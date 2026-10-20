@@ -22,6 +22,7 @@ for p in sorted((ROOT/'fixtures').glob('[0-9][0-9]-*.maxpat')):
  executed=trace.exists();rows=[json.loads(x) for x in trace.read_text().splitlines()] if executed else []
  s=json.loads(json.dumps(settings));kind='exact_ordered_messages';limits=['Only listed input messages in this fixture are observed.','JS defers high-priority input; sequence reflects collector arrival.','Scalar int/float selectors are preserved; numeric types within lists are unknown in this logger.','Expected files are observed baselines, not independently certified oracles.']
  if p.stem in ['00-environment','14-scheduler','15-scope','02-fanout','16-fanout-metadata','17-fanout-reversed']:kind='inventory_only'
+ limits+=['latest_input_id is arrival context only; causal_input_id is null because causality was not measured.','Source candidates come from direct logger patchlines; shared inlets are ambiguous and no unique source is asserted.']
  if p.stem=='14-scheduler':limits+=['Metro tick count and wall time vary; no exact tick-count comparison.']
  if p.stem=='15-scope':limits+=['Multiple receive object delivery order is officially nondeterministic.']
  if 'fanout' in p.stem:limits+=['Authored order did not override layout; explicit order semantics unresolved.']

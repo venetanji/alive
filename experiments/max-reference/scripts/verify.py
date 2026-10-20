@@ -30,8 +30,25 @@ for p in (ROOT/'results').glob('*.jsonl'):
  score=load(ROOT/'fixtures'/(p.stem+'.score.json'))
  assert rows[-1]['selector']=='complete' and rows[-1]['atoms']==[len(score['events'])],p
  assert [x['atoms'][0] for x in rows if x['selector']=='stimulus' and x['label']=='$input']==[x['id'] for x in score['events']],p
- exp=load(ROOT/'expected'/(p.stem+'.json'))['events']
- assert exp==[{k:v for k,v in x.items() if k!='wall_ms'} for x in rows],p
+ expected=load(ROOT/'expected'/(p.stem+'.json'))
+ assert expected['events']==[{k:v for k,v in x.items() if k!='wall_ms'} for x in rows],p
+ annotations=expected['event_annotations'];assert len(annotations)==len(rows),p
+ edges=[line['patchline'] for line in load(ROOT/'fixtures'/(p.stem+'.maxpat'))['patcher']['lines']]
+ latest_input=None
+ for row,annotation in zip(rows,annotations):
+  if row['label']=='$input':latest_input=row['atoms'][0]
+  assert annotation['seq']==row['seq'] and 'operation_id' not in annotation,(p,row['seq'],'annotation sequence/context')
+  assert annotation['latest_input_id']==latest_input,(p,row['seq'],'latest input is context only')
+  assert annotation['causal_input_id'] is None and annotation['causality']=='not_measured',(p,row['seq'],'unmeasured causality')
+  labelled=row['label'] in score['labels']
+  destination=['logger',score['labels'].index(row['label'])] if labelled else None
+  candidates={tuple(edge['source']) for edge in edges if edge['destination']==destination}
+  recorded=annotation['source_object_outlet_candidates']
+  assert len(recorded)==len(candidates) and {tuple(source) for source in recorded}==candidates,(p,row['seq'],'all candidate sources required')
+  resolution='not_applicable' if not labelled else ('unique_patchline' if len(candidates)==1 else ('ambiguous' if candidates else 'unresolved'))
+  assert annotation['source_resolution']==resolution,(p,row['seq'],'source ambiguity')
+  source=list(next(iter(candidates))) if len(candidates)==1 else None
+  assert annotation['source_object_outlet']==source,(p,row['seq'],'unique source only')
 assert [x['label'] for x in observed('01-trigger')]==['right','middle','left']
 assert [x['label'] for x in observed('19-depth-first')]==['inner_right','inner_left','outer_left']
 assert tuples('03-hot-cold')==[('plus','int',[12]),('plus','int',[102]),('plus','int',[105]),('int','int',[9]),('int','int',[11])]

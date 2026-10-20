@@ -64,12 +64,12 @@
     },
     {
       "path": "expected/07-flonum.json",
-      "sha256": "9b111a0f6e656c60ae6917601a3604d1401028624ed44738bb955890280123cf",
+      "sha256": "a6ea8686dc998ccc6a7ac838b2f2166c02e5da567e25fa154eab09143c65700b",
       "role": "message_trace"
     },
     {
       "path": "docs/semantic-gaps.md",
-      "sha256": "9b1ff7e891c6549c421e516e75012e8c58d1abc851ccef9153e00c9fe0a3c791",
+      "sha256": "8fd809c837bccf3cc200069c0b719be9b717f3ce23c41ff2fb55c9481f87691a",
       "role": "notes"
     }
   ],
@@ -83,7 +83,9 @@
       "Only listed input messages in this fixture are observed.",
       "JS defers high-priority input; sequence reflects collector arrival.",
       "Scalar int/float selectors are preserved; numeric types within lists are unknown in this logger.",
-      "Expected files are observed baselines, not independently certified oracles."
+      "Expected files are observed baselines, not independently certified oracles.",
+      "latest_input_id is arrival context only; causal_input_id is null because causality was not measured.",
+      "Source candidates come from direct logger patchlines; shared inlets are ambiguous and no unique source is asserted."
     ]
   },
   "redistribution": {

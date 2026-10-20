@@ -50,8 +50,12 @@
   "event_annotations": [
     {
       "seq": 1,
-      "operation_id": "event_0",
+      "latest_input_id": "event_0",
+      "causal_input_id": null,
+      "causality": "not_measured",
       "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
       "atom_types": [
         "symbol",
         "symbol",
@@ -62,38 +66,69 @@
     },
     {
       "seq": 2,
-      "operation_id": "event_0",
+      "latest_input_id": "event_0",
+      "causal_input_id": null,
+      "causality": "not_measured",
       "source_object_outlet": [
         "obj-2",
         2
       ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          2
+        ]
+      ],
+      "source_resolution": "unique_patchline",
       "atom_types": [],
       "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
     },
     {
       "seq": 3,
-      "operation_id": "event_0",
+      "latest_input_id": "event_0",
+      "causal_input_id": null,
+      "causality": "not_measured",
       "source_object_outlet": [
         "obj-2",
         1
       ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
       "atom_types": [],
       "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
     },
     {
       "seq": 4,
-      "operation_id": "event_0",
+      "latest_input_id": "event_0",
+      "causal_input_id": null,
+      "causality": "not_measured",
       "source_object_outlet": [
         "obj-2",
         0
       ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
       "atom_types": [],
       "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
     },
     {
       "seq": 5,
-      "operation_id": "event_0",
+      "latest_input_id": "event_0",
+      "causal_input_id": null,
+      "causality": "not_measured",
       "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
       "atom_types": [
         "unknown_numeric"
       ],

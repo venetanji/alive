@@ -21,6 +21,17 @@ Wine 11.13, not native Windows/macOS, Max 8, RNBO, or the Live scheduler.
   off, Scheduler in Audio Interrupt off and DSP off. No claims about race-free
   high-priority delivery, transport, sample-accurate automation or real-time
   deadlines follow. Wall time is diagnostic and distinct from sequence order.
+- Annotation `latest_input_id` records only the most recent input at collector
+  arrival, not the cause of an output. In 14-scheduler, the delayed bang at
+  sequence 16 arrives after event_8 even though event_8 addresses pipe, not
+  delay. No causal input was measured: `causal_input_id` is null and `causality`
+  is `not_measured`, including synchronous cases. Initialization has no latest
+  input. Do not reconstruct causality from timestamps or adjacency.
+- Source annotations are inferred from direct patchlines into logger inlets,
+  not measured per-message origin tags. All candidate object/outlet pairs are
+  retained. The 18-dsp driver_left inlet is shared by obj-2 outlet 0 and obj-46
+  outlet 0; its events have `source_resolution: ambiguous` and no unique
+  `source_object_outlet`. Candidate array order is not message delivery order.
 - `send` documentation explicitly says reception order of multiple receivers is
   not deterministic. Preserve this run's order as evidence, not a portable
   contract. `#0` abstraction instances were tested; `#0` inheritance in embedded

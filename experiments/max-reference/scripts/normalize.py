@@ -9,14 +9,23 @@ for p in sorted((ROOT/'results').glob('*.jsonl')):
  normalized=[{k:v for k,v in row.items() if k!='wall_ms'} for row in rows]
  score=json.loads((ROOT/'fixtures'/(p.stem+'.score.json')).read_text())
  patch=json.loads((ROOT/'fixtures'/(p.stem+'.maxpat')).read_text())['patcher']
- sources={line['patchline']['destination'][1]:line['patchline']['source'] for line in patch['lines'] if line['patchline']['destination'][0]=='logger'}
- annotations=[];operation='$initialization'
+ sources={}
+ for line in patch['lines']:
+  edge=line['patchline']
+  if edge['destination'][0]=='logger':
+   candidates=sources.setdefault(edge['destination'][1],[])
+   if edge['source'] not in candidates:candidates.append(edge['source'])
+ annotations=[];latest_input=None
  for row in rows:
-  if row['label']=='$input':operation=row['atoms'][0]
-  source=None
-  if row['label'] in score['labels']:source=sources.get(score['labels'].index(row['label']))
+  if row['label']=='$input':latest_input=row['atoms'][0]
+  candidates=[];resolution='not_applicable'
+  if row['label'] in score['labels']:
+   candidates=sources.get(score['labels'].index(row['label']),[])
+   resolution='unique_patchline' if len(candidates)==1 else ('ambiguous' if candidates else 'unresolved')
+  source=candidates[0] if len(candidates)==1 else None
   atom_types=[('int' if row['selector']=='int' else 'float') if row['selector'] in ['int','float'] else ('symbol' if isinstance(atom,str) else 'unknown_numeric') for atom in row['atoms']]
-  annotations.append({'seq':row['seq'],'operation_id':operation,'source_object_outlet':source,'atom_types':atom_types,'order_domain':'Max JS collector arrival, not scheduler thread timestamp'})
+  # Arrival context cannot establish causality for delayed or deferred outputs.
+  annotations.append({'seq':row['seq'],'latest_input_id':latest_input,'causal_input_id':None,'causality':'not_measured','source_object_outlet':source,'source_object_outlet_candidates':candidates,'source_resolution':resolution,'atom_types':atom_types,'order_domain':'Max JS collector arrival, not scheduler thread timestamp'})
  status='observed-baseline'
  limits=[]
  if p.stem=='14-scheduler':

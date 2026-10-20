@@ -64,12 +64,12 @@
     },
     {
       "path": "expected/08-pack.json",
-      "sha256": "6af9d3fa0da990e7d91e39931c11f22404ce19d1957e31c195ae40d1c16e65cf",
+      "sha256": "382256eb3857194b77c12a06fec0b228dba78389d035831eaf88e870bc30b5c7",
       "role": "message_trace"
     },
     {
       "path": "docs/semantic-gaps.md",
-      "sha256": "9b1ff7e891c6549c421e516e75012e8c58d1abc851ccef9153e00c9fe0a3c791",
+      "sha256": "8fd809c837bccf3cc200069c0b719be9b717f3ce23c41ff2fb55c9481f87691a",
       "role": "notes"
     }
   ],
@@ -83,7 +83,9 @@
       "Only listed input messages in this fixture are observed.",
       "JS defers high-priority input; sequence reflects collector arrival.",
       "Scalar int/float selectors are preserved; numeric types within lists are unknown in this logger.",
-      "Expected files are observed baselines, not independently certified oracles."
+      "Expected files are observed baselines, not independently certified oracles.",
+      "latest_input_id is arrival context only; causal_input_id is null because causality was not measured.",
+      "Source candidates come from direct logger patchlines; shared inlets are ambiguous and no unique source is asserted."
     ]
   },
   "redistribution": {

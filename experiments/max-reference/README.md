@@ -19,8 +19,13 @@ runtime or a broad Max/MSP compatibility claim. The initial fetched commit was
 - `results/*.jsonl`: raw observed collector events. `expected/*.json` removes
   wall-clock timestamps while retaining stimuli and initialization. These are
   observed baselines, not independent certification. Raw JSONL retains Max's
-  Windows CRLF line endings byte-for-byte. Expected annotations link events to
-  operations and source outlets; numeric list atoms are marked `unknown_numeric`.
+  Windows CRLF line endings byte-for-byte. In annotations, `latest_input_id` is
+  arrival context only (null before the first input); `causal_input_id` stays
+  null and `causality` is `not_measured`. This replaces the misleading
+  `operation_id` field. `source_object_outlet_candidates` retains every direct
+  logger source. `source_object_outlet` is null when those candidates are
+  ambiguous, as recorded by `source_resolution`. Numeric list atoms remain
+  `unknown_numeric`.
 - `objects.json`: 32 bounded classes with documented arguments, ports, defaults,
   message vocabulary, relevant attributes, source hashes, aliases and evidence
   status. UI, message and DSP status are separate. Some installed XML port and
@@ -118,12 +123,21 @@ To validate the delivered evidence without launching Max:
 python3 scripts/verify.py
 # If jsonschema is not installed, use an isolated tool environment:
 uv run --no-project --with jsonschema scripts/verify.py
+python3 -m unittest discover -s scripts -p 'test_normalize.py' -v
 ```
 
 `verify.py` checks graph endpoints, complete ordered scores, trace normalization,
-independent semantic assertions, both identical DSP captures, WAV encoding,
-artifact hashes and every manifest against the shared JSON Schema. This checks
+latest-input context and complete source candidates, independent semantic
+assertions, both identical DSP captures, WAV payload encoding, artifact hashes
+and every manifest against the shared JSON Schema. Annotation regressions run
+the real normalizer on disposable copies of four captured fixtures, including
+delayed output and a shared logger inlet. This checks
 bundle integrity and bounded observations, not general compatibility.
+
+After changes to derived metadata, run `scripts/normalize.py` then
+`scripts/build_manifests.py` before verification. Neither command launches Max
+or changes raw captures. Annotation corrections are derived from existing
+evidence and do not imply a new Max execution.
 
 ## Known Gaps And Sources
 

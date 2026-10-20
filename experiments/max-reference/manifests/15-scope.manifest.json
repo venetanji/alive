@@ -73,12 +73,12 @@
     },
     {
       "path": "expected/15-scope.json",
-      "sha256": "f47e22d83283f0936a513bbba021ca11d1354209f9251074465e10485c5e861d",
+      "sha256": "a4abb3bba5101764a9ae765d8a04c2af323dc2309ed80c69b47d130276d4ef30",
       "role": "message_trace"
     },
     {
       "path": "docs/semantic-gaps.md",
-      "sha256": "9b1ff7e891c6549c421e516e75012e8c58d1abc851ccef9153e00c9fe0a3c791",
+      "sha256": "8fd809c837bccf3cc200069c0b719be9b717f3ce23c41ff2fb55c9481f87691a",
       "role": "notes"
     }
   ],
@@ -93,6 +93,8 @@
       "JS defers high-priority input; sequence reflects collector arrival.",
       "Scalar int/float selectors are preserved; numeric types within lists are unknown in this logger.",
       "Expected files are observed baselines, not independently certified oracles.",
+      "latest_input_id is arrival context only; causal_input_id is null because causality was not measured.",
+      "Source candidates come from direct logger patchlines; shared inlets are ambiguous and no unique source is asserted.",
       "Multiple receive object delivery order is officially nondeterministic."
     ]
   },
