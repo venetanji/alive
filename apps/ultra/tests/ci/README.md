@@ -44,7 +44,15 @@ monitors, system service reconfiguration, device permissions, or security bypass
 are needed. Ubuntu 24.04's WirePlumber 0.4 uses upstream `policy.conf`; newer
 WirePlumber uses its `policy` profile. Capture uses raw stdout (supported by
 PipeWire 1.0), not newer `--raw` / `--sample-count` flags. Recording stops cleanly
-after the real Rust test, so frame count varies. Probe and capture timeouts bound
+after the real Rust test, so frame count varies. The analyzer requires a recorded
+planned SIGINT, a passing probe, empty recorder stderr, and valid stereo PCM.
+It accepts exit status 1 only for compiled/linked PipeWire 1.0.5: upstream
+[`pw-cat` returns success only after playback drain](https://github.com/PipeWire/pipewire/blob/1.0.5/src/tools/pw-cat.c#L1916-L1921),
+not for a recording stopped by SIGINT. The raw exit status remains in the report;
+unknown-version status 1, timeouts, missing stop evidence, errors, and invalid PCM
+are rejected. `check_cpal_capture.py --self-test` covers these cases in the
+contracts job without substituting for the actual audio integration gate.
+Probe and capture timeouts bound
 failures; process cleanup removes the private runtime directory.
 
 CI uploads build logs, exact tool versions, the matched test list, daemon/test

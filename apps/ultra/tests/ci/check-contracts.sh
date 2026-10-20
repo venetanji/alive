@@ -11,6 +11,7 @@ python3 -m unittest discover -v -s experiments/max-reference/scripts -p 'test_*.
 python3 experiments/max-reference/scripts/verify.py
 python3 experiments/max-ui-reference/verify.py
 python3 -m unittest discover -v -s experiments/max-reference/help-coverage-20261021 -p 'test_*.py'
+python3 apps/ultra/tests/check_cpal_capture.py --self-test
 python3 apps/ultra/tests/check_build_install.py
 python3 apps/ultra/tests/check_isolated_launcher.py
 

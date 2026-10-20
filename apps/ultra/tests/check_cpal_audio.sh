@@ -20,7 +20,7 @@ done
     cargo --version
     pipewire --version
     wireplumber --version
-    pw-cat --version
+    pw-cat --version | tee "$out/capture-version.txt"
 } >"$out/versions.txt" 2>&1
 cargo test --release --manifest-path apps/ultra/src-tauri/Cargo.toml --locked --no-run --message-format=json >"$out/build-artifacts.jsonl" 2>"$out/build.log"
 probe_binary=$(python3 - "$out/build-artifacts.jsonl" <<'PY'
@@ -98,21 +98,8 @@ probe=''
 # gracefully after the test has rendered its score and completed restart checks.
 # timeout forwards SIGINT to pw-cat and bounds a stuck recorder as well.
 kill -INT "$capture"
+printf 'SIGINT\n' >"$out/capture-stop.txt"
 capture_status=0
 wait "$capture" || capture_status=$?
 capture=''
-python3 - "$out" "$capture_status" <<'PY'
-import array,json,math,pathlib,sys
-out=pathlib.Path(sys.argv[1]);samples=array.array('f');samples.frombytes((out/'loopback.f32').read_bytes())
-assert len(samples)%2==0,len(samples)
-assert len(samples)//2>48000,len(samples)
-assert int(sys.argv[2])==0,sys.argv[2]
-assert not (out/'capture.log').read_text().strip()
-assert all(math.isfinite(x) for x in samples)
-channels=[samples[::2],samples[1::2]]
-peaks=[max(abs(x) for x in ch) for ch in channels]
-assert all(.001<p<1 for p in peaks),peaks
-report={'scope':'private software-only CPAL PipeWire loopback, no physical outputs','rate_hz':48000,'channels':2,'frames':len(samples)//2,'peaks':peaks,'all_finite':True,'capture_exit_status':int(sys.argv[2]),'capture_note':'Recording stopped with SIGINT after the passing Rust test; frame count varies with startup time. Clean recorder exit and empty error log are required.','note_score':'both channels A4 / MIDI 69 velocity 70; on at +2s, off +2.6s; score wall times approximate, not latency measurements','observed':'probe.log records requested and observed callback size; successful stop/start and saved configuration reload'}
-(out/'result.json').write_text(json.dumps(report,indent=2)+'\n')
-print(json.dumps(report))
-PY
+python3 apps/ultra/tests/check_cpal_capture.py "$out" "$capture_status"
