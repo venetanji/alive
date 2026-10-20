@@ -7,9 +7,10 @@ This is not a general Max/Pd graph interpreter, plugin host or full DAW.
 
 Run the supplied binary bundle with ./run.sh. No dependencies are installed and
 no audio-server settings are changed by the launcher. A desktop session and
-GTK 3 / WebKitGTK 4.1 runtime are required. The build machine was Debian 13;
-the package's BUILD-EVIDENCE.txt lists actual ELF symbol requirements. This is
-not a universal Linux/AppImage compatibility promise.
+GTK 3 / WebKitGTK 4.1 runtime are required. The original cloud bundle was built
+on Debian 13; the locally validated rebuild is from Omarchy / Arch Linux.
+The package's BUILD-EVIDENCE.txt identifies its provenance and actual ELF symbol
+requirements. This is not a universal Linux/AppImage compatibility promise.
 
 Audio: start your existing JACK server at 48,000 Hz and period <=1024 frames,
 or use your installed PipeWire JACK compatibility environment (pw-jack ./run.sh).
@@ -51,6 +52,108 @@ KNOWN VALIDATION LIMITS
 The accompanying evidence separates offline execution, synthetic backend tests,
 GUI smoke checks and physical hardware. Missing evidence is not a pass. Product
 licensing is undecided; actual incorporated dependency terms still apply.
+
+TESTED LOCAL DESKTOP
+Omarchy / Arch x86_64, kernel 7.2.8-9-omarchy, Wayland / Hyprland 0.56.2,
+GCC 16.2.1, GTK3 3.24.52, WebKitGTK4.1 2.54.1 and PipeWire-JACK 1.6.9.
+Both the supplied cloud bundle and a source rebuild opened actual Tauri windows.
+The local rebuild uses the pinned Rust 1.85.1/CMake 3.31.6 in .deps, even if
+another Rust/CMake is installed. From repository root:
+  bash apps/ultra/build.sh
+  bash apps/ultra/run.sh
+Rebuilding now installs the native library atomically, preserving a running
+app's mapping. Restart the app to load rebuilt code; a rebuild is not hot reload.
+
+Before playing, lower physical playback volume and both app gains (1..8 is
+suitable for these tests). A routes left, B right. Existing MIDI connections
+must be recreated after Stop/Start; inspect qpwgraph or QjackCtl's graph.
+QjackCtl and qpwgraph were installed for debugging. Use the existing PipeWire
+server; QjackCtl's Start button is not needed to launch another daemon.
+Playing only A (including the default typing keyboard) produces only left.
+For right, play B's keyboard or send MIDI on channel 2. The user reported B's
+on-screen keyboard was silent. At 512 frames, private native pointer tests
+produce signal on both software outputs and terminate correctly; the LG TV's
+FL/FR JACK links and balanced, unmuted sink volumes were also verified. Independent
+stereo WAVs have valid left/right samples, but the user hears no right from
+pw-play or approved direct ALSA playback with PipeWire stopped. Chrome is
+reported to play stereo; the same WAV's Chrome result remains unconfirmed.
+The audible discrepancy is unresolved, and no driver/TV diagnosis is established.
+Auto-connection uses the first two physical ports, so inspect the patchbay after
+device/order changes. See PLAN.md for the separate software/listening evidence.
+
+On the tested desktop, activating Ultra without a period override negotiated
+2048 frames, causing the expected supported-period safety stop. A latency
+request is not proof of the resulting period: inspect Ultra's JACK period.
+If you choose to run a temporary test affecting the entire existing PipeWire
+graph, first record its current settings, then explicitly set a supported period:
+  pw-metadata -n settings
+  pw-metadata -n settings 0 clock.force-quantum 256
+The local session also tested 128 and 64. Stop/Start Ultra after a safety fault.
+Restore your recorded force-quantum value when done (this machine started at 0):
+  pw-metadata -n settings 0 clock.force-quantum 0
+The app and launcher never perform these settings changes automatically.
+The direct-ALSA check restored the user's selected 512-frame override. A later
+server restart reset it to 0; the final isolated regression temporarily used
+256 and restored 0. Restore the setting you actually recorded, not an assumed
+value. Applications can retain stale connections after a server restart:
+Telegram logged playback-device failures, and fully quitting/reopening it
+restored its audio. Avoid further service restarts just to change a period.
+
+ISOLATED NATIVE REGRESSION (recommended, repository source)
+Close other Ultra instances. With an existing 48 kHz server at a supported period:
+  bash apps/ultra/tests/check_isolated_desktop.sh /tmp/ultra-isolated-results
+Requires Xvfb/xvfb-run, dbus-run-session, Python GI/AT-SPI and JACK headers.
+This launches the actual Tauri app on a private X11 display with private D-Bus
+and accessibility sessions/runtime directory. The existing audio server remains
+available through PIPEWIRE_RUNTIME_DIR. It lowers both app gains to 4, exercises both pointer
+keyboards, route isolation/reconnection and real software MIDI, saves a native
+screenshot, then stops audio and closes its processes. Accessibility actions
+address its process; XTest mouse events are confined to the verified private
+Xvfb display. No keyboard events or input/focus changes reach your desktop.
+Existing Ultra processes/target JACK ports are
+refused before any MIDI is sent. Do not launch another Ultra during this test;
+audio is still shared with your real server and physical playback.
+It never changes server settings or installs dependencies. A private native
+window is not a browser preview, physical latency test or Wayland input test.
+The final combined run passed at 256 frames, with correct note termination and
+no probe xruns/late sends/discontinuities. The desktop accessibility socket
+retained its inode and connectivity throughout the private-session run.
+
+REAL JACK CHECKS (repository source, official JACK headers and pkg-config)
+  c++ -std=c++20 -O2 apps/ultra/tests/jack_probe.cpp \
+    $(pkg-config --cflags --libs jack) -pthread -o /tmp/ultra-jack-probe
+With the actual native app running, both chains connected and gains 1..8:
+  /tmp/ultra-jack-probe basic
+  python3 apps/ultra/tests/check_desktop_isolation.py --probe /tmp/ultra-jack-probe
+  /tmp/ultra-jack-probe overload
+Overload intentionally mutes both devices: inspect the fault, Stop, then Start.
+The probe uses software MIDI and taps only Ultra outputs. It never starts a
+server. MIDI scenarios send all-off cleanup; capture mode is passive. Hold and
+capture modes report acquisition, not a semantic pass. Incomplete/nonfinite
+captures or late sends fail; graph topology changes may invalidate a capture.
+These checks are separate from tests/check_backend.py's explicit fake-JACK ABI.
+
+For the server-loss UI regression, only after an independently approved service
+restart, the existing server is back, and its period is supported:
+  python3 apps/ultra/tests/check_desktop_recovery.py
+  /tmp/ultra-jack-probe basic
+The script never restarts a service or changes settings. Desktop regression
+scripts require Python GI / AT-SPI and one actual Ultra window.
+For the mapped-library install regression (no audio/display required):
+  python3 apps/ultra/tests/check_build_install.py
+For releases during pending patch commands (no audio/display required):
+  node apps/ultra/ui/events.test.mjs
+
+Actual native UI checks include dragging, reconnecting, deleting/restoring,
+both pointer keyboards, typing A, gain/sustain, JSON paste/native file-picker
+import, focus loss, Panic, active-audio exit and real server-loss recovery.
+Screenshots are under apps/ultra/screenshots in source. Optional Download is
+still unverified; selectable JSON remains the export fallback.
+Short basic real-JACK captures at 512/256/128/64 show the declared 64-frame software
+delay and termination/isolation. Desktop interaction produced xruns, including
+focus switching. Sustained realtime acceptance, physical controller input,
+audible listening confirmation and calibrated MIDI-to-analog latency remain
+pending. See the single repository PLAN.md for detailed evidence and next gates.
 
 Ordering and long sessions: events with identical timestamps from MIDI are
 submitted before the pending UI queue is drained, so equal-time MIDI precedes

@@ -2,7 +2,7 @@
 
 Updated: 2026-10-20.
 
-Status: architecture research, a constrained Clockwork/Faust host, and an early Rust/Tauri Ultra patch-editor test build. There is no production DAW or Live/Max compatibility implementation. Native/offline and build evidence is distinguished below from unverified desktop interaction, physical audio/MIDI latency and realtime performance. This plan makes no delivery-date or broad compatibility claim.
+Status: architecture research, a constrained Clockwork/Faust host, and an early Rust/Tauri Ultra patch-editor test build. There is no production DAW or Live/Max compatibility implementation. Offline, actual Linux desktop and real PipeWire-JACK evidence are distinguished below from unmeasured physical audio/MIDI latency and unqualified realtime performance. This plan makes no delivery-date or broad compatibility claim.
 
 ## Current Recommendation
 
@@ -12,10 +12,10 @@ Status: architecture research, a constrained Clockwork/Faust host, and an early 
 2. **Use the tested constrained host contract.** Complete aligned 64-frame Clockwork calls behind a causal adapter provide one declared 64-frame delay across arbitrary input/output partitions. Exclusive ingress, 16 events per engine block, bounded queues/horizon and readiness checks avoid the raw-host admission/initialization gaps within this application profile.
 3. **Fail visibly and safely, not silently.** Rejected termination, invalid admission or panic globally mutes and invalidates future work until stopped restart. Ordinary held notes/sustain have no lease. This sacrifices continuity/per-device fault isolation under overload, but does not leave an accepted future note rearming after its off was rejected. Normal A reset/parameter changes preserve B.
 4. **Keep the first patch subset honest.** Two four-voice Faust instruments and two supported note→voice→gain→output chains are implemented. Moving/reconnecting objects edits actual route state, not arbitrary generated DSP. General patch compilation, Max/Pd compatibility, live code loading, a full device library and the Alive DAW remain separate future work.
-5. **Treat the downloadable build as a research test app.** Rust/Tauri and native binaries compile; core/offline audio, graph validation, negative controls and backend ABI tests pass. Desktop-window interaction, real JACK/MIDI hardware, physical latency and realtime deadlines remain unverified in this environment. The Linux binary has explicit runtime requirements, not universal portability.
+5. **Treat the downloadable build as a research test app.** Rust/Tauri and native binaries compile locally; core/offline, graph, negative-control and backend test-double checks pass. The actual Tauri window and real PipeWire-JACK software MIDI/audio path now run on the target Linux desktop at 512/256/128/64 frames. Physical MIDI-to-analog latency and sustained realtime acceptance remain pending; xruns occurred during desktop interactions and the user's HDMI right-channel listening discrepancy remains unresolved. The Linux binary has explicit runtime requirements, not universal portability.
 6. **Keep product licensing undecided.** The app's actual native core uses Clockwork's existing AGPL/commercial-licensed code with audited Faust-generated DSP; no commercial agreement is assumed. Rust/Tauri and system JACK/GTK/WebKit terms are separate. scsynth/Supersonic and its costs are not part of this custom Faust guest.
 
-Clockwork supplies the real ring/timed store, engine clock, memory infrastructure and host substrate. Ultra supplies bounded ingress, causal adaptation, device/voice/parameter semantics, the patch document/UI, graph validation, explicit fault UX and stopped lifecycle ownership. Next evaluate the interface and native setup on the user's Linux desktop, then measure the declared workload and extend the graph subset deliberately. Raw-upstream failure fixtures remain useful regression evidence, not claims that every Clockwork caller has been hardened.
+Clockwork supplies the real ring/timed store, engine clock, memory infrastructure and host substrate. Ultra supplies bounded ingress, causal adaptation, device/voice/parameter semantics, the patch document/UI, graph validation, explicit fault UX and stopped lifecycle ownership. The initial Linux desktop validation found and fixed route-isolation, live-rebuild and server-recovery UI defects. Next qualify sustained editing/playback and physical MIDI latency, then extend the graph subset deliberately. Raw-upstream failure fixtures remain useful regression evidence, not claims that every Clockwork caller has been hardened.
 
 ## Product Goal
 
@@ -31,7 +31,7 @@ Implement compatibility through documented behavior, independent implementations
 
 The first performance milestone is a small native instrument played from a MIDI controller on Linux. Use deterministic oscillator/envelope/gain DSP with preallocated voices so that instrument complexity does not obscure backend and scheduling behavior. Cover note-on/off, velocity, sustain, voice exhaustion, and all-notes-off. Timestamp MIDI at the earliest reliable ingress point, map it onto the audio timeline, and apply events at defined sample offsets.
 
-The first interactive slice is now Ultra: a Rust/Tauri patching interface around the validated instrument, with a deliberately limited graph/document model and native command layer. First validate that editor and hardware playback on the target desktop. The later Alive product milestone adds MIDI clips, automation, native save/reopen and audio-loop launching using the same foundation. Existing Live project import and Max compatibility remain separate research tracks, not claims made by the test app.
+The first interactive slice is now Ultra: a Rust/Tauri patching interface around the validated instrument, with a deliberately limited graph/document model and native command layer. The editor and actual PipeWire-JACK graph now run on the target desktop; physical controller playback and calibrated output measurements remain pending. The later Alive product milestone adds MIDI clips, automation, native save/reopen and audio-loop launching using the same foundation. Existing Live project import and Max compatibility remain separate research tracks, not claims made by the test app.
 
 | Area | Initial Scope | Expansion Path |
 | --- | --- | --- |
@@ -96,7 +96,7 @@ Ultra is a common authoring/device experience, not a claim that Faust DSP, Pd pa
 | Foundation | What it buys | Work and coupling retained | Counter-evidence that would change the decision |
 | --- | --- | --- | --- |
 | Direct host + AOT Faust; optional libpd profile | Executed deterministic oracle and fallback; simple buffer/event control | Would require owning transport/queues/lifecycle/observability that Clockwork can reuse; hardware still untested | Select as production fallback only if the bounded Clockwork hardening gate fails or its licensing/integration cost outweighs demonstrated reuse |
-| Clockwork hosting the custom Ultra/Faust guest | Actual hosted output/timing/isolation evidence; real scheduler/client/memory/telemetry reuse, related web boundary | Partition-dependent input mapping, scheduler admission/termination and due-work budgets, explicit readiness/teardown; Ultra-owned device/state semantics | Constrained adapter passes its offline input/admission/lifecycle gate and is used by the Ultra test build; desktop interaction and native hardware/deadline qualification remain |
+| Clockwork hosting the custom Ultra/Faust guest | Actual hosted output/timing/isolation evidence; real scheduler/client/memory/telemetry reuse, related web boundary | Partition-dependent input mapping, scheduler admission/termination and due-work budgets, explicit readiness/teardown; Ultra-owned device/state semantics | Constrained adapter passes its offline input/admission/lifecycle gate; actual desktop and PipeWire-JACK graph tests pass for the bounded cases below. Physical hardware/deadline qualification remains |
 | Supersonic/scsynth synthesis core | SC graph, buses, SynthDefs and UGen ecosystem; concrete Clockwork guest | SC-specific semantics, unsupported UGens/media, inline heavy command stages, shared resources and GPL/AGPL scope | Prefer if actual SC workflows remove substantial engine work and product licensing permits it, while preloaded/budgeted edits pass tail/deadline and isolation tests |
 
 Separate engines behind a bridge remain a fault/isolation option, not an automatic extra-block requirement. A fully unified session/patch model is not justified by either experiment: it couples authoring semantics without solving MIDI clocks, runtime locks, or lifecycle. Keep the initial repository and internal contract small; no stable external ABI is established.
@@ -321,7 +321,7 @@ Scheduling: PipeWire's RT module first uses available RLIMIT_RTPRIO and otherwis
 
 At 48 kHz, 64/128/32 frames are 1.333/2.667/0.667 ms processing periods, not audible latency. Keep scheduled sample-placement evidence, callback duration, wakeup delay, intrinsic adapter delay, and calibrated physical controller-to-analog response separate. The small cloud probes use four native voices or two Pd devices; the proposed local 32-voice workload is an expansion gate, not tested capacity.
 
-### Local Protocol (Proposed, Not Run)
+### Physical Performance Protocol (Pending)
 
 1. Inventory exact CPU, governor/power mode, kernel build/PREEMPT model, interface+firmware, controller, MIDI connection type, USB topology, driver, distro packages, PipeWire/WirePlumber config, loaded libjack path, DSP/compiler commits, limits, and thread policies. Capture graph/device sample rates, quantum, hardware periods/buffers, links/resamplers, latency metadata and stderr warnings. Resolve stable physical device IDs; no Bluetooth, hidden monitor path or default-route switching in baseline.
 2. Use the same deterministic bounded oscillator/envelope/gain instrument and score on both backends: baseline 32 voices, two independently controlled devices, stereo 48 kHz, maximum 256 ordinary events/callback, preallocated queue 4096 events. These workload limits are provisional engineering choices, not measured capacity. Reserve reset/note-release handling: overflow must not strand sustain or notes; latch panic/reset if loss compromises lifecycle. Test 33rd voice, duplicate notes, velocity-zero note-on, CC64, all-notes-off and source disconnect. Distinguish semantic overload tests from throughput benchmarks.
@@ -506,7 +506,7 @@ Run instructions are packaged in `apps/ultra/RUNNING.txt`; actual third-party te
 
 ### Build and Validation Evidence
 
-Builds use the existing checksum-pinned Clockwork/Faust/CMake/Rust inputs, plus a checked-in app Cargo.lock: Tauri 2.8.5, tauri-build 2.4.1, compatible tauri-runtime 2.8.0 / runtime-wry 2.8.1, serde 1.0.228 and serde_json 1.0.145. The native compiler is GCC/G++ 14.2.0. GTK 3.24.49 / WebKitGTK 4.1 2.52.6 prerequisites were extracted from verified official Debian packages for this build, not installed into the system. The normal source build expects the target distro's official Tauri development prerequisites. This is a pinned source/lockfile build, not a hermetic OS image.
+Builds use the existing checksum-pinned Clockwork/Faust/CMake/Rust inputs, plus a checked-in app Cargo.lock: Tauri 2.8.5, tauri-build 2.4.1, compatible tauri-runtime 2.8.0 / runtime-wry 2.8.1, serde 1.0.228 and serde_json 1.0.145. The cloud compiler was GCC/G++ 14.2.0. GTK 3.24.49 / WebKitGTK 4.1 2.52.6 prerequisites were extracted from verified official Debian packages for that build, not installed into the system. A separate target-desktop rebuild uses GCC 16.2.1 and the installed Arch GTK/WebKit libraries; see local evidence below. The normal source build expects the target distro's official Tauri development prerequisites. This is a pinned source/lockfile build, not a hermetic OS image.
 
 ```sh
 # Repository root, after installing the target distro's development prerequisites:
@@ -537,15 +537,104 @@ node --check apps/ultra/ui/app.mjs
 | Offline native audio | Actual Clockwork/Faust two-second stereo WAV: 96,000 frames at 48 kHz, note onsets A64/B95, finite signal and exact silent release tail |
 | Rust/frontend graph validation | Five Rust validation tests and JS graph/syntax checks pass; source review found/fixed startup-status, identifier-bound and reconnect-gain inconsistencies |
 | Backend unit test double | Explicit fake-JACK ABI callback tests verify offsets, independent termination, refusal of unsupported rate/period and overload silence. **Not actual JACK-server execution**; fake library never belongs in the app launcher/binary package |
-| Native window / browser interaction | Executable loads dependencies but actual GTK window could not run without a display. Browser file preview and local-server route were denied by environment policy; no bypass used. No rendered UI screenshot or interaction-pass claim |
-| Real audio/MIDI server / hardware | Actual JACK dummy-server start was blocked by socket permissions. Physical MIDI/audio, realtime deadlines, xrun behavior and target-desktop interaction remain for user/local testing |
+| Actual native desktop interaction | Local Tauri window tested on Wayland/Hyprland: drag, route edits, object deletion/restoration, both pointer keyboards, typing A, gain/sustain, JSON paste/native file-picker import, focus loss, Panic and clean active-audio exit. Screenshots and limits below. Browser DSP remains untested |
+| Real audio/MIDI server | Existing PipeWire-JACK at 48 kHz, observed 512/256/128/64-frame periods: software MIDI offsets, channel isolation, sustain/termination, overload, repeated lifecycle and approved real server-loss/recovery tested. Physical controller/analog latency and sustained deadlines remain pending; desktop-interaction xruns observed |
 
-A successful compiled app and offline waveform are not proof of target-device usability or production performance. The test build is appropriate for checking the initial Ultra interface and native setup on a matching desktop; keep the PR in draft and retain the explicit limitations above.
+The actual local app and graph tests support bounded functional use on this machine. They do not qualify sustained realtime performance or physical latency. Keep the PR in draft and retain the explicit limitations below.
+
+
+### Target Linux Desktop Validation
+
+Validation on 2026-10-20 starts from the same draft PR branch at `2ae10bf078bd5384587bf152d1f5c8e74ad3d5d7`. No `AGENTS.md` was present in the checkout or inspected parents. The supplied source archive matched that commit exactly; original archives were preserved. Both the supplied binary and a local source rebuild launched actual Tauri windows.
+
+| Component | Observed configuration |
+| --- | --- |
+| Desktop / CPU | Omarchy on Arch Linux, x86_64; Ryzen 9 5900HS, 8 cores / 16 threads, about 38 GiB RAM; Wayland / Hyprland 0.56.2; two scaled displays |
+| Kernel / privileges | `7.2.8-9-omarchy`, PREEMPT_DYNAMIC/PREEMPT, HZ=1000; no PREEMPT_RT evidence. Shell RT-priority limit 0, locked-memory limit 8,192 KiB. Active Ultra `data-loop.0` observed as SCHED_RR priority 20 through PipeWire |
+| Build / GUI | GCC/G++ 16.2.1; installed Rust 1.99, scripts use pinned Rust 1.85.1 and CMake 3.31.6; GTK3 3.24.52, WebKitGTK4.1 2.54.1, glibc 2.44 |
+| Audio / MIDI | Existing PipeWire / pipewire-jack 1.6.9, WirePlumber 0.5.18, 48 kHz; HDMI LG TV default playback and analog output available. No USB MIDI controller found; input is software JACK MIDI. Captures tap Ultra outputs, never a microphone |
+| Debug tools | Requested QjackCtl and qpwgraph installed with `sudo -n pacman -S --needed --noconfirm qjackctl qpwgraph`; no other system dependencies installed by this validation |
+
+Initial PipeWire metadata: rate 48,000, quantum 256, min/max 32/2,048, force-quantum 0, force-rate 0. Without an override, activation negotiated a 2,048-frame callback, exceeding Ultra's supported 1,024 maximum and correctly latching silence. The user approved temporary forced periods 256/128/64 and brief restarts of the existing PipeWire service for recovery testing. These are session test changes, not launcher defaults or persistent configuration. Those temporary overrides were restored to 0. The user subsequently selected 512 frames; the approved direct-ALSA test restored that value. A later service restart at 17:48:43 reset force-quantum to 0; its trigger was not established. The final combined isolated regression temporarily used the already-approved 256-frame setting and restored the value it actually found, 0. Rate remains 48,000, default quantum 256, min/max 32/2,048 and force-rate 0; existing services remain active. Do not assume that an earlier override survives a service restart.
+
+Read-only inspection identifies the large-period source: the existing `~/.config/pipewire/pipewire.conf.d/90-hdmi-audio-quantum.conf` sets `node.force-quantum = 2048` specifically for `alsa_output.pci-0000_04_00.1.hdmi-stereo`. The active sink reports that property. `80-low-latency-default.conf` separately sets the default quantum to 256. Neither file was edited. At the user's 512-frame graph setting, HDMI's ALSA PCM reports 48 kHz, two channels, a 1,024-frame hardware period and 32,768-frame buffer; graph period, hardware buffer and adapter delay are different quantities.
+
+All requested baseline checks ran before application edits:
+
+~~~sh
+(cd experiments/faust-reference && make setup && make test && make sanitize SANITIZER_OPTIONS=detect_leaks=1)
+bash experiments/libpd-adapter/run.sh
+bash experiments/clockwork-faust/run.sh
+bash experiments/clockwork-hardening/run.sh
+SANITIZER_OPTIONS=detect_leaks=1 bash experiments/clockwork-hardening/sanitize.sh
+python3 experiments/clockwork-hardening/mutation.py
+bash apps/ultra/build.sh
+D="$PWD/experiments/clockwork-faust/.deps"
+PATH="$D/rust/bin:$PATH" CARGO_HOME="$D/cargo" \
+  ULTRA_NATIVE_LIB_DIR="$PWD/apps/ultra/build" LD_LIBRARY_PATH="$PWD/apps/ultra/build" \
+  "$D/rust/bin/cargo" test --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
+node apps/ultra/ui/graph.test.mjs
+node --check apps/ultra/ui/app.mjs
+python3 apps/ultra/tests/check_backend.py
+apps/ultra/build/ultra-diagnostic --render-demo /tmp/ultra-local-demo.wav
+~~~
+
+Direct Faust/libpd pass; all 50 original Clockwork cases pass their assertions, including expected raw-host unsafe gaps. Hardened-core tests, both mutation controls, five Rust graph tests, JS checks, explicit fake-JACK tests and offline diagnostic pass. Local C/C++ ASan/UBSan also pass with leak detection enabled; the Rust static library is uninstrumented. These checks do not prove realtime deadlines.
+
+Three reproducible defects are fixed, each with a failing-before/passing-after regression:
+
+- **Route isolation:** deleting an A cable sent global all-off, cutting B's held MIDI note. Removing a cable/object now releases only its device. Completing an incomplete route sends no redundant reset to a muted device, avoiding false rejection notices. `check_desktop_isolation.py` drives the actual webview while the real probe captures both channels: A mutes and B continues until its own all-off. `events.test.mjs` also executes the actual control code with paused patch IPC: B key-up and focus-loss releases survive an A edit even while the displayed route mask is temporarily zero. Global Panic/focus-loss releases remain intentional.
+- **Live rebuild:** overwriting the mapped native library caused a confirmed SIGBUS on the audio thread. Temporary-file installation plus atomic rename preserves the running inode. `check_build_install.py` runs the actual launcher with inert compiler tools and a genuine old mmap; a real rebuild with audio active also preserves the app process. Native render/ownership code is unchanged.
+- **Server recovery:** shutdown flagged loss and muted output, but disabled Stop despite the Stop/Start instruction. Stop now remains enabled for server loss. `check_desktop_recovery.py` checks the observed disconnect/button sensitivity and exercises Stop/Start; the real basic probe passes again after service restoration. Start already performs stopped native cleanup.
+
+| Actual local test | Observed result / limit |
+| --- | --- |
+| Real JACK, 512/256/128/64 | A event frame 2,048 produces first nonzero output at 2,112; B frame 2,079 at 2,143 at each observed period. Exactly 64 frames of software adapter delay, not MIDI-to-DAC latency. Short retained basic captures have no probe xrun notifications |
+| MIDI / controls | A note-off preserves sustained B; B sustain release reaches exact silence; channel 3 ignored. A route edit preserves B. Both pointer keyboards are isolated; typing A and release work. UI gain/sustain control the native engine |
+| Overload / lifecycle | Audible baseline then 129 simultaneous events causes visible global safety stop/silence; Stop/Start recovers. Five additional Start/Stop cycles complete. Ordinary notes have no expiry lease |
+| Native editor | Pointer drag changes exported coordinates; reconnect, cross-device rejection, delete/palette restore, invalid import rejection, export/pasted import and native GTK file-picker import exercised. Optional Download remains unverified |
+| Focus / Panic / exit | Focus loss releases a held note; Panic visibly latches silence. Closing during both held MIDI notes exits without a new core dump or remaining Ultra ports. The graph change disrupted capture timing, so that close capture is not a timing pass |
+| Real server recovery | Approved restart visibly reports disconnect/stopped audio. Fixed Stop/Start recreates ports and real basic probe passes. PipeWire, pipewire-pulse and WirePlumber are active afterward |
+| Reported silent HDMI right channel at 512 | User hears A but not B, and reports neither Ultra outlet is audible when routed to the LG TV's right input. Both rebuilt and supplied cloud binaries pass private actual-pointer keyboard checks: B produces right-channel peak 0.0062000123, A the same peak on left at gain 4, opposite outputs remain zero, and releases terminate. Initial JACK links are L/FL and R/FR on the same LG sink; user experiments subsequently cross-connect them. Sink FL/FR volumes are equal and unmuted; PipeWire and ALSA both report FL/FR stereo. Audible right-channel failure remains unresolved downstream of the app's captured outputs; no PipeWire/driver/TV diagnosis is established. First-two physical-port auto-selection remains fragile across device/order changes |
+| Independent stereo playback | An 18-second 48 kHz stereo PCM16 WAV alternates 3 seconds of left 440 Hz and right 880 Hz, three times; Python sample inspection and independent FFmpeg decoding verify both channels (peak 0.019989 each) and exactly silent inactive channels. User hears only left through `pw-play --volume 0.5`. A second stereo PCM32 file uses the same 440 Hz tone on alternating channels at peak 0.005. During an explicitly approved PipeWire stop, `aplay --quiet --fatal-errors -D hw:1,3` plays that file successfully but the user still hears no right. Services and the recorded 512-frame override were restored. This reproduces the listening symptom outside Ultra and without PipeWire running; it does not explain the user's report of stereo Chrome playback. The exact test WAV was opened in Chrome, but its listening outcome was not confirmed |
+| Digital monitor / desktop recovery | A passive JACK tap of the HDMI sink's FL/FR monitor observes finite signal on both channels (peaks 0.227836/0.214834); concurrent user playback prevents attributing those peaks to the test file. After service restarts, Telegram repeatedly logs default-device creation failures while a fresh process using its OpenAL library can create a playback context. The user fully quits/reopens Telegram and confirms audio returns. This supports a stale application connection after restart; recovery of other applications was not individually confirmed |
+| Realtime concern | Focus switching produced two probe xrun notifications across its two clients; the app reported one. Longer UI sessions also accumulated xruns. No sustained performance acceptance or callback-time bound is established |
+
+The user reported that foreground text automation reached their terminal when focus changed. That attempt is excluded as interaction evidence. No further desktop-wide keyboard, pointer or focus injection is used. `check_isolated_desktop.sh` instead launches the actual native Tauri app in a private Xvfb display, D-Bus session, runtime directory and AT-SPI registry; accessibility actions address the spawned app's process. A private runtime directory also isolates auto-activated portal/accessibility sockets; `PIPEWIRE_RUNTIME_DIR` retains the existing audio connection. The first version omitted that runtime isolation and disrupted the desktop accessibility socket; the existing accessibility service was restored and the abort was identified as an AT-SPI test client, not Ultra. Both a no-app check and the final combined native-app regression verify isolation: the desktop accessibility socket retains the same inode and accepts connections before and after. `check_private_pointer.py` verifies that the addressed X server is Xvfb before exercising actual keyboard-button pointer handlers through XTest on that private display; it sends no keyboard events. The runner lowers both app gains to 4 and exercises pointer keys, isolation/reconnection and software MIDI. The final combined run passes at 256 frames with no probe xruns, late sends or discontinuities and correct note termination. It refuses an existing Ultra process or occupied `ultra` JACK ports before launching or sending MIDI; refusal was verified with both an existing app and an active port-only client. It never starts/restarts an audio server or changes its settings. The approved temporary period was set/restored by the surrounding validation session, not the runner. Do not start another Ultra instance during this shared-audio test.
+
+Current native screenshot: [1280 x 840, private X11 display, actual 256-frame JACK](apps/ultra/screenshots/linux-isolated.png). This is a native webview on Xvfb, not a browser-only preview or a Wayland screenshot. Earlier real Wayland interaction/layout checks include 1000 x 700. The fixed canvas scrolls rather than rearranging objects; dragging can overlap objects. Private-session portal/AT-SPI and realtime-request diagnostics occur; they are separate from the confirmed rebuild crash and prevent assuming RT scheduling from a private-session pass. One preliminary probe returned nonzero without retained stdout and remains unclassified; retained final captures passed. These observations are not a universal reliability claim.
+
+Local evidence is retained under `/tmp/ultra-linux-validation-20261020`: baseline/build logs, real-JACK JSON/captures, `direct-alsa.log`, the independently decoded stereo WAVs, and `runtime-isolated-final.log` plus `runtime-isolated-final/runtime-isolation.json`. The latter records exit 0, the restored override 0 and the unchanged desktop socket. These temporary artifacts are machine-local; checked-in commands/tests and the screenshot provide the portable reproduction path. No microphone recording or Telegram message content was collected.
+
+Reproduce the new checks from repository root:
+
+~~~sh
+python3 apps/ultra/tests/check_build_install.py
+node apps/ultra/ui/events.test.mjs
+# Recommended native UI + real JACK regression, using a private display:
+# Close other Ultra instances; existing 48 kHz server with supported period.
+bash apps/ultra/tests/check_isolated_desktop.sh /tmp/ultra-isolated-results
+# Direct probes for an intentionally selected existing instance:
+c++ -std=c++20 -O2 apps/ultra/tests/jack_probe.cpp \
+  $(pkg-config --cflags --libs jack) -pthread -o /tmp/ultra-jack-probe
+# Existing 48 kHz server; actual Ultra running, connected app gains 1..8:
+/tmp/ultra-jack-probe basic
+python3 apps/ultra/tests/check_desktop_isolation.py --probe /tmp/ultra-jack-probe
+/tmp/ultra-jack-probe overload
+# Inspect fault, then Stop/Start before more sound tests.
+# Only AFTER an explicitly approved server restart and a supported period:
+python3 apps/ultra/tests/check_desktop_recovery.py
+/tmp/ultra-jack-probe basic
+~~~
+
+The real probe uses separate sender/capture clients to avoid a feedback cycle, preallocated callback storage and a graph-settling interval. Missing/repeated capture frames, nonfinite output and late sends fail the check; overload requires healthy signal before muting. MIDI scenarios send bounded cleanup all-off afterward. `hold` and passive `capture` report acquisition separately with `pass: null`; they require scenario-specific assertions. `check-free` opens the existing server without activation or MIDI and refuses occupied target ports. They are neither fake-JACK nor physical latency evidence. Desktop checks require Python GI/AT-SPI; the private runner additionally needs Xvfb/xvfb-run/dbus-run-session. They never install packages or restart servers themselves.
+
+Remaining local work: calibrated controller-to-analog latency, physical controller/removal testing, audible listening confirmation, sustained 30-minute idle/editing/load runs, xrun attribution, callback-tail/deadline instrumentation, and interface recovery beyond a service restart. Native `pw_filter`, browser DSP, arbitrary patch compilation and general live replacement remain separate gates. The approximately 12.43-hour session limit and licensing decisions remain unchanged.
 
 
 ## Research Experiments and Local Handoff
 
-The following are small research fixtures, not production device APIs. All execution was on Linux x86_64, kernel 6.18.55, g++ 14.2.0 (Debian 14.2.0-19), Python 3.12.14 on 2026-10-20. No physical device, MIDI controller, browser, realtime priority, or target-machine benchmark was used. Neither upstream's complete test suite nor arbitrary patches/externals were validated.
+The following are small research fixtures, not production device APIs. Original cloud execution used Linux x86_64, kernel 6.18.55, g++ 14.2.0 (Debian 14.2.0-19), Python 3.12.14 on 2026-10-20, without physical devices, a browser or realtime priority. All listed regression suites were rerun on the target Linux desktop before app changes; the separate local desktop/JACK results are recorded above. Neither upstream's complete test suite nor arbitrary patches/externals were validated.
 
 ### Reproduce
 
@@ -701,10 +790,10 @@ The subsequent constrained adapter and its separate regression suite now establi
 | Faust-generated C++ instrument | Built and executed offline, deterministic assertions passed |
 | Faust-generated Rust | Generated source only; not compiled/run |
 | libpd real runtime adapter | Built and executed offline, deterministic assertions passed |
-| Native backend integration | JACK app bridge compiled; offline and explicit fake-JACK ABI tests executed. No real JACK server or physical run; other backends remain source/protocol only |
+| Native backend integration | Actual PipeWire-JACK software MIDI/audio at 48 kHz and 256/128/64 frames, overload and approved service-loss/recovery exercised. Explicit fake-JACK checks remain separate. Physical controller/analog and other backends remain untested |
 | Clockwork with custom Faust guest | Actual native/headless host + scheduler built/executed; 50 characterization cases include explicit failed adoption criteria |
 | Supersonic/scsynth | Pinned source audit only, not built or executed |
-| Browser DSP / native UI | AudioWorklet/WASM DSP remains source-only. Tauri desktop app compiles; actual window interaction not run in the cloud environment |
+| Browser DSP / native UI | AudioWorklet/WASM DSP remains source-only. Actual Rust/Tauri window built, launched and tested on Omarchy/Wayland; screenshots and observed limits recorded above |
 | Physical 64/128-frame latency/realtime acceptance | Not run; requires actual hardware and calibration |
 | Live/Max compatibility | Supplied reference observations only, not reproduced |
 
@@ -712,7 +801,7 @@ The subsequent constrained adapter and its separate regression suite now establi
 ### Remaining Decisions Before Product Implementation
 
 - Review the research recommendation and decide the acceptable licensing strategy before committing to a GPL/AGPL-bound foundation. No license or commercial agreement is selected by this PR.
-- Test the built Rust/Tauri Ultra slice on the actual Linux desktop. The constrained Clockwork gate is implemented; real JACK/MIDI interaction and hardware/deadline measurements are pending. Compare native `pw_filter` only after the initial JACK path is qualified. No system/server settings were changed by the build or launcher.
+- Complete the sustained Linux playback/editing gate and calibrated physical MIDI-to-analog measurements. Initial Tauri/PipeWire-JACK functionality is established, but focus-switch xruns and default negotiation to an unsupported 2,048-frame period remain concerns. Compare native `pw_filter` only through the same measured workload. The build/launcher changes no server settings; local tests used explicitly approved temporary periods and service restarts, then restored runtime metadata.
 - Clockwork-hosted render allocation/mutex interception and fixed preprepared per-device replacement are now measured in narrow offline cases. Full concurrency/state capture/reclamation, callback-tail load/deadline tests and physical recovery remain unvalidated. The libpd loader stays stopped/offline; its global lock is not fixed by either experiment.
 - Pd waveform/preset semantics intentionally differ from Faust. An identical Faust-generated Pd external and shared-score comparison would be a separate useful follow-up if patch-authored equivalence becomes a gate. Do not call the current native Pd graph a Faust-equivalent instrument or claim Max compatibility.
 - Rust/Tauri is selected for the app/control layer. Keep the C++ DSP/host FFI narrow and validated; generated Rust DSP remains an optional separate comparison, not a reason to change the chosen application stack.
@@ -749,7 +838,7 @@ Use exact comparisons for deterministic identities, structure, and event orderin
 | --- | --- | --- |
 | Native Alive projects | Architecture and MIDI-instrument workflow specification | Save/reopen, MIDI clips, automation, undo, stable identity, migration, recovery |
 | Linux realtime performance | Current backend/API documentation; no local product benchmark | Controller-to-sample mapping, physical output latency, jitter, headroom, xruns, native/patch-path comparison |
-| Reusable runtimes and browser Ultra | Pinned official source, direct Faust/libpd and actual Clockwork/Faust headless probes below; no physical backend or browser probe | Selected dependency versions/licenses, embedding and independent-device behavior, bounded callback work, portable DSP/state and browser capability matrix |
+| Reusable runtimes and browser Ultra | Pinned official source, direct Faust/libpd, actual Clockwork/Faust and local PipeWire-JACK probes; physical latency/browser qualification pending | Selected dependency versions/licenses, embedding and independent-device behavior, bounded callback work, portable DSP/state and browser capability matrix |
 | `.als` | Supplied gzip/XML observations and bundled-file inventory | Parsing, dependency resolution, playback, and export as separate levels |
 | `.amxd` | Supplied container markers and patch-chunk observations | Decoding, dependency closure, execution profile, supported files |
 | LOM | One supplied tempo-read probe and inspected documentation | Alive query/mutation/observer behavior, lifecycle, remote control, persistent bindings |
@@ -785,7 +874,7 @@ Surveyed `.amxd` containers began with `ampf` and included `meta` and `ptch` chu
 
 Installed Max documentation and public references were checked on 2026-10-20 for scheduler behavior, deferred LOM messages, persistent mapping, and `live.remote~`. Documentation differences require targeted reference tests. The supplied inventory scripts, original probe artifacts, and earlier temporary SoundCraft checkout were not present in this workspace during the review, and the runtime observations were not rerun.
 
-Linux backend research on 2026-10-20 checked official PipeWire filter, JACK configuration, `pw-jack`, and `pw-top` documentation; JACK process-callback, MIDI sample-offset, and latency APIs; Linux PREEMPT_RT and `rtla timerlat` documentation; and CPAL upstream documentation/manifest. These establish API/configuration capabilities, not comparative latency. No Linux system settings were changed and no new audio or MIDI benchmark was performed.
+Linux backend documentation research on 2026-10-20 checked official PipeWire filter, JACK configuration, `pw-jack`, and `pw-top` documentation; JACK process-callback, MIDI sample-offset, and latency APIs; Linux PREEMPT_RT and `rtla timerlat` documentation; and CPAL upstream documentation/manifest. These establish API/configuration capabilities, not comparative latency. That source audit made no system changes or hardware measurements; the separate target-desktop tests, approved temporary settings and remaining limitations are recorded under Target Linux Desktop Validation.
 
 Runtime reuse research on 2026-10-20 checked Faust's DSP/architecture interfaces, FAQ, compiler and library notices, Pd/SC compilation targets, and FaustWasm; libpd's wrapper API, processing locks and license; and SuperCollider's embedding header, timing guide, and GPL notices. Supersonic was inspected at `08b587055f0dbe6f6ff7d52e09bc2ae331121480` (manifest version 0.91.0), including its documentation, embedding header, build composition, and license. Its pinned Clockwork submodule was `94b67500c96e105491682ec68741b5018560eab7`; inspected sources included `dsp_api.h`, `clockwork_embed.h`, device/boundary documentation, and license. Both projects label themselves alpha. Supersonic/scsynth remains source-inspected only. Clockwork at the same pin was built with the custom Faust guest and exercised through its real native/headless embedding and timed store, with the measured successes and failed adoption criteria recorded above. Faust/libpd keep their separately stated validation limits. No physical native/browser performance or broad patch compatibility was established.
 
