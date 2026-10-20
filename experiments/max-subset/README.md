@@ -38,7 +38,9 @@ Bounds protect this offline inventory task, not a realtime callback or general h
 
 Specific documentation pitfalls carried into the contract: trigger's right-to-left outlets, pack's hot/cold inlets, toggle's numeric pass-through, cycle~'s default cosine, gain~'s nonlinear control and smoothing, line~'s optional activity outlet and duration rules, and nondeterministic order among multiple named receive objects. The scheduler contract separates message depth-first dispatch, deferred work, timer state and DSP/vector timing. Documentation was inspected on 2026-10-20; the live documentation is not a pinned Max 9.1.5 specification.
 
-## Incoming real reference corpus
+## Real reference corpus and capture contract
+
+The supplied corpus at commit `37e3b0f282bc5c03e57acdbe658dbb946f549527` remains on `research/max-reference-local-20261020`. See the Max Reference Review and Local Session Handoff section of `../../PLAN.md` and `../max-pd-compare/` for actual comparison results and annotation defects. Raw captures are useful, but derived annotations must not be treated as a causal oracle. No catalog compatibility flag is promoted by this review.
 
 Use `reference-manifest.schema.json` (JSON Schema 2020-12), one manifest per experiment/run setting. The included manifest and patch are **SYNTHETIC_NOT_MAX_EXECUTED**. The independently authored inventory golden is only an importer expectation; it is not a message trace. It includes feedback intentionally and must not be treated as an executable example.
 

@@ -1,0 +1,559 @@
+{
+  "scope": "actual libpd; three complete supplied scores; synchronous DSP-off messages only",
+  "libpd_sha256": "ab92e42561cf9d6d08b072877d5e97ad82086b781b3eee4c208d77adcbde860b",
+  "fixtures": {
+    "19-depth-first": {
+      "score_events": 1,
+      "max_output_count": 3,
+      "pd_output_count": 3,
+      "outputs": [
+        {
+          "operation": "event_0",
+          "label": "inner_right",
+          "selector": "bang",
+          "atoms": [],
+          "atom_types": []
+        },
+        {
+          "operation": "event_0",
+          "label": "inner_left",
+          "selector": "bang",
+          "atoms": [],
+          "atom_types": []
+        },
+        {
+          "operation": "event_0",
+          "label": "outer_left",
+          "selector": "bang",
+          "atoms": [],
+          "atom_types": []
+        }
+      ],
+      "pd_diagnostics": [],
+      "comparisons": [
+        {
+          "index": 0,
+          "max": {
+            "operation": "event_0",
+            "label": "inner_right",
+            "selector": "bang",
+            "atoms": [],
+            "atom_types": []
+          },
+          "pd": {
+            "operation": "event_0",
+            "label": "inner_right",
+            "selector": "bang",
+            "atoms": [],
+            "atom_types": []
+          },
+          "exact_observable_equal": true,
+          "ordered_value_equal": true
+        },
+        {
+          "index": 1,
+          "max": {
+            "operation": "event_0",
+            "label": "inner_left",
+            "selector": "bang",
+            "atoms": [],
+            "atom_types": []
+          },
+          "pd": {
+            "operation": "event_0",
+            "label": "inner_left",
+            "selector": "bang",
+            "atoms": [],
+            "atom_types": []
+          },
+          "exact_observable_equal": true,
+          "ordered_value_equal": true
+        },
+        {
+          "index": 2,
+          "max": {
+            "operation": "event_0",
+            "label": "outer_left",
+            "selector": "bang",
+            "atoms": [],
+            "atom_types": []
+          },
+          "pd": {
+            "operation": "event_0",
+            "label": "outer_left",
+            "selector": "bang",
+            "atoms": [],
+            "atom_types": []
+          },
+          "exact_observable_equal": true,
+          "ordered_value_equal": true
+        }
+      ]
+    },
+    "03-hot-cold": {
+      "score_events": 8,
+      "max_output_count": 5,
+      "pd_output_count": 5,
+      "outputs": [
+        {
+          "operation": "event_0",
+          "label": "plus",
+          "selector": "float",
+          "atoms": [
+            12.0
+          ],
+          "atom_types": [
+            "float"
+          ]
+        },
+        {
+          "operation": "event_2",
+          "label": "plus",
+          "selector": "float",
+          "atoms": [
+            102.0
+          ],
+          "atom_types": [
+            "float"
+          ]
+        },
+        {
+          "operation": "event_3",
+          "label": "plus",
+          "selector": "float",
+          "atoms": [
+            105.0
+          ],
+          "atom_types": [
+            "float"
+          ]
+        },
+        {
+          "operation": "event_5",
+          "label": "int",
+          "selector": "float",
+          "atoms": [
+            9.0
+          ],
+          "atom_types": [
+            "float"
+          ]
+        },
+        {
+          "operation": "event_7",
+          "label": "int",
+          "selector": "float",
+          "atoms": [
+            9.0
+          ],
+          "atom_types": [
+            "float"
+          ]
+        }
+      ],
+      "pd_diagnostics": [
+        {
+          "operation": "event_6",
+          "text": "error: int: no method for 'set'\n"
+        }
+      ],
+      "comparisons": [
+        {
+          "index": 0,
+          "max": {
+            "operation": "event_0",
+            "label": "plus",
+            "selector": "int",
+            "atoms": [
+              12
+            ],
+            "atom_types": [
+              "int"
+            ]
+          },
+          "pd": {
+            "operation": "event_0",
+            "label": "plus",
+            "selector": "float",
+            "atoms": [
+              12.0
+            ],
+            "atom_types": [
+              "float"
+            ]
+          },
+          "exact_observable_equal": false,
+          "ordered_value_equal": true
+        },
+        {
+          "index": 1,
+          "max": {
+            "operation": "event_2",
+            "label": "plus",
+            "selector": "int",
+            "atoms": [
+              102
+            ],
+            "atom_types": [
+              "int"
+            ]
+          },
+          "pd": {
+            "operation": "event_2",
+            "label": "plus",
+            "selector": "float",
+            "atoms": [
+              102.0
+            ],
+            "atom_types": [
+              "float"
+            ]
+          },
+          "exact_observable_equal": false,
+          "ordered_value_equal": true
+        },
+        {
+          "index": 2,
+          "max": {
+            "operation": "event_3",
+            "label": "plus",
+            "selector": "int",
+            "atoms": [
+              105
+            ],
+            "atom_types": [
+              "int"
+            ]
+          },
+          "pd": {
+            "operation": "event_3",
+            "label": "plus",
+            "selector": "float",
+            "atoms": [
+              105.0
+            ],
+            "atom_types": [
+              "float"
+            ]
+          },
+          "exact_observable_equal": false,
+          "ordered_value_equal": true
+        },
+        {
+          "index": 3,
+          "max": {
+            "operation": "event_5",
+            "label": "int",
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "atom_types": [
+              "int"
+            ]
+          },
+          "pd": {
+            "operation": "event_5",
+            "label": "int",
+            "selector": "float",
+            "atoms": [
+              9.0
+            ],
+            "atom_types": [
+              "float"
+            ]
+          },
+          "exact_observable_equal": false,
+          "ordered_value_equal": true
+        },
+        {
+          "index": 4,
+          "max": {
+            "operation": "event_7",
+            "label": "int",
+            "selector": "int",
+            "atoms": [
+              11
+            ],
+            "atom_types": [
+              "int"
+            ]
+          },
+          "pd": {
+            "operation": "event_7",
+            "label": "int",
+            "selector": "float",
+            "atoms": [
+              9.0
+            ],
+            "atom_types": [
+              "float"
+            ]
+          },
+          "exact_observable_equal": false,
+          "ordered_value_equal": false
+        }
+      ]
+    },
+    "08-pack": {
+      "score_events": 7,
+      "max_output_count": 5,
+      "pd_output_count": 5,
+      "outputs": [
+        {
+          "operation": "event_0",
+          "label": "pack",
+          "selector": "list",
+          "atoms": [
+            0.0,
+            0.0,
+            "symbol"
+          ],
+          "atom_types": [
+            "float",
+            "float",
+            "symbol"
+          ]
+        },
+        {
+          "operation": "event_3",
+          "label": "pack",
+          "selector": "list",
+          "atoms": [
+            5.0,
+            2.75,
+            "pear"
+          ],
+          "atom_types": [
+            "float",
+            "float",
+            "symbol"
+          ]
+        },
+        {
+          "operation": "event_4",
+          "label": "pack",
+          "selector": "list",
+          "atoms": [
+            8.0,
+            9.0,
+            "pear"
+          ],
+          "atom_types": [
+            "float",
+            "float",
+            "symbol"
+          ]
+        },
+        {
+          "operation": "event_5",
+          "label": "pack",
+          "selector": "list",
+          "atoms": [
+            1.0,
+            2.0,
+            "peach"
+          ],
+          "atom_types": [
+            "float",
+            "float",
+            "symbol"
+          ]
+        },
+        {
+          "operation": "event_6",
+          "label": "pack",
+          "selector": "list",
+          "atoms": [
+            1.0,
+            2.0,
+            "peach"
+          ],
+          "atom_types": [
+            "float",
+            "float",
+            "symbol"
+          ]
+        }
+      ],
+      "pd_diagnostics": [],
+      "comparisons": [
+        {
+          "index": 0,
+          "max": {
+            "operation": "event_0",
+            "label": "pack",
+            "selector": "list",
+            "atoms": [
+              0,
+              0,
+              "s"
+            ],
+            "atom_types": [
+              "unknown_numeric",
+              "unknown_numeric",
+              "symbol"
+            ]
+          },
+          "pd": {
+            "operation": "event_0",
+            "label": "pack",
+            "selector": "list",
+            "atoms": [
+              0.0,
+              0.0,
+              "symbol"
+            ],
+            "atom_types": [
+              "float",
+              "float",
+              "symbol"
+            ]
+          },
+          "exact_observable_equal": false,
+          "ordered_value_equal": false
+        },
+        {
+          "index": 1,
+          "max": {
+            "operation": "event_3",
+            "label": "pack",
+            "selector": "list",
+            "atoms": [
+              5,
+              2.75,
+              "pear"
+            ],
+            "atom_types": [
+              "unknown_numeric",
+              "unknown_numeric",
+              "symbol"
+            ]
+          },
+          "pd": {
+            "operation": "event_3",
+            "label": "pack",
+            "selector": "list",
+            "atoms": [
+              5.0,
+              2.75,
+              "pear"
+            ],
+            "atom_types": [
+              "float",
+              "float",
+              "symbol"
+            ]
+          },
+          "exact_observable_equal": null,
+          "ordered_value_equal": true
+        },
+        {
+          "index": 2,
+          "max": {
+            "operation": "event_4",
+            "label": "pack",
+            "selector": "list",
+            "atoms": [
+              8,
+              9,
+              "pear"
+            ],
+            "atom_types": [
+              "unknown_numeric",
+              "unknown_numeric",
+              "symbol"
+            ]
+          },
+          "pd": {
+            "operation": "event_4",
+            "label": "pack",
+            "selector": "list",
+            "atoms": [
+              8.0,
+              9.0,
+              "pear"
+            ],
+            "atom_types": [
+              "float",
+              "float",
+              "symbol"
+            ]
+          },
+          "exact_observable_equal": null,
+          "ordered_value_equal": true
+        },
+        {
+          "index": 3,
+          "max": {
+            "operation": "event_5",
+            "label": "pack",
+            "selector": "list",
+            "atoms": [
+              1,
+              2,
+              "peach"
+            ],
+            "atom_types": [
+              "unknown_numeric",
+              "unknown_numeric",
+              "symbol"
+            ]
+          },
+          "pd": {
+            "operation": "event_5",
+            "label": "pack",
+            "selector": "list",
+            "atoms": [
+              1.0,
+              2.0,
+              "peach"
+            ],
+            "atom_types": [
+              "float",
+              "float",
+              "symbol"
+            ]
+          },
+          "exact_observable_equal": null,
+          "ordered_value_equal": true
+        },
+        {
+          "index": 4,
+          "max": {
+            "operation": "event_6",
+            "label": "pack",
+            "selector": "list",
+            "atoms": [
+              1,
+              2,
+              "peach"
+            ],
+            "atom_types": [
+              "unknown_numeric",
+              "unknown_numeric",
+              "symbol"
+            ]
+          },
+          "pd": {
+            "operation": "event_6",
+            "label": "pack",
+            "selector": "list",
+            "atoms": [
+              1.0,
+              2.0,
+              "peach"
+            ],
+            "atom_types": [
+              "float",
+              "float",
+              "symbol"
+            ]
+          },
+          "exact_observable_equal": null,
+          "ordered_value_equal": true
+        }
+      ]
+    }
+  }
+}
