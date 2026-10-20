@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include "patch_graph.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

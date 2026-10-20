@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ultra · canvas</title><link rel="stylesheet" href="canvas.css"></head>
+<body>
+<header class="toolbar">
+  <div class="wordmark" aria-label="Ultra canvas">ultra<span> / canvas</span></div>
+  <div class="toolbar-group"><button id="new-patch">New</button><button id="open-patch">Open…</button><button id="export-patch">Save / export…</button></div>
+  <div class="toolbar-group history"><button id="undo" title="Undo · Ctrl/⌘ Z">↶</button><button id="redo" title="Redo · Ctrl/⌘ Shift Z">↷</button></div>
+  <div class="engine"><span id="engine-state">Preparing…</span><button id="start-audio">Start audio</button><button id="stop-graph" title="Stop all timers and notes; keep audio available">Stop patch</button><button id="stop-audio">Stop audio</button><button id="panic" class="danger">Panic</button></div>
+</header>
+<div id="preview-banner" class="preview">Browser preview · editing and JSON work here. Native execution requires the Ultra app; this page does not synthesize or schedule sound.</div>
+<main>
+  <nav class="palette-rail" aria-label="Object palette">
+    <label class="rail-label" for="object-search">OBJECTS <span>15</span></label>
+    <input id="object-search" type="search" placeholder="Find an object…" autocomplete="off" aria-label="Find an object">
+    <div id="palette"></div>
+    <p class="hint">Inlets on top.<br>Outlets on bottom.<br>Click an outlet, then an inlet.</p>
+    <div class="legend"><span><i class="control"></i> control</span><span><i class="mono"></i> mono audio</span><span><i class="stereo"></i> stereo bundle</span></div>
+    <div class="rail-links"><a id="legacy-link" href="index.html">Legacy patcher ↗</a><a id="lab-link" href="chord-lab.html">Fixed chord lab ↗</a></div>
+  </nav>
+  <section id="workspace" aria-label="Editable patch canvas" tabindex="0">
+    <div id="canvas"><svg id="cables" aria-label="Patch cables"></svg><div id="objects"></div></div>
+  </section>
+  <aside>
+    <div class="rail-label">INSPECTOR</div><div id="inspector"></div>
+    <button id="delete-selection" class="wide">Delete selection</button>
+    <div class="divider"></div><div class="rail-label">PATCH</div>
+    <p id="patch-summary"></p><p id="revision-state" class="mono-text"></p><button id="reapply" class="wide">Reapply graph</button>
+    <p class="hint">Structural edits stop all timers and notes. Click the toggle again to restart. This first canvas is not a seamless hot-swap engine.</p>
+    <p class="hint">Parameters update live. Dragging objects changes layout only. Values and pulses below objects are native observations, not a timing scope.</p>
+    <p class="hint">Sine / ASR voices. Supported audio: voice → gain → join → dac. No browser audio, arbitrary DSP, or Max compatibility.</p>
+  </aside>
+</main>
+<footer><span id="notice" role="status">Preparing canvas…</span><span id="selection-hint">Click an object to inspect · Delete to remove · Esc to stop</span></footer>
+<dialog id="patch-dialog"><form method="dialog"><button class="dialog-close" aria-label="Close dialog">×</button></form><h2 id="dialog-title">Patch JSON</h2><p id="dialog-help">Copy, paste or choose a file. This bounded profile supports 32 objects, 64 cables and 64 KiB.</p><textarea id="patch-json" spellcheck="false" aria-label="Patch JSON"></textarea><div class="dialog-actions"><button id="copy-patch">Copy JSON</button><button id="download-patch">Download JSON</button><button id="choose-file">Choose file…</button><button id="import-patch">Import JSON</button></div><p id="dialog-status" role="status"></p></dialog>
+<input id="patch-file" type="file" accept=".json,.ultra,application/json" hidden>
+<script type="module" src="canvas.mjs"></script></body></html>

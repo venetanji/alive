@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <cstring>
 #include "../src-tauri/native/backend.h"
+static JackShutdownCallback shutdown_callback;static void* shutdown_user;
 static JackLatencyCallback latency;static void* latency_user;static int latency_updates;static bool latency_ok=true;
 struct ManualMidi {unsigned time,size;std::array<unsigned char,3> bytes;};
 static std::array<ManualMidi,256> manual_midi{};static unsigned manual_count=0;
@@ -16,7 +17,7 @@ int jack_client_close(jack_client_t*){return 0;}int jack_deactivate(jack_client_
 jack_nframes_t jack_get_sample_rate(jack_client_t*){return getenv("FAKE_RATE")?atoi(getenv("FAKE_RATE")):48000;}jack_nframes_t jack_get_buffer_size(jack_client_t*){return getenv("FAKE_PERIOD")?atoi(getenv("FAKE_PERIOD")):64;}
 int jack_set_process_callback(jack_client_t*,JackProcessCallback p,void*u){process=p;user=u;return 0;}
 int jack_set_xrun_callback(jack_client_t*,JackXRunCallback,void*){return 0;}int jack_set_sample_rate_callback(jack_client_t*,JackSampleRateCallback,void*){return 0;}
-void jack_on_shutdown(jack_client_t*,JackShutdownCallback,void*){}
+void jack_on_shutdown(jack_client_t*,JackShutdownCallback f,void*u){shutdown_callback=f;shutdown_user=u;}
 jack_port_t* jack_port_register(jack_client_t*,const char*n,const char*,unsigned long,unsigned long){return reinterpret_cast<jack_port_t*>(!strcmp(n,"audio_out_l")?1:!strcmp(n,"audio_out_r")?2:3);}
 void* jack_port_get_buffer(jack_port_t*p,jack_nframes_t){return reinterpret_cast<uintptr_t>(p)==1?a.data():reinterpret_cast<uintptr_t>(p)==2?b.data():reinterpret_cast<void*>(3);}
 uint32_t jack_midi_get_event_count(void*){if(getenv("FAKE_MANUAL"))return manual_count;return block==8&&getenv("FAKE_OVERLOAD")?129:block==0?2:block==8?1:block==12?1:0;}
@@ -30,6 +31,7 @@ int jack_activate(jack_client_t*){if(!latency)return 1;latency(JackCaptureLatenc
  process(64,user);for(unsigned i=0;i<64;i++){fwrite(&a[i],4,1,f);fwrite(&b[i],4,1,f);}calls++;}fclose(f);return 0;}
 void ultra_fake_step_frames(unsigned frames){process(frames,user);++block;manual_count=0;}
 void ultra_fake_step(){ultra_fake_step_frames(64);}
+void ultra_fake_shutdown(){if(shutdown_callback)shutdown_callback(shutdown_user);}
 int ultra_fake_midi(unsigned time,unsigned status,unsigned note,unsigned value,unsigned size){if(manual_count==manual_midi.size()||size>3)return 0;manual_midi[manual_count++]={time,size,{static_cast<unsigned char>(status),static_cast<unsigned char>(note),static_cast<unsigned char>(value)}};return 1;}
 const float* ultra_fake_left(){return a.data();}
 const float* ultra_fake_right(){return b.data();}

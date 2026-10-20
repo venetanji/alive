@@ -1,4 +1,32 @@
-# Ultra research patcher UI
+# Ultra editable canvas
+
+The native window opens `canvas.html`, the first **real editable graph** profile, `ultra-canvas-v1`. The old research patcher and fixed Chord lab remain available through the left rail. All three pages use the native engine, never WebAudio or a JavaScript note clock.
+
+## Editable canvas workflow
+
+- **Start audio**, then click the top-left toggle to run the connected `metro → counter → chord → makenote → voice` chain. The native audio timeline owns metro pulses and note-off scheduling. Click the separate bang/message chain to trigger a note. JACK MIDI channel 2 reaches the second voice only through its connected `midiin` object.
+- Search or choose any of the 15 objects in the palette. Every inlet is on the **top**, every outlet on the **bottom**, with indexes increasing left to right. Click an outlet, then a matching inlet. Control, mono audio, and stereo bundles have distinct ports and cable styles. Multiple control sources may enter an inlet; an audio inlet accepts one source.
+- Drag object headers. Select an object to edit all its parameters in the inspector. Numbers, arithmetic operands, metro interval, chord root, note duration, MIDI channel and gain also have compact inline controls. Bang/message/toggle controls send actual native events. Editing a number stores its value and sends its own hot inlet, including when connected to another object's cold inlet. Native observations never feed back as UI events.
+- Select a cable or object and use **Delete selection** or Delete/Backspace. Undo/redo preserves stable IDs, cable order, parameters and positions. Numeric-parameter undo remains live; structural undo resets notes/timers. Layout undo never reapplies the native graph.
+- Numeric parameters use a bounded latest-wins queue while dragging. Message text, MIDI channel, voice device, node and cable changes are structural. Structural edits prepare a replacement graph, stop timers and notes, and require an explicit new toggle/bang to start again. This is **not seamless hot swapping**. Invalid local edits leave the document unchanged; native rejection retains the last valid active graph and blocks new UI events until resolved. Desired document and active native revisions are shown separately.
+- **Stop patch**, focus loss, a hidden page and Esc stop native timers and notes. **Panic** latches native silence until Stop audio / Start audio. Event-queue overflow fails closed instead of discarding a possible note-off. Navigation waits for audio cleanup and stays on the page if cleanup fails. Abrupt process termination still cannot guarantee webview IPC completion.
+- **Save / export…** provides selectable JSON, Copy and optional Download. **Open…** accepts pasted JSON or a file picker; file selection validates before the explicit Import step. Import validates the whole profile before replacement. No autosave is implied. `canvas-preset.json` is the supplied starter. Limits: 32 objects, 64 edges, 64 KiB; unknown fields/types, invalid values/ports, cycles and unsupported audio paths are rejected. Omitted known parameters receive protocol defaults.
+
+The audio profile is explicit `voice → gain → join → dac`, with at most one voice per logical device and one join/dac. Missing paths are silence. Gain outputs can feed either join inlet or both for explicit dual mono. These are the actual two native prepared sine/ASR voice buses, not arbitrary DSP or Max compatibility. Attack uses raw × 4 ms, release raw × 8 ms, and raw 0 means 16 frames, latched on note-on. A single stereo bundle reaches JACK left/right through `dac`.
+
+Browser preview supports editing and JSON only. Native triggers and audio controls are disabled, and runtime readouts remain absent rather than simulating playback. Per-object values and pulse counts are polled native observations, not an audio timing scope.
+
+### Canvas checks
+
+```
+node --test apps/ultra/ui/*.test.mjs apps/ultra/ui/components/*.test.mjs
+node --check apps/ultra/ui/canvas-model.mjs
+node --check apps/ultra/ui/canvas.mjs
+```
+
+`canvas-model.test.mjs` covers the strict registry/document, typed audio/control topology, snapshots, real command payloads, parameter coalescing, revision races, native rejection, stop, Panic, startup failure and cancellation, queue overflow, and numeric undo. `canvas-dom.test.mjs` executes the actual page module against a small DOM adapter for palette, wiring, deletion, message/numeric edits, native triggers, dragging, port orientation, import type changes and navigation. Rendered browser smoke is separate under `../tests/ci`; see that directory's README. DOM/static/browser-preview checks do not establish native audio output, hardware MIDI, latency or callback deadlines.
+
+## Legacy research patcher
 
 Dependency-free HTML/CSS/ES modules packaged by the Rust/Tauri shell. It never creates a WebAudio fallback: opening a browser preview explicitly reports that native audio is unavailable.
 

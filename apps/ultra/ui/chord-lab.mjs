@@ -219,7 +219,7 @@ document.addEventListener('visibilitychange', () => {
   if (document.hidden) controller.silence('Patch hidden. Transport stopped and keys released.');
 });
 window.addEventListener('pagehide', () => { leaving = true; controller.silence(); });
-$('#patcher-link').addEventListener('click', async event => {
+for (const linkId of ['patcher-link', 'canvas-link']) $(`#${linkId}`).addEventListener('click', async event => {
   event.preventDefault();
   const result = await controller.stopAudio();
   if (result === false) {
@@ -227,7 +227,7 @@ $('#patcher-link').addEventListener('click', async event => {
     return;
   }
   leaving = true;
-  window.location.assign($('#patcher-link').href);
+  window.location.assign($(`#${linkId}`).href);
 });
 window.addEventListener('resize', drawCables);
 $('#preset-button').addEventListener('click', async () => {

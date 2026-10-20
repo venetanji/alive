@@ -1,0 +1,248 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "toggle",
+      "x": 80,
+      "y": 50,
+      "params": {
+        "value": 0
+      }
+    },
+    {
+      "id": 2,
+      "type": "metro",
+      "x": 80,
+      "y": 150,
+      "params": {
+        "interval": 150
+      }
+    },
+    {
+      "id": 3,
+      "type": "counter",
+      "x": 80,
+      "y": 250,
+      "params": {
+        "steps": 8
+      }
+    },
+    {
+      "id": 4,
+      "type": "chord",
+      "x": 80,
+      "y": 350,
+      "params": {
+        "root": 48,
+        "shape": 0
+      }
+    },
+    {
+      "id": 5,
+      "type": "makenote",
+      "x": 80,
+      "y": 450,
+      "params": {
+        "velocity": 100,
+        "duration": 150
+      }
+    },
+    {
+      "id": 6,
+      "type": "voice",
+      "x": 80,
+      "y": 580,
+      "params": {
+        "device": 0,
+        "attack": 8,
+        "release": 28
+      }
+    },
+    {
+      "id": 7,
+      "type": "gain",
+      "x": 80,
+      "y": 730,
+      "params": {
+        "value": 90
+      }
+    },
+    {
+      "id": 8,
+      "type": "join",
+      "x": 310,
+      "y": 880,
+      "params": {}
+    },
+    {
+      "id": 9,
+      "type": "dac",
+      "x": 310,
+      "y": 990,
+      "params": {}
+    },
+    {
+      "id": 10,
+      "type": "midiin",
+      "x": 540,
+      "y": 450,
+      "params": {
+        "channel": 2
+      }
+    },
+    {
+      "id": 11,
+      "type": "voice",
+      "x": 540,
+      "y": 580,
+      "params": {
+        "device": 1,
+        "attack": 8,
+        "release": 28
+      }
+    },
+    {
+      "id": 12,
+      "type": "gain",
+      "x": 540,
+      "y": 730,
+      "params": {
+        "value": 90
+      }
+    },
+    {
+      "id": 13,
+      "type": "bang",
+      "x": 310,
+      "y": 250,
+      "params": {}
+    },
+    {
+      "id": 14,
+      "type": "message",
+      "x": 310,
+      "y": 350,
+      "params": {
+        "text": "60"
+      }
+    },
+    {
+      "id": 15,
+      "type": "number",
+      "x": 310,
+      "y": 50,
+      "params": {
+        "value": 150
+      }
+    },
+    {
+      "id": 16,
+      "type": "number",
+      "x": 540,
+      "y": 50,
+      "params": {
+        "value": 90
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 2,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 3,
+      "outlet": 0,
+      "to": 4,
+      "inlet": 0
+    },
+    {
+      "from": 4,
+      "outlet": 0,
+      "to": 5,
+      "inlet": 0
+    },
+    {
+      "from": 5,
+      "outlet": 0,
+      "to": 6,
+      "inlet": 0
+    },
+    {
+      "from": 6,
+      "outlet": 0,
+      "to": 7,
+      "inlet": 0
+    },
+    {
+      "from": 7,
+      "outlet": 0,
+      "to": 8,
+      "inlet": 0
+    },
+    {
+      "from": 10,
+      "outlet": 0,
+      "to": 11,
+      "inlet": 0
+    },
+    {
+      "from": 11,
+      "outlet": 0,
+      "to": 12,
+      "inlet": 0
+    },
+    {
+      "from": 12,
+      "outlet": 0,
+      "to": 8,
+      "inlet": 1
+    },
+    {
+      "from": 8,
+      "outlet": 0,
+      "to": 9,
+      "inlet": 0
+    },
+    {
+      "from": 13,
+      "outlet": 0,
+      "to": 14,
+      "inlet": 0
+    },
+    {
+      "from": 14,
+      "outlet": 0,
+      "to": 5,
+      "inlet": 0
+    },
+    {
+      "from": 15,
+      "outlet": 0,
+      "to": 2,
+      "inlet": 1
+    },
+    {
+      "from": 16,
+      "outlet": 0,
+      "to": 7,
+      "inlet": 1
+    },
+    {
+      "from": 16,
+      "outlet": 0,
+      "to": 12,
+      "inlet": 1
+    }
+  ]
+}

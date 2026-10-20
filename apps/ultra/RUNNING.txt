@@ -1,3 +1,46 @@
+EDITABLE CANVAS (primary application page)
+=========================================
+Work from research/runtime-foundations-probes and the same draft PR #1.
+From the repository root:
+  git fetch origin research/runtime-foundations-probes
+  git switch research/runtime-foundations-probes
+  git pull --ff-only origin research/runtime-foundations-probes
+  bash apps/ultra/build.sh
+  bash apps/ultra/run.sh
+Do not discard local edits to switch branches. If that branch is checked out
+elsewhere, use that worktree or create a new local branch from the remote head.
+The repo and PR are the main handoff; no new ZIP is required.
+
+The app opens the editable canvas. Start audio, then click the starter toggle
+to start its metro/counter/chord/makenote chain. Bang -> message -> makenote
+provides a manual note trigger. MIDI channel 2 feeds the second voice through
+its midiin object. Use low listening volume initially.
+
+Add objects from the palette. Drag their headers. Click a bottom outlet, then
+a top inlet. Select a node/cable and Delete to remove it; Undo/Redo restore
+edits. Every message/bang/number/toggle is a real graph object. Audio cables
+carry mono/stereo bundles, not generic untyped values. Unsupported connections
+are refused. The first supported audio path is voice -> gain -> join -> dac.
+Join input 0 maps to L, input 1 to R; swapping connections changes the audio.
+
+Sliders and ordinary parameters update live. Number/toggle controls send hot
+messages. Voice envelopes still latch for the next note. Changing the graph,
+message literal, voice device or MIDI channel safely clears notes and timers;
+click the toggle to restart. Moving a box changes layout only. This is not yet
+seamless arbitrary hot-patching. Stop patch cancels all scheduled notes/timers.
+Focus loss also stops the patch. Panic requires Stop audio then Start to recover.
+
+Save/export and Open accept bounded ultra-canvas-v1 JSON, including positions,
+parameters and exact connections. This is not .maxpat import or a full Max
+message grammar. The authored graph is saved, not an executing clock snapshot.
+Legacy patcher and fixed Chord lab links remain for comparison; navigation
+stops audio before changing profiles. See PATCH_PROTOCOL.md for exact limits.
+
+GitHub CI checks the PR: UI/reference/native C++ contracts, sandboxed Chromium
+editing with screenshots, and the actual native plus Rust/Tauri build/tests.
+Browser screenshots are editing evidence, not native WebKit or hardware audio.
+Local native desktop and real MIDI qualification remain separate.
+
 ULTRA RESEARCH PATCHER — LINUX x86_64
 
 This is a Rust + Tauri desktop window, not a remotely hosted web app. Its
