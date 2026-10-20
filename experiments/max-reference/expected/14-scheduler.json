@@ -1,0 +1,468 @@
+{
+  "fixture": "14-scheduler",
+  "status": "observed-one-run-not-exact-timing-or-tick-count-oracle",
+  "origin": "executed-Max-9.1.5-Wine-11.13",
+  "limitations": [
+    "JS collector arrival order; wall time and metro tick count vary"
+  ],
+  "events": [
+    {
+      "seq": 1,
+      "fixture": "14-scheduler",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_0",
+        "1",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 2,
+      "fixture": "14-scheduler",
+      "label": "metro",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 3,
+      "fixture": "14-scheduler",
+      "label": "metro",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 4,
+      "fixture": "14-scheduler",
+      "label": "metro",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 5,
+      "fixture": "14-scheduler",
+      "label": "metro",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 6,
+      "fixture": "14-scheduler",
+      "label": "metro",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 7,
+      "fixture": "14-scheduler",
+      "label": "metro",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 8,
+      "fixture": "14-scheduler",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_1",
+        "0",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 9,
+      "fixture": "14-scheduler",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_2",
+        "bang",
+        "obj-5",
+        0
+      ]
+    },
+    {
+      "seq": 10,
+      "fixture": "14-scheduler",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_3",
+        "stop",
+        "obj-5",
+        0
+      ]
+    },
+    {
+      "seq": 11,
+      "fixture": "14-scheduler",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_4",
+        "bang",
+        "obj-5",
+        0
+      ]
+    },
+    {
+      "seq": 12,
+      "fixture": "14-scheduler",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_5",
+        "1",
+        "obj-9",
+        0
+      ]
+    },
+    {
+      "seq": 13,
+      "fixture": "14-scheduler",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_6",
+        "2",
+        "obj-9",
+        0
+      ]
+    },
+    {
+      "seq": 14,
+      "fixture": "14-scheduler",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_7",
+        "clear",
+        "obj-9",
+        0
+      ]
+    },
+    {
+      "seq": 15,
+      "fixture": "14-scheduler",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_8",
+        "3",
+        "obj-9",
+        0
+      ]
+    },
+    {
+      "seq": 16,
+      "fixture": "14-scheduler",
+      "label": "delay",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 17,
+      "fixture": "14-scheduler",
+      "label": "pipe",
+      "selector": "int",
+      "atoms": [
+        3
+      ]
+    },
+    {
+      "seq": 18,
+      "fixture": "14-scheduler",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_9",
+        "bang",
+        "obj-14",
+        0
+      ]
+    },
+    {
+      "seq": 19,
+      "fixture": "14-scheduler",
+      "label": "defer",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 20,
+      "fixture": "14-scheduler",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_10",
+        "bang",
+        "obj-16",
+        0
+      ]
+    },
+    {
+      "seq": 21,
+      "fixture": "14-scheduler",
+      "label": "deferlow",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 22,
+      "fixture": "14-scheduler",
+      "label": "$harness",
+      "selector": "complete",
+      "atoms": [
+        11
+      ]
+    }
+  ],
+  "event_annotations": [
+    {
+      "seq": 1,
+      "operation_id": "event_0",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 2,
+      "operation_id": "event_0",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 3,
+      "operation_id": "event_0",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 4,
+      "operation_id": "event_0",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 5,
+      "operation_id": "event_0",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 6,
+      "operation_id": "event_0",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 7,
+      "operation_id": "event_0",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 8,
+      "operation_id": "event_1",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 9,
+      "operation_id": "event_2",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 10,
+      "operation_id": "event_3",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 11,
+      "operation_id": "event_4",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 12,
+      "operation_id": "event_5",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 13,
+      "operation_id": "event_6",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 14,
+      "operation_id": "event_7",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 15,
+      "operation_id": "event_8",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 16,
+      "operation_id": "event_8",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 17,
+      "operation_id": "event_8",
+      "source_object_outlet": [
+        "obj-9",
+        0
+      ],
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 18,
+      "operation_id": "event_9",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 19,
+      "operation_id": "event_9",
+      "source_object_outlet": [
+        "obj-14",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 20,
+      "operation_id": "event_10",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 21,
+      "operation_id": "event_10",
+      "source_object_outlet": [
+        "obj-16",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 22,
+      "operation_id": "event_10",
+      "source_object_outlet": null,
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    }
+  ]
+}

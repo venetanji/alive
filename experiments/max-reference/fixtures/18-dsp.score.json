@@ -1,0 +1,226 @@
+{
+  "fixture": "18-dsp",
+  "question": "48 kHz offline cosine, quarter-cycle phase, 10 ms envelope, product at gain 0.25",
+  "labels": [
+    "driver_left",
+    "driver_right",
+    "sr_left",
+    "sr_right",
+    "sigvs_left",
+    "sigvs_right",
+    "iovs_left",
+    "iovs_right",
+    "overdrive_left",
+    "overdrive_right",
+    "takeover_left",
+    "takeover_right",
+    "switch_left",
+    "switch_right"
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "override 1",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_1",
+      "message": "override 1",
+      "destination": "obj-3",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_2",
+      "message": "override 1",
+      "destination": "obj-4",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_3",
+      "message": "override 1",
+      "destination": "obj-5",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_4",
+      "message": "override 1",
+      "destination": "obj-6",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_5",
+      "message": "override 1",
+      "destination": "obj-7",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_6",
+      "message": "override 1",
+      "destination": "obj-8",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_7",
+      "message": "0",
+      "destination": "obj-8",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_8",
+      "message": "4",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_9",
+      "message": "48000",
+      "destination": "obj-3",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_10",
+      "message": "64",
+      "destination": "obj-4",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_11",
+      "message": "512",
+      "destination": "obj-5",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_12",
+      "message": "0",
+      "destination": "obj-6",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_13",
+      "message": "0",
+      "destination": "obj-7",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_14",
+      "message": "sizeinsamps 1920",
+      "destination": "obj-23",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_15",
+      "message": "clear",
+      "destination": "obj-23",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_16",
+      "message": "0.25",
+      "destination": "obj-26",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_17",
+      "message": "1",
+      "destination": "obj-24",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_18",
+      "message": "1. 10",
+      "destination": "obj-27",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_19",
+      "message": "1",
+      "destination": "obj-8",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_20",
+      "message": "0",
+      "destination": "obj-8",
+      "inlet": 0,
+      "wait_ms": 150
+    },
+    {
+      "id": "event_21",
+      "message": "bang",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_22",
+      "message": "bang",
+      "destination": "obj-3",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_23",
+      "message": "bang",
+      "destination": "obj-4",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_24",
+      "message": "bang",
+      "destination": "obj-5",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_25",
+      "message": "bang",
+      "destination": "obj-6",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_26",
+      "message": "bang",
+      "destination": "obj-7",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_27",
+      "message": "bang",
+      "destination": "obj-8",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_28",
+      "message": "capture",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    }
+  ],
+  "drain_ms": 100
+}

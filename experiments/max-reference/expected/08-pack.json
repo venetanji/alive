@@ -1,0 +1,321 @@
+{
+  "fixture": "08-pack",
+  "status": "observed-baseline",
+  "origin": "executed-Max-9.1.5-Wine-11.13",
+  "limitations": [],
+  "events": [
+    {
+      "seq": 1,
+      "fixture": "08-pack",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_0",
+        "bang",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 2,
+      "fixture": "08-pack",
+      "label": "pack",
+      "selector": "list",
+      "atoms": [
+        0,
+        0,
+        "s"
+      ]
+    },
+    {
+      "seq": 3,
+      "fixture": "08-pack",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_1",
+        "2.75",
+        "obj-2",
+        1
+      ]
+    },
+    {
+      "seq": 4,
+      "fixture": "08-pack",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_2",
+        "symbol pear",
+        "obj-2",
+        2
+      ]
+    },
+    {
+      "seq": 5,
+      "fixture": "08-pack",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_3",
+        "5",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 6,
+      "fixture": "08-pack",
+      "label": "pack",
+      "selector": "list",
+      "atoms": [
+        5,
+        2.75,
+        "pear"
+      ]
+    },
+    {
+      "seq": 7,
+      "fixture": "08-pack",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_4",
+        "list 8 9.",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 8,
+      "fixture": "08-pack",
+      "label": "pack",
+      "selector": "list",
+      "atoms": [
+        8,
+        9,
+        "pear"
+      ]
+    },
+    {
+      "seq": 9,
+      "fixture": "08-pack",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_5",
+        "list 1 2. peach extra",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 10,
+      "fixture": "08-pack",
+      "label": "pack",
+      "selector": "list",
+      "atoms": [
+        1,
+        2,
+        "peach"
+      ]
+    },
+    {
+      "seq": 11,
+      "fixture": "08-pack",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_6",
+        "bang",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 12,
+      "fixture": "08-pack",
+      "label": "pack",
+      "selector": "list",
+      "atoms": [
+        1,
+        2,
+        "peach"
+      ]
+    },
+    {
+      "seq": 13,
+      "fixture": "08-pack",
+      "label": "$harness",
+      "selector": "complete",
+      "atoms": [
+        7
+      ]
+    }
+  ],
+  "event_annotations": [
+    {
+      "seq": 1,
+      "operation_id": "event_0",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 2,
+      "operation_id": "event_0",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric",
+        "unknown_numeric",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 3,
+      "operation_id": "event_1",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 4,
+      "operation_id": "event_2",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 5,
+      "operation_id": "event_3",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 6,
+      "operation_id": "event_3",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric",
+        "unknown_numeric",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 7,
+      "operation_id": "event_4",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 8,
+      "operation_id": "event_4",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric",
+        "unknown_numeric",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 9,
+      "operation_id": "event_5",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 10,
+      "operation_id": "event_5",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric",
+        "unknown_numeric",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 11,
+      "operation_id": "event_6",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 12,
+      "operation_id": "event_6",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric",
+        "unknown_numeric",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 13,
+      "operation_id": "event_6",
+      "source_object_outlet": null,
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    }
+  ]
+}

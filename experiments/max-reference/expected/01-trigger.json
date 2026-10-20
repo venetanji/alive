@@ -1,0 +1,103 @@
+{
+  "fixture": "01-trigger",
+  "status": "observed-baseline",
+  "origin": "executed-Max-9.1.5-Wine-11.13",
+  "limitations": [],
+  "events": [
+    {
+      "seq": 1,
+      "fixture": "01-trigger",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_0",
+        "bang",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 2,
+      "fixture": "01-trigger",
+      "label": "right",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 3,
+      "fixture": "01-trigger",
+      "label": "middle",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 4,
+      "fixture": "01-trigger",
+      "label": "left",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 5,
+      "fixture": "01-trigger",
+      "label": "$harness",
+      "selector": "complete",
+      "atoms": [
+        1
+      ]
+    }
+  ],
+  "event_annotations": [
+    {
+      "seq": 1,
+      "operation_id": "event_0",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 2,
+      "operation_id": "event_0",
+      "source_object_outlet": [
+        "obj-2",
+        2
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 3,
+      "operation_id": "event_0",
+      "source_object_outlet": [
+        "obj-2",
+        1
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 4,
+      "operation_id": "event_0",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 5,
+      "operation_id": "event_0",
+      "source_object_outlet": null,
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    }
+  ]
+}

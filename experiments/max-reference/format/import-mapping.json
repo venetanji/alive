@@ -1,0 +1,22 @@
+{
+  "status": "proposed-mapping-from-self-created-fixtures; no format guarantee",
+  "interchange": "UTF-8 .maxpat JSON",
+  "lossless_policy": "Keep the complete original JSON object at every level; overlay recognized edits. Preserve all unknown fields, arrays, object IDs and unparsed object text. Never reconstruct a document only from this bounded model.",
+  "mappings": [
+    {"path":"$.patcher", "meaning":"root graph and document metadata"},
+    {"path":"$.patcher.appversion", "meaning":"producer metadata, not a compatibility promise"},
+    {"path":"$.patcher.boxes[*].box.id", "meaning":"opaque ID unique within the owning patcher"},
+    {"path":"$.patcher.boxes[*].box.maxclass", "meaning":"serialized box class; newobj resolves runtime class from text"},
+    {"path":"$.patcher.boxes[*].box.text", "meaning":"object expression or message body, interpreted according to maxclass; retain raw string including attributes/quotes/escapes"},
+    {"path":"$.patcher.boxes[*].box.patching_rect", "meaning":"x,y,width,height in patching view, independent of presentation"},
+    {"path":"$.patcher.boxes[*].box.presentation_rect", "meaning":"x,y,width,height in presentation view; requires separate presentation membership"},
+    {"path":"$.patcher.boxes[*].box.patcher", "meaning":"embedded nested graph; scoped IDs, recursive preservation"},
+    {"path":"$.patcher.boxes[*].box.saved_attribute_attributes.valueof", "meaning":"parameter metadata/initial values; does not universally encode current UI value"},
+    {"path":"$.patcher.lines[*].patchline.source", "meaning":"[box ID, zero-based outlet]"},
+    {"path":"$.patcher.lines[*].patchline.destination", "meaning":"[box ID, zero-based inlet]"},
+    {"path":"$.patcher.lines[*].patchline.order", "meaning":"preserve order field. Loader behavior under investigation; do not claim authored order overrides layout in all modes"},
+    {"path":"$.patcher.dependency_cache", "meaning":"dependency hints, not bundled content or permission to resolve arbitrary paths"}
+  ],
+  "deferred": ["full Max object grammar", "exact patchline order deserialization", "parameter automation/pattr lifecycle", "binary device formats", "font and UI parity", "external object resolution", "commercial/frozen devices", "opaque embedded data"],
+  "unsupported_policy": "Retain unsupported objects and fields and report unsupported execution explicitly. Do not replace with guessed behavior."
+}

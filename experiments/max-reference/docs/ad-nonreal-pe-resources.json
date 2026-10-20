@@ -1,0 +1,299 @@
+{
+  "evidence_id": "ev_36c9ab726a9567e74bc2d141d64d018cbff5c902b44fb7bf1ba452315cbf35e4",
+  "subject": {
+    "name": "ad_nonreal.mxe64",
+    "digest": {
+      "sha256": "510b151d0067a88a0a14520da403d12dfbadbc7182d87be7f904516a228c7cbf"
+    },
+    "format": "pe",
+    "architecture": null,
+    "local_path": "<MAX_INSTALL>/resources/externals/ad/ad_nonreal.mxe64"
+  },
+  "provider": {
+    "id": "rea-pe-resources",
+    "name": "REA PE resource parser",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_pe_resources",
+  "parameters": {
+    "path": "<MAX_INSTALL>/resources/externals/ad/ad_nonreal.mxe64",
+    "max_file_bytes": 67108864,
+    "max_entries": 1024
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "artifact": {
+      "path": "<MAX_INSTALL>/resources/externals/ad/ad_nonreal.mxe64",
+      "sha256": "510b151d0067a88a0a14520da403d12dfbadbc7182d87be7f904516a228c7cbf",
+      "bytes": 18944
+    },
+    "format": "pe32-plus",
+    "machine": 34404,
+    "directory": {
+      "rva": 32768,
+      "location": {
+        "offset": 16896,
+        "bytes": 1448
+      },
+      "data_directory_location": {
+        "offset": 424,
+        "bytes": 8
+      }
+    },
+    "directories": [
+      {
+        "location": {
+          "offset": 16896,
+          "bytes": 40
+        },
+        "characteristics": 0,
+        "timestamp": 0,
+        "major_version": 0,
+        "minor_version": 0,
+        "named_entries": 1,
+        "id_entries": 2
+      },
+      {
+        "location": {
+          "offset": 16936,
+          "bytes": 24
+        },
+        "characteristics": 0,
+        "timestamp": 0,
+        "major_version": 0,
+        "minor_version": 0,
+        "named_entries": 1,
+        "id_entries": 0
+      },
+      {
+        "location": {
+          "offset": 17008,
+          "bytes": 24
+        },
+        "characteristics": 0,
+        "timestamp": 0,
+        "major_version": 0,
+        "minor_version": 0,
+        "named_entries": 0,
+        "id_entries": 1
+      },
+      {
+        "location": {
+          "offset": 16960,
+          "bytes": 24
+        },
+        "characteristics": 0,
+        "timestamp": 0,
+        "major_version": 0,
+        "minor_version": 0,
+        "named_entries": 0,
+        "id_entries": 1
+      },
+      {
+        "location": {
+          "offset": 17032,
+          "bytes": 24
+        },
+        "characteristics": 0,
+        "timestamp": 0,
+        "major_version": 0,
+        "minor_version": 0,
+        "named_entries": 0,
+        "id_entries": 1
+      },
+      {
+        "location": {
+          "offset": 16984,
+          "bytes": 24
+        },
+        "characteristics": 0,
+        "timestamp": 0,
+        "major_version": 0,
+        "minor_version": 0,
+        "named_entries": 0,
+        "id_entries": 1
+      },
+      {
+        "location": {
+          "offset": 17056,
+          "bytes": 24
+        },
+        "characteristics": 0,
+        "timestamp": 0,
+        "major_version": 0,
+        "minor_version": 0,
+        "named_entries": 0,
+        "id_entries": 1
+      }
+    ],
+    "resources": [
+      {
+        "index": 0,
+        "type": {
+          "kind": "name",
+          "name": "C74OBJECTPROPERTIES",
+          "utf16le_hex": "4300370034004f0042004a00450043005400500052004f005000450052005400490045005300",
+          "location": {
+            "offset": 17128,
+            "bytes": 40
+          }
+        },
+        "name": {
+          "kind": "name",
+          "name": "C74OBJECTPROPERTIES",
+          "utf16le_hex": "4300370034004f0042004a00450043005400500052004f005000450052005400490045005300",
+          "location": {
+            "offset": 17128,
+            "bytes": 40
+          }
+        },
+        "language": {
+          "kind": "id",
+          "id": 1033
+        },
+        "entry_locations": [
+          {
+            "offset": 16912,
+            "bytes": 8
+          },
+          {
+            "offset": 16952,
+            "bytes": 8
+          },
+          {
+            "offset": 17024,
+            "bytes": 8
+          }
+        ],
+        "data_entry_location": {
+          "offset": 17080,
+          "bytes": 16
+        },
+        "code_page": 0,
+        "reserved": 0,
+        "payload": {
+          "rva": 33792,
+          "location": {
+            "offset": 17920,
+            "bytes": 38
+          },
+          "sha256": "76eb1c5941d497d66cd3fe89d4728324a973b22e4fba6f93b05b667b874186fa"
+        }
+      },
+      {
+        "index": 1,
+        "type": {
+          "kind": "id",
+          "id": 16
+        },
+        "name": {
+          "kind": "id",
+          "id": 1
+        },
+        "language": {
+          "kind": "id",
+          "id": 1033
+        },
+        "entry_locations": [
+          {
+            "offset": 16920,
+            "bytes": 8
+          },
+          {
+            "offset": 16976,
+            "bytes": 8
+          },
+          {
+            "offset": 17048,
+            "bytes": 8
+          }
+        ],
+        "data_entry_location": {
+          "offset": 17096,
+          "bytes": 16
+        },
+        "code_page": 0,
+        "reserved": 0,
+        "payload": {
+          "rva": 33040,
+          "location": {
+            "offset": 17168,
+            "bytes": 752
+          },
+          "sha256": "52c87488fe73a49486713547acf99a4bbb0f1eb77c60a6727c15b972b8ee97e0"
+        }
+      },
+      {
+        "index": 2,
+        "type": {
+          "kind": "id",
+          "id": 24
+        },
+        "name": {
+          "kind": "id",
+          "id": 2
+        },
+        "language": {
+          "kind": "id",
+          "id": 1033
+        },
+        "entry_locations": [
+          {
+            "offset": 16928,
+            "bytes": 8
+          },
+          {
+            "offset": 17000,
+            "bytes": 8
+          },
+          {
+            "offset": 17072,
+            "bytes": 8
+          }
+        ],
+        "data_entry_location": {
+          "offset": 17112,
+          "bytes": 16
+        },
+        "code_page": 0,
+        "reserved": 0,
+        "payload": {
+          "rva": 33832,
+          "location": {
+            "offset": 17960,
+            "bytes": 381
+          },
+          "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+        }
+      }
+    ],
+    "icon_groups": [],
+    "coverage": {
+      "status": "complete",
+      "examined_entries": 9,
+      "resources": 3
+    },
+    "limitations": [
+      "Static PE32/PE32+ type/name/language resource inventory; payloads other than RT_GROUP_ICON remain opaque.",
+      "Icon candidates are resource-table relationships. Language fallback, image decoding and actual shell/window loading are not observed.",
+      "Exact shared byte ranges are retained; non-identical overlapping resource structures or payloads are rejected."
+    ]
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static PE32/PE32+ type/name/language resource inventory; payloads other than RT_GROUP_ICON remain opaque.",
+    "Icon candidates are resource-table relationships. Language fallback, image decoding and actual shell/window loading are not observed.",
+    "Exact shared byte ranges are retained; non-identical overlapping resource structures or payloads are rejected."
+  ],
+  "locations": [
+    {
+      "kind": "artifact-path",
+      "path": "<MAX_INSTALL>/resources/externals/ad/ad_nonreal.mxe64"
+    }
+  ],
+  "evidence_links": []
+}

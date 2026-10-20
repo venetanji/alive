@@ -1,0 +1,1820 @@
+{
+  "fixture": "00-environment",
+  "status": "observed-baseline",
+  "origin": "executed-Max-9.1.5-Wine-11.13",
+  "limitations": [],
+  "events": [
+    {
+      "seq": 1,
+      "fixture": "00-environment",
+      "label": "driver_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 2,
+      "fixture": "00-environment",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "None"
+      ]
+    },
+    {
+      "seq": 3,
+      "fixture": "00-environment",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_asio",
+        "PipeASIO Driver"
+      ]
+    },
+    {
+      "seq": 4,
+      "fixture": "00-environment",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_directsound",
+        ""
+      ]
+    },
+    {
+      "seq": 5,
+      "fixture": "00-environment",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_mme",
+        ""
+      ]
+    },
+    {
+      "seq": 6,
+      "fixture": "00-environment",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "NonRealTime"
+      ]
+    },
+    {
+      "seq": 7,
+      "fixture": "00-environment",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_portaudio",
+        "MME"
+      ]
+    },
+    {
+      "seq": 8,
+      "fixture": "00-environment",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_portaudio",
+        "Windows DirectSound"
+      ]
+    },
+    {
+      "seq": 9,
+      "fixture": "00-environment",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_portaudio",
+        "Windows WASAPI"
+      ]
+    },
+    {
+      "seq": 10,
+      "fixture": "00-environment",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_portaudio",
+        "Windows WDM-KS"
+      ]
+    },
+    {
+      "seq": 11,
+      "fixture": "00-environment",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        3
+      ]
+    },
+    {
+      "seq": 12,
+      "fixture": "00-environment",
+      "label": "switch_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 13,
+      "fixture": "00-environment",
+      "label": "switch_left",
+      "selector": "append",
+      "atoms": [
+        "Off"
+      ]
+    },
+    {
+      "seq": 14,
+      "fixture": "00-environment",
+      "label": "switch_left",
+      "selector": "append",
+      "atoms": [
+        "On"
+      ]
+    },
+    {
+      "seq": 15,
+      "fixture": "00-environment",
+      "label": "switch_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 16,
+      "fixture": "00-environment",
+      "label": "switch_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 17,
+      "fixture": "00-environment",
+      "label": "takeover_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 18,
+      "fixture": "00-environment",
+      "label": "takeover_left",
+      "selector": "append",
+      "atoms": [
+        "Off"
+      ]
+    },
+    {
+      "seq": 19,
+      "fixture": "00-environment",
+      "label": "takeover_left",
+      "selector": "append",
+      "atoms": [
+        "On"
+      ]
+    },
+    {
+      "seq": 20,
+      "fixture": "00-environment",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 21,
+      "fixture": "00-environment",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 22,
+      "fixture": "00-environment",
+      "label": "overdrive_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 23,
+      "fixture": "00-environment",
+      "label": "overdrive_left",
+      "selector": "append",
+      "atoms": [
+        "Off"
+      ]
+    },
+    {
+      "seq": 24,
+      "fixture": "00-environment",
+      "label": "overdrive_left",
+      "selector": "append",
+      "atoms": [
+        "On"
+      ]
+    },
+    {
+      "seq": 25,
+      "fixture": "00-environment",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 26,
+      "fixture": "00-environment",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 27,
+      "fixture": "00-environment",
+      "label": "iovs_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 28,
+      "fixture": "00-environment",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        32
+      ]
+    },
+    {
+      "seq": 29,
+      "fixture": "00-environment",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 30,
+      "fixture": "00-environment",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        128
+      ]
+    },
+    {
+      "seq": 31,
+      "fixture": "00-environment",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        256
+      ]
+    },
+    {
+      "seq": 32,
+      "fixture": "00-environment",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 33,
+      "fixture": "00-environment",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        1024
+      ]
+    },
+    {
+      "seq": 34,
+      "fixture": "00-environment",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        2048
+      ]
+    },
+    {
+      "seq": 35,
+      "fixture": "00-environment",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 36,
+      "fixture": "00-environment",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 37,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 38,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        1
+      ]
+    },
+    {
+      "seq": 39,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        2
+      ]
+    },
+    {
+      "seq": 40,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 41,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        8
+      ]
+    },
+    {
+      "seq": 42,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        16
+      ]
+    },
+    {
+      "seq": 43,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        32
+      ]
+    },
+    {
+      "seq": 44,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 45,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        128
+      ]
+    },
+    {
+      "seq": 46,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        256
+      ]
+    },
+    {
+      "seq": 47,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 48,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        1024
+      ]
+    },
+    {
+      "seq": 49,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        2048
+      ]
+    },
+    {
+      "seq": 50,
+      "fixture": "00-environment",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 51,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 52,
+      "fixture": "00-environment",
+      "label": "sr_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 53,
+      "fixture": "00-environment",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        11025
+      ]
+    },
+    {
+      "seq": 54,
+      "fixture": "00-environment",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        12000
+      ]
+    },
+    {
+      "seq": 55,
+      "fixture": "00-environment",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        16000
+      ]
+    },
+    {
+      "seq": 56,
+      "fixture": "00-environment",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        22050
+      ]
+    },
+    {
+      "seq": 57,
+      "fixture": "00-environment",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        24000
+      ]
+    },
+    {
+      "seq": 58,
+      "fixture": "00-environment",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        32000
+      ]
+    },
+    {
+      "seq": 59,
+      "fixture": "00-environment",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        44100
+      ]
+    },
+    {
+      "seq": 60,
+      "fixture": "00-environment",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        48000
+      ]
+    },
+    {
+      "seq": 61,
+      "fixture": "00-environment",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        88200
+      ]
+    },
+    {
+      "seq": 62,
+      "fixture": "00-environment",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        96000
+      ]
+    },
+    {
+      "seq": 63,
+      "fixture": "00-environment",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        192000
+      ]
+    },
+    {
+      "seq": 64,
+      "fixture": "00-environment",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        44100
+      ]
+    },
+    {
+      "seq": 65,
+      "fixture": "00-environment",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 66,
+      "fixture": "00-environment",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_0",
+        "bang",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 67,
+      "fixture": "00-environment",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        44100
+      ]
+    },
+    {
+      "seq": 68,
+      "fixture": "00-environment",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 69,
+      "fixture": "00-environment",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_1",
+        "bang",
+        "obj-4",
+        0
+      ]
+    },
+    {
+      "seq": 70,
+      "fixture": "00-environment",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 71,
+      "fixture": "00-environment",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 72,
+      "fixture": "00-environment",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_2",
+        "bang",
+        "obj-6",
+        0
+      ]
+    },
+    {
+      "seq": 73,
+      "fixture": "00-environment",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 74,
+      "fixture": "00-environment",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 75,
+      "fixture": "00-environment",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_3",
+        "bang",
+        "obj-8",
+        0
+      ]
+    },
+    {
+      "seq": 76,
+      "fixture": "00-environment",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 77,
+      "fixture": "00-environment",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 78,
+      "fixture": "00-environment",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_4",
+        "bang",
+        "obj-10",
+        0
+      ]
+    },
+    {
+      "seq": 79,
+      "fixture": "00-environment",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 80,
+      "fixture": "00-environment",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 81,
+      "fixture": "00-environment",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_5",
+        "bang",
+        "obj-12",
+        0
+      ]
+    },
+    {
+      "seq": 82,
+      "fixture": "00-environment",
+      "label": "switch_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 83,
+      "fixture": "00-environment",
+      "label": "switch_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 84,
+      "fixture": "00-environment",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_6",
+        "bang",
+        "obj-14",
+        0
+      ]
+    },
+    {
+      "seq": 85,
+      "fixture": "00-environment",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        3
+      ]
+    },
+    {
+      "seq": 86,
+      "fixture": "00-environment",
+      "label": "$harness",
+      "selector": "complete",
+      "atoms": [
+        7
+      ]
+    }
+  ],
+  "event_annotations": [
+    {
+      "seq": 1,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-14",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 2,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-14",
+        0
+      ],
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 3,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-14",
+        0
+      ],
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 4,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-14",
+        0
+      ],
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 5,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-14",
+        0
+      ],
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 6,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-14",
+        0
+      ],
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 7,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-14",
+        0
+      ],
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 8,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-14",
+        0
+      ],
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 9,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-14",
+        0
+      ],
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 10,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-14",
+        0
+      ],
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 11,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-14",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 12,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-12",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 13,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-12",
+        0
+      ],
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 14,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-12",
+        0
+      ],
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 15,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-12",
+        1
+      ],
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 16,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-12",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 17,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-10",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 18,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-10",
+        0
+      ],
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 19,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-10",
+        0
+      ],
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 20,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-10",
+        1
+      ],
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 21,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-10",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 22,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 23,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 24,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 25,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-8",
+        1
+      ],
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 26,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 27,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 28,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 29,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 30,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 31,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 32,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 33,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 34,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 35,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 36,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 37,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 38,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 39,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 40,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 41,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 42,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 43,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 44,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 45,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 46,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 47,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 48,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 49,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 50,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 51,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 52,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 53,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 54,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 55,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 56,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 57,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 58,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 59,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 60,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 61,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 62,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 63,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 64,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-2",
+        1
+      ],
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 65,
+      "operation_id": "$initialization",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 66,
+      "operation_id": "event_0",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 67,
+      "operation_id": "event_0",
+      "source_object_outlet": [
+        "obj-2",
+        1
+      ],
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 68,
+      "operation_id": "event_0",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 69,
+      "operation_id": "event_1",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 70,
+      "operation_id": "event_1",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 71,
+      "operation_id": "event_1",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 72,
+      "operation_id": "event_2",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 73,
+      "operation_id": "event_2",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 74,
+      "operation_id": "event_2",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 75,
+      "operation_id": "event_3",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 76,
+      "operation_id": "event_3",
+      "source_object_outlet": [
+        "obj-8",
+        1
+      ],
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 77,
+      "operation_id": "event_3",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 78,
+      "operation_id": "event_4",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 79,
+      "operation_id": "event_4",
+      "source_object_outlet": [
+        "obj-10",
+        1
+      ],
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 80,
+      "operation_id": "event_4",
+      "source_object_outlet": [
+        "obj-10",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 81,
+      "operation_id": "event_5",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 82,
+      "operation_id": "event_5",
+      "source_object_outlet": [
+        "obj-12",
+        1
+      ],
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 83,
+      "operation_id": "event_5",
+      "source_object_outlet": [
+        "obj-12",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 84,
+      "operation_id": "event_6",
+      "source_object_outlet": null,
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 85,
+      "operation_id": "event_6",
+      "source_object_outlet": [
+        "obj-14",
+        0
+      ],
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 86,
+      "operation_id": "event_6",
+      "source_object_outlet": null,
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    }
+  ]
+}

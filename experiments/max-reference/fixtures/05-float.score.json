@@ -1,0 +1,73 @@
+{
+  "fixture": "05-float",
+  "question": "Numeric type, bang, symbol and list behavior for float 7.",
+  "labels": [
+    "output"
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "bang",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_1",
+      "message": "3.9",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_2",
+      "message": "-3.9",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_3",
+      "message": "symbol kiwi",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_4",
+      "message": "kiwi",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_5",
+      "message": "list 4 5",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_6",
+      "message": "list 6.75 kiwi",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_7",
+      "message": "set 12",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_8",
+      "message": "bang",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    }
+  ],
+  "drain_ms": 100
+}

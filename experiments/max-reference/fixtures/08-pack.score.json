@@ -1,0 +1,59 @@
+{
+  "fixture": "08-pack",
+  "question": "Does only pack inlet zero emit, and how do short/long lists update stored slots?",
+  "labels": [
+    "pack"
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "bang",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_1",
+      "message": "2.75",
+      "destination": "obj-2",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_2",
+      "message": "symbol pear",
+      "destination": "obj-2",
+      "inlet": 2,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_3",
+      "message": "5",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_4",
+      "message": "list 8 9.",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_5",
+      "message": "list 1 2. peach extra",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_6",
+      "message": "bang",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    }
+  ],
+  "drain_ms": 100
+}

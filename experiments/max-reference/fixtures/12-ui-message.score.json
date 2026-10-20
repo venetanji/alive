@@ -1,0 +1,89 @@
+{
+  "fixture": "12-ui-message",
+  "question": "Button bang conversion, toggle state, and message cold storage versus hot substitution",
+  "labels": [
+    "button",
+    "toggle",
+    "message"
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "9",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_1",
+      "message": "symbol pear",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_2",
+      "message": "bang",
+      "destination": "obj-3",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_3",
+      "message": "bang",
+      "destination": "obj-3",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_4",
+      "message": "7",
+      "destination": "obj-3",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_5",
+      "message": "set 1",
+      "destination": "obj-3",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_6",
+      "message": "bang",
+      "destination": "obj-3",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_7",
+      "message": "bang",
+      "destination": "obj-4",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_8",
+      "message": "4",
+      "destination": "obj-4",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_9",
+      "message": "new $1",
+      "destination": "obj-4",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_10",
+      "message": "9",
+      "destination": "obj-4",
+      "inlet": 0,
+      "wait_ms": 0
+    }
+  ],
+  "drain_ms": 100
+}

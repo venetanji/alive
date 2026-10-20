@@ -1,0 +1,19 @@
+{
+  "fixture": "19-depth-first",
+  "question": "Does the entire right trigger branch run before the left sibling?",
+  "labels": [
+    "outer_left",
+    "inner_left",
+    "inner_right"
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "bang",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    }
+  ],
+  "drain_ms": 100
+}

@@ -1,0 +1,54 @@
+{
+  "fixture": "09-unpack",
+  "question": "Unpack outlet order, coercion, missing fields, excess fields and bang",
+  "labels": [
+    "integer",
+    "float",
+    "symbol"
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "list 3 4.5 pear",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_1",
+      "message": "list 7",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_2",
+      "message": "list 8.75 2 kiwi extra",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_3",
+      "message": "bang",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_4",
+      "message": "symbol pear",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_5",
+      "message": "kiwi 2 3",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    }
+  ],
+  "drain_ms": 100
+}
