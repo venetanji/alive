@@ -161,3 +161,51 @@ releases old notes in FIFO order; a fresh UI press after reconnect survives.
 This is not a claim about physical arrival order.
 The research guest uses a finite frame-counter range and intentionally safety-
 stops before about 12.43 hours; stop/start resets it. Unlimited uptime is untested.
+
+CHORD LAB: PLAYABLE FIXED PATCH
+-------------------------------
+Build from the updated PR branch with bash apps/ultra/build.sh, then launch
+apps/ultra/run.sh. Click Chord lab in the existing patcher. Use low listening
+volume initially. Start audio, then Run transport. Internal clock produces a
+sixteenth-note arpeggio on A; the on-screen/QWERTY keyboard and MIDI channel 2
+play B. Output mapping is explicit: A mono -> L, B mono -> R, joined as stereo.
+This is fixed routing with live controls, not arbitrary Max patch execution.
+
+Edit BPM, root, major/minor/sus4, step count, transpose, velocity and gate. A
+sequence-setting edit stops transport; press Run again. Attack/release latch
+at note-on. Attack 0 is 16 frames, otherwise control*4ms; release 0 is 16 frames,
+otherwise control*8ms. The same envelope/gain controls currently apply to A/B.
+Preset JSON saves these controls, not an arbitrary graph; importing stays stopped.
+
+For external MIDI clock select External, press Arm, connect the clock source to
+ultra:midi_in, send FA Start (or FB Continue), then F8 clock. Six of the 24 PPQN
+pulses advance each step. FC Stop releases the current note but stays armed.
+FB resumes the next step, not a partial clock phase; Song Position Pointer is
+not supported. No outgoing MIDI clock is generated. A manual note/sustain is
+ignored while armed; B/channel2 stays playable. Missing clock cannot hold a
+note indefinitely: gate expiry remains audio-timed (see PLAN.md for bounds).
+Focus loss stops transport/releases notes; returning to the patcher stops audio.
+
+The audio bus/data model supports future wider layouts, but this backend still
+requires exactly two output channels. It does not decode ambisonics or run Max
+MC objects. Stored presets/control data do not carry live audio samples.
+
+Offline audible demo without JACK:
+  apps/ultra/build/ultra-diagnostic --chord-demo /tmp/ultra-chord-demo.wav
+This renders eight seconds through the actual Clockwork/Faust host. It tests no
+hardware latency or realtime deadline. Native UI/browser rendering of the NEW
+lab is not verified here; test Start/Run, controls, MIDI, preset roundtrip,
+focus-loss Stop/Panic and navigation on your local desktop before relying on it.
+
+New headless checks (after native build):
+  node --test apps/ultra/ui/audio-bus.test.mjs apps/ultra/ui/chord-lab.test.mjs
+  python3 apps/ultra/tests/check_sequence.py
+check_sequence.py needs JACK headers; set JACK_INCLUDE to their include root
+if they are not installed in the default compiler search path. It uses an
+explicit fake JACK test library, not a real audio server. Existing graph,
+event, component and backend checks remain required.
+
+Package an already built private research test binary, without a release:
+  bash apps/ultra/package-test.sh /tmp/ultra-chord-lab-linux-x86_64.tar.gz
+The archive includes launch/runtime/license notes and binary checksums. It is
+not a universal AppImage and does not install missing system dependencies.

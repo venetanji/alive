@@ -1,0 +1,31 @@
+{
+  "observed_max": "9.1.5 (3db35fa476d) (x64 windows)",
+  "observed_live": "Live 12.4.6 Build 2026-09-10_0de5c8fa9a, x64",
+  "os": "Omarchy 4.0.0.r7083.g81fd2d2, Linux 7.2.8-9-omarchy, x86_64",
+  "wine": "wine-11.13, patched d2d1-dcomp distribution 2026.08.30.1",
+  "wine_reported_os": "Windows 10 Pro",
+  "isolation": "Btrfs reflink copy of installed Wine prefix; home-folder symlinks replaced with empty directories in the copies. Private Xvfb :97, 1440x1000x24. No original prefix settings edited.",
+  "display_debugging": "Xvfb initially reported 0 Hz; private RandR mode added at 59.96 Hz to permit Live UI reproduction. This changes only the disposable display.",
+  "audio_capture": "NonRealTime driver; buffer~ floats exported through original JS; no hardware input/output recording.",
+  "message_probe_settings": {
+    "sr": 44100,
+    "sigvs": 64,
+    "iovs": 512,
+    "overdrive": false,
+    "scheduler_in_audio_interrupt": false,
+    "dsp": false,
+    "driver": "ad_mme"
+  },
+  "dsp_probe_settings": {
+    "sr": 48000,
+    "sigvs": 64,
+    "iovs": 512,
+    "overdrive": false,
+    "scheduler_in_audio_interrupt": false,
+    "driver": "NonRealTime",
+    "dsp": "on during recording; off before export"
+  },
+  "read_only_setting_queries": "adstatus sr/sigvs/iovs/overdrive/takeover/switch/driver. Use right outlet values for SR/vector sizes; left set messages carry menu indices.",
+  "original_preferences": "Not edited. Max standalone had no existing saved preferences in the original user profile; clone-created Max preferences stay in the disposable prefixes.",
+  "transport": "Not queried; message times are milliseconds; no transport-relative fixtures."
+}

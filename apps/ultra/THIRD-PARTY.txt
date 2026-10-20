@@ -9,9 +9,13 @@ AGPL-3.0-or-later / upstream commercial option. This build has not obtained a co
 license. Preserve upstream LICENSE and component notices in corresponding source.
 No scsynth/Supersonic, optional Link, ASIO, Smoothie or plugin bridge is built.
 
-Faust: generated C++ DSP from pinned 2.88.0 reference fixture. Generated source
-and architecture/library notices remain in experiments/faust-reference. Faust
-compiler is build-time only, not a linked runtime. See PLAN.md's component terms.
+Faust: app-specific C++ DSP generated with pinned 2.88.0 from core/voice.dsp,
+checked in at core/generated/app_voice.hpp. Regenerate with core/generate_voice.py.
+The frozen experiments/faust-reference oracle is unchanged. Unmodified architecture
+headers and libraries are supplied by that fixture's pinned dependency setup;
+their notices and exceptions remain intact. See core/VOICE.txt for app provenance
+and the retained exceptions, and PLAN.md for component terms. The Faust compiler
+is build-time only, not a linked runtime.
 
 Clockwork Cargo.lock pins portable-atomic 1.15.0 (MIT OR Apache-2.0).
 The complete Tauri/Rust app dependency graph is pinned in src-tauri/Cargo.lock.

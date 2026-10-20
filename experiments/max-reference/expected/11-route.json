@@ -1,0 +1,488 @@
+{
+  "fixture": "11-route",
+  "status": "observed-baseline",
+  "origin": "executed-Max-9.1.5-Wine-11.13",
+  "limitations": [],
+  "events": [
+    {
+      "seq": 1,
+      "fixture": "11-route",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_0",
+        "foo 10 20",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 2,
+      "fixture": "11-route",
+      "label": "foo",
+      "selector": "list",
+      "atoms": [
+        10,
+        20
+      ]
+    },
+    {
+      "seq": 3,
+      "fixture": "11-route",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_1",
+        "foo",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 4,
+      "fixture": "11-route",
+      "label": "foo",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 5,
+      "fixture": "11-route",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_2",
+        "list foo 9",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 6,
+      "fixture": "11-route",
+      "label": "foo",
+      "selector": "int",
+      "atoms": [
+        9
+      ]
+    },
+    {
+      "seq": 7,
+      "fixture": "11-route",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_3",
+        "2 7",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 8,
+      "fixture": "11-route",
+      "label": "two",
+      "selector": "int",
+      "atoms": [
+        7
+      ]
+    },
+    {
+      "seq": 9,
+      "fixture": "11-route",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_4",
+        "2",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 10,
+      "fixture": "11-route",
+      "label": "two",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 11,
+      "fixture": "11-route",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_5",
+        "bar 8",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 12,
+      "fixture": "11-route",
+      "label": "unmatched",
+      "selector": "bar",
+      "atoms": [
+        8
+      ]
+    },
+    {
+      "seq": 13,
+      "fixture": "11-route",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_6",
+        "bang",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 14,
+      "fixture": "11-route",
+      "label": "unmatched",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 15,
+      "fixture": "11-route",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_7",
+        "2.5 8",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 16,
+      "fixture": "11-route",
+      "label": "unmatched",
+      "selector": "list",
+      "atoms": [
+        2.5,
+        8
+      ]
+    },
+    {
+      "seq": 17,
+      "fixture": "11-route",
+      "label": "$harness",
+      "selector": "complete",
+      "atoms": [
+        8
+      ]
+    }
+  ],
+  "event_annotations": [
+    {
+      "seq": 1,
+      "latest_input_id": "event_0",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 2,
+      "latest_input_id": "event_0",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 3,
+      "latest_input_id": "event_1",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 4,
+      "latest_input_id": "event_1",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 5,
+      "latest_input_id": "event_2",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 6,
+      "latest_input_id": "event_2",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-2",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 7,
+      "latest_input_id": "event_3",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 8,
+      "latest_input_id": "event_3",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-2",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 9,
+      "latest_input_id": "event_4",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 10,
+      "latest_input_id": "event_4",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-2",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 11,
+      "latest_input_id": "event_5",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 12,
+      "latest_input_id": "event_5",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-2",
+        2
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          2
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 13,
+      "latest_input_id": "event_6",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 14,
+      "latest_input_id": "event_6",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-2",
+        2
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          2
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 15,
+      "latest_input_id": "event_7",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 16,
+      "latest_input_id": "event_7",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-2",
+        2
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          2
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 17,
+      "latest_input_id": "event_7",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    }
+  ]
+}

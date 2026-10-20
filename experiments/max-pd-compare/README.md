@@ -8,7 +8,7 @@ python3 compare.py --reference-root /path/to/experiments/max-reference --libpd /
 
 Requires Python 3 and the existing pinned libpd build; neither the library nor reference bundle is included. Both paths are required; no machine-specific defaults are used. Output files are generated next to compare.py. The input parser explicitly rejects messages outside the literal forms used by the three selected scores; it is not general Max message-box syntax support.
 
-Uses the existing MULTI libpd shared library supplied through --libpd, with libpd commit ba0dc63262901d658af8bbda5e619a60fa975e78 and Pd commit f009fd8d7b537e209e09898d487fdf1bf547da2b. No install, network, Max process, UI, audio initialization or hardware. Results include the SHA256 of the loaded library. Source reference: `experiments/max-reference` from user commit 37e3b0f282bc5c03e57acdbe658dbb946f549527. Input files are read-only. The three generated `.pd` graphs are explicit hand mappings, not a general importer/interpreter.
+Uses the existing MULTI libpd shared library supplied through --libpd, with libpd commit ba0dc63262901d658af8bbda5e619a60fa975e78 and Pd commit f009fd8d7b537e209e09898d487fdf1bf547da2b. No install, network, Max process, UI, audio initialization or hardware. Results include the SHA256 of the loaded library. Source reference: integrated `../max-reference`, original captures at 37e3b0f282bc5c03e57acdbe658dbb946f549527 with derived annotations corrected at fd8a7681d8aacd9c02084a033417b90bebc1b109. Both versions reproduce the same comparison snapshot because raw observations are unchanged. Input files are read-only. The three generated `.pd` graphs are explicit hand mappings, not a general importer/interpreter.
 
 ## Method
 

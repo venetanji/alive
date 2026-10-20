@@ -1,20 +1,34 @@
 // AOT Faust, inside Clockwork's real custom guest boundary. No scsynth.
 #include "dsp_api.h"
-#include "../../../../experiments/faust-reference/host.hpp"
+#include "../app_voice.hpp"
+#include "../engine.hpp"
 #include "observe.hpp"
 
 #include <cstring>
 #include <new>
 namespace {
 constexpr int kDevices=2, kVoices=4, kPending=128, kBlockMax=256;
+using Voice=alive::app::Voice;
+using Kind=alive::Kind;
+struct Event {int frame; Kind kind; int note,value;};
 
 struct Instrument {
  std::array<Voice,kVoices> voices;
  bool sustain=false; float level=1; int serial=0, steals=0;
+ int attack=alive::app::default_envelope_frames, release=alive::app::default_envelope_frames;
  void prepare(){for(auto&v:voices)v.prepare();}
- void reset(){for(auto&v:voices)v.reset();sustain=false;level=1;}
+ void hard_clear(){for(auto&v:voices){v.reset();v.envelope(attack,release);}sustain=false;}
+ void reset(){attack=release=alive::app::default_envelope_frames;for(auto&v:voices){v.reset();v.envelope(attack,release);}sustain=false;level=1;}
  void apply(Event e){
   if(e.kind==Kind::Reset){reset();return;}
+  if(e.kind==Kind::HardClear){hard_clear();return;}
+  if(e.kind==Kind::Attack||e.kind==Kind::Release){
+   if(e.kind==Kind::Attack)attack=alive::app::attack_frames(uint8_t(e.value));
+   else release=alive::app::release_frames(uint8_t(e.value));
+   // Only idle prepared zones can change. Active-note timing remains latched.
+   for(auto&v:voices)if(!v.active(e.frame))v.envelope(attack,release);
+   return;
+  }
   if(e.kind==Kind::Level){level=e.value/127.f;for(auto&v:voices)*v.level=level;return;}
   if(e.kind==Kind::AllOff){sustain=false;for(auto&v:voices)if(v.active(e.frame))v.release(e.frame);return;}
   if(e.kind==Kind::Sustain){sustain=e.value>=64;if(!sustain)for(auto&v:voices)if(v.active(e.frame)&&!v.down&&v.release_at<0)v.release(e.frame);return;}
@@ -23,7 +37,7 @@ struct Instrument {
   }
   Voice*pick=nullptr;for(auto&v:voices)if(!v.active(e.frame)){pick=&v;break;}
   if(!pick){pick=&voices[0];for(auto&v:voices)if(v.born<pick->born)pick=&v;++steals;}
-  pick->reset();pick->note=e.note;pick->down=true;pick->born=serial++;
+  pick->reset();pick->envelope(attack,release);pick->started=e.frame;pick->note=e.note;pick->down=true;pick->born=serial++;
   *pick->freq=440.f*std::pow(2.f,(e.note-69)/12.f);*pick->gain=e.value/127.f;*pick->gate=1;*pick->level=level;
  }
 };
@@ -55,7 +69,7 @@ uint64_t dsp_memory_bytes(const void*,uint32_t){return 0;}
 uint64_t dsp_memory_bulk_bytes(const void*,uint32_t){return 0;}
 Dsp* dsp_new(const DspConfig*c,const DspHost*,const char**err){
  if(c->sample_rate!=48000||c->block_size>kBlockMax||!c->block_size||c->memory_bytes<sizeof(Dsp)){++lifecycle.refused;*err="requires 48kHz and block <=256";return nullptr;}
- ++lifecycle.created;auto*d=new(c->memory)Dsp;ReferenceVoice::classInit(48000);
+ ++lifecycle.created;auto*d=new(c->memory)Dsp;UltraAppVoice::classInit(48000);
  for(auto&dev:d->instruments)dev.prepare();live=d;return d;
 }
 void dsp_free(Dsp*d){++lifecycle.destroyed;live=nullptr;d->~Dsp();}
@@ -69,7 +83,7 @@ void dsp_osc(Dsp*d,const uint8_t*b,uint32_t n,int64_t when,uint32_t,int64_t bloc
  // Fixed, small protocol: /ultra/event ,iiiiii device generation kind note value reserved.
  if(n!=44||std::memcmp(b,"/ultra/event\0",12)||std::memcmp(b+12,",iiiiii\0",8)){++d->obs.malformed;return;}
  Pending p{};p.device=int(word(b+20));p.generation=int(word(b+24));p.kind=int(word(b+28));p.note=int(word(b+32));p.value=int(word(b+36));
- if(p.device<0||p.device>=2||p.kind<0||p.kind>5||p.note<0||p.note>127||p.value<0||p.value>127){++d->obs.malformed;return;}
+ if(p.device<0||p.device>=2||p.kind<0||p.kind>8||p.note<0||p.note>127||p.value<0||p.value>127){++d->obs.malformed;return;}
  auto delta=(when==0||when==1)?0:std::llround(double(when-block_time)*(48000.0/4294967296.0));
  if(delta<0){++d->obs.late;delta=0;}p.frame=d->frame+int(std::min<int64_t>(delta,INT32_MAX-d->frame));
  if(d->count==kPending){++d->obs.overflow;d->panic[p.device]=true;return;}

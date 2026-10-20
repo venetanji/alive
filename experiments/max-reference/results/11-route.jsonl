@@ -1,0 +1,17 @@
+{"seq":1,"fixture":"11-route","label":"$input","selector":"stimulus","atoms":["event_0","foo 10 20","obj-2",0],"wall_ms":1792495585693}
+{"seq":2,"fixture":"11-route","label":"foo","selector":"list","atoms":[10,20],"wall_ms":1792495585693}
+{"seq":3,"fixture":"11-route","label":"$input","selector":"stimulus","atoms":["event_1","foo","obj-2",0],"wall_ms":1792495585694}
+{"seq":4,"fixture":"11-route","label":"foo","selector":"bang","atoms":[],"wall_ms":1792495585694}
+{"seq":5,"fixture":"11-route","label":"$input","selector":"stimulus","atoms":["event_2","list foo 9","obj-2",0],"wall_ms":1792495585697}
+{"seq":6,"fixture":"11-route","label":"foo","selector":"int","atoms":[9],"wall_ms":1792495585697}
+{"seq":7,"fixture":"11-route","label":"$input","selector":"stimulus","atoms":["event_3","2 7","obj-2",0],"wall_ms":1792495585698}
+{"seq":8,"fixture":"11-route","label":"two","selector":"int","atoms":[7],"wall_ms":1792495585698}
+{"seq":9,"fixture":"11-route","label":"$input","selector":"stimulus","atoms":["event_4","2","obj-2",0],"wall_ms":1792495585700}
+{"seq":10,"fixture":"11-route","label":"two","selector":"bang","atoms":[],"wall_ms":1792495585700}
+{"seq":11,"fixture":"11-route","label":"$input","selector":"stimulus","atoms":["event_5","bar 8","obj-2",0],"wall_ms":1792495585701}
+{"seq":12,"fixture":"11-route","label":"unmatched","selector":"bar","atoms":[8],"wall_ms":1792495585701}
+{"seq":13,"fixture":"11-route","label":"$input","selector":"stimulus","atoms":["event_6","bang","obj-2",0],"wall_ms":1792495585704}
+{"seq":14,"fixture":"11-route","label":"unmatched","selector":"bang","atoms":[],"wall_ms":1792495585704}
+{"seq":15,"fixture":"11-route","label":"$input","selector":"stimulus","atoms":["event_7","2.5 8","obj-2",0],"wall_ms":1792495585705}
+{"seq":16,"fixture":"11-route","label":"unmatched","selector":"list","atoms":[2.5,8],"wall_ms":1792495585705}
+{"seq":17,"fixture":"11-route","label":"$harness","selector":"complete","atoms":[8],"wall_ms":1792495585809}

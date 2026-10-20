@@ -1,0 +1,72 @@
+{
+  "fixture": "00-environment",
+  "question": "Read current audio/scheduler settings without changing them",
+  "labels": [
+    "sr_left",
+    "sr_right",
+    "sigvs_left",
+    "sigvs_right",
+    "iovs_left",
+    "iovs_right",
+    "overdrive_left",
+    "overdrive_right",
+    "takeover_left",
+    "takeover_right",
+    "switch_left",
+    "switch_right",
+    "driver_left",
+    "driver_right"
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "bang",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_1",
+      "message": "bang",
+      "destination": "obj-4",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_2",
+      "message": "bang",
+      "destination": "obj-6",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_3",
+      "message": "bang",
+      "destination": "obj-8",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_4",
+      "message": "bang",
+      "destination": "obj-10",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_5",
+      "message": "bang",
+      "destination": "obj-12",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_6",
+      "message": "bang",
+      "destination": "obj-14",
+      "inlet": 0,
+      "wait_ms": 0
+    }
+  ],
+  "drain_ms": 100
+}

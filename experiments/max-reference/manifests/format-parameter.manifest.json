@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "fixture_id": "format-parameter",
+  "provenance": "SYNTHETIC_NOT_MAX_EXECUTED",
+  "max_executed": false,
+  "captured_at_utc": null,
+  "environment": {
+    "max_version": null,
+    "live_version": null,
+    "os": null,
+    "architecture": null,
+    "runtime_host": "none"
+  },
+  "settings": {
+    "sample_rate_hz": null,
+    "signal_vector_frames": null,
+    "io_vector_frames": null,
+    "overdrive": null,
+    "scheduler_in_audio_interrupt": null,
+    "audio_enabled": false,
+    "transport": {},
+    "other": {},
+    "unknown_fields": [
+      "No runtime settings: authored structural input, not Max-saved or executed"
+    ]
+  },
+  "initial_state": {
+    "authored_input": true
+  },
+  "object_classes": [
+    "+",
+    "comment",
+    "number"
+  ],
+  "files": [
+    {
+      "path": "format/parameter.maxpat",
+      "sha256": "b87e8b1e91a7d59006b1924732ad7f72655de9839484bd8f179574d4685663ee",
+      "role": "patch"
+    },
+    {
+      "path": "format/observations.json",
+      "sha256": "5b80dee52b7b6db0a451945b6457d67a382f351733e5e18374be48a2927538d8",
+      "role": "notes"
+    },
+    {
+      "path": "format/import-mapping.json",
+      "sha256": "35f384620c210179a41cfd64cf23770a1e8ffb3666b1f43914dd7d1934bc74db",
+      "role": "notes"
+    }
+  ],
+  "procedure": "Compare this original authored JSON to format/base.maxpat using format/observations.json. Not a Max-produced save; do not execute feedback or dependency inputs as behavioral tests.",
+  "comparison": {
+    "kind": "inventory_only",
+    "absolute_tolerance": null,
+    "relative_tolerance": null,
+    "alignment": "JSON paths in original authored inputs",
+    "limitations": [
+      "No Max save/roundtrip observed",
+      "Not a runtime behavior test"
+    ]
+  },
+  "redistribution": {
+    "authorship": "Original fixtures and analysis authored for Alive local reference research; short official interface descriptions in objects.json cited separately.",
+    "permission": "Self-created fixtures/results for integration into venetanji/alive. No proprietary examples, executables, license material or bundled media included.",
+    "contains_proprietary_assets": false
+  },
+  "notes": [
+    "Authored-input delta only. Max for Live snapshots and self-created AMXD remain deferred after editor launch stalled in the disposable session."
+  ]
+}

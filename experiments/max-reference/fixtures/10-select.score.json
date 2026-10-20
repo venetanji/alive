@@ -1,0 +1,74 @@
+{
+  "fixture": "10-select",
+  "question": "Select matches, unmatched output, type handling and right inlet replacement",
+  "labels": [
+    "match",
+    "unmatched"
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "2",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_1",
+      "message": "2.0",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_2",
+      "message": "2.9",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_3",
+      "message": "symbol two",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_4",
+      "message": "list 2 3",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_5",
+      "message": "bang",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_6",
+      "message": "5",
+      "destination": "obj-2",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_7",
+      "message": "2",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_8",
+      "message": "5",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    }
+  ],
+  "drain_ms": 100
+}

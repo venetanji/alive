@@ -5,6 +5,7 @@
 #include <cstring>
 #include <thread>
 int main(int argc,char**argv){
+ if(argc==3&&!std::strcmp(argv[1],"--chord-demo")){int ok=ultra_render_chord_demo(argv[2]);std::printf("Native chord/metro + envelope Clockwork/Faust render: %s\n",ok?"PASS":"FAIL");return ok?0:1;}
  if(argc==3&&!std::strcmp(argv[1],"--render-demo")){int ok=ultra_render_demo(argv[2]);std::printf("Clockwork/Faust offline render: %s\n",ok?"PASS":"FAIL");return ok?0:1;}
  if(argc==3&&!std::strcmp(argv[1],"--run-seconds")){
   ultra_audio_routes(3);if(!ultra_audio_start()){std::fprintf(stderr,"%s\n",ultra_audio_error());ultra_audio_stop();return 2;}
@@ -14,5 +15,5 @@ int main(int argc,char**argv){
   std::printf("frames=%llu rejected=%llu flags=%u period=%u xruns=%u\n",(unsigned long long)ultra_audio_frames(),(unsigned long long)ultra_audio_rejected(),ultra_audio_flags(),ultra_audio_period(),ultra_audio_xruns());
   bool ok=(ultra_audio_flags()&13)==1;ultra_audio_stop();return ok?0:1;
  }
- std::puts("Ultra native diagnostic\n  --render-demo output.wav  Offline actual Clockwork/Faust render/check\n  --run-seconds 30          JACK MIDI/audio session, channel 1=A, 2=B");return 0;
+ std::puts("Ultra native diagnostic\n  --render-demo output.wav  Offline actual Clockwork/Faust render/check\n  --chord-demo output.wav   8s native chord/metro + attack/release render\n  --run-seconds 30          JACK MIDI/audio session, channel 1=A, 2=B");return 0;
 }

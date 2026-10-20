@@ -1,4 +1,5 @@
 #include "backend.h"
+#include "sequence.hpp"
 #include "../../core/engine.hpp"
 #include <atomic>
 #include <array>
@@ -49,7 +50,19 @@ struct Jack {
 alive::Engine engine; const char* error="Audio is stopped.";
 std::atomic<unsigned> routes{0},fault_reason{0};
 std::atomic<bool> running{false},lost{false}; std::atomic<unsigned> period{0},xruns{0};
-struct Control { alive::Event event{}; unsigned mask=0; bool route=false; };
+enum class ControlKind { Event, Route, Sequence };
+struct Control { alive::Event event{}; unsigned mask=0; ControlKind kind=ControlKind::Event; UltraSequenceConfig sequence{}; };
+ultra::Sequencer sequence;
+std::atomic<bool> sequence_requested{false},sequence_enabled{false};
+std::atomic<unsigned> sequence_step{0},sequence_note{128},sequence_clock_source{0};
+std::atomic<uint64_t> sequence_ticks{0};
+void publish_sequence(){
+ sequence_step.store(sequence.step(),std::memory_order_relaxed);sequence_note.store(sequence.note(),std::memory_order_relaxed);
+ sequence_ticks.store(sequence.ticks(),std::memory_order_relaxed);sequence_clock_source.store(sequence.clock_source(),std::memory_order_relaxed);
+ sequence_enabled.store(sequence.armed(),std::memory_order_release);
+}
+static_assert(std::atomic<bool>::is_always_lock_free&&std::atomic<unsigned>::is_always_lock_free&&std::atomic<uint64_t>::is_always_lock_free);
+
 constexpr unsigned ControlCapacity=64;
 std::array<Control,ControlCapacity+1> controls{};
 std::atomic<unsigned> control_head{0},control_tail{0};
@@ -64,33 +77,69 @@ int process(Frames n,void*){
  auto* l=static_cast<float*>(jack.port_get_buffer(jack.l,n));auto* r=static_cast<float*>(jack.port_get_buffer(jack.r,n));
  if(!l||!r)return 0;
  period.store(n,std::memory_order_relaxed);
- if(n>1024||lost.load(std::memory_order_relaxed)){if(n>1024)fault_reason.store(4);engine.panic();std::fill(l,l+n,0);std::fill(r,r+n,0);return 0;}
- // One FIFO orders route cleanup between old and new UI notes. A snapshot keeps
- // mid-callback edits behind all MIDI already admitted for this buffer.
+ if(n>1024||lost.load(std::memory_order_relaxed)||engine.status().fault){
+  if(n>1024){fault_reason.store(4);engine.panic();}
+  sequence.clear();sequence_requested=false;publish_sequence();std::fill(l,l+n,0);std::fill(r,r+n,0);return 0;
+ }
+ auto emit=[](alive::Event e){return engine.submit(e);};
+ auto manual=[&](alive::Event e){
+  // A has a single owner while armed. B and A's envelope/level remain independent.
+  if(e.device==0){
+   if(e.kind==alive::Kind::AllOff||e.kind==alive::Kind::Reset||e.kind==alive::Kind::HardClear){sequence.stop(e.offset,emit);sequence_requested.store(false,std::memory_order_relaxed);}
+   else if(sequence.armed()&&(e.kind==alive::Kind::On||e.kind==alive::Kind::Off||e.kind==alive::Kind::Sustain))return;
+  }
+  emit(e);
+ };
+ // One FIFO orders route cleanup, sequence replacement and manual UI input.
+ // Snapshot once: edits during MIDI acquisition belong to the next callback.
  const auto end=control_head.load(std::memory_order_acquire);auto tail=control_tail.load(std::memory_order_relaxed);
  for(unsigned i=0;tail!=end&&i<ControlCapacity;i++){
   const auto control=controls[tail];tail=(tail+1)%(ControlCapacity+1);
-  if(control.route){
-   for(unsigned d=0;d<2;d++)if((callback_routes&~control.mask)&(1u<<d))engine.submit({0,uint8_t(d),alive::Kind::AllOff,0,0});
+  if(control.kind==ControlKind::Route){
+   if((callback_routes^control.mask)&1)sequence.stop(0,emit);
+   for(unsigned d=0;d<2;d++)if((callback_routes&~control.mask)&(1u<<d))emit({0,uint8_t(d),alive::Kind::HardClear,0,0});
    callback_routes=control.mask;
-  }else engine.submit(control.event);
+  }else if(control.kind==ControlKind::Sequence){
+   sequence.stop(0,emit);
+   if(control.sequence.enabled){emit({0,0,alive::Kind::HardClear,0,0});}
+   sequence.configure(control.sequence,emit);
+  }else manual(control.event);
  }
  control_tail.store(tail,std::memory_order_release);
  const unsigned mask=callback_routes;
+ struct Input {unsigned time,size;std::array<unsigned char,3> data;};
+ std::array<Input,128> input{};unsigned admitted=0;
  void* buffer=jack.port_get_buffer(jack.midi,n);uint32_t count=buffer?jack.midi_get_event_count(buffer):0;
- if(count>128){fault_reason.store(3);engine.panic();count=0;}
- // Submit all MIDI at true JACK buffer offsets. Core admission is bounded/fail-closed.
+ if(count>input.size()){fault_reason.store(3);engine.panic();count=0;}
  for(uint32_t i=0;i<count;i++){
-  MidiEvent e{};if(jack.midi_event_get(&e,buffer,i)||!e.buffer||e.size<1)continue;
-  auto status=e.buffer[0];unsigned channel=status&15,cmd=status&0xf0;
-  if(channel>1||e.time>=n||!(mask&(1u<<channel)))continue;
-  alive::Event event{};event.device=channel;event.offset=e.time;
-  if((cmd==0x90||cmd==0x80)&&e.size==3){event.kind=cmd==0x90?alive::Kind::On:alive::Kind::Off;event.note=e.buffer[1];event.value=e.buffer[2];}
-  else if(cmd==0xb0&&e.size==3){event.note=0;event.value=e.buffer[2];if(e.buffer[1]==64)event.kind=alive::Kind::Sustain;else if(e.buffer[1]==123||e.buffer[1]==120)event.kind=alive::Kind::AllOff;else continue;}
-  else continue;
-  if(event.note>127||event.value>127){engine.panic();break;}engine.submit(event);
+  MidiEvent e{};if(jack.midi_event_get(&e,buffer,i)||!e.buffer||e.size<1||e.time>=n)continue;
+  const auto status=e.buffer[0];
+  if(e.size!=1&&e.size!=3)continue;
+  if(admitted&&e.time<input[admitted-1].time){engine.panic();break;}
+  Input item{e.time,unsigned(e.size),{status,0,0}};
+  if(e.size==3){item.data[1]=e.buffer[1];item.data[2]=e.buffer[2];}
+  input[admitted++]=item;
  }
- engine.render(l,r,nullptr,n);if(!(mask&1))std::fill(l,l+n,0.f);if(!(mask&2))std::fill(r,r+n,0.f);return 0;
+ // Merge external clock/transport and musical events on the audio timeline.
+ // At most 1024 samples and 128 MIDI records, never an unbounded catch-up loop.
+ unsigned next=0;
+ for(unsigned frame=0;frame<n&&!engine.status().fault;frame++){
+  while(next<admitted&&input[next].time==frame){
+   const auto& e=input[next++];const auto status=e.data[0];
+   if(e.size==1&&(status==0xf8||status==0xfa||status==0xfb||status==0xfc)){sequence.midi(status,frame,emit);continue;}
+   const unsigned channel=status&15,cmd=status&0xf0;
+   if(e.size!=3||channel>1||!(mask&(1u<<channel)))continue;
+   alive::Event event{};event.device=channel;event.offset=frame;event.note=e.data[1];event.value=e.data[2];
+   if((cmd==0x90||cmd==0x80)){event.kind=cmd==0x90?alive::Kind::On:alive::Kind::Off;}
+   else if(cmd==0xb0){event.note=0;if(e.data[1]==64)event.kind=alive::Kind::Sustain;else if(e.data[1]==123)event.kind=alive::Kind::AllOff;else if(e.data[1]==120)event.kind=alive::Kind::HardClear;else continue;}
+   else continue;
+   if(e.data[1]>127||e.data[2]>127){engine.panic();break;}manual(event);
+  }
+  sequence.sample(frame,emit);
+ }
+ float* channels[]={l,r};engine.render_bus({channels,2},nullptr,n);
+ if(engine.status().fault){sequence.clear();sequence_requested.store(false,std::memory_order_relaxed);}
+ publish_sequence();if(!(mask&1))std::fill(l,l+n,0.f);if(!(mask&2))std::fill(r,r+n,0.f);return 0;
 }
 void latency(unsigned mode,void*){
  LatencyRange range{};
@@ -106,7 +155,7 @@ void put32(FILE*f,uint32_t n){put16(f,n);put16(f,n>>16);}
 extern "C" {
 void ultra_audio_stop(){
  running.store(false);if(jack.client){jack.deactivate(jack.client);jack.client_close(jack.client);jack.client=nullptr;}
- engine.shutdown();control_head=0;control_tail=0;if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}lost.store(false);error="Audio is stopped.";
+ engine.shutdown();sequence.clear();publish_sequence();sequence_requested=false;control_head=0;control_tail=0;if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}lost.store(false);error="Audio is stopped.";
 }
 static int start_impl(){
  ultra_audio_stop();if(!jack.load()){if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}error="libjack.so.0 is unavailable. Install your distro's JACK/PipeWire JACK compatibility package, then restart.";return 0;}
@@ -127,12 +176,30 @@ static int start_impl(){
  return 1;
 }
 int ultra_audio_start(){try{return start_impl();}catch(...){ultra_audio_stop();error="Native audio initialization failed (exception). Audio is stopped.";return 0;}}
-int ultra_audio_event(unsigned device,unsigned kind,unsigned note,unsigned value){if(device>1||kind>5||note>127||value>127||!running.load()||!(routes.load()&(1u<<device)))return 0;return queue_control({{0,uint8_t(device),alive::Kind(kind),uint8_t(note),uint8_t(value)},0,false});}
+int ultra_audio_event(unsigned device,unsigned kind,unsigned note,unsigned value){
+ if(device>1||kind>7||note>127||value>127||!running.load()||!(routes.load()&(1u<<device)))return 0;
+ if(device==0&&kind<=2&&sequence_requested.load(std::memory_order_acquire))return 0;
+ const bool accepted=queue_control({{0,uint8_t(device),alive::Kind(kind),uint8_t(note),uint8_t(value)},0,ControlKind::Event,{}});
+ if(accepted&&device==0&&(kind==4||kind==5))sequence_requested.store(false,std::memory_order_release);
+ return accepted;
+}
+int ultra_audio_sequence(const UltraSequenceConfig* config){
+ if(!config||!ultra::valid_sequence(*config)||!running.load()||(config->enabled&&!(routes.load()&1)))return 0;
+ const bool accepted=queue_control({{},0,ControlKind::Sequence,*config});
+ if(accepted)sequence_requested.store(config->enabled!=0,std::memory_order_release);
+ return accepted;
+}
 void ultra_audio_routes(unsigned mask){
  mask&=3;unsigned old=routes.load(std::memory_order_relaxed);
- routes.store(mask);if(old!=mask&&engine.status().ready)queue_control({{},mask,true});
+ routes.store(mask);if(old!=mask){if((old^mask)&1)sequence_requested=false;if(engine.status().ready)queue_control({{},mask,ControlKind::Route,{}});}
 }
-void ultra_audio_panic(){fault_reason.store(1);engine.panic();}
+void ultra_audio_panic(){fault_reason.store(1);sequence_requested=false;engine.panic();}
+unsigned ultra_sequence_enabled(){return running.load()&&!engine.status().fault&&sequence_enabled.load(std::memory_order_acquire);}
+unsigned ultra_sequence_step(){return sequence_step.load(std::memory_order_relaxed);}
+unsigned ultra_sequence_note(){return ultra_sequence_enabled()?sequence_note.load(std::memory_order_relaxed):128;}
+uint64_t ultra_sequence_ticks(){return sequence_ticks.load(std::memory_order_relaxed);}
+unsigned ultra_sequence_clock_source(){return sequence_clock_source.load(std::memory_order_relaxed);}
+
 const char* ultra_audio_error(){
  const auto status=engine.status();if(status.ready&&status.fault){switch(fault_reason.load()){
  case 1:return "Panic muted the engine. Stop then Start to reset.";
@@ -153,7 +220,7 @@ static int render_demo_impl(const char*path){
  for(unsigned frame=0;frame<total;frame+=64){
   if(frame==0){engine.submit({0,0,alive::Kind::On,60,100});engine.submit({31,1,alive::Kind::On,67,100});}
   if(frame==48000){engine.submit({0,0,alive::Kind::Off,60,0});engine.submit({31,1,alive::Kind::Off,67,0});}
-  engine.render(l.data()+frame,r.data()+frame,nullptr,64);
+  float* channels[]={l.data()+frame,r.data()+frame};engine.render_bus({channels,2},nullptr,64);
  }
  auto s=engine.status();bool ok=s.ready&&!s.fault;
  for(unsigned i=0;i<total;i++){ok=ok&&std::isfinite(l[i])&&std::isfinite(r[i]);peak=std::max({peak,std::abs(l[i]),std::abs(r[i])});if(i>48150)ok=ok&&l[i]==0&&r[i]==0;}
@@ -162,6 +229,38 @@ static int render_demo_impl(const char*path){
  for(unsigned i=0;i<total;i++){put16(f,uint16_t(int16_t(std::clamp(l[i],-1.f,1.f)*32767)));put16(f,uint16_t(int16_t(std::clamp(r[i],-1.f,1.f)*32767)));}
  return fclose(f)==0;
 }
+static int render_chord_demo_impl(const char* path){
+ ultra_audio_stop();if(!engine.init())return 0;
+ constexpr unsigned total=8*48000,stop_at=7*48000;std::vector<float> l(total),r(total);float peak=0;
+ ultra::Sequencer demo;UltraSequenceConfig config{1,112,60,0,8,65,96,0,0};
+ auto emit=[](alive::Event e){return engine.submit(e);};
+ for(unsigned d=0;d<2;d++){
+  emit({0,uint8_t(d),alive::Kind(6),0,8});emit({0,uint8_t(d),alive::Kind(7),0,14});
+  emit({0,uint8_t(d),alive::Kind::Level,0,uint8_t(d?52:100)});
+ }
+ unsigned bass=36;demo.configure(config,emit);emit({0,1,alive::Kind::On,uint8_t(bass),80});
+ for(unsigned frame=0;frame<total;frame+=64){
+  if(frame&&frame%96000==0&&frame<stop_at){
+   config.chord=(frame/96000)%3;config.root=frame==192000?62:60;demo.configure(config,emit);
+   emit({0,1,alive::Kind::Off,uint8_t(bass),0});bass=config.root-24;emit({0,1,alive::Kind::On,uint8_t(bass),80});
+  }
+  if(frame==stop_at){demo.stop(0,emit);emit({0,1,alive::Kind::Off,uint8_t(bass),0});}
+  for(unsigned i=0;i<64;i++)demo.sample(i,emit);
+  float* channels[]={l.data()+frame,r.data()+frame};engine.render_bus({channels,2},nullptr,64);
+ }
+ const auto status=engine.status();bool ok=status.ready&&!status.fault;
+ for(unsigned i=0;i<total;i++){
+  ok=ok&&std::isfinite(l[i])&&std::isfinite(r[i]);peak=std::max({peak,std::abs(l[i]),std::abs(r[i])});
+  if(i>stop_at+24000)ok=ok&&l[i]==0&&r[i]==0;
+ }
+ // Reconfiguration resets visible ticks; the final segment has >7 triggers.
+ ok=status.ready&&!status.fault&&peak>0.01f&&demo.ticks()>=7&&ok;
+ engine.shutdown();if(!ok)return 0;
+ FILE* f=fopen(path,"wb");if(!f)return 0;fwrite("RIFF",1,4,f);put32(f,36+total*4);fwrite("WAVEfmt ",1,8,f);put32(f,16);put16(f,1);put16(f,2);put32(f,48000);put32(f,192000);put16(f,4);put16(f,16);fwrite("data",1,4,f);put32(f,total*4);
+ for(unsigned i=0;i<total;i++){put16(f,uint16_t(int16_t(std::clamp(l[i],-1.f,1.f)*32767)));put16(f,uint16_t(int16_t(std::clamp(r[i],-1.f,1.f)*32767)));}
+ return fclose(f)==0;
+}
+int ultra_render_chord_demo(const char*path){try{return render_chord_demo_impl(path);}catch(...){ultra_audio_stop();error="Chord demo render failed.";return 0;}}
 int ultra_render_demo(const char*path){try{return render_demo_impl(path);}catch(...){ultra_audio_stop();return 0;}}
 
 }

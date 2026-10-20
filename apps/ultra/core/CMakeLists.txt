@@ -20,3 +20,16 @@ add_custom_command(TARGET ultra_core POST_BUILD COMMAND ${CMAKE_COMMAND}
  -DCORE=$<TARGET_FILE:ultra_core> -DBUNDLE=$<TARGET_FILE:clockwork> -DGUEST=$<TARGET_FILE:ultra_hardened_guest> -DRUST=${CLOCKWORK_SOURCE}/rust/target/release/libclockwork_native.a
  -DOUTPUT=${CMAKE_CURRENT_BINARY_DIR}/libultra_core_bundle.a -DAR=${CMAKE_AR}
  -P ${CMAKE_CURRENT_SOURCE_DIR}/merge.cmake)
+
+option(ULTRA_BUILD_CORE_TESTS "Build real Clockwork application envelope tests" OFF)
+if(ULTRA_BUILD_CORE_TESTS)
+ enable_testing()
+ add_executable(check_ultra_envelope tests/envelope.cpp
+  "${ALIVE_ROOT}/experiments/clockwork-faust/instrument.cpp")
+ target_link_options(check_ultra_envelope PRIVATE
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock)
+ target_link_libraries(check_ultra_envelope PRIVATE ultra_core)
+ target_include_directories(check_ultra_envelope SYSTEM PRIVATE
+  "${ALIVE_ROOT}/experiments/faust-reference/.deps/faust-2.88.0/architecture")
+ add_test(NAME app_envelope COMMAND check_ultra_envelope)
+endif()

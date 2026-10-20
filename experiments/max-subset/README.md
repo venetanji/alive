@@ -40,7 +40,7 @@ Specific documentation pitfalls carried into the contract: trigger's right-to-le
 
 ## Real reference corpus and capture contract
 
-The supplied corpus at commit `37e3b0f282bc5c03e57acdbe658dbb946f549527` remains on `research/max-reference-local-20261020`. See the Max Reference Review and Local Session Handoff section of `../../PLAN.md` and `../max-pd-compare/` for actual comparison results and annotation defects. Raw captures are useful, but derived annotations must not be treated as a causal oracle. No catalog compatibility flag is promoted by this review.
+The corrected corpus at commit `fd8a7681d8aacd9c02084a033417b90bebc1b109` is integrated under `../max-reference`. See the Max Reference Review and Local Session Handoff section of `../../PLAN.md` and `../max-pd-compare/` for actual comparison results. Corrected annotations preserve unmeasured causality and ambiguous logger-source candidates. No catalog compatibility flag is promoted by this review.
 
 Use `reference-manifest.schema.json` (JSON Schema 2020-12), one manifest per experiment/run setting. The included manifest and patch are **SYNTHETIC_NOT_MAX_EXECUTED**. The independently authored inventory golden is only an importer expectation; it is not a message trace. It includes feedback intentionally and must not be treated as an executable example.
 

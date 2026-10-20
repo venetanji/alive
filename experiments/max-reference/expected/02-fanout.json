@@ -1,0 +1,140 @@
+{
+  "fixture": "02-fanout",
+  "status": "observed-baseline",
+  "origin": "executed-Max-9.1.5-Wine-11.13",
+  "limitations": [
+    "Authored patchline order disagreed with observed layout order; explicit cord-order semantics remain unresolved. This is an observation, not a portable ordering contract."
+  ],
+  "events": [
+    {
+      "seq": 1,
+      "fixture": "02-fanout",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_0",
+        "bang",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 2,
+      "fixture": "02-fanout",
+      "label": "order_1",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 3,
+      "fixture": "02-fanout",
+      "label": "order_0",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 4,
+      "fixture": "02-fanout",
+      "label": "order_2",
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "seq": 5,
+      "fixture": "02-fanout",
+      "label": "$harness",
+      "selector": "complete",
+      "atoms": [
+        1
+      ]
+    }
+  ],
+  "event_annotations": [
+    {
+      "seq": 1,
+      "latest_input_id": "event_0",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 2,
+      "latest_input_id": "event_0",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 3,
+      "latest_input_id": "event_0",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 4,
+      "latest_input_id": "event_0",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 5,
+      "latest_input_id": "event_0",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    }
+  ]
+}

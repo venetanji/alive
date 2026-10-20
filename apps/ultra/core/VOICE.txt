@@ -1,0 +1,116 @@
+Application Faust voice and native bus contract
+=============================================
+
+The app uses voice.dsp -> generated/app_voice.hpp, class UltraAppVoice. It no
+longer imports experiments/faust-reference/host.hpp in production. That original
+fixed-envelope fixture and experiments/clockwork-faust remain unchanged oracles.
+
+The two logical instruments each own four prepared AOT Faust voices. Attack event
+kind 6 and release kind 7 accept MIDI-sized values 0..127. Value zero means the
+original 16 frames (one third of a millisecond at 48kHz). Nonzero values mean
+attack value*192 frames (4ms) and release value*384 frames (8ms), up to 508ms
+attack and 1016ms release. The generated oscillator, gain and level arithmetic is
+unchanged; at the default timings, the existing hardened oracle scores remain
+bit-exact after the existing 64-frame causal adapter delay.
+
+Attack/release edits update instrument defaults and idle voices' prepared zones.
+Both parameters latch at note-on. Held notes, sustained notes and already-running
+release tails retain their own timings; edits affect the next note, including a
+stolen/retriggered voice. Level remains live. The reset event immediately clears
+voices and restores level=1, sustain off and both 16-frame envelope defaults.
+All-off releases held/sustained notes using their latched envelope. Repeated
+all-off does not extend a release. Internal HardClear kind 8 is distinct: it
+immediately clears every voice and sustain while preserving level/attack/release,
+for route disconnects and sequence-ownership changes. Native app-facing ingress
+must not expose that internal kind. This prevents a long release tail from
+reappearing if a removed route reconnects before its musical release finishes.
+This is linear Faust ASR: note-off during attack
+starts its release slope at the attained amplitude, and therefore ends sooner
+than the nominal full-scale release time. Host voice retirement matches the
+generated float slope, including the final zero sample, rather than hard-coding
+16 frames. Timings map exactly to the integer frame parameters above; Faust's
+single-precision reciprocal may leave a one-ULP endpoint residual for some
+values (for example 41), requiring one extra sample to reach full scale/zero.
+Retirement follows that actual DSP endpoint and does not cut off the residual.
+An earlier-silent voice can consequently become reusable sooner than
+the old fixed-envelope host's conservative lifetime.
+
+All tables, MapUI maps and DSP instances are created/initialized before callback
+exposure and destroyed only after the callback stops. Event handlers only update
+fixed state/prepared zones; no compiler, dynamic voice creation or zone lookup is
+used in the callback.
+
+AudioBusView is an explicit planar channel bundle at the Engine boundary.
+render_bus currently requires exactly two non-null output buffers. This exposes
+the native bus capability instead of making left/right parameters the only
+interface, but does not implement arbitrary widths, spatial/ambisonic processing
+or downmixing. Unsupported/null buses stick the engine in fail-closed state
+without dereferencing an invalid-width channel array or writing unknown memory.
+The next valid render is silent until stopped shutdown+init. Existing render and
+C APIs retain their two-channel compatibility signatures.
+
+Reproduce
+---------
+Prerequisite: the existing pinned experiments/faust-reference dependency setup.
+From repository root:
+  python3 apps/ultra/core/generate_voice.py
+
+The generator calls official libfaust generateCAuxFilesFromFile with:
+  -lang cpp -cn UltraAppVoice
+  -I experiments/faust-reference/.deps/faust-2.88.0/libraries
+  -o apps/ultra/core/generated/app_voice.hpp
+
+Compiler: Faust 2.88.0, Linux x86_64 libfaust release. Existing setup.sh verifies:
+  faust-2.88.0.tar.gz
+    e4e175cf236924b5b7d4784cbb8c50cc01e211159e169655dd9e6d8f92b871d9
+  libfaust-ubuntu-x86_64.zip
+    7f7784567d8770dfbc1351f53b32dfb4d4c5baef0ba5f39fd925d5407ab63ff2
+The checked-in generated header retains compiler flags, author, library version
+and license metadata. Regeneration normalizes trailing horizontal whitespace only.
+
+Build and run the real-Clockwork application envelope/bus suite:
+  D="$PWD/experiments/clockwork-faust/.deps"
+  export PATH="$D/cmake-3.31.6-linux-x86_64/bin:$D/rust/bin:$PATH"
+  export CARGO_HOME="$D/cargo"
+  cmake -S apps/ultra/core -B /tmp/ultra-envelope-build \
+    -DULTRA_BUILD_CORE_TESTS=ON -DCMAKE_BUILD_TYPE=Release
+  cmake --build /tmp/ultra-envelope-build --target check_ultra_envelope -j4
+  ctest --test-dir /tmp/ultra-envelope-build --output-on-failure
+
+Retained third-party terms
+--------------------------
+Alive/Ultra-owned source is AGPL-3.0-or-later; see the repository LICENSE and
+LICENSING.md. This does not replace any upstream notice or exception.
+Faust compiler licensing is separate from generated output. The app imports the
+same os.oscp and en.asr functions as the original fixture. Metadata identifies
+envelopes.lib 1.3.0, oscillators.lib 1.8.0, maths.lib 2.9.0, basics.lib 1.23.0,
+and platform.lib 1.3.0. Preserve upstream distribution source and notices; this
+inventory is not a blanket claim about all Faust functions or distributions.
+
+The bundled envelopes.lib and oscillators.lib GRAME sections state, except where
+noted otherwise: Copyright (C) 2003-2017 by GRAME, Centre National de Creation
+Musicale. They are LGPL-2.1-or-later, without warranty, with this exception:
+
+EXCEPTION TO THE LGPL LICENSE : As a special exception, you may create a
+larger FAUST program which directly or indirectly imports this library
+file and still distribute the compiled code generated by the FAUST
+compiler, or a modified version of this compiled code, under your own
+copyright and license. This EXCEPTION TO THE LGPL LICENSE explicitly
+grants you the right to freely choose the license for the resulting
+compiled code. In particular the resulting compiled code has no obligation
+to be LGPL or GPL. For example you are free to choose a commercial or
+closed source license or any other license if you decide so.
+
+The unmodified dsp.h, MapUI.h and meta.h architecture headers retain Copyright
+(C) 2003-2022 GRAME, Centre National de Creation Musicale, LGPL-2.1-or-later and
+their no-warranty notice, including this architecture exception:
+
+EXCEPTION : As a special exception, you may create a larger work
+that contains this FAUST architecture section and distribute
+that work under terms of your choice, so long as this FAUST
+architecture section is not modified.
+
+Complete notices and LGPL terms are in the pinned Faust source distribution.
+Transitive architecture/library notices and function-specific terms are not
+removed or superseded by the excerpts above. The compiler is never linked into
+the render process.

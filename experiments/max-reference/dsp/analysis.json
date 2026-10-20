@@ -1,0 +1,29 @@
+{
+  "frames": 1920,
+  "sample_rate": 48000,
+  "encoding": "IEEE float32 WAV; Max buffer~ storage, not full internal DSP precision",
+  "channels": [
+    "cosine_1000Hz_phase0",
+    "cosine_1000Hz_phase0.25",
+    "line_0_to_1_10ms",
+    "cosine_times_envelope_times_0.25"
+  ],
+  "max_absolute_errors": {
+    "oscillator_vs_analytic_cosine": [
+      3.524771541307814e-08,
+      3.524771596818965e-08
+    ],
+    "envelope_vs_min_n_over_480": 2.781550090258378e-08,
+    "product_vs_recorded_factors": 1.724141540648816e-08
+  },
+  "two_fresh_process_captures_identical": true,
+  "captured_sample_sha256": "e68e8ce6dd0bef6b0a0c6d0e4a03e06ec125b229bc7dea8d182f87a4a18a1408",
+  "tolerances": {
+    "same_score_phase_aligned_analytic_absolute": 1e-06,
+    "faust_initial_phase_alignment": "required; phase 0 here is cosine",
+    "faust_waveform_initial_absolute": 0.0001,
+    "faust_ramp_alignment_samples": 1,
+    "message_to_dsp_event_alignment": "up to a signal vector when scheduler settings differ; report offset, do not hide it"
+  },
+  "caution": "Proposed Faust tolerance is an integration starting point, not a validated cross-engine guarantee. No hardware output, gain~ taper or real-time reset equivalence tested."
+}

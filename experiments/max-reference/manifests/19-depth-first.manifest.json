@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "fixture_id": "19-depth-first",
+  "provenance": "MAX_REFERENCE_CAPTURE",
+  "max_executed": true,
+  "captured_at_utc": "2026-10-20T11:44:21.556000Z",
+  "environment": {
+    "max_version": "9.1.5 (3db35fa476d), x64 windows",
+    "live_version": "12.4.6 build 2026-09-10_0de5c8fa9a (installed; standalone probes do not use Live scheduler)",
+    "os": "Omarchy 4.0.0.r7083.g81fd2d2; Linux 7.2.8-9-omarchy; Wine Windows 10 Pro",
+    "architecture": "x86_64 host / Windows x64 Max",
+    "runtime_host": "standalone_max"
+  },
+  "settings": {
+    "sample_rate_hz": 48000,
+    "signal_vector_frames": 64,
+    "io_vector_frames": 512,
+    "overdrive": false,
+    "scheduler_in_audio_interrupt": false,
+    "audio_enabled": false,
+    "transport": {},
+    "other": {
+      "audio_driver": "NonRealTime",
+      "wine_version": "wine-11.13",
+      "wine_distribution": "2026.08.30.1, d2d1-dcomp build 5c23dd1c + 110 patches",
+      "dsp_enabled_during_message_probes": false,
+      "settings_context": "Same disposable Max process immediately after 18-dsp completed with DSP off."
+    },
+    "unknown_fields": [
+      "transport state and tempo: not queried; scores use only milliseconds",
+      "native Windows/macOS behavior: not measured"
+    ]
+  },
+  "initial_state": {
+    "reset": "Freshly loaded self-created patch, original arguments and saved parameter attributes in the source patch. DSP probe must be the only open DSP patch in a fresh Max process.",
+    "score": "fixtures/19-depth-first.score.json"
+  },
+  "object_classes": [
+    "comment",
+    "js",
+    "message",
+    "t",
+    "thispatcher"
+  ],
+  "files": [
+    {
+      "path": "fixtures/19-depth-first.maxpat",
+      "sha256": "8ffcde44b0bc35fce59d453f504bf8608c6c9546030a1573cf7736d660a09154",
+      "role": "patch"
+    },
+    {
+      "path": "fixtures/19-depth-first.score.json",
+      "sha256": "0893569071d3559e4fb7f7a33d6c27f5a4d3f78d6785109eb366d4caa598322c",
+      "role": "operations"
+    },
+    {
+      "path": "fixtures/probe.js",
+      "sha256": "1ce0ff7208b6c71a1c58c2213d4cbc598894bfdaa155d43a0f67c21f111b2e14",
+      "role": "dependency"
+    },
+    {
+      "path": "results/19-depth-first.jsonl",
+      "sha256": "b6df191e87f64d4c5ec0c9bf8a8ee77501026526665ce6f48c48497beeea8db3",
+      "role": "message_trace"
+    },
+    {
+      "path": "expected/19-depth-first.json",
+      "sha256": "cc1a35199595bbd090fe2c7e80bf87297aae3add1d4934aae53a58348436e40d",
+      "role": "message_trace"
+    },
+    {
+      "path": "docs/semantic-gaps.md",
+      "sha256": "8fd809c837bccf3cc200069c0b719be9b717f3ce23c41ff2fb55c9481f87691a",
+      "role": "notes"
+    }
+  ],
+  "procedure": "Open fixtures/19-depth-first.maxpat in a disposable copy with sibling probe.js and score JSON. The Max loadbang schedules the recorded score after 500 wall ms. See README for prefix isolation and reproduction. Do not change original projects/preferences.",
+  "comparison": {
+    "kind": "exact_ordered_messages",
+    "absolute_tolerance": null,
+    "relative_tolerance": null,
+    "alignment": "DSP frame zero: first recorded frame at fresh DSP start, phase 0 cosine, ramp n/480; otherwise seq is collector arrival and wall_ms is UTC wall clock, not logical time.",
+    "limitations": [
+      "Only listed input messages in this fixture are observed.",
+      "JS defers high-priority input; sequence reflects collector arrival.",
+      "Scalar int/float selectors are preserved; numeric types within lists are unknown in this logger.",
+      "Expected files are observed baselines, not independently certified oracles.",
+      "latest_input_id is arrival context only; causal_input_id is null because causality was not measured.",
+      "Source candidates come from direct logger patchlines; shared inlets are ambiguous and no unique source is asserted."
+    ]
+  },
+  "redistribution": {
+    "authorship": "Original fixtures and analysis authored for Alive local reference research; short official interface descriptions in objects.json cited separately.",
+    "permission": "Self-created fixtures/results for integration into venetanji/alive. No proprietary examples, executables, license material or bundled media included.",
+    "contains_proprietary_assets": false
+  },
+  "notes": [
+    "Reference-manifest schema from integration base aa13d68; paths relative to experiments/max-reference/, not the manifests/ subdirectory.",
+    "This manifest authenticates bytes and execution scope, not broad Max/MSP compatibility."
+  ]
+}

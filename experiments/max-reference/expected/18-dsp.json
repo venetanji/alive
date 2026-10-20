@@ -1,0 +1,8824 @@
+{
+  "fixture": "18-dsp",
+  "status": "observed-baseline",
+  "origin": "executed-Max-9.1.5-Wine-11.13",
+  "limitations": [],
+  "events": [
+    {
+      "seq": 1,
+      "fixture": "18-dsp",
+      "label": "switch_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 2,
+      "fixture": "18-dsp",
+      "label": "switch_left",
+      "selector": "append",
+      "atoms": [
+        "Off"
+      ]
+    },
+    {
+      "seq": 3,
+      "fixture": "18-dsp",
+      "label": "switch_left",
+      "selector": "append",
+      "atoms": [
+        "On"
+      ]
+    },
+    {
+      "seq": 4,
+      "fixture": "18-dsp",
+      "label": "switch_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 5,
+      "fixture": "18-dsp",
+      "label": "switch_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 6,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 7,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "append",
+      "atoms": [
+        "Off"
+      ]
+    },
+    {
+      "seq": 8,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "append",
+      "atoms": [
+        "On"
+      ]
+    },
+    {
+      "seq": 9,
+      "fixture": "18-dsp",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 10,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 11,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 12,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "append",
+      "atoms": [
+        "Off"
+      ]
+    },
+    {
+      "seq": 13,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "append",
+      "atoms": [
+        "On"
+      ]
+    },
+    {
+      "seq": 14,
+      "fixture": "18-dsp",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 15,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 16,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 17,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        32
+      ]
+    },
+    {
+      "seq": 18,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 19,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        128
+      ]
+    },
+    {
+      "seq": 20,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        256
+      ]
+    },
+    {
+      "seq": 21,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 22,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        1024
+      ]
+    },
+    {
+      "seq": 23,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        2048
+      ]
+    },
+    {
+      "seq": 24,
+      "fixture": "18-dsp",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 25,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 26,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 27,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        1
+      ]
+    },
+    {
+      "seq": 28,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        2
+      ]
+    },
+    {
+      "seq": 29,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 30,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        8
+      ]
+    },
+    {
+      "seq": 31,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        16
+      ]
+    },
+    {
+      "seq": 32,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        32
+      ]
+    },
+    {
+      "seq": 33,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 34,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        128
+      ]
+    },
+    {
+      "seq": 35,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        256
+      ]
+    },
+    {
+      "seq": 36,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 37,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        1024
+      ]
+    },
+    {
+      "seq": 38,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        2048
+      ]
+    },
+    {
+      "seq": 39,
+      "fixture": "18-dsp",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 40,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 41,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 42,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        11025
+      ]
+    },
+    {
+      "seq": 43,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        12000
+      ]
+    },
+    {
+      "seq": 44,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        16000
+      ]
+    },
+    {
+      "seq": 45,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        22050
+      ]
+    },
+    {
+      "seq": 46,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        24000
+      ]
+    },
+    {
+      "seq": 47,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        32000
+      ]
+    },
+    {
+      "seq": 48,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        44100
+      ]
+    },
+    {
+      "seq": 49,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        48000
+      ]
+    },
+    {
+      "seq": 50,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        88200
+      ]
+    },
+    {
+      "seq": 51,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        96000
+      ]
+    },
+    {
+      "seq": 52,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        192000
+      ]
+    },
+    {
+      "seq": 53,
+      "fixture": "18-dsp",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        44100
+      ]
+    },
+    {
+      "seq": 54,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 55,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 56,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "None"
+      ]
+    },
+    {
+      "seq": 57,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_asio",
+        "PipeASIO Driver"
+      ]
+    },
+    {
+      "seq": 58,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_directsound",
+        ""
+      ]
+    },
+    {
+      "seq": 59,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_mme",
+        ""
+      ]
+    },
+    {
+      "seq": 60,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "NonRealTime"
+      ]
+    },
+    {
+      "seq": 61,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_portaudio",
+        "MME"
+      ]
+    },
+    {
+      "seq": 62,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_portaudio",
+        "Windows DirectSound"
+      ]
+    },
+    {
+      "seq": 63,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_portaudio",
+        "Windows WASAPI"
+      ]
+    },
+    {
+      "seq": 64,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_portaudio",
+        "Windows WDM-KS"
+      ]
+    },
+    {
+      "seq": 65,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        3
+      ]
+    },
+    {
+      "seq": 66,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_0",
+        "override 1",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 67,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_1",
+        "override 1",
+        "obj-3",
+        0
+      ]
+    },
+    {
+      "seq": 68,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_2",
+        "override 1",
+        "obj-4",
+        0
+      ]
+    },
+    {
+      "seq": 69,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_3",
+        "override 1",
+        "obj-5",
+        0
+      ]
+    },
+    {
+      "seq": 70,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_4",
+        "override 1",
+        "obj-6",
+        0
+      ]
+    },
+    {
+      "seq": 71,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_5",
+        "override 1",
+        "obj-7",
+        0
+      ]
+    },
+    {
+      "seq": 72,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_6",
+        "override 1",
+        "obj-8",
+        0
+      ]
+    },
+    {
+      "seq": 73,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_7",
+        "0",
+        "obj-8",
+        0
+      ]
+    },
+    {
+      "seq": 74,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_8",
+        "4",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 75,
+      "fixture": "18-dsp",
+      "label": "switch_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 76,
+      "fixture": "18-dsp",
+      "label": "switch_left",
+      "selector": "append",
+      "atoms": [
+        "Off"
+      ]
+    },
+    {
+      "seq": 77,
+      "fixture": "18-dsp",
+      "label": "switch_left",
+      "selector": "append",
+      "atoms": [
+        "On"
+      ]
+    },
+    {
+      "seq": 78,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 79,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "append",
+      "atoms": [
+        "Off"
+      ]
+    },
+    {
+      "seq": 80,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "append",
+      "atoms": [
+        "On"
+      ]
+    },
+    {
+      "seq": 81,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 82,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "append",
+      "atoms": [
+        "Off"
+      ]
+    },
+    {
+      "seq": 83,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "append",
+      "atoms": [
+        "On"
+      ]
+    },
+    {
+      "seq": 84,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 85,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        32
+      ]
+    },
+    {
+      "seq": 86,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 87,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        128
+      ]
+    },
+    {
+      "seq": 88,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        256
+      ]
+    },
+    {
+      "seq": 89,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 90,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        1024
+      ]
+    },
+    {
+      "seq": 91,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        2048
+      ]
+    },
+    {
+      "seq": 92,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        4096
+      ]
+    },
+    {
+      "seq": 93,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "append",
+      "atoms": [
+        8192
+      ]
+    },
+    {
+      "seq": 94,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 95,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        1
+      ]
+    },
+    {
+      "seq": 96,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        2
+      ]
+    },
+    {
+      "seq": 97,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 98,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        8
+      ]
+    },
+    {
+      "seq": 99,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        16
+      ]
+    },
+    {
+      "seq": 100,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        32
+      ]
+    },
+    {
+      "seq": 101,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 102,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        128
+      ]
+    },
+    {
+      "seq": 103,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        256
+      ]
+    },
+    {
+      "seq": 104,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 105,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        1024
+      ]
+    },
+    {
+      "seq": 106,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        2048
+      ]
+    },
+    {
+      "seq": 107,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        4096
+      ]
+    },
+    {
+      "seq": 108,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "append",
+      "atoms": [
+        8192
+      ]
+    },
+    {
+      "seq": 109,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 110,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        22050
+      ]
+    },
+    {
+      "seq": 111,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        32000
+      ]
+    },
+    {
+      "seq": 112,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        44100
+      ]
+    },
+    {
+      "seq": 113,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        48000
+      ]
+    },
+    {
+      "seq": 114,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        96000
+      ]
+    },
+    {
+      "seq": 115,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "append",
+      "atoms": [
+        192000
+      ]
+    },
+    {
+      "seq": 116,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "clear",
+      "atoms": []
+    },
+    {
+      "seq": 117,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "None"
+      ]
+    },
+    {
+      "seq": 118,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_asio",
+        "PipeASIO Driver"
+      ]
+    },
+    {
+      "seq": 119,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_directsound",
+        ""
+      ]
+    },
+    {
+      "seq": 120,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_mme",
+        ""
+      ]
+    },
+    {
+      "seq": 121,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "NonRealTime"
+      ]
+    },
+    {
+      "seq": 122,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_portaudio",
+        "MME"
+      ]
+    },
+    {
+      "seq": 123,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_portaudio",
+        "Windows DirectSound"
+      ]
+    },
+    {
+      "seq": 124,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_portaudio",
+        "Windows WASAPI"
+      ]
+    },
+    {
+      "seq": 125,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "append",
+      "atoms": [
+        "ad_portaudio",
+        "Windows WDM-KS"
+      ]
+    },
+    {
+      "seq": 126,
+      "fixture": "18-dsp",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 127,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 128,
+      "fixture": "18-dsp",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 129,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 130,
+      "fixture": "18-dsp",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        8192
+      ]
+    },
+    {
+      "seq": 131,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        8
+      ]
+    },
+    {
+      "seq": 132,
+      "fixture": "18-dsp",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 133,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 134,
+      "fixture": "18-dsp",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        44100
+      ]
+    },
+    {
+      "seq": 135,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        2
+      ]
+    },
+    {
+      "seq": 136,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 137,
+      "fixture": "18-dsp",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 138,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 139,
+      "fixture": "18-dsp",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 140,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 141,
+      "fixture": "18-dsp",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        8192
+      ]
+    },
+    {
+      "seq": 142,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        8
+      ]
+    },
+    {
+      "seq": 143,
+      "fixture": "18-dsp",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 144,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 145,
+      "fixture": "18-dsp",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        44100
+      ]
+    },
+    {
+      "seq": 146,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        2
+      ]
+    },
+    {
+      "seq": 147,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 148,
+      "fixture": "18-dsp",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 149,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 150,
+      "fixture": "18-dsp",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 151,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 152,
+      "fixture": "18-dsp",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        8192
+      ]
+    },
+    {
+      "seq": 153,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        8
+      ]
+    },
+    {
+      "seq": 154,
+      "fixture": "18-dsp",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 155,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 156,
+      "fixture": "18-dsp",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        44100
+      ]
+    },
+    {
+      "seq": 157,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        2
+      ]
+    },
+    {
+      "seq": 158,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 159,
+      "fixture": "18-dsp",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 160,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 161,
+      "fixture": "18-dsp",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 162,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 163,
+      "fixture": "18-dsp",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        8192
+      ]
+    },
+    {
+      "seq": 164,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        8
+      ]
+    },
+    {
+      "seq": 165,
+      "fixture": "18-dsp",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 166,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 167,
+      "fixture": "18-dsp",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        44100
+      ]
+    },
+    {
+      "seq": 168,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        2
+      ]
+    },
+    {
+      "seq": 169,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 170,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_9",
+        "48000",
+        "obj-3",
+        1
+      ]
+    },
+    {
+      "seq": 171,
+      "fixture": "18-dsp",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 172,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 173,
+      "fixture": "18-dsp",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 174,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 175,
+      "fixture": "18-dsp",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        8192
+      ]
+    },
+    {
+      "seq": 176,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        8
+      ]
+    },
+    {
+      "seq": 177,
+      "fixture": "18-dsp",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 178,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 179,
+      "fixture": "18-dsp",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        48000
+      ]
+    },
+    {
+      "seq": 180,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        3
+      ]
+    },
+    {
+      "seq": 181,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 182,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_10",
+        "64",
+        "obj-4",
+        1
+      ]
+    },
+    {
+      "seq": 183,
+      "fixture": "18-dsp",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 184,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 185,
+      "fixture": "18-dsp",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 186,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 187,
+      "fixture": "18-dsp",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        8192
+      ]
+    },
+    {
+      "seq": 188,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        8
+      ]
+    },
+    {
+      "seq": 189,
+      "fixture": "18-dsp",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 190,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 191,
+      "fixture": "18-dsp",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        48000
+      ]
+    },
+    {
+      "seq": 192,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        3
+      ]
+    },
+    {
+      "seq": 193,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 194,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_11",
+        "512",
+        "obj-5",
+        1
+      ]
+    },
+    {
+      "seq": 195,
+      "fixture": "18-dsp",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 196,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 197,
+      "fixture": "18-dsp",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 198,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 199,
+      "fixture": "18-dsp",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 200,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 201,
+      "fixture": "18-dsp",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 202,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 203,
+      "fixture": "18-dsp",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        48000
+      ]
+    },
+    {
+      "seq": 204,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        3
+      ]
+    },
+    {
+      "seq": 205,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 206,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_12",
+        "0",
+        "obj-6",
+        0
+      ]
+    },
+    {
+      "seq": 207,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_13",
+        "0",
+        "obj-7",
+        0
+      ]
+    },
+    {
+      "seq": 208,
+      "fixture": "18-dsp",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 209,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 210,
+      "fixture": "18-dsp",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 211,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 212,
+      "fixture": "18-dsp",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 213,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 214,
+      "fixture": "18-dsp",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 215,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 216,
+      "fixture": "18-dsp",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        48000
+      ]
+    },
+    {
+      "seq": 217,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        3
+      ]
+    },
+    {
+      "seq": 218,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 219,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_14",
+        "sizeinsamps 1920",
+        "obj-23",
+        0
+      ]
+    },
+    {
+      "seq": 220,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_15",
+        "clear",
+        "obj-23",
+        0
+      ]
+    },
+    {
+      "seq": 221,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_16",
+        "0.25",
+        "obj-26",
+        1
+      ]
+    },
+    {
+      "seq": 222,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_17",
+        "1",
+        "obj-24",
+        0
+      ]
+    },
+    {
+      "seq": 223,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_18",
+        "1. 10",
+        "obj-27",
+        0
+      ]
+    },
+    {
+      "seq": 224,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_19",
+        "1",
+        "obj-8",
+        0
+      ]
+    },
+    {
+      "seq": 225,
+      "fixture": "18-dsp",
+      "label": "switch_right",
+      "selector": "int",
+      "atoms": [
+        1
+      ]
+    },
+    {
+      "seq": 226,
+      "fixture": "18-dsp",
+      "label": "switch_left",
+      "selector": "set",
+      "atoms": [
+        1
+      ]
+    },
+    {
+      "seq": 227,
+      "fixture": "18-dsp",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 228,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 229,
+      "fixture": "18-dsp",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 230,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 231,
+      "fixture": "18-dsp",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 232,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 233,
+      "fixture": "18-dsp",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 234,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 235,
+      "fixture": "18-dsp",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        48000
+      ]
+    },
+    {
+      "seq": 236,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        3
+      ]
+    },
+    {
+      "seq": 237,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 238,
+      "fixture": "18-dsp",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 239,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 240,
+      "fixture": "18-dsp",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 241,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 242,
+      "fixture": "18-dsp",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 243,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 244,
+      "fixture": "18-dsp",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 245,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 246,
+      "fixture": "18-dsp",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        48000
+      ]
+    },
+    {
+      "seq": 247,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        3
+      ]
+    },
+    {
+      "seq": 248,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 249,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_20",
+        "0",
+        "obj-8",
+        0
+      ]
+    },
+    {
+      "seq": 250,
+      "fixture": "18-dsp",
+      "label": "switch_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 251,
+      "fixture": "18-dsp",
+      "label": "switch_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 252,
+      "fixture": "18-dsp",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 253,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 254,
+      "fixture": "18-dsp",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 255,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 256,
+      "fixture": "18-dsp",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 257,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 258,
+      "fixture": "18-dsp",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 259,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 260,
+      "fixture": "18-dsp",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        48000
+      ]
+    },
+    {
+      "seq": 261,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        3
+      ]
+    },
+    {
+      "seq": 262,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 263,
+      "fixture": "18-dsp",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 264,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 265,
+      "fixture": "18-dsp",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 266,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 267,
+      "fixture": "18-dsp",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 268,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 269,
+      "fixture": "18-dsp",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 270,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 271,
+      "fixture": "18-dsp",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        48000
+      ]
+    },
+    {
+      "seq": 272,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        3
+      ]
+    },
+    {
+      "seq": 273,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 274,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_21",
+        "bang",
+        "obj-2",
+        0
+      ]
+    },
+    {
+      "seq": 275,
+      "fixture": "18-dsp",
+      "label": "driver_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 276,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_22",
+        "bang",
+        "obj-3",
+        0
+      ]
+    },
+    {
+      "seq": 277,
+      "fixture": "18-dsp",
+      "label": "sr_right",
+      "selector": "int",
+      "atoms": [
+        48000
+      ]
+    },
+    {
+      "seq": 278,
+      "fixture": "18-dsp",
+      "label": "sr_left",
+      "selector": "set",
+      "atoms": [
+        3
+      ]
+    },
+    {
+      "seq": 279,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_23",
+        "bang",
+        "obj-4",
+        0
+      ]
+    },
+    {
+      "seq": 280,
+      "fixture": "18-dsp",
+      "label": "sigvs_right",
+      "selector": "int",
+      "atoms": [
+        64
+      ]
+    },
+    {
+      "seq": 281,
+      "fixture": "18-dsp",
+      "label": "sigvs_left",
+      "selector": "set",
+      "atoms": [
+        6
+      ]
+    },
+    {
+      "seq": 282,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_24",
+        "bang",
+        "obj-5",
+        0
+      ]
+    },
+    {
+      "seq": 283,
+      "fixture": "18-dsp",
+      "label": "iovs_right",
+      "selector": "int",
+      "atoms": [
+        512
+      ]
+    },
+    {
+      "seq": 284,
+      "fixture": "18-dsp",
+      "label": "iovs_left",
+      "selector": "set",
+      "atoms": [
+        4
+      ]
+    },
+    {
+      "seq": 285,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_25",
+        "bang",
+        "obj-6",
+        0
+      ]
+    },
+    {
+      "seq": 286,
+      "fixture": "18-dsp",
+      "label": "overdrive_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 287,
+      "fixture": "18-dsp",
+      "label": "overdrive_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 288,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_26",
+        "bang",
+        "obj-7",
+        0
+      ]
+    },
+    {
+      "seq": 289,
+      "fixture": "18-dsp",
+      "label": "takeover_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 290,
+      "fixture": "18-dsp",
+      "label": "takeover_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 291,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_27",
+        "bang",
+        "obj-8",
+        0
+      ]
+    },
+    {
+      "seq": 292,
+      "fixture": "18-dsp",
+      "label": "switch_right",
+      "selector": "int",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 293,
+      "fixture": "18-dsp",
+      "label": "switch_left",
+      "selector": "set",
+      "atoms": [
+        0
+      ]
+    },
+    {
+      "seq": 294,
+      "fixture": "18-dsp",
+      "label": "$input",
+      "selector": "stimulus",
+      "atoms": [
+        "event_28",
+        "capture",
+        "logger",
+        0
+      ]
+    },
+    {
+      "seq": 295,
+      "fixture": "18-dsp",
+      "label": "$dsp",
+      "selector": "captured",
+      "atoms": [
+        1920,
+        4
+      ]
+    },
+    {
+      "seq": 296,
+      "fixture": "18-dsp",
+      "label": "$harness",
+      "selector": "complete",
+      "atoms": [
+        29
+      ]
+    }
+  ],
+  "event_annotations": [
+    {
+      "seq": 1,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-8",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 2,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-8",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 3,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-8",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 4,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-8",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-8",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 5,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-8",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 6,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 7,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 8,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 9,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 10,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 11,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 12,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 13,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 14,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 15,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 16,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 17,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 18,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 19,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 20,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 21,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 22,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 23,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 24,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 25,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 26,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 27,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 28,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 29,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 30,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 31,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 32,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 33,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 34,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 35,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 36,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 37,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 38,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 39,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 40,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 41,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 42,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 43,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 44,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 45,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 46,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 47,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 48,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 49,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 50,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 51,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 52,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 53,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 54,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 55,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 56,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 57,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 58,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 59,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 60,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 61,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 62,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 63,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 64,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 65,
+      "latest_input_id": null,
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 66,
+      "latest_input_id": "event_0",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 67,
+      "latest_input_id": "event_1",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 68,
+      "latest_input_id": "event_2",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 69,
+      "latest_input_id": "event_3",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 70,
+      "latest_input_id": "event_4",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 71,
+      "latest_input_id": "event_5",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 72,
+      "latest_input_id": "event_6",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 73,
+      "latest_input_id": "event_7",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 74,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 75,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-8",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 76,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-8",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 77,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-8",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 78,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 79,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 80,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 81,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 82,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 83,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 84,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 85,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 86,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 87,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 88,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 89,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 90,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 91,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 92,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 93,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 94,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 95,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 96,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 97,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 98,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 99,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 100,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 101,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 102,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 103,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 104,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 105,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 106,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 107,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 108,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 109,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 110,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 111,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 112,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 113,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 114,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 115,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 116,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 117,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 118,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 119,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 120,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 121,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 122,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 123,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 124,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 125,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "symbol",
+        "symbol"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 126,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 127,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 128,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 129,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 130,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 131,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 132,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 133,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 134,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 135,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 136,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 137,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 138,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 139,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 140,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 141,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 142,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 143,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 144,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 145,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 146,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 147,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 148,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 149,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 150,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 151,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 152,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 153,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 154,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 155,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 156,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 157,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 158,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 159,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 160,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 161,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 162,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 163,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 164,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 165,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 166,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 167,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 168,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 169,
+      "latest_input_id": "event_8",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 170,
+      "latest_input_id": "event_9",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 171,
+      "latest_input_id": "event_9",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 172,
+      "latest_input_id": "event_9",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 173,
+      "latest_input_id": "event_9",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 174,
+      "latest_input_id": "event_9",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 175,
+      "latest_input_id": "event_9",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 176,
+      "latest_input_id": "event_9",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 177,
+      "latest_input_id": "event_9",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 178,
+      "latest_input_id": "event_9",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 179,
+      "latest_input_id": "event_9",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 180,
+      "latest_input_id": "event_9",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 181,
+      "latest_input_id": "event_9",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 182,
+      "latest_input_id": "event_10",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 183,
+      "latest_input_id": "event_10",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 184,
+      "latest_input_id": "event_10",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 185,
+      "latest_input_id": "event_10",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 186,
+      "latest_input_id": "event_10",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 187,
+      "latest_input_id": "event_10",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 188,
+      "latest_input_id": "event_10",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 189,
+      "latest_input_id": "event_10",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 190,
+      "latest_input_id": "event_10",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 191,
+      "latest_input_id": "event_10",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 192,
+      "latest_input_id": "event_10",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 193,
+      "latest_input_id": "event_10",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 194,
+      "latest_input_id": "event_11",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 195,
+      "latest_input_id": "event_11",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 196,
+      "latest_input_id": "event_11",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 197,
+      "latest_input_id": "event_11",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 198,
+      "latest_input_id": "event_11",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 199,
+      "latest_input_id": "event_11",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 200,
+      "latest_input_id": "event_11",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 201,
+      "latest_input_id": "event_11",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 202,
+      "latest_input_id": "event_11",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 203,
+      "latest_input_id": "event_11",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 204,
+      "latest_input_id": "event_11",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 205,
+      "latest_input_id": "event_11",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 206,
+      "latest_input_id": "event_12",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 207,
+      "latest_input_id": "event_13",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 208,
+      "latest_input_id": "event_13",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 209,
+      "latest_input_id": "event_13",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 210,
+      "latest_input_id": "event_13",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 211,
+      "latest_input_id": "event_13",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 212,
+      "latest_input_id": "event_13",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 213,
+      "latest_input_id": "event_13",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 214,
+      "latest_input_id": "event_13",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 215,
+      "latest_input_id": "event_13",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 216,
+      "latest_input_id": "event_13",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 217,
+      "latest_input_id": "event_13",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 218,
+      "latest_input_id": "event_13",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 219,
+      "latest_input_id": "event_14",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 220,
+      "latest_input_id": "event_15",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 221,
+      "latest_input_id": "event_16",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 222,
+      "latest_input_id": "event_17",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 223,
+      "latest_input_id": "event_18",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 224,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 225,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-8",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-8",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 226,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-8",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 227,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 228,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 229,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 230,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 231,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 232,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 233,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 234,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 235,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 236,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 237,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 238,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 239,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 240,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 241,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 242,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 243,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 244,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 245,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 246,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 247,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 248,
+      "latest_input_id": "event_19",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 249,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 250,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-8",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-8",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 251,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-8",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 252,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 253,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 254,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 255,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 256,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 257,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 258,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 259,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 260,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 261,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 262,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 263,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 264,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 265,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 266,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 267,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 268,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 269,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 270,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 271,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 272,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 273,
+      "latest_input_id": "event_20",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 274,
+      "latest_input_id": "event_21",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 275,
+      "latest_input_id": "event_21",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [
+        [
+          "obj-2",
+          0
+        ],
+        [
+          "obj-46",
+          0
+        ]
+      ],
+      "source_resolution": "ambiguous",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 276,
+      "latest_input_id": "event_22",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 277,
+      "latest_input_id": "event_22",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 278,
+      "latest_input_id": "event_22",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-3",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-3",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 279,
+      "latest_input_id": "event_23",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 280,
+      "latest_input_id": "event_23",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 281,
+      "latest_input_id": "event_23",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-4",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-4",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 282,
+      "latest_input_id": "event_24",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 283,
+      "latest_input_id": "event_24",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 284,
+      "latest_input_id": "event_24",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-5",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-5",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 285,
+      "latest_input_id": "event_25",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 286,
+      "latest_input_id": "event_25",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 287,
+      "latest_input_id": "event_25",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-6",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-6",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 288,
+      "latest_input_id": "event_26",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 289,
+      "latest_input_id": "event_26",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 290,
+      "latest_input_id": "event_26",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-7",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-7",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 291,
+      "latest_input_id": "event_27",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 292,
+      "latest_input_id": "event_27",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-8",
+        1
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-8",
+          1
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "int"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 293,
+      "latest_input_id": "event_27",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": [
+        "obj-8",
+        0
+      ],
+      "source_object_outlet_candidates": [
+        [
+          "obj-8",
+          0
+        ]
+      ],
+      "source_resolution": "unique_patchline",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 294,
+      "latest_input_id": "event_28",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "symbol",
+        "symbol",
+        "symbol",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 295,
+      "latest_input_id": "event_28",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "unknown_numeric",
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    },
+    {
+      "seq": 296,
+      "latest_input_id": "event_28",
+      "causal_input_id": null,
+      "causality": "not_measured",
+      "source_object_outlet": null,
+      "source_object_outlet_candidates": [],
+      "source_resolution": "not_applicable",
+      "atom_types": [
+        "unknown_numeric"
+      ],
+      "order_domain": "Max JS collector arrival, not scheduler thread timestamp"
+    }
+  ]
+}

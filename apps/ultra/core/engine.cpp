@@ -26,7 +26,7 @@ struct Engine::Impl {
  void fail() noexcept {rejected.fetch_add(1,std::memory_order_relaxed);fault.store(true,std::memory_order_release);}
  bool admit(Event e) noexcept {
   if(!ready.load(std::memory_order_acquire)||fault.load(std::memory_order_acquire))return false;
-  if(e.offset>Horizon||e.device>1||unsigned(e.kind)>5||e.note>127||e.value>127||count==Capacity){fail();return false;}
+  if(e.offset>Horizon||e.device>1||unsigned(e.kind)>8||e.note>127||e.value>127||count==Capacity){fail();return false;}
   const uint64_t at=cursor+e.offset, block=at/B;
   unsigned due=0;for(unsigned i=0;i<count;i++)due+=events[i].frame/B==block;
   if(due>=Budget){fail();return false;}
@@ -74,13 +74,19 @@ void Engine::shutdown(){
 }
 bool Engine::queue(Event e) noexcept {
  if(!p->ready.load(std::memory_order_acquire)||p->fault.load(std::memory_order_acquire))return false;
- if(e.offset||e.device>1||unsigned(e.kind)>5||e.note>127||e.value>127){p->fail();return false;}
+ if(e.offset||e.device>1||unsigned(e.kind)>8||e.note>127||e.value>127){p->fail();return false;}
  auto head=p->head.load(std::memory_order_relaxed),next=(head+1)%(Capacity+1);
  if(next==p->tail.load(std::memory_order_acquire)){p->fail();return false;}
  p->ingress[head]=e;p->head.store(next,std::memory_order_release);return true;
 }
 bool Engine::submit(Event e) noexcept{return p->admit(e);}
 void Engine::panic() noexcept{p->fail();}
+void Engine::render_bus(AudioBusView output,const float* input,uint32_t frames,float* diagnostic) noexcept {
+ // Check width before touching the channel array. An invalid bus has no known
+ // writable destination; mute occurs on the next valid render via sticky fault.
+ if(output.channel_count!=2||!output.channels||!output.channels[0]||!output.channels[1]){p->fail();return;}
+ render(output.channels[0],output.channels[1],input,frames,diagnostic);
+}
 void Engine::render(float*l,float*r,const float*in,uint32_t n,float*diag) noexcept {
  auto silence=[&]{if(l)std::fill(l,l+n,0.f);if(r)std::fill(r,r+n,0.f);if(diag)std::fill(diag,diag+n,0.f);};
  if(n>4096||p->cursor+n>=uint64_t(INT32_MAX)-4096){p->fail();}
