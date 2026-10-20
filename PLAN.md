@@ -530,6 +530,21 @@ The rendered browser canvas is now verified with pinned Playwright 1.56.1 / Chro
 
 `.github/workflows/ultra-ci.yml` adds read-only PR/main/manual checks: UI/reference/portable C++ tests, rendered Chromium editing smoke with screenshots, and Linux native plus locked Rust/Tauri tests/build. Actions are pinned to official commit SHAs; test packages are version-locked. No release/deployment or repository write permissions are granted. CI status on the PR is the current run evidence; local passing checks are not described as an already successful GitHub run.
 
+### Next local UI task: study the running Max interface
+
+**Assigned to the local session; not part of the current cloud implementation.** The user confirms the proof of concept works but finds the first canvas too bulky. The local machine already has Max running, so inspect its actual interactions rather than inventing a design from screenshots. Keep this work in the repository and the existing draft PR; do not use ZIP demos as the primary handoff.
+
+- [ ] Observe and record object creation in the running Max version: keyboard and pointer entry points, typing a name/arguments, autocomplete ranking/selection, Enter/Escape behavior, and editing an existing object's text. Record what is actually observed, including version and shortcuts, not assumed behavior.
+- [ ] Replace panel-like cards with compact object boxes. Ordinary objects should primarily show their name/arguments; bang, message, number and other UI objects should have appropriately sized specialized controls. Move verbose status/debug details to selection/inspection rather than enlarging every object.
+- [ ] Add type-to-create object entry with keyboard-navigable autocomplete. Instantiate only supported objects from a registry; unknown names must remain visibly unresolved or be rejected, never silently mapped to unrelated DSP.
+- [ ] Use object definitions as the source of truth for arguments, UI kind, inlet/outlet count, positions, signal/control/bus types, accepted messages and emitted values. Generate the visible ports from that metadata. Preserve top inlets, bottom outlets and the native graph's validation.
+- [ ] Observe Max's actual inlet/outlet hover assistance, then implement concise local hints: port name/type, hot/cold behavior, units/range and multichannel layout where applicable.
+- [ ] Observe right-click object/help and port menus in Max. Add contextual object help and outlet/message inspection accordingly. Distinguish messages accepted by an object's inlet from data/events emitted by its outlet; do not invent a Max behavior or label both as the same thing. Document the user's desired outlet menu even if the closest Max interaction differs.
+- [ ] Create original help content and runnable examples for the supported Ultra objects based on documentation and lawful behavioral observation. Do not copy Max implementation code, proprietary help assets or binaries into the app.
+- [ ] Validate on the native desktop: create bang, message, number, arithmetic and instrument objects by typing; confirm generated ports, connect top-to-bottom, inspect hover/context help, edit arguments, save/reopen and exercise actual audio. Preserve the current native, UI and CI regressions. Browser interaction evidence alone is not native WebKit/audio evidence.
+
+Acceptance: the user can build and understand a small patch primarily from compact objects and keyboard entry, without needing the permanent palette/inspector for every action. The first goal is interaction fidelity and clarity, not claiming Max object compatibility or adding a broad DSP catalog.
+
 ### Playable Chord Lab profile
 
 Open **Chord lab** from the existing patcher. This is an actual native instrument with a fixed visible graph and editable controls, not arbitrary graph compilation. The original patcher remains available. Its processing path is the real Clockwork-hosted app Faust guest, not libpd, browser synthesis or a timer pretending to be native audio.
