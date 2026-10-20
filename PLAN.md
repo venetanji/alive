@@ -2,7 +2,17 @@
 
 Updated: 2026-10-20.
 
-Status: product and architecture planning. No product code, build system, or compatibility test suite has been established. The architecture and milestones below are the planning baseline; choices that still require workflow or platform evidence are identified explicitly. This document makes no delivery-date or working-compatibility claim.
+Status: documentation-led architecture research with runnable offline experiments. There is still no production DAW engine/editor or Live/Max compatibility implementation. Experiment build and execution evidence is listed below; physical Linux audio/MIDI latency, concurrent live editing, and browser execution remain unvalidated. This plan makes no delivery-date or broad compatibility claim.
+
+## Current Recommendation
+
+1. Keep **one host timeline and a small shared processing contract**, with distinct Alive session and Ultra patch authoring models. Begin with a minimal host and ahead-of-time Faust DSP, not a new general-purpose synthesis engine or a replacement Pd scheduler.
+2. Treat **libpd as a separate Pd execution profile**, not the sample-accurate native Ultra foundation. Its real adapter is useful evidence about instance isolation, tick placement, and buffering; it does not establish safe concurrent patch editing or equivalence to Max.
+3. Shortlist **direct JACK-on-PipeWire first, native PipeWire `pw_filter` second** for the local audio+MIDI comparison. Use identical DSP and routing; these are two client APIs into the same server, not an assumed latency contest between audio servers. CPAL remains a portability option after its separate MIDI/clock/lifecycle costs are tested.
+4. Keep **Clockwork as the broader host-reuse alternative** and **Supersonic/scsynth as a deliberate SC ecosystem choice**, not default foundations. Require timestamp-preserving native ingress, independently controlled devices inside the singleton engine, and bounded heavy-command behavior before adoption. Do not confuse no heap growth with bounded callback time.
+5. Leave product licensing open. Audited Faust-generated DSP plus a thin host offers the least coupling for a permissive/proprietary direction; Pd externals, Faust function/architecture notices, SC GPL, and Clockwork/Supersonic AGPL/commercial terms require separate decisions. A process boundary or a commercial Clockwork license does not relicense the other components.
+
+The research conclusion is provisional for product implementation, not merely a list of candidates: pursue the minimal Faust host and first JACK probe; retain Pd compatibility as optional. Change this recommendation only on the explicit counter-evidence gates below. The two offline experiments answer narrow correctness/integration questions, not controller-to-analog latency.
 
 ## Product Goal
 
@@ -33,7 +43,7 @@ Select the initial Linux audio/MIDI integration and pin its dependencies through
 
 ## Architecture and Ownership
 
-The recommended architecture is a shared realtime foundation with separate session and patch authoring models. "Shared" describes ownership and timing, not a requirement to implement the foundation ourselves. Compare existing foundations and a minimal custom host before selecting the implementation. Validate the boundary with the same instrument implemented through both paths.
+The recommended architecture is a shared realtime foundation with separate session and patch authoring models. "Shared" describes ownership and timing, not a requirement to implement the foundation ourselves. The source comparison below selects the minimal Faust host provisionally. Validate the native production boundary locally; the two cloud experiments intentionally retain distinct native/Faust and Pd execution semantics, so they do not establish cross-runtime waveform equivalence.
 
 | Component | Responsibility |
 | --- | --- |
@@ -74,90 +84,208 @@ Start with one GitHub repository, provisionally `alive`, containing both applica
 
 The initial repository can contain this `PLAN.md` and research experiments. As implementation earns its structure, group Alive and Ultra application code under `apps/alive` and `apps/ultra`, shared libraries under `packages`, reusable validation inputs under `fixtures`, and disposable investigations under `experiments`. These are logical ownership boundaries, not a request to scaffold empty packages or choose a build system before the reuse comparison. Put experiment run instructions and conclusions in this plan so it remains the single planning document.
 
-Create the repository with an explicit owner and visibility; private is the proposed initial visibility while product licensing remains undecided. An `ultra` repository can be reserved later if useful for naming, but do not duplicate the runtime, plan, or source between two active repositories. Split a module only when its API, versioning, standalone consumers, and release needs justify the coordination cost. If a split is later chosen, define one canonical owner for the shared foundation and test compatible versions together; neither application should import the other application's internals.
+Use the existing `venetanji/alive` repository. Preserve its current ownership and visibility while product licensing remains undecided; do not change repository sharing as a research side effect. An `ultra` repository can be reserved later if useful for naming, but do not duplicate the runtime, plan, or source between two active repositories. Split a module only when its API, versioning, standalone consumers, and release needs justify the coordination cost. If a split is later chosen, define one canonical owner for the shared foundation and test compatible versions together; neither application should import the other application's internals.
 
 ## Reuse Strategy for Ultra
 
-Ultra should provide coherent patch authoring, device browsing, parameters, presets, routing, automation, and dependency reporting. Execution can use different explicitly declared profiles. A Faust DSP module, a Pd patch, and a SuperCollider SynthDef need not share a file format or message scheduler to feel integrated in the same application. Native Ultra graphs should reuse selected DSP modules; existing patches retain their runtime semantics. Automatic conversion between arbitrary Pd, SuperCollider, and Max programs is not assumed.
+Ultra is a common authoring/device experience, not a claim that Faust DSP, Pd patches, SynthDefs, sclang programs, and Max patches share semantics. Keep execution profiles and dependency manifests explicit. No automatic arbitrary conversion is assumed. The following evidence is a source/documentation audit; actual builds and runs are separately enumerated under Research Experiments.
 
-| Project | Proposed Role | Boundary to Validate |
+| Foundation | What it buys | Work and coupling retained | Counter-evidence that would change the decision |
+| --- | --- | --- | --- |
+| Minimal host + AOT Faust; optional libpd adapter | Small direct buffer contract, host-owned sample-offset events/voices, clear native baseline; existing Pd runtime when explicitly selected | Host must implement bounded lifecycle, transport, queues, persistence and physical I/O; Pd semantics/locks stay in its profile | Reject as baseline if the small native instrument cannot meet local timing/recovery gates without recreating a large runtime, or a reusable host demonstrably provides equal semantics with less total maintenance |
+| Clockwork hosting an Ultra guest | Existing scheduler, assets, telemetry, memory infrastructure, native/web host separation | Alpha guest API, one shared engine, native ingress timestamp gap, reblocking and guest work budgets; host-owned state partitioning | Adopt only after a tiny guest proves timestamp-preserving ingress, independent device routing/state, measured input delay, and bounded load/replace under the same local workload |
+| Supersonic/scsynth synthesis core | SC graph, buses, SynthDefs and UGen ecosystem; concrete Clockwork guest | SC-specific semantics, unsupported UGens/media, inline heavy command stages, shared resources and GPL/AGPL scope | Prefer if actual SC workflows remove substantial engine work and product licensing permits it, while preloaded/budgeted edits pass tail/deadline and isolation tests |
+
+Separate engines behind a bridge remain a fault/isolation option, not an automatic extra-block requirement. A fully unified session/patch model is not justified by either experiment: it couples authoring semantics without solving MIDI clocks, runtime locks, or lifecycle. Keep the initial repository and internal contract small; no stable external ABI is established.
+
+### Versioned Library Evidence
+
+Source inspection and actual build versions are deliberately separate. Upstream/live documentation was read on 2026-10-20. Reproduce the experiments using their locked downloads below, not a moving upstream branch.
+
+| Component | Exact inspected revision | Primary evidence |
 | --- | --- | --- |
-| Faust | First-class DSP authoring/compiler and reusable instrument/effect library; native code and WebAssembly targets | Host owns voices or selects Faust's polyphonic architecture, events, parameters, state, and lifecycle; compiler output alone is not a DAW or general patch scheduler |
-| Pure Data / libpd | Embedded execution of existing Pd patches; candidate foundation for Ultra's message/signal execution where Pd semantics fit | Preserve Pd scheduling and tick behavior, compatible externals, instance/thread rules, and stated realtime limits; Pd compatibility does not imply Max compatibility |
-| SuperCollider | SynthDef/UGen ecosystem and candidate synthesis runtime; optional server integration or deliberate adoption as the core synthesis graph | Distinguish sclang, scsynth, and supernova; native embedding, graph ownership, control-rate behavior, event timing, and GPL terms need evaluation |
-| Supersonic / Clockwork | Candidate reusable host/synthesis foundation for native and browser Ultra; Supersonic combines scsynth with Clockwork | Alpha APIs, process singleton, block adaptation, MIDI ingress, bounded command work, supported UGens, and AGPL/commercial licensing |
+| Faust compiler/interfaces | 2.90.12, `0883a5e457f636c3ca53b3e03237fdee66881241`; **experiment uses 2.88.0**, pinned separately | [DSP interface](https://github.com/grame-cncm/faust/blob/0883a5e457f636c3ca53b3e03237fdee66881241/architecture/faust/dsp/dsp.h), [compiler license](https://github.com/grame-cncm/faust/blob/0883a5e457f636c3ca53b3e03237fdee66881241/COPYING.txt), [architecture manual](https://faustdoc.grame.fr/manual/architectures/), [FAQ](https://faustdoc.grame.fr/manual/faq/) |
+| Faust library audit | `eb6a5e330653d6b877e049cccdc95361ea07d2a4` (inspection compiler's gitlink); build uses its bundled distribution | [Oscillator source and notice](https://github.com/grame-cncm/faustlibraries/blob/eb6a5e330653d6b877e049cccdc95361ea07d2a4/oscillators.lib); inspect used functions/transitive imports, not only top-level header |
+| libpd | 0.16.1, `ba0dc63262901d658af8bbda5e619a60fa975e78` | [API](https://github.com/libpd/libpd/blob/ba0dc63262901d658af8bbda5e619a60fa975e78/libpd_wrapper/z_libpd.h), [processing/dispatch](https://github.com/libpd/libpd/blob/ba0dc63262901d658af8bbda5e619a60fa975e78/libpd_wrapper/z_libpd.c), [build flags](https://github.com/libpd/libpd/blob/ba0dc63262901d658af8bbda5e619a60fa975e78/Makefile), [license](https://github.com/libpd/libpd/blob/ba0dc63262901d658af8bbda5e619a60fa975e78/LICENSE.txt), [embedding docs](https://github.com/libpd/libpd/wiki/libpd) |
+| Pd dependency | `f009fd8d7b537e209e09898d487fdf1bf547da2b`, selected by libpd gitlink; runtime prints 0.56.5 | [Thread/lock implementation](https://github.com/pure-data/pure-data/blob/f009fd8d7b537e209e09898d487fdf1bf547da2b/src/s_inter.c) |
+| Clockwork | `94b67500c96e105491682ec68741b5018560eab7` | [Host-driven embed](https://github.com/samaaron/clockwork/blob/94b67500c96e105491682ec68741b5018560eab7/src/clockwork_embed.h), [guest contract](https://github.com/samaaron/clockwork/blob/94b67500c96e105491682ec68741b5018560eab7/src/dsp_api.h), [license/build-component terms](https://github.com/samaaron/clockwork/blob/94b67500c96e105491682ec68741b5018560eab7/LICENSE) |
+| Supersonic | 0.91.0 manifest, `08b587055f0dbe6f6ff7d52e09bc2ae331121480` | [Embedding](https://github.com/samaaron/supersonic/blob/08b587055f0dbe6f6ff7d52e09bc2ae331121480/docs/EMBEDDING.md), [SC differences](https://github.com/samaaron/supersonic/blob/08b587055f0dbe6f6ff7d52e09bc2ae331121480/docs/SCSYNTH_DIFFERENCES.md), [guest implementation](https://github.com/samaaron/supersonic/blob/08b587055f0dbe6f6ff7d52e09bc2ae331121480/dsp/scsynth/scsynth_dsp.cpp), [web modes](https://github.com/samaaron/supersonic/blob/08b587055f0dbe6f6ff7d52e09bc2ae331121480/docs/MODES.md), [license](https://github.com/samaaron/supersonic/blob/08b587055f0dbe6f6ff7d52e09bc2ae331121480/LICENSE) |
+| Upstream SuperCollider | `5b69dfedb283208c4eccc88fba4588843174f080` | [Embedding header](https://github.com/supercollider/supercollider/blob/5b69dfedb283208c4eccc88fba4588843174f080/include/server/SC_WorldOptions.h), [timing guide](https://github.com/supercollider/supercollider/blob/5b69dfedb283208c4eccc88fba4588843174f080/HelpSource/Guides/ServerTiming.schelp) |
+| FaustWasm | `1c0d17a7bb4a047a4a08cb34a0bc6a3ee2019b67` | [README/timing tests](https://github.com/grame-cncm/faustwasm/blob/1c0d17a7bb4a047a4a08cb34a0bc6a3ee2019b67/README.md), [AudioWorklet implementation](https://github.com/grame-cncm/faustwasm/blob/1c0d17a7bb4a047a4a08cb34a0bc6a3ee2019b67/src/FaustAudioWorkletProcessor.ts), [wrapper license](https://github.com/grame-cncm/faustwasm/blob/1c0d17a7bb4a047a4a08cb34a0bc6a3ee2019b67/COPYING.txt) |
 
-### Faust and Pd Integration
+### Faust: Narrow Processing Contract
+The dsp.h interface has init, instanceInit, instanceConstants, instanceResetUserInterface, instanceClear, clone, buildUserInterface and compute(count, planar inputs, planar outputs). init includes class-level table initialization as well as instance initialization: prepare tables/instances before rendering, and do not casually run class initialization concurrently with live instances. Default buffers must be distinct; in-place requires the matching compiler option and scalar path. compute's date_usec overload delegates to ordinary compute in the base implementation, so passing a timestamp alone does not schedule parameters.
+A bounded host should keep sorted frame-offset events and split compute into spans at changes; use fixed event capacity, fixed voice capacity, explicit stealing and panic policies. Host-owned voice allocation can reuse the identical monophonic Faust DSP per voice and avoids hiding lifecycle in an unexamined polyphonic architecture. One state object per voice/device plus read-only shared tables supports isolation, but prove by two-device fixture. State serialization is a host schema, not raw object-byte serialization. Replacement prepares new state off audio, publishes only a bounded pointer/slot swap at a block boundary, acknowledges retirement then frees off audio. Fixed-duration crossfade costs two graphs and needs a declared CPU budget. AOT avoids compiler/JIT work during performance. Faust does not supply the session graph, MIDI ingress, compatibility message semantics or project persistence.
+Disproof gates: render offsets 0,1,31,63,64,127; compare segmented vs one-sample reference; count allocation and lock calls during render; replace while held/sustained notes sound; exercise voice stealing, velocity-zero note-off, duplicate pitches, sustain release and queue overflow. Distinct device parameters must never affect the other. Enforce sample/voice/event ceilings; no finite WCET follows merely from the language generating finite computations.
 
-Start with ahead-of-time Faust compilation for deterministic oscillator/envelope/gain DSP. Its generated native `compute(count, inputs, outputs)` interface can run under a host callback; the adapter must respect buffer aliasing capabilities and handle timestamped changes deliberately. Default generated DSP does not make every parameter change sample-accurate automatically. Compile, initialize, and prepare replacement instances outside the callback. Consider interactive libfaust/JIT compilation later, under the same preparation/publication protocol.
+#### Generated Rust versus C++
 
-Faust already provides `faust2puredata` and `faust2supercollider`: one DSP source can become a Pd external or a SuperCollider UGen, as well as a native Ultra device. These are alternative compilation targets, not a reason to route every signal through multiple runtimes. Browser UGens must be included in a compatible WASM build; native plugin binaries do not become browser-loadable. FaustWasm also provides a direct WebAudio path, so adopting SuperCollider is not a prerequisite for web DSP.
+Rust sources at the same inspection pin:
+https://github.com/grame-cncm/faust/blob/0883a5e457f636c3ca53b3e03237fdee66881241/architecture/rust/README.md
+https://github.com/grame-cncm/faust/blob/0883a5e457f636c3ca53b3e03237fdee66881241/architecture/rust/minimal.rs
+Rust output is an actual supported compiler target, not a reason to wrap C++ by default. The inspected FaustDsp trait uses mutable-self compute with borrowed input/output slices and ParamIndex get/set methods; C++ uses UI-exposed zones and planar pointer arrays. Neither API supplies Alive's event/lifetime contract. Rust's architecture README warns large DSP structs can overflow the stack through Box::new(Dsp::new()) in debug builds; generated projects support default-boxed 0.2.0 for direct heap initialization. Allocate/initialize off render regardless. Rust borrow checking helps owner discipline, but FFI to libpd, OS callbacks and any unsafe generated/static storage still need audit; no language proves deadline bounds. C++ has broader existing architecture coverage and integrates the C libpd probe with less tooling. Choose C++ for this disposable probe only, without selecting production language. Before choosing production, generate both from identical source/compiler flags, compare event/envelope output within declared float tolerance, maximum callback time, code size/build time, initialization memory and static/table behavior. Compare debug and release initialization; do not compare different optimization/SIMD settings then attribute differences to language. The inspected Rust minimal architecture is GPL-3.0-or-later WITH an unmodified-architecture larger-work exception, not the same base license as C++ dsp.h.
 
-Evaluate libpd before writing a Pd-like object/message scheduler. It is the embeddable Pd runtime, separate from Pd's desktop editor, with host-driven processing, patch loading, MIDI, and named message receivers. Query `libpd_blocksize()` for the selected build; its normal tick is 64 frames. Check 32-frame and variable host callbacks, event placement inside a tick, and added buffering rather than assuming either zero delay or a mandatory extra block in every configuration.
+### Pd/libpd: Explicit Execution Profile
+Use libpd_init, libpd_new_instance, libpd_set_instance, libpd_init_audio, libpd_openfile, DSP-on message, libpd_process_float or raw, then close/free off render. MULTI=true sets both PDINSTANCE and PDTHREADS; without it new_instance returns NULL and set_instance does nothing. Query blocksize rather than baking in 64. A patch handle and $0 namespace are not equivalent to an independent Pd runtime; test both separate instances with identical receiver symbols and same-instance $0-qualified patches.
+The API's noteon(channel,pitch,velocity), controlchange etc have no frame-offset/timestamp parameter. Note-off is note-on velocity zero. Documentation says host messages affect the next tick; implementation immediately invokes Pd receiver dispatch while holding sys_lock, so arbitrary message graphs can execute during the call, before the next audio process. Do NOT assume libpd_float or noteon is enqueue-only. A restricted patch can implement explicit in-tick control scheduling, but that is a declared patch protocol, not general timestamped MIDI support. One tick per process call minimizes batching; process_float(ticks>1) does not expose a host event injection point between those ticks.
+The processing macro takes sys_lock, polls GUI/network work via sys_pollgui, processes each tick and copies buffers, then unlocks. Under PDTHREADS+PDINSTANCE, sys_lock takes the instance mutex and global rwlock read lock. Under no PDTHREADS it is a no-op (except test-locking mode). Therefore separate instances do not prove freedom from global lock contention; loader/class changes require audit. Loading/closing, resizing arrays and receiver operations are not safe realtime publication primitives. Arbitrary Pd patches can recurse or do expensive control work, and externals add their own globals, locks, allocations and dependencies. Outgoing hook queues cannot make incoming calls realtime-safe.
+Reblocking: at 64/128 host frames, process one/two ticks with explicit inter-tick events; at 32 or irregular frames a host FIFO must accumulate input and retain output. A generator may render ahead without audio input; an effect cannot consume input not yet received. Measure an input impulse, distinguish input buffering delay from event quantization and output FIFO prefill, and publish exact policy. No blanket zero-delay or mandatory universal one-block assertion.
+Experiment: two MULTI instances each with oscillator/gate/gain plus pass-through impulse patch, identical symbols, deterministic event requests and 32/64/128/irregular callbacks. Record requested vs applied event frame (ceil-to-tick policy explicitly, never secretly early), output difference, state independence and open/close timing. A load/replace test with rendering paused proves only lifecycle, not live replacement deadlines. Concurrent-load stress must report global lock wait and tail render times before any live-edit safety claim. Keep runtime/pool teardown off callback. This test can reject Pd as native Ultra while retaining useful Pd compatibility.
 
-The inspected libpd processing wrapper calls `sys_lock()` around processing, and patch loading also locks and allocates. Actual locking depends on the selected Pd build. Establish ownership that prevents control operations from blocking render, inspect hook/queue behavior, and test multi-instance builds and compatible externals. A lock-free outgoing notification helper does not make every incoming libpd call queued or realtime-safe. If adopting libpd would require invasive scheduler changes for native Ultra, weigh that maintenance against keeping a well-defined Pd execution profile.
+### Clockwork: Host Reuse with Adoption Gates
+clockwork_embed_boot opens/ticks physical audio. clockwork_embed_attach opens no device and render consumes host buffers. Attach's clock is NTP-at-attach plus rendered frames, so offline rendering advances with audio rather than wall clock. Render is documented allocation/lock-free, but guest command work is a separate question. Fixed engine blocks sit behind input/output FIFOs. Header specifies immediate output frame zero and input arriving up to one block late, initially padded. The header's rhetorical claim this is universal to every DAW plugin should not be adopted: aligned host/plugin blocks can avoid such adaptation.
+One engine exists per process. A second attach with matching geometry joins the same engine; otherwise it is refused. This is not independent plugin-instance state. Alive could intentionally own one Clockwork engine and partition device IDs, buses, graph nodes, assets, event destinations, state and quotas. That design must be tested; attaching twice is not a two-device isolation implementation.
+dsp_api.h separates describe/memory sizing/new/free/reconfigure/process/osc/asset. Device reconfigure is done with audio stopped and only for declared survivable changes; otherwise cold restart destroys state except explicit persistent storage. dsp_osc receives when plus the current target block_time BEFORE dsp_process; use the supplied target block time, not the prior rendered block. Native MIDI through wants_events carries block-drain time, while web can carry arrival time. A host-originated OSC path preserves explicit timetags, so a timestamp-preserving JACK/PipeWire ingress is plausible but not established by the default native MIDI path.
+Pool allocation failing rather than growing is useful, not a command CPU budget. Timed messages can be copied into scheduler storage and again by the guest; avoid bulk in OSC. Asset commit passes a range-checked shared pointer and should bind only, with release acknowledgement before reclaim. Demand maximum packet size, maximum events drained per cycle, scheduler capacity, cancellation generation, late-event semantics, and note-off-safe overflow before adoption. Run same instrument as a guest only after libpd baseline if needed; do not build all adapters now.
 
 ### SuperCollider and Supersonic
+Upstream libscsynth WorldOptions.h warns ABI may change across minor versions; its public exports create/cleanup worlds, send packets, copy sound buffers and NRT render, not a generic host-buffer render contract. Supersonic's guest adaptation is the concrete host-driven path; do not claim upstream World_New alone supplies it. Supersonic EmbeddedHost owns devices, fronts file operations and serializes sends; boot/shutdown/loadDefinitions block and must remain off render. onMessage runs NRT gateway, onLog may include audio and must stay cheap.
+The guest scsynth_dsp.cpp applies when against block_time to set sample offsets before message execution; holds_schedule=0 delegates holding timed messages to Clockwork. That proves preservation of offset information, not that every UGen/control honors it. SC guide distinguishes sequence lookahead from live input: default 0.2s Server.latency is not unavoidable engine latency, and live input should add no such lookahead. OffsetOut-style onset placement must be distinguished from control-rate parameters and envelope semantics.
+Supersonic docs explicitly run all asynchronous command stages inline on audio, though file reads/decode are client-side. Thus /d_recv parse/construct, synth construction, buffer zeroing/copying and large command bursts can exceed deadlines despite no malloc/system I/O. scsynth_dsp.cpp confirms commands finish their stages in their arrival block. Preload definitions, preallocate voices/buffers, restrict command vocabulary and sizes while running, or add preparation/budgets before claiming low-tail live editing. Measure max cycle under each operation, not just steady state.
+UGen support is explicit: no DiskIn, DiskOut, VDiskIn or UI UGens; named analysis UGens absent. The source also documents changed negative/zero envelope behavior and idempotent notify across rebuild, so compatible OSC commands do not establish bit-identical upstream semantics. Built-in cold restart currently rebuilds scsynth state. Two logical devices must partition buses/groups/node IDs/buffers and clean up only their own objects; resource exhaustion and malicious/heavy patches still share a realtime engine.
 
-SuperCollider offers a mature synthesis graph, buses, scheduling, SynthDefs, and UGens. Ultra can create SynthDefs without requiring users to write sclang. Existing sclang programs still need the language runtime and its libraries; a synthesis engine is not a replacement for that language. Upstream libscsynth exists, but its public embedding API can change across minor versions and is not a simple generic host-buffer processing interface. Validate the actual driver/embedding path before promising in-process host-driven rendering. OSC is a useful external protocol, not a requirement that every local device/event pass through a socket.
+### Licensing and Product Options
+- AOT Faust with original DSP and audited imports/architecture is the strongest permissive/proprietary-host path. Compiler LGPL-2.1-or-later is distinct from output. The inspected dsp.h has LGPL plus a larger-work exception conditioned on leaving that architecture section unmodified. oscillators.lib has an explicit generated-code exception including modified compiled output; other imported library files and notices still require inspection. Do not infer all architectures/third-party DSP have identical terms.
+- libpd/Pd core inspected license is BSD-style, with per-file exceptions. Externals remain separate license and multi-instance/RT audits. Avoid shipping arbitrary externals by default.
+- Upstream SC inspected code is GPL-2.0-or-later. Supersonic LICENSE declares combined program AGPL-3.0-or-later, scsynth GPL-2.0-or-later used under GPL-3.0; sc3-plugins also GPL with named mda exceptions. Its supplied synthdefs MIT and sample package CC0 do not relicense the engine.
+- Clockwork code offers AGPL-3.0-or-later OR commercial. Its license explicitly lists optional GPL Ableton Link, LinkAudioInputRenderer and ASIO choices alongside permissive dependencies. A commercial Clockwork agreement does not automatically cover those optional components or SC, nor make Supersonic proprietary-compatible. Check actual build flags and contract scope.
+- FaustWasm wrapper COPYING.txt is LGPL-2.1-or-later, separate from generated WASM DSP and optional embedded libfaust compiler. AOT assets can omit the compiler, but not ignore wrapper obligations. GPL/AGPL-compatible distribution must plan corresponding source/build/notice delivery; browser downloads and AGPL network obligations need product-specific review. A socket/process boundary alone is not legal clearance.
 
-Separate sequencer lookahead from live MIDI latency. SuperCollider's documented default `Server.latency` of 0.2 seconds is a sequencing setting; its timing guide recommends no added lookahead for live MIDI/GUI/HID input. `OffsetOut` can preserve synth onset offsets, but does not make all controls sample-accurate. SC UGen plugins depend on SC's runtime API and allocator contracts; they cannot generally be treated as independent plain DSP functions.
+The actual experiment uses Faust 2.88.0, whose bundled basics.lib contains processArray/tabulateNd function-level AGPL-3.0-only notices despite a general library exception header. The experiment's generated metadata uses sine/ASR primitives instead. The build hashes below, not the 2.90.12 inspection pin, identify the 2.88.0 build pin. No blanket 'Faust library output is proprietary-safe' conclusion follows from one header or generated metadata alone. Close the used-function/transitive import inventory before distribution.
 
-Supersonic is particularly relevant because its current architecture already separates a DSP guest from Clockwork's host infrastructure. It runs scsynth natively and as WASM in an AudioWorklet, with OSC scheduling, telemetry, memory pools, and client-side asset preparation. Compare three foundation choices: a minimal host with Faust/libpd adapters; Clockwork hosting an Ultra DSP graph; and Supersonic's scsynth graph as the synthesis core. A browser path increases the value of reuse but does not settle the Linux choice.
+#### License Strategy Matrix
 
-Its compatibility documentation excludes `DiskIn`, `DiskOut`, `VDiskIn`, and several UI/analysis UGens in the inspected build. The host can supply alternative media services, but scsynth command compatibility is not blanket support for existing SC projects, arbitrary UGen plugins, or DAW disk streaming. Include the supported UGen/dependency inventory in the adoption decision.
+This is a technical dependency inventory, not legal clearance. The pinned license links above and the actual build-input notices below control; no new product license is selected here.
 
-The inspected Supersonic `EmbeddedHost` owns the physical device; Clockwork's separate `clockwork_embed_attach` / `clockwork_embed_render` API lets an existing host drive buffers without opening another device. Its `dsp_api.h` is the guest boundary. These are useful concrete interfaces, with current limitations: one engine per process, fixed engine blocks behind arbitrary-size host-buffer FIFOs, and a documented input delay of up to one engine block in the attach path. Multiple Ultra devices therefore cannot each assume an independent Clockwork engine. Evaluate one shared engine with independently identified subgraphs, state, routing, and lifecycle, or establish the work needed for independent instances.
+| Selected component | GPL/AGPL-compatible product path | Permissive/proprietary host path | Required next check |
+| --- | --- | --- | --- |
+| AOT Faust-generated DSP | Retain applicable generated-code/library/architecture notices and source obligations | Potentially viable with used-function exceptions and unmodified architecture sections; not universal for all imports | Freeze transitive functions, generated metadata, architecture edits, and build inputs per device |
+| Pd/libpd core | BSD-style core usable subject to retained notices | Comparatively low copyleft coupling for audited core | Audit every external separately for license, globals, locks, and build flags |
+| Upstream SC/scsynth | GPL-compatible distribution strategy required for included engine code | No proprietary-compatible assumption from OSC/process separation | Review actual combination and distribution; choose a different foundation if obligations conflict |
+| Clockwork with Ultra guest | AGPL option plus component-specific terms | Commercial option needs explicit scope; optional GPL components remain separate | Obtain and review applicable agreement before commitment; audit enabled Link/ASIO/etc. components |
+| Supersonic/scsynth combination | Declared AGPL combined program and component notices must be honored | Commercial Clockwork alone does not relicense SC or the combined distribution | Decide product-license strategy before adoption; inventory built-in and third-party UGens |
+| FaustWasm wrapper and emitted assets | Wrapper LGPL and generated DSP/library terms remain distinct | AOT avoids runtime compiler, not wrapper or emitted-code obligations | Browser asset/source/notices delivery and modifications need review; no native plugin redistribution assumption |
 
-Clockwork's inspected guest contract says native MIDI arrival is represented by the block where it was drained, whereas web events can carry arrival timestamps. Determine whether an alternative ingress preserves the sample-offset information required by our instrument benchmark. Its pool allocation and no-blocking claims also do not prove bounded execution time: Supersonic runs asynchronous scsynth command stages inline on the audio thread. Measure definition loading, buffer commits, synth construction, queue bursts, and graph replacement under sustained playback; require preparation or work budgets where deadlines would otherwise be exceeded.
+### Browser Feasibility, Not a Web DAW
+Direct FaustWasm is the recommended first web instrument/editor feasibility baseline: reusable DSP source, precompiled .wasm+JSON metadata, optional polyphonic mixer/effect assets; compiler can be absent at runtime. At inspected pin, optional AudioContext-second arguments on parameter/MIDI methods are rounded to frames and honored inside a quantum. Untimed calls apply on arrival; late timestamps apply ASAP. FFT path is block-granular; ScriptProcessor fallback is arrival-based and not a modern low-latency target. Source hardcodes kBlockSize=128 and uses queue splice/shift and block-event sorting: timing feature is not a bounded-allocation/work guarantee. Require event quotas, horizon limits and stress profiling. README identifies test/timing/measure.mjs for actual headless Chromium AudioWorklet sample checks; this audit did not run it.
+Supersonic provides SynthDef/UGen graph and timestamped OSC schedule in SAB or postMessage modes. SAB is selected only with crossOriginIsolated, requires COOP same-origin and COEP require-corp plus compatible CORS/CORP for cross-origin assets. Producers spinlock the ring; full writes are dropped and counted, no fallback. PM incurs event-loop/serialization delivery variance and metrics snapshots (150ms default). PM is not feature-identical: scopes/capture are SAB-only. Both modes still require schedulable deadlines, bounded command work, and late-event policy. Prefer precompiled supported SynthDefs and predecoded bounded assets over dynamic native-plugin assumptions.
+For both: test secure-context deployment, audio resume after user gesture, Web MIDI support/permission and timestamp conversion to audio clock, actual sample rate/quantum, measured base/output latency where supported, device change, background tab, suspend/resume and all-notes-off on disconnect. Persist portable source/parameter/voice state plus execution profile/dependency hashes, not engine memory. Browser live MIDI-to-audio requires physical measurement; headless sample-position tests prove only scheduled rendering. Linux's 64-frame gate is not a browser promise. No browser experiment was run.
 
-### Browser Scope and Licensing
+#### Bounded Browser Probe Design
 
-Treat a web version initially as Ultra patch/instrument authoring and auditioning, with a possible later Alive session subset. Share portable DSP sources, versioned project/patch data, parameter identities, and test fixtures where supported. Keep platform I/O, filesystem/dependency loading, device discovery, and scheduling adapters explicit. A common editor or OSC surface does not establish identical execution or support for every patch on every platform. Persist the device's execution profile, dependency versions, and target capabilities; preserve unavailable devices with clear diagnostics.
+| Path | Deployment / transport | Timing and capability limits | First probe, still not run |
+| --- | --- | --- | --- |
+| Direct AOT FaustWasm AudioWorklet | HTTPS/localhost, user-gesture context resume; load pinned WASM/metadata/mixer assets | Inspected implementation assumes 128-frame processing; timed MIDI/parameter APIs exist, but late events are ASAP and queue work is not proven bounded | Reuse simple instrument, drive boundary/interior timestamps, compare observed frames with declared tolerance, cap pending events, test suspend/resume and state reset |
+| Supersonic SAB | Cross-origin isolation (COOP/COEP), compatible CORS/CORP for assets; ring transport | Ring saturation drops/counts writes; producer synchronization and heavy guest commands still need budgets; scopes/capture available | Same small supported SynthDef, saturation/late-message counters, isolation headers and resource-loading failures, recovery after suspension |
+| Supersonic postMessage | Fallback when isolation unavailable, still requires secure WebAudio setup | Serialization/event-loop delivery variance; not feature-equivalent to SAB, scopes/capture absent | Repeat scheduled-event and lifecycle cases, explicitly report mode and lost capabilities rather than treating fallback as identical |
 
-Compare Supersonic AudioWorklet/WASM with direct FaustWasm using the same simple instrument. Supersonic offers SharedArrayBuffer/ring transport when cross-origin isolation is available and a postMessage fallback with different overhead and capabilities. Verify required browser/WASM features, HTTPS or localhost, user-gesture audio startup, Web MIDI support/permission, suspension/recovery, memory ceilings, and COOP/COEP plus cross-origin resource handling. Report the actual render quantum and device/output latency. The Linux 64-frame target is not a promised browser setting, and sample-accurate scheduled playback does not establish physical live-MIDI latency.
+Probe each on the actual supported browser/version, recording sample rate, actual callback lengths, `baseLatency`/`outputLatency` if available (null when not), startup/resume outcome, MIDI permission/support and timestamp-clock mapping. Browser automation can validate rendered offsets and state transitions; live controller-to-analog latency needs calibrated hardware. Keep native externals, arbitrary SC plugins, DAW disk streaming and complete Live/Max compatibility outside this web subset. Reuse DSP source and versioned parameter/preset/dependency data, not raw native engine memory. No browser implementation is necessary to accept the current Linux research conclusion.
 
-Licensing remains undecided. Compare a GPL/AGPL-compatible product with a product that aims to keep host code under permissive or proprietary terms before selecting the foundation. Pd/libpd's core BSD-style terms are comparatively permissive; each external has its own terms. Faust's current compiler is LGPL-2.1-or-later, and its FAQ distinguishes compiler licensing from generated output; inspect libraries and architecture exceptions for the actual generated device. SuperCollider is GPL-covered. Supersonic currently declares AGPL-3.0-or-later for the combined program, and Clockwork offers AGPL or commercial licensing. A commercial Clockwork license alone does not relicense the scsynth code. Browser delivery and relevant AGPL network-use obligations need to be included in that comparison. A process boundary or a common protocol alone does not decide license compatibility.
+### Foundation Decision Gates
+Choose minimal Faust now provisionally. Reconsider Clockwork after a timestamped external-ingress proof, shared-engine two-device fixture and callback-tail/bounded-work tests. Choose Supersonic only if SC graph reuse materially reduces product work and AGPL-compatible scope is acceptable, with heavy edits preloaded or explicitly budgeted. Keep libpd for its intended Pd execution profile if tick timing and lock restrictions are acceptable; do not fork its scheduler merely to make all native Ultra events sample-accurate. If simple tests cannot build, preserve source-only status, report exact failure and avoid selecting a runtime on unrun code.
 
-The preferred starting hypothesis is Faust for reusable DSP plus a thin Ultra device/authoring layer, with libpd evaluated for Pd execution and Clockwork/Supersonic seriously compared as foundations. Select the minimum runtime set that passes the Linux and authoring gates. Build new scheduling/synthesis machinery only for concrete gaps established by that comparison.
+
+
+Explicit foundation falsification tests and maintenance costs:
+1. Minimal host/Faust (+ Pd profile): fail native foundation if exact frame changes differ from one-sample reference, A's mutation affects B, any render-path allocation/blocking operation appears, teardown happens before retirement acknowledgement, or a capped workload misses provisional local deadline budget. Pd profile must separately fail/document sub-tick MIDI requirements and concurrent load waits rather than weaken native requirements. Maintenance cost: own thin graph publication, event mapping, state, voices and backend observability; maintain small C/FFI adapters plus runtime-specific profiles. Avoid implementing a general patch scheduler until missing semantics are concrete.
+2. Clockwork guest host: feed events at frames 1 and 63 through real native ingress and require distinct correct offsets; block-drain timestamps fail the requirement. Two logical devices use distinct IDs/state/buses, replacing A must not reset B or its future events. Probe mismatched and matching second attach to expose singleton rather than count handles as isolation. Feed impulse at every offset through 32/64/128/irregular host blocks; reject unexplained delay or lost frames. Fill rings/scheduler and asset lane, require counted refusal and bounded per-cycle work, and cancel future generation-specific notes before replacement. Force rate/device restart and verify documented reconstruction. Maintenance cost: alpha API churn, embedding/FIFO and singleton adaptation, new ingress path, quota/graph/state layer; reduce duplicated host infrastructure but gain coupling to engine lifecycle/licensing and optional dependency flags.
+3. Supersonic synthesis core: all Clockwork gates plus compare onset through offset-aware output and ordinary controls separately; push increasing SynthDef size, /b_alloc, buffer commits/copies, node creation and simultaneous queue bursts under sustained sound. Require hard admission limits or prepare/budget mechanism before deadline qualification. Replace group A while group B has held/sustained notes, buffer assets and future bundles; fail on cross-device cancellation or bus/node ID collisions. Unsupported UGen must produce diagnostic without corrupting prior graph. Measure pool exhaustion and reclaim/recovery, not just initial creation. Maintenance cost: scsynth fork semantics, UGen inventory/ABI and native-vs-WASM build matrix, command admission and state reconstruction, SC language boundary, plus GPL/AGPL compliance. Greatest graph reuse, greatest synthesis-model commitment.
+
 
 ## Linux Audio and MIDI Research
 
-Compare API layers and actual backend configurations separately. CPAL using JACK and a direct JACK client may both use the same PipeWire graph; they are different application integrations, not necessarily different audio servers. Measure identical workloads and document every queue, conversion, resampler, and clock boundary.
+Select a direct JACK audio+MIDI client on PipeWire and a native `pw_filter` with audio/control ports for controlled local testing. Start with JACK's smaller documented surface. Neither is asserted faster. Direct ALSA is a diagnostic control if attribution requires it, not a third production backend. No hardware backend was built or run in this cloud research.
 
-| Candidate | Questions to Resolve |
-| --- | --- |
-| Native PipeWire | `pw_filter` versus `pw_stream` suitability; audio/MIDI timing, graph position, latency metadata, port routing, realtime callbacks, Rust binding coverage |
-| JACK API on PipeWire | Sample-offset MIDI, synchronous processing, latency reporting, quantum changes, xruns, port connections; compare a native JACK server separately only when useful |
-| CPAL with selected Linux backends | Exact released-version features, input/output clock handling, latency/xrun visibility, MIDI integration outside CPAL, wrapper overhead and hidden buffering |
-| Clockwork device layer or host-driven embedding | Which PipeWire/JACK/ALSA implementation is actually selected; callback and engine block sizes, FIFO delay, MIDI timestamps, priority acquisition, actual-device reporting, and recovery; distinguish reusable host infrastructure from an audio API |
-| Direct ALSA | A focused control/reference or fallback path where it helps distinguish hardware and server overhead; account for routing and device-sharing costs |
+### Source and Version Selection
 
-Current CPAL upstream documentation and its manifest expose optional JACK and native PipeWire backends. That observation does not select a released version or establish equivalent capabilities across integrations. Avoid treating CPAL as inherently slow or as a complete pro-audio/MIDI host. Native PipeWire is also not automatically faster than its JACK implementation; API access, implementation quality, and actual configuration determine the result.
+- PipeWire source tag 1.6.9, matching the version displayed by official documentation: https://github.com/PipeWire/pipewire/tree/1.6.9 . Audited filter.h, spa/node/io.h, midi-src.c, and ALSA sequencer source. Target's installed PipeWire/WirePlumber/kernel/ALSA versions must still be recorded; do not silently demand a system upgrade.
+- CPAL released crate 0.18.2; crate VCS revision e1612d5d98152f8dc2a62e1b51ef7cbf4f7f26b7, Rust minimum 1.85, Apache-2.0. https://docs.rs/crate/cpal/0.18.2/source/.cargo_vcs_info.json and https://docs.rs/crate/cpal/0.18.2/source/Cargo.toml . Pin cpal = "=0.18.2" and commit an experiment lockfile if used. Its Linux dependencies specify alsa 0.11, jack 0.13.5 optional, pipewire 0.10 optional (v0_3_53 feature), pulseaudio 0.3 optional. These are manifest version ranges, NOT a claim of a resolved lockfile.
+- Direct Rust JACK candidate jack = "=0.13.5". Official crate docs confirm MIDI ports/iteration, process and notification handlers, and cycle-time scope: https://docs.rs/jack/latest/jack/index.html (page explicitly 0.13.5). For an initial C/C++ probe the stable C API and PipeWire's libjack avoid a Rust-binding assumption entirely.
+- PipeWire Rust-binding coverage is NOT fully verified here: the 0.10.0 docs/source URLs were unavailable, and the attempted upstream GitHub mirror did not resolve. CPAL source proves its use of Stream/time/IO callbacks, NOT coverage of pw_filter plus RT-safe MIDI POD parsing. Use the documented C filter API/narrow FFI in the native probe rather than claiming all necessary safe Rust wrappers exist. Resolve and pin a binding only after checking the actual released filter API and lifetime/thread contracts.
 
-For MIDI, compare JACK/PipeWire graph events and ALSA sequencer ingress where relevant. Specify how each timestamp maps to the engine sample clock, how late events are treated, and whether a new event waits for another queue or quantum. Distinguish synthetic scheduled MIDI, real controller ingress, and physical key-to-sound response. Preserve note-offs and sustain-release behavior under load.
+### Backend Capability Matrix
 
-Research scheduler permissions, RTKit or equivalent priority acquisition, memory residency/pre-touch, page faults, denormals, and the thread priorities of the backend and application. Verify actual granted scheduling rather than only a requested flag. Compare the normal target-distribution kernel with PREEMPT_RT when scheduling traces justify it; an RT kernel does not repair unbounded application work. Keep the application usable without requiring a privileged launch. CPU affinity, power policy, IRQ placement, and similar tuning are measured experiment variables, not universal setup requirements.
+| Integration | Audio clock / MIDI | Buffers and reported latency | Xrun / changes / recovery | Scheduling and decision |
+|---|---|---|---|---|
+| Native PipeWire 1.6.9 pw_filter | process receives spa_io_position: clock id, nsec, position, rate, duration, delay, rate_diff, next_nsec and discontinuity/recovery flags. MIDI/UMP SPA sequences carry cycle-relative sample offsets. One filter can own both audio and MIDI ports. | Use actual clock.duration every callback, not requested quantum. Publish intrinsic ProcessLatency; consume propagated port Latency ranges. No app FIFO is necessary for compatible DSP, but upstream capture, async links, conversion/resampling and hardware may add delay. | Observe clock/graph epoch changes and state_changed errors. Reprepare rate-dependent DSP outside render; oversized unsupported buffers produce bounded silence and a reconfigure request. Reconnect and restore routing from control side. | PW_FILTER_FLAG_RT_PROCESS requests data-thread execution; no allocation, I/O, locks or logging there. Best direct graph integration; more Linux-specific port/SPA/lifecycle code. |
+| Direct JACK API on PipeWire 1.6.9 | Audio and jack_midi_event_t.time offsets in one process callback. jack_last_frame_time identifies cycle frame; jack_get_cycle_times relates frames to JACK microseconds. Frame counters wrap and discontinuities require epoch handling. | Callback nframes is authoritative. Query capture/playback latency ranges and publish intrinsic processing delay. pw-jack chooses PipeWire libjack, not jackd. No automatic extra bridge audio block should be assumed. | Explicit xrun, buffer-size, sample-rate, latency and shutdown callbacks. Shutdown only flags/wakes control code; recreate client/ports and restore connections off render. Preallocate supported maximum quantum. | Server-managed processing callback, with actual scheduling policy verified locally. Mature audio+MIDI surface and smaller first probe. Test compatibility implementation, not just abstract JACK promises. |
+| CPAL 0.18.2 PipeWire feature | Native pw_stream audio; callback/capture/playback StreamInstant derived from pw_time or fallback. No MIDI ports in generic CPAL API; separate MIDI clock mapping is needed. | Tracks observed frames in buffer_size(); requested output frames capped by mapped capacity. Stream delay contributes to playback timestamp. Not the pw_filter API. | Emits Xrun on recovery-flag transition if IO clock is available; stream/device/default-device errors. Format mismatch deactivates stream. Controller must rebuild after invalidation. | Uses mainloop-local listeners and deliberately omits RT_PROCESS; optional realtime feature promotes processing thread. Measure callback scheduling, extra buffering and error paths before adopting. |
+| CPAL 0.18.2 JACK feature | JACK audio only; now uses JACK time; cycle timing and port latency produce callback/playback estimates. Separate input/output clients, not a single generic duplex/MIDI graph. | Interleaves/deinterleaves through temporary vectors. buffer_size() reads server size. | Xrun error notification; sample-rate change invalidates/quits stream. Buffer-size callback replaces vectors (allocation), unlike desired preallocated hot path. | Actual JACK server controls processing scheduling. Generic wrapper loses direct MIDI/graph access; use direct JACK for first probe. |
+| CPAL 0.18.2 ALSA (always compiled on Linux) | PCM status/delay timestamps, with timestamp-mode fallbacks; stream.now must be compared within its supported time domain. MIDI is separate. | Fixed size requests nearest supported period, not guaranteed exact size; inspected code requests two-period ring and two-period playback start threshold. ALSA default can route through a PipeWire ALSA plugin, so this is not necessarily direct hardware. | Handles EPIPE/xrun and suspend/resume; caller handles device loss and rebuild. Query actual period/buffer after configuration. | Own worker; realtime/realtime-dbus features available. Useful explicit hw:CARD,DEV control only when permissions/device availability allow it. |
+| CPAL 0.18.2 PulseAudio feature | PulseAudio protocol audio; could terminate at pipewire-pulse. Latency estimates polled by worker, interpolated between updates (100 ms maximum polling interval); no MIDI. | Protocol buffering separate from graph quantum; do not infer pro-audio period from CPAL buffer request. | Generic errors and lifecycle, not direct graph-xrun/clock ownership. Rate/reconnect handling needs targeted probe if selected. | Not shortlisted for first low-latency instrument. Remains a desktop compatibility candidate. |
+| Direct ALSA PCM + sequencer diagnostic | PCM hardware/system timestamp pairs and separate sequencer queue time must be explicitly related; requested audio timestamp type can fall back in driver. | Inspect actual PCM periods, buffer depth, avail/delay, audio timestamp type and accuracy; avoid plug/default when measuring server removal. | EPIPE prepare/reprime; suspend resume/prepare; device disappearance close/reopen. Rate change requires reconfiguration. | App owns priority/locking and recovery. Exclusive hardware access and no graph routing are extra maintenance costs. |
+
+CPAL default features are empty. Explicit pipewire/pulseaudio/jack features compile those hosts. Linux default_host() tries compiled-and-available PipeWire, then PulseAudio, then ALSA; it does NOT automatically select JACK. Select host_from_id explicitly and record it. Source: https://github.com/RustAudio/cpal/blob/e1612d5d98152f8dc2a62e1b51ef7cbf4f7f26b7/src/platform/mod.rs . Do not repeat the obsolete generalization that released CPAL lacks native PipeWire.
+
+Source audit links for matrix:
+- https://github.com/PipeWire/pipewire/blob/1.6.9/src/pipewire/filter.h
+- https://github.com/PipeWire/pipewire/blob/1.6.9/spa/include/spa/node/io.h
+- https://github.com/PipeWire/pipewire/blob/1.6.9/src/examples/midi-src.c
+- https://docs.pipewire.org/page_latency.html
+- https://docs.pipewire.org/page_man_pw-jack_1.html
+- https://jackaudio.org/api/group__TimeFunctions.html
+- https://jackaudio.org/api/group__MIDIAPI.html
+- https://jackaudio.org/api/group__ClientCallbacks.html
+- https://jackaudio.org/api/group__LatencyFunctions.html
+- https://github.com/RustAudio/cpal/blob/e1612d5d98152f8dc2a62e1b51ef7cbf4f7f26b7/src/host/pipewire/stream.rs
+- https://github.com/RustAudio/cpal/blob/e1612d5d98152f8dc2a62e1b51ef7cbf4f7f26b7/src/host/jack/stream.rs
+- https://github.com/RustAudio/cpal/blob/e1612d5d98152f8dc2a62e1b51ef7cbf4f7f26b7/src/host/alsa/mod.rs
+- https://github.com/RustAudio/cpal/blob/e1612d5d98152f8dc2a62e1b51ef7cbf4f7f26b7/src/host/pulseaudio/stream.rs
+- https://docs.kernel.org/sound/designs/timestamping.html
+- https://www.alsa-project.org/alsa-doc/alsa-lib/pcm.html
+
+### Timestamp and Buffering Boundaries
+
+Native physical path:
+controller scan/USB or DIN transmission -> ALSA-sequencer timestamp/queue -> PipeWire MIDI node -> SPA sequence offset -> same-cycle instrument event splitter -> PipeWire audio graph -> ALSA PCM/interface queues -> DAC.
+
+JACK-on-PipeWire path:
+same controller/ALSA/PipeWire MIDI ingress -> PipeWire JACK MIDI port -> one JACK process callback (audio + MIDI) -> same PipeWire audio/device graph -> DAC.
+
+CPAL path:
+separate MIDI ingress timestamp -> bounded queue + clock-domain mapping -> CPAL audio callback (chosen host explicitly recorded) -> that backend's queues -> hardware. A separate MIDI callback's arrival time is not automatically a hardware or audio-frame timestamp.
+
+Crucial implementation observation: PipeWire 1.6.9 spa/plugins/alsa/alsa-seq.c enables real-time queue timestamping for external subscribers. Its event reader obtains event age relative to queue_time and converts to sample offset as duration - 1 - age_in_frames when age < duration, otherwise offset 0. Thus the graph preserves an intra-cycle placement but can clamp old events and does not hand the original absolute controller ingress time to the instrument as that offset. Measure capture scheduling; do not call this zero-latency or full ingress provenance. Source: https://github.com/PipeWire/pipewire/blob/1.6.9/spa/plugins/alsa/alsa-seq.c . Actual USB/DIN/device behavior remains unknown.
+
+Engine event contract proposal: epoch + absolute frame + stable sequence tie-break + source timing quality + original ingress timestamp when available. Graph-provided offsets map directly into current callback; do not re-timestamp them at dequeue. For separately clocked input, maintain validated clock-pair mapping and drift/residual diagnostics; never directly subtract MONOTONIC_RAW from MONOTONIC or arbitrary JACK/queue clocks. With cycle origin (T0,F0), estimate F = F0 + (T-T0)*effective_frames_per_time only after establishing the domains. Track mapping uncertainty. For live late events, clamp to earliest not-yet-rendered sample and increment lateness histogram; do not insert sequencer lookahead. Scheduled future events remain queued; never wrap/clamp them into the current block. On epoch discontinuity discard old scheduled work, reset voice/sustain state, and resynchronize before restoring output.
+
+Publish actual intrinsic adapter delay, not execution time. PipeWire's latency documentation says an async link generally contributes one graph quantum (driver output exception); inspect negotiated node/link properties rather than assuming a process boundary or the CPAL wrapper adds exactly one block. JACK timestamp APIs provide estimates except cycle frame origin; skipped cycles invalidate simple cumulative arithmetic. Backend latency metadata predicts routing/device delay, not verified acoustic response.
+
+Scheduling: PipeWire's RT module first uses available RLIMIT_RTPRIO and otherwise can use realtime portal/RTKit. Check actual thread policy/priority and warnings; successful connection is not evidence of RT scheduling. Prefault/preallocate bounded render memory; record memlock limits and page faults. Changing privileges, kernel, affinities or security settings is separate approved local setup, not part of research. Source: https://docs.pipewire.org/page_module_rt.html . PREEMPT_RT or rtla diagnostics may explain scheduler tails, not establish audio latency: https://docs.kernel.org/tools/rtla/rtla-timerlat.html .
+
 
 ## Latency Benchmark Contract
 
-Start with an output-only MIDI instrument, then run the same DSP through an Ultra-authored graph. Use identical voices, events, sample rate, and output routing. Measure any additional sample delay, callback cost, and timing variance attributable to patch execution. Max compatibility may intentionally add documented vector/control latency; distinguish that profile from native Ultra behavior.
+At 48 kHz, 64/128/32 frames are 1.333/2.667/0.667 ms processing periods, not audible latency. Keep scheduled sample-placement evidence, callback duration, wakeup delay, intrinsic adapter delay, and calibrated physical controller-to-analog response separate. The small cloud probes use four native voices or two Pd devices; the proposed local 32-voice workload is an expansion gate, not tested capacity.
 
-Use a direct Faust-generated device as the DSP reference where practical. After source research, shortlist runtime candidates for the equivalent patch experiment: a tiny native Ultra graph, libpd hosting the same DSP as an external, or Supersonic using a corresponding UGen/SynthDef. Build only the shortlisted paths. Share the DSP source where possible; when implementations differ, compare against declared signal/envelope tolerances and keep DSP differences separate from scheduler/adapter overhead. Add a short audio-input impulse test to reveal reblocking delay that an output-only instrument cannot expose. A later browser probe reuses the score and metrics, with its own platform settings and acceptance criteria.
+### Local Protocol (Proposed, Not Run)
 
-| Configuration at 48 kHz | Processing Period | Role |
-| --- | --- | --- |
-| 64 frames | 1.33 ms | Initial low-latency target for supported hardware |
-| 128 frames | 2.67 ms | Reliability comparison and fallback |
-| 32 frames | 0.67 ms | Stress experiment when hardware/backend support it |
+1. Inventory exact CPU, governor/power mode, kernel build/PREEMPT model, interface+firmware, controller, MIDI connection type, USB topology, driver, distro packages, PipeWire/WirePlumber config, loaded libjack path, DSP/compiler commits, limits, and thread policies. Capture graph/device sample rates, quantum, hardware periods/buffers, links/resamplers, latency metadata and stderr warnings. Resolve stable physical device IDs; no Bluetooth, hidden monitor path or default-route switching in baseline.
+2. Use the same deterministic bounded oscillator/envelope/gain instrument and score on both backends: baseline 32 voices, two independently controlled devices, stereo 48 kHz, maximum 256 ordinary events/callback, preallocated queue 4096 events. These workload limits are provisional engineering choices, not measured capacity. Reserve reset/note-release handling: overflow must not strand sustain or notes; latch panic/reset if loss compromises lifecycle. Test 33rd voice, duplicate notes, velocity-zero note-on, CC64, all-notes-off and source disconnect. Distinguish semantic overload tests from throughput benchmarks.
+3. Run 48 kHz at observed 64 and 128 frames (1.3333 and 2.6667 ms periods); optional 32 frames (0.6667 ms) is stress, not a release blocker. For controlled sessions PIPEWIRE_QUANTUM=64/48000 requests forced graph rate/quantum; verify actual graph and device settings. Do not silently apply system-wide settings. Repeat with 128 and restore settings afterward. PIPEWIRE_LATENCY is a request, not proof of actual period. Source: https://docs.pipewire.org/page_man_pipewire-jack_conf_5.html .
+4. Software tests first: deterministic injected graph MIDI at offsets 0,1,N-1; equal-time ordered events; boundary/future/late events; 32/64/128 and irregular offline partitions; impulse through each adapter; known event-to-first-nonzero frame and parameter changes. Compare to offline reference and deliberately wrong offsets so the test can fail. Render a diagnostic impulse for timing as well as musical envelope, whose threshold would otherwise bias onset. This establishes frame placement only, not physical controller response.
+5. Physical measurement: externally generated MIDI with an electrical reference pulse recorded on one synchronized acquisition channel, analog DAW output on another. Calibrate reference-pulse-to-complete-MIDI-message timing with a logic analyzer or known generator, recording transport and firmware. Do not connect DIN signal directly to an audio input; use suitable isolation/level conversion or a proper analyzer. For USB use a generator with synchronized GPIO trace or controller contact sensor; otherwise label software-send-to-output, not key-to-sound. Record trigger and output in the SAME capture clock. Swap capture channels/repeat shared reference to bound channel skew. Publish the reference-point definition and calibration uncertainty; do not subtract assumed ADC/DAC delays or half an audio round trip.
+6. Collect at least 10,000 notes with randomized phase relative to audio callback, documented seed and spacing sufficient for independent onsets. Repeat each backend/quantum/load combination three times in randomized order after warmup. Use a 30-minute sustained run for each required 64/128 baseline and representative loaded condition; maximum observed values are observation-window maxima, not hard worst-case bounds.
+7. Load matrix: idle; repeated UI edits/animation; save/load preparation; device replacement; sustained 32 voices; legal MIDI event bursts; competing CPU/memory/disk load; combined workload. Do not stress the system using unbounded RT workers. Run no-logging baseline and bounded-telemetry variant to quantify instrumentation effects. Scheduler tracing separately if it perturbs audio. Log cycle start/end, expected deadline, start lateness, callback duration, graph completion when available, queue high-water marks, events late/dropped, voice steals, page faults, xruns, and actual rates/quanta into preallocated ring; drain to disk off RT.
+8. Recovery tests separate from clean-playback statistics: quantum 64->128->64, 48k->44.1k->48k where supported, unplug/replug, server restart, MIDI disconnect while sustain down, queue overflow, intentionally failed graph preparation. Expect bounded silence/reset and visible error; rebuild outside render, then restore negotiated routing/state. Record silence duration and new clock epoch, do not count graceful silence as continuous success or hide these faults in aggregate percentiles.
+9. Report median/p95/p99/p99.9/max physical latency, p99-p50 and p99.9-p50 spreads, callback duration/start-lateness distributions and maxima, deadline headroom, total observed cycles, xrun count, all dropped/late events, calibration bounds and confidence limitations. Show segments separately: physical/input ingress; ingress-to-renderable placement; DSP/adapter delay; output queues/DAC. Never sum overlapping latency estimates or call round-trip audio latency MIDI latency.
 
-These are processing deadlines, not claims about audible MIDI latency. Separate MIDI transport/controller delay, ingress-to-sample scheduling, output buffering, conversion, and device latency. In-block sample offsets improve scheduling precision but cannot recover an event that arrived after its processing deadline. Define late-event policy and report its frequency.
+### Provisional Acceptance Budgets
 
-Record median, p95, p99, p99.9, and maximum observed scheduling/processing times, event lateness, xruns, and rendered onset positions. Use physical measurement for claims about MIDI-to-analog sound; software timestamps alone establish only the instrumented software segment. State synchronization and calibration error, test hardware, kernel, backend/dependency versions, actual graph quantum/rate, and all settings that affect the measurement.
+- Exact scheduled software placement: <=1 sample error for the native/Faust host path, no unexplained block delay; independent devices do not cross-talk or share state. Fixed-tick runtime deviations must be declared, measured, and tested against that profile, not redefined as native success.
+- At 64/128 frames under the stated baseline workload, target callback execution p99.9 <=50% period and max observed <=75% period: 64 => 0.667/1.000 ms; 128 => 1.333/2.000 ms. The remaining headroom is deliberate margin for scheduling/graph neighbors, not proof of whole-graph schedulability. Also require actual completion before backend deadline including wakeup delay.
+- Zero unexplained xruns, lost note releases, stuck voices or render-time allocations/locks in required sustained baseline/representative editing runs. Count and surface all deliberate overload failures. Unsupported requested period is a configuration failure, not an automatic performance failure at another hidden period.
+- Aspirational physical gate for a wired controller/interface: p99 <=10 ms at 64 and <=12 ms at 128; p99-p50 <=one period plus measured ingress jitter and calibration uncertainty. These are product targets selected for responsive playing, NOT claims from sources or hardware measurements. If missed, retain segment evidence and decide whether ingress, backend, runtime or hardware dominates before changing architecture. Do not weaken budgets merely to pass an unknown machine.
+- Recover device/server failure without crash, use-after-free or stuck note; no promise of uninterrupted audio during loss. Choose user-facing recovery-time target only after measured reconnect behavior.
 
-Proposed acceptance starts with a 30-minute repeatable run at 64 frames with zero observed xruns and no missed observed deadlines for a declared voice/event workload, followed by a longer soak and stressed runs. Record deadline headroom rather than only average CPU usage. Sweep voice counts and MIDI bursts; include sustain/voice stealing, UI redraw, save, device edits, and competing CPU/disk activity as separate scenarios. A finite successful run is evidence for that setup, not a hard realtime guarantee. Final workload and headroom budgets are outputs of research and local measurement.
+Decision after local runs: favor direct JACK if both meet timing/recovery gates and its simpler surface suffices. Prefer native pw_filter if it demonstrates a meaningful capability or measured tail/latency benefit, or JACK compatibility limits UMP/routing/clock observability. CPAL can return if its MIDI clock bridge and exact selected host pass the same tests; its availability is not evidence of equivalence.
 
-PipeWire `pw-top` provides graph/node timing and xrun/error counters; distinguish driver graph timing from an individual node's DSP time. Use application-side bounded tracing as well. Kernel tools such as `rtla timerlat` can diagnose scheduling delays, but do not measure audible instrument latency.
+### Per-case report record
+
+Use one machine-readable record per run with fields: case_id; timestamp_utc; source_commit; dependency_lock_hash; backend_api; backend_library_version_and_loaded_path; server_version; kernel; interface_id; controller_id; midi_transport; physical_reference_definition; calibration_method; calibration_uncertainty_us; requested_rate; observed_graph_rate; observed_device_rate; requested_quantum; observed_quantum_min_max; hardware_period_size_count; routing_graph_hash; resampling_present; intrinsic_adapter_delay_frames; reported_playback_latency_min_max; thread_policy_priority; load_profile; voices; event_capacity; random_seed; warmup_seconds; duration_seconds; cycles_observed; notes_observed; callback_duration_us {p50,p95,p99,p999,max}; callback_start_lateness_us {p50,p99,p999,max}; minimum_deadline_headroom_us; missed_deadlines; xruns; input_events; late_events; dropped_events; queue_peak; render_allocations; render_page_faults; stuck_notes; physical_latency_us {p50,p95,p99,p999,max}; physical_tail_spread_us; software_onset_error_frames_max; parameter_offset_error_frames_max; impulse_added_delay_frames; recovery_outage_ms; errors; result {pass,fail,unsupported,not_run}; failed_criteria; raw_trace_path; calibration_trace_path.
+
+Unknown values must be null with a reason, never zero. Keep native-vs-runtime and backend-vs-backend paired comparisons at equal measured configuration, workload and physical routing. An unsupported 64-frame hardware configuration cannot establish a 64-frame gate; report unsupported and obtain a product decision. A missing external trigger cannot establish physical MIDI/key latency: report software-only and leave the physical gate not_run. A failed calibration invalidates the physical latency comparison, not the independently measured software correctness. Measure audio-input loopback impulse through direct pass-through before runtime insertion; report delta from that SAME path, not a guessed one-way value from round-trip latency.
+
 
 ## Realtime Execution
 
@@ -179,6 +307,40 @@ Each queue needs a capacity, processing budget, acceptance rule, and saturation 
 | Fault reporting | Separate control/render policies | Unsupported objects, expired targets, event runaway, queue overflow, DSP failure, declared silence/bypass behavior |
 
 Verify this contract by replacing and removing active devices, saving during playback, forcing queue saturation, and submitting late events for retired objects. Instrument callback allocation, deallocation, and blocking operations. Measure callback deadlines and xruns on declared hardware.
+
+### Minimal Contract Sketch and Decision Boundaries
+
+This is an implementation proposal, not a stable ABI or an implemented generic graph engine. Establish it with the two experiments before extracting shared packages. A native instrument and an Ultra device expose the same bounded facade; their execution profile declares where they differ.
+
+```text
+PrepareSpec { sample_rate, max_frames, input_layout, output_layout,
+              voice_limit, event_limit, profile, dependency_manifest }
+RenderContext { absolute_frame, frames, timeline_generation, graph_generation,
+                transport_segment, offline }
+Event { frame, stable_sequence, target_device_id, target_generation,
+        kind, bounded_payload }
+PreparedDevice { stable_id, profile, parameter_descriptors, latency_frames,
+                 prepared_storage, prepared_state }
+render(context, borrowed_planar_inputs, borrowed_planar_outputs, sorted_events)
+  -> bounded_status_flags
+```
+
+- A block owns the half-open interval `[absolute_frame, absolute_frame + frames)`. An event on its right boundary belongs to the next block; equal-frame events retain the source's stable sequence. A native adapter renders spans between event offsets, applies the event, then renders the next span. It does not pretend ordinary Faust control zones carry timestamps. A Pd adapter declares tick quantization and reblocking delay instead of silently claiming the native contract's precision.
+- Live arrival carries an ingress clock identifier and uncertainty where available. Map it to the active host frame epoch once; clamp late live events to the earliest unrendered sample and count lateness. Do not backdate an event into already-produced audio. A device/transport generation mismatch rejects stale events. On seek, stop, reconnection, or rate change, release notes and reset the mapping before accepting a new generation. Scheduled-clip lookahead must not become mandatory live-input lookahead.
+- Start with fixed device IDs, two isolated instrument devices, bounded voice arrays, an acyclic routing description, and preallocated scratch. Reject unsupported feedback and graph sizes. No new general message scheduler, dynamic plugin ABI, or universal patch format is required. Borrowed audio buffers cannot escape a render call; zero-input instruments and duplex processors have separate declared layouts.
+- Parameter identity is `device UUID + stable parameter key`, not a UI label or pointer. A descriptor declares unit, physical range, normalized mapping, quantization, smoothing, and event resolution. Store the base value separately from effective automation/modulation/remote values. A preset records schema/profile/dependency versions and base values; arbitrary runtime-internal state is not implied by that facade. Unsupported state remains preserved with a diagnostic, not replaced with a silently different device.
+- Control prepares replacement graph N+1, including DSP initialization and storage; render adopts it at an agreed boundary only if its generation is valid and retirement capacity is available. Render acknowledges the retired graph; control reclaims it afterward. Crossfade is optional extra processing with an explicit budget, not a free default. If a runtime cannot prepare independently without taking locks also used by render, mark live replacement unsupported and require stopped processing for that profile. The offline libpd probe does not validate concurrent loading.
+- Save copies bounded stored-parameter state through a generation-tagged snapshot handoff; serialize it outside render. Arbitrary delay lines or runtime state require a separately bounded capture protocol or stopped capture. No audio-thread filesystem calls or synchronous UI/model locks. A rate/quantum change outside prepared bounds requests a non-render rebuild, produces declared silence, and reports the condition instead of resizing inside render.
+- A bounded ingress queue must also have a bounded drain budget. Reject excess note-ons and structural commands visibly; reserve termination/reset capacity. If an accepted note's termination cannot be retained, latch a per-device panic/reset that is consumed before normal events, clear sustain/held notes, and report lost fidelity. Do not call this lossless overload handling. Meter updates may be coalesced; future scheduled events stay outside the current-block budget until due. Clock reset and stale-target tests must verify no stuck notes.
+
+The experiments validate only the portions listed in their result tables. Snapshot concurrency, graph publication/reclamation, allocation instrumentation, realtime backend integration, and live controller timing remain acceptance work, not features established by these sketches.
+
+### Separate Max Compatibility Profile
+
+Keep a future `max-subset-v1` profile separate from native/Faust and Pd execution. The [Max scheduler documentation](https://docs.cycling74.com/userguide/scheduler/) describes depth-first message delivery, high/low-priority work, and distinct `defer` versus `deferlow` queue behavior. A topologically sorted DSP graph cannot replace those message semantics. Before claiming compatibility, compare reference traces for an explicit trigger fan-out, cold-inlet state, recursive-message cutoff, deferred event order, and initialization under recorded scheduler settings.
+
+[Sample-accurate messages](https://docs.cycling74.com/userguide/sample_accurate_messages/) are conditional on scheduler settings and supported objects, not a blanket property of all Max messages. Test scheduled impulses and ramps at offsets 0, 1, and vector-end; record hardware-buffer and signal-vector sizes separately. Signal-to-message feedback such as `snapshot~` retains relative timing but is documented to add a vector. Do not collapse this into the native path's event rule. `live.remote~` remains unsupported until its separate parameter ownership, smoothing, and documented buffer delay are reproduced against the target Live/Max versions. No Max binary or proprietary patch asset is needed by the cloud experiments.
+
 
 ## Time, Launching, and Parameters
 
@@ -232,134 +394,101 @@ Physical I/O does not provide media decoding, resampling, prefetch, disk streami
 
 Evaluate CPAL against the selected platform using a pinned version, supported sample formats/rates, callback-length handling, device-loss recovery, and observable xruns. Keep another backend possible through the adapter. The existing Wine/PipeASIO observation is not evidence of native backend latency or production audio quality.
 
-## Cloud Research Handoff
+## Research Experiments and Local Handoff
 
-The next cloud session should investigate architecture and Linux integration with source research and small runnable experiments before committing to production implementation. It can work from this file and public sources; local installation paths and earlier probe artifacts are optional reference context. Return one coherent recommendation and update this file in place. Keep observations, recommendations, and locally untested hypotheses distinct. Code examples are part of the investigation and should answer specific unresolved questions.
+The following are small research fixtures, not production device APIs. All execution was on Linux x86_64, kernel 6.18.55, g++ 14.2.0 (Debian 14.2.0-19), Python 3.12.14 on 2026-10-20. No physical device, MIDI controller, browser, realtime priority, or target-machine benchmark was used. Neither upstream's complete test suite nor arbitrary patches/externals were validated.
 
-### Research Packages
+### Reproduce
 
-| Package | Questions | Required Output |
-| --- | --- | --- |
-| Shared foundation and reuse | Compare product/model boundaries independently from implementation reuse. Evaluate a minimal host with Faust/libpd, Clockwork hosting an Ultra graph, and Supersonic/scsynth as the synthesis core before proposing new schedulers. | Dependency/process diagrams, ownership table, frame/event/parameter/state contracts, maintenance cost, and one experiment that could disprove each shortlisted foundation |
-| Linux audio/MIDI integration | Compare native PipeWire, JACK on PipeWire, CPAL's exact released backends, and the value of an ALSA control path. How are controller timestamps mapped, lateness handled, latency reported, and scheduling privileges obtained? | Versioned capability matrix, a shortlist of two integrations for local testing, and explicit buffering/clock diagrams; distinguish wrapper API from server/backend |
-| Realtime execution | How are voices, events, graph preparation, activation, retirement, and state capture bounded? How do sustained MIDI, UI/save work, sample-rate/quantum changes, and device failure affect deadlines? | Minimal render lifecycle, overload/reset policy, memory/priority strategy, observability plan, and justified provisional workload/headroom budgets |
-| Ultra execution profiles | Which Faust, Pd/libpd, SC/Supersonic, and native capabilities belong in a common device facade? Which Max ordering/vector/deferred behaviors need separate execution? Can runtime reuse avoid a new object scheduler? | One tiny instrument graph, a parameter/preset/dependency contract, multi-device state/routing design, explicit semantic differences, and a separate Max-compatible subset |
-| Browser feasibility | Compare direct FaustWasm with Supersonic AudioWorklet/WASM; what can share sources/data with native Ultra, and which browser constraints change latency, dependencies, or capabilities? | A small portable-instrument probe design, SAB/postMessage deployment matrix, MIDI and suspension/recovery protocol, and explicit native-only features; no full web DAW requirement |
-| Licensing and maintenance | Compare GPL/AGPL-compatible and permissive/proprietary host strategies. Inspect compiler outputs, architectures, Pd externals, SC UGens, browser assets, and Clockwork's commercial option separately. | Dependency/license inventory with exact revisions and actionable architecture implications; do not infer relicensing or obligations solely from process placement |
-| Local validation | Which claims require a real controller, interface, kernel, or running reference DAW? How are software timing, physical MIDI-to-audio onset, and backend scheduling measured separately? | Reproducible benchmark protocol with exact metrics, controls, test matrix, acceptance criteria, calibration, and required hardware/input information |
+From the repository root:
 
-Use official Faust, libpd/Pd, SuperCollider, Supersonic/Clockwork, PipeWire, JACK, ALSA, Linux kernel, library, and Cycling '74 documentation as primary sources. Inspect maintained implementations where documentation leaves a gap and record source revision and license. CPAL version/features and Rust-binding coverage must be verified against an actual selected release rather than inferred from current upstream branches. Treat alpha APIs and upstream realtime/compatibility claims as things to verify. Research should choose a small testable foundation and a backend shortlist, not a universal engine framework or the full device catalog.
-
-Proceed in order: establish the source/version/license and capability matrix; shortlist foundations and two Linux integrations; implement the smallest offline reference and shortlisted runtime experiment; then hand the native integration/protocol to a local session with the actual controller/interface. Keep the web feasibility work bounded and separately report its result. Do not expand into full engine or editor implementation while a foundational reuse decision remains open.
-
-### Runnable Cloud Experiments
-
-The cloud session may write, build, and run research code when its environment provides the required tools. Keep runnable sources in an `experiments` directory in its working checkout or return them as a separate code artifact if it only receives this document. The one-document requirement applies to the plan and findings; experiment source, build definitions, and test fixtures are legitimate code deliverables. Keep narrative conclusions and reproduction instructions in `PLAN.md`, without separate review documents or a revision history.
-
-| Priority | Experiment | Question and Required Evidence |
-| --- | --- | --- |
-| First | Offline Faust MIDI-instrument reference | Generate a small oscillator/envelope/gain instrument, drive a fixed voice pool from a deterministic frame-stamped score, and render audio without a physical device. Check onset positions, note-off/sustain/voice stealing, reset behavior, and equivalent results under supported block partitions. Record dependency versions, commands, expected results, and actual output. |
-| Second | One shortlisted Ultra/runtime adapter | Run a tiny graph through the strongest candidate after source screening: native host, libpd, or Clockwork/Supersonic. Reuse the reference DSP where practical. Exercise two independently controlled devices, event timing, parameter changes, supported block adaptation, and an input impulse. Probe replacement/loading and saturation behavior within the candidate's supported lifecycle. Record mismatches and unsupported operations rather than hiding them behind a new abstraction. |
-| Optional | Small browser instrument | If the first two probes leave time, run the instrument through direct FaustWasm or Supersonic with a minimal control surface. Use browser automation for scheduled-event and lifecycle checks where available. Test SAB and postMessage when relevant, and record actual browser capabilities and observed results. Physical Web MIDI and audible output latency remain local validation. |
-
-Where feasible, have the second experiment expose a small command-line path for local Linux audio/MIDI integration using the shortlisted backend. Build/check this in the cloud if dependencies are available; mark hardware-dependent execution as pending. Prefer a verified official embedding API over a mock adapter that merely resembles one. Every executable experiment needs a reproducible dependency/build setup, deterministic checks for the decision it tests, and explicit failures for unsupported configurations.
-
-Record each example as source-only, build-verified, executed headlessly/offline, or locally hardware-validated, according to the evidence actually obtained. Offline rendering, headless timer processing, browser automation, callback instrumentation, and hosted-CPU timing can reveal correctness or integration problems; they do not establish controller-to-analog latency, granted realtime priority on the target system, or the 64-frame Linux acceptance result. Report commands, exit status, environment, signal tolerances, and failures without filling gaps with invented benchmark results. Treat the code as experimental until the selected architecture is validated and its production lifecycle is reviewed.
-
-### Prompt to Pass to a Cloud Session
-
-```text
-Read PLAN.md as the complete current project context and update that same file
-with a curated architecture/research conclusion. Keep one plan document with
-the current recommendation integrated throughout, without a revision log or
-separate review/research documents. Runnable experiment source and build files
-are allowed under experiments in your working checkout or as a code artifact.
-
-We are designing Alive, a clean-room DAW, and Ultra, an integrated patch
-authoring environment that should reuse existing DSP and execution systems.
-Linux is the primary platform. The first performance
-workload is playing instruments from a MIDI controller with low, predictable
-audible latency under sustained load and editing. There is no product code yet.
-Use one repository initially for Alive, Ultra, shared packages, and experiments.
-Keep their module boundaries clear; do not create separate repositories, publish
-code, or choose the product license as a side effect of the investigation.
-
-Reconsider the product boundary from first principles. Compare separate DAW and
-patch engines, a shared realtime foundation with separate session/patch authoring
-models, and a unified model. The leading hypothesis is a shared processing
-contract, audio timeline, event/parameter machinery, DSP library, and graph
-lifecycle. Preserve compatibility-specific execution semantics where required.
-Identify what evidence would change that recommendation.
-
-Evaluate Faust as reusable native/WASM DSP, Pd/libpd as an embedded patch
-runtime or execution foundation, upstream SuperCollider, and samaaron/supersonic
-with its Clockwork host. Compare a minimal host with adapters, Clockwork hosting
-an Ultra graph, and Supersonic's scsynth graph as the synthesis core. Do not
-assume we need to write another Pd-like scheduler or general synthesis engine.
-Separate sclang programs, SynthDefs/UGens, Pd patches, Faust DSP, and Max patches;
-a common Ultra UI does not make their semantics or dependencies identical.
-
-For libpd inspect ticks, locks/build options, callbacks, externals, multi-instance
-ownership, and live-edit safety. For SC distinguish server lookahead from live
-input latency. For Supersonic/Clockwork inspect host-owned versus device-owning
-embedding, the current process singleton, input FIFO delay, native MIDI arrival
-timestamps, inline command work, graph isolation/state, and actual capabilities
-of the pinned revision. Investigate gaps before relying on no-allocation claims.
-
-Research native PipeWire, JACK on PipeWire, CPAL's relevant released Linux
-backends, and an optional ALSA reference path. Distinguish APIs from the audio
-server/backend actually used. Compare MIDI timestamp/sample-clock integration,
-buffering, latency metadata, xrun reporting, quantum/rate changes, realtime
-scheduling permissions, failure recovery, and Rust implementation maturity.
-Include Clockwork's actual device paths when it is shortlisted. Select two
-concrete integrations for a controlled local benchmark without multiplying
-every engine/backend combination.
-
-Specify a direct Faust-generated MIDI instrument and an equivalent Ultra path
-through shortlisted native, Pd, or SC execution. Reuse DSP source where practical
-and state tolerances when implementations differ. Define bounded event/voice
-behavior, live graph replacement, parameter/state ownership, and a separate Max
-compatibility profile. Study processing delay, buffering, and deadline variance;
-include an audio-input impulse check to expose reblocking delay.
-
-Write and run small code examples to test those choices: first an offline
-Faust instrument with deterministic MIDI/parameter events and bounded voices;
-then one real adapter to the strongest shortlisted runtime using its verified
-API. Check two-device isolation, onset/parameter timing, note lifecycle, block
-adaptation, loading/replacement, and overload behavior where supported. Avoid
-building adapters for every candidate. Supply reproducible sources, dependency
-pins, build/run commands, expected checks, observed results, and failures.
-Keep the code experimental. If tools or dependencies prevent a build or run,
-label that limit explicitly; do not report an unrun example as working.
-
-Compare direct FaustWasm and Supersonic for a future web Ultra instrument/editor
-subset. Cover AudioWorklet quantum, SAB versus postMessage, browser/WASM support,
-cross-origin isolation, Web MIDI permissions, audio startup, output latency,
-suspension/recovery, and portable assets/state. Keep Linux as the first gate and
-do not promise native latency or arbitrary native external/plugin support in
-the browser. A tiny browser example is optional after the two primary probes.
-Licensing is undecided: compare GPL/AGPL-compatible and
-permissive/proprietary host options. Check Faust output/architecture terms, Pd
-externals, SC GPL, and Supersonic/Clockwork AGPL/commercial boundaries separately.
-
-Design a local protocol at 48 kHz with 64- and 128-frame periods and an optional
-32-frame stress case. Report latency segments, jitter/tail distributions,
-maximum observed cycle times, deadline headroom, xruns, note lifecycle, and
-behavior during UI/save/device-edit and competing-system load. Separate
-software timestamp tests from calibrated physical MIDI-to-audio measurements.
-
-Deliver a source-cited reuse/architecture recommendation, backend and licensing
-matrices, minimal contract sketches, a local benchmark protocol, provisional
-acceptance budgets, experimental code with its validation status, and unresolved
-decisions integrated into PLAN.md. Cite
-exact versions/revisions and distinguish measured facts from hypotheses. A
-cloud session cannot establish this machine's audio latency or reproduce the
-supplied Live/Max observations without local evidence.
-Distinguish source-only examples, successful builds, offline/headless/browser
-runs, and target-hardware measurements. The immediate deliverable is a research
-conclusion supported by runnable experiments plus a concrete local validation
-protocol, ready to review before product implementation.
+```sh
+(cd experiments/faust-reference && make setup && make test && make sanitize)
+bash experiments/libpd-adapter/run.sh
 ```
+
+The scripts require Linux x86_64 for the provided Faust binary, a C/C++ compiler, make, Python 3, curl, tar, unzip and SHA256 tooling. They download official sources/binaries, verify the pinned hashes, and build locally without installing system software. Faust generation uses the real `generateCAuxFilesFromFile` C API through Python ctypes; the resulting render executable does **not** link libfaust/LLVM and has no JIT. The libpd adapter links the actual upstream runtime built with `MULTI=true UTIL=false EXTRA=false`. Dependency/build directories and executables are ignored, not included in the PR.
+
+| Dependency used in experiments | Pin and source | Download SHA256 |
+| --- | --- | --- |
+| Faust compiler library | [2.88.0 official Linux binary](https://github.com/grame-cncm/faust/releases/download/2.88.0/libfaust-ubuntu-x86_64.zip); source commit `8c00913e44d42f9d25aa3f1a0d500bde5662d7bc` | `7f7784567d8770dfbc1351f53b32dfb4d4c5baef0ba5f39fd925d5407ab63ff2` |
+| Faust headers/libraries | [2.88.0 source distribution](https://github.com/grame-cncm/faust/releases/download/2.88.0/faust-2.88.0.tar.gz), including bundled library contents | `e4e175cf236924b5b7d4784cbb8c50cc01e211159e169655dd9e6d8f92b871d9` |
+| libpd | `ba0dc63262901d658af8bbda5e619a60fa975e78`, 0.16.1; [pinned source](https://github.com/libpd/libpd/tree/ba0dc63262901d658af8bbda5e619a60fa975e78) | `7432b9108d6741f8ca5fd786ce83ed391d92b5197e93fd3762a5e81ae663095d` |
+| Pd submodule | `f009fd8d7b537e209e09898d487fdf1bf547da2b`; [pinned source](https://github.com/pure-data/pure-data/tree/f009fd8d7b537e209e09898d487fdf1bf547da2b); runtime prints 0.56.5 | `29ad07f1f13dd199e2ebcd3c486dca4c496e4874dd856c925dc3891e11e58267` |
+
+Official Faust archives are approximately 106 MiB binary plus 78 MiB source. Hashes lock the inputs used here; setup does not silently substitute a newer release. Build pins differ from the newer Faust interface inspection pin, deliberately. The main signal/lifecycle conclusions are established by the actual 2.88.0 generated code, not inferred from 2.90.12.
+
+### Offline Faust Instrument
+
+Files: `experiments/faust-reference/voice.dsp`, `generate.py`, `generated/voice.hpp`, `generated/voice.rs`, `host.hpp`, `test.cpp`, `Makefile`, `setup.sh`.
+
+Graph: phase-shifted sine → finite linear ASR → velocity gain → level → fixed headroom mix. Four preconstructed generated voices, 48 kHz, 16-sample attack/release, velocity/127 and 0.25 per-voice scale. The nonzero starting phase makes onset detection independent of a sine zero crossing. Controls are cached UI-zone pointers, applied only by the render-owner thread between compute spans, not concurrent UI writes. See the [Faust MIDI conventions](https://faustdoc.grame.fr/manual/midi/) for the supplied architecture behavior; this fixture deliberately defines its own bounded host policy instead of claiming `dsp_poly` conformance.
+
+The fixed score permits at most 256 events and host partitions of 1–256 frames. Equal-time events retain input order. Note-off releases all held instances of a pitch on the single supported channel; velocity-zero note-on is note-off. Sustain ≥64 defers release; all-notes-off overrides it. Voice exhaustion steals the oldest started voice and resets its DSP. Hard stealing is deterministic but not click-free. Reset clears DSP, sustain, and host level state. This is not MPE, a general MIDI stack, or a realtime ingress queue.
+
+| Check | Expected assertion / tolerance | Observed result |
+| --- | --- | --- |
+| Onset and release | First active sample at frame 37; zero from frame 117 after release and 156 after sustain release | Passed; exact onset, asserted silent ranges hold (not a claim those are the first zero samples) |
+| Velocity | Full-array scaled comparison, max absolute error ≤ `1e-7` | `7.45058e-09` |
+| Partition independence | Compare 1, 32, 64, 128, 256 and repeating 3/17/1/64/31/128 frames | Bit-identical on this build, maximum difference 0 |
+| Note lifecycle | Four-voice ceiling; oldest pitch 60 stolen; zero-velocity/off, sustain, all-notes-off and reset | Passed; post-reset note suffix equals fresh state |
+| Parameter timing | Mute frames 53–89, resume at 90 | Exact zero in mute interval; asserted resume |
+| Invalid inputs | Reject oversized score, unsorted/out-of-range events and unsupported block sizes | Passed before rendering |
+| Failure sensitivity | Shift first onset 37→38 in an isolated test copy | Onset assertion fails, nonzero exit |
+
+`make setup` and `make test` returned exit 0. `make sanitize` returned exit 0 with AddressSanitizer and UndefinedBehaviorSanitizer and **leak detection disabled**. The initial default LeakSanitizer execution failed because this sandbox uses ptrace; this is an environment limitation, not a passing leak check. The Makefile exposes that limitation rather than hiding it; on an unrestricted local machine, `make sanitize SANITIZER_OPTIONS=detect_leaks=1` requests leak checking. The generator normalizes trailing whitespace only, preserving emitted DSP semantics.
+
+`python3 generate.py --language rust` returned exit 0 and emitted `generated/voice.rs`; that file is **source-only**. No Rust toolchain was available, so Rust compilation, embedding, signal correctness and performance are untested. C++ DSP was built and executed offline. No allocation-hook audit, callback deadline test, physical latency, xrun or runtime live-replacement result is claimed.
+
+The used primitive inventory in the 2.88.0 distribution is basics 1.23.0, envelopes 1.3.0 (`en.asr`), maths 2.9.0, oscillators 1.8.0 (`os.oscp` and phasor/table helpers), and platform 1.3.0. Used GRAME primitives have the generated-code exception; generated metadata preserves emitted notices. `processArray`/`tabulateNd` AGPL-only entries elsewhere in basics.lib are not used. Unmodified architecture headers (`dsp.h`, `MapUI.h`, `PathBuilder.h`, `UI.h`, `meta.h`, `export.h`) are downloaded, not vendored, and carry their own exception terms. This bounded inventory is not permission to assume every later Faust graph/import is license-compatible.
+
+### Real libpd Adapter
+
+Files: `experiments/libpd-adapter/voice.pd`, `probe.cpp`, `check.py`, `run.sh`.
+
+Each of two real Pd instances hosts a monophonic graph: frequency → `osc~`; gate → `pack f 2` → `line~`; multiply oscillator × envelope × gain → output 1. Input 1 → output 2 is an independent impulse diagnostic. Identical receiver names deliberately test namespace/state isolation. The adapter uses actual `libpd_new_instance`, `libpd_set_instance`, `libpd_init_audio`, `libpd_openfile`, `libpd_process_float`, `libpd_blocksize`, and teardown APIs. It verifies the selected build has 64-frame ticks and multiple instances.
+
+| Check | Policy / expected result | Observed result |
+| --- | --- | --- |
+| Independent devices | Gate/gain changes in A must not alter B, with identical receiver names | Passed; inactive device exactly silent, active device within its own gain bound |
+| Requested event timing | **Adapter policy:** apply at first tick start not earlier than requested frame | Gate 65→128; gain-zero 257→320. This is not a sample-offset libpd MIDI API |
+| Aligned input | One direct tick, `adc~`→`dac~` diagnostic | Impulse at frame 0, no added sample delay in this tested patch |
+| Arbitrary-buffer causal adapter | Emit previous tick while accumulating the next input tick | Exactly 64 added frames (1.333333 ms at 48 kHz). This chosen FIFO is not unavoidable libpd latency |
+| Partition independence | 32/64/128 and repeating 1/31/7/96/128/3 frames, tolerance 0 | Bit-identical. Output gate tick 192 and gain-zero 384 include FIFO delay |
+| Signal sanity | 440 Hz ±1 Hz from positive crossings; gain 0.5 ±`1e-4`; 2 ms requested release below 128 frames at `1e-7` threshold | 440 crossings/sec, peak 0.5, last nonzero release sample 63 |
+| Replacement | Stop processing, prepare/reset replacement, switch active owner/routing, retire/free old instance | Passed; explicit replacement state sounds afterward. No concurrent loading or state migration claim |
+| Saturation | Capacity 256; deliver at most 16 named messages/tick; reject/drop remaining due work and gate-reset this known patch | 44 of 300 rejected; due remainder discarded; no stuck output after release. Not arbitrary-patch execution bounds |
+| Failure sensitivity | Shift diagnostic input impulse by one sample in a test copy | FIFO-delay assertion fails, exit 1 |
+
+`bash experiments/libpd-adapter/run.sh` verified both archive hashes, built the real dependency, and returned exit 0 with every assertion group passing. The optional printed 10,000-pair offline timing observation has no controlled scheduling/load and is not used for an acceptance claim or backend selection. It is neither a physical latency measurement nor a realtime worst-case bound.
+
+**Comparison limit:** no Faust external was compiled into Pd, and the two scores/DSP implementations are not identical. Pd's oscillator phase/table and tick-quantized `line~` envelope differ from the Faust sine/ASR path. Frequency/gain/release checks establish only narrow conceptual instrument sanity, not cross-runtime sample/waveform equality. The Pd fixture has no polyphonic/sustain/MIDI-velocity facade; the native fixture owns four voices. The experiment therefore supports an optional Pd profile and exposes why it must not silently replace native Ultra semantics.
+
+Concurrent rendering/loading/unloading, arbitrary externals, dynamic dependencies, rate/quantum recovery, clock mapping, clickless state migration, live MIDI I/O and Max compatibility remain unsupported. Per-instance plus global Pd locks remain present; no runtime patch or lock removal was attempted. The smallest hardware CLI is deferred rather than supplied as an untested facade: local backend integration is the next gate, not a hidden completed deliverable.
+
+### Evidence Status Summary
+
+| Work | Status |
+| --- | --- |
+| Faust-generated C++ instrument | Built and executed offline, deterministic assertions passed |
+| Faust-generated Rust | Generated source only; not compiled/run |
+| libpd real runtime adapter | Built and executed offline, deterministic assertions passed |
+| Native JACK/PipeWire/CPAL/ALSA integration | Documentation/source audit and local protocol only; no backend build or physical run |
+| Clockwork/Supersonic | Pinned source audit only, not built or executed |
+| Browser instrument | Scoped documentation/probe design only, not run |
+| Physical 64/128-frame latency/realtime acceptance | Not run; requires actual hardware and calibration |
+| Live/Max compatibility | Supplied reference observations only, not reproduced |
+
+
+### Remaining Decisions Before Product Implementation
+
+- Review the research recommendation and decide the acceptable licensing strategy before committing to a GPL/AGPL-bound foundation. No license or commercial agreement is selected by this PR.
+- Build the first direct JACK-on-PipeWire instrument path, then native `pw_filter`, on the actual Linux controller/interface. Use the protocol above. Neither device access nor system tuning was attempted here.
+- Native realtime memory/lock instrumentation, asynchronous state capture, graph publication/retirement, callback-tail load tests and recovery remain unimplemented. The libpd loader test is stopped/offline; its global lock is an adoption constraint, not fixed by this experiment.
+- Pd waveform/preset semantics intentionally differ from Faust. An identical Faust-generated Pd external and shared-score comparison would be a separate useful follow-up if patch-authored equivalence becomes a gate. Do not call the current native Pd graph a Faust-equivalent instrument or claim Max compatibility.
+- Rust versus C++ for production host/DSP integration remains open; the C++ research fixtures do not select it. Verify bindings and compare emitted-code/build maintenance before extending the prototype.
+- Browser implementation is deferred: the documented FaustWasm-first protocol is ready, but no browser code was run. Physical Web MIDI, native MIDI, realtime privileges and Live/Max reference behavior require local evidence.
+- Select the target Live version/edition and permitted clean-room evidence before compatibility implementation. Preserve the supplied observations below as observations, not newly reproduced results.
 
 ## Delivery Milestones
 
@@ -391,7 +520,7 @@ Use exact comparisons for deterministic identities, structure, and event orderin
 | --- | --- | --- |
 | Native Alive projects | Architecture and MIDI-instrument workflow specification | Save/reopen, MIDI clips, automation, undo, stable identity, migration, recovery |
 | Linux realtime performance | Current backend/API documentation; no local product benchmark | Controller-to-sample mapping, physical output latency, jitter, headroom, xruns, native/patch-path comparison |
-| Reusable runtimes and browser Ultra | Official Faust/libpd/SC source and Supersonic/Clockwork interfaces; no local builds or browser probe | Selected dependency versions/licenses, embedding and independent-device behavior, bounded callback work, portable DSP/state and browser capability matrix |
+| Reusable runtimes and browser Ultra | Pinned official source plus offline Faust/libpd probes below; no physical backend or browser probe | Selected dependency versions/licenses, embedding and independent-device behavior, bounded callback work, portable DSP/state and browser capability matrix |
 | `.als` | Supplied gzip/XML observations and bundled-file inventory | Parsing, dependency resolution, playback, and export as separate levels |
 | `.amxd` | Supplied container markers and patch-chunk observations | Decoding, dependency closure, execution profile, supported files |
 | LOM | One supplied tempo-read probe and inspected documentation | Alive query/mutation/observer behavior, lifecycle, remote control, persistent bindings |
@@ -429,9 +558,9 @@ Installed Max documentation and public references were checked on 2026-10-20 for
 
 Linux backend research on 2026-10-20 checked official PipeWire filter, JACK configuration, `pw-jack`, and `pw-top` documentation; JACK process-callback, MIDI sample-offset, and latency APIs; Linux PREEMPT_RT and `rtla timerlat` documentation; and CPAL upstream documentation/manifest. These establish API/configuration capabilities, not comparative latency. No Linux system settings were changed and no new audio or MIDI benchmark was performed.
 
-Runtime reuse research on 2026-10-20 checked Faust's DSP/architecture interfaces, FAQ, compiler and library notices, Pd/SC compilation targets, and FaustWasm; libpd's wrapper API, processing locks and license; and SuperCollider's embedding header, timing guide, and GPL notices. Supersonic was inspected at `08b587055f0dbe6f6ff7d52e09bc2ae331121480` (manifest version 0.91.0), including its documentation, embedding header, build composition, and license. Its pinned Clockwork submodule was `94b67500c96e105491682ec68741b5018560eab7`; inspected sources included `dsp_api.h`, `clockwork_embed.h`, device/boundary documentation, and license. Both projects label themselves alpha. These are source/documentation observations; no dependency was built, no upstream tests were run, and no native/browser performance or broad patch compatibility was established.
+Runtime reuse research on 2026-10-20 checked Faust's DSP/architecture interfaces, FAQ, compiler and library notices, Pd/SC compilation targets, and FaustWasm; libpd's wrapper API, processing locks and license; and SuperCollider's embedding header, timing guide, and GPL notices. Supersonic was inspected at `08b587055f0dbe6f6ff7d52e09bc2ae331121480` (manifest version 0.91.0), including its documentation, embedding header, build composition, and license. Its pinned Clockwork submodule was `94b67500c96e105491682ec68741b5018560eab7`; inspected sources included `dsp_api.h`, `clockwork_embed.h`, device/boundary documentation, and license. Both projects label themselves alpha. Those Supersonic/Clockwork findings remain source/documentation observations; neither runtime was built here. The Faust/libpd experiments and their narrower validation status are documented above. No physical native/browser performance or broad patch compatibility was established.
 
-SoundCraft is an architecture reference for plain-data models, layered crates, and shared commands across UI and automation. Its model and engine embody its own DAW semantics. The earlier source inspection identified revision `c0cb99340891d306e216582db465f3594b89dc1d`; recheck source and license terms before reuse, including separate branding terms. It is not a base to turn into an Ableton clone.
+SoundCraft remains an optional architecture reference for plain-data models, layered crates, and shared commands across UI and automation. Its model and engine embody its own DAW semantics. The earlier source inspection identified revision `c0cb99340891d306e216582db465f3594b89dc1d`; recheck source and license terms before reuse, including separate branding terms. It is not a base to turn into an Ableton clone.
 
 ## References
 
