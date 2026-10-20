@@ -75,8 +75,11 @@ on-screen keyboard was silent. At 512 frames, private native pointer tests
 produce signal on both software outputs and terminate correctly; the LG TV's
 FL/FR JACK links and balanced, unmuted sink volumes were also verified. Independent
 stereo WAVs have valid left/right samples, but the user hears no right from
-pw-play or approved direct ALSA playback with PipeWire stopped. Chrome is
-reported to play stereo; the same WAV's Chrome result remains unconfirmed.
+pw-play or approved direct ALSA playback with PipeWire stopped. The same spoken
+WAV also loses its right channel in Chrome/preview, while other music is reported
+to play stereo there. A known-good music reference matches the test's
+PCM16/stereo/48 kHz format; a comparison with identical music routed separately
+left/right is pending.
 The audible discrepancy is unresolved, and no driver/TV diagnosis is established.
 Auto-connection uses the first two physical ports, so inspect the patchbay after
 device/order changes. See PLAN.md for the separate software/listening evidence.
