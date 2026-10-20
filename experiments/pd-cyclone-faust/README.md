@@ -15,7 +15,7 @@ Outputs:
 - `fixture-catalog.json`: object/port shapes, concrete typed inputs/expected outputs and bounded ingress contract for UI/reference work.
 - `dependencies.json`: component versions, source links, terms and checked SHA-256 inputs.
 
-`build/` is ignored. No binary/runtime redistribution or product license selection is implied.
+`build/` is ignored. Project-owned code is AGPL-3.0-or-later; upstream terms are retained. No binary/runtime redistribution is performed by this experiment.
 
 ## What passes
 
@@ -40,6 +40,6 @@ No Max reference has been supplied. Max gate/split/clip~/trigger are only candid
 
 - libpd `ba0dc63262901d658af8bbda5e619a60fa975e78`, Pure Data `f009fd8d7b537e209e09898d487fdf1bf547da2b` (0.56.5): preserved sibling MULTI build, Standard Improved BSD terms with notices/individual-file review.
 - [Cyclone 0.9.4](https://github.com/porres/pd-cyclone/releases/tag/cyclone_0.9.4), commit `173ea9f376711035a76e3bbf2374fae6c6d236c8`: official release requires Pd >=0.56.2 and works with this pin. Cyclone 0.9.6 requires Pd >=0.57, so it is intentionally not substituted. Source is BSD-3-Clause. We compile selected files directly; no pd-lib-builder source is executed.
-- [Faust 2.88.0](https://github.com/grame-cncm/faust/releases/tag/2.88.0): compiler is a pinned build-time dependency, not loaded by the rendering process. Unmodified architecture headers and the selected GRAME library sections have documented Faust exceptions; the wider libraries contain separately licensed sections. Reuse of this particular DSP does not clear every future Faust DSP or choose the application's license.
+- [Faust 2.88.0](https://github.com/grame-cncm/faust/releases/tag/2.88.0): compiler is a pinned build-time dependency, not loaded by the rendering process. Unmodified architecture headers and the selected GRAME library sections have documented Faust exceptions; the wider libraries contain separately licensed sections. Reuse of this particular DSP does not clear every future Faust DSP or override the project's AGPL-3.0-or-later choice and upstream terms.
 
 `dependencies.json` records source and compiler-library hashes, but the native C/C++ compiler is an environment tool, not hermetically provisioned. Its version is recorded in results. Reproducible behavior is tested; cross-toolchain binary identity is not promised. Full distribution/legal review is still pending.
