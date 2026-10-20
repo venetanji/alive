@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ultra · UI component preview</title>
+<link rel="stylesheet" href="components/components.css">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#dddeda;color:#303733;font:13px/1.5 Arial,Helvetica,sans-serif}header{padding:22px 5vw;background:#303434;color:#ecedeb}h1{font-size:23px;margin:0 0 4px}header p{margin:0;color:#c2cdc5}main{max-width:1100px;margin:auto;padding:28px 5vw}h2{font-size:12px;letter-spacing:1.3px;text-transform:uppercase;color:#626e65}section{margin:0 0 28px}.grid{display:flex;flex-wrap:wrap;gap:22px;padding:22px;background:#e1e3df;background-image:radial-gradient(#b9c1b8 .7px,transparent .7px);background-size:16px 16px;border:1px solid #bdc2bb;align-items:center}.notes{max-width:720px;color:#64705f}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#303434;color:#d7e5d9;padding:16px;max-height:290px;overflow:auto;font:11px/1.6 monospace}.toolbar{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:14px 0}.toolbar button{background:#e8ece2;border:1px solid #7f8980;border-radius:2px;padding:6px 12px;color:#303733}button:focus-visible,input:focus-visible{outline:2px solid #168793;outline-offset:3px}#load-status{font-weight:bold;color:#87552c}
+</style>
+</head>
+<body>
+<header><h1>Ultra / object studies</h1><p>UI component preview; no audio/runtime execution</p></header>
+<main>
+<p id="load-status" role="status">Loading UI modules. If this remains visible, open this page through the bundled Tauri assets or an authorized static server, not a file:// browser tab.</p>
+<section><h2>Objects and messages</h2><div class="grid" id="objects"></div><p class="notes">Edit text, then press Enter or leave the field to commit. Escape cancels. The arrow sends a message; editing alone never sends it. Numeric lists, “bang” and raw text are preview payloads, not a Max parser.</p></section>
+<section><h2>Values and indicators</h2><div class="grid" id="values"></div><p class="notes">Move the slider to update the preview meter. This is a local UI demonstration, not a measured audio level. A committed slider change is distinct from its drag/keyboard previews.</p></section>
+<section><h2>Ports</h2><div class="grid" id="ports"></div><p class="notes">Ports report connection intent only. There is no routing or cable editor on this page.</p></section>
+<div class="toolbar"><label><input id="disabled" type="checkbox"> Disable controls</label><button id="reset" type="button">Reset</button><button id="snapshot" type="button">Show state JSON</button><button id="clear" type="button">Clear event log</button></div>
+<section><h2>Local event log</h2><pre id="events" aria-label="Recent UI events">No events yet.</pre></section>
+<section><h2>Serializable state</h2><pre id="state" aria-label="Component state JSON">Choose “Show state JSON”.</pre></section>
+<noscript>This component preview requires JavaScript. It never runs audio.</noscript>
+</main><script type="module" src="components/lab.mjs"></script>
+</body></html>

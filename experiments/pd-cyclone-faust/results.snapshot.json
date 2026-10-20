@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "status": "pass",
+  "profile": "libpd-0.56.5-cyclone-0.9.4-faust-2.88.0",
+  "sample_rate": 48000,
+  "tick_frames": 64,
+  "channels": 3,
+  "oracle_frames": 1536,
+  "max_abs_error": 0.0,
+  "comparison": "same generated Faust voice, same host, aligned tick controls; bit-exact float comparison in C++",
+  "checks": [
+    {
+      "id": "exact_b_lifecycle_isolation",
+      "status": "pass"
+    },
+    {
+      "id": "same_dsp_tick_exact",
+      "status": "pass"
+    },
+    {
+      "id": "instance_and_reset",
+      "status": "pass"
+    },
+    {
+      "id": "stopped_replacement",
+      "status": "pass"
+    },
+    {
+      "id": "typed_dispatch_order",
+      "status": "pass"
+    },
+    {
+      "id": "subtick_ceil",
+      "status": "pass"
+    },
+    {
+      "id": "capacity_fail_closed",
+      "status": "pass"
+    },
+    {
+      "id": "tick_budget_fail_closed",
+      "status": "pass"
+    },
+    {
+      "id": "invalid_fail_closed",
+      "status": "pass"
+    },
+    {
+      "id": "same_frame_stable_order",
+      "status": "pass"
+    }
+  ],
+  "negative_controls": [
+    {
+      "removed_external": "alivevoice~.pd_linux",
+      "expected_failure": true,
+      "last_line": "FAIL Cyclone voice clip differs"
+    },
+    {
+      "removed_external": "cyclone/clip~.pd_linux",
+      "expected_failure": true,
+      "last_line": "FAIL Cyclone voice clip differs"
+    },
+    {
+      "removed_external": "cyclone/gate.pd_linux",
+      "expected_failure": true,
+      "last_line": "FAIL typed/order trace mismatch"
+    },
+    {
+      "removed_external": "cyclone/split.pd_linux",
+      "expected_failure": true,
+      "last_line": "FAIL typed/order trace mismatch"
+    }
+  ],
+  "dispatch_trace": [
+    "gate1:bang",
+    "gate1:float:3.500000",
+    "gate1:symbol:hello",
+    "gate1:list:f:2.000000,s:two",
+    "gate1:anything:custom:f:7.000000",
+    "gate2:float:9.000000",
+    "inside:float:3.000000",
+    "outside:float:10.000000",
+    "outside:float:-1.000000",
+    "right:bang",
+    "left:bang"
+  ],
+  "timing_cases": [
+    {
+      "requested_frame": "0",
+      "dispatch_frame": "0",
+      "first_nonzero_frame": "0",
+      "max_abs_error": "0"
+    },
+    {
+      "requested_frame": "1",
+      "dispatch_frame": "64",
+      "first_nonzero_frame": "64",
+      "max_abs_error": "0"
+    },
+    {
+      "requested_frame": "31",
+      "dispatch_frame": "64",
+      "first_nonzero_frame": "64",
+      "max_abs_error": "0"
+    },
+    {
+      "requested_frame": "63",
+      "dispatch_frame": "64",
+      "first_nonzero_frame": "64",
+      "max_abs_error": "0"
+    },
+    {
+      "requested_frame": "64",
+      "dispatch_frame": "64",
+      "first_nonzero_frame": "64",
+      "max_abs_error": "0"
+    },
+    {
+      "requested_frame": "65",
+      "dispatch_frame": "128",
+      "first_nonzero_frame": "128",
+      "max_abs_error": "0"
+    },
+    {
+      "requested_frame": "127",
+      "dispatch_frame": "128",
+      "first_nonzero_frame": "128",
+      "max_abs_error": "0"
+    }
+  ],
+  "audio_csv_sha256": "d0d04a9bd345d1f1c19f1a37cfa08c389b09e6a81c867e5d6abc733977007e6b",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+  "compiler": "c++ (Debian 14.2.0-19) 14.2.0",
+  "max_reference_status": "not supplied; no Max equivalence claimed",
+  "realtime_status": "not qualified; offline only; arbitrary Pd patch execution is not bounded",
+  "product_license": "undecided"
+}

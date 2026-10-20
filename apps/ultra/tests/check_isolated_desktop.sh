@@ -66,7 +66,9 @@ export AT_SPI_BUS_ADDRESS
 /usr/lib/at-spi2-registryd >"$ULTRA_TEST_OUTPUT_DIR/registry.log" 2>&1 &
 ultra_registry_pid=$!
 cd "$ROOT"
-bash apps/ultra/run.sh >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
+# Test the same build checked above, not run.sh's preferred packaged copy.
+LD_LIBRARY_PATH="$ROOT/apps/ultra/src-tauri/target/release${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+  "$ROOT/apps/ultra/src-tauri/target/release/ultra" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
 ultra_test_pid=$!
 export ULTRA_TEST_PID="$ultra_test_pid"
 python3 - <<'PY'

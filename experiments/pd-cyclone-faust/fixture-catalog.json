@@ -1,0 +1,389 @@
+{
+  "schema_version": 1,
+  "profile": "pd-cyclone-faust-offline",
+  "status": "executed-in-libpd-not-validated-against-Max",
+  "sample_rate": 48000,
+  "tick_frames": 64,
+  "runtime_graph": "voice.pd",
+  "result_path": "build/results.json",
+  "audio_path": "build/audio.csv",
+  "objects": [
+    {
+      "id": "alivevoice~",
+      "implementation": "custom Pd external wrapping unmodified Faust ReferenceVoice",
+      "max_equivalent": null,
+      "inlets": [
+        {
+          "type": "message",
+          "selectors": [
+            "freq",
+            "gain",
+            "gate",
+            "level",
+            "reset"
+          ]
+        }
+      ],
+      "outlets": [
+        {
+          "type": "signal"
+        }
+      ],
+      "parameters": {
+        "freq": {
+          "min": 20,
+          "max": 20000,
+          "default": 440,
+          "unit": "Hz"
+        },
+        "gain": {
+          "min": 0,
+          "max": 1,
+          "default": 0
+        },
+        "gate": {
+          "min": 0,
+          "max": 1,
+          "default": 0
+        },
+        "level": {
+          "min": 0,
+          "max": 1,
+          "default": 1
+        }
+      },
+      "notes": "Mono Voice only, not the four-voice reference host allocation/sustain policy. reset clears DSP and gate, retains freq/gain/level."
+    },
+    {
+      "id": "cyclone/gate",
+      "candidate_max_name": "gate",
+      "creation_arguments": [
+        2,
+        0
+      ],
+      "inlets": [
+        {
+          "index": 0,
+          "type": "number",
+          "role": "outlet selection, zero closes"
+        },
+        {
+          "index": 1,
+          "type": "message",
+          "role": "forwarded data"
+        }
+      ],
+      "outlets": [
+        {
+          "index": 0,
+          "type": "message"
+        },
+        {
+          "index": 1,
+          "type": "message"
+        }
+      ],
+      "tested_types": [
+        "bang",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "status": "candidate-unverified-in-Max"
+    },
+    {
+      "id": "cyclone/split",
+      "candidate_max_name": "split",
+      "creation_arguments": [
+        0,
+        10
+      ],
+      "inlets": [
+        {
+          "index": 0,
+          "type": "number",
+          "role": "value"
+        },
+        {
+          "index": 1,
+          "type": "number",
+          "role": "minimum"
+        },
+        {
+          "index": 2,
+          "type": "number",
+          "role": "maximum"
+        }
+      ],
+      "outlets": [
+        {
+          "index": 0,
+          "type": "number",
+          "role": "inside"
+        },
+        {
+          "index": 1,
+          "type": "number",
+          "role": "outside"
+        }
+      ],
+      "observed": "Classifies float before truncating toward zero. 3.75 -> inside 3; 10.5 -> outside 10; -1.5 -> outside -1.",
+      "status": "candidate-unverified-in-Max"
+    },
+    {
+      "id": "cyclone/clip~",
+      "candidate_max_name": "clip~",
+      "creation_arguments": [
+        -0.05,
+        0.05
+      ],
+      "inlets": [
+        {
+          "index": 0,
+          "type": "signal",
+          "role": "input"
+        },
+        {
+          "index": 1,
+          "type": "signal-or-number",
+          "role": "minimum"
+        },
+        {
+          "index": 2,
+          "type": "signal-or-number",
+          "role": "maximum"
+        }
+      ],
+      "outlets": [
+        {
+          "index": 0,
+          "type": "signal"
+        }
+      ],
+      "status": "candidate-unverified-in-Max",
+      "upstream_deprecated": true,
+      "notes": "Cyclone recommends Pd vanilla clip~ instead. Included deliberately to exercise real Cyclone signal code; not a recommendation to expose deprecated objects in a product."
+    },
+    {
+      "id": "trigger",
+      "candidate_max_name": "trigger",
+      "creation_arguments": [
+        "bang",
+        "bang"
+      ],
+      "implementation": "Pd vanilla t b b",
+      "observed": "Right outlet dispatch precedes left synchronously.",
+      "status": "candidate-unverified-in-Max"
+    }
+  ],
+  "message_fixture": {
+    "transport": "libpd calls on a selected instance; outputs captured by bound receive hooks before any audio tick",
+    "steps": [
+      {
+        "receiver": "gate_data",
+        "type": "bang",
+        "expect": []
+      },
+      {
+        "receiver": "gate_select",
+        "type": "float",
+        "value": 1,
+        "expect": []
+      },
+      {
+        "receiver": "gate_data",
+        "type": "bang",
+        "expect": [
+          "gate1:bang"
+        ]
+      },
+      {
+        "receiver": "gate_data",
+        "type": "float",
+        "value": 3.5,
+        "expect": [
+          "gate1:float:3.500000"
+        ]
+      },
+      {
+        "receiver": "gate_data",
+        "type": "symbol",
+        "value": "hello",
+        "expect": [
+          "gate1:symbol:hello"
+        ]
+      },
+      {
+        "receiver": "gate_data",
+        "type": "list",
+        "atoms": [
+          2,
+          "two"
+        ],
+        "expect": [
+          "gate1:list:f:2.000000,s:two"
+        ]
+      },
+      {
+        "receiver": "gate_data",
+        "type": "anything",
+        "selector": "custom",
+        "atoms": [
+          7
+        ],
+        "expect": [
+          "gate1:anything:custom:f:7.000000"
+        ]
+      },
+      {
+        "receiver": "gate_select",
+        "type": "float",
+        "value": 2,
+        "expect": []
+      },
+      {
+        "receiver": "gate_data",
+        "type": "float",
+        "value": 9,
+        "expect": [
+          "gate2:float:9.000000"
+        ]
+      },
+      {
+        "receiver": "split_data",
+        "type": "float",
+        "value": 3.75,
+        "expect": [
+          "inside:float:3.000000"
+        ]
+      },
+      {
+        "receiver": "split_data",
+        "type": "float",
+        "value": 10.5,
+        "expect": [
+          "outside:float:10.000000"
+        ]
+      },
+      {
+        "receiver": "split_data",
+        "type": "float",
+        "value": -1.5,
+        "expect": [
+          "outside:float:-1.000000"
+        ]
+      },
+      {
+        "receiver": "order",
+        "type": "bang",
+        "expect": [
+          "right:bang",
+          "left:bang"
+        ]
+      }
+    ]
+  },
+  "audio_fixture": {
+    "frames": 1536,
+    "channels": [
+      "raw Faust voice",
+      "Cyclone clip voice -0.05..0.05",
+      "Cyclone clip input -0.1..0.1"
+    ],
+    "input": "Each tick input[i]=(i-32)/64 for i=0..63",
+    "events": [
+      {
+        "frame": 0,
+        "freq": 440,
+        "gain": 0.8,
+        "gate": 1
+      },
+      {
+        "frame": 256,
+        "freq": 660
+      },
+      {
+        "frame": 512,
+        "level": 0.3
+      },
+      {
+        "frame": 768,
+        "gate": 0
+      },
+      {
+        "frame": 1024,
+        "reset": true
+      },
+      {
+        "frame": 1088,
+        "gate": 1
+      }
+    ],
+    "expected": "Raw voice bit-exact to direct ReferenceVoice. Channel 2 clamp(oracle,-.05,.05); channel 3 clamp(input,-.1,.1).",
+    "subtick_policy": "Direct libpd controls dispatch synchronously outside processing. The host Score policy deliberately ceils requests to 64-frame ticks; tested offsets 0/1/31/63/64/65/127 match exact oracle envelope/phase at quantized frames 0/64/64/64/64/128/128. No arbitrary sample-offset equivalence or causal FIFO adapter.",
+    "same_frame_order": "Insertion order: gate 1 then 0 is silent; gate 0 then 1 sounds.",
+    "timing_cases": [
+      {
+        "requested_frame": 0,
+        "dispatch_frame": 0,
+        "max_abs_error": 0
+      },
+      {
+        "requested_frame": 1,
+        "dispatch_frame": 64,
+        "max_abs_error": 0
+      },
+      {
+        "requested_frame": 31,
+        "dispatch_frame": 64,
+        "max_abs_error": 0
+      },
+      {
+        "requested_frame": 63,
+        "dispatch_frame": 64,
+        "max_abs_error": 0
+      },
+      {
+        "requested_frame": 64,
+        "dispatch_frame": 64,
+        "max_abs_error": 0
+      },
+      {
+        "requested_frame": 65,
+        "dispatch_frame": 128,
+        "max_abs_error": 0
+      },
+      {
+        "requested_frame": 127,
+        "dispatch_frame": 128,
+        "max_abs_error": 0
+      }
+    ]
+  },
+  "admission_contract": {
+    "capacity": 256,
+    "events_per_tick": 16,
+    "absolute_frame_horizon_inclusive": 480000,
+    "finite_values_only": true,
+    "sorted_nondecreasing_frames": true,
+    "failure": "Any invalid event, capacity overflow or 17 due events latches failed; cancels all pending work; clears voice before next tick; future pushes reject. New Score recovers only after pending reset applied.",
+    "scope": "Offline internal fixture score of scalar voice controls, not a general typed-message RT queue; dispatch traces bypass it with a fixed tiny test sequence."
+  },
+  "excluded": [
+    "arbitrary Max patches",
+    "Max binary compatibility",
+    "Max JSON import",
+    "LOM/live.*",
+    "gen~",
+    "presentation mode",
+    "deferred/low-priority Max scheduling",
+    "pointer atoms",
+    "integer-vs-float Max parity",
+    "all Cyclone objects",
+    "arbitrary Pd graph bounds",
+    "realtime callback qualification",
+    "hardware latency",
+    "four-voice MIDI/sustain policy parity"
+  ]
+}
