@@ -2,20 +2,20 @@
 
 Updated: 2026-10-20.
 
-Status: documentation-led architecture research with runnable offline experiments. There is still no production DAW engine/editor or Live/Max compatibility implementation. Experiment build and execution evidence is listed below; physical Linux audio/MIDI latency, concurrent live editing, and browser execution remain unvalidated. This plan makes no delivery-date or broad compatibility claim.
+Status: architecture research, a constrained Clockwork/Faust host, and an early Rust/Tauri Ultra patch-editor test build. There is no production DAW or Live/Max compatibility implementation. Native/offline and build evidence is distinguished below from unverified desktop interaction, physical audio/MIDI latency and realtime performance. This plan makes no delivery-date or broad compatibility claim.
 
 ## Current Recommendation
 
-**Decision: perform one narrowly scoped Clockwork host-hardening experiment before choosing the production foundation.** Faust + Clockwork is now the leading reuse candidate, not an untested alternative rejected in favor of writing our own host. Keep the direct Faust path as the deterministic oracle and fallback. Do not start a general custom scheduler/engine while the concrete Clockwork gaps below remain small enough to test directly.
+**Pursue Faust + Clockwork through the constrained Ultra adapter, with Rust + Tauri as the desktop application stack.** The requested hardening is implemented and an early node-based Ultra test app builds. Keep the direct Faust path as the deterministic oracle; do not replace Clockwork with a new generic host/scheduler merely because the raw embedding API needs constraints.
 
-1. Keep **one host timeline with separate Alive session and Ultra patch models**. A real Ultra guest containing the same Faust DSP now executes through Clockwork's client, timed store and embedding path. Direct-reference output, sample-offset events and logical-device isolation can be tested without adopting scsynth.
-2. **Do not call the current pin production-ready.** Its embedding input timeline depends on host partitions; a successful ring send does not guarantee scheduler admission, so a lost note-off can leave an accepted note sounding. Public embed attachment can report OK after a guest refuses configuration, and closing a handle is not guest destruction. These measured/source-backed host contracts need explicit treatment.
-3. The next bounded gate is an **input-causal, admission-safe Clockwork adapter** at the same pin or an explicitly justified fix revision: one declared input delay across all partitions; acknowledgment or an enforceable reservation/admission protocol for future events and termination; bounded due-work/packet budgets; and explicit guest-ready/stopped-teardown reporting. Re-run the current characterization fixtures as correctness regressions. No UI, general graph editor, arbitrary plugin host or compatibility expansion belongs in that experiment.
-4. **Preserve normal held-note/sustain semantics.** The experimental 2,048-frame note lease demonstrates one safety tradeoff but is off by default and not an acceptable hidden fix for dropped terminations. Keep libpd as a separate Pd profile; its exact future-on/rejected-off regression is fixed with latched fail-closed score invalidation.
-5. **Validate native MIDI and hardware separately.** The current native MIDI payload already carries an OS-arrival timestamp mapped to the engine clock; verify its interpretation and calibration before requiring a new ingress adapter. Continue the controlled JACK-on-PipeWire/native `pw_filter` comparison when a physical host integration is built. Neither synthetic OSC nor headless rendering establishes physical latency or realtime deadlines.
-6. **Keep licensing undecided and attribute it to the actual build.** This custom headless guest uses Clockwork's AGPL/commercial-licensed core, not scsynth, Smoothie, optional Link, ASIO or a plugin bridge. Faust-generated code/library/architecture terms remain separate. A future scsynth/Supersonic runtime is a different synthesis and licensing decision, not a dependency of Faust + Clockwork.
+1. **Start with Ultra's patching interface.** The local Tauri webview provides original compact object boxes, ports/cables, embedded keyboards and gain controls inspired by the supplied Max-style reference. Rust owns native commands and authoritative validation. SoundCraft supplies loose model/command-layer ideas, not copied code or its egui UI stack.
+2. **Use the tested constrained host contract.** Complete aligned 64-frame Clockwork calls behind a causal adapter provide one declared 64-frame delay across arbitrary input/output partitions. Exclusive ingress, 16 events per engine block, bounded queues/horizon and readiness checks avoid the raw-host admission/initialization gaps within this application profile.
+3. **Fail visibly and safely, not silently.** Rejected termination, invalid admission or panic globally mutes and invalidates future work until stopped restart. Ordinary held notes/sustain have no lease. This sacrifices continuity/per-device fault isolation under overload, but does not leave an accepted future note rearming after its off was rejected. Normal A reset/parameter changes preserve B.
+4. **Keep the first patch subset honest.** Two four-voice Faust instruments and two supported note→voice→gain→output chains are implemented. Moving/reconnecting objects edits actual route state, not arbitrary generated DSP. General patch compilation, Max/Pd compatibility, live code loading, a full device library and the Alive DAW remain separate future work.
+5. **Treat the downloadable build as a research test app.** Rust/Tauri and native binaries compile; core/offline audio, graph validation, negative controls and backend ABI tests pass. Desktop-window interaction, real JACK/MIDI hardware, physical latency and realtime deadlines remain unverified in this environment. The Linux binary has explicit runtime requirements, not universal portability.
+6. **Keep product licensing undecided.** The app's actual native core uses Clockwork's existing AGPL/commercial-licensed code with audited Faust-generated DSP; no commercial agreement is assumed. Rust/Tauri and system JACK/GTK/WebKit terms are separate. scsynth/Supersonic and its costs are not part of this custom Faust guest.
 
-Clockwork demonstrably removes work we would otherwise own around timed storage/delivery, client/ring plumbing, shared-memory layout, memory infrastructure and telemetry. Ultra still owns musical/device/voice semantics, Faust span scheduling, per-device generations, quotas/termination, prepared replacements, serialization and UI. Reuse is valuable, but it does not eliminate those responsibilities. The research result is therefore a concrete narrowing of the foundation decision, not a claim that either direct hosting or Clockwork has already passed the Linux product gate.
+Clockwork supplies the real ring/timed store, engine clock, memory infrastructure and host substrate. Ultra supplies bounded ingress, causal adaptation, device/voice/parameter semantics, the patch document/UI, graph validation, explicit fault UX and stopped lifecycle ownership. Next evaluate the interface and native setup on the user's Linux desktop, then measure the declared workload and extend the graph subset deliberately. Raw-upstream failure fixtures remain useful regression evidence, not claims that every Clockwork caller has been hardened.
 
 ## Product Goal
 
@@ -31,7 +31,7 @@ Implement compatibility through documented behavior, independent implementations
 
 The first performance milestone is a small native instrument played from a MIDI controller on Linux. Use deterministic oscillator/envelope/gain DSP with preallocated voices so that instrument complexity does not obscure backend and scheduling behavior. Cover note-on/off, velocity, sustain, voice exhaustion, and all-notes-off. Timestamp MIDI at the earliest reliable ingress point, map it onto the audio timeline, and apply events at defined sample offsets.
 
-The first product milestone adds a minimal interface, a MIDI clip, parameter automation, and native save/reopen around that instrument. A command interface reproduces the same operations. Audio-loop launching is the next workflow expansion. Existing Live project import and Max compatibility remain separate research tracks unless they become explicit first-release requirements.
+The first interactive slice is now Ultra: a Rust/Tauri patching interface around the validated instrument, with a deliberately limited graph/document model and native command layer. First validate that editor and hardware playback on the target desktop. The later Alive product milestone adds MIDI clips, automation, native save/reopen and audio-loop launching using the same foundation. Existing Live project import and Max compatibility remain separate research tracks, not claims made by the test app.
 
 | Area | Initial Scope | Expansion Path |
 | --- | --- | --- |
@@ -46,7 +46,7 @@ Select the initial Linux audio/MIDI integration and pin its dependencies through
 
 ## Architecture and Ownership
 
-The recommended architecture is a shared realtime foundation with separate session and patch authoring models. "Shared" describes ownership and timing, not a requirement to implement the foundation ourselves. Actual Clockwork-hosted Faust execution now supports further host reuse rather than prematurely selecting a custom foundation. The remaining input/admission/lifecycle gates are explicit below. The direct Faust and Clockwork/Faust paths share DSP/policy for exact comparison; the Pd fixture remains a different execution profile and does not establish cross-runtime waveform equivalence.
+The recommended architecture is a shared realtime foundation with separate session and patch authoring models. "Shared" describes ownership and timing, not a requirement to implement the foundation ourselves. Actual Clockwork-hosted Faust execution and the constrained adapter now support a first Ultra test application rather than a new custom foundation. The app hardens its own bounded input/admission/lifecycle path; raw-upstream and production/hardware limits remain explicit below. The direct Faust and Clockwork/Faust paths share DSP/policy for exact comparison; the Pd fixture remains a different execution profile and does not establish cross-runtime waveform equivalence.
 
 | Component | Responsibility |
 | --- | --- |
@@ -79,7 +79,7 @@ flowchart LR
     Standalone[Ultra standalone host] --> Engine
 ```
 
-A single repository with focused modules is the recommended starting organization. Rust is a candidate for new host/model code; C/C++ libraries, their build systems, and a narrow audited FFI are acceptable when reuse wins. Compare Faust's generated Rust and C++ paths rather than choosing an engine by language. Keep the initial shared contracts small and extract reusable machinery from the instrument/patch experiment. Separate processes are a separate fault-isolation decision, especially for external plugins; they do not inherently imply an extra audio block, but their scheduling, buffering, and recovery costs require measurement. Separate repositories, release cycles, dynamic loading, or a stable ABI need demonstrated consumers. An internal Rust trait is not a stable plugin ABI.
+A single repository with focused modules is the recommended starting organization. Rust + Tauri is the selected application/control/UI-shell stack. Existing C/C++ Clockwork/Faust libraries remain behind a narrow reviewed native boundary; this does not require rewriting mature DSP in Rust. Compare Faust's generated Rust and C++ paths rather than choosing an engine by language. Keep the initial shared contracts small and extract reusable machinery from the instrument/patch experiment. Separate processes are a separate fault-isolation decision, especially for external plugins; they do not inherently imply an extra audio block, but their scheduling, buffering, and recovery costs require measurement. Separate repositories, release cycles, dynamic loading, or a stable ABI need demonstrated consumers. An internal Rust trait is not a stable plugin ABI.
 
 ### Repository Setup
 
@@ -96,7 +96,7 @@ Ultra is a common authoring/device experience, not a claim that Faust DSP, Pd pa
 | Foundation | What it buys | Work and coupling retained | Counter-evidence that would change the decision |
 | --- | --- | --- | --- |
 | Direct host + AOT Faust; optional libpd profile | Executed deterministic oracle and fallback; simple buffer/event control | Would require owning transport/queues/lifecycle/observability that Clockwork can reuse; hardware still untested | Select as production fallback only if the bounded Clockwork hardening gate fails or its licensing/integration cost outweighs demonstrated reuse |
-| Clockwork hosting the custom Ultra/Faust guest | Actual hosted output/timing/isolation evidence; real scheduler/client/memory/telemetry reuse, related web boundary | Partition-dependent input mapping, scheduler admission/termination and due-work budgets, explicit readiness/teardown; Ultra-owned device/state semantics | Leading reuse candidate, pending the narrowly scoped input-causal/admission-safe adapter gate, then native MIDI/hardware validation |
+| Clockwork hosting the custom Ultra/Faust guest | Actual hosted output/timing/isolation evidence; real scheduler/client/memory/telemetry reuse, related web boundary | Partition-dependent input mapping, scheduler admission/termination and due-work budgets, explicit readiness/teardown; Ultra-owned device/state semantics | Constrained adapter passes its offline input/admission/lifecycle gate and is used by the Ultra test build; desktop interaction and native hardware/deadline qualification remain |
 | Supersonic/scsynth synthesis core | SC graph, buses, SynthDefs and UGen ecosystem; concrete Clockwork guest | SC-specific semantics, unsupported UGens/media, inline heavy command stages, shared resources and GPL/AGPL scope | Prefer if actual SC workflows remove substantial engine work and product licensing permits it, while preloaded/budgeted edits pass tail/deadline and isolation tests |
 
 Separate engines behind a bridge remain a fault/isolation option, not an automatic extra-block requirement. A fully unified session/patch model is not justified by either experiment: it couples authoring semantics without solving MIDI clocks, runtime locks, or lifecycle. Keep the initial repository and internal contract small; no stable external ABI is established.
@@ -126,7 +126,7 @@ Disproof gates: render offsets 0,1,31,63,64,127; compare segmented vs one-sample
 Rust sources at the same inspection pin:
 https://github.com/grame-cncm/faust/blob/0883a5e457f636c3ca53b3e03237fdee66881241/architecture/rust/README.md
 https://github.com/grame-cncm/faust/blob/0883a5e457f636c3ca53b3e03237fdee66881241/architecture/rust/minimal.rs
-Rust output is an actual supported compiler target, not a reason to wrap C++ by default. The inspected FaustDsp trait uses mutable-self compute with borrowed input/output slices and ParamIndex get/set methods; C++ uses UI-exposed zones and planar pointer arrays. Neither API supplies Alive's event/lifetime contract. Rust's architecture README warns large DSP structs can overflow the stack through Box::new(Dsp::new()) in debug builds; generated projects support default-boxed 0.2.0 for direct heap initialization. Allocate/initialize off render regardless. Rust borrow checking helps owner discipline, but FFI to libpd, OS callbacks and generated/static storage still need audit; no language proves deadline bounds. In fact, the actual source-only `generated/voice.rs` from Faust 2.88.0 uses a `std::sync::RwLock` around its shared oscillator table, including a read lock inside `compute`. Do not infer a lock-free Rust render path from the language or the C++ result; this generated path requires its own redesign/validation before realtime adoption. C++ has broader existing architecture coverage and integrates the C libpd probe with less tooling. Choose C++ for this disposable probe only, without selecting production language. Before choosing production, generate both from identical source/compiler flags, compare event/envelope output within declared float tolerance, maximum callback time, code size/build time, initialization memory and static/table behavior. Compare debug and release initialization; do not compare different optimization/SIMD settings then attribute differences to language. The inspected Rust minimal architecture is GPL-3.0-or-later WITH an unmodified-architecture larger-work exception, not the same base license as C++ dsp.h.
+Rust output is an actual supported compiler target, not a reason to wrap C++ by default. The inspected FaustDsp trait uses mutable-self compute with borrowed input/output slices and ParamIndex get/set methods; C++ uses UI-exposed zones and planar pointer arrays. Neither API supplies Alive's event/lifetime contract. Rust's architecture README warns large DSP structs can overflow the stack through Box::new(Dsp::new()) in debug builds; generated projects support default-boxed 0.2.0 for direct heap initialization. Allocate/initialize off render regardless. Rust borrow checking helps owner discipline, but FFI to libpd, OS callbacks and generated/static storage still need audit; no language proves deadline bounds. In fact, the actual source-only `generated/voice.rs` from Faust 2.88.0 uses a `std::sync::RwLock` around its shared oscillator table, including a read lock inside `compute`. Do not infer a lock-free Rust render path from the language or the C++ result; this generated path requires its own redesign/validation before realtime adoption. C++ has broader existing architecture coverage and integrates the C libpd probe with less tooling. The application stack is now explicitly Rust/Tauri, with C++ Clockwork/Faust reached through reviewed FFI. That does not make the source-only generated Rust DSP a validated replacement. Before any such DSP migration, generate both from identical source/compiler flags and compare event/envelope output, callback cost, code/build size, initialization memory and static/table behavior. Compare debug and release initialization; do not compare different optimization/SIMD settings then attribute differences to language. The inspected Rust minimal architecture is GPL-3.0-or-later WITH an unmodified-architecture larger-work exception, not the same base license as C++ dsp.h.
 
 ### Pd/libpd: Explicit Execution Profile
 Use libpd_init, libpd_new_instance, libpd_set_instance, libpd_init_audio, libpd_openfile, DSP-on message, libpd_process_float or raw, then close/free off render. MULTI=true sets both PDINSTANCE and PDTHREADS; without it new_instance returns NULL and set_instance does nothing. Query blocksize rather than baking in 64. A patch handle and $0 namespace are not equivalent to an independent Pd runtime; test both separate instances with identical receiver symbols and same-instance $0-qualified patches.
@@ -245,7 +245,7 @@ For both: test secure-context deployment, audio resume after user gesture, Web M
 Probe each on the actual supported browser/version, recording sample rate, actual callback lengths, `baseLatency`/`outputLatency` if available (null when not), startup/resume outcome, MIDI permission/support and timestamp-clock mapping. Browser automation can validate rendered offsets and state transitions; live controller-to-analog latency needs calibrated hardware. Keep native externals, arbitrary SC plugins, DAW disk streaming and complete Live/Max compatibility outside this web subset. Reuse DSP source and versioned parameter/preset/dependency data, not raw native engine memory. No browser implementation is necessary to accept the current Linux research conclusion.
 
 ### Foundation Decision Gates
-The current decision is the narrow Clockwork hardening gate in Current Recommendation. Actual hosted comparisons establish a useful common DSP boundary; they do not excuse failed termination or partition-dependent input behavior. Retain direct Faust as oracle/fallback. Select Supersonic only for a separately justified SC graph/UGen requirement and compatible licensing; its heavy-command behavior is not an inherent cost of a custom Clockwork guest. Keep Pd semantics and locks in the optional Pd profile. Reject or revise the candidate on the following concrete gates rather than on implementation size alone.
+The current application uses the bounded Clockwork adapter described under Ultra Test Application. Its causal buffering/admission proof addresses the earlier raw-host gaps within one exclusive-client configuration; it does not excuse unsafe raw calls or establish hardware deadlines. Retain direct Faust as oracle/fallback. Select Supersonic only for a separately justified SC graph/UGen requirement and compatible licensing; its heavy-command behavior is not an inherent cost of a custom Clockwork guest. Keep Pd semantics and locks in the optional Pd profile. Reject or revise the candidate on the following concrete gates rather than on implementation size alone.
 
 
 
@@ -457,6 +457,92 @@ Physical I/O does not provide media decoding, resampling, prefetch, disk streami
 
 Evaluate CPAL against the selected platform using a pinned version, supported sample formats/rates, callback-length handling, device-loss recovery, and observable xruns. Keep another backend possible through the adapter. The existing Wine/PipeASIO observation is not evidence of native backend latency or production audio quality.
 
+## Ultra Test Application: Rust + Tauri
+
+Ultra is the first interactive test slice. The desktop shell and command/patch validation layer are Rust + Tauri; the original node canvas is embedded in the local webview. The native bridge hosts the actual constrained Clockwork/Faust engine. It is not a remotely hosted page, a localhost HTTP app, a WebAudio mock, or a complete Max/Pd implementation.
+
+The visual direction follows the supplied patcher reference: a light-gray work area, compact dark object headers, visible inlets/outlets, signal/control cables, embedded keyboards and gain controls. SoundCraft is a **loose architecture reference** for a pure-data model and shared command layer, not the UI/framework or engine base. Its inspected revision `25d52c646aea780c8076ff966076f994ad256221` uses egui, whereas Ultra deliberately uses Tauri. See [model](https://github.com/storytold/soundcraft/blob/25d52c646aea780c8076ff966076f994ad256221/crates/model/src/lib.rs), [commands](https://github.com/storytold/soundcraft/blob/25d52c646aea780c8076ff966076f994ad256221/crates/engine/src/lib.rs), and [notices](https://github.com/storytold/soundcraft/blob/25d52c646aea780c8076ff966076f994ad256221/NOTICE). No SoundCraft implementation, images, name or branding is incorporated.
+
+### Current Interactive Scope
+
+The starter patch contains two independent chains:
+
+```text
+note.in → faust.voice~ → gain~ → audio.out~
+```
+
+- Drag/select/delete objects, connect/disconnect compatible ports, inspect a selection, and restore supported objects from the palette. There is at most one of each of the four object types per device, eight objects and six connections total.
+- Keyboard/pointer notes, sustain and gain control the native guest. Device A is MIDI channel 1 / left output; B is MIDI channel 2 / right output. Each has four prepared sine/ASR voices and deterministic oldest-voice stealing.
+- Rust validates route structure and IDs independently of the frontend. Only complete same-device chains enable output; incomplete routes are muted and invalid patches mute both routes. Cables affect these actual routing masks, but do not compile arbitrary DSP algorithms. Unsupported graphs are rejected, not approximated as compatible Max patches.
+- Start/Stop/Panic and status expose native readiness, fault state, frames, rejected events, JACK period and xruns. These are real counters, not simulated meters. Normal key/pointer release, sustain release and focus loss send releases/all-off. Panic and overload are visible safety stops requiring Stop/Start.
+- Patch JSON stores the supported nodes, connections, layout and gain values. Import validates size/version/bounds; export has an explicit text fallback rather than promising unverified webview downloads. No undo stack, autosave, arbitrary Faust source editing, device catalog, dynamic patch compilation or Max/Pd file import is implemented.
+- A browser-only preview explicitly reports no native engine and does not synthesize fake audio. The delivered desktop executable embeds the UI and uses native IPC.
+
+### Native Host and Safety Contract
+
+The application uses the same pinned Clockwork/Faust source behind `apps/ultra/core`, without modifying upstream Clockwork. Its constrained adapter, rather than every possible raw Clockwork caller, now meets the tested safety/correctness gates:
+
+| Prior raw-host gap | Constrained application behavior | Remaining tradeoff |
+| --- | --- | --- |
+| Input timing varies with arbitrary embed partitions | Gather a complete 64-frame input block and return the preceding output block; call actual embedding only with complete aligned blocks | A declared fixed **64-frame delay applies to all output**, including instruments: 1.333 ms at 48 kHz. This is not zero latency or measured physical latency |
+| Ring/store rejection can lose note termination | Exclusive private client, bounded packets, 64 pending scheduled events, maximum 1,024-frame horizon and 16 events per engine block; send only the immediately rendered block | Admission failure globally mutes and invalidates pending future work until stopped restart. An overloaded A can silence B; continuity and per-device failure isolation are not promised |
+| Unbounded due burst relative to guest capacity | No external/raw OSC ingress; at most 16 packets enter before each actual 64-frame tick, below the upstream 32-ring-frame drain and 512-store-slot capacities | Proof depends on exclusive trusted application ownership. It does not fix the upstream scheduler for arbitrary additional clients |
+| Guest refusal can leave attach success | Exact 48 kHz / 64-frame geometry and an explicit guest-ready check before exposing ready state | Other sample rates are refused; no live sample-rate migration |
+| Handle close does not destroy guest | Stop/deactivate callbacks, close the client/handle and invoke the native internal teardown path outside render | Relies on this pinned internal boundary; no arbitrary concurrent reclamation or hot compilation |
+
+The UI queue and callback-owned scheduled queue each have fixed capacity 64; they are separate storage, not a single shared 64-event total. The callback snapshots producer head once, so draining cannot chase an unbounded producer. The native MIDI callback is the sole producer into Clockwork; serialized control/UI input crosses the SPSC queue. UI enqueue success is not a guarantee that its later block-budget check succeeds: a failure is surfaced by a sticky fault and silence. There is no per-note expiry lease; held/sustained notes remain valid while the session is healthy.
+
+Control locks, graph validation, initialization, dependency preparation and destruction stay outside render. Status/panic use lock-free scalar atomics. Native app startup/exit is serialized; exceptions are contained at C ABI boundaries. Equal-time MIDI is submitted before pending UI events, a deterministic implementation order rather than a claim about physical arrival order. The finite research guest counter deliberately safety-stops before about 12.43 hours at 48 kHz; restart resets it. This is not unlimited uptime validation.
+
+### Audio Backend and User Testing
+
+The native app dynamically opens `libjack.so.0` with **NoStartServer**, creates two output ports and one MIDI input, and attempts to connect the first two physical playback ports. It never starts a daemon, changes system/server settings or captures a microphone. Use an existing 48 kHz JACK server, or the installed PipeWire JACK compatibility environment (`pw-jack`). Supported JACK period is at most 1,024 frames; other rates/oversized callbacks fail visibly and remain silent.
+
+JACK MIDI sample offsets are retained through the constrained core. Note on/off, velocity, CC64 sustain and CC120/123 termination are supported for channels 1/2. Browser/typing-key input has control-path timing, not physical MIDI timestamp evidence. The declared 64-frame adapter delay is reported in status and JACK latency metadata; total audio-interface/MIDI latency is still unmeasured.
+
+The Linux x86_64 binary is a research test build, not a universal AppImage. Actual ELF symbol floors are **GLIBC 2.39** and, for the native library, **GLIBCXX 3.4.31**, with GTK3/WebKitGTK 4.1 runtime dependencies. A matching modern Linux desktop is required. The launcher checks missing libraries and prints diagnostics without installing anything. A source/build bundle is provided for rebuilding on the user's distribution. Distribution/version compatibility must be verified on the target machine, not inferred from the web client or cloud compiler.
+
+Run instructions are packaged in `apps/ultra/RUNNING.txt`; actual third-party terms are in `apps/ultra/THIRD-PARTY.txt`. These are application instructions/notices, not separate research plans. Core/planning conclusions remain here.
+
+### Build and Validation Evidence
+
+Builds use the existing checksum-pinned Clockwork/Faust/CMake/Rust inputs, plus a checked-in app Cargo.lock: Tauri 2.8.5, tauri-build 2.4.1, compatible tauri-runtime 2.8.0 / runtime-wry 2.8.1, serde 1.0.228 and serde_json 1.0.145. The native compiler is GCC/G++ 14.2.0. GTK 3.24.49 / WebKitGTK 4.1 2.52.6 prerequisites were extracted from verified official Debian packages for this build, not installed into the system. The normal source build expects the target distro's official Tauri development prerequisites. This is a pinned source/lockfile build, not a hermetic OS image.
+
+```sh
+# Repository root, after installing the target distro's development prerequisites:
+bash apps/ultra/build.sh --native-only
+bash apps/ultra/build.sh
+bash apps/ultra/run.sh
+
+# Core tests and isolated deliberate-fault controls:
+bash experiments/clockwork-hardening/run.sh
+bash experiments/clockwork-hardening/sanitize.sh
+python3 experiments/clockwork-hardening/mutation.py
+
+# Pure patch-model validation:
+node apps/ultra/ui/graph.test.mjs
+node --check apps/ultra/ui/app.mjs
+```
+
+| Evidence | Observed result / limitation |
+| --- | --- |
+| Hardened real-host signal/timing | Direct reference exactly reproduced after the declared 64-frame delay, including original score, equal-time ordering and offsets 0/1/31/63/64/127 across host partitions 1/32/64/128/256 and irregular 1/31/63/64/127/3/17 |
+| Input adapter | Eleven labeled impulses match `input[frame-64]` for every output frame at all six partitions; no partition-dependent shift/loss/duplication |
+| Admission/termination | Per-block 16, scheduled 64, UI 64 capacity and active/future rejected-off failures latch visible fault/silence. Accepted future notes do not rearm a failed engine |
+| Sustained work/lifecycle | 32,000 real scheduler deliveries across 2,000 blocks, maximum 16 guest callbacks/pending events per tested block; long held sustain without lease; normal A reset preserves B exactly; 20 clean same-process lifetimes/restarts including pending-note cancellation |
+| Instrumentation/sanitizers | No observed render allocations/frees/pthread mutex locks in instrumented cases. C/C++ ASan+UBSan pass; Rust library uninstrumented and leak detection disabled under ptrace. Same interception/coverage limits as the characterization fixture |
+| Negative controls | Isolated +1-frame timestamp mutation fails exact output oracle; discarded fault latch fails rejected-off/accepted-on silence. Production sources remain unchanged by mutation runs |
+| Original regressions | Existing direct Faust/libpd suites and all 50 raw Clockwork characterization cases still pass their assertions; raw-host unsafe cases remain explicit, not erased by the constrained wrapper |
+| Native app build | Actual Rust/Tauri release executable, native shared library and offline diagnostic compile successfully |
+| Offline native audio | Actual Clockwork/Faust two-second stereo WAV: 96,000 frames at 48 kHz, note onsets A64/B95, finite signal and exact silent release tail |
+| Rust/frontend graph validation | Five Rust validation tests and JS graph/syntax checks pass; source review found/fixed startup-status, identifier-bound and reconnect-gain inconsistencies |
+| Backend unit test double | Explicit fake-JACK ABI callback tests verify offsets, independent termination, refusal of unsupported rate/period and overload silence. **Not actual JACK-server execution**; fake library never belongs in the app launcher/binary package |
+| Native window / browser interaction | Executable loads dependencies but actual GTK window could not run without a display. Browser file preview and local-server route were denied by environment policy; no bypass used. No rendered UI screenshot or interaction-pass claim |
+| Real audio/MIDI server / hardware | Actual JACK dummy-server start was blocked by socket permissions. Physical MIDI/audio, realtime deadlines, xrun behavior and target-desktop interaction remain for user/local testing |
+
+A successful compiled app and offline waveform are not proof of target-device usability or production performance. The test build is appropriate for checking the initial Ultra interface and native setup on a matching desktop; keep the PR in draft and retain the explicit limitations above.
+
+
 ## Research Experiments and Local Handoff
 
 The following are small research fixtures, not production device APIs. All execution was on Linux x86_64, kernel 6.18.55, g++ 14.2.0 (Debian 14.2.0-19), Python 3.12.14 on 2026-10-20. No physical device, MIDI controller, browser, realtime priority, or target-machine benchmark was used. Neither upstream's complete test suite nor arbitrary patches/externals were validated.
@@ -605,7 +691,7 @@ The observed 256 scheduled callbacks in one block proves that a guest queue limi
 
 This implementation provides a working, evidence-backed custom-guest path. It does not implement arbitrary Faust compilation during playback, dynamic patch dependencies, multiple simultaneous engine instances, transparent persistence/migration, concurrent bank preparation/reclamation, browser execution, or native audio/MIDI devices. The preprepared spare is a bounded one-replacement-per-device case. The internal stopped destructor test does not imply that public `embed_close` releases the engine.
 
-Next, make the existing characterization cases fail on unsafe behavior rather than expect it: a declared fixed-delay input adapter; acknowledged/reserved termination-safe scheduled admission and bounded due work; and explicit guest-ready/stopped-shutdown reporting. Retain indefinite sustain with lease OFF. If these narrow fixes pass the same exact-output/isolation cases and measured local deadlines, pursue Faust + Clockwork as the shared foundation. If not, use the direct host fallback with documented evidence for the infrastructure it must replace. This is the current additional-experiment decision, not permission to expand into the DAW/editor now.
+The subsequent constrained adapter and its separate regression suite now establish fixed-delay input/output, exclusive bounded admission with fail-closed termination, explicit readiness and stopped teardown for the Ultra test app. The original characterization cases remain unchanged so unsafe unrestricted calls stay visible. Indefinite sustain is preserved with lease OFF; local hardware deadlines and general live graph editing are still not established. See Ultra Test Application for the actual current scope rather than treating this raw-host characterization as an unresolved app implementation.
 
 
 ### Evidence Status Summary
@@ -615,10 +701,10 @@ Next, make the existing characterization cases fail on unsafe behavior rather th
 | Faust-generated C++ instrument | Built and executed offline, deterministic assertions passed |
 | Faust-generated Rust | Generated source only; not compiled/run |
 | libpd real runtime adapter | Built and executed offline, deterministic assertions passed |
-| Native JACK/PipeWire/CPAL/ALSA integration | Documentation/source audit and local protocol only; no backend build or physical run |
+| Native backend integration | JACK app bridge compiled; offline and explicit fake-JACK ABI tests executed. No real JACK server or physical run; other backends remain source/protocol only |
 | Clockwork with custom Faust guest | Actual native/headless host + scheduler built/executed; 50 characterization cases include explicit failed adoption criteria |
 | Supersonic/scsynth | Pinned source audit only, not built or executed |
-| Browser instrument | Scoped documentation/probe design only, not run |
+| Browser DSP / native UI | AudioWorklet/WASM DSP remains source-only. Tauri desktop app compiles; actual window interaction not run in the cloud environment |
 | Physical 64/128-frame latency/realtime acceptance | Not run; requires actual hardware and calibration |
 | Live/Max compatibility | Supplied reference observations only, not reproduced |
 
@@ -626,10 +712,10 @@ Next, make the existing characterization cases fail on unsafe behavior rather th
 ### Remaining Decisions Before Product Implementation
 
 - Review the research recommendation and decide the acceptable licensing strategy before committing to a GPL/AGPL-bound foundation. No license or commercial agreement is selected by this PR.
-- First resolve the narrowly scoped Clockwork input/admission/readiness gate. Then build the physical host integration and compare the proposed JACK-on-PipeWire/native `pw_filter` paths using the protocol above. Native Clockwork device support is a further explicit build configuration, not established by the no-device fixture. No device access or system tuning was attempted here.
+- Test the built Rust/Tauri Ultra slice on the actual Linux desktop. The constrained Clockwork gate is implemented; real JACK/MIDI interaction and hardware/deadline measurements are pending. Compare native `pw_filter` only after the initial JACK path is qualified. No system/server settings were changed by the build or launcher.
 - Clockwork-hosted render allocation/mutex interception and fixed preprepared per-device replacement are now measured in narrow offline cases. Full concurrency/state capture/reclamation, callback-tail load/deadline tests and physical recovery remain unvalidated. The libpd loader stays stopped/offline; its global lock is not fixed by either experiment.
 - Pd waveform/preset semantics intentionally differ from Faust. An identical Faust-generated Pd external and shared-score comparison would be a separate useful follow-up if patch-authored equivalence becomes a gate. Do not call the current native Pd graph a Faust-equivalent instrument or claim Max compatibility.
-- Rust versus C++ for production host/DSP integration remains open; the C++ research fixtures do not select it. Verify bindings and compare emitted-code/build maintenance before extending the prototype.
+- Rust/Tauri is selected for the app/control layer. Keep the C++ DSP/host FFI narrow and validated; generated Rust DSP remains an optional separate comparison, not a reason to change the chosen application stack.
 - Browser implementation is deferred: the documented FaustWasm-first protocol is ready, but no browser code was run. Physical Web MIDI, native MIDI, realtime privileges and Live/Max reference behavior require local evidence.
 - Select the target Live version/edition and permitted clean-room evidence before compatibility implementation. Preserve the supplied observations below as observations, not newly reproduced results.
 
@@ -641,7 +727,7 @@ Milestones are acceptance gates, not dates. The import and Ultra experiments can
 | --- | --- | --- | --- |
 | Architecture, reuse, and Linux research | Select a foundation candidate and shortlist audio/MIDI integrations, with licensing implications explicit | Linux-first and live MIDI-instrument priorities; Faust/Pd/SC/Supersonic comparison | Source-cited comparisons, minimal offline/reference and runtime-adapter experiments with actual validation status, timing/ownership contracts, dependency/license matrix, local benchmark protocol |
 | Native MIDI performance probe | Play a bounded native instrument from live MIDI | Backend shortlist, timestamp mapping, minimal processing contract | Latency/jitter/deadline measurements, voice and burst tests, queue-overflow and note-lifecycle behavior |
-| Shared-foundation experiment | Direct/Clockwork offline subset executed; input/admission/readiness hardening and physical qualification remain | Existing deterministic reference and actual-hosted fixture; native probe for hardware conclusions | Exact signal/events/isolation established for the bounded guest; current unsafe input/termination cases must become passing correctness regressions before local deadline/latency acceptance |
+| Shared-foundation experiment | Direct/Clockwork offline subset and constrained input/admission/readiness adapter executed; physical qualification remains | Existing deterministic reference and actual-hosted fixture; native probe for hardware conclusions | Exact delayed-reference, input, admission/termination and lifecycle regressions pass through the constrained adapter; raw-host characterization remains distinct; local deadline/latency acceptance is still pending |
 | Native Alive slice | Play/record a MIDI clip, automate the instrument, save and reopen through a minimal UI | Proven processing path, transport, parameter, and persistence contracts | Reproducible command sequence, deterministic offline output, state/undo checks, performance under UI/save load |
 | `.als` import probe | Inspect and import one bounded set subset with dependency diagnostics | Reference fixtures and source/internal identity mapping | Preserved source data, supported/unsupported content tests, no implied save-back support |
 | Max-compatible semantic probe | Execute a named existing-patch subset on the shared foundation | Compatibility scheduler profile and dependency inventory | Ordered message traces, DSP comparison, one existing supported patch, rejection behavior |
@@ -703,7 +789,7 @@ Linux backend research on 2026-10-20 checked official PipeWire filter, JACK conf
 
 Runtime reuse research on 2026-10-20 checked Faust's DSP/architecture interfaces, FAQ, compiler and library notices, Pd/SC compilation targets, and FaustWasm; libpd's wrapper API, processing locks and license; and SuperCollider's embedding header, timing guide, and GPL notices. Supersonic was inspected at `08b587055f0dbe6f6ff7d52e09bc2ae331121480` (manifest version 0.91.0), including its documentation, embedding header, build composition, and license. Its pinned Clockwork submodule was `94b67500c96e105491682ec68741b5018560eab7`; inspected sources included `dsp_api.h`, `clockwork_embed.h`, device/boundary documentation, and license. Both projects label themselves alpha. Supersonic/scsynth remains source-inspected only. Clockwork at the same pin was built with the custom Faust guest and exercised through its real native/headless embedding and timed store, with the measured successes and failed adoption criteria recorded above. Faust/libpd keep their separately stated validation limits. No physical native/browser performance or broad patch compatibility was established.
 
-SoundCraft remains an optional architecture reference for plain-data models, layered crates, and shared commands across UI and automation. Its model and engine embody its own DAW semantics. The earlier source inspection identified revision `c0cb99340891d306e216582db465f3594b89dc1d`; recheck source and license terms before reuse, including separate branding terms. It is not a base to turn into an Ableton clone.
+SoundCraft is a loose architecture reference for plain-data models, layered crates and shared commands, inspected at `25d52c646aea780c8076ff966076f994ad256221`. Its Rust/egui UI and DAW semantics are not adopted. MIT/Apache notices and separate branding restrictions were checked; no code/assets/branding are copied into Ultra. Ultra remains Rust/Tauri with its own node-based interface.
 
 ## References
 

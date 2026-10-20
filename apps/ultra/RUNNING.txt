@@ -1,0 +1,59 @@
+ULTRA RESEARCH PATCHER — LINUX x86_64
+
+This is a Rust + Tauri desktop window, not a remotely hosted web app. Its
+patch canvas controls the native Clockwork/Faust engine through Rust commands.
+Only two prepared note -> Faust -> gain -> output chains are implemented.
+This is not a general Max/Pd graph interpreter, plugin host or full DAW.
+
+Run the supplied binary bundle with ./run.sh. No dependencies are installed and
+no audio-server settings are changed by the launcher. A desktop session and
+GTK 3 / WebKitGTK 4.1 runtime are required. The build machine was Debian 13;
+the package's BUILD-EVIDENCE.txt lists actual ELF symbol requirements. This is
+not a universal Linux/AppImage compatibility promise.
+
+Audio: start your existing JACK server at 48,000 Hz and period <=1024 frames,
+or use your installed PipeWire JACK compatibility environment (pw-jack ./run.sh).
+Press Start in Ultra. It opens JACK with NoStartServer. It attempts connection
+to the first two physical playback ports; inspect routing in your JACK/PipeWire
+patchbay if silent. Connect your MIDI controller to ultra:midi_in. MIDI channel
+1 drives A (left output), channel 2 drives B (right output). Other channels
+are ignored. Note on/off, velocity, sustain CC64, and CC120/123 are supported.
+
+The core adds a declared 64 frames (1.333 ms at 48 kHz), independent of host
+partitions. This is NOT measured physical MIDI-to-audio latency. JACK sample
+offsets are retained; browser/computer-keyboard notes have control-path timing.
+No microphone or audio input is captured by this instrument app.
+
+Valid connected chains enable sound. Disconnected/invalid paths are muted.
+Four voices per device, oldest hard-steal. The bounded safety policy stops the
+whole engine on overload/panic, never silently leaves an accepted note sounding.
+Stop then Start clears the safety stop. Normal notes have no expiry lease.
+Window focus loss is safety-handled; inspect status before resuming playback.
+
+OFFLINE CHECK (no JACK server, desktop, or audio hardware needed)
+  ./ultra-diagnostic --render-demo demo.wav
+Writes a two-second stereo 48 kHz WAV using the actual Clockwork-hosted Faust
+path, checking finite output, audible notes and termination. Play with your
+usual audio player. This does not establish realtime deadlines or device I/O.
+For JACK diagnostics: ./ultra-diagnostic --run-seconds 30
+
+REBUILD FROM REPOSITORY SOURCE
+Linux build prerequisites: C/C++ compiler, curl, tar, Python 3, pkg-config,
+and official Tauri Linux prerequisites (GTK/WebKitGTK 4.1 development packages).
+See https://v2.tauri.app/start/prerequisites/ for distro-specific guidance.
+  ./build.sh --native-only
+  ./build.sh
+The build bootstraps the already-pinned Clockwork/Faust/CMake/Rust research
+inputs locally under experiments/clockwork-faust/.deps. Cargo.lock pins the
+Rust/Tauri graph. No global toolchain or server changes are performed.
+
+KNOWN VALIDATION LIMITS
+The accompanying evidence separates offline execution, synthetic backend tests,
+GUI smoke checks and physical hardware. Missing evidence is not a pass. Product
+licensing is undecided; actual incorporated dependency terms still apply.
+
+Ordering and long sessions: events with identical timestamps from MIDI are
+submitted before the pending UI queue is drained, so equal-time MIDI precedes
+UI control, deterministically. This is not a claim about physical arrival order.
+The research guest uses a finite frame-counter range and intentionally safety-
+stops before about 12.43 hours; stop/start resets it. Unlimited uptime is untested.
