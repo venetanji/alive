@@ -1,0 +1,28 @@
+{
+  "evidence_id": "ev_1d06d43a4fea753de1635415d56913bb4f580638b2eef7608283b8c7ace539bb",
+  "operation": "inspect_pe_resources",
+  "provider": {
+    "id": "rea-pe-resources",
+    "name": "REA PE resource parser",
+    "version": "1"
+  },
+  "artifact": {
+    "name": "Max.exe",
+    "sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b",
+    "bytes": 33077248
+  },
+  "format": "pe32-plus",
+  "machine": 34404,
+  "coverage": {
+    "status": "complete",
+    "examined_entries": 300,
+    "resources": 147
+  },
+  "resource_count": 147,
+  "limitations": [
+    "Static PE32/PE32+ type/name/language resource inventory; payloads other than RT_GROUP_ICON remain opaque.",
+    "Icon candidates are resource-table relationships. Language fallback, image decoding and actual shell/window loading are not observed.",
+    "Exact shared byte ranges are retained; non-identical overlapping resource structures or payloads are rejected."
+  ],
+  "interpretation": "Read-only PE resource inventory. No proprietary implementation code decompiled, no resources extracted. Static metadata does not establish UI behavior."
+}

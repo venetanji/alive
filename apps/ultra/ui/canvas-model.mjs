@@ -93,12 +93,12 @@ export function makeNode(type,id,x=40,y=40,params={}) {
 }
 export function starterPatch() {
   const nodes=[
-    makeNode('toggle',1,80,50), makeNode('metro',2,80,150), makeNode('counter',3,80,250),
-    makeNode('chord',4,80,350), makeNode('makenote',5,80,450), makeNode('voice',6,80,580),
-    makeNode('gain',7,80,730), makeNode('join',8,310,880), makeNode('dac',9,310,990),
-    makeNode('midiin',10,540,450),makeNode('voice',11,540,580,{device:1}),makeNode('gain',12,540,730),
-    makeNode('bang',13,310,250),makeNode('message',14,310,350,{text:'60'}),
-    makeNode('number',15,310,50,{value:150}), makeNode('number',16,540,50,{value:90}),
+    makeNode('toggle',1,80,50), makeNode('metro',2,80,110), makeNode('counter',3,80,170),
+    makeNode('chord',4,80,230), makeNode('makenote',5,80,290), makeNode('voice',6,80,350),
+    makeNode('gain',7,80,400), makeNode('join',8,300,530), makeNode('dac',9,300,590),
+    makeNode('midiin',10,460,290),makeNode('voice',11,460,350,{device:1}),makeNode('gain',12,460,400),
+    makeNode('bang',13,300,170),makeNode('message',14,300,230,{text:'60'}),
+    makeNode('number',15,180,50,{value:150}), makeNode('number',16,460,50,{value:90}),
   ];
   const edges=[[1,0,2,0],[2,0,3,0],[3,0,4,0],[4,0,5,0],[5,0,6,0],[6,0,7,0],[7,0,8,0],[10,0,11,0],[11,0,12,0],[12,0,8,1],[8,0,9,0],[13,0,14,0],[14,0,5,0],[15,0,2,1],[16,0,7,1],[16,0,12,1]].map(([from,outlet,to,inlet])=>({from,outlet,to,inlet}));
   return {version:1,profile:'ultra-canvas-v1',nodes,edges};
@@ -111,15 +111,18 @@ export class CanvasDocument {
     if(history) {this.past.push(copy(this.patch));if(this.past.length>100)this.past.shift();this.future=[];}
     this.patch=validated; this.nextId=Math.max(this.nextId,...validated.nodes.map(n=>n.id+1)); return true;
   }
-  add(type,x=40,y=40) {
-    const id=this.nextId;const params={};
-    if(type==='voice') params.device=this.patch.nodes.some(n=>n.type==='voice'&&n.params.device===0)?1:0;
+  add(type,x=40,y=40,params={}) {
+    const id=this.nextId;params={...params};
+    if(type==='voice'&&!Object.hasOwn(params,'device')) params.device=this.patch.nodes.some(n=>n.type==='voice'&&n.params.device===0)?1:0;
     this.edit(p=>p.nodes.push(makeNode(type,id,x,y,params)));return id;
   }
+  configure(id,type,params) { return this.edit(p=>{const i=p.nodes.findIndex(n=>n.id===id);if(i<0)fail('Missing object.');const old=p.nodes[i];p.nodes[i]=makeNode(type,id,old.x,old.y,params);}); }
   remove(id) { return this.edit(p=>{p.nodes=p.nodes.filter(n=>n.id!==id);p.edges=p.edges.filter(e=>e.from!==id&&e.to!==id);}); }
+  removeMany(ids) {const set=new Set(ids);return this.edit(p=>{p.nodes=p.nodes.filter(n=>!set.has(n.id));p.edges=p.edges.filter(e=>!set.has(e.from)&&!set.has(e.to));});}
   connect(from,outlet,to,inlet) { return this.edit(p=>p.edges.push({from,outlet,to,inlet})); }
   disconnect(index) { return this.edit(p=>p.edges.splice(index,1)); }
   move(id,x,y,options) {return this.edit(p=>{const n=p.nodes.find(n=>n.id===id);if(!n)fail('Missing object.');n.x=x;n.y=y;},options);}
+  moveMany(positions) {return this.edit(p=>{for(const {id,x,y} of positions){const n=p.nodes.find(n=>n.id===id);if(!n)fail('Missing object.');n.x=x;n.y=y;}});}
   parameter(id,key,value,options) { return this.edit(p=>{const n=p.nodes.find(n=>n.id===id);if(!n)fail('Missing object.');n.params[key]=value;},options); }
   replace(patch) { const valid=validatePatch(patch);return this.edit(p=>Object.assign(p,valid)); }
   undo() { if(!this.past.length)return false;this.future.push(copy(this.patch));this.patch=this.past.pop();return true; }
@@ -203,7 +206,7 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
           observations=Object.fromEntries((graph.nodes||[]).filter(n=>document.patch.nodes.some(x=>x.id===n.id)).map(n=>[n.id,{value:n.value,pulses:n.pulses}]));
           if(graph.active===false){faulted=true;notice='Native canvas profile is no longer active. Reapply before playing.';}
         }
-        if(status.fault||status.server_lost){faulted=true;notice='Native audio fault. Stop audio, then start again.';}
+        if(status.fault||status.server_lost){faulted=true;notice=`Native audio fault: ${status.message||'backend unavailable'}. Stop audio, then start again.`;}
         emit();
       } catch(error){report(`Native status unavailable: ${error?.message||error}`);}
     })().finally(()=>{pollTask=null;});return pollTask;
@@ -282,9 +285,9 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
   }
   async function dispose(){const stopped=await stopAudio();if(stopped===false)throw Error('Native audio cleanup failed. Stay on this page and try Stop audio again.');disposed=true;}
   return {getState,prepare:ensureApply,startAudio,stopAudio,stop,panic,poll,flush,dispose,event,parameter,
-    add:(...args)=>structural(()=>document.add(...args)),remove:id=>structural(()=>document.remove(id)),
+    add:(...args)=>structural(()=>document.add(...args)),configure:(...args)=>structural(()=>document.configure(...args)),remove:id=>structural(()=>document.remove(id)),removeMany:ids=>structural(()=>document.removeMany(ids)),
     connect:(...args)=>structural(()=>document.connect(...args)),disconnect:i=>structural(()=>document.disconnect(i)),
-    move:(...args)=>{document.move(...args);emit();},undo:()=>history('undo'),redo:()=>history('redo'),
+    move:(...args)=>{document.move(...args);emit();},moveMany:positions=>{document.moveMany(positions);emit();},undo:()=>history('undo'),redo:()=>history('redo'),
     load:text=>structural(()=>document.replace(typeof text==='string'?parsePatch(text):text)),
     reapply:()=>structural(()=>{}),export:()=>serializePatch(document.patch),notice:report};
 }

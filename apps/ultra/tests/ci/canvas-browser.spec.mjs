@@ -3,6 +3,7 @@ import {test, expect} from '@playwright/test';
 // These tests use the real page and ordinary user controls. They deliberately
 // provide no __TAURI__ or native-IPC replacement and make no audio claim.
 async function exportPatch(page) {
+  await page.locator('.file-menu summary').click();
   await page.locator('#export-patch').click();
   await expect(page.locator('#patch-dialog')).toBeVisible();
   const patch = JSON.parse(await page.locator('#patch-json').inputValue());
@@ -12,6 +13,7 @@ async function exportPatch(page) {
 }
 
 async function importPatch(page, patch) {
+  await page.locator('.file-menu summary').click();
   await page.locator('#open-patch').click();
   await page.locator('#patch-json').fill(JSON.stringify(patch));
   await page.locator('#import-patch').click();
@@ -72,6 +74,7 @@ test('add and wire objects, delete and undo, export, and reject invalid import',
   await expect(page.locator('#patch-dialog')).not.toBeVisible();
   await expect(page.locator('#objects [data-node]')).toHaveCount(0);
 
+  await page.locator('#show-library').click();
   await page.locator('#palette [data-add="bang"]').click();
   await page.locator('#palette [data-add="number"]').click();
   await expect(page.locator('#objects [data-node]')).toHaveCount(2);
@@ -108,7 +111,7 @@ test('add and wire objects, delete and undo, export, and reject invalid import',
     return {x: screen.x, y: screen.y};
   });
   await page.mouse.click(cablePoint.x, cablePoint.y);
-  await page.locator('#delete-selection').click();
+  await page.keyboard.press('Delete');
   await expect(page.locator('#cables path[data-edge]')).toHaveCount(0);
   await page.locator('#undo').click();
   await expect(page.locator('#cables path[data-edge]')).toHaveCount(1);
@@ -128,4 +131,74 @@ test('add and wire objects, delete and undo, export, and reject invalid import',
   const screenshot = testInfo.outputPath('canvas-browser-edited.png');
   await page.screenshot({path: screenshot, fullPage: true});
   await testInfo.attach('Canvas editing result, not native audio', {path: screenshot, contentType: 'image/png'});
+});
+
+test('inline creation, rejected classes, connected text edits, lock, help and directional port menus', async ({page}) => {
+  await page.goto('/canvas.html');
+  await page.keyboard.press('Control+n');
+  await expect(page.locator('#file-menu')).not.toHaveAttribute('open');
+  await page.keyboard.press('n');
+  const text=page.locator('#object-text');
+  await text.fill('cycle~ 440');await text.press('Enter');
+  await expect(page.locator('#object-error')).toContainText('Unknown object');
+  await expect(page.locator('#objects [data-node]')).toHaveCount(0);
+  await text.fill('+ 12');await expect(text).toHaveAttribute('aria-invalid','false');await text.press('Enter');
+  await expect(page.locator('#objects .object-label')).toContainText('+12');
+  await page.keyboard.press('Enter');await text.fill('* 2');await text.press('Enter');
+  await expect(page.locator('#objects .class-name')).toHaveText('*');
+  await page.keyboard.press('Control+z');await expect(page.locator('#objects .class-name')).toHaveText('+');
+  const workspace=await page.locator('#workspace').boundingBox();await page.mouse.move(workspace.x+360,workspace.y+220);
+  await page.keyboard.press('n');await text.fill('met');
+  await expect(page.locator('#object-suggestions [role=option]').first()).toContainText('metro');
+  await text.press('Enter');await expect(page.locator('#objects [data-node]')).toHaveCount(2);
+  await page.keyboard.press('Control+e');await expect(page.locator('#lock-label')).toHaveText('Locked');
+  await page.keyboard.press('n');await expect(page.locator('#object-entry')).toBeHidden();
+  await page.keyboard.press('Delete');await expect(page.locator('#objects [data-node]')).toHaveCount(2);
+  await page.keyboard.press('Control+e');
+  const inlet=page.locator('#objects article').first().locator('[data-direction=in]').first();
+  await inlet.hover();await expect(page.locator('#port-tooltip')).toContainText('Accepts');
+  await inlet.click({button:'right'});await expect(page.locator('#context-menu')).toContainText('Accepts');
+  await page.keyboard.press('Escape');
+  await page.locator('#objects article').first().locator('[data-direction=out]').click({button:'right'});
+  await expect(page.locator('#context-menu')).toContainText('Emits');
+  await page.locator('#context-menu button').last().click();
+  await expect(page.locator('#help-content')).toContainText('Inlets / accepted messages');
+  await expect(page.locator('#help-content')).toContainText('Open runnable example patch');
+});
+
+test('group drag and undo retain selection; zoom keeps patch cord endpoints on ports', async ({page}) => {
+  await page.goto('/canvas.html');
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[
+    {id:1,type:'add',x:80,y:80,params:{rhs:1}},
+    {id:2,type:'number',x:300,y:220,params:{value:0}},
+  ],edges:[{from:1,outlet:0,to:2,inlet:0}]});
+  await page.locator('#workspace').focus();await page.keyboard.press('Control+a');
+  const box=await page.locator('[data-node="1"] [data-drag]').boundingBox();
+  await page.mouse.move(box.x+15,box.y+12);await page.mouse.down();
+  await page.mouse.move(box.x+55,box.y+52,{steps:5});await page.mouse.up();
+  await expect(page.locator('.node.selected')).toHaveCount(2);
+  let patch=await exportPatch(page);expect(patch.nodes.map(n=>[n.x,n.y])).toEqual([[120,120],[340,260]]);
+  await page.locator('#undo').click();patch=await exportPatch(page);
+  expect(patch.nodes.map(n=>[n.x,n.y])).toEqual([[80,80],[300,220]]);
+  await page.locator('#canvas-zoom').selectOption('1.5');
+  const distance=await page.locator('#cables path[data-edge]').evaluate(path=>{
+    const ports=[document.querySelector('[data-node="1"] [data-direction=out]'),document.querySelector('[data-node="2"] [data-direction=in]')];
+    return [0,path.getTotalLength()].map((length,i)=>{
+      const p=path.getPointAtLength(length),s=new DOMPoint(p.x,p.y).matrixTransform(path.getScreenCTM()),r=ports[i].getBoundingClientRect();
+      return Math.hypot(s.x-r.left-r.width/2,s.y-r.top-r.height/2);
+    });
+  });
+  expect(Math.max(...distance)).toBeLessThan(.5);
+});
+
+test('small preview keeps chrome reachable and overlays its optional inspector', async ({page}) => {
+  await page.setViewportSize({width:390,height:844});await page.goto('/canvas.html');
+  await expect(page.locator('#show-inspector')).toBeInViewport();
+  await expect(page.locator('#panic')).toBeInViewport();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(390);
+  await page.locator('#show-inspector').click();await expect(page.locator('#details-panel')).toBeInViewport();
+  await page.locator('#close-panel').click();await page.locator('#fit-patch').click();
+  await expect(page.locator('#canvas-zoom')).not.toHaveValue('');
+  await page.keyboard.press('Control+n');await expect(page.locator('#empty-patch')).toBeVisible();
+  await page.locator('#empty-add').click();await expect(page.locator('#object-text')).toBeFocused();
 });

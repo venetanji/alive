@@ -15,7 +15,9 @@ does not read repository secrets or use `pull_request_target`.
    or establish new Max compatibility.
 2. **Chromium canvas editing smoke:** the actual HTML/CSS/modules served over
    loopback HTTP in sandboxed Chromium. It checks document editing and visible
-   top-inlet/bottom-outlet geometry. There is no Tauri/native IPC shim and no
+   top-inlet/bottom-outlet geometry, keyboard creation, text-edit undo, lock
+   protection, directional help, group moves, zoomed cord geometry and small
+   viewport controls. There is no Tauri/native IPC shim and no
    fake browser audio. A passing preview test is not native audio qualification.
 3. **Linux native build and Rust bridge:** builds the pinned real Clockwork/Faust
    engine and `libultra_native.so`, runs backend/sequence/canvas integration tests

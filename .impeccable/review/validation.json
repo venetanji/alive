@@ -1,0 +1,130 @@
+{
+  "recorded_at_utc": "2026-10-20T15:56:47.608096+00:00",
+  "starting_commit": "d7e1c59005b4d8a5178854ce28f29bb1e3207956",
+  "branch": "design/max-patcher-ui-20261020",
+  "pr_1": {
+    "head_at_check": "d7e1c59005b4d8a5178854ce28f29bb1e3207956",
+    "is_draft": true,
+    "modified_by_this_work": false
+  },
+  "source_files_sha256": {
+    "apps/ultra/ui/canvas.html": "355253a9c34b3af98f87e4bdbbb7946027a91563d43794176aaca0a100884071",
+    "apps/ultra/ui/canvas.css": "e135e7b520920895305b4e6eef5b85b4323cf1a3bb4668c28e79942eb5149790",
+    "apps/ultra/ui/canvas.mjs": "d6e4b522311a769ad1833ba6cac810d09cef559b41bfd4cafd9f173c3f1e6c03",
+    "apps/ultra/ui/canvas-model.mjs": "7e85cc37e1b995f2359da0533247c8fa8a2fe492d0e0fa2dce8791ccdf3cf67d",
+    "apps/ultra/ui/canvas-catalog.mjs": "f378033a1a034ca2bfa59c899c463e3749b79867777d875bfa579e4b20d0d5c0",
+    "apps/ultra/ui/canvas-entry.mjs": "4d51d254a2e58c878b12333669b213b43883ecce843278ddd78ca6f976d3102e",
+    "apps/ultra/ui/canvas-node.mjs": "c1a368059552dd6196cc3944ddd2fa5f898544dc9f5f2fe0ab81526fd422b96a",
+    "apps/ultra/ui/canvas-preset.json": "98b7e936f73ab7a601d4f83df47f2e611a3eb98a06a04bc15c002f54550f4853"
+  },
+  "built_artifacts": [
+    {
+      "path": "apps/ultra/src-tauri/target/release/ultra",
+      "sha256": "e365afa5779753373cb9a4610e3a51c9bde0afd4be690903a593f7701363ac80",
+      "bytes": 9408008,
+      "redistributed_in_git": false
+    },
+    {
+      "path": "apps/ultra/src-tauri/target/release/libultra_native.so",
+      "sha256": "9ed875b5aa47cdece2906f629d1260adb4a002bc845b698bcec9149f160b7489",
+      "bytes": 9445720,
+      "redistributed_in_git": false
+    }
+  ],
+  "checks": [
+    {
+      "command": "bash apps/ultra/build.sh",
+      "status": "passed",
+      "scope": "actual release Tauri app and native library"
+    },
+    {
+      "command": "node --test apps/ultra/ui/*.test.mjs apps/ultra/ui/components/*.test.mjs",
+      "status": "passed",
+      "tests": 92,
+      "failures": 0
+    },
+    {
+      "command": "npm --prefix apps/ultra/tests/ci run test:browser",
+      "status": "passed",
+      "tests": 5,
+      "scope": "sandboxed Chromium; no native IPC or browser audio"
+    },
+    {
+      "command": "cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --locked",
+      "status": "passed",
+      "tests": 25,
+      "scope": "Rust bridge and validation; local pinned toolchain with ULTRA_NATIVE_LIB_DIR"
+    },
+    {
+      "command": "uv run --no-project --with-requirements apps/ultra/tests/ci/requirements.txt bash apps/ultra/tests/ci/check-contracts.sh",
+      "status": "passed",
+      "scope": "contracts, 16 subset tests, 4 trace-annotation tests, 32 reference patch graphs, 20 complete Max traces and 150 hashed artifacts; earlier separately scoped evidence"
+    },
+    {
+      "commands": [
+        "python3 apps/ultra/tests/check_backend.py",
+        "python3 apps/ultra/tests/check_sequence.py",
+        "python3 apps/ultra/tests/check_canvas.py"
+      ],
+      "status": "passed",
+      "scope": "native engine/adapter via explicit fake JACK ABI; not real audio"
+    },
+    {
+      "command": "bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/ultra-canvas-results",
+      "status": "passed",
+      "scope": "actual rebuilt native UI, private Xvfb and software-only PipeWire 1.6.9 JACK at 48000 Hz / 1024 frames",
+      "result": "native-result.json",
+      "input_patch": "native-roundtrip.ultra.json",
+      "audio": "native-audio.f32"
+    },
+    {
+      "command": "uv run --no-project --with-requirements apps/ultra/tests/ci/requirements.txt python3 experiments/max-ui-reference/verify.py",
+      "status": "passed",
+      "hashed_artifacts": 13,
+      "schema": "urn:alive:max-reference-manifest:v1"
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed"
+    }
+  ],
+  "audio_capture": {
+    "format": "interleaved little-endian float32",
+    "channels": 2,
+    "sample_rate_hz": 48000,
+    "frames": 48000,
+    "event": "Click bang object 13 during software capture; onset timing is observed, not deterministic",
+    "is_Max_recording": false,
+    "is_latency_measurement": false
+  },
+  "existing_desktop_audio": {
+    "status": "not_qualified",
+    "initial_jack_rate_hz": 48000,
+    "subsequent_rate_callback_hz": 44100,
+    "observed_with": "direct native library invocation and a separate documented-JACK-API zero-output probe, after closing disposable Wine/Live",
+    "result": "Unchanged native rate callback correctly latches safety stop",
+    "global_preferences_changed": false,
+    "limits": [
+      "The exact graph policy selecting 44100 was not established",
+      "Private software test does not qualify physical playback, hardware MIDI or callback deadlines"
+    ]
+  },
+  "max_reference": {
+    "path": "experiments/max-ui-reference/manifest.json",
+    "snapshots": "User supplied two byte-identical Max 9.1.5 saved files; original bytes preserved",
+    "limits": "UI and saved-format observations only. No new Max DSP or scheduler measurement. No native .maxpat importer."
+  },
+  "review": {
+    "skill_version": "Impeccable 4.5.0",
+    "method": "inline substitute; not independent",
+    "disposition": "ship",
+    "report": "review.md"
+  },
+  "unchanged_scope": [
+    "PLAN.md",
+    "C++ native runtime",
+    "Rust host runtime",
+    "shared PR branch",
+    "original user projects and Wine prefix"
+  ]
+}

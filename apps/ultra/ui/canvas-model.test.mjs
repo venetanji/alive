@@ -140,3 +140,12 @@ test('undo and redo of numeric parameters remain live, while topology undo reapp
   const before=h.calls.length;c.undo();await c.flush();c.redo();await c.flush();const recent=h.calls.slice(before);assert.equal(recent.filter(x=>x.name==='canvas_apply').length,0);assert.deepEqual(recent.filter(x=>x.name==='canvas_param').map(x=>x.args.value),[90,20]);
   c.add('bang',0,0);await c.flush();const applyCount=h.calls.filter(x=>x.name==='canvas_apply').length;c.undo();await c.flush();assert.equal(h.calls.filter(x=>x.name==='canvas_apply').length,applyCount+1);
 });
+test('native audio fault retains the backend reason and recovery instruction',async()=>{
+  const h=host(),c=createCanvasController({invoke:async(name,args)=>{
+    const result=await h.invoke(name,args);
+    return name==='audio_status'?{...result,fault:true,message:'JACK period exceeded 1024 frames.'}:result;
+  }});
+  await c.prepare();await c.poll();
+  assert.match(c.getState().notice,/JACK period exceeded 1024 frames/);
+  assert.match(c.getState().notice,/Stop audio/);
+});

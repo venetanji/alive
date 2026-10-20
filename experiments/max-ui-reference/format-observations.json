@@ -1,0 +1,27 @@
+{
+  "basis": ["snapshots/Untitled1.maxpat", "snapshots/savedpatch.maxpat"],
+  "status": "source_inspected_user_supplied_Max_saved_JSON",
+  "scope": "One metro 150 object. The two files are byte-identical; no changed-property inference is possible.",
+  "observations": [
+    {"json_path": "$.patcher.appversion", "value": {"major": 9, "minor": 1, "revision": 5, "architecture": "x64", "modernui": 1}, "meaning": "Saving application metadata in these files; not a cross-version format guarantee"},
+    {"json_path": "$.patcher.fileversion", "value": 1, "meaning": "Observed file-format marker"},
+    {"json_path": "$.patcher.boxes[0].box.maxclass", "value": "newobj", "meaning": "Generic object wrapper; metro is in text, not maxclass"},
+    {"json_path": "$.patcher.boxes[0].box.text", "value": "metro 150", "meaning": "Class name and positional argument in one string"},
+    {"json_path": "$.patcher.boxes[0].box.id", "value": "obj-1", "meaning": "String identifier scoped to this patcher"},
+    {"json_path": "$.patcher.boxes[0].box.patching_rect", "value": [109.0, 62.0, 63.0, 22.0], "meaning": "Saved x, y, width and height in patcher coordinates"},
+    {"json_path": "$.patcher.boxes[0].box.numinlets", "value": 2, "meaning": "Saved inlet metadata; imported graph still needs target validation"},
+    {"json_path": "$.patcher.boxes[0].box.outlettype", "value": ["bang"], "meaning": "Saved outlet metadata; not an exhaustive runtime type contract"},
+    {"json_path": "$.patcher.lines", "value": [], "meaning": "No patchlines in this snapshot; connection-order behavior is established only in the separate max-reference probes"},
+    {"json_path": "$.patcher.rect", "value": [59.0, 106.0, 629.0, 499.0], "meaning": "Patcher window rectangle; preserve separately from object geometry"},
+    {"json_path": "$.patcher.oscreceiveudpport", "value": 0, "meaning": "Example of saved state outside the bounded object mapping; retain opaque"}
+  ],
+  "proposed_import_boundary_not_implemented": {
+    "primary_document": "Keep the full original patcher JSON tree, including unknown fields, object keys, nested patchers, dependency and parameter dictionaries.",
+    "object_identity": "Use a scoped (patcher-path, original string ID) map to internal numeric IDs; retain original IDs for export.",
+    "object_creation": "Recognize maxclass=newobj text only through an explicit supported-name and argument parser. Model UI maxclasses separately. Do not substitute number for int/flonum or voice~ for cycle~.",
+    "geometry": "Map patching_rect x/y/width/height to editor geometry; preserve presentation fields independently. The current Ultra profile stores only x/y, so it cannot be a lossless Max document.",
+    "connections": "Preserve each original patchline and explicit order metadata. Reject or defer unsupported endpoints; never infer execution order from drawing coordinates.",
+    "unsupported": "Retain unresolved objects and unknown JSON in the source document, visibly mark them, and prevent execution until all required semantics are implemented.",
+    "export": "A Max document export should merge supported edits into its preserved tree. Do not send a lossless source tree directly through the strict ultra-canvas-v1 runtime protocol."
+  }
+}

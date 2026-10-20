@@ -1,0 +1,709 @@
+{
+  "scope": "Ultra UI contract, not Max implementation metadata",
+  "objects": [
+    {
+      "type": "bang",
+      "name": "bang",
+      "aliases": [
+        "button"
+      ],
+      "arguments": [],
+      "example": "bang",
+      "parameters": {},
+      "ui": "bang",
+      "inlets": [
+        {
+          "title": "Trigger",
+          "detail": "Any accepted control input emits a bang.",
+          "messages": [
+            "bang",
+            "one to three numbers"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        }
+      ],
+      "outlets": [
+        {
+          "title": "Bang",
+          "detail": "One bang per accepted input.",
+          "messages": [
+            "bang"
+          ],
+          "type": "control",
+          "direction": "Emits"
+        }
+      ]
+    },
+    {
+      "type": "message",
+      "name": "message",
+      "aliases": [
+        "msg"
+      ],
+      "arguments": [
+        "text"
+      ],
+      "example": "message 60 100",
+      "parameters": {
+        "text": {
+          "value": "60 100"
+        }
+      },
+      "ui": "message",
+      "inlets": [
+        {
+          "title": "Trigger",
+          "detail": "Hot. Any accepted control input sends the stored literal.",
+          "messages": [
+            "bang",
+            "one to three numbers"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        }
+      ],
+      "outlets": [
+        {
+          "title": "Message",
+          "detail": "The stored bang or one-to-three-number literal. Symbols and substitution are outside this profile.",
+          "messages": [
+            "bang",
+            "one to three numbers"
+          ],
+          "type": "control",
+          "direction": "Emits"
+        }
+      ]
+    },
+    {
+      "type": "number",
+      "name": "number",
+      "aliases": [],
+      "arguments": [
+        "value"
+      ],
+      "example": "number 60",
+      "parameters": {
+        "value": {
+          "value": 0,
+          "min": -100000,
+          "max": 100000,
+          "integer": false
+        }
+      },
+      "ui": "number",
+      "inlets": [
+        {
+          "title": "Value",
+          "detail": "Hot. A scalar stores and emits; bang emits the stored number. Range -100000 to 100000.",
+          "messages": [
+            "bang",
+            "number"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        },
+        {
+          "title": "Store",
+          "detail": "Cold. A scalar stores without output.",
+          "messages": [
+            "number"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        }
+      ],
+      "outlets": [
+        {
+          "title": "Value",
+          "detail": "The stored finite numeric value. This profile has one numeric box; it is not Max int or flonum coercion.",
+          "messages": [
+            "number"
+          ],
+          "type": "control",
+          "direction": "Emits"
+        }
+      ]
+    },
+    {
+      "type": "toggle",
+      "name": "toggle",
+      "aliases": [],
+      "arguments": [
+        "value"
+      ],
+      "example": "toggle 0",
+      "parameters": {
+        "value": {
+          "value": 0,
+          "min": 0,
+          "max": 1,
+          "integer": true
+        }
+      },
+      "ui": "toggle",
+      "inlets": [
+        {
+          "title": "Switch",
+          "detail": "Hot. Bang toggles; a scalar sets zero or one and emits.",
+          "messages": [
+            "bang",
+            "number"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        }
+      ],
+      "outlets": [
+        {
+          "title": "State",
+          "detail": "The current boolean state, zero or one.",
+          "messages": [
+            "0",
+            "1"
+          ],
+          "type": "control",
+          "direction": "Emits"
+        }
+      ]
+    },
+    {
+      "type": "add",
+      "name": "+",
+      "aliases": [
+        "add"
+      ],
+      "arguments": [
+        "rhs"
+      ],
+      "example": "+ 12",
+      "parameters": {
+        "rhs": {
+          "value": 0,
+          "min": -100000,
+          "max": 100000,
+          "integer": false
+        }
+      },
+      "ui": "object",
+      "inlets": [
+        {
+          "title": "Left operand",
+          "detail": "Hot. A scalar stores and emits the sum; bang reuses the stored left operand.",
+          "messages": [
+            "bang",
+            "number"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        },
+        {
+          "title": "Right operand",
+          "detail": "Cold. Store the right operand without output.",
+          "messages": [
+            "number"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        }
+      ],
+      "outlets": [
+        {
+          "title": "Sum",
+          "detail": "Left plus right, clipped to -100000 to 100000.",
+          "messages": [
+            "number"
+          ],
+          "type": "control",
+          "direction": "Emits"
+        }
+      ]
+    },
+    {
+      "type": "multiply",
+      "name": "*",
+      "aliases": [
+        "multiply"
+      ],
+      "arguments": [
+        "rhs"
+      ],
+      "example": "* 0.5",
+      "parameters": {
+        "rhs": {
+          "value": 1,
+          "min": -100000,
+          "max": 100000,
+          "integer": false
+        }
+      },
+      "ui": "object",
+      "inlets": [
+        {
+          "title": "Left operand",
+          "detail": "Hot. A scalar stores and emits the product; bang reuses the stored left operand.",
+          "messages": [
+            "bang",
+            "number"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        },
+        {
+          "title": "Right operand",
+          "detail": "Cold. Store the right operand without output.",
+          "messages": [
+            "number"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        }
+      ],
+      "outlets": [
+        {
+          "title": "Product",
+          "detail": "Left times right, clipped to -100000 to 100000.",
+          "messages": [
+            "number"
+          ],
+          "type": "control",
+          "direction": "Emits"
+        }
+      ]
+    },
+    {
+      "type": "metro",
+      "name": "metro",
+      "aliases": [],
+      "arguments": [
+        "interval"
+      ],
+      "example": "metro 150",
+      "parameters": {
+        "interval": {
+          "value": 150,
+          "min": 20,
+          "max": 2000,
+          "integer": false
+        }
+      },
+      "ui": "object",
+      "inlets": [
+        {
+          "title": "Clock",
+          "detail": "Hot. Nonzero starts, zero stops, bang emits once. Native sample-clock timing.",
+          "messages": [
+            "0",
+            "1",
+            "bang"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        },
+        {
+          "title": "Interval",
+          "detail": "Cold. Set the next interval in milliseconds; 20 to 2000 ms.",
+          "messages": [
+            "number (ms)"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        }
+      ],
+      "outlets": [
+        {
+          "title": "Tick",
+          "detail": "Bang at each native scheduled deadline. Browser polling is not the clock.",
+          "messages": [
+            "bang"
+          ],
+          "type": "control",
+          "direction": "Emits"
+        }
+      ]
+    },
+    {
+      "type": "counter",
+      "name": "counter",
+      "aliases": [],
+      "arguments": [
+        "steps"
+      ],
+      "example": "counter 8",
+      "parameters": {
+        "steps": {
+          "value": 8,
+          "min": 1,
+          "max": 32,
+          "integer": true
+        }
+      },
+      "ui": "object",
+      "inlets": [
+        {
+          "title": "Advance",
+          "detail": "Hot. Bang emits the current index and advances modulo steps.",
+          "messages": [
+            "bang"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        },
+        {
+          "title": "Reset",
+          "detail": "Cold. Set the next index; negative values clip to zero.",
+          "messages": [
+            "number"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        }
+      ],
+      "outlets": [
+        {
+          "title": "Index",
+          "detail": "Index from zero to steps minus one.",
+          "messages": [
+            "number"
+          ],
+          "type": "control",
+          "direction": "Emits"
+        }
+      ]
+    },
+    {
+      "type": "chord",
+      "name": "chord",
+      "aliases": [],
+      "arguments": [
+        "root",
+        "shape"
+      ],
+      "example": "chord 48 0",
+      "parameters": {
+        "root": {
+          "value": 48,
+          "min": 0,
+          "max": 127,
+          "integer": true
+        },
+        "shape": {
+          "value": 0,
+          "min": 0,
+          "max": 2,
+          "integer": true
+        }
+      },
+      "ui": "object",
+      "inlets": [
+        {
+          "title": "Index",
+          "detail": "Hot. Convert a nonnegative index to a MIDI pitch. Negative indices clip to zero.",
+          "messages": [
+            "number"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        },
+        {
+          "title": "Root",
+          "detail": "Cold. Root pitch 0 to 127.",
+          "messages": [
+            "number (MIDI pitch)"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        }
+      ],
+      "outlets": [
+        {
+          "title": "Pitch",
+          "detail": "MIDI pitch clipped to 0 to 127. Shape 0 major, 1 minor, 2 sus4.",
+          "messages": [
+            "number (MIDI pitch)"
+          ],
+          "type": "control",
+          "direction": "Emits"
+        }
+      ]
+    },
+    {
+      "type": "makenote",
+      "name": "makenote",
+      "aliases": [],
+      "arguments": [
+        "velocity",
+        "duration"
+      ],
+      "example": "makenote 100 150",
+      "parameters": {
+        "velocity": {
+          "value": 100,
+          "min": 1,
+          "max": 127,
+          "integer": true
+        },
+        "duration": {
+          "value": 150,
+          "min": 10,
+          "max": 2000,
+          "integer": false
+        }
+      },
+      "ui": "object",
+      "inlets": [
+        {
+          "title": "Pitch",
+          "detail": "Hot. Emit [pitch, velocity], then [pitch, 0] after the stored duration.",
+          "messages": [
+            "number (MIDI pitch)"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        },
+        {
+          "title": "Velocity",
+          "detail": "Cold. Store velocity 1 to 127.",
+          "messages": [
+            "number"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        },
+        {
+          "title": "Duration",
+          "detail": "Cold. Store duration 10 to 2000 milliseconds.",
+          "messages": [
+            "number (ms)"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        }
+      ],
+      "outlets": [
+        {
+          "title": "Notes",
+          "detail": "Note-on [pitch, velocity], followed by [pitch, 0]. This is one list outlet, unlike Max makenote.",
+          "messages": [
+            "pitch velocity"
+          ],
+          "type": "control",
+          "direction": "Emits"
+        }
+      ]
+    },
+    {
+      "type": "midiin",
+      "name": "midiin",
+      "aliases": [],
+      "arguments": [
+        "channel"
+      ],
+      "example": "midiin 2",
+      "parameters": {
+        "channel": {
+          "value": 2,
+          "min": 1,
+          "max": 16,
+          "integer": true
+        }
+      },
+      "ui": "object",
+      "inlets": [],
+      "outlets": [
+        {
+          "title": "Notes",
+          "detail": "Channel-filtered MIDI note pairs. Note-off is [pitch, 0]. No clock, CC, SysEx or general MIDI byte stream.",
+          "messages": [
+            "pitch velocity"
+          ],
+          "type": "control",
+          "direction": "Emits"
+        }
+      ]
+    },
+    {
+      "type": "voice",
+      "name": "voice~",
+      "aliases": [],
+      "arguments": [
+        "device",
+        "attack",
+        "release"
+      ],
+      "example": "voice~ 0 8 28",
+      "parameters": {
+        "device": {
+          "value": 0,
+          "min": 0,
+          "max": 1,
+          "integer": true
+        },
+        "attack": {
+          "value": 8,
+          "min": 0,
+          "max": 127,
+          "integer": true
+        },
+        "release": {
+          "value": 28,
+          "min": 0,
+          "max": 127,
+          "integer": true
+        }
+      },
+      "ui": "object",
+      "inlets": [
+        {
+          "title": "Notes",
+          "detail": "Hot. Two-number pitch/velocity list. Velocity 0 releases the note. Four voices, oldest hard steal.",
+          "messages": [
+            "pitch velocity"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        },
+        {
+          "title": "Attack",
+          "detail": "Cold. Latches at the next note-on. 1 to 127 times 4 ms; 0 is 16 samples.",
+          "messages": [
+            "number (0-127)"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        },
+        {
+          "title": "Release",
+          "detail": "Cold. Latches at the next note-on. 1 to 127 times 8 ms; 0 is 16 samples.",
+          "messages": [
+            "number (0-127)"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        }
+      ],
+      "outlets": [
+        {
+          "title": "Signal",
+          "detail": "One mono sine / ASR signal. Uses prepared bank A (0) or B (1).",
+          "messages": [
+            "mono signal"
+          ],
+          "type": "mono",
+          "direction": "Emits"
+        }
+      ]
+    },
+    {
+      "type": "gain",
+      "name": "gain~",
+      "aliases": [],
+      "arguments": [
+        "value"
+      ],
+      "example": "gain~ 4",
+      "parameters": {
+        "value": {
+          "value": 90,
+          "min": 0,
+          "max": 127,
+          "integer": true
+        }
+      },
+      "ui": "gain",
+      "inlets": [
+        {
+          "title": "Signal",
+          "detail": "Continuous mono audio from voice~. One supported source per audio inlet.",
+          "messages": [
+            "mono signal"
+          ],
+          "type": "mono",
+          "direction": "Accepts"
+        },
+        {
+          "title": "Level",
+          "detail": "Live linear level 0 to 127. This is a raw value, not dB.",
+          "messages": [
+            "number (0-127)"
+          ],
+          "type": "control",
+          "direction": "Accepts"
+        }
+      ],
+      "outlets": [
+        {
+          "title": "Signal",
+          "detail": "One mono signal multiplied by the linear level.",
+          "messages": [
+            "mono signal"
+          ],
+          "type": "mono",
+          "direction": "Emits"
+        }
+      ]
+    },
+    {
+      "type": "join",
+      "name": "join~",
+      "aliases": [],
+      "arguments": [],
+      "example": "join~",
+      "parameters": {},
+      "ui": "object",
+      "inlets": [
+        {
+          "title": "Left",
+          "detail": "Continuous mono audio becomes channel 0 / left. A missing connection is silence.",
+          "messages": [
+            "mono signal"
+          ],
+          "type": "mono",
+          "direction": "Accepts"
+        },
+        {
+          "title": "Right",
+          "detail": "Continuous mono audio becomes channel 1 / right. A missing connection is silence.",
+          "messages": [
+            "mono signal"
+          ],
+          "type": "mono",
+          "direction": "Accepts"
+        }
+      ],
+      "outlets": [
+        {
+          "title": "Stereo",
+          "detail": "Two-channel bundle: left at channel 0, right at channel 1.",
+          "messages": [
+            "stereo signal bundle"
+          ],
+          "type": "stereo",
+          "direction": "Emits"
+        }
+      ]
+    },
+    {
+      "type": "dac",
+      "name": "dac~",
+      "aliases": [],
+      "arguments": [],
+      "example": "dac~",
+      "parameters": {},
+      "ui": "object",
+      "inlets": [
+        {
+          "title": "Output",
+          "detail": "Continuous stereo bundle: channel 0 left, channel 1 right. Exactly two JACK outputs.",
+          "messages": [
+            "stereo signal bundle"
+          ],
+          "type": "stereo",
+          "direction": "Accepts"
+        }
+      ],
+      "outlets": []
+    }
+  ]
+}

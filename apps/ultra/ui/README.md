@@ -1,12 +1,13 @@
 # Ultra editable canvas
 
-The native window opens `canvas.html`, the first **real editable graph** profile, `ultra-canvas-v1`. The old research patcher and fixed Chord lab remain available through the left rail. All three pages use the native engine, never WebAudio or a JavaScript note clock.
+The native window opens `canvas.html`, the editable graph profile `ultra-canvas-v1`. Its compact interface follows the locally observed Max 9.1.5 patcher. The old research patcher and fixed Chord lab remain in the File menu. All three pages use the native engine, never WebAudio or a JavaScript note clock.
 
 ## Editable canvas workflow
 
-- **Start audio**, then click the top-left toggle to run the connected `metro → counter → chord → makenote → voice` chain. The native audio timeline owns metro pulses and note-off scheduling. Click the separate bang/message chain to trigger a note. JACK MIDI channel 2 reaches the second voice only through its connected `midiin` object.
-- Search or choose any of the 15 objects in the palette. Every inlet is on the **top**, every outlet on the **bottom**, with indexes increasing left to right. Click an outlet, then a matching inlet. Control, mono audio, and stereo bundles have distinct ports and cable styles. Multiple control sources may enter an inlet; an audio inlet accepts one source.
-- Drag object headers. Select an object to edit all its parameters in the inspector. Numbers, arithmetic operands, metro interval, chord root, note duration, MIDI channel and gain also have compact inline controls. Bang/message/toggle controls send actual native events. Editing a number stores its value and sends its own hot inlet, including when connected to another object's cold inlet. Native observations never feed back as UI events.
+- **Ctrl E** locks/unlocks the patch. Edit mode selects and moves controls; locked mode operates them. Start audio, lock, then click the top-left toggle to run `metro → counter → chord → makenote → voice`. The native audio timeline owns metro pulses and note-off scheduling. The separate bang/message chain triggers a note. JACK MIDI channel 2 reaches the second voice only through its connected `midiin` object. Ctrl/Cmd-click can operate a control while editing.
+- **N** or double-click blank canvas creates an object at the pointer. Type its name and positional arguments, such as `metro 150` or `+ 12`. Arrow keys select a suggestion, Tab completes, Enter commits and Escape cancels. B/M/T/I begin bang/message/toggle/number entry. Double-click an object, or select it and press Enter/F2, to edit its text. Unsupported classes and invalid arguments remain visible as errors without replacing the current object. The optional object library lists all 15 supported kinds.
+- Every inlet is on the **top**, every outlet on the **bottom**, indexed left to right. Click an outlet, then a matching inlet. Control, mono audio and stereo bundles have distinct ports and cable styles. Hover or focus a port for help; right-click an inlet for **Accepts**, an outlet for **Emits**. These descriptions follow Ultra's contract. Multiple control sources may enter an inlet; an audio inlet accepts one source. Saved cable array order controls fan-out order.
+- Drag object bodies/headers, Shift-select or marquee a group, and use arrow keys to nudge. Group moves/deletes undo in one step. Zoom and Fit change the view without changing coordinates. Ctrl I opens the optional inspector for all parameters; F1 or the context menu opens help with literal and runnable examples. Numbers and vertical gain controls operate while locked. Native numeric observations update display without modifying saved parameters or feeding back as UI events.
 - Select a cable or object and use **Delete selection** or Delete/Backspace. Undo/redo preserves stable IDs, cable order, parameters and positions. Numeric-parameter undo remains live; structural undo resets notes/timers. Layout undo never reapplies the native graph.
 - Numeric parameters use a bounded latest-wins queue while dragging. Message text, MIDI channel, voice device, node and cable changes are structural. Structural edits prepare a replacement graph, stop timers and notes, and require an explicit new toggle/bang to start again. This is **not seamless hot swapping**. Invalid local edits leave the document unchanged; native rejection retains the last valid active graph and blocks new UI events until resolved. Desired document and active native revisions are shown separately.
 - **Stop patch**, focus loss, a hidden page and Esc stop native timers and notes. **Panic** latches native silence until Stop audio / Start audio. Event-queue overflow fails closed instead of discarding a possible note-off. Navigation waits for audio cleanup and stays on the page if cleanup fails. Abrupt process termination still cannot guarantee webview IPC completion.
@@ -25,6 +26,22 @@ node --check apps/ultra/ui/canvas.mjs
 ```
 
 `canvas-model.test.mjs` covers the strict registry/document, typed audio/control topology, snapshots, real command payloads, parameter coalescing, revision races, native rejection, stop, Panic, startup failure and cancellation, queue overflow, and numeric undo. `canvas-dom.test.mjs` executes the actual page module against a small DOM adapter for palette, wiring, deletion, message/numeric edits, native triggers, dragging, port orientation, import type changes and navigation. Rendered browser smoke is separate under `../tests/ci`; see that directory's README. DOM/static/browser-preview checks do not establish native audio output, hardware MIDI, latency or callback deadlines.
+
+`canvas-catalog.mjs` is the UI name/argument/port-help contract over the same
+15-kind native registry. It rejects Max classes that lack runtime support;
+`int`, `flonum` and `cycle~` are not aliases. `canvas-entry.mjs` owns inline entry
+and `canvas-node.mjs` owns compact object faces. The reference observations and
+user-supplied Max-saved snapshots live in `experiments/max-ui-reference/`.
+
+`bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/ultra-canvas-results` exercises
+the built Tauri canvas on private Xvfb/D-Bus/AT-SPI, reopens authored JSON and
+captures the connected bang/message audio path at gain 4. This mode starts a
+disposable 48 kHz / 1024-frame PipeWire server on a private socket, without
+hardware discovery or a session manager. It never uses the user's audio graph,
+desktop input or clipboard. It refuses another Ultra instance. Omit
+`--software-audio` to qualify the existing JACK server instead; that mode can
+connect physical outputs and requires 48 kHz and a <=1024-frame period throughout
+playback. A passing software capture does not qualify hardware output.
 
 ## Legacy research patcher
 
