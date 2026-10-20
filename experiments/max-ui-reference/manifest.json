@@ -58,7 +58,7 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "90887f33bd0db4d24b35009db14b78fdf3ff3258cc74a3090985e8216756629f",
+      "sha256": "bd2cc9c022ef9d3112683e822a1d3362b97ec5b91708ff63aa7df143cdfcc81e",
       "role": "notes"
     },
     {
@@ -120,6 +120,11 @@
       "path": "verify.py",
       "sha256": "02f2ead787fb260d4a500522f699d6843baee8f7cd0e0bce86ed200a7786f381",
       "role": "dependency"
+    },
+    {
+      "path": "snapshots/.gitattributes",
+      "role": "notes",
+      "sha256": "7defe3f55cf80603a4e3ebaaa1cf4fa950828ae145a17ac6367dd88990419732"
     }
   ],
   "procedure": "See README.md and operations.json. Open copies only, keep DSP off, compare lock/create/autocomplete/port-help behavior. The manifest covers observed UI, not message or audio semantics.",

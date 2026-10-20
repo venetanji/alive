@@ -80,12 +80,13 @@
     {
       "command": "uv run --no-project --with-requirements apps/ultra/tests/ci/requirements.txt python3 experiments/max-ui-reference/verify.py",
       "status": "passed",
-      "hashed_artifacts": 13,
+      "hashed_artifacts": 14,
       "schema": "urn:alive:max-reference-manifest:v1"
     },
     {
-      "command": "git diff --check",
-      "status": "passed"
+      "command": "git diff --check d7e1c59005b4d8a5178854ce28f29bb1e3207956",
+      "status": "passed",
+      "scope": "Full change, including raw CRLF Max snapshots with scoped attributes"
     }
   ],
   "audio_capture": {

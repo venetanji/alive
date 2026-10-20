@@ -24,6 +24,8 @@ The user then supplied `Untitled1.maxpat` and `savedpatch.maxpat`. The two saved
 files are byte-identical and have Max 9.1.5 app metadata. Their original bytes
 are retained under `snapshots/`; their save host is user-reported, not established
 by the JSON. They provide a real saved-format baseline, not a before/after pair.
+The scoped Git attributes preserve their Windows line endings without text
+normalization, so fixture hashes stay valid after checkout.
 
 DSP was not started for this UI study. Sample rate, vector sizes, Overdrive and
 Scheduler in Audio Interrupt were not queried in this run and are explicitly
