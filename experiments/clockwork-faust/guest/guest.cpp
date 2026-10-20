@@ -1,0 +1,110 @@
+// AOT Faust, inside Clockwork's real custom guest boundary. No scsynth.
+#include "dsp_api.h"
+#include "../../faust-reference/host.hpp"
+#include "observe.hpp"
+#include "../instrument.hpp"
+#include <cstring>
+#include <new>
+namespace {
+constexpr int kDevices=2, kVoices=4, kPending=128, kBlockMax=256;
+constexpr int kLease=2048; // Opt-in policy demonstration, OFF by default; changes long holds.
+struct Instrument {
+ std::array<Voice,kVoices> voices;
+ bool sustain=false; float level=1; int serial=0, steals=0;
+ void prepare(){for(auto&v:voices)v.prepare();}
+ void reset(){for(auto&v:voices)v.reset();sustain=false;level=1;}
+ void apply(Event e){
+  if(e.kind==Kind::Reset){reset();return;}
+  if(e.kind==Kind::Level){level=e.value/127.f;for(auto&v:voices)*v.level=level;return;}
+  if(e.kind==Kind::AllOff){sustain=false;for(auto&v:voices)if(v.active(e.frame))v.release(e.frame);return;}
+  if(e.kind==Kind::Sustain){sustain=e.value>=64;if(!sustain)for(auto&v:voices)if(v.active(e.frame)&&!v.down&&v.release_at<0)v.release(e.frame);return;}
+  if(e.kind==Kind::Off||(e.kind==Kind::On&&e.value==0)){
+   for(auto&v:voices)if(v.active(e.frame)&&v.note==e.note&&v.down){v.down=false;if(!sustain)v.release(e.frame);}return;
+  }
+  Voice*pick=nullptr;for(auto&v:voices)if(!v.active(e.frame)){pick=&v;break;}
+  if(!pick){pick=&voices[0];for(auto&v:voices)if(v.born<pick->born)pick=&v;++steals;}
+  pick->reset();pick->note=e.note;pick->down=true;pick->born=serial++;
+  *pick->freq=440.f*std::pow(2.f,(e.note-69)/12.f);*pick->gain=e.value/127.f;*pick->gate=1;*pick->level=level;
+ }
+};
+struct Pending {int frame,device,generation,kind,note,value;};
+uint32_t word(const uint8_t*p){return uint32_t(p[0])<<24|uint32_t(p[1])<<16|uint32_t(p[2])<<8|p[3];}
+}
+struct Dsp {
+ Instrument bank[2][2]; // Preprepared spare, one bounded replacement per cold boot.
+ int selected[2]{},generation[2]{},replacements[2]{};
+ int lease[2][4]{};bool safety[2]{};
+ std::array<Pending,kPending> pending{};int count=0,frame=0;
+ unsigned messages_this_block=0; bool panic[2]{};
+ std::array<float,kBlockMax> scratch{};Observation obs;
+ Instrument& device(int id){return bank[id][selected[id]];}
+ void apply(Pending p){
+  if(p.generation!=generation[p.device]){++obs.stale;return;}
+  if(p.kind==8){device(p.device).reset();++generation[p.device];return;}
+  if(p.kind==7){safety[p.device]=p.value!=0;return;}
+  if(p.kind==6){ // Prepared replacement only; advance identity, old future events ignored.
+   if(replacements[p.device]){++obs.malformed;return;}
+   selected[p.device]^=1;++generation[p.device];++replacements[p.device];return;
+  }
+  auto&x=device(p.device);x.apply({p.frame,Kind(p.kind),p.note,p.value});
+  if(p.kind==int(Kind::On)&&p.value){ // assign expiry to newly born voice, never another voice
+   for(int v=0;v<4;v++)if(x.voices[v].born==x.serial-1&&x.voices[v].down)lease[p.device][v]=p.frame+kLease;
+  }
+ }
+};
+static Dsp* live=nullptr;
+static Lifecycle lifecycle;
+extern "C" {
+Lifecycle ultra_lifecycle(){return lifecycle;}
+Observation ultra_observe(){return live?live->obs:Observation{};}
+const DspInfo* dsp_describe(){static DspInfo x={"Ultra Faust research","0.1",0,sizeof(Dsp),0,0,0,0,0};return &x;}
+uint64_t dsp_memory_bytes(const void*,uint32_t){return 0;}
+uint64_t dsp_memory_bulk_bytes(const void*,uint32_t){return 0;}
+Dsp* dsp_new(const DspConfig*c,const DspHost*,const char**err){
+ if(c->sample_rate!=48000||c->block_size>kBlockMax||!c->block_size||c->memory_bytes<sizeof(Dsp)){++lifecycle.refused;*err="requires 48kHz and block <=256";return nullptr;}
+ ++lifecycle.created;if(measuring)++lifecycle.in_render;auto*d=new(c->memory)Dsp;ReferenceVoice::classInit(48000);
+ for(auto&dev:d->bank)for(auto&bank:dev)bank.prepare();live=d;return d;
+}
+void dsp_free(Dsp*d){++lifecycle.destroyed;if(measuring)++lifecycle.in_render;live=nullptr;d->~Dsp();}
+int dsp_reconfigure(Dsp*,double,uint32_t,uint32_t){return -1;}
+int dsp_asset(Dsp*,const ClockworkAsset*){return -1;}
+void dsp_osc(Dsp*d,const uint8_t*b,uint32_t n,int64_t when,uint32_t,int64_t block_time){
+ ++d->obs.messages;++d->messages_this_block;
+ if(when==0)++d->obs.immediate0;if(when==1)++d->obs.immediate1;
+ // This protocol permits exactly one message per bundle: bounded parsing, no recursion.
+ if(n==64&&!std::memcmp(b,"#bundle\0",8)&&word(b+16)==44){b+=20;n=44;}
+ // Fixed, small protocol: /ultra/event ,iiiiii device generation kind note value reserved.
+ if(n!=44||std::memcmp(b,"/ultra/event\0",12)||std::memcmp(b+12,",iiiiii\0",8)){++d->obs.malformed;return;}
+ Pending p{};p.device=int(word(b+20));p.generation=int(word(b+24));p.kind=int(word(b+28));p.note=int(word(b+32));p.value=int(word(b+36));
+ if(p.device<0||p.device>=2||p.kind<0||p.kind>8||p.note<0||p.note>127||p.value<0||p.value>127){++d->obs.malformed;return;}
+ auto delta=(when==0||when==1)?0:std::llround(double(when-block_time)*(48000.0/4294967296.0));
+ if(delta<0){++d->obs.late;delta=0;}p.frame=d->frame+int(std::min<int64_t>(delta,INT32_MAX-d->frame));
+ if(d->count==kPending){++d->obs.overflow;d->panic[p.device]=true;return;}
+ // Stable insertion: same-time delivery order preserved. Fixed <=128 work/storage.
+ int i=d->count++;while(i&&d->pending[i-1].frame>p.frame){d->pending[i]=d->pending[i-1];--i;}d->pending[i]=p;
+ d->obs.max_pending=std::max(d->obs.max_pending,unsigned(d->count));
+}
+void dsp_process(Dsp*d,const float*const*in,uint32_t ni,float*const*out,uint32_t no,uint32_t frames,int64_t){
+ ++d->obs.calls;d->obs.max_messages_per_block=std::max(d->obs.max_messages_per_block,d->messages_this_block);d->messages_this_block=0;
+ for(unsigned c=0;c<no;c++)std::fill(out[c],out[c]+frames,0.f);
+ if(no>2&&ni)std::copy(in[0],in[0]+frames,out[2]);
+ for(int id=0;id<2;id++)if(d->panic[id]){d->device(id).reset();++d->generation[id];d->panic[id]=false;}
+ const int end=d->frame+frames;int used=0;unsigned spans=0;
+ while(d->frame<end){
+  while(used<d->count&&d->pending[used].frame<=d->frame)d->apply(d->pending[used++]);
+  int stop=end;if(used<d->count)stop=std::min(stop,d->pending[used].frame);
+  for(int id=0;id<2;id++)for(int v=0;v<4;v++){
+   auto&voice=d->device(id).voices[v];
+   if(d->safety[id]&&voice.active(d->frame)&&voice.release_at<0){if(d->lease[id][v]<=d->frame)voice.release(d->frame);else stop=std::min(stop,d->lease[id][v]);}
+  }
+  const int n=stop-d->frame,offset=frames-(end-d->frame);++spans;
+  for(int id=0;id<2;id++)for(auto&v:d->device(id).voices)if(v.active(d->frame)){
+   float*buf[]={d->scratch.data()};v.dsp.compute(n,nullptr,buf);if(unsigned(id)<no)for(int f=0;f<n;f++)out[id][offset+f]+=d->scratch[f];
+  }
+  d->frame=stop;
+ }
+ for(int i=used;i<d->count;i++)d->pending[i-used]=d->pending[i];d->count-=used;
+ d->obs.spans+=spans;d->obs.max_spans=std::max(d->obs.max_spans,spans);
+ for(int id=0;id<2;id++){d->obs.level[id]=d->device(id).level;d->obs.generation[id]=d->generation[id];d->obs.replacements[id]=d->replacements[id];d->obs.steals[id]=d->device(id).steals;d->obs.active[id]=0;for(auto&v:d->device(id).voices)d->obs.active[id]+=v.active(d->frame);}
+}
+}

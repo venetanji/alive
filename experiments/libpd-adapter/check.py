@@ -8,5 +8,5 @@ result=subprocess.run([str(exe),str(root)],capture_output=True,text=True)
 print(result.stdout,end='')
 print(result.stderr,end='')
 assert result.returncode==0, f'probe exit {result.returncode}'
-for check in ['isolation','tick_events','input_delay','partitions','replacement','burst','signal']:
+for check in ['isolation','tick_events','input_delay','partitions','replacement','burst','future_overflow','tick_overflow','active_overflow','signal']:
     assert f'PASS {check}' in result.stdout, f'missing assertion group: {check}'

@@ -32,18 +32,24 @@ float peak(const Tick& x,int channel){float m=0;for(int i=channel;i<128;i+=2)m=s
 struct Event {int frame;const char* receiver;float value;};
 // Offline score capacity and tick work limit are deliberately explicit, not Pd guarantees.
 struct Score {
-    std::array<Event,256> events{};int size=0,next=0,rejected=0;bool panic=false;
+    std::array<Event,256> events{};int size=0,next=0,rejected=0;
+    bool failed=false,resetPending=false;
+    void fail(){failed=true;resetPending=true;next=size;}
     bool push(Event e){
-        if(size==256){++rejected;panic=true;return false;}
+        if(failed || size==256){++rejected;if(!failed)fail();return false;}
         require(size==0 || events[size-1].frame<=e.frame,"unsorted score");events[size++]=e;return true;
     }
     void apply(Device& d,int tickStart){
-        int count=0;while(next<size && events[next].frame<=tickStart && count<16){
-            auto e=events[next++];d.set(e.receiver,e.value);++count;
-        }
-        if(next<size && events[next].frame<=tickStart){panic=true;while(next<size && events[next].frame<=tickStart)++next;}
-        // Guaranteed bounded reset for this known patch only; release ends within one tick.
-        if(panic){d.set("gate",0);panic=false;}
+        // Preflight at most 17 entries: no partial dispatch on a saturated tick.
+        int end=next;
+        while(!failed && end<size && events[end].frame<=tickStart && end-next<17)++end;
+        if(end-next>16)fail();
+        // Any admission/work-budget loss invalidates ALL pending events, including
+        // future gate-ons. The failed score rejects subsequent pushes permanently.
+        // Recover only with a fresh Score after applying this reset to its device.
+        if(resetPending){d.set("gate",0);resetPending=false;}
+        if(failed)return;
+        while(next<end){auto e=events[next++];d.set(e.receiver,e.value);}
     }
 };
 // Causal arbitrary-size input adapter: return previous tick while collecting next.
@@ -96,7 +102,43 @@ int main(int argc,char** argv){try{
     }std::cout<<"PASS replacement (stopped/offline prepare, explicit reset, close/free)\n";
     {
         Device d(path);Score s;for(int i=0;i<300;++i)s.push({0,"gate",1});require(s.size==256 && s.rejected==44,"queue capacity");s.apply(d,0);require(s.next==256,"burst drop");d.tick();require(peak(d.tick(),0)==0,"panic leaves stuck note");
-    }std::cout<<"PASS burst (capacity 256, 44 rejected; 16 messages/tick then drop due remainder + gate reset)\n";
+    }std::cout<<"PASS burst (capacity 256, 44 rejected; fail-closed cancellation of all pending events + gate reset)\n";
+    {
+        // Regression: panic must not be consumed before an accepted future gate-on.
+        Device d(path);Score s;
+        for(int i=0;i<255;++i)require(s.push({(i/15)*64,"gain",0.5f}),"gain score admission");
+        require(s.push({1088,"gate",1}),"future gate-on admission");
+        require(!s.push({1152,"gate",0}),"overflow gate-off must reject");
+        for(int frame=0;frame<1536;frame+=64){s.apply(d,frame);auto x=d.tick();
+            if(frame>=1216)require(peak(x,0)==0,"future gate-on survives rejected gate-off");}
+    }std::cout<<"PASS future_overflow (255 gains at 15/tick; gate-on 1088 accepted, gate-off 1152 rejected; no stuck note)\n";
+    {
+        Device d(path);Score s;
+        for(int i=0;i<15;++i)require(s.push({0,"gain",0.5f}),"budget gain admission");
+        require(s.push({0,"gate",1}),"sixteenth event admission");
+        s.apply(d,0);require(!s.failed && s.next==16,"exact tick budget incorrectly rejected");
+        d.tick();require(peak(d.tick(),0)>0.1f,"sixteenth event not dispatched");
+    }
+    {
+        Device d(path);d.set("gate",1);d.tick();require(peak(d.tick(),0)>0.1f,"overload fixture silent");
+        Score s;for(int i=0;i<17;++i)require(s.push({0,"gain",0.5f}),"tick score admission");
+        require(s.push({128,"gate",1}),"pending future on admission");
+        s.apply(d,0);require(s.failed && s.next==s.size,"tick overflow did not cancel future work");
+        require(!s.push({192,"gate",1}),"failed score accepts new gate-on");
+        for(int frame=0;frame<512;frame+=64){if(frame)s.apply(d,frame);auto x=d.tick();
+            if(frame>=128)require(peak(x,0)==0,"tick overflow rearmed or left active note");}
+        Score fresh;require(fresh.push({512,"gate",1}),"fresh score admission");
+        fresh.apply(d,512);d.tick();require(peak(d.tick(),0)>0.1f,"fresh score cannot recover");
+        require(fresh.push({640,"gate",0}),"fresh score gate-off admission");
+        fresh.apply(d,640);d.tick();require(peak(d.tick(),0)==0,"fresh score release");
+    }std::cout<<"PASS tick_overflow (17 due events invalidate pending future on; active note released, later admission rejected, fresh score recovers)\n";
+    {
+        Device d(path);d.set("gate",1);d.tick();require(peak(d.tick(),0)>0.1f,"capacity fixture silent");
+        Score s;for(int i=0;i<256;++i)require(s.push({1024+i*64,"gain",0.5f}),"capacity fixture admission");
+        require(!s.push({20000,"gate",0}),"capacity termination should reject");
+        s.apply(d,0);d.tick();require(peak(d.tick(),0)==0,"capacity overflow fails active-note termination");
+        require(!s.push({20064,"gate",1}),"capacity failed score accepts new on");
+    }std::cout<<"PASS active_overflow (capacity rejection releases sounding note before future events)\n";
     {
         Device d(path);d.set("gate",1);auto attack=d.tick();require(attack[0]==0,"attack starts nonzero");
         d.tick();float maxAmplitude=0,previous=0;int crossings=0;
