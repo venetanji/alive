@@ -26,7 +26,7 @@ async function mount(native=false){
   const document={querySelector:s=>{const e=ids.get(s.slice(1));assert.ok(e,`HTML must contain ${s}`);return e;},createElement:t=>new Element(t),createElementNS:(_,t)=>new Element(t),addEventListener:(...a)=>documentEvents.addEventListener(...a),hidden:false,activeElement:null};
   const window={addEventListener:(...a)=>windowEvents.addEventListener(...a),setTimeout:(fn,ms)=>{timeouts.push({fn,ms});return timeouts.length;},clearTimeout(){},location:{assign:href=>navigations.push(href)}};
   ids.get('legacy-link').href='index.html';ids.get('lab-link').href='chord-lab.html';
-  const invoke=native?async(name,args={})=>{calls.push({name,args});if(name==='canvas_apply'){patch=args.patch;return{revision:++revision};}if(name==='audio_start')running=true;if(name==='audio_stop')running=false;if(name==='audio_status')return{running};if(name==='canvas_status')return{revision,active:true,nodes:patch.nodes.map(n=>({id:n.id,value:0,pulses:0}))};return true;}:undefined;
+  const invoke=native?async(name,args={})=>{calls.push({name,args});if(name==='audio_devices')return{config:{host:'default',device:'default',sample_rate:48000,buffer_frames:null},hosts:['PipeWire'],effective_host:'PipeWire',devices:[{id:'default',name:'System default - Speakers',compatible:true}],notice:'Audio is off.'};if(name==='canvas_apply'){patch=args.patch;return{revision:++revision};}if(name==='audio_start')running=true;if(name==='audio_stop')running=false;if(name==='audio_status')return{running};if(name==='canvas_status')return{revision,active:true,nodes:patch.nodes.map(n=>({id:n.id,value:0,pulses:0}))};return true;}:undefined;
   const {mountCanvas}=await import('./canvas.mjs');const page=mountCanvas({document,window,invoke});await page.controller.flush();await settle();
   return{...page,ids,calls,timeouts,navigations,windowEvents,documentEvents,all:id=>descendants(ids.get(id))};
 }
@@ -36,6 +36,25 @@ test('browser page mounts editable palette, honest preview, and exclusively top/
   const ports=p.all('objects').filter(e=>e.dataset.direction);assert.ok(ports.length>30);
   for(const port of ports)assert.equal(port.dataset.side,port.dataset.direction==='in'?'top':'bottom');
   await p.ids.get('export-patch').fire('click');assert.equal(p.ids.get('patch-dialog').open,true);assert.equal(JSON.parse(p.ids.get('patch-json').value).profile,'ultra-canvas-v1');assert.equal(p.calls.length,0);
+});
+test('audio settings save requested device buffer without starting sound, then lock edits during playback',async()=>{
+  const p=await mount(true);await p.ids.get('show-audio').fire('click');
+  assert.equal(p.ids.get('audio-content').hidden,false);
+  p.ids.get('audio-buffer').value='128';await p.ids.get('audio-save').fire('click');
+  assert.deepEqual(p.calls.find(c=>c.name==='audio_configure').args.config,{host:'default',device:'default',sample_rate:48000,buffer_frames:128});
+  assert.equal(p.calls.filter(c=>c.name==='audio_start').length,0);
+  await p.ids.get('audio-start-configured').fire('click');
+  assert.equal(p.controller.getState().status.running,true);
+  assert.equal(p.ids.get('audio-buffer').disabled,true);
+  await p.ids.get('audio-stop-configured').fire('click');
+  assert.equal(p.ids.get('audio-buffer').disabled,false);
+});
+test('audio settings browser preview never invents devices or invokes a native host',async()=>{
+  const p=await mount();await p.ids.get('show-audio').fire('click');
+  assert.equal(p.ids.get('audio-content').hidden,false);
+  assert.equal(p.ids.get('audio-save').disabled,true);
+  assert.match(p.ids.get('audio-settings-notice').textContent,/native/i);
+  assert.equal(p.calls.length,0);
 });
 test('real page adds, wires, selects, disconnects, deletes and undoes objects',async()=>{
   const p=await mount();const before=p.controller.getState().patch.nodes.length;

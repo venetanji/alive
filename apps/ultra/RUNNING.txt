@@ -1,20 +1,20 @@
 EDITABLE CANVAS (primary application page)
 =========================================
-Work from research/runtime-foundations-probes and the same draft PR #1.
-From the repository root:
-  git fetch origin research/runtime-foundations-probes
-  git switch research/runtime-foundations-probes
-  git pull --ff-only origin research/runtime-foundations-probes
+From a checkout containing the Rust audio-settings changes:
   bash apps/ultra/build.sh
   bash apps/ultra/run.sh
-Do not discard local edits to switch branches. If that branch is checked out
-elsewhere, use that worktree or create a new local branch from the remote head.
-The repo and PR are the main handoff; no new ZIP is required.
+Open Audio settings in the footer to select an output and buffer/period size.
+Save settings leaves audio off; Save & start audio opens the output. Settings
+belong to Ultra and survive restart. The desktop app now uses Rust CPAL 0.18.2,
+with native PipeWire/ALSA on Linux, rather than requiring a JACK connection.
+The core is still stereo 48 kHz. Requested and observed buffers are separate.
+See AUDIO.md for current setup, platform limits and private software tests.
+PR #1 remains draft; this work is delivered on a separate branch for integration.
 
 The app opens the editable canvas. Start audio, then click the starter toggle
 to start its metro/counter/chord/makenote chain. Bang -> message -> makenote
-provides a manual note trigger. MIDI channel 2 feeds the second voice through
-its midiin object. Use low listening volume initially.
+provides a manual note trigger. Physical MIDI input and external MIDI clock
+are deferred on the CPAL path. Use low listening volume initially.
 
 Add objects from the palette. Drag their headers. Click a bottom outlet, then
 a top inlet. Select a node/cable and Delete to remove it; Undo/Redo restore
@@ -40,6 +40,10 @@ GitHub CI checks the PR: UI/reference/native C++ contracts, sandboxed Chromium
 editing with screenshots, and the actual native plus Rust/Tauri build/tests.
 Browser screenshots are editing evidence, not native WebKit or hardware audio.
 Local native desktop and real MIDI qualification remain separate.
+
+HISTORICAL JACK INVESTIGATION (the diagnostic still supports this adapter)
+The remaining JACK-specific setup, MIDI and hardware results describe the
+earlier desktop adapter. Use AUDIO.md for the current CPAL app and tests.
 
 ULTRA RESEARCH PATCHER — LINUX x86_64
 

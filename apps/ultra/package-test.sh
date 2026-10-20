@@ -16,7 +16,7 @@ trap 'rm -rf "$TMP"' EXIT
 DEST="$TMP/ultra-chord-lab"
 mkdir -p "$DEST"
 cp src-tauri/target/release/ultra src-tauri/target/release/libultra_native.so build/ultra-diagnostic "$DEST/"
-cp run.sh RUNNING.txt THIRD-PARTY.txt THIRD-PARTY-CRATES.json "$DEST/"
+cp run.sh RUNNING.txt AUDIO.md THIRD-PARTY.txt THIRD-PARTY-CRATES.json "$DEST/"
 cp "$ROOT/LICENSE" "$ROOT/LICENSING.md" "$DEST/"
 cat > "$DEST/BUILD.txt" <<EOF
 Private research test build, not a release or portability certification.

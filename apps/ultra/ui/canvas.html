@@ -63,11 +63,30 @@
     <section id="library-content" hidden><label for="object-search" class="sr-only">Find an object</label><input id="object-search" type="search" placeholder="Find an object..." autocomplete="off"><div id="palette"></div><p class="panel-note">15 supported objects. Names and arguments belong to Ultra's bounded profile.</p></section>
     <section id="inspector-content"><div id="inspector"></div><button id="edit-object" class="panel-action">Edit object text</button><button id="delete-selection" class="panel-action">Delete selection</button><details class="diagnostics"><summary>Native observations</summary><p id="revision-state"></p><p id="observation-state"></p><button id="reapply" class="panel-action">Reapply graph</button></details></section>
     <section id="help-content" hidden></section>
+    <section id="audio-content" hidden>
+      <p class="audio-intro">Choose where your patch plays. Settings apply to Ultra and are remembered on this device.</p>
+      <label class="audio-field" for="audio-host">Audio system<select id="audio-host"></select></label>
+      <p id="audio-host-detail" class="audio-hint"></p>
+      <label class="audio-field" for="audio-device">Output device<select id="audio-device"></select></label>
+      <div class="audio-format-fields">
+        <label class="audio-field" for="audio-rate">Sample rate<select id="audio-rate" disabled><option value="48000">48,000 Hz</option></select></label>
+        <label class="audio-field" for="audio-buffer">Buffer / period<select id="audio-buffer"><option value="auto">Automatic</option><option value="32">32 frames</option><option value="64">64 frames</option><option value="128">128 frames</option><option value="256">256 frames</option><option value="512">512 frames</option><option value="1024">1024 frames</option><option value="2048">2048 frames</option><option value="4096">4096 frames</option><option value="8192">8192 frames</option></select></label>
+      </div>
+      <p class="audio-hint">The current DSP core runs at 48 kHz in stereo. Smaller buffers respond faster; larger buffers give your computer more time.</p>
+      <p id="audio-buffer-duration" class="audio-hint"></p>
+      <div class="audio-settings-actions"><button id="audio-save" class="panel-action">Save settings</button><button id="audio-start-configured" class="audio-primary">Save &amp; start audio</button></div>
+      <button id="audio-stop-configured" class="panel-action">Stop audio to edit settings</button>
+      <p id="audio-settings-notice" role="status" class="audio-settings-notice"></p>
+      <div class="audio-live-heading"><h3>Live output</h3><button id="audio-refresh">Refresh devices</button></div>
+      <dl class="audio-live"><dt>Status</dt><dd id="audio-live-state">Audio off</dd><dt>Output</dt><dd id="audio-live-device">Not started</dd><dt>Observed buffer</dt><dd id="audio-live-buffer">Waiting for audio</dd><dt>DSP pipeline</dt><dd>64 frames / 1.33 ms</dd><dt>Stream errors</dt><dd id="audio-live-errors">0</dd></dl>
+      <p class="audio-hint">Observed buffer comes from the device callback and may differ from your request. Buffer duration is not total speaker latency.</p>
+      <p class="audio-hint">This output path does not capture a microphone. Physical MIDI input is not connected through CPAL yet.</p>
+    </section>
   </aside>
 </main>
 <div class="assist-bar"><span id="assist" aria-live="polite">N: new object. Double-click an object to edit. Ctrl E: lock to perform.</span><span id="selection-hint">Editing</span></div>
 <footer class="audio-bar">
-  <div class="audio-controls"><button id="start-audio" title="Start the native audio engine"><svg><use href="#i-power"/></svg><span>Start audio</span></button><button id="stop-audio" class="icon-button" aria-label="Stop audio" title="Stop audio"><svg><use href="#i-stop"/></svg></button><span id="engine-state" role="status">Audio off</span><span id="audio-format">48 kHz / stereo</span></div>
+  <div class="audio-controls"><button id="start-audio" title="Start the native audio engine"><svg><use href="#i-power"/></svg><span>Start audio</span></button><button id="stop-audio" class="icon-button" aria-label="Stop audio" title="Stop audio"><svg><use href="#i-stop"/></svg></button><span id="engine-state" role="status">Audio off</span><button id="show-audio" aria-pressed="false" title="Configure audio output and buffer size">Audio settings</button><span id="audio-format">48 kHz / stereo</span></div>
   <span id="notice" role="status">Preparing patch...</span>
   <button id="stop-graph" title="Stop all timers and notes (Esc)">Stop patch</button><button id="panic" class="panic-button" title="Latch emergency mute; Stop audio then Start to recover">Panic</button>
 </footer>

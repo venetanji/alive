@@ -17,6 +17,10 @@ unsigned ultra_sequence_note(void); /* 128 means no owned note. */
 uint64_t ultra_sequence_ticks(void);
 unsigned ultra_sequence_clock_source(void);
 int ultra_audio_start(void);
+/* Rust owns device I/O. Start/stop only with the device callback stopped.
+   Render runs on its single callback thread, 1..1024 planar stereo frames. */
+int ultra_external_start(void);
+int ultra_external_render(unsigned frames, float* left, float* right);
 void ultra_audio_stop(void);
 int ultra_audio_event(unsigned device,unsigned kind,unsigned note,unsigned value);
 void ultra_audio_routes(unsigned mask);

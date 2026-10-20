@@ -1,0 +1,63 @@
+{
+  "captured_at_utc": "2026-10-20T17:06:58.701025+00:00",
+  "starting_commit": "c75e8e1",
+  "branch": "feat/rust-audio-settings-20261021",
+  "environment": {
+    "os": "Omarchy / Arch Linux",
+    "kernel": "7.2.8-9-omarchy",
+    "architecture": "x86_64",
+    "cpal": "0.18.2",
+    "pipewire_binding": "0.10.1",
+    "alsa_binding": "0.11.0",
+    "system_libraries": [
+      "1.6.9",
+      "1.2.16.1",
+      "2.54.1"
+    ]
+  },
+  "checks": {
+    "javascript_tests": {
+      "passed": 94,
+      "failed": 0
+    },
+    "browser_tests": {
+      "passed": 6,
+      "failed": 0
+    },
+    "rust_tests": {
+      "passed": 30,
+      "ignored": 1,
+      "note": "The ignored private PipeWire integration test was run separately and passed."
+    },
+    "native_external_callback_partition_test": "passed; identical native output at 1/64/127/256/1024 frames",
+    "legacy_jack_abi_tests": "passed; explicit test double, not physical MIDI",
+    "native_canvas_and_sequencer_tests": "passed",
+    "reference_manifest_schema": "passed",
+    "Max_reference_integrity": "34 patch graphs, 20 complete traces, 32 schema-valid manifests, 150 hashed artifacts, 1920 DSP frames",
+    "native_desktop": "native-ui.json",
+    "cpal_software_loopback": "cpal-loopback.json",
+    "release_build": "passed"
+  },
+  "limitations": [
+    "Linux verified; other OS builds/packaging pending",
+    "Core is stereo 48 kHz only",
+    "No physical MIDI input or external MIDI clock on CPAL path",
+    "No calibrated hardware latency or sustained realtime deadline qualification",
+    "DSP-independent message executor, new slider/line objects, and inspector theming are mapped work, not implemented by this change",
+    "No installed Max help file passed end-to-end in Ultra"
+  ],
+  "files": {
+    "apps/ultra/src-tauri/src/audio.rs": "17a128f2e765928f30772b537ed0c716211b60f1437da5597298aed55a7bb5ae",
+    "apps/ultra/src-tauri/src/main.rs": "0725ac7f67a095d7f39c3277f2894fd530b575021ac18e3570fb3e9e2c196ccd",
+    "apps/ultra/src-tauri/native/backend.cpp": "b152e8595bb7b95850e947e4b2ee040f5ea2200804f3f997929e51936efd4687",
+    "apps/ultra/ui/audio-settings.mjs": "9b9235da46c7c77a51a8644d83ca68008d7ad07162ffc992fba8365b3c30f841",
+    "apps/ultra/ui/canvas.html": "1f2a0fc9ce81964643ea366386cd71c22f687a10cd4aba0dcf19867adac0d3c3",
+    "apps/ultra/ui/canvas.css": "1478c32a8997ebd43d652879535cf87a7e3c26240cd1fd60baf14c0785edaad1",
+    "apps/ultra/ui/canvas.mjs": "8d23617678c499dbd2d30aa70375d39ca4c298f2a5aa4e1c655a5adbcc201d46",
+    "apps/ultra/src-tauri/Cargo.lock": "a3bc77971383b7d8d8db461f0a074dc6d9c5916720f69a707e5d4ecd9c8e9d17"
+  },
+  "binaries": {
+    "ultra": "955bd52380d257daf3dabdf8cb2617654999a2efb95d5f63e337a42e6357d7e9",
+    "libultra_native.so": "9e7770ce55d9a75f4d17968b02a0f53fd2c66d9e14c1af0d7f5b42dd1ec22e69"
+  }
+}

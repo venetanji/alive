@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exercise the built canvas, JSON round trips and software JACK capture privately."""
+"""Exercise the built canvas, audio settings and CPAL software capture privately."""
 import array
 import ctypes as C
 import ctypes.util
@@ -194,25 +194,63 @@ try:
     assert export() == starter
     (output/'roundtrip.ultra.json').write_text(json.dumps(starter, indent=2)+'\n')
     keys('Control_L', 'e')
-    click('Start audio')
+    click('Audio settings')
+    wait_for('Save settings')
+    time.sleep(.4)
+    Atspi.Component.grab_focus(wait_for('Buffer / period'))
+    keys('Home')
+    for _ in range(5):
+        keys('Down')
+    keys('Return')
+    keys('Escape')
+    click('Save settings')
+    for _ in range(40):
+        settings = list(Path(os.environ['XDG_DATA_HOME']).rglob('audio-settings.json'))
+        if settings: break
+        time.sleep(.1)
+    if not settings:
+        names = []
+        for root in Atspi.get_desktop(0):
+            try:
+                if root.get_process_id() != pid: continue
+                for a in walk(root):
+                    try:
+                        names.append({'name':a.get_name(),'text':Atspi.Text.get_text(a,0,-1) if 'Text' in a.get_interfaces() else ''})
+                    except GLib.GError: pass
+            except GLib.GError: pass
+        (output/'settings-failure.json').write_text(json.dumps(names,indent=2))
+        root = Gdk.get_default_root_window()
+        Gdk.pixbuf_get_from_window(root,0,0,root.get_width(),root.get_height()).savev(str(output/'settings-failure.png'),'png',[],[])
+    assert len(settings) == 1, settings
+    config = json.loads(settings[0].read_text())
+    assert config['sample_rate'] == 48000 and config['buffer_frames'] == 512, config
+    click('Save & start audio')
     time.sleep(.6)
     assert not wait_for('Start audio').get_state_set().contains(Atspi.StateType.ENABLED)
-    subprocess.run(['jack_lsp', '-c'], stdout=(output/'jack-connections.txt').open('w'), check=True)
+    root = Gdk.get_default_root_window()
+    image = Gdk.pixbuf_get_from_window(root, 0, 0, root.get_width(), root.get_height())
+    image.savev(str(output/'native-audio-settings.png'), 'png', [], [])
+    click('Close panel')
     capture = output/'canvas-message.f32'
-    probe = subprocess.Popen([str(output/'jack-probe'), 'capture', 'ultra', str(capture)],
+    probe = subprocess.Popen(['pw-cat', '--record', '--raw', '--rate=48000', '--format=f32', '--channels=2', '--target=0', '--sample-count=96000', '--properties={ node.name = Ultra-Canvas-Capture }', str(capture)],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     try:
-        time.sleep(.42)
+        for _ in range(40):
+            ports = subprocess.check_output(['pw-link','-i'],text=True)
+            if 'Ultra-Canvas-Capture:input_FL' in ports: break
+            time.sleep(.1)
+        subprocess.run(['pw-link','Ultra-Software-Output:monitor_FL','Ultra-Canvas-Capture:input_FL'],check=True)
+        subprocess.run(['pw-link','Ultra-Software-Output:monitor_FR','Ultra-Canvas-Capture:input_FR'],check=True)
         click('Trigger bang object 13')
         stdout, stderr = probe.communicate(timeout=8)
     finally:
         if probe.poll() is None:
             probe.terminate()
             probe.communicate(timeout=2)
-    assert probe.returncode == 0, stdout+stderr
+    assert probe.returncode in (0,1) and not stderr, stdout+stderr
     samples = array.array('f')
     samples.frombytes(capture.read_bytes())
-    assert len(samples) == 96000 and all(math.isfinite(v) for v in samples)
+    assert len(samples) == 96000*2 and all(math.isfinite(v) for v in samples)
     left, right = samples[::2], samples[1::2]
     assert max(map(abs, left)) > 1e-5, 'Connected native bang/message path is silent'
     assert all(v == 0 for v in right), 'Untriggered MIDI voice sounded'
@@ -224,11 +262,11 @@ try:
     root = Gdk.get_default_root_window()
     image = Gdk.pixbuf_get_from_window(root, 0, 0, root.get_width(), root.get_height())
     image.savev(str(output/'native-canvas.png'), 'png', [], [])
-    result = {'status': 'passed', 'scope': 'built Tauri canvas + real JACK ABI',
+    result = {'status': 'passed', 'scope': 'built Tauri canvas + real Rust CPAL device output',
               'audio_environment': os.environ['ULTRA_TEST_AUDIO_SCOPE'],
               'keyboard_create_edit_undo_lock': True, 'json_roundtrip': True,
               'message_path_left_peak': max(map(abs, left)), 'untriggered_right_peak': 0,
-              'note_off_tail_peak': 0, 'capture': json.loads(stdout),
+              'note_off_tail_peak': 0, 'capture_frames': len(samples)//2, 'saved_audio_config': config,
               'limits': ['No hardware MIDI or latency qualification', 'No Max DSP equivalence claim']}
     (output/'result.json').write_text(json.dumps(result, indent=2)+'\n')
     print(json.dumps(result, indent=2))

@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "scope": "built Tauri canvas + real Rust CPAL device output",
+  "audio_environment": "private software-only CPAL PipeWire at 48 kHz / 512 frames",
+  "keyboard_create_edit_undo_lock": true,
+  "json_roundtrip": true,
+  "message_path_left_peak": 0.006200010888278484,
+  "untriggered_right_peak": 0,
+  "note_off_tail_peak": 0,
+  "capture_frames": 96000,
+  "saved_audio_config": {
+    "host": "default",
+    "device": "default",
+    "sample_rate": 48000,
+    "buffer_frames": 512
+  },
+  "limits": [
+    "No hardware MIDI or latency qualification",
+    "No Max DSP equivalence claim"
+  ]
+}

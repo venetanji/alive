@@ -2,6 +2,7 @@ import {createCanvasController,parsePatch,starterPatch} from './canvas-model.mjs
 import {OBJECTS,objectText,parseObjectText,portHelp} from './canvas-catalog.mjs';
 import {createObjectEntry} from './canvas-entry.mjs';
 import {createNodeView} from './canvas-node.mjs';
+import {mountAudioSettings} from './audio-settings.mjs';
 
 export function mountCanvas({document:doc=globalThis.document,window:win=globalThis.window,invoke=win?.__TAURI__?.core?.invoke}={}) {
   const $=id=>doc.querySelector('#'+id),make=(tag,className,text)=>{const e=doc.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;};
@@ -9,6 +10,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   let pointer={x:80,y:90};
   const views=new Map(),fields=new Map();
   const controller=createCanvasController({invoke,onState:state=>{if(initialized)render(state);}});
+  const audioSettings=mountAudioSettings({document:doc,invoke,controller});
   const guard=fn=>(...args)=>{try{return Promise.resolve(fn(...args)).catch(error=>controller.notice(error));}catch(error){controller.notice(error);}};
   const editing=e=>['INPUT','TEXTAREA','SELECT'].includes(e?.tagName)||e?.isContentEditable;
   const getNode=id=>controller.getState().patch.nodes.find(n=>n.id===id);
@@ -37,16 +39,20 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   }});
   function editNode(id){const n=getNode(id);if(n)entryAt(objectText(n),n);}
   function showPanel(mode) {
-    panel=panel===mode?null:mode;applyPanel();
+    panel=panel===mode?null:mode;return applyPanel();
   }
   function applyPanel() {
-    $('details-panel').hidden=!panel;$('panel-title').textContent={library:'Objects',inspector:'Inspector',help:'Help'}[panel]||'Inspector';
-    for(const mode of ['library','inspector','help'])$(mode+'-content').hidden=panel!==mode;
+    $('details-panel').hidden=!panel;$('panel-title').textContent={library:'Objects',inspector:'Inspector',help:'Help',audio:'Audio settings'}[panel]||'Inspector';
+    $('details-panel').setAttribute('aria-label',$('panel-title').textContent);
+    $('details-panel').classList.toggle('audio-panel',panel==='audio');
+    for(const mode of ['library','inspector','help','audio'])$(mode+'-content').hidden=panel!==mode;
+    $('show-audio').setAttribute('aria-pressed',String(panel==='audio'));
     $('show-inspector').setAttribute('aria-pressed',String(panel==='inspector'));
     if(panel==='inspector')renderInspector(controller.getState());
     if(panel==='help')renderHelp(currentNode());
     if(panel==='library')$('object-search').focus();
     drawCables(controller.getState().patch);
+    if(panel==='audio')return audioSettings.open();
   }
   function setLocked(value) {
     locked=value;entry.close();pending=null;closeMenus();
@@ -210,6 +216,8 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     return patch;
   }
   function render(state) {
+    audioSettings.update(state);
+    $('audio-format').textContent=state.status.running&&state.status.period?`48 kHz / ${state.status.period} frames`:'48 kHz / stereo';
     $('preview-banner').hidden=state.native;$('runtime-label').textContent=state.native?'Native editor':'Browser preview';
     $('engine-state').textContent=!state.native?'Preview':state.faulted?'Fault - restart':state.status.running?'Audio on':'Audio off';$('engine-state').classList.toggle('running',!!state.status.running&&!state.faulted);
     $('start-audio').disabled=!state.native||state.busy||!!state.status.running;
@@ -261,7 +269,8 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   function load(patch){entry.close();closeMenus();clearSelection();pending=null;setLocked(false);controller.load(patch);}
   $('new-patch').addEventListener('click',guard(()=>load({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]})));
   $('starter-patch').addEventListener('click',guard(()=>{load(starterPatch());fitPatch();}));
-  $('start-audio').addEventListener('click',()=>controller.startAudio());$('stop-audio').addEventListener('click',()=>controller.stopAudio());$('stop-graph').addEventListener('click',()=>controller.stop());$('panic').addEventListener('click',()=>controller.panic());$('reapply').addEventListener('click',()=>controller.reapply());
+  $('show-audio').addEventListener('click',()=>showPanel('audio'));
+  $('start-audio').addEventListener('click',async()=>{await controller.startAudio();if(!controller.getState().status.running){panel='audio';await applyPanel();}});$('stop-audio').addEventListener('click',()=>controller.stopAudio());$('stop-graph').addEventListener('click',()=>controller.stop());$('panic').addEventListener('click',()=>controller.panic());$('reapply').addEventListener('click',()=>controller.reapply());
   $('canvas-zoom').addEventListener('change',e=>{zoom=Number(e.target.value);render(controller.getState());});$('fit-patch').addEventListener('click',fitPatch);
   $('workspace').addEventListener('pointermove',e=>{
     pointer=point(e);if(pending)drawCables(controller.getState().patch);

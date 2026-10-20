@@ -1,5 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 mod canvas;
+mod audio;
 use serde::{Deserialize, Serialize};
 use std::{
     ffi::{c_char, CStr},
@@ -7,6 +8,7 @@ use std::{
 };
 use tauri::Manager;
 struct Audio(Mutex<canvas::CanvasState>);
+struct AudioIo(Mutex<audio::Driver>);
 extern "C" {
     fn ultra_canvas_install(graph: *const canvas::NativeGraph) -> i32;
     fn ultra_canvas_event(
@@ -19,7 +21,7 @@ extern "C" {
     fn ultra_canvas_param(revision: u64, node: u32, param: u32, value: f64) -> i32;
     fn ultra_canvas_stop();
     fn ultra_canvas_status(status: *mut canvas::NativeStatus);
-    fn ultra_audio_start() -> i32;
+    #[cfg(test)]
     fn ultra_audio_stop();
     fn ultra_audio_event(device: u32, kind: u32, note: u32, value: u32) -> i32;
     fn ultra_audio_sequence(config: *const NativeSequenceConfig) -> i32;
@@ -55,6 +57,7 @@ struct Status {
     sequence_ticks: u64,
     sequence_clock_source: u32,
     message: String,
+    output: Option<audio::Snapshot>,
 }
 fn status() -> Status {
     unsafe {
@@ -78,30 +81,58 @@ fn status() -> Status {
             message: CStr::from_ptr(ultra_audio_error())
                 .to_string_lossy()
                 .into_owned(),
+            output: None,
         }
     }
 }
-#[tauri::command]
-fn audio_status(state: tauri::State<Audio>) -> Result<Status, String> {
-    let _lock = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
-    Ok(status())
-}
-#[tauri::command]
-fn audio_start(state: tauri::State<Audio>) -> Result<Status, String> {
-    let _lock = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
-    unsafe {
-        ultra_audio_start();
+fn device_status(io: &audio::Driver) -> Status {
+    let mut result = status();
+    let output = io.snapshot();
+    result.period = output.observed_buffer_frames;
+    if output.failed {
+        result.fault = true;
+        result.ready = false;
+        result.running = false;
     }
-    Ok(status())
+    if output.failed || !result.fault { result.message = output.message.clone(); }
+    result.output = Some(output);
+    result
 }
 #[tauri::command]
-fn audio_stop(state: tauri::State<Audio>) -> Result<Status, String> {
+fn audio_status(state: tauri::State<Audio>, io: tauri::State<AudioIo>) -> Result<Status, String> {
     let _lock = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    let io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
+    Ok(device_status(&io))
+}
+#[tauri::command]
+fn audio_start(state: tauri::State<Audio>, io: tauri::State<AudioIo>) -> Result<Status, String> {
+    let _lock = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
+    io.start()?;
+    Ok(device_status(&io))
+}
+#[tauri::command]
+fn audio_stop(state: tauri::State<Audio>, io: tauri::State<AudioIo>) -> Result<Status, String> {
+    let _lock = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
     unsafe {
         ultra_canvas_stop();
-        ultra_audio_stop();
     }
-    Ok(status())
+    io.stop();
+    Ok(device_status(&io))
+}
+#[tauri::command]
+fn audio_devices(io: tauri::State<AudioIo>, host: Option<String>) -> Result<audio::Catalog, String> {
+    let io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
+    let selected = host.unwrap_or_else(|| io.snapshot().config.host);
+    io.catalog(&selected)
+}
+#[tauri::command]
+fn audio_configure(state: tauri::State<Audio>, io: tauri::State<AudioIo>, config: audio::Config) -> Result<Status, String> {
+    let _lock = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
+    io.configure(config)?;
+    Ok(device_status(&io))
 }
 #[tauri::command]
 fn audio_panic(state: tauri::State<Audio>) -> Result<Status, String> {
@@ -522,17 +553,25 @@ mod tests {
     }
 }
 fn main() {
+    #[cfg(target_os = "linux")]
     if std::env::var_os("DISPLAY").is_none() && std::env::var_os("WAYLAND_DISPLAY").is_none() {
         eprintln!("Ultra needs a Linux desktop session (DISPLAY or WAYLAND_DISPLAY). For offline checks run ultra-diagnostic --render-demo demo.wav.");
         std::process::exit(2);
     }
     tauri::Builder::default()
         .manage(Audio(Mutex::new(canvas::CanvasState::default())))
+        .setup(|app| {
+            let path = app.path().app_data_dir()?.join("audio-settings.json");
+            app.manage(AudioIo(Mutex::new(audio::Driver::load(path))));
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             audio_status,
             audio_start,
             audio_stop,
             audio_panic,
+            audio_devices,
+            audio_configure,
             note_event,
             patch_apply,
             sequence_config,
@@ -562,8 +601,8 @@ fn main() {
                 if let Ok(_lock) = state.0.lock() {
                     unsafe {
                         ultra_canvas_stop();
-                        ultra_audio_stop();
                     }
+                    if let Ok(mut io) = app.state::<AudioIo>().0.lock() { io.stop(); }
                 };
             }
         });

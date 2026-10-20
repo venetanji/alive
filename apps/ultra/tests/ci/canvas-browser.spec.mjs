@@ -195,10 +195,24 @@ test('small preview keeps chrome reachable and overlays its optional inspector',
   await page.setViewportSize({width:390,height:844});await page.goto('/canvas.html');
   await expect(page.locator('#show-inspector')).toBeInViewport();
   await expect(page.locator('#panic')).toBeInViewport();
+  await expect(page.locator('#show-audio')).toBeInViewport();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(390);
   await page.locator('#show-inspector').click();await expect(page.locator('#details-panel')).toBeInViewport();
   await page.locator('#close-panel').click();await page.locator('#fit-patch').click();
   await expect(page.locator('#canvas-zoom')).not.toHaveValue('');
   await page.keyboard.press('Control+n');await expect(page.locator('#empty-patch')).toBeVisible();
   await page.locator('#empty-add').click();await expect(page.locator('#object-text')).toBeFocused();
+});
+
+test('audio settings preview is reachable, fits the panel and explains native-only devices', async ({page}) => {
+  for (const width of [1280,390]) {
+    await page.setViewportSize({width,height:844});await page.goto('/canvas.html');
+    await page.locator('#show-audio').click();
+    await expect(page.locator('#audio-content')).toBeVisible();
+    await expect(page.locator('#audio-settings-notice')).toContainText('native Ultra');
+    await expect(page.locator('#audio-save')).toBeDisabled();
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(width);
+    const panel=await page.locator('#details-panel').evaluate(e=>({width:e.clientWidth,scroll:e.scrollWidth}));
+    expect(panel.scroll).toBe(panel.width);
+  }
 });

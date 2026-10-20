@@ -15,11 +15,11 @@ export const REGISTRY = Object.freeze({
   counter: spec('counter',{steps:number(8,1,32,true)},[[C,'advance'],[C,'reset index']],[[C,'index']],'Emits the current index, then advances modulo steps.'),
   chord: spec('chord',{root:number(48,0,127,true),shape:number(0,0,2,true)},[[C,'index'],[C,'root']],[[C,'pitch']],'Triad stair: 0 major, 1 minor, 2 sus4. Repeats one octave higher every third step.'),
   makenote: spec('makenote',{velocity:number(100,1,127,true),duration:number(150,10,2000)},[[C,'pitch'],[C,'velocity'],[C,'duration ms']],[[C,'pitch, velocity']],'Native note-on and delayed note-off. Duration is milliseconds.'),
-  midiin: spec('midiin',{channel:number(2,1,16,true)},[],[[C,'pitch, velocity']],'JACK MIDI note pairs on this channel, only along connected wires.'),
+  midiin: spec('midiin',{channel:number(2,1,16,true)},[],[[C,'pitch, velocity']],'Physical MIDI is deferred on the Rust CPAL output path. The legacy JACK diagnostic supports channel-filtered note pairs.'),
   voice: spec('voice~',{device:number(0,0,1,true),attack:number(8,0,127,true),release:number(28,0,127,true)},[[C,'pitch, velocity'],[C,'attack'],[C,'release']],[[M,'mono voice']],'A/B sine / ASR voices. Attack: raw × 4 ms; release: raw × 8 ms; raw 0 = 16 frames.'),
   gain: spec('gain~',{value:number(90,0,127,true)},[[M,'mono audio'],[C,'level']],[[M,'mono audio']],'Live level, raw 0–127, not decibels.'),
   join: spec('join~',{},[[M,'left / channel 0'],[M,'right / channel 1']],[[S,'stereo bundle']],'Explicit two-channel bundle. Missing inputs are silence; one source may feed both.'),
-  dac: spec('dac~',{},[[S,'stereo bundle']],[],'Maps the explicit bundle to JACK left and right.'),
+  dac: spec('dac~',{},[[S,'stereo bundle']],[],'Maps the explicit bundle to left and right on the configured Rust audio output.'),
 });
 const copy = value => JSON.parse(JSON.stringify(value));
 const fail = message => { throw Error(message); };

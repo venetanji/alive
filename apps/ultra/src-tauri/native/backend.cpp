@@ -57,7 +57,7 @@ struct Control {
  ultra::CanvasPlan canvas{};uint64_t revision=0;uint32_t node=0,inlet=0,param=0;ultra::CanvasMessage message{};double value=0;
 };
 ultra::CanvasPlan admitted_canvas; // Control-thread only; serialized by Rust.
-ultra::CanvasRuntime canvas; // Callback-owned while JACK is active.
+ultra::CanvasRuntime canvas; // Owned by the active audio callback.
 std::atomic<bool> canvas_requested{false};bool callback_canvas=false;
 unsigned canvas_silence=0;
 std::array<std::array<float,1024>,2> canvas_audio{};
@@ -99,9 +99,7 @@ bool queue_control(Control control){
  if(next==control_tail.load(std::memory_order_acquire)){engine.panic();return false;}
  controls[head]=control;control_head.store(next,std::memory_order_release);return true;
 }
-int process(Frames n,void*){
- auto* l=static_cast<float*>(jack.port_get_buffer(jack.l,n));auto* r=static_cast<float*>(jack.port_get_buffer(jack.r,n));
- if(!l||!r)return 0;
+int render_audio(Frames n,float* l,float* r,bool with_midi){
  period.store(n,std::memory_order_relaxed);
  if(n>1024||lost.load(std::memory_order_relaxed)||engine.status().fault){
   if(n>1024){fault_reason.store(4);engine.panic();}
@@ -150,7 +148,7 @@ int process(Frames n,void*){
  const unsigned mask=callback_routes;
  struct Input {unsigned time,size;std::array<unsigned char,3> data;};
  std::array<Input,128> input{};unsigned admitted=0;
- void* buffer=jack.port_get_buffer(jack.midi,n);uint32_t count=buffer?jack.midi_get_event_count(buffer):0;
+ void* buffer=with_midi?jack.port_get_buffer(jack.midi,n):nullptr;uint32_t count=buffer?jack.midi_get_event_count(buffer):0;
  if(count>input.size()){fault_reason.store(3);engine.panic();count=0;}
  for(uint32_t i=0;i<count;i++){
   MidiEvent e{};if(jack.midi_event_get(&e,buffer,i)||!e.buffer||e.size<1||e.time>=n)continue;
@@ -202,6 +200,11 @@ int process(Frames n,void*){
  if(engine.status().fault){sequence.clear();sequence_requested.store(false,std::memory_order_relaxed);canvas.clear_timers();}
  publish_canvas();publish_sequence();return 0;
 }
+int process(Frames n,void*){
+ auto* l=static_cast<float*>(jack.port_get_buffer(jack.l,n));auto* r=static_cast<float*>(jack.port_get_buffer(jack.r,n));
+ if(!l||!r)return 0;
+ return render_audio(n,l,r,true);
+}
 void latency(unsigned mode,void*){
  LatencyRange range{};
  if(mode==0){jack.port_get_latency_range(jack.midi,mode,&range);range.min+=64;range.max+=64;jack.port_set_latency_range(jack.l,mode,&range);jack.port_set_latency_range(jack.r,mode,&range);}
@@ -240,6 +243,22 @@ static int start_impl(){
  return 1;
 }
 int ultra_audio_start(){try{return start_impl();}catch(...){ultra_audio_stop();error="Native audio initialization failed (exception). Audio is stopped.";return 0;}}
+int ultra_external_start(){
+ try{
+  ultra_audio_stop();
+  if(!engine.init(48000)){error="Clockwork/Faust guest initialization was refused.";return 0;}
+  callback_routes=routes.load();callback_canvas=canvas_requested.load();
+  canvas.reset(admitted_canvas);canvas_silence=64;
+  if(callback_canvas){auto emit=[](alive::Event e){return engine.submit(e);};canvas.configure_voices(0,emit);}
+  publish_canvas();fault_reason=0;lost=false;xruns=0;period=0;running=true;
+  error="Rust audio output is running.";return 1;
+ }catch(...){ultra_audio_stop();error="Native DSP initialization failed. Audio is stopped.";return 0;}
+}
+int ultra_external_render(unsigned n,float* left,float* right){
+ if(!n||n>1024||!left||!right){fault_reason=4;engine.panic();return 0;}
+ if(!running.load()){std::fill(left,left+n,0.f);std::fill(right,right+n,0.f);return 0;}
+ render_audio(n,left,right,false);return !engine.status().fault;
+}
 int ultra_audio_event(unsigned device,unsigned kind,unsigned note,unsigned value){
  if(device>1||kind>7||note>127||value>127||canvas_requested.load()||!running.load()||!(routes.load()&(1u<<device)))return 0;
  if(device==0&&kind<=2&&sequence_requested.load(std::memory_order_acquire))return 0;

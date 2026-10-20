@@ -26,9 +26,13 @@ does not read repository secrets or use `pull_request_target`.
    native DSP; it does not prove real JACK server behavior, physical MIDI,
    audible output, hardware latency, or realtime deadlines.
 
-The native runner installs JACK headers and Tauri's GTK/WebKit dependencies from
+The native runner installs JACK headers, ALSA/PipeWire/libclang build dependencies
+for CPAL, and Tauri's GTK/WebKit dependencies from
 Ubuntu's official apt repositories. No audio server is launched. Physical and
 desktop qualification remain separate tasks described in `../../RUNNING.txt`.
+It also tests the Rust-host native rendering ABI across callback partitions.
+Real CPAL software loopback and native Audio settings UI are local private-server
+tests documented in `../../AUDIO.md`; they are not claimed by the cloud job.
 The Ubuntu runner and apt security updates are intentionally not frozen images.
 
 ## Run locally
