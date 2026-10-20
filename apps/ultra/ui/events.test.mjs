@@ -52,4 +52,10 @@ assert(!restored.calls.some(c=>c.name==='note_event'&&c.args.device===0&&c.args.
  'Connecting a previously muted A route must not submit rejected A reset events');
 assert(restored.calls.some(c=>c.name==='note_event'&&c.args.device===0&&c.args.kind===3),
  'Reconnected A must receive its gain after native patch acceptance');
-console.log('PASS: pending patch edits preserve B key/focus releases; reconnect avoids inactive-device resets.');
+const gain=app();
+vm.runInContext("applyPatch();patch.nodes.find(n=>n.type==='gain'&&n.device===1).level=7;event(1,3,0,7);",gain.context);
+await gain.finish(3);
+const levels=gain.calls.filter(c=>c.name==='note_event'&&c.args.device===1&&c.args.kind===3);
+assert.equal(levels.at(-1)?.args.value,7,
+ 'A gain change during patch IPC must reach the engine after patch acceptance');
+console.log('PASS: pending patch edits preserve releases and latest gains; reconnect avoids inactive-device resets.');

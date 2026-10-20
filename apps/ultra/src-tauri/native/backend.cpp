@@ -49,25 +49,48 @@ struct Jack {
 alive::Engine engine; const char* error="Audio is stopped.";
 std::atomic<unsigned> routes{0},fault_reason{0};
 std::atomic<bool> running{false},lost{false}; std::atomic<unsigned> period{0},xruns{0};
+struct Control { alive::Event event{}; unsigned mask=0; bool route=false; };
+constexpr unsigned ControlCapacity=64;
+std::array<Control,ControlCapacity+1> controls{};
+std::atomic<unsigned> control_head{0},control_tail{0};
+unsigned callback_routes=0; // Callback-owned; initialized only while stopped.
+bool queue_control(Control control){
+ auto status=engine.status();if(!status.ready||status.fault)return false;
+ const auto head=control_head.load(std::memory_order_relaxed),next=(head+1)%(ControlCapacity+1);
+ if(next==control_tail.load(std::memory_order_acquire)){engine.panic();return false;}
+ controls[head]=control;control_head.store(next,std::memory_order_release);return true;
+}
 int process(Frames n,void*){
  auto* l=static_cast<float*>(jack.port_get_buffer(jack.l,n));auto* r=static_cast<float*>(jack.port_get_buffer(jack.r,n));
  if(!l||!r)return 0;
  period.store(n,std::memory_order_relaxed);
  if(n>1024||lost.load(std::memory_order_relaxed)){if(n>1024)fault_reason.store(4);engine.panic();std::fill(l,l+n,0);std::fill(r,r+n,0);return 0;}
+ // One FIFO orders route cleanup between old and new UI notes. A snapshot keeps
+ // mid-callback edits behind all MIDI already admitted for this buffer.
+ const auto end=control_head.load(std::memory_order_acquire);auto tail=control_tail.load(std::memory_order_relaxed);
+ for(unsigned i=0;tail!=end&&i<ControlCapacity;i++){
+  const auto control=controls[tail];tail=(tail+1)%(ControlCapacity+1);
+  if(control.route){
+   for(unsigned d=0;d<2;d++)if((callback_routes&~control.mask)&(1u<<d))engine.submit({0,uint8_t(d),alive::Kind::AllOff,0,0});
+   callback_routes=control.mask;
+  }else engine.submit(control.event);
+ }
+ control_tail.store(tail,std::memory_order_release);
+ const unsigned mask=callback_routes;
  void* buffer=jack.port_get_buffer(jack.midi,n);uint32_t count=buffer?jack.midi_get_event_count(buffer):0;
  if(count>128){fault_reason.store(3);engine.panic();count=0;}
  // Submit all MIDI at true JACK buffer offsets. Core admission is bounded/fail-closed.
  for(uint32_t i=0;i<count;i++){
   MidiEvent e{};if(jack.midi_event_get(&e,buffer,i)||!e.buffer||e.size<1)continue;
   auto status=e.buffer[0];unsigned channel=status&15,cmd=status&0xf0;
-  if(channel>1||e.time>=n||!(routes.load(std::memory_order_relaxed)&(1u<<channel)))continue;
+  if(channel>1||e.time>=n||!(mask&(1u<<channel)))continue;
   alive::Event event{};event.device=channel;event.offset=e.time;
   if((cmd==0x90||cmd==0x80)&&e.size==3){event.kind=cmd==0x90?alive::Kind::On:alive::Kind::Off;event.note=e.buffer[1];event.value=e.buffer[2];}
   else if(cmd==0xb0&&e.size==3){event.note=0;event.value=e.buffer[2];if(e.buffer[1]==64)event.kind=alive::Kind::Sustain;else if(e.buffer[1]==123||e.buffer[1]==120)event.kind=alive::Kind::AllOff;else continue;}
   else continue;
   if(event.note>127||event.value>127){engine.panic();break;}engine.submit(event);
  }
- engine.render(l,r,nullptr,n);unsigned mask=routes.load(std::memory_order_relaxed);if(!(mask&1))std::fill(l,l+n,0.f);if(!(mask&2))std::fill(r,r+n,0.f);return 0;
+ engine.render(l,r,nullptr,n);if(!(mask&1))std::fill(l,l+n,0.f);if(!(mask&2))std::fill(r,r+n,0.f);return 0;
 }
 void latency(unsigned mode,void*){
  LatencyRange range{};
@@ -83,7 +106,7 @@ void put32(FILE*f,uint32_t n){put16(f,n);put16(f,n>>16);}
 extern "C" {
 void ultra_audio_stop(){
  running.store(false);if(jack.client){jack.deactivate(jack.client);jack.client_close(jack.client);jack.client=nullptr;}
- engine.shutdown();if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}lost.store(false);error="Audio is stopped.";
+ engine.shutdown();control_head=0;control_tail=0;if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}lost.store(false);error="Audio is stopped.";
 }
 static int start_impl(){
  ultra_audio_stop();if(!jack.load()){if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}error="libjack.so.0 is unavailable. Install your distro's JACK/PipeWire JACK compatibility package, then restart.";return 0;}
@@ -92,6 +115,7 @@ static int start_impl(){
  if(jack.get_sample_rate(jack.client)!=48000){ultra_audio_stop();error="This research instrument requires a 48,000 Hz JACK server. Audio remains stopped.";return 0;}
  if(!jack.get_buffer_size(jack.client)||jack.get_buffer_size(jack.client)>1024){ultra_audio_stop();error="JACK period above 1024 frames is unsupported.";return 0;}
  if(!engine.init(48000)){ultra_audio_stop();error="Clockwork/Faust guest initialization was refused.";return 0;}
+ callback_routes=routes.load();
  jack.l=jack.port_register(jack.client,"audio_out_l","32 bit float mono audio",2,0);jack.r=jack.port_register(jack.client,"audio_out_r","32 bit float mono audio",2,0);jack.midi=jack.port_register(jack.client,"midi_in","8 bit raw midi",1,0);
  if(!jack.l||!jack.r||!jack.midi||jack.set_process_callback(jack.client,process,nullptr)||jack.set_xrun_callback(jack.client,xrun,nullptr)||jack.set_sample_rate_callback(jack.client,rate,nullptr)||jack.set_latency_callback(jack.client,latency,nullptr)){
  ultra_audio_stop();error="JACK port/callback registration failed.";return 0;}
@@ -103,11 +127,14 @@ static int start_impl(){
  return 1;
 }
 int ultra_audio_start(){try{return start_impl();}catch(...){ultra_audio_stop();error="Native audio initialization failed (exception). Audio is stopped.";return 0;}}
-int ultra_audio_event(unsigned device,unsigned kind,unsigned note,unsigned value){if(device>1||kind>5||note>127||value>127||!running.load()||!(routes.load()&(1u<<device)))return 0;return engine.queue({0,uint8_t(device),alive::Kind(kind),uint8_t(note),uint8_t(value)});}
-void ultra_audio_routes(unsigned mask){unsigned old=routes.exchange(mask&3);for(unsigned d=0;d<2;d++)if((old&(1u<<d))&&!(mask&(1u<<d)))engine.queue({0,uint8_t(d),alive::Kind::AllOff,0,0});}
+int ultra_audio_event(unsigned device,unsigned kind,unsigned note,unsigned value){if(device>1||kind>5||note>127||value>127||!running.load()||!(routes.load()&(1u<<device)))return 0;return queue_control({{0,uint8_t(device),alive::Kind(kind),uint8_t(note),uint8_t(value)},0,false});}
+void ultra_audio_routes(unsigned mask){
+ mask&=3;unsigned old=routes.load(std::memory_order_relaxed);
+ routes.store(mask);if(old!=mask&&engine.status().ready)queue_control({{},mask,true});
+}
 void ultra_audio_panic(){fault_reason.store(1);engine.panic();}
 const char* ultra_audio_error(){
- if(engine.status().fault){switch(fault_reason.load()){
+ const auto status=engine.status();if(status.ready&&status.fault){switch(fault_reason.load()){
  case 1:return "Panic muted the engine. Stop then Start to reset.";
  case 2:return "JACK server disconnected. Restore the server, then Stop/Start.";
  case 3:return "Safety stop: more than 128 MIDI events in one callback. Stop/Start to reset.";
@@ -118,7 +145,7 @@ const char* ultra_audio_error(){
 }
 uint64_t ultra_audio_frames(){return engine.status().rendered;}
 uint64_t ultra_audio_rejected(){return engine.status().rejected;}
-unsigned ultra_audio_flags(){auto s=engine.status();return (running.load()?1:0)|(s.ready?2:0)|(s.fault?4:0)|(lost.load()?8:0);}
+unsigned ultra_audio_flags(){auto s=engine.status();return (running.load()?1:0)|(s.ready?2:0)|(s.ready&&s.fault?4:0)|(lost.load()?8:0);}
 unsigned ultra_audio_period(){return period.load();}unsigned ultra_audio_xruns(){return xruns.load();}
 static int render_demo_impl(const char*path){
  ultra_audio_stop();if(!engine.init())return 0;

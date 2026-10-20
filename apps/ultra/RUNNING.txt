@@ -70,17 +70,10 @@ must be recreated after Stop/Start; inspect qpwgraph or QjackCtl's graph.
 QjackCtl and qpwgraph were installed for debugging. Use the existing PipeWire
 server; QjackCtl's Start button is not needed to launch another daemon.
 Playing only A (including the default typing keyboard) produces only left.
-For right, play B's keyboard or send MIDI on channel 2. The user reported B's
-on-screen keyboard was silent. At 512 frames, private native pointer tests
-produce signal on both software outputs and terminate correctly; the LG TV's
-FL/FR JACK links and balanced, unmuted sink volumes were also verified. Independent
-stereo WAVs have valid left/right samples, but the user hears no right from
-pw-play or approved direct ALSA playback with PipeWire stopped. The same spoken
-WAV also loses its right channel in Chrome/preview, while other music is reported
-to play stereo there. A known-good music reference matches the test's
-PCM16/stereo/48 kHz format; a comparison with identical music routed separately
-left/right is pending.
-The audible discrepancy is unresolved, and no driver/TV diagnosis is established.
+For right, play B's keyboard or send MIDI on channel 2. The previously missing
+right channel is resolved: the user confirmed a speaker cable issue. Native
+pointer tests and independent stereo WAV decoding had already verified both
+software outputs. The earlier listening discrepancy is closed.
 Auto-connection uses the first two physical ports, so inspect the patchbay after
 device/order changes. See PLAN.md for the separate software/listening evidence.
 
@@ -144,8 +137,12 @@ The script never restarts a service or changes settings. Desktop regression
 scripts require Python GI / AT-SPI and one actual Ultra window.
 For the mapped-library install regression (no audio/display required):
   python3 apps/ultra/tests/check_build_install.py
-For releases during pending patch commands (no audio/display required):
+For releases/gain changes during pending patch commands (no audio/display required):
   node apps/ultra/ui/events.test.mjs
+For route ordering, fresh reconnect presses, queue overflow and recovery errors
+against an explicit fake JACK library (no audio server/display required):
+  python3 apps/ultra/tests/check_backend.py
+This needs official JACK development headers and a native build first.
 
 Actual native UI checks include dragging, reconnecting, deleting/restoring,
 both pointer keyboards, typing A, gain/sustain, JSON paste/native file-picker
@@ -154,12 +151,14 @@ Screenshots are under apps/ultra/screenshots in source. Optional Download is
 still unverified; selectable JSON remains the export fallback.
 Short basic real-JACK captures at 512/256/128/64 show the declared 64-frame software
 delay and termination/isolation. Desktop interaction produced xruns, including
-focus switching. Sustained realtime acceptance, physical controller input,
-audible listening confirmation and calibrated MIDI-to-analog latency remain
-pending. See the single repository PLAN.md for detailed evidence and next gates.
+focus switching. Sustained realtime acceptance, physical controller input and
+calibrated MIDI-to-analog latency remain pending. See the single repository
+PLAN.md for detailed evidence and next gates.
 
-Ordering and long sessions: events with identical timestamps from MIDI are
-submitted before the pending UI queue is drained, so equal-time MIDI precedes
-UI control, deterministically. This is not a claim about physical arrival order.
+Ordering and long sessions: the native callback first applies one FIFO snapshot
+of UI events and route commands, then admits this buffer's MIDI. Equal-time UI
+controls precede MIDI. Later edits take effect next callback. A disconnect
+releases old notes in FIFO order; a fresh UI press after reconnect survives.
+This is not a claim about physical arrival order.
 The research guest uses a finite frame-counter range and intentionally safety-
 stops before about 12.43 hours; stop/start resets it. Unlimited uptime is untested.
