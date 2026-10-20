@@ -22,6 +22,7 @@ const settle=()=>new Promise(r=>setImmediate(r));
 async function mount(native=false){
   const html=readFileSync(new URL('./canvas.html',import.meta.url),'utf8'),ids=new Map();
   for(const[,tag,id]of html.matchAll(/<([\w-]+)\b[^>]*\bid="([^"]+)"/g))ids.set(id,new Element(tag));
+  ids.get('object-entry').hidden=true;
   const documentEvents=new Element(),windowEvents=new Element(),calls=[],timeouts=[],navigations=[];let revision=0,running=false,patch;
   const document={querySelector:s=>{const e=ids.get(s.slice(1));assert.ok(e,`HTML must contain ${s}`);return e;},createElement:t=>new Element(t),createElementNS:(_,t)=>new Element(t),addEventListener:(...a)=>documentEvents.addEventListener(...a),hidden:false,activeElement:null};
   const window={addEventListener:(...a)=>windowEvents.addEventListener(...a),setTimeout:(fn,ms)=>{timeouts.push({fn,ms});return timeouts.length;},clearTimeout(){},location:{assign:href=>navigations.push(href)}};
@@ -135,4 +136,48 @@ test('number display follows native observations without changing saved paramete
   const element=p.all('objects').find(e=>Number(e.dataset.node)===15),input=descendants(element).find(e=>e.dataset.parameter==='value');
   p.render({...state,observations:{15:{value:72,pulses:1}}});
   assert.equal(input.value,'72');assert.equal(node.params.value,150);
+});
+test('Escape stops notes from focused ordinary inputs but entry Escape only cancels',async()=>{
+  const p=await mount(true);await p.ids.get('start-audio').fire('click');
+  const stops=()=>p.calls.filter(c=>c.name==='canvas_stop').length;
+  let before=stops();await p.windowEvents.fire('keydown',{key:'Escape',target:p.ids.get('object-search')});
+  assert.equal(stops(),before+1);
+  await p.windowEvents.fire('keydown',{key:'n'});before=stops();
+  await p.ids.get('object-text').fire('keydown',{key:'Escape'});
+  assert.equal(stops(),before);assert.equal(p.ids.get('object-entry').hidden,true);
+});
+test('locked inspector rejects structural parameters while keeping live controls available',async()=>{
+  const p=await mount(true);await p.ids.get('lock-patch').fire('click');
+  for(const [type,key,value] of [['message','text','60 100'],['voice','device',1],['midiin','channel',2]]){
+    const id=p.controller.getState().patch.nodes.find(n=>n.type===type).id;
+    const node=p.all('objects').find(e=>Number(e.dataset.node)===id);
+    await descendants(node).find(e=>e.dataset.drag).fire('click');
+    const input=p.all('inspector').find(e=>e.dataset.parameter===key);assert.ok(input);
+    assert.equal(input.disabled,true,`${id} ${key}`);
+    const before=p.controller.export();input.value=String(value);await input.fire('change');assert.equal(p.controller.export(),before);
+  }
+  const number=p.all('objects').find(e=>Number(e.dataset.node)===15);await descendants(number).find(e=>e.dataset.drag).fire('click');
+  const input=p.all('inspector').find(e=>e.dataset.parameter==='value');assert.equal(input.disabled,false);
+  input.value='200';await input.fire('change');assert.equal(p.controller.getState().patch.nodes.find(n=>n.id===15).params.value,200);
+});
+test('camera pan, zoom and reset never send native graph or audio commands',async()=>{
+  const p=await mount(true),before=p.controller.export(),calls=p.calls.length;
+  const workspace=p.ids.get('workspace');
+  await workspace.fire('pointerdown',{button:1,pointerId:7,clientX:300,clientY:300});
+  await workspace.fire('pointermove',{pointerId:7,clientX:420,clientY:340});await workspace.fire('pointerup',{pointerId:7});
+  assert.match(p.ids.get('canvas').style.transform,/translate\(120px, 40px\)/);
+  await workspace.fire('wheel',{ctrlKey:true,deltaY:-200,deltaMode:0,clientX:120,clientY:100});
+  assert.ok(Number(p.ids.get('canvas-zoom').value)>1);
+  await p.ids.get('reset-view').fire('click');assert.equal(p.ids.get('canvas').style.transform,'translate(0px, 0px) scale(1)');
+  assert.equal(p.controller.export(),before);assert.equal(p.calls.length,calls);
+});
+test('locking cancels an in-flight move and disables already-open runnable help',async()=>{
+  const p=await mount();const node=p.all('objects').find(e=>Number(e.dataset.node)===15),header=descendants(node).find(e=>e.dataset.drag);
+  await header.fire('click');await p.ids.get('show-help').fire('click');
+  const example=p.all('help-content').find(e=>e.textContent==='Open runnable example patch');assert.ok(example);assert.equal(example.disabled,false);
+  const before=p.controller.export();await header.fire('pointerdown',{pointerId:1,clientX:300,clientY:100});await header.fire('pointermove',{pointerId:1,clientX:340,clientY:160});
+  await p.ids.get('lock-patch').fire('click');await header.fire('pointermove',{pointerId:1,clientX:380,clientY:180});await header.fire('pointerup',{pointerId:1});
+  assert.equal(p.controller.export(),before);
+  assert.ok(!p.all('help-content').some(e=>e.textContent==='Open runnable example patch'&&!e.disabled));
+  await example.fire('click');assert.equal(p.controller.export(),before);
 });

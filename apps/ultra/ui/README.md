@@ -4,16 +4,16 @@ The native window opens `canvas.html`, the editable graph profile `ultra-canvas-
 
 ## Editable canvas workflow
 
-- **Ctrl E** locks/unlocks the patch. Edit mode selects and moves controls; locked mode operates them. Start audio, lock, then click the top-left toggle to run `metro → counter → chord → makenote → voice`. The native audio timeline owns metro pulses and note-off scheduling. The separate bang/message chain triggers a note. JACK MIDI channel 2 reaches the second voice only through its connected `midiin` object. Ctrl/Cmd-click can operate a control while editing.
+- **Ctrl E** locks/unlocks the patch. Edit mode selects and moves controls; locked mode operates them. Start audio, lock, then click the top-left toggle to run `metro → counter → chord → makenote → voice`. The native audio timeline owns metro pulses and note-off scheduling. The separate bang/message chain triggers a note. The current CPAL desktop path has no physical MIDI ingress; `midiin` routing is exercised only through the legacy JACK adapter/tests. Ctrl/Cmd-click can operate a control while editing.
 - **N** or double-click blank canvas creates an object at the pointer. Type its name and positional arguments, such as `metro 150` or `+ 12`. Arrow keys select a suggestion, Tab completes, Enter commits and Escape cancels. B/M/T/I begin bang/message/toggle/number entry. Double-click an object, or select it and press Enter/F2, to edit its text. Unsupported classes and invalid arguments remain visible as errors without replacing the current object. The optional object library lists all 15 supported kinds.
 - Every inlet is on the **top**, every outlet on the **bottom**, indexed left to right. Click an outlet, then a matching inlet. Control, mono audio and stereo bundles have distinct ports and cable styles. Hover or focus a port for help; right-click an inlet for **Accepts**, an outlet for **Emits**. These descriptions follow Ultra's contract. Multiple control sources may enter an inlet; an audio inlet accepts one source. Saved cable array order controls fan-out order.
-- Drag object bodies/headers, Shift-select or marquee a group, and use arrow keys to nudge. Group moves/deletes undo in one step. Zoom and Fit change the view without changing coordinates. Ctrl I opens the optional inspector for all parameters; F1 or the context menu opens help with literal and runnable examples. Numbers and vertical gain controls operate while locked. Native numeric observations update display without modifying saved parameters or feeding back as UI events.
+- Drag object bodies/headers, Shift-select or marquee a group, and use arrow keys to nudge. Group moves/deletes undo in one step. Space+drag or middle-button drag pans the canvas, including when starting over an object. Ctrl/Cmd+wheel zooms at the pointer; Ctrl/Cmd +/- zooms and Ctrl/Cmd 0 or Reset view restores 100% at the origin. Zoom and Fit change only the view, never graph coordinates or audio state. Ctrl I opens the optional inspector for all parameters; F1 or the context menu opens help with literal and runnable examples. Numbers and vertical gain controls operate while locked. Native numeric observations update display without modifying saved parameters or feeding back as UI events.
 - Select a cable or object and use **Delete selection** or Delete/Backspace. Undo/redo preserves stable IDs, cable order, parameters and positions. Numeric-parameter undo remains live; structural undo resets notes/timers. Layout undo never reapplies the native graph.
-- Numeric parameters use a bounded latest-wins queue while dragging. Message text, MIDI channel, voice device, node and cable changes are structural. Structural edits prepare a replacement graph, stop timers and notes, and require an explicit new toggle/bang to start again. This is **not seamless hot swapping**. Invalid local edits leave the document unchanged; native rejection retains the last valid active graph and blocks new UI events until resolved. Desired document and active native revisions are shown separately.
-- **Stop patch**, focus loss, a hidden page and Esc stop native timers and notes. **Panic** latches native silence until Stop audio / Start audio. Event-queue overflow fails closed instead of discarding a possible note-off. Navigation waits for audio cleanup and stays on the page if cleanup fails. Abrupt process termination still cannot guarantee webview IPC completion.
+- Numeric parameters use a bounded latest-wins queue while dragging. Message text, MIDI channel, voice device, node and cable changes are structural and disabled while locked, including in the Inspector. Structural edits prepare a replacement graph, stop timers and notes, and require an explicit new toggle/bang to start again. This is **not seamless hot swapping**. Invalid local edits leave the document unchanged; native rejection retains the last valid active graph and blocks new UI events until resolved. Desired document and active native revisions are shown separately.
+- **Stop patch**, focus loss, a hidden page and Esc stop native timers and notes, including when ordinary number/gain/Inspector inputs have focus. Escape inside object entry cancels that edit instead; modal/context menus retain their dismissal behavior. **Panic** latches native silence until Stop audio / Start audio. Event-queue overflow fails closed instead of discarding a possible note-off. Navigation waits for audio cleanup and stays on the page if cleanup fails. Abrupt process termination still cannot guarantee webview IPC completion.
 - **Save / export…** provides selectable JSON, Copy and optional Download. **Open…** accepts pasted JSON or a file picker; file selection validates before the explicit Import step. Import validates the whole profile before replacement. No autosave is implied. `canvas-preset.json` is the supplied starter. Limits: 32 objects, 64 edges, 64 KiB; unknown fields/types, invalid values/ports, cycles and unsupported audio paths are rejected. Omitted known parameters receive protocol defaults.
 
-The audio profile is explicit `voice → gain → join → dac`, with at most one voice per logical device and one join/dac. Missing paths are silence. Gain outputs can feed either join inlet or both for explicit dual mono. These are the actual two native prepared sine/ASR voice buses, not arbitrary DSP or Max compatibility. Attack uses raw × 4 ms, release raw × 8 ms, and raw 0 means 16 frames, latched on note-on. A single stereo bundle reaches JACK left/right through `dac`.
+The audio profile is explicit `voice → gain → join → dac`, with at most one voice per logical device and one join/dac. Missing paths are silence. Gain outputs can feed either join inlet or both for explicit dual mono. These are the actual two native prepared sine/ASR voice buses, not arbitrary DSP or Max compatibility. Attack uses raw × 4 ms, release raw × 8 ms, and raw 0 means 16 frames, latched on note-on. A single stereo bundle reaches the selected CPAL stereo output through `dac`.
 
 Browser preview supports editing and JSON only. Native triggers and audio controls are disabled, and runtime readouts remain absent rather than simulating playback. Per-object values and pulse counts are polled native observations, not an audio timing scope.
 
@@ -36,14 +36,18 @@ user-supplied Max-saved snapshots live in `experiments/max-ui-reference/`.
 `bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/ultra-canvas-results` exercises
 the built Tauri canvas on private Xvfb/D-Bus/AT-SPI, reopens authored JSON and
 captures the connected bang/message audio path at gain 4. This mode starts a
-disposable 48 kHz / 1024-frame PipeWire server on a private socket, without
-hardware discovery or a session manager. It never uses the user's audio graph,
-desktop input or clipboard. It refuses another Ultra instance. Omit
-`--software-audio` to qualify the existing JACK server instead; that mode can
-connect physical outputs and requires 48 kHz and a <=1024-frame period throughout
-playback. A passing software capture does not qualify hardware output.
+disposable 48 kHz / 512-frame PipeWire server on a private socket, with policy-only
+WirePlumber and no hardware discovery. The current script always uses private
+software audio (the optional `--software-audio` flag is retained for compatibility).
+It never qualifies the user's physical output. The committed desktop captures were
+made on the local Arch environment; the portable CI gate is the separate
+`check_cpal_audio.sh` real CPAL loopback, not an automated desktop UI test.
 
 ## Legacy research patcher
+
+The JACK routing/MIDI observations below describe the earlier adapter. The current
+Tauri app uses CPAL for all pages: on-screen controls and internal clocks remain
+available, but physical MIDI and external MIDI clock are not connected.
 
 Dependency-free HTML/CSS/ES modules packaged by the Rust/Tauri shell. It never creates a WebAudio fallback: opening a browser preview explicitly reports that native audio is unavailable.
 

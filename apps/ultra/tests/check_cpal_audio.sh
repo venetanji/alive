@@ -5,11 +5,24 @@ cd "$ROOT"
 out=${1:?Usage: check_cpal_audio.sh /absolute/results/directory}
 mkdir -p "$out"
 out=$(realpath "$out")
+exec > >(tee "$out/runner.log") 2>&1
 export PATH="$ROOT/experiments/clockwork-faust/.deps/rust/bin:$PATH"
 export CARGO_HOME="${CARGO_HOME:-$ROOT/experiments/clockwork-faust/.deps/cargo}"
 export ULTRA_NATIVE_LIB_DIR="$ROOT/apps/ultra/build"
 export LD_LIBRARY_PATH="$ULTRA_NATIVE_LIB_DIR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --locked --no-run --message-format=json >"$out/build-artifacts.jsonl" 2>"$out/build.log"
+# Fail before building if the private-server tools are missing. Never use or
+# reconfigure an existing user/system audio service.
+for tool in pipewire wireplumber pw-cat pw-link pw-dump dbus-run-session timeout python3; do
+    command -v "$tool" >/dev/null || { echo "Missing required tool: $tool" >&2; exit 1; }
+done
+{
+    rustc --version
+    cargo --version
+    pipewire --version
+    wireplumber --version
+    pw-cat --version
+} >"$out/versions.txt" 2>&1
+cargo test --release --manifest-path apps/ultra/src-tauri/Cargo.toml --locked --no-run --message-format=json >"$out/build-artifacts.jsonl" 2>"$out/build.log"
 probe_binary=$(python3 - "$out/build-artifacts.jsonl" <<'PY'
 import json,sys
 rows=[json.loads(x) for x in open(sys.argv[1])]
@@ -18,9 +31,15 @@ assert len(bins)==1,bins
 print(bins[0])
 PY
 )
+# Rust test filters silently succeed with zero matches; explicitly reject that.
+test_name=audio::tests::private_software_output
+"$probe_binary" --list --ignored >"$out/test-list.txt"
+grep -Fxq "$test_name: test" "$out/test-list.txt"
 runtime=$(mktemp -d /tmp/ultra-cpal.XXXXXX)
 export PIPEWIRE_RUNTIME_DIR="$runtime" PIPEWIRE_REMOTE=ultra-audio-test XDG_RUNTIME_DIR="$runtime"
 export GIO_USE_VFS=local GTK_USE_PORTAL=0
+export XDG_STATE_HOME="$runtime/state" XDG_CONFIG_HOME="$runtime/config"
+mkdir -p "$XDG_STATE_HOME" "$XDG_CONFIG_HOME"
 export ULTRA_AUDIO_PROBE_SETTINGS="$runtime/settings.json"
 server='' policy='' capture='' probe=''
 cleanup() {
@@ -40,42 +59,60 @@ test -S "$runtime/ultra-audio-test"
 # CPAL 0.18.2's discovery checks pipewire-0 even with PIPEWIRE_REMOTE set.
 ln -s ultra-audio-test "$runtime/pipewire-0"
 # Policy only configures/routes our software nodes; it loads no hardware monitors.
-XDG_STATE_HOME="$runtime/state" XDG_CONFIG_HOME="$runtime/config" \
-    WIREPLUMBER_CONFIG_DIR=/usr/share/wireplumber \
-    dbus-run-session -- wireplumber -p policy >"$out/policy.log" 2>&1 &
+# Ubuntu 24.04 ships WirePlumber 0.4: its upstream policy.conf loads only
+# policy.lua, not main.lua/bluetooth.lua or any hardware discovery monitors.
+# WirePlumber 0.5 replaced these configurations with built-in profiles.
+case "$(wireplumber --version)" in
+    *"0.4."*) policy_args=(-c policy.conf) ;;
+    *) policy_args=(-p policy) ;;
+esac
+WIREPLUMBER_CONFIG_DIR=/usr/share/wireplumber \
+    timeout --kill-after=5s 60s dbus-run-session -- wireplumber "${policy_args[@]}" >"$out/policy.log" 2>&1 &
 policy=$!
 sleep .3
-pw-cat --record --raw --rate=48000 --format=f32 --channels=2 --target=0 --sample-count=384000 \
-    --properties='{ node.name = Ultra-Capture }' "$out/loopback.f32" >"$out/capture.log" 2>&1 &
+kill -0 "$policy"
+# Writing to stdout requests raw PCM on both PipeWire 1.0 and newer versions.
+timeout --signal=INT --kill-after=5s 40s pw-cat --record --rate=48000 --format=f32 --channels=2 --channel-map=FL,FR --target=0 \
+    --properties='{ node.name = Ultra-Capture }' - >"$out/loopback.f32" 2>"$out/capture.log" &
 capture=$!
-"$probe_binary" audio::tests::private_software_output --ignored --exact --nocapture >"$out/probe.log" 2>&1 &
-probe=$!
 for attempt in {1..80}; do
-    pw-link -o >"$out/ports-out.txt"
-    pw-link -i >"$out/ports-in.txt"
-    if rg -q 'Ultra-Capture:input_FL' "$out/ports-in.txt"; then break; fi
-    kill -0 "$probe"; sleep .1
+    timeout 5s pw-link -o >"$out/ports-out.txt"
+    timeout 5s pw-link -i >"$out/ports-in.txt"
+    if grep -q 'Ultra-Capture:input_FL' "$out/ports-in.txt" &&
+       grep -q 'Ultra-Capture:input_FR' "$out/ports-in.txt" &&
+       grep -q 'Ultra-Software-Output:monitor_FL' "$out/ports-out.txt" &&
+       grep -q 'Ultra-Software-Output:monitor_FR' "$out/ports-out.txt"; then break; fi
+    kill -0 "$capture"; kill -0 "$policy"; kill -0 "$server"; sleep .1
 done
-pw-link -l >"$out/connections.txt"
-pw-link Ultra-Software-Output:monitor_FL Ultra-Capture:input_FL
-pw-link Ultra-Software-Output:monitor_FR Ultra-Capture:input_FR
+timeout 5s pw-link Ultra-Software-Output:monitor_FL Ultra-Capture:input_FL
+timeout 5s pw-link Ultra-Software-Output:monitor_FR Ultra-Capture:input_FR
+# Connect recording before starting the score; slow policy startup cannot
+# silently consume the probe's two-second pre-roll.
+timeout --kill-after=5s 30s "$probe_binary" "$test_name" --ignored --exact --nocapture >"$out/probe.log" 2>&1 &
+probe=$!
+timeout 5s pw-link -l >"$out/connections.txt"
+timeout 5s pw-dump >"$out/graph.json"
 wait "$probe"
 probe=''
+# PipeWire 1.0 (Ubuntu 24.04) has no finite-frame recording option. Stop
+# gracefully after the test has rendered its score and completed restart checks.
+# timeout forwards SIGINT to pw-cat and bounds a stuck recorder as well.
+kill -INT "$capture"
 capture_status=0
 wait "$capture" || capture_status=$?
 capture=''
 python3 - "$out" "$capture_status" <<'PY'
 import array,json,math,pathlib,sys
 out=pathlib.Path(sys.argv[1]);samples=array.array('f');samples.frombytes((out/'loopback.f32').read_bytes())
-assert len(samples)>48000, len(samples)
-assert len(samples)==384000*2,len(samples)
-assert int(sys.argv[2]) in (0,1),sys.argv[2]
+assert len(samples)%2==0,len(samples)
+assert len(samples)//2>48000,len(samples)
+assert int(sys.argv[2])==0,sys.argv[2]
 assert not (out/'capture.log').read_text().strip()
 assert all(math.isfinite(x) for x in samples)
 channels=[samples[::2],samples[1::2]]
 peaks=[max(abs(x) for x in ch) for ch in channels]
 assert all(.001<p<1 for p in peaks),peaks
-report={'scope':'private software-only CPAL PipeWire loopback, no physical outputs','rate_hz':48000,'channels':2,'frames':len(samples)//2,'peaks':peaks,'all_finite':True,'capture_exit_status':int(sys.argv[2]),'capture_note':'This pw-cat returns 1 after its requested sample count; exact frame count and empty error log are required.','note_score':'both channels A4 / MIDI 69 velocity 70; on at +2s, off +2.6s; score wall times approximate, not latency measurements','observed':'probe.log records requested and observed callback size; successful stop/start and saved configuration reload'}
+report={'scope':'private software-only CPAL PipeWire loopback, no physical outputs','rate_hz':48000,'channels':2,'frames':len(samples)//2,'peaks':peaks,'all_finite':True,'capture_exit_status':int(sys.argv[2]),'capture_note':'Recording stopped with SIGINT after the passing Rust test; frame count varies with startup time. Clean recorder exit and empty error log are required.','note_score':'both channels A4 / MIDI 69 velocity 70; on at +2s, off +2.6s; score wall times approximate, not latency measurements','observed':'probe.log records requested and observed callback size; successful stop/start and saved configuration reload'}
 (out/'result.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report))
 PY

@@ -58,10 +58,12 @@ kbd { color: var(--muted); font: 10px "Liberation Sans", sans-serif; }
 .zoom-control select { background: transparent; border-color: transparent; padding: 4px 2px; width: 66px; font-variant-numeric: tabular-nums; }
 .preview { padding: 5px 12px; border-bottom: 1px solid #736549; background: #443c2d; color: #f0ddb7; font-size: 11px; }
 main { display: flex; flex: 1; min-height: 0; position: relative; }
-#workspace { flex: 1; min-width: 0; overflow: auto; position: relative; background-color: var(--canvas); background-image: radial-gradient(#535353 .8px, transparent .8px); background-size: 16px 16px; outline: none; scrollbar-color: #666666 #303030; }
+#workspace { flex: 1; min-width: 0; overflow: auto; position: relative; background-color: var(--canvas); background-image: radial-gradient(#535353 .8px, transparent .8px); background-size: 16px 16px; outline: none; scrollbar-color: #666666 #303030; overflow-anchor: none; }
 #workspace.locked { background-image: none; }
-#canvas-space { position: relative; }
-#canvas { position: relative; transform-origin: top left; min-width: 100%; }
+#canvas-space { position: relative; overflow: hidden; }
+#workspace.pan-ready, #workspace.pan-ready * { cursor: grab !important; }
+#workspace.panning, #workspace.panning * { cursor: grabbing !important; user-select: none; }
+#canvas { position: relative; transform-origin: top left; }
 #objects, #cables { position: absolute; inset: 0; }
 #objects { pointer-events: none; }
 #cables { width: 100%; height: 100%; overflow: visible; pointer-events: none; }
@@ -216,7 +218,7 @@ dialog p { line-height: 1.6; color: var(--muted); }
   .document-summary { font-size: 10px; }
   .toolbar { padding: 0 6px; gap: 0; }
   .toolbar-divider { margin: 0 4px; }
-  #add-object kbd, #show-library { display: none; }
+  #add-object kbd, #show-library, #reset-view { display: none; }
   .mode-button { min-width: 65px; }
   #add-object { padding: 4px; }
   .zoom-control select { width: 59px; }

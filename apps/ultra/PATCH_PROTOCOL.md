@@ -3,6 +3,14 @@
 This is `ultra-canvas-v1`, a bounded Ultra execution profile, not Max compatibility.
 The canvas edits actual connections. UI/control data is prepared outside rendering;
 message dispatch and metro/makenote timing run on the native audio timeline.
+They currently require running audio; DSP-independent message execution is not
+implemented. The desktop uses Rust CPAL for output and has no physical MIDI
+ingress/external clock yet. The MIDI object contract below is supported by the
+legacy JACK diagnostic/ABI tests, not a claim of CPAL MIDI input.
+
+Pan/zoom are view-only state: they neither alter node coordinates nor publish
+native graphs. Locked mode refuses structural Inspector edits while allowing
+ordinary live parameters.
 
 ## Document and IPC
 

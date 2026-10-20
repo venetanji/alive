@@ -19,20 +19,38 @@ does not read repository secrets or use `pull_request_target`.
    protection, directional help, group moves, zoomed cord geometry and small
    viewport controls. There is no Tauri/native IPC shim and no
    fake browser audio. A passing preview test is not native audio qualification.
-3. **Linux native build and Rust bridge:** builds the pinned real Clockwork/Faust
+3. **Linux native build, Rust bridge, and CPAL loopback:** builds the pinned real Clockwork/Faust
    engine and `libultra_native.so`, runs backend/sequence/canvas integration tests
    against an explicitly identified JACK ABI test double, then builds and tests
-   the real Rust/Tauri bridge using `Cargo.lock`. The ABI harness executes real
-   native DSP; it does not prove real JACK server behavior, physical MIDI,
-   audible output, hardware latency, or realtime deadlines.
+   the real Rust/Tauri bridge using `Cargo.lock`. Finally it explicitly runs the
+   ignored `audio::tests::private_software_output` test in a private software-only
+   PipeWire graph and checks recorded stereo PCM for finite, non-silent,
+   non-clipping samples. The test must exist (zero matched tests fails the gate).
+   This executes actual CPAL callbacks and native DSP, not an audio mock.
+   It does not prove real JACK server behavior, physical MIDI, audible hardware
+   output, hardware latency, or realtime deadlines.
 
 The native runner installs JACK headers, ALSA/PipeWire/libclang build dependencies
 for CPAL, and Tauri's GTK/WebKit dependencies from
-Ubuntu's official apt repositories. No audio server is launched. Physical and
-desktop qualification remain separate tasks described in `../../RUNNING.txt`.
-It also tests the Rust-host native rendering ABI across callback partitions.
-Real CPAL software loopback and native Audio settings UI are local private-server
-tests documented in `../../AUDIO.md`; they are not claimed by the cloud job.
+Ubuntu's official apt repositories, plus `pipewire-bin`, `wireplumber`, and `dbus`
+for the private loopback gate. It also tests the Rust-host native rendering ABI
+across callback partitions. Physical and native desktop Audio settings UI
+qualification remain separate tasks described in `../../RUNNING.txt` and
+`../../AUDIO.md`; neither is claimed by the cloud job.
+
+The loopback script starts only its own PipeWire server, policy-only WirePlumber,
+and D-Bus session under a fresh mode-0700 temporary runtime directory. No hardware
+monitors, system service reconfiguration, device permissions, or security bypasses
+are needed. Ubuntu 24.04's WirePlumber 0.4 uses upstream `policy.conf`; newer
+WirePlumber uses its `policy` profile. Capture uses raw stdout (supported by
+PipeWire 1.0), not newer `--raw` / `--sample-count` flags. Recording stops cleanly
+after the real Rust test, so frame count varies. Probe and capture timeouts bound
+failures; process cleanup removes the private runtime directory.
+
+CI uploads build logs, exact tool versions, the matched test list, daemon/test
+logs, graph and link snapshots, raw stereo float32 PCM, and a JSON signal report
+when successful. Available failure evidence is uploaded too, for seven days.
+No waveform or JSON report is a claim of acoustic or hardware qualification.
 The Ubuntu runner and apt security updates are intentionally not frozen images.
 
 ## Run locally
@@ -74,6 +92,7 @@ export ULTRA_NATIVE_LIB_DIR="$PWD/apps/ultra/build"
 export LD_LIBRARY_PATH="$ULTRA_NATIVE_LIB_DIR"
 cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
 cargo build --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
+bash apps/ultra/tests/check_cpal_audio.sh "$PWD/apps/ultra/build/cpal-evidence"
 ```
 
 ## Dependency and cache policy

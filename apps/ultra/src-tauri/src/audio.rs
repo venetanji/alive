@@ -123,19 +123,34 @@ impl Driver {
         Self { config, path, stream: None, metrics: Arc::default(), host: String::new(), device: String::new(), message }
     }
     pub fn catalog(&self, selected_host: &str) -> Result<Catalog, String> {
-        let host = host(selected_host)?;
-        let mut devices = Vec::new();
+        // Discovery failures must not hide the hosts needed for explicit recovery.
+        // Never resolve a stale selection to a different host or device here.
+        let mut catalog = Catalog { config: self.config.clone(),
+            hosts: cpal::available_hosts().iter().map(|h| h.name().into()).collect(),
+            effective_host: String::new(), devices: Vec::new(), notice: self.message.clone() };
+        let host = match host(selected_host) {
+            Ok(host) => host,
+            Err(error) => { catalog.notice = error; return Ok(catalog); }
+        };
+        catalog.effective_host = host.id().name().into();
+        let outputs = match host.output_devices() {
+            Ok(outputs) => outputs,
+            Err(error) => {
+                catalog.notice = format!("Cannot list output devices: {error}. Refresh devices or choose another host.");
+                return Ok(catalog);
+            }
+        };
         if let Some(d) = host.default_output_device() {
-            devices.push(DeviceInfo { id: "default".into(), name: format!("System default - {d}"), compatible: format(&d, &Config::default()).is_ok() });
+            catalog.devices.push(DeviceInfo { id: "default".into(), name: format!("System default - {d}"), compatible: format(&d, &Config::default()).is_ok() });
         }
-        for d in host.output_devices().map_err(|e| format!("Cannot list output devices: {e}"))? {
+        for d in outputs {
             if let Ok(id) = d.id() {
-                devices.push(DeviceInfo { id: id.to_string(), name: d.to_string(), compatible: format(&d, &Config::default()).is_ok() });
+                catalog.devices.push(DeviceInfo { id: id.to_string(), name: d.to_string(), compatible: format(&d, &Config::default()).is_ok() });
             }
         }
-        Ok(Catalog { config: self.config.clone(), hosts: cpal::available_hosts().iter().map(|h| h.name().into()).collect(),
-            effective_host: host.id().name().into(), devices, notice: self.message.clone() })
+        Ok(catalog)
     }
+
     pub fn configure(&mut self, config: Config) -> Result<(), String> {
         if self.stream.is_some() { return Err("Stop audio before changing its configuration.".into()); }
         config.validate()?;
@@ -264,6 +279,23 @@ mod tests {
         let mut config = Config::default(); config.device = "".into();
         assert!(config.validate().is_err());
         assert_eq!(clean(f32::NAN),0.); assert_eq!(clean(2.),1.);
+    }
+    #[test]
+    fn unavailable_saved_host_catalog_keeps_preferences_and_lists_recovery_hosts() {
+        let path = std::env::temp_dir().join(format!("ultra-stale-host-{}.json", std::process::id()));
+        let config = Config { host: "missing-host".into(), device: "saved-output".into(), ..Config::default() };
+        let bytes = serde_json::to_vec(&config).unwrap();
+        std::fs::write(&path, &bytes).unwrap();
+        let driver = Driver::load(path.clone());
+        let catalog = driver.catalog(&config.host).expect("host failure must not hide recovery choices");
+        assert_eq!(catalog.config, config);
+        assert_eq!(catalog.hosts, cpal::available_hosts().iter().map(|h| h.name().to_string()).collect::<Vec<_>>());
+        assert!(catalog.devices.is_empty());
+        assert!(catalog.effective_host.is_empty());
+        assert!(catalog.notice.contains("Audio host is unavailable"));
+        assert_eq!(driver.config, config);
+        assert_eq!(std::fs::read(&path).unwrap(), bytes);
+        std::fs::remove_file(path).unwrap();
     }
     #[test]
     fn native_failure_silences_the_whole_device_callback() {

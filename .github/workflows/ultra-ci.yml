@@ -77,7 +77,7 @@ jobs:
           retention-days: 7
 
   native:
-    name: Linux native build and Rust bridge
+    name: Linux native build, Rust bridge, and CPAL loopback
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
@@ -96,7 +96,8 @@ jobs:
             build-essential pkg-config curl ca-certificates unzip xz-utils \
             libjack-jackd2-dev libgtk-3-dev libwebkit2gtk-4.1-dev \
             libasound2-dev libpipewire-0.3-dev libspa-0.2-dev libclang-dev \
-            libayatana-appindicator3-dev librsvg2-dev patchelf
+            libayatana-appindicator3-dev librsvg2-dev patchelf \
+            pipewire-bin wireplumber dbus
       - name: Cache downloaded, checksum-verified native dependencies
         uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
@@ -131,3 +132,15 @@ jobs:
           rustc --version
           cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
           cargo build --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
+
+      - name: Gate real CPAL output through a private software-only PipeWire graph
+        timeout-minutes: 5
+        run: bash apps/ultra/tests/check_cpal_audio.sh "$GITHUB_WORKSPACE/apps/ultra/build/cpal-evidence"
+      - name: Save CPAL loopback evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: cpal-software-loopback-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/cpal-evidence/
+          if-no-files-found: warn
+          retention-days: 7

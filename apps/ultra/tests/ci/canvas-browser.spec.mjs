@@ -216,3 +216,71 @@ test('audio settings preview is reachable, fits the panel and explains native-on
     expect(panel.scroll).toBe(panel.width);
   }
 });
+
+test('space and middle drag pan without editing, cursor zoom anchors and reset restores view', async ({page}) => {
+  await page.goto('/canvas.html');
+  const before=await exportPatch(page);
+  await page.locator('#workspace').focus();
+  const node=page.locator('[data-node="1"]'),start=await node.boundingBox();
+  await page.mouse.move(start.x+12,start.y+12);await page.keyboard.down('Space');
+  await page.mouse.down();await page.mouse.move(start.x+112,start.y+72,{steps:8});await page.mouse.up();await page.keyboard.up('Space');
+  let moved=await node.boundingBox();expect(moved.x-start.x).toBeCloseTo(100,0);expect(moved.y-start.y).toBeCloseTo(60,0);
+  expect(await exportPatch(page)).toEqual(before);
+  await page.mouse.move(moved.x+12,moved.y+12);await page.mouse.down({button:'middle'});await page.mouse.move(moved.x+52,moved.y+42,{steps:5});await page.mouse.up({button:'middle'});
+  moved=await node.boundingBox();expect(moved.x-start.x).toBeCloseTo(140,0);
+  const anchor={x:moved.x+20,y:moved.y+15};
+  const world=await page.locator('#canvas').evaluate((canvas,a)=>{const r=canvas.getBoundingClientRect(),z=new DOMMatrix(getComputedStyle(canvas).transform).a;return{x:(a.x-r.left)/z,y:(a.y-r.top)/z};},anchor);
+  await page.mouse.move(anchor.x,anchor.y);await page.keyboard.down('Control');await page.mouse.wheel(0,-240);await page.keyboard.up('Control');
+  await expect.poll(()=>page.locator('#canvas-zoom').inputValue()).not.toBe('1');
+  const after=await page.locator('#canvas').evaluate((canvas,p)=>{const r=canvas.getBoundingClientRect(),z=new DOMMatrix(getComputedStyle(canvas).transform).a;return{x:r.left+p.x*z,y:r.top+p.y*z};},world);
+  expect(after.x).toBeCloseTo(anchor.x,0);expect(after.y).toBeCloseTo(anchor.y,0);
+  await page.locator('#workspace').focus();await page.keyboard.press('Control+0');
+  const reset=await node.boundingBox();expect(reset.x).toBeCloseTo(start.x,0);expect(reset.y).toBeCloseTo(start.y,0);
+  expect(await exportPatch(page)).toEqual(before);
+  await page.locator('#lock-patch').click();await page.locator('#workspace').focus();
+  await page.keyboard.press('Control+=');expect(Number(await page.locator('#canvas-zoom').inputValue())).toBeGreaterThan(1);
+});
+
+test('panned zoomed canvas keeps drag, marquee, creation and cables in world coordinates', async ({page},testInfo) => {
+  await page.goto('/canvas.html');
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[
+    {id:1,type:'add',x:80,y:80,params:{rhs:1}},
+    {id:2,type:'number',x:300,y:220,params:{value:0}},
+  ],edges:[{from:1,outlet:0,to:2,inlet:0}]});
+  await page.locator('#canvas-zoom').selectOption('1.5');
+  const workspace=await page.locator('#workspace').boundingBox();
+  await page.mouse.move(workspace.x+1100,workspace.y+600);await page.mouse.down({button:'middle'});
+  await page.mouse.move(workspace.x+1400,workspace.y+800,{steps:5});await page.mouse.up({button:'middle'});
+  const header=await page.locator('[data-node="1"] [data-drag]').boundingBox();
+  await page.mouse.move(header.x+header.width/2,header.y+header.height/2);await page.mouse.down();await page.mouse.move(header.x+header.width/2+60,header.y+header.height/2+45,{steps:5});await page.mouse.up();
+  let patch=await exportPatch(page);expect(patch.nodes[0].x).toBe(120);expect(patch.nodes[0].y).toBe(110);
+  const distance=await page.locator('#cables path[data-edge]').evaluate(path=>[0,path.getTotalLength()].map((length,i)=>{
+    const port=document.querySelector(i?'[data-node="2"] [data-direction=in]':'[data-node="1"] [data-direction=out]'),r=port.getBoundingClientRect();
+    const p=path.getPointAtLength(length),s=new DOMPoint(p.x,p.y).matrixTransform(path.getScreenCTM());return Math.hypot(s.x-r.left-r.width/2,s.y-r.top-r.height/2);
+  }));expect(Math.max(...distance)).toBeLessThan(.5);
+  const first=await page.locator('[data-node="1"]').boundingBox(),second=await page.locator('[data-node="2"]').boundingBox();
+  await page.mouse.move(first.x-15,first.y-15);await page.mouse.down();await page.mouse.move(second.x+second.width+15,second.y+second.height+15,{steps:8});await page.mouse.up();
+  await expect(page.locator('.node.selected')).toHaveCount(2);
+  const world={x:500,y:400};const at=await page.locator('#canvas').evaluate((canvas,p)=>{const r=canvas.getBoundingClientRect(),z=new DOMMatrix(getComputedStyle(canvas).transform).a;return{x:r.left+p.x*z,y:r.top+p.y*z};},world);
+  await page.mouse.dblclick(at.x,at.y);await page.locator('#object-text').fill('button');await page.locator('#object-text').press('Enter');
+  patch=await exportPatch(page);expect(patch.nodes.at(-1).x).toBeCloseTo(world.x,0);expect(patch.nodes.at(-1).y).toBeCloseTo(world.y,0);
+  const screenshot=testInfo.outputPath('canvas-zoom-pan.png');await page.screenshot({path:screenshot,fullPage:true});await testInfo.attach('Panned 150% canvas: browser editing, not native audio',{path:screenshot,contentType:'image/png'});
+});
+
+test('locked Inspector disables structural edits but permits live values; input Escape stays safe',async({page})=>{
+  await page.goto('/canvas.html');await page.locator('#lock-patch').click();await page.locator('#show-inspector').click();
+  for(const [id,key] of [[14,'text'],[6,'device']]){
+    await page.locator(`[data-node="${id}"] [data-drag]`).focus();await page.keyboard.press('Enter');
+    await expect(page.locator(`#inspector [data-parameter="${key}"]`)).toBeDisabled();
+  }
+  await page.locator('[data-node="15"] [data-drag]').focus();await page.keyboard.press('Enter');
+  const value=page.locator('#inspector [data-parameter="value"]');await expect(value).toBeEnabled();await value.fill('200');await value.press('Tab');
+  expect((await exportPatch(page)).nodes.find(n=>n.id===15).params.value).toBe(200);
+  await page.locator('#lock-patch').click();await page.locator('#show-library').click();await page.locator('#object-search').fill('metro');await page.keyboard.press('Escape');
+  await expect(page.locator('#notice')).toContainText('Browser preview: native execution is unavailable.');
+});
+
+test('Space keeps toolbar buttons keyboard-accessible rather than starting canvas pan',async({page})=>{
+  await page.goto('/canvas.html');await page.locator('#lock-patch').focus();await page.keyboard.press('Space');
+  await expect(page.locator('#lock-label')).toHaveText('Locked');
+});

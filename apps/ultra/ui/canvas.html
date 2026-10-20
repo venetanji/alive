@@ -44,7 +44,8 @@
     <button id="undo" class="icon-button" aria-label="Undo" title="Undo (Ctrl Z)"><svg><use href="#i-undo"/></svg></button>
     <button id="redo" class="icon-button" aria-label="Redo" title="Redo (Ctrl Shift Z)"><svg><use href="#i-redo"/></svg></button>
     <span class="toolbar-divider"></span>
-    <label class="zoom-control"><span class="sr-only">Canvas zoom</span><select id="canvas-zoom" aria-label="Canvas zoom"><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option><option id="zoom-fit" value="fit" hidden>Fit</option></select></label>
+    <button id="reset-view" title="Reset view (Ctrl 0)" aria-label="Reset canvas view">1:1</button>
+    <label class="zoom-control" title="Ctrl / Cmd wheel: zoom at pointer. Space + drag or middle drag: pan."><span class="sr-only">Canvas zoom</span><select id="canvas-zoom" aria-label="Canvas zoom"><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option><option id="zoom-fit" value="fit" hidden>Fit</option></select></label>
     <button id="fit-patch" class="icon-button" aria-label="Fit patch" title="Fit patch to window"><svg><use href="#i-fit"/></svg></button>
     <div class="toolbar-end">
       <button id="show-inspector" class="icon-button" aria-label="Inspector" title="Inspector (Ctrl I)" aria-pressed="false"><svg><use href="#i-inspect"/></svg></button>

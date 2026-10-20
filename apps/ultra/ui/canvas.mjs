@@ -7,7 +7,7 @@ import {mountAudioSettings} from './audio-settings.mjs';
 export function mountCanvas({document:doc=globalThis.document,window:win=globalThis.window,invoke=win?.__TAURI__?.core?.invoke}={}) {
   const $=id=>doc.querySelector('#'+id),make=(tag,className,text)=>{const e=doc.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;};
   let initialized=false,selection=null,selected=new Set(),pending=null,locked=false,zoom=1,panel=null,inspectorKey='',drag=null,marquee=null,leaving=false,timer=null;
-  let pointer={x:80,y:90};
+  let pointer={x:80,y:90},panX=0,panY=0,pan=null,spaceHeld=false,suppressPanClick=false;
   const views=new Map(),fields=new Map();
   const controller=createCanvasController({invoke,onState:state=>{if(initialized)render(state);}});
   const audioSettings=mountAudioSettings({document:doc,invoke,controller});
@@ -55,8 +55,9 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     if(panel==='audio')return audioSettings.open();
   }
   function setLocked(value) {
-    locked=value;entry.close();pending=null;closeMenus();
+    locked=value;drag=null;releaseNavigation();entry.close();pending=null;closeMenus();
     if(locked)clearSelection();
+    if(panel==='help')renderHelp(currentNode());
     $('workspace').classList.toggle('locked',locked);$('lock-patch').setAttribute('aria-pressed',String(locked));
     $('lock-label').textContent=locked?'Locked':'Edit';
     const icon=$('lock-patch').children[0]?.children[0];icon?.setAttribute('href',locked?'#i-lock':'#i-unlock');
@@ -131,7 +132,11 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     if(!locked&&!e.ctrlKey&&!e.metaKey){if(!selected.has(id))selectNode(id,e.shiftKey);return;}
     return guard(()=>controller.event(id,0,null))();
   }
-  function parameter(id,key,value,options){guard(()=>controller.parameter(id,key,value,options))();}
+  const structuralParameter=(type,key)=>key==='text'||(type==='midiin'&&key==='channel')||(type==='voice'&&key==='device');
+  function parameter(id,key,value,options){
+    if(locked&&structuralParameter(getNode(id)?.type,key)){controller.notice('Unlock the patch to change this structural parameter.');return;}
+    guard(()=>controller.parameter(id,key,value,options))();
+  }
   function removeSelection() {
     if(locked)return;
     if(selection?.kind==='edge')controller.disconnect(selection.index);
@@ -179,7 +184,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
         const edge=state.patch.edges[selection.index];if(edge)area.append(make('h2','','Patch cord'),make('p','',`Object ${edge.from} outlet ${edge.outlet} to object ${edge.to} inlet ${edge.inlet}. Fan-out follows saved cable order.`));
       } else area.append(make('p','','Select an object to inspect its parameters. Right-click a port for accepted messages or emitted data.'));
     }
-    if(n)for(const [key,input] of fields)if(doc.activeElement!==input)input.value=String(n.params[key]);
+    if(n)for(const [key,input] of fields){input.disabled=locked&&structuralParameter(n.type,key);if(doc.activeElement!==input)input.value=String(n.params[key]);}
     $('edit-object').disabled=!n||locked;$('delete-selection').disabled=!selection||locked;
     const observation=n?state.observations[n.id]:null;
     $('observation-state').textContent=observation?`Node observation: ${JSON.stringify(observation.value)}. Total pulses: ${observation.pulses}. This is not a complete outlet trace.`:'No native node observation.';
@@ -188,7 +193,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     const area=$('help-content');area.replaceChildren();
     if(!node){
       area.append(make('h2','','Patching in Ultra'),make('p','','Create objects by typing their name and arguments. Connect bottom outlets to top inlets. Lock the patch to use its controls.'));
-      for(const [key,label] of [['N','New object at pointer'],['B / M / T / I','Bang / message / toggle / number'],['Ctrl E','Lock or unlock'],['Ctrl I','Inspector'],['Enter / F2','Edit selected object'],['Ctrl Z / Ctrl Shift Z','Undo / redo'],['Ctrl A','Select all objects'],['Delete','Remove selection'],['Escape','Cancel editing or stop notes'],['Ctrl S / Ctrl O','Export / open JSON']]){
+      for(const [key,label] of [['N','New object at pointer'],['B / M / T / I','Bang / message / toggle / number'],['Ctrl E','Lock or unlock'],['Ctrl I','Inspector'],['Enter / F2','Edit selected object'],['Ctrl Z / Ctrl Shift Z','Undo / redo'],['Ctrl A','Select all objects'],['Delete','Remove selection'],['Escape','Cancel editing or stop notes'],['Space + drag / middle drag','Pan canvas'],['Ctrl +/- / Ctrl 0','Zoom / reset view'],['Ctrl + wheel','Zoom at pointer'],['Ctrl S / Ctrl O','Export / open JSON']]){
         const row=make('div','shortcut-row');row.append(make('span','',label),make('kbd','',key));area.append(row);
       }
       area.append(make('p','panel-note','The canvas implements Ultra\'s 15-object profile. It does not import .maxpat or execute arbitrary Max objects. Focus loss stops timers and notes.'));
@@ -197,6 +202,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     const s=OBJECTS[node.type];area.append(make('h2','',s.name),make('p','',s.summary),make('code','help-example',s.example));
     const add=make('button','panel-action','Create this example object');add.disabled=locked;add.addEventListener('click',()=>entryAt(s.example));area.append(add);
     const run=make('button','panel-action','Open runnable example patch');run.disabled=locked;run.addEventListener('click',()=>{
+      if(locked){controller.notice('Unlock the patch before loading an example.');return;}
       if(win.confirm&&!win.confirm('Replace this patch with the example? Export your current patch first to keep it.'))return;
       const patch=examplePatch(node.type);controller.load(patch);clearSelection();panel=null;applyPanel();fitPatch();
     });area.append(run);
@@ -240,12 +246,29 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     }
     const container=$('objects');if(container.children.length!==children.length||children.some((e,i)=>container.children[i]!==e))container.replaceChildren(...children);
     const width=Math.max(760,...state.patch.nodes.map(n=>n.x+350)),height=Math.max(740,...state.patch.nodes.map(n=>n.y+160));
-    $('canvas').style.width=`${width}px`;$('canvas').style.height=`${height}px`;$('canvas').style.transform=`scale(${zoom})`;
-    $('canvas-space').style.width=`${Math.max(width*zoom,$('workspace').clientWidth||0)}px`;$('canvas-space').style.height=`${height*zoom}px`;
+    $('canvas').style.width=`${width}px`;$('canvas').style.height=`${height}px`;$('canvas').style.transform=`translate(${panX}px, ${panY}px) scale(${zoom})`;
+    $('canvas-space').style.width=`${Math.max(width*zoom,$('workspace').clientWidth||0)}px`;$('canvas-space').style.height=`${Math.max(height*zoom,$('workspace').clientHeight||0)}px`;
     renderInspector(state);drawCables(state.patch);
   }
+  function zoomLabel() {
+    $('zoom-fit').value=String(zoom);$('zoom-fit').textContent=`${Math.round(zoom*100)}%`;$('zoom-fit').hidden=false;
+    $('canvas-zoom').value=String(zoom);
+  }
+  function setZoom(value,anchor=null) {
+    if(drag||marquee||pan)return;
+    const next=Math.max(.25,Math.min(3,value));if(!Number.isFinite(next))return;
+    const workspace=$('workspace'),r=workspace.getBoundingClientRect(),base=$('canvas').getBoundingClientRect();
+    const at=anchor||{x:r.left+(workspace.clientWidth||0)/2,y:r.top+(workspace.clientHeight||0)/2};
+    panX+=(at.x-base.left)*(1-next/zoom);panY+=(at.y-base.top)*(1-next/zoom);zoom=next;
+    const left=workspace.scrollLeft,top=workspace.scrollTop;
+    entry.close();closeMenus();zoomLabel();render(controller.getState());
+    // Shrinking the scroll surface may clamp scroll offsets. Keep the same
+    // world point under the cursor even at those boundaries.
+    panX+=workspace.scrollLeft-left;panY+=workspace.scrollTop-top;render(controller.getState());
+  }
+  function resetView(){if(drag||marquee||pan)return;zoom=1;panX=panY=0;$('workspace').scrollLeft=0;$('workspace').scrollTop=0;zoomLabel();render(controller.getState());}
   function fitPatch() {
-    const patch=controller.getState().patch;if(!patch.nodes.length)return;
+    const patch=controller.getState().patch;if(!patch.nodes.length){resetView();return;}panX=panY=0;
     const width=Math.max(...patch.nodes.map(n=>n.x+(n.type==='gain'?40:190)))+35,height=Math.max(...patch.nodes.map(n=>n.y+(n.type==='gain'?120:35)))+35;
     const workspace=$('workspace');zoom=Math.max(.4,Math.min(1.5,(workspace.clientWidth||1000)/width,(workspace.clientHeight||730)/height));
     $('zoom-fit').value=String(zoom);$('zoom-fit').textContent=`${Math.round(zoom*100)}%`;$('zoom-fit').hidden=false;
@@ -271,8 +294,25 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   $('starter-patch').addEventListener('click',guard(()=>{load(starterPatch());fitPatch();}));
   $('show-audio').addEventListener('click',()=>showPanel('audio'));
   $('start-audio').addEventListener('click',async()=>{await controller.startAudio();if(!controller.getState().status.running){panel='audio';await applyPanel();}});$('stop-audio').addEventListener('click',()=>controller.stopAudio());$('stop-graph').addEventListener('click',()=>controller.stop());$('panic').addEventListener('click',()=>controller.panic());$('reapply').addEventListener('click',()=>controller.reapply());
-  $('canvas-zoom').addEventListener('change',e=>{zoom=Number(e.target.value);render(controller.getState());});$('fit-patch').addEventListener('click',fitPatch);
+  $('canvas-zoom').addEventListener('change',e=>setZoom(Number(e.target.value)));$('reset-view').addEventListener('click',resetView);$('fit-patch').addEventListener('click',fitPatch);
+  function endPan(){pan=null;$('workspace').classList.toggle('panning',false);}
+  function releaseNavigation(){spaceHeld=false;endPan();marquee=null;$('selection-box').hidden=true;$('workspace').classList.toggle('pan-ready',false);}
+  $('workspace').addEventListener('pointerdown',e=>{
+    suppressPanClick=false;
+    if(e.button!==1&&!(e.button===0&&spaceHeld))return;
+    e.preventDefault();e.stopPropagation();entry.close();closeMenus();finishDrag();marquee=null;$('selection-box').hidden=true;
+    pan={pointer:e.pointerId,x:e.clientX,y:e.clientY,startX:panX,startY:panY};suppressPanClick=true;
+    $('workspace').classList.toggle('panning',true);$('workspace').setPointerCapture?.(e.pointerId);
+  },true);
+  for(const event of ['click','auxclick','dblclick'])$('workspace').addEventListener(event,e=>{if(suppressPanClick){e.preventDefault();e.stopPropagation();}},true);
+  $('workspace').addEventListener('lostpointercapture',endPan);
+  $('workspace').addEventListener('wheel',e=>{
+    if(!e.ctrlKey&&!e.metaKey)return;e.preventDefault();
+    const delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?$('workspace').clientHeight:1);
+    setZoom(zoom*Math.exp(-delta*.002),{x:e.clientX,y:e.clientY});
+  },{passive:false});
   $('workspace').addEventListener('pointermove',e=>{
+    if(pan&&pan.pointer===e.pointerId){panX=pan.startX+e.clientX-pan.x;panY=pan.startY+e.clientY-pan.y;render(controller.getState());return;}
     pointer=point(e);if(pending)drawCables(controller.getState().patch);
     if(marquee){
       const x=Math.min(marquee.x,pointer.x),y=Math.min(marquee.y,pointer.y),width=Math.abs(pointer.x-marquee.x),height=Math.abs(pointer.y-marquee.y),box=$('selection-box');
@@ -282,8 +322,8 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   });
   const background=e=>['workspace','canvas-space','canvas','objects'].some(id=>e.target===$(id));
   $('workspace').addEventListener('pointerdown',e=>{if(!background(e))return;closeMenus();entry.close();if(locked||e.button!==0)return;pointer=point(e);pending=null;clearSelection();marquee=pointer;$('workspace').setPointerCapture?.(e.pointerId);render(controller.getState());});
-  $('workspace').addEventListener('pointerup',()=>{marquee=null;$('selection-box').hidden=true;});
-  $('workspace').addEventListener('pointercancel',()=>{marquee=null;$('selection-box').hidden=true;finishDrag();});
+  $('workspace').addEventListener('pointerup',()=>{endPan();marquee=null;$('selection-box').hidden=true;});
+  $('workspace').addEventListener('pointercancel',()=>{releaseNavigation();marquee=null;$('selection-box').hidden=true;finishDrag();});
   $('workspace').addEventListener('dblclick',e=>{if(background(e)){pointer=point(e);entryAt();}});
   $('workspace').addEventListener('contextmenu',e=>{if(!background(e))return;e.preventDefault();pointer=point(e);const menu=$('context-menu');menu.replaceChildren();menuItem('New object',()=>entryAt(),locked);menuItem(locked?'Unlock patch':'Lock patch',()=>setLocked(!locked));menuItem('Fit patch',fitPatch);positionOverlay(menu,e.clientX,e.clientY,270,150);menu.hidden=false;});
   $('workspace').addEventListener('scroll',()=>{entry.close();closeMenus();});
@@ -293,17 +333,24 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     if(['ArrowDown','ArrowUp'].includes(e.key)){e.preventDefault();items[(i+(e.key==='ArrowDown'?1:-1)+items.length)%items.length]?.focus();}
     if(e.key==='Escape'){e.preventDefault();closeMenus();$('workspace').focus();}
   });
+  win.addEventListener('keyup',e=>{if(e.key===' '){spaceHeld=false;$('workspace').classList.toggle('pan-ready',false);}});
+  win.addEventListener('keydown',e=>{
+    let target=e.target;while(target&&target!==$('workspace'))target=target.parentElement;
+    if(e.key===' '&&(target||e.target===doc.body)&&!editing(e.target)&&!entry.isOpen()&&!$('patch-dialog').open){e.preventDefault();e.stopPropagation();spaceHeld=true;$('workspace').classList.toggle('pan-ready',true);}
+  },true);
   win.addEventListener('keydown',guard(e=>{
     if($('patch-dialog').open)return;
-    if(editing(e.target)||entry.isOpen())return;
+    if(entry.isOpen())return;
+    if(e.key==='Escape'){e.preventDefault();pending=null;closeMenus();releaseNavigation();return controller.stop();}
+    if(editing(e.target))return;
     const command=e.ctrlKey||e.metaKey,key=e.key.toLowerCase();
+    if(command&&['+','=','-','0'].includes(key)){e.preventDefault();if(key==='0')resetView();else setZoom(zoom*(key==='-'?1/1.2:1.2));return;}
     if(command&&key==='e'){e.preventDefault();setLocked(!locked);return;}
     if(command&&key==='i'){e.preventDefault();showPanel('inspector');return;}
     if(command&&key==='s'){e.preventDefault();dialog('save');return;}
     if(command&&key==='o'){e.preventDefault();dialog('open');return;}
     if(command&&key==='n'){e.preventDefault();$('new-patch').click();return;}
     if(e.key==='F1'){e.preventDefault();panel='help';applyPanel();return;}
-    if(e.key==='Escape'){e.preventDefault();pending=null;closeMenus();return controller.stop();}
     if(locked)return;
     if(command&&key==='z'){e.preventDefault();return e.shiftKey?controller.redo():controller.undo();}
     if(command&&key==='a'){e.preventDefault();selected=new Set(controller.getState().patch.nodes.map(n=>n.id));selection=selected.size?{kind:'node',id:[...selected][0]}:null;render(controller.getState());return;}
@@ -314,8 +361,8 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     const type={b:'bang',m:'message',t:'toggle',i:'number'}[key];if(type){e.preventDefault();entryAt(OBJECTS[type].name+' ');}
     if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)&&selected.size){e.preventDefault();const step=e.shiftKey?10:1,dx=step*(e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0),dy=step*(e.key==='ArrowDown'?1:e.key==='ArrowUp'?-1:0);controller.moveMany(controller.getState().patch.nodes.filter(n=>selected.has(n.id)).map(n=>({id:n.id,x:Math.max(0,Math.min(4000,n.x+dx)),y:Math.max(0,Math.min(4000,n.y+dy))})));}
   }));
-  win.addEventListener('blur',()=>{finishDrag();controller.stop('Focus left the patch. Timers and notes stopped.');});
-  doc.addEventListener('visibilitychange',()=>{if(doc.hidden)controller.stop('Patch hidden. Timers and notes stopped.');});
+  win.addEventListener('blur',()=>{releaseNavigation();finishDrag();controller.stop('Focus left the patch. Timers and notes stopped.');});
+  doc.addEventListener('visibilitychange',()=>{if(doc.hidden){releaseNavigation();finishDrag();controller.stop('Patch hidden. Timers and notes stopped.');}});
   win.addEventListener('pagehide',()=>{leaving=true;controller.stopAudio();});
   for(const id of ['legacy-link','lab-link'])$(id).addEventListener('click',guard(async e=>{e.preventDefault();if(leaving)return;leaving=true;if(timer!==null)win.clearTimeout(timer);try{await controller.dispose();win.location.assign(e.currentTarget?.href||$(id).href);}catch(error){leaving=false;timer=win.setTimeout(poll,100);throw error;}}));
   function dialog(mode){entry.close();closeMenus();$('dialog-title').textContent=mode==='open'?'Open patch':'Save / export patch';$('patch-json').value=mode==='open'?'':controller.export();$('dialog-status').textContent=mode==='open'?'The whole document is validated before replacing your current patch.':'Copy or download this JSON to keep the patch. Export contains authored state, not running timers.';$('patch-dialog').showModal();$('patch-json').focus();if(mode!=='open')$('patch-json').select();}
