@@ -1,0 +1,1257 @@
+{
+  "schema_version": 1,
+  "bounded_inventory": true,
+  "objects": [
+    {
+      "max_class": "button",
+      "namespace": "box",
+      "work_group": "controls",
+      "backend_candidate": "Original Ultra UI + message executor; Pd supplies messages, not Max UI",
+      "acceptance_gates": [
+        "locked control operations with DSP off",
+        "Ctrl/Cmd temporary operation",
+        "I/F/S",
+        "drag/text commit",
+        "range/floatoutput/set"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/button.maxhelp",
+          "sha256": "877181b6ebb71b9b8fcc37c20dca255460f64f2e03275cb2f724201aa18704dc",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-3"
+              ],
+              "direct_boxes": 9,
+              "direct_tokens": [
+                "button",
+                "comment",
+                "flonum",
+                "jsui",
+                "message",
+                "print"
+              ]
+            }
+          ],
+          "review_flags": [
+            "additional-runtime-family",
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/button/"
+    },
+    {
+      "max_class": "toggle",
+      "namespace": "box",
+      "work_group": "controls",
+      "backend_candidate": "Original Ultra UI + message executor; Pd supplies messages, not Max UI",
+      "acceptance_gates": [
+        "locked control operations with DSP off",
+        "Ctrl/Cmd temporary operation",
+        "I/F/S",
+        "drag/text commit",
+        "range/floatoutput/set"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/toggle.maxhelp",
+          "sha256": "80a7681796becd60122811afe7c99fc45a6ac5d29d625292493f0594fb508adb",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 19,
+              "direct_tokens": [
+                "comment",
+                "jsui",
+                "message",
+                "number",
+                "print",
+                "toggle"
+              ]
+            }
+          ],
+          "review_flags": [
+            "additional-runtime-family",
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/toggle/"
+    },
+    {
+      "max_class": "number",
+      "namespace": "box",
+      "work_group": "controls",
+      "backend_candidate": "Original Ultra UI + message executor; Pd supplies messages, not Max UI",
+      "acceptance_gates": [
+        "locked control operations with DSP off",
+        "Ctrl/Cmd temporary operation",
+        "I/F/S",
+        "drag/text commit",
+        "range/floatoutput/set"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/number.maxhelp",
+          "sha256": "9b65214765ed2c153fbdc5d1b7fd3fbeb50526e02c13662005d42064fadb3451",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 17,
+              "direct_tokens": [
+                "comment",
+                "jsui",
+                "message",
+                "number",
+                "print"
+              ]
+            }
+          ],
+          "review_flags": [
+            "additional-runtime-family",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/number/"
+    },
+    {
+      "max_class": "flonum",
+      "namespace": "box",
+      "work_group": "controls",
+      "backend_candidate": "Original Ultra UI + message executor; Pd supplies messages, not Max UI",
+      "acceptance_gates": [
+        "locked control operations with DSP off",
+        "Ctrl/Cmd temporary operation",
+        "I/F/S",
+        "drag/text commit",
+        "range/floatoutput/set"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/flonum.maxhelp",
+          "sha256": "b1251b92a08e8c6bc248bce5561c87459680c95540d3a20e9ac87294507aeefa",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 17,
+              "direct_tokens": [
+                "comment",
+                "flonum",
+                "jsui",
+                "message",
+                "number",
+                "print"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/flonum/"
+    },
+    {
+      "max_class": "slider",
+      "namespace": "box",
+      "work_group": "controls",
+      "backend_candidate": "Original Ultra UI + message executor; Pd supplies messages, not Max UI",
+      "acceptance_gates": [
+        "locked control operations with DSP off",
+        "Ctrl/Cmd temporary operation",
+        "I/F/S",
+        "drag/text commit",
+        "range/floatoutput/set"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/slider.maxhelp",
+          "sha256": "f79e46e3bef25bc48d6757914c96d7f52e0939de6216638b0c168c06c3a98d9d",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-3"
+              ],
+              "direct_boxes": 22,
+              "direct_tokens": [
+                "button",
+                "comment",
+                "flonum",
+                "jsui",
+                "message",
+                "number",
+                "slider"
+              ]
+            }
+          ],
+          "review_flags": [
+            "additional-runtime-family",
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/slider/"
+    },
+    {
+      "max_class": "message",
+      "namespace": "box",
+      "work_group": "controls",
+      "backend_candidate": "Original Ultra UI + message executor; Pd supplies messages, not Max UI",
+      "acceptance_gates": [
+        "locked control operations with DSP off",
+        "Ctrl/Cmd temporary operation",
+        "I/F/S",
+        "drag/text commit",
+        "range/floatoutput/set"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/message.maxhelp",
+          "sha256": "43387ef79516ac69ec80075e57bfa095b7b637294111c80d7bec293bb6626383",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 28,
+              "direct_tokens": [
+                "button",
+                "comment",
+                "jsui",
+                "message",
+                "print"
+              ]
+            }
+          ],
+          "review_flags": [
+            "additional-runtime-family",
+            "declared-dependencies",
+            "file-or-state-operations",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/message/"
+    },
+    {
+      "max_class": "int",
+      "namespace": "box",
+      "work_group": "core-messages",
+      "backend_candidate": "libpd/Pd first, selected pinned Cyclone objects where necessary; explicit Max adapter",
+      "acceptance_gates": [
+        "ordered typed traces",
+        "coercion",
+        "hot/cold",
+        "symbols/lists",
+        "aliases",
+        "scoped names",
+        "load order"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/int.maxhelp",
+          "sha256": "bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 21,
+              "direct_tokens": [
+                "button",
+                "comment",
+                "i",
+                "int",
+                "jsui",
+                "message",
+                "number",
+                "r",
+                "slider"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/int/"
+    },
+    {
+      "max_class": "float",
+      "namespace": "box",
+      "work_group": "core-messages",
+      "backend_candidate": "libpd/Pd first, selected pinned Cyclone objects where necessary; explicit Max adapter",
+      "acceptance_gates": [
+        "ordered typed traces",
+        "coercion",
+        "hot/cold",
+        "symbols/lists",
+        "aliases",
+        "scoped names",
+        "load order"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/float.maxhelp",
+          "sha256": "c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 23,
+              "direct_tokens": [
+                "*",
+                "button",
+                "comment",
+                "f",
+                "float",
+                "flonum",
+                "jsui",
+                "message",
+                "r",
+                "slider"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/float/"
+    },
+    {
+      "max_class": "trigger",
+      "namespace": "box",
+      "work_group": "core-messages",
+      "backend_candidate": "libpd/Pd first, selected pinned Cyclone objects where necessary; explicit Max adapter",
+      "acceptance_gates": [
+        "ordered typed traces",
+        "coercion",
+        "hot/cold",
+        "symbols/lists",
+        "aliases",
+        "scoped names",
+        "load order"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/trigger.maxhelp",
+          "sha256": "b4e655f02c012203c9141aca9f0bb096de1bf03be9bbd665727925a51f807095",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 20,
+              "direct_tokens": [
+                "button",
+                "comment",
+                "flonum",
+                "jsui",
+                "message",
+                "print",
+                "t",
+                "trigger"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/trigger/"
+    },
+    {
+      "max_class": "pack",
+      "namespace": "box",
+      "work_group": "core-messages",
+      "backend_candidate": "libpd/Pd first, selected pinned Cyclone objects where necessary; explicit Max adapter",
+      "acceptance_gates": [
+        "ordered typed traces",
+        "coercion",
+        "hot/cold",
+        "symbols/lists",
+        "aliases",
+        "scoped names",
+        "load order"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/pack.maxhelp",
+          "sha256": "bdc8583d15f82e398f553d9223794451138312d67e41eb251f8c541ab5df0d79",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 12,
+              "direct_tokens": [
+                "button",
+                "comment",
+                "flonum",
+                "jsui",
+                "message",
+                "number",
+                "pack",
+                "umenu"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/pack/"
+    },
+    {
+      "max_class": "unpack",
+      "namespace": "box",
+      "work_group": "core-messages",
+      "backend_candidate": "libpd/Pd first, selected pinned Cyclone objects where necessary; explicit Max adapter",
+      "acceptance_gates": [
+        "ordered typed traces",
+        "coercion",
+        "hot/cold",
+        "symbols/lists",
+        "aliases",
+        "scoped names",
+        "load order"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/unpack.maxhelp",
+          "sha256": "3a4c1f749bfa9928a7cc92be3efbc4c651aadf6b27999077601f487350e4dce1",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 15,
+              "direct_tokens": [
+                "button",
+                "comment",
+                "jsui",
+                "message",
+                "unpack"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/unpack/"
+    },
+    {
+      "max_class": "select",
+      "namespace": "box",
+      "work_group": "core-messages",
+      "backend_candidate": "libpd/Pd first, selected pinned Cyclone objects where necessary; explicit Max adapter",
+      "acceptance_gates": [
+        "ordered typed traces",
+        "coercion",
+        "hot/cold",
+        "symbols/lists",
+        "aliases",
+        "scoped names",
+        "load order"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/select.maxhelp",
+          "sha256": "f096ff4673dbdbbca73863f35af3f8c91b5fa4d24ffc0c678566c8a57a114668",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 16,
+              "direct_tokens": [
+                "button",
+                "comment",
+                "jsui",
+                "number",
+                "sel",
+                "select",
+                "slider"
+              ]
+            }
+          ],
+          "review_flags": [
+            "additional-runtime-family",
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/select/"
+    },
+    {
+      "max_class": "route",
+      "namespace": "box",
+      "work_group": "core-messages",
+      "backend_candidate": "libpd/Pd first, selected pinned Cyclone objects where necessary; explicit Max adapter",
+      "acceptance_gates": [
+        "ordered typed traces",
+        "coercion",
+        "hot/cold",
+        "symbols/lists",
+        "aliases",
+        "scoped names",
+        "load order"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/route.maxhelp",
+          "sha256": "1546c9f3437eba81723df60ded860507b099904fe87aa40b719efacf4549635e",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 24,
+              "direct_tokens": [
+                "button",
+                "comment",
+                "jsui",
+                "message",
+                "print",
+                "route",
+                "textbutton"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/route/"
+    },
+    {
+      "max_class": "send",
+      "namespace": "box",
+      "work_group": "core-messages",
+      "backend_candidate": "libpd/Pd first, selected pinned Cyclone objects where necessary; explicit Max adapter",
+      "acceptance_gates": [
+        "ordered typed traces",
+        "coercion",
+        "hot/cold",
+        "symbols/lists",
+        "aliases",
+        "scoped names",
+        "load order"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/send.maxhelp",
+          "sha256": "efd288bc442ab216667976f642aaec57fe0250932546c873395eb6dcfb83936f",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 18,
+              "direct_tokens": [
+                "comment",
+                "jsui",
+                "message",
+                "number",
+                "print",
+                "r",
+                "receive",
+                "s",
+                "send"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/send/"
+    },
+    {
+      "max_class": "receive",
+      "namespace": "box",
+      "work_group": "core-messages",
+      "backend_candidate": "libpd/Pd first, selected pinned Cyclone objects where necessary; explicit Max adapter",
+      "acceptance_gates": [
+        "ordered typed traces",
+        "coercion",
+        "hot/cold",
+        "symbols/lists",
+        "aliases",
+        "scoped names",
+        "load order"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/receive.maxhelp",
+          "sha256": "f9dd54aa707d9436eb761e46586c3acba03e8975db499ad4228d6e99b847162d",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 18,
+              "direct_tokens": [
+                "comment",
+                "jsui",
+                "message",
+                "number",
+                "print",
+                "r",
+                "receive",
+                "s",
+                "send"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/receive/"
+    },
+    {
+      "max_class": "loadbang",
+      "namespace": "box",
+      "work_group": "core-messages",
+      "backend_candidate": "libpd/Pd first, selected pinned Cyclone objects where necessary; explicit Max adapter",
+      "acceptance_gates": [
+        "ordered typed traces",
+        "coercion",
+        "hot/cold",
+        "symbols/lists",
+        "aliases",
+        "scoped names",
+        "load order"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/loadbang.maxhelp",
+          "sha256": "d9b70a2282adbb970238d65a2d65ab01814adf6c13be349e236968cfc286f17d",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 13,
+              "direct_tokens": [
+                "button",
+                "comment",
+                "jsui",
+                "loadbang",
+                "message",
+                "metro",
+                "print",
+                "toggle"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/loadbang/"
+    },
+    {
+      "max_class": "metro",
+      "namespace": "box",
+      "work_group": "clocks",
+      "backend_candidate": "Pd scheduler candidate; Max priority queues require explicit adapter or deferred status",
+      "acceptance_gates": [
+        "logical order separately from timestamps",
+        "cancellation",
+        "stop/clear",
+        "queue priorities",
+        "DSP-off clocks"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/metro.maxhelp",
+          "sha256": "93015ebf920aaff1d0957317f38858dcb8dfb6d94df56af71c25c1082d8d7a53",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 26,
+              "direct_tokens": [
+                "*",
+                "bpatcher",
+                "button",
+                "clocker",
+                "comment",
+                "jsui",
+                "message",
+                "metro",
+                "number",
+                "qmetro",
+                "slider",
+                "toggle"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/metro/"
+    },
+    {
+      "max_class": "delay",
+      "namespace": "box",
+      "work_group": "clocks",
+      "backend_candidate": "Pd scheduler candidate; Max priority queues require explicit adapter or deferred status",
+      "acceptance_gates": [
+        "logical order separately from timestamps",
+        "cancellation",
+        "stop/clear",
+        "queue priorities",
+        "DSP-off clocks"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/delay.maxhelp",
+          "sha256": "383441d755e5ec412064a28bb4820a4c1a510f9d3d1a9b66f0722637470d60d9",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 12,
+              "direct_tokens": [
+                "button",
+                "comment",
+                "delay",
+                "dial",
+                "jsui",
+                "message",
+                "number",
+                "print"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/delay/"
+    },
+    {
+      "max_class": "pipe",
+      "namespace": "box",
+      "work_group": "clocks",
+      "backend_candidate": "Pd scheduler candidate; Max priority queues require explicit adapter or deferred status",
+      "acceptance_gates": [
+        "logical order separately from timestamps",
+        "cancellation",
+        "stop/clear",
+        "queue priorities",
+        "DSP-off clocks"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/pipe.maxhelp",
+          "sha256": "01667ad841f5226d56c912afc43eb6ab0c24580978021ee4346b8d3d7a510138",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-3"
+              ],
+              "direct_boxes": 24,
+              "direct_tokens": [
+                "button",
+                "comment",
+                "flonum",
+                "jsui",
+                "message",
+                "number",
+                "pipe"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "file-or-state-operations",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/pipe/"
+    },
+    {
+      "max_class": "defer",
+      "namespace": "box",
+      "work_group": "clocks",
+      "backend_candidate": "Pd scheduler candidate; Max priority queues require explicit adapter or deferred status",
+      "acceptance_gates": [
+        "logical order separately from timestamps",
+        "cancellation",
+        "stop/clear",
+        "queue priorities",
+        "DSP-off clocks"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/defer.maxhelp",
+          "sha256": "4b08959b179311ba51f8d6881d01e42714b7a6c60b26df8374dde50567174ffb",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 16,
+              "direct_tokens": [
+                "comment",
+                "defer",
+                "delay",
+                "gswitch2",
+                "jsui",
+                "message",
+                "print",
+                "t",
+                "tab",
+                "textbutton"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/defer/"
+    },
+    {
+      "max_class": "deferlow",
+      "namespace": "box",
+      "work_group": "clocks",
+      "backend_candidate": "Pd scheduler candidate; Max priority queues require explicit adapter or deferred status",
+      "acceptance_gates": [
+        "logical order separately from timestamps",
+        "cancellation",
+        "stop/clear",
+        "queue priorities",
+        "DSP-off clocks"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/deferlow.maxhelp",
+          "sha256": "cc6ba3d23c8da0677e6917d4655e960cdd4b45cc8d647fc3fd6584c338519b86",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 15,
+              "direct_tokens": [
+                "button",
+                "comment",
+                "deferlow",
+                "jsui",
+                "message",
+                "number",
+                "print",
+                "trigger",
+                "uzi"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/deferlow/"
+    },
+    {
+      "max_class": "line",
+      "namespace": "box",
+      "work_group": "ramps",
+      "backend_candidate": "Pd line/line~ candidates; Faust for DSP, with an explicit event/ramp adapter",
+      "acceptance_gates": [
+        "initial value",
+        "target/time pairs",
+        "grain",
+        "output timing",
+        "interruptions",
+        "stop/pause",
+        "exact ramp endpoint"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/max/line.maxhelp",
+          "sha256": "84a7eba118672092e25e4c55921d790549c9e223c34bd213ec093a2542e1f94a",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 20,
+              "direct_tokens": [
+                "button",
+                "comment",
+                "flonum",
+                "jsui",
+                "line",
+                "message",
+                "number",
+                "textbutton"
+              ]
+            }
+          ],
+          "review_flags": [
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/line/"
+    },
+    {
+      "max_class": "line~",
+      "namespace": "box",
+      "work_group": "ramps",
+      "backend_candidate": "Pd line/line~ candidates; Faust for DSP, with an explicit event/ramp adapter",
+      "acceptance_gates": [
+        "initial value",
+        "target/time pairs",
+        "grain",
+        "output timing",
+        "interruptions",
+        "stop/pause",
+        "exact ramp endpoint"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/msp/line~.maxhelp",
+          "sha256": "85a8482029441c0be53abcfc3f1aa3d14bb0a347e3360ffeb3e4299b9ba1226a",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 12,
+              "direct_tokens": [
+                "comment",
+                "ezdac~",
+                "jsui",
+                "line~",
+                "message",
+                "number~",
+                "textbutton"
+              ]
+            }
+          ],
+          "review_flags": [
+            "audio-output-or-host-routing",
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/line~/"
+    },
+    {
+      "max_class": "sig~",
+      "namespace": "box",
+      "work_group": "ramps",
+      "backend_candidate": "Pd line/line~ candidates; Faust for DSP, with an explicit event/ramp adapter",
+      "acceptance_gates": [
+        "initial value",
+        "target/time pairs",
+        "grain",
+        "output timing",
+        "interruptions",
+        "stop/pause",
+        "exact ramp endpoint"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/msp/sig~.maxhelp",
+          "sha256": "0244ff183c74405fbde65800cc3dee881e252afc5fc5975049dd962266bb75c3",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-34"
+              ],
+              "direct_boxes": 14,
+              "direct_tokens": [
+                "comment",
+                "cycle~",
+                "ezdac~",
+                "flonum",
+                "jsui",
+                "live.gain~",
+                "loadmess",
+                "number~",
+                "sig~",
+                "textbutton"
+              ]
+            }
+          ],
+          "review_flags": [
+            "additional-runtime-family",
+            "audio-output-or-host-routing",
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/sig~/"
+    },
+    {
+      "max_class": "cycle~",
+      "namespace": "box",
+      "work_group": "dsp",
+      "backend_candidate": "Faust voice/operators + Rust CPAL output; UI gain separate from multiplier",
+      "acceptance_gates": [
+        "phase/reset",
+        "bounded tolerance",
+        "level scale",
+        "stereo mapping",
+        "fixed core rate vs device callback size"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/msp/cycle~.maxhelp",
+          "sha256": "89868ae65cc4c9af6cd2caa2fa22140805c6508a97f6128973f5ddcf57a9fa9d",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-34"
+              ],
+              "direct_boxes": 15,
+              "direct_tokens": [
+                "comment",
+                "cycle~",
+                "ezdac~",
+                "flonum",
+                "jsui",
+                "line~",
+                "live.gain~",
+                "message",
+                "textbutton"
+              ]
+            }
+          ],
+          "review_flags": [
+            "additional-runtime-family",
+            "audio-output-or-host-routing",
+            "declared-dependencies",
+            "file-or-state-operations",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/cycle~/"
+    },
+    {
+      "max_class": "*~",
+      "namespace": "box",
+      "work_group": "dsp",
+      "backend_candidate": "Faust voice/operators + Rust CPAL output; UI gain separate from multiplier",
+      "acceptance_gates": [
+        "phase/reset",
+        "bounded tolerance",
+        "level scale",
+        "stereo mapping",
+        "fixed core rate vs device callback size"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [],
+      "official_reference": "https://docs.cycling74.com/reference/*~/"
+    },
+    {
+      "max_class": "gain~",
+      "namespace": "box",
+      "work_group": "dsp",
+      "backend_candidate": "Faust voice/operators + Rust CPAL output; UI gain separate from multiplier",
+      "acceptance_gates": [
+        "phase/reset",
+        "bounded tolerance",
+        "level scale",
+        "stereo mapping",
+        "fixed core rate vs device callback size"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/msp/gain~.maxhelp",
+          "sha256": "eadb5a6b378b48d7653a2143a6a15bea92b2e26d69839028eb5337d590a3e887",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 23,
+              "direct_tokens": [
+                "comment",
+                "cycle~",
+                "ezdac~",
+                "flonum",
+                "gain~",
+                "jsui",
+                "message",
+                "number",
+                "textbutton"
+              ]
+            }
+          ],
+          "review_flags": [
+            "additional-runtime-family",
+            "audio-output-or-host-routing",
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/gain~/"
+    },
+    {
+      "max_class": "dac~",
+      "namespace": "box",
+      "work_group": "dsp",
+      "backend_candidate": "Faust voice/operators + Rust CPAL output; UI gain separate from multiplier",
+      "acceptance_gates": [
+        "phase/reset",
+        "bounded tolerance",
+        "level scale",
+        "stereo mapping",
+        "fixed core rate vs device callback size"
+      ],
+      "evidence_status": "source-inspected; see earlier max-reference manifests for executed original semantic cases",
+      "ultra_help_conformance": "untested",
+      "installed_help": [
+        {
+          "path": "help/msp/dac~.maxhelp",
+          "sha256": "29f82f12ad3db37b602c7f604312534f1a1ff90211c039f3417f600a8c4277b6",
+          "basic_tabs": [
+            {
+              "box_path": [
+                "obj-2"
+              ],
+              "direct_boxes": 25,
+              "direct_tokens": [
+                "bpatcher",
+                "comment",
+                "dac~",
+                "jsui",
+                "message",
+                "toggle"
+              ]
+            }
+          ],
+          "review_flags": [
+            "audio-output-or-host-routing",
+            "declared-dependencies",
+            "script-or-managed-code"
+          ]
+        }
+      ],
+      "official_reference": "https://docs.cycling74.com/reference/dac~/"
+    }
+  ],
+  "deferred": [
+    "Jitter/GL/video",
+    "RNBO/gen namespaces",
+    "commercial/package assets",
+    "arbitrary JS/V8/JSUI/Node/Java",
+    "host Live API/automation",
+    "hardware/network/file side effects without case review",
+    "general Max scheduler priority equivalence",
+    "full help-patch conformance"
+  ]
+}

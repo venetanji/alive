@@ -1,0 +1,96 @@
+{
+  "status": "proposed-not-dispatched",
+  "requested_model_label": "6.1 Luna",
+  "available_exact_match": false,
+  "available_related_model": "gpt-6-luna",
+  "agent_count_proposed": 6,
+  "prerequisites": [
+    "Confirm exact available model and budget before any paid/cloud session",
+    "Land DSP-independent message execution and typed message contract first",
+    "Use isolated worktrees; no shared PLAN.md edits",
+    "Original fixtures only; installed help content stays local"
+  ],
+  "packages": [
+    {
+      "id": 1,
+      "scope": "Message lifecycle and DSP-off controls",
+      "owns": [
+        "new message-host adapter",
+        "message-lifecycle tests"
+      ],
+      "depends_on": [],
+      "gate": "bang/toggle and ordered arithmetic traces run with audio off; independent start/stop; no browser scheduler"
+    },
+    {
+      "id": 2,
+      "scope": "Max integer/float and typed inlet semantics",
+      "owns": [
+        "new type adapters",
+        "original type help fixtures"
+      ],
+      "depends_on": [
+        1
+      ],
+      "gate": "earlier Max int/float/number/flonum/pack/unpack/select/route ordered references, including negative cases"
+    },
+    {
+      "id": 3,
+      "scope": "UI operation, shortcuts and slider",
+      "owns": [
+        "canvas-node.mjs",
+        "canvas-catalog.mjs",
+        "UI interaction tests"
+      ],
+      "depends_on": [
+        1,
+        2
+      ],
+      "gate": "lock operates; unlock edits; Ctrl/Cmd operates; I/F/S distinct; slider range/step/set and keyboard accessible"
+    },
+    {
+      "id": 4,
+      "scope": "line and line~",
+      "owns": [
+        "new ramp adapters",
+        "original ramp fixtures"
+      ],
+      "depends_on": [
+        1,
+        2
+      ],
+      "gate": "compare original Max and backend score; interrupted ramps; output grain; offline 48 kHz endpoints"
+    },
+    {
+      "id": 5,
+      "scope": "Executable help and coverage runner",
+      "owns": [
+        "new help catalog/runner",
+        "coverage artifacts"
+      ],
+      "depends_on": [
+        1,
+        2
+      ],
+      "gate": "one original minimal runnable patch per supported object; per-case assertions; full vs adapted help counted separately"
+    },
+    {
+      "id": 6,
+      "scope": "Inspector appearance and maxpat import proposal",
+      "owns": [
+        "new authoring-style module",
+        "maxpat importer tests"
+      ],
+      "depends_on": [
+        2
+      ],
+      "gate": "round trip owned snapshots; preserve unknown JSON; reject unsupported runtime nodes before graph replacement; styles separate from DSP params"
+    }
+  ],
+  "orchestrator_gates": [
+    "Inspect every diff and unsupported feature",
+    "Run JS/Rust/native suites plus private desktop verification",
+    "Compare Max traces before marking semantic pass",
+    "Measure callback behavior; no unbounded allocation/locking on render path",
+    "Integrate serially and rebuild; draft PR unchanged unless explicitly integrated"
+  ]
+}

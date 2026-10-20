@@ -1,0 +1,40 @@
+{
+  "display": "private Xvfb :98, 1440x1000",
+  "actions": [
+    {
+      "fixture": "interaction.maxpat",
+      "state": "locked",
+      "actions": [
+        "click button",
+        "click toggle",
+        "click toggle",
+        "click horizontal slider",
+        "click dump"
+      ],
+      "result": "results/ui-events.jsonl"
+    },
+    {
+      "fixture": "interaction.maxpat",
+      "state": "unlocked",
+      "actions": [
+        "Ctrl E",
+        "I then drop at new location",
+        "F then drop at new location",
+        "S then drop at new location"
+      ],
+      "result": "results/max-shortcuts.png; unsaved objects discarded"
+    },
+    {
+      "fixture": "interaction-query.maxpat",
+      "state": "locked, DSP queried 0",
+      "actions": [
+        "query numeric adstatus switch outlet after JS initialization",
+        "click button",
+        "click toggle",
+        "click toggle"
+      ],
+      "result": "results/dsp-query.jsonl"
+    }
+  ],
+  "sequence_scope": "One JS instance/file; collector arrival order only. Screenshot and input actions do not measure time."
+}

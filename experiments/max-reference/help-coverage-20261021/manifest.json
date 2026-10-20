@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "fixture_id": "max-help-coverage-20261021",
+  "provenance": "MAX_REFERENCE_CAPTURE",
+  "max_executed": true,
+  "captured_at_utc": "2026-10-20T16:40:57.381857+00:00",
+  "environment": {
+    "max_version": "9.1.5 x64 Windows",
+    "live_version": "12.4.6 Suite",
+    "os": "Omarchy 4.0.0.r7083.g81fd2d2 / Linux 7.2.8-9-omarchy / Wine Windows environment",
+    "architecture": "x86_64 host, Windows x64 Max",
+    "runtime_host": "standalone_max"
+  },
+  "settings": {
+    "sample_rate_hz": null,
+    "signal_vector_frames": null,
+    "io_vector_frames": null,
+    "overdrive": null,
+    "scheduler_in_audio_interrupt": null,
+    "audio_enabled": false,
+    "transport": {},
+    "other": {
+      "wine": "11.13 patched d2d1/dcomp",
+      "display": "private Xvfb",
+      "corpus_files": 2145,
+      "full_help_ultra_conformance": "0/2103",
+      "source_inventory": "source-inspected; no installed help executed"
+    },
+    "unknown_fields": [
+      "sample_rate_hz",
+      "signal_vector_frames",
+      "io_vector_frames",
+      "overdrive",
+      "scheduler_in_audio_interrupt",
+      "transport"
+    ]
+  },
+  "initial_state": {
+    "patches": "Original hand-authored JSON opened in disposable Wine Max; not Max-saved",
+    "dsp_query": "adstatus switch numeric right outlet",
+    "starting_commit": "b41c9b0816644aae93f7405e6c1cf9ad89a60c40"
+  },
+  "object_classes": [
+    "adstatus",
+    "button",
+    "toggle",
+    "number",
+    "flonum",
+    "slider",
+    "message",
+    "js",
+    "loadbang"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "3f4704e6e9693f1c5a25224f0e6d4b03bcffe76f900f732e3655db1c3bc411b2",
+      "role": "notes"
+    },
+    {
+      "path": "batch-map.json",
+      "sha256": "6b40705924a8c6ab3cc3e6eac3cb379f3418be3bfffaaa2ebc6e2dca64c67bfa",
+      "role": "notes"
+    },
+    {
+      "path": "fixtures/interaction-query.maxpat",
+      "sha256": "072cb525d5e722f63c32096cbf46ad028a53fcd56cac9f545140fd5d70221db8",
+      "role": "patch"
+    },
+    {
+      "path": "fixtures/interaction.maxpat",
+      "sha256": "12538b21f1d20dd34222ad004189f7dabcd755432dcd667d7ed0128254629600",
+      "role": "patch"
+    },
+    {
+      "path": "fixtures/ui-probe.js",
+      "sha256": "ca9c262574b90e8e63dcebffea5c7796511a455961d4f02b9a94459aeb8548af",
+      "role": "dependency"
+    },
+    {
+      "path": "fixtures/ui-query.js",
+      "sha256": "0dbaddd0b532e67ff9b87305ba014371914b27c1df7728c84cfa81a69ad9a248",
+      "role": "dependency"
+    },
+    {
+      "path": "focus-reference.json",
+      "sha256": "50c9fb392cf3da490a966f36b69ecf7e2c662cab933c9ebdb73be17a9c2f7b6b",
+      "role": "notes"
+    },
+    {
+      "path": "help-files.jsonl",
+      "sha256": "ad56e65dad84c9f2f9479219d670ab3f77b31fd5fa4d3e1718889de9e8715342",
+      "role": "notes"
+    },
+    {
+      "path": "inventory.py",
+      "sha256": "a317e6510c08c9a63d361fd4f56eabead6e503ce9786ff71000b4a8cba3be3cc",
+      "role": "notes"
+    },
+    {
+      "path": "object-usage.jsonl",
+      "sha256": "f1c5f8df815492c6740b554f49f86a290b9479d950d7c709f2ed7160f2603e82",
+      "role": "notes"
+    },
+    {
+      "path": "objects.json",
+      "sha256": "03f6dddae5c02ee491ef2a5888bfc03aaa3eac5a2e5a2250c53c7e68cf202121",
+      "role": "notes"
+    },
+    {
+      "path": "operations.json",
+      "sha256": "41e2323725ae864a51bb25db7241b178cdaf79b2ef0261995d07662262a1a765",
+      "role": "operations"
+    },
+    {
+      "path": "results/dsp-query.jsonl",
+      "sha256": "c4e3e5370a4d8f18376c85d1f0356dd7d0a299659ca9041e2f7331902cea4022",
+      "role": "message_trace"
+    },
+    {
+      "path": "results/max-locked-controls.png",
+      "sha256": "21a561ce623042d5335fc73eedbab08daa6e1740a1ad5baefb8d65378f6ab8cf",
+      "role": "screenshot"
+    },
+    {
+      "path": "results/max-shortcuts.png",
+      "sha256": "388ac53b385f7c3ce392b547be91f3d85260810ed32fdf2bf8f6fe9522002fcd",
+      "role": "screenshot"
+    },
+    {
+      "path": "results/ui-events.jsonl",
+      "sha256": "4a88aef53ebd40b4c9165a3c4e3aa1f4f401970b8e775e625b1ecf260c2493c0",
+      "role": "message_trace"
+    },
+    {
+      "path": "summary.json",
+      "sha256": "7370fb0efc8c1f19f4b2a3ac78578afdb237522e81fed57ba5d2e5221cd6b035",
+      "role": "notes"
+    },
+    {
+      "path": "test_inventory.py",
+      "sha256": "65434d3a331c344e9e15b011b86b740c3ce500327640a93eec1db741436ffcbb",
+      "role": "notes"
+    }
+  ],
+  "procedure": "See README.md and operations.json. Inventory never executes installed help; own interaction fixtures executed on private X display.",
+  "comparison": {
+    "kind": "inventory_only",
+    "absolute_tolerance": null,
+    "relative_tolerance": null,
+    "alignment": "Sequence numbers describe collector arrival; UI shortcuts observed visually. No Ultra semantic conformance claimed.",
+    "limitations": [
+      "No installed help file executed end-to-end in Ultra",
+      "Only original UI fixtures executed in Max",
+      "Current audio device settings other than DSP off not queried",
+      "No DSP outputs captured by this follow-up"
+    ]
+  },
+  "redistribution": {
+    "authorship": "Original Alive fixtures, notes and cropped UI observations; user supplied saved metro patch files",
+    "permission": "User requested study and integration in venetanji/alive; originals preserved",
+    "contains_proprietary_assets": false
+  },
+  "notes": [
+    "Corpus inventories contain derived facts only, not installed proprietary patch content",
+    "Requested swarm not dispatched; exact model label unresolved",
+    "Separate research branch; PR #1 remains draft and untouched"
+  ]
+}
