@@ -3,6 +3,17 @@ EDITABLE CANVAS (primary application page)
 From a checkout containing the Rust audio-settings changes:
   bash apps/ultra/build.sh
   bash apps/ultra/run.sh
+
+Omarchy / Linux app-launcher shortcut (install once after building):
+  python3 apps/ultra/install-launcher.py
+Open Apps (Super+Alt+Space on Omarchy) and find "Ultra (Latest Build)". The
+shortcut follows this checkout's run.sh, which prefers
+src-tauri/target/release/ultra and its matching native library.
+After rebuilding, close and reopen Ultra to load the
+new build. Run the installer again if you move the checkout. It installs a
+user desktop entry under $XDG_DATA_HOME/applications (normally
+~/.local/share/applications). Standalone bundles still use their supplied binary.
+
 Open Audio settings in the footer to select an output and buffer/period size.
 Save settings leaves audio off; Save & start audio opens the output. Settings
 belong to Ultra and survive restart. The desktop app now uses Rust CPAL 0.18.2,

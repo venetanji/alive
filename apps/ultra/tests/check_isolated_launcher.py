@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exercise only the isolated runner's launch stanza, never JACK or a display."""
+"""Exercise release/bundle launch selection, never JACK or a display."""
 import os
 import pathlib
 import shutil
@@ -10,7 +10,7 @@ source = pathlib.Path(__file__).resolve().parents[1]
 script = (source / 'tests/check_isolated_desktop.sh').read_text()
 # Execute the actual launch stanza without the desktop/audio setup or UI probe.
 launch = script.split('cd "$ROOT"\n', 1)[1].split("python3 - <<'PY'", 1)[0]
-with tempfile.TemporaryDirectory(prefix='ultra-launch-selection-') as directory:
+with tempfile.TemporaryDirectory(prefix='ultra launch selection ') as directory:
     root = pathlib.Path(directory)
     app = root / 'apps/ultra'
     release = app / 'src-tauri/target/release'
@@ -31,4 +31,18 @@ with tempfile.TemporaryDirectory(prefix='ultra-launch-selection-') as directory:
     assert pathlib.Path(binary).resolve() == release / 'ultra', 'Isolated runner launched the stale packaged binary instead of the checked release build'
     assert libraries == str(release) + ':/existing/library', 'Release native library must take precedence'
     assert pid == result.stdout, 'Accessibility probe must target the launched app PID'
+
+    def run_launcher():
+        subprocess.run(['bash', str(app / 'run.sh')], env=env, check=True)
+        binary, libraries, _ = (root / 'launched').read_text().splitlines()
+        return (app / binary).resolve(), libraries
+
+    binary, libraries = run_launcher()
+    assert binary == release / 'ultra', 'The normal launcher must prefer the current release over a stale bundle'
+    assert libraries == str(release) + ':/existing/library'
+    (release / 'ultra').unlink()
+    binary, libraries = run_launcher()
+    assert binary == app / 'ultra', 'Binary bundles must still launch without a source build'
+    assert libraries == str(app) + ':/existing/library'
 print('PASS isolated runner selects the checked release binary and native library, preserving its PID')
+print('PASS normal launcher prefers the release build and retains standalone bundle support')
