@@ -179,6 +179,15 @@ commits and Escape cancels. Errors remain visible without changing the patch.
 
 ### Port help and menus
 
+Drag between bottom outlets and top inlets in either direction to wire objects.
+Clicking both ports or activating focused ports with Enter/Space also connects.
+The pending cord highlights destinations accepted by the graph validator and
+snaps near a port. Invalid targets show their rejection in the assist bar;
+invalid or empty drops leave the document intact. Escape, lost pointer capture,
+focus loss, locking and history actions clear the gesture and its feedback.
+Port hit areas grow outward to preserve the compact face for object dragging;
+variadic objects keep enough width to target adjacent ports independently.
+
 Hover and focus provide concise help. The inlet menu lists accepted messages;
 the outlet menu lists emitted data. Both expose original per-object help. The
 outlet menu is an Ultra addition, not an observed Max feature.

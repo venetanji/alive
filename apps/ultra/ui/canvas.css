@@ -85,13 +85,21 @@ main { display: flex; flex: 1; min-height: 0; position: relative; }
 .node .inlets { top: -1px; }
 .node .outlets { bottom: -1px; }
 .node .ports:has(.port:only-child) { justify-content: flex-start; }
-.port { position: relative; width: 7px; height: 4px; min-width: 7px; padding: 0; margin: 0; border: 0; border-radius: 0 0 4px 4px; background: #b8b8b5; pointer-events: auto; cursor: crosshair; }
-.port::after { content: ''; position: absolute; inset: -5px -4px; }
+.port { position: relative; width: 7px; height: 4px; min-width: 7px; padding: 0; margin: 0; border: 0; border-radius: 0 0 4px 4px; background: #b8b8b5; pointer-events: auto; cursor: crosshair; touch-action: none; }
+.port::after { content: ''; position: absolute; inset: -3px -5px; }
+/* Grow targets away from the face so compact objects remain draggable. */
+.inlets .port::after { top: -10px; }
+.outlets .port::after { bottom: -10px; }
 .port.mono { background: var(--mono); }
 .port.stereo { background: var(--stereo); width: 11px; min-width: 11px; }
 .port.hot { background: #ed9b86; }
 .port.pending { background: var(--selection); outline: 2px solid var(--selection); outline-offset: 2px; }
 .port:hover, .port:focus-visible { outline: 2px solid var(--selection); outline-offset: 1px; }
+.port.compatible { outline: 1px solid var(--selection); outline-offset: 2px; }
+.port.unavailable { opacity: .4; cursor: not-allowed; }
+.port.wire-target { background: var(--selection); outline: 3px solid var(--selection); outline-offset: 2px; }
+.port.wire-invalid { opacity: 1; background: var(--error); outline: 2px solid var(--error); outline-offset: 2px; }
+#workspace.wiring, #workspace.wiring .node { cursor: crosshair; }
 .node.ui-bang, .node.ui-toggle { width: 24px !important; height: 24px; }
 .node.ui-bang .ports, .node.ui-toggle .ports { background: transparent; }
 .node.ui-message { border-radius: 4px; }

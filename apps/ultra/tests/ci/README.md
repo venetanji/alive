@@ -16,7 +16,9 @@ does not read repository secrets or use `pull_request_target`.
 2. **Chromium canvas editing smoke:** the actual HTML/CSS/modules served over
    loopback HTTP in sandboxed Chromium. It checks document editing and visible
    top-inlet/bottom-outlet geometry, keyboard creation, text-edit undo, lock
-   protection, directional help, group moves, zoomed cord geometry and small
+   protection, directional help, group moves, zoomed cord geometry, dragging
+   cords in both directions, keyboard wiring, rejected drops, cancellation,
+   history during wiring and small
    viewport controls. There is no Tauri/native IPC shim and no
    fake browser audio. A passing preview test is not native audio qualification.
 3. **Linux native build, Rust bridge, and CPAL loopback:** builds the pinned real Clockwork/Faust

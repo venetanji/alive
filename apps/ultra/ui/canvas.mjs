@@ -1,4 +1,4 @@
-import {createCanvasController,parsePatch,starterPatch,nodeSpec} from './canvas-model.mjs';
+import {createCanvasController,parsePatch,validatePatch,starterPatch,nodeSpec} from './canvas-model.mjs';
 import {OBJECTS,objectText,parseObjectText,portHelp} from './canvas-catalog.mjs';
 import {createObjectEntry} from './canvas-entry.mjs';
 import {createNodeView} from './canvas-node.mjs';
@@ -9,6 +9,8 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   const $=id=>doc.querySelector('#'+id),make=(tag,className,text)=>{const e=doc.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;};
   let initialized=false,selection=null,selected=new Set(),pending=null,locked=false,zoom=1,panel=null,inspectorKey='',helpKey='',drag=null,marquee=null,leaving=false,timer=null;
   let pointer={x:80,y:90},pointerClient=null,panX=0,panY=0,pan=null,spaceHeld=false,suppressPanClick=false;
+  let wireGesture=null,wireTarget=null,wireKey='',suppressWireClick=false;
+  const wireTargets=new Map();
   const views=new Map(),fields=new Map();
   const controller=createCanvasController({invoke,onState:state=>{if(initialized)render(state);}});
   const audioSettings=mountAudioSettings({document:doc,invoke,controller});
@@ -25,7 +27,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   function point(e){const rect=$('canvas').getBoundingClientRect();return{x:Math.max(0,Math.min(3900,(e.clientX-rect.left)/zoom)),y:Math.max(0,Math.min(3900,(e.clientY-rect.top)/zoom))};}
   function entryAt(text='',node=null) {
     if(locked){controller.notice('Unlock the patch with Ctrl E to edit objects.');return;}
-    closeMenus();pending=null;
+    closeMenus();cancelWire();
     const rect=$('canvas').getBoundingClientRect(),p=node?{x:node.x,y:node.y}:pointer;
     entry.open({text,nodeId:node?.id,x:p.x,y:p.y,clientX:rect.left+p.x*zoom,clientY:rect.top+p.y*zoom});
   }
@@ -56,13 +58,13 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     if(panel==='audio')return audioSettings.open();
   }
   function setLocked(value) {
-    locked=value;drag=null;releaseNavigation();entry.close();pending=null;closeMenus();
+    locked=value;drag=null;releaseNavigation();entry.close();cancelWire();closeMenus();
     if(locked)clearSelection();
     if(panel==='help')renderHelp(currentNode());
     $('workspace').classList.toggle('locked',locked);$('lock-patch').setAttribute('aria-pressed',String(locked));
     $('lock-label').textContent=locked?'Locked':'Edit';
     const icon=$('lock-patch').children[0]?.children[0];icon?.setAttribute('href',locked?'#i-lock':'#i-unlock');
-    $('assist').textContent=locked?'Click controls to play. Ctrl E unlocks the patch.':'N: new object. Double-click an object to edit. Ctrl E: lock to perform.';
+    resetAssist();
     render(controller.getState());
   }
   function positionOverlay(element,x,y,width=275,height=200) {
@@ -70,12 +72,14 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     element.style.top=`${Math.max(8,Math.min(y,(win.innerHeight||840)-height-8))}px`;
   }
   function hoverPort(id,direction,index,button) {
+    if(pending)return;
     const node=getNode(id),info=portHelp(node,direction,index),tip=$('port-tooltip');
     tip.replaceChildren(make('strong','',`${OBJECTS[node.type].name}: ${info.title}`),make('p','',`${info.direction}: ${info.messages.join(' / ')}. ${info.detail}`));
     const r=button.getBoundingClientRect();positionOverlay(tip,r.left+12,r.top+14,275,120);tip.hidden=false;
     button.setAttribute('aria-describedby','port-tooltip');$('assist').textContent=`${direction==='in'?'Inlet':'Outlet'} ${index} / ${info.type}: ${info.detail}`;
   }
-  function unhover(){ $('port-tooltip').hidden=true; }
+  function unhover(){ $('port-tooltip').hidden=true;if(!pending)resetAssist(); }
+  function resetAssist(){ $('assist').textContent=locked?'Click controls to play. Ctrl E unlocks the patch.':'Drag between ports to connect. N: new object. Ctrl E: lock to perform.'; }
   function menuItem(text,fn,disabled=false) {
     const b=make('button','',text);b.type='button';b.setAttribute('role','menuitem');b.disabled=disabled;
     b.addEventListener('click',guard(()=>{closeMenus();return fn();}));$('context-menu').append(b);return b;
@@ -100,18 +104,98 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     positionOverlay(menu,e.clientX,e.clientY,270,360);menu.hidden=false;
     const first=[...menu.children].find(c=>c.tagName==='BUTTON'&&!c.disabled);first?.focus();
   }
-  function portClick(id,direction,index) {
+  const samePort=(a,b)=>!!a&&!!b&&a.id===b.id&&a.direction===b.direction&&a.index===b.index;
+  const portKey=p=>`${p.id}/${p.direction}/${p.index}`;
+  function cableEdge(target) {
+    const a=pending.direction==='out'?pending:target,b=pending.direction==='in'?pending:target;
+    return{from:a.id,outlet:a.index,to:b.id,inlet:b.index};
+  }
+  function cancelWire(refresh=true) {
+    const active=!!pending,gesture=wireGesture;wireGesture=null;pending=null;wireTarget=null;wireKey='';wireTargets.clear();
+    if(gesture&&$('workspace').hasPointerCapture?.(gesture.pointer))$('workspace').releasePointerCapture(gesture.pointer);
+    resetAssist();
+    if(active&&refresh)render(controller.getState());
+  }
+  function startWire(id,direction,index) {
+    pending={id,direction,index};wireTarget=null;wireKey='';unhover();selectNode(id);
+    $('assist').textContent=`Drag or click a highlighted ${direction==='out'?'top inlet':'bottom outlet'}. Escape cancels.`;
+  }
+  function connectWire(target) {
+    const edge=cableEdge(target);
+    try{cancelWire();controller.connect(edge.from,edge.outlet,edge.to,edge.inlet);}
+    catch(error){controller.notice(error);}
+    render(controller.getState());
+  }
+  function portClick(id,direction,index,e) {
+    if(e?.detail&&suppressWireClick)return;
     if(locked){controller.notice('Unlock the patch with Ctrl E to connect ports.');return;}
     unhover();
-    if(direction==='out'){pending={from:id,outlet:index};selectNode(id);$('assist').textContent='Click a matching top inlet. Escape cancels the cable.';}
-    else if(pending){
-      try{controller.connect(pending.from,pending.outlet,id,index);pending=null;render(controller.getState());}
-      catch(error){controller.notice(error);}
-    } else {selectNode(id);controller.notice('Start a cable from a bottom outlet.');}
+    const target={id,direction,index};
+    if(samePort(pending,target)){cancelWire();render(controller.getState());}
+    else if(pending&&pending.direction!==direction)connectWire(target);
+    else startWire(id,direction,index);
+  }
+  function portDown(id,direction,index,e) {
+    if(e.button!==0)return;
+    // The captured pointer is handled on release; ignore its synthetic click.
+    e.preventDefault();suppressWireClick=true;
+    if(locked){controller.notice('Unlock the patch with Ctrl E to connect ports.');return;}
+    const pressed={id,direction,index},started=!pending||(pending.direction===direction&&!samePort(pending,pressed));
+    if(started)startWire(id,direction,index);
+    pointer=point(e);wireGesture={pointer:e.pointerId,x:e.clientX,y:e.clientY,pressed,started,moved:false};
+    $('workspace').setPointerCapture?.(e.pointerId);drawCables(controller.getState().patch);
+  }
+  function targetAt(e) {
+    const hit=doc.elementFromPoint?.(e.clientX,e.clientY);
+    if(!hit?.closest?.('#workspace'))return null;
+    const direct=hit.closest('.port'),node=direct?.closest('[data-node]');
+    if(direct&&direct.dataset.direction!==pending.direction)return{id:Number(node.dataset.node),direction:direct.dataset.direction,index:Number(direct.dataset.port)};
+    let nearest=null,distance=14;
+    for(const candidate of wireTargets.values()){
+      const r=candidate.button.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2,d=Math.hypot(e.clientX-x,e.clientY-y);
+      if(d<distance&&doc.elementFromPoint(x,y)?.closest('.port')===candidate.button){nearest=candidate.target;distance=d;}
+    }
+    return nearest;
+  }
+  function wireFeedback(state) {
+    $('workspace').classList.toggle('wiring',!!pending);
+    const key=pending?`${state.desiredRevision}/${portKey(pending)}`:'';
+    if(key!==wireKey){
+      wireKey=key;wireTargets.clear();
+      if(pending)for(const [id,view] of views)for(const direction of ['in','out']){
+        if(direction===pending.direction)continue;
+        view.ports[direction].forEach((button,index)=>{
+          const target={id,direction,index};let error='';
+          try{validatePatch({...state.patch,edges:[...state.patch.edges,cableEdge(target)]});}catch(reason){error=reason.message;}
+          wireTargets.set(portKey(target),{target,button,error});
+        });
+      }
+    }
+    if(wireTarget&&!wireTargets.has(portKey(wireTarget)))wireTarget=null;
+    for(const [id,view] of views)for(const direction of ['in','out'])view.ports[direction].forEach((button,index)=>{
+      const candidate=wireTargets.get(`${id}/${direction}/${index}`),active=samePort(wireTarget,candidate?.target);
+      button.classList.toggle('compatible',!!candidate&&!candidate.error);
+      button.classList.toggle('unavailable',!!candidate&&!!candidate.error);
+      button.classList.toggle('wire-target',!!candidate&&active&&!candidate.error);
+      button.classList.toggle('wire-invalid',!!candidate&&active&&!!candidate.error);
+    });
+    if(wireTarget){
+      const candidate=wireTargets.get(portKey(wireTarget));
+      $('assist').textContent=candidate?.error||`Release to connect ${OBJECTS[getNode(wireTarget.id).type].name} ${wireTarget.direction==='in'?'inlet':'outlet'} ${wireTarget.index}. Escape cancels.`;
+    } else if(pending){
+      $('assist').textContent=`Drag or click a highlighted ${pending.direction==='out'?'top inlet':'bottom outlet'}. Escape cancels.`;
+    }
+  }
+  function finishWire(e) {
+    if(!wireGesture||wireGesture.pointer!==e.pointerId)return;
+    const gesture=wireGesture,target=pending?targetAt(e):null;wireGesture=null;
+    if($('workspace').hasPointerCapture?.(e.pointerId))$('workspace').releasePointerCapture(e.pointerId);
+    if(gesture.moved){if(target)connectWire(target);else{cancelWire();render(controller.getState());}}
+    else if(!gesture.started)portClick(gesture.pressed.id,gesture.pressed.direction,gesture.pressed.index);
   }
   function dragStart(id,e) {
     if(locked||e.button!==0||e.ctrlKey||e.metaKey)return;
-    e.preventDefault();e.stopPropagation();
+    e.preventDefault();e.stopPropagation();cancelWire();
     if(e.shiftKey){selectNode(id,true);return;}
     if(!selected.has(id))selectNode(id);
     const nodes=controller.getState().patch.nodes.filter(n=>selected.has(n.id));
@@ -142,7 +226,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     if(locked)return;
     if(selection?.kind==='edge')controller.disconnect(selection.index);
     else if(selected.size)controller.removeMany([...selected]);
-    clearSelection();pending=null;render(controller.getState());
+    clearSelection();cancelWire();render(controller.getState());
   }
   function drawCables(patch) {
     const svg=$('cables');svg.replaceChildren();
@@ -163,8 +247,9 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
       const hit=doc.createElementNS('http://www.w3.org/2000/svg','path');hit.setAttribute('d',d);hit.setAttribute('class','cable-hit');hit.addEventListener('click',choose);
       svg.append(hit,path);
     });
-    if(pending&&views.has(pending.from)){
-      const path=doc.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('class','cable pending-cable');path.setAttribute('d',pathData(endpoint(pending.from,'out',pending.outlet),pointer));svg.append(path);
+    if(pending&&views.has(pending.id)){
+      const target=wireTarget&&wireTargets.get(portKey(wireTarget)),end=target&&!target.error?endpoint(wireTarget.id,wireTarget.direction,wireTarget.index):pointer,start=endpoint(pending.id,pending.direction,pending.index);
+      const path=doc.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('class','cable pending-cable');path.setAttribute('d',pending.direction==='out'?pathData(start,end):pathData(end,start));svg.append(path);
     }
   }
   function renderInspector(state) {
@@ -196,7 +281,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     const area=$('help-content');area.replaceChildren();
     if(!node){
       area.append(make('h2','','Patching in Ultra'),make('p','','Create objects by typing their name and arguments. Connect bottom outlets to top inlets. Lock the patch to use its controls.'));
-      for(const [key,label] of [['N','New object at pointer'],['B / M / T / I','Bang / message / toggle / number'],['Ctrl E','Lock or unlock'],['Ctrl I','Inspector'],['Enter / F2','Edit selected object'],['Ctrl Z / Ctrl Shift Z','Undo / redo'],['Ctrl A','Select all objects'],['Delete','Remove selection'],['Escape','Cancel editing or stop notes'],['Wheel / two-finger scroll','Scroll canvas'],['Shift + wheel','Scroll horizontally'],['Space + drag / middle drag','Pan canvas'],['Z / Shift Z','Zoom in / out at pointer'],['Ctrl +/- / Ctrl 0','Zoom / reset view'],['Ctrl + wheel / pinch','Zoom at pointer'],['Ctrl S / Ctrl O','Export / open JSON']]){
+      for(const [key,label] of [['Drag between ports','Connect an outlet to an inlet in either direction'],['Enter / Space on a port','Start or finish a connection'],['N','New object at pointer'],['B / M / T / I','Bang / message / toggle / number'],['Ctrl E','Lock or unlock'],['Ctrl I','Inspector'],['Enter / F2','Edit selected object'],['Ctrl Z / Ctrl Shift Z','Undo / redo'],['Ctrl A','Select all objects'],['Delete','Remove selection'],['Escape','Cancel editing or stop notes'],['Wheel / two-finger scroll','Scroll canvas'],['Shift + wheel','Scroll horizontally'],['Space + drag / middle drag','Pan canvas'],['Z / Shift Z','Zoom in / out at pointer'],['Ctrl +/- / Ctrl 0','Zoom / reset view'],['Ctrl + wheel / pinch','Zoom at pointer'],['Ctrl S / Ctrl O','Export / open JSON']]){
         const row=make('div','shortcut-row');row.append(make('span','',label),make('kbd','',key));area.append(row);
       }
       area.append(make('p','panel-note',`The canvas implements Ultra's ${Object.keys(OBJECTS).length}-object profile. It does not import .maxpat or execute arbitrary Max objects. Focus loss stops timers and notes.`));
@@ -238,12 +323,13 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     $('reapply').disabled=!state.native||state.applying||state.busy;
     $('selection-hint').textContent=locked?'Locked':selected.size?`${selected.size} selected`:'Editing';
     $('empty-patch').hidden=state.patch.nodes.length>0;
+    if(pending){const node=state.patch.nodes.find(n=>n.id===pending.id);if(!node||!nodeSpec(node)[pending.direction==='in'?'inlets':'outlets'][pending.index])cancelWire(false);}
     const ids=new Set(state.patch.nodes.map(n=>n.id));for(const id of views.keys())if(!ids.has(id)){views.delete(id);selected.delete(id);}
     if(selection?.kind==='node'&&!ids.has(selection.id))selection=null;
     const children=[];
     for(const node of state.patch.nodes){
       if(!views.has(node.id)||views.get(node.id).type!==node.type||views.get(node.id).configuration!==node.params.args){
-        const v=createNodeView(node,{doc,select:selectNode,dragStart,edit:editNode,portClick,hover:hoverPort,unhover,context:contextMenu,operate,parameter,event:(...args)=>guard(()=>controller.event(...args))()});
+        const v=createNodeView(node,{doc,select:selectNode,dragStart,edit:editNode,portClick,portDown,hover:hoverPort,unhover,context:contextMenu,operate,parameter,event:(...args)=>guard(()=>controller.event(...args))()});
         for(const target of [v.element,v.header]){target.addEventListener('pointermove',dragMove);target.addEventListener('pointerup',finishDrag);target.addEventListener('pointercancel',finishDrag);target.addEventListener('lostpointercapture',finishDrag);}views.set(node.id,v);
       }
       const view=views.get(node.id);view.update(node,state,{selected:selected.has(node.id),locked,pending,moving:!!drag&&selected.has(node.id)});children.push(view.element);
@@ -252,7 +338,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     const width=Math.max(760,...state.patch.nodes.map(n=>n.x+350)),height=Math.max(740,...state.patch.nodes.map(n=>n.y+160));
     $('canvas').style.width=`${width}px`;$('canvas').style.height=`${height}px`;$('canvas').style.transform=`translate(${panX}px, ${panY}px) scale(${zoom})`;
     $('canvas-space').style.width=`${Math.max(width*zoom,$('workspace').clientWidth||0)}px`;$('canvas-space').style.height=`${Math.max(height*zoom,$('workspace').clientHeight||0)}px`;
-    renderInspector(state);drawCables(state.patch);
+    wireFeedback(state);renderInspector(state);drawCables(state.patch);
     if(panel==='help'&&helpKey!==helpIdentity(currentNode()))renderHelp(currentNode());
   }
   function zoomLabel() {
@@ -260,7 +346,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     $('canvas-zoom').value=String(zoom);
   }
   function setZoom(value,anchor=null) {
-    if(drag||marquee||pan)return;
+    if(drag||marquee||pan||wireGesture)return;
     const next=Math.max(.25,Math.min(3,value));if(!Number.isFinite(next))return;
     const workspace=$('workspace'),r=workspace.getBoundingClientRect(),base=$('canvas').getBoundingClientRect();
     const at=anchor||{x:r.left+(workspace.clientWidth||0)/2,y:r.top+(workspace.clientHeight||0)/2};
@@ -293,7 +379,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   $('lock-patch').addEventListener('click',()=>setLocked(!locked));$('show-inspector').addEventListener('click',()=>showPanel('inspector'));
   $('show-library').addEventListener('click',()=>showPanel('library'));$('show-help').addEventListener('click',()=>showPanel('help'));
   $('close-panel').addEventListener('click',()=>{panel=null;applyPanel();});$('edit-object').addEventListener('click',()=>{if(currentNode())editNode(selection.id);});
-  $('delete-selection').addEventListener('click',guard(removeSelection));$('undo').addEventListener('click',guard(()=>{pending=null;controller.undo();}));$('redo').addEventListener('click',guard(()=>{pending=null;controller.redo();}));
+  $('delete-selection').addEventListener('click',guard(removeSelection));$('undo').addEventListener('click',guard(()=>{cancelWire();controller.undo();}));$('redo').addEventListener('click',guard(()=>{cancelWire();controller.redo();}));
   function load(patch){entry.close();closeMenus();clearSelection();pending=null;setLocked(false);controller.load(patch);}
   $('new-patch').addEventListener('click',guard(()=>load({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]})));
   $('starter-patch').addEventListener('click',guard(()=>{load(starterPatch());fitPatch();}));
@@ -303,14 +389,15 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   function endPan(){pan=null;$('workspace').classList.toggle('panning',false);}
   function releaseNavigation(){spaceHeld=false;endPan();marquee=null;$('selection-box').hidden=true;$('workspace').classList.toggle('pan-ready',false);}
   $('workspace').addEventListener('pointerdown',e=>{
-    suppressPanClick=false;
+    suppressPanClick=false;suppressWireClick=false;
     if(e.button!==1&&!(e.button===0&&spaceHeld))return;
-    e.preventDefault();e.stopPropagation();entry.close();closeMenus();finishDrag();marquee=null;$('selection-box').hidden=true;
+    e.preventDefault();e.stopPropagation();entry.close();closeMenus();finishDrag();cancelWire();marquee=null;$('selection-box').hidden=true;
     pan={pointer:e.pointerId,x:e.clientX,y:e.clientY,startX:panX,startY:panY};suppressPanClick=true;
     $('workspace').classList.toggle('panning',true);$('workspace').setPointerCapture?.(e.pointerId);
   },true);
-  for(const event of ['click','auxclick','dblclick'])$('workspace').addEventListener(event,e=>{if(suppressPanClick){e.preventDefault();e.stopPropagation();}},true);
+  for(const event of ['click','auxclick','dblclick'])$('workspace').addEventListener(event,e=>{if(suppressPanClick||(suppressWireClick&&e.detail)){e.preventDefault();e.stopPropagation();}},true);
   $('workspace').addEventListener('lostpointercapture',endPan);
+  $('workspace').addEventListener('lostpointercapture',()=>{if(wireGesture){cancelWire();render(controller.getState());}});
   $('workspace').addEventListener('wheel',e=>{
     if(!e.ctrlKey&&!e.metaKey)return;e.preventDefault();
     const delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?$('workspace').clientHeight:1);
@@ -319,7 +406,9 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   $('workspace').addEventListener('pointermove',e=>{
     pointerClient={x:e.clientX,y:e.clientY};
     if(pan&&pan.pointer===e.pointerId){panX=pan.startX+e.clientX-pan.x;panY=pan.startY+e.clientY-pan.y;render(controller.getState());return;}
-    pointer=point(e);if(pending)drawCables(controller.getState().patch);
+    pointer=point(e);
+    if(wireGesture&&wireGesture.pointer===e.pointerId&&Math.hypot(e.clientX-wireGesture.x,e.clientY-wireGesture.y)>4)wireGesture.moved=true;
+    if(pending){wireTarget=targetAt(e);const state=controller.getState();wireFeedback(state);drawCables(state.patch);}
     if(marquee){
       const x=Math.min(marquee.x,pointer.x),y=Math.min(marquee.y,pointer.y),width=Math.abs(pointer.x-marquee.x),height=Math.abs(pointer.y-marquee.y),box=$('selection-box');
       box.hidden=false;Object.assign(box.style,{left:`${x}px`,top:`${y}px`,width:`${width}px`,height:`${height}px`});
@@ -327,9 +416,9 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     }
   });
   const background=e=>['workspace','canvas-space','canvas','objects'].some(id=>e.target===$(id));
-  $('workspace').addEventListener('pointerdown',e=>{if(!background(e))return;closeMenus();entry.close();if(locked||e.button!==0)return;pointer=point(e);pending=null;clearSelection();marquee=pointer;$('workspace').setPointerCapture?.(e.pointerId);render(controller.getState());});
-  $('workspace').addEventListener('pointerup',()=>{endPan();marquee=null;$('selection-box').hidden=true;});
-  $('workspace').addEventListener('pointercancel',()=>{releaseNavigation();marquee=null;$('selection-box').hidden=true;finishDrag();});
+  $('workspace').addEventListener('pointerdown',e=>{if(!background(e))return;closeMenus();entry.close();if(locked||e.button!==0)return;pointer=point(e);cancelWire();clearSelection();marquee=pointer;$('workspace').setPointerCapture?.(e.pointerId);render(controller.getState());});
+  $('workspace').addEventListener('pointerup',e=>{finishWire(e);endPan();marquee=null;$('selection-box').hidden=true;});
+  $('workspace').addEventListener('pointercancel',()=>{cancelWire();releaseNavigation();marquee=null;$('selection-box').hidden=true;finishDrag();render(controller.getState());});
   $('workspace').addEventListener('dblclick',e=>{if(background(e)){pointer=point(e);entryAt();}});
   $('workspace').addEventListener('contextmenu',e=>{if(!background(e))return;e.preventDefault();pointer=point(e);const menu=$('context-menu');menu.replaceChildren();menuItem('New object',()=>entryAt(),locked);menuItem(locked?'Unlock patch':'Lock patch',()=>setLocked(!locked));menuItem('Fit patch',fitPatch);positionOverlay(menu,e.clientX,e.clientY,270,150);menu.hidden=false;});
   $('workspace').addEventListener('scroll',()=>{entry.close();closeMenus();});
@@ -341,13 +430,14 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   });
   win.addEventListener('keyup',e=>{if(e.key===' '){spaceHeld=false;$('workspace').classList.toggle('pan-ready',false);}});
   win.addEventListener('keydown',e=>{
+    if(e.target?.dataset?.direction)return;
     let target=e.target;while(target&&target!==$('workspace'))target=target.parentElement;
     if(e.key===' '&&(target||e.target===doc.body)&&!editing(e.target)&&!entry.isOpen()&&!$('patch-dialog').open){e.preventDefault();e.stopPropagation();spaceHeld=true;$('workspace').classList.toggle('pan-ready',true);}
   },true);
   win.addEventListener('keydown',guard(e=>{
     if($('patch-dialog').open)return;
     if(entry.isOpen())return;
-    if(e.key==='Escape'){e.preventDefault();pending=null;closeMenus();releaseNavigation();return controller.stop();}
+    if(e.key==='Escape'){e.preventDefault();cancelWire();closeMenus();releaseNavigation();render(controller.getState());return controller.stop();}
     if(editing(e.target))return;
     const command=e.ctrlKey||e.metaKey,key=e.key.toLowerCase();
     if(command&&['+','=','-','0'].includes(key)){e.preventDefault();if(key==='0')resetView();else setZoom(zoom*(key==='-'?1/1.2:1.2));return;}
@@ -359,7 +449,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     if(command&&key==='n'){e.preventDefault();$('new-patch').click();return;}
     if(e.key==='F1'){e.preventDefault();panel='help';applyPanel();return;}
     if(locked)return;
-    if(command&&key==='z'){e.preventDefault();return e.shiftKey?controller.redo():controller.undo();}
+    if(command&&key==='z'){e.preventDefault();cancelWire();return e.shiftKey?controller.redo():controller.undo();}
     if(command&&key==='a'){e.preventDefault();selected=new Set(controller.getState().patch.nodes.map(n=>n.id));selection=selected.size?{kind:'node',id:[...selected][0]}:null;render(controller.getState());return;}
     if(['Delete','Backspace'].includes(e.key)){e.preventDefault();removeSelection();return;}
     if(['Enter','F2'].includes(e.key)&&currentNode()){e.preventDefault();editNode(selection.id);return;}
@@ -368,8 +458,8 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     const type={b:'bang',m:'message',t:'toggle',i:'number'}[key];if(type){e.preventDefault();entryAt(OBJECTS[type].name+' ');}
     if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)&&selected.size){e.preventDefault();const step=e.shiftKey?10:1,dx=step*(e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0),dy=step*(e.key==='ArrowDown'?1:e.key==='ArrowUp'?-1:0);controller.moveMany(controller.getState().patch.nodes.filter(n=>selected.has(n.id)).map(n=>({id:n.id,x:Math.max(0,Math.min(4000,n.x+dx)),y:Math.max(0,Math.min(4000,n.y+dy))})));}
   }));
-  win.addEventListener('blur',()=>{releaseNavigation();finishDrag();controller.stop('Focus left the patch. Timers and notes stopped.');});
-  doc.addEventListener('visibilitychange',()=>{if(doc.hidden){releaseNavigation();finishDrag();controller.stop('Patch hidden. Timers and notes stopped.');}});
+  win.addEventListener('blur',()=>{cancelWire();releaseNavigation();finishDrag();controller.stop('Focus left the patch. Timers and notes stopped.');});
+  doc.addEventListener('visibilitychange',()=>{if(doc.hidden){cancelWire();releaseNavigation();finishDrag();controller.stop('Patch hidden. Timers and notes stopped.');}});
   win.addEventListener('pagehide',()=>{leaving=true;controller.stopAudio();});
   for(const id of ['legacy-link','lab-link'])$(id).addEventListener('click',guard(async e=>{e.preventDefault();if(leaving)return;leaving=true;if(timer!==null)win.clearTimeout(timer);try{await controller.dispose();win.location.assign(e.currentTarget?.href||$(id).href);}catch(error){leaving=false;timer=win.setTimeout(poll,100);throw error;}}));
   function dialog(mode){entry.close();closeMenus();$('dialog-title').textContent=mode==='open'?'Open patch':'Save / export patch';$('patch-json').value=mode==='open'?'':controller.export();$('dialog-status').textContent=mode==='open'?'The whole document is validated before replacing your current patch.':'Copy or download this JSON to keep the patch. Export contains authored state, not running timers.';$('patch-dialog').showModal();$('patch-json').focus();if(mode!=='open')$('patch-json').select();}

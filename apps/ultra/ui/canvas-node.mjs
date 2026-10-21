@@ -1,7 +1,7 @@
 import {OBJECTS, objectText, portHelp} from './canvas-catalog.mjs';
 import {nodeSpec} from './canvas-model.mjs';
 
-export function createNodeView(node,{doc,select,dragStart,edit,portClick,hover,unhover,context,operate,parameter,event}) {
+export function createNodeView(node,{doc,select,dragStart,edit,portClick,portDown,hover,unhover,context,operate,parameter,event}) {
   const s={...OBJECTS[node.type],...nodeSpec(node)},make=(tag,className,text)=>{const e=doc.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;};
   const element=make('article',`node ui-${s.ui}`);element.dataset.node=String(node.id);element.setAttribute('aria-label',`${s.name} object ${node.id}`);
   const header=make('header',s.ui==='object'?'object-label':'ui-handle');header.dataset.drag='true';header.tabIndex=0;header.setAttribute('aria-label',`Select or drag ${s.name} object ${node.id}`);
@@ -21,7 +21,8 @@ export function createNodeView(node,{doc,select,dragStart,edit,portClick,hover,u
       b.type='button';Object.assign(b.dataset,{direction,port:String(i),side:p.side,portType:p.type});
       b.setAttribute('aria-label',`${s.name} ${node.id}, ${direction==='in'?'Inlet':'Outlet'} ${i}: ${info.title} (${p.type})`);
       b.addEventListener('click',e=>{e.stopPropagation();portClick(node.id,direction,i,e);});
-      b.addEventListener('pointerdown',e=>e.stopPropagation());
+      b.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();e.stopPropagation();portClick(node.id,direction,i);}});
+      b.addEventListener('pointerdown',e=>{e.stopPropagation();portDown(node.id,direction,i,e);});
       b.addEventListener('pointerenter',()=>hover(node.id,direction,i,b));b.addEventListener('focus',()=>hover(node.id,direction,i,b));
       b.addEventListener('pointerleave',unhover);b.addEventListener('blur',unhover);
       b.addEventListener('contextmenu',e=>{e.preventDefault();e.stopPropagation();context(node.id,e,{direction,index:i});});
@@ -56,7 +57,7 @@ export function createNodeView(node,{doc,select,dragStart,edit,portClick,hover,u
   function update(current,state,{selected=false,locked=false,pending=null,moving=false}={}) {
     if(!moving){element.style.left=`${current.x}px`;element.style.top=`${current.y}px`;}
     const text=objectText(current),parts=text.split(' ');args.textContent=parts.slice(1).join(' ');
-    element.style.width=`${Math.max(node.type==='message'?52:48,Math.min(310,(node.type==='message'?current.params.text:text).length*7+18))}px`;
+    element.style.width=`${Math.max(node.type==='message'?52:48,Math.max(s.inlets.length,s.outlets.length)*18,Math.min(310,(node.type==='message'?current.params.text:text).length*7+18))}px`;
     element.classList.toggle('selected',selected);
     const observation=state.observations[current.id];
     for(const[key,input] of inputs){
@@ -80,7 +81,7 @@ export function createNodeView(node,{doc,select,dragStart,edit,portClick,hover,u
       const raw=node.type==='slider'&&Number.isFinite(observation?.value)?observation.value:current.params.value;
       level.textContent=String(node.type==='slider'?Math.max(-100000,Math.min(100000,raw*current.params.mult+current.params.min)):raw);
     }
-    portElements.out.forEach((b,i)=>b.classList.toggle('pending',pending?.from===current.id&&pending.outlet===i));
+    for(const direction of ['in','out'])portElements[direction].forEach((b,i)=>b.classList.toggle('pending',pending?.id===current.id&&pending.direction===direction&&pending.index===i));
   }
   return{type:node.type,configuration:node.params.args,element,header,ports:portElements,update};
 }

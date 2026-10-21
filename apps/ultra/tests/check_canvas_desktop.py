@@ -160,6 +160,23 @@ def export():
     return json.loads(value)
 
 
+def drag_port(source, target, y_offset=0):
+    start = Atspi.Component.get_extents(wait_for(source), Atspi.CoordType.SCREEN)
+    end = Atspi.Component.get_extents(wait_for(target), Atspi.CoordType.SCREEN)
+    sx, sy = start.x + start.width // 2, start.y + start.height // 2
+    ex, ey = end.x + end.width // 2, end.y + end.height // 2 + y_offset
+    assert t.XTestFakeMotionEvent(display, 0, sx, sy, 0)
+    assert t.XTestFakeButtonEvent(display, 1, 1, 0)
+    x.XFlush(display)
+    for step in range(1, 9):
+        assert t.XTestFakeMotionEvent(display, 0, round(sx+(ex-sx)*step/8), round(sy+(ey-sy)*step/8), 0)
+        x.XFlush(display)
+        time.sleep(.04)
+    assert t.XTestFakeButtonEvent(display, 1, 0, 0)
+    x.XFlush(display)
+    time.sleep(.2)
+
+
 try:
     wait_for('Start audio')
     Atspi.Component.grab_focus(wait_for('Editable patch canvas'))
@@ -181,6 +198,30 @@ try:
     keys('n')
     assert export() == patch, 'Locked creation changed the document'
     keys('Control_L', 'e')
+
+    # Real X input checks WebKit pointer capture and the native apply boundary.
+    wiring = {'version': 1, 'profile': 'ultra-canvas-v1', 'nodes': [
+        {'id': 1, 'type': 'add', 'x': 80, 'y': 80, 'params': {'rhs': 0}},
+        {'id': 2, 'type': 'number', 'x': 300, 'y': 240, 'params': {'value': 0}},
+    ], 'edges': []}
+    keys('Control_L', 'o')
+    text('Patch JSON', json.dumps(wiring))
+    click('Import JSON')
+    source = '+ 1, Outlet 0: Sum (control)'
+    target = 'number 2, Inlet 0: Value (control)'
+    drag_port(source, target, y_offset=9)
+    connected = export()
+    assert connected['edges'] == [{'from': 1, 'outlet': 0, 'to': 2, 'inlet': 0}], 'Native cord drag failed'
+    assert connected['nodes'] == wiring['nodes'], 'Wiring moved the objects'
+    keys('Control_L', 'z')
+    assert export() == wiring, 'Cord undo changed another part of the patch'
+    drag_port(target, source)
+    assert export() == connected, 'Native reverse cord drag failed'
+    keys('Control_L', 'z')
+    click(source)
+    click(target)
+    assert export() == connected, 'Native click-to-connect regressed'
+    (output/'wiring.ultra.json').write_text(json.dumps(connected, indent=2)+'\n')
 
     # Reopen a complete authored patch through the shipped JSON dialog.
     starter = json.loads(Path('apps/ultra/ui/canvas-preset.json').read_text())

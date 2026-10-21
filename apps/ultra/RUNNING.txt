@@ -31,9 +31,13 @@ Press N or double-click blank canvas, then type an object name and arguments.
 Use autocomplete or the optional palette. Ctrl/Cmd E toggles edit/performance
 lock. Drag object headers to move them. Space+drag or middle-button drag pans
 the canvas; Ctrl/Cmd+wheel zooms at the pointer. Ctrl/Cmd +/- zooms, Ctrl/Cmd 0
-or Reset view restores 100% at the origin. Camera movement never edits the patch. Click a bottom outlet, then
-a top inlet. Select a node/cable and Delete to remove it; Undo/Redo restore
-edits. Every message/bang/number/toggle is a real graph object. Audio cables
+or Reset view restores 100% at the origin. Camera movement never edits the patch.
+Drag from a bottom outlet to a top inlet, or start at the inlet and drag back.
+Release near a highlighted port to connect. Clicking each port also works;
+focused ports accept Enter or Space. Escape cancels the cord. A locked patch
+must be unlocked with Ctrl/Cmd E before wiring. Invalid drops explain the
+rejection without changing the graph. Select a node/cable and Delete to remove
+it; Undo/Redo restore edits. Every message/bang/number/toggle is a real graph object. Audio cables
 carry mono/stereo bundles, not generic untyped values. Unsupported connections
 are refused. The first supported audio path is voice -> gain -> join -> dac.
 Join input 0 maps to L, input 1 to R; swapping connections changes the audio.

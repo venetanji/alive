@@ -19,6 +19,111 @@ async function importPatch(page, patch) {
   await page.locator('#import-patch').click();
 }
 
+const wiringPatch={version:1,profile:'ultra-canvas-v1',nodes:[
+  {id:1,type:'add',x:80,y:80,params:{}},
+  {id:2,type:'number',x:300,y:240,params:{}},
+  {id:3,type:'gain',x:420,y:240,params:{}},
+],edges:[]};
+const port=(page,id,direction,index=0)=>page.locator(`[data-node="${id}"] [data-direction="${direction}"][data-port="${index}"]`);
+async function portPoint(locator){const r=await locator.boundingBox();return{x:r.x+r.width/2,y:r.y+r.height/2};}
+async function dragPort(page,source,target,offset={x:0,y:0}){
+  const a=await portPoint(source),b=await portPoint(target);
+  await page.mouse.move(a.x,a.y);await page.mouse.down();
+  await page.mouse.move(b.x+offset.x,b.y+offset.y,{steps:8});
+  await page.mouse.up();
+}
+
+test('dragging a patch cord connects ports and undo removes exactly that cable',async({page},testInfo)=>{
+  await page.goto('/canvas.html');await importPatch(page,wiringPatch);
+  const a=await portPoint(port(page,1,'out')),b=await portPoint(port(page,2,'in'));
+  await page.mouse.move(a.x,a.y);await page.mouse.down();
+  await page.mouse.move(b.x,b.y+9,{steps:8});
+  await expect(page.locator('.pending-cable')).toHaveCount(1);
+  await expect(port(page,2,'in')).toHaveClass(/compatible/);
+  await expect(port(page,2,'in')).toHaveClass(/wire-target/);
+  await page.screenshot({path:testInfo.outputPath('patch-cord-target.png')});
+  await page.mouse.up();
+  expect((await exportPatch(page)).edges).toEqual([{from:1,outlet:0,to:2,inlet:0}]);
+  await expect(page.locator('.pending-cable')).toHaveCount(0);
+  await page.locator('#undo').click();expect((await exportPatch(page)).edges).toEqual([]);
+});
+
+test('patch cords can start at an inlet with dragging or keyboard activation',async({page})=>{
+  await page.goto('/canvas.html');await importPatch(page,wiringPatch);
+  await dragPort(page,port(page,2,'in'),port(page,1,'out'));
+  expect((await exportPatch(page)).edges).toEqual([{from:1,outlet:0,to:2,inlet:0}]);
+  await page.locator('#undo').click();
+  await port(page,2,'in').focus();await page.keyboard.press('Enter');
+  await port(page,1,'out').focus();await page.keyboard.press('Space');
+  expect((await exportPatch(page)).edges).toEqual([{from:1,outlet:0,to:2,inlet:0}]);
+});
+
+test('invalid patch cord drops explain the rejection and allow a valid retry',async({page})=>{
+  await page.goto('/canvas.html');await importPatch(page,wiringPatch);
+  await dragPort(page,port(page,1,'out'),port(page,3,'in'));
+  await expect(page.locator('#notice')).toContainText(/type mismatch/i);
+  expect((await exportPatch(page)).edges).toEqual([]);
+  await dragPort(page,port(page,1,'out'),port(page,2,'in'));
+  expect((await exportPatch(page)).edges).toEqual([{from:1,outlet:0,to:2,inlet:0}]);
+});
+
+test('patch cord dragging respects zoom and pan without moving objects',async({page})=>{
+  await page.goto('/canvas.html');await importPatch(page,wiringPatch);
+  const anchor=await portPoint(port(page,1,'out'));
+  await page.mouse.move(anchor.x,anchor.y);await page.keyboard.down('Control');
+  await page.mouse.wheel(0,-200);await page.keyboard.up('Control');
+  await expect.poll(async()=>Number(await page.locator('#canvas-zoom').inputValue())).toBeGreaterThan(1.4);
+  const r=await page.locator('#workspace').boundingBox();
+  await page.mouse.move(r.x+500,r.y+300);await page.mouse.down({button:'middle'});
+  await page.mouse.move(r.x+570,r.y+340,{steps:5});await page.mouse.up({button:'middle'});
+  await dragPort(page,port(page,1,'out'),port(page,2,'in'));
+  const patch=await exportPatch(page);
+  expect(patch.edges).toEqual([{from:1,outlet:0,to:2,inlet:0}]);
+  expect(patch.nodes.map(n=>[n.x,n.y])).toEqual([[80,80],[300,240],[420,240]]);
+});
+
+test('cancelled patch cord gestures and locked ports cannot create cables',async({page})=>{
+  await page.goto('/canvas.html');await importPatch(page,wiringPatch);
+  const a=await portPoint(port(page,1,'out')),b=await portPoint(port(page,2,'in'));
+  await page.mouse.move(a.x,a.y);await page.mouse.down();await page.mouse.move(b.x,b.y,{steps:5});
+  await page.keyboard.press('Escape');await page.mouse.up();
+  await expect(page.locator('.pending-cable')).toHaveCount(0);
+  expect((await exportPatch(page)).edges).toEqual([]);
+  await page.locator('#lock-patch').click();
+  await dragPort(page,port(page,1,'out'),port(page,2,'in'));
+  await expect(page.locator('#notice')).toContainText(/unlock/i);
+  expect((await exportPatch(page)).edges).toEqual([]);
+});
+
+test('keyboard undo cancels a pending cord before removing its hovered destination',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('/canvas.html');await importPatch(page,wiringPatch);
+  await page.locator('#show-library').click();await page.locator('#palette [data-add="number"]').click();
+  const added=(await exportPatch(page)).nodes.at(-1).id;
+  await port(page,1,'out').click();await port(page,added,'in').hover();
+  await expect(port(page,added,'in')).toHaveClass(/wire-target/);
+  await page.keyboard.press('Control+z');
+  await expect(page.locator(`[data-node="${added}"]`)).toHaveCount(0);
+  await expect(page.locator('.pending-cable')).toHaveCount(0);
+  await expect(page.locator('.wire-target')).toHaveCount(0);
+  await dragPort(page,port(page,1,'out'),port(page,2,'in'));
+  expect((await exportPatch(page)).edges).toEqual([{from:1,outlet:0,to:2,inlet:0}]);
+  expect(errors).toEqual([]);
+});
+
+test('empty undo and redo stacks still clear all pending cord feedback',async({page})=>{
+  for(const key of ['Control+z','Control+Shift+z']){
+    await page.goto('/canvas.html');const original=await exportPatch(page);
+    await port(page,1,'out').click();
+    await expect(page.locator('.pending-cable')).toHaveCount(1);
+    await page.keyboard.press(key);
+    await expect(page.locator('.pending-cable')).toHaveCount(0);
+    await expect(page.locator('.port.pending, .port.compatible, .port.unavailable')).toHaveCount(0);
+    await expect(page.locator('#workspace')).not.toHaveClass(/wiring/);
+    expect(await exportPatch(page)).toEqual(original);
+  }
+});
+
 test('autocomplete guides arguments, completes named options and keeps typed values on Enter',async({page},testInfo)=>{
   await page.goto('/canvas.html');await page.locator('#workspace').focus();await page.keyboard.press('n');
   const input=page.locator('#object-text'),help=page.locator('#object-arguments');
