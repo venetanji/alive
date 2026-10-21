@@ -250,18 +250,18 @@ test('new control objects expose dynamic ports, typed text and parameter guidanc
   await page.screenshot({path:testInfo.outputPath('control-object-batch.png')});
 });
 
-test('flonum and slider operate only in locked mode and keep authored values in preview',async({page})=>{
+test('plain unlocked numeric controls select objects and locked controls edit authored values in preview',async({page})=>{
   await page.goto('/canvas.html');
   await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'flonum',x:60,y:60,params:{value:1.25,minimum:-2,maximum:4,numdecimalplaces:3}},{id:2,type:'slider',x:60,y:140,params:{size:11,min:-5,mult:1,floatoutput:1}},{id:3,type:'gain',x:60,y:220,params:{}}],edges:[]});
   const flonum=page.locator('[data-node="1"] .number-input'),slider=page.locator('[data-node="2"] .slider-input');
   expect(await slider.evaluate(e=>({min:e.min,max:e.max,step:e.step}))).toEqual({min:'0',max:'10',step:'any'});
   await expect(flonum).toHaveJSProperty('readOnly',true);
-  await expect(slider).toHaveCSS('pointer-events','none');
+  await expect(slider).toHaveAttribute('aria-disabled','true');
   const unlocked=await exportPatch(page);
   await slider.focus();await page.keyboard.press('End');await page.keyboard.press('ArrowRight');
   const gain=page.locator('[data-node="3"] .gain-input');await gain.focus();await page.keyboard.press('Home');
   expect(await exportPatch(page)).toEqual(unlocked);
-  await expect(slider).toBeDisabled();await expect(gain).toBeDisabled();
+  await expect(slider).toHaveJSProperty('readOnly',true);await expect(gain).toHaveJSProperty('readOnly',true);
   await page.locator('#lock-patch').click();await expect(flonum).toHaveJSProperty('readOnly',false);
   await flonum.fill('2.375');await flonum.press('Tab');
   await expect(page.locator('#notice')).toContainText(/preview|native/i);
@@ -269,7 +269,7 @@ test('flonum and slider operate only in locked mode and keep authored values in 
   await expect(slider).toHaveValue('10');await expect(page.locator('[data-node="2"] .slider-value')).toHaveText('5');
   const patch=await exportPatch(page);expect(patch.nodes[0].params.value).toBe(2.375);expect(patch.nodes[1].params.value).toBe(10);
   await page.locator('#lock-patch').click();await expect(flonum).toHaveJSProperty('readOnly',true);
-  await expect(slider).toBeDisabled();await expect(gain).toBeDisabled();
+  await expect(slider).toHaveJSProperty('readOnly',true);await expect(gain).toHaveJSProperty('readOnly',true);
 });
 
 test('add and wire objects, delete and undo, export, and reject invalid import', async ({page}, testInfo) => {

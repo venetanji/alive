@@ -4,6 +4,10 @@ import {createObjectEntry} from './canvas-entry.mjs';
 import {createNodeView} from './canvas-node.mjs';
 import {mountAudioSettings} from './audio-settings.mjs';
 import {OBJECT_EXAMPLES} from './canvas-object-examples.mjs';
+import {mountAppearanceFields} from './canvas-inspector.mjs';
+import {mountMaxImportDialog} from './canvas-max-dialog.mjs';
+import {MAX_IMPORT_LIMITS} from './canvas-max-import.mjs';
+import {applyNodeAppearance} from './canvas-appearance-view.mjs';
 
 export function mountCanvas({document:doc=globalThis.document,window:win=globalThis.window,invoke=win?.__TAURI__?.core?.invoke}={}) {
   const $=id=>doc.querySelector('#'+id),make=(tag,className,text)=>{const e=doc.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;};
@@ -12,8 +16,10 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   let wireGesture=null,wireTarget=null,wireKey='',suppressWireClick=false;
   const wireTargets=new Map();
   const views=new Map(),fields=new Map();
+  let appearanceInspector=null;
   const controller=createCanvasController({invoke,onState:state=>{if(initialized)render(state);}});
   const audioSettings=mountAudioSettings({document:doc,invoke,controller});
+  const maxDialog=mountMaxImportDialog({doc});
   const guard=fn=>(...args)=>{try{return Promise.resolve(fn(...args)).catch(error=>controller.notice(error));}catch(error){controller.notice(error);}};
   const editing=e=>['INPUT','TEXTAREA','SELECT'].includes(e?.tagName)||e?.isContentEditable;
   const getNode=id=>controller.getState().patch.nodes.find(n=>n.id===id);
@@ -58,6 +64,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     if(panel==='audio')return audioSettings.open();
   }
   function setLocked(value) {
+    for(const view of views.values())view.cancelInteraction?.();
     locked=value;drag=null;releaseNavigation();entry.close();cancelWire();closeMenus();
     if(locked)clearSelection();
     if(panel==='help')renderHelp(currentNode());
@@ -255,7 +262,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   function renderInspector(state) {
     const n=currentNode(),key=selection?.kind==='edge'?`edge/${selection.index}`:n?`${n.id}/${n.type}/${selected.size}`:'none';
     if(key!==inspectorKey){
-      inspectorKey=key;fields.clear();const area=$('inspector');area.replaceChildren();
+      inspectorKey=key;fields.clear();appearanceInspector=null;const area=$('inspector');area.replaceChildren();
       if(n){
         area.append(make('h2','',OBJECTS[n.type].name),make('p','',selected.size>1?`${selected.size} selected. Drag or delete the group.`:OBJECTS[n.type].summary));
         for(const [key,p] of Object.entries(OBJECTS[n.type].params)){
@@ -265,12 +272,14 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
           input.value=n.params[key];input.addEventListener('change',()=>parameter(n.id,key,['text','args'].includes(key)?input.value:Number(input.value)));fields.set(key,input);label.append(name,input);area.append(label);
         }
         area.append(make('p','panel-note','Parameters update live. Object text and connection edits stop timers and clear notes.'));
+        appearanceInspector=mountAppearanceFields({doc,area,node:n,change:guard((key,value)=>controller.style(n.id,key,value)),reset:guard(()=>controller.style(n.id,null))});
         const b=make('button','panel-action',`Help for ${OBJECTS[n.type].name}`);b.addEventListener('click',()=>{panel='help';applyPanel();});area.append(b);
       } else if(selection?.kind==='edge') {
         const edge=state.patch.edges[selection.index];if(edge)area.append(make('h2','','Patch cord'),make('p','',`Object ${edge.from} outlet ${edge.outlet} to object ${edge.to} inlet ${edge.inlet}. Fan-out follows saved cable order.`));
       } else area.append(make('p','','Select an object to inspect its parameters. Right-click a port for accepted messages or emitted data.'));
     }
     if(n)for(const [key,input] of fields){input.disabled=locked&&structuralParameter(n.type,key);if(doc.activeElement!==input)input.value=String(n.params[key]);}
+    if(n)appearanceInspector?.update(n,locked);
     $('edit-object').disabled=!n||locked;$('delete-selection').disabled=!selection||locked;
     const observation=n?state.observations[n.id]:null;
     $('observation-state').textContent=observation?`Node observation: ${JSON.stringify(observation.value)}. Total pulses: ${observation.pulses}. This is not a complete outlet trace.`:'No native node observation.';
@@ -284,7 +293,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
       for(const [key,label] of [['Drag between ports','Connect an outlet to an inlet in either direction'],['Enter / Space on a port','Start or finish a connection'],['N','New object at pointer'],['B / M / T / I','Bang / message / toggle / number'],['Ctrl E','Lock or unlock'],['Ctrl I','Inspector'],['Enter / F2','Edit selected object'],['Ctrl Z / Ctrl Shift Z','Undo / redo'],['Ctrl A','Select all objects'],['Delete','Remove selection'],['Escape','Cancel editing or stop notes'],['Wheel / two-finger scroll','Scroll canvas'],['Shift + wheel','Scroll horizontally'],['Space + drag / middle drag','Pan canvas'],['Z / Shift Z','Zoom in / out at pointer'],['Ctrl +/- / Ctrl 0','Zoom / reset view'],['Ctrl + wheel / pinch','Zoom at pointer'],['Ctrl S / Ctrl O','Export / open JSON']]){
         const row=make('div','shortcut-row');row.append(make('span','',label),make('kbd','',key));area.append(row);
       }
-      area.append(make('p','panel-note',`The canvas implements Ultra's ${Object.keys(OBJECTS).length}-object profile. It does not import .maxpat or execute arbitrary Max objects. Focus loss stops timers and notes.`));
+      area.append(make('p','panel-note',`The canvas implements Ultra's ${Object.keys(OBJECTS).length}-object profile. Open a .maxpat or .maxhelp file to inspect its tabs and import a compatible graph. Partial selections require explicit acceptance of the compatibility report. Focus loss stops timers and notes.`));
       return;
     }
     const s={...OBJECTS[node.type],...nodeSpec(node)};area.append(make('h2','',s.name),make('p','',s.summary),make('code','help-example',s.example));
@@ -324,18 +333,19 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     $('selection-hint').textContent=locked?'Locked':selected.size?`${selected.size} selected`:'Editing';
     $('empty-patch').hidden=state.patch.nodes.length>0;
     if(pending){const node=state.patch.nodes.find(n=>n.id===pending.id);if(!node||!nodeSpec(node)[pending.direction==='in'?'inlets':'outlets'][pending.index])cancelWire(false);}
-    const ids=new Set(state.patch.nodes.map(n=>n.id));for(const id of views.keys())if(!ids.has(id)){views.delete(id);selected.delete(id);}
+    const ids=new Set(state.patch.nodes.map(n=>n.id));for(const id of views.keys())if(!ids.has(id)){views.get(id).dispose?.();views.delete(id);selected.delete(id);}
     if(selection?.kind==='node'&&!ids.has(selection.id))selection=null;
     const children=[];
     for(const node of state.patch.nodes){
       if(!views.has(node.id)||views.get(node.id).type!==node.type||views.get(node.id).configuration!==node.params.args){
+        views.get(node.id)?.dispose?.();
         const v=createNodeView(node,{doc,select:selectNode,dragStart,edit:editNode,portClick,portDown,hover:hoverPort,unhover,context:contextMenu,operate,parameter,event:(...args)=>guard(()=>controller.event(...args))()});
         for(const target of [v.element,v.header]){target.addEventListener('pointermove',dragMove);target.addEventListener('pointerup',finishDrag);target.addEventListener('pointercancel',finishDrag);target.addEventListener('lostpointercapture',finishDrag);}views.set(node.id,v);
       }
-      const view=views.get(node.id);view.update(node,state,{selected:selected.has(node.id),locked,pending,moving:!!drag&&selected.has(node.id)});children.push(view.element);
+      const view=views.get(node.id);view.update(node,state,{selected:selected.has(node.id),locked,pending,moving:!!drag&&selected.has(node.id)});applyNodeAppearance(view,node,doc);children.push(view.element);
     }
     const container=$('objects');if(container.children.length!==children.length||children.some((e,i)=>container.children[i]!==e))container.replaceChildren(...children);
-    const width=Math.max(760,...state.patch.nodes.map(n=>n.x+350)),height=Math.max(740,...state.patch.nodes.map(n=>n.y+160));
+    const width=Math.max(760,...state.patch.nodes.map(n=>n.x+Math.max(350,n.style?.width??0))),height=Math.max(740,...state.patch.nodes.map(n=>n.y+Math.max(160,n.style?.height??0)));
     $('canvas').style.width=`${width}px`;$('canvas').style.height=`${height}px`;$('canvas').style.transform=`translate(${panX}px, ${panY}px) scale(${zoom})`;
     $('canvas-space').style.width=`${Math.max(width*zoom,$('workspace').clientWidth||0)}px`;$('canvas-space').style.height=`${Math.max(height*zoom,$('workspace').clientHeight||0)}px`;
     wireFeedback(state);renderInspector(state);drawCables(state.patch);
@@ -360,8 +370,11 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   function resetView(){if(drag||marquee||pan)return;zoom=1;panX=panY=0;$('workspace').scrollLeft=0;$('workspace').scrollTop=0;zoomLabel();render(controller.getState());}
   function fitPatch() {
     const patch=controller.getState().patch;if(!patch.nodes.length){resetView();return;}panX=panY=0;
-    const width=Math.max(...patch.nodes.map(n=>n.x+(n.type==='gain'?40:190)))+35,height=Math.max(...patch.nodes.map(n=>n.y+(n.type==='gain'?120:35)))+35;
-    const workspace=$('workspace');zoom=Math.max(.4,Math.min(1.5,(workspace.clientWidth||1000)/width,(workspace.clientHeight||730)/height));
+    const left=Math.min(...patch.nodes.map(n=>n.x)),top=Math.min(...patch.nodes.map(n=>n.y));
+    const width=Math.max(...patch.nodes.map(n=>n.x+(views.get(n.id)?.element.offsetWidth||n.style?.width||(n.type==='gain'?30:190))))-left+70;
+    const height=Math.max(...patch.nodes.map(n=>n.y+(views.get(n.id)?.element.offsetHeight||n.style?.height||(n.type==='gain'?100:24))))-top+70;
+    const workspace=$('workspace');zoom=Math.max(.25,Math.min(1.5,(workspace.clientWidth||1000)/width,(workspace.clientHeight||730)/height));
+    panX=35-left*zoom;panY=35-top*zoom;
     $('zoom-fit').value=String(zoom);$('zoom-fit').textContent=`${Math.round(zoom*100)}%`;$('zoom-fit').hidden=false;
     $('canvas-zoom').value=String(zoom);workspace.scrollLeft=0;workspace.scrollTop=0;render(controller.getState());
   }
@@ -437,7 +450,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   win.addEventListener('keydown',guard(e=>{
     if($('patch-dialog').open)return;
     if(entry.isOpen())return;
-    if(e.key==='Escape'){e.preventDefault();cancelWire();closeMenus();releaseNavigation();render(controller.getState());return controller.stop();}
+    if(e.key==='Escape'){e.preventDefault();for(const view of views.values())view.cancelInteraction?.();cancelWire();closeMenus();releaseNavigation();render(controller.getState());return controller.stop();}
     if(editing(e.target))return;
     const command=e.ctrlKey||e.metaKey,key=e.key.toLowerCase();
     if(command&&['+','=','-','0'].includes(key)){e.preventDefault();if(key==='0')resetView();else setZoom(zoom*(key==='-'?1/1.2:1.2));return;}
@@ -458,19 +471,35 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     const type={b:'bang',m:'message',t:'toggle',i:'number'}[key];if(type){e.preventDefault();entryAt(OBJECTS[type].name+' ');}
     if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)&&selected.size){e.preventDefault();const step=e.shiftKey?10:1,dx=step*(e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0),dy=step*(e.key==='ArrowDown'?1:e.key==='ArrowUp'?-1:0);controller.moveMany(controller.getState().patch.nodes.filter(n=>selected.has(n.id)).map(n=>({id:n.id,x:Math.max(0,Math.min(4000,n.x+dx)),y:Math.max(0,Math.min(4000,n.y+dy))})));}
   }));
-  win.addEventListener('blur',()=>{cancelWire();releaseNavigation();finishDrag();controller.stop('Focus left the patch. Timers and notes stopped.');});
-  doc.addEventListener('visibilitychange',()=>{if(doc.hidden){cancelWire();releaseNavigation();finishDrag();controller.stop('Patch hidden. Timers and notes stopped.');}});
+  win.addEventListener('blur',()=>{for(const view of views.values())view.cancelInteraction?.();cancelWire();releaseNavigation();finishDrag();controller.stop('Focus left the patch. Timers and notes stopped.');});
+  doc.addEventListener('visibilitychange',()=>{if(doc.hidden){for(const view of views.values())view.cancelInteraction?.();cancelWire();releaseNavigation();finishDrag();controller.stop('Patch hidden. Timers and notes stopped.');}});
   win.addEventListener('pagehide',()=>{leaving=true;controller.stopAudio();});
   for(const id of ['legacy-link','lab-link'])$(id).addEventListener('click',guard(async e=>{e.preventDefault();if(leaving)return;leaving=true;if(timer!==null)win.clearTimeout(timer);try{await controller.dispose();win.location.assign(e.currentTarget?.href||$(id).href);}catch(error){leaving=false;timer=win.setTimeout(poll,100);throw error;}}));
-  function dialog(mode){entry.close();closeMenus();$('dialog-title').textContent=mode==='open'?'Open patch':'Save / export patch';$('patch-json').value=mode==='open'?'':controller.export();$('dialog-status').textContent=mode==='open'?'The whole document is validated before replacing your current patch.':'Copy or download this JSON to keep the patch. Export contains authored state, not running timers.';$('patch-dialog').showModal();$('patch-json').focus();if(mode!=='open')$('patch-json').select();}
+  function dialog(mode){entry.close();closeMenus();maxDialog.reset(mode==='open');$('dialog-title').textContent=mode==='open'?'Open patch':'Save / export patch';$('patch-json').value=mode==='open'?'':controller.export();$('dialog-status').textContent=mode==='open'?'The whole document is validated before replacing your current patch. Max files show a compatibility report first.':'Copy or download this JSON to keep the patch. Export contains authored state, not running timers.';$('patch-dialog').showModal();$('patch-json').focus();if(mode!=='open')$('patch-json').select();}
   $('export-patch').addEventListener('click',()=>dialog('save'));$('open-patch').addEventListener('click',()=>dialog('open'));
-  $('import-patch').addEventListener('click',()=>{try{load(parsePatch($('patch-json').value));$('patch-dialog').close();}catch(error){$('dialog-status').textContent=error.message;controller.notice(error);}});
+  $('import-patch').addEventListener('click',()=>{try{
+    if(maxDialog.hasSelection()){
+      const result=maxDialog.importSelected();load(result.patch);fitPatch();$('patch-dialog').close();
+      controller.notice(`${result.partial?'Partial Max import':'Max patcher imported'}: ${result.selection.name}. ${result.stats.importedBoxes} objects and ${result.stats.importedEdges} cables. Lock the patch to operate controls; timers and audio remain stopped.`);
+    }else{
+      const text=$('patch-json').value;if(new TextEncoder().encode(text).length>MAX_IMPORT_LIMITS.bytes)throw Error('Input exceeds the 8 MiB analysis limit.');
+      let input;try{input=JSON.parse(text.replace(/^\uFEFF/,''));}catch{throw Error('Patch is not valid JSON.');}
+      if(input&&typeof input==='object'&&Object.hasOwn(input,'patcher')){maxDialog.inspect(text);return;}
+      load(parsePatch(text));$('patch-dialog').close();
+    }
+  }catch(error){$('dialog-status').textContent=error.message;controller.notice(error);}});
   $('copy-patch').addEventListener('click',async()=>{try{await win.navigator.clipboard.writeText($('patch-json').value);$('dialog-status').textContent='JSON copied.';}catch{$('patch-json').focus();$('patch-json').select();$('dialog-status').textContent='Use your system Copy command on the selected JSON.';}});
   $('download-patch').addEventListener('click',()=>{try{const blob=new Blob([$('patch-json').value],{type:'application/json'}),url=URL.createObjectURL(blob),link=make('a');link.href=url;link.download='patch.ultra.json';link.click();win.setTimeout(()=>URL.revokeObjectURL(url),1000);$('dialog-status').textContent='Download requested. Copy the JSON if this webview does not save it.';}catch(error){$('dialog-status').textContent=error.message;}});
-  $('choose-file').addEventListener('click',()=>$('patch-file').click());$('patch-file').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{if(file.size>65536)throw Error('Patch exceeds 64 KiB.');const text=await file.text();parsePatch(text);$('patch-json').value=text;$('dialog-status').textContent='File validated. Choose Import JSON to replace the patch.';}catch(error){$('dialog-status').textContent=error.message;}finally{e.target.value='';}});
+  $('choose-file').addEventListener('click',()=>$('patch-file').click());$('patch-file').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{
+    if(file.size>MAX_IMPORT_LIMITS.bytes)throw Error('Input exceeds the 8 MiB analysis limit.');
+    const text=await file.text();let input;try{input=JSON.parse(text.replace(/^\uFEFF/,''));}catch{throw Error('Patch is not valid JSON.');}
+    maxDialog.reset();$('patch-json').value=text;
+    if(input&&typeof input==='object'&&Object.hasOwn(input,'patcher'))maxDialog.inspect(text,file.name);
+    else{parsePatch(text);$('dialog-status').textContent='File validated. Choose Import JSON to replace the patch.';}
+  }catch(error){$('dialog-status').textContent=error.message;}finally{e.target.value='';}});
   initialized=true;render(controller.getState());controller.prepare();
   const poll=async()=>{if(leaving)return;await controller.poll();if(!leaving)timer=win.setTimeout(poll,100);};timer=win.setTimeout(poll,100);
   win.addEventListener('resize',()=>{closeMenus();entry.close();drawCables(controller.getState().patch);});
-  return{controller,render,dispose:async()=>{leaving=true;if(timer!==null)win.clearTimeout(timer);await controller.dispose();}};
+  return{controller,render,dispose:async()=>{leaving=true;if(timer!==null)win.clearTimeout(timer);for(const view of views.values())view.dispose?.();await controller.dispose();}};
 }
 if(typeof document!=='undefined'&&typeof window!=='undefined')mountCanvas();

@@ -3,7 +3,7 @@ import {fileURLToPath} from 'node:url';
 
 export default defineConfig({
   testDir: '.',
-  testMatch: 'canvas-browser.spec.mjs',
+  testMatch: ['canvas-browser.spec.mjs', 'canvas-controls.spec.mjs', 'canvas-compat.spec.mjs'],
   fullyParallel: false,
   workers: 1,
   retries: 0,

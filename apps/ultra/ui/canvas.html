@@ -100,7 +100,15 @@
 </div>
 <div id="port-tooltip" class="port-tooltip" role="tooltip" hidden></div>
 <div id="context-menu" class="context-menu" role="menu" hidden></div>
-<dialog id="patch-dialog"><form method="dialog"><button class="dialog-close icon-button" aria-label="Close dialog"><svg><use href="#i-close"/></svg></button></form><h2 id="dialog-title">Patch JSON</h2><p id="dialog-help">Copy JSON or choose a file. Maximum 32 objects, 64 cables and 64 KiB.</p><textarea id="patch-json" spellcheck="false" aria-label="Patch JSON"></textarea><div class="dialog-actions"><button id="copy-patch">Copy JSON</button><button id="download-patch">Download JSON</button><button id="choose-file">Choose file...</button><button id="import-patch">Import JSON</button></div><p id="dialog-status" role="status"></p></dialog>
-<input id="patch-file" type="file" accept=".json,.ultra,application/json" hidden>
+<dialog id="patch-dialog"><form method="dialog"><button class="dialog-close icon-button" aria-label="Close dialog"><svg><use href="#i-close"/></svg></button></form><h2 id="dialog-title">Patch JSON</h2><p id="dialog-help">Copy JSON or choose an Ultra, .maxpat or .maxhelp file. Executable patches support 32 objects, 64 cables and 64 KiB. Max files up to 8 MiB can be inspected.</p><textarea id="patch-json" spellcheck="false" aria-label="Patch JSON"></textarea>
+<section id="max-import" hidden aria-label="Max compatibility report">
+  <label class="max-patcher-field">Patcher / help tab<select id="max-patcher" aria-label="Max patcher or help tab"></select></label>
+  <p id="max-summary" role="status"></p>
+  <details open><summary>Compatibility details</summary><ul id="max-diagnostics"></ul></details>
+  <label id="max-partial-field"><input id="max-allow-partial" type="checkbox"> Allow partial import with the listed omissions and behavior differences</label>
+  <p class="panel-note">Only the selected patcher is converted. Nested tabs, scripts, dependencies and automation do not run. Comments are omitted. Importing does not start timers or audio.</p>
+</section>
+<div class="dialog-actions"><button id="copy-patch">Copy JSON</button><button id="download-patch">Download JSON</button><button id="choose-file">Choose file...</button><button id="analyze-max">Inspect Max JSON</button><button id="import-patch">Import JSON</button></div><p id="dialog-status" role="status"></p></dialog>
+<input id="patch-file" type="file" accept=".json,.ultra,.maxpat,.maxhelp,application/json" hidden>
 <script type="module" src="canvas.mjs"></script>
 </body></html>

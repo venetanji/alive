@@ -26,7 +26,12 @@ to configure every object through permanent side panels.
 - The existing `ultra-canvas-v1` profile supports 25 object kinds, 32 nodes and
   64 edges. Control, mono audio and stereo bundles have distinct port types.
 - Native control objects and ramps operate with audio off. Typed messages and
-  variadic object ports are bounded; complete Max help import is not supported.
+  variadic object ports are bounded. Max files expose named help tabs/patchers
+  and compatibility reports; partial selections require explicit acceptance.
+  Whole Max help files and arbitrary Max objects are not executable.
+- Existing controls operate across their face when locked or with Ctrl/Cmd while
+  editing. Optional Max-named appearance overrides save with the document and
+  do not reset execution when edited.
 - The native Clockwork/Faust engine supports two prepared voice banks at 48 kHz.
   UI editing must retain the existing Rust/native validation and safety rules.
 - Supported object names and arguments must be explicit. Unsupported objects

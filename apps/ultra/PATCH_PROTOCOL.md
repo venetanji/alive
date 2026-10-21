@@ -17,7 +17,7 @@ ordinary live parameters.
 ## Document and IPC
 
 JSON: `{version:1, profile:"ultra-canvas-v1", nodes:[...], edges:[...]}`.
-Node: `{id:positive integer, type:string, x:number, y:number, params:object}`.
+Node: `{id:positive integer, type:string, x:number, y:number, params:object, style?:object}`.
 Edge: `{from:nodeId, outlet:integer, to:nodeId, inlet:integer}`.
 Maximum 32 nodes, 64 edges, 64 KiB JSON. IDs unique; finite positions 0..4000.
 Reject unknown types/parameters, invalid ports, type mismatches, duplicate edges,
@@ -51,6 +51,42 @@ text, variadic creation `args`, MIDI channel and voice device changes are
 structural-only. Layout edits are UI-only.
 Validate/prepare before publishing; invalid edits retain the last valid active graph.
 Stop/start retains the latest valid graph but starts its timers stopped.
+
+### Optional Display Style
+
+`node.style` stores bounded appearance overrides. Omitted fields inherit the
+renderer theme; old patches need no new field. JS document validation and Rust
+preparation reject unknown, inapplicable or malformed attributes. Rust validates
+style but writes none of it into native descriptors. Style edits and their
+undo/redo history update the authoring document without graph installation,
+runtime parameter IPC, revision changes, timer resets or observation resets.
+The 32-node, 64-cable and 64 KiB document limits still apply.
+
+Color fields use native Max attribute names and exactly four finite RGBA
+components in 0..1. This is a small inline appearance contract; it does not
+resolve Max named styles, arbitrary attributes or font resources.
+Attribute names and control groups follow the installed Max jbox, button,
+toggle, number, flonum, slider and gain~ references. Numeric bounds are Ultra's
+document limits.
+
+| Types | Allowed Style Fields |
+| --- | --- |
+| All | `width` 12..1200, `height` 12..800, `fontsize` 8..48; RGBA `bgcolor`, `textcolor`, `color` (object outline). |
+| `bang` | RGBA `blinkcolor`, `outlinecolor`. |
+| `toggle` | RGBA `bordercolor`, `checkedcolor`, `uncheckedcolor`. |
+| `number`, `flonum` | RGBA `bordercolor`, `tricolor`; integer `triangle` 0/1. |
+| `slider` | RGBA `bordercolor`, `knobcolor`, `elementcolor`; integer `orientation` 0 automatic, 1 horizontal, 2 vertical. |
+| `gain` | RGBA `bordercolor`, `knobcolor`; integer `orientation` 0/1/2. |
+
+Dimensions are the width and height projected from Max `patching_rect`; existing
+node `x` and `y` retain position. Inspector metadata is exported by
+`appearanceFields(type)`, and `validateStyle(type, style)` validates and clones
+an override object. `CanvasDocument.style(id, key, value, options)` and the
+controller equivalent create history entries. Passing null as the value removes
+one override; `style(id, null)` removes the whole style in one history entry.
+Null is an editing operation, not a permitted saved attribute value.
+Reconfiguring an object preserves all fields still applicable to the new type
+and removes only fields that type cannot display.
 
 ## Object registry / initial semantics
 

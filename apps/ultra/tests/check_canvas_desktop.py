@@ -83,6 +83,7 @@ def click(name):
         image = Gdk.pixbuf_get_from_window(root, 0, 0, root.get_width(), root.get_height())
         image.savev(str(output/'native-action-failure.png'), 'png', [], [])
         raise AssertionError(name + ' is disabled')
+    Atspi.Component.grab_focus(control)
     rect = Atspi.Component.get_extents(control, Atspi.CoordType.SCREEN)
     assert rect.width > 0 and rect.height > 0, name
     assert t.XTestFakeMotionEvent(display, 0, rect.x+rect.width//2, rect.y+rect.height//2, 0)
@@ -177,6 +178,46 @@ def drag_port(source, target, y_offset=0):
     time.sleep(.2)
 
 
+def control_point(name, x_fraction, y_fraction):
+    rect = Atspi.Component.get_extents(wait_for(name), Atspi.CoordType.SCREEN)
+    return round(rect.x + rect.width*x_fraction), round(rect.y + rect.height*y_fraction)
+
+
+def click_control(name, x_fraction=.5, y_fraction=.5):
+    px, py = control_point(name, x_fraction, y_fraction)
+    assert t.XTestFakeMotionEvent(display, 0, px, py, 0)
+    assert t.XTestFakeButtonEvent(display, 1, 1, 0)
+    assert t.XTestFakeButtonEvent(display, 1, 0, 0)
+    x.XFlush(display)
+    time.sleep(.3)
+
+
+def drag_control(name, start, end, modifier=None):
+    sx, sy = control_point(name, *start)
+    ex, ey = control_point(name, *end)
+    code = x.XKeysymToKeycode(display, x.XStringToKeysym(modifier.encode())) if modifier else None
+    if code:
+        assert t.XTestFakeKeyEvent(display, code, 1, 0)
+    assert t.XTestFakeMotionEvent(display, 0, sx, sy, 0)
+    assert t.XTestFakeButtonEvent(display, 1, 1, 0)
+    for step in range(1, 9):
+        assert t.XTestFakeMotionEvent(display, 0, round(sx+(ex-sx)*step/8), round(sy+(ey-sy)*step/8), 0)
+        x.XFlush(display)
+        time.sleep(.04)
+    assert t.XTestFakeButtonEvent(display, 1, 0, 0)
+    if code:
+        assert t.XTestFakeKeyEvent(display, code, 0, 0)
+    x.XFlush(display)
+    time.sleep(.4)
+
+
+def numeric_value(name):
+    control = wait_for(name)
+    if 'Value' in control.get_interfaces():
+        return float(Atspi.Value.get_current_value(control))
+    return float(Atspi.Text.get_text(control, 0, -1))
+
+
 try:
     wait_for('Start audio')
     Atspi.Component.grab_focus(wait_for('Editable patch canvas'))
@@ -222,6 +263,67 @@ try:
     click(target)
     assert export() == connected, 'Native click-to-connect regressed'
     (output/'wiring.ultra.json').write_text(json.dumps(connected, indent=2)+'\n')
+
+    controls = {'version': 1, 'profile': 'ultra-canvas-v1', 'nodes': [
+        {'id': 1, 'type': 'toggle', 'x': 80, 'y': 60, 'params': {}},
+        {'id': 2, 'type': 'bang', 'x': 160, 'y': 60, 'params': {}},
+        {'id': 3, 'type': 'number', 'x': 80, 'y': 220, 'params': {}},
+        {'id': 4, 'type': 'slider', 'x': 300, 'y': 60, 'params': {},
+         'style': {'width': 30, 'height': 120, 'orientation': 2, 'knobcolor': [.8, .4, .2, 1]}},
+        {'id': 5, 'type': 'flonum', 'x': 450, 'y': 60, 'params': {'value': 1.25}},
+        {'id': 6, 'type': 'int', 'x': 160, 'y': 140, 'params': {'value': 37}},
+    ], 'edges': [{'from': 1, 'outlet': 0, 'to': 3, 'inlet': 0},
+                 {'from': 2, 'outlet': 0, 'to': 6, 'inlet': 0},
+                 {'from': 6, 'outlet': 0, 'to': 3, 'inlet': 0},
+                 {'from': 4, 'outlet': 0, 'to': 3, 'inlet': 0}]}
+    keys('Control_L', 'o')
+    text('Patch JSON', json.dumps(controls))
+    click('Import JSON')
+    Atspi.Component.grab_focus(wait_for('Editable patch canvas'))
+    keys('Control_L', 'e')
+    # Exercise the face next to each old connection-notch collision with real X input.
+    click_control('Trigger toggle object 1', .2, .1)
+    assert numeric_value('number value, object 3') == 1, 'Toggle top face failed'
+    click_control('Trigger toggle object 1', .2, .9)
+    assert numeric_value('number value, object 3') == 0, 'Toggle bottom face failed'
+    click_control('Trigger bang object 2', .2, .1)
+    assert numeric_value('number value, object 3') == 37, 'Button face did not emit through native int'
+    drag_control('slider value, object 4', (.5, .9), (.5, .1))
+    assert numeric_value('number value, object 3') > 110, 'Locked vertical slider did not emit'
+    Atspi.Component.grab_focus(wait_for('Editable patch canvas'))
+    keys('Control_L', 'e')
+    drag_control('slider value, object 4', (.5, .1), (.5, .8), 'Control_L')
+    assert 15 < numeric_value('number value, object 3') < 40, 'Temporary edit-mode slider did not emit'
+    drag_control('number value, object 3', (.5, .5), (.5, -.5), 'Control_L')
+    assert numeric_value('number value, object 3') > 40, 'Number face did not drag'
+    (output/'controls.ultra.json').write_text(json.dumps(export(), indent=2)+'\n')
+
+    max_help = Path(os.environ.get('ULTRA_TEST_MAX_HELP', '/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/slider.maxhelp'))
+    imported_help = {'tested': False, 'reason': 'Installed licensed slider.maxhelp is unavailable'}
+    if max_help.is_file():
+        keys('Control_L', 'o')
+        text('Patch JSON', max_help.read_text())
+        click('Import JSON')
+        wait_for('Max patcher or help tab')
+        click('Allow partial import with the listed omissions and behavior differences')
+        click('Import supported portion')
+        converted = export()
+        assert len(converted['nodes']) == 14 and len(converted['edges']) == 9
+        Atspi.Component.grab_focus(wait_for('Editable patch canvas'))
+        keys('Control_L', 'e')
+        drag_control('slider value, object 4', (.1, .5), (.75, .5))
+        first = numeric_value('number value, object 9')
+        assert 80 < first < 110, 'Imported installed slider branch did not run through Tauri'
+        drag_control('slider value, object 4', (.75, .5), (.2, .5))
+        second = numeric_value('number value, object 9')
+        assert 15 < second < 40, 'Imported installed slider branch did not update'
+        imported_help = {'tested': True, 'source': str(max_help), 'partial': True,
+                         'selected_tab': 'basic', 'imported_nodes': 14, 'imported_edges': 9,
+                         'native_downstream_values': [first, second],
+                         'whole_help_executed': False}
+        (output/'imported-slider.ultra.json').write_text(json.dumps(converted, indent=2)+'\n')
+        Atspi.Component.grab_focus(wait_for('Editable patch canvas'))
+        keys('Control_L', 'e')
 
     # Reopen a complete authored patch through the shipped JSON dialog.
     starter = json.loads(Path('apps/ultra/ui/canvas-preset.json').read_text())
@@ -306,6 +408,7 @@ try:
     result = {'status': 'passed', 'scope': 'built Tauri canvas + real Rust CPAL device output',
               'audio_environment': os.environ['ULTRA_TEST_AUDIO_SCOPE'],
               'keyboard_create_edit_undo_lock': True, 'json_roundtrip': True,
+              'control_face_and_numeric_drag': True, 'installed_max_help': imported_help,
               'message_path_left_peak': max(map(abs, left)), 'untriggered_right_peak': 0,
               'note_off_tail_peak': 0, 'capture_frames': len(samples)//2, 'saved_audio_config': config,
               'limits': ['No hardware MIDI or latency qualification', 'No Max DSP equivalence claim']}

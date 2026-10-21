@@ -1,4 +1,5 @@
 // ultra-canvas-v1: a document/editor and bounded native command adapter, never a JS scheduler or DSP.
+import {appearanceFields, validateStyle} from './canvas-appearance.mjs';
 const C = 'control', M = 'mono', S = 'stereo';
 const port = (type, label, side) => ({type, label, side});
 const ports = (items, side) => items.map(([type,label])=>port(type,label,side));
@@ -36,7 +37,7 @@ const fail = message => { throw Error(message); };
 function fields(value, allowed, context, required=true) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) fail(`${context} must be an object.`);
   for(const key of Object.keys(value)) if(!allowed.includes(key)) fail(`Unknown ${context} field: ${key}.`);
-  for(const key of required?allowed:[]) if(!(key in value)) fail(`Missing ${context} field: ${key}.`);
+  for(const key of Array.isArray(required)?required:required?allowed:[]) if(!(key in value)) fail(`Missing ${context} field: ${key}.`);
 }
 function numeric(value,min,max,integer,context) {
   if(typeof value!=='number'||!Number.isFinite(value)||value<min||value>max||(integer&&!Number.isInteger(value))) fail(`${context} must be ${integer?'an integer':'a finite number'} from ${min} to ${max}.`);
@@ -82,12 +83,13 @@ export function validatePatch(input) {
   if(!Array.isArray(input.edges)||input.edges.length>64) fail('A patch supports at most 64 cables.');
   const nodes=new Map(), devices=new Set(), singleton=new Set();
   for(let node of input.nodes) {
-    fields(node,['id','type','x','y','params'],'node'); numeric(node.id,1,4294967295,true,'Node ID');
+    fields(node,['id','type','x','y','params','style'],'node',['id','type','x','y','params']); numeric(node.id,1,4294967295,true,'Node ID');
     if(nodes.has(node.id)) fail('Duplicate node ID.');
     const s=Object.hasOwn(REGISTRY,node.type)?REGISTRY[node.type]:null; if(!s) fail(`Unknown object type: ${node.type}.`);
     numeric(node.x,0,4000,false,'X position'); numeric(node.y,0,4000,false,'Y position');
     fields(node.params,Object.keys(s.params),`${node.type} parameters`,false);
     node={...node,params:{...Object.fromEntries(Object.entries(s.params).map(([key,p])=>[key,p.value])),...node.params}};
+    if(Object.hasOwn(node,'style'))node.style=validateStyle(node.type,node.style);
     for(const [key,p] of Object.entries(s.params)) {
       if(key==='text')parseMessage(node.params[key]);else if(key==='args')parseArguments(node.params[key]);else numeric(node.params[key],p.min,p.max,p.integer,`${node.type}.${key}`);
     }
@@ -155,7 +157,16 @@ export class CanvasDocument {
     if(type==='voice'&&!Object.hasOwn(params,'device')) params.device=this.patch.nodes.some(n=>n.type==='voice'&&n.params.device===0)?1:0;
     this.edit(p=>p.nodes.push(makeNode(type,id,x,y,params)));return id;
   }
-  configure(id,type,params) { return this.edit(p=>{const i=p.nodes.findIndex(n=>n.id===id);if(i<0)fail('Missing object.');const old=p.nodes[i];p.nodes[i]=makeNode(type,id,old.x,old.y,params);}); }
+  configure(id,type,params) { return this.edit(p=>{
+    const i=p.nodes.findIndex(n=>n.id===id);if(i<0)fail('Missing object.');
+    const old=p.nodes[i],node=makeNode(type,id,old.x,old.y,params);
+    if(old.style) {
+      const allowed=new Set(appearanceFields(type).map(field=>field.key));
+      const style=Object.fromEntries(Object.entries(old.style).filter(([key])=>allowed.has(key)));
+      if(Object.keys(style).length)node.style=style;
+    }
+    p.nodes[i]=node;
+  }); }
   remove(id) { return this.edit(p=>{p.nodes=p.nodes.filter(n=>n.id!==id);p.edges=p.edges.filter(e=>e.from!==id&&e.to!==id);}); }
   removeMany(ids) {const set=new Set(ids);return this.edit(p=>{p.nodes=p.nodes.filter(n=>!set.has(n.id));p.edges=p.edges.filter(e=>!set.has(e.from)&&!set.has(e.to));});}
   connect(from,outlet,to,inlet) { return this.edit(p=>p.edges.push({from,outlet,to,inlet})); }
@@ -163,6 +174,15 @@ export class CanvasDocument {
   move(id,x,y,options) {return this.edit(p=>{const n=p.nodes.find(n=>n.id===id);if(!n)fail('Missing object.');n.x=x;n.y=y;},options);}
   moveMany(positions) {return this.edit(p=>{for(const {id,x,y} of positions){const n=p.nodes.find(n=>n.id===id);if(!n)fail('Missing object.');n.x=x;n.y=y;}});}
   parameter(id,key,value,options) { return this.edit(p=>{const n=p.nodes.find(n=>n.id===id);if(!n)fail('Missing object.');n.params[key]=value;},options); }
+  style(id,key,value,options) { return this.edit(p=>{
+    const node=p.nodes.find(node=>node.id===id);if(!node)fail('Missing object.');
+    if(key===null){delete node.style;return;}
+    if(!appearanceFields(node.type).some(field=>field.key===key))fail(`Unknown ${node.type} style attribute: ${key}.`);
+    const style={...node.style};
+    if(value===null)delete style[key];else style[key]=value;
+    const validated=validateStyle(node.type,style);
+    if(Object.keys(validated).length)node.style=validated;else delete node.style;
+  },options); }
   replace(patch) { const valid=validatePatch(patch);return this.edit(p=>Object.assign(p,valid)); }
   undo() { if(!this.past.length)return false;this.future.push(copy(this.patch));this.patch=this.past.pop();return true; }
   redo() { if(!this.future.length)return false;this.past.push(copy(this.patch));this.patch=this.future.pop();return true; }
@@ -327,6 +347,7 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
   }
   async function dispose(){const stopped=await stopAudio();if(stopped===false)throw Error('Native audio cleanup failed. Stay on this page and try Stop audio again.');disposed=true;}
   return {getState,prepare:ensureApply,startAudio,stopAudio,stop,panic,poll,flush,dispose,event,parameter,
+    style:(...args)=>{const changed=document.style(...args);if(changed)emit();return changed;},
     add:(...args)=>structural(()=>document.add(...args)),configure:(...args)=>structural(()=>document.configure(...args)),remove:id=>structural(()=>document.remove(id)),removeMany:ids=>structural(()=>document.removeMany(ids)),
     connect:(...args)=>structural(()=>document.connect(...args)),disconnect:i=>structural(()=>document.disconnect(i)),
     move:(...args)=>{document.move(...args);emit();},moveMany:positions=>{document.moveMany(positions);emit();},undo:()=>history('undo'),redo:()=>history('redo'),

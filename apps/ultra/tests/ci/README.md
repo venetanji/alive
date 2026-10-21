@@ -18,9 +18,12 @@ does not read repository secrets or use `pull_request_target`.
    top-inlet/bottom-outlet geometry, keyboard creation, text-edit undo, lock
    protection, directional help, group moves, zoomed cord geometry, dragging
    cords in both directions, keyboard wiring, rejected drops, cancellation,
-   history during wiring and small
-   viewport controls. There is no Tauri/native IPC shim and no
+   history during wiring, full control faces, modifier operation, numeric dragging,
+   gesture cancellation, styled range orientation, inspector export/reset/undo,
+   Max tab selection and explicit partial imports, and small viewport controls.
+   There is no Tauri/native IPC shim and no
    fake browser audio. A passing preview test is not native audio qualification.
+
 3. **Linux native build, Rust bridge, and CPAL loopback:** builds the pinned real Clockwork/Faust
    engine and `libultra_native.so`, runs backend/sequence/canvas integration tests
    against an explicitly identified JACK ABI test double, then builds and tests
@@ -31,6 +34,19 @@ does not read repository secrets or use `pull_request_target`.
    This executes actual CPAL callbacks and native DSP, not an audio mock.
    It does not prove real JACK server behavior, physical MIDI, audible hardware
    output, hardware latency, or realtime deadlines.
+
+The optional desktop `check_canvas_desktop.sh --software-audio` additionally
+drives the built Tauri/WebKit app with real X input: notch-adjacent button/toggle
+clicks, locked and modifier sliders, numeric dragging, and native downstream
+observations. When the licensed local `slider.maxhelp` is available (override
+with `ULTRA_TEST_MAX_HELP`), it opens the original JSON through the dialog,
+accepts the partial basic tab, and checks the actual imported slider-to-number
+branch. The report records whether that optional source was available; it never
+claims complete Max help execution. The same run checks real CPAL software audio.
+
+Reproduce static coverage and native execution of the exact imported slider
+fragment with `experiments/max-reference/help-import-20261021/check-import.mjs`.
+No proprietary help source is stored in the repository.
 
 The native runner installs JACK headers, ALSA/PipeWire/libclang build dependencies
 for CPAL, and Tauri's GTK/WebKit dependencies from

@@ -34,6 +34,34 @@ fn empty_document_is_a_valid_silent_graph() {
     assert_eq!(p.native.node_count, 0);
 }
 #[test]
+fn appearance_shared_cases_validate_without_changing_native_descriptors() {
+    let cases: Value =
+        serde_json::from_str(include_str!("../../ui/canvas-appearance-cases.json")).unwrap();
+    for case in cases["valid"].as_array().unwrap() {
+        let kind = case["type"].as_str().unwrap();
+        let original = prepare(patch(vec![node(1, kind, json!({}))], vec![])).unwrap();
+        let mut styled = node(1, kind, json!({}));
+        styled["style"] = case["style"].clone();
+        let prepared = prepare(patch(vec![styled], vec![]))
+            .unwrap_or_else(|error| panic!("{}: {error}", case["name"]));
+        assert_eq!(
+            format!("{:?}", prepared.native),
+            format!("{:?}", original.native),
+            "{}",
+            case["name"]
+        );
+    }
+    for case in cases["invalid"].as_array().unwrap() {
+        let mut styled = node(1, case["type"].as_str().unwrap(), json!({}));
+        styled["style"] = case["style"].clone();
+        assert!(
+            prepare(patch(vec![styled], vec![])).is_err(),
+            "{}",
+            case["name"]
+        );
+    }
+}
+#[test]
 fn schema_is_strict_and_required() {
     for field in ["version", "profile", "nodes", "edges"] {
         let mut p = patch(vec![], vec![]);

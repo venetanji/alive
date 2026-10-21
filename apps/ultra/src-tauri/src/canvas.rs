@@ -117,6 +117,8 @@ struct Node {
     x: f64,
     y: f64,
     params: Map<String, Value>,
+    #[serde(default)]
+    style: Map<String, Value>,
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -434,6 +436,48 @@ fn validate_relationships(node: &NativeNode) -> Result<(), String> {
     Ok(())
 }
 
+fn validate_style(kind: u32, name: &str, style: &Map<String, Value>) -> Result<(), String> {
+    let bounded = |value: &Value, lo: f64, hi: f64, integer: bool| {
+        value.as_f64().is_some_and(|number| {
+            number.is_finite() && (lo..=hi).contains(&number) && (!integer || number.fract() == 0.)
+        })
+    };
+    for (key, value) in style {
+        let valid = match key.as_str() {
+            "width" => bounded(value, 12., 1200., false),
+            "height" => bounded(value, 12., 800., false),
+            "fontsize" => bounded(value, 8., 48., false),
+            "triangle" if matches!(kind, 2 | 17) => bounded(value, 0., 1., true),
+            "orientation" if matches!(kind, 12 | 18) => bounded(value, 0., 2., true),
+            _ => {
+                let is_color = match key.as_str() {
+                    "bgcolor" | "textcolor" | "color" => true,
+                    "blinkcolor" | "outlinecolor" => kind == 0,
+                    "checkedcolor" | "uncheckedcolor" => kind == 3,
+                    "bordercolor" => matches!(kind, 2 | 3 | 12 | 17 | 18),
+                    "tricolor" => matches!(kind, 2 | 17),
+                    "knobcolor" => matches!(kind, 12 | 18),
+                    "elementcolor" => kind == 18,
+                    _ => false,
+                };
+                if !is_color {
+                    return Err(format!("Unknown {name} style attribute: {key}"));
+                }
+                value.as_array().is_some_and(|rgba| {
+                    rgba.len() == 4
+                        && rgba
+                            .iter()
+                            .all(|component| bounded(component, 0., 1., false))
+                })
+            }
+        };
+        if !valid {
+            return Err(format!("Invalid {name} style value for {key}"));
+        }
+    }
+    Ok(())
+}
+
 pub fn prepare(patch: Value) -> Result<Prepared, String> {
     serde_json::to_writer(SizeLimit(0), &patch)
         .map_err(|e| format!("Invalid canvas input: {e}"))?;
@@ -466,6 +510,8 @@ pub fn prepare(patch: Value) -> Result<Prepared, String> {
         }
         let kind =
             kind(&node.r#type).ok_or_else(|| format!("Unknown canvas object: {}", node.r#type))?;
+        // Display overrides are validated document data and never reach the native graph.
+        validate_style(kind, &node.r#type, &node.style)?;
         let mut native = NativeNode {
             id: node.id,
             kind,

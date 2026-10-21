@@ -42,6 +42,10 @@ carry mono/stereo bundles, not generic untyped values. Unsupported connections
 are refused. The first supported audio path is voice -> gain -> join -> dac.
 Join input 0 maps to L, input 1 to R; swapping connections changes the audio.
 
+Lock to operate the entire button/toggle face, drag a slider or drag a number
+vertically. Click a numeric box to select and type its value; Enter commits it.
+Ctrl/Cmd-click or drag temporarily operates a control while editing. Plain
+unlocked gestures select/move objects. Shift gives finer numeric dragging.
 Sliders and ordinary parameters update live. Number/toggle controls send hot
 messages. Voice envelopes still latch for the next note. Changing the graph,
 message literal, voice device or MIDI channel safely clears notes and timers;
@@ -49,9 +53,20 @@ click the toggle to restart. Moving a box changes layout only. This is not yet
 seamless arbitrary hot-patching. Stop patch cancels all scheduled notes/timers.
 Focus loss also stops the patch. Panic requires Stop audio then Start to recover.
 
+The Inspector includes bounded Max-named appearance attributes: dimensions,
+font size, RGBA colors, control colors and slider/gain orientation. Appearance
+edits, reset and undo preserve the running graph. Export keeps these overrides.
+
 Save/export and Open accept bounded ultra-canvas-v1 JSON, including positions,
-parameters and exact connections. This is not .maxpat import or a full Max
-message grammar. The authored graph is saved, not an executing clock snapshot.
+parameters, appearance and exact connections. Open also inspects .maxpat and
+.maxhelp files up to 8 MiB: choose a named patcher/help tab, review its report,
+and import it. A partial selection requires Allow partial import. Unsupported
+boxes/cables and known behavior differences are listed; graphs are never
+truncated to fit. Comments, scripts, dependencies and automation are omitted.
+The selected graph must fit 32 objects, 64 cables and 64 KiB. Lock it after
+import to operate controls. Import does not start timers or audio. This is a
+bounded conversion, not full Max help or message-language compatibility.
+The authored graph is saved, not an executing clock snapshot.
 Legacy patcher and fixed Chord lab links remain for comparison; navigation
 stops audio before changing profiles. See PATCH_PROTOCOL.md for exact limits.
 

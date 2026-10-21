@@ -4,8 +4,8 @@ import {readFileSync} from 'node:fs';
 
 // This executes the real page module with a small DOM adapter. It does not prove rendered geometry or native sound.
 class Element {
-  constructor(tag='div'){this.tagName=tag.toUpperCase();this.children=[];this.listeners={};this.dataset={};this.style={};this.attrs={};this.value='';this.disabled=false;this.open=false;this.hidden=false;this.textContent='';this.scrollLeft=0;this.scrollTop=0;
-    const classes=new Set();this.classList={toggle:(n,v)=>{if(v??!classes.has(n))classes.add(n);else classes.delete(n);},contains:n=>classes.has(n)};
+  constructor(tag='div'){this.tagName=tag.toUpperCase();this.children=[];this.listeners={};this.dataset={};this.style={setProperty(key,value){this[key]=value;},removeProperty(key){delete this[key];}};this.attrs={};this.value='';this.disabled=false;this.open=false;this.hidden=false;this.textContent='';this.scrollLeft=0;this.scrollTop=0;
+    const classes=new Set();this.classList={add:n=>classes.add(n),remove:n=>classes.delete(n),toggle:(n,v)=>{if(v??!classes.has(n))classes.add(n);else classes.delete(n);},contains:n=>classes.has(n)};
   }
   append(...children){this.children.push(...children);for(const c of children)if(typeof c==='object')c.parentElement=this;}
   replaceChildren(...children){this.children=[];this.append(...children);}

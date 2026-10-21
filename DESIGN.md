@@ -158,7 +158,10 @@ with an offset. Disabled buttons reduce opacity and lose the pointer cursor.
 
 Text objects expose their name and arguments in one line. Bang, toggle, message,
 number, flonum, slider and gain have dedicated compact faces. Editing selects and moves them;
-locking enables performance controls. Ctrl/Cmd-click can operate while editing.
+locking enables the whole performance face without port-hit interference.
+Ctrl/Cmd-click or drag can operate while editing. Numeric boxes support vertical
+dragging, finer Shift dragging and direct entry. Ranges respect saved dimensions
+and automatic/horizontal/vertical orientation. Interrupted gestures cancel cleanly.
 Runtime numeric observations update the visible value without rewriting saved
 parameters.
 
@@ -197,6 +200,17 @@ outlet menu is an Ultra addition, not an observed Max feature.
 The library and inspector are optional. Help includes literal and runnable
 examples within the bounded profile. JSON uses a focused dialog because import
 can replace the entire document; validation precedes replacement.
+
+The inspector groups runtime parameters and appearance. Appearance uses supported
+Max attribute names with RGB swatches and separate alpha values; omitted attributes
+inherit the theme. Dimensions, font size, borders and applicable control colors
+round-trip without stopping the graph. Reset removes all appearance overrides.
+
+Opening Max JSON inventories actual named patchers/help tabs and exposes a
+compatibility report. Raw source becomes compact while the report is open.
+Unsupported or differing selections require explicit partial-import acceptance.
+The selected graph retains supported dimensions, attributes, saved port indices
+and explicit fan-out order. No scripts or nested patchers execute implicitly.
 
 ## Do's and Don'ts
 
