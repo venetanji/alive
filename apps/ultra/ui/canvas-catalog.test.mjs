@@ -10,7 +10,7 @@ test('typed names and arguments build the supported profile without approximatin
   assert.deepEqual(parseObjectText('message 60 100'),{type:'message',params:{text:'60 100'}});
   assert.deepEqual(parseObjectText('voice~ 1 8 28'),{type:'voice',params:{device:1,attack:8,release:28}});
   assert.equal(parseObjectText('button').type,'bang');
-  for(const text of ['cycle~ 440','int 2','flonum','metro 1','metro NaN','gain~ 128','voice~ 0 8 28 99','message symbol'])
+  for(const text of ['cycle~ 440','metro 1','metro NaN','gain~ 128','voice~ 0 8 28 99','message set $1'])
     assert.throws(()=>parseObjectText(text),undefined,text);
 });
 test('every supported object has round-trippable creation text and directional port help',()=>{
@@ -33,7 +33,17 @@ test('autocomplete ranks exact names before prefixes, and never invents unsuppor
   assert.equal(suggestObjects('+')[0].type,'add');
   assert.equal(suggestObjects('but')[0].type,'bang');
   assert.deepEqual(suggestObjects('cycle~'),[]);
-  assert.equal(suggestObjects('').length,15);
+  assert.equal(suggestObjects('').length,25);
+});
+test('named creation parameters share the positional validator and preserve unspecified edit values',()=>{
+  assert.deepEqual(parseObjectText('voice~ 1 @release 40 @attack 12'),{type:'voice',params:{device:1,attack:12,release:40}});
+  assert.deepEqual(parseObjectText('metro @interval 250'),parseObjectText('metro 250'));
+  const previous={type:'voice',params:{device:1,attack:8,release:28}};
+  assert.deepEqual(parseObjectText('voice~ @attack 16',previous),{type:'voice',params:{device:1,attack:16,release:28}});
+  for(const text of ['metro @active 1','metro @interval','metro @interval 1','voice~ @device 2',
+    'voice~ @attack 1 @attack 2','voice~ 0 @device 1','voice~ @attack 1 2','gain~ @value NaN','chord @shape 1.5'])
+    assert.throws(()=>parseObjectText(text),undefined,text);
+  assert.equal(parseObjectText('message bang').params.text,'bang');
 });
 test('creation and text replacement are atomic, undoable and preserve identity and valid cords',()=>{
   const doc=new CanvasDocument({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});

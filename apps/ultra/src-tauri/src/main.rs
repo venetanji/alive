@@ -4,13 +4,16 @@ mod audio;
 use serde::{Deserialize, Serialize};
 use std::{
     ffi::{c_char, CStr},
-    sync::Mutex,
+    sync::{atomic::{AtomicBool, Ordering}, Arc, Mutex},
+    time::Duration,
 };
 use tauri::Manager;
 struct Audio(Mutex<canvas::CanvasState>);
 struct AudioIo(Mutex<audio::Driver>);
+struct CanvasIdleClock(Arc<AtomicBool>);
 extern "C" {
     fn ultra_canvas_install(graph: *const canvas::NativeGraph) -> i32;
+    #[cfg(test)]
     fn ultra_canvas_event(
         revision: u64,
         node: u32,
@@ -18,6 +21,8 @@ extern "C" {
         count: u32,
         values: *const f64,
     ) -> i32;
+    fn ultra_canvas_message(revision: u64, node: u32, inlet: u32, message: *const canvas::NativeMessage) -> i32;
+    fn ultra_canvas_idle_tick();
     fn ultra_canvas_param(revision: u64, node: u32, param: u32, value: f64) -> i32;
     fn ultra_canvas_stop();
     fn ultra_canvas_status(status: *mut canvas::NativeStatus);
@@ -343,9 +348,9 @@ fn canvas_event(
 ) -> Result<bool, String> {
     let control = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
     let event = control.event(revision, node, inlet, value)?;
-    if unsafe { ultra_canvas_event(revision, node, inlet, event.count, event.values.as_ptr()) } == 0
+    if unsafe { ultra_canvas_message(revision, node, inlet, &event) } == 0
     {
-        return Err("Canvas event was not admitted; check audio and active revision".into());
+        return Err("Canvas event was not admitted; check the active revision and message".into());
     }
     Ok(true)
 }
@@ -445,7 +450,7 @@ mod tests {
         let values = [60., 100.];
         assert_eq!(
             unsafe { ultra_canvas_event(revision, 6, 0, 2, values.as_ptr()) },
-            0
+            1
         );
         unsafe {
             ultra_canvas_stop();
@@ -462,6 +467,60 @@ mod tests {
                 .value,
             4.
         );
+        // Every shipped object example passes both Rust preparation and actual
+        // native graph admission, with monotonically increasing generations.
+        for example in [
+            include_str!("../../examples/int.ultra"),
+            include_str!("../../examples/float.ultra"),
+            include_str!("../../examples/flonum.ultra"),
+            include_str!("../../examples/slider.ultra"),
+            include_str!("../../examples/pack.ultra"),
+            include_str!("../../examples/unpack.ultra"),
+            include_str!("../../examples/select.ultra"),
+            include_str!("../../examples/route.ultra"),
+            include_str!("../../examples/trigger.ultra"),
+            include_str!("../../examples/line.ultra"),
+        ] {
+            let prepared = canvas::prepare(serde_json::from_str(example).unwrap()).unwrap();
+            control.install(prepared, |graph| unsafe { ultra_canvas_install(graph) != 0 }).unwrap();
+        }
+        let node = |id,kind,params| serde_json::json!({"id":id,"type":kind,"x":0,"y":0,"params":params});
+        let edge = |from,outlet,to,inlet| serde_json::json!({"from":from,"outlet":outlet,"to":to,"inlet":inlet});
+        let mut nodes = vec![
+            node(1,"int",serde_json::json!({})), node(2,"float",serde_json::json!({})),
+            node(3,"flonum",serde_json::json!({})), node(4,"slider",serde_json::json!({})),
+            node(5,"pack",serde_json::json!({"args":"0 0."})), node(6,"unpack",serde_json::json!({"args":"0 0."})),
+            node(7,"select",serde_json::json!({"args":"7"})), node(8,"route",serde_json::json!({"args":"routekey"})),
+            node(9,"trigger",serde_json::json!({"args":"i f"})), node(10,"line",serde_json::json!({"grain":1})),
+        ];
+        nodes.extend((11..=22).map(|id| node(id,if matches!(id,17|22) {"bang"} else {"number"},serde_json::json!({}))));
+        let edges = vec![edge(1,0,11,0),edge(2,0,12,0),edge(3,0,13,0),edge(4,0,14,0),
+            edge(5,0,6,0),edge(6,0,15,0),edge(6,1,16,0),edge(7,0,17,0),edge(8,0,18,0),
+            edge(9,0,19,0),edge(9,1,20,0),edge(10,0,21,0),edge(10,1,22,0)];
+        let prepared = canvas::prepare(serde_json::json!({"version":1,"profile":"ultra-canvas-v1","nodes":nodes,"edges":edges})).unwrap();
+        let revision = control.install(prepared, |graph| unsafe { ultra_canvas_install(graph) != 0 }).unwrap();
+        for (node,inlet,value) in [
+            (1,0,serde_json::json!("3.75")), (2,0,serde_json::json!("4.25")),
+            (3,0,serde_json::json!("12.25")), (4,0,serde_json::json!([7])),
+            (5,1,serde_json::json!("8.5")), (5,0,serde_json::json!([3])),
+            (7,0,serde_json::json!([7])), (8,0,serde_json::json!("routekey 22")),
+            (9,0,serde_json::json!("3.75")), (10,0,serde_json::json!("10 10")),
+        ] {
+            let message = control.event(revision,node,inlet,value).unwrap();
+            assert_eq!(unsafe { ultra_canvas_message(revision,node,inlet,&message) },1,"node {node}");
+        }
+        std::thread::sleep(Duration::from_millis(30));
+        unsafe { ultra_canvas_idle_tick(); ultra_canvas_status(&mut snapshot); }
+        assert_eq!(unsafe { ultra_audio_flags() } & 1,0,"message execution must not start audio");
+        for (id,value) in [(11,3.),(12,4.25),(13,12.25),(14,7.),(15,3.),(16,8.5),(18,22.),(19,3.),(20,3.75),(21,10.)] {
+            let observed = snapshot.nodes[..snapshot.node_count as usize].iter().find(|n| n.id==id).unwrap();
+            assert_eq!(observed.value,value,"node {id}");
+            assert!(observed.pulses>0,"node {id}");
+        }
+        for id in [17,22] {
+            assert_eq!(snapshot.nodes[..snapshot.node_count as usize].iter().find(|n|n.id==id).unwrap().pulses,1,"bang sink {id}");
+        }
+        unsafe { ultra_canvas_stop(); }
     }
 
     #[test]
@@ -560,9 +619,26 @@ fn main() {
     }
     tauri::Builder::default()
         .manage(Audio(Mutex::new(canvas::CanvasState::default())))
+        .manage(CanvasIdleClock(Arc::new(AtomicBool::new(true))))
         .setup(|app| {
             let path = app.path().app_data_dir()?.join("audio-settings.json");
             app.manage(AudioIo(Mutex::new(audio::Driver::load(path))));
+            let handle = app.handle().clone();
+            let running = app.state::<CanvasIdleClock>().0.clone();
+            std::thread::Builder::new().name("ultra-control-clock".into()).spawn(move || {
+                while running.load(Ordering::Acquire) {
+                    let Some(control) = handle.try_state::<Audio>() else { break; };
+                    match control.0.lock() {
+                        Ok(_guard) => {
+                            if running.load(Ordering::Acquire) {
+                                unsafe { ultra_canvas_idle_tick(); }
+                            }
+                        }
+                        Err(_) => break,
+                    }
+                    std::thread::sleep(Duration::from_millis(2));
+                }
+            })?;
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -597,6 +673,7 @@ fn main() {
         .expect("Unable to start Ultra window")
         .run(|app, event| {
             if matches!(event, tauri::RunEvent::Exit) {
+                app.state::<CanvasIdleClock>().0.store(false, Ordering::Release);
                 let state = app.state::<Audio>();
                 if let Ok(_lock) = state.0.lock() {
                     unsafe {

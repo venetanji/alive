@@ -46,9 +46,12 @@ WirePlumber uses its `policy` profile. Capture uses raw stdout (supported by
 PipeWire 1.0), not newer `--raw` / `--sample-count` flags. Recording stops cleanly
 after the real Rust test, so frame count varies. The analyzer requires a recorded
 planned SIGINT, a passing probe, empty recorder stderr, and valid stereo PCM.
-It accepts exit status 1 only for compiled/linked PipeWire 1.0.5: upstream
+It accepts exit status 1 only for matching compiled/linked PipeWire 1.0.5 or
+1.6.9: upstream
 [`pw-cat` returns success only after playback drain](https://github.com/PipeWire/pipewire/blob/1.0.5/src/tools/pw-cat.c#L1916-L1921),
-not for a recording stopped by SIGINT. The raw exit status remains in the report;
+not for a recording stopped by SIGINT. The
+[same shutdown behavior remains in 1.6.9](https://github.com/PipeWire/pipewire/blob/1.6.9/src/tools/pw-cat.c#L2655-L2660).
+The raw exit status remains in the report;
 unknown-version status 1, timeouts, missing stop evidence, errors, and invalid PCM
 are rejected. `check_cpal_capture.py --self-test` covers these cases in the
 contracts job without substituting for the actual audio integration gate.
@@ -87,6 +90,20 @@ The test runner owns its loopback HTTP server and shuts it down afterward.
 GitHub retains browser reports, screenshots, and failed-test traces for seven
 days. Tests use only the checked-in research patch, never a user's private data.
 
+For the optional Linux WebKitGTK gain-slider rendering regression, use system
+Python with GI, Cairo, GTK 3, WebKit2 4.1 introspection, Xvfb, and xauth installed:
+
+```sh
+xvfb-run -a python3 apps/ultra/tests/ci/check_gain_slider_webkit.py
+```
+
+This check loads the real page in an ephemeral WebKit context on a private
+display, owns its loopback server, and samples the gain track at minimum,
+midpoint, and maximum. It covers the Linux rendering engine used by Tauri;
+it is separate from the three cloud jobs and makes no native audio claim.
+See [the slider color study](../../../../experiments/max-ui-reference/slider-colors.md)
+for the observed engine difference and the bounded Max comparison.
+
 For native checks, first install the apt packages listed in the workflow, then:
 
 ```sh
@@ -102,6 +119,20 @@ cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
 cargo build --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
 bash apps/ultra/tests/check_cpal_audio.sh "$PWD/apps/ultra/build/cpal-evidence"
 ```
+
+The object batch also has a real C ABI check for stopped-audio message dispatch,
+live parameter state retention, and native `line` ramp/completion scheduling.
+Build the native library first, then run from the repository root:
+
+```sh
+c++ -std=c++17 -O2 -Wall -Wextra -Werror \
+  apps/ultra/tests/canvas_idle_test.cpp -L apps/ultra/build \
+  -Wl,-rpath,"$PWD/apps/ultra/build" -lultra_native -o /tmp/ultra-canvas-idle-test
+/tmp/ultra-canvas-idle-test
+```
+
+This opens no audio device. The portable contract gate separately compiles both
+native graph test files, including typed routing, outlet order, and ramp timing.
 
 ## Dependency and cache policy
 

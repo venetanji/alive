@@ -7,7 +7,8 @@
 web
 
 Ultra's editor uses local HTML/CSS/JavaScript inside the existing Rust/Tauri Linux
-desktop app. The browser preview edits documents; the native app executes audio.
+desktop app. The browser preview edits documents; the native app executes control
+messages and audio.
 
 ## Users
 
@@ -22,8 +23,10 @@ to configure every object through permanent side panels.
 
 ## Capabilities and Constraints
 
-- The existing `ultra-canvas-v1` profile supports 15 object kinds, 32 nodes and
+- The existing `ultra-canvas-v1` profile supports 25 object kinds, 32 nodes and
   64 edges. Control, mono audio and stereo bundles have distinct port types.
+- Native control objects and ramps operate with audio off. Typed messages and
+  variadic object ports are bounded; complete Max help import is not supported.
 - The native Clockwork/Faust engine supports two prepared voice banks at 48 kHz.
   UI editing must retain the existing Rust/native validation and safety rules.
 - Supported object names and arguments must be explicit. Unsupported objects

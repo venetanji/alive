@@ -9,11 +9,10 @@ import tempfile
 import unittest
 
 
-KNOWN_SIGINT_VERSION = [
-    'pw-cat',
-    'Compiled with libpipewire 1.0.5',
-    'Linked with libpipewire 1.0.5',
-]
+KNOWN_SIGINT_VERSIONS = {
+    ('pw-cat', f'Compiled with libpipewire {version}', f'Linked with libpipewire {version}')
+    for version in ('1.0.5', '1.6.9')
+}
 
 
 def analyze(out, capture_status):
@@ -22,13 +21,14 @@ def analyze(out, capture_status):
     assert (out / 'capture-stop.txt').read_text() == 'SIGINT\n'
     assert 'test result: ok. 1 passed; 0 failed;' in (out / 'probe.log').read_text()
     assert not (out / 'capture.log').read_text().strip()
-    # PipeWire 1.0.5 do_quit() only quits the main loop. main() starts with
+    # These versions' do_quit() only quits the main loop. main() starts with
     # EXIT_FAILURE and returns success only after playback drain; a deliberate
     # recording SIGINT therefore returns 1. Never normalize other failures.
     # https://github.com/PipeWire/pipewire/blob/1.0.5/src/tools/pw-cat.c#L1916-L1921
+    # https://github.com/PipeWire/pipewire/blob/1.6.9/src/tools/pw-cat.c#L2655-L2660
     known_sigint = (
         capture_status == 1
-        and (out / 'capture-version.txt').read_text().splitlines() == KNOWN_SIGINT_VERSION
+        and tuple((out / 'capture-version.txt').read_text().splitlines()) in KNOWN_SIGINT_VERSIONS
     )
     assert capture_status == 0 or known_sigint, capture_status
     samples = array.array('f')
@@ -49,7 +49,7 @@ def analyze(out, capture_status):
         'capture_known_sigint_exit': known_sigint,
         'capture_note': 'Recording stopped with SIGINT after the passing Rust test; '
                         'frame count varies. Status 1 is allowed only for the '
-                        'documented PipeWire 1.0.5 recording shutdown, with empty '
+                        'documented PipeWire 1.0.5 or 1.6.9 recording shutdown, with empty '
                         'stderr and valid PCM; raw status is retained.',
         'note_score': 'both channels A4 / MIDI 69 velocity 70; on at +2s, off +2.6s; '
                       'score wall times approximate, not latency measurements',
@@ -61,7 +61,7 @@ def analyze(out, capture_status):
 
 
 class CaptureRegression(unittest.TestCase):
-    def check(self, *, status=1, version='1.0.5', stopped=True, log='',
+    def check(self, *, status=1, version='1.0.5', linked_version=None, stopped=True, log='',
               samples=None, probe_ok=True, valid=False):
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)
@@ -70,7 +70,7 @@ class CaptureRegression(unittest.TestCase):
             (root / 'loopback.f32').write_bytes(samples)
             (root / 'capture.log').write_text(log)
             (root / 'capture-version.txt').write_text(
-                f'pw-cat\nCompiled with libpipewire {version}\nLinked with libpipewire {version}\n')
+                f'pw-cat\nCompiled with libpipewire {version}\nLinked with libpipewire {linked_version or version}\n')
             (root / 'probe.log').write_text(
                 'test result: ok. 1 passed; 0 failed; 0 ignored;\n' if probe_ok
                 else 'test result: FAILED. 0 passed; 1 failed;\n')
@@ -84,6 +84,12 @@ class CaptureRegression(unittest.TestCase):
 
     def test_known_planned_sigint(self):
         self.check(valid=True)
+
+    def test_known_planned_sigint_1_6_9(self):
+        self.check(version='1.6.9', valid=True)
+
+    def test_mismatched_compile_link_versions(self):
+        self.check(version='1.6.9', linked_version='1.0.5')
 
     def test_clean_zero(self):
         self.check(status=0, version='1.4.9', valid=True)

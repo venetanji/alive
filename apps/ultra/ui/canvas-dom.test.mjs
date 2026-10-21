@@ -23,17 +23,17 @@ async function mount(native=false){
   const html=readFileSync(new URL('./canvas.html',import.meta.url),'utf8'),ids=new Map();
   for(const[,tag,id]of html.matchAll(/<([\w-]+)\b[^>]*\bid="([^"]+)"/g))ids.set(id,new Element(tag));
   ids.get('object-entry').hidden=true;
-  const documentEvents=new Element(),windowEvents=new Element(),calls=[],timeouts=[],navigations=[];let revision=0,running=false,patch;
+  const documentEvents=new Element(),windowEvents=new Element(),calls=[],timeouts=[],navigations=[],observed={};let revision=0,running=false,patch;
   const document={querySelector:s=>{const e=ids.get(s.slice(1));assert.ok(e,`HTML must contain ${s}`);return e;},createElement:t=>new Element(t),createElementNS:(_,t)=>new Element(t),addEventListener:(...a)=>documentEvents.addEventListener(...a),hidden:false,activeElement:null};
   const window={addEventListener:(...a)=>windowEvents.addEventListener(...a),setTimeout:(fn,ms)=>{timeouts.push({fn,ms});return timeouts.length;},clearTimeout(){},location:{assign:href=>navigations.push(href)}};
   ids.get('legacy-link').href='index.html';ids.get('lab-link').href='chord-lab.html';
-  const invoke=native?async(name,args={})=>{calls.push({name,args});if(name==='audio_devices')return{config:{host:'default',device:'default',sample_rate:48000,buffer_frames:null},hosts:['PipeWire'],effective_host:'PipeWire',devices:[{id:'default',name:'System default - Speakers',compatible:true}],notice:'Audio is off.'};if(name==='canvas_apply'){patch=args.patch;return{revision:++revision};}if(name==='audio_start')running=true;if(name==='audio_stop')running=false;if(name==='audio_status')return{running};if(name==='canvas_status')return{revision,active:true,nodes:patch.nodes.map(n=>({id:n.id,value:0,pulses:0}))};return true;}:undefined;
+  const invoke=native?async(name,args={})=>{calls.push({name,args});if(name==='audio_devices')return{config:{host:'default',device:'default',sample_rate:48000,buffer_frames:null},hosts:['PipeWire'],effective_host:'PipeWire',devices:[{id:'default',name:'System default - Speakers',compatible:true}],notice:'Audio is off.'};if(name==='canvas_apply'){patch=args.patch;return{revision:++revision};}if(name==='audio_start')running=true;if(name==='audio_stop')running=false;if(name==='audio_status')return{running};if(name==='canvas_status')return{revision,active:true,nodes:patch.nodes.map(n=>({id:n.id,value:0,pulses:0,...observed[n.id]}))};return true;}:undefined;
   const {mountCanvas}=await import('./canvas.mjs');const page=mountCanvas({document,window,invoke});await page.controller.flush();await settle();
-  return{...page,ids,calls,timeouts,navigations,windowEvents,documentEvents,all:id=>descendants(ids.get(id))};
+  return{...page,ids,calls,timeouts,navigations,observed,windowEvents,documentEvents,all:id=>descendants(ids.get(id))};
 }
 test('browser page mounts editable palette, honest preview, and exclusively top/bottom typed ports',async()=>{
   const p=await mount();assert.equal(p.ids.get('preview-banner').hidden,false);assert.equal(p.ids.get('start-audio').disabled,true);
-  assert.equal(p.all('palette').filter(e=>e.dataset.add).length,15);
+  assert.equal(p.all('palette').filter(e=>e.dataset.add).length,25);
   const ports=p.all('objects').filter(e=>e.dataset.direction);assert.ok(ports.length>30);
   for(const port of ports)assert.equal(port.dataset.side,port.dataset.direction==='in'?'top':'bottom');
   await p.ids.get('export-patch').fire('click');assert.equal(p.ids.get('patch-dialog').open,true);assert.equal(JSON.parse(p.ids.get('patch-json').value).profile,'ultra-canvas-v1');assert.equal(p.calls.length,0);
@@ -82,7 +82,7 @@ test('actual numeric, bang, toggle and message controls emit native events; drag
 test('message editing validates before replacement and bad ports leave last valid document intact',async()=>{
   const p=await mount();const msg=p.all('objects').find(e=>Number(e.dataset.node)===14);await descendants(msg).find(e=>e.dataset.drag).fire('click');
   const text=p.all('inspector').find(e=>e.dataset.parameter==='text');text.value='60 100';await text.fire('change');assert.equal(p.controller.getState().patch.nodes.find(n=>n.id===14).params.text,'60 100');
-  text.value='not a valid message';await text.fire('change');assert.equal(p.controller.getState().patch.nodes.find(n=>n.id===14).params.text,'60 100');assert.match(p.ids.get('notice').textContent,/literal|Message/);
+  text.value='set $1';await text.fire('change');assert.equal(p.controller.getState().patch.nodes.find(n=>n.id===14).params.text,'60 100');assert.match(p.ids.get('notice').textContent,/literal|Message/);
   const before=p.controller.export(),voice=p.all('objects').find(e=>Number(e.dataset.node)===6);await descendants(voice).find(e=>e.dataset.direction==='out').fire('click');await descendants(msg).find(e=>e.dataset.direction==='in').fire('click');assert.equal(p.controller.export(),before);assert.match(p.ids.get('notice').textContent,/type/i);
 });
 test('focus loss stops native graph and safe navigation awaits audio cleanup',async()=>{
@@ -168,6 +168,12 @@ test('camera pan, zoom and reset never send native graph or audio commands',asyn
   assert.match(p.ids.get('canvas').style.transform,/translate\(120px, 40px\)/);
   await workspace.fire('wheel',{ctrlKey:true,deltaY:-200,deltaMode:0,clientX:120,clientY:100});
   assert.ok(Number(p.ids.get('canvas-zoom').value)>1);
+  await workspace.fire('pointermove',{clientX:200,clientY:150});
+  const zoom=Number(p.ids.get('canvas-zoom').value);
+  await p.windowEvents.fire('keydown',{key:'z',target:workspace});
+  assert.ok(Number(p.ids.get('canvas-zoom').value)>zoom);
+  await p.windowEvents.fire('keydown',{key:'Z',shiftKey:true,target:workspace});
+  assert.equal(Number(p.ids.get('canvas-zoom').value),zoom);
   await p.ids.get('reset-view').fire('click');assert.equal(p.ids.get('canvas').style.transform,'translate(0px, 0px) scale(1)');
   assert.equal(p.controller.export(),before);assert.equal(p.calls.length,calls);
 });
@@ -180,4 +186,71 @@ test('locking cancels an in-flight move and disables already-open runnable help'
   assert.equal(p.controller.export(),before);
   assert.ok(!p.all('help-content').some(e=>e.textContent==='Open runnable example patch'&&!e.disabled));
   await example.fire('click');assert.equal(p.controller.export(),before);
+});
+
+test('new variadic objects rebuild node-aware ports after configuration changes',async()=>{
+  const p=await mount();
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'pack',x:40,y:40,params:{args:'0 0'}}],edges:[]});
+  const find=()=>p.all('objects').find(e=>Number(e.dataset.node)===1);
+  assert.equal(descendants(find()).filter(e=>e.dataset.direction==='in').length,2);
+  p.controller.parameter(1,'args','0 f s 0');
+  assert.equal(descendants(find()).filter(e=>e.dataset.direction==='in').length,4);
+  const fourth=descendants(find()).find(e=>e.dataset.direction==='in'&&e.dataset.port==='3');
+  await fourth.fire('pointerenter');assert.match(p.ids.get('assist').textContent,/cold/i);
+  await fourth.fire('contextmenu');assert.ok(p.ids.get('context-menu').children.length);
+  await p.ids.get('context-menu').children.find(e=>e.textContent==='Help for pack').fire('click');
+  assert.equal(p.all('help-content').filter(e=>e.className==='help-port').length,5);
+  p.controller.parameter(1,'args','0 0 0');
+  assert.equal(p.all('help-content').filter(e=>e.className==='help-port').length,4);
+});
+test('locked flonum and slider emit hot native events with audio off, Tab emits a selector and observations display',async()=>{
+  const p=await mount(true);
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'flonum',x:40,y:40,params:{}},{id:2,type:'slider',x:40,y:100,params:{}}],edges:[]});
+  await p.controller.flush();await p.ids.get('lock-patch').fire('click');
+  const input=id=>descendants(p.all('objects').find(e=>Number(e.dataset.node)===id)).find(e=>e.dataset.parameter==='value');
+  assert.ok(input(1));assert.ok(input(2));
+  input(1).value='3.5';await input(1).fire('change');input(2).value='42';await input(2).fire('input');await input(2).fire('change');
+  await input(1).fire('keydown',{key:'Tab'});await p.controller.flush();
+  assert.ok(p.calls.some(c=>c.name==='canvas_event'&&c.args.node===1&&c.args.value[0]===3.5));
+  assert.ok(p.calls.some(c=>c.name==='canvas_event'&&c.args.node===2&&c.args.value[0]===42));
+  assert.ok(p.calls.some(c=>c.name==='canvas_event'&&c.args.node===1&&c.args.value==='tab'));
+  assert.ok(!p.calls.some(c=>c.name==='audio_start'));
+  p.observed[1]={value:7.125,pulses:1};p.observed[2]={value:61,pulses:1};await p.controller.poll();
+  assert.equal(Number(input(1).value),7.125);assert.equal(Number(input(2).value),61);
+  await input(1).fire('keydown',{key:'Tab'});await p.controller.flush();
+  const exported=JSON.parse(p.controller.export());assert.equal(exported.nodes[0].params.value,3.5);assert.equal(exported.nodes[1].params.value,42);
+});
+
+test('flonum Tab commits pending text before the native second-outlet event',async()=>{
+  const p=await mount(true);
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'flonum',x:40,y:40,params:{}}],edges:[]});
+  await p.controller.flush();await p.ids.get('lock-patch').fire('click');
+  const input=p.all('objects').find(e=>e.dataset.parameter==='value');
+  input.value='5.25';await input.fire('input');await input.fire('keydown',{key:'Tab'});await input.fire('change');await p.controller.flush();
+  assert.deepEqual(p.calls.filter(c=>c.name==='canvas_event').map(c=>c.args.value),[[5.25],'tab']);
+});
+
+test('slider pointer values remain raw and offset/multiplier apply only to the output readout',async()=>{
+  const p=await mount(true);
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'slider',x:40,y:40,params:{min:10,mult:2,size:6}}],edges:[]});
+  await p.controller.flush();await p.ids.get('lock-patch').fire('click');
+  const input=p.all('objects').find(e=>e.dataset.parameter==='value');
+  assert.equal(Number(input.min),0);assert.equal(Number(input.max),5);assert.equal(Number(input.step),1);
+  input.value='5';await input.fire('input');await input.fire('change');await p.controller.flush();
+  assert.ok(p.calls.some(c=>c.name==='canvas_event'&&c.args.value[0]===5));
+  assert.equal(p.all('objects').find(e=>e.className==='slider-value').textContent,'20');
+  p.observed[1]={value:3,pulses:1};await p.controller.poll();assert.equal(Number(input.value),3);
+  assert.equal(p.all('objects').find(e=>e.className==='slider-value').textContent,'16');
+});
+
+test('line Help opens its own runnable native example without starting audio or sending events',async()=>{
+  const p=await mount(true);
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'line',x:40,y:40,params:{}}],edges:[]});
+  await p.controller.flush();
+  const node=p.all('objects').find(e=>Number(e.dataset.node)===1);
+  await node.fire('contextmenu');await p.ids.get('context-menu').children.find(e=>e.textContent==='Help for line').fire('click');
+  await p.all('help-content').find(e=>e.textContent==='Open runnable example patch').fire('click');await p.controller.flush();
+  const patch=JSON.parse(p.controller.export());assert.ok(patch.nodes.some(n=>n.type==='line'));
+  assert.ok(patch.nodes.some(n=>n.type==='message'));assert.ok(patch.edges.length);
+  assert.equal(p.calls.filter(c=>['audio_start','canvas_event'].includes(c.name)).length,0);
 });

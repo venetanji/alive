@@ -4,10 +4,10 @@ The native window opens `canvas.html`, the editable graph profile `ultra-canvas-
 
 ## Editable canvas workflow
 
-- **Ctrl E** locks/unlocks the patch. Edit mode selects and moves controls; locked mode operates them. Start audio, lock, then click the top-left toggle to run `metro → counter → chord → makenote → voice`. The native audio timeline owns metro pulses and note-off scheduling. The separate bang/message chain triggers a note. The current CPAL desktop path has no physical MIDI ingress; `midiin` routing is exercised only through the legacy JACK adapter/tests. Ctrl/Cmd-click can operate a control while editing.
-- **N** or double-click blank canvas creates an object at the pointer. Type its name and positional arguments, such as `metro 150` or `+ 12`. Arrow keys select a suggestion, Tab completes, Enter commits and Escape cancels. B/M/T/I begin bang/message/toggle/number entry. Double-click an object, or select it and press Enter/F2, to edit its text. Unsupported classes and invalid arguments remain visible as errors without replacing the current object. The optional object library lists all 15 supported kinds.
+- **Ctrl E** locks/unlocks the patch. Edit mode selects and moves controls; locked mode operates them. Control objects work with audio stopped. For sound, start audio, lock, then click the top-left toggle to run `metro → counter → chord → makenote → voice`. Native code owns metro pulses, ramps and note-off scheduling; its background worker clocks controls when DSP is off. The separate bang/message chain triggers a note. The current CPAL desktop path has no physical MIDI ingress; `midiin` routing is exercised only through the legacy JACK adapter/tests. Ctrl/Cmd-click can operate a control while editing.
+- **N** or double-click blank canvas creates an object at the pointer. Type its name and positional arguments, such as `metro 150`, `+ 12`, `line 0 20`, or `pack i f s`. Arrow keys select a suggestion, Tab completes, Enter commits and Escape cancels. B/M/T/I begin bang/message/toggle/number entry. Double-click an object, or select it and press Enter/F2, to edit its text. Unsupported classes and invalid arguments remain visible as errors without replacing the current object. The optional object library lists all 25 supported kinds, including the new `int`, `float`, `flonum`, `slider`, `pack`, `unpack`, `select`, `route`, `trigger` and `line`.
 - Every inlet is on the **top**, every outlet on the **bottom**, indexed left to right. Click an outlet, then a matching inlet. Control, mono audio and stereo bundles have distinct ports and cable styles. Hover or focus a port for help; right-click an inlet for **Accepts**, an outlet for **Emits**. These descriptions follow Ultra's contract. Multiple control sources may enter an inlet; an audio inlet accepts one source. Saved cable array order controls fan-out order.
-- Drag object bodies/headers, Shift-select or marquee a group, and use arrow keys to nudge. Group moves/deletes undo in one step. Space+drag or middle-button drag pans the canvas, including when starting over an object. Ctrl/Cmd+wheel zooms at the pointer; Ctrl/Cmd +/- zooms and Ctrl/Cmd 0 or Reset view restores 100% at the origin. Zoom and Fit change only the view, never graph coordinates or audio state. Ctrl I opens the optional inspector for all parameters; F1 or the context menu opens help with literal and runnable examples. Numbers and vertical gain controls operate while locked. Native numeric observations update display without modifying saved parameters or feeding back as UI events.
+- Drag object bodies/headers, Shift-select or marquee a group, and use arrow keys to nudge. Group moves/deletes undo in one step. Wheel or two-finger scrolling moves the view; Shift+wheel scrolls horizontally. Space+drag or middle-button drag also pans, including when starting over an object. **Z** zooms in around the pointer and **Shift Z** zooms out, following Max's key commands. Ctrl/Cmd+wheel (including browser trackpad pinch events) also zooms at the pointer; Ctrl/Cmd +/- zooms and Ctrl/Cmd 0 or Reset view restores 100% at the origin. Navigation works in edit and locked mode; typing and Ctrl/Cmd Z undo keep their usual behavior. Zoom and Fit change only the view, never graph coordinates or audio state. Ctrl I opens the optional inspector for all parameters; F1 or the context menu opens help with literal and runnable examples. Numbers and vertical gain controls operate while locked. Native numeric observations update display without modifying saved parameters or feeding back as UI events.
 - Select a cable or object and use **Delete selection** or Delete/Backspace. Undo/redo preserves stable IDs, cable order, parameters and positions. Numeric-parameter undo remains live; structural undo resets notes/timers. Layout undo never reapplies the native graph.
 - Numeric parameters use a bounded latest-wins queue while dragging. Message text, MIDI channel, voice device, node and cable changes are structural and disabled while locked, including in the Inspector. Structural edits prepare a replacement graph, stop timers and notes, and require an explicit new toggle/bang to start again. This is **not seamless hot swapping**. Invalid local edits leave the document unchanged; native rejection retains the last valid active graph and blocks new UI events until resolved. Desired document and active native revisions are shown separately.
 - **Stop patch**, focus loss, a hidden page and Esc stop native timers and notes, including when ordinary number/gain/Inspector inputs have focus. Escape inside object entry cancels that edit instead; modal/context menus retain their dismissal behavior. **Panic** latches native silence until Stop audio / Start audio. Event-queue overflow fails closed instead of discarding a possible note-off. Navigation waits for audio cleanup and stays on the page if cleanup fails. Abrupt process termination still cannot guarantee webview IPC completion.
@@ -28,10 +28,41 @@ node --check apps/ultra/ui/canvas.mjs
 `canvas-model.test.mjs` covers the strict registry/document, typed audio/control topology, snapshots, real command payloads, parameter coalescing, revision races, native rejection, stop, Panic, startup failure and cancellation, queue overflow, and numeric undo. `canvas-dom.test.mjs` executes the actual page module against a small DOM adapter for palette, wiring, deletion, message/numeric edits, native triggers, dragging, port orientation, import type changes and navigation. Rendered browser smoke is separate under `../tests/ci`; see that directory's README. DOM/static/browser-preview checks do not establish native audio output, hardware MIDI, latency or callback deadlines.
 
 `canvas-catalog.mjs` is the UI name/argument/port-help contract over the same
-15-kind native registry. It rejects Max classes that lack runtime support;
-`int`, `flonum` and `cycle~` are not aliases. `canvas-entry.mjs` owns inline entry
+25-kind native registry. It rejects Max classes that lack runtime support;
+`cycle~` remains unsupported. `int` and `flonum` are separate runtime kinds;
+`i`, `f`, `sel` and `t` resolve to int, float, select and trigger when typed as
+object names. `canvas-entry.mjs` owns inline entry
 and `canvas-node.mjs` owns compact object faces. The reference observations and
 user-supplied Max-saved snapshots live in `experiments/max-ui-reference/`.
+
+Inline autocomplete shows each object's positional signature, highlights the
+argument at the caret, and describes its range and default. Enumerated parameters
+offer named choices (for example `chord` shape 0 Major / 1 Minor / 2 Sus4).
+Type `@` to list supported named creation parameters; `metro @interval 250` and
+`metro 250` configure the same value. Positional arguments precede named options;
+duplicates, unsupported options and invalid values leave the patch unchanged.
+Tab or a suggestion click completes the current token while preserving text
+after the caret. Enter commits the typed arguments without substituting defaults.
+These option names describe Ultra's registry, not the complete Max attributes.
+
+`pack`, `unpack`, `select`, `route` and `trigger` create their port counts from
+up to eight creation atoms. Typed literals and named selectors can be sent from
+message boxes, for example `note 64 100`, `set 12`, and `pause`. `flonum` is a
+floating-point UI box with a Tab bang outlet; `slider` is an independent control
+slider rather than an audio gain. `line` has target/time/grain inlets and a
+completion outlet. The native clock runs it with audio off. Original runnable
+examples and operation instructions are in `../examples/README.md`; start with
+`../examples/line.ultra`. See `../PATCH_PROTOCOL.md` for bounds and the supported
+subset. Whole Max `.maxpat`/`.maxhelp` files still require a separate importer.
+
+The navigation comparison is recorded in
+`experiments/max-ui-reference/navigation.md`. Max's installed 9.1.5 key-command
+map identifies Z/Shift Z as cursor-centered zoom. The official
+[Patching guide](https://docs.cycling74.com/userguide/patching/#zooming) documents
+these keys and pinch; the [Patcher Window guide](https://docs.cycling74.com/userguide/patcher_window/#top-toolbar)
+documents Ctrl/Cmd = and -. Space/middle dragging and Ctrl/Cmd 0 are retained
+Ultra conveniences, not verified Max shortcuts. Max's exact zoom increments,
+wheel sensitivity and platform-specific hand-drag gestures were not measured.
 
 `bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/ultra-canvas-results` exercises
 the built Tauri canvas on private Xvfb/D-Bus/AT-SPI, reopens authored JSON and

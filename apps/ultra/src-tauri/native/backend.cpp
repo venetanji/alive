@@ -8,6 +8,7 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <chrono>
 #include <dlfcn.h>
 #include <string>
 #include <vector>
@@ -57,7 +58,10 @@ struct Control {
  ultra::CanvasPlan canvas{};uint64_t revision=0;uint32_t node=0,inlet=0,param=0;ultra::CanvasMessage message{};double value=0;
 };
 ultra::CanvasPlan admitted_canvas; // Control-thread only; serialized by Rust.
-ultra::CanvasRuntime canvas; // Owned by the active audio callback.
+ultra::CanvasRuntime canvas; // Callback-owned while running; control-owned after shutdown.
+using CanvasClock=std::chrono::steady_clock;
+auto canvas_idle_mark=CanvasClock::now();
+double canvas_idle_fraction=0;
 std::atomic<bool> canvas_requested{false};bool callback_canvas=false;
 unsigned canvas_silence=0;
 std::array<std::array<float,1024>,2> canvas_audio{};
@@ -70,13 +74,31 @@ double bits_double(uint64_t v){double result;std::memcpy(&result,&v,sizeof resul
 void publish_canvas(){
  canvas_generation.fetch_add(1,std::memory_order_acq_rel);
  const auto& p=canvas.plan();canvas_revision.store(p.graph.revision,std::memory_order_relaxed);
- canvas_count.store(p.graph.node_count,std::memory_order_relaxed);canvas_active.store(callback_canvas,std::memory_order_relaxed);
+ canvas_count.store(p.graph.node_count,std::memory_order_relaxed);canvas_active.store(callback_canvas&&!canvas.failed(),std::memory_order_relaxed);
  for(unsigned i=0;i<p.graph.node_count;i++){
   canvas_nodes[i].id.store(p.graph.nodes[i].id,std::memory_order_relaxed);
   canvas_nodes[i].value.store(double_bits(canvas.value(i)),std::memory_order_relaxed);
   canvas_nodes[i].pulses.store(canvas.pulses(i),std::memory_order_relaxed);
  }
  canvas_generation.fetch_add(1,std::memory_order_release);
+}
+void reset_canvas_idle_clock(){canvas_idle_mark=CanvasClock::now();canvas_idle_fraction=0;}
+void tick_canvas_idle(){
+ // Rust serializes this with every lifecycle/control call. A stopped engine is
+ // required because a disconnected audio callback may still own the runtime.
+ if(running.load()||engine.status().ready||!canvas_requested.load()||!callback_canvas){reset_canvas_idle_clock();return;}
+ const auto now=CanvasClock::now();
+ const double elapsed=std::chrono::duration<double>(now-canvas_idle_mark).count();canvas_idle_mark=now;
+ // Bound catch-up after suspension. The native scheduler still advances in
+ // sample frames, with the same work budget as the active audio path.
+ const double frames=std::min(elapsed,.1)*48000.+canvas_idle_fraction;
+ const auto count=static_cast<unsigned>(frames);canvas_idle_fraction=frames-count;
+ auto discard=[](alive::Event){return true;};
+ for(unsigned i=0;i<count&&!canvas.failed();i++){
+  if(i%1024==0)canvas.begin_callback();
+  canvas.sample(0,discard);
+ }
+ publish_canvas();
 }
 ultra::Sequencer sequence;
 std::atomic<bool> sequence_requested{false},sequence_enabled{false};
@@ -138,7 +160,7 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
   }else if(control.kind==ControlKind::CanvasEvent){
    if(callback_canvas&&control.revision==canvas.plan().graph.revision)canvas.event(control.revision,control.node,control.inlet,control.message,0,emit);
   }else if(control.kind==ControlKind::CanvasParam){
-   if(callback_canvas&&control.revision==canvas.plan().graph.revision)canvas.param(control.canvas,control.node,control.param,control.value,0,emit);
+   if(callback_canvas&&control.revision==canvas.plan().graph.revision&&!canvas.param(control.canvas,control.node,control.param,control.value,0,emit))canvas.fail();
   }else if(control.kind==ControlKind::CanvasStop){
    if(callback_canvas){canvas.stop(0,emit);canvas_silence=64;}
   }else if(!callback_canvas)manual(control.event);
@@ -219,7 +241,7 @@ void put32(FILE*f,uint32_t n){put16(f,n);put16(f,n>>16);}
 extern "C" {
 void ultra_audio_stop(){
  running.store(false);if(jack.client){jack.deactivate(jack.client);jack.client_close(jack.client);jack.client=nullptr;}
- engine.shutdown();sequence.clear();publish_sequence();canvas.reset(admitted_canvas);callback_canvas=canvas_requested.load();canvas.clear_timers();publish_canvas();sequence_requested=false;control_head=0;control_tail=0;if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}lost.store(false);error="Audio is stopped.";
+ engine.shutdown();sequence.clear();publish_sequence();canvas.reset(admitted_canvas);callback_canvas=canvas_requested.load();canvas.clear_timers();reset_canvas_idle_clock();publish_canvas();sequence_requested=false;control_head=0;control_tail=0;if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}lost.store(false);error="Audio is stopped.";
 }
 static int start_impl(){
  ultra_audio_stop();if(!jack.load()){if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}error="libjack.so.0 is unavailable. Install your distro's JACK/PipeWire JACK compatibility package, then restart.";return 0;}
@@ -292,14 +314,25 @@ int ultra_canvas_install(const UltraCanvasGraph* graph){
   Control c{};c.kind=ControlKind::CanvasInstall;c.canvas=next;if(!queue_control(c))return 0;
  }else if(engine.status().ready)return 0;
  admitted_canvas=next;canvas_requested=true;sequence_requested=false;
- if(!was_running){canvas.reset(next);callback_canvas=true;canvas.clear_timers();publish_canvas();}
+ if(!was_running){canvas.reset(next);callback_canvas=true;canvas.clear_timers();reset_canvas_idle_clock();publish_canvas();}
  return 1;
 }
 int ultra_canvas_event(uint64_t revision,uint32_t node,uint32_t inlet,uint32_t count,const double* values){
- if(!running.load()||!canvas_requested.load()||count>3||(count&&!values))return 0;
- ultra::CanvasMessage m{};m.count=count;for(unsigned i=0;i<count;i++)m.values[i]=values[i];
+ if(count>8||(count&&!values))return 0;
+ UltraCanvasMessage message{};message.count=count;
+ for(unsigned i=0;i<count;i++){message.values[i]=values[i];message.tags[i]=std::floor(values[i])==values[i]?0:1;}
+ return ultra_canvas_message(revision,node,inlet,&message);
+}
+int ultra_canvas_message(uint64_t revision,uint32_t node,uint32_t inlet,const UltraCanvasMessage* message){
+ if(!message||!canvas_requested.load())return 0;
+ const auto m=ultra::canvas_message_from_pod(*message);
  if(!ultra::canvas_event_valid(admitted_canvas,revision,node,inlet,m))return 0;
- Control c{};c.kind=ControlKind::CanvasEvent;c.revision=revision;c.node=node;c.inlet=inlet;c.message=m;return queue_control(c);
+ if(running.load()){
+  Control c{};c.kind=ControlKind::CanvasEvent;c.revision=revision;c.node=node;c.inlet=inlet;c.message=m;return queue_control(c);
+ }
+ if(engine.status().ready)return 0;
+ tick_canvas_idle();canvas.begin_callback();auto discard=[](alive::Event){return true;};
+ const bool accepted=canvas.event(revision,node,inlet,m,0,discard);publish_canvas();return accepted;
 }
 int ultra_canvas_param(uint64_t revision,uint32_t node,uint32_t param,double value){
  if(!canvas_requested.load()||revision!=admitted_canvas.graph.revision)return 0;
@@ -308,16 +341,17 @@ int ultra_canvas_param(uint64_t revision,uint32_t node,uint32_t param,double val
  if(was_running){
   Control c{};c.kind=ControlKind::CanvasParam;c.revision=revision;c.node=node;c.param=param;c.value=value;c.canvas=next;if(!queue_control(c))return 0;
  }else if(engine.status().ready)return 0;
+ if(!was_running){tick_canvas_idle();canvas.begin_callback();auto discard=[](alive::Event){return true;};if(!canvas.param(next,node,param,value,0,discard))return 0;publish_canvas();}
  admitted_canvas=next;
- if(!was_running){canvas.reset(next);canvas.clear_timers();publish_canvas();}
  return 1;
 }
 void ultra_canvas_stop(){
  if(!canvas_requested.load())return;
  if(running.load()){Control c{};c.kind=ControlKind::CanvasStop;queue_control(c);}
  else if(engine.status().ready){engine.panic();} // Shutdown may still own callback state.
- else {canvas.clear_timers();publish_canvas();}
+ else {canvas.clear_timers();reset_canvas_idle_clock();publish_canvas();}
 }
+void ultra_canvas_idle_tick(){tick_canvas_idle();}
 void ultra_canvas_status(UltraCanvasStatus* result){
  if(!result)return;
  // Every field is atomic. Four attempts bound UI work under callback contention.

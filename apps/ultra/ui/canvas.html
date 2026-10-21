@@ -45,7 +45,7 @@
     <button id="redo" class="icon-button" aria-label="Redo" title="Redo (Ctrl Shift Z)"><svg><use href="#i-redo"/></svg></button>
     <span class="toolbar-divider"></span>
     <button id="reset-view" title="Reset view (Ctrl 0)" aria-label="Reset canvas view">1:1</button>
-    <label class="zoom-control" title="Ctrl / Cmd wheel: zoom at pointer. Space + drag or middle drag: pan."><span class="sr-only">Canvas zoom</span><select id="canvas-zoom" aria-label="Canvas zoom"><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option><option id="zoom-fit" value="fit" hidden>Fit</option></select></label>
+    <label class="zoom-control" title="Z / Shift Z: zoom in / out at pointer. Ctrl / Cmd wheel or pinch: zoom. Scroll to move; Shift scroll moves horizontally. Space + drag or middle drag: pan."><span class="sr-only">Canvas zoom</span><select id="canvas-zoom" aria-label="Canvas zoom"><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option><option id="zoom-fit" value="fit" hidden>Fit</option></select></label>
     <button id="fit-patch" class="icon-button" aria-label="Fit patch" title="Fit patch to window"><svg><use href="#i-fit"/></svg></button>
     <div class="toolbar-end">
       <button id="show-inspector" class="icon-button" aria-label="Inspector" title="Inspector (Ctrl I)" aria-pressed="false"><svg><use href="#i-inspect"/></svg></button>
@@ -61,7 +61,7 @@
   </section>
   <aside id="details-panel" hidden aria-label="Object details">
     <header class="panel-header"><h2 id="panel-title">Inspector</h2><button id="close-panel" class="icon-button" aria-label="Close panel"><svg><use href="#i-close"/></svg></button></header>
-    <section id="library-content" hidden><label for="object-search" class="sr-only">Find an object</label><input id="object-search" type="search" placeholder="Find an object..." autocomplete="off"><div id="palette"></div><p class="panel-note">15 supported objects. Names and arguments belong to Ultra's bounded profile.</p></section>
+    <section id="library-content" hidden><label for="object-search" class="sr-only">Find an object</label><input id="object-search" type="search" placeholder="Find an object..." autocomplete="off"><div id="palette"></div><p class="panel-note">25 supported objects. Names and arguments belong to Ultra's bounded profile.</p></section>
     <section id="inspector-content"><div id="inspector"></div><button id="edit-object" class="panel-action">Edit object text</button><button id="delete-selection" class="panel-action">Delete selection</button><details class="diagnostics"><summary>Native observations</summary><p id="revision-state"></p><p id="observation-state"></p><button id="reapply" class="panel-action">Reapply graph</button></details></section>
     <section id="help-content" hidden></section>
     <section id="audio-content" hidden>
@@ -93,7 +93,8 @@
 </footer>
 <div id="object-entry" class="object-entry" hidden>
   <label for="object-text" class="sr-only">Object name and arguments</label>
-  <input id="object-text" role="combobox" aria-label="Object name and arguments" aria-autocomplete="list" aria-controls="object-suggestions" aria-expanded="false" autocomplete="off" spellcheck="false" placeholder="object name and arguments">
+  <input id="object-text" role="combobox" aria-label="Object name and arguments" aria-autocomplete="list" aria-controls="object-suggestions" aria-describedby="object-arguments object-error" aria-expanded="false" autocomplete="off" spellcheck="false" placeholder="object name and arguments">
+  <div id="object-arguments" hidden></div>
   <div id="object-suggestions" role="listbox" aria-label="Supported objects"></div>
   <p id="object-error" role="status"></p><p class="entry-hint"><kbd>Up</kbd><kbd>Down</kbd> choose <kbd>Tab</kbd> complete <kbd>Enter</kbd> create <kbd>Esc</kbd> cancel</p>
 </div>

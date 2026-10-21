@@ -3,7 +3,7 @@
 import ctypes as C, math, os, pathlib, subprocess, sys, tempfile
 root = pathlib.Path(__file__).resolve().parents[1]
 class Node(C.Structure):
-    _fields_ = [(k,C.c_uint32) for k in ('id','kind','device','count')] + [(k,C.c_double) for k in ('p0','p1','p2')]
+    _fields_ = [(k,C.c_uint32) for k in ('id','kind','device','count')] + [(k,C.c_double) for k in ('p0','p1','p2','p3','p4','p5')] + [('text',C.c_char*128)]
 class Edge(C.Structure):
     _fields_ = [(k,C.c_uint32) for k in ('from_','outlet','to','inlet')]
 class Graph(C.Structure):

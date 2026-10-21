@@ -6,12 +6,12 @@ const number = (value,min,max,integer=false) => ({value,min,max,integer});
 const spec = (label, params, inputs, outputs, help) => ({label,params,inlets:ports(inputs,'top'),outlets:ports(outputs,'bottom'),help});
 export const REGISTRY = Object.freeze({
   bang: spec('bang',{},[[C,'trigger']],[[C,'bang']],'Any input emits bang. Click to send a native bang.'),
-  message: spec('message',{text:{value:'60 100'}},[[C,'trigger']],[[C,'stored message']],'Bang or one to three literal numbers. Click to emit; edit text in the inspector.'),
+  message: spec('message',{text:{value:'60 100'}},[[C,'trigger']],[[C,'stored message']],'Literal bang, numeric/symbol atoms or named selector; at most eight atoms. No substitution or comma/semicolon syntax.'),
   number: spec('number',{value:number(0,-100000,100000)},[[C,'hot: store + emit'],[C,'cold: store']],[[C,'value']],'Editing the value sends its own hot inlet, so connected objects receive it.'),
   toggle: spec('toggle',{value:number(0,0,1,true)},[[C,'bang toggles; scalar sets']],[[C,'0 / 1']],'Native state. Structural edits and Stop reset it off.'),
   add: spec('+',{rhs:number(0,-100000,100000)},[[C,'hot: value / bang'],[C,'cold: right operand']],[[C,'sum']],'Hot inlet emits left + right. Cold inlet changes the right operand.'),
   multiply: spec('×',{rhs:number(1,-100000,100000)},[[C,'hot: value / bang'],[C,'cold: right operand']],[[C,'product']],'Hot inlet emits left × right.'),
-  metro: spec('metro',{interval:number(150,20,2000)},[[C,'on / off; bang once'],[C,'interval ms']],[[C,'bang']],'Native audio-timeline clock. Interval is in milliseconds; no browser clock.'),
+  metro: spec('metro',{interval:number(150,20,2000)},[[C,'on / off; bang once'],[C,'interval ms']],[[C,'bang']],'Native control clock, including with audio off. Interval is in milliseconds; no browser clock.'),
   counter: spec('counter',{steps:number(8,1,32,true)},[[C,'advance'],[C,'reset index']],[[C,'index']],'Emits the current index, then advances modulo steps.'),
   chord: spec('chord',{root:number(48,0,127,true),shape:number(0,0,2,true)},[[C,'index'],[C,'root']],[[C,'pitch']],'Triad stair: 0 major, 1 minor, 2 sus4. Repeats one octave higher every third step.'),
   makenote: spec('makenote',{velocity:number(100,1,127,true),duration:number(150,10,2000)},[[C,'pitch'],[C,'velocity'],[C,'duration ms']],[[C,'pitch, velocity']],'Native note-on and delayed note-off. Duration is milliseconds.'),
@@ -20,6 +20,16 @@ export const REGISTRY = Object.freeze({
   gain: spec('gain~',{value:number(90,0,127,true)},[[M,'mono audio'],[C,'level']],[[M,'mono audio']],'Live level, raw 0–127, not decibels.'),
   join: spec('join~',{},[[M,'left / channel 0'],[M,'right / channel 1']],[[S,'stereo bundle']],'Explicit two-channel bundle. Missing inputs are silence; one source may feed both.'),
   dac: spec('dac~',{},[[S,'stereo bundle']],[],'Maps the explicit bundle to left and right on the configured Rust audio output.'),
+  int: spec('int',{value:number(0,-100000,100000)},[[C,'hot: store + emit'],[C,'cold: store']],[[C,'integer']],'Store an integer, truncating toward zero. Bang emits the stored value; set stores silently.'),
+  float: spec('float',{value:number(0,-100000,100000)},[[C,'hot: store + emit'],[C,'cold: store']],[[C,'float']],'Store a floating-point number. Bang emits the stored value; set stores silently.'),
+  flonum: spec('flonum',{value:number(0,-100000,100000),minimum:number(-100000,-100000,100000),maximum:number(100000,-100000,100000),numdecimalplaces:number(6,0,9,true)},[[C,'hot: store + emit']],[[C,'float'],[C,'Tab bang']],'Floating-point UI box with optional minimum/maximum. Tab emits a bang from its second outlet. Decimal places affect display only.'),
+  slider: spec('slider',{value:number(0,-100000,100000),size:number(128,1,100000,true),min:number(0,-100000,100000),mult:number(1,-100000,100000),floatoutput:number(0,0,1,true)},[[C,'hot: store + emit']],[[C,'value']],'Store a raw value. The pointer spans 0 to size - 1. Output is raw * mult + min, clipped to global bounds; direct numeric input can exceed the pointer range.'),
+  pack: spec('pack',{args:{value:'0 0'}},[[C,'hot: emit list'],[C,'cold: store']],[[C,'list']],'Store up to eight typed fields. Only the left inlet emits the complete list; remaining inlets store silently.'),
+  unpack: spec('unpack',{args:{value:'0 0'}},[[C,'list']],[[C,'field 0'],[C,'field 1']],'Distribute up to eight typed list fields to separate outlets, synchronously from right to left.'),
+  select: spec('select',{args:{value:'0'}},[[C,'match input'],[C,'cold: selector']],[[C,'match bang'],[C,'unmatched']],'Compare typed selectors. Matching outlets emit bang; the final outlet passes unmatched input.'),
+  route: spec('route',{args:{value:'0'}},[[C,'route input'],[C,'cold: selector']],[[C,'matched remainder'],[C,'unmatched']],'Route a matching selector or leading atom, stripping it from matched messages. Extra inlets replace selectors.'),
+  trigger: spec('trigger',{args:{value:'i i'}},[[C,'input']],[[C,'integer'],[C,'integer']],'Emit synchronously from right to left. Arguments i/f/b/l/s coerce to int/float/bang/list/symbol; other atoms are constants.'),
+  line: spec('line',{value:number(0,-100000,100000),time:number(0,0,100000),grain:number(20,1,100000),floatoutput:number(2,0,2,true)},[[C,'target / ramp'],[C,'time ms'],[C,'grain ms']],[[C,'value'],[C,'completion bang']],'Native control ramp. Target/time pairs, stop, pause and resume use the backend clock, including while audio is off. Output mode 0 int, 1 float, 2 automatic.'),
 });
 const copy = value => JSON.parse(JSON.stringify(value));
 const fail = message => { throw Error(message); };
@@ -31,12 +41,39 @@ function fields(value, allowed, context, required=true) {
 function numeric(value,min,max,integer,context) {
   if(typeof value!=='number'||!Number.isFinite(value)||value<min||value>max||(integer&&!Number.isInteger(value))) fail(`${context} must be ${integer?'an integer':'a finite number'} from ${min} to ${max}.`);
 }
+const numericAtom=/^[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?$/;
+function literalWords(text,context) {
+  if(typeof text!=='string'||text.length>127||/[^\x20-\x7e\t\r\n]|[,;$'"\\]/.test(text))fail(`${context} must be at most 127 ASCII bytes, without substitution, quotes, backslashes, commas or semicolons.`);
+  const words=text.trim().split(/\s+/);if(!text.trim())fail(`${context} requires at least one atom.`);
+  for(const [index,word]of words.entries()){
+    const forceSymbol=context==='Message'&&words[0]==='symbol'&&index===1;
+    if(!forceSymbol&&numericAtom.test(word))numeric(Number(word),-100000,100000,false,`${context} value`);
+    else if(word.length>31||(!forceSymbol&&(/^[\d+.-]/.test(word)||/^(?:nan|inf(?:inity)?)$/i.test(word))))fail(`${context} symbols must contain at most 31 ASCII bytes; numeric atoms must be valid finite numbers.`);
+  }
+  return words;
+}
+export function parseArguments(text) {
+  const words=literalWords(text,'Arguments');if(words.length>8)fail('Arguments support at most eight atoms.');return words;
+}
 export function parseMessage(text) {
-  if(typeof text!=='string'||text.length>128) fail('Message must contain at most 128 characters.');
-  const trimmed=text.trim(); if(trimmed==='bang') return null;
-  const words=trimmed.split(/\s+/);
-  if(!trimmed||words.length>3||words.some(x=>!/^[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?$/.test(x))) fail('Message supports bang or one to three literal numbers only.');
-  const values=words.map(Number); values.forEach(x=>numeric(x,-100000,100000,false,'Message value')); return values;
+  const words=literalWords(text,'Message'),head=words[0];
+  if(head==='bang'&&words.length===1)return null;
+  if(head==='bang')fail('bang does not accept arguments.');
+  const numeric=words.every(word=>numericAtom.test(word));
+  const count=words.length-(numericAtom.test(head)?0:1);
+  if(count>8)fail('Message supports at most eight atoms.');
+  if(head==='symbol'&&words.length!==2)fail('symbol requires exactly one symbol atom.');
+  if(head==='list'&&words.length===1)return text.trim();
+  return numeric?words.map(Number):text.trim();
+}
+export function nodeSpec(node) {
+  const s=REGISTRY[node.type];if(!s)fail(`Unknown object type: ${node.type}.`);
+  if(!Object.hasOwn(s.params,'args'))return s;
+  const args=parseArguments(node.params?.args??s.params.args.value),count=args.length;
+  const control=(n,label,side)=>ports(Array.from({length:n},(_,i)=>[C,`${label} ${i}`]),side);
+  const ins=node.type==='pack'?count:node.type==='route'?count+1:node.type==='select'&&count===1?2:1;
+  const outs=['unpack','trigger'].includes(node.type)?count:['select','route'].includes(node.type)?count+1:1;
+  return{...s,inlets:control(ins,'inlet','top'),outlets:control(outs,'outlet','bottom')};
 }
 export function validatePatch(input) {
   fields(input,['version','profile','nodes','edges'],'patch');
@@ -52,8 +89,9 @@ export function validatePatch(input) {
     fields(node.params,Object.keys(s.params),`${node.type} parameters`,false);
     node={...node,params:{...Object.fromEntries(Object.entries(s.params).map(([key,p])=>[key,p.value])),...node.params}};
     for(const [key,p] of Object.entries(s.params)) {
-      if(key==='text') parseMessage(node.params[key]); else numeric(node.params[key],p.min,p.max,p.integer,`${node.type}.${key}`);
+      if(key==='text')parseMessage(node.params[key]);else if(key==='args')parseArguments(node.params[key]);else numeric(node.params[key],p.min,p.max,p.integer,`${node.type}.${key}`);
     }
+    if(node.type==='flonum'&&node.params.minimum>node.params.maximum)fail('flonum minimum must not exceed maximum.');
     if(node.type==='voice') { if(devices.has(node.params.device)) fail('Only one voice per logical device is supported.'); devices.add(node.params.device); }
     if(['join','dac'].includes(node.type)) { if(singleton.has(node.type)) fail(`Only one ${node.type} is supported.`); singleton.add(node.type); }
     nodes.set(node.id,node);
@@ -62,10 +100,11 @@ export function validatePatch(input) {
   for(const edge of input.edges) {
     fields(edge,['from','outlet','to','inlet'],'edge');
     const from=nodes.get(edge.from),to=nodes.get(edge.to); if(!from||!to) fail('Cable references a missing object.');
-    numeric(edge.outlet,0,REGISTRY[from.type].outlets.length-1,true,'Outlet index');
-    numeric(edge.inlet,0,REGISTRY[to.type].inlets.length-1,true,'Inlet index');
-    const kind=REGISTRY[from.type].outlets[edge.outlet].type;
-    if(kind!==REGISTRY[to.type].inlets[edge.inlet].type) fail('Port type mismatch: control, mono and stereo are distinct.');
+    const source=nodeSpec(from),target=nodeSpec(to);
+    numeric(edge.outlet,0,source.outlets.length-1,true,'Outlet index');
+    numeric(edge.inlet,0,target.inlets.length-1,true,'Inlet index');
+    const kind=source.outlets[edge.outlet].type;
+    if(kind!==target.inlets[edge.inlet].type) fail('Port type mismatch: control, mono and stereo are distinct.');
     const key=`${edge.from}:${edge.outlet}>${edge.to}:${edge.inlet}`; if(duplicates.has(key)) fail('Duplicate cable.'); duplicates.add(key);
     if(kind===C) { if(!adjacency.has(edge.from)) adjacency.set(edge.from,[]); adjacency.get(edge.from).push(edge.to); }
     else {
@@ -135,7 +174,7 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
   let status={},observations={},notice=native?'Preparing native patch…':'Browser preview: native execution is unavailable.',faulted=false,panicked=false,disposed=false,actionEpoch=0;
   let pendingParams=new Map(),events=[],pollTask=null,stopTask=null,stopping=false,lifecycle=0;
   const getState=()=>({patch:copy(document.patch),native,revision,desiredRevision:desired,activeDocumentRevision:applied,status:{...status},observations:copy(observations),notice,faulted:faulted||panicked,
-    busy:!!operation,applying:!!applyTask,ready:native&&applied===desired&&!!status.running&&!status.fault&&!status.server_lost&&!faulted&&!panicked&&!operation&&!stopping&&!disposed,canUndo:!!document.past.length,canRedo:!!document.future.length});
+    busy:!!operation,applying:!!applyTask,ready:native&&applied===desired&&!status.fault&&!status.server_lost&&!faulted&&!panicked&&!operation&&!stopping&&!disposed,canUndo:!!document.past.length,canRedo:!!document.future.length});
   const emit=()=>onState(getState());
   const report=error=>{notice=String(error?.message||error);emit();};
   const resetRuntime=()=>{observations={};actionEpoch++;events=[];};
@@ -167,32 +206,35 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
         const r=revision,epoch=actionEpoch;
         try {
           await invoke('canvas_param',{revision:r,node:entry.id,key:entry.key,value:entry.value});
-          if(entry.hot&&!stopping&&entry.epoch===actionEpoch&&status.running&&r===revision&&epoch===actionEpoch&&!applyTask) await invoke('canvas_event',{revision:r,node:entry.id,inlet:0,value:[entry.value]});
+          if(entry.hot&&getState().ready&&entry.epoch===actionEpoch&&r===revision&&epoch===actionEpoch&&!applyTask) await invoke('canvas_event',{revision:r,node:entry.id,inlet:0,value:[entry.value]});
         } catch(error) {if(r===revision&&epoch===actionEpoch){faulted=true;report(`Parameter not applied: ${error?.message||error}. Stop and reapply the graph to recover.`);}}
       }
     })().finally(()=>{paramTask=null;emit();});return paramTask;
   }
   function parameter(id,key,value,{history=true}={}) {
     const node=document.patch.nodes.find(n=>n.id===id);if(!node)fail('Missing object.');
-    if(key==='text'||(node.type==='midiin'&&key==='channel')||(node.type==='voice'&&key==='device'))return structural(()=>document.parameter(id,key,value,{history}));
+    if(key==='text'||key==='args'||(node.type==='midiin'&&key==='channel')||(node.type==='voice'&&key==='device'))return structural(()=>document.parameter(id,key,value,{history}));
     document.parameter(id,key,value,{history});
-    if(native)pendingParams.set(`${id}/${key}`,{id,key,value,epoch:actionEpoch,hot:['number','toggle'].includes(node.type)&&key==='value'});
+    if(native)pendingParams.set(`${id}/${key}`,{id,key,value,epoch:actionEpoch,hot:getState().ready&&['number','toggle','int','float','flonum','slider'].includes(node.type)&&key==='value'});
     emit();return pumpParams();
   }
   function pumpEvents() {
     if(eventTask)return eventTask;
     eventTask=(async()=>{
       while(events.length) {
-        const event=events.shift();if(event.epoch!==actionEpoch||!getState().ready)continue;
+        const event=events.shift();
+        if(paramTask)await paramTask;
+        if(event.epoch!==actionEpoch||!getState().ready)continue;
         try{await invoke('canvas_event',{revision:event.revision,node:event.node,inlet:event.inlet,value:event.value});}
         catch(error){if(event.epoch===actionEpoch){faulted=true;report(`Native event rejected: ${error?.message||error}. Stop and reapply to recover.`);}}
       }
     })().finally(()=>{eventTask=null;emit();});return eventTask;
   }
   function event(node,inlet=0,value=null) {
-    if(!getState().ready){notice=native?'Wait for the current graph and start audio before sending events.':'Browser preview: native execution is unavailable.';emit();return Promise.resolve(false);}
-    const n=document.patch.nodes.find(x=>x.id===node);if(!n||REGISTRY[n.type].inlets[inlet]?.type!==C)fail('Events require a control inlet.');
-    if(value!==null){if(!Array.isArray(value)||value.length<1||value.length>3)fail('Events contain one to three numbers.');value.forEach(v=>numeric(v,-100000,100000,false,'Event value'));}
+    if(!getState().ready){notice=native?'Wait for the current graph or recover the native fault before sending events.':'Browser preview: native execution is unavailable.';emit();return Promise.resolve(false);}
+    const n=document.patch.nodes.find(x=>x.id===node);if(!n||nodeSpec(n).inlets[inlet]?.type!==C)fail('Events require a control inlet.');
+    if(typeof value==='string')parseMessage(value);
+    else if(value!==null){if(!Array.isArray(value)||value.length<1||value.length>8)fail('Events contain one to eight numbers or a literal message.');value.forEach(v=>numeric(v,-100000,100000,false,'Event value'));}
     if(events.length>=64){faulted=true;return stop('Event queue overflow. Native timers and notes stopped; reapply before playing.');}
     events.push({node,inlet,value,revision,epoch:actionEpoch});return pumpEvents();
   }
@@ -245,7 +287,7 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
         if(token!==lifecycle)return;
         await invoke('canvas_stop');resetRuntime();await poll();
         if(status.running&&!status.fault&&!status.server_lost&&!faulted) notice='Audio ready. Click the top-left toggle to start the patch.';
-        else notice=`Audio could not start: ${status.message||started?.message||'native backend is not running'}`;
+        else {faulted=true;notice=`Audio could not start: ${status.message||started?.message||'native backend is not running'}`;}
         emit();
       }catch(error){faulted=true;report(`Audio could not start: ${error?.message||error}`);}
     });
@@ -271,7 +313,7 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
   async function flush() {
     for(;;){const tasks=[applyTask,paramTask,eventTask,operation,pollTask,stopTask].filter(Boolean);if(!tasks.length)break;await Promise.all(tasks);await Promise.resolve();}
   }
-  const topology = p=>JSON.stringify({nodes:p.nodes.map(n=>({id:n.id,type:n.type,structural:n.type==='message'?n.params.text:n.type==='midiin'?n.params.channel:n.type==='voice'?n.params.device:null})),edges:p.edges});
+  const topology = p=>JSON.stringify({nodes:p.nodes.map(n=>({id:n.id,type:n.type,structural:n.params.args??(n.type==='message'?n.params.text:n.type==='midiin'?n.params.channel:n.type==='voice'?n.params.device:null)})),edges:p.edges});
   function history(direction) {
     const before=copy(document.patch);if(!document[direction]())return;
     if(topology(document.patch)!==topology(before))structural(()=>{});

@@ -123,23 +123,35 @@ fn defaults_compile_to_exact_native_slots() {
     for (i, n) in p.native.nodes[..15].iter().enumerate() {
         assert_eq!(n.kind, i as u32);
     }
-    assert_eq!(p.native.nodes[1].count, 2);
-    assert_eq!(p.native.nodes[1].p0, 60.0);
-    assert_eq!(p.native.nodes[1].p1, 100.0);
+    assert_eq!(&p.native.nodes[1].text[..7], b"60 100\0");
+    assert_eq!(p.native.nodes[1].count, 0);
+    assert_eq!(p.native.nodes[1].p0, 0.0);
     assert_eq!(p.native.nodes[5].p0, 1.0);
     assert_eq!(p.native.nodes[6].p0, 150.0);
     assert_eq!(p.native.nodes[8].p0, 48.0);
     assert_eq!(p.native.nodes[11].p1, 28.0);
     assert_eq!(p.native.nodes[12].p0, 90.0);
-    assert_eq!(std::mem::size_of::<NativeNode>(), 40);
+    assert_eq!(std::mem::size_of::<NativeNode>(), 192);
     assert_eq!(std::mem::size_of::<NativeEdge>(), 16);
-    assert_eq!(std::mem::size_of::<NativeGraph>(), 2320);
+    assert_eq!(std::mem::size_of::<NativeGraph>(), 7184);
     assert_eq!(std::mem::size_of::<NativeObservation>(), 24);
     assert_eq!(std::mem::size_of::<NativeStatus>(), 784);
 }
 #[test]
-fn messages_are_only_bang_or_bounded_literal_lists() {
-    for valid in ["bang", " 60 100 ", "-100000 +1.25 1e5", "0", "1\n2\t3"] {
+fn messages_admit_typed_literals_and_reject_unsupported_syntax() {
+    for valid in [
+        "bang",
+        " 60 100 ",
+        "-100000 +1.25 1e5",
+        "0",
+        "1\n2\t3",
+        "1 2 3 4",
+        "set 60",
+        "stop",
+        "pause",
+        "resume",
+        "list",
+    ] {
         assert!(
             prepare(patch(
                 vec![node(1, "message", json!({"text":valid}))],
@@ -150,8 +162,30 @@ fn messages_are_only_bang_or_bounded_literal_lists() {
         );
     }
     for invalid in [
-        "", " ", "NaN", "inf", "1e309", "100001", "1 2 3 4", "60, 100", "$1", "set 60", "bang 1",
-        "60; bang", "0x10",
+        "",
+        " ",
+        "NaN",
+        "inf",
+        "1e309",
+        "100001",
+        "1 2 3 4 5 6 7 8 9",
+        "60, 100",
+        "$1",
+        "bang 1",
+        "60; bang",
+        "0x10",
+        "+",
+        "-",
+        ".",
+        "+foo",
+        "symbol",
+        "symbol bing bang",
+        "'bing'",
+        "\"bing\"",
+        "bing\\bang",
+        "b\0ing",
+        "b\u{7f}ing",
+        "音",
     ] {
         assert!(
             prepare(patch(
@@ -329,7 +363,7 @@ fn events_validate_generation_target_control_ports_and_values() {
         (1, 1, 3, Value::Null),
         (1, 1, 0, json!(60)),
         (1, 1, 0, json!([])),
-        (1, 1, 0, json!([1, 2, 3, 4])),
+        (1, 1, 0, json!([1, 2, 3, 4, 5, 6, 7, 8, 9])),
         (1, 1, 0, json!([100001])),
         (1, 1, 0, json!(["60"])),
     ] {
@@ -419,7 +453,7 @@ fn finite_control_bounds_and_exact_size_limit_are_enforced() {
 fn all_allowed_live_parameters_use_their_native_slot_without_revising() {
     let kinds = [
         "number", "toggle", "add", "multiply", "metro", "counter", "chord", "makenote", "voice",
-        "gain",
+        "gain", "int", "float", "flonum", "slider", "line",
     ];
     let nodes = kinds
         .iter()
@@ -456,4 +490,220 @@ fn shipped_editor_preset_compiles_as_the_same_native_profile() {
     assert_eq!(nodes.iter().filter(|n| n.kind == 11).count(), 2);
     assert_eq!(nodes.iter().filter(|n| n.kind == 13).count(), 1);
     assert_eq!(nodes.iter().filter(|n| n.kind == 14).count(), 1);
+}
+
+#[test]
+fn object_batch_default_kinds_and_argument_dependent_ports_are_admitted() {
+    let kinds = [
+        "int", "float", "flonum", "slider", "pack", "unpack", "select", "route", "trigger", "line",
+    ];
+    let prepared = prepare(patch(
+        kinds
+            .iter()
+            .enumerate()
+            .map(|(i, k)| node(i as u32 + 1, k, json!({})))
+            .collect(),
+        vec![],
+    ))
+    .unwrap();
+    for (index, native) in prepared.native.nodes[..10].iter().enumerate() {
+        assert_eq!(native.kind, index as u32 + 15);
+    }
+    let nodes = vec![
+        node(1, "trigger", json!({"args":"b i f"})),
+        node(2, "pack", json!({"args":"0 0. bing"})),
+        node(3, "unpack", json!({"args":"0 0. bing"})),
+        node(4, "select", json!({"args":"bing"})),
+        node(5, "route", json!({"args":"bing bang"})),
+        node(6, "line", json!({})),
+        node(7, "number", json!({})),
+    ];
+    let edges = vec![
+        edge(1, 2, 2, 2),
+        edge(2, 0, 3, 0),
+        edge(3, 2, 4, 1),
+        edge(4, 1, 5, 2),
+        edge(5, 2, 6, 2),
+        edge(6, 1, 7, 0),
+    ];
+    assert!(prepare(patch(nodes.clone(), edges)).is_ok());
+    for bad in [
+        edge(1, 3, 7, 0),
+        edge(7, 0, 2, 3),
+        edge(3, 3, 7, 0),
+        edge(7, 0, 4, 2),
+        edge(7, 0, 5, 3),
+        edge(6, 2, 7, 0),
+    ] {
+        assert!(prepare(patch(nodes.clone(), vec![bad])).is_err());
+    }
+}
+
+#[test]
+fn typed_literal_messages_and_eight_atom_events_preserve_cardinality() {
+    for text in [
+        "set 7.5",
+        "list 1 2. bing",
+        "symbol bing",
+        "bing",
+        "tab",
+        "1 2 3 4 5 6 7 8",
+    ] {
+        assert!(
+            prepare(patch(
+                vec![node(1, "message", json!({"text":text}))],
+                vec![]
+            ))
+            .is_ok(),
+            "{text}"
+        );
+    }
+    let mut state = CanvasState::default();
+    state
+        .install(
+            prepare(patch(vec![node(1, "int", json!({}))], vec![])).unwrap(),
+            |_| true,
+        )
+        .unwrap();
+    assert_eq!(
+        state
+            .event(1, 1, 0, json!([1, 2, 3, 4, 5, 6, 7, 8]))
+            .unwrap()
+            .count,
+        8
+    );
+    assert_eq!(state.event(1, 1, 0, json!("set 7.5")).unwrap().count, 1);
+    assert!(state
+        .event(1, 1, 0, json!([1, 2, 3, 4, 5, 6, 7, 8, 9]))
+        .is_err());
+}
+
+#[test]
+fn typed_message_pod_layout_and_atom_identity_are_preserved() {
+    assert_eq!(std::mem::size_of::<NativeMessage>(), 392);
+    assert_eq!(std::mem::offset_of!(NativeMessage, values), 8);
+    assert_eq!(std::mem::offset_of!(NativeMessage, tags), 72);
+    assert_eq!(std::mem::offset_of!(NativeMessage, symbols), 104);
+    assert_eq!(std::mem::offset_of!(NativeMessage, selector), 360);
+    assert_eq!(std::mem::offset_of!(NativeNode, p3), 40);
+    assert_eq!(std::mem::offset_of!(NativeNode, text), 64);
+    let message = literal("list 1 1. 1e0 bing").unwrap();
+    assert_eq!(message.count, 4);
+    assert_eq!(&message.tags[..4], &[0, 1, 1, 2]);
+    assert_eq!(&message.values[..3], &[1., 1., 1.]);
+    assert_eq!(&message.selector[..5], b"list\0");
+    assert_eq!(&message.symbols[3][..5], b"bing\0");
+    let forced = literal("symbol 100001").unwrap();
+    assert_eq!(forced.tags[0], 2);
+    assert_eq!(&forced.symbols[0][..7], b"100001\0");
+    let selector = literal("set -2.5").unwrap();
+    assert_eq!(&selector.selector[..4], b"set\0");
+    assert_eq!(selector.tags[0], 1);
+    assert_eq!(selector.values[0], -2.5);
+    assert_eq!(literal("bing").unwrap().count, 0);
+    for bad in [
+        "x".repeat(32),
+        "symbol ".to_string() + &"x".repeat(32),
+        " ".repeat(127) + "1",
+    ] {
+        assert!(literal(&bad).is_err(), "{bad}");
+    }
+    assert!(literal(&"x".repeat(31)).is_ok());
+    assert!(literal(&("list ".to_string() + &["1"; 8].join(" "))).is_ok());
+}
+
+#[test]
+fn batch_parameters_use_six_slots_and_refuse_crossed_flonum_limits_atomically() {
+    let p = prepare(patch(
+        vec![
+            node(1, "flonum", json!({})),
+            node(2, "slider", json!({})),
+            node(3, "line", json!({})),
+        ],
+        vec![],
+    ))
+    .unwrap();
+    let f = p.native.nodes[0];
+    assert_eq!((f.p0, f.p1, f.p2, f.p3), (0., -100000., 100000., 6.));
+    let s = p.native.nodes[1];
+    assert_eq!((s.p0, s.p1, s.p2, s.p3, s.p4), (0., 128., 0., 1., 0.));
+    let l = p.native.nodes[2];
+    assert_eq!((l.p0, l.p1, l.p2, l.p3), (0., 0., 20., 2.));
+    for (kind, params) in [
+        ("flonum", json!({"minimum":4,"maximum":3})),
+        ("flonum", json!({"numdecimalplaces":10})),
+        ("slider", json!({"size":1.5})),
+        ("slider", json!({"size":0})),
+        ("slider", json!({"floatoutput":2})),
+        ("line", json!({"time":-1})),
+        ("line", json!({"grain":0})),
+        ("line", json!({"floatoutput":3})),
+    ] {
+        assert!(
+            prepare(patch(vec![node(1, kind, params)], vec![])).is_err(),
+            "{kind}"
+        );
+    }
+    let mut state = CanvasState::default();
+    state.install(p, |_| true).unwrap();
+    state
+        .parameter(1, 1, "minimum", 10., |slot, value| {
+            assert_eq!((slot, value), (1, 10.));
+            true
+        })
+        .unwrap();
+    assert!(state
+        .parameter(1, 1, "maximum", 9., |_, _| panic!(
+            "crossed limit reached native"
+        ))
+        .is_err());
+    assert_eq!(state.graph.as_ref().unwrap().native.nodes[0].p2, 100000.);
+    state
+        .parameter(1, 2, "floatoutput", 1., |slot, value| {
+            assert_eq!((slot, value), (4, 1.));
+            true
+        })
+        .unwrap();
+    state
+        .parameter(1, 3, "floatoutput", 0., |slot, value| {
+            assert_eq!((slot, value), (3, 0.));
+            true
+        })
+        .unwrap();
+}
+
+#[test]
+fn creation_arguments_are_bounded_structural_and_drive_event_ports() {
+    for name in ["pack", "unpack", "select", "route", "trigger"] {
+        for args in ["", "0 0 0 0 0 0 0 0 0", "100001", "NaN", "0; bang", "音"] {
+            assert!(
+                prepare(patch(vec![node(1, name, json!({"args":args}))], vec![])).is_err(),
+                "{name}: {args}"
+            );
+        }
+    }
+    let mut state = CanvasState::default();
+    state
+        .install(
+            prepare(patch(
+                vec![
+                    node(1, "pack", json!({"args":"0 0. bing"})),
+                    node(2, "select", json!({"args":"0 1"})),
+                ],
+                vec![],
+            ))
+            .unwrap(),
+            |_| true,
+        )
+        .unwrap();
+    assert!(state.event(1, 1, 2, json!("symbol bing")).is_ok());
+    assert!(state.event(1, 1, 3, Value::Null).is_err());
+    assert!(state.event(1, 2, 1, Value::Null).is_err());
+    assert!(state
+        .parameter(1, 1, "args", 1., |_, _| panic!(
+            "structural text reached numeric update"
+        ))
+        .is_err());
+    let arrays = state.event(1, 1, 0, json!([1, 1.5])).unwrap();
+    assert_eq!(&arrays.tags[..2], &[0, 1]);
 }

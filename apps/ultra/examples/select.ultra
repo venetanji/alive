@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "slider",
+      "x": 280,
+      "y": 60,
+      "params": {
+        "value": 0,
+        "size": 8,
+        "min": 0,
+        "mult": 1,
+        "floatoutput": 0
+      }
+    },
+    {
+      "id": 2,
+      "type": "select",
+      "x": 280,
+      "y": 220,
+      "params": {
+        "args": "3 7"
+      }
+    },
+    {
+      "id": 3,
+      "type": "bang",
+      "x": 80,
+      "y": 380,
+      "params": {}
+    },
+    {
+      "id": 4,
+      "type": "bang",
+      "x": 300,
+      "y": 380,
+      "params": {}
+    },
+    {
+      "id": 5,
+      "type": "flonum",
+      "x": 520,
+      "y": 380,
+      "params": {
+        "value": 0,
+        "minimum": -100000,
+        "maximum": 100000,
+        "numdecimalplaces": 6
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 2,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 1,
+      "to": 4,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 2,
+      "to": 5,
+      "inlet": 0
+    }
+  ]
+}

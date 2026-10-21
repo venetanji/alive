@@ -16,8 +16,8 @@ function host() {
     return true;
   }};
 }
-test('registry has exactly 15 protocol objects, exclusively top inlet / bottom outlet descriptors', () => {
-  assert.equal(Object.keys(REGISTRY).length,15);
+test('registry has exactly 25 protocol objects, exclusively top inlet / bottom outlet descriptors', () => {
+  assert.equal(Object.keys(REGISTRY).length,25);
   for (const spec of Object.values(REGISTRY)) {
     assert.ok(spec.inlets.every(p => p.side === 'top'));
     assert.ok(spec.outlets.every(p => p.side === 'bottom'));
@@ -53,7 +53,7 @@ test('strict validation rejects malformed, unknown, oversized, duplicate and cyc
     const p=clone(original); mutate(p); assert.throws(()=>validatePatch(p));
   }
   assert.deepEqual(parseMessage('60 100'),[60,100]); assert.equal(parseMessage('bang'),null);
-  for (const text of ['', 'hello', 'Infinity', '1 2 3 4', '100001','0x10']) assert.throws(()=>parseMessage(text));
+  for (const text of ['', '$1', '1e1000', '1 2 3 4 5 6 7 8 9', '100001','0x10']) assert.throws(()=>parseMessage(text));
 });
 test('audio supports missing paths and explicit dual mono, rejects parallel gains and duplicate devices', () => {
   const p=starterPatch(), voices=p.nodes.filter(n=>n.type==='voice'), gains=p.nodes.filter(n=>n.type==='gain'), join=p.nodes.find(n=>n.type==='join');
@@ -105,7 +105,7 @@ test('latest structural graph wins while earlier apply is pending; intermediate 
 test('native observations, stop, panic and awaited navigation cleanup use native commands', async () => {
   const h=host(),c=createCanvasController({invoke:h.invoke}); await c.startAudio(); await c.poll(); assert.ok(Object.keys(c.getState().observations).length>0);
   await c.stop(); assert.equal(h.calls.filter(x=>x.name==='canvas_stop').length>=1,true);
-  await c.panic(); assert.equal(h.calls.at(-1).name,'audio_panic'); await c.stopAudio(); assert.equal(c.getState().ready,false);
+  await c.panic(); assert.equal(h.calls.at(-1).name,'audio_panic'); await c.stopAudio(); assert.equal(c.getState().ready,true);
   await c.dispose(); assert.ok(h.calls.some(x=>x.name==='audio_stop'));
 });
 test('MIDI channel and voice device edits are structural safety boundaries', async () => {

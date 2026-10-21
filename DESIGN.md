@@ -54,7 +54,7 @@ components:
   object-entry:
     backgroundColor: "#232323"
     textColor: "{colors.object-name}"
-    width: "330px"
+    width: "370px"
     rounded: "{rounded.input}"
 ---
 
@@ -157,17 +157,25 @@ with an offset. Disabled buttons reduce opacity and lose the pointer cursor.
 ### Object boxes and controls
 
 Text objects expose their name and arguments in one line. Bang, toggle, message,
-number and gain have dedicated compact faces. Editing selects and moves them;
+number, flonum, slider and gain have dedicated compact faces. Editing selects and moves them;
 locking enables performance controls. Ctrl/Cmd-click can operate while editing.
 Runtime numeric observations update the visible value without rewriting saved
 parameters.
 
+Variadic objects derive their inlet and outlet rails from their creation atoms.
+The native control clock operates while audio is off. Flonum keeps display
+precision separate from stored values; Tab uses its dedicated bang outlet.
+Slider pointer position is raw, while min/mult scale its numeric output.
+Object Help opens the corresponding original runnable patch for the new batch.
+
 ### Inline entry
 
 Name-and-argument entry appears near the pointer or edited object. Suggestions
-use amber names, a plain explanation and a blue active row. Arrow keys choose,
-Tab completes, Enter commits and Escape cancels. Errors remain visible without
-changing the patch.
+use amber names, positional signatures, a plain explanation and a blue active
+row. A compact argument guide highlights the parameter at the caret with its
+range and default. Typing @ lists supported named options; enum parameters offer
+their named values. Arrow keys choose, Tab completes the current token, Enter
+commits and Escape cancels. Errors remain visible without changing the patch.
 
 ### Port help and menus
 

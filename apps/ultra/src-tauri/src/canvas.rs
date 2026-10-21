@@ -16,7 +16,7 @@ const NUMBER_LIMIT: f64 = 100_000.;
 
 // Keep these C-layout types in sync with native/patch_graph.h. Tests pin sizes.
 #[repr(C)]
-#[derive(Clone, Copy, Debug, Default)]
+#[derive(Clone, Copy, Debug)]
 pub struct NativeNode {
     pub id: u32,
     pub kind: u32,
@@ -25,6 +25,36 @@ pub struct NativeNode {
     pub p0: f64,
     pub p1: f64,
     pub p2: f64,
+    pub p3: f64,
+    pub p4: f64,
+    pub p5: f64,
+    pub text: [u8; 128],
+}
+impl Default for NativeNode {
+    fn default() -> Self {
+        Self {
+            id: 0,
+            kind: 0,
+            device: 0,
+            count: 0,
+            p0: 0.,
+            p1: 0.,
+            p2: 0.,
+            p3: 0.,
+            p4: 0.,
+            p5: 0.,
+            text: [0; 128],
+        }
+    }
+}
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default)]
+pub struct NativeMessage {
+    pub count: u32,
+    pub values: [f64; 8],
+    pub tags: [u32; 8],
+    pub symbols: [[u8; 32]; 8],
+    pub selector: [u8; 32],
 }
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default)]
@@ -122,8 +152,9 @@ enum Port {
     Mono,
     Stereo,
 }
-fn inlet(kind: u32, port: u32) -> Option<Port> {
-    match kind {
+fn inlet(node: &NativeNode, port: u32) -> Option<Port> {
+    let count = argument_count(node);
+    match node.kind {
         0..=1 | 3 if port == 0 => Some(Port::Control),
         2 | 4..=8 if port <= 1 => Some(Port::Control),
         9 | 11 if port <= 2 => Some(Port::Control),
@@ -131,24 +162,43 @@ fn inlet(kind: u32, port: u32) -> Option<Port> {
         12 if port == 1 => Some(Port::Control),
         13 if port <= 1 => Some(Port::Mono),
         14 if port == 0 => Some(Port::Stereo),
+        15..=16 if port <= 1 => Some(Port::Control),
+        17..=18 | 20 | 23 if port == 0 => Some(Port::Control),
+        19 if port < count => Some(Port::Control),
+        21 if port < if count == 1 { 2 } else { 1 } => Some(Port::Control),
+        22 if port <= count => Some(Port::Control),
+        24 if port <= 2 => Some(Port::Control),
         _ => None,
     }
 }
-fn outlet(kind: u32, port: u32) -> Option<Port> {
-    if port != 0 {
-        return None;
-    }
-    match kind {
-        0..=10 => Some(Port::Control),
-        11..=12 => Some(Port::Mono),
-        13 => Some(Port::Stereo),
+fn outlet(node: &NativeNode, port: u32) -> Option<Port> {
+    let count = argument_count(node);
+    match node.kind {
+        0..=10 | 15..=16 | 18..=19 if port == 0 => Some(Port::Control),
+        11..=12 if port == 0 => Some(Port::Mono),
+        13 if port == 0 => Some(Port::Stereo),
+        17 | 24 if port <= 1 => Some(Port::Control),
+        20 | 23 if port < count => Some(Port::Control),
+        21..=22 if port <= count => Some(Port::Control),
         _ => None,
     }
+}
+fn argument_count(node: &NativeNode) -> u32 {
+    let end = node
+        .text
+        .iter()
+        .position(|&b| b == 0)
+        .unwrap_or(node.text.len());
+    node.text[..end]
+        .split(u8::is_ascii_whitespace)
+        .filter(|part| !part.is_empty())
+        .count() as u32
 }
 fn kind(name: &str) -> Option<u32> {
     [
         "bang", "message", "number", "toggle", "add", "multiply", "metro", "counter", "chord",
-        "makenote", "midiin", "voice", "gain", "join", "dac",
+        "makenote", "midiin", "voice", "gain", "join", "dac", "int", "float", "flonum", "slider",
+        "pack", "unpack", "select", "route", "trigger", "line",
     ]
     .iter()
     .position(|candidate| *candidate == name)
@@ -201,6 +251,42 @@ fn parameters(kind: u32) -> &'static [Parameter] {
             p!("release", 1, 28., 0., 127., true, true),
         ],
         12 => &[p!("value", 0, 90., 0., 127., true, true)],
+        15..=16 => &[p!("value", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true)],
+        17 => &[
+            p!("value", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true),
+            p!(
+                "minimum",
+                1,
+                -NUMBER_LIMIT,
+                -NUMBER_LIMIT,
+                NUMBER_LIMIT,
+                false,
+                true
+            ),
+            p!(
+                "maximum",
+                2,
+                NUMBER_LIMIT,
+                -NUMBER_LIMIT,
+                NUMBER_LIMIT,
+                false,
+                true
+            ),
+            p!("numdecimalplaces", 3, 6., 0., 9., true, true),
+        ],
+        18 => &[
+            p!("value", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true),
+            p!("size", 1, 128., 1., NUMBER_LIMIT, true, true),
+            p!("min", 2, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true),
+            p!("mult", 3, 1., -NUMBER_LIMIT, NUMBER_LIMIT, false, true),
+            p!("floatoutput", 4, 0., 0., 1., true, true),
+        ],
+        24 => &[
+            p!("value", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true),
+            p!("time", 1, 0., 0., NUMBER_LIMIT, false, true),
+            p!("grain", 2, 20., 1., NUMBER_LIMIT, false, true),
+            p!("floatoutput", 3, 2., 0., 2., true, true),
+        ],
         _ => &[],
     }
 }
@@ -231,38 +317,119 @@ fn assign_parameter(node: &mut NativeNode, spec: Parameter, value: f64) {
         match spec.slot {
             0 => node.p0 = value,
             1 => node.p1 = value,
+            2 => node.p2 = value,
+            3 => node.p3 = value,
+            4 => node.p4 = value,
+            5 => node.p5 = value,
             _ => unreachable!("unsupported numeric parameter slot"),
         }
     }
 }
-fn literals(text: &str) -> Result<([f64; 3], u32), String> {
-    if text.chars().count() > 128 {
-        return Err("Message text exceeds 128 characters".into());
+fn validate_text(text: &str) -> Result<(), String> {
+    if text.len() > 127
+        || text.trim().is_empty()
+        || !text.is_ascii()
+        || text.bytes().any(|b| {
+            matches!(b, b',' | b';' | b'$' | b'"' | b'\'' | b'\\')
+                || (b.is_ascii_control() && !matches!(b, b'\n' | b'\r' | b'\t'))
+        })
+    {
+        return Err("Text requires 1..127 ASCII bytes without substitution, quotes, backslashes, commas or semicolons".into());
     }
-    let mut values = [0.; 3];
-    if text.trim() == "bang" {
-        return Ok((values, 0));
+    Ok(())
+}
+fn symbol(text: &str) -> Result<[u8; 32], String> {
+    if text.is_empty() || text.len() > 31 || text.bytes().any(|b| b.is_ascii_whitespace()) {
+        return Err("Symbols require 1..31 ASCII bytes without whitespace".into());
     }
-    let mut count = 0;
-    for token in text.split_whitespace() {
-        if count == 3 {
-            return Err("Messages support bang or one to three literal numbers".into());
+    let mut result = [0; 32];
+    result[..text.len()].copy_from_slice(text.as_bytes());
+    Ok(result)
+}
+fn add_atom(message: &mut NativeMessage, token: &str, force_symbol: bool) -> Result<(), String> {
+    let index = message.count as usize;
+    if index == 8 {
+        return Err("Messages and creation arguments support at most eight atoms".into());
+    }
+    if !force_symbol {
+        match token.parse::<f64>() {
+            Ok(value) => {
+                validate_number(value)?;
+                message.values[index] = value;
+                message.tags[index] = u32::from(token.contains(['.', 'e', 'E']));
+                message.count += 1;
+                return Ok(());
+            }
+            Err(_)
+                if token.as_bytes().first().is_some_and(u8::is_ascii_digit)
+                    || matches!(token.as_bytes().first(), Some(b'+' | b'-' | b'.')) =>
+            {
+                return Err("Malformed numeric atom".into());
+            }
+            Err(_) => {}
         }
-        let value: f64 = token.parse().map_err(|_| {
-            "Messages support only literal numbers, not symbols or Max message syntax"
-        })?;
-        validate_number(value)?;
-        values[count] = value;
-        count += 1;
     }
-    if count == 0 {
-        return Err("Message text must be bang or one to three literal numbers".into());
+    message.tags[index] = 2;
+    message.symbols[index] = symbol(token)?;
+    message.count += 1;
+    Ok(())
+}
+fn arguments(text: &str) -> Result<NativeMessage, String> {
+    validate_text(text)?;
+    let mut result = NativeMessage::default();
+    for token in text.split_ascii_whitespace() {
+        add_atom(&mut result, token, false)?;
     }
-    Ok((values, count as u32))
+    Ok(result)
+}
+fn literal(text: &str) -> Result<NativeMessage, String> {
+    validate_text(text)?;
+    let tokens: Vec<_> = text.split_ascii_whitespace().collect();
+    let first = tokens[0];
+    if first == "bang" {
+        if tokens.len() != 1 {
+            return Err("bang accepts no atoms".into());
+        }
+        return Ok(NativeMessage::default());
+    }
+    let mut result = NativeMessage::default();
+    if first == "symbol" {
+        if tokens.len() != 2 {
+            return Err("symbol requires one literal atom".into());
+        }
+        result.selector = symbol(first)?;
+        add_atom(&mut result, tokens[1], true)?;
+    } else if first == "list" {
+        result.selector = symbol(first)?;
+        for token in &tokens[1..] {
+            add_atom(&mut result, token, false)?;
+        }
+    } else {
+        let mut head = NativeMessage::default();
+        add_atom(&mut head, first, false)?;
+        if head.tags[0] == 2 {
+            result.selector = head.symbols[0];
+            for token in &tokens[1..] {
+                add_atom(&mut result, token, false)?;
+            }
+        } else {
+            result = head;
+            for token in &tokens[1..] {
+                add_atom(&mut result, token, false)?;
+            }
+        }
+    }
+    Ok(result)
 }
 fn validate_number(value: f64) -> Result<(), String> {
     if !value.is_finite() || value.abs() > NUMBER_LIMIT {
         return Err("Control values must be finite numbers in -100000..100000".into());
+    }
+    Ok(())
+}
+fn validate_relationships(node: &NativeNode) -> Result<(), String> {
+    if node.kind == 17 && node.p1 > node.p2 {
+        return Err("flonum minimum must not exceed maximum".into());
     }
     Ok(())
 }
@@ -312,11 +479,22 @@ pub fn prepare(patch: Value) -> Result<Prepared, String> {
                 Some(value) => value.as_str().ok_or("Message text must be a string")?,
                 None => "60 100",
             };
-            let (values, count) = literals(text)?;
-            native.count = count;
-            native.p0 = values[0];
-            native.p1 = values[1];
-            native.p2 = values[2];
+            literal(text)?;
+            native.text[..text.len()].copy_from_slice(text.as_bytes());
+        } else if (19..=23).contains(&kind) {
+            if node.params.keys().any(|key| key != "args") {
+                return Err(format!("Unknown parameter for {}", node.r#type));
+            }
+            let text = match node.params.get("args") {
+                Some(value) => value.as_str().ok_or("Creation args must be a string")?,
+                None => match kind {
+                    19..=20 => "0 0",
+                    21..=22 => "0",
+                    _ => "i i",
+                },
+            };
+            arguments(text)?;
+            native.text[..text.len()].copy_from_slice(text.as_bytes());
         } else {
             let specs = parameters(kind);
             if node
@@ -336,6 +514,7 @@ pub fn prepare(patch: Value) -> Result<Prepared, String> {
                 validate_parameter(*spec, value)?;
                 assign_parameter(&mut native, *spec, value);
             }
+            validate_relationships(&native)?;
         }
         if kind == 11 && !devices.insert(native.device) {
             return Err("Only one voice per logical device is supported".into());
@@ -354,8 +533,8 @@ pub fn prepare(patch: Value) -> Result<Prepared, String> {
         let to = *ids.get(&edge.to).ok_or("Unknown edge destination")?;
         let a = graph.nodes[from];
         let b = graph.nodes[to];
-        let out = outlet(a.kind, edge.outlet).ok_or("Invalid outlet")?;
-        let input = inlet(b.kind, edge.inlet).ok_or("Invalid inlet")?;
+        let out = outlet(&a, edge.outlet).ok_or("Invalid outlet")?;
+        let input = inlet(&b, edge.inlet).ok_or("Invalid inlet")?;
         if out != input {
             return Err("Control, mono audio and stereo audio ports cannot be mixed".into());
         }
@@ -412,10 +591,6 @@ pub struct CanvasState {
     graph: Option<Prepared>,
     revision: u64,
 }
-pub struct Event {
-    pub count: u32,
-    pub values: [f64; 3],
-}
 impl CanvasState {
     /// Commit the generation only after the native bounded plan has been admitted.
     pub fn install(
@@ -454,28 +629,28 @@ impl CanvasState {
         node: u32,
         port: u32,
         value: Value,
-    ) -> Result<Event, String> {
+    ) -> Result<NativeMessage, String> {
         let index = self.node_index(revision, node)?;
-        if inlet(self.graph.as_ref().unwrap().native.nodes[index].kind, port) != Some(Port::Control)
-        {
+        if inlet(&self.graph.as_ref().unwrap().native.nodes[index], port) != Some(Port::Control) {
             return Err("Events require a valid control inlet".into());
         }
-        let mut event = Event {
-            count: 0,
-            values: [0.; 3],
-        };
+        let mut event = NativeMessage::default();
         if value.is_null() {
             return Ok(event);
         }
+        if let Some(text) = value.as_str() {
+            return literal(text);
+        }
         let values = value
             .as_array()
-            .filter(|values| (1..=3).contains(&values.len()))
-            .ok_or("Events must be null (bang) or one to three numeric values")?;
+            .filter(|values| (1..=8).contains(&values.len()))
+            .ok_or("Events must be null, a literal string, or one to eight numeric values")?;
         event.count = values.len() as u32;
         for (index, value) in values.iter().enumerate() {
             let value = value.as_f64().ok_or("Event values must be numeric")?;
             validate_number(value)?;
             event.values[index] = value;
+            event.tags[index] = u32::from(value.fract() != 0.);
         }
         Ok(event)
     }
@@ -497,14 +672,13 @@ impl CanvasState {
             return Err(format!("{key} is structural; apply a new graph"));
         }
         validate_parameter(*spec, value)?;
+        let mut next = native;
+        assign_parameter(&mut next, *spec, value);
+        validate_relationships(&next)?;
         if !send(spec.slot, value) {
             return Err("Native canvas parameter was not admitted".into());
         }
-        assign_parameter(
-            &mut self.graph.as_mut().unwrap().native.nodes[index],
-            *spec,
-            value,
-        );
+        self.graph.as_mut().unwrap().native.nodes[index] = next;
         Ok(())
     }
 }

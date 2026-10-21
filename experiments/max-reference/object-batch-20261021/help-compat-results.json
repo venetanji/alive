@@ -1,0 +1,2340 @@
+{
+  "schema_version": 1,
+  "scope": "Installed Max help intake and feasibility measured against the real current Ultra canvas parser/registry. Rejections are expected results, not compatibility passes.",
+  "selected_objects": [
+    "int",
+    "float",
+    "flonum",
+    "slider",
+    "pack",
+    "unpack",
+    "select",
+    "route",
+    "trigger",
+    "line"
+  ],
+  "node_version": "v22.23.3",
+  "production_file_picker_accept": ".json,.ultra,application/json",
+  "runtime_profile": {
+    "name": "ultra-canvas-v1",
+    "registry_types": [
+      "bang",
+      "message",
+      "number",
+      "toggle",
+      "add",
+      "multiply",
+      "metro",
+      "counter",
+      "chord",
+      "makenote",
+      "midiin",
+      "voice",
+      "gain",
+      "join",
+      "dac",
+      "int",
+      "float",
+      "flonum",
+      "slider",
+      "pack",
+      "unpack",
+      "select",
+      "route",
+      "trigger",
+      "line"
+    ],
+    "registry_count": 25,
+    "max_nodes": 32,
+    "max_edges": 64,
+    "max_source_json_bytes": 65536
+  },
+  "evidence_sources": [
+    {
+      "path": "apps/ultra/ui/canvas-model.mjs",
+      "sha256": "d1cc66ef8844a1ab984bae33cbaa68843784b2c42e373c8c0ab075d1a2807913"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-catalog.mjs",
+      "sha256": "9636347b0babaed801847a43881e74900b71fbc5540b76bcb6121be8de1d11c2"
+    },
+    {
+      "path": "apps/ultra/ui/canvas.mjs",
+      "sha256": "555687868b58ec1f0a409bc9e7016d766dc8e887ffad4f8fa045993709108dec"
+    },
+    {
+      "path": "apps/ultra/ui/canvas.html",
+      "sha256": "bba85df79f36e352719c1512f1c9e790ca4803703b167d6111cb4767af40784a"
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/canvas.rs",
+      "sha256": "19d772b4d534a9f0086b7805ef2b1fcf78206287764386ae206e95906fe37fc2"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/patch_graph.hpp",
+      "sha256": "6a427ea229b7b09abc52e41a935750663d16804fd55c526baffa580a36ed6a6f"
+    },
+    {
+      "path": "experiments/max-reference/object-batch-20261021/help-compat.mjs",
+      "sha256": "7104e9a5e36a7e2889c21932f227a6b4941e148b966666430669e8ff9e5c4c9d"
+    },
+    {
+      "path": "experiments/max-reference/object-batch-20261021/help-compat-fixtures.json",
+      "sha256": "c5bd79704268acda41e19207124a9a0df46aae3d808ad11a4fcd10e2913f8a3c"
+    }
+  ],
+  "summary": {
+    "installed_files_checked": 10,
+    "source_json_valid": 10,
+    "direct_help_accepted": 0,
+    "direct_help_rejected_for_size_first": 2,
+    "direct_help_rejected_for_schema_first": 8,
+    "canonical_types_accepted": 10,
+    "isolated_basic_tabs_parser_checked": 10,
+    "isolated_basic_tabs_parser_accepted": 0,
+    "adapted_selected_object_fixtures_executed": 0,
+    "installed_help_executed_or_compared": 0,
+    "boundary_assertions_pass": 11,
+    "independent_existing_ultra_native_smoke_cases_pass": 2
+  },
+  "files": [
+    {
+      "object": "int",
+      "installed_relative_path": "resources/help/max/int.maxhelp",
+      "sha256": "bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61",
+      "bytes": 26001,
+      "source_json_parses": true,
+      "file_picker_extension_advertised": false,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "production_controller_load": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher.",
+        "previous_document_retained": true
+      },
+      "compacting_source_does_not_convert_schema": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "isolated_canonical_node_schema_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "authoring_object_entry_probes": [
+        {
+          "spelling": "int",
+          "accepted": true,
+          "error": null
+        },
+        {
+          "spelling": "i",
+          "accepted": true,
+          "error": null
+        }
+      ],
+      "source": {
+        "patchers": 3,
+        "boxes": 25,
+        "edges": 10,
+        "root_boxes": 4,
+        "root_edges": 0,
+        "recursive_capacity_excess": {
+          "nodes_over_32": 0,
+          "edges_over_64": 0
+        },
+        "capacity_note": "Recursive counts are an inventory, not a flattening algorithm; hierarchy and helper patchers remain unsupported.",
+        "token_counts": [
+          {
+            "token": "button",
+            "count": 3,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "comment",
+            "count": 5,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "i",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "int",
+            "count": 2,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "js",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "jsui",
+            "count": 3,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "message",
+            "count": 1,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "number",
+            "count": 4,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "p",
+            "count": 2,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "r",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "slider",
+            "count": 2,
+            "exact_registry_key_exists": true
+          }
+        ],
+        "target_occurrences": [
+          {
+            "box_id": "obj-28",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          },
+          {
+            "box_id": "obj-9",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          },
+          {
+            "box_id": "obj-22",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          }
+        ],
+        "target_saved_port_shapes": [
+          {
+            "token": "int",
+            "maxclass": "newobj",
+            "inlets": 2,
+            "outlets": 1,
+            "count": 2
+          },
+          {
+            "token": "i",
+            "maxclass": "newobj",
+            "inlets": 2,
+            "outlets": 1,
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "boxes": 21,
+            "edges": 10,
+            "compact_max_wrapper_bytes": 5474,
+            "production_parser": {
+              "accepted": false,
+              "error": "Unknown patch field: patcher."
+            },
+            "direct_tokens": [
+              "button",
+              "comment",
+              "i",
+              "int",
+              "jsui",
+              "message",
+              "number",
+              "r",
+              "slider"
+            ]
+          }
+        ]
+      },
+      "conversion": {
+        "production_max_importer_exists": false,
+        "all_source_nodes_and_ports_converted": false,
+        "adapted_selected_object_fixture_available": false,
+        "selected_object_executed_in_ultra": false,
+        "installed_help_executed_in_ultra": false,
+        "max_reference_compared": false,
+        "blockers": [
+          "max-patcher-schema-has-no-production-importer",
+          "max-node-arguments-ports-state-and-attributes-have-no-runtime-converter",
+          "nested-help-tabs-helper-scripts-and-dependencies-have-no-execution-adapter"
+        ]
+      }
+    },
+    {
+      "object": "float",
+      "installed_relative_path": "resources/help/max/float.maxhelp",
+      "sha256": "c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c",
+      "bytes": 28070,
+      "source_json_parses": true,
+      "file_picker_extension_advertised": false,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "production_controller_load": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher.",
+        "previous_document_retained": true
+      },
+      "compacting_source_does_not_convert_schema": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "isolated_canonical_node_schema_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "authoring_object_entry_probes": [
+        {
+          "spelling": "float",
+          "accepted": true,
+          "error": null
+        },
+        {
+          "spelling": "f",
+          "accepted": true,
+          "error": null
+        }
+      ],
+      "source": {
+        "patchers": 3,
+        "boxes": 27,
+        "edges": 12,
+        "root_boxes": 4,
+        "root_edges": 0,
+        "recursive_capacity_excess": {
+          "nodes_over_32": 0,
+          "edges_over_64": 0
+        },
+        "capacity_note": "Recursive counts are an inventory, not a flattening algorithm; hierarchy and helper patchers remain unsupported.",
+        "token_counts": [
+          {
+            "token": "*",
+            "count": 2,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "button",
+            "count": 3,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "comment",
+            "count": 5,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "f",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "float",
+            "count": 2,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "flonum",
+            "count": 4,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "js",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "jsui",
+            "count": 3,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "message",
+            "count": 1,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "p",
+            "count": 2,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "r",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "slider",
+            "count": 2,
+            "exact_registry_key_exists": true
+          }
+        ],
+        "target_occurrences": [
+          {
+            "box_id": "obj-28",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          },
+          {
+            "box_id": "obj-9",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          },
+          {
+            "box_id": "obj-22",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          }
+        ],
+        "target_saved_port_shapes": [
+          {
+            "token": "float",
+            "maxclass": "newobj",
+            "inlets": 2,
+            "outlets": 1,
+            "count": 2
+          },
+          {
+            "token": "f",
+            "maxclass": "newobj",
+            "inlets": 2,
+            "outlets": 1,
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "boxes": 23,
+            "edges": 12,
+            "compact_max_wrapper_bytes": 5986,
+            "production_parser": {
+              "accepted": false,
+              "error": "Unknown patch field: patcher."
+            },
+            "direct_tokens": [
+              "*",
+              "button",
+              "comment",
+              "f",
+              "float",
+              "flonum",
+              "jsui",
+              "message",
+              "r",
+              "slider"
+            ]
+          }
+        ]
+      },
+      "conversion": {
+        "production_max_importer_exists": false,
+        "all_source_nodes_and_ports_converted": false,
+        "adapted_selected_object_fixture_available": false,
+        "selected_object_executed_in_ultra": false,
+        "installed_help_executed_in_ultra": false,
+        "max_reference_compared": false,
+        "blockers": [
+          "max-patcher-schema-has-no-production-importer",
+          "max-node-arguments-ports-state-and-attributes-have-no-runtime-converter",
+          "nested-help-tabs-helper-scripts-and-dependencies-have-no-execution-adapter"
+        ]
+      }
+    },
+    {
+      "object": "flonum",
+      "installed_relative_path": "resources/help/max/flonum.maxhelp",
+      "sha256": "b1251b92a08e8c6bc248bce5561c87459680c95540d3a20e9ac87294507aeefa",
+      "bytes": 41266,
+      "source_json_parses": true,
+      "file_picker_extension_advertised": false,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "production_controller_load": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher.",
+        "previous_document_retained": true
+      },
+      "compacting_source_does_not_convert_schema": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "isolated_canonical_node_schema_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "authoring_object_entry_probes": [
+        {
+          "spelling": "flonum",
+          "accepted": true,
+          "error": null
+        }
+      ],
+      "source": {
+        "patchers": 4,
+        "boxes": 39,
+        "edges": 17,
+        "root_boxes": 5,
+        "root_edges": 0,
+        "recursive_capacity_excess": {
+          "nodes_over_32": 7,
+          "edges_over_64": 0
+        },
+        "capacity_note": "Recursive counts are an inventory, not a flattening algorithm; hierarchy and helper patchers remain unsupported.",
+        "token_counts": [
+          {
+            "token": "attrui",
+            "count": 7,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "comment",
+            "count": 12,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "flonum",
+            "count": 3,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "js",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "jsui",
+            "count": 3,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "message",
+            "count": 8,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "number",
+            "count": 1,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "p",
+            "count": 3,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "print",
+            "count": 1,
+            "exact_registry_key_exists": false
+          }
+        ],
+        "target_occurrences": [
+          {
+            "box_id": "obj-13",
+            "patcher_box_path": [
+              "obj-49"
+            ]
+          },
+          {
+            "box_id": "obj-37",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          },
+          {
+            "box_id": "obj-36",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          }
+        ],
+        "target_saved_port_shapes": [
+          {
+            "token": "flonum",
+            "maxclass": "flonum",
+            "inlets": 1,
+            "outlets": 2,
+            "count": 3
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "boxes": 17,
+            "edges": 10,
+            "compact_max_wrapper_bytes": 5050,
+            "production_parser": {
+              "accepted": false,
+              "error": "Unknown patch field: patcher."
+            },
+            "direct_tokens": [
+              "comment",
+              "flonum",
+              "jsui",
+              "message",
+              "number",
+              "print"
+            ]
+          }
+        ]
+      },
+      "conversion": {
+        "production_max_importer_exists": false,
+        "all_source_nodes_and_ports_converted": false,
+        "adapted_selected_object_fixture_available": false,
+        "selected_object_executed_in_ultra": false,
+        "installed_help_executed_in_ultra": false,
+        "max_reference_compared": false,
+        "blockers": [
+          "max-patcher-schema-has-no-production-importer",
+          "max-node-arguments-ports-state-and-attributes-have-no-runtime-converter",
+          "nested-help-tabs-helper-scripts-and-dependencies-have-no-execution-adapter"
+        ]
+      }
+    },
+    {
+      "object": "slider",
+      "installed_relative_path": "resources/help/max/slider.maxhelp",
+      "sha256": "f79e46e3bef25bc48d6757914c96d7f52e0939de6216638b0c168c06c3a98d9d",
+      "bytes": 52156,
+      "source_json_parses": true,
+      "file_picker_extension_advertised": false,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "production_controller_load": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher.",
+        "previous_document_retained": true
+      },
+      "compacting_source_does_not_convert_schema": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "isolated_canonical_node_schema_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "authoring_object_entry_probes": [
+        {
+          "spelling": "slider",
+          "accepted": true,
+          "error": null
+        }
+      ],
+      "source": {
+        "patchers": 5,
+        "boxes": 51,
+        "edges": 18,
+        "root_boxes": 6,
+        "root_edges": 0,
+        "recursive_capacity_excess": {
+          "nodes_over_32": 19,
+          "edges_over_64": 0
+        },
+        "capacity_note": "Recursive counts are an inventory, not a flattening algorithm; hierarchy and helper patchers remain unsupported.",
+        "token_counts": [
+          {
+            "token": "attrui",
+            "count": 5,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "button",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "comment",
+            "count": 11,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "flonum",
+            "count": 1,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "js",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "jsui",
+            "count": 4,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "live.line",
+            "count": 5,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "message",
+            "count": 5,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "number",
+            "count": 6,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "p",
+            "count": 4,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "slider",
+            "count": 8,
+            "exact_registry_key_exists": true
+          }
+        ],
+        "target_occurrences": [
+          {
+            "box_id": "obj-7",
+            "patcher_box_path": [
+              "obj-4"
+            ]
+          },
+          {
+            "box_id": "obj-9",
+            "patcher_box_path": [
+              "obj-1"
+            ]
+          },
+          {
+            "box_id": "obj-14",
+            "patcher_box_path": [
+              "obj-1"
+            ]
+          },
+          {
+            "box_id": "obj-34",
+            "patcher_box_path": [
+              "obj-3"
+            ]
+          },
+          {
+            "box_id": "obj-14",
+            "patcher_box_path": [
+              "obj-3"
+            ]
+          },
+          {
+            "box_id": "obj-17",
+            "patcher_box_path": [
+              "obj-3"
+            ]
+          },
+          {
+            "box_id": "obj-25",
+            "patcher_box_path": [
+              "obj-3"
+            ]
+          },
+          {
+            "box_id": "obj-32",
+            "patcher_box_path": [
+              "obj-3"
+            ]
+          }
+        ],
+        "target_saved_port_shapes": [
+          {
+            "token": "slider",
+            "maxclass": "slider",
+            "inlets": 1,
+            "outlets": 1,
+            "count": 8
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-3"
+            ],
+            "boxes": 22,
+            "edges": 11,
+            "compact_max_wrapper_bytes": 6130,
+            "production_parser": {
+              "accepted": false,
+              "error": "Unknown patch field: patcher."
+            },
+            "direct_tokens": [
+              "button",
+              "comment",
+              "flonum",
+              "jsui",
+              "message",
+              "number",
+              "slider"
+            ]
+          }
+        ]
+      },
+      "conversion": {
+        "production_max_importer_exists": false,
+        "all_source_nodes_and_ports_converted": false,
+        "adapted_selected_object_fixture_available": false,
+        "selected_object_executed_in_ultra": false,
+        "installed_help_executed_in_ultra": false,
+        "max_reference_compared": false,
+        "blockers": [
+          "max-patcher-schema-has-no-production-importer",
+          "max-node-arguments-ports-state-and-attributes-have-no-runtime-converter",
+          "nested-help-tabs-helper-scripts-and-dependencies-have-no-execution-adapter"
+        ]
+      }
+    },
+    {
+      "object": "pack",
+      "installed_relative_path": "resources/help/max/pack.maxhelp",
+      "sha256": "bdc8583d15f82e398f553d9223794451138312d67e41eb251f8c541ab5df0d79",
+      "bytes": 67352,
+      "source_json_parses": true,
+      "file_picker_extension_advertised": false,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Patch exceeds 64 KiB."
+      },
+      "production_controller_load": {
+        "accepted": false,
+        "error": "Patch exceeds 64 KiB.",
+        "previous_document_retained": true
+      },
+      "compacting_source_does_not_convert_schema": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "isolated_canonical_node_schema_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "authoring_object_entry_probes": [
+        {
+          "spelling": "pack",
+          "accepted": true,
+          "error": null
+        }
+      ],
+      "source": {
+        "patchers": 5,
+        "boxes": 68,
+        "edges": 32,
+        "root_boxes": 6,
+        "root_edges": 0,
+        "recursive_capacity_excess": {
+          "nodes_over_32": 36,
+          "edges_over_64": 0
+        },
+        "capacity_note": "Recursive counts are an inventory, not a flattening algorithm; hierarchy and helper patchers remain unsupported.",
+        "token_counts": [
+          {
+            "token": "button",
+            "count": 2,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "comment",
+            "count": 21,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "flonum",
+            "count": 4,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "incdec",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "js",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "jsui",
+            "count": 5,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "message",
+            "count": 14,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "number",
+            "count": 6,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "p",
+            "count": 4,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "pack",
+            "count": 7,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "prepend",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "trigger",
+            "count": 1,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "umenu",
+            "count": 1,
+            "exact_registry_key_exists": false
+          }
+        ],
+        "target_occurrences": [
+          {
+            "box_id": "obj-39",
+            "patcher_box_path": [
+              "obj-6"
+            ]
+          },
+          {
+            "box_id": "obj-37",
+            "patcher_box_path": [
+              "obj-6"
+            ]
+          },
+          {
+            "box_id": "obj-11",
+            "patcher_box_path": [
+              "obj-6"
+            ]
+          },
+          {
+            "box_id": "obj-14",
+            "patcher_box_path": [
+              "obj-5"
+            ]
+          },
+          {
+            "box_id": "obj-3",
+            "patcher_box_path": [
+              "obj-5"
+            ]
+          },
+          {
+            "box_id": "obj-21",
+            "patcher_box_path": [
+              "obj-5"
+            ]
+          },
+          {
+            "box_id": "obj-5",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          }
+        ],
+        "target_saved_port_shapes": [
+          {
+            "token": "pack",
+            "maxclass": "newobj",
+            "inlets": 2,
+            "outlets": 1,
+            "count": 3
+          },
+          {
+            "token": "pack",
+            "maxclass": "newobj",
+            "inlets": 4,
+            "outlets": 1,
+            "count": 3
+          },
+          {
+            "token": "pack",
+            "maxclass": "newobj",
+            "inlets": 3,
+            "outlets": 1,
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "boxes": 12,
+            "edges": 5,
+            "compact_max_wrapper_bytes": 3576,
+            "production_parser": {
+              "accepted": false,
+              "error": "Unknown patch field: patcher."
+            },
+            "direct_tokens": [
+              "button",
+              "comment",
+              "flonum",
+              "jsui",
+              "message",
+              "number",
+              "pack",
+              "umenu"
+            ]
+          }
+        ]
+      },
+      "conversion": {
+        "production_max_importer_exists": false,
+        "all_source_nodes_and_ports_converted": false,
+        "adapted_selected_object_fixture_available": false,
+        "selected_object_executed_in_ultra": false,
+        "installed_help_executed_in_ultra": false,
+        "max_reference_compared": false,
+        "blockers": [
+          "original-source-exceeds-64KiB-intake",
+          "max-patcher-schema-has-no-production-importer",
+          "max-node-arguments-ports-state-and-attributes-have-no-runtime-converter",
+          "nested-help-tabs-helper-scripts-and-dependencies-have-no-execution-adapter"
+        ]
+      }
+    },
+    {
+      "object": "unpack",
+      "installed_relative_path": "resources/help/max/unpack.maxhelp",
+      "sha256": "3a4c1f749bfa9928a7cc92be3efbc4c651aadf6b27999077601f487350e4dce1",
+      "bytes": 46425,
+      "source_json_parses": true,
+      "file_picker_extension_advertised": false,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "production_controller_load": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher.",
+        "previous_document_retained": true
+      },
+      "compacting_source_does_not_convert_schema": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "isolated_canonical_node_schema_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "authoring_object_entry_probes": [
+        {
+          "spelling": "unpack",
+          "accepted": true,
+          "error": null
+        }
+      ],
+      "source": {
+        "patchers": 4,
+        "boxes": 47,
+        "edges": 23,
+        "root_boxes": 5,
+        "root_edges": 0,
+        "recursive_capacity_excess": {
+          "nodes_over_32": 15,
+          "edges_over_64": 0
+        },
+        "capacity_note": "Recursive counts are an inventory, not a flattening algorithm; hierarchy and helper patchers remain unsupported.",
+        "token_counts": [
+          {
+            "token": "button",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "comment",
+            "count": 20,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "flonum",
+            "count": 1,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "js",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "jsui",
+            "count": 4,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "message",
+            "count": 10,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "number",
+            "count": 1,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "p",
+            "count": 3,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "pack",
+            "count": 3,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "umenu",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "unpack",
+            "count": 2,
+            "exact_registry_key_exists": true
+          }
+        ],
+        "target_occurrences": [
+          {
+            "box_id": "obj-5",
+            "patcher_box_path": [
+              "obj-5"
+            ]
+          },
+          {
+            "box_id": "obj-5",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          }
+        ],
+        "target_saved_port_shapes": [
+          {
+            "token": "unpack",
+            "maxclass": "newobj",
+            "inlets": 1,
+            "outlets": 3,
+            "count": 2
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "boxes": 15,
+            "edges": 8,
+            "compact_max_wrapper_bytes": 4012,
+            "production_parser": {
+              "accepted": false,
+              "error": "Unknown patch field: patcher."
+            },
+            "direct_tokens": [
+              "button",
+              "comment",
+              "jsui",
+              "message",
+              "unpack"
+            ]
+          }
+        ]
+      },
+      "conversion": {
+        "production_max_importer_exists": false,
+        "all_source_nodes_and_ports_converted": false,
+        "adapted_selected_object_fixture_available": false,
+        "selected_object_executed_in_ultra": false,
+        "installed_help_executed_in_ultra": false,
+        "max_reference_compared": false,
+        "blockers": [
+          "max-patcher-schema-has-no-production-importer",
+          "max-node-arguments-ports-state-and-attributes-have-no-runtime-converter",
+          "nested-help-tabs-helper-scripts-and-dependencies-have-no-execution-adapter"
+        ]
+      }
+    },
+    {
+      "object": "select",
+      "installed_relative_path": "resources/help/max/select.maxhelp",
+      "sha256": "f096ff4673dbdbbca73863f35af3f8c91b5fa4d24ffc0c678566c8a57a114668",
+      "bytes": 42264,
+      "source_json_parses": true,
+      "file_picker_extension_advertised": false,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "production_controller_load": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher.",
+        "previous_document_retained": true
+      },
+      "compacting_source_does_not_convert_schema": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "isolated_canonical_node_schema_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "authoring_object_entry_probes": [
+        {
+          "spelling": "select",
+          "accepted": true,
+          "error": null
+        },
+        {
+          "spelling": "sel",
+          "accepted": true,
+          "error": null
+        }
+      ],
+      "source": {
+        "patchers": 4,
+        "boxes": 39,
+        "edges": 14,
+        "root_boxes": 5,
+        "root_edges": 0,
+        "recursive_capacity_excess": {
+          "nodes_over_32": 7,
+          "edges_over_64": 0
+        },
+        "capacity_note": "Recursive counts are an inventory, not a flattening algorithm; hierarchy and helper patchers remain unsupported.",
+        "token_counts": [
+          {
+            "token": "attrui",
+            "count": 2,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "button",
+            "count": 4,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "comment",
+            "count": 12,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "flonum",
+            "count": 2,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "js",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "jsui",
+            "count": 4,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "live.dial",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "number",
+            "count": 3,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "p",
+            "count": 3,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "sel",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "select",
+            "count": 2,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "slider",
+            "count": 2,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "textbutton",
+            "count": 2,
+            "exact_registry_key_exists": false
+          }
+        ],
+        "target_occurrences": [
+          {
+            "box_id": "obj-19",
+            "patcher_box_path": [
+              "obj-5"
+            ]
+          },
+          {
+            "box_id": "obj-19",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          },
+          {
+            "box_id": "obj-42",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          }
+        ],
+        "target_saved_port_shapes": [
+          {
+            "token": "select",
+            "maxclass": "newobj",
+            "inlets": 2,
+            "outlets": 2,
+            "count": 2
+          },
+          {
+            "token": "sel",
+            "maxclass": "newobj",
+            "inlets": 2,
+            "outlets": 2,
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "boxes": 16,
+            "edges": 7,
+            "compact_max_wrapper_bytes": 4239,
+            "production_parser": {
+              "accepted": false,
+              "error": "Unknown patch field: patcher."
+            },
+            "direct_tokens": [
+              "button",
+              "comment",
+              "jsui",
+              "number",
+              "sel",
+              "select",
+              "slider"
+            ]
+          }
+        ]
+      },
+      "conversion": {
+        "production_max_importer_exists": false,
+        "all_source_nodes_and_ports_converted": false,
+        "adapted_selected_object_fixture_available": false,
+        "selected_object_executed_in_ultra": false,
+        "installed_help_executed_in_ultra": false,
+        "max_reference_compared": false,
+        "blockers": [
+          "max-patcher-schema-has-no-production-importer",
+          "max-node-arguments-ports-state-and-attributes-have-no-runtime-converter",
+          "nested-help-tabs-helper-scripts-and-dependencies-have-no-execution-adapter"
+        ]
+      }
+    },
+    {
+      "object": "route",
+      "installed_relative_path": "resources/help/max/route.maxhelp",
+      "sha256": "1546c9f3437eba81723df60ded860507b099904fe87aa40b719efacf4549635e",
+      "bytes": 57546,
+      "source_json_parses": true,
+      "file_picker_extension_advertised": false,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "production_controller_load": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher.",
+        "previous_document_retained": true
+      },
+      "compacting_source_does_not_convert_schema": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "isolated_canonical_node_schema_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "authoring_object_entry_probes": [
+        {
+          "spelling": "route",
+          "accepted": true,
+          "error": null
+        }
+      ],
+      "source": {
+        "patchers": 4,
+        "boxes": 55,
+        "edges": 35,
+        "root_boxes": 5,
+        "root_edges": 0,
+        "recursive_capacity_excess": {
+          "nodes_over_32": 23,
+          "edges_over_64": 0
+        },
+        "capacity_note": "Recursive counts are an inventory, not a flattening algorithm; hierarchy and helper patchers remain unsupported.",
+        "token_counts": [
+          {
+            "token": "button",
+            "count": 6,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "comment",
+            "count": 5,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "flonum",
+            "count": 2,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "js",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "jsui",
+            "count": 4,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "message",
+            "count": 15,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "number",
+            "count": 4,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "p",
+            "count": 3,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "print",
+            "count": 8,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "route",
+            "count": 5,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "textbutton",
+            "count": 2,
+            "exact_registry_key_exists": false
+          }
+        ],
+        "target_occurrences": [
+          {
+            "box_id": "obj-44",
+            "patcher_box_path": [
+              "obj-3"
+            ]
+          },
+          {
+            "box_id": "obj-41",
+            "patcher_box_path": [
+              "obj-3"
+            ]
+          },
+          {
+            "box_id": "obj-16",
+            "patcher_box_path": [
+              "obj-3"
+            ]
+          },
+          {
+            "box_id": "obj-1",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          },
+          {
+            "box_id": "obj-35",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          }
+        ],
+        "target_saved_port_shapes": [
+          {
+            "token": "route",
+            "maxclass": "newobj",
+            "inlets": 5,
+            "outlets": 5,
+            "count": 1
+          },
+          {
+            "token": "route",
+            "maxclass": "newobj",
+            "inlets": 2,
+            "outlets": 2,
+            "count": 2
+          },
+          {
+            "token": "route",
+            "maxclass": "newobj",
+            "inlets": 3,
+            "outlets": 3,
+            "count": 1
+          },
+          {
+            "token": "route",
+            "maxclass": "newobj",
+            "inlets": 4,
+            "outlets": 4,
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "boxes": 24,
+            "edges": 16,
+            "compact_max_wrapper_bytes": 7002,
+            "production_parser": {
+              "accepted": false,
+              "error": "Unknown patch field: patcher."
+            },
+            "direct_tokens": [
+              "button",
+              "comment",
+              "jsui",
+              "message",
+              "print",
+              "route",
+              "textbutton"
+            ]
+          }
+        ]
+      },
+      "conversion": {
+        "production_max_importer_exists": false,
+        "all_source_nodes_and_ports_converted": false,
+        "adapted_selected_object_fixture_available": false,
+        "selected_object_executed_in_ultra": false,
+        "installed_help_executed_in_ultra": false,
+        "max_reference_compared": false,
+        "blockers": [
+          "max-patcher-schema-has-no-production-importer",
+          "max-node-arguments-ports-state-and-attributes-have-no-runtime-converter",
+          "nested-help-tabs-helper-scripts-and-dependencies-have-no-execution-adapter"
+        ]
+      }
+    },
+    {
+      "object": "trigger",
+      "installed_relative_path": "resources/help/max/trigger.maxhelp",
+      "sha256": "b4e655f02c012203c9141aca9f0bb096de1bf03be9bbd665727925a51f807095",
+      "bytes": 54093,
+      "source_json_parses": true,
+      "file_picker_extension_advertised": false,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "production_controller_load": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher.",
+        "previous_document_retained": true
+      },
+      "compacting_source_does_not_convert_schema": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "isolated_canonical_node_schema_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "authoring_object_entry_probes": [
+        {
+          "spelling": "trigger",
+          "accepted": true,
+          "error": null
+        },
+        {
+          "spelling": "t",
+          "accepted": true,
+          "error": null
+        }
+      ],
+      "source": {
+        "patchers": 4,
+        "boxes": 53,
+        "edges": 37,
+        "root_boxes": 6,
+        "root_edges": 1,
+        "recursive_capacity_excess": {
+          "nodes_over_32": 21,
+          "edges_over_64": 0
+        },
+        "capacity_note": "Recursive counts are an inventory, not a flattening algorithm; hierarchy and helper patchers remain unsupported.",
+        "token_counts": [
+          {
+            "token": "-",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "+",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": ">",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "accum",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "button",
+            "count": 4,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "comment",
+            "count": 7,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "flonum",
+            "count": 6,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "gate",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "js",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "jsui",
+            "count": 4,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "message",
+            "count": 8,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "number",
+            "count": 3,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "p",
+            "count": 3,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "print",
+            "count": 5,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "t",
+            "count": 6,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "trigger",
+            "count": 1,
+            "exact_registry_key_exists": true
+          }
+        ],
+        "target_occurrences": [
+          {
+            "box_id": "obj-29",
+            "patcher_box_path": [
+              "obj-7"
+            ]
+          },
+          {
+            "box_id": "obj-24",
+            "patcher_box_path": [
+              "obj-7"
+            ]
+          },
+          {
+            "box_id": "obj-21",
+            "patcher_box_path": [
+              "obj-7"
+            ]
+          },
+          {
+            "box_id": "obj-17",
+            "patcher_box_path": [
+              "obj-7"
+            ]
+          },
+          {
+            "box_id": "obj-3",
+            "patcher_box_path": [
+              "obj-7"
+            ]
+          },
+          {
+            "box_id": "obj-24",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          },
+          {
+            "box_id": "obj-5",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          }
+        ],
+        "target_saved_port_shapes": [
+          {
+            "token": "t",
+            "maxclass": "newobj",
+            "inlets": 1,
+            "outlets": 2,
+            "count": 5
+          },
+          {
+            "token": "t",
+            "maxclass": "newobj",
+            "inlets": 1,
+            "outlets": 5,
+            "count": 1
+          },
+          {
+            "token": "trigger",
+            "maxclass": "newobj",
+            "inlets": 1,
+            "outlets": 5,
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "boxes": 20,
+            "edges": 14,
+            "compact_max_wrapper_bytes": 5377,
+            "production_parser": {
+              "accepted": false,
+              "error": "Unknown patch field: patcher."
+            },
+            "direct_tokens": [
+              "button",
+              "comment",
+              "flonum",
+              "jsui",
+              "message",
+              "print",
+              "t",
+              "trigger"
+            ]
+          }
+        ]
+      },
+      "conversion": {
+        "production_max_importer_exists": false,
+        "all_source_nodes_and_ports_converted": false,
+        "adapted_selected_object_fixture_available": false,
+        "selected_object_executed_in_ultra": false,
+        "installed_help_executed_in_ultra": false,
+        "max_reference_compared": false,
+        "blockers": [
+          "max-patcher-schema-has-no-production-importer",
+          "max-node-arguments-ports-state-and-attributes-have-no-runtime-converter",
+          "nested-help-tabs-helper-scripts-and-dependencies-have-no-execution-adapter"
+        ]
+      }
+    },
+    {
+      "object": "line",
+      "installed_relative_path": "resources/help/max/line.maxhelp",
+      "sha256": "84a7eba118672092e25e4c55921d790549c9e223c34bd213ec093a2542e1f94a",
+      "bytes": 111616,
+      "source_json_parses": true,
+      "file_picker_extension_advertised": false,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Patch exceeds 64 KiB."
+      },
+      "production_controller_load": {
+        "accepted": false,
+        "error": "Patch exceeds 64 KiB.",
+        "previous_document_retained": true
+      },
+      "compacting_source_does_not_convert_schema": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "isolated_canonical_node_schema_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "authoring_object_entry_probes": [
+        {
+          "spelling": "line",
+          "accepted": true,
+          "error": null
+        }
+      ],
+      "source": {
+        "patchers": 6,
+        "boxes": 119,
+        "edges": 63,
+        "root_boxes": 7,
+        "root_edges": 0,
+        "recursive_capacity_excess": {
+          "nodes_over_32": 87,
+          "edges_over_64": 0
+        },
+        "capacity_note": "Recursive counts are an inventory, not a flattening algorithm; hierarchy and helper patchers remain unsupported.",
+        "token_counts": [
+          {
+            "token": "button",
+            "count": 9,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "comment",
+            "count": 36,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "flonum",
+            "count": 9,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "function",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "js",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "jsui",
+            "count": 6,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "line",
+            "count": 9,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "message",
+            "count": 16,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "multislider",
+            "count": 3,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "number",
+            "count": 4,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "p",
+            "count": 5,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "pack",
+            "count": 1,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "panel",
+            "count": 2,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "print",
+            "count": 2,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "random",
+            "count": 2,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "scale",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "t",
+            "count": 2,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "textbutton",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "timer",
+            "count": 2,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "toggle",
+            "count": 3,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "trigger",
+            "count": 1,
+            "exact_registry_key_exists": true
+          },
+          {
+            "token": "uzi",
+            "count": 1,
+            "exact_registry_key_exists": false
+          },
+          {
+            "token": "zl.group",
+            "count": 2,
+            "exact_registry_key_exists": false
+          }
+        ],
+        "target_occurrences": [
+          {
+            "box_id": "obj-27",
+            "patcher_box_path": [
+              "obj-8"
+            ]
+          },
+          {
+            "box_id": "obj-39",
+            "patcher_box_path": [
+              "obj-8"
+            ]
+          },
+          {
+            "box_id": "obj-1",
+            "patcher_box_path": [
+              "obj-8"
+            ]
+          },
+          {
+            "box_id": "obj-13",
+            "patcher_box_path": [
+              "obj-7"
+            ]
+          },
+          {
+            "box_id": "obj-2",
+            "patcher_box_path": [
+              "obj-7"
+            ]
+          },
+          {
+            "box_id": "obj-60",
+            "patcher_box_path": [
+              "obj-7"
+            ]
+          },
+          {
+            "box_id": "obj-24",
+            "patcher_box_path": [
+              "obj-3"
+            ]
+          },
+          {
+            "box_id": "obj-15",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          },
+          {
+            "box_id": "obj-24",
+            "patcher_box_path": [
+              "obj-2"
+            ]
+          }
+        ],
+        "target_saved_port_shapes": [
+          {
+            "token": "line",
+            "maxclass": "newobj",
+            "inlets": 3,
+            "outlets": 2,
+            "count": 9
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "boxes": 20,
+            "edges": 8,
+            "compact_max_wrapper_bytes": 5620,
+            "production_parser": {
+              "accepted": false,
+              "error": "Unknown patch field: patcher."
+            },
+            "direct_tokens": [
+              "button",
+              "comment",
+              "flonum",
+              "jsui",
+              "line",
+              "message",
+              "number",
+              "textbutton"
+            ]
+          }
+        ]
+      },
+      "conversion": {
+        "production_max_importer_exists": false,
+        "all_source_nodes_and_ports_converted": false,
+        "adapted_selected_object_fixture_available": false,
+        "selected_object_executed_in_ultra": false,
+        "installed_help_executed_in_ultra": false,
+        "max_reference_compared": false,
+        "blockers": [
+          "original-source-exceeds-64KiB-intake",
+          "max-patcher-schema-has-no-production-importer",
+          "max-node-arguments-ports-state-and-attributes-have-no-runtime-converter",
+          "nested-help-tabs-helper-scripts-and-dependencies-have-no-execution-adapter"
+        ]
+      }
+    }
+  ],
+  "intake_boundary_checks": [
+    {
+      "name": "32 nodes accepted",
+      "accepted": true,
+      "error": null,
+      "expected": "accept",
+      "assertion_pass": true
+    },
+    {
+      "name": "33 nodes rejected",
+      "accepted": false,
+      "error": "A patch supports at most 32 objects.",
+      "expected": "reject",
+      "assertion_pass": true
+    },
+    {
+      "name": "64 edges accepted",
+      "accepted": true,
+      "error": null,
+      "expected": "accept",
+      "assertion_pass": true
+    },
+    {
+      "name": "65 edges rejected",
+      "accepted": false,
+      "error": "A patch supports at most 64 cables.",
+      "expected": "reject",
+      "assertion_pass": true
+    },
+    {
+      "name": "65536-byte input accepted",
+      "accepted": true,
+      "error": null,
+      "expected": "accept",
+      "assertion_pass": true
+    },
+    {
+      "name": "65537-byte input rejected",
+      "accepted": false,
+      "error": "Patch exceeds 64 KiB.",
+      "expected": "reject",
+      "assertion_pass": true
+    },
+    {
+      "name": "unknown node parameter rejected",
+      "accepted": false,
+      "error": "Unknown number parameters field: unknown.",
+      "expected": "reject",
+      "assertion_pass": true
+    },
+    {
+      "name": "nonexistent outlet rejected",
+      "accepted": false,
+      "error": "Outlet index must be an integer from 0 to 0.",
+      "expected": "reject",
+      "assertion_pass": true
+    },
+    {
+      "name": "control cycle rejected",
+      "accepted": false,
+      "error": "Control cycles are unsupported.",
+      "expected": "reject",
+      "assertion_pass": true
+    },
+    {
+      "name": "selector message accepted",
+      "accepted": true,
+      "error": null,
+      "expected": "accept",
+      "assertion_pass": true
+    },
+    {
+      "name": "unsupported message substitution rejected",
+      "accepted": false,
+      "error": "Message must be at most 127 ASCII bytes, without substitution, quotes, backslashes, commas or semicolons.",
+      "expected": "reject",
+      "assertion_pass": true
+    }
+  ],
+  "existing_ultra_native_smoke": {
+    "provenance": "ORIGINAL_ULTRA_FIXTURES_NOT_MAX_CAPTURE",
+    "scope": "Exercises the existing Ultra canvas and native runtime only; none of these fixtures implements a selected Max object.",
+    "layer": "Production parsePatch + production native compile_canvas/CanvasRuntime, called by an experimental fixture transport.",
+    "native_header_sha256": "6a427ea229b7b09abc52e41a935750663d16804fd55c526baffa580a36ed6a6f",
+    "compiler": "g++ (GCC) 16.2.1 20260810",
+    "compile_arguments": [
+      "-std=c++20",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-I <repo>",
+      "<temporary original smoke.cpp>",
+      "-o <temporary binary>"
+    ],
+    "rust_preparation_or_ipc_executed": false,
+    "browser_or_tauri_executed": false,
+    "audio_device_opened": false,
+    "max_executed": false,
+    "selected_object_compatibility_passes": 0,
+    "cases": [
+      {
+        "name": "ordered-cold-store-hot-read-fractional-add",
+        "parser_accepted": true,
+        "native_compiled_and_executed": true,
+        "assertion_count": 15,
+        "assertions_pass": true,
+        "operations": 3,
+        "actual": [
+          {
+            "step": 0,
+            "observations": [
+              {
+                "id": 1,
+                "value": 7.5,
+                "pulses": 1
+              },
+              {
+                "id": 2,
+                "value": 7.5,
+                "pulses": 2
+              },
+              {
+                "id": 3,
+                "value": 7.5,
+                "pulses": 1
+              },
+              {
+                "id": 4,
+                "value": 7.75,
+                "pulses": 1
+              },
+              {
+                "id": 5,
+                "value": 7.75,
+                "pulses": 1
+              }
+            ]
+          },
+          {
+            "step": 1,
+            "observations": [
+              {
+                "id": 1,
+                "value": 7.5,
+                "pulses": 1
+              },
+              {
+                "id": 2,
+                "value": -2.25,
+                "pulses": 3
+              },
+              {
+                "id": 3,
+                "value": 7.5,
+                "pulses": 1
+              },
+              {
+                "id": 4,
+                "value": 7.75,
+                "pulses": 1
+              },
+              {
+                "id": 5,
+                "value": 7.75,
+                "pulses": 1
+              }
+            ]
+          },
+          {
+            "step": 2,
+            "observations": [
+              {
+                "id": 1,
+                "value": 7.5,
+                "pulses": 1
+              },
+              {
+                "id": 2,
+                "value": -2.25,
+                "pulses": 4
+              },
+              {
+                "id": 3,
+                "value": 7.5,
+                "pulses": 1
+              },
+              {
+                "id": 4,
+                "value": -2,
+                "pulses": 2
+              },
+              {
+                "id": 5,
+                "value": -2,
+                "pulses": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "incompatible-list-does-not-emit-from-number",
+        "parser_accepted": true,
+        "native_compiled_and_executed": true,
+        "assertion_count": 8,
+        "assertions_pass": true,
+        "operations": 2,
+        "actual": [
+          {
+            "step": 0,
+            "observations": [
+              {
+                "id": 1,
+                "value": 5,
+                "pulses": 1
+              },
+              {
+                "id": 2,
+                "value": 5,
+                "pulses": 1
+              },
+              {
+                "id": 3,
+                "value": 0,
+                "pulses": 0
+              }
+            ]
+          },
+          {
+            "step": 1,
+            "observations": [
+              {
+                "id": 1,
+                "value": 5,
+                "pulses": 1
+              },
+              {
+                "id": 2,
+                "value": 5,
+                "pulses": 2
+              },
+              {
+                "id": 3,
+                "value": 3,
+                "pulses": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "limitations": [
+    "No proprietary source text is retained in this report; hashes, object tokens, saved port counts, IDs and counts are derived metadata.",
+    "No Max help is opened in Max, no helper script is executed, and no external dependency is loaded.",
+    "This runner does not implement a production importer. Selected runtime objects are checked in the separate native, Rust and editor tests.",
+    "Exact registry key overlap is an identity candidate only, not Max semantics or schema compatibility.",
+    "Native smoke fixtures are independently authored Ultra patches; they are neither adapted installed help nor a Max reference comparison.",
+    "This runner calls the native core directly and does not certify the Rust preparation layer, full desktop application, audio timeline host, visuals or audio behavior."
+  ]
+}

@@ -19,6 +19,49 @@ async function importPatch(page, patch) {
   await page.locator('#import-patch').click();
 }
 
+test('autocomplete guides arguments, completes named options and keeps typed values on Enter',async({page},testInfo)=>{
+  await page.goto('/canvas.html');await page.locator('#workspace').focus();await page.keyboard.press('n');
+  const input=page.locator('#object-text'),help=page.locator('#object-arguments');
+  await input.fill('chord 48 ');
+  await expect(help).toContainText('shape');await expect(help).toContainText('default 0');
+  await expect(page.locator('.suggestion')).toHaveText(['0Major','1Minor','2Sus4']);
+  await input.press('ArrowDown');await input.press('Tab');await expect(input).toHaveValue('chord 48 1 ');
+  await input.press('Enter');
+  expect((await exportPatch(page)).nodes.at(-1).params).toEqual({root:48,shape:1});
+  await page.locator('#workspace').focus();await page.keyboard.press('n');
+  await input.fill('metro ');await expect(help).toContainText('20 to 2000');await expect(help).toContainText('milliseconds');
+  await input.fill('metro 225');await input.press('Enter');
+  expect((await exportPatch(page)).nodes.at(-1).params.interval).toBe(225);
+  await page.locator('#workspace').focus();await page.keyboard.press('n');
+  await input.fill('voice~ 1 @re 40');await input.evaluate(e=>e.setSelectionRange(12,12));await input.press('ArrowLeft');await input.press('ArrowRight');
+  await expect(page.locator('.suggestion strong')).toHaveText(['@release']);
+  await input.press('Tab');await expect(input).toHaveValue('voice~ 1 @release 40');
+  expect(await input.evaluate(e=>e.selectionStart)).toBe('voice~ 1 @release '.length);
+  await input.fill('metro @int');await page.locator('.suggestion').click();await expect(input).toHaveValue('metro @interval ');
+  await input.fill('metro @interval 250');
+  await page.screenshot({path:testInfo.outputPath('autocomplete-parameters.png')});
+  await input.press('Enter');expect((await exportPatch(page)).nodes.at(-1).params.interval).toBe(250);
+});
+
+test('completion follows selected edit text and Ctrl A instead of stale argument choices',async({page})=>{
+  await page.goto('/canvas.html');
+  await page.locator('[data-node="6"] .object-label').dblclick();
+  const input=page.locator('#object-text');await expect(input).toHaveValue('voice~ 0 8 28');
+  await input.press('Tab');await expect(input).toHaveValue('voice~ 0 8 28');
+  await input.fill('voice~ 1 8 2');await input.press('Control+a');await input.press('Tab');
+  await expect(input).toHaveValue('voice~ 1 8 2');
+});
+
+test('autocomplete argument guidance fits a narrow viewport and rejects unsupported options atomically',async({page})=>{
+  await page.setViewportSize({width:390,height:844});await page.goto('/canvas.html');
+  await page.locator('#workspace').focus();await page.keyboard.press('n');await page.locator('#object-text').fill('voice~ @');
+  await expect(page.locator('#object-entry')).toBeInViewport();
+  expect(await page.locator('#object-entry').evaluate(e=>e.scrollWidth<=e.clientWidth)).toBe(true);
+  await page.locator('#object-text').fill('metro @active 1');await page.keyboard.press('Enter');
+  await expect(page.locator('#object-error')).toContainText('Unknown metro option');
+  await expect(page.locator('#objects [data-node]')).toHaveCount(16);
+});
+
 test('honest browser preview renders all inlets above outlets', async ({page}, testInfo) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
@@ -26,7 +69,7 @@ test('honest browser preview renders all inlets above outlets', async ({page}, t
   await expect(page.locator('#preview-banner')).toBeVisible();
   await expect(page.locator('#preview-banner')).toContainText(/native|preview/i);
   await expect(page.locator('#start-audio')).toBeDisabled();
-  await expect(page.locator('#palette [data-add]')).toHaveCount(15);
+  await expect(page.locator('#palette [data-add]')).toHaveCount(25);
   await expect(page.locator('#objects [data-node]').first()).toBeVisible();
 
   const geometry = await page.locator('#objects [data-node]').evaluateAll(nodes =>
@@ -65,11 +108,70 @@ test('honest browser preview renders all inlets above outlets', async ({page}, t
   await testInfo.attach('Canvas browser preview, not native audio', {path: screenshot, contentType: 'image/png'});
 });
 
+test('new control objects expose dynamic ports, typed text and parameter guidance',async({page},testInfo)=>{
+  await page.goto('/canvas.html');
+  const kinds=['int','float','flonum','slider','pack','unpack','select','route','trigger','line'];
+  const args={pack:'0 f s',unpack:'i f s',select:'red blue',route:'red blue',trigger:'b i f s'};
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:kinds.map((type,i)=>({id:i+1,type,x:60+(i%3)*230,y:60+Math.floor(i/3)*100,params:args[type]?{args:args[type]}:{}})),edges:[]});
+  const expected=[[2,1],[2,1],[1,2],[1,1],[3,1],[1,3],[1,3],[3,3],[1,4],[3,2]];
+  for(let i=0;i<kinds.length;i++){
+    const node=page.locator(`#objects [data-node="${i+1}"]`);
+    await expect(node.locator('[data-direction=in]')).toHaveCount(expected[i][0]);
+    await expect(node.locator('[data-direction=out]')).toHaveCount(expected[i][1]);
+  }
+  await page.locator('[data-node="5"] [data-drag]').click();
+  await page.locator('#show-inspector').click();
+  await page.locator('#inspector textarea[data-parameter=args]').fill('0 0 0 0 0');
+  await page.locator('#inspector textarea[data-parameter=args]').press('Tab');
+  await expect(page.locator('[data-node="5"] [data-direction=in]')).toHaveCount(5);
+  await page.locator('[data-node="6"] [data-direction=out][data-port="2"]').click();
+  await page.locator('[data-node="5"] [data-direction=in][data-port="4"]').click();
+  await expect(page.locator('#cables path[data-edge]')).toHaveCount(1);
+  const exported=await exportPatch(page);
+  expect(exported.edges).toEqual([{from:6,outlet:2,to:5,inlet:4}]);
+  await page.locator('#workspace').focus();await page.keyboard.press('n');
+  await page.locator('#object-text').fill('trigger ');await page.locator('#object-text').press('End');
+  await expect(page.locator('#object-arguments')).toContainText(/8 typed atoms/);
+  await expect(page.locator('#object-arguments')).toContainText(/i\/int/);
+  await page.keyboard.press('Escape');await page.keyboard.press('t');
+  await expect(page.locator('#object-text')).toHaveValue('toggle ');
+  await page.locator('#object-text').fill('t b i');await page.locator('#object-text').press('Enter');
+  expect((await exportPatch(page)).nodes.at(-1).type).toBe('trigger');
+  await page.locator('#workspace').focus();await page.keyboard.press('n');
+  await page.locator('#object-text').fill('line 0 ');await page.locator('#object-text').press('End');
+  await expect(page.locator('#object-arguments .current-argument')).toHaveText(' [grain]');
+  await page.locator('#object-text').fill('line 0 5 @time 100 @floatoutput 1');await page.locator('#object-text').press('Enter');
+  expect((await exportPatch(page)).nodes.at(-1).params).toEqual({value:0,time:100,grain:5,floatoutput:1});
+  await page.screenshot({path:testInfo.outputPath('control-object-batch.png')});
+});
+
+test('flonum and slider operate only in locked mode and keep authored values in preview',async({page})=>{
+  await page.goto('/canvas.html');
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'flonum',x:60,y:60,params:{value:1.25,minimum:-2,maximum:4,numdecimalplaces:3}},{id:2,type:'slider',x:60,y:140,params:{size:11,min:-5,mult:1,floatoutput:1}},{id:3,type:'gain',x:60,y:220,params:{}}],edges:[]});
+  const flonum=page.locator('[data-node="1"] .number-input'),slider=page.locator('[data-node="2"] .slider-input');
+  expect(await slider.evaluate(e=>({min:e.min,max:e.max,step:e.step}))).toEqual({min:'0',max:'10',step:'any'});
+  await expect(flonum).toHaveJSProperty('readOnly',true);
+  await expect(slider).toHaveCSS('pointer-events','none');
+  const unlocked=await exportPatch(page);
+  await slider.focus();await page.keyboard.press('End');await page.keyboard.press('ArrowRight');
+  const gain=page.locator('[data-node="3"] .gain-input');await gain.focus();await page.keyboard.press('Home');
+  expect(await exportPatch(page)).toEqual(unlocked);
+  await expect(slider).toBeDisabled();await expect(gain).toBeDisabled();
+  await page.locator('#lock-patch').click();await expect(flonum).toHaveJSProperty('readOnly',false);
+  await flonum.fill('2.375');await flonum.press('Tab');
+  await expect(page.locator('#notice')).toContainText(/preview|native/i);
+  await slider.focus();await slider.press('End');
+  await expect(slider).toHaveValue('10');await expect(page.locator('[data-node="2"] .slider-value')).toHaveText('5');
+  const patch=await exportPatch(page);expect(patch.nodes[0].params.value).toBe(2.375);expect(patch.nodes[1].params.value).toBe(10);
+  await page.locator('#lock-patch').click();await expect(flonum).toHaveJSProperty('readOnly',true);
+  await expect(slider).toBeDisabled();await expect(gain).toBeDisabled();
+});
+
 test('add and wire objects, delete and undo, export, and reject invalid import', async ({page}, testInfo) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/canvas.html');
-  await expect(page.locator('#palette [data-add]')).toHaveCount(15);
+  await expect(page.locator('#palette [data-add]')).toHaveCount(25);
   await importPatch(page, {version: 1, profile: 'ultra-canvas-v1', nodes: [], edges: []});
   await expect(page.locator('#patch-dialog')).not.toBeVisible();
   await expect(page.locator('#objects [data-node]')).toHaveCount(0);
@@ -283,4 +385,61 @@ test('locked Inspector disables structural edits but permits live values; input 
 test('Space keeps toolbar buttons keyboard-accessible rather than starting canvas pan',async({page})=>{
   await page.goto('/canvas.html');await page.locator('#lock-patch').focus();await page.keyboard.press('Space');
   await expect(page.locator('#lock-label')).toHaveText('Locked');
+});
+
+test('Max Z and Shift Z zoom around the cursor in edit and locked mode',async({page})=>{
+  await page.goto('/canvas.html');
+  const before=await exportPatch(page);
+  for(const locked of [false,true]){
+    if(locked)await page.locator('#lock-patch').click();
+    await page.locator('#reset-view').click();await page.locator('#workspace').focus();
+    const anchor={x:510,y:430};await page.mouse.move(anchor.x,anchor.y);
+    const world=await page.locator('#canvas').evaluate((canvas,a)=>{const r=canvas.getBoundingClientRect(),z=new DOMMatrix(getComputedStyle(canvas).transform).a;return{x:(a.x-r.left)/z,y:(a.y-r.top)/z};},anchor);
+    await page.keyboard.press('z');
+    expect(Number(await page.locator('#canvas-zoom').inputValue())).toBeGreaterThan(1);
+    const after=await page.locator('#canvas').evaluate((canvas,p)=>{const r=canvas.getBoundingClientRect(),z=new DOMMatrix(getComputedStyle(canvas).transform).a;return{x:r.left+p.x*z,y:r.top+p.y*z};},world);
+    expect(after.x).toBeCloseTo(anchor.x,0);expect(after.y).toBeCloseTo(anchor.y,0);
+    // A toolbar zoom moves the canvas without moving the physical pointer.
+    await page.keyboard.press('Control+=');
+    const at=await page.locator('#canvas').evaluate((canvas,a)=>{const r=canvas.getBoundingClientRect(),z=new DOMMatrix(getComputedStyle(canvas).transform).a;return{x:(a.x-r.left)/z,y:(a.y-r.top)/z};},anchor);
+    await page.keyboard.press('z');
+    const anchored=await page.locator('#canvas').evaluate((canvas,p)=>{const r=canvas.getBoundingClientRect(),z=new DOMMatrix(getComputedStyle(canvas).transform).a;return{x:r.left+p.x*z,y:r.top+p.y*z};},at);
+    expect(anchored.x).toBeCloseTo(anchor.x,0);expect(anchored.y).toBeCloseTo(anchor.y,0);
+    await page.keyboard.press('Shift+Z');await page.keyboard.press('Control+-');
+    await page.keyboard.press('Shift+z');expect(Number(await page.locator('#canvas-zoom').inputValue())).toBeCloseTo(1,5);
+    expect(await exportPatch(page)).toEqual(before);
+  }
+});
+
+test('Max zoom shortcuts leave typing and Ctrl Z undo available',async({page})=>{
+  await page.goto('/canvas.html');await page.locator('#workspace').focus();
+  await page.keyboard.press('n');await page.locator('#object-text').fill('z');
+  await page.locator('#object-text').press('Shift+Z');
+  await expect(page.locator('#object-text')).toHaveValue('zZ');
+  await expect(page.locator('#canvas-zoom')).toHaveValue('1');
+  await page.keyboard.press('Escape');await page.keyboard.press('n');
+  await page.locator('#object-text').fill('button');await page.keyboard.press('Enter');
+  await expect(page.locator('#objects [data-node]')).toHaveCount(17);
+  await page.keyboard.press('Control+z');await expect(page.locator('#objects [data-node]')).toHaveCount(16);
+  await page.keyboard.press('Control+Shift+z');await expect(page.locator('#objects [data-node]')).toHaveCount(17);
+  await expect(page.locator('#canvas-zoom')).toHaveValue('1');
+});
+
+test('wheel, Shift wheel and two-axis trackpad scrolling move the view without changing the patch',async({page})=>{
+  await page.goto('/canvas.html');
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[
+    {id:1,type:'add',x:400,y:400,params:{rhs:1}},
+    {id:2,type:'number',x:2600,y:2200,params:{value:0}},
+  ],edges:[{from:1,outlet:0,to:2,inlet:0}]});
+  const before=await exportPatch(page),node=page.locator('[data-node="1"]');
+  await page.mouse.move(650,650);const start=await node.boundingBox();
+  await page.mouse.wheel(0,120);
+  await expect.poll(async()=>Math.round((await node.boundingBox()).y)).toBe(Math.round(start.y-120));
+  await page.keyboard.down('Shift');await page.mouse.wheel(0,140);await page.keyboard.up('Shift');
+  await expect.poll(async()=>Math.round((await node.boundingBox()).x)).toBe(Math.round(start.x-140));
+  await page.mouse.wheel(35,45);
+  await expect.poll(async()=>Math.round((await node.boundingBox()).x)).toBe(Math.round(start.x-175));
+  await expect.poll(async()=>Math.round((await node.boundingBox()).y)).toBe(Math.round(start.y-165));
+  await expect(page.locator('#canvas-zoom')).toHaveValue('1');
+  expect(await exportPatch(page)).toEqual(before);
 });

@@ -1,13 +1,14 @@
-import {createCanvasController,parsePatch,starterPatch} from './canvas-model.mjs';
+import {createCanvasController,parsePatch,starterPatch,nodeSpec} from './canvas-model.mjs';
 import {OBJECTS,objectText,parseObjectText,portHelp} from './canvas-catalog.mjs';
 import {createObjectEntry} from './canvas-entry.mjs';
 import {createNodeView} from './canvas-node.mjs';
 import {mountAudioSettings} from './audio-settings.mjs';
+import {OBJECT_EXAMPLES} from './canvas-object-examples.mjs';
 
 export function mountCanvas({document:doc=globalThis.document,window:win=globalThis.window,invoke=win?.__TAURI__?.core?.invoke}={}) {
   const $=id=>doc.querySelector('#'+id),make=(tag,className,text)=>{const e=doc.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;};
-  let initialized=false,selection=null,selected=new Set(),pending=null,locked=false,zoom=1,panel=null,inspectorKey='',drag=null,marquee=null,leaving=false,timer=null;
-  let pointer={x:80,y:90},panX=0,panY=0,pan=null,spaceHeld=false,suppressPanClick=false;
+  let initialized=false,selection=null,selected=new Set(),pending=null,locked=false,zoom=1,panel=null,inspectorKey='',helpKey='',drag=null,marquee=null,leaving=false,timer=null;
+  let pointer={x:80,y:90},pointerClient=null,panX=0,panY=0,pan=null,spaceHeld=false,suppressPanClick=false;
   const views=new Map(),fields=new Map();
   const controller=createCanvasController({invoke,onState:state=>{if(initialized)render(state);}});
   const audioSettings=mountAudioSettings({document:doc,invoke,controller});
@@ -69,7 +70,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     element.style.top=`${Math.max(8,Math.min(y,(win.innerHeight||840)-height-8))}px`;
   }
   function hoverPort(id,direction,index,button) {
-    const node=getNode(id),info=portHelp(node.type,direction,index),tip=$('port-tooltip');
+    const node=getNode(id),info=portHelp(node,direction,index),tip=$('port-tooltip');
     tip.replaceChildren(make('strong','',`${OBJECTS[node.type].name}: ${info.title}`),make('p','',`${info.direction}: ${info.messages.join(' / ')}. ${info.detail}`));
     const r=button.getBoundingClientRect();positionOverlay(tip,r.left+12,r.top+14,275,120);tip.hidden=false;
     button.setAttribute('aria-describedby','port-tooltip');$('assist').textContent=`${direction==='in'?'Inlet':'Outlet'} ${index} / ${info.type}: ${info.detail}`;
@@ -82,7 +83,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   function contextMenu(id,e,port=null) {
     unhover();selectNode(id);const node=getNode(id),s=OBJECTS[node.type],menu=$('context-menu');menu.replaceChildren();
     if(port) {
-      const info=portHelp(node.type,port.direction,port.index);
+      const info=portHelp(node,port.direction,port.index);
       menu.append(make('div','context-heading',`${s.name} / ${port.direction==='in'?'inlet':'outlet'} ${port.index}`),make('p','',info.detail),make('div','context-heading',info.direction));
       for(const message of info.messages)menu.append(make('span','message-type',message));
       if(port.direction==='out') {
@@ -132,10 +133,10 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     if(!locked&&!e.ctrlKey&&!e.metaKey){if(!selected.has(id))selectNode(id,e.shiftKey);return;}
     return guard(()=>controller.event(id,0,null))();
   }
-  const structuralParameter=(type,key)=>key==='text'||(type==='midiin'&&key==='channel')||(type==='voice'&&key==='device');
+  const structuralParameter=(type,key)=>key==='text'||key==='args'||(type==='midiin'&&key==='channel')||(type==='voice'&&key==='device');
   function parameter(id,key,value,options){
     if(locked&&structuralParameter(getNode(id)?.type,key)){controller.notice('Unlock the patch to change this structural parameter.');return;}
-    guard(()=>controller.parameter(id,key,value,options))();
+    return guard(()=>controller.parameter(id,key,value,options))();
   }
   function removeSelection() {
     if(locked)return;
@@ -152,7 +153,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     const pathData=(a,b)=>{const bend=Math.max(22,Math.min(130,Math.abs(b.y-a.y)*.45));return`M ${a.x} ${a.y} C ${a.x} ${a.y+bend}, ${b.x} ${b.y-bend}, ${b.x} ${b.y}`;};
     patch.edges.forEach((edge,index)=>{
       if(!views.has(edge.from)||!views.has(edge.to))return;
-      const source=patch.nodes.find(n=>n.id===edge.from),kind=OBJECTS[source.type].outlets[edge.outlet].type;
+      const source=patch.nodes.find(n=>n.id===edge.from),kind=nodeSpec(source).outlets[edge.outlet].type;
       const d=pathData(endpoint(edge.from,'out',edge.outlet),endpoint(edge.to,'in',edge.inlet));
       const path=doc.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',d);path.setAttribute('class',`cable ${kind}${selection?.kind==='edge'&&selection.index===index?' selected':''}`);path.dataset.edge=String(index);
       path.setAttribute('aria-label',`Cable ${edge.from}:${edge.outlet} to ${edge.to}:${edge.inlet}`);
@@ -173,10 +174,10 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
       if(n){
         area.append(make('h2','',OBJECTS[n.type].name),make('p','',selected.size>1?`${selected.size} selected. Drag or delete the group.`:OBJECTS[n.type].summary));
         for(const [key,p] of Object.entries(OBJECTS[n.type].params)){
-          const label=make('label','field'),name=make('span','field-name',key),input=make(key==='text'?'textarea':'input');
+          const label=make('label','field'),name=make('span','field-name',key),input=make(['text','args'].includes(key)?'textarea':'input');
           input.dataset.parameter=key;input.setAttribute('aria-label',`${OBJECTS[n.type].name} ${key}, selected object ${n.id}`);
-          if(key!=='text'){input.type='number';input.min=p.min;input.max=p.max;input.step=p.integer?1:'any';}
-          input.value=n.params[key];input.addEventListener('change',()=>parameter(n.id,key,key==='text'?input.value:Number(input.value)));fields.set(key,input);label.append(name,input);area.append(label);
+          if(!['text','args'].includes(key)){input.type='number';input.min=p.min;input.max=p.max;input.step=p.integer?1:'any';}
+          input.value=n.params[key];input.addEventListener('change',()=>parameter(n.id,key,['text','args'].includes(key)?input.value:Number(input.value)));fields.set(key,input);label.append(name,input);area.append(label);
         }
         area.append(make('p','panel-note','Parameters update live. Object text and connection edits stop timers and clear notes.'));
         const b=make('button','panel-action',`Help for ${OBJECTS[n.type].name}`);b.addEventListener('click',()=>{panel='help';applyPanel();});area.append(b);
@@ -189,17 +190,19 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     const observation=n?state.observations[n.id]:null;
     $('observation-state').textContent=observation?`Node observation: ${JSON.stringify(observation.value)}. Total pulses: ${observation.pulses}. This is not a complete outlet trace.`:'No native node observation.';
   }
+  const helpIdentity=node=>JSON.stringify([node?.id,node?.type,node?.params.args,locked]);
   function renderHelp(node) {
+    helpKey=helpIdentity(node);
     const area=$('help-content');area.replaceChildren();
     if(!node){
       area.append(make('h2','','Patching in Ultra'),make('p','','Create objects by typing their name and arguments. Connect bottom outlets to top inlets. Lock the patch to use its controls.'));
-      for(const [key,label] of [['N','New object at pointer'],['B / M / T / I','Bang / message / toggle / number'],['Ctrl E','Lock or unlock'],['Ctrl I','Inspector'],['Enter / F2','Edit selected object'],['Ctrl Z / Ctrl Shift Z','Undo / redo'],['Ctrl A','Select all objects'],['Delete','Remove selection'],['Escape','Cancel editing or stop notes'],['Space + drag / middle drag','Pan canvas'],['Ctrl +/- / Ctrl 0','Zoom / reset view'],['Ctrl + wheel','Zoom at pointer'],['Ctrl S / Ctrl O','Export / open JSON']]){
+      for(const [key,label] of [['N','New object at pointer'],['B / M / T / I','Bang / message / toggle / number'],['Ctrl E','Lock or unlock'],['Ctrl I','Inspector'],['Enter / F2','Edit selected object'],['Ctrl Z / Ctrl Shift Z','Undo / redo'],['Ctrl A','Select all objects'],['Delete','Remove selection'],['Escape','Cancel editing or stop notes'],['Wheel / two-finger scroll','Scroll canvas'],['Shift + wheel','Scroll horizontally'],['Space + drag / middle drag','Pan canvas'],['Z / Shift Z','Zoom in / out at pointer'],['Ctrl +/- / Ctrl 0','Zoom / reset view'],['Ctrl + wheel / pinch','Zoom at pointer'],['Ctrl S / Ctrl O','Export / open JSON']]){
         const row=make('div','shortcut-row');row.append(make('span','',label),make('kbd','',key));area.append(row);
       }
-      area.append(make('p','panel-note','The canvas implements Ultra\'s 15-object profile. It does not import .maxpat or execute arbitrary Max objects. Focus loss stops timers and notes.'));
+      area.append(make('p','panel-note',`The canvas implements Ultra's ${Object.keys(OBJECTS).length}-object profile. It does not import .maxpat or execute arbitrary Max objects. Focus loss stops timers and notes.`));
       return;
     }
-    const s=OBJECTS[node.type];area.append(make('h2','',s.name),make('p','',s.summary),make('code','help-example',s.example));
+    const s={...OBJECTS[node.type],...nodeSpec(node)};area.append(make('h2','',s.name),make('p','',s.summary),make('code','help-example',s.example));
     const add=make('button','panel-action','Create this example object');add.disabled=locked;add.addEventListener('click',()=>entryAt(s.example));area.append(add);
     const run=make('button','panel-action','Open runnable example patch');run.disabled=locked;run.addEventListener('click',()=>{
       if(locked){controller.notice('Unlock the patch before loading an example.');return;}
@@ -209,11 +212,12 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     for(const direction of ['in','out']){
       const ports=direction==='in'?s.inlets:s.outlets;if(!ports.length)continue;
       const section=make('section','help-section');section.append(make('h3','',direction==='in'?'Inlets / accepted messages':'Outlets / emitted data'));
-      ports.forEach((p,i)=>{const h=portHelp(node.type,direction,i),row=make('div','help-port');row.append(make('strong','',`${i}: ${h.title} (${h.type})`),make('p','',`${h.direction} ${h.messages.join(', ')}. ${h.detail}`));section.append(row);});area.append(section);
+      ports.forEach((p,i)=>{const h=portHelp(node,direction,i),row=make('div','help-port');row.append(make('strong','',`${i}: ${h.title} (${h.type})`),make('p','',`${h.direction} ${h.messages.join(', ')}. ${h.detail}`));section.append(row);});area.append(section);
     }
     area.append(make('p','panel-note',s.help),make('p','panel-note','Original Ultra help. Similar names do not imply Max semantics. Native observations summarize a node; they are not a scope or message history.'));
   }
   function examplePatch(type) {
+    if(Object.hasOwn(OBJECT_EXAMPLES,type))return JSON.parse(JSON.stringify(OBJECT_EXAMPLES[type]));
     const patch=starterPatch();for(const n of patch.nodes)if(n.type==='gain')n.params.value=4;
     if(['add','multiply'].includes(type)){
       patch.nodes.push({id:17,type,x:300,y:290,params:{rhs:type==='add'?12:1}});
@@ -238,8 +242,8 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     if(selection?.kind==='node'&&!ids.has(selection.id))selection=null;
     const children=[];
     for(const node of state.patch.nodes){
-      if(!views.has(node.id)||views.get(node.id).type!==node.type){
-        const v=createNodeView(node,{doc,select:selectNode,dragStart,edit:editNode,portClick,hover:hoverPort,unhover,context:contextMenu,operate,parameter});
+      if(!views.has(node.id)||views.get(node.id).type!==node.type||views.get(node.id).configuration!==node.params.args){
+        const v=createNodeView(node,{doc,select:selectNode,dragStart,edit:editNode,portClick,hover:hoverPort,unhover,context:contextMenu,operate,parameter,event:(...args)=>guard(()=>controller.event(...args))()});
         for(const target of [v.element,v.header]){target.addEventListener('pointermove',dragMove);target.addEventListener('pointerup',finishDrag);target.addEventListener('pointercancel',finishDrag);target.addEventListener('lostpointercapture',finishDrag);}views.set(node.id,v);
       }
       const view=views.get(node.id);view.update(node,state,{selected:selected.has(node.id),locked,pending,moving:!!drag&&selected.has(node.id)});children.push(view.element);
@@ -249,6 +253,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     $('canvas').style.width=`${width}px`;$('canvas').style.height=`${height}px`;$('canvas').style.transform=`translate(${panX}px, ${panY}px) scale(${zoom})`;
     $('canvas-space').style.width=`${Math.max(width*zoom,$('workspace').clientWidth||0)}px`;$('canvas-space').style.height=`${Math.max(height*zoom,$('workspace').clientHeight||0)}px`;
     renderInspector(state);drawCables(state.patch);
+    if(panel==='help'&&helpKey!==helpIdentity(currentNode()))renderHelp(currentNode());
   }
   function zoomLabel() {
     $('zoom-fit').value=String(zoom);$('zoom-fit').textContent=`${Math.round(zoom*100)}%`;$('zoom-fit').hidden=false;
@@ -312,6 +317,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     setZoom(zoom*Math.exp(-delta*.002),{x:e.clientX,y:e.clientY});
   },{passive:false});
   $('workspace').addEventListener('pointermove',e=>{
+    pointerClient={x:e.clientX,y:e.clientY};
     if(pan&&pan.pointer===e.pointerId){panX=pan.startX+e.clientX-pan.x;panY=pan.startY+e.clientY-pan.y;render(controller.getState());return;}
     pointer=point(e);if(pending)drawCables(controller.getState().patch);
     if(marquee){
@@ -345,6 +351,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     if(editing(e.target))return;
     const command=e.ctrlKey||e.metaKey,key=e.key.toLowerCase();
     if(command&&['+','=','-','0'].includes(key)){e.preventDefault();if(key==='0')resetView();else setZoom(zoom*(key==='-'?1/1.2:1.2));return;}
+    if(!command&&!e.altKey&&key==='z'){e.preventDefault();setZoom(zoom*(e.shiftKey?1/1.2:1.2),pointerClient);return;}
     if(command&&key==='e'){e.preventDefault();setLocked(!locked);return;}
     if(command&&key==='i'){e.preventDefault();showPanel('inspector');return;}
     if(command&&key==='s'){e.preventDefault();dialog('save');return;}

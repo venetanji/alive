@@ -6,7 +6,7 @@
 #include <limits>
 #include <vector>
 using namespace ultra;
-static_assert(sizeof(UltraCanvasNode)==40&&sizeof(UltraCanvasEdge)==16&&sizeof(UltraCanvasGraph)==2320);
+static_assert(sizeof(UltraCanvasNode)==192&&sizeof(UltraCanvasEdge)==16&&sizeof(UltraCanvasGraph)==7184);
 static_assert(sizeof(UltraCanvasObservation)==24&&sizeof(UltraCanvasStatus)==784);
 static UltraCanvasGraph simple(){
  UltraCanvasGraph g{};g.revision=1;
@@ -43,7 +43,7 @@ int main(){
  g=simple();g.edge_count=65;assert(!compile_canvas(g,p));
  g=simple();g.nodes[1].id=1;assert(!compile_canvas(g,p));
  g=simple();g.nodes[0].id=0;assert(!compile_canvas(g,p));
- g=simple();g.nodes[0].kind=15;assert(!compile_canvas(g,p));
+ g=simple();g.nodes[0].kind=25;assert(!compile_canvas(g,p));
  g=simple();g.nodes[0].p0=std::numeric_limits<double>::infinity();assert(!compile_canvas(g,p));
  g=simple();g.nodes[0].p0=std::numeric_limits<double>::quiet_NaN();assert(!compile_canvas(g,p));
  g=simple();g.edges[0].outlet=1;assert(!compile_canvas(g,p));

@@ -1,0 +1,4246 @@
+{
+  "schema_version": 1,
+  "batch_id": "object-batch-20261021",
+  "object_count": 10,
+  "scope": "Ten next message/control/UI objects; derived local source facts and original implementation notes only.",
+  "installed_source": {
+    "environment_manifest": "../manifest.json",
+    "max_version": "9.1.5 Windows x64"
+  },
+  "evidence_boundary": [
+    "Reference signatures/defaults are documentation evidence; they do not prove current runtime behavior.",
+    "Saved help JSON port counts are source facts; they do not prove extra inlet semantics.",
+    "Existing Max traces use original research fixtures and bounded scores, not installed whole-help execution.",
+    "No canvas execution, imported help conformance or UI/DSP equivalence is established by this map.",
+    "No installed patch bodies, prose, scripts, graphics or media are redistributed."
+  ],
+  "implementation_order": [
+    {
+      "step": 1,
+      "objects": [],
+      "gate": "DSP-independent typed message executor and lifecycle; preserve bang/int/float/symbol/list/anything, inlet and outlet identity, depth-first ordering."
+    },
+    {
+      "step": 2,
+      "objects": [
+        "int",
+        "float",
+        "trigger"
+      ],
+      "gate": "Match existing ordered Max scores, add cold-inlet and alias cases; keep unsupported messages explicit."
+    },
+    {
+      "step": 3,
+      "objects": [
+        "pack",
+        "unpack"
+      ],
+      "gate": "Typed slots, hot/cold updates, list width and stored state; right-to-left outlet ordering."
+    },
+    {
+      "step": 4,
+      "objects": [
+        "select",
+        "route"
+      ],
+      "gate": "Resolve saved/documented inlet conflicts; selector type and remainder semantics; explicit options."
+    },
+    {
+      "step": 5,
+      "objects": [
+        "flonum",
+        "slider"
+      ],
+      "gate": "Message behavior first; DSP-off locked controls, editing modifier, ranges, float mode, focus and keyboard."
+    },
+    {
+      "step": 6,
+      "objects": [
+        "line"
+      ],
+      "gate": "Create original Max timing oracle, then independent clock, tolerances, completion/interruption/queued behavior."
+    }
+  ],
+  "objects": [
+    {
+      "class": "int",
+      "namespace": "box",
+      "aliases_to_test": [
+        "i"
+      ],
+      "alias_status": "token present in installed help; runtime equivalence not independently verified",
+      "json_maxclass": "newobj",
+      "contract_evidence": "paraphrased installed XML; saved help port facts and conflicts explicitly separated",
+      "contract": {
+        "arguments": [
+          {
+            "name": "initial",
+            "type": "number",
+            "optional": true,
+            "default": 0,
+            "effect": "Initial integer storage; float input is converted."
+          }
+        ],
+        "ports": {
+          "inlets": 2,
+          "outlets": 1,
+          "input": [
+            "0: number stores and emits; bang emits stored value; set stores silently.",
+            "1: number stores silently."
+          ],
+          "output": [
+            "0: integer."
+          ]
+        },
+        "options": [
+          "send <receiver> publishes stored value to named receivers without outlet output.",
+          "XML describes 32-bit integer storage; overflow has no retained reference case."
+        ],
+        "acceptance": [
+          "Negative and positive float conversion; distinguish integer selector.",
+          "Hot/cold inlet, bang and silent set; initial state.",
+          "Explicit symbol/list/invalid-input diagnostics; alias i independently."
+        ],
+        "deferred": [
+          "Overflow and nonfinite numbers",
+          "Named send behavior and receiver ordering"
+        ],
+        "original_example": "int 11"
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/int.maxref.xml",
+        "sha256": "0f2bc1d6a2b7ff31be636cb0f7b7dc0fd460f1b7d86538eed74b35a33d265011",
+        "status": "installed-xml-inspected",
+        "arguments_raw": [
+          {
+            "name": "initial-value",
+            "optional": "1",
+            "type": "number"
+          }
+        ],
+        "port_templates_raw": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "port_caution": "INLET_TYPE/OUTLET_TYPE and OBJARG_* are literal template markers, not inferred types.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "in1",
+            "arguments": [
+              {
+                "name": "set-input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "send",
+            "arguments": [
+              {
+                "name": "receive-object-name",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "set",
+            "arguments": [
+              {
+                "name": "set-input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          }
+        ],
+        "attributes": []
+      },
+      "official_reference": "https://docs.cycling74.com/reference/int/",
+      "installed_help": {
+        "path": "help/max/int.maxhelp",
+        "sha256": "bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61",
+        "status": "parsed-static-metadata-only",
+        "patchers": 3,
+        "boxes": 25,
+        "patchlines": 10,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "button",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "i",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "int",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "r",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "slider",
+            "count": 2
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_boxes": 21,
+            "direct_tokens": [
+              "button",
+              "comment",
+              "i",
+              "int",
+              "jsui",
+              "message",
+              "number",
+              "r",
+              "slider"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-2",
+              "obj-28"
+            ],
+            "token": "int",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-9"
+            ],
+            "token": "i",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-22"
+            ],
+            "token": "int",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              "int"
+            ]
+          }
+        ],
+        "alias_tokens_present": [
+          "i"
+        ],
+        "script_file_references": [
+          "helpstarter.js"
+        ],
+        "declared_dependencies": [
+          {
+            "name": "helpargs.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpargs.js",
+                "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpdetails.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpdetails.js",
+                "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpname.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpname.js",
+                "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpstarter.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpstarter.js",
+                "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+              }
+            ],
+            "resolution": "unique-local-match"
+          }
+        ],
+        "dependency_limit": "All nested dependency_cache declarations are inspected; script bodies, dynamically loaded assets and transitive code dependencies are not resolved."
+      },
+      "max_runtime_evidence": {
+        "status": "existing-bounded-max-capture-not-canvas-execution",
+        "fixture": "04-int",
+        "max_executed": true,
+        "scope": "Numeric type, bang, symbol and list behavior for int 7",
+        "expected_status": "observed-baseline",
+        "raw_trace_lines": 16,
+        "files": [
+          {
+            "path": "../fixtures/04-int.score.json",
+            "sha256": "98da5fa318f89df758d17810ef45b4fbbfaae9f88bccf4be274149114fc5ed5e"
+          },
+          {
+            "path": "../manifests/04-int.manifest.json",
+            "sha256": "183c3bd0f9d79fbb58d365391f9975efeb22ffd11c555230a48a17e80dd6d9cf"
+          },
+          {
+            "path": "../results/04-int.jsonl",
+            "sha256": "e47562cbf6d3aeb6092fbc52c6eac9d752a068aeac0904e50c8aa670b7730ce0"
+          },
+          {
+            "path": "../expected/04-int.json",
+            "sha256": "56906927e999a469b45c4839b75c4282dd94d622a62d07906f3744a4d77797b7"
+          }
+        ]
+      },
+      "canvas_semantic_status": "not-implemented-not-executed-by-this-map"
+    },
+    {
+      "class": "float",
+      "namespace": "box",
+      "aliases_to_test": [
+        "f"
+      ],
+      "alias_status": "token present in installed help; runtime equivalence not independently verified",
+      "json_maxclass": "newobj",
+      "contract_evidence": "paraphrased installed XML; saved help port facts and conflicts explicitly separated",
+      "contract": {
+        "arguments": [
+          {
+            "name": "initial",
+            "type": "float",
+            "optional": true,
+            "default": 0.0,
+            "effect": "Initial floating-point storage."
+          }
+        ],
+        "ports": {
+          "inlets": 2,
+          "outlets": 1,
+          "input": [
+            "0: number stores and emits; bang emits; set stores silently.",
+            "1: number stores silently."
+          ],
+          "output": [
+            "0: float."
+          ]
+        },
+        "options": [
+          "send <receiver> publishes stored value without outlet output.",
+          "XML describes single-precision storage; verify precision against this Max version."
+        ],
+        "acceptance": [
+          "Integer-to-float selector conversion, fractions and negative values.",
+          "Hot/cold inlet, bang and silent set; initial state.",
+          "Explicit symbol/list/invalid-input diagnostics; alias f independently."
+        ],
+        "deferred": [
+          "Precision, large magnitudes and nonfinite numbers",
+          "Named send behavior"
+        ],
+        "original_example": "float 2.25"
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/float.maxref.xml",
+        "sha256": "6d88281ad80a17f68ce727db2321035f42a123cddcd2fc3e813daf8cd0171567",
+        "status": "installed-xml-inspected",
+        "arguments_raw": [
+          {
+            "name": "initial-value",
+            "optional": "1",
+            "type": "float"
+          }
+        ],
+        "port_templates_raw": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "port_caution": "INLET_TYPE/OUTLET_TYPE and OBJARG_* are literal template markers, not inferred types.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "in1",
+            "arguments": [
+              {
+                "name": "set-input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "send",
+            "arguments": [
+              {
+                "name": "receive-object-name",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "set",
+            "arguments": [
+              {
+                "name": "set-input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          }
+        ],
+        "attributes": []
+      },
+      "official_reference": "https://docs.cycling74.com/reference/float/",
+      "installed_help": {
+        "path": "help/max/float.maxhelp",
+        "sha256": "c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c",
+        "status": "parsed-static-metadata-only",
+        "patchers": 3,
+        "boxes": 27,
+        "patchlines": 12,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "*",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "button",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "f",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "float",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "r",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "slider",
+            "count": 2
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_boxes": 23,
+            "direct_tokens": [
+              "*",
+              "button",
+              "comment",
+              "f",
+              "float",
+              "flonum",
+              "jsui",
+              "message",
+              "r",
+              "slider"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-2",
+              "obj-28"
+            ],
+            "token": "float",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              "float"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-9"
+            ],
+            "token": "f",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              "float"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-22"
+            ],
+            "token": "float",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              "float"
+            ]
+          }
+        ],
+        "alias_tokens_present": [
+          "f"
+        ],
+        "script_file_references": [
+          "helpstarter.js"
+        ],
+        "declared_dependencies": [
+          {
+            "name": "helpargs.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpargs.js",
+                "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpdetails.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpdetails.js",
+                "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpname.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpname.js",
+                "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpstarter.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpstarter.js",
+                "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+              }
+            ],
+            "resolution": "unique-local-match"
+          }
+        ],
+        "dependency_limit": "All nested dependency_cache declarations are inspected; script bodies, dynamically loaded assets and transitive code dependencies are not resolved."
+      },
+      "max_runtime_evidence": {
+        "status": "existing-bounded-max-capture-not-canvas-execution",
+        "fixture": "05-float",
+        "max_executed": true,
+        "scope": "Numeric type, bang, symbol and list behavior for float 7.",
+        "expected_status": "observed-baseline",
+        "raw_trace_lines": 16,
+        "files": [
+          {
+            "path": "../fixtures/05-float.score.json",
+            "sha256": "229e2dc4cd9feb97c214b8e4be059698f734d0a3ea7748bd8f574bb002a9e7f4"
+          },
+          {
+            "path": "../manifests/05-float.manifest.json",
+            "sha256": "6d10c38c377fe268b839f4bb6079c1166917cab299f01b2cae6cbe6fa94c5aab"
+          },
+          {
+            "path": "../results/05-float.jsonl",
+            "sha256": "8d8e18277db968bb778bd130afe505fc705161727a66aaff6a8a1b2085020505"
+          },
+          {
+            "path": "../expected/05-float.json",
+            "sha256": "ddf033f70eb490c9cb6dab48592e98f18d3db7696da1a4ec6874e0715c641e55"
+          }
+        ]
+      },
+      "canvas_semantic_status": "not-implemented-not-executed-by-this-map"
+    },
+    {
+      "class": "flonum",
+      "namespace": "box",
+      "aliases_to_test": [],
+      "alias_status": "no alias mapped",
+      "json_maxclass": "flonum",
+      "contract_evidence": "paraphrased installed XML; saved help port facts and conflicts explicitly separated",
+      "contract": {
+        "arguments": [],
+        "arguments_caution": "XML argument row is a template placeholder; no positional argument contract inferred.",
+        "ports": {
+          "inlets": 1,
+          "outlets": 2,
+          "input": [
+            "0: numeric update displays and emits; bang repeats; set updates silently."
+          ],
+          "output": [
+            "0: displayed numeric value.",
+            "1: bang for keyboard Tab navigation."
+          ]
+        },
+        "options": [
+          "minimum/maximum bound stored, displayed and emitted values; min/max without a number clear bounds.",
+          "cantchange, mouseup and outputonclick affect operation; select gives keyboard focus.",
+          "numdecimalplaces changes display; appearance and parameter metadata stay separate from value state."
+        ],
+        "acceptance": [
+          "Float selector, bang, silent set and bounds.",
+          "Drag either side of decimal; typed entry commits; focus and Tab outlet.",
+          "Operate locked with DSP off, and temporary operation while editing."
+        ],
+        "deferred": [
+          "Parameter automation and appearance/style parity",
+          "Full keyboard/accessibility behavior"
+        ],
+        "original_example": "UI flonum with minimum=-2.5 and maximum=2.5"
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/flonum.maxref.xml",
+        "sha256": "b36cc948295ad443b152e5b2d7e12138c791186cc1027ecae9c4b5a7bf8e9072",
+        "status": "installed-xml-inspected",
+        "arguments_raw": [
+          {
+            "id": "0",
+            "name": "OBJARG_NAME",
+            "type": "OBJARG_TYPE",
+            "optional": "0"
+          }
+        ],
+        "port_templates_raw": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "port_caution": "INLET_TYPE/OUTLET_TYPE and OBJARG_* are literal template markers, not inferred types.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "max",
+            "arguments": [
+              {
+                "name": "maximum-value",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "min",
+            "arguments": [
+              {
+                "name": "minimum",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "(mouse)",
+            "arguments": []
+          },
+          {
+            "name": "select",
+            "arguments": []
+          },
+          {
+            "name": "set",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          }
+        ],
+        "attributes": [
+          {
+            "name": "bgcolor",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "4",
+            "default_lexemes": [],
+            "enum_names": []
+          },
+          {
+            "name": "bordercolor",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "4",
+            "default_lexemes": [],
+            "enum_names": []
+          },
+          {
+            "name": "cantchange",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "hbgcolor",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "4",
+            "default_lexemes": [],
+            "enum_names": []
+          },
+          {
+            "name": "htextcolor",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "4",
+            "default_lexemes": [],
+            "enum_names": []
+          },
+          {
+            "name": "htricolor",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "4",
+            "default_lexemes": [],
+            "enum_names": []
+          },
+          {
+            "name": "maximum",
+            "get": "1",
+            "set": "1",
+            "type": "atom",
+            "size": "1",
+            "default_lexemes": [
+              "<none>"
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "minimum",
+            "get": "1",
+            "set": "1",
+            "type": "atom",
+            "size": "1",
+            "default_lexemes": [
+              "<none>"
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "mouseup",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "numdecimalplaces",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "outputonclick",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "parameter_enable",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [],
+            "enum_names": []
+          },
+          {
+            "name": "textcolor",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "4",
+            "default_lexemes": [],
+            "enum_names": []
+          },
+          {
+            "name": "triangle",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "1"
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "tricolor",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "4",
+            "default_lexemes": [],
+            "enum_names": []
+          },
+          {
+            "name": "triscale",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "1",
+            "default_lexemes": [
+              "1."
+            ],
+            "enum_names": []
+          }
+        ]
+      },
+      "official_reference": "https://docs.cycling74.com/reference/flonum/",
+      "installed_help": {
+        "path": "help/max/flonum.maxhelp",
+        "sha256": "b1251b92a08e8c6bc248bce5561c87459680c95540d3a20e9ac87294507aeefa",
+        "status": "parsed-static-metadata-only",
+        "patchers": 4,
+        "boxes": 39,
+        "patchlines": 17,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "attrui",
+            "count": 7
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 12
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 8
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "print",
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_boxes": 17,
+            "direct_tokens": [
+              "comment",
+              "flonum",
+              "jsui",
+              "message",
+              "number",
+              "print"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-49",
+              "obj-13"
+            ],
+            "token": "flonum",
+            "numinlets": 1,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              "bang"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-37"
+            ],
+            "token": "flonum",
+            "numinlets": 1,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              "bang"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-36"
+            ],
+            "token": "flonum",
+            "numinlets": 1,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              "bang"
+            ]
+          }
+        ],
+        "alias_tokens_present": [],
+        "script_file_references": [
+          "helpstarter.js"
+        ],
+        "declared_dependencies": [
+          {
+            "name": "helpdetails.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpdetails.js",
+                "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpname.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpname.js",
+                "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpstarter.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpstarter.js",
+                "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+              }
+            ],
+            "resolution": "unique-local-match"
+          }
+        ],
+        "dependency_limit": "All nested dependency_cache declarations are inspected; script bodies, dynamically loaded assets and transitive code dependencies are not resolved."
+      },
+      "max_runtime_evidence": {
+        "status": "existing-bounded-max-capture-not-canvas-execution",
+        "fixture": "07-flonum",
+        "max_executed": true,
+        "scope": "Numeric type, bang, symbol and list behavior for flonum",
+        "expected_status": "observed-baseline",
+        "raw_trace_lines": 18,
+        "files": [
+          {
+            "path": "../fixtures/07-flonum.score.json",
+            "sha256": "a376a3305c5eef5cc301b135a1d0c12dd4bd038e9f4e93190f1b867b37b0cb89"
+          },
+          {
+            "path": "../manifests/07-flonum.manifest.json",
+            "sha256": "06368f85d0287596167bff646cca6772641c259fecfd768554ddecf45bda8827"
+          },
+          {
+            "path": "../results/07-flonum.jsonl",
+            "sha256": "89d665ff66c3a80e16b0171fe35a5ae372340e41bcde2dccbaf59aa73565969b"
+          },
+          {
+            "path": "../expected/07-flonum.json",
+            "sha256": "a6ea8686dc998ccc6a7ac838b2f2166c02e5da567e25fa154eab09143c65700b"
+          }
+        ]
+      },
+      "canvas_semantic_status": "not-implemented-not-executed-by-this-map"
+    },
+    {
+      "class": "slider",
+      "namespace": "box",
+      "aliases_to_test": [],
+      "alias_status": "no alias mapped",
+      "json_maxclass": "slider",
+      "contract_evidence": "paraphrased installed XML; saved help port facts and conflicts explicitly separated",
+      "contract": {
+        "arguments": [],
+        "arguments_caution": "XML argument row is a template placeholder; use attributes, not invented positional arguments.",
+        "ports": {
+          "inlets": 1,
+          "outlets": 1,
+          "input": [
+            "0: numeric input displays/emits; bang repeats; set changes state silently."
+          ],
+          "output": [
+            "0: integer by default; float when floatoutput is enabled."
+          ]
+        },
+        "options": [
+          "size controls drag range; mult scales and min offsets output.",
+          "Integer mode clamps size below 2 to 2; float mode clamps size below 1 to 1.",
+          "setminmax <low> <high> configures range and enables floatoutput.",
+          "relative changes drag anchoring; orientation can follow geometry or be explicit.",
+          "XML distinguishes bounded drag output from numeric inlet values, which are not bounded before output."
+        ],
+        "source_conflicts": [
+          "relative description calls relative mode the default, but its attribute metadata has default value=0."
+        ],
+        "acceptance": [
+          "Default integer mode; floatoutput; size/mult/min; silent set.",
+          "Out-of-range inlet versus drag; setminmax and fractional endpoints.",
+          "Locked, edit-mode modifier and DSP-off operation; orientation and relative mode."
+        ],
+        "deferred": [
+          "Exact mouse mapping and rounding",
+          "Parameter mapping and style/appearance parity"
+        ],
+        "original_example": "UI slider with size=9, mult=0.25 and min=-1"
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/slider.maxref.xml",
+        "sha256": "c6608cbf9ccb51592c8d9fcc16d19450a1a02e639f02801e31a45f4e7b4b9eab",
+        "status": "installed-xml-inspected",
+        "arguments_raw": [
+          {
+            "id": "0",
+            "name": "OBJARG_NAME",
+            "type": "OBJARG_TYPE",
+            "optional": "0"
+          }
+        ],
+        "port_templates_raw": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "port_caution": "INLET_TYPE/OUTLET_TYPE and OBJARG_* are literal template markers, not inferred types.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "(mouse)",
+            "arguments": []
+          },
+          {
+            "name": "set",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "setminmax",
+            "arguments": [
+              {
+                "name": "values",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          }
+        ],
+        "attributes": [
+          {
+            "name": "annotation_name",
+            "get": "1",
+            "set": "1",
+            "type": "symbol",
+            "size": "1",
+            "default_lexemes": [
+              ""
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "bgcolor",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "4",
+            "default_lexemes": [],
+            "enum_names": []
+          },
+          {
+            "name": "bordercolor",
+            "get": "1",
+            "set": "1",
+            "type": "atom",
+            "size": "1",
+            "default_lexemes": [],
+            "enum_names": []
+          },
+          {
+            "name": "drawoffcolor",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "elementcolor",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "4",
+            "default_lexemes": [],
+            "enum_names": []
+          },
+          {
+            "name": "floatoutput",
+            "get": "1",
+            "set": "1",
+            "type": "atom_long",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "inputrangemode",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "knobcolor",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "4",
+            "default_lexemes": [],
+            "enum_names": []
+          },
+          {
+            "name": "knobshape",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "enum_names": [
+              "Indicator+",
+              "Less Rounded",
+              "Rounded",
+              "Triangle",
+              "Rectangle",
+              "Indicator",
+              "Narrow Rounded"
+            ]
+          },
+          {
+            "name": "min",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "1",
+            "default_lexemes": [
+              "0."
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "mult",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "1",
+            "default_lexemes": [
+              "1."
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "orientation",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "enum_names": [
+              "Automatic",
+              "Horizontal",
+              "Vertical"
+            ]
+          },
+          {
+            "name": "param_connect",
+            "get": "1",
+            "set": "1",
+            "type": "symbol",
+            "size": "1",
+            "default_lexemes": [
+              ""
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "parameter_enable",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [],
+            "enum_names": []
+          },
+          {
+            "name": "parameter_mappable",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "1"
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "relative",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "enum_names": [
+              "Absolute",
+              "Relative"
+            ]
+          },
+          {
+            "name": "size",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "1",
+            "default_lexemes": [
+              "128."
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "style",
+            "get": "1",
+            "set": "1",
+            "type": "symbol",
+            "size": "1",
+            "default_lexemes": [
+              ""
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "thickness",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "1",
+            "default_lexemes": [
+              "100."
+            ],
+            "enum_names": []
+          }
+        ]
+      },
+      "official_reference": "https://docs.cycling74.com/reference/slider/",
+      "installed_help": {
+        "path": "help/max/slider.maxhelp",
+        "sha256": "f79e46e3bef25bc48d6757914c96d7f52e0939de6216638b0c168c06c3a98d9d",
+        "status": "parsed-static-metadata-only",
+        "patchers": 5,
+        "boxes": 51,
+        "patchlines": 18,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "attrui",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "button",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 11
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "live.line",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 6
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "slider",
+            "count": 8
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-3"
+            ],
+            "direct_boxes": 22,
+            "direct_tokens": [
+              "button",
+              "comment",
+              "flonum",
+              "jsui",
+              "message",
+              "number",
+              "slider"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-4",
+              "obj-7"
+            ],
+            "token": "slider",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-1",
+              "obj-9"
+            ],
+            "token": "slider",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-1",
+              "obj-14"
+            ],
+            "token": "slider",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-34"
+            ],
+            "token": "slider",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-14"
+            ],
+            "token": "slider",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-17"
+            ],
+            "token": "slider",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-25"
+            ],
+            "token": "slider",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-32"
+            ],
+            "token": "slider",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          }
+        ],
+        "alias_tokens_present": [],
+        "script_file_references": [
+          "helpstarter.js"
+        ],
+        "declared_dependencies": [
+          {
+            "name": "helpdetails.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpdetails.js",
+                "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpname.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpname.js",
+                "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpstarter.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpstarter.js",
+                "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+              }
+            ],
+            "resolution": "unique-local-match"
+          }
+        ],
+        "dependency_limit": "All nested dependency_cache declarations are inspected; script bodies, dynamically loaded assets and transitive code dependencies are not resolved."
+      },
+      "max_runtime_evidence": {
+        "status": "existing-max-ui-observation-only",
+        "files": [
+          {
+            "path": "../help-coverage-20261021/results/ui-events.jsonl",
+            "sha256": "4a88aef53ebd40b4c9165a3c4e3aa1f4f401970b8e775e625b1ecf260c2493c0"
+          }
+        ],
+        "scope": "Locked slider emits in existing physical UI probe; no range/coercion oracle."
+      },
+      "canvas_semantic_status": "not-implemented-not-executed-by-this-map"
+    },
+    {
+      "class": "pack",
+      "namespace": "box",
+      "aliases_to_test": [],
+      "alias_status": "no alias mapped",
+      "json_maxclass": "newobj",
+      "contract_evidence": "paraphrased installed XML; saved help port facts and conflicts explicitly separated",
+      "contract": {
+        "arguments": [
+          {
+            "name": "slots",
+            "type": "int|float|symbol[]",
+            "optional": true,
+            "default": [
+              0,
+              0
+            ],
+            "effect": "Each atom fixes one inlet and stored slot type/value."
+          }
+        ],
+        "ports": {
+          "inlets": "2 when no arguments; otherwise number of slot arguments",
+          "outlets": 1,
+          "input": [
+            "0: update and emit stored sequence; bang repeats; set updates silently.",
+            "1..N-1: update corresponding slot silently; lists can update subsequent slots."
+          ],
+          "output": [
+            "0: stored message/list; nth can emit one stored item."
+          ]
+        },
+        "options": [
+          "Short updates preserve untouched slots; excess items have no available slot.",
+          "Slot type comes from creation arguments and controls numeric/symbol conversion.",
+          "send publishes to named receivers; nth selects an element (index basis not mapped here)."
+        ],
+        "acceptance": [
+          "Typed slots and hot/cold behavior; initial bang.",
+          "Short and excess lists; numeric/symbol conversion; message selector serialization.",
+          "Silent set and nth index bounds need additional retained Max cases."
+        ],
+        "deferred": [
+          "nth index basis/bounds",
+          "Named send",
+          "Symbol-first output canonicalization"
+        ],
+        "original_example": "pack 3 0.5 amber"
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/pack.maxref.xml",
+        "sha256": "43bad217a251635f0c3bb21369f40e595681cec7bd7a38ee7e7b718246dac742",
+        "status": "installed-xml-inspected",
+        "arguments_raw": [
+          {
+            "name": "list-elements",
+            "optional": "1",
+            "type": "any"
+          }
+        ],
+        "port_templates_raw": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "port_caution": "INLET_TYPE/OUTLET_TYPE and OBJARG_* are literal template markers, not inferred types.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "list",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "anything",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "nth",
+            "arguments": [
+              {
+                "name": "index",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "send",
+            "arguments": [
+              {
+                "name": "receive-name",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "set",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "symbol",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "symbol"
+              }
+            ]
+          }
+        ],
+        "attributes": []
+      },
+      "official_reference": "https://docs.cycling74.com/reference/pack/",
+      "installed_help": {
+        "path": "help/max/pack.maxhelp",
+        "sha256": "bdc8583d15f82e398f553d9223794451138312d67e41eb251f8c541ab5df0d79",
+        "status": "parsed-static-metadata-only",
+        "patchers": 5,
+        "boxes": 68,
+        "patchlines": 32,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "button",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 21
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "incdec",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 14
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 6
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "pack",
+            "count": 7
+          },
+          {
+            "namespace": "box",
+            "token": "prepend",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "trigger",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "umenu",
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_boxes": 12,
+            "direct_tokens": [
+              "button",
+              "comment",
+              "flonum",
+              "jsui",
+              "message",
+              "number",
+              "pack",
+              "umenu"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-6",
+              "obj-39"
+            ],
+            "token": "pack",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-6",
+              "obj-37"
+            ],
+            "token": "pack",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-6",
+              "obj-11"
+            ],
+            "token": "pack",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-5",
+              "obj-14"
+            ],
+            "token": "pack",
+            "numinlets": 4,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-5",
+              "obj-3"
+            ],
+            "token": "pack",
+            "numinlets": 4,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-5",
+              "obj-21"
+            ],
+            "token": "pack",
+            "numinlets": 4,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-5"
+            ],
+            "token": "pack",
+            "numinlets": 3,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          }
+        ],
+        "alias_tokens_present": [],
+        "script_file_references": [
+          "helpstarter.js"
+        ],
+        "declared_dependencies": [
+          {
+            "name": "helpargs.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpargs.js",
+                "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpdetails.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpdetails.js",
+                "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpname.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpname.js",
+                "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpstarter.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpstarter.js",
+                "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+              }
+            ],
+            "resolution": "unique-local-match"
+          }
+        ],
+        "dependency_limit": "All nested dependency_cache declarations are inspected; script bodies, dynamically loaded assets and transitive code dependencies are not resolved."
+      },
+      "max_runtime_evidence": {
+        "status": "existing-bounded-max-capture-not-canvas-execution",
+        "fixture": "08-pack",
+        "max_executed": true,
+        "scope": "Does only pack inlet zero emit, and how do short/long lists update stored slots?",
+        "expected_status": "observed-baseline",
+        "raw_trace_lines": 13,
+        "files": [
+          {
+            "path": "../fixtures/08-pack.score.json",
+            "sha256": "7c8722ea1073f555cdacb7e9c2e378e1d8a923425816fe68bf9d845c3b494af9"
+          },
+          {
+            "path": "../manifests/08-pack.manifest.json",
+            "sha256": "d60769132dc060c0c38e9de500acf2146aab256aea437ea6e3df5224bf35ceb3"
+          },
+          {
+            "path": "../results/08-pack.jsonl",
+            "sha256": "6531a90678c6eeac19c23a0a759957a5c3111237e8bdbd9ff2c870bfc427a41b"
+          },
+          {
+            "path": "../expected/08-pack.json",
+            "sha256": "382256eb3857194b77c12a06fec0b228dba78389d035831eaf88e870bc30b5c7"
+          }
+        ]
+      },
+      "canvas_semantic_status": "not-implemented-not-executed-by-this-map"
+    },
+    {
+      "class": "unpack",
+      "namespace": "box",
+      "aliases_to_test": [],
+      "alias_status": "no alias mapped",
+      "json_maxclass": "newobj",
+      "contract_evidence": "paraphrased installed XML; saved help port facts and conflicts explicitly separated",
+      "contract": {
+        "arguments": [
+          {
+            "name": "slots",
+            "type": "int|float|symbol[]",
+            "optional": true,
+            "default": [
+              0,
+              0
+            ],
+            "effect": "Each argument fixes one output type; defaults to two integer outputs."
+          }
+        ],
+        "ports": {
+          "inlets": 1,
+          "outlets": "2 when no arguments; otherwise number of slot arguments",
+          "input": [
+            "0: distribute received atoms to typed outlets; bang recalls stored items."
+          ],
+          "output": [
+            "0..N-1: corresponding coerced element; delivery order is a separate contract."
+          ]
+        },
+        "options": [
+          "Extra items exceed the outlet count; short lists and later bang require stored-state verification.",
+          "XML template lists two outlets but argument count controls actual count."
+        ],
+        "acceptance": [
+          "Right-to-left output order from ordered Max baseline.",
+          "Integer/float/symbol coercion, short/excess input and later bang.",
+          "Anything selector differs from explicit symbol/list syntax."
+        ],
+        "deferred": [
+          "Per-atom int/float trace fidelity",
+          "All symbol conversion edge cases"
+        ],
+        "original_example": "unpack 0 0. pear"
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/unpack.maxref.xml",
+        "sha256": "77849f4d7100ed8f9c77dfade3c54dadbf0a49a5320d61cd7b951f8c78aa6214",
+        "status": "installed-xml-inspected",
+        "arguments_raw": [
+          {
+            "name": "list-elements",
+            "optional": "1",
+            "type": "any"
+          }
+        ],
+        "port_templates_raw": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "port_caution": "INLET_TYPE/OUTLET_TYPE and OBJARG_* are literal template markers, not inferred types.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "list",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "anything",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "any"
+              }
+            ]
+          }
+        ],
+        "attributes": []
+      },
+      "official_reference": "https://docs.cycling74.com/reference/unpack/",
+      "installed_help": {
+        "path": "help/max/unpack.maxhelp",
+        "sha256": "3a4c1f749bfa9928a7cc92be3efbc4c651aadf6b27999077601f487350e4dce1",
+        "status": "parsed-static-metadata-only",
+        "patchers": 4,
+        "boxes": 47,
+        "patchlines": 23,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "button",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 20
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 10
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "pack",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "umenu",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "unpack",
+            "count": 2
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_boxes": 15,
+            "direct_tokens": [
+              "button",
+              "comment",
+              "jsui",
+              "message",
+              "unpack"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-5",
+              "obj-5"
+            ],
+            "token": "unpack",
+            "numinlets": 1,
+            "numoutlets": 3,
+            "outlettype": [
+              "int",
+              "float",
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-5"
+            ],
+            "token": "unpack",
+            "numinlets": 1,
+            "numoutlets": 3,
+            "outlettype": [
+              "int",
+              "float",
+              ""
+            ]
+          }
+        ],
+        "alias_tokens_present": [],
+        "script_file_references": [
+          "helpstarter.js"
+        ],
+        "declared_dependencies": [
+          {
+            "name": "helpargs.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpargs.js",
+                "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpdetails.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpdetails.js",
+                "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpname.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpname.js",
+                "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpstarter.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpstarter.js",
+                "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+              }
+            ],
+            "resolution": "unique-local-match"
+          }
+        ],
+        "dependency_limit": "All nested dependency_cache declarations are inspected; script bodies, dynamically loaded assets and transitive code dependencies are not resolved."
+      },
+      "max_runtime_evidence": {
+        "status": "existing-bounded-max-capture-not-canvas-execution",
+        "fixture": "09-unpack",
+        "max_executed": true,
+        "scope": "Unpack outlet order, coercion, missing fields, excess fields and bang",
+        "expected_status": "observed-baseline",
+        "raw_trace_lines": 21,
+        "files": [
+          {
+            "path": "../fixtures/09-unpack.score.json",
+            "sha256": "d3ee6aff9a6eb8147b8b5419c7cba4dd645605d87cd3e2689a1768afa4baf405"
+          },
+          {
+            "path": "../manifests/09-unpack.manifest.json",
+            "sha256": "00b1cb84de4bc1a0e3de6e4b4943de82d067f68993910ac1faa906289a540f49"
+          },
+          {
+            "path": "../results/09-unpack.jsonl",
+            "sha256": "b56b32538fce0370ca91d0af1097b2025aac574a4654a34a7ee78ddd9f8b65b1"
+          },
+          {
+            "path": "../expected/09-unpack.json",
+            "sha256": "b514b2b8ba464ce0e5572ec9de0552f12c813bb334a52e147f7ddb480f50dd26"
+          }
+        ]
+      },
+      "canvas_semantic_status": "not-implemented-not-executed-by-this-map"
+    },
+    {
+      "class": "select",
+      "namespace": "box",
+      "aliases_to_test": [
+        "sel"
+      ],
+      "alias_status": "token present in installed help; runtime equivalence not independently verified",
+      "json_maxclass": "newobj",
+      "contract_evidence": "paraphrased installed XML; saved help port facts and conflicts explicitly separated",
+      "contract": {
+        "arguments": [
+          {
+            "name": "selectors",
+            "type": "int|float|symbol[]",
+            "optional": true,
+            "default": [
+              0
+            ],
+            "effect": "One match outlet per selector, plus one unmatched outlet."
+          }
+        ],
+        "ports": {
+          "inlets": "1 or 2; single-integer/default second inlet documented; float case conflicts with saved help",
+          "outlets": "number of selectors + 1 (2 by default)",
+          "input": [
+            "0: compare first message element with selectors.",
+            "1: replace comparison value in documented single-integer/default case."
+          ],
+          "output": [
+            "0..N-1: bang for match, leftmost matching duplicate only.",
+            "N: original unmatched message."
+          ]
+        },
+        "options": [
+          "matchfloat enables floating comparison; exact is its documented attribute alias.",
+          "fuzzy supplies tolerance when floating comparison is enabled."
+        ],
+        "source_conflicts": [
+          "XML restricts right inlet to single int/default; p fuzzy float-selector instance saves two inlets."
+        ],
+        "acceptance": [
+          "Integer, float, symbol, bang and list matching; original unmatched selector/payload.",
+          "Single-integer right-inlet replacement; multiple selectors and duplicates.",
+          "matchfloat/exact/fuzzy and single-float port creation require fresh runtime probes."
+        ],
+        "deferred": [
+          "Resolve float-selector inlet conflict",
+          "Fuzzy boundaries and duplicate symbol behavior"
+        ],
+        "original_example": "select 4 9 ready"
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/select.maxref.xml",
+        "sha256": "8051a768b2169bf72f40021e66123d14877ab9b2d6654f6d5e5a549b7fe463d1",
+        "status": "installed-xml-inspected",
+        "arguments_raw": [
+          {
+            "name": "selectors",
+            "optional": "1",
+            "type": "anything"
+          },
+          {
+            "name": "inlet",
+            "optional": "0",
+            "type": "int"
+          }
+        ],
+        "port_templates_raw": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "port_caution": "INLET_TYPE/OUTLET_TYPE and OBJARG_* are literal template markers, not inferred types.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "list",
+            "arguments": [
+              {
+                "name": "input",
+                "type": "list",
+                "optional": "0"
+              }
+            ]
+          },
+          {
+            "name": "anything",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "in1",
+            "arguments": [
+              {
+                "name": "value",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "symbol",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "symbol"
+              }
+            ]
+          }
+        ],
+        "attributes": [
+          {
+            "name": "fuzzy",
+            "get": "1",
+            "set": "1",
+            "type": "atom",
+            "size": "1",
+            "default_lexemes": [
+              "0."
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "matchfloat",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "alias": "exact",
+            "default_lexemes": [
+              "0"
+            ],
+            "enum_names": []
+          }
+        ]
+      },
+      "official_reference": "https://docs.cycling74.com/reference/select/",
+      "installed_help": {
+        "path": "help/max/select.maxhelp",
+        "sha256": "f096ff4673dbdbbca73863f35af3f8c91b5fa4d24ffc0c678566c8a57a114668",
+        "status": "parsed-static-metadata-only",
+        "patchers": 4,
+        "boxes": 39,
+        "patchlines": 14,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "attrui",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "button",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 12
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "live.dial",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "sel",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "select",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "slider",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "textbutton",
+            "count": 2
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_boxes": 16,
+            "direct_tokens": [
+              "button",
+              "comment",
+              "jsui",
+              "number",
+              "sel",
+              "select",
+              "slider"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-5",
+              "obj-19"
+            ],
+            "token": "select",
+            "numinlets": 2,
+            "numoutlets": 2,
+            "outlettype": [
+              "bang",
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-19"
+            ],
+            "token": "select",
+            "numinlets": 2,
+            "numoutlets": 2,
+            "outlettype": [
+              "bang",
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-42"
+            ],
+            "token": "sel",
+            "numinlets": 2,
+            "numoutlets": 2,
+            "outlettype": [
+              "bang",
+              ""
+            ]
+          }
+        ],
+        "alias_tokens_present": [
+          "sel"
+        ],
+        "script_file_references": [
+          "helpstarter.js"
+        ],
+        "declared_dependencies": [
+          {
+            "name": "helpargs.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpargs.js",
+                "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpdetails.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpdetails.js",
+                "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpname.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpname.js",
+                "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpstarter.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpstarter.js",
+                "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+              }
+            ],
+            "resolution": "unique-local-match"
+          }
+        ],
+        "dependency_limit": "All nested dependency_cache declarations are inspected; script bodies, dynamically loaded assets and transitive code dependencies are not resolved."
+      },
+      "max_runtime_evidence": {
+        "status": "existing-bounded-max-capture-not-canvas-execution",
+        "fixture": "10-select",
+        "max_executed": true,
+        "scope": "Select matches, unmatched output, type handling and right inlet replacement",
+        "expected_status": "observed-baseline",
+        "raw_trace_lines": 18,
+        "files": [
+          {
+            "path": "../fixtures/10-select.score.json",
+            "sha256": "70fb38c25a56013b9f3f7faba5e10bb1e48388c4b8e017ce5016af0c07899c55"
+          },
+          {
+            "path": "../manifests/10-select.manifest.json",
+            "sha256": "6f61119c50d56b4d1411f7d876060080b001202834f8f3540149ed2d415dde70"
+          },
+          {
+            "path": "../results/10-select.jsonl",
+            "sha256": "6fa330b21d1d4dda844e9ade67232f6a1dd559ba415cd86bb2a7c043ef92419e"
+          },
+          {
+            "path": "../expected/10-select.json",
+            "sha256": "9699a11dbb59a683622cb55634e9644bcc7536178914d222c2c52e5f600399b1"
+          }
+        ]
+      },
+      "canvas_semantic_status": "not-implemented-not-executed-by-this-map"
+    },
+    {
+      "class": "route",
+      "namespace": "box",
+      "aliases_to_test": [],
+      "alias_status": "no alias mapped",
+      "json_maxclass": "newobj",
+      "contract_evidence": "paraphrased installed XML; saved help port facts and conflicts explicitly separated",
+      "contract": {
+        "arguments": [
+          {
+            "name": "selectors",
+            "type": "int|float|symbol[]",
+            "optional": true,
+            "default": [
+              0
+            ],
+            "effect": "One routed outlet per selector, plus unmatched outlet."
+          }
+        ],
+        "ports": {
+          "inlets": "saved help: number of selectors + 1; XML lists two template inlets",
+          "outlets": "number of selectors + 1 (2 by default)",
+          "input": [
+            "0: compare selector/first item; extra saved inlets need a measured behavior contract."
+          ],
+          "output": [
+            "0..N-1: matched remainder after removing selector; empty remainder becomes bang.",
+            "N: entire unmatched message."
+          ]
+        },
+        "options": [
+          "Keep int/float/list message categories distinct from their textual selector spelling.",
+          "Mixed numeric/symbol arguments appear in installed help."
+        ],
+        "source_conflicts": [
+          "Saved help has N+1 inlets for N selectors, beyond XML template rows; roles of additional inlets are unmeasured."
+        ],
+        "acceptance": [
+          "Selector stripping, empty remainder, mixed numeric/symbol selectors and unmatched message.",
+          "Explicit list versus anything and scalar numeric inputs.",
+          "Resolve extra inlet behavior before claiming route creation/import compatibility."
+        ],
+        "deferred": [
+          "Additional inlet roles",
+          "Type-selector routing and exact float matching"
+        ],
+        "original_example": "route open 6 close"
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/route.maxref.xml",
+        "sha256": "772ab0cc1d3339fb86b5554acc7ff0ac4cfb90cb71fd60bd13d30422fd52e990",
+        "status": "installed-xml-inspected",
+        "arguments_raw": [
+          {
+            "name": "selectors",
+            "optional": "1",
+            "type": "anything"
+          }
+        ],
+        "port_templates_raw": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "port_caution": "INLET_TYPE/OUTLET_TYPE and OBJARG_* are literal template markers, not inferred types.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "list",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "anything",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          }
+        ],
+        "attributes": []
+      },
+      "official_reference": "https://docs.cycling74.com/reference/route/",
+      "installed_help": {
+        "path": "help/max/route.maxhelp",
+        "sha256": "1546c9f3437eba81723df60ded860507b099904fe87aa40b719efacf4549635e",
+        "status": "parsed-static-metadata-only",
+        "patchers": 4,
+        "boxes": 55,
+        "patchlines": 35,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "button",
+            "count": 6
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 15
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "print",
+            "count": 8
+          },
+          {
+            "namespace": "box",
+            "token": "route",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "textbutton",
+            "count": 2
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_boxes": 24,
+            "direct_tokens": [
+              "button",
+              "comment",
+              "jsui",
+              "message",
+              "print",
+              "route",
+              "textbutton"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-3",
+              "obj-44"
+            ],
+            "token": "route",
+            "numinlets": 5,
+            "numoutlets": 5,
+            "outlettype": [
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-41"
+            ],
+            "token": "route",
+            "numinlets": 2,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-16"
+            ],
+            "token": "route",
+            "numinlets": 2,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-1"
+            ],
+            "token": "route",
+            "numinlets": 3,
+            "numoutlets": 3,
+            "outlettype": [
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-35"
+            ],
+            "token": "route",
+            "numinlets": 4,
+            "numoutlets": 4,
+            "outlettype": [
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        ],
+        "alias_tokens_present": [],
+        "script_file_references": [
+          "helpstarter.js"
+        ],
+        "declared_dependencies": [
+          {
+            "name": "helpargs.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpargs.js",
+                "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpdetails.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpdetails.js",
+                "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpname.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpname.js",
+                "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpstarter.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpstarter.js",
+                "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+              }
+            ],
+            "resolution": "unique-local-match"
+          }
+        ],
+        "dependency_limit": "All nested dependency_cache declarations are inspected; script bodies, dynamically loaded assets and transitive code dependencies are not resolved."
+      },
+      "max_runtime_evidence": {
+        "status": "existing-bounded-max-capture-not-canvas-execution",
+        "fixture": "11-route",
+        "max_executed": true,
+        "scope": "Route selector stripping, numeric selectors, unmatched values and list selectors",
+        "expected_status": "observed-baseline",
+        "raw_trace_lines": 17,
+        "files": [
+          {
+            "path": "../fixtures/11-route.score.json",
+            "sha256": "1cd0f54e981cd291c4e46018fcb214a0a98301e0f920dbb179e25069eec47c8e"
+          },
+          {
+            "path": "../manifests/11-route.manifest.json",
+            "sha256": "96f9f61110a8eb0bec48e59f78917cc627a696d55f25a7ba653b04b8d0429b1b"
+          },
+          {
+            "path": "../results/11-route.jsonl",
+            "sha256": "10bb5a3f25880590081a96e72f7dbc8ed753c7238087ca15c7b3ad9df899477b"
+          },
+          {
+            "path": "../expected/11-route.json",
+            "sha256": "a9782e41349540cf6773ceedc92837931e082be87e969853447c4bfad11c35a6"
+          }
+        ]
+      },
+      "canvas_semantic_status": "not-implemented-not-executed-by-this-map"
+    },
+    {
+      "class": "trigger",
+      "namespace": "box",
+      "aliases_to_test": [
+        "t"
+      ],
+      "alias_status": "token present in installed help; runtime equivalence not independently verified",
+      "json_maxclass": "newobj",
+      "contract_evidence": "paraphrased installed XML; saved help port facts and conflicts explicitly separated",
+      "contract": {
+        "arguments": [
+          {
+            "name": "formats_or_constants",
+            "type": "int|float|symbol[]",
+            "optional": true,
+            "default": [
+              "i",
+              "i"
+            ],
+            "effect": "Each argument creates one output; i/f/b/l/s select conversion, other atoms supply constants."
+          }
+        ],
+        "ports": {
+          "inlets": 1,
+          "outlets": "2 when no arguments; otherwise argument count",
+          "input": [
+            "0: distribute input synchronously through output conversions/constants."
+          ],
+          "output": [
+            "N-1..0: emit in right-to-left order; downstream processing completes before preceding output."
+          ]
+        },
+        "options": [
+          "Alias t is present in installed help.",
+          "Typed bang/list/symbol conversions include zero and empty-symbol cases; do not use JavaScript truthiness."
+        ],
+        "acceptance": [
+          "Right-to-left order and depth-first downstream behavior.",
+          "i/f/b/l/s formats for numeric, bang, symbol/list/anything input.",
+          "Numeric and symbol constants; defaults; alias t."
+        ],
+        "deferred": [
+          "All conversion combinations and empty-symbol interoperability",
+          "Any format aliases not explicitly tested"
+        ],
+        "original_example": "trigger b i f"
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/trigger.maxref.xml",
+        "sha256": "8e0eeed2e84257b8bf9ad0cf706945e19a584c6cc7045de867faf8c1e93a2361",
+        "status": "installed-xml-inspected",
+        "arguments_raw": [
+          {
+            "name": "formats",
+            "optional": "1",
+            "type": "symbol"
+          },
+          {
+            "name": "constant",
+            "optional": "1",
+            "type": "anything"
+          }
+        ],
+        "port_templates_raw": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "port_caution": "INLET_TYPE/OUTLET_TYPE and OBJARG_* are literal template markers, not inferred types.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "list",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "anything",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          }
+        ],
+        "attributes": []
+      },
+      "official_reference": "https://docs.cycling74.com/reference/trigger/",
+      "installed_help": {
+        "path": "help/max/trigger.maxhelp",
+        "sha256": "b4e655f02c012203c9141aca9f0bb096de1bf03be9bbd665727925a51f807095",
+        "status": "parsed-static-metadata-only",
+        "patchers": 4,
+        "boxes": 53,
+        "patchlines": 37,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "+",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "-",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": ">",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "accum",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "button",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 7
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 6
+          },
+          {
+            "namespace": "box",
+            "token": "gate",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 8
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "print",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "t",
+            "count": 6
+          },
+          {
+            "namespace": "box",
+            "token": "trigger",
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_boxes": 20,
+            "direct_tokens": [
+              "button",
+              "comment",
+              "flonum",
+              "jsui",
+              "message",
+              "print",
+              "t",
+              "trigger"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-7",
+              "obj-29"
+            ],
+            "token": "t",
+            "numinlets": 1,
+            "numoutlets": 2,
+            "outlettype": [
+              "bang",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-7",
+              "obj-24"
+            ],
+            "token": "t",
+            "numinlets": 1,
+            "numoutlets": 2,
+            "outlettype": [
+              "float",
+              "float"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-7",
+              "obj-21"
+            ],
+            "token": "t",
+            "numinlets": 1,
+            "numoutlets": 2,
+            "outlettype": [
+              "bang",
+              "float"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-7",
+              "obj-17"
+            ],
+            "token": "t",
+            "numinlets": 1,
+            "numoutlets": 2,
+            "outlettype": [
+              "float",
+              "float"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-7",
+              "obj-3"
+            ],
+            "token": "t",
+            "numinlets": 1,
+            "numoutlets": 2,
+            "outlettype": [
+              "bang",
+              "float"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-24"
+            ],
+            "token": "t",
+            "numinlets": 1,
+            "numoutlets": 5,
+            "outlettype": [
+              "this",
+              "that",
+              "int",
+              "float",
+              "bang"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-5"
+            ],
+            "token": "trigger",
+            "numinlets": 1,
+            "numoutlets": 5,
+            "outlettype": [
+              "bang",
+              "float",
+              "int",
+              "",
+              ""
+            ]
+          }
+        ],
+        "alias_tokens_present": [
+          "t"
+        ],
+        "script_file_references": [
+          "helpstarter.js"
+        ],
+        "declared_dependencies": [
+          {
+            "name": "helpargs.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpargs.js",
+                "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpdetails.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpdetails.js",
+                "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpname.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpname.js",
+                "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpstarter.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpstarter.js",
+                "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+              }
+            ],
+            "resolution": "unique-local-match"
+          }
+        ],
+        "dependency_limit": "All nested dependency_cache declarations are inspected; script bodies, dynamically loaded assets and transitive code dependencies are not resolved."
+      },
+      "max_runtime_evidence": {
+        "status": "existing-bounded-max-capture-not-canvas-execution",
+        "fixture": "01-trigger",
+        "max_executed": true,
+        "scope": "Does trigger emit right to left, and is each downstream chain completed first?",
+        "expected_status": "observed-baseline",
+        "raw_trace_lines": 5,
+        "files": [
+          {
+            "path": "../fixtures/01-trigger.score.json",
+            "sha256": "e17b86ab33cabf78ac96f5866a3187f1cdbfdc293bf7c3ecba8ed7a9846c9cd3"
+          },
+          {
+            "path": "../manifests/01-trigger.manifest.json",
+            "sha256": "895eb635a568868198b86db53b4ac2538464cf66bf0e5c335b8b610145f25512"
+          },
+          {
+            "path": "../results/01-trigger.jsonl",
+            "sha256": "40893236c7121b2b05321f79068b1233c4c7c568c2fa071ef3997c12c8fc745c"
+          },
+          {
+            "path": "../expected/01-trigger.json",
+            "sha256": "c1a4f22ab094bd1df33cd264bf69131c50e0dd8d8f1427e377a5ae89ed687eaf"
+          }
+        ]
+      },
+      "canvas_semantic_status": "not-implemented-not-executed-by-this-map"
+    },
+    {
+      "class": "line",
+      "namespace": "box",
+      "aliases_to_test": [],
+      "alias_status": "no alias mapped",
+      "json_maxclass": "newobj",
+      "contract_evidence": "paraphrased installed XML; saved help port facts and conflicts explicitly separated",
+      "contract": {
+        "arguments": [
+          {
+            "name": "initial",
+            "type": "number",
+            "optional": true,
+            "default": 0,
+            "effect": "Initial value; lexical numeric type contributes to output mode."
+          },
+          {
+            "name": "grain_ms",
+            "type": "number",
+            "optional": true,
+            "default": 20,
+            "effect": "Message output interval; documented argument values below 1 reset to 20."
+          }
+        ],
+        "ports": {
+          "inlets": 3,
+          "outlets": 2,
+          "input": [
+            "0: target or target/time[/grain]; longer sequences schedule target/time pairs.",
+            "1: next duration in milliseconds; documentation consumes this per target.",
+            "2: interval between ramp updates in milliseconds."
+          ],
+          "output": [
+            "0: numeric ramp samples.",
+            "1: completion bang."
+          ]
+        },
+        "options": [
+          "set updates start value silently and stops current ramp; stop halts output.",
+          "pause preserves pending ramp and keeps current value output; resume continues.",
+          "New target/list replaces pending segments; three-number list supplies persistent grain.",
+          "floatoutput 0/1/2 selects off/on/auto; compatmode enables older behavior.",
+          "Auto float output has documented distance<=1 and step<0.4 conditions; verify rather than infer from initial argument alone.",
+          "clock delegates to named setclock; maxpoints bounds queued points."
+        ],
+        "acceptance": [
+          "DSP-independent clock; finite start/target/time/grain score with numeric tolerance.",
+          "Integer/float/auto modes; exact endpoint and completion ordering.",
+          "Interrupted ramp, set/stop, pause/resume, persistent grain and queued segments."
+        ],
+        "deferred": [
+          "No retained line message runtime baseline",
+          "Scheduler priority and exact timing",
+          "setclock",
+          "Legacy compatmode",
+          "Long breakpoint lists and maxpoints limits"
+        ],
+        "original_example": "line 2. 10"
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/line.maxref.xml",
+        "sha256": "3a9d28ea7e01cb8b21dc00aa8454b0250072e6ef608a73ad3c79c3166d79914b",
+        "status": "installed-xml-inspected",
+        "arguments_raw": [
+          {
+            "name": "initial",
+            "optional": "1",
+            "type": "number"
+          },
+          {
+            "name": "grain",
+            "optional": "1",
+            "type": "number"
+          }
+        ],
+        "port_templates_raw": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "2",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "port_caution": "INLET_TYPE/OUTLET_TYPE and OBJARG_* are literal template markers, not inferred types.",
+        "methods": [
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "list",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "clock",
+            "arguments": [
+              {
+                "name": "setclock object name",
+                "optional": "0",
+                "type": "symbol"
+              }
+            ]
+          },
+          {
+            "name": "pause",
+            "arguments": []
+          },
+          {
+            "name": "resume",
+            "arguments": []
+          },
+          {
+            "name": "set",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "stop",
+            "arguments": []
+          }
+        ],
+        "attributes": [
+          {
+            "name": "compatmode",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "floatoutput",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "2"
+            ],
+            "enum_names": [
+              "Off",
+              "On",
+              "Auto"
+            ]
+          },
+          {
+            "name": "grain",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "1",
+            "default_lexemes": [
+              "20."
+            ],
+            "enum_names": []
+          },
+          {
+            "name": "maxpoints",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "129"
+            ],
+            "enum_names": []
+          }
+        ]
+      },
+      "official_reference": "https://docs.cycling74.com/reference/line/",
+      "installed_help": {
+        "path": "help/max/line.maxhelp",
+        "sha256": "84a7eba118672092e25e4c55921d790549c9e223c34bd213ec093a2542e1f94a",
+        "status": "parsed-static-metadata-only",
+        "patchers": 6,
+        "boxes": 119,
+        "patchlines": 63,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "button",
+            "count": 9
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 36
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 9
+          },
+          {
+            "namespace": "box",
+            "token": "function",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 6
+          },
+          {
+            "namespace": "box",
+            "token": "line",
+            "count": 9
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 16
+          },
+          {
+            "namespace": "box",
+            "token": "multislider",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "pack",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "panel",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "print",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "random",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "scale",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "t",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "textbutton",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "timer",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "toggle",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "trigger",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "uzi",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "zl.group",
+            "count": 2
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_boxes": 20,
+            "direct_tokens": [
+              "button",
+              "comment",
+              "flonum",
+              "jsui",
+              "line",
+              "message",
+              "number",
+              "textbutton"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-8",
+              "obj-27"
+            ],
+            "token": "line",
+            "numinlets": 3,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              "bang"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-8",
+              "obj-39"
+            ],
+            "token": "line",
+            "numinlets": 3,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              "bang"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-8",
+              "obj-1"
+            ],
+            "token": "line",
+            "numinlets": 3,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              "bang"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-7",
+              "obj-13"
+            ],
+            "token": "line",
+            "numinlets": 3,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              "bang"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-7",
+              "obj-2"
+            ],
+            "token": "line",
+            "numinlets": 3,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              "bang"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-7",
+              "obj-60"
+            ],
+            "token": "line",
+            "numinlets": 3,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              "bang"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-24"
+            ],
+            "token": "line",
+            "numinlets": 3,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              "bang"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-15"
+            ],
+            "token": "line",
+            "numinlets": 3,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              "bang"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-24"
+            ],
+            "token": "line",
+            "numinlets": 3,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              "bang"
+            ]
+          }
+        ],
+        "alias_tokens_present": [],
+        "script_file_references": [
+          "helpstarter.js"
+        ],
+        "declared_dependencies": [
+          {
+            "name": "helpargs.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpargs.js",
+                "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpdetails.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpdetails.js",
+                "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpname.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpname.js",
+                "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa"
+              }
+            ],
+            "resolution": "unique-local-match"
+          },
+          {
+            "name": "helpstarter.js",
+            "declarations": 1,
+            "local_matches": [
+              {
+                "path": "help/resources/helpstarter.js",
+                "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+              }
+            ],
+            "resolution": "unique-local-match"
+          }
+        ],
+        "dependency_limit": "All nested dependency_cache declarations are inspected; script bodies, dynamically loaded assets and transitive code dependencies are not resolved."
+      },
+      "max_runtime_evidence": {
+        "status": "no-retained-max-message-baseline",
+        "files": []
+      },
+      "canvas_semantic_status": "not-implemented-not-executed-by-this-map"
+    }
+  ]
+}

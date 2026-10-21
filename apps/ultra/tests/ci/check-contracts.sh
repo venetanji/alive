@@ -24,3 +24,6 @@ c++ -std=c++20 -O2 -Wall -Wextra -Werror \
 c++ -std=c++17 -O2 -Wall -Wextra -Werror \
   apps/ultra/tests/patch_graph_test.cpp -o "$TEST_DIR/patch-graph-test"
 "$TEST_DIR/patch-graph-test"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror \
+  apps/ultra/tests/patch_graph_objects_test.cpp -o "$TEST_DIR/patch-graph-objects-test"
+"$TEST_DIR/patch-graph-objects-test"
