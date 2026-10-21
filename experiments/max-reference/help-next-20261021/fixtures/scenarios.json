@@ -1,0 +1,450 @@
+{
+  "schema_version": 1,
+  "provenance": "ORIGINAL_AUTHORED_ULTRA_SCENARIOS",
+  "source_help_graph_copied": false,
+  "max_reference_executed": false,
+  "scope": "Independent multi-object scenarios exercise useful current Ultra contracts; none is an adapted or executed installed Max help graph.",
+  "cases": [
+    {
+      "name": "scalar-cold-trigger",
+      "objects": [
+        "trigger",
+        "float",
+        "int"
+      ],
+      "purpose": "The right trigger outlet stores a float before the left bang recalls it; the next integer stage truncates toward zero.",
+      "patch_file": "fixtures/scalar-cold-trigger.ultra",
+      "operations": [
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "-7.75"
+          },
+          "expected": [
+            {
+              "id": 2,
+              "value": -7.75
+            },
+            {
+              "id": 4,
+              "value": -7,
+              "pulses": 1
+            }
+          ]
+        },
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "6.25"
+          },
+          "expected": [
+            {
+              "id": 4,
+              "value": 6,
+              "pulses": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "pack-unpack-cold-order",
+      "objects": [
+        "pack",
+        "unpack"
+      ],
+      "purpose": "A cold typed pack field survives a hot update, unpack reaches the arithmetic cold inlet before its hot inlet, and set stays silent until recall.",
+      "patch_file": "fixtures/pack-unpack-cold-order.ultra",
+      "operations": [
+        {
+          "event": {
+            "node": 1,
+            "inlet": 1,
+            "text": "4.25"
+          },
+          "expected": [
+            {
+              "id": 4,
+              "value": 0,
+              "pulses": 0
+            }
+          ]
+        },
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "7.9"
+          },
+          "expected": [
+            {
+              "id": 4,
+              "value": 11.25,
+              "pulses": 1
+            },
+            {
+              "id": 2,
+              "atoms": [
+                {
+                  "tag": 0,
+                  "value": 7
+                }
+              ],
+              "value": 7
+            }
+          ]
+        },
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "set 5 2.5"
+          },
+          "expected": [
+            {
+              "id": 4,
+              "value": 11.25,
+              "pulses": 1
+            }
+          ]
+        },
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "bang"
+          },
+          "expected": [
+            {
+              "id": 4,
+              "value": 7.5,
+              "pulses": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "route-select-branches",
+      "objects": [
+        "route",
+        "select"
+      ],
+      "purpose": "Route strips a named selector before select matches the remaining number; matched, unmatched, second-route and default branches stay distinct.",
+      "patch_file": "fixtures/route-select-branches.ultra",
+      "operations": [
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "red 4"
+          },
+          "expected": [
+            {
+              "id": 3,
+              "pulses": 1
+            },
+            {
+              "id": 4,
+              "pulses": 0
+            },
+            {
+              "id": 5,
+              "pulses": 0
+            }
+          ]
+        },
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "red 9"
+          },
+          "expected": [
+            {
+              "id": 5,
+              "value": 9,
+              "pulses": 1
+            }
+          ]
+        },
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "blue 3.5"
+          },
+          "expected": [
+            {
+              "id": 6,
+              "value": 3.5,
+              "pulses": 1
+            }
+          ]
+        },
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "green 2"
+          },
+          "expected": [
+            {
+              "id": 7,
+              "pulses": 1
+            },
+            {
+              "id": 6,
+              "value": 3.5,
+              "pulses": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "slider-flonum-bounds",
+      "objects": [
+        "slider",
+        "flonum"
+      ],
+      "purpose": "Slider raw-to-output scaling precedes flonum clamping; a silent slider set waits for bang and flonum Tab uses its second outlet.",
+      "patch_file": "fixtures/slider-flonum-bounds.ultra",
+      "operations": [
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "12"
+          },
+          "expected": [
+            {
+              "id": 3,
+              "value": 14,
+              "pulses": 1
+            }
+          ]
+        },
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "set 4"
+          },
+          "expected": [
+            {
+              "id": 3,
+              "value": 14,
+              "pulses": 1
+            }
+          ]
+        },
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "bang"
+          },
+          "expected": [
+            {
+              "id": 3,
+              "value": 12,
+              "pulses": 2
+            }
+          ]
+        },
+        {
+          "event": {
+            "node": 2,
+            "inlet": 0,
+            "text": "tab"
+          },
+          "expected": [
+            {
+              "id": 3,
+              "value": 12,
+              "pulses": 2
+            },
+            {
+              "id": 4,
+              "pulses": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "line-grain-completion",
+      "objects": [
+        "line"
+      ],
+      "purpose": "A 20 ms explicit float ramp emits at 10 ms grains and completes once; stop cancels a later ramp before another output.",
+      "patch_file": "fixtures/line-grain-completion.ultra",
+      "operations": [
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "10 20"
+          },
+          "expected": [
+            {
+              "id": 3,
+              "pulses": 0
+            },
+            {
+              "id": 4,
+              "pulses": 0
+            }
+          ]
+        },
+        {
+          "advance_frames": 481,
+          "expected": [
+            {
+              "id": 3,
+              "value": 5,
+              "pulses": 2
+            },
+            {
+              "id": 4,
+              "pulses": 0
+            }
+          ]
+        },
+        {
+          "advance_frames": 480,
+          "expected": [
+            {
+              "id": 3,
+              "value": 10,
+              "pulses": 3
+            },
+            {
+              "id": 4,
+              "pulses": 1
+            }
+          ]
+        },
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "0 20"
+          },
+          "expected": [
+            {
+              "id": 3,
+              "value": 10,
+              "pulses": 3
+            }
+          ]
+        },
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "stop"
+          },
+          "expected": [
+            {
+              "id": 3,
+              "value": 10,
+              "pulses": 3
+            }
+          ]
+        },
+        {
+          "advance_frames": 2000,
+          "expected": [
+            {
+              "id": 3,
+              "value": 10,
+              "pulses": 3
+            },
+            {
+              "id": 4,
+              "pulses": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "metro-counter-bounded",
+      "objects": [
+        "metro",
+        "counter"
+      ],
+      "purpose": "Exercise the current Ultra contracts: a 20 ms metro advances a modulo-three counter, select detects one, and zero stops future ticks. This is not the Max counter contract.",
+      "patch_file": "fixtures/metro-counter-bounded.ultra",
+      "operations": [
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "1"
+          },
+          "expected": [
+            {
+              "id": 3,
+              "pulses": 0
+            }
+          ]
+        },
+        {
+          "advance_frames": 2881,
+          "expected": [
+            {
+              "id": 3,
+              "value": 0,
+              "pulses": 4
+            },
+            {
+              "id": 5,
+              "pulses": 1
+            },
+            {
+              "id": 6,
+              "pulses": 3
+            }
+          ]
+        },
+        {
+          "event": {
+            "node": 1,
+            "inlet": 0,
+            "text": "0"
+          },
+          "expected": [
+            {
+              "id": 3,
+              "value": 0,
+              "pulses": 4
+            }
+          ]
+        },
+        {
+          "advance_frames": 2000,
+          "expected": [
+            {
+              "id": 3,
+              "value": 0,
+              "pulses": 4
+            },
+            {
+              "id": 5,
+              "pulses": 1
+            },
+            {
+              "id": 6,
+              "pulses": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

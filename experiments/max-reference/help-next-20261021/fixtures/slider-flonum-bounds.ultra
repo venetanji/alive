@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "slider",
+      "x": 60,
+      "y": 60,
+      "params": {
+        "value": 0,
+        "size": 128,
+        "min": 10,
+        "mult": 0.5,
+        "floatoutput": 1
+      }
+    },
+    {
+      "id": 2,
+      "type": "flonum",
+      "x": 230,
+      "y": 60,
+      "params": {
+        "value": 10,
+        "minimum": 10,
+        "maximum": 14,
+        "numdecimalplaces": 2
+      }
+    },
+    {
+      "id": 3,
+      "type": "number",
+      "x": 400,
+      "y": 60,
+      "params": {
+        "value": 0
+      }
+    },
+    {
+      "id": 4,
+      "type": "bang",
+      "x": 570,
+      "y": 60,
+      "params": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 2,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 1,
+      "to": 4,
+      "inlet": 0
+    }
+  ]
+}

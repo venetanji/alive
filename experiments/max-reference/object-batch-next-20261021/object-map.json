@@ -1,0 +1,4693 @@
+{
+  "schema_version": 1,
+  "batch_id": "object-batch-next-20261021",
+  "object_count": 10,
+  "scope": "Ten control-object research contracts. Eight absent Ultra kinds plus two existing subsets needing compatibility work.",
+  "source_environment": {
+    "max_version": "9.1.5 Windows x64",
+    "historical_environment": "../docs/environment.json",
+    "resource_root_policy": "Caller supplies local licensed Max resources; output paths are relative to that root."
+  },
+  "provenance": "STATIC_REFERENCE_AND_HELP_MAPPING_WITH_SEPARATE_HISTORICAL_CAPTURE_LINKS",
+  "runtime_execution_performed": false,
+  "ultra_source_snapshot": {
+    "status": "read-only-source-snapshot-not-runtime-executed",
+    "registered_kind_count": 25,
+    "already_present_from_this_batch": [
+      "metro",
+      "counter"
+    ],
+    "absent_from_registry": [
+      "delay",
+      "pipe",
+      "change",
+      "gate",
+      "switch",
+      "split",
+      "clip",
+      "scale"
+    ],
+    "sources": [
+      {
+        "path": "apps/ultra/ui/canvas-model.mjs",
+        "sha256": "d1cc66ef8844a1ab984bae33cbaa68843784b2c42e373c8c0ab075d1a2807913",
+        "bytes": 27676
+      },
+      {
+        "path": "apps/ultra/ui/canvas-catalog.mjs",
+        "sha256": "9636347b0babaed801847a43881e74900b71fbc5540b76bcb6121be8de1d11c2",
+        "bytes": 13397
+      },
+      {
+        "path": "apps/ultra/src-tauri/native/patch_graph.hpp",
+        "sha256": "6a427ea229b7b09abc52e41a935750663d16804fd55c526baffa580a36ed6a6f",
+        "bytes": 25194
+      }
+    ],
+    "source_anchors": {
+      "metro": [
+        "REGISTRY.metro",
+        "definitions.metro",
+        "case Metro"
+      ],
+      "counter": [
+        "REGISTRY.counter",
+        "definitions.counter",
+        "case Counter"
+      ]
+    },
+    "metro_current_subset": "2 in/1 out; interval default 150 ms, range 20..2000 ms; bang emits once; nonzero arms, zero stops; native sample clock also advances with audio off.",
+    "counter_current_subset": "2 in/1 out; steps default 8, range 1..32; bang outputs index then increments modulo steps; second input silently resets the index."
+  },
+  "implementation_order": [
+    {
+      "priority": 1,
+      "objects": [
+        "change",
+        "clip",
+        "gate",
+        "switch",
+        "split"
+      ],
+      "reason": "Reuse typed synchronous dispatch with small per-object state; obtain original Max scores for coercion and extra-outlet order first."
+    },
+    {
+      "priority": 2,
+      "objects": [
+        "delay",
+        "metro"
+      ],
+      "reason": "Reuse existing native clock after pinning trigger/deadline semantics; metro requires existing-document migration."
+    },
+    {
+      "priority": 3,
+      "objects": [
+        "scale",
+        "counter",
+        "pipe"
+      ],
+      "reason": "Numeric mode ambiguity, complex counter state/migration and typed queued snapshots need more reference coverage."
+    }
+  ],
+  "shared_acceptance_requirements": [
+    "Create original finite Max scores and retain typed outlet traces plus console diagnostics; help source inspection is not runtime parity.",
+    "Preserve bang/int/float/symbol/list/anything identity, inlet/outlet identity and depth-first synchronous downstream completion.",
+    "Use finite scalar bounds and at most eight atoms as explicit Ultra profile limits, not Max limits.",
+    "Keep timers native and operational with audio off; cancel on object/graph lifecycle changes and bound dispatch/queue growth.",
+    "Declare unsupported options and invalid configurations explicitly; do not infer defaults or silently reinterpret existing patches.",
+    "Separate whole-help admission, original runnable examples, native tests and comparisons against observed Max traces."
+  ],
+  "redistribution": {
+    "contains_installed_patch_bodies": false,
+    "contains_reference_prose": false,
+    "published_data": "File identity, interface signatures/names/default lexemes, counts, saved port facts, selected graph endpoints and original analysis only."
+  },
+  "objects": [
+    {
+      "class": "metro",
+      "json_maxclass": "newobj",
+      "namespace": "box",
+      "official_reference": "https://docs.cycling74.com/reference/metro/",
+      "native_status": "existing-ultra-subset-migration-required",
+      "contract_status": "original-paraphrase-and-proposal-based-on-installed-documentation",
+      "contract": {
+        "priority": 2,
+        "arguments": "Optional interval; documented positional default 5 ms. Milliseconds or notevalue positionally; other units use @interval.",
+        "ports": {
+          "inlets": 2,
+          "outlets": 1,
+          "input_roles": [
+            "0: bang/nonzero start; zero/stop stop.",
+            "1: set future interval; current interval finishes first."
+          ],
+          "output_roles": [
+            "0: bang ticks."
+          ]
+        },
+        "messages": [
+          "bang starts the metronome; int/float zero stops and nonzero starts.",
+          "Right-inlet time updates apply after the next tick.",
+          "clock selects a named setclock; no name restores internal time."
+        ],
+        "scheduling": "Recurring clock. defer selects low-priority output. Transport, quantize and autostart have additional timing semantics.",
+        "bounded_native_scope": [
+          "Extend the existing native millisecond clock, with explicit start/stop and deterministic deadline ordering.",
+          "Keep the existing 20..2000 ms Ultra profile unless a new configuration explicitly selects a wider tested range.",
+          "Choose an explicit document migration/profile for Max bang-start behavior; existing Ultra bang emits one tick.",
+          "Support interval updates without retiming the currently pending tick; cancel on graph replacement/Stop."
+        ],
+        "edge_cases_and_unknowns": [
+          "Exact first-tick time, retrigger while active, and zero/negative interval normalization need new Max scores.",
+          "Do not claim transport, notevalues, quantization, setclock, defer queues or autostart from a millisecond-only implementation."
+        ],
+        "source_conflicts": [],
+        "required_methods": [
+          "bang",
+          "int",
+          "float",
+          "list",
+          "anything",
+          "clock",
+          "stop"
+        ],
+        "evidence_selectors": [
+          "./objarglist/objarg[@name='interval']",
+          "./methodlist/method[@name='int']",
+          "./methodlist/method[@name='bang']",
+          "./attributelist/attribute[@name='defer']"
+        ],
+        "help_anchor": [
+          "obj-2",
+          "obj-20"
+        ],
+        "help_use_case": "Basic tab connects a toggle to start/stop a 500 ms metronome, a number to its interval input, and its bang output to a button.",
+        "acceptance_cases": [
+          "Start, update interval halfway through a wait, stop, then advance beyond all pending deadlines.",
+          "Probe bang on a stopped and running instance separately; preserve old Ultra behavior during migration."
+        ]
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/metro.maxref.xml",
+        "sha256": "c3d8998cbf47b867bdb65fa06b3a96e8eb41994e667320fa812ff6f7778eb2c8",
+        "bytes": 12051,
+        "status": "documentation-inspected-not-executed",
+        "arguments": [
+          {
+            "name": "interval",
+            "optional": "1",
+            "units": "ms",
+            "type": "number"
+          }
+        ],
+        "port_templates": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "template_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE markers are placeholders, not measured type contracts.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "list",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "anything",
+            "arguments": [
+              {
+                "name": "interval",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "clock",
+            "arguments": [
+              {
+                "name": "name",
+                "optional": "0",
+                "type": "symbol"
+              }
+            ]
+          },
+          {
+            "name": "stop",
+            "arguments": []
+          }
+        ],
+        "attributes": [
+          {
+            "name": "active",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "default_status": "documented-metadata"
+          },
+          {
+            "name": "autostart",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "default_status": "documented-metadata"
+          },
+          {
+            "name": "autostarttime",
+            "get": "1",
+            "set": "1",
+            "type": "Time Value",
+            "size": "1",
+            "default_lexemes": [
+              "0 ticks"
+            ],
+            "default_status": "documented-metadata"
+          },
+          {
+            "name": "defer",
+            "get": "1",
+            "set": "1",
+            "type": "float",
+            "size": "1",
+            "default_lexemes": [
+              "0."
+            ],
+            "default_status": "documented-metadata"
+          },
+          {
+            "name": "interval",
+            "get": "1",
+            "set": "1",
+            "type": "Time Value",
+            "size": "1",
+            "default_lexemes": [
+              "5 ms"
+            ],
+            "default_status": "documented-metadata"
+          },
+          {
+            "name": "quantize",
+            "get": "1",
+            "set": "1",
+            "type": "Time Value",
+            "size": "1",
+            "default_lexemes": [
+              "0 ticks"
+            ],
+            "default_status": "documented-metadata"
+          },
+          {
+            "name": "transport",
+            "get": "1",
+            "set": "1",
+            "type": "symbol",
+            "size": "1",
+            "default_lexemes": [
+              "internal"
+            ],
+            "default_status": "documented-metadata"
+          }
+        ],
+        "cited_xml_selectors": [
+          "./objarglist/objarg[@name='interval']",
+          "./methodlist/method[@name='int']",
+          "./methodlist/method[@name='bang']",
+          "./attributelist/attribute[@name='defer']"
+        ]
+      },
+      "installed_help": {
+        "path": "help/max/metro.maxhelp",
+        "sha256": "93015ebf920aaff1d0957317f38858dcb8dfb6d94df56af71c25c1082d8d7a53",
+        "bytes": 29704,
+        "status": "static-json-inspected-not-imported-or-executed",
+        "patchers": 3,
+        "boxes": 30,
+        "patchlines": 10,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "*",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "bpatcher",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "button",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "clocker",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 8
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "metro",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "qmetro",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "slider",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "toggle",
+            "count": 2
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_tokens": [
+              "*",
+              "bpatcher",
+              "button",
+              "clocker",
+              "comment",
+              "jsui",
+              "message",
+              "metro",
+              "number",
+              "qmetro",
+              "slider",
+              "toggle"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-2",
+              "obj-1"
+            ],
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              "bang"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-20"
+            ],
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              "bang"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-43"
+            ],
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              "bang"
+            ]
+          }
+        ],
+        "use_case_evidence": [
+          {
+            "box_path": [
+              "obj-2",
+              "obj-20"
+            ],
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              "bang"
+            ],
+            "parent_box_path": [
+              "obj-2"
+            ],
+            "direct_incident_edges": [
+              {
+                "source": [
+                  "obj-17",
+                  0
+                ],
+                "destination": [
+                  "obj-20",
+                  0
+                ],
+                "source_token": "toggle",
+                "destination_token": "metro",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-20",
+                  0
+                ],
+                "destination": [
+                  "obj-11",
+                  0
+                ],
+                "source_token": "metro",
+                "destination_token": "button",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-35",
+                  0
+                ],
+                "destination": [
+                  "obj-20",
+                  1
+                ],
+                "source_token": "number",
+                "destination_token": "metro",
+                "order": null
+              }
+            ],
+            "interpretation": "Basic tab connects a toggle to start/stop a 500 ms metronome, a number to its interval input, and its bang output to a button."
+          }
+        ],
+        "declared_dependency_names": [
+          "helpargs.js",
+          "helpdetails.js",
+          "helpname.js",
+          "helpstarter.js",
+          "openTransport.maxpat"
+        ],
+        "limits": [
+          "Saved ports do not prove message behavior.",
+          "Only static dependency_cache names are inventoried; helpers/transitive loads are not resolved or executed.",
+          "No copied patch body, message text, comment, helper source, appearance data or bundled media is published."
+        ]
+      },
+      "max_runtime_evidence": {
+        "status": "existing-bounded-original-max-score-only",
+        "max_executed_by_this_map": false,
+        "historical_max_executed": true,
+        "fixture": "14-scheduler",
+        "expected_status": "observed-one-run-not-exact-timing-or-tick-count-oracle",
+        "scope": "Start and stop metro 10 at collector arrival; six bangs in this one run are not an exact tick-count/timing contract.",
+        "observed_event_count_for_label": 6,
+        "files": [
+          {
+            "path": "../fixtures/14-scheduler.maxpat",
+            "sha256": "41892e9f9e97e123b5cf7bae58242678dfc653c0bc70e5b8f57e59aabc74fbfc",
+            "bytes": 8646
+          },
+          {
+            "path": "../fixtures/14-scheduler.score.json",
+            "sha256": "f812f78b3e8632f2fbe7a06643d8a2be1931740259d7e1e869a29443e3510d53",
+            "bytes": 1649
+          },
+          {
+            "path": "../results/14-scheduler.jsonl",
+            "sha256": "7b7d01aec11f402154af60e71972f563cecb09d04b265e49e229e87129432a54",
+            "bytes": 2664
+          },
+          {
+            "path": "../expected/14-scheduler.json",
+            "sha256": "749edfe1602933954f58ce1ad69632415e4eb630899ecc6f0418dd9c78993678",
+            "bytes": 13922
+          },
+          {
+            "path": "../manifests/14-scheduler.manifest.json",
+            "sha256": "e37d83c2322bf6e0a77612772db93ea169b0f279f92b2151f0b3d51a9397e9a1",
+            "bytes": 4497
+          }
+        ],
+        "limitations": [
+          "JS collector arrival does not measure logical scheduler time or causality.",
+          "No retained console error channel; no output alone cannot prove successful acceptance.",
+          "These original patches are not installed help execution or Ultra comparison."
+        ]
+      }
+    },
+    {
+      "class": "counter",
+      "json_maxclass": "newobj",
+      "namespace": "box",
+      "official_reference": "https://docs.cycling74.com/reference/counter/",
+      "native_status": "existing-ultra-subset-migration-required",
+      "contract_status": "original-paraphrase-and-proposal-based-on-installed-documentation",
+      "contract": {
+        "priority": 3,
+        "arguments": "0 args: up, min 0, max 2147483647. 1 arg: maximum. 2 args: minimum/maximum. 3 args: direction/minimum/maximum; directions 0 up, 1 down, 2 updown.",
+        "ports": {
+          "inlets": 5,
+          "outlets": 4,
+          "input_roles": [
+            "0: advance or command.",
+            "1: direction.",
+            "2: value for next clock.",
+            "3: immediate value/output.",
+            "4: maximum; bang jumps to maximum/output."
+          ],
+          "output_roles": [
+            "0: count.",
+            "1: minimum/underflow flag.",
+            "2: maximum/carry flag.",
+            "3: carry count."
+          ]
+        },
+        "messages": [
+          "Left int acts like bang; floats convert to integers.",
+          "set/goto set the next output silently; jam emits immediately only within current bounds.",
+          "inc/dec emit while overriding ordinary direction; up/down/updown select direction.",
+          "min changes minimum, count and output; max changes maximum; setmin changes minimum silently.",
+          "carrybang/carryint, flags, carryflag and compatmode affect carry/reset behavior; state reports to the console."
+        ],
+        "scheduling": "Immediate message state machine. Four-outlet ordering, initial count and wrap/bounce transitions need a retained ordered oracle.",
+        "bounded_native_scope": [
+          "Treat as expansion/migration of an existing Ultra object, whose argument is a step count and whose ports are 2 in/1 out.",
+          "Start with explicit direction/min/max in the existing finite numeric range, all five inlets, four typed outlets and silent versus immediate reset.",
+          "Version saved counter configuration; counter 8 currently means 0..7 in Ultra, but Max's one argument is inclusive maximum 8.",
+          "Keep integer flags as a declared first mode; reject unsupported compatibility/flag modes explicitly."
+        ],
+        "edge_cases_and_unknowns": [
+          "Reset below minimum may lower minimum; reset above maximum can set minimum equal to maximum while preserving the hidden maximum request.",
+          "Maximum below minimum is constrained effectively while the requested maximum remains stored.",
+          "Negative/reversed bounds appear in help; one-step ranges, bounce endpoint duplication, carry timing/order and overflow require runtime capture.",
+          "Default Max maximum exceeds Ultra's -100000..100000 numeric profile."
+        ],
+        "source_conflicts": [],
+        "required_methods": [
+          "bang",
+          "int",
+          "float",
+          "carrybang",
+          "carryint",
+          "dec",
+          "down",
+          "flags",
+          "goto",
+          "inc",
+          "jam",
+          "max",
+          "min",
+          "next",
+          "set",
+          "setmin",
+          "state",
+          "up",
+          "updown"
+        ],
+        "evidence_selectors": [
+          "./objarglist/objarg[@name='options']",
+          "./methodlist/method[@name='int']",
+          "./methodlist/method[@name='set']",
+          "./methodlist/method[@name='flags']"
+        ],
+        "help_anchor": [
+          "obj-2",
+          "obj-3"
+        ],
+        "help_use_case": "Basic tab uses a 1..4 upward counter with a button, inc/dec messages and separate count, minimum flag, maximum flag and carry-count displays.",
+        "acceptance_cases": [
+          "Capture all four outlets for up/down/updown, first trigger, wrap, bounce and single-value ranges.",
+          "Compare next-clock reset, immediate reset, jam, min, setmin and maximum changes, including out-of-range resets."
+        ]
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/counter.maxref.xml",
+        "sha256": "49815241c3426586f255c0ef5d236114af3c727d84be95247ebfb26bcf09616b",
+        "bytes": 17102,
+        "status": "documentation-inspected-not-executed",
+        "arguments": [
+          {
+            "name": "options",
+            "optional": "1",
+            "type": "int"
+          }
+        ],
+        "port_templates": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "2",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "3",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "4",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "OUTLET_TYPE"
+            },
+            {
+              "id": "2",
+              "type": "OUTLET_TYPE"
+            },
+            {
+              "id": "3",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "template_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE markers are placeholders, not measured type contracts.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "carrybang",
+            "arguments": []
+          },
+          {
+            "name": "carryint",
+            "arguments": []
+          },
+          {
+            "name": "dec",
+            "arguments": []
+          },
+          {
+            "name": "down",
+            "arguments": []
+          },
+          {
+            "name": "flags",
+            "arguments": [
+              {
+                "name": "carry-mode",
+                "optional": "0",
+                "type": "int"
+              },
+              {
+                "name": "minimum-mode",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "goto",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "inc",
+            "arguments": []
+          },
+          {
+            "name": "jam",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "max",
+            "arguments": [
+              {
+                "name": "maximum",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "min",
+            "arguments": [
+              {
+                "name": "minimum",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "next",
+            "arguments": []
+          },
+          {
+            "name": "set",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "setmin",
+            "arguments": [
+              {
+                "name": "minimum",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "state",
+            "arguments": []
+          },
+          {
+            "name": "up",
+            "arguments": []
+          },
+          {
+            "name": "updown",
+            "arguments": []
+          }
+        ],
+        "attributes": [
+          {
+            "name": "carryflag",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "default_status": "documented-metadata"
+          },
+          {
+            "name": "compatmode",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "default_status": "documented-metadata"
+          }
+        ],
+        "cited_xml_selectors": [
+          "./objarglist/objarg[@name='options']",
+          "./methodlist/method[@name='int']",
+          "./methodlist/method[@name='set']",
+          "./methodlist/method[@name='flags']"
+        ]
+      },
+      "installed_help": {
+        "path": "help/max/counter.maxhelp",
+        "sha256": "205877e5f544e8762fcf7c31d88fbd009642a77fc75193b386478d5e8cfef109",
+        "bytes": 89693,
+        "status": "static-json-inspected-not-imported-or-executed",
+        "patchers": 5,
+        "boxes": 100,
+        "patchlines": 50,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "button",
+            "count": 17
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 28
+          },
+          {
+            "namespace": "box",
+            "token": "counter",
+            "count": 13
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 7
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 23
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "toggle",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "umenu",
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_tokens": [
+              "button",
+              "comment",
+              "counter",
+              "jsui",
+              "message",
+              "number",
+              "toggle"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-6",
+              "obj-8"
+            ],
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": [
+              "int",
+              "",
+              "",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-6",
+              "obj-27"
+            ],
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": [
+              "int",
+              "",
+              "",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-6",
+              "obj-32"
+            ],
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": [
+              "int",
+              "",
+              "",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-6",
+              "obj-35"
+            ],
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": [
+              "int",
+              "",
+              "",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-6",
+              "obj-17"
+            ],
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": [
+              "int",
+              "",
+              "",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-6",
+              "obj-1"
+            ],
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": [
+              "int",
+              "",
+              "",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-12"
+            ],
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": [
+              "int",
+              "",
+              "",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-23"
+            ],
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": [
+              "int",
+              "",
+              "",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-3"
+            ],
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": [
+              "int",
+              "",
+              "",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-23"
+            ],
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": [
+              "int",
+              "",
+              "",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-19"
+            ],
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": [
+              "int",
+              "",
+              "",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-15"
+            ],
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": [
+              "int",
+              "",
+              "",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-1"
+            ],
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": [
+              "int",
+              "",
+              "",
+              "int"
+            ]
+          }
+        ],
+        "use_case_evidence": [
+          {
+            "box_path": [
+              "obj-2",
+              "obj-3"
+            ],
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": [
+              "int",
+              "",
+              "",
+              "int"
+            ],
+            "parent_box_path": [
+              "obj-2"
+            ],
+            "direct_incident_edges": [
+              {
+                "source": [
+                  "obj-3",
+                  1
+                ],
+                "destination": [
+                  "obj-11",
+                  0
+                ],
+                "source_token": "counter",
+                "destination_token": "toggle",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-3",
+                  2
+                ],
+                "destination": [
+                  "obj-16",
+                  0
+                ],
+                "source_token": "counter",
+                "destination_token": "toggle",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-3",
+                  3
+                ],
+                "destination": [
+                  "obj-20",
+                  0
+                ],
+                "source_token": "counter",
+                "destination_token": "number",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-3",
+                  0
+                ],
+                "destination": [
+                  "obj-9",
+                  0
+                ],
+                "source_token": "counter",
+                "destination_token": "number",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-33",
+                  0
+                ],
+                "destination": [
+                  "obj-3",
+                  0
+                ],
+                "source_token": "button",
+                "destination_token": "counter",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-6",
+                  0
+                ],
+                "destination": [
+                  "obj-3",
+                  0
+                ],
+                "source_token": "message",
+                "destination_token": "counter",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-8",
+                  0
+                ],
+                "destination": [
+                  "obj-3",
+                  0
+                ],
+                "source_token": "message",
+                "destination_token": "counter",
+                "order": null
+              }
+            ],
+            "interpretation": "Basic tab uses a 1..4 upward counter with a button, inc/dec messages and separate count, minimum flag, maximum flag and carry-count displays."
+          }
+        ],
+        "declared_dependency_names": [
+          "helpdetails.js",
+          "helpname.js",
+          "helpstarter.js"
+        ],
+        "limits": [
+          "Saved ports do not prove message behavior.",
+          "Only static dependency_cache names are inventoried; helpers/transitive loads are not resolved or executed.",
+          "No copied patch body, message text, comment, helper source, appearance data or bundled media is published."
+        ]
+      },
+      "max_runtime_evidence": {
+        "status": "no-retained-original-max-oracle-in-this-corpus",
+        "max_executed_by_this_map": false
+      }
+    },
+    {
+      "class": "delay",
+      "json_maxclass": "newobj",
+      "namespace": "box",
+      "official_reference": "https://docs.cycling74.com/reference/delay/",
+      "native_status": "research-only-not-in-current-ultra-registry",
+      "contract_status": "original-paraphrase-and-proposal-based-on-installed-documentation",
+      "contract": {
+        "priority": 2,
+        "arguments": "Initial delay accepts milliseconds or a notevalue; prose explicitly allows no argument and says 5 ms despite the argument's optional=0 metadata.",
+        "ports": {
+          "inlets": 2,
+          "outlets": 1,
+          "input_roles": [
+            "0: bang schedules; number changes time and schedules; stop cancels.",
+            "1: stores the time for future triggers without retiming a pending bang."
+          ],
+          "output_roles": [
+            "0: delayed bang."
+          ]
+        },
+        "messages": [
+          "bang starts a delayed bang; left int/float stores a new time then triggers.",
+          "Right-inlet numeric/list/anything time configuration changes future delay.",
+          "stop cancels pending output; clock selects/restores clock source."
+        ],
+        "scheduling": "Cancellable one-shot clock. Pending-trigger replacement/restart is not established by the retained stop-then-restart score.",
+        "bounded_native_scope": [
+          "Implement finite nonnegative milliseconds with one pending deadline per object and explicit retrigger policy after a new Max oracle.",
+          "Preserve right-inlet update isolation; reuse the audio-independent native clock and graph-generation cancellation.",
+          "Require an explicit time argument until the documented no-argument default conflict is resolved."
+        ],
+        "edge_cases_and_unknowns": [
+          "Two triggers before expiry, zero/negative times and same-deadline cancellation need runtime cases.",
+          "Tempo-relative delays require a running transport; quantize, transport and setclock remain outside the initial scope."
+        ],
+        "source_conflicts": [
+          "Argument prose says no-argument initial delay is 5 ms; delaytime metadata default is 0 ms; the argument row has optional=0."
+        ],
+        "required_methods": [
+          "bang",
+          "int",
+          "float",
+          "list",
+          "anything",
+          "clock",
+          "stop"
+        ],
+        "evidence_selectors": [
+          "./objarglist/objarg[@name='time']",
+          "./methodlist/method[@name='int']",
+          "./methodlist/method[@name='stop']",
+          "./attributelist/attribute[@name='delaytime']"
+        ],
+        "help_anchor": [
+          "obj-2",
+          "obj-1"
+        ],
+        "help_use_case": "Basic tab connects a trigger button and stop message to delay 500, a dial/number chain to its time input, and its output to a button/print chain.",
+        "acceptance_cases": [
+          "Schedule, change the cold time, verify original pending deadline, then trigger with the new time.",
+          "Capture retrigger-before-expiry separately from stop-then-restart; verify no output after destruction or graph replacement."
+        ]
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/delay.maxref.xml",
+        "sha256": "845bedd5402b2c47e636cb81245173e9d17f5a3cd838b4400bb2d2ea70c38c4d",
+        "bytes": 9055,
+        "status": "documentation-inspected-not-executed",
+        "arguments": [
+          {
+            "name": "time",
+            "optional": "0",
+            "type": "any"
+          }
+        ],
+        "port_templates": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "template_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE markers are placeholders, not measured type contracts.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "time",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "time",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "list",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "anything",
+            "arguments": [
+              {
+                "name": "time",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "clock",
+            "arguments": [
+              {
+                "name": "setclock-object-name",
+                "optional": "0",
+                "type": "symbol"
+              }
+            ]
+          },
+          {
+            "name": "stop",
+            "arguments": []
+          }
+        ],
+        "attributes": [
+          {
+            "name": "delaytime",
+            "get": "1",
+            "set": "1",
+            "type": "Time Value",
+            "size": "1",
+            "default_lexemes": [
+              "0 ms"
+            ],
+            "default_status": "documented-metadata"
+          },
+          {
+            "name": "quantize",
+            "get": "1",
+            "set": "1",
+            "type": "Time Value",
+            "size": "1",
+            "default_lexemes": [
+              "0 ticks"
+            ],
+            "default_status": "documented-metadata"
+          },
+          {
+            "name": "transport",
+            "get": "1",
+            "set": "1",
+            "type": "symbol",
+            "size": "1",
+            "default_lexemes": [
+              "internal"
+            ],
+            "default_status": "documented-metadata"
+          }
+        ],
+        "cited_xml_selectors": [
+          "./objarglist/objarg[@name='time']",
+          "./methodlist/method[@name='int']",
+          "./methodlist/method[@name='stop']",
+          "./attributelist/attribute[@name='delaytime']"
+        ]
+      },
+      "installed_help": {
+        "path": "help/max/delay.maxhelp",
+        "sha256": "383441d755e5ec412064a28bb4820a4c1a510f9d3d1a9b66f0722637470d60d9",
+        "bytes": 32088,
+        "status": "static-json-inspected-not-imported-or-executed",
+        "patchers": 4,
+        "boxes": 34,
+        "patchlines": 15,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "attrui",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "bpatcher",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "button",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "delay",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "dial",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "print",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "textbutton",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "toggle",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "transport",
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_tokens": [
+              "button",
+              "comment",
+              "delay",
+              "dial",
+              "jsui",
+              "message",
+              "number",
+              "print"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-3",
+              "obj-1"
+            ],
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              "bang"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-1"
+            ],
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              "bang"
+            ]
+          }
+        ],
+        "use_case_evidence": [
+          {
+            "box_path": [
+              "obj-2",
+              "obj-1"
+            ],
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              "bang"
+            ],
+            "parent_box_path": [
+              "obj-2"
+            ],
+            "direct_incident_edges": [
+              {
+                "source": [
+                  "obj-1",
+                  0
+                ],
+                "destination": [
+                  "obj-5",
+                  0
+                ],
+                "source_token": "delay",
+                "destination_token": "button",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-17",
+                  0
+                ],
+                "destination": [
+                  "obj-1",
+                  1
+                ],
+                "source_token": "number",
+                "destination_token": "delay",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-19",
+                  0
+                ],
+                "destination": [
+                  "obj-1",
+                  0
+                ],
+                "source_token": "button",
+                "destination_token": "delay",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-21",
+                  0
+                ],
+                "destination": [
+                  "obj-1",
+                  0
+                ],
+                "source_token": "message",
+                "destination_token": "delay",
+                "order": null
+              }
+            ],
+            "interpretation": "Basic tab connects a trigger button and stop message to delay 500, a dial/number chain to its time input, and its output to a button/print chain."
+          }
+        ],
+        "declared_dependency_names": [
+          "helpargs.js",
+          "helpdetails.js",
+          "helpname.js",
+          "helpstarter.js",
+          "openTransport.maxpat"
+        ],
+        "limits": [
+          "Saved ports do not prove message behavior.",
+          "Only static dependency_cache names are inventoried; helpers/transitive loads are not resolved or executed.",
+          "No copied patch body, message text, comment, helper source, appearance data or bundled media is published."
+        ]
+      },
+      "max_runtime_evidence": {
+        "status": "existing-bounded-original-max-score-only",
+        "max_executed_by_this_map": false,
+        "historical_max_executed": true,
+        "fixture": "14-scheduler",
+        "expected_status": "observed-one-run-not-exact-timing-or-tick-count-oracle",
+        "scope": "delay 20: bang, stop after 5 ms, bang again; one delayed bang observed. No overlapping-trigger replacement test.",
+        "observed_event_count_for_label": 1,
+        "files": [
+          {
+            "path": "../fixtures/14-scheduler.maxpat",
+            "sha256": "41892e9f9e97e123b5cf7bae58242678dfc653c0bc70e5b8f57e59aabc74fbfc",
+            "bytes": 8646
+          },
+          {
+            "path": "../fixtures/14-scheduler.score.json",
+            "sha256": "f812f78b3e8632f2fbe7a06643d8a2be1931740259d7e1e869a29443e3510d53",
+            "bytes": 1649
+          },
+          {
+            "path": "../results/14-scheduler.jsonl",
+            "sha256": "7b7d01aec11f402154af60e71972f563cecb09d04b265e49e229e87129432a54",
+            "bytes": 2664
+          },
+          {
+            "path": "../expected/14-scheduler.json",
+            "sha256": "749edfe1602933954f58ce1ad69632415e4eb630899ecc6f0418dd9c78993678",
+            "bytes": 13922
+          },
+          {
+            "path": "../manifests/14-scheduler.manifest.json",
+            "sha256": "e37d83c2322bf6e0a77612772db93ea169b0f279f92b2151f0b3d51a9397e9a1",
+            "bytes": 4497
+          }
+        ],
+        "limitations": [
+          "JS collector arrival does not measure logical scheduler time or causality.",
+          "No retained console error channel; no output alone cannot prove successful acceptance.",
+          "These original patches are not installed help execution or Ultra comparison."
+        ]
+      }
+    },
+    {
+      "class": "pipe",
+      "json_maxclass": "newobj",
+      "namespace": "box",
+      "official_reference": "https://docs.cycling74.com/reference/pipe/",
+      "native_status": "research-only-not-in-current-ultra-registry",
+      "contract_status": "original-paraphrase-and-proposal-based-on-installed-documentation",
+      "contract": {
+        "priority": 3,
+        "arguments": "Last argument is delay. Preceding atoms establish stored fields/types and data port count. No args: one initial 0 field, 0 ms. One arg changes delay only.",
+        "ports": {
+          "inlets": "N data fields + 1 delay input; N defaults to 1",
+          "outlets": "N data fields; N defaults to 1",
+          "input_roles": [
+            "0: updates fields and queues a delayed output; bang queues stored values again.",
+            "1..N-1: store field values without scheduling; lists update successive fields.",
+            "N: delay/time configuration."
+          ],
+          "output_roles": [
+            "0..N-1: corresponding delayed values."
+          ]
+        },
+        "messages": [
+          "int/float update values; non-float-initialized data fields convert floats to integers.",
+          "List distributes values; anything is documented via list behavior, while symbols are also named by the overview.",
+          "clear/stop halt queued output. flush emits retained values immediately in reverse arrival order for each outlet, then clears pending output."
+        ],
+        "scheduling": "Multiple pending snapshots; a bang adds another event without replacing older events. Normal due-time tie order and multi-outlet delivery order remain unmeasured.",
+        "bounded_native_scope": [
+          "Use 1..8 typed stored fields, N+1 inputs, N outputs and a fixed queue of 64 pending snapshots as an explicit proposed Ultra capacity.",
+          "Copy every scheduled payload into the queue; later cold-field edits must not mutate already pending messages.",
+          "Signal queue overflow explicitly without allocation or silent eviction; preserve existing queued records.",
+          "Implement clear, stop and reverse-arrival flush, with generation cancellation and bounded dispatch; verify stored values after clear/flush separately."
+        ],
+        "edge_cases_and_unknowns": [
+          "Help includes a 12-field instance, beyond the proposed eight-field Ultra subset.",
+          "List wording does not settle every intermediate-snapshot detail; capture hot and cold list update cases before implementation.",
+          "Simple pipe does not establish arbitrary-length anything-message preservation; advanced help uses surrounding helper objects.",
+          "Flush cross-outlet order, delay changes on pending items, equal deadlines, symbols, queue capacity and zero/negative time need runtime capture.",
+          "Transport/notevalues, quantize and named clock are deferred."
+        ],
+        "source_conflicts": [],
+        "required_methods": [
+          "bang",
+          "int",
+          "float",
+          "list",
+          "anything",
+          "clear",
+          "flush",
+          "stop"
+        ],
+        "evidence_selectors": [
+          "./objarglist/objarg[@name='initialization']",
+          "./methodlist/method[@name='bang']",
+          "./methodlist/method[@name='list']",
+          "./methodlist/method[@name='flush']"
+        ],
+        "help_anchor": [
+          "obj-3",
+          "obj-5"
+        ],
+        "help_use_case": "Basic tab demonstrates two stored integer fields, separate hot/cold inputs, a delay input, and two output displays. A second branch exposes stop and flush.",
+        "acceptance_cases": [
+          "Queue 10, 20 and 30 at long delay; flush should distinguish reverse arrival from ordinary deadline output.",
+          "Change cold fields between triggers and inspect every outlet; test clear/stop without assuming stored fields are erased.",
+          "Fill the proposed bounded queue and verify explicit overflow status, cancellation and recovery."
+        ]
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/pipe.maxref.xml",
+        "sha256": "c9ecd23cf62a840c3806d290e5906689f7c24db06237e1499482d0b2f8ed5151",
+        "bytes": 9582,
+        "status": "documentation-inspected-not-executed",
+        "arguments": [
+          {
+            "name": "initialization",
+            "optional": "1",
+            "type": "list"
+          }
+        ],
+        "port_templates": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "template_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE markers are placeholders, not measured type contracts.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "delay",
+                "optional": "0",
+                "units": "ms",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "delay",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "list",
+            "arguments": []
+          },
+          {
+            "name": "anything",
+            "arguments": []
+          },
+          {
+            "name": "clear",
+            "arguments": []
+          },
+          {
+            "name": "flush",
+            "arguments": []
+          },
+          {
+            "name": "stop",
+            "arguments": []
+          }
+        ],
+        "attributes": [
+          {
+            "name": "clock",
+            "get": "1",
+            "set": "1",
+            "type": "symbol",
+            "size": "1",
+            "default_lexemes": [],
+            "default_status": "not-stated"
+          },
+          {
+            "name": "delaytime",
+            "get": "1",
+            "set": "1",
+            "type": "Time Value",
+            "size": "1",
+            "default_lexemes": [
+              "0 ms"
+            ],
+            "default_status": "documented-metadata"
+          },
+          {
+            "name": "quantize",
+            "get": "1",
+            "set": "1",
+            "type": "Time Value",
+            "size": "1",
+            "default_lexemes": [
+              "0 ticks"
+            ],
+            "default_status": "documented-metadata"
+          }
+        ],
+        "cited_xml_selectors": [
+          "./objarglist/objarg[@name='initialization']",
+          "./methodlist/method[@name='bang']",
+          "./methodlist/method[@name='list']",
+          "./methodlist/method[@name='flush']"
+        ]
+      },
+      "installed_help": {
+        "path": "help/max/pipe.maxhelp",
+        "sha256": "01667ad841f5226d56c912afc43eb6ab0c24580978021ee4346b8d3d7a510138",
+        "bytes": 134789,
+        "status": "static-json-inspected-not-imported-or-executed",
+        "patchers": 8,
+        "boxes": 121,
+        "patchlines": 84,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "bpatcher",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "button",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "coll",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 27
+          },
+          {
+            "namespace": "box",
+            "token": "counter",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 12
+          },
+          {
+            "namespace": "box",
+            "token": "inlet",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 6
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 12
+          },
+          {
+            "namespace": "box",
+            "token": "multislider",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 13
+          },
+          {
+            "namespace": "box",
+            "token": "outlet",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 7
+          },
+          {
+            "namespace": "box",
+            "token": "pack",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "pak",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "pipe",
+            "count": 8
+          },
+          {
+            "namespace": "box",
+            "token": "prepend",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "t",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "textbutton",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "umenu",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "unpack",
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-3"
+            ],
+            "direct_tokens": [
+              "button",
+              "comment",
+              "flonum",
+              "jsui",
+              "message",
+              "number",
+              "pipe"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-7",
+              "obj-49",
+              "obj-16"
+            ],
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-7",
+              "obj-36",
+              "obj-16"
+            ],
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-1",
+              "obj-13"
+            ],
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-1",
+              "obj-2"
+            ],
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-6",
+              "obj-5"
+            ],
+            "numinlets": 4,
+            "numoutlets": 3,
+            "outlettype": [
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-6",
+              "obj-15"
+            ],
+            "numinlets": 13,
+            "numoutlets": 12,
+            "outlettype": [
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-33"
+            ],
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-5"
+            ],
+            "numinlets": 3,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              ""
+            ]
+          }
+        ],
+        "use_case_evidence": [
+          {
+            "box_path": [
+              "obj-3",
+              "obj-5"
+            ],
+            "numinlets": 3,
+            "numoutlets": 2,
+            "outlettype": [
+              "",
+              ""
+            ],
+            "parent_box_path": [
+              "obj-3"
+            ],
+            "direct_incident_edges": [
+              {
+                "source": [
+                  "obj-11",
+                  0
+                ],
+                "destination": [
+                  "obj-5",
+                  2
+                ],
+                "source_token": "number",
+                "destination_token": "pipe",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-12",
+                  0
+                ],
+                "destination": [
+                  "obj-5",
+                  1
+                ],
+                "source_token": "number",
+                "destination_token": "pipe",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-13",
+                  0
+                ],
+                "destination": [
+                  "obj-5",
+                  0
+                ],
+                "source_token": "number",
+                "destination_token": "pipe",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-27",
+                  0
+                ],
+                "destination": [
+                  "obj-5",
+                  0
+                ],
+                "source_token": "button",
+                "destination_token": "pipe",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-5",
+                  0
+                ],
+                "destination": [
+                  "obj-25",
+                  0
+                ],
+                "source_token": "pipe",
+                "destination_token": "number",
+                "order": 1
+              },
+              {
+                "source": [
+                  "obj-5",
+                  1
+                ],
+                "destination": [
+                  "obj-28",
+                  0
+                ],
+                "source_token": "pipe",
+                "destination_token": "number",
+                "order": 1
+              },
+              {
+                "source": [
+                  "obj-5",
+                  0
+                ],
+                "destination": [
+                  "obj-31",
+                  0
+                ],
+                "source_token": "pipe",
+                "destination_token": "button",
+                "order": 0
+              },
+              {
+                "source": [
+                  "obj-5",
+                  1
+                ],
+                "destination": [
+                  "obj-32",
+                  0
+                ],
+                "source_token": "pipe",
+                "destination_token": "button",
+                "order": 0
+              }
+            ],
+            "interpretation": "Basic tab demonstrates two stored integer fields, separate hot/cold inputs, a delay input, and two output displays. A second branch exposes stop and flush."
+          }
+        ],
+        "declared_dependency_names": [
+          "helpargs.js",
+          "helpdetails.js",
+          "helpname.js",
+          "helpstarter.js",
+          "openTransport.maxpat"
+        ],
+        "limits": [
+          "Saved ports do not prove message behavior.",
+          "Only static dependency_cache names are inventoried; helpers/transitive loads are not resolved or executed.",
+          "No copied patch body, message text, comment, helper source, appearance data or bundled media is published."
+        ]
+      },
+      "max_runtime_evidence": {
+        "status": "existing-bounded-original-max-score-only",
+        "max_executed_by_this_map": false,
+        "historical_max_executed": true,
+        "fixture": "14-scheduler",
+        "expected_status": "observed-one-run-not-exact-timing-or-tick-count-oracle",
+        "scope": "pipe 20: queue 1 and 2, clear after 5 ms, queue 3; only integer 3 observed. No flush/typed-fields test.",
+        "observed_event_count_for_label": 1,
+        "files": [
+          {
+            "path": "../fixtures/14-scheduler.maxpat",
+            "sha256": "41892e9f9e97e123b5cf7bae58242678dfc653c0bc70e5b8f57e59aabc74fbfc",
+            "bytes": 8646
+          },
+          {
+            "path": "../fixtures/14-scheduler.score.json",
+            "sha256": "f812f78b3e8632f2fbe7a06643d8a2be1931740259d7e1e869a29443e3510d53",
+            "bytes": 1649
+          },
+          {
+            "path": "../results/14-scheduler.jsonl",
+            "sha256": "7b7d01aec11f402154af60e71972f563cecb09d04b265e49e229e87129432a54",
+            "bytes": 2664
+          },
+          {
+            "path": "../expected/14-scheduler.json",
+            "sha256": "749edfe1602933954f58ce1ad69632415e4eb630899ecc6f0418dd9c78993678",
+            "bytes": 13922
+          },
+          {
+            "path": "../manifests/14-scheduler.manifest.json",
+            "sha256": "e37d83c2322bf6e0a77612772db93ea169b0f279f92b2151f0b3d51a9397e9a1",
+            "bytes": 4497
+          }
+        ],
+        "limitations": [
+          "JS collector arrival does not measure logical scheduler time or causality.",
+          "No retained console error channel; no output alone cannot prove successful acceptance.",
+          "These original patches are not installed help execution or Ultra comparison."
+        ]
+      }
+    },
+    {
+      "class": "change",
+      "json_maxclass": "newobj",
+      "namespace": "box",
+      "official_reference": "https://docs.cycling74.com/reference/change/",
+      "native_status": "research-only-not-in-current-ultra-registry",
+      "contract_status": "original-paraphrase-and-proposal-based-on-installed-documentation",
+      "contract": {
+        "priority": 1,
+        "arguments": "Optional initial comparison number, default 0. Mode can be + or -; help also contains change + and change - without a numeric first argument.",
+        "ports": {
+          "inlets": 1,
+          "outlets": 3,
+          "input_roles": [
+            "0: numeric comparison, mode or silent set."
+          ],
+          "output_roles": [
+            "0: changed value, or directional 1/-1.",
+            "1: integer 1 on zero-to-nonzero transition.",
+            "2: integer 1 on nonzero-to-zero transition."
+          ]
+        },
+        "messages": [
+          "int/float compare to stored value and replace it; repeated numeric value is suppressed.",
+          "mode + outputs 1 for increases; mode - outputs -1 for decreases; bare mode restores ordinary changed-value output.",
+          "set replaces comparison state without output."
+        ],
+        "scheduling": "Immediate stateful filter; multi-outlet order and transition outlet behavior in directional modes need a runtime oracle.",
+        "bounded_native_scope": [
+          "Store a typed finite scalar, implement exact value comparison plus silent set and mode selection.",
+          "Expose all three typed control outlets; preserve input scalar type where later runtime evidence requires it.",
+          "Use saved initial number and declared mode, resetting on graph replacement consistently with other scalar objects."
+        ],
+        "edge_cases_and_unknowns": [
+          "Numeric equality across int/float selectors, negative zero and mode transitions need scores.",
+          "A suppressed value still replaces comparison state; verify this for directional filters.",
+          "No bang/list/anything method is documented; do not invent bang recall or list-head acceptance."
+        ],
+        "source_conflicts": [
+          "Argument table places mode second, while shipped help instantiates change + and change - as single arguments."
+        ],
+        "required_methods": [
+          "int",
+          "float",
+          "mode",
+          "set"
+        ],
+        "evidence_selectors": [
+          "./objarglist/objarg[@name='initial-value']",
+          "./objarglist/objarg[@name='mode']",
+          "./methodlist/method[@name='mode']",
+          "./methodlist/method[@name='set']"
+        ],
+        "help_anchor": [
+          "obj-2",
+          "obj-5"
+        ],
+        "help_use_case": "Basic tab feeds change 0 with a number, displays changed values, routes logical transitions to separate print objects, and sends set 100 silently.",
+        "acceptance_cases": [
+          "Send 0, 0, 2, 2, -3, 0; retain exact outlet order and selector types.",
+          "Send set 100, 100, 99; then exercise +, -, bare mode and single-symbol creation forms."
+        ]
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/change.maxref.xml",
+        "sha256": "843af02e003b3d9806a055202629eb383b11059545d922e2018484db53330575",
+        "bytes": 4680,
+        "status": "documentation-inspected-not-executed",
+        "arguments": [
+          {
+            "name": "initial-value",
+            "optional": "1",
+            "type": "int or float"
+          },
+          {
+            "name": "mode",
+            "optional": "1",
+            "type": "symbol"
+          }
+        ],
+        "port_templates": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "OUTLET_TYPE"
+            },
+            {
+              "id": "2",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "template_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE markers are placeholders, not measured type contracts.",
+        "methods": [
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "mode",
+            "arguments": [
+              {
+                "name": "flag (+ or -)",
+                "optional": "0",
+                "type": "symbol"
+              }
+            ]
+          },
+          {
+            "name": "set",
+            "arguments": [
+              {
+                "name": "stored value",
+                "optional": "0",
+                "type": "number"
+              }
+            ]
+          }
+        ],
+        "attributes": [],
+        "cited_xml_selectors": [
+          "./objarglist/objarg[@name='initial-value']",
+          "./objarglist/objarg[@name='mode']",
+          "./methodlist/method[@name='mode']",
+          "./methodlist/method[@name='set']"
+        ]
+      },
+      "installed_help": {
+        "path": "help/max/change.maxhelp",
+        "sha256": "8b8789419edaa4e9a8f9f308a31a5c39aecbf4a8224fb24257c7252f5d9d05bd",
+        "bytes": 37101,
+        "status": "static-json-inspected-not-imported-or-executed",
+        "patchers": 4,
+        "boxes": 36,
+        "patchlines": 17,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "button",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "change",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 9
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "incdec",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "print",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "sel",
+            "count": 2
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_tokens": [
+              "change",
+              "comment",
+              "flonum",
+              "incdec",
+              "jsui",
+              "message",
+              "number",
+              "print"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-5",
+              "obj-7"
+            ],
+            "numinlets": 1,
+            "numoutlets": 3,
+            "outlettype": [
+              "",
+              "int",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-5",
+              "obj-6"
+            ],
+            "numinlets": 1,
+            "numoutlets": 3,
+            "outlettype": [
+              "",
+              "int",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-19"
+            ],
+            "numinlets": 1,
+            "numoutlets": 3,
+            "outlettype": [
+              "",
+              "int",
+              "int"
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-5"
+            ],
+            "numinlets": 1,
+            "numoutlets": 3,
+            "outlettype": [
+              "",
+              "int",
+              "int"
+            ]
+          }
+        ],
+        "use_case_evidence": [
+          {
+            "box_path": [
+              "obj-2",
+              "obj-5"
+            ],
+            "numinlets": 1,
+            "numoutlets": 3,
+            "outlettype": [
+              "",
+              "int",
+              "int"
+            ],
+            "parent_box_path": [
+              "obj-2"
+            ],
+            "direct_incident_edges": [
+              {
+                "source": [
+                  "obj-11",
+                  0
+                ],
+                "destination": [
+                  "obj-5",
+                  0
+                ],
+                "source_token": "number",
+                "destination_token": "change",
+                "order": 1
+              },
+              {
+                "source": [
+                  "obj-28",
+                  0
+                ],
+                "destination": [
+                  "obj-5",
+                  0
+                ],
+                "source_token": "message",
+                "destination_token": "change",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-5",
+                  1
+                ],
+                "destination": [
+                  "obj-6",
+                  0
+                ],
+                "source_token": "change",
+                "destination_token": "print",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-5",
+                  2
+                ],
+                "destination": [
+                  "obj-7",
+                  0
+                ],
+                "source_token": "change",
+                "destination_token": "print",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-5",
+                  0
+                ],
+                "destination": [
+                  "obj-9",
+                  0
+                ],
+                "source_token": "change",
+                "destination_token": "number",
+                "order": null
+              }
+            ],
+            "interpretation": "Basic tab feeds change 0 with a number, displays changed values, routes logical transitions to separate print objects, and sends set 100 silently."
+          }
+        ],
+        "declared_dependency_names": [
+          "helpargs.js",
+          "helpdetails.js",
+          "helpname.js",
+          "helpstarter.js"
+        ],
+        "limits": [
+          "Saved ports do not prove message behavior.",
+          "Only static dependency_cache names are inventoried; helpers/transitive loads are not resolved or executed.",
+          "No copied patch body, message text, comment, helper source, appearance data or bundled media is published."
+        ]
+      },
+      "max_runtime_evidence": {
+        "status": "no-retained-original-max-oracle-in-this-corpus",
+        "max_executed_by_this_map": false
+      }
+    },
+    {
+      "class": "gate",
+      "json_maxclass": "newobj",
+      "namespace": "box",
+      "official_reference": "https://docs.cycling74.com/reference/gate/",
+      "native_status": "research-only-not-in-current-ultra-registry",
+      "contract_status": "original-paraphrase-and-proposal-based-on-installed-documentation",
+      "contract": {
+        "priority": 1,
+        "arguments": "Optional number of outlets, default 1; optional initial open outlet, default 0 (closed). Selection numbering is 1..N.",
+        "ports": {
+          "inlets": 2,
+          "outlets": "N; default 1",
+          "input_roles": [
+            "0: selection/report/next.",
+            "1: arbitrary message to pass when open."
+          ],
+          "output_roles": [
+            "0..N-1: unchanged data for selected outlet; outlet 0 also reports selection on control bang."
+          ]
+        },
+        "messages": [
+          "Left int sets selection silently; float converts to int.",
+          "Left bang outputs the current open-outlet number, including 0 if closed.",
+          "next selects the next outlet, wrapping closed/rightmost to outlet 1.",
+          "Messages at the right data inlet pass unchanged only when an outlet is open."
+        ],
+        "scheduling": "Immediate selector; no queued or stored data replay is implied by changing the selected outlet.",
+        "bounded_native_scope": [
+          "Support 1..8 outlets, fixed two inputs and an explicit initial selection.",
+          "Forward the complete typed CanvasMessage without number conversion; control and data bang have distinct roles.",
+          "Keep selector changes silent; implement next and control-bang report synchronously."
+        ],
+        "edge_cases_and_unknowns": [
+          "Out-of-range/negative selectors, zero/negative outlet-count arguments and invalid initial selection need Max probes.",
+          "Do not choose clamp, close or wrap for invalid selectors from the next-message wrap rule."
+        ],
+        "source_conflicts": [],
+        "required_methods": [
+          "bang",
+          "int",
+          "float",
+          "next"
+        ],
+        "evidence_selectors": [
+          "./objarglist/objarg[@name='outlets']",
+          "./objarglist/objarg[@name='initial-state']",
+          "./methodlist/method[@name='bang']",
+          "./methodlist/method[@name='next']"
+        ],
+        "help_anchor": [
+          "obj-2",
+          "obj-14"
+        ],
+        "help_use_case": "Basic tab directs a metronome/counter stream through one of three gate outputs selected by a radiogroup/number chain.",
+        "acceptance_cases": [
+          "Select 0, 1, 3 and next; send distinct bang/int/float/symbol/list/anything data at inlet 1.",
+          "Bang the left inlet while closed/open and verify integer report on outlet 0 without replaying prior data."
+        ]
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/gate.maxref.xml",
+        "sha256": "56a1d4011b58bbdc03816a007b977c0cfd4f3ae902778711ba58f39a83ca75a9",
+        "bytes": 4001,
+        "status": "documentation-inspected-not-executed",
+        "arguments": [
+          {
+            "name": "outlets",
+            "optional": "1",
+            "type": "int"
+          },
+          {
+            "name": "initial-state",
+            "optional": "1",
+            "type": "int"
+          }
+        ],
+        "port_templates": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "template_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE markers are placeholders, not measured type contracts.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "outlet-number",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "outlet-number",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "next",
+            "arguments": []
+          }
+        ],
+        "attributes": [],
+        "cited_xml_selectors": [
+          "./objarglist/objarg[@name='outlets']",
+          "./objarglist/objarg[@name='initial-state']",
+          "./methodlist/method[@name='bang']",
+          "./methodlist/method[@name='next']"
+        ]
+      },
+      "installed_help": {
+        "path": "help/max/gate.maxhelp",
+        "sha256": "d99006027882f1443fe20f71a11ea76910e028476ce8a482c1a1c0843207a6a5",
+        "bytes": 36555,
+        "status": "static-json-inspected-not-imported-or-executed",
+        "patchers": 4,
+        "boxes": 34,
+        "patchlines": 16,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 7
+          },
+          {
+            "namespace": "box",
+            "token": "counter",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "gate",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "metro",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 8
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "print",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "radiogroup",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "umenu",
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_tokens": [
+              "comment",
+              "counter",
+              "gate",
+              "jsui",
+              "metro",
+              "number",
+              "radiogroup"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-5",
+              "obj-4"
+            ],
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-5",
+              "obj-27"
+            ],
+            "numinlets": 2,
+            "numoutlets": 3,
+            "outlettype": [
+              "",
+              "",
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-14"
+            ],
+            "numinlets": 2,
+            "numoutlets": 3,
+            "outlettype": [
+              "",
+              "",
+              ""
+            ]
+          }
+        ],
+        "use_case_evidence": [
+          {
+            "box_path": [
+              "obj-2",
+              "obj-14"
+            ],
+            "numinlets": 2,
+            "numoutlets": 3,
+            "outlettype": [
+              "",
+              "",
+              ""
+            ],
+            "parent_box_path": [
+              "obj-2"
+            ],
+            "direct_incident_edges": [
+              {
+                "source": [
+                  "obj-14",
+                  0
+                ],
+                "destination": [
+                  "obj-16",
+                  0
+                ],
+                "source_token": "gate",
+                "destination_token": "number",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-14",
+                  1
+                ],
+                "destination": [
+                  "obj-18",
+                  0
+                ],
+                "source_token": "gate",
+                "destination_token": "number",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-14",
+                  2
+                ],
+                "destination": [
+                  "obj-20",
+                  0
+                ],
+                "source_token": "gate",
+                "destination_token": "number",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-22",
+                  0
+                ],
+                "destination": [
+                  "obj-14",
+                  1
+                ],
+                "source_token": "counter",
+                "destination_token": "gate",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-7",
+                  0
+                ],
+                "destination": [
+                  "obj-14",
+                  0
+                ],
+                "source_token": "number",
+                "destination_token": "gate",
+                "order": null
+              }
+            ],
+            "interpretation": "Basic tab directs a metronome/counter stream through one of three gate outputs selected by a radiogroup/number chain."
+          }
+        ],
+        "declared_dependency_names": [
+          "helpargs.js",
+          "helpdetails.js",
+          "helpname.js",
+          "helpstarter.js"
+        ],
+        "limits": [
+          "Saved ports do not prove message behavior.",
+          "Only static dependency_cache names are inventoried; helpers/transitive loads are not resolved or executed.",
+          "No copied patch body, message text, comment, helper source, appearance data or bundled media is published."
+        ]
+      },
+      "max_runtime_evidence": {
+        "status": "no-retained-original-max-oracle-in-this-corpus",
+        "max_executed_by_this_map": false
+      }
+    },
+    {
+      "class": "switch",
+      "json_maxclass": "newobj",
+      "namespace": "box",
+      "official_reference": "https://docs.cycling74.com/reference/switch/",
+      "native_status": "research-only-not-in-current-ultra-registry",
+      "contract_status": "original-paraphrase-and-proposal-based-on-installed-documentation",
+      "contract": {
+        "priority": 1,
+        "arguments": "Optional number N of data inputs, default 2; one additional control input. Initial open input defaults to 0 (closed), numbered 1..N.",
+        "ports": {
+          "inlets": "N+1; default 3",
+          "outlets": 1,
+          "input_roles": [
+            "0: selection/report/next.",
+            "1..N: arbitrary messages, only selected input passes."
+          ],
+          "output_roles": [
+            "0: unchanged selected message or integer selection report."
+          ]
+        },
+        "messages": [
+          "Left int sets open input; zero closes all data inputs; float converts to int.",
+          "Left bang reports selected input or 0; next cycles to the next data input, wrapping to 1.",
+          "A message arriving at an unselected data input produces no forwarded message."
+        ],
+        "scheduling": "Immediate message selector. Selection changes do not imply replay of previously discarded inputs.",
+        "bounded_native_scope": [
+          "Support 1..8 data inputs plus one control input and one output.",
+          "Forward complete typed messages; selection updates remain silent; implement next and integer report.",
+          "Use dynamic saved ports and inlet help so authoring distinguishes selector input from data inputs."
+        ],
+        "edge_cases_and_unknowns": [
+          "Negative/out-of-range selectors, invalid initial state and invalid N require capture.",
+          "Bang at data input is data; bang at input 0 is an integer state query."
+        ],
+        "source_conflicts": [],
+        "required_methods": [
+          "bang",
+          "int",
+          "float",
+          "next"
+        ],
+        "evidence_selectors": [
+          "./objarglist/objarg[@name='inlets']",
+          "./objarglist/objarg[@name='initial']",
+          "./methodlist/method[@name='bang']",
+          "./methodlist/method[@name='next']"
+        ],
+        "help_anchor": [
+          "obj-2",
+          "obj-26"
+        ],
+        "help_use_case": "Basic tab chooses one of four message/slider sources through switch 4; a menu controls selection and the chosen message updates a message box through its cold input.",
+        "acceptance_cases": [
+          "Interleave distinct typed data on all inputs, select each input, then close and cycle with next.",
+          "Verify selection changes emit nothing and control-bang reports without forwarding stored data."
+        ]
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/switch.maxref.xml",
+        "sha256": "5d603c14d5a77abb4f342c07e1c3304b944fbd07449b70d400ebeff71cc66592",
+        "bytes": 4162,
+        "status": "documentation-inspected-not-executed",
+        "arguments": [
+          {
+            "name": "inlets",
+            "optional": "1",
+            "type": "int"
+          },
+          {
+            "name": "initial",
+            "optional": "1",
+            "type": "int"
+          }
+        ],
+        "port_templates": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "2",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "template_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE markers are placeholders, not measured type contracts.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "inlet",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "inlet",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "next",
+            "arguments": []
+          }
+        ],
+        "attributes": [],
+        "cited_xml_selectors": [
+          "./objarglist/objarg[@name='inlets']",
+          "./objarglist/objarg[@name='initial']",
+          "./methodlist/method[@name='bang']",
+          "./methodlist/method[@name='next']"
+        ]
+      },
+      "installed_help": {
+        "path": "help/max/switch.maxhelp",
+        "sha256": "9b6c1f44dce58ae6f273aefd9d6665c76bed99e30d33bf14756852bd216a811c",
+        "bytes": 21867,
+        "status": "static-json-inspected-not-imported-or-executed",
+        "patchers": 3,
+        "boxes": 19,
+        "patchlines": 11,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "slider",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "switch",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "umenu",
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_tokens": [
+              "jsui",
+              "message",
+              "number",
+              "slider",
+              "switch",
+              "umenu"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-5"
+            ],
+            "numinlets": 3,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-26"
+            ],
+            "numinlets": 5,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          }
+        ],
+        "use_case_evidence": [
+          {
+            "box_path": [
+              "obj-2",
+              "obj-26"
+            ],
+            "numinlets": 5,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ],
+            "parent_box_path": [
+              "obj-2"
+            ],
+            "direct_incident_edges": [
+              {
+                "source": [
+                  "obj-16",
+                  0
+                ],
+                "destination": [
+                  "obj-26",
+                  1
+                ],
+                "source_token": "message",
+                "destination_token": "switch",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-17",
+                  0
+                ],
+                "destination": [
+                  "obj-26",
+                  2
+                ],
+                "source_token": "message",
+                "destination_token": "switch",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-18",
+                  0
+                ],
+                "destination": [
+                  "obj-26",
+                  3
+                ],
+                "source_token": "message",
+                "destination_token": "switch",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-19",
+                  0
+                ],
+                "destination": [
+                  "obj-26",
+                  4
+                ],
+                "source_token": "message",
+                "destination_token": "switch",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-26",
+                  0
+                ],
+                "destination": [
+                  "obj-20",
+                  1
+                ],
+                "source_token": "switch",
+                "destination_token": "message",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-28",
+                  0
+                ],
+                "destination": [
+                  "obj-26",
+                  4
+                ],
+                "source_token": "slider",
+                "destination_token": "switch",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-29",
+                  0
+                ],
+                "destination": [
+                  "obj-26",
+                  3
+                ],
+                "source_token": "slider",
+                "destination_token": "switch",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-30",
+                  0
+                ],
+                "destination": [
+                  "obj-26",
+                  2
+                ],
+                "source_token": "slider",
+                "destination_token": "switch",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-31",
+                  0
+                ],
+                "destination": [
+                  "obj-26",
+                  1
+                ],
+                "source_token": "slider",
+                "destination_token": "switch",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-8",
+                  0
+                ],
+                "destination": [
+                  "obj-26",
+                  0
+                ],
+                "source_token": "umenu",
+                "destination_token": "switch",
+                "order": 0
+              }
+            ],
+            "interpretation": "Basic tab chooses one of four message/slider sources through switch 4; a menu controls selection and the chosen message updates a message box through its cold input."
+          }
+        ],
+        "declared_dependency_names": [
+          "helpargs.js",
+          "helpdetails.js",
+          "helpname.js",
+          "helpstarter.js"
+        ],
+        "limits": [
+          "Saved ports do not prove message behavior.",
+          "Only static dependency_cache names are inventoried; helpers/transitive loads are not resolved or executed.",
+          "No copied patch body, message text, comment, helper source, appearance data or bundled media is published."
+        ]
+      },
+      "max_runtime_evidence": {
+        "status": "no-retained-original-max-oracle-in-this-corpus",
+        "max_executed_by_this_map": false
+      }
+    },
+    {
+      "class": "split",
+      "json_maxclass": "newobj",
+      "namespace": "box",
+      "official_reference": "https://docs.cycling74.com/reference/split/",
+      "native_status": "research-only-not-in-current-ultra-registry",
+      "contract_status": "original-paraphrase-and-proposal-based-on-installed-documentation",
+      "contract": {
+        "priority": 1,
+        "arguments": "Minimum and maximum, both marked required. Numeric output type follows the first/lower-bound argument; undocumented missing-argument defaults remain unknown.",
+        "ports": {
+          "inlets": 3,
+          "outlets": 2,
+          "input_roles": [
+            "0: numeric value to route.",
+            "1: lower bound and numeric mode.",
+            "2: upper bound."
+          ],
+          "output_roles": [
+            "0: value within bounds.",
+            "1: value outside bounds."
+          ]
+        },
+        "messages": [
+          "int/float in the hot input routes one numeric value to one output.",
+          "Cold lower/upper inputs update bounds; integer lower-bound configuration selects integer conversion.",
+          "Creation prose specifies float output when the first argument is float, regardless of input selector."
+        ],
+        "scheduling": "Immediate numeric comparison/route; no timers or storage recall are documented.",
+        "bounded_native_scope": [
+          "Require explicit finite lower/upper creation arguments and all three inputs/two outputs.",
+          "Retain numeric tags for the lower-bound type; compare/emit using the verified conversion order.",
+          "Keep bound changes cold and route exactly once per accepted numeric message."
+        ],
+        "edge_cases_and_unknowns": [
+          "Exact endpoint inclusion, conversion before versus after comparison and fractional boundaries need oracle cases.",
+          "Reversed/equal bounds, missing arguments and float-to-integer rounding need capture.",
+          "Method prose repeats an integer-lower-bound condition in both int/float entries; capture type changes in the cold lower input.",
+          "No bang/list/set method is documented."
+        ],
+        "source_conflicts": [],
+        "required_methods": [
+          "int",
+          "float"
+        ],
+        "evidence_selectors": [
+          "./objarglist/objarg[@name='minimum']",
+          "./objarglist/objarg[@name='maximum']",
+          "./methodlist/method[@name='int']",
+          "./methodlist/method[@name='float']"
+        ],
+        "help_anchor": [
+          "obj-2",
+          "obj-21"
+        ],
+        "help_use_case": "Basic tab sends integer and floating input through split 1 10, provides separate numeric lower/upper controls, and displays in-range/out-of-range values independently.",
+        "acceptance_cases": [
+          "Capture just below, equal to and just above both bounds with int and float lower-bound configurations.",
+          "Change lower bound type and probe fractional values that cross an endpoint only after conversion."
+        ]
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/split.maxref.xml",
+        "sha256": "2e36492b71ba09e5323f771969c7d351d07f56330d5da98a3a49a9aada87d8ee",
+        "bytes": 4528,
+        "status": "documentation-inspected-not-executed",
+        "arguments": [
+          {
+            "name": "minimum",
+            "optional": "0",
+            "type": "number"
+          },
+          {
+            "name": "maximum",
+            "optional": "0",
+            "type": "number"
+          }
+        ],
+        "port_templates": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "2",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "template_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE markers are placeholders, not measured type contracts.",
+        "methods": [
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          }
+        ],
+        "attributes": [],
+        "cited_xml_selectors": [
+          "./objarglist/objarg[@name='minimum']",
+          "./objarglist/objarg[@name='maximum']",
+          "./methodlist/method[@name='int']",
+          "./methodlist/method[@name='float']"
+        ]
+      },
+      "installed_help": {
+        "path": "help/max/split.maxhelp",
+        "sha256": "a182edcf1cc9414015caaf34f0aaf4e7fb22ca338ca9eb8bdb4eb2eea7cec4f1",
+        "bytes": 20411,
+        "status": "static-json-inspected-not-imported-or-executed",
+        "patchers": 3,
+        "boxes": 18,
+        "patchlines": 6,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "split",
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_tokens": [
+              "comment",
+              "flonum",
+              "jsui",
+              "number",
+              "split"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-2",
+              "obj-21"
+            ],
+            "numinlets": 3,
+            "numoutlets": 2,
+            "outlettype": [
+              "int",
+              "int"
+            ]
+          }
+        ],
+        "use_case_evidence": [
+          {
+            "box_path": [
+              "obj-2",
+              "obj-21"
+            ],
+            "numinlets": 3,
+            "numoutlets": 2,
+            "outlettype": [
+              "int",
+              "int"
+            ],
+            "parent_box_path": [
+              "obj-2"
+            ],
+            "direct_incident_edges": [
+              {
+                "source": [
+                  "obj-21",
+                  0
+                ],
+                "destination": [
+                  "obj-17",
+                  0
+                ],
+                "source_token": "split",
+                "destination_token": "number",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-21",
+                  1
+                ],
+                "destination": [
+                  "obj-19",
+                  0
+                ],
+                "source_token": "split",
+                "destination_token": "number",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-22",
+                  0
+                ],
+                "destination": [
+                  "obj-21",
+                  1
+                ],
+                "source_token": "number",
+                "destination_token": "split",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-23",
+                  0
+                ],
+                "destination": [
+                  "obj-21",
+                  2
+                ],
+                "source_token": "number",
+                "destination_token": "split",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-24",
+                  0
+                ],
+                "destination": [
+                  "obj-21",
+                  0
+                ],
+                "source_token": "number",
+                "destination_token": "split",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-6",
+                  0
+                ],
+                "destination": [
+                  "obj-21",
+                  0
+                ],
+                "source_token": "flonum",
+                "destination_token": "split",
+                "order": null
+              }
+            ],
+            "interpretation": "Basic tab sends integer and floating input through split 1 10, provides separate numeric lower/upper controls, and displays in-range/out-of-range values independently."
+          }
+        ],
+        "declared_dependency_names": [
+          "helpargs.js",
+          "helpdetails.js",
+          "helpname.js",
+          "helpstarter.js"
+        ],
+        "limits": [
+          "Saved ports do not prove message behavior.",
+          "Only static dependency_cache names are inventoried; helpers/transitive loads are not resolved or executed.",
+          "No copied patch body, message text, comment, helper source, appearance data or bundled media is published."
+        ]
+      },
+      "max_runtime_evidence": {
+        "status": "no-retained-original-max-oracle-in-this-corpus",
+        "max_executed_by_this_map": false
+      }
+    },
+    {
+      "class": "clip",
+      "json_maxclass": "newobj",
+      "namespace": "box",
+      "official_reference": "https://docs.cycling74.com/reference/clip/",
+      "native_status": "research-only-not-in-current-ultra-registry",
+      "contract_status": "original-paraphrase-and-proposal-based-on-installed-documentation",
+      "contract": {
+        "priority": 1,
+        "arguments": "Optional min/max; no arguments mean both 0, one argument supplies both bounds. mode metadata defaults to 0.",
+        "ports": {
+          "inlets": 3,
+          "outlets": 1,
+          "input_roles": [
+            "0: numeric/list input or set lower upper.",
+            "1: lower bound.",
+            "2: upper bound."
+          ],
+          "output_roles": [
+            "0: constrained numeric value or numeric list."
+          ]
+        },
+        "messages": [
+          "Scalar output type follows incoming int versus float, independently of bound argument types.",
+          "List input clips every numeric element and emits a list.",
+          "set lower upper updates both bounds; cold inputs update individual bounds.",
+          "mode 0 clamps; nonzero mode emits zero for out-of-range values."
+        ],
+        "scheduling": "Immediate transform; bound-update silence and list atom conversion still require a Max trace.",
+        "bounded_native_scope": [
+          "Implement three control inputs with finite bounds, scalar tag preservation and lists of up to eight numeric atoms.",
+          "Implement set and explicit mode 0/1 configuration with silent bound storage.",
+          "Use a separate clip object rather than globally clamping all routed control data."
+        ],
+        "edge_cases_and_unknowns": [
+          "Integer input with fractional clipped bounds needs exact conversion/rounding capture.",
+          "Reversed/equal bounds, endpoint inclusion, mixed numeric list tags and nonnumeric list atoms need scores.",
+          "No bang recall is documented; mode normalization beyond 0/1 is not part of the proposed subset."
+        ],
+        "source_conflicts": [],
+        "required_methods": [
+          "int",
+          "float",
+          "list",
+          "set"
+        ],
+        "evidence_selectors": [
+          "./objarglist/objarg[@name='minimum']",
+          "./methodlist/method[@name='int']",
+          "./methodlist/method[@name='float']",
+          "./attributelist/attribute[@name='mode']"
+        ],
+        "help_anchor": [
+          "obj-2",
+          "obj-8"
+        ],
+        "help_use_case": "Basic tab combines slider/int/float/list inputs for clip 10 50, independent floating lower/upper inputs, set 0 29 and a print outlet.",
+        "acceptance_cases": [
+          "Probe no/one/two creation bounds, endpoints, out-of-range values and fractional bounds with int/float inputs.",
+          "Compare clamp and zero-outside mode on scalar and mixed numeric lists; verify silent bound updates."
+        ]
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/clip.maxref.xml",
+        "sha256": "b4fe84cf578591505d3f391ca322c58c1ed7b9ebcbb6ee1acb53b1405bd83825",
+        "bytes": 6151,
+        "status": "documentation-inspected-not-executed",
+        "arguments": [
+          {
+            "name": "minimum",
+            "optional": "1",
+            "type": "number"
+          },
+          {
+            "name": "maximum",
+            "optional": "1",
+            "type": "number"
+          }
+        ],
+        "port_templates": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "2",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "template_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE markers are placeholders, not measured type contracts.",
+        "methods": [
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "list",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          },
+          {
+            "name": "set",
+            "arguments": [
+              {
+                "name": "minimum/maximum",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          }
+        ],
+        "attributes": [
+          {
+            "name": "mode",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [
+              "0"
+            ],
+            "default_status": "documented-metadata"
+          }
+        ],
+        "cited_xml_selectors": [
+          "./objarglist/objarg[@name='minimum']",
+          "./methodlist/method[@name='int']",
+          "./methodlist/method[@name='float']",
+          "./attributelist/attribute[@name='mode']"
+        ]
+      },
+      "installed_help": {
+        "path": "help/max/clip.maxhelp",
+        "sha256": "0563703f5583093679fadbef08408da2f0f2e6177ce706cdcd7e66bd1d0c774a",
+        "bytes": 32221,
+        "status": "static-json-inspected-not-imported-or-executed",
+        "patchers": 4,
+        "boxes": 30,
+        "patchlines": 11,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "attrui",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "clip",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 9
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "multislider",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 3
+          },
+          {
+            "namespace": "box",
+            "token": "print",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "slider",
+            "count": 2
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_tokens": [
+              "clip",
+              "comment",
+              "flonum",
+              "jsui",
+              "message",
+              "number",
+              "print",
+              "slider"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-5",
+              "obj-8"
+            ],
+            "numinlets": 3,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-8"
+            ],
+            "numinlets": 3,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          }
+        ],
+        "use_case_evidence": [
+          {
+            "box_path": [
+              "obj-2",
+              "obj-8"
+            ],
+            "numinlets": 3,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ],
+            "parent_box_path": [
+              "obj-2"
+            ],
+            "direct_incident_edges": [
+              {
+                "source": [
+                  "obj-10",
+                  0
+                ],
+                "destination": [
+                  "obj-8",
+                  0
+                ],
+                "source_token": "number",
+                "destination_token": "clip",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-11",
+                  0
+                ],
+                "destination": [
+                  "obj-8",
+                  0
+                ],
+                "source_token": "flonum",
+                "destination_token": "clip",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-14",
+                  0
+                ],
+                "destination": [
+                  "obj-8",
+                  0
+                ],
+                "source_token": "message",
+                "destination_token": "clip",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-17",
+                  0
+                ],
+                "destination": [
+                  "obj-8",
+                  1
+                ],
+                "source_token": "flonum",
+                "destination_token": "clip",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-19",
+                  0
+                ],
+                "destination": [
+                  "obj-8",
+                  2
+                ],
+                "source_token": "flonum",
+                "destination_token": "clip",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-3",
+                  0
+                ],
+                "destination": [
+                  "obj-8",
+                  0
+                ],
+                "source_token": "message",
+                "destination_token": "clip",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-5",
+                  0
+                ],
+                "destination": [
+                  "obj-8",
+                  0
+                ],
+                "source_token": "slider",
+                "destination_token": "clip",
+                "order": null
+              },
+              {
+                "source": [
+                  "obj-8",
+                  0
+                ],
+                "destination": [
+                  "obj-9",
+                  0
+                ],
+                "source_token": "clip",
+                "destination_token": "print",
+                "order": null
+              }
+            ],
+            "interpretation": "Basic tab combines slider/int/float/list inputs for clip 10 50, independent floating lower/upper inputs, set 0 29 and a print outlet."
+          }
+        ],
+        "declared_dependency_names": [
+          "helpargs.js",
+          "helpdetails.js",
+          "helpname.js",
+          "helpstarter.js"
+        ],
+        "limits": [
+          "Saved ports do not prove message behavior.",
+          "Only static dependency_cache names are inventoried; helpers/transitive loads are not resolved or executed.",
+          "No copied patch body, message text, comment, helper source, appearance data or bundled media is published."
+        ]
+      },
+      "max_runtime_evidence": {
+        "status": "no-retained-original-max-oracle-in-this-corpus",
+        "max_executed_by_this_map": false
+      }
+    },
+    {
+      "class": "scale",
+      "json_maxclass": "newobj",
+      "namespace": "box",
+      "official_reference": "https://docs.cycling74.com/reference/scale/",
+      "native_status": "research-only-not-in-current-ultra-registry",
+      "contract_status": "original-paraphrase-and-proposal-based-on-installed-documentation",
+      "contract": {
+        "priority": 3,
+        "arguments": "Four optional input-low/input-high/output-low/output-high numbers and optional exponent. Missing-argument numeric defaults are not stated in this reference; require all four ranges initially.",
+        "ports": {
+          "inlets": 6,
+          "outlets": 1,
+          "input_roles": [
+            "0: scalar/list to map; bang recomputes prior input.",
+            "1: input low.",
+            "2: input high.",
+            "3: output low.",
+            "4: output high.",
+            "5: exponent/curve."
+          ],
+          "output_roles": [
+            "0: mapped scalar/list, including extrapolation beyond expected input range."
+          ]
+        },
+        "messages": [
+          "bang reapplies the latest input using current range configuration.",
+          "Lists map each numeric item. Input is not clipped to expected range.",
+          "Integer argument ranges truncate rather than round; float input can be converted to int when input range is integer.",
+          "Modern mode uses a signed power of normalized input; classic 1 retains legacy scaling; classic 2 also reverses exponent orientation when output bounds invert."
+        ],
+        "scheduling": "Immediate numeric transform with stored previous input; no clock.",
+        "bounded_native_scope": [
+          "Start with explicit four floating ranges and linear exponent 1; support six inputs, one output, bang recall and numeric lists up to eight atoms.",
+          "Implement non-clipped extrapolation and reversed output ranges; reject a zero input span explicitly in the first Ultra profile.",
+          "Add integer/mixed-range coercion and classic 0/2 curves only after reference scores; do not infer modern default mode from an absent default metadata entry.",
+          "Keep legacy classic 1, historical inverted exponent behavior and nonfinite results explicitly unsupported until measured."
+        ],
+        "edge_cases_and_unknowns": [
+          "Default ranges/exponent/classic mode, zero input span and nonpositive exponents need capture.",
+          "The int and float method prose leaves mixed-range input conversion interactions ambiguous.",
+          "The classic attribute prose names scale~ even though this is the scale reference; confirm modes on the message object.",
+          "Negative normalized input with fractional exponent, inverted input/output ranges, overflow and bang after a list need oracle cases."
+        ],
+        "source_conflicts": [
+          "classic metadata has no default entry; do not label its default 0 from convention.",
+          "Attribute description refers to scale~ in the scale XML."
+        ],
+        "required_methods": [
+          "bang",
+          "int",
+          "float",
+          "list"
+        ],
+        "evidence_selectors": [
+          "./description",
+          "./objarglist/objarg[@name='exponential']",
+          "./methodlist/method[@name='float']",
+          "./attributelist/attribute[@name='classic']"
+        ],
+        "help_anchor": [
+          "obj-2",
+          "obj-14"
+        ],
+        "help_use_case": "Basic tab contrasts integer 0..127 to 0..500 scaling with floating 0..1 to 0..5 scaling; another branch exposes all four range-setting inputs.",
+        "acceptance_cases": [
+          "Capture integer, float and mixed ranges with fractions, endpoints and values beyond both ends.",
+          "Exercise reversed ranges, signed modern power with fractional exponent, classic 0/1/2 and cold changes followed by bang."
+        ]
+      },
+      "reference": {
+        "path": "docs/refpages/max-ref/scale.maxref.xml",
+        "sha256": "80b192d3aff37b589f5e8a88649d633cd120985d754a130f141d5cbf90bfb5b3",
+        "bytes": 9990,
+        "status": "documentation-inspected-not-executed",
+        "arguments": [
+          {
+            "name": "input-low",
+            "optional": "1",
+            "type": "number"
+          },
+          {
+            "name": "input-high",
+            "optional": "1",
+            "type": "number"
+          },
+          {
+            "name": "output-low",
+            "optional": "1",
+            "type": "number"
+          },
+          {
+            "name": "output-high",
+            "optional": "1",
+            "type": "number"
+          },
+          {
+            "name": "exponential",
+            "optional": "1",
+            "type": "float"
+          }
+        ],
+        "port_templates": {
+          "inlets": [
+            {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "1",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "2",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "3",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "4",
+              "type": "INLET_TYPE"
+            },
+            {
+              "id": "5",
+              "type": "INLET_TYPE"
+            }
+          ],
+          "outlets": [
+            {
+              "id": "0",
+              "type": "OUTLET_TYPE"
+            }
+          ]
+        },
+        "template_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE markers are placeholders, not measured type contracts.",
+        "methods": [
+          {
+            "name": "bang",
+            "arguments": []
+          },
+          {
+            "name": "int",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "name": "float",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "float"
+              }
+            ]
+          },
+          {
+            "name": "list",
+            "arguments": [
+              {
+                "name": "input",
+                "optional": "0",
+                "type": "list"
+              }
+            ]
+          }
+        ],
+        "attributes": [
+          {
+            "name": "classic",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1",
+            "default_lexemes": [],
+            "default_status": "not-stated"
+          }
+        ],
+        "cited_xml_selectors": [
+          "./description",
+          "./objarglist/objarg[@name='exponential']",
+          "./methodlist/method[@name='float']",
+          "./attributelist/attribute[@name='classic']"
+        ]
+      },
+      "installed_help": {
+        "path": "help/max/scale.maxhelp",
+        "sha256": "c3b587efaa35d99c7189cff5577c3acc48318fed1c20c12d4139b7d92cb29bba",
+        "bytes": 75910,
+        "status": "static-json-inspected-not-imported-or-executed",
+        "patchers": 5,
+        "boxes": 74,
+        "patchlines": 44,
+        "tokens": [
+          {
+            "namespace": "box",
+            "token": "attrui",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "comment",
+            "count": 14
+          },
+          {
+            "namespace": "box",
+            "token": "flonum",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "itable",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "js",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "jsui",
+            "count": 5
+          },
+          {
+            "namespace": "box",
+            "token": "message",
+            "count": 11
+          },
+          {
+            "namespace": "box",
+            "token": "multislider",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "number",
+            "count": 12
+          },
+          {
+            "namespace": "box",
+            "token": "p",
+            "count": 4
+          },
+          {
+            "namespace": "box",
+            "token": "pack",
+            "count": 1
+          },
+          {
+            "namespace": "box",
+            "token": "scale",
+            "count": 9
+          },
+          {
+            "namespace": "box",
+            "token": "slider",
+            "count": 6
+          },
+          {
+            "namespace": "box",
+            "token": "t",
+            "count": 2
+          },
+          {
+            "namespace": "box",
+            "token": "uzi",
+            "count": 1
+          }
+        ],
+        "basic_tabs": [
+          {
+            "box_path": [
+              "obj-2"
+            ],
+            "direct_tokens": [
+              "comment",
+              "flonum",
+              "jsui",
+              "number",
+              "scale",
+              "slider"
+            ]
+          }
+        ],
+        "saved_target_ports": [
+          {
+            "box_path": [
+              "obj-7",
+              "obj-3"
+            ],
+            "numinlets": 6,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-7",
+              "obj-15"
+            ],
+            "numinlets": 6,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-17"
+            ],
+            "numinlets": 6,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-15"
+            ],
+            "numinlets": 6,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-14"
+            ],
+            "numinlets": 6,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-3",
+              "obj-5"
+            ],
+            "numinlets": 6,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-26"
+            ],
+            "numinlets": 6,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-14"
+            ],
+            "numinlets": 6,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          },
+          {
+            "box_path": [
+              "obj-2",
+              "obj-5"
+            ],
+            "numinlets": 6,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ]
+          }
+        ],
+        "use_case_evidence": [
+          {
+            "box_path": [
+              "obj-2",
+              "obj-14"
+            ],
+            "numinlets": 6,
+            "numoutlets": 1,
+            "outlettype": [
+              ""
+            ],
+            "parent_box_path": [
+              "obj-2"
+            ],
+            "direct_incident_edges": [
+              {
+                "source": [
+                  "obj-13",
+                  0
+                ],
+                "destination": [
+                  "obj-14",
+                  0
+                ],
+                "source_token": "slider",
+                "destination_token": "scale",
+                "order": 1
+              },
+              {
+                "source": [
+                  "obj-14",
+                  0
+                ],
+                "destination": [
+                  "obj-11",
+                  0
+                ],
+                "source_token": "scale",
+                "destination_token": "flonum",
+                "order": null
+              }
+            ],
+            "interpretation": "Basic tab contrasts integer 0..127 to 0..500 scaling with floating 0..1 to 0..5 scaling; another branch exposes all four range-setting inputs."
+          }
+        ],
+        "declared_dependency_names": [
+          "helpargs.js",
+          "helpdetails.js",
+          "helpname.js",
+          "helpstarter.js"
+        ],
+        "limits": [
+          "Saved ports do not prove message behavior.",
+          "Only static dependency_cache names are inventoried; helpers/transitive loads are not resolved or executed.",
+          "No copied patch body, message text, comment, helper source, appearance data or bundled media is published."
+        ]
+      },
+      "max_runtime_evidence": {
+        "status": "no-retained-original-max-oracle-in-this-corpus",
+        "max_executed_by_this_map": false
+      }
+    }
+  ]
+}
