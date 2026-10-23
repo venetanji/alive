@@ -1,0 +1,758 @@
+{
+  "fixture": "list-followup",
+  "labels": [
+    "append-empty:0",
+    "prepend-empty:0",
+    "iter-symbol-recall:0",
+    "reg-cold-reset:0",
+    "reg-cold-reset:1",
+    "join-cold-reset:0",
+    "join-cold-reset:1",
+    "iter-cold-reset:0",
+    "iter-cold-reset:1",
+    "slice-cold-reset:0",
+    "slice-cold-reset:1",
+    "rot-cold-reset:0",
+    "rot-cold-reset:1",
+    "iter-reentrant-size:0",
+    "iter-reentrant-size:1",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$feedback",
+    "$delivery"
+  ],
+  "targets": [
+    {
+      "id": "obj-1",
+      "key": "append-empty",
+      "creation": "append",
+      "outlets": 1
+    },
+    {
+      "id": "obj-21",
+      "key": "prepend-empty",
+      "creation": "prepend",
+      "outlets": 1
+    },
+    {
+      "id": "obj-41",
+      "key": "iter-symbol-recall",
+      "creation": "iter",
+      "outlets": 1
+    },
+    {
+      "id": "obj-52",
+      "key": "reg-cold-reset",
+      "creation": "zl.reg first 7",
+      "outlets": 2
+    },
+    {
+      "id": "obj-61",
+      "key": "join-cold-reset",
+      "creation": "zl.join tail 9",
+      "outlets": 2
+    },
+    {
+      "id": "obj-70",
+      "key": "iter-cold-reset",
+      "creation": "zl.iter 2",
+      "outlets": 2
+    },
+    {
+      "id": "obj-79",
+      "key": "slice-cold-reset",
+      "creation": "zl.slice 2",
+      "outlets": 2
+    },
+    {
+      "id": "obj-88",
+      "key": "rot-cold-reset",
+      "creation": "zl.rot 1",
+      "outlets": 2
+    },
+    {
+      "id": "obj-97",
+      "key": "iter-reentrant-size",
+      "creation": "zl.iter 2",
+      "outlets": 2
+    }
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "bang",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_1",
+      "message": "8",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "8"
+    },
+    {
+      "id": "event_2",
+      "message": "8.",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "8."
+    },
+    {
+      "id": "event_3",
+      "message": "list 8",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "list 8"
+    },
+    {
+      "id": "event_4",
+      "message": "list apple",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "list apple"
+    },
+    {
+      "id": "event_5",
+      "message": "symbol apple",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "symbol apple"
+    },
+    {
+      "id": "event_6",
+      "message": "apple",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "apple"
+    },
+    {
+      "id": "event_7",
+      "message": "apple 3",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "apple 3"
+    },
+    {
+      "id": "event_8",
+      "message": "set tail",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "set tail"
+    },
+    {
+      "id": "event_9",
+      "message": "8",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "8"
+    },
+    {
+      "id": "event_10",
+      "message": "set",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "set"
+    },
+    {
+      "id": "event_11",
+      "message": "bang",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_12",
+      "message": "8",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "8"
+    },
+    {
+      "id": "event_13",
+      "message": "8.",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "8."
+    },
+    {
+      "id": "event_14",
+      "message": "list 8",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "list 8"
+    },
+    {
+      "id": "event_15",
+      "message": "list apple",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "list apple"
+    },
+    {
+      "id": "event_16",
+      "message": "symbol apple",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "symbol apple"
+    },
+    {
+      "id": "event_17",
+      "message": "apple",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "apple"
+    },
+    {
+      "id": "event_18",
+      "message": "apple 3",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "apple 3"
+    },
+    {
+      "id": "event_19",
+      "message": "bang",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_20",
+      "message": "8",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "8"
+    },
+    {
+      "id": "event_21",
+      "message": "8.",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "8."
+    },
+    {
+      "id": "event_22",
+      "message": "list 8",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "list 8"
+    },
+    {
+      "id": "event_23",
+      "message": "list apple",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "list apple"
+    },
+    {
+      "id": "event_24",
+      "message": "symbol apple",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "symbol apple"
+    },
+    {
+      "id": "event_25",
+      "message": "apple",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "apple"
+    },
+    {
+      "id": "event_26",
+      "message": "apple 3",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "apple 3"
+    },
+    {
+      "id": "event_27",
+      "message": "set tail",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "set tail"
+    },
+    {
+      "id": "event_28",
+      "message": "8",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "8"
+    },
+    {
+      "id": "event_29",
+      "message": "set",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "set"
+    },
+    {
+      "id": "event_30",
+      "message": "bang",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_31",
+      "message": "8",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "8"
+    },
+    {
+      "id": "event_32",
+      "message": "8.",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "8."
+    },
+    {
+      "id": "event_33",
+      "message": "list 8",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "list 8"
+    },
+    {
+      "id": "event_34",
+      "message": "list apple",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "list apple"
+    },
+    {
+      "id": "event_35",
+      "message": "symbol apple",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "symbol apple"
+    },
+    {
+      "id": "event_36",
+      "message": "apple",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "apple"
+    },
+    {
+      "id": "event_37",
+      "message": "apple 3",
+      "destination": "obj-21",
+      "inlet": 0,
+      "case": "apple 3"
+    },
+    {
+      "id": "event_38",
+      "message": "symbol apple",
+      "destination": "obj-41",
+      "inlet": 0,
+      "case": "symbol apple"
+    },
+    {
+      "id": "event_39",
+      "message": "bang",
+      "destination": "obj-41",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_40",
+      "message": "apple 3 pear",
+      "destination": "obj-41",
+      "inlet": 0,
+      "case": "apple 3 pear"
+    },
+    {
+      "id": "event_41",
+      "message": "bang",
+      "destination": "obj-41",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_42",
+      "message": "list apple 3 pear",
+      "destination": "obj-41",
+      "inlet": 0,
+      "case": "list apple 3 pear"
+    },
+    {
+      "id": "event_43",
+      "message": "bang",
+      "destination": "obj-41",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_44",
+      "message": "list symbol apple",
+      "destination": "obj-41",
+      "inlet": 0,
+      "case": "list symbol apple"
+    },
+    {
+      "id": "event_45",
+      "message": "bang",
+      "destination": "obj-41",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_46",
+      "message": "symbol apple",
+      "destination": "obj-41",
+      "inlet": 0,
+      "case": "symbol apple"
+    },
+    {
+      "id": "event_47",
+      "message": "bang",
+      "destination": "obj-41",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_48",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-52",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_49",
+      "message": "zlclear",
+      "destination": "obj-52",
+      "inlet": 1,
+      "case": "zlclear"
+    },
+    {
+      "id": "event_50",
+      "message": "bang",
+      "destination": "obj-52",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_51",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-52",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_52",
+      "message": "3",
+      "destination": "obj-52",
+      "inlet": 1,
+      "case": "3"
+    },
+    {
+      "id": "event_53",
+      "message": "zlreset",
+      "destination": "obj-52",
+      "inlet": 1,
+      "case": "zlreset"
+    },
+    {
+      "id": "event_54",
+      "message": "bang",
+      "destination": "obj-52",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_55",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-52",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_56",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-61",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_57",
+      "message": "zlclear",
+      "destination": "obj-61",
+      "inlet": 1,
+      "case": "zlclear"
+    },
+    {
+      "id": "event_58",
+      "message": "bang",
+      "destination": "obj-61",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_59",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-61",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_60",
+      "message": "3",
+      "destination": "obj-61",
+      "inlet": 1,
+      "case": "3"
+    },
+    {
+      "id": "event_61",
+      "message": "zlreset",
+      "destination": "obj-61",
+      "inlet": 1,
+      "case": "zlreset"
+    },
+    {
+      "id": "event_62",
+      "message": "bang",
+      "destination": "obj-61",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_63",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-61",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_64",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-70",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_65",
+      "message": "zlclear",
+      "destination": "obj-70",
+      "inlet": 1,
+      "case": "zlclear"
+    },
+    {
+      "id": "event_66",
+      "message": "bang",
+      "destination": "obj-70",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_67",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-70",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_68",
+      "message": "3",
+      "destination": "obj-70",
+      "inlet": 1,
+      "case": "3"
+    },
+    {
+      "id": "event_69",
+      "message": "zlreset",
+      "destination": "obj-70",
+      "inlet": 1,
+      "case": "zlreset"
+    },
+    {
+      "id": "event_70",
+      "message": "bang",
+      "destination": "obj-70",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_71",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-70",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_72",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-79",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_73",
+      "message": "zlclear",
+      "destination": "obj-79",
+      "inlet": 1,
+      "case": "zlclear"
+    },
+    {
+      "id": "event_74",
+      "message": "bang",
+      "destination": "obj-79",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_75",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-79",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_76",
+      "message": "3",
+      "destination": "obj-79",
+      "inlet": 1,
+      "case": "3"
+    },
+    {
+      "id": "event_77",
+      "message": "zlreset",
+      "destination": "obj-79",
+      "inlet": 1,
+      "case": "zlreset"
+    },
+    {
+      "id": "event_78",
+      "message": "bang",
+      "destination": "obj-79",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_79",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-79",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_80",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-88",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_81",
+      "message": "zlclear",
+      "destination": "obj-88",
+      "inlet": 1,
+      "case": "zlclear"
+    },
+    {
+      "id": "event_82",
+      "message": "bang",
+      "destination": "obj-88",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_83",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-88",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_84",
+      "message": "3",
+      "destination": "obj-88",
+      "inlet": 1,
+      "case": "3"
+    },
+    {
+      "id": "event_85",
+      "message": "zlreset",
+      "destination": "obj-88",
+      "inlet": 1,
+      "case": "zlreset"
+    },
+    {
+      "id": "event_86",
+      "message": "bang",
+      "destination": "obj-88",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_87",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-88",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_88",
+      "message": "list 1 2 3 4 5 6 7",
+      "destination": "obj-97",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5 6 7"
+    },
+    {
+      "id": "event_89",
+      "message": "bang",
+      "destination": "obj-97",
+      "inlet": 0,
+      "case": "bang"
+    }
+  ],
+  "drain_ms": 100
+}

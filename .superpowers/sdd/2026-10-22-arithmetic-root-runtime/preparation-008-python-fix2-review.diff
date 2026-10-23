@@ -1,0 +1,214 @@
+--- fix1/test_preparation.py
++++ fix2/test_preparation.py
+@@ -1,22 +1,24 @@
+ """Original synthetic fixtures for the finite arithmetic reference package."""
+ from collections import Counter
+ import copy
+ import hashlib
+ import importlib.util
+ import json
+ import io
++import os
+ from pathlib import Path
+ import tempfile
+ import unittest
+ from unittest.mock import patch
+ from contextlib import ExitStack, contextmanager, redirect_stderr, redirect_stdout
++from functools import wraps
+ 
+ ROOT = Path(__file__).resolve().parent
+ 
+ 
+ def module(name):
+     path = ROOT / (name + '.py')
+     if not path.is_file():
+         raise AssertionError('Finite arithmetic ' + name + ' implementation is missing')
+     spec = importlib.util.spec_from_file_location('arithmetic_test_' + name, path)
+     result = importlib.util.module_from_spec(spec)
+@@ -392,20 +394,84 @@
+     raw['input_routes']=copy.deepcopy(routes);raw['output_routes']=routes;raw['numeric']=[]
+     for b in document['boxes']:
+         if b['maxclass'] not in n.NUMERIC:continue
+         gated=b['anchor'] in numeric;v=next((r['value_observation']['value'] for r in rows if r['anchor']==b['anchor']),b['initial_numeric'])
+         raw['numeric'].append(dict(anchor=b['anchor'],class_name='number' if gated else b['maxclass'],value=v,
+             source_class=b['maxclass'],getter_method='getvalueof',getter_representation='scalar-number',semantic_tag='float' if gated else 'int',
+             semantic_tag_basis='source-flonum-and-live-v8-format6' if gated else 'number-class'))
+     return document,raw
+ 
+ 
++def extraction_memory_only(test):
++    """Guard these private-derived fixtures before any disk allocation or write."""
++    @wraps(test)
++    def guarded(*args, **kwargs):
++        original_open,original_io_open,original_os_open=open,io.open,os.open
++        def read_only_open(original, file, mode='r', *positional, **named):
++            if any(flag in mode for flag in ('w','a','x','+')):raise AssertionError('Extraction fixture filesystem write refused')
++            return original(file,mode,*positional,**named)
++        def read_only_os_open(path, flags, *positional, **named):
++            if flags & (os.O_WRONLY|os.O_RDWR|os.O_CREAT|os.O_TRUNC|os.O_APPEND):raise AssertionError('Extraction fixture filesystem write refused')
++            return original_os_open(path,flags,*positional,**named)
++        with ExitStack() as guards:
++            guards.enter_context(patch('builtins.open',side_effect=lambda *a,**k:read_only_open(original_open,*a,**k)))
++            guards.enter_context(patch.object(io,'open',side_effect=lambda *a,**k:read_only_open(original_io_open,*a,**k)))
++            guards.enter_context(patch.object(os,'open',side_effect=read_only_os_open))
++            guards.enter_context(patch.object(tempfile,'TemporaryDirectory',side_effect=AssertionError('Extraction fixtures must remain in memory')))
++            for name in ('mkdir','makedirs','chmod','rename','replace','unlink','remove','rmdir'):
++                guards.enter_context(patch.object(os,name,side_effect=AssertionError('Extraction fixture filesystem mutation refused')))
++            return test(*args,**kwargs)
++    return guarded
++
++
++@contextmanager
++def extraction_memory_storage(n, payload):
++    """Keep storage virtual while executing the production retained-byte hash."""
++    work=Path('/__alive_memory_extraction__');path=work/'raw.json';retained=work/'retained-raw.json'
++    files={path:payload};writes=[];reads=[];descriptor=-101
++    def check_owner(owner):
++        if owner!=work:raise AssertionError('Unexpected extraction storage owner')
++    def source_path(owner,value):
++        check_owner(owner)
++        if Path(value)!=path:raise AssertionError('Unexpected extraction input path')
++        return path
++    def read(owner,value):
++        source_path(owner,value);reads.append(path);return files[path]
++    class RetainedBuffer(io.BytesIO):
++        def fileno(self):return descriptor
++        def close(self):
++            if not self.closed:
++                files[retained]=self.getvalue();writes.append((retained,files[retained]))
++            super().close()
++    def open_retained(value,flags,mode=0o777):
++        if Path(value)!=retained or flags!=(os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW) or mode!=0o600:
++            raise AssertionError('Unexpected extraction retained-write boundary')
++        if retained in files:raise FileExistsError('Retained fixture already exists')
++        return descriptor
++    def fdopen(value,mode):
++        if value!=descriptor or mode!='wb':raise AssertionError('Unexpected extraction descriptor')
++        return RetainedBuffer()
++    def fchmod(value,mode):
++        if value!=descriptor or mode!=0o600:raise AssertionError('Unexpected extraction file mode')
++    def fsync(value):
++        if value!=descriptor:raise AssertionError('Unexpected extraction flush descriptor')
++    with ExitStack()as storage:
++        storage.enter_context(patch.object(n,'verify_private',side_effect=check_owner))
++        storage.enter_context(patch.object(n,'private_path',side_effect=source_path))
++        storage.enter_context(patch.object(n,'read_private',side_effect=read))
++        storage.enter_context(patch.object(n.os,'open',side_effect=open_retained))
++        storage.enter_context(patch.object(n.os,'fdopen',side_effect=fdopen))
++        storage.enter_context(patch.object(n.os,'fchmod',side_effect=fchmod))
++        storage.enter_context(patch.object(n.os,'fsync',side_effect=fsync))
++        yield dict(work=work,path=path,retained=retained,files=files,writes=writes,reads=reads)
++
++
+ class Preparation008Tests(unittest.TestCase):
+     def test_plus_v8_independent007_loader(self):
+         n=module('arithmetic')
+         self.assertTrue(hasattr(n,'load_plus_v8_representation_measurements'),'Independent007 loader missing')
+         result=n.load_plus_v8_representation_measurements()
+         self.assertEqual(set(result),{'numeric','roots'})
+         self.assertEqual(set(result['numeric']),set(n.PLUS_NUMERIC_PINS));self.assertEqual(set(result['roots']),{'root/obj-2','root/obj-3'})
+         with patch.object(n,'package_binding',side_effect=AssertionError('Current package forbidden')),patch.object(n,'verify_private',side_effect=AssertionError('Current verification forbidden')),patch.object(n,'source_metadata',side_effect=AssertionError('Recursive metadata forbidden')):
+             self.assertEqual(n.load_plus_v8_representation_measurements(),result)
+ 
+@@ -541,73 +607,85 @@
+                         with self.subTest(method=method,shape=shape),self.assertRaises(ValueError):n.validate_v8_representation_witnesses(d,r,rid,step,action)
+ 
+     def test_plus_v8_strict_metadata_counts_and_receipt_claim(self):
+         n=module('arithmetic');document,raw=plus008_fixture(n)
+         for field in ('saved_incoming_routes','saved_outgoing_routes'):
+             d=copy.deepcopy(document);b=next(b for b in d['boxes']if 'observed_geometry_policy'in b);b[field]=False
+             with self.subTest(field=field),self.assertRaises(ValueError):n.validate_plus_v8_metadata(d)
+         r=copy.deepcopy(raw);next(v for v in r['numeric']if v['source_class']=='flonum')['receipt_tag_observed']=True
+         with self.assertRaises(ValueError):n.validate_checkpoint(document,r,r['request_id'],r['step_id'],'event')
+ 
++    @extraction_memory_only
+     def test_plus_v8_trusted_record_is_checked_before_update(self):
+         n=module('arithmetic');self.assertTrue(hasattr(n,'PLUS_V8_EVIDENCE'),'Plus V8 provenance missing')
+         d,raw=plus008_fixture(n);trusted={k:copy.deepcopy(raw[k]) for k in ('request_id','operation_request_id','step_id','action','action_document','action_revision','document','revision','source_sha256')}
+         trusted['working_path']=d['working_windows_path'];trusted['seq_before']=0
+-        with tempfile.TemporaryDirectory() as temporary,patch.object(n,'verify_private'):
+-            work=Path(temporary);work.chmod(0o700);path=work/'raw.json';n.write_json(path,raw)
++        payload=n.canonical(raw)+b'\n'
++        with extraction_memory_storage(n,payload)as store:
++            work=store['work'];path=store['path']
+             for key in trusted:
+                 if key=='seq_before':continue
+                 record=copy.deepcopy(trusted);record[key]=True;before=copy.deepcopy(record)
+                 with self.subTest(key=key),self.assertRaises(ValueError):n.extract_checkpoint(work,d,path,raw['request_id'],raw['step_id'],'event',record)
+-                self.assertEqual(record,before);self.assertFalse((work/'retained-raw.json').exists())
++                self.assertEqual(record,before);self.assertEqual(store['writes'],[]);self.assertNotIn(store['retained'],store['files'])
+             with self.assertRaises(ValueError):n.extract_checkpoint(work,d,path,raw['request_id'],raw['step_id'],'event')
++            self.assertEqual(store['writes'],[]);self.assertNotIn(store['retained'],store['files'])
++            before=copy.deepcopy(trusted)
+             result=n.extract_checkpoint(work,d,path,raw['request_id'],raw['step_id'],'event',trusted)
+-            self.assertEqual(result['raw_sha256'],hashlib.sha256(path.read_bytes()).hexdigest())
+-
++            expected=dict(raw_sha256=hashlib.sha256(payload).hexdigest(),raw_bytes=len(payload))
++            self.assertEqual({k:result[k]for k in expected},expected)
++            self.assertEqual(trusted,dict(before,**expected))
++            self.assertEqual(store['writes'],[(store['retained'],payload)])
++            self.assertEqual(store['files'],{path:payload,store['retained']:payload})
++            self.assertEqual(set(store['reads']),{path})
++
++    @extraction_memory_only
+     def test_plus_v8_valid_refusals_keep_exact_retained_bytes_and_session_binding(self):
+         n=module('arithmetic');document,success=plus008_fixture(n,action='install')
+         success.update(request_id=52,operation_request_id=51)
+         success['v8_representation_witnesses'].update(request_id=52,operation_request_id=51)
+         trusted={k:copy.deepcopy(success[k])for k in ('request_id','operation_request_id','step_id','action','action_document',
+             'action_revision','document','revision','source_sha256')}
+         trusted.update(working_path=document['working_windows_path'],seq_before=0)
+         owner=Path.home()/'.cache/alive-ultra-evidence/arithmetic-max-runtime-007'
+         failed=n.read_private(owner,owner/'observations/request-52-plus-r1.json')
+         invalid=copy.deepcopy(success);invalid['numeric'][0]['getter_method']='unavailable'
+         mismatched=copy.deepcopy(success);mismatched['operation_request_id']+=1
+         mismatched['v8_representation_witnesses']['operation_request_id']+=1
+         payloads=(('failed-envelope',failed),('invalid-success',n.canonical(invalid)),('mismatched-success-operation',n.canonical(mismatched)))
+         for case,payload in payloads:
+-            with self.subTest(case=case),tempfile.TemporaryDirectory()as temporary,patch.object(n,'verify_private'):
+-                work=Path(temporary);work.chmod(0o700);path=work/'raw.json';n.retain_raw(path,payload)
++            with self.subTest(case=case),extraction_memory_storage(n,payload)as store:
++                work=store['work'];path=store['path']
+                 record=copy.deepcopy(trusted)
+                 with self.assertRaises(ValueError):n.extract_checkpoint(work,document,path,52,success['step_id'],'install',record)
+-                self.assertTrue((work/'retained-raw.json').exists(),'Valid refused result was not retained')
+-                self.assertEqual((work/'retained-raw.json').read_bytes(),payload)
++                self.assertEqual(store['writes'],[(store['retained'],payload)])
++                self.assertEqual(store['files'][store['retained']],payload)
+                 self.assertEqual(record,dict(trusted,raw_sha256=hashlib.sha256(payload).hexdigest(),raw_bytes=len(payload)))
+-                self.assertEqual(path.read_bytes(),payload)
++                self.assertEqual(store['files'],{path:payload,store['retained']:payload});self.assertEqual(store['reads'],[path])
+         for payload in (failed,n.canonical(success)):
+             for key in trusted:
+                 if key=='seq_before':continue
+                 for mutation in ('missing','changed'):
+-                    with self.subTest(context=key,mutation=mutation,failed=payload==failed),tempfile.TemporaryDirectory()as temporary,patch.object(n,'verify_private'):
+-                        work=Path(temporary);work.chmod(0o700);path=work/'raw.json';n.retain_raw(path,payload)
++                    with self.subTest(context=key,mutation=mutation,failed=payload==failed),extraction_memory_storage(n,payload)as store:
++                        work=store['work'];path=store['path']
+                         record=copy.deepcopy(trusted)
+                         if mutation=='missing':record.pop(key)
+                         else:record[key]=True
+                         original=copy.deepcopy(record)
+                         with self.assertRaises(ValueError):n.extract_checkpoint(work,document,path,52,success['step_id'],'install',record)
+-                        self.assertEqual(record,original);self.assertFalse((work/'retained-raw.json').exists())
+-            with tempfile.TemporaryDirectory()as temporary,patch.object(n,'verify_private'):
+-                work=Path(temporary);work.chmod(0o700);path=work/'raw.json';n.retain_raw(path,payload)
++                        self.assertEqual(record,original);self.assertEqual(store['writes'],[])
++                        self.assertEqual(store['files'],{path:payload});self.assertEqual(store['reads'],[path])
++            with extraction_memory_storage(n,payload)as store:
++                work=store['work'];path=store['path']
+                 with self.assertRaises(ValueError):n.extract_checkpoint(work,document,path,52,success['step_id'],'install')
+-                self.assertFalse((work/'retained-raw.json').exists())
++                self.assertEqual(store['writes'],[]);self.assertEqual(store['files'],{path:payload});self.assertEqual(store['reads'],[path])
++        self.assertEqual(n.read_private(owner,owner/'observations/request-52-plus-r1.json'),failed)
+ 
+     def test_plus_v8_nested_source_identities_refuse_before_normalization(self):
+         n=module('arithmetic');document,raw=plus008_fixture(n)
+         equivalent=copy.deepcopy(document)
+         for view in ('boxes','full_inventory'):
+             for box in equivalent[view]:
+                 box['rect']=[int(v) if v==int(v) else v for v in box['rect']]
+                 if n.finite(box.get('initial_numeric')):box['initial_numeric']=float(box['initial_numeric'])
+                 for field in ('observed_geometry_policy','v8_root_representation_policy'):
+                     if field not in box:continue

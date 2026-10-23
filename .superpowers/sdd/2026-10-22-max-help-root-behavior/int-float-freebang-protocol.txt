@@ -1,0 +1,171 @@
+FREEBANG-V1 IMPLEMENTATION CONTRACT (2026-10-22)
+
+Signatures: validate_close(work, config, command, ack) -> raw retention PRIVATE metadata dict;
+validate_barrier(work, config, evidence, expected_live) -> None.
+config is already verified sealed preparation; exact runtime ACK retained by runner
+at work/observations/ack-request-<command_id>.json BEFORE validator. Close validator
+checks that retained JSON equals ack. command has command_id and full score operation.
+
+config['lifecycle'] exact keys:
+ version='freebang-v1', monitor_epoch=<48 lowercase hex>,
+ observer_path=<windows absolute path to lifecycle-observer.js>,
+ report_path=<windows absolute path to private lifecycle-report.json>,
+ driver_inventory=[{varname,maxclass,boxtext,rect}],
+ owners=[{document,revision,source_sha256,working_path,channel,inlet,root_proof_path}].
+owners have inlets 0..3, ordered int-r1,int-r2,float-r1,float-r2. All channel names
+are fresh unique ASCII identifiers. monitor_epoch identifies one-use prepared work,
+NOT runtime processownership capture_id. No config mutation at runtime.
+owner working_path is document working_windows_path; root_proof_path is windows
+path under work/observations/lifecycle-root-<document>-r<revision>.json.
+Every config document has lifecycle_owner_inlet exact integer pointing into owners.
+Driver inventory has six objects: controller '__alive_numeric_controller', observer
+'__alive_numeric_lifecycle_observer', four '__alive_numeric_lifecycle_receive_N'.
+Classes js,v8,receive. Config exact rects/boxtexts created by preparation.
+Root additions: reader '__alive_numeric_reader', disposer '__alive_numeric_disposer',
+freebang '__alive_numeric_freebang', send '__alive_numeric_lifecycle_send'.
+Root new rects: reader [-3000,-3000,160,22], disposer [-3100,-3000,100,22],
+freebang [-3200,-3000,100,22], send [-3400,-3000,200,22].
+Root text exact freebang 'freebang', send 'send '+channel; reader/disposer class v8/
+thispatcher and known helper/config/owner arguments (no public args printed).
+
+ACK keeps existing close_diagnostics fields exactly; adds lifecycle_evidence:
+ {version:'freebang-v1',
+  binding:{monitor_epoch,request_id,step_id,action:'close',document,revision,
+           source_sha256,working_path,observer_helper_sha256},
+  root_route_path:<owner.root_proof_path>,
+  root_route_proof:<full parsed object below>,
+  driver_route_proof:<object below>,
+  observer_report:<object below>}
+No new public receipt/schema fields. All private proof retained under ACK bytes.
+The independent Python validator reads root proof exact raw bytes from bound path,
+checks parsed JSON equals embedded root_route_proof, retains exclusively as
+work/observations/retained-lifecycle-root-<document>-r<revision>.json, hashes/size,
+and returns metadata for PRIVATE validator/completion evidence only. Thus no unsupported Max crypto
+or controller-computed SHA needed. Unknown fields in above structures refuse.
+
+ROOT PROOF exact keys:
+ {version:'freebang-v1',request_id,step_id,document,revision,source_sha256,
+  working_path,root_is_top_level:true,
+  originals:[{anchor,varname,maxclass,rect}],
+  harness:[{varname,maxclass,rect,boxtext,valid}],
+  input_routes:[EDGE],output_routes:[EDGE]}
+originals are EXACT root-level config.document.full_inventory entries, matched
+by unique source geometry/class + source_varname (shell_height_policy.live_rect
+allowed iff present in sealed definition; no other adaptation). No new original
+varname renaming at root. Actual object count EXACT originals+4 harness. Original
+rect/class/source_varname checked against definition. No Basic enumeration or
+exclusions added by this proof. harness list EXACT four known root additions,
+rects above, class v8,thispatcher,freebang,send, valid true/1, exact text for
+freebang/send. reader/disposer boxtext present but reader arguments not independently
+reconstructed; sealed creation code plus exact class/varname/rect binds handles.
+EDGE is {source:{identity,port},destination:{identity,port}}. identity is original
+anchor or harness varname, endpoints resolved by unique scope/name/class/geometry
+against actual enumeration, never wrapper equality. Each input/output list EXACT
+one edge freebang:0 -> send:0 (duplicate sensitive). Original root has no new routes.
+
+DRIVER PROOF exact keys:
+ {boxes:[{varname,maxclass,boxtext,rect,valid}],input_routes:[EDGE],output_routes:[EDGE],
+  declared_inlets:5,declared_outlets:0}
+boxes EXACT driver_inventory, every valid true/1. Exact boxtext for receive
+is 'receive '+mapped channel. Controller/observer text checked as prepared text
+(use exact text; runtime capability mismatch refuses). Rect exact. Each route list
+EXACT four receive_N:0 -> observer:N+1. Endpoint identity varname; class/rect/name
+verified unique. No other object/route. No assumed numinlets getter; declarations
+are helper source/self-report plus actual routes. No receive.set/retyping or
+replacement in any helper; no private route challenge, only automatic bang events.
+
+OBSERVER REPORT exact keys:
+ {monitor_epoch,seq,transitions:[TRANSITION],events:[EVENT],states:[STATE],
+  failures:[string],sealed:boolean}
+TRANSITION exact {seq,kind,inlet,request_id,step_id}; kind arm,dispatch-start,
+dispatch-return,close-validated,barrier. seq exact int, globally contiguous across
+combined transitions+events, starting 1. Owner controls inlet exact integer0..3;
+barrier inlet=-1. Arm records owner request/step, subsequent owner transitions same.
+EVENT exact {seq,inlet,payload_kind,request_id,step_id}; payload_kind='bang' for
+witnesses; malformed/nonbang still recorded but failures nonempty => refuse.
+Events derive binding from immutable inlet map and active state, never payload.
+STATE exact {inlet,state,request_id,step_id,witness_count}; exactly4 sorted inlets.
+Initial state monitoring,request_id=0,step_id='',witness_count=0. arm->armed;
+dispatch-start->dispatching; bang->witnessed; dispatch-return keeps dispatching or
+witnessed (event may be async after return); close-validated->closed. Exactly one
+bang required during dispatch-start..final report. No repeated control/witness.
+Any event before dispatch-start, closed owner event, other owner event while a
+close active, nonbang, duplicate or stale request sets sticky failures. Helpers
+never manually call freebang or route send/receive; all event inlet actions actual
+receiver output. close-validated requires one witness and no sticky failure.
+Current close evidence report obtained AFTER 30 polls and close-validated control,
+so final transition for this close is close-validated. Historical earlier close
+transitions/events are included and independently validated, not discarded.
+seq/report reflects snapshot after last control; driver validity/proof from same
+snapshot. The dispose actual invocation is exactly between dispatch-start and
+return controls, with existing close_diagnostics.dispose typed result showing
+attempted true, returned (any result type). No separate dispatch structure.
+
+SAMPLES: Original close_diagnostics.samples members remain unchanged. Add only
+'harness_objects': [{anchor:'__alive_numeric_freebang',valid:TYPED},
+                   {anchor:'__alive_numeric_lifecycle_send',valid:TYPED}].
+Exactly before-dispose attempt0 + poll attempts1..30. reader_valid,disposer_valid,
+retained_firstobject_valid (separately retained Maxobj beforedispose), all
+definition.boxes original handles (23 float/21 int), new2 each typed
+{status:'returned',type:'boolean',value:true/false} OR
+{status:'returned',type:'number',value:0/1}. Bool numeric conflation refuses.
+Before all true/1; polls allow true/1 pending; final all false/0; no live handle
+AFTER first jointly invalid poll. root_valid unavailable undefined allowed and
+retained; all wind/firstobject observations unchanged diagnostics. firstobject
+getter validity is diagnostic ONLY. The separately retained positivelyvalid
+first Maxobj is REQUIRED via retained_firstobject_valid in all31samples; unavailable
+beforehandle refuses capability. Malformed required typed reads refuse.
+Failed proof/disposal still has diagnostic evidence but cannot qualify.
+
+BARRIER: runner sends additional PRIVATE command op='lifecycle-barrier',
+step_id='capture-complete' after all54operations/102checkpoints, before complete.
+ACK {command_id,success:true,step_id,lifecycle_evidence:{version:'freebang-v1',
+ binding:{monitor_epoch,request_id,step_id:'capture-complete',action:'lifecycle-barrier',
+          observer_helper_sha256},driver_route_proof,observer_report}}.
+Barrier control records TRANSITION kind='barrier',inlet=-1,request_id barrierid,
+step_id='capture-complete'; seals report. Expected states int/floatr1 closed with
+one witness; r2 monitoring/no events. Config owner order handles mapping. No
+more controls allowed except callback cleanup: postbarrier callbacks ignored for
+score and never witnesses. No public journal entry for barrier. validate_barrier
+checks exact expected_live {'int':2,'float':2}, states, complete histories, routes,
+sealed true and final barrier transition. Earlier close report sealed=false.
+
+Run retention metadata keys: root_raw_path/root_sha256/root_bytes,
+close_proof_validated; separate PRIVATE validator/completion evidence only.
+Public session.command_requests remains exactly its existing156records/shape. No public
+new witness fields or comparator modification. Validator returns after all gates.
+
+APPROVED PHYSICAL INLET HARDENING:
+Observer has5physicalinlets:0controlonly; logicalownerN0..3 maps physicalN+1.
+Every driver EDGE destination observerport is N+1; declared_inlets5. Every
+control callback checks physicalinlet0; invoking control from eventport records
+a sticky unexpected notification. Bang/nonbang oncontrol0 refuses. Internal
+helper functions/state are enclosed in IIFE; only guarded Max callbacks and
+guarded lifecyclecontrol are global. Unknown selectors cannot invoke internal
+transition/persist/readPrivate helpers and are classified as unexpected input.
+Root harness geometry is explicitly set via documented setboxattr, then actual
+V8 readback must exactly match; no original geometry policy is broadened.
+Private rootproof hash/size are computed by Python after exact raw retention,
+with parsed equality to full embedded ACK proof. No Max-side crypto assumed.
+validate_barrier(work,config,FULL_ACK,expected_live) checks retained ACK bytes.
+Root-route .valid fields are primitive bool/numeric0/1 positive only; required
+sample reads remain typed. Source_varname None maps actual empty string.
+
+FROZEN-REVIEW AMENDMENTS:
+The finite score closes float-r1 before int-r1 (logical inlets2,0). First close
+must have no earlier close history. Second close must independently revalidate
+the accepted float close; final barrier must revalidate both accepted closes.
+Expected predecessors come from that fixed score order, never from whichever
+history rows or private files happen to remain. Re-read exact prior ACK/root
+bytes and strictly checked validated-close metadata; compare all digest/size/
+path/owner/request bindings and replay each prior proof without re-retaining it.
+Each later transitions/events prefix must match the earlier accepted report
+type-sensitively; prior owner states and complete close sets cannot be rewritten,
+discarded, or invented. Missing or replaced predecessor evidence refuses.
+
+Failure cleanup uses the independent acceptance gate before projecting any
+positive public close completion, just as the main path does. A controller-only
+true cannot be exported after Python refuses. Unvalidated/mismatched/duplicate
+positive close rows refuse public journal projection; the complete private
+journal remains available for diagnosis. Successful public record shapes and
+156command records remain unchanged.

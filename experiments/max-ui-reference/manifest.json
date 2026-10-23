@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "fixture_id": "max-ui-study",
+  "provenance": "MAX_REFERENCE_CAPTURE",
+  "max_executed": true,
+  "captured_at_utc": "2026-10-20T15:02:07.468311+00:00",
+  "environment": {
+    "max_version": "9.1.5 x64 Windows",
+    "live_version": "12.4.6 Suite",
+    "os": "Omarchy 4.0.0.r7083.g81fd2d2 / Linux 7.2.8-9-omarchy / Wine Windows environment",
+    "architecture": "x86_64 host, Windows x64 Max",
+    "runtime_host": "standalone_max"
+  },
+  "settings": {
+    "sample_rate_hz": null,
+    "signal_vector_frames": null,
+    "io_vector_frames": null,
+    "overdrive": null,
+    "scheduler_in_audio_interrupt": null,
+    "audio_enabled": false,
+    "transport": {},
+    "other": {
+      "wine": "11.13 patched d2d1/dcomp build",
+      "display": "private Xvfb, 1440x1000x24",
+      "input": "XTest on private display only",
+      "prefix": "disposable copy; profile folder links replaced with private empty folders",
+      "max_for_live_status": "device editor and new own metro patch opened successfully; no DSP probe",
+      "snapshots_status": "user-supplied saved files, source-inspected; save host not inferred from JSON"
+    },
+    "unknown_fields": [
+      "sample_rate_hz",
+      "signal_vector_frames",
+      "io_vector_frames",
+      "overdrive",
+      "scheduler_in_audio_interrupt",
+      "transport"
+    ]
+  },
+  "initial_state": {
+    "fixture": "ui-study.maxpat",
+    "authorship": "Original JSON authored for this study, not Max-saved",
+    "dsp": "off",
+    "snapshots": "Original user-supplied bytes; both files identical"
+  },
+  "object_classes": [
+    "button",
+    "toggle",
+    "message",
+    "number",
+    "flonum",
+    "+",
+    "metro",
+    "cycle~",
+    "*~",
+    "gain~",
+    "dac~"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "bd2cc9c022ef9d3112683e822a1d3362b97ec5b91708ff63aa7df143cdfcc81e",
+      "role": "notes"
+    },
+    {
+      "path": "format-observations.json",
+      "sha256": "e60c5c84a6d6d44210e064d0b22fff385013e9ee9d8127db69380e20cc8952ad",
+      "role": "notes"
+    },
+    {
+      "path": "operations.json",
+      "sha256": "13af7ba70b04a3b112ba1e35741c1effd0e2e8794b2ade1ca6a3ee982c8e5e63",
+      "role": "operations"
+    },
+    {
+      "path": "rea-metadata.json",
+      "sha256": "4be51dc37f0b86a3323d2497d8915d7e6415a8f642df5612a4a56d703a481bf1",
+      "role": "notes"
+    },
+    {
+      "path": "screenshots/max-autocomplete.png",
+      "sha256": "d3aa61b3e790cc6388810d3059df0f46b3ec3bd023cf69d6d7465751a25b40b9",
+      "role": "screenshot"
+    },
+    {
+      "path": "screenshots/max-controls.png",
+      "sha256": "fb03192194851ee5aac437b0a1ee0f81573b14877f09dfee098eb1e006bb1e39",
+      "role": "screenshot"
+    },
+    {
+      "path": "screenshots/max-for-live-own-metro.png",
+      "sha256": "b04f7f9e40d8010c0c997920e9aabc913fe779c130af58d8f2c4bb21e340f005",
+      "role": "screenshot"
+    },
+    {
+      "path": "screenshots/max-inlet-menu.png",
+      "sha256": "7c0ccc176d15b49f2a0e9ce1f269dcef50fe7c293ada20fceb3f0be6cd45355a",
+      "role": "screenshot"
+    },
+    {
+      "path": "snapshots/Untitled1.maxpat",
+      "sha256": "bf20f4882666586e62b6f5aee63fe55a9a502d9703cd629fc8ee9cacb2183e58",
+      "role": "patch"
+    },
+    {
+      "path": "snapshots/savedpatch.maxpat",
+      "sha256": "bf20f4882666586e62b6f5aee63fe55a9a502d9703cd629fc8ee9cacb2183e58",
+      "role": "patch"
+    },
+    {
+      "path": "ui-study.maxpat",
+      "sha256": "8c86c7ca141f14e2e24d64fafa95b3cefd8043308a58e2adaf6ec817e49dcd6c",
+      "role": "patch"
+    },
+    {
+      "path": "ultra-ui-catalog.json",
+      "sha256": "d340eee6d3907920c434706aebab8eac02093d20179e38086f4d04837c64e0a3",
+      "role": "notes"
+    },
+    {
+      "path": "verify.py",
+      "sha256": "02f2ead787fb260d4a500522f699d6843baee8f7cd0e0bce86ed200a7786f381",
+      "role": "dependency"
+    },
+    {
+      "path": "snapshots/.gitattributes",
+      "role": "notes",
+      "sha256": "7defe3f55cf80603a4e3ebaaa1cf4fa950828ae145a17ac6367dd88990419732"
+    }
+  ],
+  "procedure": "See README.md and operations.json. Open copies only, keep DSP off, compare lock/create/autocomplete/port-help behavior. The manifest covers observed UI, not message or audio semantics.",
+  "comparison": {
+    "kind": "inventory_only",
+    "absolute_tolerance": null,
+    "relative_tolerance": null,
+    "alignment": "UI operation sequence; no scheduler or audio timing alignment",
+    "limitations": [
+      "One installed Wine/Max environment only",
+      "Screenshots are cropped UI observations, not pixel-identical cross-platform guarantees",
+      "User snapshots are byte-identical; no before/after changed-property guarantee",
+      "Ultra port menus and help use its bounded runtime contract",
+      "No DSP, scheduler timing or arbitrary Max compatibility established"
+    ]
+  },
+  "redistribution": {
+    "authorship": "Original Alive fixtures, notes and cropped UI observations; user supplied saved metro patch files",
+    "permission": "User requested study and integration in venetanji/alive; originals preserved",
+    "contains_proprietary_assets": false
+  },
+  "notes": [
+    "Uses experiments/max-subset/reference-manifest.schema.json from the integration branch",
+    "Starting commit d7e1c59005b4d8a5178854ce28f29bb1e3207956; work branch design/max-patcher-ui-20261020",
+    "No Max code decompiled, no bundled assets or executable resource payloads redistributed",
+    "Earlier semantic evidence remains separately scoped in experiments/max-reference/"
+  ]
+}

@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "capture": "arithmetic-011",
+  "status": "FAILED",
+  "complete": false,
+  "evidence_id": "ev_38ca271f8a1a4a438579f17600edbc49d1d4e5b1ccdcd97d9509105fb7ce80eb",
+  "rea_exit": {
+    "code": 1,
+    "signal": 0,
+    "reason": "exited"
+  },
+  "rea_truncated": false,
+  "complete_original_rea_response_retained_in_session_store": true,
+  "original_rea_file_hashes_directly_verified_before_projection": true,
+  "original_rea_files": [
+    {
+      "name": "cleanup.json",
+      "size": 1845,
+      "sha256": "bd339b96b9617aa2c41a4519ea9e0454d9e001081aac1d166be7a33d588c62ec"
+    },
+    {
+      "name": "display-states.json",
+      "size": 20837,
+      "sha256": "909337fec50dd1c6e1e73e8237dd2fb116124499eba69afb656c6c6aeac50027"
+    },
+    {
+      "name": "preferences-after.json",
+      "size": 205649,
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329"
+    },
+    {
+      "name": "preferences-before.json",
+      "size": 205649,
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329"
+    },
+    {
+      "name": "receipts.jsonl",
+      "size": 80493,
+      "sha256": "c3c1a65546120b1607873830dc13781e370e343dae1439d8fa3561b74e9f0153"
+    },
+    {
+      "name": "session.json",
+      "size": 72723,
+      "sha256": "7117e17749dbd3fb0ccfacaa4d8427671088b47bc08394169291dd039d2f58e3"
+    }
+  ],
+  "rea_limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+    "Process trees are sampled and may omit short-lived descendants.",
+    "Filesystem observations are before/after snapshots, not syscall traces.",
+    "Inherited host environment variables are not recorded and may affect results."
+  ],
+  "rea_unverified_process_count": 13,
+  "prelaunch_acceptance": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-011-prelaunch-acceptance.json",
+  "postflight": {
+    "all_six_whole_capture_flags_false": true,
+    "command_requests": 101,
+    "complete": false,
+    "completed_operations": 52,
+    "failure_type": "TimeoutError",
+    "final_private_ack_accepted": false,
+    "final_private_ack_bytes": 5696,
+    "final_private_ack_id": 101,
+    "final_private_ack_sha256": "87c03688cee90985af8bb4d99bd3d51db773d04f33ddc5ca3080b1f7759f2b9b",
+    "independent_closes": 4,
+    "journal_kinds": {
+      "harness-error": 1,
+      "receipt": 94,
+      "step-complete": 52,
+      "stimulus": 44
+    },
+    "journal_rows": 191,
+    "last_accepted_step": "close-plus-r2",
+    "last_ack": 100,
+    "mapped_files": 16,
+    "marker_processes": 0,
+    "minus_collector_progress_received": true,
+    "minus_envelope_received": false,
+    "minus_internal_progress_basis": "final-private-ack-not-accepted-by-runner",
+    "minus_terminal_diagnostics": 7,
+    "native_exact_five": true,
+    "numeric_states": 336,
+    "original_outputs": 94,
+    "owned_processes": 0,
+    "package_sha256": "95d68b1c343dcab15950f4406dba6cf2dd86bf799e8ec66b34c4e71334d3c0af",
+    "preference_bytes_equal": true,
+    "preferences_match_current": true,
+    "prefix_absent": true,
+    "prefix_processes": 0,
+    "private_display_processes": 0,
+    "private_files": 241,
+    "private_subdirectories": 4,
+    "qualification_increment": 0,
+    "readbacks": 48,
+    "retained_acknowledgements": 100,
+    "runtime_invocations": 1,
+    "sealed_inputs": 22,
+    "source_helper_preservation": true,
+    "status": "FAILED",
+    "successful_acknowledgements": 100,
+    "unreadable_environments": {
+      "display": 322,
+      "marker": 322,
+      "owned": 322,
+      "prefix": 322
+    },
+    "xvfb_exited": true
+  },
+  "final_private_ack": {
+    "ack_bytes": 5696,
+    "ack_sha256": "87c03688cee90985af8bb4d99bd3d51db773d04f33ddc5ca3080b1f7759f2b9b",
+    "basis": "final-private-ack-not-accepted-or-retained-by-runner",
+    "controller_representation_observations": 0,
+    "geometry_dispositions": 0,
+    "identity_matches_prepared_request": true,
+    "minus_envelope_received": false,
+    "minus_progress": {
+      "collection": null,
+      "collection_entered": false,
+      "counts": {
+        "completed_pairs": 0,
+        "invocation_attempts": 0,
+        "lookup_attempts": 0,
+        "outcomes_retained": 0
+      },
+      "envelope_created": false,
+      "first_eligibility_failure": {
+        "error_code": "minus-root-ownership",
+        "phase": "front-root",
+        "poll_index": 1,
+        "reason": "front-root-mismatch",
+        "stage": "eligibility"
+      },
+      "host_sample_attempts": 70,
+      "initial_snapshot_available": true,
+      "last_eligibility_failure": {
+        "error_code": "minus-root-ownership",
+        "phase": "front-root",
+        "poll_index": 70,
+        "reason": "front-root-mismatch",
+        "stage": "eligibility"
+      },
+      "last_sample_phase": "front-root",
+      "observe_entries": 70,
+      "phase": "terminal-export",
+      "source_validated": true,
+      "source_validation_attempts": 1,
+      "version": "minus-collector-progress-v1"
+    },
+    "numeric_mode_observations": 0,
+    "request_id": 101,
+    "runner_retained_ack101": false,
+    "success": false,
+    "terminal_diagnostic_count": 7
+  },
+  "runner_initial_observations": {
+    "cleanup": {
+      "marker_processes_after": [],
+      "owned_capture_after": [],
+      "preferences_unchanged": true,
+      "prefix_processes_after": [],
+      "prefix_removed": true,
+      "unreadable_process_environments": {
+        "marker_scan": 322,
+        "owned_scan": 324,
+        "prefix_scan": 322
+      },
+      "xvfb_exited": true
+    },
+    "command_requests": 101,
+    "failure_error_sha256": "789c6bbf8394cc12430e61850cac52a4ca449e3e13f71ed48b4351c61d5c97db",
+    "failure_type": "TimeoutError",
+    "helpers_preserved": true,
+    "journal_kinds": {
+      "harness-error": 1,
+      "receipt": 94,
+      "step-complete": 52,
+      "stimulus": 44
+    },
+    "journal_rows": 191,
+    "last_ack_bytes": 104552,
+    "last_ack_id": 100,
+    "last_ack_sha256": "057f4a5103e41fd8b249a707742bdb4b598dc85f0419cd12086ee2526cce4a07",
+    "last_ack_success": true,
+    "last_operation": "close-plus-r2",
+    "last_request_id": 101,
+    "minus_envelope_received": false,
+    "minus_progress": null,
+    "numeric_states": 336,
+    "operations": 52,
+    "readbacks": 48,
+    "retained_ack_count": 100,
+    "session": {
+      "complete": false,
+      "initial_numeric_readback_validated": false,
+      "lifecycle_barrier_validated": false,
+      "numeric_getters_silent_validated": false,
+      "numeric_readback_validated": false,
+      "runtime_endpoint_readback_validated": false,
+      "runtime_invocations": 1,
+      "saved_order_observed": false,
+      "status": "FAILED",
+      "typed_float_dispatch_validated": false
+    },
+    "sources_preserved": true,
+    "state_checkpoints": 48,
+    "successful_ack_count": 100,
+    "terminal_diagnostic_count": 0,
+    "validated_close_count": 4
+  },
+  "source_review_sha256": "b6379530a92f4792ef0b0a3fbd2f62979786ea7a16a75e42ea7256737562197f",
+  "concrete_review_sha256": "7e2c57631edde2d1cb0cb126182aee17c860e08c2cced475af8c4e8d53a6c27d",
+  "independent_capture_audit": "PENDING",
+  "diagnostic_investigation": "PENDING",
+  "qualification": {
+    "qualified": 0,
+    "total": 2103,
+    "increment": 0
+  }
+}

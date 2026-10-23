@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-21",
+  "status": "passed",
+  "reproduce": "bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/ultra-max-import-desktop",
+  "scope": "Built Tauri/WebKit canvas, real X input, production Rust preparation and native control runtime",
+  "control_face_and_numeric_drag": true,
+  "installed_relative_path": "resources/help/max/slider.maxhelp",
+  "source_sha256": "f79e46e3bef25bc48d6757914c96d7f52e0939de6216638b0c168c06c3a98d9d",
+  "selected_tab": "basic",
+  "partial": true,
+  "imported_nodes": 14,
+  "imported_edges": 9,
+  "native_downstream_values": [
+    95.0,
+    26.0
+  ],
+  "whole_help_executed": false,
+  "max_executed": false,
+  "separate_native_audio_regression": {
+    "environment": "private software-only CPAL PipeWire at 48 kHz / 512 frames",
+    "capture_frames": 96000,
+    "message_path_left_peak": 0.006200010888278484,
+    "untriggered_right_peak": 0,
+    "note_off_tail_peak": 0
+  },
+  "limits": [
+    "The help branch exercised control messages only; audio is a separate original Ultra patch.",
+    "No whole-help, hardware audio, Max runtime or Max DSP parity claim."
+  ]
+}

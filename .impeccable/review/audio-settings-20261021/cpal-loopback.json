@@ -1,0 +1,15 @@
+{
+  "scope": "private software-only CPAL PipeWire loopback, no physical outputs",
+  "rate_hz": 48000,
+  "channels": 2,
+  "frames": 384000,
+  "peaks": [
+    0.13779526948928833,
+    0.13779526948928833
+  ],
+  "all_finite": true,
+  "capture_exit_status": 1,
+  "capture_note": "This pw-cat returns 1 after its requested sample count; exact frame count and empty error log are required.",
+  "note_score": "both channels A4 / MIDI 69 velocity 70; on at +2s, off +2.6s; score wall times approximate, not latency measurements",
+  "observed": "probe.log records requested and observed callback size; successful stop/start and saved configuration reload"
+}

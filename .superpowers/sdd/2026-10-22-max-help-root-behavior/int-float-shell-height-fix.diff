@@ -1,0 +1,328 @@
+--- a/experiments/max-reference/int-float-runtime-20261022/controller.js
++++ b/experiments/max-reference/int-float-runtime-20261022/controller.js
+@@ -2,7 +2,7 @@
+ autowatch = 0; inlets = 1; outlets = 0;
+ var configFile=jsarguments[1], config, shared, roots={}, revisions={}, seen=0, busy=false;
+ var ticker, pollTask, startupTask;
+-var anchorDiagnostics=[];
++var anchorDiagnostics=[], geometryDispositions=[];
+ function read(path) {
+     var f=new File(path,"read"),text="";
+     if (!f.isopen) return null;
+@@ -31,20 +31,68 @@
+     for(var i=0;i<4;i++)if(!finite(a[i])||!finite(b[i])||Math.abs(a[i]-b[i])>0.01)return false;
+     return true;
+ }
+-function resolve(patcher,expected) {
+-    var found=[],diagnostic={expected_anchor:expected.anchor,expected_rect:expected.rect,
++function sameNumbers(a,b) {
++    if(!a||!b||a.length!==b.length)return false;
++    for(var i=0;i<a.length;i++)if(!finite(a[i])||a[i]!==b[i])return false;
++    return true;
++}
++function shellHeightPolicy(expected,definition) {
++    var policy=expected.shell_height_policy;if(typeof policy==="undefined")return null;
++    var source="bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61";
++    var profiles={
++        "root/obj-1":["js",[92,94,110,20],"3c299423556feddb0be4ff31bc20e20f1fc305063815420e899f529763daa2e1"],
++        "root/obj-2":["patcher",[10,85,50,20],"484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393"],
++        "root/obj-3":["patcher",[205,205,50,20],"bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a"]};
++    var helpers={
++        "helpstarter.js":"a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8",
++        "helpname.js":"49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
++        "helpdetails.js":"31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1",
++        "helpargs.js":"04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"};
++    var profile=profiles[expected.anchor];
++    if(!policy||!profile||!definition||definition.document!=="int"||definition.source_sha256!==source||
++        policy.kind!=="source-bound-int-shell-height"||policy.document!=="int"||policy.source_sha256!==source||
++        policy.anchor!==expected.anchor||policy.runtime_class!==profile[0]||expected.runtime_class!==profile[0]||
++        expected.maxclass!=="newobj"||!sameNumbers(expected.rect,profile[1])||!sameNumbers(policy.saved_rect,profile[1])||
++        !sameNumbers(policy.live_rect,profile[1].slice(0,3).concat([22]))||
++        policy.source_text_sha256!==profile[2]||expected.source_text_sha256!==profile[2]||
++        policy.saved_incoming_routes!==0||policy.saved_outgoing_routes!==0||
++        expected.saved_incoming_routes!==0||expected.saved_outgoing_routes!==0)throw Error("invalid-int-shell-height-policy");
++    function pinned(map) {
++        if(!map||Object.keys(map).length!==4)return false;
++        for(var name in helpers)if(map[name]!==helpers[name])return false;
++        return true;
++    }
++    var configured={};
++    if(!config||!config.helpers||config.helpers.length!==4)throw Error("int-shell-helper-binding");
++    for(var i=0;i<config.helpers.length;i++)configured[config.helpers[i].name]=config.helpers[i].sha256;
++    if(!pinned(policy.helper_sha256)||!pinned(definition.helper_sha256)||!pinned(configured))throw Error("int-shell-helper-binding");
++    return policy;
++}
++function resolve(patcher,expected,definition,dispositions) {
++    var policy=shellHeightPolicy(expected,definition),found=[],fullCount=0,policyCount=0;
++    var diagnostic={expected_anchor:expected.anchor,expected_rect:expected.rect,
+         expected_maxclass:expected.maxclass,expected_runtime_class:expected.runtime_class,candidates:[]};
+     for(var o=patcher.firstobject;o;o=o.nextobject) {
+         var rect=null;try{rect=o.getboxattr("patching_rect");}catch(e){}
+         diagnostic.candidates.push({maxclass:o.maxclass,rect:rect});
+-        if(sameRect(rect,expected.rect))found.push(o);
+-    }
+-    var classes=expected.runtime_classes||[expected.runtime_class];
+-    if(found.length!==1||classes.indexOf(found[0].maxclass)===-1) {
+-        diagnostic.full_match_count=found.length;anchorDiagnostics.push(diagnostic);
++        var full=sameRect(rect,expected.rect),adapted=policy&&rect&&rect[3]===22&&
++            o.maxclass===policy.runtime_class&&sameRect(rect,policy.live_rect);
++        if(full)fullCount++;
++        if(adapted)policyCount++;
++        if(full||adapted)found.push({object:o,rect:rect,adapted:adapted});
++    }
++    var classes=policy?[policy.runtime_class]:(expected.runtime_classes||[expected.runtime_class]);
++    if(found.length!==1||classes.indexOf(found[0].object.maxclass)===-1) {
++        diagnostic.full_match_count=fullCount;
++        if(policy)diagnostic.policy_match_count=policyCount;
++        anchorDiagnostics.push(diagnostic);
+         throw Error("strict-original-geometry-class-unavailable");
+     }
+-    return found[0];
++    if(found[0].adapted&&!dispositions)throw Error("shell-height-disposition-sink-required");
++    if(found[0].adapted)dispositions.push({anchor:expected.anchor,source_sha256:definition.source_sha256,
++        document:definition.document,revision:definition.revision,runtime_class:found[0].object.maxclass,
++        saved_rect:expected.rect.slice(0),live_rect:found[0].rect.slice(0),policy:policy});
++    return found[0].object;
+ }
+ function tree(patcher) {
+     var result=[];
+@@ -55,17 +103,39 @@
+     return result;
+ }
+ function validateTree(patcher,definition) {
+-    if(tree(patcher).length!==definition.full_inventory.length)throw Error("full-source-tree-count-mismatch");
++    anchorDiagnostics=[];geometryDispositions=[];
++    var actualTotal=tree(patcher).length;
++    if(actualTotal!==definition.full_inventory.length)anchorDiagnostics.push({scope:"root",diagnostic_type:"tree-count",
++        expected_count:definition.full_inventory.length,actual_count:actualTotal});
++    function namedChild(p,b) {
++        if(typeof b.source_varname!=="string"||!b.source_varname)return null;
++        var found=[],classes=b.runtime_classes||[b.runtime_class];
++        for(var o=p.firstobject;o;o=o.nextobject)
++            if(o.varname===b.source_varname&&classes.indexOf(o.maxclass)!==-1)found.push(o);
++        return found.length===1?found[0]:null;
++    }
+     function scope(p,parent) {
+         var expected=definition.full_inventory.filter(function(b){return b.anchor.slice(0,b.anchor.lastIndexOf("/"))===parent;});
+         var actual=0;for(var o=p.firstobject;o;o=o.nextobject)actual++;
+-        if(actual!==expected.length)throw Error("full-source-scope-count-mismatch");
++        if(actual!==expected.length)anchorDiagnostics.push({scope:parent,diagnostic_type:"scope-count",
++            expected_count:expected.length,actual_count:actual});
+         for(var i=0;i<expected.length;i++) {
+-            var b=expected[i],object=resolve(p,b);
+-            if(b.child){var sub=object.subpatcher();if(!sub)throw Error("full-source-child-missing");scope(sub,b.anchor);}
++            var b=expected[i],object=null,before=anchorDiagnostics.length;
++            try{object=resolve(p,b,definition,geometryDispositions);}catch(error){
++                if(anchorDiagnostics.length===before)anchorDiagnostics.push({expected_anchor:b.anchor,
++                    expected_rect:b.rect,expected_runtime_class:b.runtime_class,diagnostic_type:"invalid-anchor-binding"});
++            }
++            if(b.child) {
++                // A saved unique name permits diagnostic traversal only; it never clears an anchor failure.
++                var container=object||namedChild(p,b),sub=null;
++                try{if(container)sub=container.subpatcher();}catch(error){}
++                if(sub)scope(sub,b.anchor);
++                else anchorDiagnostics.push({scope:b.anchor,diagnostic_type:"unresolved-child-scope"});
++            }
+         }
+     }
+     scope(patcher,"root");
++    if(anchorDiagnostics.length)throw Error("aggregate-original-hierarchy-preflight-failed");
+ }
+ function dispatch(object,message) {
+     if(!message||Object.keys(message).length!==2||!Array.isArray(message.atoms))throw Error("message-shape");
+@@ -101,7 +171,14 @@
+     var box=patcher.getnamed(definition.basic_varname);
+     if(!box)throw Error("saved-basic-unavailable");
+     var basic=box.subpatcher(),objects={};
+-    for(var i=0;i<definition.boxes.length;i++)objects[definition.boxes[i].anchor]=resolve(basic,definition.boxes[i]);
++    for(var i=0;i<definition.boxes.length;i++) {
++        var before=anchorDiagnostics.length;
++        try{objects[definition.boxes[i].anchor]=resolve(basic,definition.boxes[i]);}catch(error){
++            if(anchorDiagnostics.length===before)anchorDiagnostics.push({expected_anchor:definition.boxes[i].anchor,
++                expected_rect:definition.boxes[i].rect,diagnostic_type:"invalid-basic-binding"});
++        }
++    }
++    if(anchorDiagnostics.length)throw Error("aggregate-basic-preflight-failed");
+     for(var i=0;i<definition.boxes.length;i++) {
+         var b=definition.boxes[i],object=objects[b.anchor];object.varname="__alive_help_"+b.id.replace(/-/g,"_");
+         for(var port=0;port<b.outlets;port++) {
+@@ -132,7 +209,7 @@
+                 if(stable>=5&&attempts>=10) {
+                     roots[doc]=bind(p,definition);revisions[doc]=revision;
+                     record("step-complete",{document:doc,revision:revision,source_sha256:definition.source_sha256});
+-                    ack(command,{working_path:definition.working_windows_path});return;
++                    ack(command,{working_path:definition.working_windows_path,geometry_dispositions:geometryDispositions});return;
+                 }
+             }
+             if(attempts>=80)throw Error("bounded-helper-settling-timeout");
+--- a/experiments/max-reference/int-float-runtime-20261022/numeric.py
++++ b/experiments/max-reference/int-float-runtime-20261022/numeric.py
+@@ -26,6 +26,15 @@
+ COUNTS={'int':(25,14,10),'float':(27,16,12)}
+ NUMERIC={'number','flonum','slider'}
+ MAIN_EVENTS={f'E{i:02}' for i in [8,9,10,11,13,14,16,17,18,19,20,21,22,24,25,27,28,30,32,43,47]}
++SHELL_HELPERS={
++    'helpstarter.js':'a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8',
++    'helpname.js':'49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa',
++    'helpdetails.js':'31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1',
++    'helpargs.js':'04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469'}
++SHELL_ANCHORS={
++    'root/obj-1':('js',[92,94,110,20],'3c299423556feddb0be4ff31bc20e20f1fc305063815420e899f529763daa2e1'),
++    'root/obj-2':('patcher',[10,85,50,20],'484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393'),
++    'root/obj-3':('patcher',[205,205,50,20],'bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a')}
+ 
+ 
+ def finite(value):
+@@ -36,6 +45,21 @@
+     if maxclass!='newobj':return [maxclass]
+     token=text.split()[0];canonical={'i':'int','f':'float','r':'receive','p':'patcher'}.get(token,token)
+     return [canonical] if token==canonical else [canonical,token]
++
++
++def shell_height_policy(document,source_sha256,box,helpers):
++    anchor=box['anchor']
++    if document!='int' or anchor not in SHELL_ANCHORS:return None
++    cls,rect,text_sha=SHELL_ANCHORS[anchor]
++    pins={h['name']:h['sha256'] for h in helpers}
++    if (source_sha256!=IDENTITIES['int'] or len(helpers)!=4 or pins!=SHELL_HELPERS or
++        box['maxclass']!='newobj' or box['runtime_class']!=cls or box['rect']!=rect or
++        not all(finite(v) for v in box['rect']) or box.get('source_text_sha256')!=text_sha or
++        any(type(box.get(k)) is not int or box[k]!=0 for k in ['saved_incoming_routes','saved_outgoing_routes'])):
++        raise ValueError('Invalid measured int shell height binding')
++    return dict(kind='source-bound-int-shell-height',document='int',source_sha256=source_sha256,anchor=anchor,
++                runtime_class=cls,saved_rect=rect[:],live_rect=rect[:3]+[22],source_text_sha256=text_sha,
++                helper_sha256=dict(SHELL_HELPERS),saved_incoming_routes=0,saved_outgoing_routes=0)
+ 
+ 
+ def validate_message(message):
+@@ -112,7 +136,8 @@
+ 
+ 
+ def validate_checkpoint(document,raw,request_id,step_id,action):
+-    if any('annotation_width_policy' in box or 'observer_policy' in box for box in document['boxes']):
++    if any(any(key in box for key in ['annotation_width_policy','observer_policy','shell_height_policy'])
++           for box in document['boxes']):
+         raise ValueError('Numeric roots have no geometry exception')
+     if (type(raw.get('revision')) is not int or raw['revision']!=document['revision'] or
+             raw.get('action')!=action or raw.get('readback_method')!='v8-numeric-getvalueof'):
+@@ -264,8 +289,15 @@
+             for item in patcher.get('boxes',[]):
+                 b=item['box'];anchor=scope+'/'+b['id'];cls=b['maxclass']
+                 classes=runtime_classes(cls,b.get('text',''))
+-                result.append(dict(anchor=anchor,maxclass=cls,runtime_class=classes[0],runtime_classes=classes,
+-                                   rect=b['patching_rect'],child='patcher' in b))
++                routes=[line['patchline'] for line in patcher.get('lines',[])]
++                entry=dict(anchor=anchor,maxclass=cls,runtime_class=classes[0],runtime_classes=classes,
++                    rect=b['patching_rect'],child='patcher' in b,source_varname=b.get('varname'),
++                    source_text_sha256=hashlib.sha256(b.get('text','').encode()).hexdigest(),
++                    saved_incoming_routes=sum(e['destination'][0]==b['id'] for e in routes),
++                    saved_outgoing_routes=sum(e['source'][0]==b['id'] for e in routes))
++                policy=shell_height_policy(name,sha,entry,helpers)
++                if policy is not None:entry['shell_height_policy']=policy
++                result.append(entry)
+                 if 'patcher' in b:result.extend(tree_inventory(b['patcher'],anchor))
+             return result
+         inventory=tree_inventory(root);edges=[dict(index=i,**e['patchline']) for i,e in enumerate(basic.get('lines',[]))]
+@@ -274,7 +306,8 @@
+         if len(inventory)!=COUNTS[name][0] or executable!=COUNTS[name][1] or len(edges)!=COUNTS[name][2]:
+             raise ValueError('Pinned numeric full-tree counts changed')
+         d=dict(document=name,source_sha256=sha,source_path=str(source.resolve()),basic_varname='basic_tab',
+-               boxes=boxes,saved_edges=edges,full_inventory=inventory)
++               boxes=boxes,saved_edges=edges,full_inventory=inventory,
++               helper_sha256={h['name']:h['sha256'] for h in helpers})
+         d['observer_leaves']=observer_definitions(d);documents.append(d)
+         public.append(dict(document=name,source_sha256=sha,bytes=source.stat().st_size,full_box_count=len(inventory),
+                            basic_box_count=len(boxes),basic_cable_count=len(edges),executable_count=executable,
+--- a/experiments/max-reference/int-float-runtime-20261022/test_numeric.py
++++ b/experiments/max-reference/int-float-runtime-20261022/test_numeric.py
+@@ -196,5 +196,24 @@
+             operation.update(request_id=1,checkpoint_request_ids=[2],working_paths={'int':'Z:/private'})
+             self.assertEqual(set(n.public_operation(operation)),expected)
+ 
++    def test_shell_height_policy_is_exact_source_helper_anchor_and_route_bound(self):
++        helpers=[dict(name=name,sha256=sha) for name,sha in n.SHELL_HELPERS.items()]
++        for anchor,(cls,rect,text_sha) in n.SHELL_ANCHORS.items():
++            b=dict(anchor=anchor,maxclass='newobj',runtime_class=cls,rect=rect,source_text_sha256=text_sha,
++                   saved_incoming_routes=0,saved_outgoing_routes=0)
++            policy=n.shell_height_policy('int',n.IDENTITIES['int'],b,helpers)
++            self.assertEqual(policy['live_rect'],rect[:3]+[22])
++            self.assertEqual(policy['helper_sha256'],n.SHELL_HELPERS)
++            self.assertIsNone(n.shell_height_policy('float',n.IDENTITIES['float'],b,helpers))
++            self.assertIsNone(n.shell_height_policy('int',n.IDENTITIES['int'],dict(b,anchor='root/obj-2/obj-16'),helpers))
++            for bad in [dict(b,saved_incoming_routes=1),dict(b,rect=rect[:3]+[21]),
++                        dict(b,source_text_sha256='0'*64),dict(b,runtime_class='number')]:
++                with self.assertRaises(ValueError):n.shell_height_policy('int',n.IDENTITIES['int'],bad,helpers)
++            with self.assertRaises(ValueError):n.shell_height_policy('int',n.IDENTITIES['int'],b,helpers[:3])
++
++    def test_basic_checkpoint_refuses_any_shell_policy_field(self):
++        d,raw=fixture();d['boxes'][0]['shell_height_policy']={}
++        with self.assertRaises(ValueError):n.validate_checkpoint(d,raw,3,'install-int','install')
++
+ 
+ if __name__=='__main__':unittest.main()
+--- /dev/null
++++ b/experiments/max-reference/int-float-runtime-20261022/test_shell.cjs
+@@ -0,0 +1,63 @@
++// Original synthetic hierarchy/height fixtures. No target or installed source access.
++const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
++const ctx=vm.createContext({jsarguments:['controller','private']});
++vm.runInContext(fs.readFileSync(path.join(__dirname,'controller.js'),'utf8'),ctx);
++const source='bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61';
++const helpers={
++ 'helpstarter.js':'a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8',
++ 'helpname.js':'49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa',
++ 'helpdetails.js':'31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1',
++ 'helpargs.js':'04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469'};
++const expected=[
++ ['root/obj-1','js',[92,94,110,20],'3c299423556feddb0be4ff31bc20e20f1fc305063815420e899f529763daa2e1'],
++ ['root/obj-2','patcher',[10,85,50,20],'484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393'],
++ ['root/obj-3','patcher',[205,205,50,20],'bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a']
++].map(([anchor,cls,rect,text])=>({anchor,maxclass:'newobj',runtime_class:cls,runtime_classes:[cls],rect,
++ source_text_sha256:text,saved_incoming_routes:0,saved_outgoing_routes:0,
++ shell_height_policy:{kind:'source-bound-int-shell-height',document:'int',source_sha256:source,anchor,
++ runtime_class:cls,saved_rect:rect,live_rect:[...rect.slice(0,3),22],source_text_sha256:text,
++ helper_sha256:helpers,saved_incoming_routes:0,saved_outgoing_routes:0}}));
++ctx.config={helpers:Object.entries(helpers).map(([name,sha256])=>({name,sha256}))};
++const definition={document:'int',source_sha256:source,helper_sha256:helpers,full_inventory:expected};
++function box(e,height=22){return {maxclass:e.runtime_class,getboxattr:()=>[...e.rect.slice(0,3),height],nextobject:null};}
++for(const e of expected){
++ const o=box(e),observed=[];
++ assert.equal(ctx.resolve({firstobject:o},e,definition,observed),o,'only measured shell heights are admitted');
++ assert.equal(observed.length,1,'accepted discrepancy must be retained');
++ assert.equal(observed[0].live_rect[3],22);
++ assert.throws(()=>ctx.resolve({firstobject:o},e,definition),'a discrepancy cannot be silently discarded');
++ for(const h of [19,21,22.005,23,30])assert.throws(()=>ctx.resolve({firstobject:box(e,h)},e,definition,[]));
++ const changed=box(e);changed.getboxattr=()=>[e.rect[0]+1,e.rect[1],e.rect[2],22];
++ assert.throws(()=>ctx.resolve({firstobject:changed},e,definition,[]));
++ const duplicate=box(e);o.nextobject=duplicate;assert.throws(()=>ctx.resolve({firstobject:o},e,definition,[]));o.nextobject=null;
++ for(const mutate of [d=>d.document='float',d=>d.source_sha256='0'.repeat(64),
++   d=>d.helper_sha256={...helpers,'helpstarter.js':'0'.repeat(64)}]){
++  const bad=JSON.parse(JSON.stringify(definition));mutate(bad);assert.throws(()=>ctx.resolve({firstobject:o},e,bad,[]));
++ }
++ for(const mutate of [b=>b.anchor='root/obj-2/obj-1',b=>b.runtime_class='number',
++   b=>b.saved_incoming_routes=1,b=>b.source_text_sha256='0'.repeat(64)]){
++  const bad=JSON.parse(JSON.stringify(e));mutate(bad);assert.throws(()=>ctx.resolve({firstobject:o},bad,definition,[]));
++ }
++}
++const basic={anchor:'root/obj-2/obj-16',maxclass:'number',runtime_class:'number',rect:[5,5,40,20],child:false};
++assert.throws(()=>ctx.resolve({firstobject:box(basic)},basic,definition,[]),'Basic height remains strict');
++// Root failure must not hide failures in independently named, resolvable child scopes.
++const one=box({...basic,rect:[5,5,40,20]},21),two=box({...basic,rect:[60,5,40,20]},21);one.nextobject=two;
++const child={firstobject:one};const container=box(expected[1],23);container.varname='synthetic_basic';container.subpatcher=()=>child;
++const starter=box(expected[0],23);starter.nextobject=container;
++const broken={...definition,full_inventory:[expected[0],{...expected[1],child:true,source_varname:'synthetic_basic'},
++ basic,{...basic,anchor:'root/obj-2/obj-17',rect:[60,5,40,20]}]};
++const root={firstobject:starter};
++assert.throws(()=>ctx.validateTree(root,broken));
++assert.deepEqual(Array.from(ctx.anchorDiagnostics.filter(d=>d.expected_anchor).map(d=>d.expected_anchor)).sort(),
++ ['root/obj-1','root/obj-2','root/obj-2/obj-16','root/obj-2/obj-17'].sort(),'all resolvable failures must aggregate');
++const count=ctx.anchorDiagnostics.length;
++assert.throws(()=>ctx.validateTree(root,broken));assert.equal(ctx.anchorDiagnostics.length,count,'settling attempts must replace failures');
++let mutations=0;Object.defineProperty(one,'varname',{set(){mutations++}});root.newdefault=()=>{mutations++};
++assert.throws(()=>ctx.bind(root,broken));assert.equal(mutations,0,'failed hierarchy preflight must mutate nothing');
++starter.getboxattr=()=>[92,94,110,22];container.getboxattr=()=>[10,85,50,22];
++one.getboxattr=()=>[5,5,40,20];two.getboxattr=()=>[60,5,40,20];root.getnamed=()=>container;
++const badBasic={...broken,basic_varname:'synthetic_basic',boxes:[basic,{...basic,anchor:'root/obj-2/obj-17',
++ rect:[60,5,40,20],shell_height_policy:{}}]};
++assert.throws(()=>ctx.bind(root,badBasic));assert.equal(mutations,0,'invalid Basic policy must fail before mutation');
++console.log('shell: exact int-only height disposition, source/helper/route binding, strict Basic and aggregate preflight pass');

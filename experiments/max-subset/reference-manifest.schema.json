@@ -1,0 +1,431 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:alive:max-reference-manifest:v1",
+  "title": "Max reference fixture manifest (evidence, not compatibility certification)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "fixture_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*$"
+    },
+    "provenance": {
+      "enum": [
+        "SYNTHETIC_NOT_MAX_EXECUTED",
+        "MAX_REFERENCE_CAPTURE"
+      ]
+    },
+    "max_executed": {
+      "type": "boolean"
+    },
+    "captured_at_utc": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "live_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "os": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "architecture": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "runtime_host": {
+          "enum": [
+            "standalone_max",
+            "max_for_live",
+            "none"
+          ]
+        }
+      },
+      "required": [
+        "max_version",
+        "live_version",
+        "os",
+        "architecture",
+        "runtime_host"
+      ]
+    },
+    "settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sample_rate_hz": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "signal_vector_frames": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "io_vector_frames": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "overdrive": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "scheduler_in_audio_interrupt": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "audio_enabled": {
+          "type": "boolean"
+        },
+        "transport": {
+          "type": "object"
+        },
+        "other": {
+          "type": "object"
+        },
+        "unknown_fields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "sample_rate_hz",
+        "signal_vector_frames",
+        "io_vector_frames",
+        "overdrive",
+        "scheduler_in_audio_interrupt",
+        "audio_enabled",
+        "transport",
+        "other",
+        "unknown_fields"
+      ]
+    },
+    "initial_state": {
+      "type": "object"
+    },
+    "object_classes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[:\\\\\\u0000]).+$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "role": {
+            "enum": [
+              "patch",
+              "operations",
+              "message_trace",
+              "audio",
+              "screenshot",
+              "settings",
+              "notes",
+              "dependency"
+            ]
+          }
+        },
+        "required": [
+          "path",
+          "sha256",
+          "role"
+        ]
+      }
+    },
+    "procedure": {
+      "type": "string",
+      "minLength": 1
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "exact_ordered_messages",
+            "audio_tolerance",
+            "inventory_only"
+          ]
+        },
+        "absolute_tolerance": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "relative_tolerance": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "alignment": {
+          "type": "string",
+          "minLength": 1
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "absolute_tolerance",
+        "relative_tolerance",
+        "alignment",
+        "limitations"
+      ]
+    },
+    "redistribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "authorship": {
+          "type": "string",
+          "minLength": 1
+        },
+        "permission": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contains_proprietary_assets": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "authorship",
+        "permission",
+        "contains_proprietary_assets"
+      ]
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "fixture_id",
+    "provenance",
+    "max_executed",
+    "captured_at_utc",
+    "environment",
+    "settings",
+    "initial_state",
+    "object_classes",
+    "files",
+    "procedure",
+    "comparison",
+    "redistribution",
+    "notes"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "provenance": {
+            "const": "MAX_REFERENCE_CAPTURE"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "max_executed": {
+            "const": true
+          },
+          "captured_at_utc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "environment": {
+            "properties": {
+              "max_version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "os": {
+                "type": "string",
+                "minLength": 1
+              },
+              "architecture": {
+                "type": "string",
+                "minLength": 1
+              },
+              "runtime_host": {
+                "enum": [
+                  "standalone_max",
+                  "max_for_live"
+                ]
+              }
+            }
+          },
+          "files": {
+            "allOf": [
+              {
+                "contains": {
+                  "properties": {
+                    "role": {
+                      "const": "patch"
+                    }
+                  },
+                  "required": [
+                    "role"
+                  ]
+                }
+              },
+              {
+                "contains": {
+                  "properties": {
+                    "role": {
+                      "const": "operations"
+                    }
+                  },
+                  "required": [
+                    "role"
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "max_executed": {
+            "const": false
+          },
+          "captured_at_utc": {
+            "type": "null"
+          },
+          "environment": {
+            "properties": {
+              "runtime_host": {
+                "const": "none"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "comparison": {
+            "properties": {
+              "kind": {
+                "const": "exact_ordered_messages"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "files": {
+            "contains": {
+              "properties": {
+                "role": {
+                  "const": "message_trace"
+                }
+              },
+              "required": [
+                "role"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "comparison": {
+            "properties": {
+              "kind": {
+                "const": "audio_tolerance"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "files": {
+            "contains": {
+              "properties": {
+                "role": {
+                  "const": "audio"
+                }
+              },
+              "required": [
+                "role"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

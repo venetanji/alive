@@ -1,0 +1,15 @@
+#N canvas 0 0 600 400 10;
+#X obj 20 20 r obj-2-0;
+#X obj 20 45 r obj-2-1;
+#X obj 20 70 + 10;
+#X obj 20 95 s plus;
+#X obj 20 120 r obj-3-0;
+#X obj 20 145 r obj-3-1;
+#X obj 20 170 int 7;
+#X obj 20 195 s int;
+#X connect 0 0 2 0;
+#X connect 1 0 2 1;
+#X connect 2 0 3 0;
+#X connect 4 0 6 0;
+#X connect 5 0 6 1;
+#X connect 6 0 7 0;

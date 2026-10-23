@@ -1,0 +1,67 @@
+{
+  "operation": "capture_process_scenario",
+  "evidence_id": "ev_5918c4938b343ff302dfbdac274410bd597c3ebb78ef89e33637a72d1bfeb2ee",
+  "session_sha256": "53df6177d426a1e7b8ad80a812ed2e655bc62c09ebec8916d5b059bbd7b835b6",
+  "cleanup_sha256": "a4f239050bc2c48f433aa244c19e39ce10dcc7062b122af2ea47a75c8ab59e66",
+  "status": "FAILED",
+  "complete": false,
+  "completed_operations": 52,
+  "required_operations": 78,
+  "readback_request_count": 48,
+  "successful_command_acknowledgements": 100,
+  "received_command_acknowledgements": 101,
+  "command_request_count": 101,
+  "observed_original_outlet_receipts": 94,
+  "required_original_outlet_receipts": 141,
+  "observed_numeric_states": 336,
+  "required_numeric_states": 504,
+  "independently_validated_closes": 4,
+  "required_closes": 6,
+  "failure_document": "minus",
+  "failure_revision": 1,
+  "failure_request_id": 101,
+  "failure_response_received": true,
+  "failure_type": "ValueError",
+  "rea_filesystem_hash_omissions": [],
+  "rea_public_file_hashes_verified_by_parent": 6,
+  "rea_public_file_hashes": [
+    {
+      "name": "cleanup.json",
+      "sha256": "a4f239050bc2c48f433aa244c19e39ce10dcc7062b122af2ea47a75c8ab59e66",
+      "size": 1843
+    },
+    {
+      "name": "display-states.json",
+      "sha256": "e76e47bcaf62682b245a74bee87bb30348e7edccb093b7e3a63b23f917481bad",
+      "size": 20837
+    },
+    {
+      "name": "preferences-after.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "size": 205649
+    },
+    {
+      "name": "preferences-before.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "size": 205649
+    },
+    {
+      "name": "receipts.jsonl",
+      "sha256": "93326f7e0b1589c02077c031996ce814754b5d888dce14cdef11d6d266d62c7c",
+      "size": 80493
+    },
+    {
+      "name": "session.json",
+      "sha256": "53df6177d426a1e7b8ad80a812ed2e655bc62c09ebec8916d5b059bbd7b835b6",
+      "size": 72820
+    }
+  ],
+  "preferences_equal_by_runner": true,
+  "sources_and_helpers_preserved": true,
+  "exact_owned_cleanup_empty": true,
+  "prefix_removed": true,
+  "xvfb_exited": true,
+  "full_comparison_complete": false,
+  "qualification_increment": 0,
+  "saved_order_observed": false
+}

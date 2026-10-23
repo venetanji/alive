@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "fixture_id": "ordered-synthetic",
+  "provenance": "SYNTHETIC_NOT_MAX_EXECUTED",
+  "max_executed": false,
+  "captured_at_utc": null,
+  "environment": {
+    "max_version": null,
+    "live_version": null,
+    "os": null,
+    "architecture": null,
+    "runtime_host": "none"
+  },
+  "settings": {
+    "sample_rate_hz": null,
+    "signal_vector_frames": null,
+    "io_vector_frames": null,
+    "overdrive": null,
+    "scheduler_in_audio_interrupt": null,
+    "audio_enabled": false,
+    "transport": {},
+    "other": {},
+    "unknown_fields": [
+      "all runtime settings: never executed"
+    ]
+  },
+  "initial_state": {},
+  "object_classes": [
+    "button",
+    "trigger"
+  ],
+  "files": [
+    {
+      "path": "ordered.synthetic.maxpat",
+      "sha256": "774c3073e2fd343ff3733b836d1c746252dc009a021182194aa8b6821cdd0d4e",
+      "role": "patch"
+    }
+  ],
+  "procedure": "Hand-authored structural import fixture with a feedback edge. Never run in Max; no behavior or safe execution claim.",
+  "comparison": {
+    "kind": "inventory_only",
+    "absolute_tolerance": null,
+    "relative_tolerance": null,
+    "alignment": "not applicable",
+    "limitations": [
+      "Expected inventory is not a Max message trace."
+    ]
+  },
+  "redistribution": {
+    "authorship": "Independently hand-authored for this experiment.",
+    "permission": "Same repository terms as experiment source.",
+    "contains_proprietary_assets": false
+  },
+  "notes": [
+    "Do not relabel as a Max reference capture."
+  ]
+}

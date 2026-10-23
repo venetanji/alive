@@ -1,0 +1,8631 @@
+{
+  "schema": "ultra-max-list-score-v1",
+  "fixture": "list-objects",
+  "evidence": "observed Max 9.1.5; collector arrival order",
+  "numeric_list_atom_tags": "unknown_numeric; JSON alone cannot prove per-atom int/float types",
+  "sources": {
+    "fixtures/list-objects.maxpat": "2cbf4f6ad935a8b2b14adf5b5119ec3784bfc69773127e447d5fe94515fecbdd",
+    "fixtures/list-objects.score.json": "09106deec265a5368c74c066e66c8760e8128501e3005a125bbaed2273488f70",
+    "results/list-objects.jsonl": "e187ac873a9c001ea5ce42e217c789dcb781c87b0a3a89185327b2b4e0cb8d9b",
+    "fixtures/probe.js": "e38037e55519c290325624bdeb126ca874821922700b7da0e4de0848823a24b7"
+  },
+  "targets": [
+    {
+      "id": "obj-1",
+      "key": "iter",
+      "creation": "iter",
+      "outlets": 1
+    },
+    {
+      "id": "obj-23",
+      "key": "prepend",
+      "creation": "prepend head 9",
+      "outlets": 1
+    },
+    {
+      "id": "obj-45",
+      "key": "append",
+      "creation": "append 9 tail",
+      "outlets": 1
+    },
+    {
+      "id": "obj-67",
+      "key": "zl.reg",
+      "creation": "zl.reg",
+      "outlets": 2
+    },
+    {
+      "id": "obj-106",
+      "key": "zl.join",
+      "creation": "zl.join tail 9",
+      "outlets": 2
+    },
+    {
+      "id": "obj-145",
+      "key": "zl.len",
+      "creation": "zl.len",
+      "outlets": 2
+    },
+    {
+      "id": "obj-184",
+      "key": "zl.iter",
+      "creation": "zl.iter 2",
+      "outlets": 2
+    },
+    {
+      "id": "obj-223",
+      "key": "zl.slice",
+      "creation": "zl.slice 2",
+      "outlets": 2
+    },
+    {
+      "id": "obj-262",
+      "key": "zl.rev",
+      "creation": "zl.rev",
+      "outlets": 2
+    },
+    {
+      "id": "obj-301",
+      "key": "zl.rot",
+      "creation": "zl.rot 1",
+      "outlets": 2
+    },
+    {
+      "id": "obj-340",
+      "key": "prepend-default",
+      "creation": "prepend",
+      "outlets": 1
+    },
+    {
+      "id": "obj-348",
+      "key": "append-default",
+      "creation": "append",
+      "outlets": 1
+    },
+    {
+      "id": "obj-356",
+      "key": "reg-initial",
+      "creation": "zl.reg first 7.",
+      "outlets": 2
+    },
+    {
+      "id": "obj-364",
+      "key": "join-default",
+      "creation": "zl.join",
+      "outlets": 2
+    },
+    {
+      "id": "obj-372",
+      "key": "iter-default",
+      "creation": "zl.iter",
+      "outlets": 2
+    },
+    {
+      "id": "obj-380",
+      "key": "slice-default",
+      "creation": "zl.slice",
+      "outlets": 2
+    },
+    {
+      "id": "obj-388",
+      "key": "rot-default",
+      "creation": "zl.rot",
+      "outlets": 2
+    },
+    {
+      "id": "obj-396",
+      "key": "prepend-list",
+      "creation": "prepend list",
+      "outlets": 1
+    },
+    {
+      "id": "obj-408",
+      "key": "prepend-numeric",
+      "creation": "prepend 7",
+      "outlets": 1
+    },
+    {
+      "id": "obj-420",
+      "key": "append-symbol",
+      "creation": "append tail",
+      "outlets": 1
+    }
+  ],
+  "cases": [
+    {
+      "input_id": "event_0",
+      "target": "iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_1",
+      "target": "iter",
+      "inlet": 0,
+      "message": "42",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_2",
+      "target": "iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_3",
+      "target": "iter",
+      "inlet": 0,
+      "message": "42.",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_4",
+      "target": "iter",
+      "inlet": 0,
+      "message": "list 42",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_5",
+      "target": "iter",
+      "inlet": 0,
+      "message": "list 42.",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_6",
+      "target": "iter",
+      "inlet": 0,
+      "message": "list apple",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_7",
+      "target": "iter",
+      "inlet": 0,
+      "message": "symbol apple",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "symbol",
+          "atoms": []
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_8",
+      "target": "iter",
+      "inlet": 0,
+      "message": "apple",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_9",
+      "target": "iter",
+      "inlet": 0,
+      "message": "apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "pear",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_10",
+      "target": "iter",
+      "inlet": 0,
+      "message": "list apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "pear",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_11",
+      "target": "iter",
+      "inlet": 0,
+      "message": "list 1 2. apple 4",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          "apple",
+          4
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_12",
+      "target": "iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_13",
+      "target": "iter",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_14",
+      "target": "iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_15",
+      "target": "iter",
+      "inlet": 0,
+      "message": "set 8 9",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": [
+          8,
+          9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": []
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            8
+          ]
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_16",
+      "target": "iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": []
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            8
+          ]
+        },
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_17",
+      "target": "iter",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "zlclear",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_18",
+      "target": "iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "zlclear",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_19",
+      "target": "iter",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "zlreset",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_20",
+      "target": "iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "iter",
+          "outlet": 0,
+          "selector": "zlreset",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_21",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "head",
+          "atoms": [
+            9,
+            "bang"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_22",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "42",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "head",
+          "atoms": [
+            9,
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_23",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "head",
+          "atoms": [
+            9,
+            "bang"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_24",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "42.",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "head",
+          "atoms": [
+            9,
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_25",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "list 42",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "head",
+          "atoms": [
+            9,
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_26",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "list 42.",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "head",
+          "atoms": [
+            9,
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_27",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "list apple",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "head",
+          "atoms": [
+            9,
+            "apple"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_28",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "symbol apple",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "head",
+          "atoms": [
+            9,
+            "symbol",
+            "apple"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_29",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "apple",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "head",
+          "atoms": [
+            9,
+            "apple"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_30",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "head",
+          "atoms": [
+            9,
+            "apple",
+            3,
+            "pear"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_31",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "list apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "head",
+          "atoms": [
+            9,
+            "apple",
+            3,
+            "pear"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_32",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "list 1 2. apple 4",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          "apple",
+          4
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "head",
+          "atoms": [
+            9,
+            1,
+            2,
+            "apple",
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_33",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "head",
+          "atoms": [
+            9,
+            "bang"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_34",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_35",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "head",
+          "atoms": [
+            9,
+            "bang"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_36",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "set 8 9",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": [
+          8,
+          9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_37",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            8,
+            9,
+            "bang"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_38",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            8,
+            9,
+            "zlclear"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_39",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            8,
+            9,
+            "bang"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_40",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            8,
+            9,
+            "zlreset"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_41",
+      "target": "prepend",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            8,
+            9,
+            "bang"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_42",
+      "target": "append",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_43",
+      "target": "append",
+      "inlet": 0,
+      "message": "42",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            42,
+            9,
+            "tail"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_44",
+      "target": "append",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_45",
+      "target": "append",
+      "inlet": 0,
+      "message": "42.",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            42,
+            9,
+            "tail"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_46",
+      "target": "append",
+      "inlet": 0,
+      "message": "list 42",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            42,
+            9,
+            "tail"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_47",
+      "target": "append",
+      "inlet": 0,
+      "message": "list 42.",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            42,
+            9,
+            "tail"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_48",
+      "target": "append",
+      "inlet": 0,
+      "message": "list apple",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            "apple",
+            9,
+            "tail"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_49",
+      "target": "append",
+      "inlet": 0,
+      "message": "symbol apple",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append",
+          "outlet": 0,
+          "selector": "symbol",
+          "atoms": [
+            "apple",
+            9,
+            "tail"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_50",
+      "target": "append",
+      "inlet": 0,
+      "message": "apple",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            9,
+            "tail"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_51",
+      "target": "append",
+      "inlet": 0,
+      "message": "apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            3,
+            "pear",
+            9,
+            "tail"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_52",
+      "target": "append",
+      "inlet": 0,
+      "message": "list apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            "apple",
+            3,
+            "pear",
+            9,
+            "tail"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_53",
+      "target": "append",
+      "inlet": 0,
+      "message": "list 1 2. apple 4",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          "apple",
+          4
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            "apple",
+            4,
+            9,
+            "tail"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_54",
+      "target": "append",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_55",
+      "target": "append",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_56",
+      "target": "append",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_57",
+      "target": "append",
+      "inlet": 0,
+      "message": "set 8 9",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": [
+          8,
+          9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_58",
+      "target": "append",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_59",
+      "target": "append",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append",
+          "outlet": 0,
+          "selector": "zlclear",
+          "atoms": [
+            8,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_60",
+      "target": "append",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_61",
+      "target": "append",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append",
+          "outlet": 0,
+          "selector": "zlreset",
+          "atoms": [
+            8,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_62",
+      "target": "append",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_63",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_64",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "42",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_65",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_66",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "42.",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_67",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "list 42",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_68",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "list 42.",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_69",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "list apple",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_70",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "symbol apple",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "symbol",
+          "atoms": [
+            "apple"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_71",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "apple",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_72",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            3,
+            "pear"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_73",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "list apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            3,
+            "pear"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_74",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "list 1 2. apple 4",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          "apple",
+          4
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            "apple",
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_75",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            "apple",
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_76",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_77",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            "apple",
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_78",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "set 8 9",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": [
+          8,
+          9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": [
+            8,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_79",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": [
+            8,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_80",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_81",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_82",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_83",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_84",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_85",
+      "target": "zl.reg",
+      "inlet": 1,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_86",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_87",
+      "target": "zl.reg",
+      "inlet": 1,
+      "message": "list 7 8",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          7,
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_88",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            7,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_89",
+      "target": "zl.reg",
+      "inlet": 1,
+      "message": "3",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_90",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_91",
+      "target": "zl.reg",
+      "inlet": 1,
+      "message": "0",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          0
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_92",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_93",
+      "target": "zl.reg",
+      "inlet": 1,
+      "message": "-1",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          -1
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_94",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            -1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_95",
+      "target": "zl.reg",
+      "inlet": 1,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_96",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.reg",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            -1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_97",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_98",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_99",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_100",
+      "target": "zl.reg",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_101",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "tail",
+          "atoms": [
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_102",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "42",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            42,
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_103",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            42,
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_104",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "42.",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            42,
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_105",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "list 42",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            42,
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_106",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "list 42.",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            42,
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_107",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "list apple",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_108",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "symbol apple",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "symbol",
+          "atoms": [
+            "apple",
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_109",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "apple",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_110",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            3,
+            "pear",
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_111",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "list apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            3,
+            "pear",
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_112",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "list 1 2. apple 4",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          "apple",
+          4
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            "apple",
+            4,
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_113",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            "apple",
+            4,
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_114",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_115",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            "apple",
+            4,
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_116",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "set 8 9",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": [
+          8,
+          9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": [
+            8,
+            9,
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_117",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": [
+            8,
+            9,
+            "tail",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_118",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_119",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_120",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_121",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_122",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_123",
+      "target": "zl.join",
+      "inlet": 1,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_124",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_125",
+      "target": "zl.join",
+      "inlet": 1,
+      "message": "list 7 8",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          7,
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_126",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_127",
+      "target": "zl.join",
+      "inlet": 1,
+      "message": "3",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_128",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_129",
+      "target": "zl.join",
+      "inlet": 1,
+      "message": "0",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          0
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_130",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_131",
+      "target": "zl.join",
+      "inlet": 1,
+      "message": "-1",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          -1
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_132",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            -1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_133",
+      "target": "zl.join",
+      "inlet": 1,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_134",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.join",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            -1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_135",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_136",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_137",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_138",
+      "target": "zl.join",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_139",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_140",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "42",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_141",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_142",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "42.",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_143",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "list 42",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_144",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "list 42.",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_145",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "list apple",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_146",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "symbol apple",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_147",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "apple",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_148",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_149",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "list apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_150",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "list 1 2. apple 4",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          "apple",
+          4
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_151",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_152",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_153",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_154",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "set 8 9",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": [
+          8,
+          9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_155",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_156",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_157",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_158",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_159",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_160",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_161",
+      "target": "zl.len",
+      "inlet": 1,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_162",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_163",
+      "target": "zl.len",
+      "inlet": 1,
+      "message": "list 7 8",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          7,
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_164",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_165",
+      "target": "zl.len",
+      "inlet": 1,
+      "message": "3",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_166",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_167",
+      "target": "zl.len",
+      "inlet": 1,
+      "message": "0",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          0
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_168",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_169",
+      "target": "zl.len",
+      "inlet": 1,
+      "message": "-1",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          -1
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_170",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_171",
+      "target": "zl.len",
+      "inlet": 1,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_172",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.len",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_173",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_174",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_175",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_176",
+      "target": "zl.len",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_177",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_178",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "42",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_179",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_180",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "42.",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_181",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "list 42",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_182",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "list 42.",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_183",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "list apple",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_184",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "symbol apple",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "symbol",
+          "atoms": [
+            "apple"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_185",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "apple",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_186",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "pear",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_187",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "list apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "pear",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_188",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "list 1 2. apple 4",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          "apple",
+          4
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_189",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_190",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_191",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_192",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "set 8 9",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": [
+          8,
+          9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": [
+            8
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_193",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": [
+            8
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_194",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_195",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_196",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_197",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_198",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_199",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_200",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_201",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "list 7 8",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          7,
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_202",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_203",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "3",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_204",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_205",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "0",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          0
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_206",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_207",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "-1",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          -1
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_208",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_209",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_210",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_211",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_212",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_213",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_214",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_215",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_216",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "42",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_217",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_218",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "42.",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_219",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "list 42",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_220",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "list 42.",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_221",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "list apple",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_222",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "symbol apple",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "symbol",
+          "atoms": [
+            "apple"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_223",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "apple",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_224",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "pear",
+          "atoms": []
+        },
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_225",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "list apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "pear",
+          "atoms": []
+        },
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_226",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "list 1 2. apple 4",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          "apple",
+          4
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "apple",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_227",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "apple",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_228",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_229",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "apple",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_230",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "set 8 9",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": [
+          8,
+          9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "int",
+          "atoms": [
+            9
+          ]
+        },
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": [
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_231",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "int",
+          "atoms": [
+            9
+          ]
+        },
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": [
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_232",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_233",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_234",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_235",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_236",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_237",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_238",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_239",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "list 7 8",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          7,
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_240",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_241",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "3",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_242",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            4,
+            5
+          ]
+        },
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_243",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "0",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          0
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_244",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_245",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "-1",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          -1
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_246",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_247",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_248",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_249",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_250",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_251",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_252",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_253",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_254",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "42",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_255",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_256",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "42.",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_257",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "list 42",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_258",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "list 42.",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_259",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "list apple",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_260",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "symbol apple",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            "symbol"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_261",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "apple",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_262",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "pear",
+          "atoms": [
+            3,
+            "apple"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_263",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "list apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "pear",
+          "atoms": [
+            3,
+            "apple"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_264",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "list 1 2. apple 4",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          "apple",
+          4
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            4,
+            "apple",
+            2,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_265",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            4,
+            "apple",
+            2,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_266",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_267",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            4,
+            "apple",
+            2,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_268",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "set 8 9",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": [
+          8,
+          9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            9,
+            8,
+            "set"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_269",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            9,
+            8,
+            "set"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_270",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_271",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_272",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_273",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_274",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            5,
+            4,
+            3,
+            2,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_275",
+      "target": "zl.rev",
+      "inlet": 1,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_276",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            5,
+            4,
+            3,
+            2,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_277",
+      "target": "zl.rev",
+      "inlet": 1,
+      "message": "list 7 8",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          7,
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_278",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            5,
+            4,
+            3,
+            2,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_279",
+      "target": "zl.rev",
+      "inlet": 1,
+      "message": "3",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_280",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            5,
+            4,
+            3,
+            2,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_281",
+      "target": "zl.rev",
+      "inlet": 1,
+      "message": "0",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          0
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_282",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            5,
+            4,
+            3,
+            2,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_283",
+      "target": "zl.rev",
+      "inlet": 1,
+      "message": "-1",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          -1
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_284",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            5,
+            4,
+            3,
+            2,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_285",
+      "target": "zl.rev",
+      "inlet": 1,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_286",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rev",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            5,
+            4,
+            3,
+            2,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_287",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_288",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_289",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_290",
+      "target": "zl.rev",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_291",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_292",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "42",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_293",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_294",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "42.",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_295",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "list 42",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_296",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "list 42.",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          42
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "float",
+          "atoms": [
+            42
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_297",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "list apple",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_298",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "symbol apple",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            "symbol"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_299",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "apple",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_300",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "pear",
+          "atoms": [
+            "apple",
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_301",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "list apple 3 pear",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          3,
+          "pear"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "pear",
+          "atoms": [
+            "apple",
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_302",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "list 1 2. apple 4",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          "apple",
+          4
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            4,
+            1,
+            2,
+            "apple"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_303",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            4,
+            1,
+            2,
+            "apple"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_304",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_305",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            4,
+            1,
+            2,
+            "apple"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_306",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "set 8 9",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": [
+          8,
+          9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            9,
+            "set",
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_307",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            9,
+            "set",
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_308",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_309",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_310",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_311",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_312",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_313",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_314",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_315",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "list 7 8",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          7,
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_316",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            4,
+            5,
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_317",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "3",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_318",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            3,
+            4,
+            5,
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_319",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "0",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          0
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_320",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_321",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "-1",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          -1
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_322",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            2,
+            3,
+            4,
+            5,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_323",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_324",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            2,
+            3,
+            4,
+            5,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_325",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "zlreset",
+      "delivery": true,
+      "input": {
+        "selector": "zlreset",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_326",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_327",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "zlclear",
+      "delivery": true,
+      "input": {
+        "selector": "zlclear",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_328",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_329",
+      "target": "prepend-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-default",
+          "outlet": 0,
+          "selector": "bang",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_330",
+      "target": "prepend-default",
+      "inlet": 0,
+      "message": "list 1 2 3",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-default",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_331",
+      "target": "prepend-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-default",
+          "outlet": 0,
+          "selector": "bang",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_332",
+      "target": "prepend-default",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_333",
+      "target": "prepend-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-default",
+          "outlet": 0,
+          "selector": "bang",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_334",
+      "target": "prepend-default",
+      "inlet": 0,
+      "message": "set",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_335",
+      "target": "prepend-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-default",
+          "outlet": 0,
+          "selector": "bang",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_336",
+      "target": "append-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_337",
+      "target": "append-default",
+      "inlet": 0,
+      "message": "list 1 2 3",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append-default",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_338",
+      "target": "append-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_339",
+      "target": "append-default",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_340",
+      "target": "append-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_341",
+      "target": "append-default",
+      "inlet": 0,
+      "message": "set",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_342",
+      "target": "append-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_343",
+      "target": "reg-initial",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "reg-initial",
+          "outlet": 0,
+          "selector": "first",
+          "atoms": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_344",
+      "target": "reg-initial",
+      "inlet": 0,
+      "message": "list 1 2 3",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "reg-initial",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_345",
+      "target": "reg-initial",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "reg-initial",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_346",
+      "target": "reg-initial",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_347",
+      "target": "reg-initial",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "reg-initial",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_348",
+      "target": "reg-initial",
+      "inlet": 0,
+      "message": "set",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "reg-initial",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_349",
+      "target": "reg-initial",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "reg-initial",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_350",
+      "target": "join-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_351",
+      "target": "join-default",
+      "inlet": 0,
+      "message": "list 1 2 3",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "join-default",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_352",
+      "target": "join-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "join-default",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_353",
+      "target": "join-default",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_354",
+      "target": "join-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "join-default",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_355",
+      "target": "join-default",
+      "inlet": 0,
+      "message": "set",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "join-default",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_356",
+      "target": "join-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "join-default",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_357",
+      "target": "iter-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_358",
+      "target": "iter-default",
+      "inlet": 0,
+      "message": "list 1 2 3",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_359",
+      "target": "iter-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_360",
+      "target": "iter-default",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_361",
+      "target": "iter-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_362",
+      "target": "iter-default",
+      "inlet": 0,
+      "message": "set",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_363",
+      "target": "iter-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_364",
+      "target": "slice-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_365",
+      "target": "slice-default",
+      "inlet": 0,
+      "message": "list 1 2 3",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "slice-default",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_366",
+      "target": "slice-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "slice-default",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_367",
+      "target": "slice-default",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_368",
+      "target": "slice-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "slice-default",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_369",
+      "target": "slice-default",
+      "inlet": 0,
+      "message": "set",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "slice-default",
+          "outlet": 1,
+          "selector": "set",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_370",
+      "target": "slice-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "slice-default",
+          "outlet": 1,
+          "selector": "set",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_371",
+      "target": "rot-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_372",
+      "target": "rot-default",
+      "inlet": 0,
+      "message": "list 1 2 3",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "rot-default",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_373",
+      "target": "rot-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "rot-default",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_374",
+      "target": "rot-default",
+      "inlet": 0,
+      "message": "list",
+      "delivery": false,
+      "input": null,
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_375",
+      "target": "rot-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "rot-default",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_376",
+      "target": "rot-default",
+      "inlet": 0,
+      "message": "set",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "rot-default",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_377",
+      "target": "rot-default",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "rot-default",
+          "outlet": 0,
+          "selector": "set",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_378",
+      "target": "prepend-list",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-list",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            "bang"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_379",
+      "target": "prepend-list",
+      "inlet": 0,
+      "message": "8",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-list",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_380",
+      "target": "prepend-list",
+      "inlet": 0,
+      "message": "list 8",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-list",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_381",
+      "target": "prepend-list",
+      "inlet": 0,
+      "message": "symbol apple",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-list",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            "symbol",
+            "apple"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_382",
+      "target": "prepend-list",
+      "inlet": 0,
+      "message": "apple 3",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-list",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            "apple",
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_383",
+      "target": "prepend-list",
+      "inlet": 0,
+      "message": "set foo 9",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": [
+          "foo",
+          9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_384",
+      "target": "prepend-list",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-list",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": [
+            9,
+            "bang"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_385",
+      "target": "prepend-list",
+      "inlet": 0,
+      "message": "8",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-list",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": [
+            9,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_386",
+      "target": "prepend-list",
+      "inlet": 0,
+      "message": "set",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_387",
+      "target": "prepend-list",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-list",
+          "outlet": 0,
+          "selector": "bang",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_388",
+      "target": "prepend-list",
+      "inlet": 0,
+      "message": "list 1 2",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-list",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_389",
+      "target": "prepend-numeric",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-numeric",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            7,
+            "bang"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_390",
+      "target": "prepend-numeric",
+      "inlet": 0,
+      "message": "8",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-numeric",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            7,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_391",
+      "target": "prepend-numeric",
+      "inlet": 0,
+      "message": "list 8",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-numeric",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            7,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_392",
+      "target": "prepend-numeric",
+      "inlet": 0,
+      "message": "symbol apple",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-numeric",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            7,
+            "symbol",
+            "apple"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_393",
+      "target": "prepend-numeric",
+      "inlet": 0,
+      "message": "apple 3",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-numeric",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            7,
+            "apple",
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_394",
+      "target": "prepend-numeric",
+      "inlet": 0,
+      "message": "set foo 9",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": [
+          "foo",
+          9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_395",
+      "target": "prepend-numeric",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-numeric",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": [
+            9,
+            "bang"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_396",
+      "target": "prepend-numeric",
+      "inlet": 0,
+      "message": "8",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-numeric",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": [
+            9,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_397",
+      "target": "prepend-numeric",
+      "inlet": 0,
+      "message": "set",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_398",
+      "target": "prepend-numeric",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-numeric",
+          "outlet": 0,
+          "selector": "bang",
+          "atoms": []
+        }
+      ]
+    },
+    {
+      "input_id": "event_399",
+      "target": "prepend-numeric",
+      "inlet": 0,
+      "message": "list 1 2",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "prepend-numeric",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_400",
+      "target": "append-symbol",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_401",
+      "target": "append-symbol",
+      "inlet": 0,
+      "message": "8",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append-symbol",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            8,
+            "tail"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_402",
+      "target": "append-symbol",
+      "inlet": 0,
+      "message": "list 8",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append-symbol",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            8,
+            "tail"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_403",
+      "target": "append-symbol",
+      "inlet": 0,
+      "message": "symbol apple",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append-symbol",
+          "outlet": 0,
+          "selector": "symbol",
+          "atoms": [
+            "apple",
+            "tail"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_404",
+      "target": "append-symbol",
+      "inlet": 0,
+      "message": "apple 3",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append-symbol",
+          "outlet": 0,
+          "selector": "apple",
+          "atoms": [
+            3,
+            "tail"
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_405",
+      "target": "append-symbol",
+      "inlet": 0,
+      "message": "set foo 9",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": [
+          "foo",
+          9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_406",
+      "target": "append-symbol",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_407",
+      "target": "append-symbol",
+      "inlet": 0,
+      "message": "8",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append-symbol",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            8,
+            "foo",
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_408",
+      "target": "append-symbol",
+      "inlet": 0,
+      "message": "set",
+      "delivery": true,
+      "input": {
+        "selector": "set",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_409",
+      "target": "append-symbol",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_410",
+      "target": "append-symbol",
+      "inlet": 0,
+      "message": "list 1 2",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "append-symbol",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        }
+      ]
+    }
+  ]
+}

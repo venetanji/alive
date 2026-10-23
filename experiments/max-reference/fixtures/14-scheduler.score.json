@@ -1,0 +1,91 @@
+{
+  "fixture": "14-scheduler",
+  "question": "Metro/delay/pipe cancellation and defer/deferlow observed at collector arrival",
+  "labels": [
+    "metro",
+    "delay",
+    "pipe",
+    "defer",
+    "deferlow"
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "1",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_1",
+      "message": "0",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 55
+    },
+    {
+      "id": "event_2",
+      "message": "bang",
+      "destination": "obj-5",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_3",
+      "message": "stop",
+      "destination": "obj-5",
+      "inlet": 0,
+      "wait_ms": 5
+    },
+    {
+      "id": "event_4",
+      "message": "bang",
+      "destination": "obj-5",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_5",
+      "message": "1",
+      "destination": "obj-9",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_6",
+      "message": "2",
+      "destination": "obj-9",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_7",
+      "message": "clear",
+      "destination": "obj-9",
+      "inlet": 0,
+      "wait_ms": 5
+    },
+    {
+      "id": "event_8",
+      "message": "3",
+      "destination": "obj-9",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_9",
+      "message": "bang",
+      "destination": "obj-14",
+      "inlet": 0,
+      "wait_ms": 30
+    },
+    {
+      "id": "event_10",
+      "message": "bang",
+      "destination": "obj-16",
+      "inlet": 0,
+      "wait_ms": 0
+    }
+  ],
+  "drain_ms": 150
+}

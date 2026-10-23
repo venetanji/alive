@@ -1,0 +1,4124 @@
+{
+  "schema_version": 1,
+  "scope": "Use the production Max importer on installed named basic tabs; execute the exact explicitly partial imported slider graph in the production native control runtime. No whole-help or Max-runtime execution is claimed.",
+  "summary": {
+    "installed_sources_analyzed": 13,
+    "named_basic_tabs_imported_with_explicit_partial": 13,
+    "strict_imports_accepted": 0,
+    "complete_selected_graphs": 0,
+    "exact_imported_graphs_native_executed": 1,
+    "native_behavioral_assertions_passed": 8,
+    "whole_help_execution_passes_added": 0,
+    "whole_installed_help_corpus": 2103,
+    "max_runtime_executed": false
+  },
+  "files": [
+    {
+      "object": "toggle",
+      "installed_relative_path": "resources/help/max/toggle.maxhelp",
+      "source_bytes": 44532,
+      "source_sha256": "80a7681796becd60122811afe7c99fc45a6ac5d29d625292493f0594fb508adb",
+      "recursive_inventory": {
+        "patchers": 5,
+        "boxes": 49,
+        "edges": 17
+      },
+      "selected": {
+        "selection": {
+          "id": "root/obj-2",
+          "name": "basic",
+          "path": [
+            "obj-2"
+          ]
+        },
+        "stats": {
+          "sourceBoxes": 19,
+          "sourceEdges": 9,
+          "importedBoxes": 9,
+          "importedEdges": 5,
+          "omittedBoxes": 2,
+          "omittedEdges": 4,
+          "decorations": 8
+        },
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-3"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-9"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-6"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-6"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-4"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-4"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-4"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-4",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-1",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-29"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-28"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-27"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-25"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-26"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-26"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-26",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-24"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-19"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-15"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-15"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-15",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-14"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-14"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-14",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-10"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-10"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-10",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-8"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-8"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-8",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-7"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-7"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-7",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Ultra toggle normalizes every nonzero numeric input to 1; Max toggle can pass the nonzero input value through.",
+            "boxId": "obj-5"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute svg is not adapted.",
+            "boxId": "obj-5",
+            "attribute": "svg"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-2",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "The destination does not implement this literal Max message selector.",
+            "edgeIndex": 1,
+            "source": [
+              "obj-14",
+              0
+            ],
+            "destination": [
+              "obj-5",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "The destination does not implement this literal Max message selector.",
+            "edgeIndex": 2,
+            "source": [
+              "obj-15",
+              0
+            ],
+            "destination": [
+              "obj-5",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 4,
+            "source": [
+              "obj-5",
+              0
+            ],
+            "destination": [
+              "obj-1",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "The destination does not implement this literal Max message selector.",
+            "edgeIndex": 6,
+            "source": [
+              "obj-6",
+              0
+            ],
+            "destination": [
+              "obj-5",
+              0
+            ]
+          }
+        ],
+        "source_box_to_native_node": {
+          "obj-6": 1,
+          "obj-4": 2,
+          "obj-26": 3,
+          "obj-15": 4,
+          "obj-14": 5,
+          "obj-10": 6,
+          "obj-8": 7,
+          "obj-7": 8,
+          "obj-5": 9
+        },
+        "supported_native_types": [
+          "message",
+          "number",
+          "toggle"
+        ],
+        "graph_sha256": "a6945c17c54c2a47b008a95cc7853fedc971da8a712fbf28aad3d4f42d378c4e",
+        "strict_import_accepted": false,
+        "explicit_partial_import_accepted": true,
+        "complete_selected_graph": false,
+        "extracted_graph_executed": false,
+        "source_help_executed_as_a_whole": false,
+        "max_executed": false
+      }
+    },
+    {
+      "object": "button",
+      "installed_relative_path": "resources/help/max/button.maxhelp",
+      "source_bytes": 29759,
+      "source_sha256": "877181b6ebb71b9b8fcc37c20dca255460f64f2e03275cb2f724201aa18704dc",
+      "recursive_inventory": {
+        "patchers": 4,
+        "boxes": 27,
+        "edges": 7
+      },
+      "selected": {
+        "selection": {
+          "id": "root/obj-3",
+          "name": "basic",
+          "path": [
+            "obj-3"
+          ]
+        },
+        "stats": {
+          "sourceBoxes": 9,
+          "sourceEdges": 4,
+          "importedBoxes": 4,
+          "importedEdges": 3,
+          "omittedBoxes": 2,
+          "omittedEdges": 1,
+          "decorations": 3
+        },
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-18"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-17"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-15"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-13",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute format is not adapted.",
+            "boxId": "obj-13",
+            "attribute": "format"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-10"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-10"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-10",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-9"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-9"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-9",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-7",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-2",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 2,
+            "source": [
+              "obj-6",
+              0
+            ],
+            "destination": [
+              "obj-7",
+              0
+            ]
+          }
+        ],
+        "source_box_to_native_node": {
+          "obj-13": 1,
+          "obj-10": 2,
+          "obj-9": 3,
+          "obj-6": 4
+        },
+        "supported_native_types": [
+          "flonum",
+          "message",
+          "bang"
+        ],
+        "graph_sha256": "16b4ffa479914289a1b51f0d8d6817495b044366ac20b8192f19b97e0b5b65cd",
+        "strict_import_accepted": false,
+        "explicit_partial_import_accepted": true,
+        "complete_selected_graph": false,
+        "extracted_graph_executed": false,
+        "source_help_executed_as_a_whole": false,
+        "max_executed": false
+      }
+    },
+    {
+      "object": "number",
+      "installed_relative_path": "resources/help/max/number.maxhelp",
+      "source_bytes": 67376,
+      "source_sha256": "9b65214765ed2c153fbdc5d1b7fd3fbeb50526e02c13662005d42064fadb3451",
+      "recursive_inventory": {
+        "patchers": 6,
+        "boxes": 79,
+        "edges": 42
+      },
+      "selected": {
+        "selection": {
+          "id": "root/obj-2",
+          "name": "basic",
+          "path": [
+            "obj-2"
+          ]
+        },
+        "stats": {
+          "sourceBoxes": 17,
+          "sourceEdges": 10,
+          "importedBoxes": 11,
+          "importedEdges": 4,
+          "omittedBoxes": 2,
+          "omittedEdges": 6,
+          "decorations": 4
+        },
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-5"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-4"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-3"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-1"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-18"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-18"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-18"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute cantchange is not adapted.",
+            "boxId": "obj-18",
+            "attribute": "cantchange"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-18",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute triscale is not adapted.",
+            "boxId": "obj-18",
+            "attribute": "triscale"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-19"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-19"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-19"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-19",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute triscale is not adapted.",
+            "boxId": "obj-19",
+            "attribute": "triscale"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-20"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-20"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-20",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-21"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-21"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-21",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-22",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-23"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-23"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-23"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-23",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-40"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-40"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-40",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-41"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-41"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-41",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-44"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-44"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-44",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-45"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-45"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-45",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-46"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-46"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-46",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-47"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-47"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-47",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-2",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "The destination does not implement this literal Max message selector.",
+            "edgeIndex": 1,
+            "source": [
+              "obj-20",
+              0
+            ],
+            "destination": [
+              "obj-19",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "The destination does not implement this literal Max message selector.",
+            "edgeIndex": 2,
+            "source": [
+              "obj-21",
+              0
+            ],
+            "destination": [
+              "obj-19",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 3,
+            "source": [
+              "obj-23",
+              0
+            ],
+            "destination": [
+              "obj-22",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "The destination does not implement this literal Max message selector.",
+            "edgeIndex": 4,
+            "source": [
+              "obj-40",
+              0
+            ],
+            "destination": [
+              "obj-19",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "The destination does not implement this literal Max message selector.",
+            "edgeIndex": 5,
+            "source": [
+              "obj-41",
+              0
+            ],
+            "destination": [
+              "obj-19",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "The destination does not implement this literal Max message selector.",
+            "edgeIndex": 6,
+            "source": [
+              "obj-44",
+              0
+            ],
+            "destination": [
+              "obj-23",
+              0
+            ]
+          }
+        ],
+        "source_box_to_native_node": {
+          "obj-18": 1,
+          "obj-19": 2,
+          "obj-20": 3,
+          "obj-21": 4,
+          "obj-23": 5,
+          "obj-40": 6,
+          "obj-41": 7,
+          "obj-44": 8,
+          "obj-45": 9,
+          "obj-46": 10,
+          "obj-47": 11
+        },
+        "supported_native_types": [
+          "number",
+          "message"
+        ],
+        "graph_sha256": "008339c208f0bca16e06415d3232a083b0d4a3143aa1d231802c853fff7fac96",
+        "strict_import_accepted": false,
+        "explicit_partial_import_accepted": true,
+        "complete_selected_graph": false,
+        "extracted_graph_executed": false,
+        "source_help_executed_as_a_whole": false,
+        "max_executed": false
+      }
+    },
+    {
+      "object": "flonum",
+      "installed_relative_path": "resources/help/max/flonum.maxhelp",
+      "source_bytes": 41266,
+      "source_sha256": "b1251b92a08e8c6bc248bce5561c87459680c95540d3a20e9ac87294507aeefa",
+      "recursive_inventory": {
+        "patchers": 4,
+        "boxes": 39,
+        "edges": 17
+      },
+      "selected": {
+        "selection": {
+          "id": "root/obj-2",
+          "name": "basic",
+          "path": [
+            "obj-2"
+          ]
+        },
+        "stats": {
+          "sourceBoxes": 17,
+          "sourceEdges": 10,
+          "importedBoxes": 11,
+          "importedEdges": 9,
+          "omittedBoxes": 2,
+          "omittedEdges": 1,
+          "decorations": 4
+        },
+        "diagnostics": [
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-37",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute format is not adapted.",
+            "boxId": "obj-37",
+            "attribute": "format"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute triscale is not adapted.",
+            "boxId": "obj-37",
+            "attribute": "triscale"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-36",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute format is not adapted.",
+            "boxId": "obj-36",
+            "attribute": "format"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute triscale is not adapted.",
+            "boxId": "obj-36",
+            "attribute": "triscale"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-5"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-4"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-3"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-1"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-14"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-14"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-14"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute cantchange is not adapted.",
+            "boxId": "obj-14",
+            "attribute": "cantchange"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-14",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute triscale is not adapted.",
+            "boxId": "obj-14",
+            "attribute": "triscale"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-26"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-26"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-26",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-27"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-27"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-27",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-28",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-30"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-30"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-30",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-31"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-31"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-31",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-32"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-32"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-32",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-33"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-33"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-33",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-34"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-34"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-34",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-35"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-35"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-35",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-2",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 0,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 1,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 2,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 3,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 4,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 5,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 6,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 7,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 8,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 8,
+            "source": [
+              "obj-36",
+              0
+            ],
+            "destination": [
+              "obj-28",
+              0
+            ]
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 9,
+            "attribute": "midpoints"
+          }
+        ],
+        "source_box_to_native_node": {
+          "obj-37": 1,
+          "obj-36": 2,
+          "obj-14": 3,
+          "obj-26": 4,
+          "obj-27": 5,
+          "obj-30": 6,
+          "obj-31": 7,
+          "obj-32": 8,
+          "obj-33": 9,
+          "obj-34": 10,
+          "obj-35": 11
+        },
+        "supported_native_types": [
+          "flonum",
+          "number",
+          "message"
+        ],
+        "graph_sha256": "80312ced65bcc4cabd1bd13b78f6b29325e24c5a9ea8cd2420d0ede3eeea603c",
+        "strict_import_accepted": false,
+        "explicit_partial_import_accepted": true,
+        "complete_selected_graph": false,
+        "extracted_graph_executed": false,
+        "source_help_executed_as_a_whole": false,
+        "max_executed": false
+      }
+    },
+    {
+      "object": "slider",
+      "installed_relative_path": "resources/help/max/slider.maxhelp",
+      "source_bytes": 52156,
+      "source_sha256": "f79e46e3bef25bc48d6757914c96d7f52e0939de6216638b0c168c06c3a98d9d",
+      "recursive_inventory": {
+        "patchers": 5,
+        "boxes": 51,
+        "edges": 18
+      },
+      "selected": {
+        "selection": {
+          "id": "root/obj-3",
+          "name": "basic",
+          "path": [
+            "obj-3"
+          ]
+        },
+        "stats": {
+          "sourceBoxes": 22,
+          "sourceEdges": 11,
+          "importedBoxes": 14,
+          "importedEdges": 9,
+          "omittedBoxes": 3,
+          "omittedEdges": 2,
+          "decorations": 5
+        },
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-36"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-35",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute format is not adapted.",
+            "boxId": "obj-35",
+            "attribute": "format"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-15"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-18"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-18"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-18",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-19"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-19"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-19",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-20"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-20"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-20",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-21"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-21"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-21",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-22"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-22"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-22"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-22",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-24"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Max integer number-box bounds are not represented by Ultra number parameters.",
+            "boxId": "obj-26",
+            "maxclass": "number"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-27"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Message must be at most 127 ASCII bytes, without substitution, quotes, backslashes, commas or semicolons.",
+            "boxId": "obj-28",
+            "maxclass": "message"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-29"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-29"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-29"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-29",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-30"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-31"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-31"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-31"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-31",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-2",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 1,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 3,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 4,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 5,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 7,
+            "source": [
+              "obj-26",
+              0
+            ],
+            "destination": [
+              "obj-28",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 8,
+            "source": [
+              "obj-28",
+              0
+            ],
+            "destination": [
+              "obj-25",
+              0
+            ]
+          }
+        ],
+        "source_box_to_native_node": {
+          "obj-35": 1,
+          "obj-34": 2,
+          "obj-14": 3,
+          "obj-17": 4,
+          "obj-18": 5,
+          "obj-19": 6,
+          "obj-20": 7,
+          "obj-21": 8,
+          "obj-22": 9,
+          "obj-23": 10,
+          "obj-25": 11,
+          "obj-29": 12,
+          "obj-31": 13,
+          "obj-32": 14
+        },
+        "supported_native_types": [
+          "flonum",
+          "slider",
+          "message",
+          "number",
+          "bang"
+        ],
+        "graph_sha256": "6796e8dab74bbbb198e191cac2a48592a49bf2eb017724d5148f0cbb6349a40c",
+        "strict_import_accepted": false,
+        "explicit_partial_import_accepted": true,
+        "complete_selected_graph": false,
+        "extracted_graph_executed": true,
+        "source_help_executed_as_a_whole": false,
+        "max_executed": false
+      }
+    },
+    {
+      "object": "int",
+      "installed_relative_path": "resources/help/max/int.maxhelp",
+      "source_bytes": 26001,
+      "source_sha256": "bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61",
+      "recursive_inventory": {
+        "patchers": 3,
+        "boxes": 25,
+        "edges": 10
+      },
+      "selected": {
+        "selection": {
+          "id": "root/obj-2",
+          "name": "basic",
+          "path": [
+            "obj-2"
+          ]
+        },
+        "stats": {
+          "sourceBoxes": 21,
+          "sourceEdges": 10,
+          "importedBoxes": 13,
+          "importedEdges": 8,
+          "omittedBoxes": 3,
+          "omittedEdges": 2,
+          "decorations": 5
+        },
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-5"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-1"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-23"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-28",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-9",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-16"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-16"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-16"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-16",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-17"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-17"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-17"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-17",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-21"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-21"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-21"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-21",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-22",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-29"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-29"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-29",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-31"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"r\". Choose a supported object from the list.",
+            "boxId": "obj-32",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-33"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-33"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-33"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-33",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-34"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-2",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-4",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 0,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 1,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 4,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 5,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "The destination does not implement this literal Max message selector.",
+            "edgeIndex": 7,
+            "source": [
+              "obj-29",
+              0
+            ],
+            "destination": [
+              "obj-28",
+              0
+            ]
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 8,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 9,
+            "source": [
+              "obj-32",
+              0
+            ],
+            "destination": [
+              "obj-33",
+              0
+            ]
+          }
+        ],
+        "source_box_to_native_node": {
+          "obj-28": 1,
+          "obj-35": 2,
+          "obj-9": 3,
+          "obj-16": 4,
+          "obj-17": 5,
+          "obj-18": 6,
+          "obj-20": 7,
+          "obj-21": 8,
+          "obj-22": 9,
+          "obj-24": 10,
+          "obj-29": 11,
+          "obj-30": 12,
+          "obj-33": 13
+        },
+        "supported_native_types": [
+          "int",
+          "bang",
+          "number",
+          "slider",
+          "message"
+        ],
+        "graph_sha256": "1d34dbac143d1681ccbe1610b4c56286753bbfc14867fb5688158cff80d390b9",
+        "strict_import_accepted": false,
+        "explicit_partial_import_accepted": true,
+        "complete_selected_graph": false,
+        "extracted_graph_executed": false,
+        "source_help_executed_as_a_whole": false,
+        "max_executed": false
+      }
+    },
+    {
+      "object": "float",
+      "installed_relative_path": "resources/help/max/float.maxhelp",
+      "source_bytes": 28070,
+      "source_sha256": "c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c",
+      "recursive_inventory": {
+        "patchers": 3,
+        "boxes": 27,
+        "edges": 12
+      },
+      "selected": {
+        "selection": {
+          "id": "root/obj-2",
+          "name": "basic",
+          "path": [
+            "obj-2"
+          ]
+        },
+        "stats": {
+          "sourceBoxes": 23,
+          "sourceEdges": 12,
+          "importedBoxes": 15,
+          "importedEdges": 10,
+          "omittedBoxes": 3,
+          "omittedEdges": 2,
+          "decorations": 5
+        },
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-6"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-3"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-1"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-5"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-28",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-9",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-16",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute format is not adapted.",
+            "boxId": "obj-16",
+            "attribute": "format"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-17",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute format is not adapted.",
+            "boxId": "obj-17",
+            "attribute": "format"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Ultra arithmetic uses floating-point operands; Max integer creation-argument coercion is not reproduced.",
+            "boxId": "obj-19"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-19",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-21",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute format is not adapted.",
+            "boxId": "obj-21",
+            "attribute": "format"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-22",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Ultra arithmetic uses floating-point operands; Max integer creation-argument coercion is not reproduced.",
+            "boxId": "obj-23"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-23",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-29"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-29"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-29",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"r\". Choose a supported object from the list.",
+            "boxId": "obj-32",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-33",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute format is not adapted.",
+            "boxId": "obj-33",
+            "attribute": "format"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-34"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-2",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-4",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "The destination does not implement this literal Max message selector.",
+            "edgeIndex": 9,
+            "source": [
+              "obj-29",
+              0
+            ],
+            "destination": [
+              "obj-28",
+              0
+            ]
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 10,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 11,
+            "source": [
+              "obj-32",
+              0
+            ],
+            "destination": [
+              "obj-33",
+              0
+            ]
+          }
+        ],
+        "source_box_to_native_node": {
+          "obj-28": 1,
+          "obj-35": 2,
+          "obj-9": 3,
+          "obj-16": 4,
+          "obj-17": 5,
+          "obj-18": 6,
+          "obj-19": 7,
+          "obj-20": 8,
+          "obj-21": 9,
+          "obj-22": 10,
+          "obj-23": 11,
+          "obj-24": 12,
+          "obj-29": 13,
+          "obj-30": 14,
+          "obj-33": 15
+        },
+        "supported_native_types": [
+          "float",
+          "bang",
+          "flonum",
+          "slider",
+          "multiply",
+          "message"
+        ],
+        "graph_sha256": "46f0cb4de80fdc1f6eb0bc9f0ba675d2f60055e3a220f9fe4374edcf842dfcaf",
+        "strict_import_accepted": false,
+        "explicit_partial_import_accepted": true,
+        "complete_selected_graph": false,
+        "extracted_graph_executed": false,
+        "source_help_executed_as_a_whole": false,
+        "max_executed": false
+      }
+    },
+    {
+      "object": "pack",
+      "installed_relative_path": "resources/help/max/pack.maxhelp",
+      "source_bytes": 67352,
+      "source_sha256": "bdc8583d15f82e398f553d9223794451138312d67e41eb251f8c541ab5df0d79",
+      "recursive_inventory": {
+        "patchers": 5,
+        "boxes": 68,
+        "edges": 32
+      },
+      "selected": {
+        "selection": {
+          "id": "root/obj-2",
+          "name": "basic",
+          "path": [
+            "obj-2"
+          ]
+        },
+        "stats": {
+          "sourceBoxes": 12,
+          "sourceEdges": 5,
+          "importedBoxes": 4,
+          "importedEdges": 3,
+          "omittedBoxes": 4,
+          "omittedEdges": 2,
+          "decorations": 4
+        },
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-1"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-20"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-16"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class umenu.",
+            "boxId": "obj-14",
+            "maxclass": "umenu"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-13",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute format is not adapted.",
+            "boxId": "obj-13",
+            "attribute": "format"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-11"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-9"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-9"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-9"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-9",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Empty/editable Max message displays and cold-inlet storage are unsupported.",
+            "boxId": "obj-7",
+            "maxclass": "message"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-5",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-2",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-4",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 0,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 1,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 1,
+            "source": [
+              "obj-14",
+              1
+            ],
+            "destination": [
+              "obj-5",
+              2
+            ]
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 2,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 3,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 3,
+            "source": [
+              "obj-5",
+              0
+            ],
+            "destination": [
+              "obj-7",
+              1
+            ]
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 4,
+            "attribute": "midpoints"
+          }
+        ],
+        "source_box_to_native_node": {
+          "obj-18": 1,
+          "obj-13": 2,
+          "obj-9": 3,
+          "obj-5": 4
+        },
+        "supported_native_types": [
+          "bang",
+          "flonum",
+          "number",
+          "pack"
+        ],
+        "graph_sha256": "6292777156b2a4b3af2d42426c39e01c6fc9dde5be4afb113a8de8216087dfe2",
+        "strict_import_accepted": false,
+        "explicit_partial_import_accepted": true,
+        "complete_selected_graph": false,
+        "extracted_graph_executed": false,
+        "source_help_executed_as_a_whole": false,
+        "max_executed": false
+      }
+    },
+    {
+      "object": "unpack",
+      "installed_relative_path": "resources/help/max/unpack.maxhelp",
+      "source_bytes": 46425,
+      "source_sha256": "3a4c1f749bfa9928a7cc92be3efbc4c651aadf6b27999077601f487350e4dce1",
+      "recursive_inventory": {
+        "patchers": 4,
+        "boxes": 47,
+        "edges": 23
+      },
+      "selected": {
+        "selection": {
+          "id": "root/obj-2",
+          "name": "basic",
+          "path": [
+            "obj-2"
+          ]
+        },
+        "stats": {
+          "sourceBoxes": 15,
+          "sourceEdges": 8,
+          "importedBoxes": 6,
+          "importedEdges": 5,
+          "omittedBoxes": 5,
+          "omittedEdges": 3,
+          "decorations": 4
+        },
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-6"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-25"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-21"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-21"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-21",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-19"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-17"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-17"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-17",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-15"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-13"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-13"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-13",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-11"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-11"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-11",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Empty/editable Max message displays and cold-inlet storage are unsupported.",
+            "boxId": "obj-9",
+            "maxclass": "message"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Empty/editable Max message displays and cold-inlet storage are unsupported.",
+            "boxId": "obj-8",
+            "maxclass": "message"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Empty/editable Max message displays and cold-inlet storage are unsupported.",
+            "boxId": "obj-7",
+            "maxclass": "message"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-5",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-2",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-4",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 5,
+            "source": [
+              "obj-5",
+              0
+            ],
+            "destination": [
+              "obj-7",
+              1
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 6,
+            "source": [
+              "obj-5",
+              1
+            ],
+            "destination": [
+              "obj-8",
+              1
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 7,
+            "source": [
+              "obj-5",
+              2
+            ],
+            "destination": [
+              "obj-9",
+              1
+            ]
+          }
+        ],
+        "source_box_to_native_node": {
+          "obj-23": 1,
+          "obj-21": 2,
+          "obj-17": 3,
+          "obj-13": 4,
+          "obj-11": 5,
+          "obj-5": 6
+        },
+        "supported_native_types": [
+          "bang",
+          "message",
+          "unpack"
+        ],
+        "graph_sha256": "0966e7ff270e5ea89091429b42230e20f16af25876b57d4f1fc67dc768c9f066",
+        "strict_import_accepted": false,
+        "explicit_partial_import_accepted": true,
+        "complete_selected_graph": false,
+        "extracted_graph_executed": false,
+        "source_help_executed_as_a_whole": false,
+        "max_executed": false
+      }
+    },
+    {
+      "object": "select",
+      "installed_relative_path": "resources/help/max/select.maxhelp",
+      "source_bytes": 42264,
+      "source_sha256": "f096ff4673dbdbbca73863f35af3f8c91b5fa4d24ffc0c678566c8a57a114668",
+      "recursive_inventory": {
+        "patchers": 4,
+        "boxes": 39,
+        "edges": 14
+      },
+      "selected": {
+        "selection": {
+          "id": "root/obj-2",
+          "name": "basic",
+          "path": [
+            "obj-2"
+          ]
+        },
+        "stats": {
+          "sourceBoxes": 16,
+          "sourceEdges": 7,
+          "importedBoxes": 9,
+          "importedEdges": 7,
+          "omittedBoxes": 2,
+          "omittedEdges": 0,
+          "decorations": 5
+        },
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-7"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-11"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-14"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-18"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-18"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-18"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-18",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute triscale is not adapted.",
+            "boxId": "obj-18",
+            "attribute": "triscale"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-19",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-20"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-22"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-22"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-22"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-22",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute triscale is not adapted.",
+            "boxId": "obj-22",
+            "attribute": "triscale"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-24"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-24"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-24"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-24",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute triscale is not adapted.",
+            "boxId": "obj-24",
+            "attribute": "triscale"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-41"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-42",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-2",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-4",
+            "maxclass": "jsui"
+          }
+        ],
+        "source_box_to_native_node": {
+          "obj-16": 1,
+          "obj-17": 2,
+          "obj-18": 3,
+          "obj-19": 4,
+          "obj-21": 5,
+          "obj-22": 6,
+          "obj-23": 7,
+          "obj-24": 8,
+          "obj-42": 9
+        },
+        "supported_native_types": [
+          "bang",
+          "slider",
+          "number",
+          "select"
+        ],
+        "graph_sha256": "7b1f207e0f1dcf357f81458f9260618a6f27cd2d280b51642410f231c32bf54b",
+        "strict_import_accepted": false,
+        "explicit_partial_import_accepted": true,
+        "complete_selected_graph": false,
+        "extracted_graph_executed": false,
+        "source_help_executed_as_a_whole": false,
+        "max_executed": false
+      }
+    },
+    {
+      "object": "route",
+      "installed_relative_path": "resources/help/max/route.maxhelp",
+      "source_bytes": 57546,
+      "source_sha256": "1546c9f3437eba81723df60ded860507b099904fe87aa40b719efacf4549635e",
+      "recursive_inventory": {
+        "patchers": 4,
+        "boxes": 55,
+        "edges": 35
+      },
+      "selected": {
+        "selection": {
+          "id": "root/obj-2",
+          "name": "basic",
+          "path": [
+            "obj-2"
+          ]
+        },
+        "stats": {
+          "sourceBoxes": 24,
+          "sourceEdges": 16,
+          "importedBoxes": 11,
+          "importedEdges": 9,
+          "omittedBoxes": 11,
+          "omittedEdges": 7,
+          "decorations": 2
+        },
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-7"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-11"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-28",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-29",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-30",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-1",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-36"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-36"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-36",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-37"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-37"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-37",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-39"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-39"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-39",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-3",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-21"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-21"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-21",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-22",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-23"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-23"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-23",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-24"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-24"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-24",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-25"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-25"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-25",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-26"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-26"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-26",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-33",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-34",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-35",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-2",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-4",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class textbutton.",
+            "boxId": "obj-6",
+            "maxclass": "textbutton"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class textbutton.",
+            "boxId": "obj-31",
+            "maxclass": "textbutton"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 0,
+            "source": [
+              "obj-1",
+              0
+            ],
+            "destination": [
+              "obj-28",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 1,
+            "source": [
+              "obj-1",
+              1
+            ],
+            "destination": [
+              "obj-29",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 2,
+            "source": [
+              "obj-1",
+              2
+            ],
+            "destination": [
+              "obj-30",
+              0
+            ]
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 3,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 5,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 6,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 7,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 8,
+            "source": [
+              "obj-35",
+              3
+            ],
+            "destination": [
+              "obj-22",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 9,
+            "source": [
+              "obj-35",
+              2
+            ],
+            "destination": [
+              "obj-3",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 10,
+            "source": [
+              "obj-35",
+              0
+            ],
+            "destination": [
+              "obj-33",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 11,
+            "source": [
+              "obj-35",
+              1
+            ],
+            "destination": [
+              "obj-34",
+              0
+            ]
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 13,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 14,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 15,
+            "attribute": "midpoints"
+          }
+        ],
+        "source_box_to_native_node": {
+          "obj-1": 1,
+          "obj-36": 2,
+          "obj-37": 3,
+          "obj-39": 4,
+          "obj-40": 5,
+          "obj-21": 6,
+          "obj-23": 7,
+          "obj-24": 8,
+          "obj-25": 9,
+          "obj-26": 10,
+          "obj-35": 11
+        },
+        "supported_native_types": [
+          "route",
+          "message",
+          "bang"
+        ],
+        "graph_sha256": "4e647d0ba851e513a269e22159bcfa6fbb6b5605f617b1a107a099e844e13b35",
+        "strict_import_accepted": false,
+        "explicit_partial_import_accepted": true,
+        "complete_selected_graph": false,
+        "extracted_graph_executed": false,
+        "source_help_executed_as_a_whole": false,
+        "max_executed": false
+      }
+    },
+    {
+      "object": "trigger",
+      "installed_relative_path": "resources/help/max/trigger.maxhelp",
+      "source_bytes": 54093,
+      "source_sha256": "b4e655f02c012203c9141aca9f0bb096de1bf03be9bbd665727925a51f807095",
+      "recursive_inventory": {
+        "patchers": 4,
+        "boxes": 53,
+        "edges": 37
+      },
+      "selected": {
+        "selection": {
+          "id": "root/obj-2",
+          "name": "basic",
+          "path": [
+            "obj-2"
+          ]
+        },
+        "stats": {
+          "sourceBoxes": 20,
+          "sourceEdges": 14,
+          "importedBoxes": 7,
+          "importedEdges": 5,
+          "omittedBoxes": 11,
+          "omittedEdges": 9,
+          "decorations": 2
+        },
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-10"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-36"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-33",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Empty/editable Max message displays and cold-inlet storage are unsupported.",
+            "boxId": "obj-32",
+            "maxclass": "message"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-31"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-31"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-31",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-28",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-27",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-26",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Unknown object \"print\". Choose a supported object from the list.",
+            "boxId": "obj-25",
+            "maxclass": "newobj"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-24",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Empty/editable Max message displays and cold-inlet storage are unsupported.",
+            "boxId": "obj-16",
+            "maxclass": "message"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Only the literal hot-inlet message is supported; Max cold-inlet replacement and message editing are unavailable.",
+            "boxId": "obj-15"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-15"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-15",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Empty/editable Max message displays and cold-inlet storage are unsupported.",
+            "boxId": "obj-13",
+            "maxclass": "message"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Empty/editable Max message displays and cold-inlet storage are unsupported.",
+            "boxId": "obj-11",
+            "maxclass": "message"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-7",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute format is not adapted.",
+            "boxId": "obj-7",
+            "attribute": "format"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-5",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-2",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-4",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 0,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 1,
+            "source": [
+              "obj-24",
+              0
+            ],
+            "destination": [
+              "obj-25",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 2,
+            "source": [
+              "obj-24",
+              1
+            ],
+            "destination": [
+              "obj-26",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 3,
+            "source": [
+              "obj-24",
+              2
+            ],
+            "destination": [
+              "obj-27",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 4,
+            "source": [
+              "obj-24",
+              3
+            ],
+            "destination": [
+              "obj-28",
+              0
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 5,
+            "source": [
+              "obj-24",
+              4
+            ],
+            "destination": [
+              "obj-33",
+              0
+            ]
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 7,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 8,
+            "source": [
+              "obj-5",
+              1
+            ],
+            "destination": [
+              "obj-11",
+              1
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 9,
+            "source": [
+              "obj-5",
+              2
+            ],
+            "destination": [
+              "obj-13",
+              1
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 10,
+            "source": [
+              "obj-5",
+              3
+            ],
+            "destination": [
+              "obj-16",
+              1
+            ]
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 11,
+            "source": [
+              "obj-5",
+              4
+            ],
+            "destination": [
+              "obj-32",
+              1
+            ]
+          }
+        ],
+        "source_box_to_native_node": {
+          "obj-31": 1,
+          "obj-30": 2,
+          "obj-24": 3,
+          "obj-15": 4,
+          "obj-9": 5,
+          "obj-7": 6,
+          "obj-5": 7
+        },
+        "supported_native_types": [
+          "message",
+          "bang",
+          "trigger",
+          "flonum"
+        ],
+        "graph_sha256": "a179edb62209c008a1a5909ff67e0473476e3e5df171421a342bfe10a82c8da3",
+        "strict_import_accepted": false,
+        "explicit_partial_import_accepted": true,
+        "complete_selected_graph": false,
+        "extracted_graph_executed": false,
+        "source_help_executed_as_a_whole": false,
+        "max_executed": false
+      }
+    },
+    {
+      "object": "line",
+      "installed_relative_path": "resources/help/max/line.maxhelp",
+      "source_bytes": 111616,
+      "source_sha256": "84a7eba118672092e25e4c55921d790549c9e223c34bd213ec093a2542e1f94a",
+      "recursive_inventory": {
+        "patchers": 6,
+        "boxes": 119,
+        "edges": 63
+      },
+      "selected": {
+        "selection": {
+          "id": "root/obj-2",
+          "name": "basic",
+          "path": [
+            "obj-2"
+          ]
+        },
+        "stats": {
+          "sourceBoxes": 20,
+          "sourceEdges": 8,
+          "importedBoxes": 8,
+          "importedEdges": 6,
+          "omittedBoxes": 5,
+          "omittedEdges": 2,
+          "decorations": 7
+        },
+        "diagnostics": [
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-7"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-6"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-5"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-3"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-1"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-10"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Message must be at most 127 ASCII bytes, without substitution, quotes, backslashes, commas or semicolons.",
+            "boxId": "obj-14",
+            "maxclass": "message"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-15",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-16",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute format is not adapted.",
+            "boxId": "obj-16",
+            "attribute": "format"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "Message must be at most 127 ASCII bytes, without substitution, quotes, backslashes, commas or semicolons.",
+            "boxId": "obj-17",
+            "maxclass": "message"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-18",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute format is not adapted.",
+            "boxId": "obj-18",
+            "attribute": "format"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-19",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Saved Max behavior attribute format is not adapted.",
+            "boxId": "obj-19",
+            "attribute": "format"
+          },
+          {
+            "severity": "warning",
+            "code": "semantic-gap",
+            "message": "Max integer coercion and the second (Tab) outlet differ: Ultra number stores a floating-point value and has one outlet.",
+            "boxId": "obj-21"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numinlets=1; Ultra exposes 2. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-21"
+          },
+          {
+            "severity": "warning",
+            "code": "port-shape",
+            "message": "Saved Max numoutlets=2; Ultra exposes 1. Cable indices are kept and unavailable ports are rejected.",
+            "boxId": "obj-21"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-21",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max appearance attribute fontname is not adapted.",
+            "boxId": "obj-24",
+            "attribute": "fontname"
+          },
+          {
+            "severity": "info",
+            "code": "decoration",
+            "message": "Comment text is not imported into the executable graph.",
+            "boxId": "obj-35"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-4",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class jsui.",
+            "boxId": "obj-2",
+            "maxclass": "jsui"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-box",
+            "message": "No execution adapter for Max class textbutton.",
+            "boxId": "obj-93",
+            "maxclass": "textbutton"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 0,
+            "source": [
+              "obj-14",
+              0
+            ],
+            "destination": [
+              "obj-15",
+              0
+            ]
+          },
+          {
+            "severity": "warning",
+            "code": "appearance-gap",
+            "message": "Saved Max cable appearance attribute midpoints is not adapted.",
+            "edgeIndex": 3,
+            "attribute": "midpoints"
+          },
+          {
+            "severity": "error",
+            "code": "unsupported-edge",
+            "message": "A cable endpoint has no imported executable box.",
+            "edgeIndex": 3,
+            "source": [
+              "obj-17",
+              0
+            ],
+            "destination": [
+              "obj-24",
+              0
+            ]
+          }
+        ],
+        "source_box_to_native_node": {
+          "obj-13": 1,
+          "obj-15": 2,
+          "obj-16": 3,
+          "obj-18": 4,
+          "obj-19": 5,
+          "obj-21": 6,
+          "obj-24": 7,
+          "obj-32": 8
+        },
+        "supported_native_types": [
+          "bang",
+          "line",
+          "flonum",
+          "number"
+        ],
+        "graph_sha256": "498fddc6b1fc98c45c2d5f9001d4dbf323a1f8b5d22a3dc0e93b91204731c7d5",
+        "strict_import_accepted": false,
+        "explicit_partial_import_accepted": true,
+        "complete_selected_graph": false,
+        "extracted_graph_executed": false,
+        "source_help_executed_as_a_whole": false,
+        "max_executed": false
+      }
+    }
+  ],
+  "native": {
+    "source_file": "resources/help/max/slider.maxhelp",
+    "selection": {
+      "id": "root/obj-3",
+      "name": "basic",
+      "path": [
+        "obj-3"
+      ]
+    },
+    "exact_imported_graph_sha256": "6796e8dab74bbbb198e191cac2a48592a49bf2eb017724d5148f0cbb6349a40c",
+    "graph_modified_after_import": false,
+    "production_compile_canvas": true,
+    "production_canvas_runtime": true,
+    "operations": [
+      {
+        "node": 4,
+        "inlet": 0,
+        "text": "73"
+      },
+      {
+        "node": 4,
+        "inlet": 0,
+        "text": "21"
+      }
+    ],
+    "observed_nodes": [
+      {
+        "step": 0,
+        "nodes": [
+          {
+            "id": 4,
+            "value": 73,
+            "pulses": 1,
+            "selector": "",
+            "atoms": [
+              {
+                "tag": 0,
+                "value": 73
+              }
+            ]
+          },
+          {
+            "id": 9,
+            "value": 73,
+            "pulses": 1,
+            "selector": "",
+            "atoms": [
+              {
+                "tag": 0,
+                "value": 73
+              }
+            ]
+          },
+          {
+            "id": 10,
+            "value": 73,
+            "pulses": 1,
+            "selector": "",
+            "atoms": [
+              {
+                "tag": 0,
+                "value": 73
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "step": 1,
+        "nodes": [
+          {
+            "id": 4,
+            "value": 21,
+            "pulses": 2,
+            "selector": "",
+            "atoms": [
+              {
+                "tag": 0,
+                "value": 21
+              }
+            ]
+          },
+          {
+            "id": 9,
+            "value": 21,
+            "pulses": 2,
+            "selector": "",
+            "atoms": [
+              {
+                "tag": 0,
+                "value": 21
+              }
+            ]
+          },
+          {
+            "id": 10,
+            "value": 21,
+            "pulses": 2,
+            "selector": "",
+            "atoms": [
+              {
+                "tag": 0,
+                "value": 21
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "behavioral_assertions_passed": 8,
+    "transport": "Research descriptor transport from the existing help-next native-scenario.cpp driver; UI appearance metadata is not part of native execution descriptors.",
+    "rust_preparation_executed": false,
+    "browser_executed": false,
+    "tauri_executed": false,
+    "audio_device_opened": false,
+    "max_executed": false
+  },
+  "evidence_sources": [
+    {
+      "path": "apps/ultra/ui/canvas-max-import.mjs",
+      "sha256": "987635d20108f11adb74e1e53553729951513c879bc010403cb42d982f3c404b"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-max-import.test.mjs",
+      "sha256": "ba0cf26732aa7ad787584493422d35f603ade5158142bb21b71a7b656a89d021"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-model.mjs",
+      "sha256": "9817ef6c5e8a0627b99f1c6a781cea5535966f5f8591f4285f46cdc8a28f4888"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-catalog.mjs",
+      "sha256": "9636347b0babaed801847a43881e74900b71fbc5540b76bcb6121be8de1d11c2"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-appearance.mjs",
+      "sha256": "50d2e372441e7772906d277ef744d8aeff2c5da57833841679d84d4cacb2e68c"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/patch_graph.hpp",
+      "sha256": "6a427ea229b7b09abc52e41a935750663d16804fd55c526baffa580a36ed6a6f"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/canvas_message.hpp",
+      "sha256": "bc950c00d981a964d5f1019cd04da7f6bdc42f96225dbf5ceb7901a7edbe3cba"
+    },
+    {
+      "path": "experiments/max-reference/help-next-20261021/native-scenario.cpp",
+      "sha256": "74579055631442bcfa2efb007d6ccb7f28aea55c997429c8e81c4643995b88ed"
+    },
+    {
+      "path": "experiments/max-reference/help-import-20261021/check-import.mjs",
+      "sha256": "008bfdf95f1d2db36bfb6d5f1af9ee7ddedcc49f8e3c7ff3db97e67405d7585e"
+    }
+  ],
+  "limitations": [
+    "All 13 basic tabs are partial and require explicit acknowledgement; helper scripts, print/receive objects, unsupported displays, message syntax and unavailable ports remain omissions.",
+    "Diagnostics distinguish retained native behavior gaps from unsupported nodes and cables. Native execution proves only the retained branch behavior under the tested numeric inputs.",
+    "The research transport bypasses Rust preparation and desktop IPC. Appearance metadata is accepted by the JS document but not evaluated by this native runner.",
+    "No proprietary help source or extracted graph is retained in this report. The optional exported graph remains in the caller-selected local path.",
+    "This experiment supplies no Max runtime reference, timing oracle, whole-file execution, dependency emulation or audio-device evidence."
+  ]
+}

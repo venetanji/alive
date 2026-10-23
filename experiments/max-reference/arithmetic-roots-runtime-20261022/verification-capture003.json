@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "stage": "arithmetic-full-root-runtime",
+  "snapshot": "capture003",
+  "status": "INCOMPLETE",
+  "max_capture_status": "FAILED",
+  "max_completed_operations": 0,
+  "max_readbacks": 1,
+  "max_validated_readbacks": 0,
+  "max_acknowledged_commands": 2,
+  "native_score_status": "PASS",
+  "required_counts": {
+    "operations": 78,
+    "events": 66,
+    "installs": 6,
+    "closes": 6,
+    "live_checkpoints": 72,
+    "empty_checkpoints": 6,
+    "numeric_states": 504,
+    "original_outlet_emissions": 141,
+    "native_saved_cable_deliveries": 90,
+    "native_typed_receipts": 297
+  },
+  "observations": {
+    "document": "times",
+    "revision": 1,
+    "geometry_dispositions": 4,
+    "controller_representation_observations": 3,
+    "controller_install_acknowledged": true,
+    "readback_transport_acknowledged": true,
+    "actual_v8_readback_valid": false,
+    "inventory_complete": true,
+    "root_inventory_count": 8,
+    "basic_inventory_count": 35,
+    "unique_source_rows": 7,
+    "numeric_class_mismatches": 3,
+    "root_class_mismatches": 2,
+    "v8_scalar_format_observations": 3,
+    "v8_finite_scalar_getters": 3,
+    "source_default_initial_matches": 3,
+    "outlet_scalar_tags_observed": false,
+    "monitored_receipts_during_three_probe_sequence": 0,
+    "all_seven_getters_silence_validated": false,
+    "arithmetic_events_executed": 0
+  },
+  "qualification": {
+    "qualified": 0,
+    "total": 2103,
+    "increment": 0
+  },
+  "saved_order_observed": false,
+  "verification": {
+    "python_tests": 44,
+    "python_skipped": 1,
+    "node_helper_suite": "PASS",
+    "initial_review_findings": 2,
+    "initial_review_findings_red_green_verified": 2,
+    "corrected_static_review": "PASS",
+    "concrete_review": "PASS",
+    "capture_audit": "MEASURED_FAILURE_VERIFIED",
+    "sealed_inputs_verified": 22,
+    "historical_implementation_files_verified": 16,
+    "rea_public_file_hashes_verified_by_parent": 6,
+    "rea_filesystem_hash_omissions": 0,
+    "reviewer_raw_rea_record_access": false
+  },
+  "evidence_id": "ev_de849ca377d9aa0cada5598c4443c3f57f501c23b073fa1430f610873112f8cd",
+  "public_artifacts": [
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/score.json",
+      "sha256": "95012c9d56bc898d32b055d2f6d7fc925cac19afc4a18af254f7a3c871b67afb",
+      "bytes": 24179
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/native-result.json",
+      "sha256": "ce1976dfaecf4494ff876395a3c5df4add4f393f28235343cfc434120200a836",
+      "bytes": 37931
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/native-refusals.json",
+      "sha256": "49b4904521ca6db43cb486321b5fe7a85a8770a03202d217957c3a5be2eab430",
+      "bytes": 1022
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/preparation-manifest-arithmetic003.json",
+      "sha256": "357e4296de98f953faae2a17bded5a4df66fe5438ee3b4a23ea5ada00f41260c",
+      "bytes": 5716
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/max-preparation-003-report.md",
+      "sha256": "df292f345b3954080ff02c2d007616d2d257a99c2b7af059d696b541ca207507",
+      "bytes": 6310
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-003-initial-review.md",
+      "sha256": "4c6173878488cd5267c5513c84bd8516fd87ca52facea0a2d8d5335f371cf883",
+      "bytes": 6694
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/max-preparation-003-fix-report.md",
+      "sha256": "0aa64697c5fc2fd2b161acb89998e8f82ac3ef66d474f373bc9a7247dd1d41ea",
+      "bytes": 5200
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-003-correction-review.md",
+      "sha256": "30a21751f9523422ed8dbfc99583a0f2d43c17d0ff9fe42d03c4e2730f2cfa6b",
+      "bytes": 4740
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-003-concrete-review.md",
+      "sha256": "a31a466df21ca3602218fe352bf2c89ded5496a0badba2d9930d3fe06244d004",
+      "bytes": 4032
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/capture-003-audit.md",
+      "sha256": "0102fdaea0e0ee5bcd2e77217b25aef4c467b53124d27bca3426759f5c9fe1b1",
+      "bytes": 8198
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/native-report.md",
+      "sha256": "f89ab2d9168cf70da23001abea25896721f998c15f07eecd168d9345f940def5",
+      "bytes": 8064
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/comparison-review.md",
+      "sha256": "8ce0389d41c1a6ef5fbac95584338fdd5d066bd001a946e63b7c3afc9caede19",
+      "bytes": 4547
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-003/capture-evidence.json",
+      "sha256": "6948f6447a1ca492e6166462879769db68823961dab7360b53f3cfa9f61ec0dd",
+      "bytes": 849
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-003/cleanup.json",
+      "sha256": "dda86d351b2716c12c68cbab64d69fa704ac831a48c1f86adec7f6526bae200d",
+      "bytes": 1843
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-003/display-states.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-003/preferences-after.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "bytes": 205649
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-003/preferences-before.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "bytes": 205649
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-003/receipts.jsonl",
+      "sha256": "d7d8a0901c418f5df6fe19967859bba7eba6a9cbc0c2c66592d0d5863aaa7648",
+      "bytes": 276
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-003/session.json",
+      "sha256": "6f2485ef65ed879dfb8543e90d2aa61aa2a922249edbb01ca4e8454ddbe0ec9b",
+      "bytes": 8323
+    }
+  ],
+  "private_bindings": [
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-003/config.json",
+      "sha256": "a406709cab7224f3d297baa14de204565407e4572eadd6c7c0c3d6166ef46fe5",
+      "bytes": 153002
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-003/seal.json",
+      "sha256": "3ab64f6487e0a5f182acd9623728df66664e355472216fdad98545d9753cf5fa",
+      "bytes": 3486
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-003/observations/ack-request-1.json",
+      "sha256": "ae28ae272f4fe7743c121f5f8aacdc28026e29256bf9b4cdef31c0fa10ad08be",
+      "bytes": 13547
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-003/observations/ack-request-2.json",
+      "sha256": "75a66ca1f57c5a0569b4efc5ef1ef1fa14f0c09199e4fec650a354973eecfda7",
+      "bytes": 61
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-003/observations/request-2-times-r1.json",
+      "sha256": "b3c8518d4d2930f2d18c3066e9ace27038f7893d4ae3644a6d002d99b56a71d6",
+      "bytes": 5347
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-003/private-journal.jsonl",
+      "sha256": "a23ad153daa607b0fb416a9707a7339e2d828e812f8aeb588bcd7f000abf43d7",
+      "bytes": 258
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-003/private-display-states.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-package-003-historical/binding.json",
+      "sha256": "2f6239892695457b3ce8a12cc79e3e26e15714ef7365ec61a2ac3af43640d099",
+      "bytes": 1367
+    }
+  ],
+  "pending": [
+    "separate-source-bound-v8-numeric-and-root-representation-policies",
+    "complete-78-operation-max-capture",
+    "complete-native-max-comparison",
+    "whole-help-qualification"
+  ]
+}

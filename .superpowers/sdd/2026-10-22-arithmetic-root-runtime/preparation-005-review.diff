@@ -1,0 +1,736 @@
+--- historical004/arithmetic.py
++++ current005/arithmetic.py
+@@ -68,6 +68,11 @@
+ GEOMETRY_SOURCE = '1eea3861a1605453fb3ed4daa4660f71e175fb2cf16ce4c4098cb53c5b94d54b'
+ GEOMETRY_EVIDENCE = {'ack_sha256': '8a9b1405f0e5b6cc0706c57c54660777d73736eafb5281025fcd17f9f0addaeb', 'config_sha256': 'a6512b968a0637b93752b446ebfc5c4ab86f0cb6c006b22272ec52f9091c3cff', 'seal_sha256': '34634c43ab942f092fe2f2ccc66e4ea987ca9c5e78d7649cc7d026e728ab9070', 'manifest_sha256': '65ad2d5c90b185f4c89ca512274cf61682ab2ca9e939b79f52d8234e61c6c0b3', 'rea_evidence_id': 'ev_a9118e14891b1c344fa246dcb7663ea520d23df9c742ffc3dd450a6289a37098'}
+ TIMES_GEOMETRY_PINS = {'root/obj-3': {'runtime_class': 'js', 'changed_dimension': 3, 'source_box_sha256': 'c7355e6a1bd3aef210bfd59ead9d88a6faa6c3aaba8fb2eda9ccbaa5accf6ec9', 'source_text_sha256': '0ca81c69553c5299b7dc137769cb0887e0f1dc26c73bfe08c0e04891d8a99d02', 'saved_rect_sha256': '4814549a20cdea1cfbb09260659e96090b0f19f029fd07d1405c2a48d7288f69', 'live_rect_sha256': 'db4ae3c63db9fecef333bf4657bce3104026f6484bd5ab0edd0bc53c328ecd7e'}, 'root/obj-4': {'runtime_class': 'patcher', 'changed_dimension': 3, 'source_box_sha256': '339c2bd0981f0070983da5a867fef9356a4a992df87739ff60b05a946df309fc', 'source_text_sha256': '484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393', 'saved_rect_sha256': 'd354caae9baa0021746491027a9c4aa1da57065450298612fc0a7b77682b0ceb', 'live_rect_sha256': '6dff8399adb73f3c4d2f1e05a7407d37381968cd2b51bdbb9eb2cc5ee9f849d3'}, 'root/obj-4/obj-5': {'runtime_class': 'jsui', 'changed_dimension': 2, 'source_box_sha256': 'eb55b6bacadd9290ad4ee92a7d298d2145bb0c4107afc28a60405c9d40bfa247', 'source_text_sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'saved_rect_sha256': 'fc417b56433ec311af6d252074e5992d7ba6210f706e1ae5fd1f9982d385996c', 'live_rect_sha256': '9feebcd05aba863038f477eeded7fe885e0634d3e796d765969fdd55cecc478c'}, 'root/obj-1': {'runtime_class': 'patcher', 'changed_dimension': 3, 'source_box_sha256': 'ae8f1b27f351f9a4adb1997619d3b70f80666212c66402864934e5c5b753ab6e', 'source_text_sha256': 'bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a', 'saved_rect_sha256': 'd9aad27455a8969fb33a22e3689241f29c2d83d1eac360baf98c043f897e0e86', 'live_rect_sha256': '1b3974a5eef49edf4381887e103169ef36e333facb4d2ccab310ef62ea699926'}}
++# Capture004 plus-only identities; measured vectors remain private.
++PLUS_SOURCE = 'd1443c5af7ba8874c7b1d237e3d22bbe518970ad8ae85a09ec8f10494d084895'
++PLUS_EVIDENCE = {'ack_sha256': 'ed2fe5493d43ee8d00ee06cb76bd39bf5ddbbe00723e9b8ed62730ab66394cd6', 'config_sha256': 'cc06829fbbd1e0e89888152e0f2d4407df5a4e9a3817d7aa7e3a1a40e5ac74fb', 'seal_sha256': 'c3f37c41129eead48fc0f97597731d2c9e3ae3596746ee8d9551ee89d0426e5c', 'command_sha256': '7a53e382e6d67241fef6ac8e313f76986896991c789971b5f7c2d1b3cdf93261', 'manifest_sha256': '9b00b30ab36278e5e387bdac9deeb42364fdfa2948cf902be0a015488a04cd11', 'package_sha256': '22d237c6efd59c8aa87acad901da09028999e369d62c89deb1cc3fe646da177a', 'rea_evidence_id': 'ev_ebf222bc4a6c33847e6667ce57f8dffcf8eb185e38e981a0efbfee44492f47a1', 'audit_sha256': '925a70d2cda0811794b03eb8f59ff76127ccfed10c0c843b36f368550ba88c53'}
++PLUS_GEOMETRY_PINS = {'root/obj-1': {'source_box_sha256': 'c4af8c73939eab75ed8940ff6b03159859ca0a782cd411601e0ea594db29d8e2', 'source_text_sha256': 'e86f190fbc376badcc5d7b14a552d4e84fad436e0789bb2c7cc221fa38bf9390', 'saved_rect_sha256': '7c282ca427b38aa6bf81f9155d70ce5720fd0f12f6ab4ef4da21f6441c947cd6', 'runtime_class': 'js', 'changed_dimension': 3, 'live_rect_sha256': 'da868357a7d43088775aeb0784d73cae93002d63fcabbd3ceddd53521cd20e84'}, 'root/obj-2': {'source_box_sha256': 'bbc5fe757f0ef027839d4a09709a97b50451ae9a5fec7d7f38aa810d53ce9f92', 'source_text_sha256': '484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393', 'saved_rect_sha256': 'd354caae9baa0021746491027a9c4aa1da57065450298612fc0a7b77682b0ceb', 'runtime_class': 'patcher', 'changed_dimension': 3, 'live_rect_sha256': '6dff8399adb73f3c4d2f1e05a7407d37381968cd2b51bdbb9eb2cc5ee9f849d3'}, 'root/obj-2/obj-4': {'source_box_sha256': 'd9b8da7ef51019bd5837726c704eda09de39cffe89f08bd61e32811cde5acd0f', 'source_text_sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'saved_rect_sha256': 'a421ba89c6cd1917427e84dbab006bf66255f8cf04f84b0b83de8c6c6b4646d2', 'runtime_class': 'jsui', 'changed_dimension': 2, 'live_rect_sha256': 'ef478f664cd641a901af80ccc3be0b0f9a1388d863a267d636bdb72fd1a5908a'}, 'root/obj-3': {'source_box_sha256': '310417ef44ee7139be2082fc5bbc63c5a65dfa5d10ab54894b29fe164b84c100', 'source_text_sha256': 'bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a', 'saved_rect_sha256': 'd9aad27455a8969fb33a22e3689241f29c2d83d1eac360baf98c043f897e0e86', 'runtime_class': 'patcher', 'changed_dimension': 3, 'live_rect_sha256': '1b3974a5eef49edf4381887e103169ef36e333facb4d2ccab310ef62ea699926'}}
++PLUS_NUMERIC_PINS = {'root/obj-2/obj-1': {'source_box_sha256': 'c873e45cc1ebc4c71b93a736b509fc0f622d4764df74edb3a21f5bad4d999a78', 'source_text_sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'saved_rect_sha256': '97bd3d008866faa2c6cdc5bf0de64333c64bd29bf79bae29b6ae070ec6823267'}, 'root/obj-2/obj-24': {'source_box_sha256': 'd84cf4a6a5daa8db1d4b2616b5c1f94385a15d274a80be64ca07ddcb728d8cb3', 'source_text_sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'saved_rect_sha256': '14acfb0d484e461a00397ecfb34329cfe8167d5e47b6360edbd54f0fabbd91bc'}, 'root/obj-2/obj-23': {'source_box_sha256': '5b0e92ade41a0633d5d5dc178c9fd1ebc519f7014d331e4a924afff0dfe07982', 'source_text_sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'saved_rect_sha256': '38b2cd4242257c9f9802ef997eccb7d32e451c1b05f37868136baa42fb89636c'}}
+ TIMES_NUMERIC_PINS = {'root/obj-4/obj-1': '3c1b5b23cac75bca82bf1aa6c7c161ca91e8e050d41c2fed4549959291d45360', 'root/obj-4/obj-24': 'd46ddd6aff2b7184bce9a8b1218416dcb47db543026c78a533139b289cb73b42', 'root/obj-4/obj-23': 'f122ac20a6bf9ecec78a24a73a0cbd911d938b441439337f9298ae4dfbcc853c'}
+ NUMERIC_REPRESENTATION_EVIDENCE = {'ack_sha256': '47764e9dac8f1ec69514509e22e93849e6d8d9a13783c60843757d8a0a3fb22a',
+     'config_sha256': '801e50b51d1055791cc07221776ebeaf1c1d755088a36c86d05722a3cfb94ec3',
+@@ -275,18 +280,21 @@
+ 
+ 
+ def validate_geometry_policy(document, box, policy):
+-    pin = TIMES_GEOMETRY_PINS.get(box.get('anchor'))
+-    if (not pin or document.get('document') != 'times' or document.get('source_sha256') != GEOMETRY_SOURCE or
++    plus = document.get('document') == 'plus'
++    name, source, pins, evidence = ('plus', PLUS_SOURCE, PLUS_GEOMETRY_PINS, PLUS_EVIDENCE) if plus else ('times', GEOMETRY_SOURCE, TIMES_GEOMETRY_PINS, GEOMETRY_EVIDENCE)
++    pin = pins.get(box.get('anchor'))
++    if (not pin or document.get('document') != name or document.get('source_sha256') != source or
+         document.get('helper_sha256') != HELPERS or type(policy) is not dict):
+         raise ValueError('Unobserved arithmetic geometry source or anchor')
+-    expected = dict(kind='times-observed-geometry-v1', document='times', source_sha256=GEOMETRY_SOURCE,
++    expected = dict(kind=name + '-observed-geometry-v1', document=name, source_sha256=source,
+         anchor=box['anchor'], runtime_class=pin['runtime_class'], changed_dimension=pin['changed_dimension'],
+         source_box_sha256=pin['source_box_sha256'], source_text_sha256=pin['source_text_sha256'],
+         saved_rect=box['rect'], live_rect=policy.get('live_rect'), saved_rect_sha256=pin['saved_rect_sha256'],
+-        live_rect_sha256=pin['live_rect_sha256'], helper_sha256=dict(HELPERS), evidence=dict(GEOMETRY_EVIDENCE),
++        live_rect_sha256=pin['live_rect_sha256'], helper_sha256=dict(HELPERS), evidence=dict(evidence),
+         saved_incoming_routes=0, saved_outgoing_routes=0)
+     saved = common.finite_rectangle(box['rect']); live = common.finite_rectangle(policy.get('live_rect'))
+     if (canonical(expected) != canonical(policy) or box.get('runtime_class') != pin['runtime_class'] or
++        (plus and box.get('maxclass') != ('jsui' if pin['runtime_class'] == 'jsui' else 'newobj')) or
+         box.get('source_box_sha256') != pin['source_box_sha256'] or box.get('source_text_sha256') != pin['source_text_sha256'] or
+         box.get('saved_incoming_routes') != 0 or box.get('saved_outgoing_routes') != 0 or
+         geometry_vector_digest(saved) != pin['saved_rect_sha256'] or
+@@ -331,6 +339,75 @@
+             geometry_vector_digest(live) != pin['live_rect_sha256']):
+             raise ValueError('Capture001 exact geometry vector changed')
+         result[anchor] = live
++    return result
++
++
++def load_plus_measurements():
++    """Read immutable004 privately; class-only numeric evidence grants no admission."""
++    work = Path.home() / '.cache/alive-ultra-evidence/arithmetic-max-runtime-004'
++    names = {'config': 'config.json', 'seal': 'seal.json', 'command': 'command.json', 'ack': 'observations/ack-request-51.json'}
++    payloads = {key: read_private(work, work / name) for key, name in names.items()}
++    for key, payload in payloads.items():
++        if hashlib.sha256(payload).hexdigest() != PLUS_EVIDENCE[key + '_sha256']:
++            raise ValueError('Immutable capture004 plus evidence changed')
++    manifest = ROOT / 'preparation-manifest-arithmetic004.json'
++    audit = REPO / '.superpowers/sdd/2026-10-22-arithmetic-root-runtime/capture-004-audit.md'
++    if (manifest.is_symlink() or audit.is_symlink() or digest(manifest) != PLUS_EVIDENCE['manifest_sha256'] or
++        digest(audit) != PLUS_EVIDENCE['audit_sha256']):
++        raise ValueError('Historical capture004 manifest or audit changed')
++    config, seal, command, ack = (parse_json(payloads[key]) for key in ('config', 'seal', 'command', 'ack'))
++    binding = seal.get('package_binding', {})
++    if (config.get('work') != str(work) or len(config.get('helpers', [])) != 4 or
++        {h['name']: h['sha256'] for h in config['helpers']} != HELPERS or
++        binding.get('package_sha256') != PLUS_EVIDENCE['package_sha256'] or
++        config.get('package_sha256') != binding.get('package_files') or
++        parse_json(manifest.read_bytes()).get('package_binding') != binding):
++        raise ValueError('Capture004 plus helper or package binding changed')
++    for name, sha in seal['files'].items():
++        if hashlib.sha256(read_private(work, work / name)).hexdigest() != sha:
++            raise ValueError('Historical capture004 sealed bytes changed')
++    definitions = [d for d in config['documents'] if d.get('document') == 'plus' and d.get('revision') == 1]
++    if len(definitions) != 1 or definitions[0].get('source_sha256') != PLUS_SOURCE:
++        raise ValueError('Capture004 exact plus revision1 source required')
++    definition = definitions[0]
++    wanted_command = dict(command_id=51, op='operation', action='install', action_revision=1,
++        document='plus', revision=1, source_sha256=PLUS_SOURCE, step_id='install-plus-r1')
++    if (canonical(command) != canonical(wanted_command) or ack.get('command_id') != 51 or ack.get('success') is not False or
++        any(ack.get(key) != [] for key in ('geometry_dispositions', 'numeric_mode_observations', 'controller_representation_observations')) or
++        definition.get('helper_sha256') != HELPERS or definition.get('lifecycle_owner_inlet') != 2):
++        raise ValueError('Capture004 plus install identity or observation changed')
++    source = read_private(work, definition['pristine_path'])
++    if hashlib.sha256(source).hexdigest() != PLUS_SOURCE: raise ValueError('Capture004 plus pristine source changed')
++    boxes, inventory, edges = source_inventory('plus', parse_json(source)['patcher'], config['helpers'])
++    if (canonical(boxes) != canonical(definition['boxes']) or canonical(inventory) != canonical(definition['full_inventory']) or
++        canonical(edges) != canonical(definition['saved_edges'])):
++        raise ValueError('Capture004 plus saved inventory changed')
++    diagnostics = ack.get('anchor_diagnostics', [])
++    if Counter(r.get('expected_anchor') for r in diagnostics) != Counter(list(PLUS_GEOMETRY_PINS) + list(PLUS_NUMERIC_PINS)):
++        raise ValueError('Capture004 exact seven plus diagnostics required')
++    result = {}
++    for row in diagnostics:
++        anchor = row['expected_anchor']; originals = [b for b in inventory if b['anchor'] == anchor]
++        if len(originals) != 1: raise ValueError('Capture004 plus source anchor not unique')
++        b = originals[0]; geo = anchor in PLUS_GEOMETRY_PINS
++        pin = (PLUS_GEOMETRY_PINS if geo else PLUS_NUMERIC_PINS)[anchor]
++        saved = common.finite_rectangle(row['expected_rect'])
++        candidates = [c for c in row['candidates'] if c.get('rect', [])[:2] == saved[:2]]
++        if (set(row) != {'expected_anchor', 'expected_rect', 'expected_maxclass', 'expected_runtime_class', 'candidates'} or
++            row['expected_maxclass'] != b['maxclass'] or row['expected_runtime_class'] != b['runtime_class'] or
++            saved != b['rect'] or len(candidates) != 1 or
++            candidates[0].get('maxclass') != (pin['runtime_class'] if geo else 'number') or
++            b.get('source_box_sha256') != pin['source_box_sha256'] or b.get('source_text_sha256') != pin['source_text_sha256'] or
++            geometry_vector_digest(saved) != pin['saved_rect_sha256']):
++            raise ValueError('Capture004 plus exact source or candidate binding changed')
++        live = common.finite_rectangle(candidates[0]['rect'])
++        if geo:
++            policy = dict(kind='plus-observed-geometry-v1', document='plus', source_sha256=PLUS_SOURCE,
++                anchor=anchor, **pin, saved_rect=b['rect'], live_rect=live, helper_sha256=dict(HELPERS),
++                evidence=dict(PLUS_EVIDENCE), saved_incoming_routes=0, saved_outgoing_routes=0)
++            validate_geometry_policy(definition, b, policy); result[anchor] = live
++        elif b['maxclass'] != 'flonum' or b['runtime_class'] != 'flonum' or live != saved:
++            raise ValueError('Capture004 plus numeric class-only evidence changed')
+     return result
+ 
+ 
+@@ -789,21 +866,24 @@
+         definition = dict(document=document, source_sha256=source, source_path=str(path.resolve()),
+             basic_varname='basic_tab', basic_anchor=BASIC[document], boxes=boxes, saved_edges=edges,
+             full_inventory=inventory, helper_sha256=dict(HELPERS))
+-        if document == 'times' and source == GEOMETRY_SOURCE:
+-            measured = load_geometry_measurements()
++        if (document == 'times' and source == GEOMETRY_SOURCE) or (document == 'plus' and source == PLUS_SOURCE):
++            pins = PLUS_GEOMETRY_PINS if document == 'plus' else TIMES_GEOMETRY_PINS
++            evidence = PLUS_EVIDENCE if document == 'plus' else GEOMETRY_EVIDENCE
++            measured = load_plus_measurements() if document == 'plus' else load_geometry_measurements()
+             for entry in inventory:
+-                pin = TIMES_GEOMETRY_PINS.get(entry['anchor'])
++                pin = pins.get(entry['anchor'])
+                 if pin is None: continue
+-                policy = dict(kind='times-observed-geometry-v1', document='times', source_sha256=GEOMETRY_SOURCE,
++                policy = dict(kind=document + '-observed-geometry-v1', document=document, source_sha256=source,
+                     anchor=entry['anchor'], runtime_class=pin['runtime_class'], changed_dimension=pin['changed_dimension'],
+                     source_box_sha256=pin['source_box_sha256'], source_text_sha256=pin['source_text_sha256'],
+                     saved_rect=entry['rect'], live_rect=measured[entry['anchor']], saved_rect_sha256=pin['saved_rect_sha256'],
+-                    live_rect_sha256=pin['live_rect_sha256'], helper_sha256=dict(HELPERS), evidence=dict(GEOMETRY_EVIDENCE),
++                    live_rect_sha256=pin['live_rect_sha256'], helper_sha256=dict(HELPERS), evidence=dict(evidence),
+                     saved_incoming_routes=0, saved_outgoing_routes=0)
+                 entry['observed_geometry_policy'] = validate_geometry_policy(definition, entry, policy)
+                 for box in boxes:
+                     if box['anchor'] == entry['anchor']:
+                         box.update(observed_geometry_policy=copy.deepcopy(policy), saved_incoming_routes=0, saved_outgoing_routes=0)
++        if document == 'times' and source == GEOMETRY_SOURCE:
+             observed_numeric = load_numeric_representation_measurements()
+             for box in boxes:
+                 if box['anchor'] not in NUMERIC_REPRESENTATION_PINS: continue
+--- historical004/controller.js
++++ current005/controller.js
+@@ -4,6 +4,7 @@
+ var ticker, pollTask, startupTask;
+ var anchorDiagnostics=[], geometryDispositions=[], numericModeObservations=[],controllerRepresentationObservations=[];
+ var closeDiagnostics=null;
++var plusPreflightContext=null;
+ function read(path) {
+     var f=new File(path,"read"),text="";
+     if (!f.isopen) return null;
+@@ -66,6 +67,11 @@
+ var GEOMETRY_HELPERS={"helpstarter.js":"a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8","helpname.js":"49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa","helpdetails.js":"31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1","helpargs.js":"04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"};
+ var GEOMETRY_EVIDENCE={"ack_sha256":"8a9b1405f0e5b6cc0706c57c54660777d73736eafb5281025fcd17f9f0addaeb","config_sha256":"a6512b968a0637b93752b446ebfc5c4ab86f0cb6c006b22272ec52f9091c3cff","seal_sha256":"34634c43ab942f092fe2f2ccc66e4ea987ca9c5e78d7649cc7d026e728ab9070","manifest_sha256":"65ad2d5c90b185f4c89ca512274cf61682ab2ca9e939b79f52d8234e61c6c0b3","rea_evidence_id":"ev_a9118e14891b1c344fa246dcb7663ea520d23df9c742ffc3dd450a6289a37098"};
+ var TIMES_GEOMETRY_PINS={"root/obj-3":{"runtime_class":"js","changed_dimension":3,"source_box_sha256":"c7355e6a1bd3aef210bfd59ead9d88a6faa6c3aaba8fb2eda9ccbaa5accf6ec9","source_text_sha256":"0ca81c69553c5299b7dc137769cb0887e0f1dc26c73bfe08c0e04891d8a99d02","saved_rect_sha256":"4814549a20cdea1cfbb09260659e96090b0f19f029fd07d1405c2a48d7288f69","live_rect_sha256":"db4ae3c63db9fecef333bf4657bce3104026f6484bd5ab0edd0bc53c328ecd7e"},"root/obj-4":{"runtime_class":"patcher","changed_dimension":3,"source_box_sha256":"339c2bd0981f0070983da5a867fef9356a4a992df87739ff60b05a946df309fc","source_text_sha256":"484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393","saved_rect_sha256":"d354caae9baa0021746491027a9c4aa1da57065450298612fc0a7b77682b0ceb","live_rect_sha256":"6dff8399adb73f3c4d2f1e05a7407d37381968cd2b51bdbb9eb2cc5ee9f849d3"},"root/obj-4/obj-5":{"runtime_class":"jsui","changed_dimension":2,"source_box_sha256":"eb55b6bacadd9290ad4ee92a7d298d2145bb0c4107afc28a60405c9d40bfa247","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"fc417b56433ec311af6d252074e5992d7ba6210f706e1ae5fd1f9982d385996c","live_rect_sha256":"9feebcd05aba863038f477eeded7fe885e0634d3e796d765969fdd55cecc478c"},"root/obj-1":{"runtime_class":"patcher","changed_dimension":3,"source_box_sha256":"ae8f1b27f351f9a4adb1997619d3b70f80666212c66402864934e5c5b753ab6e","source_text_sha256":"bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a","saved_rect_sha256":"d9aad27455a8969fb33a22e3689241f29c2d83d1eac360baf98c043f897e0e86","live_rect_sha256":"1b3974a5eef49edf4381887e103169ef36e333facb4d2ccab310ef62ea699926"}};
++// Capture004 plus-only identities; measured vectors remain private.
++var PLUS_SOURCE="d1443c5af7ba8874c7b1d237e3d22bbe518970ad8ae85a09ec8f10494d084895";
++var PLUS_EVIDENCE={"ack_sha256":"ed2fe5493d43ee8d00ee06cb76bd39bf5ddbbe00723e9b8ed62730ab66394cd6","config_sha256":"cc06829fbbd1e0e89888152e0f2d4407df5a4e9a3817d7aa7e3a1a40e5ac74fb","seal_sha256":"c3f37c41129eead48fc0f97597731d2c9e3ae3596746ee8d9551ee89d0426e5c","command_sha256":"7a53e382e6d67241fef6ac8e313f76986896991c789971b5f7c2d1b3cdf93261","manifest_sha256":"9b00b30ab36278e5e387bdac9deeb42364fdfa2948cf902be0a015488a04cd11","package_sha256":"22d237c6efd59c8aa87acad901da09028999e369d62c89deb1cc3fe646da177a","rea_evidence_id":"ev_ebf222bc4a6c33847e6667ce57f8dffcf8eb185e38e981a0efbfee44492f47a1","audit_sha256":"925a70d2cda0811794b03eb8f59ff76127ccfed10c0c843b36f368550ba88c53"};
++var PLUS_GEOMETRY_PINS={"root/obj-1":{"source_box_sha256":"c4af8c73939eab75ed8940ff6b03159859ca0a782cd411601e0ea594db29d8e2","source_text_sha256":"e86f190fbc376badcc5d7b14a552d4e84fad436e0789bb2c7cc221fa38bf9390","saved_rect_sha256":"7c282ca427b38aa6bf81f9155d70ce5720fd0f12f6ab4ef4da21f6441c947cd6","runtime_class":"js","changed_dimension":3,"live_rect_sha256":"da868357a7d43088775aeb0784d73cae93002d63fcabbd3ceddd53521cd20e84"},"root/obj-2":{"source_box_sha256":"bbc5fe757f0ef027839d4a09709a97b50451ae9a5fec7d7f38aa810d53ce9f92","source_text_sha256":"484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393","saved_rect_sha256":"d354caae9baa0021746491027a9c4aa1da57065450298612fc0a7b77682b0ceb","runtime_class":"patcher","changed_dimension":3,"live_rect_sha256":"6dff8399adb73f3c4d2f1e05a7407d37381968cd2b51bdbb9eb2cc5ee9f849d3"},"root/obj-2/obj-4":{"source_box_sha256":"d9b8da7ef51019bd5837726c704eda09de39cffe89f08bd61e32811cde5acd0f","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"a421ba89c6cd1917427e84dbab006bf66255f8cf04f84b0b83de8c6c6b4646d2","runtime_class":"jsui","changed_dimension":2,"live_rect_sha256":"ef478f664cd641a901af80ccc3be0b0f9a1388d863a267d636bdb72fd1a5908a"},"root/obj-3":{"source_box_sha256":"310417ef44ee7139be2082fc5bbc63c5a65dfa5d10ab54894b29fe164b84c100","source_text_sha256":"bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a","saved_rect_sha256":"d9aad27455a8969fb33a22e3689241f29c2d83d1eac360baf98c043f897e0e86","runtime_class":"patcher","changed_dimension":3,"live_rect_sha256":"1b3974a5eef49edf4381887e103169ef36e333facb4d2ccab310ef62ea699926"}};
++var PLUS_NUMERIC_PINS={"root/obj-2/obj-1":{"source_box_sha256":"c873e45cc1ebc4c71b93a736b509fc0f622d4764df74edb3a21f5bad4d999a78","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"97bd3d008866faa2c6cdc5bf0de64333c64bd29bf79bae29b6ae070ec6823267"},"root/obj-2/obj-24":{"source_box_sha256":"d84cf4a6a5daa8db1d4b2616b5c1f94385a15d274a80be64ca07ddcb728d8cb3","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"14acfb0d484e461a00397ecfb34329cfe8167d5e47b6360edbd54f0fabbd91bc"},"root/obj-2/obj-23":{"source_box_sha256":"5b0e92ade41a0633d5d5dc178c9fd1ebc519f7014d331e4a924afff0dfe07982","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"38b2cd4242257c9f9802ef997eccb7d32e451c1b05f37868136baa42fb89636c"}};
+ var TIMES_NUMERIC_PINS={"root/obj-4/obj-1":"3c1b5b23cac75bca82bf1aa6c7c161ca91e8e050d41c2fed4549959291d45360","root/obj-4/obj-24":"d46ddd6aff2b7184bce9a8b1218416dcb47db543026c78a533139b289cb73b42","root/obj-4/obj-23":"f122ac20a6bf9ecec78a24a73a0cbd911d938b441439337f9298ae4dfbcc853c"};
+ var NUMERIC_REPRESENTATION_EVIDENCE={"ack_sha256":"47764e9dac8f1ec69514509e22e93849e6d8d9a13783c60843757d8a0a3fb22a","config_sha256":"801e50b51d1055791cc07221776ebeaf1c1d755088a36c86d05722a3cfb94ec3","seal_sha256":"cdfd0f740b0705af080b6bff21d7ace7004bb94bc0713addd99e1eebf84b084d","manifest_sha256":"40bca79b06ddbbcd8644fca527e4240fab68f79b7acc8b526a6467399c562616","rea_evidence_id":"ev_51b14ef10881b6c5b881216a7fd4fa1b0f0c5c5e8bc05f75694dcbc9c4426d5d"};
+ var NUMERIC_REPRESENTATION_PINS={"root/obj-4/obj-1":{"source_box_sha256":"3c1b5b23cac75bca82bf1aa6c7c161ca91e8e050d41c2fed4549959291d45360","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"be69f9cbfae7d8916a7697c10b45556c60dab2bf806f472f39a1f743c6b71562","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"},"root/obj-4/obj-24":{"source_box_sha256":"d46ddd6aff2b7184bce9a8b1218416dcb47db543026c78a533139b289cb73b42","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"3ae5be738626430c7205dcb01a2fba671d0f93a83677c43e9ba362422cdd0754","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"},"root/obj-4/obj-23":{"source_box_sha256":"f122ac20a6bf9ecec78a24a73a0cbd911d938b441439337f9298ae4dfbcc853c","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"6172628b9bf9e972a77a1773539e5ffe75c0b592876ec787c48026a2e90b89f2","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"}};
+@@ -115,18 +121,20 @@
+ }
+ function observedGeometryPolicy(expected,definition,configuration) {
+     var policy=expected.observed_geometry_policy;if(typeof policy==="undefined")return null;
+-    var pin=TIMES_GEOMETRY_PINS[expected.anchor],configured={};
+-    if(!pin||!definition||definition.document!=="times"||definition.source_sha256!==GEOMETRY_SOURCE||
++    var plus=definition&&definition.document==="plus",name=plus?"plus":"times",source=plus?PLUS_SOURCE:GEOMETRY_SOURCE;
++    var pin=(plus?PLUS_GEOMETRY_PINS:TIMES_GEOMETRY_PINS)[expected.anchor],evidence=plus?PLUS_EVIDENCE:GEOMETRY_EVIDENCE,configured={};
++    if(!pin||!definition||definition.document!==name||definition.source_sha256!==source||
+         !sameData(definition.helper_sha256,GEOMETRY_HELPERS)||!configuration||!configuration.helpers||configuration.helpers.length!==4)
+         throw Error("unobserved-arithmetic-geometry-binding");
+     for(var index=0;index<configuration.helpers.length;index++){var helper=configuration.helpers[index];configured[helper.name]=helper.sha256;}
+-    var wanted={kind:"times-observed-geometry-v1",document:"times",source_sha256:GEOMETRY_SOURCE,
++    var wanted={kind:name+"-observed-geometry-v1",document:name,source_sha256:source,
+         anchor:expected.anchor,runtime_class:pin.runtime_class,changed_dimension:pin.changed_dimension,
+         source_box_sha256:pin.source_box_sha256,source_text_sha256:pin.source_text_sha256,
+         saved_rect:expected.rect,live_rect:policy.live_rect,saved_rect_sha256:pin.saved_rect_sha256,
+-        live_rect_sha256:pin.live_rect_sha256,helper_sha256:GEOMETRY_HELPERS,evidence:GEOMETRY_EVIDENCE,
++        live_rect_sha256:pin.live_rect_sha256,helper_sha256:GEOMETRY_HELPERS,evidence:evidence,
+         saved_incoming_routes:0,saved_outgoing_routes:0};
+     if(!sameData(policy,wanted)||!sameData(configured,GEOMETRY_HELPERS)||expected.runtime_class!==pin.runtime_class||
++        (plus&&expected.maxclass!==(pin.runtime_class==="jsui"?"jsui":"newobj"))||
+         expected.source_box_sha256!==pin.source_box_sha256||expected.source_text_sha256!==pin.source_text_sha256||
+         expected.saved_incoming_routes!==0||expected.saved_outgoing_routes!==0||
+         !Array.isArray(policy.live_rect)||policy.live_rect.length!==4||!Array.isArray(expected.rect)||expected.rect.length!==4)
+@@ -157,18 +165,49 @@
+     if(!isFinite(value)){result.representation="nonfinite";return result;}
+     result.value=value;return result;
+ }
++function plusNumericPreflightBinding(object,expected,definition,root) {
++    var pin=PLUS_NUMERIC_PINS[expected.anchor],configured={},revision=definition&&definition.revision;
++    if(config&&Array.isArray(config.helpers)&&config.helpers.length===4)for(var i=0;i<config.helpers.length;i++)
++        configured[config.helpers[i].name]=config.helpers[i].sha256;
++    var owner=config&&config.lifecycle&&config.lifecycle.owners&&definition&&config.lifecycle.owners[definition.lifecycle_owner_inlet];
++    var documents=config&&Array.isArray(config.documents)?config.documents.filter(function(d){return d.document==="plus"&&d.revision===revision;}):[];
++    var originals=definition&&Array.isArray(definition.full_inventory)?definition.full_inventory.filter(function(b){return b.anchor===expected.anchor;}):[];
++    if(!pin||!definition||definition.document!=="plus"||definition.source_sha256!==PLUS_SOURCE||
++        !sameData(definition.helper_sha256,GEOMETRY_HELPERS)||!sameData(configured,GEOMETRY_HELPERS)||
++        (revision!==1&&revision!==2)||definition.lifecycle_owner_inlet!==revision+1||
++        !owner||owner.document!=="plus"||owner.revision!==revision||owner.source_sha256!==PLUS_SOURCE||
++        typeof definition.working_windows_path!=="string"||!definition.working_windows_path||
++        !root||!samePath(root.filepath,definition.working_windows_path)||
++        owner.working_path!==definition.working_windows_path||documents.length!==1||
++        documents[0].source_sha256!==PLUS_SOURCE||documents[0].working_windows_path!==definition.working_windows_path||
++        documents[0].lifecycle_owner_inlet!==definition.lifecycle_owner_inlet||originals.length!==1||!sameData(originals[0],expected)||
++        expected.maxclass!=="flonum"||expected.runtime_class!=="flonum"||!sameData(expected.runtime_classes,["flonum"])||
++        expected.source_box_sha256!==pin.source_box_sha256||expected.source_text_sha256!==pin.source_text_sha256||
++        geometryVectorHash(expected.rect)!==pin.saved_rect_sha256||object.maxclass!=="number"||
++        !sameNumbers(object.getboxattr("patching_rect"),expected.rect)||!shared||shared.action!=="install"||
++        shared.action_document!=="plus"||shared.action_revision!==revision||shared.step_id!=="install-plus-r"+revision||
++        !finite(shared.request_id)||shared.request_id<1||Math.floor(shared.request_id)!==shared.request_id)
++        throw Error("unobserved-plus-numeric-preflight-binding");
++}
+ function numericPreflightObservation(object,expected,definition) {
+-    var configured={};
+-    if(config&&config.helpers&&config.helpers.length===4)for(var i=0;i<config.helpers.length;i++)
+-        configured[config.helpers[i].name]=config.helpers[i].sha256;
+-    if(!definition||definition.document!=="times"||definition.source_sha256!==GEOMETRY_SOURCE||
+-        !sameData(definition.helper_sha256,GEOMETRY_HELPERS)||!sameData(configured,GEOMETRY_HELPERS)||
+-        expected.maxclass!=="flonum"||expected.runtime_class!=="flonum"||object.maxclass!=="number"||
+-        expected.source_box_sha256!==TIMES_NUMERIC_PINS[expected.anchor]||!TIMES_NUMERIC_PINS[expected.anchor]||
+-        !sameNumbers(object.getboxattr("patching_rect"),expected.rect)||!shared||shared.action!=="install"||
+-        shared.action_document!==definition.document||shared.action_revision!==definition.revision||
+-        typeof shared.request_id!=="number"||shared.request_id<1||Math.floor(shared.request_id)!==shared.request_id||
+-        typeof shared.step_id!=="string")throw Error("unobserved-numeric-preflight-binding");
++    if(definition&&definition.document==="plus") {
++        if(!plusPreflightContext||plusPreflightContext.definition!==definition||
++            !plusPreflightContext.candidates.some(function(row){return row.object===object&&row.expected===expected;}))
++            throw Error("incomplete-plus-numeric-preflight-inventory");
++        plusNumericPreflightBinding(object,expected,definition,plusPreflightContext.root);
++    }else{
++        var configured={};
++        if(config&&config.helpers&&config.helpers.length===4)for(var i=0;i<config.helpers.length;i++)
++            configured[config.helpers[i].name]=config.helpers[i].sha256;
++        if(!definition||definition.document!=="times"||definition.source_sha256!==GEOMETRY_SOURCE||
++            !sameData(definition.helper_sha256,GEOMETRY_HELPERS)||!sameData(configured,GEOMETRY_HELPERS)||
++            expected.maxclass!=="flonum"||expected.runtime_class!=="flonum"||object.maxclass!=="number"||
++            expected.source_box_sha256!==TIMES_NUMERIC_PINS[expected.anchor]||!TIMES_NUMERIC_PINS[expected.anchor]||
++            !sameNumbers(object.getboxattr("patching_rect"),expected.rect)||!shared||shared.action!=="install"||
++            shared.action_document!==definition.document||shared.action_revision!==definition.revision||
++            typeof shared.request_id!=="number"||shared.request_id<1||Math.floor(shared.request_id)!==shared.request_id||
++            typeof shared.step_id!=="string")throw Error("unobserved-numeric-preflight-binding");
++    }
+     return {anchor:expected.anchor,document:definition.document,revision:definition.revision,
+         source_sha256:definition.source_sha256,source_box_sha256:expected.source_box_sha256,
+         request_id:shared.request_id,step_id:shared.step_id,operation_action:"install",
+@@ -236,7 +275,7 @@
+         row.value_observation.value!==expected.initial_numeric)throw Error("controller-numeric-live-representation-refused");
+     return row;
+ }
+-function resolve(patcher,expected,definition,dispositions) {
++function resolve(patcher,expected,definition,dispositions,plusCandidates) {
+     var forbidden=["annotation_width_policy","observer_policy","shell_height_policy","annotation_geometry_policy","numeric_mode_policy"];
+     for(var i=0;i<forbidden.length;i++)if(typeof expected[forbidden[i]]!=="undefined")
+         throw Error("arithmetic-policy-not-admitted");
+@@ -255,6 +294,9 @@
+         if(!representation&&found.length===1&&definition&&definition.document==="times"&&definition.source_sha256===GEOMETRY_SOURCE&&
+             expected.maxclass==="flonum"&&found[0].maxclass==="number"&&TIMES_NUMERIC_PINS[expected.anchor])
+             diagnostic.numeric_preflight_observation=numericPreflightObservation(found[0],expected,definition);
++        if(plusCandidates&&found.length===1&&definition&&definition.document==="plus"&&definition.source_sha256===PLUS_SOURCE&&
++            expected.maxclass==="flonum"&&found[0].maxclass==="number"&&PLUS_NUMERIC_PINS[expected.anchor])
++            plusCandidates.push({object:found[0],expected:expected,diagnostic:diagnostic});
+         anchorDiagnostics.push(diagnostic);throw Error("strict-original-geometry-class-unavailable");
+     }
+     if(representation)controllerNumericRepresentationObservation(found[0],expected,definition);
+@@ -276,6 +318,7 @@
+ }
+ function validateTree(patcher,definition) {
+     anchorDiagnostics=[];geometryDispositions=[];numericModeObservations=[];controllerRepresentationObservations=[];
++    plusPreflightContext=null;var plusCandidates=[];
+     var actualTotal=tree(patcher).length;
+     if(actualTotal!==definition.full_inventory.length)anchorDiagnostics.push({scope:"root",diagnostic_type:"tree-count",
+         expected_count:definition.full_inventory.length,actual_count:actualTotal});
+@@ -293,7 +336,7 @@
+             expected_count:expected.length,actual_count:actual});
+         for(var i=0;i<expected.length;i++) {
+             var b=expected[i],object=null,before=anchorDiagnostics.length;
+-            try{object=resolve(p,b,definition,geometryDispositions);}catch(error){
++            try{object=resolve(p,b,definition,geometryDispositions,plusCandidates);}catch(error){
+                 if(anchorDiagnostics.length===before)anchorDiagnostics.push({expected_anchor:b.anchor,
+                     expected_rect:b.rect,expected_runtime_class:b.runtime_class,diagnostic_type:"invalid-anchor-binding",
+                     numeric_mode_observation:error.numeric_mode_observation||null});
+@@ -308,6 +351,30 @@
+         }
+     }
+     scope(patcher,"root");
++    // Defer plus getters until the entire inventory and all three bindings are checked.
++    if(definition.document==="plus"&&actualTotal===20&&definition.full_inventory.length===20&&
++        anchorDiagnostics.length===3&&plusCandidates.length===3) {
++        var ready=true,anchors={};
++        try{
++            for(var anchor in PLUS_GEOMETRY_PINS) {
++                var originals=definition.full_inventory.filter(function(b){return b.anchor===anchor;});
++                if(originals.length!==1||!originals[0].observed_geometry_policy)
++                    throw Error("incomplete-plus-geometry-evidence");
++                observedGeometryPolicy(originals[0],definition,config);
++            }
++            for(var i=0;i<plusCandidates.length;i++) {
++                var row=plusCandidates[i];if(anchors[row.expected.anchor])throw Error("duplicate-plus-preflight-anchor");
++                anchors[row.expected.anchor]=true;plusNumericPreflightBinding(row.object,row.expected,definition,patcher);
++            }
++        }catch(error){ready=false;}
++        if(ready) {
++            plusPreflightContext={definition:definition,candidates:plusCandidates,root:patcher};
++            try{for(var i=0;i<plusCandidates.length;i++) {
++                var row=plusCandidates[i];
++                row.diagnostic.numeric_preflight_observation=numericPreflightObservation(row.object,row.expected,definition);
++            }}finally{plusPreflightContext=null;}
++        }
++    }
+     if(anchorDiagnostics.length)throw Error("aggregate-original-hierarchy-preflight-failed");
+ }
+ function dispatch(object,message) {
+--- historical004/v8-readback.js
++++ current005/v8-readback.js
+@@ -61,6 +61,10 @@
+ var GEOMETRY_HELPERS={"helpstarter.js":"a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8","helpname.js":"49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa","helpdetails.js":"31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1","helpargs.js":"04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"};
+ var GEOMETRY_EVIDENCE={"ack_sha256":"8a9b1405f0e5b6cc0706c57c54660777d73736eafb5281025fcd17f9f0addaeb","config_sha256":"a6512b968a0637b93752b446ebfc5c4ab86f0cb6c006b22272ec52f9091c3cff","seal_sha256":"34634c43ab942f092fe2f2ccc66e4ea987ca9c5e78d7649cc7d026e728ab9070","manifest_sha256":"65ad2d5c90b185f4c89ca512274cf61682ab2ca9e939b79f52d8234e61c6c0b3","rea_evidence_id":"ev_a9118e14891b1c344fa246dcb7663ea520d23df9c742ffc3dd450a6289a37098"};
+ var TIMES_GEOMETRY_PINS={"root/obj-3":{"runtime_class":"js","changed_dimension":3,"source_box_sha256":"c7355e6a1bd3aef210bfd59ead9d88a6faa6c3aaba8fb2eda9ccbaa5accf6ec9","source_text_sha256":"0ca81c69553c5299b7dc137769cb0887e0f1dc26c73bfe08c0e04891d8a99d02","saved_rect_sha256":"4814549a20cdea1cfbb09260659e96090b0f19f029fd07d1405c2a48d7288f69","live_rect_sha256":"db4ae3c63db9fecef333bf4657bce3104026f6484bd5ab0edd0bc53c328ecd7e"},"root/obj-4":{"runtime_class":"patcher","changed_dimension":3,"source_box_sha256":"339c2bd0981f0070983da5a867fef9356a4a992df87739ff60b05a946df309fc","source_text_sha256":"484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393","saved_rect_sha256":"d354caae9baa0021746491027a9c4aa1da57065450298612fc0a7b77682b0ceb","live_rect_sha256":"6dff8399adb73f3c4d2f1e05a7407d37381968cd2b51bdbb9eb2cc5ee9f849d3"},"root/obj-4/obj-5":{"runtime_class":"jsui","changed_dimension":2,"source_box_sha256":"eb55b6bacadd9290ad4ee92a7d298d2145bb0c4107afc28a60405c9d40bfa247","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"fc417b56433ec311af6d252074e5992d7ba6210f706e1ae5fd1f9982d385996c","live_rect_sha256":"9feebcd05aba863038f477eeded7fe885e0634d3e796d765969fdd55cecc478c"},"root/obj-1":{"runtime_class":"patcher","changed_dimension":3,"source_box_sha256":"ae8f1b27f351f9a4adb1997619d3b70f80666212c66402864934e5c5b753ab6e","source_text_sha256":"bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a","saved_rect_sha256":"d9aad27455a8969fb33a22e3689241f29c2d83d1eac360baf98c043f897e0e86","live_rect_sha256":"1b3974a5eef49edf4381887e103169ef36e333facb4d2ccab310ef62ea699926"}};
++// Capture004 plus-only identities; measured vectors remain private.
++var PLUS_SOURCE="d1443c5af7ba8874c7b1d237e3d22bbe518970ad8ae85a09ec8f10494d084895";
++var PLUS_EVIDENCE={"ack_sha256":"ed2fe5493d43ee8d00ee06cb76bd39bf5ddbbe00723e9b8ed62730ab66394cd6","config_sha256":"cc06829fbbd1e0e89888152e0f2d4407df5a4e9a3817d7aa7e3a1a40e5ac74fb","seal_sha256":"c3f37c41129eead48fc0f97597731d2c9e3ae3596746ee8d9551ee89d0426e5c","command_sha256":"7a53e382e6d67241fef6ac8e313f76986896991c789971b5f7c2d1b3cdf93261","manifest_sha256":"9b00b30ab36278e5e387bdac9deeb42364fdfa2948cf902be0a015488a04cd11","package_sha256":"22d237c6efd59c8aa87acad901da09028999e369d62c89deb1cc3fe646da177a","rea_evidence_id":"ev_ebf222bc4a6c33847e6667ce57f8dffcf8eb185e38e981a0efbfee44492f47a1","audit_sha256":"925a70d2cda0811794b03eb8f59ff76127ccfed10c0c843b36f368550ba88c53"};
++var PLUS_GEOMETRY_PINS={"root/obj-1":{"source_box_sha256":"c4af8c73939eab75ed8940ff6b03159859ca0a782cd411601e0ea594db29d8e2","source_text_sha256":"e86f190fbc376badcc5d7b14a552d4e84fad436e0789bb2c7cc221fa38bf9390","saved_rect_sha256":"7c282ca427b38aa6bf81f9155d70ce5720fd0f12f6ab4ef4da21f6441c947cd6","runtime_class":"js","changed_dimension":3,"live_rect_sha256":"da868357a7d43088775aeb0784d73cae93002d63fcabbd3ceddd53521cd20e84"},"root/obj-2":{"source_box_sha256":"bbc5fe757f0ef027839d4a09709a97b50451ae9a5fec7d7f38aa810d53ce9f92","source_text_sha256":"484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393","saved_rect_sha256":"d354caae9baa0021746491027a9c4aa1da57065450298612fc0a7b77682b0ceb","runtime_class":"patcher","changed_dimension":3,"live_rect_sha256":"6dff8399adb73f3c4d2f1e05a7407d37381968cd2b51bdbb9eb2cc5ee9f849d3"},"root/obj-2/obj-4":{"source_box_sha256":"d9b8da7ef51019bd5837726c704eda09de39cffe89f08bd61e32811cde5acd0f","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"a421ba89c6cd1917427e84dbab006bf66255f8cf04f84b0b83de8c6c6b4646d2","runtime_class":"jsui","changed_dimension":2,"live_rect_sha256":"ef478f664cd641a901af80ccc3be0b0f9a1388d863a267d636bdb72fd1a5908a"},"root/obj-3":{"source_box_sha256":"310417ef44ee7139be2082fc5bbc63c5a65dfa5d10ab54894b29fe164b84c100","source_text_sha256":"bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a","saved_rect_sha256":"d9aad27455a8969fb33a22e3689241f29c2d83d1eac360baf98c043f897e0e86","runtime_class":"patcher","changed_dimension":3,"live_rect_sha256":"1b3974a5eef49edf4381887e103169ef36e333facb4d2ccab310ef62ea699926"}};
+ var TIMES_NUMERIC_PINS={"root/obj-4/obj-1":"3c1b5b23cac75bca82bf1aa6c7c161ca91e8e050d41c2fed4549959291d45360","root/obj-4/obj-24":"d46ddd6aff2b7184bce9a8b1218416dcb47db543026c78a533139b289cb73b42","root/obj-4/obj-23":"f122ac20a6bf9ecec78a24a73a0cbd911d938b441439337f9298ae4dfbcc853c"};
+ var NUMERIC_REPRESENTATION_EVIDENCE={"ack_sha256":"47764e9dac8f1ec69514509e22e93849e6d8d9a13783c60843757d8a0a3fb22a","config_sha256":"801e50b51d1055791cc07221776ebeaf1c1d755088a36c86d05722a3cfb94ec3","seal_sha256":"cdfd0f740b0705af080b6bff21d7ace7004bb94bc0713addd99e1eebf84b084d","manifest_sha256":"40bca79b06ddbbcd8644fca527e4240fab68f79b7acc8b526a6467399c562616","rea_evidence_id":"ev_51b14ef10881b6c5b881216a7fd4fa1b0f0c5c5e8bc05f75694dcbc9c4426d5d"};
+ var NUMERIC_REPRESENTATION_PINS={"root/obj-4/obj-1":{"source_box_sha256":"3c1b5b23cac75bca82bf1aa6c7c161ca91e8e050d41c2fed4549959291d45360","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"be69f9cbfae7d8916a7697c10b45556c60dab2bf806f472f39a1f743c6b71562","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"},"root/obj-4/obj-24":{"source_box_sha256":"d46ddd6aff2b7184bce9a8b1218416dcb47db543026c78a533139b289cb73b42","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"3ae5be738626430c7205dcb01a2fba671d0f93a83677c43e9ba362422cdd0754","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"},"root/obj-4/obj-23":{"source_box_sha256":"f122ac20a6bf9ecec78a24a73a0cbd911d938b441439337f9298ae4dfbcc853c","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"6172628b9bf9e972a77a1773539e5ffe75c0b592876ec787c48026a2e90b89f2","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"}};
+@@ -121,18 +125,20 @@
+ }
+ function observedGeometryPolicy(expected,definition,configuration) {
+     var policy=expected.observed_geometry_policy;if(typeof policy==="undefined")return null;
+-    var pin=TIMES_GEOMETRY_PINS[expected.anchor],configured={};
+-    if(!pin||!definition||definition.document!=="times"||definition.source_sha256!==GEOMETRY_SOURCE||
++    var plus=definition&&definition.document==="plus",name=plus?"plus":"times",source=plus?PLUS_SOURCE:GEOMETRY_SOURCE;
++    var pin=(plus?PLUS_GEOMETRY_PINS:TIMES_GEOMETRY_PINS)[expected.anchor],evidence=plus?PLUS_EVIDENCE:GEOMETRY_EVIDENCE,configured={};
++    if(!pin||!definition||definition.document!==name||definition.source_sha256!==source||
+         !sameData(definition.helper_sha256,GEOMETRY_HELPERS)||!configuration||!configuration.helpers||configuration.helpers.length!==4)
+         throw Error("unobserved-arithmetic-geometry-binding");
+     for(var index=0;index<configuration.helpers.length;index++){var helper=configuration.helpers[index];configured[helper.name]=helper.sha256;}
+-    var wanted={kind:"times-observed-geometry-v1",document:"times",source_sha256:GEOMETRY_SOURCE,
++    var wanted={kind:name+"-observed-geometry-v1",document:name,source_sha256:source,
+         anchor:expected.anchor,runtime_class:pin.runtime_class,changed_dimension:pin.changed_dimension,
+         source_box_sha256:pin.source_box_sha256,source_text_sha256:pin.source_text_sha256,
+         saved_rect:expected.rect,live_rect:policy.live_rect,saved_rect_sha256:pin.saved_rect_sha256,
+-        live_rect_sha256:pin.live_rect_sha256,helper_sha256:GEOMETRY_HELPERS,evidence:GEOMETRY_EVIDENCE,
++        live_rect_sha256:pin.live_rect_sha256,helper_sha256:GEOMETRY_HELPERS,evidence:evidence,
+         saved_incoming_routes:0,saved_outgoing_routes:0};
+     if(!sameData(policy,wanted)||!sameData(configured,GEOMETRY_HELPERS)||expected.runtime_class!==pin.runtime_class||
++        (plus&&expected.maxclass!==(pin.runtime_class==="jsui"?"jsui":"newobj"))||
+         expected.source_box_sha256!==pin.source_box_sha256||expected.source_text_sha256!==pin.source_text_sha256||
+         expected.saved_incoming_routes!==0||expected.saved_outgoing_routes!==0||
+         !Array.isArray(policy.live_rect)||policy.live_rect.length!==4||!Array.isArray(expected.rect)||expected.rect.length!==4)
+--- historical004/lifecycle.py
++++ current005/lifecycle.py
+@@ -32,6 +32,10 @@
+ GEOMETRY_SOURCE = '1eea3861a1605453fb3ed4daa4660f71e175fb2cf16ce4c4098cb53c5b94d54b'
+ GEOMETRY_EVIDENCE = {'ack_sha256': '8a9b1405f0e5b6cc0706c57c54660777d73736eafb5281025fcd17f9f0addaeb', 'config_sha256': 'a6512b968a0637b93752b446ebfc5c4ab86f0cb6c006b22272ec52f9091c3cff', 'seal_sha256': '34634c43ab942f092fe2f2ccc66e4ea987ca9c5e78d7649cc7d026e728ab9070', 'manifest_sha256': '65ad2d5c90b185f4c89ca512274cf61682ab2ca9e939b79f52d8234e61c6c0b3', 'rea_evidence_id': 'ev_a9118e14891b1c344fa246dcb7663ea520d23df9c742ffc3dd450a6289a37098'}
+ TIMES_GEOMETRY_PINS = {'root/obj-3': {'runtime_class': 'js', 'changed_dimension': 3, 'source_box_sha256': 'c7355e6a1bd3aef210bfd59ead9d88a6faa6c3aaba8fb2eda9ccbaa5accf6ec9', 'source_text_sha256': '0ca81c69553c5299b7dc137769cb0887e0f1dc26c73bfe08c0e04891d8a99d02', 'saved_rect_sha256': '4814549a20cdea1cfbb09260659e96090b0f19f029fd07d1405c2a48d7288f69', 'live_rect_sha256': 'db4ae3c63db9fecef333bf4657bce3104026f6484bd5ab0edd0bc53c328ecd7e'}, 'root/obj-4': {'runtime_class': 'patcher', 'changed_dimension': 3, 'source_box_sha256': '339c2bd0981f0070983da5a867fef9356a4a992df87739ff60b05a946df309fc', 'source_text_sha256': '484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393', 'saved_rect_sha256': 'd354caae9baa0021746491027a9c4aa1da57065450298612fc0a7b77682b0ceb', 'live_rect_sha256': '6dff8399adb73f3c4d2f1e05a7407d37381968cd2b51bdbb9eb2cc5ee9f849d3'}, 'root/obj-4/obj-5': {'runtime_class': 'jsui', 'changed_dimension': 2, 'source_box_sha256': 'eb55b6bacadd9290ad4ee92a7d298d2145bb0c4107afc28a60405c9d40bfa247', 'source_text_sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'saved_rect_sha256': 'fc417b56433ec311af6d252074e5992d7ba6210f706e1ae5fd1f9982d385996c', 'live_rect_sha256': '9feebcd05aba863038f477eeded7fe885e0634d3e796d765969fdd55cecc478c'}, 'root/obj-1': {'runtime_class': 'patcher', 'changed_dimension': 3, 'source_box_sha256': 'ae8f1b27f351f9a4adb1997619d3b70f80666212c66402864934e5c5b753ab6e', 'source_text_sha256': 'bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a', 'saved_rect_sha256': 'd9aad27455a8969fb33a22e3689241f29c2d83d1eac360baf98c043f897e0e86', 'live_rect_sha256': '1b3974a5eef49edf4381887e103169ef36e333facb4d2ccab310ef62ea699926'}}
++# Capture004 plus-only identities; measured vectors remain private.
++PLUS_SOURCE = 'd1443c5af7ba8874c7b1d237e3d22bbe518970ad8ae85a09ec8f10494d084895'
++PLUS_EVIDENCE = {'ack_sha256': 'ed2fe5493d43ee8d00ee06cb76bd39bf5ddbbe00723e9b8ed62730ab66394cd6', 'config_sha256': 'cc06829fbbd1e0e89888152e0f2d4407df5a4e9a3817d7aa7e3a1a40e5ac74fb', 'seal_sha256': 'c3f37c41129eead48fc0f97597731d2c9e3ae3596746ee8d9551ee89d0426e5c', 'command_sha256': '7a53e382e6d67241fef6ac8e313f76986896991c789971b5f7c2d1b3cdf93261', 'manifest_sha256': '9b00b30ab36278e5e387bdac9deeb42364fdfa2948cf902be0a015488a04cd11', 'package_sha256': '22d237c6efd59c8aa87acad901da09028999e369d62c89deb1cc3fe646da177a', 'rea_evidence_id': 'ev_ebf222bc4a6c33847e6667ce57f8dffcf8eb185e38e981a0efbfee44492f47a1', 'audit_sha256': '925a70d2cda0811794b03eb8f59ff76127ccfed10c0c843b36f368550ba88c53'}
++PLUS_GEOMETRY_PINS = {'root/obj-1': {'source_box_sha256': 'c4af8c73939eab75ed8940ff6b03159859ca0a782cd411601e0ea594db29d8e2', 'source_text_sha256': 'e86f190fbc376badcc5d7b14a552d4e84fad436e0789bb2c7cc221fa38bf9390', 'saved_rect_sha256': '7c282ca427b38aa6bf81f9155d70ce5720fd0f12f6ab4ef4da21f6441c947cd6', 'runtime_class': 'js', 'changed_dimension': 3, 'live_rect_sha256': 'da868357a7d43088775aeb0784d73cae93002d63fcabbd3ceddd53521cd20e84'}, 'root/obj-2': {'source_box_sha256': 'bbc5fe757f0ef027839d4a09709a97b50451ae9a5fec7d7f38aa810d53ce9f92', 'source_text_sha256': '484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393', 'saved_rect_sha256': 'd354caae9baa0021746491027a9c4aa1da57065450298612fc0a7b77682b0ceb', 'runtime_class': 'patcher', 'changed_dimension': 3, 'live_rect_sha256': '6dff8399adb73f3c4d2f1e05a7407d37381968cd2b51bdbb9eb2cc5ee9f849d3'}, 'root/obj-2/obj-4': {'source_box_sha256': 'd9b8da7ef51019bd5837726c704eda09de39cffe89f08bd61e32811cde5acd0f', 'source_text_sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'saved_rect_sha256': 'a421ba89c6cd1917427e84dbab006bf66255f8cf04f84b0b83de8c6c6b4646d2', 'runtime_class': 'jsui', 'changed_dimension': 2, 'live_rect_sha256': 'ef478f664cd641a901af80ccc3be0b0f9a1388d863a267d636bdb72fd1a5908a'}, 'root/obj-3': {'source_box_sha256': '310417ef44ee7139be2082fc5bbc63c5a65dfa5d10ab54894b29fe164b84c100', 'source_text_sha256': 'bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a', 'saved_rect_sha256': 'd9aad27455a8969fb33a22e3689241f29c2d83d1eac360baf98c043f897e0e86', 'runtime_class': 'patcher', 'changed_dimension': 3, 'live_rect_sha256': '1b3974a5eef49edf4381887e103169ef36e333facb4d2ccab310ef62ea699926'}}
+ V8_REPRESENTATION_EVIDENCE = dict(
+     raw_sha256='b3c8518d4d2930f2d18c3066e9ace27038f7893d4ae3644a6d002d99b56a71d6',
+     ack_sha256='ae28ae272f4fe7743c121f5f8aacdc28026e29256bf9b4cdef31c0fa10ad08be',
+@@ -330,19 +334,22 @@
+ def _observed_geometry(owner, definition, original):
+     policy = original.get('observed_geometry_policy')
+     if policy is None: return None
+-    pin = TIMES_GEOMETRY_PINS.get(original['anchor'])
+-    _require(pin is not None and owner['document'] == definition['document'] == 'times' and
+-             owner['source_sha256'] == definition['source_sha256'] == GEOMETRY_SOURCE and
++    plus = definition['document'] == 'plus'
++    name, source, pins, evidence = ('plus', PLUS_SOURCE, PLUS_GEOMETRY_PINS, PLUS_EVIDENCE) if plus else ('times', GEOMETRY_SOURCE, TIMES_GEOMETRY_PINS, GEOMETRY_EVIDENCE)
++    pin = pins.get(original['anchor'])
++    _require(pin is not None and owner['document'] == definition['document'] == name and
++             owner['source_sha256'] == definition['source_sha256'] == source and
+              _same(definition.get('helper_sha256'), ROOT_HELPERS) and type(policy) is dict,
+              'observed geometry source or helper binding')
+-    expected = dict(kind='times-observed-geometry-v1', document='times', source_sha256=GEOMETRY_SOURCE,
++    expected = dict(kind=name + '-observed-geometry-v1', document=name, source_sha256=source,
+         anchor=original['anchor'], runtime_class=pin['runtime_class'], changed_dimension=pin['changed_dimension'],
+         source_box_sha256=pin['source_box_sha256'], source_text_sha256=pin['source_text_sha256'],
+         saved_rect=original['rect'], live_rect=policy.get('live_rect'), saved_rect_sha256=pin['saved_rect_sha256'],
+-        live_rect_sha256=pin['live_rect_sha256'], helper_sha256=ROOT_HELPERS, evidence=GEOMETRY_EVIDENCE,
++        live_rect_sha256=pin['live_rect_sha256'], helper_sha256=ROOT_HELPERS, evidence=evidence,
+         saved_incoming_routes=0, saved_outgoing_routes=0)
+     _rect(original['rect']); _rect(policy.get('live_rect'))
+     _require(_same_geometry_fields(policy, expected, ('saved_rect', 'live_rect')) and original.get('runtime_class') == pin['runtime_class'] and
++             (not plus or original.get('maxclass') == ('jsui' if pin['runtime_class'] == 'jsui' else 'newobj')) and
+              original.get('source_box_sha256') == pin['source_box_sha256'] and
+              original.get('source_text_sha256') == pin['source_text_sha256'] and
+              original.get('saved_incoming_routes') == original.get('saved_outgoing_routes') == 0 and
+--- historical004/test_preparation.py
++++ current005/test_preparation.py
+@@ -153,6 +153,122 @@
+ 
+ 
+ class PreparationTests(unittest.TestCase):
++    def test_plus_geometry_is_separately_bound_without_numeric_admission(self):
++        n = module('arithmetic')
++        self.assertTrue(hasattr(n, 'PLUS_GEOMETRY_PINS'), 'Capture004 plus geometry gate missing')
++        for index, (anchor, original_pin) in enumerate(n.PLUS_GEOMETRY_PINS.items()):
++            saved = [80 * index, 8, 40, 20]; live = saved[:]; live[original_pin['changed_dimension']] += 2
++            pin = dict(original_pin, saved_rect_sha256=n.geometry_vector_digest(saved), live_rect_sha256=n.geometry_vector_digest(live))
++            box = dict(anchor=anchor, maxclass='jsui' if pin['runtime_class'] == 'jsui' else 'newobj',
++                runtime_class=pin['runtime_class'], rect=saved, source_box_sha256=pin['source_box_sha256'],
++                source_text_sha256=pin['source_text_sha256'], saved_incoming_routes=0, saved_outgoing_routes=0)
++            definition = dict(document='plus', source_sha256=n.PLUS_SOURCE, helper_sha256=dict(n.HELPERS))
++            policy = dict(kind='plus-observed-geometry-v1', document='plus', source_sha256=n.PLUS_SOURCE,
++                anchor=anchor, **pin, saved_rect=saved, live_rect=live, helper_sha256=dict(n.HELPERS),
++                evidence=dict(n.PLUS_EVIDENCE), saved_incoming_routes=0, saved_outgoing_routes=0)
++            with patch.object(n, 'PLUS_GEOMETRY_PINS', {anchor: pin}):
++                self.assertEqual(n.validate_geometry_policy(definition, box, policy), policy)
++                for mutation in ('times', 'minus', 'source', 'helper', 'anchor', 'box', 'text', 'saved', 'live', 'axis', 'route', 'evidence', 'class', 'source-class'):
++                    d, b, p = copy.deepcopy(definition), copy.deepcopy(box), copy.deepcopy(policy)
++                    if mutation in ('times', 'minus'): d['document'] = mutation
++                    if mutation == 'source': d['source_sha256'] = 'f' * 64
++                    if mutation == 'helper': d['helper_sha256']['helpargs.js'] = 'f' * 64
++                    if mutation == 'anchor': b['anchor'] = 'root/unobserved'
++                    if mutation == 'box': b['source_box_sha256'] = 'f' * 64
++                    if mutation == 'text': b['source_text_sha256'] = 'f' * 64
++                    if mutation == 'saved': b['rect'][0] += .001
++                    if mutation == 'live': p['live_rect'][pin['changed_dimension']] += .001
++                    if mutation == 'axis': p['live_rect'][0] += 1
++                    if mutation == 'route': b['saved_incoming_routes'] = 1
++                    if mutation == 'evidence': p['evidence']['ack_sha256'] = 'f' * 64
++                    if mutation == 'class': b['runtime_class'] = 'number'
++                    if mutation == 'source-class': b['maxclass'] = 'number'
++                    with self.subTest(anchor=anchor, mutation=mutation), self.assertRaises(ValueError):
++                        n.validate_geometry_policy(d, b, p)
++                self.assertNotIn('controller_numeric_representation_policy', box)
++
++    def test_capture004_loader_checks_immutable_bindings_and_exact_seven_rows(self):
++        n = module('arithmetic')
++        self.assertTrue(hasattr(n, 'load_plus_measurements'), 'Immutable capture004 plus loader missing')
++        with tempfile.TemporaryDirectory() as temporary, ExitStack() as patches:
++            base = Path(temporary); work = base / '.cache/alive-ultra-evidence/arithmetic-max-runtime-004'
++            work.mkdir(parents=True, mode=0o700); (work / 'observations').mkdir(mode=0o700)
++            package = base / 'package'; package.mkdir(); repo = base / 'repo'
++            audit = repo / '.superpowers/sdd/2026-10-22-arithmetic-root-runtime/capture-004-audit.md'
++            audit.parent.mkdir(parents=True); audit.write_bytes(b'Synthetic immutable audit.')
++            source = b'{"patcher":{}}'; source_sha = hashlib.sha256(source).hexdigest()
++            n.retain_raw(work / 'source.maxhelp', source)
++            geometry, numeric, inventory, diagnostics, measured = {}, {}, [], [], {}
++            for index, (anchor, old) in enumerate({**n.PLUS_GEOMETRY_PINS, **n.PLUS_NUMERIC_PINS}.items()):
++                saved = [index * 80, 8, 40, 20]; live = saved[:]
++                geo = anchor in n.PLUS_GEOMETRY_PINS
++                if geo: live[old['changed_dimension']] += 2
++                pin = dict(old, saved_rect_sha256=n.geometry_vector_digest(saved))
++                if geo: pin['live_rect_sha256'] = n.geometry_vector_digest(live)
++                (geometry if geo else numeric)[anchor] = pin
++                runtime = pin['runtime_class'] if geo else 'flonum'
++                inventory.append(dict(anchor=anchor, maxclass='flonum' if not geo else 'jsui' if runtime == 'jsui' else 'newobj',
++                    runtime_class=runtime, rect=[float(value) for value in saved], source_box_sha256=pin['source_box_sha256'],
++                    source_text_sha256=pin['source_text_sha256'], saved_incoming_routes=0, saved_outgoing_routes=0))
++                diagnostics.append(dict(expected_anchor=anchor, expected_maxclass=inventory[-1]['maxclass'],
++                    expected_runtime_class=runtime, expected_rect=saved, candidates=[dict(maxclass=runtime if geo else 'number', rect=live)]))
++                if geo: measured[anchor] = live
++            boxes = copy.deepcopy(inventory); edges = []
++            definition = dict(document='plus', revision=1, source_sha256=source_sha, helper_sha256=dict(n.HELPERS),
++                pristine_path=str(work / 'source.maxhelp'), boxes=boxes, full_inventory=inventory, saved_edges=edges,
++                lifecycle_owner_inlet=2, working_windows_path='Z:/synthetic/plus-r1.maxhelp')
++            binding = dict(package_files={'synthetic.js': 'a' * 64}, package_sha256='b' * 64)
++            config = dict(work=str(work), documents=[definition], package_sha256=binding['package_files'],
++                helpers=[dict(name=name, sha256=sha) for name, sha in n.HELPERS.items()])
++            command = dict(command_id=51, op='operation', action='install', action_revision=1,
++                document='plus', revision=1, source_sha256=source_sha, step_id='install-plus-r1')
++            ack = dict(command_id=51, success=False, anchor_diagnostics=diagnostics, geometry_dispositions=[],
++                numeric_mode_observations=[], controller_representation_observations=[])
++            for name, data in [('config.json', config), ('command.json', command), ('seal.json', dict(files={'source.maxhelp': source_sha}, package_binding=binding)),
++                    ('observations/ack-request-51.json', ack)]: n.write_json(work / name, data)
++            manifest = package / 'preparation-manifest-arithmetic004.json'; manifest.write_bytes(n.canonical(dict(package_binding=binding)))
++            evidence = {key + '_sha256': n.digest(work / name) for key, name in [('ack', 'observations/ack-request-51.json'),
++                ('config', 'config.json'), ('command', 'command.json'), ('seal', 'seal.json')]}
++            evidence.update(manifest_sha256=n.digest(manifest), audit_sha256=n.digest(audit), package_sha256=binding['package_sha256'], rea_evidence_id='synthetic')
++            for name, value in [('ROOT', package), ('REPO', repo), ('PLUS_SOURCE', source_sha), ('PLUS_GEOMETRY_PINS', geometry),
++                    ('PLUS_NUMERIC_PINS', numeric), ('PLUS_EVIDENCE', evidence)]: patches.enter_context(patch.object(n, name, value))
++            patches.enter_context(patch.object(Path, 'home', return_value=base))
++            patches.enter_context(patch.object(n, 'source_inventory', return_value=(boxes, inventory, edges)))
++            try: actual = n.load_plus_measurements()
++            except ValueError as error: self.fail('Equivalent source/ACK rectangle spelling refused: ' + str(error))
++            self.assertEqual(actual, measured)
++            for mutation in ('missing', 'duplicate', 'class', 'geometry', 'unexpected-observation', 'identity'):
++                changed = copy.deepcopy(ack)
++                if mutation == 'missing': changed['anchor_diagnostics'].pop()
++                if mutation == 'duplicate': changed['anchor_diagnostics'][-1] = copy.deepcopy(changed['anchor_diagnostics'][0])
++                if mutation == 'class': changed['anchor_diagnostics'][0]['candidates'][0]['maxclass'] = 'number'
++                if mutation == 'geometry': changed['anchor_diagnostics'][-1]['candidates'][0]['rect'][0] += .001
++                if mutation == 'unexpected-observation': changed['numeric_mode_observations'] = [{}]
++                if mutation == 'identity': changed['command_id'] = 52
++                (work / 'observations/ack-request-51.json').write_bytes(n.canonical(changed))
++                evidence['ack_sha256'] = n.digest(work / 'observations/ack-request-51.json')
++                with self.subTest(mutation=mutation), self.assertRaises(ValueError): n.load_plus_measurements()
++            (work / 'observations/ack-request-51.json').write_bytes(n.canonical(ack)); evidence['ack_sha256'] = n.digest(work / 'observations/ack-request-51.json')
++            for mutation in ('source', 'revision', 'owner', 'inventory', 'helpers', 'package'):
++                changed = copy.deepcopy(config)
++                if mutation == 'source': changed['documents'][0]['source_sha256'] = 'f' * 64
++                if mutation == 'revision': changed['documents'][0]['revision'] = 2
++                if mutation == 'owner': changed['documents'][0]['lifecycle_owner_inlet'] = 3
++                if mutation == 'inventory': changed['documents'][0]['full_inventory'][0]['source_text_sha256'] = 'f' * 64
++                if mutation == 'helpers': changed['helpers'][0]['sha256'] = 'f' * 64
++                if mutation == 'package': changed['package_sha256'] = {}
++                (work / 'config.json').write_bytes(n.canonical(changed)); evidence['config_sha256'] = n.digest(work / 'config.json')
++                with self.subTest(mutation=mutation), self.assertRaises(ValueError): n.load_plus_measurements()
++            (work / 'config.json').write_bytes(n.canonical(config)); evidence['config_sha256'] = n.digest(work / 'config.json')
++            (work / 'source.maxhelp').write_bytes(b'Changed sealed source.')
++            with self.assertRaises(ValueError): n.load_plus_measurements()
++            (work / 'source.maxhelp').write_bytes(source)
++            manifest_payload = manifest.read_bytes(); manifest.unlink(); manifest.symlink_to(audit)
++            with self.assertRaises(ValueError): n.load_plus_measurements()
++            manifest.unlink(); manifest.write_bytes(manifest_payload)
++            (work / 'source.maxhelp').unlink(); (work / 'source.maxhelp').symlink_to(audit)
++            with self.assertRaises(ValueError): n.load_plus_measurements()
++
+     def test_metadata_attaches_distinct_v8_policies_and_retains_source_descriptors(self):
+         n = module('arithmetic'); definition, raw, numeric_pins, root_pins = v8_fixture(n)
+         boxes, inventory = definition['boxes'], definition['full_inventory']
+--- historical004/test_helpers.cjs
++++ current005/test_helpers.cjs
+@@ -633,3 +633,166 @@
+ late.control('attest', -1, 0, 'startup'); late.context.inlet = 1; late.context.bang();
+ assert.ok(late.report().observer_report.failures.includes('unexpected-notification'));
+ console.log('arithmetic helpers: typed dispatch, strict geometry/getters, six-owner automatic-close monitor pass');
++
++// Removing the plus dispatch or exact metadata checks must break these gates.
++for (const name of ['controller.js', 'v8-readback.js']) {
++  const context = helper(name);
++  assert.equal(typeof context.PLUS_SOURCE, 'string', `${name}: separate capture004 plus binding missing`);
++  for (const [index, [anchor, originalPin]] of Object.entries(plain(context.PLUS_GEOMETRY_PINS)).entries()) {
++    const saved = [index * 80, 8, 40, 20], live = [...saved]; live[originalPin.changed_dimension] += 2;
++    const pin = {...originalPin, saved_rect_sha256: hash(saved), live_rect_sha256: hash(live)};
++    context.PLUS_GEOMETRY_PINS = {[anchor]: pin};
++    const definition = {document: 'plus', source_sha256: context.PLUS_SOURCE, helper_sha256: plain(context.GEOMETRY_HELPERS)};
++    const configuration = {helpers: Object.entries(context.GEOMETRY_HELPERS).map(([name, sha256]) => ({name, sha256}))};
++    const expected = {anchor, maxclass: pin.runtime_class === 'jsui' ? 'jsui' : 'newobj', runtime_class: pin.runtime_class,
++      rect: saved, source_box_sha256: pin.source_box_sha256, source_text_sha256: pin.source_text_sha256,
++      saved_incoming_routes: 0, saved_outgoing_routes: 0};
++    expected.observed_geometry_policy = {kind: 'plus-observed-geometry-v1', document: 'plus', source_sha256: context.PLUS_SOURCE,
++      anchor, ...pin, saved_rect: saved, live_rect: live, helper_sha256: plain(context.GEOMETRY_HELPERS),
++      evidence: plain(context.PLUS_EVIDENCE), saved_incoming_routes: 0, saved_outgoing_routes: 0};
++    assert.deepEqual(plain(context.observedGeometryPolicy(expected, definition, configuration)), expected.observed_geometry_policy);
++    for (const mutation of ['times', 'minus', 'source', 'helper', 'anchor', 'box', 'text', 'saved', 'live', 'axis', 'route', 'class', 'source-class', 'evidence']) {
++      const e = plain(expected), d = plain(definition), c = plain(configuration);
++      if (['times', 'minus'].includes(mutation)) d.document = mutation;
++      if (mutation === 'source') d.source_sha256 = 'f'.repeat(64);
++      if (mutation === 'helper') c.helpers[0].sha256 = 'f'.repeat(64);
++      if (mutation === 'anchor') e.anchor = 'root/unobserved';
++      if (mutation === 'box') e.source_box_sha256 = 'f'.repeat(64);
++      if (mutation === 'text') e.source_text_sha256 = 'f'.repeat(64);
++      if (mutation === 'saved') e.rect[0] += .001;
++      if (mutation === 'live') e.observed_geometry_policy.live_rect[pin.changed_dimension] += .001;
++      if (mutation === 'axis') e.observed_geometry_policy.live_rect[0] += 1;
++      if (mutation === 'route') e.saved_outgoing_routes = 1;
++      if (mutation === 'class') e.runtime_class = 'number';
++      if (mutation === 'source-class') e.maxclass = 'number';
++      if (mutation === 'evidence') e.observed_geometry_policy.evidence.audit_sha256 = 'f'.repeat(64);
++      assert.throws(() => context.observedGeometryPolicy(e, d, c), `${name}:${anchor}:${mutation}`);
++    }
++  }
++}
++
++function plusPreflightFixture(revision = 1) {
++  const context = helper('controller.js'), calls = [], scopes = {'root': [], 'root/obj-2': [], 'root/obj-3': []};
++  assert.equal(typeof context.PLUS_NUMERIC_PINS, 'object', 'Plus diagnostic-only source pins missing');
++  const geometry = plain(context.PLUS_GEOMETRY_PINS), numeric = plain(context.PLUS_NUMERIC_PINS), inventory = [];
++  const add = (anchor, cls, extra = {}) => {
++    const rect = [inventory.length * 80, 8, 40, 20];
++    const expected = {anchor, maxclass: ['js', 'patcher'].includes(cls) ? 'newobj' : cls,
++      runtime_class: cls, runtime_classes: cls === 'patcher' ? ['patcher', 'p'] : [cls], rect,
++      source_box_sha256: hash(anchor), source_text_sha256: hash('synthetic'), child: cls === 'patcher',
++      saved_incoming_routes: 0, saved_outgoing_routes: 0, ...extra};
++    const object = {maxclass: cls, live: [...rect], getboxattr() {return this.live;}, nextobject: null,
++      message() {assert.fail('plus preflight sent input');}, setvalueof() {assert.fail('plus preflight set value');}};
++    if (expected.child) {
++      expected.source_varname = anchor === 'root/obj-2' ? 'basic_tab' : 'q_tab';
++      object.varname = expected.source_varname; object.subpatcher = () => ({firstobject: scopes[anchor][0] || null});
++    }
++    if (geometry[anchor]) {
++      const pin = geometry[anchor]; object.live[pin.changed_dimension] += 2;
++      pin.saved_rect_sha256 = hash(rect); pin.live_rect_sha256 = hash(object.live);
++      Object.assign(expected, {source_box_sha256: pin.source_box_sha256, source_text_sha256: pin.source_text_sha256});
++      expected.observed_geometry_policy = {kind: 'plus-observed-geometry-v1', document: 'plus', source_sha256: context.PLUS_SOURCE,
++        anchor, ...pin, saved_rect: rect, live_rect: object.live, helper_sha256: plain(context.GEOMETRY_HELPERS),
++        evidence: plain(context.PLUS_EVIDENCE), saved_incoming_routes: 0, saved_outgoing_routes: 0};
++    }
++    if (numeric[anchor]) {
++      const pin = numeric[anchor]; pin.saved_rect_sha256 = hash(rect);
++      Object.assign(expected, {source_box_sha256: pin.source_box_sha256, source_text_sha256: pin.source_text_sha256});
++      object.maxclass = 'number'; object.getattr = attribute => {assert.equal(attribute, 'format'); calls.push([anchor, 'format']); return 6;};
++      object.getvalueof = () => {calls.push([anchor, 'value']); return [123.5];};
++    }
++    inventory.push(expected); scopes[anchor.slice(0, anchor.lastIndexOf('/'))].push(object);
++    return {expected, object};
++  };
++  add('root/obj-1', 'js'); add('root/obj-2', 'patcher'); add('root/obj-3', 'patcher'); add('root/obj-4', 'jsui');
++  add('root/obj-2/obj-4', 'jsui');
++  const targets = Object.keys(numeric).map(anchor => add(anchor, 'flonum'));
++  for (let i = 0; i < 12; i++) add(`root/obj-2/synthetic-${i}`, 'comment');
++  for (const objects of Object.values(scopes)) objects.forEach((o, i) => {o.nextobject = objects[i + 1] || null;});
++  context.PLUS_GEOMETRY_PINS = geometry; context.PLUS_NUMERIC_PINS = numeric;
++  const definition = {document: 'plus', revision, source_sha256: context.PLUS_SOURCE, helper_sha256: plain(context.GEOMETRY_HELPERS),
++    working_windows_path: `Z:/synthetic/plus-r${revision}.maxhelp`, lifecycle_owner_inlet: revision + 1, full_inventory: inventory};
++  const owners = []; owners[revision + 1] = {document: 'plus', revision, source_sha256: context.PLUS_SOURCE, working_path: definition.working_windows_path};
++  context.config = {helpers: Object.entries(context.GEOMETRY_HELPERS).map(([name, sha256]) => ({name, sha256})), documents: [definition], lifecycle: {owners}};
++  context.shared = {request_id: 51, step_id: `install-plus-r${revision}`, action: 'install', action_document: 'plus', action_revision: revision};
++  return {context, calls, definition, targets, scopes, root: {firstobject: scopes.root[0], filepath: definition.working_windows_path}};
++}
++for (const revision of [1, 2]) {
++  const f = plusPreflightFixture(revision);
++  assert.throws(() => f.context.validateTree(f.root, f.definition), /aggregate-original-hierarchy-preflight-failed/);
++  assert.equal(f.calls.length, 6, 'exact three plus controls each read format and value');
++  assert.equal(f.context.anchorDiagnostics.length, 3); assert.equal(f.context.geometryDispositions.length, 4);
++  assert.equal(f.context.controllerRepresentationObservations.length, 0); assert.equal(f.context.numericModeObservations.length, 0);
++  for (const row of f.context.anchorDiagnostics) {
++    const observation = row.numeric_preflight_observation;
++    assert.equal(observation.source_class, 'flonum'); assert.equal(observation.runtime_class, 'number');
++    assert.equal(observation.format_observation.value, 6); assert.equal(observation.value_observation.representation, 'singleton-number-array');
++    assert.equal(observation.receipt_tag_observed, false);
++  }
++  assert.ok(f.targets.every(t => t.expected.runtime_classes.join(',') === 'flonum'));
++  assert.throws(() => f.context.numericPreflightObservation(f.targets[0].object, f.targets[0].expected, f.definition),
++    'direct diagnostic calls cannot reuse a completed inventory context');
++  assert.equal(f.calls.length, 6);
++}
++for (const mutation of ['times', 'minus', 'source', 'helper', 'box', 'text', 'saved', 'live', 'class', 'request', 'infinite-request',
++  'step', 'revision', 'owner', 'owner-path', 'root-path', 'owner-source', 'document-duplicate', 'candidate-duplicate', 'missing', 'extra', 'child', 'evidence', 'missing-policy']) {
++  const f = plusPreflightFixture(), {context: c, definition: d, targets} = f, target = targets[0];
++  if (['times', 'minus'].includes(mutation)) d.document = mutation;
++  if (mutation === 'source') d.source_sha256 = 'f'.repeat(64);
++  if (mutation === 'helper') c.config.helpers[0].sha256 = 'f'.repeat(64);
++  if (mutation === 'box') target.expected.source_box_sha256 = 'f'.repeat(64);
++  if (mutation === 'text') target.expected.source_text_sha256 = 'f'.repeat(64);
++  if (mutation === 'saved') target.expected.rect[0] += .001;
++  if (mutation === 'live') target.object.live[0] += .001;
++  if (mutation === 'class') target.object.maxclass = 'flonum';
++  if (mutation === 'request') c.shared.request_id = 1.25;
++  if (mutation === 'infinite-request') c.shared.request_id = Infinity;
++  if (mutation === 'step') c.shared.step_id = 'install-times-r1';
++  if (mutation === 'revision') d.revision = 3;
++  if (mutation === 'owner') d.lifecycle_owner_inlet = 3;
++  if (mutation === 'owner-path') c.config.lifecycle.owners[2].working_path = 'Z:/wrong.maxhelp';
++  if (mutation === 'root-path') f.root.filepath = 'Z:/wrong.maxhelp';
++  if (mutation === 'owner-source') c.config.lifecycle.owners[2].source_sha256 = 'f'.repeat(64);
++  if (mutation === 'document-duplicate') c.config.documents.push(d);
++  if (mutation === 'candidate-duplicate') f.scopes['root/obj-2'][0].live = [...target.object.live];
++  if (mutation === 'missing') f.scopes['root/obj-2'].at(-2).nextobject = null;
++  if (mutation === 'extra') f.scopes['root/obj-2'].at(-1).nextobject = {maxclass: 'comment', nextobject: null};
++  if (mutation === 'child') f.scopes.root[1].varname = 'wrong';
++  if (mutation === 'evidence') d.full_inventory[0].observed_geometry_policy.evidence.audit_sha256 = 'f'.repeat(64);
++  if (mutation === 'missing-policy') {
++    delete d.full_inventory[0].observed_geometry_policy;
++    f.scopes.root[0].live = [...d.full_inventory[0].rect];
++  }
++  assert.throws(() => c.validateTree(f.root, d), `${mutation}: plus install must refuse`);
++  assert.deepEqual(f.calls, [], `${mutation}: all plus probes must be suppressed before any capability call`);
++}
++for (const [value, want] of [[undefined, 'undefined'], [null, 'null'], [[1, 2], 'ambiguous-array'], [Infinity, 'nonfinite'], ['x', 'other'], [123.5, 'scalar-number']]) {
++  const f = plusPreflightFixture(); f.targets[0].object.getvalueof = () => value;
++  assert.throws(() => f.context.validateTree(f.root, f.definition));
++  assert.equal(f.context.anchorDiagnostics[0].numeric_preflight_observation.value_observation.representation, want);
++}
++for (const outcome of ['unavailable', 'threw', 'property-threw']) {
++  const f = plusPreflightFixture(), object = f.targets[0].object;
++  if (outcome === 'unavailable') {object.getattr = undefined; object.getvalueof = undefined;}
++  if (outcome === 'threw') {object.getattr = object.getvalueof = () => {throw Error('synthetic unavailable');};}
++  if (outcome === 'property-threw') {
++    for (const method of ['getattr', 'getvalueof']) Object.defineProperty(object, method, {get() {throw Error('synthetic property unavailable');}});
++  }
++  assert.throws(() => f.context.validateTree(f.root, f.definition));
++  const observation = f.context.anchorDiagnostics[0].numeric_preflight_observation;
++  for (const key of ['format_observation', 'value_observation']) {
++    assert.equal(observation[key].status, outcome === 'unavailable' ? 'unavailable' : 'threw');
++    assert.equal(observation[key].value, null);
++  }
++}
++const plusFailure = plusPreflightFixture(), plusMemory = new Map([['Z:/synthetic/journal.jsonl', '']]);
++plusFailure.context.File = memoryFile(plusMemory); plusFailure.context.shared.seq = 0;
++plusFailure.context.config.ack_path = 'Z:/synthetic/ack.json'; plusFailure.context.config.journal_path = 'Z:/synthetic/journal.jsonl';
++assert.throws(() => plusFailure.context.validateTree(plusFailure.root, plusFailure.definition));
++plusFailure.context.fail({command_id: 51}, Error('synthetic later failure'));
++const plusSerialized = JSON.parse(plusMemory.get('Z:/synthetic/ack.json'));
++assert.equal(plusSerialized.success, false); assert.equal(plusSerialized.anchor_diagnostics.length, 3);
++assert.equal(plusSerialized.geometry_dispositions.length, 4);
++assert.ok(plusSerialized.anchor_diagnostics.every(row => row.numeric_preflight_observation));
++assert.deepEqual(plusSerialized.controller_representation_observations, []); assert.deepEqual(plusSerialized.numeric_mode_observations, []);
++console.log('capture004 plus: four exact geometry gates and three diagnostic-only probes pass');
+--- historical004/test_lifecycle.py
++++ current005/test_lifecycle.py
+@@ -448,6 +448,39 @@
+                 with self.assertRaises(ValueError):
+                     lifecycle._root(root, fixture.owner(0), definition, 100, command['step_id'])
+ 
++    def test_plus_geometry_has_independent_exact_source_and_evidence_gate(self):
++        lifecycle = load()
++        self.assertTrue(hasattr(lifecycle, 'PLUS_GEOMETRY_PINS'), 'Independent plus geometry gate missing')
++        for index, (anchor, original_pin) in enumerate(lifecycle.PLUS_GEOMETRY_PINS.items()):
++            saved = [80 * index, 8, 40, 20]; live = saved[:]; live[original_pin['changed_dimension']] += 2
++            pin = dict(original_pin, saved_rect_sha256=sha(lifecycle._canonical(saved)), live_rect_sha256=sha(lifecycle._canonical(live)))
++            original = dict(anchor=anchor, maxclass='jsui' if pin['runtime_class'] == 'jsui' else 'newobj',
++                runtime_class=pin['runtime_class'], rect=saved, source_box_sha256=pin['source_box_sha256'],
++                source_text_sha256=pin['source_text_sha256'], saved_incoming_routes=0, saved_outgoing_routes=0)
++            policy = dict(kind='plus-observed-geometry-v1', document='plus', source_sha256=lifecycle.PLUS_SOURCE,
++                anchor=anchor, **pin, saved_rect=saved, live_rect=live, helper_sha256=dict(lifecycle.ROOT_HELPERS),
++                evidence=dict(lifecycle.PLUS_EVIDENCE), saved_incoming_routes=0, saved_outgoing_routes=0)
++            original['observed_geometry_policy'] = policy
++            owner = dict(document='plus', source_sha256=lifecycle.PLUS_SOURCE)
++            definition = dict(owner, helper_sha256=dict(lifecycle.ROOT_HELPERS))
++            with patch.object(lifecycle, 'PLUS_GEOMETRY_PINS', {anchor: pin}):
++                self.assertEqual(lifecycle._observed_geometry(owner, definition, original), policy)
++                for mutation in ('times', 'minus', 'source', 'helper', 'box', 'text', 'live', 'axis', 'route', 'class', 'source-class', 'evidence'):
++                    o, d, b = copy.deepcopy(owner), copy.deepcopy(definition), copy.deepcopy(original)
++                    if mutation in ('times', 'minus'): o['document'] = d['document'] = mutation
++                    if mutation == 'source': o['source_sha256'] = 'f' * 64
++                    if mutation == 'helper': d['helper_sha256']['helpargs.js'] = 'f' * 64
++                    if mutation == 'box': b['source_box_sha256'] = 'f' * 64
++                    if mutation == 'text': b['source_text_sha256'] = 'f' * 64
++                    if mutation == 'live': b['observed_geometry_policy']['live_rect'][pin['changed_dimension']] += .001
++                    if mutation == 'axis': b['observed_geometry_policy']['live_rect'][0] += 1
++                    if mutation == 'route': b['saved_outgoing_routes'] = 1
++                    if mutation == 'class': b['runtime_class'] = 'number'
++                    if mutation == 'source-class': b['maxclass'] = 'number'
++                    if mutation == 'evidence': b['observed_geometry_policy']['evidence']['audit_sha256'] = 'f' * 64
++                    with self.subTest(anchor=anchor, mutation=mutation), self.assertRaises(ValueError):
++                        lifecycle._observed_geometry(o, d, b)
++
+     def test_basic_retention_revalidates_all_six_forged_histories_after_digest_rebinding(self):
+         lifecycle = load()
+         for index in range(6):

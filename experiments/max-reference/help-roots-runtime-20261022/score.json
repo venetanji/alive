@@ -1,0 +1,547 @@
+[
+  {
+    "step_id": "a1-value-0",
+    "ordinal": 0,
+    "document": "append",
+    "row": "A1",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-7",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "programmatic-hot-int",
+    "message": {
+      "selector": "int",
+      "atoms": [
+        {
+          "tag": "int",
+          "value": 0
+        }
+      ]
+    }
+  },
+  {
+    "step_id": "a1-value-7",
+    "ordinal": 1,
+    "document": "append",
+    "row": "A1",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-7",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "programmatic-hot-int",
+    "message": {
+      "selector": "int",
+      "atoms": [
+        {
+          "tag": "int",
+          "value": 7
+        }
+      ]
+    }
+  },
+  {
+    "step_id": "a1-value--3",
+    "ordinal": 2,
+    "document": "append",
+    "row": "A1",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-7",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "programmatic-hot-int",
+    "message": {
+      "selector": "int",
+      "atoms": [
+        {
+          "tag": "int",
+          "value": -3
+        }
+      ]
+    }
+  },
+  {
+    "step_id": "a2-click-0",
+    "ordinal": 3,
+    "document": "append",
+    "row": "A2",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-16",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "a2-click-1",
+    "ordinal": 4,
+    "document": "append",
+    "row": "A2",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-17",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "a2-click-2",
+    "ordinal": 5,
+    "document": "append",
+    "row": "A2",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-16",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "a3-before-set",
+    "ordinal": 6,
+    "document": "append",
+    "row": "A3",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-24",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "programmatic-hot-int",
+    "message": {
+      "selector": "int",
+      "atoms": [
+        {
+          "tag": "int",
+          "value": 7
+        }
+      ]
+    }
+  },
+  {
+    "step_id": "a3-set-first",
+    "ordinal": 7,
+    "document": "append",
+    "row": "A3",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-18",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "a3-after-first",
+    "ordinal": 8,
+    "document": "append",
+    "row": "A3",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-24",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "programmatic-hot-int",
+    "message": {
+      "selector": "int",
+      "atoms": [
+        {
+          "tag": "int",
+          "value": 7
+        }
+      ]
+    }
+  },
+  {
+    "step_id": "a3-set-second",
+    "ordinal": 9,
+    "document": "append",
+    "row": "A3",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-22",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "a3-after-second",
+    "ordinal": 10,
+    "document": "append",
+    "row": "A3",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-24",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "programmatic-hot-int",
+    "message": {
+      "selector": "int",
+      "atoms": [
+        {
+          "tag": "int",
+          "value": -3
+        }
+      ]
+    }
+  },
+  {
+    "step_id": "a3-repeat-second",
+    "ordinal": 11,
+    "document": "append",
+    "row": "A3",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-24",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "programmatic-hot-int",
+    "message": {
+      "selector": "int",
+      "atoms": [
+        {
+          "tag": "int",
+          "value": -3
+        }
+      ]
+    }
+  },
+  {
+    "step_id": "a3-replace-again",
+    "ordinal": 12,
+    "document": "append",
+    "row": "A3",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-18",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "a3-after-replace",
+    "ordinal": 13,
+    "document": "append",
+    "row": "A3",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-24",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "programmatic-hot-int",
+    "message": {
+      "selector": "int",
+      "atoms": [
+        {
+          "tag": "int",
+          "value": 0
+        }
+      ]
+    }
+  },
+  {
+    "step_id": "a4-display-obj-9",
+    "ordinal": 14,
+    "document": "append",
+    "row": "A4",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-9",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "a4-upstream-obj-9",
+    "ordinal": 15,
+    "document": "append",
+    "row": "A4",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-7",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "programmatic-hot-int",
+    "message": {
+      "selector": "int",
+      "atoms": [
+        {
+          "tag": "int",
+          "value": 7
+        }
+      ]
+    }
+  },
+  {
+    "step_id": "a4-display-obj-10",
+    "ordinal": 16,
+    "document": "append",
+    "row": "A4",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-10",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "a4-upstream-obj-10",
+    "ordinal": 17,
+    "document": "append",
+    "row": "A4",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-16",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "a4-display-obj-20",
+    "ordinal": 18,
+    "document": "append",
+    "row": "A4",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-20",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "a4-upstream-obj-20",
+    "ordinal": 19,
+    "document": "append",
+    "row": "A4",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "anchor": "root/obj-5/obj-24",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "programmatic-hot-int",
+    "message": {
+      "selector": "int",
+      "atoms": [
+        {
+          "tag": "int",
+          "value": 7
+        }
+      ]
+    }
+  },
+  {
+    "step_id": "p1-click-0",
+    "ordinal": 20,
+    "document": "prepend",
+    "row": "P1",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "anchor": "root/obj-2/obj-10",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "p1-click-1",
+    "ordinal": 21,
+    "document": "prepend",
+    "row": "P1",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "anchor": "root/obj-2/obj-11",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "p1-click-2",
+    "ordinal": 22,
+    "document": "prepend",
+    "row": "P1",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "anchor": "root/obj-2/obj-27",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "p1-click-3",
+    "ordinal": 23,
+    "document": "prepend",
+    "row": "P1",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "anchor": "root/obj-2/obj-10",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "p1-click-4",
+    "ordinal": 24,
+    "document": "prepend",
+    "row": "P1",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "anchor": "root/obj-2/obj-11",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "p1-click-5",
+    "ordinal": 25,
+    "document": "prepend",
+    "row": "P1",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "anchor": "root/obj-2/obj-11",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "p2-click-0",
+    "ordinal": 26,
+    "document": "prepend",
+    "row": "P2",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "anchor": "root/obj-2/obj-14",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "p2-click-1",
+    "ordinal": 27,
+    "document": "prepend",
+    "row": "P2",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "anchor": "root/obj-2/obj-15",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "p2-click-2",
+    "ordinal": 28,
+    "document": "prepend",
+    "row": "P2",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "anchor": "root/obj-2/obj-16",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "p2-click-3",
+    "ordinal": 29,
+    "document": "prepend",
+    "row": "P2",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "anchor": "root/obj-2/obj-19",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "p2-click-4",
+    "ordinal": 30,
+    "document": "prepend",
+    "row": "P2",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "anchor": "root/obj-2/obj-19",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "p2-click-5",
+    "ordinal": 31,
+    "document": "prepend",
+    "row": "P2",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "anchor": "root/obj-2/obj-14",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  },
+  {
+    "step_id": "p2-click-6",
+    "ordinal": 32,
+    "document": "prepend",
+    "row": "P2",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "anchor": "root/obj-2/obj-19",
+    "action": "event",
+    "inlet": 0,
+    "interaction": "saved-control-bang",
+    "message": {
+      "selector": "bang",
+      "atoms": []
+    }
+  }
+]

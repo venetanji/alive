@@ -1,0 +1,1362 @@
+{
+  "schema": "ultra-max-list-score-v1",
+  "fixture": "list-precision",
+  "evidence": "observed Max 9.1.5; collector arrival order",
+  "numeric_list_atom_tags": "unknown_numeric; JSON alone cannot prove per-atom int/float types",
+  "sources": {
+    "fixtures/list-precision.maxpat": "c057c4b7d96e43e8ba83c24d3a0dbcdaab5962344bcfa38e16ec664e9c2f6c26",
+    "fixtures/list-precision.score.json": "27b38b60d0f982fbdd2eedd10b6a34534770c177d4f04d0598cd06ff4689ed79",
+    "results/list-precision.jsonl": "6942a4d6a471c445bdfe0d999c6fb00bcb21e49a5bb7cd7e84d5a1b481402ec1",
+    "fixtures/probe.js": "e38037e55519c290325624bdeb126ca874821922700b7da0e4de0848823a24b7"
+  },
+  "targets": [
+    {
+      "id": "obj-1",
+      "key": "list3-growth",
+      "creation": "iter",
+      "outlets": 1
+    },
+    {
+      "id": "obj-9",
+      "key": "list5-growth",
+      "creation": "iter",
+      "outlets": 1
+    },
+    {
+      "id": "obj-15",
+      "key": "zl.iter",
+      "creation": "zl.iter 2",
+      "outlets": 2
+    },
+    {
+      "id": "obj-26",
+      "key": "zl.slice",
+      "creation": "zl.slice 2",
+      "outlets": 2
+    },
+    {
+      "id": "obj-37",
+      "key": "zl.rot",
+      "creation": "zl.rot 2",
+      "outlets": 2
+    }
+  ],
+  "cases": [
+    {
+      "input_id": "event_0",
+      "target": "list3-growth",
+      "inlet": 0,
+      "message": "list 1 2 3",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_1",
+      "target": "list3-growth",
+      "inlet": 0,
+      "message": "foo 1 2 3",
+      "delivery": true,
+      "input": {
+        "selector": "foo",
+        "atoms": [
+          1,
+          2,
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": []
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_2",
+      "target": "list3-growth",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_3",
+      "target": "list3-growth",
+      "inlet": 0,
+      "message": "foo 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "foo",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": []
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_4",
+      "target": "list3-growth",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": []
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_5",
+      "target": "list3-growth",
+      "inlet": 0,
+      "message": "foo 1 2 3 4 5 6",
+      "delivery": true,
+      "input": {
+        "selector": "foo",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": []
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_6",
+      "target": "list3-growth",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        },
+        {
+          "target": "list3-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_7",
+      "target": "list5-growth",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_8",
+      "target": "list5-growth",
+      "inlet": 0,
+      "message": "foo 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "foo",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": []
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_9",
+      "target": "list5-growth",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_10",
+      "target": "list5-growth",
+      "inlet": 0,
+      "message": "foo 1 2 3 4 5 6 7",
+      "delivery": true,
+      "input": {
+        "selector": "foo",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": []
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            6
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_11",
+      "target": "list5-growth",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": []
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            6
+          ]
+        },
+        {
+          "target": "list5-growth",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_12",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            3,
+            4
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_13",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "2",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_14",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "symbol 3",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_15",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_16",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "2",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_17",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "apple 2",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_18",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_19",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "2",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_20",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "list apple 2",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_21",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_22",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_23",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "2",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_24",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "symbol 3",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_25",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_26",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "2",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_27",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "apple 2",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_28",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_29",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "2",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_30",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "list apple 2",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_31",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_32",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            4,
+            5,
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_33",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "2",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_34",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "symbol 3",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_35",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_36",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "2",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_37",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "apple 2",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_38",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_39",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "2",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_40",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "list apple 2",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_41",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    }
+  ]
+}

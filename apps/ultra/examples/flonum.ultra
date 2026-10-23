@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "message",
+      "x": 160,
+      "y": 60,
+      "params": {
+        "text": "1.25"
+      }
+    },
+    {
+      "id": 2,
+      "type": "flonum",
+      "x": 160,
+      "y": 180,
+      "params": {
+        "value": 0,
+        "minimum": -10,
+        "maximum": 10,
+        "numdecimalplaces": 3
+      }
+    },
+    {
+      "id": 3,
+      "type": "bang",
+      "x": 360,
+      "y": 300,
+      "params": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 2,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 1,
+      "to": 3,
+      "inlet": 0
+    }
+  ]
+}

@@ -1,0 +1,398 @@
+EDITABLE CANVAS (primary application page)
+=========================================
+From the repository root:
+  bash apps/ultra/build.sh
+  bash apps/ultra/run.sh
+
+Omarchy / Linux app-launcher shortcut (install once after building):
+  python3 apps/ultra/install-launcher.py
+Open Apps (Super+Alt+Space on Omarchy) and find "Ultra (Latest Build)". The
+shortcut follows this checkout's run.sh, which prefers
+src-tauri/target/release/ultra and its matching native library.
+After rebuilding, close and reopen Ultra to load the
+new build. Run the installer again if you move the checkout. It installs a
+user desktop entry under $XDG_DATA_HOME/applications (normally
+~/.local/share/applications), plus MIME descriptions for .ultra, .maxpat and
+.maxhelp. Choose Open With Ultra in the file manager as needed; the installer
+does not force a default application. Standalone bundles still use their supplied
+binary.
+
+Open files from the command line, including multiple paths:
+  bash apps/ultra/run.sh -- apps/ultra/examples/send.ultra apps/ultra/examples/receive.ultra
+Paths are resolved from the invoking directory. A later invocation delivers its
+files to the existing Ultra process. An already-open file focuses its existing
+window; other files open independent native windows.
+
+Open Audio settings in the footer to select an output and buffer/period size.
+Save settings leaves audio off; Save & start audio opens the output. Settings
+belong to Ultra and survive restart. The desktop app now uses Rust CPAL 0.18.2,
+with native PipeWire/ALSA on Linux, rather than requiring a JACK connection.
+The core is still stereo 48 kHz. Requested and observed buffers are separate.
+See AUDIO.md for current setup, platform limits and private software tests.
+PR #1 remains draft; the UI, reference study and audio settings are integrated there.
+
+The app opens the editable canvas. Up to 16 root patch, help and example documents
+can be open together. Each owns its graph, undo history, control state, timers
+and voices, with up to 64 native child views. They share one native runtime, output device and audio
+settings. Start audio, then click the starter toggle
+to start its metro/counter/chord/makenote chain. Bang -> message -> makenote
+provides a manual note trigger. Physical MIDI input and external MIDI clock
+are deferred on the CPAL path. Use low listening volume initially.
+
+Press N or double-click blank canvas, then type an object name and arguments.
+Use autocomplete or the optional palette. Ctrl/Cmd E toggles edit/performance
+lock. Drag object headers to move them. Space+drag or middle-button drag pans
+the canvas; Ctrl/Cmd+wheel zooms at the pointer. Ctrl/Cmd +/- zooms, Ctrl/Cmd 0
+or Reset view restores 100% at the origin. Camera movement never edits the patch.
+Drag from a bottom outlet to a top inlet, or start at the inlet and drag back.
+Release near a highlighted port to connect. Clicking each port also works;
+focused ports accept Enter or Space. Escape cancels the cord. A locked patch
+must be unlocked with Ctrl/Cmd E before wiring. Invalid drops explain the
+rejection without changing the graph. Select a node/cable and Delete to remove
+it; Undo/Redo restore edits. Every message/bang/number/toggle is a real graph
+object. Ports distinguish control, mono signal, mixed control/mono and legacy
+stereo bundles. Mono inputs sum multiple signal sources. Control and signal
+dependency graphs are validated separately; pure cycles are refused but sampled
+feedback through snapshot~ is legal. New dac~ takes mono inputs mapped only to
+physical channels 1 (left) and 2 (right); repeated mappings sum. The older
+voice -> gain -> join~ -> stereo.dac~ path preserves saved kind dac and explicit
+stereo bundles. Join input 0 maps to L, input 1 to R.
+
+The 50-kind registry includes sig~, +~, -~, *~, /~, cycle~, phasor~, noise~,
+clip~, line~, snapshot~ and dac~. Signal examples require Start audio even when
+their only output is a Console observation. Start with examples/cycle.ultra or
+examples/line_signal.ultra; examples/signal_dac.ultra connects a quiet 0.02-scaled
+sine to the speakers. New MSP sources evaluate the current frame at native
+48 kHz; the existing custom Clockwork/Faust Voice pipeline retains its 64-frame
+delay. Engine starts and graph replacements mute the first 64 output samples
+as a guard while signal state already advances.
+Gain evaluates independently per branch rather than controlling a global voice
+level. All windows share one stereo output device.
+
+cycle~ and phasor~ take one positional frequency, line~ one initial value, and
+snapshot~ one interval. Numeric creation/control values are finite -100000 to
+100000 unless a narrower field range applies; DSP calculations can exceed that
+control bound. Only output channel mappings 1 and 2 are admitted. noise~ retains
+one physical control inlet but accepts no methods, including seed; exact Max
+noise sequences are not claimed. snapshot~ bang reads an offset from the latest
+completed 64-frame vector; periodic reports use a bounded native approximation,
+not an exact Max scheduling claim. Waveform buffers, tempo/transport scheduling,
+unsupported execution attributes, ezdac~ and signal delay feedback remain gaps.
+Frozen Max signal observations and production-header replay are recorded in
+experiments/max-reference/signal-runtime-20261021/.
+
+Lock to operate the entire button/toggle face, drag a slider or drag a number
+vertically. Click a numeric box to select and type its value; Enter commits it.
+Ctrl/Cmd-click or drag temporarily operates a control while editing. Plain
+unlocked gestures select/move objects. Shift gives finer numeric dragging.
+Sliders and ordinary parameters update live. Number/toggle controls send hot
+messages. Voice envelopes still latch for the next note. Changing the graph,
+message literal, voice device or MIDI channel safely clears notes and timers;
+continuous signals resume from reset state with DSP on, but click the toggle to
+restart a metro. Moving a box changes layout only. This is not yet
+seamless arbitrary hot-patching. These structural resets affect only the edited
+document. Stop patch or Escape cancels the current document's scheduled notes
+and timers and freezes/silences its signal graph. An accepted local event,
+parameter change, incoming Receive or explicit global DSP restart resumes its
+continuous signals. Switching focus or hiding a window preserves playback.
+Double-click an embedded p object to open its native window. All child views
+share their owner's tree, Save and Undo/Redo; opening/closing a child preserves
+live runtime values and playback. Closing the root prompts once for unsaved
+changes and closes all of its children. Close waits for pending edits from all
+ready views; Cancel restores editing, and failed admission keeps windows open.
+Other roots continue. Start audio, Stop audio,
+Audio settings and Panic apply to the shared output. Stop audio clears timers
+and notes in every patch; controls can be triggered again with audio off. Start
+audio resumes continuous signals in all documents, including locally stopped
+ones, while stopped metros remain off. Ordinary values and receive bindings
+survive DSP restart; Cycle restarts at reset phase and Phasor keeps its phase.
+Panic requires Stop audio then Start to recover.
+
+The Inspector includes bounded Max-named appearance attributes: dimensions,
+font size, RGBA colors, control colors and slider/gain orientation. Appearance
+edits, reset and undo preserve the running graph. Export keeps these overrides.
+Selected buttons, toggles, sliders and gain controls show a bottom-right resize
+handle. Drag it, or focus it and use arrow keys (Shift: 10 px). Escape or focus
+loss cancels a drag. Each completed resize is one undo entry. The slider inspector
+shows Range Size, Output Minimum, Output Multiplier, Integer/Float Output Mode,
+and the calculated output range; these settings affect native messages.
+
+Create `print notes` and connect an outlet to its inlet. Open Console in the
+toolbar (Ctrl/Cmd M), or double-click print while locked. Messages print with
+audio off or on. The inspector offers Message/Warning/Error/Debug levels. Filter
+by text or level, click a source label to select its current object, and Clear
+to empty history. The console keeps the latest 512 rows and reports native queue
+drops. Open apps/ultra/examples/print.ultra for an original runnable example.
+
+Create `send notes` (or `s notes`) and `receive notes` (or `r notes`) in any
+open patches to deliver complete typed control messages under that name. A named
+receive has no inlet; an unnamed `receive` has one inlet accepting `set notes`
+to bind or retarget it without output. That runtime binding does not change the
+saved creation name or ports. Receiver delivery order is unspecified. Names are
+literal ASCII tokens, at most 31 bytes; Max #0/--- patch-local expansion and
+signal-rate send~/receive~ are unsupported. The send.ultra and receive.ultra
+examples share `ultra-help-notes` and work with audio off.
+
+New (Ctrl/Cmd N) opens an empty native patch window. Open (Ctrl/Cmd O), dropping
+a patch file, or opening one from the file manager creates or focuses its own
+window. Save (Ctrl/Cmd S) and Save As (Ctrl/Cmd Shift S) write validated Ultra
+JSON atomically, normally as .ultra; .json is also accepted. The title's asterisk
+tracks saved content, including undo. Closing modified content offers Save,
+Discard or Cancel. There is no autosave. Advanced JSON / Max import retains
+paste-and-replace intake; Export JSON retains Copy, selectable text and Download.
+
+Open accepts bounded ultra-canvas-v1 JSON, including positions, parameters,
+appearance and exact connections. It also inspects .maxpat, .maxhelp and Max JSON
+files up to 8 MiB in a separate window: choose a named patcher/help tab, review
+its report, and import it. A partial selection requires Allow partial import.
+Unsupported boxes/cables and known behavior differences are listed; graphs are never
+truncated to fit. Comments, scripts, dependencies and automation are omitted.
+The selected graph must fit 32 objects, 64 cables and 64 KiB. Lock it after
+import to operate controls. Import does not start timers or audio. This is a
+bounded conversion, not full Max help or message-language compatibility. Saving
+an imported Max document always chooses a separate Ultra file, including when
+the source used .json. The original source cannot be overwritten by that save.
+The authored graph is saved, not an executing clock snapshot.
+
+Help & Examples searches 101 original entries: help and an example for each of the
+50 object kinds, plus the starter. F1 with a selected object, Alt/Option-click,
+or Object Help in its context menu opens or focuses that object's help in its
+own native patch window. Help & Examples also lists open windows for switching.
+These patches contain no redistributed Max help content. Original examples and
+partial imports do not establish complete execution of installed Max help.
+
+Browser preview supports independent preview windows and downloads; it does not
+execute control messages or audio. Legacy patcher and fixed Chord lab links
+remain in the browser File menu for comparison; native canvas windows hide
+these engine-wide adapters. See PATCH_PROTOCOL.md for exact limits.
+
+GitHub CI checks the PR: UI/reference/native C++ contracts, sandboxed Chromium
+editing with screenshots, the actual native plus Rust/Tauri build/tests,
+and a private software-only CPAL loopback with saved test evidence.
+Browser screenshots are editing evidence, not native WebKit or hardware audio.
+Local native desktop and real MIDI qualification remain separate.
+After building, the optional private native window/file/message/audio checks run
+with:
+  bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/ultra-canvas-results
+This includes check_documents_desktop.py on private Xvfb/D-Bus/AT-SPI and
+software-only PipeWire, with no input or audio sent to the user's desktop.
+For only the document checks in that same private session:
+  ULTRA_TEST_DOCUMENTS_ONLY=1 bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/ultra-documents-results
+See tests/ci/README.md for prerequisites and what each check establishes.
+
+HISTORICAL JACK INVESTIGATION (the diagnostic still supports this adapter)
+The remaining JACK-specific setup, MIDI and hardware results describe the
+earlier desktop adapter. Use AUDIO.md for the current CPAL app and tests.
+
+ULTRA RESEARCH PATCHER — LINUX x86_64
+
+This is a Rust + Tauri desktop window, not a remotely hosted web app. Its
+patch canvas controls the native Clockwork/Faust engine through Rust commands.
+That earlier adapter implemented only two prepared note -> Faust -> gain ->
+output chains.
+This is not a general Max/Pd graph interpreter, plugin host or full DAW.
+
+Run the supplied binary bundle with ./run.sh. No dependencies are installed and
+no audio-server settings are changed by the launcher. A desktop session and
+GTK 3 / WebKitGTK 4.1 runtime are required. The original cloud bundle was built
+on Debian 13; the locally validated rebuild is from Omarchy / Arch Linux.
+The package's BUILD-EVIDENCE.txt identifies its provenance and actual ELF symbol
+requirements. This is not a universal Linux/AppImage compatibility promise.
+
+Audio: start your existing JACK server at 48,000 Hz and period <=1024 frames,
+or use your installed PipeWire JACK compatibility environment (pw-jack ./run.sh).
+Press Start in Ultra. It opens JACK with NoStartServer. It attempts connection
+to the first two physical playback ports; inspect routing in your JACK/PipeWire
+patchbay if silent. Connect your MIDI controller to ultra:midi_in. MIDI channel
+1 drives A (left output), channel 2 drives B (right output). Other channels
+are ignored. Note on/off, velocity, sustain CC64, and CC120/123 are supported.
+
+The custom Voice path adds a declared 64 frames (1.333 ms at 48 kHz), independent
+of host partitions. This is NOT measured physical MIDI-to-audio latency. JACK sample
+offsets are retained; browser/computer-keyboard notes have control-path timing.
+No microphone or audio input is captured by this instrument app.
+
+Valid connected chains enable sound. Disconnected/invalid paths are muted.
+Four voices per device, oldest hard-steal. The bounded safety policy stops the
+whole engine on overload/panic, never silently leaves an accepted note sounding.
+Stop then Start clears the safety stop. Normal notes have no expiry lease.
+Window focus loss is safety-handled; inspect status before resuming playback.
+
+OFFLINE CHECK (no JACK server, desktop, or audio hardware needed)
+  ./ultra-diagnostic --render-demo demo.wav
+Writes a two-second stereo 48 kHz WAV using the actual Clockwork-hosted Faust
+path, checking finite output, audible notes and termination. Play with your
+usual audio player. This does not establish realtime deadlines or device I/O.
+For JACK diagnostics: ./ultra-diagnostic --run-seconds 30
+
+REBUILD FROM REPOSITORY SOURCE
+Linux build prerequisites: C/C++ compiler, curl, tar, Python 3, pkg-config,
+and official Tauri Linux prerequisites (GTK/WebKitGTK 4.1 development packages).
+See https://v2.tauri.app/start/prerequisites/ for distro-specific guidance.
+  ./build.sh --native-only
+  ./build.sh
+The build bootstraps the already-pinned Clockwork/Faust/CMake/Rust research
+inputs locally under experiments/clockwork-faust/.deps. Cargo.lock pins the
+Rust/Tauri graph. No global toolchain or server changes are performed.
+
+KNOWN VALIDATION LIMITS
+The accompanying evidence separates offline execution, synthetic backend tests,
+GUI smoke checks and physical hardware. Missing evidence is not a pass. Original project code is AGPL-3.0-or-later; actual incorporated dependency terms still apply.
+
+TESTED LOCAL DESKTOP
+Omarchy / Arch x86_64, kernel 7.2.8-9-omarchy, Wayland / Hyprland 0.56.2,
+GCC 16.2.1, GTK3 3.24.52, WebKitGTK4.1 2.54.1 and PipeWire-JACK 1.6.9.
+Both the supplied cloud bundle and a source rebuild opened actual Tauri windows.
+The local rebuild uses the pinned Rust 1.85.1/CMake 3.31.6 in .deps, even if
+another Rust/CMake is installed. From repository root:
+  bash apps/ultra/build.sh
+  bash apps/ultra/run.sh
+Rebuilding now installs the native library atomically, preserving a running
+app's mapping. Restart the app to load rebuilt code; a rebuild is not hot reload.
+
+Before playing, lower physical playback volume and both app gains (1..8 is
+suitable for these tests). A routes left, B right. Existing MIDI connections
+must be recreated after Stop/Start; inspect qpwgraph or QjackCtl's graph.
+QjackCtl and qpwgraph were installed for debugging. Use the existing PipeWire
+server; QjackCtl's Start button is not needed to launch another daemon.
+Playing only A (including the default typing keyboard) produces only left.
+For right, play B's keyboard or send MIDI on channel 2. The previously missing
+right channel is resolved: the user confirmed a speaker cable issue. Native
+pointer tests and independent stereo WAV decoding had already verified both
+software outputs. The earlier listening discrepancy is closed.
+Auto-connection uses the first two physical ports, so inspect the patchbay after
+device/order changes. See PLAN.md for the separate software/listening evidence.
+
+On the tested desktop, activating Ultra without a period override negotiated
+2048 frames, causing the expected supported-period safety stop. A latency
+request is not proof of the resulting period: inspect Ultra's JACK period.
+If you choose to run a temporary test affecting the entire existing PipeWire
+graph, first record its current settings, then explicitly set a supported period:
+  pw-metadata -n settings
+  pw-metadata -n settings 0 clock.force-quantum 256
+The local session also tested 128 and 64. Stop/Start Ultra after a safety fault.
+Restore your recorded force-quantum value when done (this machine started at 0):
+  pw-metadata -n settings 0 clock.force-quantum 0
+The app and launcher never perform these settings changes automatically.
+The direct-ALSA check restored the user's selected 512-frame override. A later
+server restart reset it to 0; the final isolated regression temporarily used
+256 and restored 0. Restore the setting you actually recorded, not an assumed
+value. Applications can retain stale connections after a server restart:
+Telegram logged playback-device failures, and fully quitting/reopening it
+restored its audio. Avoid further service restarts just to change a period.
+
+ISOLATED NATIVE REGRESSION (recommended, repository source)
+Close other Ultra instances. With an existing 48 kHz server at a supported period:
+  bash apps/ultra/tests/check_isolated_desktop.sh /tmp/ultra-isolated-results
+Requires Xvfb/xvfb-run, dbus-run-session, Python GI/AT-SPI and JACK headers.
+This launches the actual Tauri app on a private X11 display with private D-Bus
+and accessibility sessions/runtime directory. The existing audio server remains
+available through PIPEWIRE_RUNTIME_DIR. It lowers both app gains to 4, exercises both pointer
+keyboards, route isolation/reconnection and real software MIDI, saves a native
+screenshot, then stops audio and closes its processes. Accessibility actions
+address its process; XTest mouse events are confined to the verified private
+Xvfb display. No keyboard events or input/focus changes reach your desktop.
+Existing Ultra processes/target JACK ports are
+refused before any MIDI is sent. Do not launch another Ultra during this test;
+audio is still shared with your real server and physical playback.
+It never changes server settings or installs dependencies. A private native
+window is not a browser preview, physical latency test or Wayland input test.
+The final combined run passed at 256 frames, with correct note termination and
+no probe xruns/late sends/discontinuities. The desktop accessibility socket
+retained its inode and connectivity throughout the private-session run.
+
+REAL JACK CHECKS (repository source, official JACK headers and pkg-config)
+  c++ -std=c++20 -O2 apps/ultra/tests/jack_probe.cpp \
+    $(pkg-config --cflags --libs jack) -pthread -o /tmp/ultra-jack-probe
+With the actual native app running, both chains connected and gains 1..8:
+  /tmp/ultra-jack-probe basic
+  python3 apps/ultra/tests/check_desktop_isolation.py --probe /tmp/ultra-jack-probe
+  /tmp/ultra-jack-probe overload
+Overload intentionally mutes both devices: inspect the fault, Stop, then Start.
+The probe uses software MIDI and taps only Ultra outputs. It never starts a
+server. MIDI scenarios send all-off cleanup; capture mode is passive. Hold and
+capture modes report acquisition, not a semantic pass. Incomplete/nonfinite
+captures or late sends fail; graph topology changes may invalidate a capture.
+These checks are separate from tests/check_backend.py's explicit fake-JACK ABI.
+
+For the server-loss UI regression, only after an independently approved service
+restart, the existing server is back, and its period is supported:
+  python3 apps/ultra/tests/check_desktop_recovery.py
+  /tmp/ultra-jack-probe basic
+The script never restarts a service or changes settings. Desktop regression
+scripts require Python GI / AT-SPI and one actual Ultra window.
+For the mapped-library install regression (no audio/display required):
+  python3 apps/ultra/tests/check_build_install.py
+For releases/gain changes during pending patch commands (no audio/display required):
+  node apps/ultra/ui/events.test.mjs
+For route ordering, fresh reconnect presses, queue overflow and recovery errors
+against an explicit fake JACK library (no audio server/display required):
+  python3 apps/ultra/tests/check_backend.py
+This needs official JACK development headers and a native build first.
+
+Actual native UI checks include dragging, reconnecting, deleting/restoring,
+both pointer keyboards, typing A, gain/sustain, JSON paste/native file-picker
+import, focus loss, Panic, active-audio exit and real server-loss recovery.
+Screenshots are under apps/ultra/screenshots in source. Optional Download is
+still unverified; selectable JSON remains the export fallback.
+Short basic real-JACK captures at 512/256/128/64 show the declared 64-frame software
+delay and termination/isolation. Desktop interaction produced xruns, including
+focus switching. Sustained realtime acceptance, physical controller input and
+calibrated MIDI-to-analog latency remain pending. See the single repository
+PLAN.md for detailed evidence and next gates.
+
+Ordering and long sessions: the native callback first applies one FIFO snapshot
+of UI events and route commands, then admits this buffer's MIDI. Equal-time UI
+controls precede MIDI. Later edits take effect next callback. A disconnect
+releases old notes in FIFO order; a fresh UI press after reconnect survives.
+This is not a claim about physical arrival order.
+The research guest uses a finite frame-counter range and intentionally safety-
+stops before about 12.43 hours; stop/start resets it. Unlimited uptime is untested.
+
+CHORD LAB: PLAYABLE FIXED PATCH
+-------------------------------
+Build from the updated PR branch with bash apps/ultra/build.sh, then launch
+apps/ultra/run.sh. Click Chord lab in the existing patcher. Use low listening
+volume initially. Start audio, then Run transport. Internal clock produces a
+sixteenth-note arpeggio on A; the on-screen/QWERTY keyboard and MIDI channel 2
+play B. Output mapping is explicit: A mono -> L, B mono -> R, joined as stereo.
+This is fixed routing with live controls, not arbitrary Max patch execution.
+
+Edit BPM, root, major/minor/sus4, step count, transpose, velocity and gate. A
+sequence-setting edit stops transport; press Run again. Attack/release latch
+at note-on. Attack 0 is 16 frames, otherwise control*4ms; release 0 is 16 frames,
+otherwise control*8ms. The same envelope/gain controls currently apply to A/B.
+Preset JSON saves these controls, not an arbitrary graph; importing stays stopped.
+
+For external MIDI clock select External, press Arm, connect the clock source to
+ultra:midi_in, send FA Start (or FB Continue), then F8 clock. Six of the 24 PPQN
+pulses advance each step. FC Stop releases the current note but stays armed.
+FB resumes the next step, not a partial clock phase; Song Position Pointer is
+not supported. No outgoing MIDI clock is generated. A manual note/sustain is
+ignored while armed; B/channel2 stays playable. Missing clock cannot hold a
+note indefinitely: gate expiry remains audio-timed (see PLAN.md for bounds).
+Focus loss stops transport/releases notes; returning to the patcher stops audio.
+
+The audio bus/data model supports future wider layouts, but this backend still
+requires exactly two output channels. It does not decode ambisonics or run Max
+MC objects. Stored presets/control data do not carry live audio samples.
+
+Offline audible demo without JACK:
+  apps/ultra/build/ultra-diagnostic --chord-demo /tmp/ultra-chord-demo.wav
+This renders eight seconds through the actual Clockwork/Faust host. It tests no
+hardware latency or realtime deadline. Native UI/browser rendering of the NEW
+lab is not verified here; test Start/Run, controls, MIDI, preset roundtrip,
+focus-loss Stop/Panic and navigation on your local desktop before relying on it.
+
+New headless checks (after native build):
+  node --test apps/ultra/ui/audio-bus.test.mjs apps/ultra/ui/chord-lab.test.mjs
+  python3 apps/ultra/tests/check_sequence.py
+check_sequence.py needs JACK headers; set JACK_INCLUDE to their include root
+if they are not installed in the default compiler search path. It uses an
+explicit fake JACK test library, not a real audio server. Existing graph,
+event, component and backend checks remain required.
+
+Package an already built private research test binary, without a release:
+  bash apps/ultra/package-test.sh /tmp/ultra-chord-lab-linux-x86_64.tar.gz
+The archive includes launch/runtime/license notes and binary checksums. It is
+not a universal AppImage and does not install missing system dependencies.

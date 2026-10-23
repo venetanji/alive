@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "message",
+      "x": 80,
+      "y": 60,
+      "params": {
+        "text": "-3.9"
+      }
+    },
+    {
+      "id": 2,
+      "type": "number_int",
+      "x": 80,
+      "y": 140,
+      "params": {
+        "value": 0,
+        "minimum": -20,
+        "maximum": 20
+      }
+    },
+    {
+      "id": 3,
+      "type": "print",
+      "x": 80,
+      "y": 235,
+      "params": {
+        "label": "integer",
+        "level": 0,
+        "popup": 0
+      }
+    },
+    {
+      "id": 4,
+      "type": "print",
+      "x": 300,
+      "y": 235,
+      "params": {
+        "label": "physical-tab",
+        "level": 0,
+        "popup": 0
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 2,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 1,
+      "to": 4,
+      "inlet": 0
+    }
+  ]
+}

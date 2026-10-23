@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "route",
+      "x": 60,
+      "y": 60,
+      "params": {
+        "args": "red blue"
+      }
+    },
+    {
+      "id": 2,
+      "type": "select",
+      "x": 230,
+      "y": 60,
+      "params": {
+        "args": "4 8"
+      }
+    },
+    {
+      "id": 3,
+      "type": "bang",
+      "x": 400,
+      "y": 60,
+      "params": {}
+    },
+    {
+      "id": 4,
+      "type": "bang",
+      "x": 570,
+      "y": 60,
+      "params": {}
+    },
+    {
+      "id": 5,
+      "type": "number",
+      "x": 60,
+      "y": 190,
+      "params": {
+        "value": 0
+      }
+    },
+    {
+      "id": 6,
+      "type": "number",
+      "x": 230,
+      "y": 190,
+      "params": {
+        "value": 0
+      }
+    },
+    {
+      "id": 7,
+      "type": "bang",
+      "x": 400,
+      "y": 190,
+      "params": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 2,
+      "inlet": 0
+    },
+    {
+      "from": 1,
+      "outlet": 1,
+      "to": 6,
+      "inlet": 0
+    },
+    {
+      "from": 1,
+      "outlet": 2,
+      "to": 7,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 1,
+      "to": 4,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 2,
+      "to": 5,
+      "inlet": 0
+    }
+  ]
+}

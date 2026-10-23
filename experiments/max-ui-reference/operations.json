@@ -1,0 +1,18 @@
+{
+  "kind": "ordered_ui_observations_not_message_trace",
+  "sequence_unit": "manual UI operation order; no wall-clock or scheduler timing assertion",
+  "operations": [
+    {"seq": 1, "action": "Open own ui-study.maxpat in standalone Max, DSP off", "status": "observed", "result": "Compact dark controls, object labels, ports and distinct signal cords"},
+    {"seq": 2, "action": "Ctrl E to unlock", "status": "observed", "result": "Dot grid and editable objects"},
+    {"seq": 3, "action": "N at blank position; type met", "status": "observed", "result": "Inline autocomplete; meter~ before metro"},
+    {"seq": 4, "action": "Down then Enter", "status": "observed", "result": "Selected metro committed"},
+    {"seq": 5, "action": "Create unknown zz-alive-unsupported class", "status": "observed", "result": "Visibly unresolved text; input helper typed hyphens, not the initially intended underscores"},
+    {"seq": 6, "action": "Hover + left inlet", "status": "observed", "result": "Set Left Operand, Trigger the Calculation"},
+    {"seq": 7, "action": "Right-click message inlet", "status": "observed", "result": "Attributes and Messages, including bang, float, int, list, set and symbol"},
+    {"seq": 8, "action": "Right-click + outlet", "status": "observed_bounded_negative", "result": "No analogous emitted-message menu appeared in this attempt; no general absence claim"},
+    {"seq": 9, "action": "Open disposable Live default set; decline old recovery; load Max MIDI Effect; Edit in Max", "status": "observed", "result": "Max --mfl process and editable device patcher opened"},
+    {"seq": 10, "action": "Ctrl N; N; metro 150", "status": "observed", "result": "New own patch with metro 150 created in the Max for Live session"},
+    {"seq": 11, "action": "Inspect user-supplied Untitled1.maxpat and savedpatch.maxpat", "status": "source_inspected_user_reported_save", "result": "Both files identical; Max appversion 9.1.5; one metro 150 object"}
+  ],
+  "untested": ["DSP output", "scheduler settings", "Max-saved one-property diffs beyond the supplied identical snapshots", "arbitrary Max objects", "native Windows/macOS appearance"]
+}

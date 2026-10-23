@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "pack",
+      "x": 60,
+      "y": 60,
+      "params": {
+        "args": "0 0."
+      }
+    },
+    {
+      "id": 2,
+      "type": "unpack",
+      "x": 230,
+      "y": 60,
+      "params": {
+        "args": "0 0."
+      }
+    },
+    {
+      "id": 3,
+      "type": "add",
+      "x": 400,
+      "y": 60,
+      "params": {
+        "rhs": 0
+      }
+    },
+    {
+      "id": 4,
+      "type": "number",
+      "x": 570,
+      "y": 60,
+      "params": {
+        "value": 0
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 2,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 1,
+      "to": 3,
+      "inlet": 1
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 3,
+      "outlet": 0,
+      "to": 4,
+      "inlet": 0
+    }
+  ]
+}

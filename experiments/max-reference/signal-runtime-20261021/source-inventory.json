@@ -1,0 +1,2302 @@
+{
+  "schema": "installed-max-source-signatures-v1",
+  "evidence": "STATIC_INSTALLED_REFERENCE_NOT_RUNTIME",
+  "resource_root": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources",
+  "sources": [
+    {
+      "object": "sig~",
+      "reference": {
+        "path": "docs/refpages/msp-ref/sig~.maxref.xml",
+        "sha256": "eaad45d6835e696cd23d07d2c98a9a23d6cf453c6f5cb54ba3f70708623391d0",
+        "anchors": [
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "0",
+              "type": "float"
+            },
+            "line": 27
+          },
+          {
+            "kind": "outlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 38
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "name": "initial-output-value",
+              "optional": "1",
+              "type": "number"
+            },
+            "line": 49
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "int"
+            },
+            "line": 60
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "float"
+            },
+            "line": 71
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "list"
+            },
+            "line": 82
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "set"
+            },
+            "line": 93
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "signal"
+            },
+            "line": 105
+          }
+        ],
+        "attribute_metadata_defaults": {}
+      },
+      "help": {
+        "path": "help/msp/sig~.maxhelp",
+        "sha256": "0244ff183c74405fbde65800cc3dee881e252afc5fc5975049dd962266bb75c3",
+        "port_signatures": [
+          {
+            "anchor": "$/patcher/boxes/2/box/patcher/boxes/8/box",
+            "signature": {
+              "id": "obj-17",
+              "maxclass": "newobj",
+              "text": "sig~",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "object": "+~",
+      "reference": {
+        "path": "docs/refpages/msp-ref/plus~.maxref.xml",
+        "sha256": "119b2cf68b9d4264a7d99b81885d9c22426f27b635604dc54bcbf89b69e0310f",
+        "anchors": [
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "0",
+              "type": "signal/float"
+            },
+            "line": 24
+          },
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "1",
+              "type": "signal/float"
+            },
+            "line": 32
+          },
+          {
+            "kind": "outlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 43
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "name": "initial-offset",
+              "optional": "1",
+              "type": "number"
+            },
+            "line": 54
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "int"
+            },
+            "line": 65
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "float"
+            },
+            "line": 79
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "signal"
+            },
+            "line": 93
+          }
+        ],
+        "attribute_metadata_defaults": {}
+      },
+      "help": {
+        "path": "help/msp/plus~.maxhelp",
+        "sha256": "60b9999fe9afb7c00bf66e6edcdb038954917fccd5befaea77a6fc0e19ea1162",
+        "port_signatures": [
+          {
+            "anchor": "$/patcher/boxes/2/box/patcher/boxes/7/box",
+            "signature": {
+              "id": "obj-17",
+              "maxclass": "newobj",
+              "text": "+~",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/2/box/patcher/boxes/15/box",
+            "signature": {
+              "id": "obj-5",
+              "maxclass": "newobj",
+              "text": "+~ 0.5",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "object": "-~",
+      "reference": {
+        "path": "docs/refpages/msp-ref/minus~.maxref.xml",
+        "sha256": "2fa80b244c8cf70517c5398c4d0b7bab15f8ea02f83f7c569838c8aa6018d624",
+        "anchors": [
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "0",
+              "type": "signal/float"
+            },
+            "line": 24
+          },
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "1",
+              "type": "signal/float"
+            },
+            "line": 32
+          },
+          {
+            "kind": "outlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 43
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "name": "initial-subtraction-value",
+              "optional": "1",
+              "type": "number"
+            },
+            "line": 54
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "int"
+            },
+            "line": 65
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "float"
+            },
+            "line": 79
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "signal"
+            },
+            "line": 93
+          }
+        ],
+        "attribute_metadata_defaults": {}
+      },
+      "help": {
+        "path": "help/msp/minus~.maxhelp",
+        "sha256": "c60c6adbb197440f7e9b13ab091caef14c5ca983b9f640240c33a6bc4f3a9bf8",
+        "port_signatures": [
+          {
+            "anchor": "$/patcher/boxes/1/box/patcher/boxes/16/box",
+            "signature": {
+              "id": "obj-21",
+              "maxclass": "newobj",
+              "text": "-~",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "object": "*~",
+      "reference": {
+        "path": "docs/refpages/msp-ref/times~.maxref.xml",
+        "sha256": "b371192859782302dd81d6e756c6169e9b443fac6ae618fe0f005e7ea859f6d5",
+        "anchors": [
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "0",
+              "type": "Signal/Float"
+            },
+            "line": 24
+          },
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "1",
+              "type": "Signal/Float"
+            },
+            "line": 32
+          },
+          {
+            "kind": "outlet",
+            "signature": {
+              "id": "0",
+              "type": "Signal"
+            },
+            "line": 43
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "name": "initial-multiplier",
+              "optional": "1",
+              "type": "number"
+            },
+            "line": 54
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "int"
+            },
+            "line": 65
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "float"
+            },
+            "line": 79
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "signal"
+            },
+            "line": 93
+          }
+        ],
+        "attribute_metadata_defaults": {}
+      },
+      "help": {
+        "path": "help/msp/times~.maxhelp",
+        "sha256": "3577562ef537a3ff939cd1665dfa2a350e428cd8e06c30a236d15881fb9f0f66",
+        "port_signatures": [
+          {
+            "anchor": "$/patcher/boxes/0/box/patcher/boxes/8/box",
+            "signature": {
+              "id": "obj-17",
+              "maxclass": "newobj",
+              "text": "*~",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/2/box/patcher/boxes/7/box",
+            "signature": {
+              "id": "obj-11",
+              "maxclass": "newobj",
+              "text": "*~",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/2/box/patcher/boxes/9/box",
+            "signature": {
+              "id": "obj-17",
+              "maxclass": "newobj",
+              "text": "*~ 0.2",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "object": "/~",
+      "reference": {
+        "path": "docs/refpages/msp-ref/div~.maxref.xml",
+        "sha256": "177fbfa143946d7411fac4e3088bfb8c09e53a75602b116630e9dc0890c1a8af",
+        "anchors": [
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "0",
+              "type": "signal/float"
+            },
+            "line": 24
+          },
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "1",
+              "type": "signal/float"
+            },
+            "line": 32
+          },
+          {
+            "kind": "outlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 43
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "name": "initial-divisor",
+              "optional": "1",
+              "type": "number"
+            },
+            "line": 54
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "int"
+            },
+            "line": 65
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "float"
+            },
+            "line": 79
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "signal"
+            },
+            "line": 93
+          }
+        ],
+        "attribute_metadata_defaults": {}
+      },
+      "help": {
+        "path": "help/msp/div~.maxhelp",
+        "sha256": "83638cddd6f5eb98852bf4fa1788b0161b95c8d3096f28323e076e2932e0944e",
+        "port_signatures": [
+          {
+            "anchor": "$/patcher/boxes/1/box/patcher/boxes/9/box",
+            "signature": {
+              "id": "obj-18",
+              "maxclass": "newobj",
+              "text": "/~",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "object": "cycle~",
+      "reference": {
+        "path": "docs/refpages/msp-ref/cycle~.maxref.xml",
+        "sha256": "5f97357b3799cb051a507711b6631cf33436b354fb6190bee224ccd8567a7703",
+        "anchors": [
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "0",
+              "type": "signal/float"
+            },
+            "line": 30
+          },
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "1",
+              "type": "signal/float"
+            },
+            "line": 38
+          },
+          {
+            "kind": "outlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 49
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "name": "frequency",
+              "optional": "1",
+              "units": "hz",
+              "type": "number"
+            },
+            "line": 60
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "name": "buffer-name",
+              "optional": "1",
+              "type": "symbol"
+            },
+            "line": 68
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "name": "sample-offset",
+              "optional": "1",
+              "type": "int"
+            },
+            "line": 76
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "float"
+            },
+            "line": 87
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "(mouse)"
+            },
+            "line": 100
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "reset"
+            },
+            "line": 107
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "set"
+            },
+            "line": 118
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "setall"
+            },
+            "line": 130
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "signal"
+            },
+            "line": 141
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "buffer",
+              "get": "1",
+              "set": "1",
+              "type": "symbol",
+              "size": "1"
+            },
+            "line": 155
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "buffer_offset",
+              "get": "1",
+              "set": "1",
+              "type": "atom_long",
+              "size": "1"
+            },
+            "line": 166
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "buffer_sizeinsamps",
+              "get": "1",
+              "set": "1",
+              "type": "atom_long",
+              "size": "1"
+            },
+            "line": 177
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "frequency",
+              "get": "1",
+              "set": "1",
+              "type": "float",
+              "size": "1"
+            },
+            "line": 313
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "phase",
+              "get": "1",
+              "set": "1",
+              "type": "float",
+              "size": "1"
+            },
+            "line": 324
+          }
+        ],
+        "attribute_metadata_defaults": {}
+      },
+      "help": {
+        "path": "help/msp/cycle~.maxhelp",
+        "sha256": "89868ae65cc4c9af6cd2caa2fa22140805c6508a97f6128973f5ddcf57a9fa9d",
+        "port_signatures": [
+          {
+            "anchor": "$/patcher/boxes/0/box/patcher/boxes/15/box",
+            "signature": {
+              "id": "obj-11",
+              "maxclass": "newobj",
+              "text": "cycle~ 400.",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/2/box/patcher/boxes/9/box",
+            "signature": {
+              "id": "obj-14",
+              "maxclass": "newobj",
+              "text": "cycle~ 0.25",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/2/box/patcher/boxes/12/box",
+            "signature": {
+              "id": "obj-5",
+              "maxclass": "newobj",
+              "text": "cycle~ 0.25",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/2/box/patcher/boxes/20/box",
+            "signature": {
+              "id": "obj-41",
+              "maxclass": "newobj",
+              "text": "cycle~",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/3/box/patcher/boxes/13/box",
+            "signature": {
+              "id": "obj-11",
+              "maxclass": "newobj",
+              "text": "cycle~ 440.",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "object": "phasor~",
+      "reference": {
+        "path": "docs/refpages/msp-ref/phasor~.maxref.xml",
+        "sha256": "1ff6866fa9143d4f38d8346f65b27bab48dd2de1315714f0fe15dcd69b4e149e",
+        "anchors": [
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "0",
+              "type": "signal/float/symbol"
+            },
+            "line": 27
+          },
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "1",
+              "type": "float"
+            },
+            "line": 35
+          },
+          {
+            "kind": "outlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 46
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "name": "initial-frequency",
+              "optional": "1",
+              "units": "time-value",
+              "type": "list"
+            },
+            "line": 57
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "bang"
+            },
+            "line": 68
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "int"
+            },
+            "line": 77
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "float"
+            },
+            "line": 91
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "list"
+            },
+            "line": 105
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "anything"
+            },
+            "line": 114
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "reset"
+            },
+            "line": 123
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "signal"
+            },
+            "line": 132
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "frequency",
+              "get": "1",
+              "set": "1",
+              "type": "Time Value",
+              "size": "1"
+            },
+            "line": 147
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "jitter",
+              "get": "1",
+              "set": "1",
+              "type": "float",
+              "size": "1"
+            },
+            "line": 160
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "limit",
+              "get": "1",
+              "set": "1",
+              "type": "float",
+              "size": "1"
+            },
+            "line": 171
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "lock",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 182
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "phaseoffset",
+              "get": "1",
+              "set": "1",
+              "type": "float",
+              "size": "1"
+            },
+            "line": 193
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "syncupdate",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 204
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "transport",
+              "get": "1",
+              "set": "1",
+              "type": "symbol",
+              "size": "1"
+            },
+            "line": 216
+          }
+        ],
+        "attribute_metadata_defaults": {
+          "frequency": "0 ms",
+          "transport": "internal"
+        }
+      },
+      "help": {
+        "path": "help/msp/phasor~.maxhelp",
+        "sha256": "a3b5b5863f8df3a0e9c91a0de209cdd6e69c9de6762d7305084a3522835a59e2",
+        "port_signatures": [
+          {
+            "anchor": "$/patcher/boxes/0/box/patcher/boxes/9/box",
+            "signature": {
+              "id": "obj-7",
+              "maxclass": "newobj",
+              "text": "phasor~ 3",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/0/box/patcher/boxes/11/box",
+            "signature": {
+              "id": "obj-3",
+              "maxclass": "newobj",
+              "text": "phasor~ 4",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/2/box/patcher/boxes/16/box",
+            "signature": {
+              "id": "obj-33",
+              "maxclass": "newobj",
+              "text": "phasor~",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/2/box/patcher/boxes/19/box",
+            "signature": {
+              "id": "obj-16",
+              "maxclass": "newobj",
+              "text": "phasor~ @syncupdate 1",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/3/box/patcher/boxes/20/box",
+            "signature": {
+              "id": "obj-1",
+              "maxclass": "newobj",
+              "text": "phasor~ 4n @lock 1",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/5/box/patcher/boxes/7/box",
+            "signature": {
+              "id": "obj-5",
+              "maxclass": "newobj",
+              "text": "phasor~ 440",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "object": "noise~",
+      "reference": {
+        "path": "docs/refpages/msp-ref/noise~.maxref.xml",
+        "sha256": "5c92ea5328c8f24314a07227a8d3a303e865d1eb759f84e6c7d283188167fc60",
+        "anchors": [
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            "line": 27
+          },
+          {
+            "kind": "outlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 38
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "classic",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 52
+          }
+        ],
+        "attribute_metadata_defaults": {}
+      },
+      "help": {
+        "path": "help/msp/noise~.maxhelp",
+        "sha256": "9647ae3dd80f85b1c0e3ba1cd0f4e506bddad01b651fa1c4663693afa8631c72",
+        "port_signatures": [
+          {
+            "anchor": "$/patcher/boxes/1/box/patcher/boxes/6/box",
+            "signature": {
+              "id": "obj-26",
+              "maxclass": "newobj",
+              "text": "noise~",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "object": "clip~",
+      "reference": {
+        "path": "docs/refpages/msp-ref/clip~.maxref.xml",
+        "sha256": "f17d46821d9381c409283e1ff908b0a3004bee7320700dc21d09928ec331bf57",
+        "anchors": [
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 27
+          },
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "1",
+              "type": "signal"
+            },
+            "line": 35
+          },
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "2",
+              "type": "signal"
+            },
+            "line": 43
+          },
+          {
+            "kind": "outlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 54
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "name": "minimum",
+              "optional": "1",
+              "type": "float"
+            },
+            "line": 65
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "name": "maximum",
+              "optional": "1",
+              "type": "float"
+            },
+            "line": 73
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "int"
+            },
+            "line": 84
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "float"
+            },
+            "line": 95
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "signal"
+            },
+            "line": 106
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "mode",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 124
+          }
+        ],
+        "attribute_metadata_defaults": {}
+      },
+      "help": {
+        "path": "help/msp/clip~.maxhelp",
+        "sha256": "03d82e1405cfa2c3a003bb71346394a9befcdf4c5b3647a0f44740db9352bebf",
+        "port_signatures": [
+          {
+            "anchor": "$/patcher/boxes/0/box/patcher/boxes/6/box",
+            "signature": {
+              "id": "obj-19",
+              "maxclass": "newobj",
+              "text": "clip~ -1. 1.",
+              "numinlets": 3,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/2/box/patcher/boxes/14/box",
+            "signature": {
+              "id": "obj-19",
+              "maxclass": "newobj",
+              "text": "clip~ -1. 1.",
+              "numinlets": 3,
+              "numoutlets": 1,
+              "outlettype": [
+                "signal"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "object": "dac~",
+      "reference": {
+        "path": "docs/refpages/msp-ref/dac~.maxref.xml",
+        "sha256": "c79cff2fcbd9dd7dffc4dcaf2ff4896793209191cd8bafa78b1d47f53f6f571b",
+        "anchors": [
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 27
+          },
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "1",
+              "type": "signal"
+            },
+            "line": 35
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "name": "outputs",
+              "optional": "1",
+              "type": "int/symbol"
+            },
+            "line": 47
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "int"
+            },
+            "line": 61
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "list"
+            },
+            "line": 72
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "(mouse)"
+            },
+            "line": 83
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "open"
+            },
+            "line": 91
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "set"
+            },
+            "line": 100
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "signal"
+            },
+            "line": 114
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "start"
+            },
+            "line": 123
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "startwindow"
+            },
+            "line": 132
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "stop"
+            },
+            "line": 141
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "wclose"
+            },
+            "line": 150
+          }
+        ],
+        "attribute_metadata_defaults": {}
+      },
+      "help": {
+        "path": "help/msp/dac~.maxhelp",
+        "sha256": "29f82f12ad3db37b602c7f604312534f1a1ff90211c039f3417f600a8c4277b6",
+        "port_signatures": [
+          {
+            "anchor": "$/patcher/boxes/1/box/patcher/boxes/11/box",
+            "signature": {
+              "id": "obj-6",
+              "maxclass": "newobj",
+              "text": "dac~ 1 3 4",
+              "numinlets": 3,
+              "numoutlets": 0
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/1/box/patcher/boxes/22/box",
+            "signature": {
+              "id": "obj-5",
+              "maxclass": "newobj",
+              "text": "dac~",
+              "numinlets": 2,
+              "numoutlets": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "object": "ezdac~",
+      "reference": {
+        "path": "docs/refpages/msp-ref/ezdac~.maxref.xml",
+        "sha256": "053e287091a4a5bd3dbfcb500949102a4c5f2416abc415ab155d6c32d2e3678d",
+        "anchors": [
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 30
+          },
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "1",
+              "type": "signal"
+            },
+            "line": 38
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "id": "0",
+              "name": "OBJARG_NAME",
+              "type": "OBJARG_TYPE",
+              "optional": "0"
+            },
+            "line": 51
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "int"
+            },
+            "line": 62
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "list"
+            },
+            "line": 73
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "(mouse)"
+            },
+            "line": 84
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "local"
+            },
+            "line": 92
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "open"
+            },
+            "line": 103
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "set"
+            },
+            "line": 112
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "signal"
+            },
+            "line": 126
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "start"
+            },
+            "line": 138
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "startwindow"
+            },
+            "line": 147
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "stop"
+            },
+            "line": 156
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "wclose"
+            },
+            "line": 165
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "bgcolor",
+              "get": "1",
+              "set": "1",
+              "type": "float",
+              "size": "4"
+            },
+            "line": 177
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "border",
+              "get": "1",
+              "set": "1",
+              "type": "atom",
+              "size": "1"
+            },
+            "line": 196
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "bordercolor",
+              "get": "1",
+              "set": "1",
+              "type": "atom",
+              "size": "1"
+            },
+            "line": 208
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "color",
+              "get": "1",
+              "set": "1",
+              "type": "float",
+              "size": "4"
+            },
+            "line": 220
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "elementcolor",
+              "get": "1",
+              "set": "1",
+              "type": "float",
+              "size": "4"
+            },
+            "line": 240
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "local",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 260
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "offgradcolor1",
+              "get": "1",
+              "set": "1",
+              "type": "atom",
+              "size": "1"
+            },
+            "line": 277
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "offgradcolor2",
+              "get": "1",
+              "set": "1",
+              "type": "atom",
+              "size": "1"
+            },
+            "line": 289
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "ongradcolor1",
+              "get": "1",
+              "set": "1",
+              "type": "atom",
+              "size": "1"
+            },
+            "line": 301
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "ongradcolor2",
+              "get": "1",
+              "set": "1",
+              "type": "atom",
+              "size": "1"
+            },
+            "line": 313
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "style",
+              "get": "1",
+              "set": "1",
+              "type": "symbol",
+              "size": "1"
+            },
+            "line": 325
+          }
+        ],
+        "attribute_metadata_defaults": {
+          "local": "0",
+          "style": ""
+        }
+      },
+      "help": {
+        "path": "help/msp/ezdac~.maxhelp",
+        "sha256": "7e107570ba5ee2ed22d66bc436de454d8df8eed3b2220995b29015423e8cc40e",
+        "port_signatures": [
+          {
+            "anchor": "$/patcher/boxes/0/box/patcher/boxes/5/box",
+            "signature": {
+              "id": "obj-20",
+              "maxclass": "ezdac~",
+              "numinlets": 2,
+              "numoutlets": 0
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/1/box/patcher/boxes/8/box",
+            "signature": {
+              "id": "obj-30",
+              "maxclass": "ezdac~",
+              "numinlets": 2,
+              "numoutlets": 0
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/3/box/patcher/boxes/7/box",
+            "signature": {
+              "id": "obj-20",
+              "maxclass": "ezdac~",
+              "numinlets": 2,
+              "numoutlets": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "object": "gain~",
+      "reference": {
+        "path": "docs/refpages/msp-ref/gain~.maxref.xml",
+        "sha256": "5ec8c73b4f5eaa802156ec03f4f47c2b683d4b034addce41b711ef1fccc2a768",
+        "anchors": [
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 27
+          },
+          {
+            "kind": "outlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 38
+          },
+          {
+            "kind": "outlet",
+            "signature": {
+              "id": "1",
+              "type": "signal"
+            },
+            "line": 46
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "id": "0",
+              "name": "OBJARG_NAME",
+              "type": "OBJARG_TYPE",
+              "optional": "0"
+            },
+            "line": 58
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "bang"
+            },
+            "line": 71
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "int"
+            },
+            "line": 80
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "float"
+            },
+            "line": 91
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "list"
+            },
+            "line": 102
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "color"
+            },
+            "line": 113
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "ft1"
+            },
+            "line": 127
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "(mouse)"
+            },
+            "line": 138
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "set"
+            },
+            "line": 146
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "setvalue"
+            },
+            "line": 157
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "signal"
+            },
+            "line": 168
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "annotation_name",
+              "get": "1",
+              "set": "1",
+              "type": "symbol",
+              "size": "1"
+            },
+            "line": 180
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "bgcolor",
+              "get": "1",
+              "set": "1",
+              "type": "float",
+              "size": "4"
+            },
+            "line": 196
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "bordercolor",
+              "get": "1",
+              "set": "1",
+              "type": "atom",
+              "size": "1"
+            },
+            "line": 217
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "inc",
+              "get": "1",
+              "set": "1",
+              "type": "float",
+              "size": "1"
+            },
+            "line": 229
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "interp",
+              "get": "1",
+              "set": "1",
+              "type": "float",
+              "size": "1"
+            },
+            "line": 244
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "interpinlet",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 259
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "knobcolor",
+              "get": "1",
+              "set": "1",
+              "type": "float",
+              "size": "4"
+            },
+            "line": 275
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "multislider",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 296
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "orientation",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 311
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "param_connect",
+              "get": "1",
+              "set": "1",
+              "type": "symbol",
+              "size": "1"
+            },
+            "line": 360
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "parameter_enable",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 381
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "parameter_mappable",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 396
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "relative",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 412
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "scale",
+              "get": "1",
+              "set": "1",
+              "type": "float",
+              "size": "1"
+            },
+            "line": 447
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "size",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 462
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "stripecolor",
+              "get": "1",
+              "set": "1",
+              "type": "float",
+              "size": "4"
+            },
+            "line": 478
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "style",
+              "get": "1",
+              "set": "1",
+              "type": "symbol",
+              "size": "1"
+            },
+            "line": 499
+          }
+        ],
+        "attribute_metadata_defaults": {
+          "annotation_name": "",
+          "inc": "1.071519",
+          "interp": "10.",
+          "interpinlet": "0",
+          "multislider": "0",
+          "orientation": "0",
+          "param_connect": "",
+          "parameter_mappable": "1",
+          "relative": "0",
+          "scale": "7.94321",
+          "size": "158",
+          "style": ""
+        }
+      },
+      "help": {
+        "path": "help/msp/gain~.maxhelp",
+        "sha256": "eadb5a6b378b48d7653a2143a6a15bea92b2e26d69839028eb5337d590a3e887",
+        "port_signatures": [
+          {
+            "anchor": "$/patcher/boxes/0/box/patcher/boxes/23/box",
+            "signature": {
+              "id": "obj-19",
+              "maxclass": "gain~",
+              "numinlets": 1,
+              "numoutlets": 2,
+              "outlettype": [
+                "multichannelsignal",
+                ""
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/1/box/patcher/boxes/10/box",
+            "signature": {
+              "id": "obj-21",
+              "maxclass": "gain~",
+              "numinlets": 2,
+              "numoutlets": 2,
+              "outlettype": [
+                "signal",
+                ""
+              ],
+              "interpinlet": 1
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/3/box/patcher/boxes/21/box",
+            "signature": {
+              "id": "obj-21",
+              "maxclass": "gain~",
+              "numinlets": 2,
+              "numoutlets": 2,
+              "outlettype": [
+                "signal",
+                ""
+              ],
+              "interpinlet": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "object": "line~",
+      "reference": {
+        "path": "docs/refpages/msp-ref/line~.maxref.xml",
+        "sha256": "05234bec696c40ca5f4e4d5e6883f87fb5c1d727dd66ab266977badc58335216",
+        "anchors": [
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "0",
+              "type": "INLET_TYPE"
+            },
+            "line": 27
+          },
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "1",
+              "type": "INLET_TYPE"
+            },
+            "line": 35
+          },
+          {
+            "kind": "outlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 46
+          },
+          {
+            "kind": "outlet",
+            "signature": {
+              "id": "1",
+              "type": "signal"
+            },
+            "line": 54
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "name": "initial-value",
+              "optional": "1",
+              "type": "float or int"
+            },
+            "line": 65
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "int"
+            },
+            "line": 76
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "float"
+            },
+            "line": 90
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "list"
+            },
+            "line": 104
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "anything"
+            },
+            "line": 125
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "pause"
+            },
+            "line": 146
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "resume"
+            },
+            "line": 155
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "stop"
+            },
+            "line": 164
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "activeout",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 176
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "maxpoints",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 189
+          }
+        ],
+        "attribute_metadata_defaults": {
+          "activeout": "0"
+        }
+      },
+      "help": {
+        "path": "help/msp/line~.maxhelp",
+        "sha256": "85a8482029441c0be53abcfc3f1aa3d14bb0a347e3360ffeb3e4299b9ba1226a",
+        "port_signatures": [
+          {
+            "anchor": "$/patcher/boxes/0/box/patcher/boxes/9/box",
+            "signature": {
+              "id": "obj-1",
+              "maxclass": "newobj",
+              "text": "line~ @activeout 1",
+              "numinlets": 2,
+              "numoutlets": 3,
+              "outlettype": [
+                "signal",
+                "signal",
+                "bang"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/1/box/patcher/boxes/13/box",
+            "signature": {
+              "id": "obj-13",
+              "maxclass": "newobj",
+              "text": "line~ @maxpoints 256",
+              "numinlets": 2,
+              "numoutlets": 2,
+              "outlettype": [
+                "signal",
+                "bang"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/2/box/patcher/boxes/11/box",
+            "signature": {
+              "id": "obj-5",
+              "maxclass": "newobj",
+              "text": "line~ 0.5",
+              "numinlets": 2,
+              "numoutlets": 2,
+              "outlettype": [
+                "signal",
+                "bang"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/3/box/patcher/boxes/14/box",
+            "signature": {
+              "id": "obj-5",
+              "maxclass": "newobj",
+              "text": "line~ 0.5",
+              "numinlets": 2,
+              "numoutlets": 2,
+              "outlettype": [
+                "signal",
+                "bang"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/5/box/patcher/boxes/8/box",
+            "signature": {
+              "id": "obj-5",
+              "maxclass": "newobj",
+              "text": "line~ 0.5",
+              "numinlets": 2,
+              "numoutlets": 2,
+              "outlettype": [
+                "signal",
+                "bang"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "object": "snapshot~",
+      "reference": {
+        "path": "docs/refpages/msp-ref/snapshot~.maxref.xml",
+        "sha256": "45bac66dd16645df0284325a0b9d1b4a9229041077cc70a8789ae01e3637ca80",
+        "anchors": [
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "0",
+              "type": "signal"
+            },
+            "line": 27
+          },
+          {
+            "kind": "inlet",
+            "signature": {
+              "id": "1",
+              "type": "signal"
+            },
+            "line": 33
+          },
+          {
+            "kind": "outlet",
+            "signature": {
+              "id": "0",
+              "type": "float"
+            },
+            "line": 42
+          },
+          {
+            "kind": "objarg",
+            "signature": {
+              "name": "reporting-interval",
+              "optional": "1",
+              "default": "0",
+              "units": "time-value",
+              "type": "list"
+            },
+            "line": 51
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "bang"
+            },
+            "line": 62
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "int"
+            },
+            "line": 69
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "float"
+            },
+            "line": 82
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "list"
+            },
+            "line": 95
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "anything"
+            },
+            "line": 104
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "sampleinterval"
+            },
+            "line": 113
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "signal"
+            },
+            "line": 122
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "start"
+            },
+            "line": 131
+          },
+          {
+            "kind": "method",
+            "signature": {
+              "name": "stop"
+            },
+            "line": 138
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "active",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 148
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "interval",
+              "get": "1",
+              "set": "1",
+              "type": "Time Value",
+              "size": "1"
+            },
+            "line": 161
+          },
+          {
+            "kind": "attribute",
+            "signature": {
+              "name": "offset",
+              "get": "1",
+              "set": "1",
+              "type": "int",
+              "size": "1"
+            },
+            "line": 174
+          }
+        ],
+        "attribute_metadata_defaults": {
+          "interval": "0 ms"
+        }
+      },
+      "help": {
+        "path": "help/msp/snapshot~.maxhelp",
+        "sha256": "95561b017ac3d0013893af4559c099b6e03da41a3a27d05bb88d161836bb44d2",
+        "port_signatures": [
+          {
+            "anchor": "$/patcher/boxes/1/box/patcher/boxes/9/box",
+            "signature": {
+              "id": "obj-10",
+              "maxclass": "newobj",
+              "text": "snapshot~ 4n",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "float"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/2/box/patcher/boxes/12/box",
+            "signature": {
+              "id": "obj-5",
+              "maxclass": "newobj",
+              "text": "snapshot~ 0",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "float"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/4/box/patcher/boxes/11/box",
+            "signature": {
+              "id": "obj-10",
+              "maxclass": "newobj",
+              "text": "snapshot~ 740",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "float"
+              ]
+            }
+          },
+          {
+            "anchor": "$/patcher/boxes/4/box/patcher/boxes/15/box",
+            "signature": {
+              "id": "obj-5",
+              "maxclass": "newobj",
+              "text": "snapshot~ @offset",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "outlettype": [
+                "float"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Signatures can contain template placeholders and incorrect port labels; README records observed conflicts.",
+    "No installed documentation, patch, script or media bodies are redistributed."
+  ]
+}

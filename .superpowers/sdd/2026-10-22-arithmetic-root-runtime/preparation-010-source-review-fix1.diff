@@ -1,0 +1,423 @@
+--- arithmetic-package-009-historical/controller.js
++++ current/controller.js
+@@ -427,23 +427,73 @@
+     if(!minusCommand(command))return null;
+     var configuration=config,action=shared,documents=config.documents,helpers=config.helpers,lifecycle=config.lifecycle;
+     var owners=lifecycle&&lifecycle.owners,owner=owners&&owners[4],bridge=minusIntrinsicApply;
+-    var initial=null,root=null,retained=null,evidence=null,attempted=false;
++    var initial=null,authority=null,sourceValidated=false,root=null,retained=null,evidence=null,attempted=false;
++    var nativeFunctionString=Function.prototype.toString,objectConstructorString=nativeFunctionString.call(Object),
++        arrayConstructorString=nativeFunctionString.call(Array);
++    var plainPrototypes=[{prototype:Object.prototype,array:false,parent:null},
++        {prototype:Array.prototype,array:true,parent:Object.prototype}];
+     function inputs() {
+         if(config!==configuration||shared!==action||config.documents!==documents||config.helpers!==helpers||
+             config.lifecycle!==lifecycle||!lifecycle||lifecycle.owners!==owners||owners[4]!==owner||
+             documents.indexOf(definition)===-1||!minusCommand(command)||
+             !sameData(plusInstallIdentity(),{request_id:101,step_id:"install-minus-r1",action:"install",action_document:"minus",action_revision:1}))
+             throw Error("minus-input-identity");
+-        return {command:minusCanonical(command),definition:minusCanonical(definition),configuration:minusCanonical(config),owner:minusCanonical(owner)};
+-    }
+-    try{initial=inputs();}catch(initialError){}
+-    function sameInputs(){return initial&&sameData(initial,inputs());}
++    }
++    try{
++        inputs();
++        initial={command:minusCanonical(command),definition:minusCanonical(definition),configuration:minusCanonical(config),owner:minusCanonical(owner)};
++        authority={command:JSON.parse(initial.command),definition:JSON.parse(initial.definition),
++            configuration:JSON.parse(initial.configuration),owner:JSON.parse(initial.owner)};
++    }catch(initialError){initial=null;}
++    function plainPrototype(prototype,array) {
++        if(prototype===null)return true;
++        for(var i=0;i<plainPrototypes.length;i++) {
++            var allowed=plainPrototypes[i];
++            if(prototype!==allowed.prototype)continue;
++            if(array!==allowed.array||Object.getPrototypeOf(prototype)!==allowed.parent||
++                Object.getOwnPropertyDescriptor(prototype,"toJSON"))return false;
++            return !array||plainPrototype(allowed.parent,false);
++        }
++        // A foreign realm's intrinsic constructor must point back to this exact prototype.
++        var constructor=Object.getOwnPropertyDescriptor(prototype,"constructor");
++        if(!constructor||typeof constructor.value!=="function")return false;
++        var descriptor=Object.getOwnPropertyDescriptor(constructor.value,"prototype"),parent=Object.getPrototypeOf(prototype);
++        if(!descriptor||descriptor.value!==prototype||nativeFunctionString.call(constructor.value)!==
++            (array?arrayConstructorString:objectConstructorString)||Object.getOwnPropertyDescriptor(prototype,"toJSON"))return false;
++        if(array?!Array.isArray(prototype)||!plainPrototype(parent,false):parent!==null)return false;
++        plainPrototypes.push({prototype:prototype,array:array,parent:parent});return true;
++    }
++    function samePlain(current,expected) {
++        var remaining=100000,ancestors=[];
++        function compare(value,snapshot,depth) {
++            if(--remaining<0||depth>128||typeof value!==typeof snapshot)return false;
++            if(snapshot===null||typeof snapshot!=="object")return value===snapshot;
++            if(!value||Array.isArray(value)!==Array.isArray(snapshot)||ancestors.indexOf(value)!==-1)return false;
++            if(!plainPrototype(Object.getPrototypeOf(value),Array.isArray(value)))return false;
++            if(typeof Object.getOwnPropertySymbols==="function"&&Object.getOwnPropertySymbols(value).length)return false;
++            var keys=Object.getOwnPropertyNames(value),expectedKeys=Object.getOwnPropertyNames(snapshot);
++            if(keys.length!==expectedKeys.length)return false;
++            ancestors.push(value);
++            for(var i=0;i<expectedKeys.length;i++) {
++                var key=expectedKeys[i],descriptor=Object.getOwnPropertyDescriptor(value,key);
++                if(!descriptor||!Object.prototype.hasOwnProperty.call(descriptor,"value")||!compare(descriptor.value,snapshot[key],depth+1))return false;
++            }
++            ancestors.pop();return true;
++        }
++        return compare(current,expected,0);
++    }
++    function sameInputs(){
++        if(!initial)return false;
++        inputs();
++        return samePlain(command,authority.command)&&samePlain(definition,authority.definition)&&
++            samePlain(config,authority.configuration)&&samePlain(owner,authority.owner);
++    }
+     function sample() {
+         if(max.frontpatcher!==root||root.parentpatcher!==null)throw Error("minus-root-ownership");
+-        var handles=[],data=[],scopes=[],mapped={};
++        var handles=[],data=[],scopes=[],mapped={},eligibility={};
+         function scope(p,parent,container,count) {
+             if(scopes.indexOf(p)!==-1||parent!=="root"&&(p.parentpatcher!==root||p.box!==container))throw Error("minus-scope-ownership");
+-            scopes.push(p);handles.push(p);var objects=[],rows=[];
++            scopes.push(p);handles.push(p);var objects=[],rows=[];eligibility[parent]=[];
+             for(var object=p.firstobject;object;object=object.nextobject) {
+                 if(objects.length>=count||handles.indexOf(object)!==-1)throw Error("minus-runtime-inventory");
+                 objects.push(object);handles.push(object);
+@@ -454,18 +504,28 @@
+                 for(var coordinate=0;coordinate<4;coordinate++) {
+                     var value=rawRect[coordinate];if(!finite(value))throw Error("minus-runtime-coordinate");rect.push(value);
+                 }
+-                var rectHash=geometryVectorHash(rect);
+-                var expected=definition.full_inventory.filter(function(b){
+-                    if(b.anchor.slice(0,b.anchor.lastIndexOf("/"))!==parent)return false;
+-                    var pin=MINUS_PINS[b.anchor];
+-                    return pin?cls===pin.runtime_class&&rectHash===pin.live_rect_sha256:
+-                        b.runtime_classes.indexOf(cls)!==-1&&sameNumbers(rect,b.rect);
+-                });
++                var expected;
++                if(retained) {
++                    // The first source-pinned sample owns these eligibility values.
++                    var candidates=retained.eligibility[parent],ordered=candidates&&candidates[objects.length-1];
++                    var eligible=function(candidate){return candidate.runtime_classes.indexOf(cls)!==-1&&sameNumbers(rect,candidate.rect);};
++                    expected=ordered&&eligible(ordered)?[ordered]:(candidates||[]).filter(eligible);
++                }else {
++                    var rectHash=geometryVectorHash(rect);
++                    expected=definition.full_inventory.filter(function(b){
++                        if(b.anchor.slice(0,b.anchor.lastIndexOf("/"))!==parent)return false;
++                        var pin=MINUS_PINS[b.anchor];
++                        return pin?cls===pin.runtime_class&&rectHash===pin.live_rect_sha256:
++                            b.runtime_classes.indexOf(cls)!==-1&&sameNumbers(rect,b.rect);
++                    });
++                }
+                 if(expected.length!==1||mapped[expected[0].anchor])throw Error("minus-runtime-bijection");
+                 var b=expected[0],pin=MINUS_PINS[b.anchor];
+                 if(b.source_varname!==null?name!==b.source_varname:name!==null&&name!=="")throw Error("minus-runtime-name");
+-                if(pin&&pin.changed_dimension!==null)for(var dimension=0;dimension<4;dimension++)
++                if(!retained&&pin&&pin.changed_dimension!==null)for(var dimension=0;dimension<4;dimension++)
+                     if((dimension===pin.changed_dimension)===(rect[dimension]===b.rect[dimension]))throw Error("minus-runtime-dimension");
++                if(!retained)eligibility[parent].push({anchor:b.anchor,source_varname:b.source_varname,child:b.child,rect:rect.slice(),
++                    runtime_classes:pin?[pin.runtime_class]:authority.definition.full_inventory.filter(function(row){return row.anchor===b.anchor;})[0].runtime_classes.slice()});
+                 mapped[b.anchor]=object;rows.push({anchor:b.anchor,maxclass:cls,varname:name,rect:rect});
+                 var child=object.subpatcher();
+                 if(b.child) {
+@@ -481,7 +541,7 @@
+         var filepath=root.filepath;
+         // This is the final host read; only plain input/snapshot checks follow.
+         if(!sameInputs()||!samePath(filepath,definition.working_windows_path))throw Error("minus-final-input-binding");
+-        return {handles:handles,data:data,filepath:filepath,mapped:mapped};
++        return {handles:handles,data:data,filepath:filepath,mapped:mapped,eligibility:eligibility};
+     }
+     function invalidate(pollIndex,stage,code) {
+         if(!evidence||evidence.terminal_context.stale)return;
+@@ -492,8 +552,18 @@
+         var code=null;
+         try{
+             var now=sample();
+-            if(now.filepath!==retained.filepath||!sameData(now.data,retained.data)||now.handles.length!==retained.handles.length)code="binding-changed";
+-            else for(var i=0;i<now.handles.length;i++)if(now.handles[i]!==retained.handles[i]){code="binding-changed";break;}
++            if(now.filepath!==retained.filepath||now.data.length!==retained.data.length||now.handles.length!==retained.handles.length)code="binding-changed";
++            else {
++                for(var i=0;i<now.handles.length;i++)if(now.handles[i]!==retained.handles[i]){code="binding-changed";break;}
++                for(i=0;!code&&i<now.data.length;i++) {
++                    var current=now.data[i],previous=retained.data[i];
++                    if(current.scope!==previous.scope||current.rows.length!==previous.rows.length){code="binding-changed";break;}
++                    for(var j=0;j<current.rows.length;j++) {
++                        var a=current.rows[j],b=previous.rows[j];
++                        if(a.anchor!==b.anchor||a.maxclass!==b.maxclass||a.varname!==b.varname||!sameNumbers(a.rect,b.rect)){code="binding-changed";break;}
++                    }
++                }
++            }
+         }catch(guardError){code="guard-threw";}
+         if(code)invalidate(pollIndex,stage,code);return code;
+     }
+@@ -555,7 +625,13 @@
+             if(attempted)return;
+             if(!initial||d!==definition)return;
+             try {
+-                if(!sameInputs())return;minusSourceDefinition(d,configuration,command);root=patcher;
++                if(!sameInputs())return;
++                if(!sourceValidated) {
++                    minusSourceDefinition(d,configuration,command);
++                    if(!sameInputs())return;
++                    sourceValidated=true;
++                }
++                root=patcher;
+                 var bindings=sample();
+                 if(diagnostics.length!==7||geometryDispositions.length||numericModeObservations.length||controllerRepresentationObservations.length)return;
+                 var anchors={};
+--- arithmetic-package-009-historical/test_helpers.cjs
++++ current/test_helpers.cjs
+@@ -1962,3 +1962,255 @@
+ });
+ console.log(JSON.stringify({completed009, failures009}));
+ assert.equal(failures009.length, 0, 'preparation009 behavioral regressions');
++
++// Task010 counters observe the real install/poll/refusal path, including legacy reads.
++function work010(f) {
++  const counts = {canonical: {command: 0, definition: 0, configuration: 0, owner: 0}, source: 0,
++    geometry: 0, rectangles: 0, filepaths: 0, samples: 0};
++  const c = f.c, canonical = c.minusCanonical, source = c.minusSourceDefinition, geometry = c.geometryVectorHash;
++  let depth = 0;
++  c.minusCanonical = function (value) {
++    if (!depth) for (const [name, object] of Object.entries({command: f.command, definition: f.d, configuration: c.config, owner: f.owner}))
++      if (value === object) counts.canonical[name]++;
++    depth++;
++    try {return canonical(value);} finally {depth--;}
++  };
++  c.minusSourceDefinition = (...args) => {counts.source++; return source(...args);};
++  c.geometryVectorHash = (...args) => {counts.geometry++; return geometry(...args);};
++  const filepath = f.root.filepath;
++  Object.defineProperty(f.root, 'filepath', {configurable: true, get() {counts.filepaths++; return filepath;}});
++  let parent = f.root.parentpatcher;
++  const parentDescriptor = Object.getOwnPropertyDescriptor(f.root, 'parentpatcher');
++  Object.defineProperty(f.root, 'parentpatcher', {configurable: true, get() {
++    if (new Error().stack.includes('at sample (')) counts.samples++;
++    return parentDescriptor.get ? parentDescriptor.get.call(f.root) : parent;
++  }, set(value) {if (parentDescriptor.set) parentDescriptor.set.call(f.root, value); else parent = value;}});
++  for (const object of Object.values(f.byAnchor)) {
++    const get = object.getboxattr;
++    object.getboxattr = function (...args) {counts.rectangles++; return get.apply(this, args);};
++  }
++  return counts;
++}
++const completed010 = [], failures010 = [];
++function readOracle010(f) {
++  const expected = ['max.frontpatcher', 'root.parentpatcher'], actual = [];
++  function scope(name) {
++    if (name !== 'root') expected.push(name + '.parentpatcher', name + '.box');
++    expected.push(name + '.firstobject');
++    for (const object of f.scopeObjects[name]) {
++      const anchor = Object.keys(f.byAnchor).find(a => f.byAnchor[a] === object);
++      expected.push(...['patcher', 'maxclass', 'varname', 'getboxattr', 'getboxattr()', 'rect.length', 'rect.0', 'rect.1', 'rect.2', 'rect.3', 'subpatcher', 'subpatcher()'].map(k => anchor + '.' + k));
++      if (f.scopes[anchor]) {expected.push(name + '.getnamed', name + '.getnamed()'); scope(anchor);}
++      expected.push(anchor + '.nextobject');
++    }
++  }
++  scope('root'); expected.push('root.filepath');
++  let muted = false;
++  const record = event => {if (!muted && new Error().stack.includes('at sample (')) actual.push(event);};
++  function property(object, key, name, method = false) {
++    let value = object[key];
++    Object.defineProperty(object, key, {configurable: true, get() {
++      record(name + '.' + key);
++      if (!method) return value;
++      const captured = value;
++      return function (...args) {
++        record(name + '.' + key + '()');
++        const previous = muted; muted = true;
++        let result; try {result = captured.apply(this, args);} finally {muted = previous;}
++        if (key === 'getboxattr') result = new Proxy(result, {get(target, coordinate) {
++          if (['length', '0', '1', '2', '3'].includes(coordinate)) record(name + '.rect.' + coordinate);
++          return target[coordinate];
++        }});
++        return result;
++      };
++    }, set(next) {value = next;}});
++  }
++  property(f.c.max, 'frontpatcher', 'max');
++  property(f.root, 'parentpatcher', 'root'); property(f.root, 'filepath', 'root');
++  for (const [name, object] of Object.entries(f.scopes)) {
++    if (name !== 'root') {property(object, 'parentpatcher', name); property(object, 'box', name);}
++    property(object, 'firstobject', name); property(object, 'getnamed', name, true);
++  }
++  for (const [name, object] of Object.entries(f.byAnchor))
++    for (const key of ['patcher', 'maxclass', 'varname', 'getboxattr', 'subpatcher', 'nextobject'])
++      property(object, key, name, ['getboxattr', 'subpatcher'].includes(key));
++  return {expected, actual};
++}
++function case010(name, body) {
++  if (process.env.ARITHMETIC_010_CASE && process.env.ARITHMETIC_010_CASE !== name) return;
++  try {body(); completed010.push(name);} catch (error) {failures010.push({name, error: error.message});}
++}
++case010('minus010_stable_work_budget', () => {
++  const f = minus009Fixture(), counts = work010(f);
++  f.start(); f.finish(); const e = refused009(f);
++  assert.equal(counts.samples, 89); assert.equal(counts.rectangles, 20820); assert.equal(counts.filepaths, 159);
++  assert.deepEqual(f.calls, f.targets.flatMap(a => [[a, 'getattr'], [a, 'getvalueof']]));
++  assert.deepEqual(e.counts, {lookups_attempted: 6, invocation_attempts: 6, invocation_outcomes_retained: 6, completed_pairs: 3});
++  assert.equal(f.ack().anchor_diagnostics.length, 7); assert.equal(e.collection.diagnostic_sha256, digest009(f.ack().anchor_diagnostics));
++  for (const [name, value] of Object.entries({command: f.command, definition: f.d, configuration: f.c.config, owner: f.owner}))
++    assert.equal(e.binding[name + '_snapshot_sha256'], digest009(value));
++  console.log(JSON.stringify({work010: 'stable', counts}));
++  assert.deepEqual(counts.canonical, {command: 1, definition: 1, configuration: 1, owner: 1}, 'four complete snapshots must be canonicalized once');
++  assert.equal(counts.source, 1); assert.ok(counts.geometry <= 63, 'only source and first eligible host geometry may be hashed');
++});
++case010('minus010_ineligible_source_cache', () => {
++  const f = minus009Fixture(), oracle = readOracle010(f), counts = work010(f); f.root.parentpatcher = {};
++  f.start(); f.finish(); assert.equal(refused009(f), undefined); assert.equal(f.calls.length, 0);
++  assert.equal(counts.rectangles, 19040); assert.equal(counts.filepaths, 70);
++  assert.equal(counts.samples, 70);
++  assert.deepEqual(oracle.actual, Array.from({length: 70}, () => ['max.frontpatcher', 'root.parentpatcher']).flat(), 'ineligible ownership must still be freshly read each retry');
++  console.log(JSON.stringify({work010: 'ineligible', counts}));
++  assert.equal(counts.source, 1, 'successful immutable validation must survive ineligible host retries');
++  assert.deepEqual(counts.canonical, {command: 1, definition: 1, configuration: 1, owner: 1});
++});
++case010('minus010_complete_ordered_read_oracle', () => {
++  const f = minus009Fixture(), oracle = readOracle010(f);
++  f.start(); f.finish(); const e = refused009(f);
++  assert.equal(e.collection.status, 'complete');
++  assert.equal(oracle.actual.length, oracle.expected.length * 89);
++  for (let index = 0; index < 89; index++)
++    assert.deepEqual(oracle.actual.slice(index * oracle.expected.length, (index + 1) * oracle.expected.length), oracle.expected, 'fresh sample ' + index);
++  assert.equal(digest009(oracle.actual), 'bd9606c23777bcc7bce36c56f688eaea22d3314bf88b55110394d03059fbfea6', 'ordered baseline from current009 before source edits');
++  console.log(JSON.stringify({readOracle010: {samples: 89, readsPerSample: oracle.expected.length, orderedDigest: digest009(oracle.actual)}}));
++});
++case010('minus010_complete_plain_mutations_after_cache', () => {
++  const mutations = {
++    'array-prototype': f => {Object.setPrototypeOf(f.d.boxes, Object.create(Array.prototype));},
++    nested: f => {f.d.boxes[0].authored_text += ' changed';},
++    'full-inventory-value': f => {f.d.full_inventory[0].source_box_sha256 = 'e'.repeat(64);},
++    'edge-value': f => {f.d.saved_edges[0].source[1]++;},
++    'leaf-value': f => {f.d.observer_leaves[0].varname += '-changed';},
++    'helper-value': f => {f.c.config.helpers[0].bytes++;},
++    'path-value': f => {f.d.pristine_path += '-changed';},
++    'owner-value': f => {f.owner.channel += '-changed';},
++    'other-definition': f => {f.c.config.documents[1].nested.value++;},
++    'added-command': f => {f.command.extra = 1;},
++    'missing-owner': f => {delete f.owner.channel;},
++    'added-config': f => {f.c.config.extra = true;},
++    'array-order': f => {f.d.saved_edges.reverse();},
++    'array-length': f => {f.d.observer_leaves.pop();},
++    'array-expando': f => {f.d.boxes.extra = 1;},
++    'array-hole': f => {delete f.d.boxes[0];},
++    type: f => {f.d.boxes[0].inlets = true;},
++    toJSON: f => {f.c.config.documents[1].toJSON = () => {assert.fail('user serialization called');};},
++    function: f => {f.c.config.documents[1].nested.value = () => 1;},
++    undefined: f => {f.c.config.documents[1].nested.value = undefined;},
++    nonfinite: f => {f.c.config.documents[1].nested.value = Infinity;},
++    nan: f => {f.c.config.documents[1].nested.value = NaN;},
++    'negative-infinity': f => {f.c.config.documents[1].nested.value = -Infinity;},
++    cycle: f => {f.c.config.documents[1].nested.value = f.c.config.documents[1];},
++    'definition-reference': f => {f.c.config.documents[0] = plain(f.d);},
++    'owner-reference': f => {f.c.config.lifecycle.owners[4] = plain(f.owner);},
++    'document-array-reference': f => {f.c.config.documents = [...f.c.config.documents];},
++    'helper-array-reference': f => {f.c.config.helpers = [...f.c.config.helpers];},
++    'configuration-reference': f => {f.c.config = {...f.c.config};},
++    'action-reference': f => {f.c.shared = {...f.c.shared};},
++    'hidden-field': f => {Object.defineProperty(f.d.boxes, 'extra', {value: 1});},
++    symbol: f => {f.c.config.documents[1][Symbol('extra')] = 1;},
++    prototype: f => {Object.setPrototypeOf(f.c.config.documents[1].nested, {unexpected: 1});}
++  };
++  for (const [name, mutate] of Object.entries(mutations)) for (const phase of ['lookup', 'outcome', 'later']) {
++    const f = minus009Fixture(); f.c.config.documents.push({document: 'synthetic-other', nested: {value: 0}});
++    const object = f.byAnchor[f.targets[0]], original = object.getattr;
++    if (phase === 'lookup') Object.defineProperty(object, 'getattr', {get() {mutate(f); return original;}});
++    if (phase === 'outcome') object.getattr = function (...args) {const result = original.apply(this, args); mutate(f); return result;};
++    f.start(); f.run();
++    if (phase === 'later') mutate(f);
++    f.finish(); const e = refused009(f), prefix = phase === 'lookup' ? 0 : phase === 'outcome' ? 1 : 6;
++    assert.ok(e, name + '/' + phase); assert.equal(f.calls.length, prefix, name + '/' + phase);
++    assert.equal(e.counts.invocation_outcomes_retained, prefix); assert.equal(e.counts.completed_pairs, phase === 'later' ? 3 : 0);
++    assert.equal(e.terminal_context.stale, true);
++    assert.equal(e.terminal_context.first_invalidation.code, 'guard-threw');
++    assert.equal(e.terminal_context.first_invalidation.stage, phase === 'later' ? 'later-validation' : 'collection-guard');
++    if (phase !== 'later') assert.equal(e.collection.first_failure.stage, phase === 'lookup' ? 'guard-before-invocation' : 'guard-after-outcome');
++    assert.equal(e.binding.command_snapshot_sha256, digest009({command_id: 101, op: 'operation', action: 'install', document: 'minus', revision: 1,
++      action_revision: 1, step_id: 'install-minus-r1', source_sha256: f.d.source_sha256}));
++  }
++});
++case010('minus010_object_order_and_finite_numeric_equivalence', () => {
++  const f = minus009Fixture(); f.c.config.synthetic = {zero: 0, fraction: 1.25, integer: 2};
++  const object = f.byAnchor[f.targets[0]], original = object.getattr;
++  object.getattr = function (...args) {
++    f.c.config.synthetic = {integer: 2.0, fraction: 1.250, zero: -0};
++    const keys = Object.keys(f.command).reverse(), values = keys.map(k => f.command[k]);
++    for (const key of keys) delete f.command[key]; keys.forEach((key, i) => {f.command[key] = values[i];});
++    return original.apply(this, args);
++  };
++  f.start(); f.finish(); const e = refused009(f);
++  assert.equal(f.calls.length, 6); assert.equal(e.terminal_context.stale, false); assert.equal(e.collection.status, 'complete');
++});
++case010('minus010_post_source_validation_equality', () => {
++  const f = minus009Fixture(); f.c.config.synthetic = 0;
++  const source = f.c.minusSourceDefinition; let calls = 0;
++  f.c.minusSourceDefinition = (...args) => {const result = source(...args); if (++calls === 1) f.c.config.synthetic = 1; return result;};
++  f.start(); f.run(); assert.equal(f.calls.length, 0); assert.equal(f.collector.exportData(), null);
++  f.c.config.synthetic = 0; f.finish(); const e = refused009(f);
++  assert.equal(calls, 2, 'source success that changes plain inputs cannot populate the cache');
++  assert.equal(f.calls.length, 6); assert.equal(e.collection.poll_index, 2); assert.equal(e.terminal_context.stale, false);
++});
++case010('minus010_binding_change_and_invalid_eligibility_codes', () => {
++  const mutations = {
++    reorder(f) {const list = f.scopeObjects['root/obj-2'], first = list[0], second = list[1];
++      f.scopes['root/obj-2'].firstobject = second; second.nextobject = first; first.nextobject = list[2];},
++    replacement(f) {const object = f.byAnchor['root/obj-4'], replacement = {...object}; f.byAnchor['root/obj-3'].nextobject = replacement;},
++    class(f) {f.byAnchor['root/obj-4'].maxclass = 'invalid-class';},
++    name(f) {f.byAnchor['root/obj-4'].varname = 'invalid-name';},
++    rectangle(f) {f.byAnchor['root/obj-4'].live[0]++;},
++    ownership(f) {f.byAnchor['root/obj-4'].patcher = {};}
++  };
++  for (const [name, mutate] of Object.entries(mutations)) for (const phase of ['collection', 'later']) {
++    const f = minus009Fixture(), object = f.byAnchor[f.targets[0]], original = object.getattr;
++    if (phase === 'collection') object.getattr = function (...args) {const result = original.apply(this, args); mutate(f); return result;};
++    f.start(); f.run(); if (phase === 'later') mutate(f); f.finish(); const e = refused009(f);
++    const code = ['reorder', 'replacement'].includes(name) ? 'binding-changed' : 'guard-threw';
++    assert.equal(e.terminal_context.first_invalidation.code, code, name + '/' + phase);
++    assert.equal(e.terminal_context.first_invalidation.stage, phase === 'later' ? 'later-validation' : 'collection-guard');
++    assert.equal(e.counts.invocation_outcomes_retained, phase === 'later' ? 6 : 1);
++    assert.equal(f.calls.length, phase === 'later' ? 6 : 1);
++    if (phase === 'collection') {assert.equal(e.collection.first_failure.code, code); assert.equal(e.collection.first_failure.stage, 'guard-after-outcome');}
++  }
++});
++for (const form of ['object', 'array']) for (const phase of ['lookup', 'outcome', 'later'])
++  case010('minus010_fix1_inherited_hook_' + form + '_' + phase, () => {
++    const f = minus009Fixture(); f.c.config.synthetic = form === 'object' ? {value: 0} : [0];
++    let serializationCalls = 0;
++    const prototype = form === 'object' ? Object.create(null) : Object.setPrototypeOf([], Object.prototype);
++    prototype.toJSON = () => {serializationCalls++; return null;};
++    const mutate = () => {Object.setPrototypeOf(f.c.config.synthetic, prototype);};
++    const object = f.byAnchor[f.targets[0]], original = object.getattr;
++    if (phase === 'lookup') Object.defineProperty(object, 'getattr', {get() {mutate(); return original;}});
++    if (phase === 'outcome') object.getattr = function (...args) {const result = original.apply(this, args); mutate(); return result;};
++    f.start(); f.run(); if (phase === 'later') mutate(); f.finish();
++    const e = refused009(f), prefix = phase === 'lookup' ? 0 : phase === 'outcome' ? 1 : 6;
++    console.log(JSON.stringify({fix1010: {form, phase, calls: f.calls.length, serializationCalls, stale: e.terminal_context.stale}}));
++    assert.equal(serializationCalls, 0, 'inherited serialization hooks must never execute');
++    assert.equal(f.calls.length, prefix, form + '/' + phase + ': exact invocation prefix');
++    assert.deepEqual(e.counts, {lookups_attempted: phase === 'later' ? 6 : 1, invocation_attempts: prefix,
++      invocation_outcomes_retained: prefix, completed_pairs: phase === 'later' ? 3 : 0});
++    assert.equal(e.terminal_context.stale, true);
++    assert.deepEqual(e.terminal_context.first_invalidation, {poll_index: phase === 'later' ? 2 : 1,
++      stage: phase === 'later' ? 'later-validation' : 'collection-guard', code: 'guard-threw'});
++    assert.equal(e.collection.status, phase === 'later' ? 'complete' : 'stopped');
++    assert.deepEqual(e.collection.first_failure, phase === 'later' ? null : {
++      stage: phase === 'lookup' ? 'guard-before-invocation' : 'guard-after-outcome', method_index: 0, code: 'guard-threw'});
++    if (prefix) {assert.equal(e.methods[0].invocation_status, 'returned'); assert.equal(e.methods[0].observation.value, 9);}
++    else {assert.equal(e.methods[0].lookup_status, 'callable'); assert.equal(e.methods[0].invocation_status, 'unattempted'); assert.equal(e.methods[0].observation, null);}
++    assert.ok(e.methods.slice(prefix).every(row => row.invocation_status === 'unattempted'));
++  });
++case010('minus010_fix1_plain_cross_realm_and_null_prototype', () => {
++  for (const form of ['local-object', 'local-array', 'foreign-object', 'foreign-array', 'null-object', 'null-array']) {
++    const f = minus009Fixture(); f.c.config.synthetic = form.endsWith('array') ? [0] : {value: 0};
++    let replacement;
++    if (form.startsWith('local-')) replacement = vm.runInContext(form.endsWith('array') ? '[0]' : '({value: 0})', f.c);
++    else if (form.startsWith('foreign-')) replacement = vm.runInNewContext(form.endsWith('array') ? '[0]' : '({value: 0})');
++    else replacement = Object.setPrototypeOf(form.endsWith('array') ? [0] : {value: 0}, null);
++    const object = f.byAnchor[f.targets[0]], original = object.getattr;
++    object.getattr = function (...args) {f.c.config.synthetic = replacement; return original.apply(this, args);};
++    f.start(); f.finish(); const e = refused009(f);
++    assert.equal(f.calls.length, 6, form); assert.equal(e.collection.status, 'complete');
++    assert.deepEqual(e.terminal_context, {stale: false, first_invalidation: null});
++    assert.deepEqual(e.counts, {lookups_attempted: 6, invocation_attempts: 6, invocation_outcomes_retained: 6, completed_pairs: 3});
++  }
++});
++console.log(JSON.stringify({completed010, failures010}));
++assert.equal(failures010.length, 0, 'preparation010 behavioral regressions');

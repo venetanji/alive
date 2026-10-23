@@ -1,0 +1,308 @@
+use super::*;
+
+fn snapshot(id: u32) -> canvas::NativeStatus {
+    let mut status = canvas::NativeStatus::default();
+    unsafe { crate::ultra_canvas_status_document(id, &mut status); }
+    status
+}
+
+#[test]
+fn arithmetic_shared_rhs_history_retains_hot_state_and_mode_history_reinstalls() {
+    let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut registry=Registry::default();
+    let patch=serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
+        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"arithmetic"},"patcher":{"nodes":[
+            {"id":2,"type":"multiply","x":0,"y":0,"params":{"rhs":2,"numericmode":1}},
+            {"id":3,"type":"print","x":100,"y":0,"params":{"label":"product","popup":1}},
+            {"id":4,"type":"number","x":200,"y":0,"params":{"value":0}}
+        ],"edges":[{"from":2,"outlet":0,"to":3,"inlet":0}]}}
+    ],"edges":[]});
+    let root=registry.add("Arithmetic".into(),Kind::Patch,Some(patch),None,None).unwrap();
+    // Native close retains revision history; keep this test's slot distinct.
+    registry.get_mut(&root.label).unwrap().id=15;
+    let mut control=canvas::CanvasState::default();
+    let root=registry.prepare_runtime(&root.label,|owner|admit(&mut control,owner,owner.patch.as_ref().unwrap(),None,true)).unwrap();
+    let (child,_)=registry.open_view(&root.label,1).unwrap();
+    registry.prepare_runtime(&child.label,|_|panic!("child reinstalled arithmetic runtime")).unwrap();
+    let send=|control:&canvas::CanvasState,node,inlet,value| {
+        let event=control.event(control.revision(),node,inlet,value).unwrap();
+        assert_eq!(unsafe {crate::ultra_canvas_message_document(root.id,control.revision(),node,inlet,&event)},1);
+    };
+    let output=|| {
+        let mut raw=canvas::NativePrintPopupSnapshot::default();assert_eq!(unsafe {crate::ultra_canvas_print_popups_document(root.id,&mut raw)},1);
+        canvas::print_popup_snapshot(&raw).unwrap().nodes.remove(0)
+    };
+    let independent=||snapshot(root.id).nodes[..3].iter().find(|node|node.id==4).unwrap().value;
+    send(&control,2,0,serde_json::json!("7"));send(&control,4,0,serde_json::json!("37.5"));
+    assert_eq!(output().text,"14");
+    assert_eq!(unsafe {crate::ultra_canvas_param_hot_document(root.id,root.runtime_revision,2,1,2.,0)},0,"raw native mode edit must refuse");
+    assert_eq!(unsafe {crate::ultra_canvas_param_hot_document(root.id,root.runtime_revision,2,0,0.5,0)},0,"raw fractional integer rhs must refuse");
+    let original=root.patch.clone().unwrap();let mut rhs=original.clone();rhs["nodes"][0]["patcher"]["nodes"][0]["params"]["rhs"]=serde_json::json!(3);
+    let changed=registry.commit(&child.label,0,rhs.clone(),true,|owner,patch|admit(&mut control,owner,patch,None,false)).unwrap().document;
+    assert_eq!(changed.runtime_revision,root.runtime_revision);
+    assert_eq!(output().text,"14","cold rhs commit must retain the existing receipt");
+    let verify=|control:&canvas::CanvasState,text:&str| {
+        assert_eq!(control.revision(),root.runtime_revision);assert_eq!(independent(),37.5);
+        send(control,2,0,Value::Null);assert_eq!(output().text,text);
+    };
+    verify(&control,"21");
+    for (view,revision,direction,expected,text) in [(&root.label,1,"undo",original,"14"),(&child.label,2,"redo",rhs.clone(),"21")] {
+        let updated=registry.history(view,revision,direction,|owner,patch|admit(&mut control,owner,patch,None,false)).unwrap().document;
+        assert_eq!(updated.runtime_revision,root.runtime_revision);verify(&control,text);
+        for label in [&root.label,&child.label] {assert_eq!(registry.descriptor(label).unwrap().patch,Some(expected.clone()));}
+    }
+    let mut floating=rhs.clone();floating["nodes"][0]["patcher"]["nodes"][0]["params"]["numericmode"]=serde_json::json!(2);
+    let changed=registry.commit(&root.label,3,floating.clone(),true,|owner,patch|admit(&mut control,owner,patch,None,false)).unwrap().document;
+    assert!(changed.runtime_revision>root.runtime_revision);assert_eq!(independent(),0.);
+    let stale=canvas::NativeMessage::default();assert_eq!(unsafe {crate::ultra_canvas_message_document(root.id,root.runtime_revision,2,0,&stale)},0);
+    send(&control,2,0,serde_json::json!("3.75"));assert_eq!(output().text,"11.25");
+    let mut runtime_revision=changed.runtime_revision;
+    for (view,revision,direction,expected,text) in [(&child.label,4,"undo",rhs,"0"),(&root.label,5,"redo",floating,"0.")] {
+        let updated=registry.history(view,revision,direction,|owner,patch|admit(&mut control,owner,patch,None,false)).unwrap().document;
+        assert!(updated.runtime_revision>runtime_revision);runtime_revision=updated.runtime_revision;
+        send(&control,2,0,Value::Null);assert_eq!(output().text,text);
+        for label in [&root.label,&child.label] {let view=registry.descriptor(label).unwrap();assert_eq!(view.runtime_revision,runtime_revision);assert_eq!(view.patch,Some(expected.clone()));}
+    }
+    assert_eq!(unsafe {crate::ultra_canvas_close_document(root.id)},1);
+}
+
+#[test]
+fn cable_midpoints_owner_commits_and_history_preserve_fresh_native_recall() {
+    let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut registry = Registry::default();
+    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
+        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"nodes":[
+            {"id":2,"type":"number","x":10,"y":10,"params":{"value":1}},
+            {"id":3,"type":"number","x":100,"y":100,"params":{"value":0}},
+            {"id":4,"type":"message_box","x":150,"y":0,"params":{"text":"saved $1"}},
+            {"id":5,"type":"print","x":150,"y":100,"params":{"label":"cord","popup":1}}
+        ],"edges":[
+            {"from":2,"outlet":0,"to":3,"inlet":0,"midpoints":[30.5,40,30.5,40]},
+            {"from":2,"outlet":0,"to":5,"inlet":0}
+        ]}}
+    ],"edges":[]});
+    let root = registry.add("Cables".into(), Kind::Patch, Some(patch), None, None).unwrap();
+    registry.get_mut(&root.label).unwrap().id = 14;
+    let mut control = canvas::CanvasState::default();
+    let root = registry.prepare_runtime(&root.label, |owner| admit(&mut control, owner, owner.patch.as_ref().unwrap(), None, true)).unwrap();
+    let (child, _) = registry.open_view(&root.label, 1).unwrap();
+    registry.prepare_runtime(&child.label, |_| panic!("child reinstalled runtime")).unwrap();
+    let send = |control: &canvas::CanvasState, node, inlet, value| {
+        let event = control.event(root.runtime_revision, node, inlet, value).unwrap();
+        assert_eq!(unsafe {crate::ultra_canvas_message_document(root.id, root.runtime_revision, node, inlet, &event)}, 1);
+    };
+    let print = || {
+        let mut raw = canvas::NativePrintPopupSnapshot::default();
+        assert_eq!(unsafe {crate::ultra_canvas_print_popups_document(root.id, &mut raw)}, 1);
+        canvas::print_popup_snapshot(&raw).unwrap().nodes.remove(0)
+    };
+    let sink = || snapshot(root.id).nodes[..4].iter().find(|node| node.id == 3).copied().unwrap();
+    send(&control, 2, 0, serde_json::json!([77]));
+    send(&control, 4, 1, serde_json::json!("live $1"));
+    let mut generation = print().generation;
+    assert_eq!(sink().value, 77.);
+    let verify_live = |control: &canvas::CanvasState, generation| {
+        assert_eq!(control.revision(), root.runtime_revision);
+        let mut text = canvas::NativeMessageBoxSnapshot::default();
+        assert_eq!(unsafe {crate::ultra_canvas_message_boxes_document(root.id, &mut text)}, 1);
+        assert_eq!(canvas::message_box_snapshot(&text).unwrap().nodes[0].text, "live $1");
+        let receipt = print();
+        assert!(receipt.enabled && receipt.has_value);
+        assert_eq!(receipt.text, "77");
+        assert_eq!(receipt.generation, generation, "geometry must retain the existing Print receipt");
+        // Clear the sink, then recall the source: stale display state cannot pass.
+        send(control, 3, 0, serde_json::json!([0]));
+        let before = sink();
+        assert_eq!(before.value, 0.);
+        send(control, 2, 0, Value::Null);
+        assert_eq!(sink().value, 77.);
+        assert_eq!(sink().pulses, before.pulses + 1);
+        assert_eq!(print().generation, generation + 1);
+        generation + 1
+    };
+    let mut revision = 0;
+    for (author, undo_view, redo_view, points) in [
+        (&child.label, &root.label, &child.label, serde_json::json!([40.5,45,40.5,45])),
+        (&root.label, &child.label, &root.label, serde_json::json!([60.5,65,60.5,65])),
+    ] {
+        let previous = registry.descriptor(&root.label).unwrap().patch.unwrap();
+        let mut edited = previous.clone();
+        edited["nodes"][0]["patcher"]["edges"][0]["midpoints"] = points;
+        let committed = registry.commit(author, revision, edited.clone(), true, |owner, patch| admit(&mut control, owner, patch, None, false)).unwrap();
+        assert!(committed.accepted);
+        revision += 1;
+        assert_eq!(committed.document.runtime_revision, root.runtime_revision);
+        assert_eq!(committed.document.authoring_revision, revision);
+        assert_eq!(registry.descriptor(&root.label).unwrap().patch, Some(edited.clone()));
+        assert_eq!(registry.descriptor(&child.label).unwrap().patch, Some(edited.clone()));
+        assert!(!registry.commit(undo_view, revision - 1, previous.clone(), true, |_, _| panic!("stale geometry CAS reached admission")).unwrap().accepted);
+        generation = verify_live(&control, generation);
+        for (view, direction, expected) in [(undo_view, "undo", previous), (redo_view, "redo", edited)] {
+            let result = registry.history(view, revision, direction, |owner, patch| admit(&mut control, owner, patch, None, false)).unwrap();
+            assert!(result.accepted);
+            revision += 1;
+            assert_eq!(result.document.authoring_revision, revision);
+            assert_eq!(result.document.runtime_revision, root.runtime_revision);
+            for label in [&root.label, &child.label] {
+                let descriptor = registry.descriptor(label).unwrap();
+                assert_eq!(descriptor.runtime_revision, root.runtime_revision);
+                assert_eq!(descriptor.patch, Some(expected.clone()));
+            }
+            generation = verify_live(&control, generation);
+        }
+    }
+    assert_eq!(unsafe {crate::ultra_canvas_close_document(root.id)}, 1);
+}
+
+#[test]
+fn forced_graph_installs_cannot_silently_ignore_message_text_intent() {
+    let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut registry=Registry::default();
+    let owner=registry.add("Hint".into(),Kind::Patch,Some(documents::empty_patch()),None,None).unwrap();
+    let mut control=canvas::CanvasState::default();
+    let hint=MessageText { node:99,text:"ignored".into() };
+    assert!(admit_message(&mut control,&owner,owner.patch.as_ref().unwrap(),None,Some(&hint),true).is_err());
+    assert_eq!(control.revision(),0);
+}
+
+#[test]
+fn message_box_shared_restore_history_and_child_view_serials() {
+    let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut registry=Registry::default();
+    let patch=serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
+        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"nodes":[
+            {"id":2,"type":"message_box","x":0,"y":0,"params":{"text":"saved $1 $2"}},
+            {"id":3,"type":"number","x":100,"y":0,"params":{"value":0}}
+        ],"edges":[]}}
+    ],"edges":[]});
+    let root=registry.add("Messages".into(),Kind::Patch,Some(patch),None,None).unwrap();
+    registry.get_mut(&root.label).unwrap().id=13;
+    let mut control=canvas::CanvasState::default();
+    let root=registry.prepare_runtime(&root.label,|owner|admit(&mut control,owner,owner.patch.as_ref().unwrap(),None,true)).unwrap();
+    let (child,_)=registry.open_view(&root.label,1).unwrap();
+    let read=|| { let mut raw=canvas::NativeMessageBoxSnapshot::default();assert_eq!(unsafe {crate::ultra_canvas_message_boxes_document(root.id,&mut raw)},1);canvas::message_box_snapshot(&raw).unwrap() };
+    let cold=control.event(root.runtime_revision,2,1,serde_json::json!("new $1 $2")).unwrap();
+    assert_eq!(unsafe {crate::ultra_canvas_message_document(root.id,root.runtime_revision,2,1,&cold)},1);
+    assert_eq!(read().nodes[0].text,"new $1 $2");assert!(!registry.descriptor(&child.label).unwrap().dirty);
+    let hint=MessageText {node:2,text:"saved $1 $2".into()};
+    let restored=registry.commit(&child.label,0,root.patch.clone().unwrap(),true,|owner,patch|admit_message(&mut control,owner,patch,None,Some(&hint),false)).unwrap().document;
+    assert_eq!(restored.authoring_revision,0);assert!(!restored.can_undo&&!restored.dirty);
+    assert_eq!(restored.message_text_serial,1);assert_eq!(read().text_edit_serial,1);assert_eq!(read().nodes[0].text,"saved $1 $2");
+    assert_eq!(registry.descriptor(&root.label).unwrap().message_text_serial,1);
+    let mut edited=root.patch.clone().unwrap();edited["nodes"][0]["patcher"]["nodes"][0]["params"]["text"]=serde_json::json!("fresh $1");
+    let updated=registry.commit(&root.label,0,edited.clone(),true,|owner,patch|admit(&mut control,owner,patch,None,false)).unwrap().document;
+    assert_eq!(updated.message_text_serial,2);assert_eq!(updated.runtime_revision,root.runtime_revision);
+    assert!(!registry.commit(&child.label,0,edited.clone(),true,|_,_|panic!("stale CAS reached admission")).unwrap().accepted);
+    let undone=registry.history(&child.label,1,"undo",|owner,patch|admit(&mut control,owner,patch,None,false)).unwrap().document;
+    assert_eq!(undone.message_text_serial,3);assert_eq!(read().nodes[0].text,"saved $1 $2");
+    let redone=registry.history(&root.label,2,"redo",|owner,patch|admit(&mut control,owner,patch,None,false)).unwrap().document;
+    assert_eq!(redone.message_text_serial,4);assert_eq!(read().nodes[0].text,"fresh $1");
+    edited["nodes"][0]["patcher"]["nodes"][1]["params"]["value"]=serde_json::json!(8);
+    assert!(registry.commit(&root.label,3,edited,true,|owner,patch|admit_message(&mut control,owner,patch,None,Some(&hint),false)).is_err());
+    assert_eq!(read().text_edit_serial,4);
+    assert_eq!(unsafe {crate::ultra_canvas_close_document(root.id)},1);
+}
+
+#[test]
+fn integer_number_shared_edits_and_history_keep_runtime_and_tab_independent() {
+    let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut registry = Registry::default();
+    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
+        {"id":1,"type":"number_int","x":0,"y":0,"params":{"value":1}},
+        {"id":2,"type":"number","x":100,"y":0,"params":{"value":0}},
+        {"id":3,"type":"number","x":200,"y":0,"params":{"value":0}}
+    ],"edges":[{"from":1,"outlet":0,"to":2,"inlet":0}]});
+    let root = registry.add("Integer".into(), Kind::Patch, Some(patch), None, None).unwrap();
+    registry.get_mut(&root.label).unwrap().id = 12;
+    let mut control = canvas::CanvasState::default();
+    let root = registry.prepare_runtime(&root.label, |owner| admit(&mut control, owner, owner.patch.as_ref().unwrap(), None, true)).unwrap();
+    let independent = control.event(root.runtime_revision,3,0,serde_json::json!([37.5])).unwrap();
+    assert_eq!(unsafe {crate::ultra_canvas_message_document(root.id,root.runtime_revision,3,0,&independent)},1);
+    let mut edited = root.patch.unwrap();edited["nodes"][0]["params"]["value"] = serde_json::json!(4);
+    let updated = registry.commit(&root.label,0,edited,true,|owner,patch|admit(&mut control,owner,patch,None,false)).unwrap().document;
+    assert_eq!(updated.runtime_revision,root.runtime_revision);
+    assert_eq!(snapshot(root.id).nodes[1].value,4.);
+    assert_eq!(unsafe {crate::ultra_canvas_tab_document(root.id,root.runtime_revision,1)},1);
+    assert_eq!(snapshot(root.id).nodes[0].value,4.);
+    let undone = registry.history(&root.label,1,"undo",|owner,patch|admit(&mut control,owner,patch,None,false)).unwrap().document;
+    assert_eq!(undone.runtime_revision,root.runtime_revision);
+    assert_eq!(snapshot(root.id).nodes[1].value,1.);
+    let redone = registry.history(&root.label,2,"redo",|owner,patch|admit(&mut control,owner,patch,None,false)).unwrap().document;
+    assert_eq!(redone.runtime_revision,root.runtime_revision);
+    assert_eq!(snapshot(root.id).nodes[1].value,4.);
+    assert_eq!(snapshot(root.id).nodes[2].value,37.5);
+    assert_eq!(unsafe {crate::ultra_canvas_close_document(root.id)},1);
+    assert_eq!(unsafe {crate::ultra_canvas_tab_document(root.id,root.runtime_revision,1)},0);
+}
+
+#[test]
+fn shared_admission_preserves_live_state_and_uses_atomic_hot_numeric_updates() {
+    let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut registry = Registry::default();
+    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
+        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"nodes":[
+            {"id":2,"type":"number","x":0,"y":0,"params":{"value":1}},
+            {"id":3,"type":"number","x":50,"y":0,"params":{"value":0}}
+        ],"edges":[{"from":2,"outlet":0,"to":3,"inlet":0}]}}
+    ],"edges":[]});
+    let root = registry.add("Owner".into(), Kind::Patch, Some(patch), None, None).unwrap();
+    registry.get_mut(&root.label).unwrap().id = 11;
+    let mut control = canvas::CanvasState::default();
+    let root = registry.prepare_runtime(&root.label, |owner| admit(&mut control, owner, owner.patch.as_ref().unwrap(), None, true)).unwrap();
+    let (child, _) = registry.open_view(&root.label, 1).unwrap();
+    registry.prepare_runtime(&child.label, |_| panic!("child reinstalled runtime")).unwrap();
+    let event = control.event(root.runtime_revision, 2, 0, serde_json::json!([7])).unwrap();
+    assert_eq!(unsafe { crate::ultra_canvas_message_document(root.id, root.runtime_revision, 2, 0, &event) }, 1);
+    let before = snapshot(root.id);
+    let source = |status: &canvas::NativeStatus| status.nodes[..status.node_count as usize].iter().find(|node| node.id == 3).copied().unwrap();
+    assert_eq!(source(&before).value, 7.);
+
+    let mut geometry = root.patch.unwrap();
+    geometry["nodes"][0]["params"]["name"] = serde_json::json!("renamed");
+    geometry["nodes"][0]["patcher"]["nodes"][0]["y"] = serde_json::json!(90);
+    let moved = registry.commit(&child.label, 0, geometry.clone(), true, |owner, patch| admit(&mut control, owner, patch, None, false)).unwrap().document;
+    assert_eq!(moved.runtime_revision, root.runtime_revision);
+    assert_eq!(moved.view_title, "renamed");
+    let after = snapshot(root.id);
+    assert_eq!(source(&after).value, 7.);
+    assert_eq!(source(&after).pulses, source(&before).pulses);
+
+    let same_value = Parameter { node:2, key:"value".into(), value:1., hot:true };
+    let reapplied = registry.commit(&child.label, 1, geometry.clone(), true, |owner, patch| admit(&mut control, owner, patch, Some(&same_value), false)).unwrap();
+    assert_eq!(reapplied.document.authoring_revision, 1);
+    assert_eq!(source(&snapshot(root.id)).value, 1., "a hot edit must emit even when authoring value is unchanged");
+
+    let mut numeric = geometry.clone();
+    numeric["nodes"][0]["patcher"]["nodes"][0]["params"]["value"] = serde_json::json!(4);
+    let parameter = Parameter { node:2, key:"value".into(), value:4., hot:true };
+    let changed = registry.commit(&child.label, 1, numeric.clone(), true, |owner, patch| admit(&mut control, owner, patch, Some(&parameter), false)).unwrap().document;
+    assert_eq!(changed.runtime_revision, root.runtime_revision);
+    let after = snapshot(root.id);
+    assert_eq!(source(&after).value, 4.);
+    assert_eq!(source(&after).pulses, source(&before).pulses + 2);
+
+    let undo = registry.history(&root.label, 2, "undo", |owner, patch| admit(&mut control, owner, patch, None, false)).unwrap().document;
+    assert_eq!(undo.runtime_revision, root.runtime_revision, "single numeric undo must not reinstall the graph");
+    assert_eq!(source(&snapshot(root.id)).value, 1.);
+    let redo = registry.history(&child.label, 3, "redo", |owner, patch| admit(&mut control, owner, patch, None, false)).unwrap().document;
+    assert_eq!(redo.runtime_revision, root.runtime_revision);
+    assert_eq!(source(&snapshot(root.id)).value, 4.);
+
+    let mut dishonest = numeric.clone();
+    dishonest["nodes"][0]["patcher"]["nodes"][0]["params"]["value"] = serde_json::json!(5);
+    dishonest["nodes"][0]["patcher"]["nodes"][1]["params"]["value"] = serde_json::json!(6);
+    let parameter = Parameter { node:2, key:"value".into(), value:5., hot:true };
+    assert!(registry.commit(&child.label, 4, dishonest, true, |owner, patch| admit(&mut control, owner, patch, Some(&parameter), false)).is_err());
+    assert_eq!(registry.get(&root.label).unwrap().patch, Some(numeric));
+    assert_eq!(source(&snapshot(root.id)).value, 4.);
+    assert_eq!(unsafe { crate::ultra_canvas_close_document(root.id) }, 1);
+    registry.remove(&root.label);
+
+    // A new owner can reuse the slot and identical content, but must install it.
+    let replacement = registry.add("Replacement".into(), Kind::Patch, Some(geometry), None, None).unwrap();
+    registry.get_mut(&replacement.label).unwrap().id = 11;
+    let replacement = registry.prepare_runtime(&replacement.label, |owner| admit(&mut control, owner, owner.patch.as_ref().unwrap(), None, true)).unwrap();
+    assert!(replacement.runtime_revision > root.runtime_revision);
+    assert_eq!(snapshot(root.id).active, 1);
+    assert_eq!(unsafe { crate::ultra_canvas_close_document(root.id) }, 1);
+}

@@ -1,0 +1,152 @@
+name: Ultra CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Fork PRs execute untrusted source without secrets or repository write access.
+permissions:
+  contents: read
+
+concurrency:
+  group: ultra-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  contracts:
+    name: UI, protocol, and reference tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22.20.0'
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.12.10'
+          cache: pip
+          cache-dependency-path: apps/ultra/tests/ci/requirements.txt
+      - name: Install pinned schema validator
+        run: |
+          python -m pip install --disable-pip-version-check --only-binary=:all: -r apps/ultra/tests/ci/requirements.txt
+      - name: Run deterministic UI, native graph, and recorded-reference tests
+        run: bash apps/ultra/tests/ci/check-contracts.sh
+
+  browser:
+    name: Chromium canvas editing smoke
+    # Use a supported runner where downloaded Chromium can use its normal
+    # user-namespace sandbox without changing Ubuntu 24.04 AppArmor settings.
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22.20.0'
+          cache: npm
+          cache-dependency-path: apps/ultra/tests/ci/package-lock.json
+      - name: Install locked browser test tools
+        working-directory: apps/ultra/tests/ci
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Install the Playwright-pinned Chromium build
+        working-directory: apps/ultra/tests/ci
+        run: npx --no-install playwright install --with-deps chromium
+      - name: Test real rendered document editing, without a native audio shim
+        working-directory: apps/ultra/tests/ci
+        run: npm run test:browser
+      - name: Save browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: canvas-browser-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            apps/ultra/tests/ci/playwright-report/
+            apps/ultra/tests/ci/test-results/
+          if-no-files-found: warn
+          retention-days: 7
+
+  native:
+    name: Linux native build, Rust bridge, and CPAL loopback
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      JOBS: '2'
+      CARGO_BUILD_JOBS: '2'
+      CARGO_NET_RETRY: '2'
+      CARGO_HTTP_TIMEOUT: '60'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Install official Ubuntu native and Tauri dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential pkg-config curl ca-certificates unzip xz-utils \
+            libjack-jackd2-dev libgtk-3-dev libwebkit2gtk-4.1-dev \
+            libasound2-dev libpipewire-0.3-dev libspa-0.2-dev libclang-dev \
+            libayatana-appindicator3-dev librsvg2-dev patchelf \
+            pipewire-bin wireplumber dbus
+      - name: Cache downloaded, checksum-verified native dependencies
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          # Cache archives, not gigabytes of extracted toolchains/build products.
+          # setup.sh rechecks every SHA256 before extraction on each fresh runner.
+          path: |
+            experiments/clockwork-faust/.deps/*.tar.gz
+            experiments/clockwork-faust/.deps/*.tar.xz
+            experiments/clockwork-faust/.deps/cargo/registry/cache
+            experiments/clockwork-faust/.deps/cargo/registry/index
+            experiments/faust-reference/.deps/*.tar.gz
+            experiments/faust-reference/.deps/*.zip
+          key: ultra-native-downloads-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('experiments/clockwork-faust/setup.sh', 'experiments/faust-reference/setup.sh', 'apps/ultra/src-tauri/Cargo.lock') }}
+      - name: Build actual Clockwork, Faust, and Ultra native engine
+        run: bash apps/ultra/build.sh --native-only
+      - name: Exercise the compiled native adapter with explicit JACK ABI tests
+        run: |
+          python3 apps/ultra/tests/check_backend.py
+          python3 apps/ultra/tests/check_sequence.py
+          python3 apps/ultra/tests/check_canvas.py
+          c++ -std=c++20 -O2 -Wall -Wextra -Werror apps/ultra/tests/external_audio_test.cpp \
+            -Lapps/ultra/build -lultra_native -Wl,-rpath,"$PWD/apps/ultra/build" \
+            -o apps/ultra/build/external-audio-test
+          apps/ultra/build/external-audio-test
+          for test in document_runtime document_audio signal_audio canvas_numeric_ui_backend canvas_message_ui_backend canvas_print_popup_backend; do
+            c++ -std=c++20 -O2 -Wall -Wextra -Werror "apps/ultra/tests/${test}_test.cpp" \
+              -Lapps/ultra/build -lultra_native -Wl,-rpath,"$PWD/apps/ultra/build" \
+              -o "apps/ultra/build/${test}-test"
+            "apps/ultra/build/${test}-test"
+          done
+      - name: Build and test the real Rust/Tauri bridge
+        run: |
+          DEPS="$GITHUB_WORKSPACE/experiments/clockwork-faust/.deps"
+          export PATH="$DEPS/rust/bin:$PATH"
+          export CARGO_HOME="$DEPS/cargo"
+          export ULTRA_NATIVE_LIB_DIR="$GITHUB_WORKSPACE/apps/ultra/build"
+          export LD_LIBRARY_PATH="$ULTRA_NATIVE_LIB_DIR"
+          rustc --version
+          cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
+          cargo build --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
+
+      - name: Gate real CPAL output through a private software-only PipeWire graph
+        timeout-minutes: 5
+        run: bash apps/ultra/tests/check_cpal_audio.sh "$GITHUB_WORKSPACE/apps/ultra/build/cpal-evidence"
+      - name: Save CPAL loopback evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: cpal-software-loopback-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/cpal-evidence/
+          if-no-files-found: warn
+          retention-days: 7

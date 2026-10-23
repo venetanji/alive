@@ -1,0 +1,106 @@
+# Reference P1 correction against frozen pre-fix files
+--- pre-fix/apps/ultra/ui/canvas-help-view.mjs
++++ fixed/apps/ultra/ui/canvas-help-view.mjs
+@@ -1,6 +1,6 @@
+-const catalog=new Set(['append','prepend','int','float','combine','join','pack','pak','zl','message','route','pv','value']);
++const catalog=new Set(['append','prepend','int','float','combine','join','pack','pak','zl','message','route','pv','value','times','plus','minus']);
+ const unavailable=reason=>({status:'unavailable',reason});
+ const text=value=>typeof value==='string'&&new TextEncoder().encode(value).length<=16384&&!/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f\ufffe\uffff]/u.test(value);
+ 
+ export function checkedReference(value,name){
+   if(value?.status==='unavailable')return unavailable(value.reason);
+
+SHA256 3569262b2566c58e5f46730d9249ec008b7773fc2bb805be848d61616e92e8ac apps/ultra/ui/canvas-help-view.mjs
+--- pre-fix/apps/ultra/ui/canvas-help-view.test.mjs
++++ fixed/apps/ultra/ui/canvas-help-view.test.mjs
+@@ -1,14 +1,14 @@
+ import assert from 'node:assert/strict';
+ import {test} from 'node:test';
+-import {mountHelpShell,createHelpHelperView} from './canvas-help-view.mjs';
++import {checkedReference,mountHelpShell,createHelpHelperView} from './canvas-help-view.mjs';
+ import {applyNodeAppearance} from './canvas-appearance-view.mjs';
+ 
+ const settle=()=>new Promise(resolve=>setImmediate(resolve));
+ const reference=name=>({status:'available',object:name,sourceSha256:'a'.repeat(64),digest:'Original summary',description:'Original description',
+   arguments:[],methods:[],inlets:[],outlets:[],related:[{name:'pack',available:true}]});
+-function mount(){
++function mount(object='append'){
+   let doc;
+   class Element{
+     constructor(tag='div'){this.tagName=tag.toUpperCase();this.children=[];this.listeners={};this.dataset={};this.style={setProperty(key,value){this[key]=value;},removeProperty(key){delete this[key];}};this.classList={toggle(){}};this.disabled=false;this.hidden=false;}
+     append(...children){this.children.push(...children);}
+     contains(element){return element===this||this.children.some(child=>child.contains(element));}
+@@ -26,17 +26,67 @@
+       const event={target:this,preventDefault(){},stopPropagation(){stopped=true;},...extra};
+       for(const handler of this.listeners[name]??[])await handler(event);
+       if(name==='keydown'&&!stopped)doc.onKeydown?.(event);
+     }
+   }
+-  const ids=new Map(),replies=new Map();
++  const ids=new Map(),replies=new Map(),requested=[];
+   doc={activeElement:null,querySelector(id){if(!ids.has(id))ids.set(id,new Element());return ids.get(id);},createElement:tag=>new Element(tag),addEventListener(){}};
+-  const view=mountHelpShell({doc,invoke:(_,{name})=>new Promise(resolve=>replies.set(name,resolve))});
+-  view.update({helpIdentity:'original-shell',helpShell:{object:'append'},hostingHelp:true});
+-  return{doc,view,get:id=>doc.querySelector('#'+id),reply:(name,value)=>replies.get(name)(value),
++  const view=mountHelpShell({doc,invoke:(_,{name})=>{requested.push(name);return new Promise(resolve=>replies.set(name,resolve));}});
++  view.update({helpIdentity:'original-shell',helpShell:{object},hostingHelp:true});
++  return{doc,view,requested,get:id=>doc.querySelector('#'+id),reply:(name,value)=>replies.get(name)(value),
+     button:label=>doc.querySelector('#help-reference-menu').children.find(child=>child.tagName==='BUTTON'&&child.textContent===label)};
+ }
++
++for(const name of ['times','plus','minus']){
++  test(`${name} accepts only its exact safe Reference response identity`,()=>{
++    const value=reference(name);
++    assert.equal(checkedReference(value,name),value);
++    assert.equal(checkedReference({...value,object:'append'},name).status,'unavailable');
++    assert.equal(checkedReference(value,'append').status,'unavailable');
++  });
++
++  test(`${name} shell opens and renders its Reference as plain text`,async()=>{
++    const p=mount(name),value={...reference(name),digest:'Original synthetic <img src=x> summary.',description:'Original synthetic <script>text</script> description.'};
++    await settle();p.reply(name,value);await settle();
++    assert.equal(p.view.reference.status,'available');
++    await p.get('help-question').fire('click');await p.button('Reference').fire('click');await settle();
++    assert.equal(p.get('help-reference-pane').hidden,false);
++    assert.equal(p.get('help-reference-title').textContent,`${name} Reference`);
++    assert.deepEqual(p.get('help-reference-body').children.map(child=>[child.tagName,child.textContent]),[
++      ['H2',name],['P','Original synthetic <img src=x> summary.'],['P','Original synthetic <script>text</script> description.'],
++    ]);
++    assert.equal(p.doc.activeElement,p.get('help-reference-close'));
++    assert.deepEqual(p.requested,[name]);
++  });
++}
++
++test('safe arithmetic related links navigate while symbolic, path and unknown aliases remain disabled',async()=>{
++  const p=mount(),safe=['times','plus','minus'],refused=['*','+','-','../times','/plus','plus.maxref.xml','unknown'];
++  await settle();p.reply('append',{...reference('append'),related:[...safe,...refused].map(name=>({name,available:true}))});await settle();
++  await p.get('help-question').fire('click');
++  for(const name of safe)assert.equal(p.button(name).disabled,false,name);
++  for(const name of refused){assert.equal(p.button(name).disabled,true,name);await p.view.openReference(name);}
++  assert.deepEqual(p.requested,['append']);
++  for(const name of safe){
++    await p.button(name).fire('click');await settle();
++    assert.equal(p.get('help-reference-title').textContent,`${name} Reference`);
++    p.reply(name,reference(name));await settle();
++    assert.equal(p.get('help-reference-body').children[0].textContent,name);
++    await p.get('help-question').fire('click');
++  }
++  assert.deepEqual(p.requested,['append','times','plus','minus']);
++  for(const name of refused)assert.equal(checkedReference(reference(name),name).status,'unavailable',name);
++});
++
++test('arithmetic Reference admission retains response bounds and plain-text field checks',()=>{
++  const value=reference('plus');
++  for(const update of [{description:'x'.repeat(16385)},{description:'Original synthetic\u0000text'},
++    {methods:Array.from({length:65},()=>({name:'original',description:'Original synthetic method.'}))},{sourceSha256:'invalid'},
++    {arguments:[{name:'original',description:'Original synthetic argument.',type:'number',optional:'yes'}]},
++    {related:[{name:'times',available:'yes'}]},
++  ])assert.equal(checkedReference({...value,...update},'plus').status,'unavailable');
++});
+ 
+ test('a delayed reference response preserves keyboard focus in the open menu',async()=>{
+   const p=mount();await p.get('help-question').fire('click');await settle();
+   const original=p.button('Reference');assert.equal(p.doc.activeElement,original);
+   p.reply('append',reference('append'));await settle();
+
+SHA256 cafc460c90c03387d0660dbffc7b1af59e9ef8040e0379064774473a704d6c84 apps/ultra/ui/canvas-help-view.test.mjs

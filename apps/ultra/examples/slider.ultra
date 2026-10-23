@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "slider",
+      "x": 160,
+      "y": 60,
+      "params": {
+        "value": 0,
+        "size": 101,
+        "min": 0,
+        "mult": 1,
+        "floatoutput": 1
+      }
+    },
+    {
+      "id": 2,
+      "type": "flonum",
+      "x": 360,
+      "y": 180,
+      "params": {
+        "value": 0,
+        "minimum": -100000,
+        "maximum": 100000,
+        "numdecimalplaces": 6
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 2,
+      "inlet": 0
+    }
+  ]
+}

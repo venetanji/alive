@@ -1,0 +1,3360 @@
+{
+  "scope": "Bounded inventory, not broad Max/MSP compatibility. Port counts and documented defaults are from the installed public XML. Runtime evidence is limited to referenced input scores.",
+  "objects": [
+    {
+      "class": "button",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "button",
+      "ui_behavior": {
+        "status": "untested-interaction"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "02-fanout",
+          "12-ui-message"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "button",
+        "official_url": "https://docs.cycling74.com/reference/button/",
+        "installed_reference": "refpages/max-ref/button.maxref.xml",
+        "sha256": "874e9f61811b11ee7910dbdc52e02900ffeb589318ac1d59b5c60c19c5731e3b",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "id": "0",
+          "name": "OBJARG_NAME",
+          "type": "OBJARG_TYPE",
+          "optional": "0",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "See the anything listing"
+        },
+        {
+          "name": "int",
+          "description": "See the anything listing"
+        },
+        {
+          "name": "float",
+          "description": "See the anything listing"
+        },
+        {
+          "name": "list",
+          "description": "See the anything listing"
+        },
+        {
+          "name": "anything",
+          "description": "When any message is received in the inlet, button flashes briefly and a bang is sent out the outlet."
+        },
+        {
+          "name": "(mouse)",
+          "description": "Clicking on the button object will cause it to blink briefly and send a bang out the outlet."
+        }
+      ],
+      "attributes": [
+        {
+          "name": "blinktime",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "The time in milliseconds that the button will light up when clicked or triggered by a message."
+        },
+        {
+          "name": "parameter_enable",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "Enables use of this object with Max for Live Parameters and setting initial parameter values in Max."
+        }
+      ],
+      "documented_defaults": [
+        {
+          "context": "attribute:parameter_enable",
+          "text": "Enables use of this object with Max for Live Parameters and setting initial parameter values in Max."
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "toggle",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "toggle",
+      "ui_behavior": {
+        "status": "untested-interaction"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "12-ui-message"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "toggle",
+        "official_url": "https://docs.cycling74.com/reference/toggle/",
+        "installed_reference": "refpages/max-ref/toggle.maxref.xml",
+        "sha256": "01a5f92464918a1b05f17982a45fed85783235206e4b0c5e79fcfce48ee09ada",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "id": "0",
+          "name": "OBJARG_NAME",
+          "type": "OBJARG_TYPE",
+          "optional": "0",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "Switches toggle on if it is off; switches it off if it is on."
+        },
+        {
+          "name": "int",
+          "description": "The number is sent out the outlet. If the number is not 0, toggle displays an X, showing it is on. If it is 0 , toggle is blank, showing it is off."
+        },
+        {
+          "name": "float",
+          "description": "Converted to int . See int listing."
+        },
+        {
+          "name": "(drag)",
+          "description": "When an SVG file is dragged onto toggle, it is assigned as the value of the svg attribute and used to draw the on state indicator instead of the default X."
+        },
+        {
+          "name": "(mouse)",
+          "description": "A mouse click on toggle switches the object on if it is off and off if it is on."
+        },
+        {
+          "name": "outputvalue",
+          "description": "TEXT_HERE"
+        },
+        {
+          "name": "read",
+          "description": "Use the read to assign an SVG file to use to draw the on state instead of the default X."
+        },
+        {
+          "name": "set",
+          "description": "Switches the toggle on or off without sending anything out the outlet. The word set , followed by any non-zero number, sets toggle to on; set 0 sets it to off."
+        }
+      ],
+      "attributes": [
+        {
+          "name": "parameter_enable",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "Enables use of this object with Max for Live Parameters and setting initial parameter values in Max."
+        },
+        {
+          "name": "size",
+          "get": "1",
+          "set": "1",
+          "type": "float",
+          "size": "1",
+          "description": "Sets a scale factor as a percentage of the total area for drawing the X or SVG image when the toggle is on."
+        }
+      ],
+      "documented_defaults": [
+        {
+          "context": "message:(drag)",
+          "text": "When an SVG file is dragged onto toggle, it is assigned as the value of the svg attribute and used to draw the on state indicator instead of the default X."
+        },
+        {
+          "context": "message:read",
+          "text": "Use the read to assign an SVG file to use to draw the on state instead of the default X."
+        },
+        {
+          "context": "attribute:parameter_enable",
+          "text": "Enables use of this object with Max for Live Parameters and setting initial parameter values in Max."
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "number",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "number",
+      "ui_behavior": {
+        "status": "untested-interaction"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "06-number",
+          "13-initialization"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "number",
+        "official_url": "https://docs.cycling74.com/reference/number/",
+        "installed_reference": "refpages/max-ref/number.maxref.xml",
+        "sha256": "ba955a3f6984509b3fe718c4653fd0f00921effc23bcdb56fb58b62e892d07f5",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "id": "0",
+          "name": "OBJARG_NAME",
+          "type": "OBJARG_TYPE",
+          "optional": "0",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "OUTLET_TYPE",
+          "description": "Use this outlet to trigger a select message to another number box to create an interface for tabbing between objects."
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "Sends the currently displayed value out the outlet"
+        },
+        {
+          "name": "int",
+          "description": "An int value received will be displayed and sent out the outlet. The value will be converted to a float if the number box's format attribute is set to Float."
+        },
+        {
+          "name": "float",
+          "description": "float value received will be displayed and sent out the outlet. The value will be converted to an int if the number box's format attribute is set to Int or another integer-based format."
+        },
+        {
+          "name": "list",
+          "description": "list received is displayed and sent out the outlet. If the format is set to List or Text, the entire list is stored and output. Otherwise only the first value in the list is stored and output."
+        },
+        {
+          "name": "anything",
+          "description": "If any message is received and the number box's format is set to Text, the entire message is stored and output. If the format is set to Int or Float, an error message is posted to the Max console and no value is stored or output. If the format is set to List, no value is stored or output, but no error message is posted."
+        },
+        {
+          "name": "clear",
+          "description": "When the format atrribute of number is set to List or Text, clear will clear the current list or message displayed."
+        },
+        {
+          "name": "max",
+          "description": "The word max , followed by a number, sets the maximum value that can be displayed or sent out by the number box. The word max by itself sets the maximum to None, removing any previously set maximum value."
+        },
+        {
+          "name": "min",
+          "description": "The word min , followed by a number, sets the minimum value that can be displayed or sent out by the number box. The word min by itself sets the minimum to None, removing any previously set minimum value."
+        },
+        {
+          "name": "(mouse)",
+          "description": "Clicking and dragging up and down on a number box with the mouse (when the patcher window is locked) moves the displayed value up and down, and outputs the new values continuously. In a float number box, dragging to the left of the decimal point changes the value in increments of 1. Dragging to the right of the decimal point changes the fractional part of the number in increments of 0.01. When the active patcher window is locked, numbers can be entered into a number box by clicking on it with the mouse and typing in a number on the computer keyboard. Typing the Return or Enter keys on Macintosh or the Enter key on Windows, or clicking outside the number box, sends the number out the outlet. You can also click on the number box and use the up or down arrows on your keyboard to increase or decrease the number by one. Shift+arrow jumps by tens. For the float number box, alt/option+arrow jumps by tenths. When the format of the number box is set to List, you can drag up or down on individual numbers within the list to change them. When the format of the number box is set to List or Text, you can select individual items in a list or message to replace them by typing, or select the entire contents to replace everything by typing."
+        },
+        {
+          "name": "select",
+          "description": "The word select will highlight the number box so you can type values into it. Clicking on any empty space in a locked patcher will deselect the object."
+        },
+        {
+          "name": "set",
+          "description": "The word set , followed by a number, list or message, sets the stored and displayed value to that number without triggering output."
+        }
+      ],
+      "attributes": [
+        {
+          "name": "maximum",
+          "get": "1",
+          "set": "1",
+          "type": "atom",
+          "size": "1",
+          "description": "Sets the maximum value that can be displayed or output"
+        },
+        {
+          "name": "minimum",
+          "get": "1",
+          "set": "1",
+          "type": "atom",
+          "size": "1",
+          "description": "Sets the minimum value that can be displayed or output"
+        },
+        {
+          "name": "parameter_enable",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "Enables use of this object with Max for Live Parameters and setting initial parameter values in Max."
+        }
+      ],
+      "documented_defaults": [
+        {
+          "context": "attribute:parameter_enable",
+          "text": "Enables use of this object with Max for Live Parameters and setting initial parameter values in Max."
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "flonum",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "flonum",
+      "ui_behavior": {
+        "status": "untested-interaction"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "07-flonum"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "flonum",
+        "official_url": "https://docs.cycling74.com/reference/flonum/",
+        "installed_reference": "refpages/max-ref/flonum.maxref.xml",
+        "sha256": "b36cc948295ad443b152e5b2d7e12138c791186cc1027ecae9c4b5a7bf8e9072",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "id": "0",
+          "name": "OBJARG_NAME",
+          "type": "OBJARG_TYPE",
+          "optional": "0",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "Sends the currently displayed number out the outlet."
+        },
+        {
+          "name": "int",
+          "description": "The number received in the inlet is stored and displayed in the number box and sent out the outlet."
+        },
+        {
+          "name": "float",
+          "description": "The number received in the inlet is stored and displayed in the number box and sent out the outlet."
+        },
+        {
+          "name": "max",
+          "description": "The word max , followed by a number, sets the maximum value that can be displayed or sent out by the number box . The word max by itself sets the maximum to None (removes a prior maximum value constraint)."
+        },
+        {
+          "name": "min",
+          "description": "The word min , followed by a number, sets the minimum value that can be displayed or sent out by the number box . The word min by itself sets the minimum to None (removes a prior minimum value constraint)."
+        },
+        {
+          "name": "(mouse)",
+          "description": "Clicking and dragging up and down on the number box with the mouse (when the patcher window is locked) moves the displayed value up and down, and outputs the new values continuously. In the float number box, dragging to the left of the decimal point changes the value in increments of 1. Dragging to the right of the decimal point changes the fractional part of the number in increments of 0.01. When the active patcher window is locked, numbers can be entered into a number box by clicking on it with the mouse and typing in a number on the computer keyboard. Typing the Return or Enter keys on Macintosh or the Enter key on Windows, or clicking outside the number box, sends the number out the outlet."
+        },
+        {
+          "name": "select",
+          "description": "The word select will make the number box active so that you can type numbers straight into it (click on any empty space in a locked patcher to deselect it)."
+        },
+        {
+          "name": "set",
+          "description": "The word set , followed by a number, sets the stored and displayed value to that number without triggering output."
+        }
+      ],
+      "attributes": [
+        {
+          "name": "maximum",
+          "get": "1",
+          "set": "1",
+          "type": "atom",
+          "size": "1",
+          "description": "Sets the maximum value that can be displayed or sent out by the number box ."
+        },
+        {
+          "name": "minimum",
+          "get": "1",
+          "set": "1",
+          "type": "atom",
+          "size": "1",
+          "description": "Sets the minimum value that can be displayed or sent out by the number box ."
+        },
+        {
+          "name": "parameter_enable",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "Enables use of this object with Max for Live Parameters and allows for setting initial parameter values in the Max environment."
+        }
+      ],
+      "documented_defaults": [
+        {
+          "context": "attribute:cantchange",
+          "text": "Toggles the ability to disallow changes with the mouse or the computer keyboard. The default is 0 (mouse/keyboard output active)."
+        },
+        {
+          "context": "attribute:mouseup",
+          "text": "Toggles the ability to send a number only when the mouse button is released, rather than continuously. The default is 0 (continuous display)."
+        },
+        {
+          "context": "attribute:parameter_enable",
+          "text": "Enables use of this object with Max for Live Parameters and allows for setting initial parameter values in the Max environment."
+        },
+        {
+          "context": "attribute:triangle",
+          "text": "Toggles the drawing of a triangular arrow pointing to the number in the number box. The default is 1 (draw the triangle)."
+        }
+      ],
+      "discussion": "Note: The way floating-point numbers are stored on your computer means that not all numbers can be represented. This means that you will often see values such as 2.3 displayed as 2.29999. Clicking in the Float Display Correction checkbox in the Interface pane of the Max Preferences Window will make the Max application round numbers and truncates them at what it guesses is the least significant digit."
+    },
+    {
+      "class": "int",
+      "aliases": [
+        "i"
+      ],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "03-hot-cold",
+          "04-int"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "int",
+        "official_url": "https://docs.cycling74.com/reference/int/",
+        "installed_reference": "refpages/max-ref/int.maxref.xml",
+        "sha256": "0f2bc1d6a2b7ff31be636cb0f7b7dc0fd460f1b7d86538eed74b35a33d265011",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "initial-value",
+          "optional": "1",
+          "type": "number",
+          "description": "Sets an initial value to be stored in int . If there is no argument, the initial value is 0. An int argument by itself, without the word int , is another way of creating and initializing an int object. Float values are converted to integers."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "In left inlet: Sends the stored value out the outlet."
+        },
+        {
+          "name": "int",
+          "description": "In left inlet: The number replaces the currently stored value and is sent out the outlet."
+        },
+        {
+          "name": "float",
+          "description": "Converted to int ."
+        },
+        {
+          "name": "in1",
+          "description": "In right inlet: The number replaces the stored value without triggering output."
+        },
+        {
+          "name": "send",
+          "description": "In left inlet: The word send , followed by the name of a receive object, sends the value stored in int to all receive objects with that name, without sending it out the outlet of the int ."
+        },
+        {
+          "name": "set",
+          "description": "In left inlet: The word set , followed by a number, replaces the stored value without triggering output."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:initial-value",
+          "text": "Sets an initial value to be stored in int . If there is no argument, the initial value is 0. An int argument by itself, without the word int , is another way of creating and initializing an int object. Float values are converted to integers."
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "float",
+      "aliases": [
+        "f"
+      ],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "05-float"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "float",
+        "official_url": "https://docs.cycling74.com/reference/float/",
+        "installed_reference": "refpages/max-ref/float.maxref.xml",
+        "sha256": "6d88281ad80a17f68ce727db2321035f42a123cddcd2fc3e813daf8cd0171567",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "initial-value",
+          "optional": "1",
+          "type": "float",
+          "description": "Sets an initial value to be stored in float . If there is no argument, the initial value is 0.0 . A float argument by itself, without the word float , is another way of creating and initializing a float object."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "In left inlet: Sends the stored value out the outlet."
+        },
+        {
+          "name": "int",
+          "description": "Converted to float ."
+        },
+        {
+          "name": "float",
+          "description": "In left inlet: The number replaces the currently stored value and is sent out the outlet."
+        },
+        {
+          "name": "in1",
+          "description": "In right inlet: The number replaces the stored value without triggering output."
+        },
+        {
+          "name": "send",
+          "description": "In left inlet: The word send , followed by a name of a receive object, sends the number stored in the float object to all receive objects with that name, without sending it out the float object's outlet."
+        },
+        {
+          "name": "set",
+          "description": "In left inlet: The word set , followed by a number, replaces the stored value without triggering output."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:initial-value",
+          "text": "Sets an initial value to be stored in float . If there is no argument, the initial value is 0.0 . A float argument by itself, without the word float , is another way of creating and initializing a float object."
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "message",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "message",
+      "ui_behavior": {
+        "status": "untested-interaction"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "12-ui-message"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "message",
+        "official_url": "https://docs.cycling74.com/reference/message/",
+        "installed_reference": "refpages/max-ref/message.maxref.xml",
+        "sha256": "465a0fdb7df97c1e7693dc6bfe96aa20087f0adbd65e1e8ae27d264ee9e371c5",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "message",
+          "optional": "0",
+          "type": "list",
+          "description": "The initial contents of the message box are typed in when the patcher window is unlocked. Any message can be contained in a message box. Certain characters have special meaning."
+        },
+        {
+          "name": "changeable-arg",
+          "optional": "0",
+          "type": "symbol",
+          "description": "A dollar sign ( $ ), followed immediately by a number in the range 1-9, is a changeable argument. This argument's value can be replaced by the corresponding item in a list received in the inlet. (Example: $2 stores the second item in a list as its value before sending out the contents of the message box .) The value of a changeable argument is initially 0 ."
+        },
+        {
+          "name": "comma",
+          "optional": "0",
+          "type": "symbol",
+          "description": "A comma ( , ) divides a message into separate messages which will be sent out in order. (Example: 3, 4, 5 sends out 3 , then 4 , then 5 .)"
+        },
+        {
+          "name": "backslash",
+          "optional": "0",
+          "type": "symbol",
+          "description": "A backslash ( \\ ) is used to negate (escape) the traits of a special character. When a backslash immediately precedes a dollar sign, comma, or semicolon, the character is treated as a normal character. (Example: Notes played were C\\, E\\, and G .)"
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "In left inlet: Sends out the contents of the message box. A mouse click on the message box has the same effect. In right inlet: Sets the contents of the message box to 'bang' without triggering output."
+        },
+        {
+          "name": "int",
+          "description": "In left inlet: The number replaces the value stored in the argument $1 , if such an argument exists, then sends out the contents of the message box. In right inlet: Sets the contents of the message box without triggering output."
+        },
+        {
+          "name": "float",
+          "description": "In left inlet: The number replaces the value stored in the argument $1 , if such an argument exists, then sends out the contents of the message box. In right inlet: Sets the contents of the message box without triggering output."
+        },
+        {
+          "name": "list",
+          "description": "Each item in the list replaces the value of its corresponding $ argument, if such an argument exists, then sends out the contents of the message box. In right inlet: Sets the contents of the message box without triggering output."
+        },
+        {
+          "name": "anything",
+          "description": "See the list listing"
+        },
+        {
+          "name": "append",
+          "description": "The word append followed by any message will set the message box to display that message after any text which it already contains without triggering output."
+        },
+        {
+          "name": "(mouse)",
+          "description": "A mouse click on a message box sends its contents out the object's outlet."
+        },
+        {
+          "name": "prepend",
+          "description": "The word prepend followed by any message will set the message box to display that message before any text which it already contains without triggering output."
+        },
+        {
+          "name": "set",
+          "description": "The word set , followed by a message, sets the contents of the message box to that new message, without triggering output. The word set by itself clears the contents of the message box ."
+        },
+        {
+          "name": "setargs",
+          "description": "The word setargs , followed by a message, sets the changeable argument(s) (e.g. $1) of the receiving message box, without triggering output."
+        },
+        {
+          "name": "symbol",
+          "description": "In left inlet: The symbol replaces the value stored in the argument $1 , if such an argument exists, then sends out the contents of the message box. In right inlet: Sets the contents of the message box without triggering output."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:message",
+          "text": "The initial contents of the message box are typed in when the patcher window is unlocked. Any message can be contained in a message box. Certain characters have special meaning."
+        },
+        {
+          "context": "argument:changeable-arg",
+          "text": "A dollar sign ( $ ), followed immediately by a number in the range 1-9, is a changeable argument. This argument's value can be replaced by the corresponding item in a list received in the inlet. (Example: $2 stores the second item in a list as its value before sending out the contents of the message box .) The value of a changeable argument is initially 0 ."
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "trigger",
+      "aliases": [
+        "t"
+      ],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "01-trigger"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "trigger",
+        "official_url": "https://docs.cycling74.com/reference/trigger/",
+        "installed_reference": "refpages/max-ref/trigger.maxref.xml",
+        "sha256": "8e0eeed2e84257b8bf9ad0cf706945e19a584c6cc7045de867faf8c1e93a2361",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "formats",
+          "optional": "1",
+          "type": "symbol",
+          "description": "The number of arguments determines the number of outlets. Each outlet sends out either int, float, bang , list, or symbol, as identified by symbol arguments (i, f, b, l, or s). If there are no arguments, there are two outlets, both of which send an int."
+        },
+        {
+          "name": "constant",
+          "optional": "1",
+          "type": "anything",
+          "description": "When an int, float, or symbol is specified, the value is output as a constant."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "Causes either a bang , an integer 0 , a float 0. , a list 0 , or an empty symbol to be sent out of each outlet."
+        },
+        {
+          "name": "int",
+          "description": "The number is sent out each outlet in the form designated by the typed-in arguments: either an int, a float, a list, a symbol (although empty), or a bang ."
+        },
+        {
+          "name": "float",
+          "description": "The number is sent out each outlet in the form designated by the typed-in arguments: either an int, a float, a list, a symbol (although empty), or a bang ."
+        },
+        {
+          "name": "list",
+          "description": "The list is sent out any outlet with the letter l assigned to it. Out other outlets, the list is converted and sent out as integer 0 , float 0. , the empty symbol \"\" , or bang ."
+        },
+        {
+          "name": "anything",
+          "description": "Anything can be output according to the format specified (same as list but interpreted as a symbol)."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:formats",
+          "text": "The number of arguments determines the number of outlets. Each outlet sends out either int, float, bang , list, or symbol, as identified by symbol arguments (i, f, b, l, or s). If there are no arguments, there are two outlets, both of which send an int."
+        }
+      ],
+      "discussion": "trigger can also be instantiated with the simple name of \"t\"."
+    },
+    {
+      "class": "pack",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "08-pack"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "pack",
+        "official_url": "https://docs.cycling74.com/reference/pack/",
+        "installed_reference": "refpages/max-ref/pack.maxref.xml",
+        "sha256": "43bad217a251635f0c3bb21369f40e595681cec7bd7a38ee7e7b718246dac742",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "list-elements",
+          "optional": "1",
+          "type": "any",
+          "description": "The number of inlets is determined by the number of arguments. Each argument sets an initial type and value for an item in the list produced by pack . If there are no arguments, the object will be created with two inlets, and the two list elements will be set to (int) 0 initially."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "value for the first list element, causes output"
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "value for the second list element"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "Output list"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "Output currently stored list"
+        },
+        {
+          "name": "int",
+          "description": "The number is stored as an item in a list, with its position in the list corresponding to the inlet in which it was received. A number in the left inlet also causes the list to be output. If the inlet has been initialized with a float or symbol argument, the incoming number will be converted to a float or a blank symbol."
+        },
+        {
+          "name": "float",
+          "description": "The number is stored as an item in a list, with its position in the list corresponding to the inlet in which it was received. A number in the left inlet also causes the entire list to be the output. If the inlet has been initialized with an int or symbol argument, the incoming number will be converted to an int or a (blank) symbol."
+        },
+        {
+          "name": "list",
+          "description": "Any multi-item message is treated as a list. The first item in the incoming list is stored in in the location that corresponds to the inlet in which it was received. Each subsequent item is stored as if it had arrived in subsequent inlets (limited to the number of inlets available). A list received in the left inlet causes the entire stored list to be sent out the outlet."
+        },
+        {
+          "name": "anything",
+          "description": "Performs the same function as list ."
+        },
+        {
+          "name": "nth",
+          "description": "The nth message will output the stored list element at the index. Output is sent from the first outlet."
+        },
+        {
+          "name": "send",
+          "description": "Sends the stored list to all receive objects with a matching name."
+        },
+        {
+          "name": "set",
+          "description": "Sets the values without causing list output. Although the set message works with any inlet, it is only meaningful in the left inlet, which is the only inlet that will trigger output."
+        },
+        {
+          "name": "symbol",
+          "description": "Stores the symbol in the list at the position corresponding to the inlet it was received. If the list element was initialized as a number, the symbol is converted to 0 before being stored. A symbol in the left inlet triggers output of the list."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:list-elements",
+          "text": "The number of inlets is determined by the number of arguments. Each argument sets an initial type and value for an item in the list produced by pack . If there are no arguments, the object will be created with two inlets, and the two list elements will be set to (int) 0 initially."
+        },
+        {
+          "context": "message:int",
+          "text": "The number is stored as an item in a list, with its position in the list corresponding to the inlet in which it was received. A number in the left inlet also causes the list to be output. If the inlet has been initialized with a float or symbol argument, the incoming number will be converted to a float or a blank symbol."
+        },
+        {
+          "context": "message:float",
+          "text": "The number is stored as an item in a list, with its position in the list corresponding to the inlet in which it was received. A number in the left inlet also causes the entire list to be the output. If the inlet has been initialized with an int or symbol argument, the incoming number will be converted to an int or a (blank) symbol."
+        },
+        {
+          "context": "message:symbol",
+          "text": "Stores the symbol in the list at the position corresponding to the inlet it was received. If the list element was initialized as a number, the symbol is converted to 0 before being stored. A symbol in the left inlet triggers output of the list."
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "unpack",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "09-unpack"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "unpack",
+        "official_url": "https://docs.cycling74.com/reference/unpack/",
+        "installed_reference": "refpages/max-ref/unpack.maxref.xml",
+        "sha256": "77849f4d7100ed8f9c77dfade3c54dadbf0a49a5320d61cd7b951f8c78aa6214",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "list-elements",
+          "optional": "1",
+          "type": "any",
+          "description": "The number of outlets is determined by the number of arguments. The arguments can be any combination of ints, floats, and symbols. The argument specifies the output of the unpack object's outlets; the input type is forced to the outlet type that is defined. If no argument is typed in, unpack will have two int outlets."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "Causes each stored item of a list to be sent out the corresponding outlet."
+        },
+        {
+          "name": "int",
+          "description": "The number is sent out the left outlet."
+        },
+        {
+          "name": "float",
+          "description": "The number is sent out the left outlet."
+        },
+        {
+          "name": "list",
+          "description": "Each item in the list (up to the number of outlets) is sent out the outlet corresponding to its position in the list."
+        },
+        {
+          "name": "anything",
+          "description": "Performs the same function as list ."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [],
+      "discussion": null
+    },
+    {
+      "class": "select",
+      "aliases": [
+        "sel"
+      ],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "10-select"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "select",
+        "official_url": "https://docs.cycling74.com/reference/select/",
+        "installed_reference": "refpages/max-ref/select.maxref.xml",
+        "sha256": "8051a768b2169bf72f40021e66123d14877ab9b2d6654f6d5e5a549b7fe463d1",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "selectors",
+          "optional": "1",
+          "type": "anything",
+          "description": "The arguments can be a mix of ints, floats, or symbols. The number of arguments determines the number of outlets in addition to the rightmost outlet. If there is no argument, there is only one other outlet, which is assigned the integer number 0 ."
+        },
+        {
+          "name": "inlet",
+          "optional": "0",
+          "type": "int",
+          "description": "If there is a single int argument (or if there are no arguments) a second inlet is created on the right. Numbers received in that inlet are stored in place of the argument. If there is more than one argument, or if the only argument is not an int , the right inlet is not created."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "Performs the same function as anything . The bang message matches a 'bang' symbol in the arguments."
+        },
+        {
+          "name": "int",
+          "description": "Performs the same function as anything . Note: If an int is listed multiple times as an argument, a bang message will be sent out the leftmost outlet only."
+        },
+        {
+          "name": "float",
+          "description": "Performs the same function as anything . Note: If a float is listed multiple times as an argument, a bang message will be sent out the leftmost outlet only."
+        },
+        {
+          "name": "list",
+          "description": "Performs the same function as anything ."
+        },
+        {
+          "name": "anything",
+          "description": "All input will be selectively output either as a bang from one of its corresponding outlets if the first element in the list matches the object argument(s) or as it is out the object's right-most outlet."
+        },
+        {
+          "name": "in1",
+          "description": "In right inlet: Replaces the value of the argument. The right inlet exists only if there is a single int argument."
+        },
+        {
+          "name": "symbol",
+          "description": "Performs the same function as anything ."
+        }
+      ],
+      "attributes": [
+        {
+          "name": "fuzzy",
+          "get": "1",
+          "set": "1",
+          "type": "atom",
+          "size": "1",
+          "description": "When matchfloat is set to 1, the fuzzy attribute allows for fuzzy floating-point comparison. This can be useful when sending a float to select via a dial object, or other similar objects, where a long floating point number is sent. For example, if the number 0.49999999 is sent to select with an argument of 0.5, turning matchfloat on and setting fuzzy to 0.01 will cause the two floats to register as a match."
+        },
+        {
+          "name": "matchfloat",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "alias": "exact",
+          "description": "When matchfloat is set to 1, the select object performs float comparison. In this mode, the fuzzy attribute can be used to match floats within a specified distance of the given float selector . When matchfloat is set to 0, floats are ignored. The old exact attribute is now an alias of matchfloat ."
+        }
+      ],
+      "documented_defaults": [
+        {
+          "context": "argument:inlet",
+          "text": "If there is a single int argument (or if there are no arguments) a second inlet is created on the right. Numbers received in that inlet are stored in place of the argument. If there is more than one argument, or if the only argument is not an int , the right inlet is not created."
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "route",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "11-route"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "route",
+        "official_url": "https://docs.cycling74.com/reference/route/",
+        "installed_reference": "refpages/max-ref/route.maxref.xml",
+        "sha256": "772ab0cc1d3339fb86b5554acc7ff0ac4cfb90cb71fd60bd13d30422fd52e990",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "selectors",
+          "optional": "1",
+          "type": "anything",
+          "description": "Arguments can be a mix of ints, floats, or symbols. The number of arguments determines the number of outlets, in addition to the rightmost outlet. Each argument assigns a name or a number to an outlet. If there is no argument, there is one other outlet, which is assigned the number 0 ."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "Performs the same function as anything ."
+        },
+        {
+          "name": "int",
+          "description": "Performs the same function as anything ."
+        },
+        {
+          "name": "float",
+          "description": "Performs the same function as anything ."
+        },
+        {
+          "name": "list",
+          "description": "Performs the same function as anything ."
+        },
+        {
+          "name": "anything",
+          "description": "If the first item of the message is the same as one of the arguments of route , the rest of the message is sent out the outlet that corresponds to that argument. If the first item does not match any of the arguments, the entire message is passed out the rightmost outlet."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [],
+      "discussion": null
+    },
+    {
+      "class": "+",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "03-hot-cold"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "+",
+        "official_url": "https://docs.cycling74.com/reference/plus/",
+        "installed_reference": "refpages/max-ref/plus.maxref.xml",
+        "sha256": "441f02ffe58bbc571e594398a6495430affc45240cdde79feecbadc769f91002",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "initial",
+          "optional": "1",
+          "type": "int or float",
+          "description": "Sets the initial value, to be added to a number received in the left inlet. A float argument causes the numbers to be added as floats."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "In left inlet: Performs the addition with the numbers currently stored. If there is no argument, + initially holds 0 ."
+        },
+        {
+          "name": "int",
+          "description": "The number is added to the number in the right inlet, and the result is sent out the outlet."
+        },
+        {
+          "name": "float",
+          "description": "Converted to int , unless + has a float argument."
+        },
+        {
+          "name": "in1",
+          "description": "The number is stored for addition to a number received in the left inlet."
+        },
+        {
+          "name": "set",
+          "description": "In left inlet: The word set , followed by a number, adds that number to the number in the right inlet but nothing is sent out. A subsequent bang sends out the result."
+        },
+        {
+          "name": "list",
+          "description": "In left inlet: The first number is added to the second number, and the result is sent out the outlet."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:initial",
+          "text": "Sets the initial value, to be added to a number received in the left inlet. A float argument causes the numbers to be added as floats."
+        },
+        {
+          "context": "message:bang",
+          "text": "In left inlet: Performs the addition with the numbers currently stored. If there is no argument, + initially holds 0 ."
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "-",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "source-inspected-only",
+        "fixtures": []
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "-",
+        "official_url": "https://docs.cycling74.com/reference/minus/",
+        "installed_reference": "refpages/max-ref/minus.maxref.xml",
+        "sha256": "1cace7ba26cec674dec28196c28c0fd8063b4a8e8bdfd712fd12b64ec8675bcc",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "initial",
+          "optional": "1",
+          "type": "number",
+          "description": "Sets the initial value to be subtracted from a number received in the left inlet. A float argument causes the numbers to be subtracted as floats."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "In left inlet: Performs the subtraction with the numbers currently stored. If there is no argument, - initially holds 0 ."
+        },
+        {
+          "name": "int",
+          "description": "The number in the right inlet is subtracted from the number, and the result is sent out the outlet."
+        },
+        {
+          "name": "float",
+          "description": "Converted to int , unless - has a float argument."
+        },
+        {
+          "name": "in1",
+          "description": "The number is stored, to be subtracted from, by a number received in the left inlet."
+        },
+        {
+          "name": "set",
+          "description": "Sets the number to be subtracted without causing output ( bang will output it)."
+        },
+        {
+          "name": "list",
+          "description": "In left inlet: The first number is subtracted from the second number, and the result is sent out the outlet."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:initial",
+          "text": "Sets the initial value to be subtracted from a number received in the left inlet. A float argument causes the numbers to be subtracted as floats."
+        },
+        {
+          "context": "message:bang",
+          "text": "In left inlet: Performs the subtraction with the numbers currently stored. If there is no argument, - initially holds 0 ."
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "*",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "source-inspected-only",
+        "fixtures": []
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "*",
+        "official_url": "https://docs.cycling74.com/reference/times/",
+        "installed_reference": "refpages/max-ref/times.maxref.xml",
+        "sha256": "85baf43d8613f3da7fa70ff326005e0fdd07d049e0b0c2e2a7e0bf7c1623253e",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "initial",
+          "optional": "1",
+          "type": "int or float",
+          "description": "Sets the initial value, to be multiplied by a number received in the left inlet. A float argument causes the numbers to be multiplied as floats."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "Performs the multiplication with the numbers currently stored. If there is no argument, * initially holds 0 as a multiplier."
+        },
+        {
+          "name": "int",
+          "description": "The number is multiplied by the number in the right inlet, and the result is sent out the outlet."
+        },
+        {
+          "name": "float",
+          "description": "Converted to int before multiplication, unless * has a float argument."
+        },
+        {
+          "name": "in1",
+          "description": "In right inlet: The number is stored for multiplication with a number received in the left inlet."
+        },
+        {
+          "name": "set",
+          "description": "The word set , followed by a number, sets the inlet's input without causing output."
+        },
+        {
+          "name": "list",
+          "description": "In left inlet: The first number is multiplied by the second number, and the result is sent out the outlet."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:initial",
+          "text": "Sets the initial value, to be multiplied by a number received in the left inlet. A float argument causes the numbers to be multiplied as floats."
+        },
+        {
+          "context": "message:bang",
+          "text": "Performs the multiplication with the numbers currently stored. If there is no argument, * initially holds 0 as a multiplier."
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "/",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "source-inspected-only",
+        "fixtures": []
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "/",
+        "official_url": "https://docs.cycling74.com/reference/div/",
+        "installed_reference": "refpages/max-ref/div.maxref.xml",
+        "sha256": "9f3d45c04b668b92c4c98e8d2d9fe146b7399dfc42c7dd1f560dedad043f8cec",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "initial",
+          "optional": "1",
+          "type": "int or float",
+          "description": "Sets an initial value for the divisor. If there is no argument, the divisor is set to 1 initially. A float argument causes the numbers to be divided as floats. (Division by 0 is not allowed. Int division by 0 will have the same result as dividing by 1. Float division by 0 will always cause an output of -2 31 .)"
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "In left inlet: Performs the division with the numbers currently stored."
+        },
+        {
+          "name": "int",
+          "description": "In left inlet: The number is divided by the number in the right inlet, and the result is sent out the outlet."
+        },
+        {
+          "name": "float",
+          "description": "Converted to int , unless / has a float argument."
+        },
+        {
+          "name": "in1",
+          "description": "In right inlet: The number is stored as the divisor (the number to be divided into the number in the left inlet)."
+        },
+        {
+          "name": "set",
+          "description": "Sets the number to be divided without causing output ( bang will output it)."
+        },
+        {
+          "name": "list",
+          "description": "In left inlet: The first number is divided by the second number, and the result is sent out the outlet."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:initial",
+          "text": "Sets an initial value for the divisor. If there is no argument, the divisor is set to 1 initially. A float argument causes the numbers to be divided as floats. (Division by 0 is not allowed. Int division by 0 will have the same result as dividing by 1. Float division by 0 will always cause an output of -2 31 .)"
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "%",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "source-inspected-only",
+        "fixtures": []
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "%",
+        "official_url": "https://docs.cycling74.com/reference/modulo/",
+        "installed_reference": "refpages/max-ref/modulo.maxref.xml",
+        "sha256": "cd5793fa49c63003cdc331b9d722953c469b99cd044744780297890da1d45667",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "initial-value",
+          "optional": "1",
+          "type": "int",
+          "description": "Sets an initial value for the divisor. If there is no argument, the divisor is set to 1 initially."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "In left inlet: Performs the operation with the numbers currently stored."
+        },
+        {
+          "name": "int",
+          "description": "In left inlet: The number is divided by the number in the right inlet, and the remainder is sent out the outlet."
+        },
+        {
+          "name": "float",
+          "description": "Converted to int ."
+        },
+        {
+          "name": "in1",
+          "description": "In right inlet: The number is stored as the divisor (the number to be divided into the number in the left inlet) for calculating the remainder."
+        },
+        {
+          "name": "set",
+          "description": "Sets the number to be divided without causing output ( bang will output it)."
+        },
+        {
+          "name": "list",
+          "description": "In left inlet: The first number is divided by the second number, and the remainder is sent out the outlet."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:initial-value",
+          "text": "Sets an initial value for the divisor. If there is no argument, the divisor is set to 1 initially."
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "metro",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "14-scheduler"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "metro",
+        "official_url": "https://docs.cycling74.com/reference/metro/",
+        "installed_reference": "refpages/max-ref/metro.maxref.xml",
+        "sha256": "c3d8998cbf47b867bdb65fa06b3a96e8eb41994e667320fa812ff6f7778eb2c8",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "interval",
+          "optional": "1",
+          "units": "ms",
+          "type": "number",
+          "description": "The optional first argument sets an initial value for the time interval at which metro sends its output. This time interval can be either a number which specifies time in milliseconds (e.g. metro 100) or notevalue (e.g. metro 4n). Note: While the metro object lets you specify time in any of Max's standard time formats , the interval attribute argument should be used when specifying time in any other time unit besides milliseconds or notevalues (e.g. metro @interval 11025 samples ). If there is no argument, the initial time interval is 5 milliseconds."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "Sets the delay time for the object. Delay time can be specified in any of the time formats used in Max."
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "In left inlet: starts the metro object."
+        },
+        {
+          "name": "int",
+          "description": "In left inlet: Any number other than 0 starts the metro object. At regular intervals, metro sends a bang out the outlet. 0 stops metro . In right inlet: The number is the time interval, in milliseconds, at which metro sends out a bang . A new number in the right inlet does not take effect until the next output is sent."
+        },
+        {
+          "name": "float",
+          "description": "Performs the same function as int ."
+        },
+        {
+          "name": "list",
+          "description": "In right inlet: A list may be used to specify time in one of the Max time formats ."
+        },
+        {
+          "name": "anything",
+          "description": "Same as list ."
+        },
+        {
+          "name": "clock",
+          "description": "The word clock , followed by the name of an existing setclock object, sets the metro object to be controlled by that setclock object rather than by Max\u2019s internal millisecond clock. The word clock by itself sets the metro object back to using Max\u2019s regular millisecond clock."
+        },
+        {
+          "name": "stop",
+          "description": "In left inlet: Stops metro ."
+        }
+      ],
+      "attributes": [
+        {
+          "name": "active",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "Turns the metro on and off."
+        },
+        {
+          "name": "autostart",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "If turned on (non-zero) the metro will begin running automatically at the time specified with the autostarttime attribute."
+        },
+        {
+          "name": "interval",
+          "get": "1",
+          "set": "1",
+          "type": "Time Value",
+          "size": "1",
+          "description": "Sets the The time interval at which metro sends out a bang . Time can be specified in any of the time formats used in Max."
+        }
+      ],
+      "documented_defaults": [
+        {
+          "context": "argument:interval",
+          "text": "The optional first argument sets an initial value for the time interval at which metro sends its output. This time interval can be either a number which specifies time in milliseconds (e.g. metro 100) or notevalue (e.g. metro 4n). Note: While the metro object lets you specify time in any of Max's standard time formats , the interval attribute argument should be used when specifying time in any other time unit besides milliseconds or notevalues (e.g. metro @interval 11025 samples ). If there is no argument, the initial time interval is 5 milliseconds."
+        },
+        {
+          "context": "attribute:transport",
+          "text": "The name of the transport object used to determine the metro interval when using tempo-relative time units. The default is internal which is the global transport. In Max for Live, the default is the Live transport."
+        }
+      ],
+      "discussion": "The object's output can be quantized using tempo-relative syntax, and if the autostarttime attribute is set, the object can also start at a tempo-relative point."
+    },
+    {
+      "class": "delay",
+      "aliases": [
+        "del"
+      ],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "14-scheduler"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "delay",
+        "official_url": "https://docs.cycling74.com/reference/delay/",
+        "installed_reference": "refpages/max-ref/delay.maxref.xml",
+        "sha256": "845bedd5402b2c47e636cb81245173e9d17f5a3cd838b4400bb2d2ea70c38c4d",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "time",
+          "optional": "0",
+          "type": "any",
+          "description": "Sets an initial amount of time to delay a bang received in the left inlet. This time interval can be either a number which specifies time in milliseconds (e.g. delay 200) or a notevalue (e.g. delay 4nd). Note: While the delay object lets you specify time in any of Max's standard time formats , the delaytime attribute argument should be used when specifying time in any other time unit besides milliseconds or notevalues (e.g. delay @delaytime 11025 samples ). If there is no argument, the initial time interval is 5 milliseconds. If notevalue, ticks, or bars.beats.units are specified for the delay interval, the object will not operate unless the transport is running."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "In left inlet: A bang is delayed a certain number of milliseconds before being sent out the outlet."
+        },
+        {
+          "name": "int",
+          "description": "In right inlet: The number is stored as the number of milliseconds to delay a bang received in the left inlet. A number received in the right inlet changes the delay time of the next bang received -- it does not modify the time of a bang currently being delayed. In left inlet: The number is stored as the number of milliseconds to delay a bang received in the left inlet. It then automatically sends a bang message to itself to start the delay."
+        },
+        {
+          "name": "float",
+          "description": "In right inlet: The number is stored as the number of milliseconds to delay a bang received in the left inlet. A number received in the right inlet changes the delay time of the next bang received -- it does not modify the time of a bang currently being delayed. In left inlet: The number is stored as the number of milliseconds to delay a bang received in the left inlet. It then automatically sends a bang message to itself to start the delay."
+        },
+        {
+          "name": "list",
+          "description": "In right inlet: A list may be used to specify time in one of the Max time formats ."
+        },
+        {
+          "name": "anything",
+          "description": "Same as list ."
+        },
+        {
+          "name": "clock",
+          "description": "The word clock , followed by the name of an existing setclock object, sets the delay object to be controlled by that setclock object rather than by Max\u2019s internal millisecond clock. The word clock by itself sets the delay object back to using Max\u2019s regular millisecond clock."
+        },
+        {
+          "name": "stop",
+          "description": "In left inlet: Stops delay from outputting the bang it is currently delaying."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:time",
+          "text": "Sets an initial amount of time to delay a bang received in the left inlet. This time interval can be either a number which specifies time in milliseconds (e.g. delay 200) or a notevalue (e.g. delay 4nd). Note: While the delay object lets you specify time in any of Max's standard time formats , the delaytime attribute argument should be used when specifying time in any other time unit besides milliseconds or notevalues (e.g. delay @delaytime 11025 samples ). If there is no argument, the initial time interval is 5 milliseconds. If notevalue, ticks, or bars.beats.units are specified for the delay interval, the object will not operate unless the transport is running."
+        },
+        {
+          "context": "attribute:transport",
+          "text": "The name of the transport object used to determine the delay time when using tempo-relative time units. The default is internal which is the global transport. In Max for Live, the default is the Live transport."
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "pipe",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "14-scheduler"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "pipe",
+        "official_url": "https://docs.cycling74.com/reference/pipe/",
+        "installed_reference": "refpages/max-ref/pipe.maxref.xml",
+        "sha256": "c9ecd23cf62a840c3806d290e5906689f7c24db06237e1499482d0b2f8ed5151",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "initialization",
+          "optional": "1",
+          "type": "list",
+          "description": "The number of arguments to the pipe object depends on the number of items in a list you wish to delay, but the final argument is always used to set the initial value for the delay time. If no argument is specified, the initial value is 0 and the delay time is 0 ms. If there is one argument, this sets the delay time. If there are two arguments, the first argument sets an initial value to be stored in pipe , and the second argument sets the delay time. If more than two arguments are present, pipe creates additional inlets and outlets for delaying additional numbers. The pipe object allows you to specify time intervals using either a number which specifies time in milliseconds (e.g. pipe 200) or a notevalue (e.g. pipe 2n). Note: While the pipe object lets you specify time in any of Max's standard time formats , the delaytime attribute argument should be used when specifying time in any other time unit besides milliseconds or notevalues (e.g. pipe @ delaytime 11025 samples). If notevalue, ticks, or bars.beats.units are specified for the delay interval, the object will not operate unless the transport is running."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "Number to be delayed."
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "Time can be specified in any of the time formats used in Max."
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "Delayed output."
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "Re-triggers the numbers currently stored in the pipe to be output again after the specified time (in addition to any numbers already being delayed)."
+        },
+        {
+          "name": "int",
+          "description": "In left inlet: Sets value and triggers delay In middle inlets: Sets value without triggering delay In right inlet: Sets the delay time"
+        },
+        {
+          "name": "float",
+          "description": "Float is converted to int unless the inlet was initialized with a float argument. In left inlet: Sets value and triggers delay In middle inlets: Sets value without triggering delay In right inlet: Sets the delay time"
+        },
+        {
+          "name": "list",
+          "description": "In left inlet: For each element in the list, a value will be set for the corresponding input and trigger a delay. In middle inlets: When a list is sent to one of the middle inlets of pipe , the first element in the list sets the corresponding input. Subsequent elements set the subsequent inputs. These values are stored until a bang is sent to the first inlet of pipe . In right inlet: Specify time in one of the Max time formats ."
+        },
+        {
+          "name": "anything",
+          "description": "TEXT_HERE"
+        },
+        {
+          "name": "clear",
+          "description": "Halts all output"
+        },
+        {
+          "name": "flush",
+          "description": "Immediately sends out all values currently being delayed by pipe , and clears the pipe object's memory. Values are sent out each outlet in reverse order from that in which they were received in the corresponding inlet."
+        },
+        {
+          "name": "stop",
+          "description": "Halts all output"
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:initialization",
+          "text": "The number of arguments to the pipe object depends on the number of items in a list you wish to delay, but the final argument is always used to set the initial value for the delay time. If no argument is specified, the initial value is 0 and the delay time is 0 ms. If there is one argument, this sets the delay time. If there are two arguments, the first argument sets an initial value to be stored in pipe , and the second argument sets the delay time. If more than two arguments are present, pipe creates additional inlets and outlets for delaying additional numbers. The pipe object allows you to specify time intervals using either a number which specifies time in milliseconds (e.g. pipe 200) or a notevalue (e.g. pipe 2n). Note: While the pipe object lets you specify time in any of Max's standard time formats , the delaytime attribute argument should be used when specifying time in any other time unit besides milliseconds or notevalues (e.g. pipe @ delaytime 11025 samples). If notevalue, ticks, or bars.beats.units are specified for the delay interval, the object will not operate unless the transport is running."
+        },
+        {
+          "context": "message:float",
+          "text": "Float is converted to int unless the inlet was initialized with a float argument. In left inlet: Sets value and triggers delay In middle inlets: Sets value without triggering delay In right inlet: Sets the delay time"
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "defer",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "14-scheduler"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "defer",
+        "official_url": "https://docs.cycling74.com/reference/defer/",
+        "installed_reference": "refpages/max-ref/defer.maxref.xml",
+        "sha256": "6bc059a5ea994ab9f34b722dcd3a73f542bf7ed8743045b9705c8d3ba302d21f",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "id": "0",
+          "name": "OBJARG_NAME",
+          "type": "OBJARG_TYPE",
+          "optional": "0",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "Same as anything ."
+        },
+        {
+          "name": "int",
+          "description": "Same as anything ."
+        },
+        {
+          "name": "float",
+          "description": "Same as anything ."
+        },
+        {
+          "name": "list",
+          "description": "Same as anything ."
+        },
+        {
+          "name": "anything",
+          "description": "Reduces the priority of the message received. This allows other messages (which may be more time-critical) to execute first."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [],
+      "discussion": null
+    },
+    {
+      "class": "deferlow",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "14-scheduler"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "deferlow",
+        "official_url": "https://docs.cycling74.com/reference/deferlow/",
+        "installed_reference": "refpages/max-ref/deferlow.maxref.xml",
+        "sha256": "aea78955f48df3c15612c4804a1e63c0101fb5a0608d9f281a5ca472d2fcb5ce",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "id": "0",
+          "name": "OBJARG_NAME",
+          "type": "OBJARG_TYPE",
+          "optional": "0",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "The deferlow object places the received message at the tail of the low priority queue for deferred execution."
+        },
+        {
+          "name": "int",
+          "description": "The deferlow object places the received message at the tail of the low priority queue for deferred execution."
+        },
+        {
+          "name": "float",
+          "description": "The deferlow object places the received message at the tail of the low priority queue for deferred execution."
+        },
+        {
+          "name": "list",
+          "description": "The deferlow object places the received message at the tail of the low priority queue for deferred execution."
+        },
+        {
+          "name": "anything",
+          "description": "The deferlow object places the received message at the tail of the low priority queue for deferred execution."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [],
+      "discussion": "Examples of high priority messages are those generated by a MIDI object (such as notein ) or a timing object (such as metro or seq ), and examples of low priority message are those generated in response to user events (such as clicking a button )."
+    },
+    {
+      "class": "loadbang",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "13-initialization"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "loadbang",
+        "official_url": "https://docs.cycling74.com/reference/loadbang/",
+        "installed_reference": "refpages/max-ref/loadbang.maxref.xml",
+        "sha256": "53d68b41ce7023b487c44782fa4e87fa33e8916b9953cd34e7d5db12f292c411",
+        "evidence": "source-inspected"
+      },
+      "arguments": [],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "Sending a bang message to a loadbang object causes it to output a bang message."
+        },
+        {
+          "name": "(mouse)",
+          "description": "Double-clicking on a loadbang object causes it to output a bang message."
+        },
+        {
+          "name": "loadbang",
+          "description": "Same as bang ."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [],
+      "discussion": null
+    },
+    {
+      "class": "send",
+      "aliases": [
+        "s"
+      ],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "15-scope"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "send",
+        "official_url": "https://docs.cycling74.com/reference/send/",
+        "installed_reference": "refpages/max-ref/send.maxref.xml",
+        "sha256": "b4883d20eb847abcdd89c37666bb545282f1282318a0cd4da0cc29be5f954a73",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "name",
+          "optional": "0",
+          "type": "symbol",
+          "description": "Name the send object. All send objects that share the same name will send data to any receive objects that share their name. If you want a named send / receive object in a Max for Live device to be unique to the device, use three dashes ( --- ) to start the name of your send / receive destination (e.g. s ---filtercutoff ). When your patch is initialized, it will replace the three dashes with a unique-to-Live number (e.g. s 024filtercutoff );"
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "TEXT_HERE"
+        },
+        {
+          "name": "int",
+          "description": "TEXT_HERE"
+        },
+        {
+          "name": "float",
+          "description": "TEXT_HERE"
+        },
+        {
+          "name": "list",
+          "description": "TEXT_HERE"
+        },
+        {
+          "name": "anything",
+          "description": "A message received in the inlet is sent out the outlet of any receive object that has the same name, even if the receive is in another loaded patch."
+        },
+        {
+          "name": "(mouse)",
+          "description": "Double-clicking on a send object opens all windows containing receive objects with the same name, and also lists the instance numbers of patches hosted in a poly~ object that share named receive objects."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:name",
+          "text": "Name the send object. All send objects that share the same name will send data to any receive objects that share their name. If you want a named send / receive object in a Max for Live device to be unique to the device, use three dashes ( --- ) to start the name of your send / receive destination (e.g. s ---filtercutoff ). When your patch is initialized, it will replace the three dashes with a unique-to-Live number (e.g. s 024filtercutoff );"
+        }
+      ],
+      "discussion": "The order of reception by two or more receive objects is not deterministic. The send object's object action menu has two special entries on the bottom of the menu: Show others and Create receive. Show others will bring up a contextual menu showing all instances of other same-named send and receive objects. This is the same as using the (mouse) method. Create receive allows you to quickly create a same-named receive object. Note: Communication between Max for Live devices using send and receive is supported, but there may be some latency involved when sending data between devices."
+    },
+    {
+      "class": "receive",
+      "aliases": [
+        "r"
+      ],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "15-scope"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "not-applicable"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "receive",
+        "official_url": "https://docs.cycling74.com/reference/receive/",
+        "installed_reference": "refpages/max-ref/receive.maxref.xml",
+        "sha256": "360289408f81a609674a25a189f7567b33cd1810ad5c23169ad9ce888ad550dd",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "name",
+          "optional": "1",
+          "type": "symbol",
+          "description": "Name the receive object. If there is no argument, receive has one inlet, and a name must be provided by a set message before anything can be received. All receive objects that share the same name will receive data from any send objects that share their name. If you want a named send / receive object in a Max for Live device to be unique to the device, use three dashes ( --- ) to start the name of your send / receive destination (e.g. s ---filtercutoff ). When your patch is initialized, it will replace the three dashes with a unique-to-Live number (e.g. s 024filtercutoff );"
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "OUTLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "(mouse)",
+          "description": "Double-clicking on a receive object looks for and opens a loaded patcher window containing a send object with the same name. Repeatedly double-clicking on the receive object looks for and opens more such windows."
+        },
+        {
+          "name": "set",
+          "description": "The word set , followed by a symbol, provides a name for receive , as if that name had been typed in as an argument."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:name",
+          "text": "Name the receive object. If there is no argument, receive has one inlet, and a name must be provided by a set message before anything can be received. All receive objects that share the same name will receive data from any send objects that share their name. If you want a named send / receive object in a Max for Live device to be unique to the device, use three dashes ( --- ) to start the name of your send / receive destination (e.g. s ---filtercutoff ). When your patch is initialized, it will replace the three dashes with a unique-to-Live number (e.g. s 024filtercutoff );"
+        }
+      ],
+      "discussion": "The order of reception by two or more receive objects is not deterministic. The receive object's object action menu has two special entries on the bottom of the menu: Show others and Create send. Show others will bring up a contextual menu showing all instances of other same-named send and receive objects. This is the same as using the (mouse) method. Create receive allows you to quickly create a same-named send object. Note: Communication between Max for Live devices using send and receive is supported, but there may be some latency involved when sending data between devices."
+    },
+    {
+      "class": "cycle~",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "18-dsp"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "observed-offline-48k"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "cycle~",
+        "official_url": "https://docs.cycling74.com/reference/cycle~/",
+        "installed_reference": "refpages/msp-ref/cycle~.maxref.xml",
+        "sha256": "5f97357b3799cb051a507711b6631cf33436b354fb6190bee224ccd8567a7703",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "frequency",
+          "optional": "1",
+          "units": "hz",
+          "type": "number",
+          "description": "Oscillator frequency (initial)"
+        },
+        {
+          "name": "buffer-name",
+          "optional": "1",
+          "type": "symbol",
+          "description": "The name of a buffer~ object used to define the oscillator's wavetable. If a frequency argument is present, the buffer~ name follows the frequency. If no buffer~ name is given, cycle~ uses an internal 64-bit 16K cosine wavetable."
+        },
+        {
+          "name": "sample-offset",
+          "optional": "1",
+          "type": "int",
+          "description": "If a buffer~ name has been given, this defines the sample offset into the named buffer~ object's sample memory. cycle~ only uses the first channel of a multi-channel buffer~ ."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "signal/float",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "signal/float",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "signal",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "float",
+          "description": "Left inlet: frequency of the oscillator Right inlet: phase of the oscillator in the range 0.0 to 1.0"
+        },
+        {
+          "name": "(mouse)",
+          "description": "Double-click to display buffer~ contents"
+        },
+        {
+          "name": "reset",
+          "description": "In the left inlet, the reset message, followed by a float from 0 - 1, resets the phase of the cycle~ object. Signal output continues from the specified phase. If you have multiple cycle~ objects that are out of phase, sending them all the reset message will synchronize them."
+        },
+        {
+          "name": "set",
+          "description": "Set a buffer~ object to use as the wavetable, using the first 512 samples. If no name is given, the internal cosine wavetable with 16K samples will be used. Use the setall message to use an entire buffer~ as a wavetable."
+        },
+        {
+          "name": "setall",
+          "description": "Set a buffer~ object to use as the wavetable, using the entire buffer~ length. This is in contrast to the set message which only uses the first 512 samples of the buffer~ ."
+        },
+        {
+          "name": "signal",
+          "description": "Left inlet: frequency of the oscillator Right inlet: phase of the oscillator in the range 0.0 to 1.0"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "buffer",
+          "get": "1",
+          "set": "1",
+          "type": "symbol",
+          "size": "1",
+          "description": "Buffer containing an external waveform. Setting the buffer~ with the attribute is analogous to sending the setall message."
+        },
+        {
+          "name": "buffer_offset",
+          "get": "1",
+          "set": "1",
+          "type": "atom_long",
+          "size": "1",
+          "description": "TEXT_HERE"
+        },
+        {
+          "name": "buffer_sizeinsamps",
+          "get": "1",
+          "set": "1",
+          "type": "atom_long",
+          "size": "1",
+          "description": "Override the size of the buffer used for the wavetable. If using the set message the size will be 512, or if using the setall message the size will be the whole buffer~ length. Use this attribute to define a different size (the size should be a power of two). Setting this size to 0 will result in an effective size of 512 and setting it to -1 will result an effective size of the whole buffer~ length."
+        },
+        {
+          "name": "frequency",
+          "get": "1",
+          "set": "1",
+          "type": "float",
+          "size": "1",
+          "description": "TEXT_HERE"
+        },
+        {
+          "name": "phase",
+          "get": "1",
+          "set": "1",
+          "type": "float",
+          "size": "1",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "documented_defaults": [
+        {
+          "context": "argument:frequency",
+          "text": "Oscillator frequency (initial)"
+        }
+      ],
+      "discussion": "The cycle~ object is an interpolating oscillator that reads repeatedly through one cycle of a waveform, using a wavetable. The wavetable can be changed using the 'set' message. This wavetable may be of any size, but historically was limited to 512 samples."
+    },
+    {
+      "class": "sig~",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "18-dsp"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "observed-offline-48k"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "sig~",
+        "official_url": "https://docs.cycling74.com/reference/sig~/",
+        "installed_reference": "refpages/msp-ref/sig~.maxref.xml",
+        "sha256": "eaad45d6835e696cd23d07d2c98a9a23d6cf453c6f5cb54ba3f70708623391d0",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "initial-output-value",
+          "optional": "1",
+          "type": "number",
+          "description": "One or more numbers set the initial output signal values. The number of values entered determines the number of outlets."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "float",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "signal",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "int",
+          "description": "TEXT_HERE"
+        },
+        {
+          "name": "float",
+          "description": "TEXT_HERE"
+        },
+        {
+          "name": "list",
+          "description": "A list sets values for each output corresponding to the position of the number in the list."
+        },
+        {
+          "name": "set",
+          "description": "The message set followed by an int, then a float, sets the value for a specified index. The first int argument sets the index (outlet). The second float argument sets the value for that index. The index starts at 0 for the leftmost outlet."
+        },
+        {
+          "name": "signal",
+          "description": "If a signal patch cord is connected to the inlet of sig~ , the value of the signal will be ignored. However, you can use the connection to influence the order of DSP operations. The connection guarantees that sig~ and whatever is connected to it will occur after any objects connected to the inlet of sig~ . This advanced technique is known as order forcing ."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:initial-output-value",
+          "text": "One or more numbers set the initial output signal values. The number of values entered determines the number of outlets."
+        }
+      ],
+      "discussion": "The sig~ object is sample-accurate when Scheduler in Audio Interrupt is enabled. More details here ."
+    },
+    {
+      "class": "line~",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "18-dsp"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "observed-offline-48k"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "line~",
+        "official_url": "https://docs.cycling74.com/reference/line~/",
+        "installed_reference": "refpages/msp-ref/line~.maxref.xml",
+        "sha256": "05234bec696c40ca5f4e4d5e6883f87fb5c1d727dd66ab266977badc58335216",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "initial-value",
+          "optional": "1",
+          "type": "float or int",
+          "description": "Sets an initial value for the signal output. The default value is 0 ."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "INLET_TYPE",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "signal",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "signal",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "int",
+          "description": "In left inlet: The number is the target value, to be arrived at in the time specified by the number in the right inlet. If no time has been specified since the last target value, the time is considered to be 0 and the output signal jumps immediately to the target value. In right inlet: The number is the time, in milliseconds, in which the output signal will arrive at the target value."
+        },
+        {
+          "name": "float",
+          "description": "In left inlet: The number is the target value, to be arrived at in the time specified by the number in the right inlet. If no time has been specified since the last target value, the time is considered to be 0 and the output signal jumps immediately to the target value. In right inlet: The number is the time, in milliseconds, in which the output signal will arrive at the target value."
+        },
+        {
+          "name": "list",
+          "description": "In left inlet: The first number specifies a target value and the second number specifies a total amount of time (in milliseconds) in which line~ should reach the target value. In the specified amount of time, line~ generates a ramp signal from its current value to the target value. line~ accepts up to 128 target-time pairs in a list, to generate compound ramps. (An example would be 0 1000 1 1000 , which would go from the current value to 0 in a second, then to 1 in a second.) Once one of the ramps has reached its target value, the next one starts. A subsequent list , float , or int in the left inlet clears all ramps yet to be generated. A list consisting of a number, followed by a comma and up to 128 target-time pairs, will set an initial value for the ramp. An example would be 0, 1 1000 which would set an initial value of 0, a new value of 1, and a target time of 1000 ms. In right inlet: A list may be used to specify time in one of the Max time formats ."
+        },
+        {
+          "name": "anything",
+          "description": "In left inlet: The first number specifies a target value and the second number specifies a total amount of time (in milliseconds) in which line~ should reach the target value. In the specified amount of time, line~ generates a ramp signal from its current value to the target value. line~ accepts up to 128 target-time pairs in a list, to generate compound ramps. (An example would be 0 1000 1 1000 , which would go from the current value to 0 in a second, then to 1 in a second.) Once one of the ramps has reached its target value, the next one starts. A subsequent list , float , or int in the left inlet clears all ramps yet to be generated. A list consisting of a number, followed by a comma and up to 128 target-time pairs, will set an initial value for the ramp. An example would be 0, 1 1000 which would set an initial value of 0, a new value of 1, and a target time of 1000 ms. In right inlet: A list may be used to specify time in one of the Max time formats ."
+        },
+        {
+          "name": "pause",
+          "description": "In left inlet: Pauses the internal ramp but does not change the target value nor clear pending target-time pairs. line~ will continue outputting whatever value was its current value when the pause message was received, until either it receives a resume message or until a new ramp is input."
+        },
+        {
+          "name": "resume",
+          "description": "In left inlet: Resumes the internal ramp and subsequent pending target-time pairs if the line~ object was paused as a result of the pause message."
+        },
+        {
+          "name": "stop",
+          "description": "In left inlet: Stops the internal ramp and clears pending target-time pairs. line~ will continue outputting whatever value was its current value when the stop message was received, resetting its target value to that value."
+        }
+      ],
+      "attributes": [
+        {
+          "name": "activeout",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "When activeout is 1, line~ has a second signal outlet that outputs 1 when the ramp is active and 0 when it is not active. This signal can be connected to polyphonic voice allocator objects such as thispoly~ or mc.noteallocator~ to maintain a busy state while the line is active. activeout can only be set as a typed-in argument to line~ ."
+        },
+        {
+          "name": "maxpoints",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "Specify the maximum number of user defined points allowed in the line. The default is 129 points. maxpoints can only be set as a typed-in argument to line~ ."
+        }
+      ],
+      "documented_defaults": [
+        {
+          "context": "argument:initial-value",
+          "text": "Sets an initial value for the signal output. The default value is 0 ."
+        },
+        {
+          "context": "message:list",
+          "text": "In left inlet: The first number specifies a target value and the second number specifies a total amount of time (in milliseconds) in which line~ should reach the target value. In the specified amount of time, line~ generates a ramp signal from its current value to the target value. line~ accepts up to 128 target-time pairs in a list, to generate compound ramps. (An example would be 0 1000 1 1000 , which would go from the current value to 0 in a second, then to 1 in a second.) Once one of the ramps has reached its target value, the next one starts. A subsequent list , float , or int in the left inlet clears all ramps yet to be generated. A list consisting of a number, followed by a comma and up to 128 target-time pairs, will set an initial value for the ramp. An example would be 0, 1 1000 which would set an initial value of 0, a new value of 1, and a target time of 1000 ms. In right inlet: A list may be used to specify time in one of the Max time formats ."
+        },
+        {
+          "context": "message:anything",
+          "text": "In left inlet: The first number specifies a target value and the second number specifies a total amount of time (in milliseconds) in which line~ should reach the target value. In the specified amount of time, line~ generates a ramp signal from its current value to the target value. line~ accepts up to 128 target-time pairs in a list, to generate compound ramps. (An example would be 0 1000 1 1000 , which would go from the current value to 0 in a second, then to 1 in a second.) Once one of the ramps has reached its target value, the next one starts. A subsequent list , float , or int in the left inlet clears all ramps yet to be generated. A list consisting of a number, followed by a comma and up to 128 target-time pairs, will set an initial value for the ramp. An example would be 0, 1 1000 which would set an initial value of 0, a new value of 1, and a target time of 1000 ms. In right inlet: A list may be used to specify time in one of the Max time formats ."
+        },
+        {
+          "context": "attribute:maxpoints",
+          "text": "Specify the maximum number of user defined points allowed in the line. The default is 129 points. maxpoints can only be set as a typed-in argument to line~ ."
+        }
+      ],
+      "discussion": "The line~ object is sample-accurate when Scheduler in Audio Interrupt is enabled. More details here ."
+    },
+    {
+      "class": "*~",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "18-dsp"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "observed-offline-48k"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "*~",
+        "official_url": "https://docs.cycling74.com/reference/times~/",
+        "installed_reference": "refpages/msp-ref/times~.maxref.xml",
+        "sha256": "b371192859782302dd81d6e756c6169e9b443fac6ae618fe0f005e7ea859f6d5",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "initial-multiplier",
+          "optional": "1",
+          "type": "number",
+          "description": "Sets an initial value by which to multiply the signal coming into the left inlet. If a signal is connected to the right inlet, the argument is ignored. If no argument is present, and no signal is connected to the right inlet, the initial value is 0 by default."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "Signal/Float",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "Signal/Float",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "Signal",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "int",
+          "description": "In left inlet: A factor by which to multiply the signal coming into the right inlet. If a signal is connected to both left and right inlets, a float or int connected to either inlet will be ignored. In right inlet: A factor by which to multiply the signal coming into the left inlet. If a signal is connected to both left and right inlets, a float or int connected to either inlet will be ignored."
+        },
+        {
+          "name": "float",
+          "description": "In left inlet: A factor by which to multiply the signal coming into the right inlet. If a signal is connected to both left and right inlets, a float or int connected to either inlet will be ignored. In right inlet: A factor by which to multiply the signal coming into the left inlet. If a signal is connected to both left and right inlets, a float or int connected to either inlet will be ignored."
+        },
+        {
+          "name": "signal",
+          "description": "In left inlet: The signal is multiplied by the signal coming into the right inlet, or a constant value received in the right inlet. All signal inputs to a single inlet are summed. If a signal and number are both sent to the left inlet, the specified operation will be performed with those values. In right inlet: The signal is multiplied by the signal coming into the left inlet, or a constant value received in the left inlet. All signal inputs to a single inlet are summed."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "argument:initial-multiplier",
+          "text": "Sets an initial value by which to multiply the signal coming into the left inlet. If a signal is connected to the right inlet, the argument is ignored. If no argument is present, and no signal is connected to the right inlet, the initial value is 0 by default."
+        }
+      ],
+      "discussion": null
+    },
+    {
+      "class": "gain~",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "gain~",
+      "ui_behavior": {
+        "status": "untested-interaction"
+      },
+      "message_behavior": {
+        "status": "source-inspected-only",
+        "fixtures": []
+      },
+      "dsp_behavior": {
+        "status": "deferred"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "gain~",
+        "official_url": "https://docs.cycling74.com/reference/gain~/",
+        "installed_reference": "refpages/msp-ref/gain~.maxref.xml",
+        "sha256": "5ec8c73b4f5eaa802156ec03f4f47c2b683d4b034addce41b711ef1fccc2a768",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "id": "0",
+          "name": "OBJARG_NAME",
+          "type": "OBJARG_TYPE",
+          "optional": "0",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "signal",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [
+        {
+          "id": "0",
+          "type": "signal",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "signal",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "bang",
+          "description": "Sends current slider value out right outlet."
+        },
+        {
+          "name": "int",
+          "description": "In left inlet: Sets the value of the slider, ramps the output signal to the level corresponding to the new value over the specified ramp time, and outputs the slider's value out the right outlet."
+        },
+        {
+          "name": "float",
+          "description": "In left inlet: Converted to int . Sets the value of the slider, ramps the output signal to the level corresponding to the new value over the specified ramp time, and outputs the slider's value out the right outlet."
+        },
+        {
+          "name": "list",
+          "description": "The object takes list messages in conjunction with pattr objects."
+        },
+        {
+          "name": "color",
+          "description": "Sets the bgcolor to a legacy color (from the 1990s) by index 0 - 15."
+        },
+        {
+          "name": "ft1",
+          "description": "In right inlet: Sets the ramp time in milliseconds. The default is 10 milliseconds."
+        },
+        {
+          "name": "(mouse)",
+          "description": "Clicking and dragging with the mouse sets the value of the slider, ramps the output signal to the level corresponding to the new value over the specified ramp time, and outputs the slider\u2019s value out the right outlet."
+        },
+        {
+          "name": "set",
+          "description": "In left inlet: The word set , followed by a number, sets the value of the slider, ramps the output signal to the level corresponding to the new value over the specified ramp time, but does not output the slider's value out the right outlet."
+        },
+        {
+          "name": "setvalue",
+          "description": "TEXT_HERE"
+        },
+        {
+          "name": "signal",
+          "description": "In left inlet: The input signal to be scaled by the slider."
+        }
+      ],
+      "attributes": [
+        {
+          "name": "inc",
+          "get": "1",
+          "set": "1",
+          "type": "float",
+          "size": "1",
+          "description": "Sets the increment value used to calculate the output scale factor based on the input value. The default value is 1.071519."
+        },
+        {
+          "name": "interp",
+          "get": "1",
+          "set": "1",
+          "type": "float",
+          "size": "1",
+          "description": "Sets the interpolation ramp time in milliseconds for the gain~ object. The default is 10."
+        },
+        {
+          "name": "interpinlet",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "Toggles the display of the interpolation inlet."
+        },
+        {
+          "name": "multislider",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "This attribute only applies to mc.gain~ . If multislider is enabled, the mc.gain~ object will create a slider for each channel in its input multichannel signal, permitting independent level control of each channel. If the object is not wide or tall enough to show all the sliders, it remains in single slider mode until its size is adjusted."
+        },
+        {
+          "name": "orientation",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "Sets the gain~ object to a horizontal or vertical data display. Automatic : (the default for gain~ and mc.gain~ ) sets the display dependent on the size of the slider - longest side of the rectangle that describes the slider sets the orientation. Horizontal Vertical"
+        },
+        {
+          "name": "parameter_enable",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "Enables use of this object with Max for Live Parameters and setting initial values of parameters in Max."
+        },
+        {
+          "name": "relative",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "Sets way that the gain~ object responds to mouse clicks."
+        },
+        {
+          "name": "scale",
+          "get": "1",
+          "set": "1",
+          "type": "float",
+          "size": "1",
+          "description": "Sets the base output value used to calculate the output scale factor based on the input value. The default value is 7.94231. See the \"Inspector\" section for an explanation of the calculation. The word size , followed by a number, sets the range of gain~ to the number. The values of the slider will then be 0 to the range value minus 1. The default value is 158."
+        },
+        {
+          "name": "size",
+          "get": "1",
+          "set": "1",
+          "type": "int",
+          "size": "1",
+          "description": "Sets the number of steps (range) of the gain~ object. The default value is 158."
+        }
+      ],
+      "documented_defaults": [
+        {
+          "context": "message:ft1",
+          "text": "In right inlet: Sets the ramp time in milliseconds. The default is 10 milliseconds."
+        },
+        {
+          "context": "attribute:inc",
+          "text": "Sets the increment value used to calculate the output scale factor based on the input value. The default value is 1.071519."
+        },
+        {
+          "context": "attribute:interp",
+          "text": "Sets the interpolation ramp time in milliseconds for the gain~ object. The default is 10."
+        },
+        {
+          "context": "attribute:orientation",
+          "text": "Sets the gain~ object to a horizontal or vertical data display. Automatic : (the default for gain~ and mc.gain~ ) sets the display dependent on the size of the slider - longest side of the rectangle that describes the slider sets the orientation. Horizontal Vertical"
+        },
+        {
+          "context": "attribute:parameter_enable",
+          "text": "Enables use of this object with Max for Live Parameters and setting initial values of parameters in Max."
+        },
+        {
+          "context": "attribute:scale",
+          "text": "Sets the base output value used to calculate the output scale factor based on the input value. The default value is 7.94231. See the \"Inspector\" section for an explanation of the calculation. The word size , followed by a number, sets the range of gain~ to the number. The values of the slider will then be 0 to the range value minus 1. The default value is 158."
+        },
+        {
+          "context": "attribute:size",
+          "text": "Sets the number of steps (range) of the gain~ object. The default value is 158."
+        }
+      ],
+      "discussion": "Parameters of line's formula that translates between slider values and the signal scalar can be changed via messages or by selecting the object and choosing Get Info... from the Max menu. The formula values are the same as for the linedrive object. The default values of range (158), base value (7.94231), and increment (1.071519) provide for a slider where 128 is full scale (multiplying by 1.0), 0 produces a zero signal, and 1 is 75.6 dB below the value at 127. A change of 10 in the slider produces a 6 dB change in the output. In addition, since the range is 158, slider values from 129 to 157 provide 17.4 dB of headroom. When the slider is at 157, the output signal is 17.4 dB louder than the input signal."
+    },
+    {
+      "class": "dac~",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "newobj",
+      "ui_behavior": {
+        "status": "not-applicable"
+      },
+      "message_behavior": {
+        "status": "observed-bounded-inputs",
+        "fixtures": [
+          "18-dsp"
+        ]
+      },
+      "dsp_behavior": {
+        "status": "instantiated-offline-no-hardware-output"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "dac~",
+        "official_url": "https://docs.cycling74.com/reference/dac~/",
+        "installed_reference": "refpages/msp-ref/dac~.maxref.xml",
+        "sha256": "c79cff2fcbd9dd7dffc4dcaf2ff4896793209191cd8bafa78b1d47f53f6f571b",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "name": "outputs",
+          "optional": "1",
+          "type": "int/symbol",
+          "description": "You can create a dac~ object with one or more logical channel numbers between 1 and 1024. Logical channels are assigned to audio device channels using either the Audio Status window, its I/O Mappings subwindow, or an adstatus object (with keyword output ). If the computer's built-in audio hardware is being used, there will be two output channels available. Other audio drivers and/or devices may have more than two channels. If no argument is typed in, dac~ will have two inlets, for input channels 1 and 2. If a symbol is provided as the first argument to a dac~ object, its output will be sent to the Max mixer. If dac~ instances in a patcher hierarchy share the same name they will use the same mixer output."
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "signal",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "signal",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "int",
+          "description": "A non-zero number turns on audio processing in all loaded patches. 0 turns off audio processing in all loaded patches."
+        },
+        {
+          "name": "list",
+          "description": "list comprised of integers sets the logical output channels for each signal inlet in order from left to right."
+        },
+        {
+          "name": "(mouse)",
+          "description": "Double-clicking on dac~ opens the Audio Status window."
+        },
+        {
+          "name": "open",
+          "description": "Opens the Audio Status window."
+        },
+        {
+          "name": "set",
+          "description": "In any inlet: The word set , followed by a number, sets the logical output channel for the signal inlet in which the set message was received. For instance, sending set 3 to the left inlet of dac~ makes the signal coming in the left inlet output to logical output channel 3. Note that if the audio is on and you use the set message to change a dac~ to use logical channels that are not currently in use, no sound will be heard from these channels until the audio is turned off and on again. For example, if you have a dac~ object with arguments 1 2 3 4 and signals are only connected to the two leftmost inlets (for channels 1 and 2), the message set 1 3 will not immediately route the leftmost audio signal to logical channel 3, because it is not currently in use. A method to get around this is to connect a sig~ 0 to each channel of a dac~ you plan on using for a set message. At this point, you might as well use a matrix~ or selector~ object to do something similar before the audio signal reaches the dac~ ."
+        },
+        {
+          "name": "signal",
+          "description": "A signal coming into an inlet of dac~ is sent to the audio output channel corresponding to the inlet. The signal must be between -1 and 1 to avoid clipping."
+        },
+        {
+          "name": "start",
+          "description": "Turns on audio processing in all loaded patches."
+        },
+        {
+          "name": "startwindow",
+          "description": "Turns on audio processing only in the patch in which this dac~ is located, and in subpatches of that patch. Turns off audio processing in all other patches."
+        },
+        {
+          "name": "stop",
+          "description": "Turns off audio processing in all loaded patches."
+        },
+        {
+          "name": "wclose",
+          "description": "Closes the Audio Status window if it is open."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [],
+      "discussion": null
+    },
+    {
+      "class": "ezdac~",
+      "aliases": [],
+      "alias_status": "official-documentation; no alias-equivalence runtime fixture",
+      "json_maxclass": "ezdac~",
+      "ui_behavior": {
+        "status": "untested-interaction"
+      },
+      "message_behavior": {
+        "status": "source-inspected-only",
+        "fixtures": []
+      },
+      "dsp_behavior": {
+        "status": "deferred"
+      },
+      "deferred": [
+        "behavior outside the referenced scores",
+        "inherited UI attributes and automation unless explicitly listed",
+        "unsupported attributes must be preserved, not silently approximated"
+      ],
+      "source": {
+        "id": "ezdac~",
+        "official_url": "https://docs.cycling74.com/reference/ezdac~/",
+        "installed_reference": "refpages/msp-ref/ezdac~.maxref.xml",
+        "sha256": "053e287091a4a5bd3dbfcb500949102a4c5f2416abc415ab155d6c32d2e3678d",
+        "evidence": "source-inspected"
+      },
+      "arguments": [
+        {
+          "id": "0",
+          "name": "OBJARG_NAME",
+          "type": "OBJARG_TYPE",
+          "optional": "0",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "inlets": [
+        {
+          "id": "0",
+          "type": "signal",
+          "description": "TEXT_HERE"
+        },
+        {
+          "id": "1",
+          "type": "signal",
+          "description": "TEXT_HERE"
+        }
+      ],
+      "outlets": [],
+      "port_type_caution": "INLET_TYPE/OUTLET_TYPE and TEXT_HERE are placeholders in the shipped docs, not measured types. Dynamic port counts depend on arguments.",
+      "messages": [
+        {
+          "name": "int",
+          "description": "A non-zero number turns on audio processing in all loaded patches. 0 turns off audio processing in all loaded patches."
+        },
+        {
+          "name": "list",
+          "description": "list comprised of integers, sets the logical output channels for each signal inlet in order from left to right."
+        },
+        {
+          "name": "(mouse)",
+          "description": "Clicking on ezdac~ toggles audio processing on or off. Audio on is represented by the object being highlighted."
+        },
+        {
+          "name": "local",
+          "description": "The word local , followed by 1 , makes a click to turn on an ezdac~ object equivalent to sending it the startwindow message . The message local 0 returns the ezdac~ object to its default mode where a click to turn it on is equivalent to the start message."
+        },
+        {
+          "name": "open",
+          "description": "Opens the Audio Status window. The window is also brought to the front."
+        },
+        {
+          "name": "set",
+          "description": "In any inlet: The word set , followed by a number, sets the logical output channel for the signal inlet in which the set message was received. For instance, sending set 3 to the left inlet of ezdac~ makes the signal coming in the left inlet output to logical output channel 3. Note that if the audio is on and you use the set message to change a ezdac~ to use logical channels that are not currently in use, no sound will be heard from these channels until the audio is turned off and on again."
+        },
+        {
+          "name": "signal",
+          "description": "In left inlet: The signal is sent to audio output channel 1. The signal in each inlet must be between -1 and 1 to avoid clipping by the DAC. In right inlet: The signal is sent to audio output channel 2."
+        },
+        {
+          "name": "start",
+          "description": "Turns on audio processing in all loaded patches."
+        },
+        {
+          "name": "startwindow",
+          "description": "Turns on audio processing only in the patch in which this ezdac~ is located, and in subpatches of that patch. Turns off audio processing in all other patches."
+        },
+        {
+          "name": "stop",
+          "description": "Turns off audio processing in all loaded patches."
+        },
+        {
+          "name": "wclose",
+          "description": "Closes the Audio Status window."
+        }
+      ],
+      "attributes": [],
+      "documented_defaults": [
+        {
+          "context": "message:local",
+          "text": "The word local , followed by 1 , makes a click to turn on an ezdac~ object equivalent to sending it the startwindow message . The message local 0 returns the ezdac~ object to its default mode where a click to turn it on is equivalent to the start message."
+        }
+      ],
+      "discussion": null
+    }
+  ]
+}

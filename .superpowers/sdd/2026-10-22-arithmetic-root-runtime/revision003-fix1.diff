@@ -1,0 +1,164 @@
+--- initial003/controller.js
++++ corrected003/controller.js
+@@ -215,6 +215,9 @@
+         shared.step_id!=="install-times-r"+revision||typeof shared.request_id!=="number"||
+         !isFinite(shared.request_id)||shared.request_id<1||Math.floor(shared.request_id)!==shared.request_id)
+         throw Error("controller-numeric-install-owner-binding");
++    var liveRect;
++    try{liveRect=object.getboxattr("patching_rect");}catch(error){throw Error("controller-numeric-live-geometry-unavailable");}
++    if(!sameNumbers(liveRect,expected.rect))throw Error("controller-numeric-live-geometry-changed");
+     var row={anchor:expected.anchor,document:"times",revision:revision,source_sha256:GEOMETRY_SOURCE,
+         source_box_sha256:expected.source_box_sha256,request_id:shared.request_id,step_id:shared.step_id,
+         operation_action:"install",engine:"js-controller",source_class:"flonum",runtime_class:object.maxclass,
+--- initial003/test_helpers.cjs
++++ corrected003/test_helpers.cjs
+@@ -107,6 +107,20 @@
+ assert.equal(controller.resolve({firstobject: numericObject}, gateExpected, gateDefinition, []), numericObject);
+ assert.equal(controller.controllerRepresentationObservations.length, 1, 'resolver passes retain one request-bound observation per anchor');
+ assert.deepEqual(gateExpected.runtime_classes, ['flonum']);
++for (const liveRectangle of [() => [8.005, 12, 60, 20], () => undefined, undefined,
++  () => {throw Error('synthetic geometry unavailable');}]) {
++  for (const entry of ['resolve', 'direct-observation']) {
++    const calls = [];
++    const shifted = {...numericObject, getboxattr: liveRectangle,
++      getattr() {calls.push('format'); return 6;}, getvalueof() {calls.push('value'); return [gateInitial];},
++      message() {calls.push('input');}, setvalueof() {calls.push('setter');}};
++    assert.throws(() => entry === 'resolve'
++      ? controller.resolve({firstobject: shifted}, gateExpected, gateDefinition, [])
++      : controller.controllerNumericRepresentationObservation(shifted, gateExpected, gateDefinition),
++    `exact live geometry must precede probes through ${entry}`);
++    assert.deepEqual(calls, [], 'geometry refusal must not probe capabilities, send input or set state');
++  }
++}
+ for (const mutation of ['source', 'helper', 'anchor', 'box', 'text', 'rect', 'initial', 'evidence', 'alias']) {
+   const e = plain(gateExpected), d = plain(gateDefinition);
+   if (mutation === 'source') d.source_sha256 = 'f'.repeat(64);
+@@ -202,6 +216,43 @@
+ assert.ok(refused, 'V8 number and jpatcher representations must remain refused');
+ assert.equal(refused.v8_representation_diagnostics.numeric_rows.length, 3);
+ assert.equal(refused.v8_representation_diagnostics.root_rows.length, 4);
++for (const scenario of ['root-overflow', 'numeric-overflow', 'root-unavailable', 'numeric-unavailable', 'numeric-traversal-throw']) {
++  const calls = [];
++  const numericObjects = diagNumericObjects.map(object => ({...object,
++    getattr() {calls.push('format'); return 6;}, getvalueof() {calls.push('value'); return [gateInitial];},
++    message() {calls.push('input');}, setvalueof() {calls.push('setter');}}));
++  const rootObjects = diagRootObjects.map(object => ({...object}));
++  const extra = index => ({maxclass: 'comment', varname: '__synthetic_extra_' + index,
++    getboxattr: () => [1000 + 80 * index, 400, 60, 20], nextobject: null});
++  if (scenario === 'numeric-overflow') numericObjects.push(extra(0), {...numericObjects[0]});
++  const basic = linkObjects(numericObjects);
++  if (scenario === 'numeric-traversal-throw') Object.defineProperty(numericObjects[1], 'nextobject', {
++    get() {throw Error('synthetic traversal unavailable');}});
++  rootObjects[2].subpatcher = () => {
++    calls.push('basic-child'); return scenario === 'numeric-unavailable' ? undefined : basic;
++  };
++  if (scenario === 'root-overflow') rootObjects.push(...Array.from({length: 5}, (_, index) => extra(index)), {...rootObjects[2]});
++  const root = {...diagRoot, ...linkObjects(rootObjects)};
++  if (scenario === 'root-unavailable') root.firstobject = undefined;
++  const overflow = reader.collectRepresentationDiagnostics(root, diagDefinition, diagRequest, diagConfig);
++  assert.deepEqual(calls.filter(call => call !== 'basic-child'), [], `${scenario} must suppress all numeric capability probes`);
++  if (scenario.startsWith('root-')) assert.deepEqual(calls, [], 'incomplete root coverage must not derive Basic from a prefix');
++  assert.equal(overflow.strict_mismatch, true);
++  assert.equal(overflow.numeric_rows.length, 3); assert.equal(overflow.root_rows.length, 4);
++  assert.equal(overflow.inventory_complete, false);
++  assert.equal(overflow.inventory_coverage[scenario.startsWith('root-') ? 'root' : 'numeric'].complete, false);
++  for (const row of [...overflow.root_rows, ...overflow.numeric_rows]) {
++    assert.equal(row.candidate_count, null, 'incomplete required coverage cannot assert a complete match count');
++    assert.equal(row.candidate_count_complete, false);
++    assert.equal(row.actual_runtime_class, null); assert.equal(row.live_rect, null);
++    assert.equal(typeof row.observed_candidate_count, 'number');
++  }
++  assert.ok(overflow.numeric_rows.every(row => row.value_observation.value === null && row.format_observation.value === null));
++  let refusal;
++  try {reader.collectReadback(root, diagDefinition, diagRequest, diagConfig);} catch (error) {refusal = error;}
++  assert.equal(refusal.v8_representation_diagnostics.numeric_rows.length, 3);
++  assert.equal(refusal.v8_representation_diagnostics.root_rows.length, 4);
++}
+ diagNumericObjects[0].getvalueof = () => {throw Error('synthetic unavailable');};
+ diagNumericObjects[1].getattr = undefined;
+ diagNumericObjects[2].varname = '__missing';
+@@ -212,7 +263,8 @@
+ const duplicate = {...diagNumericObjects[0], nextobject: null};
+ diagNumericObjects[2].nextobject = duplicate;
+ const duplicateDiag = reader.collectRepresentationDiagnostics(diagRoot, diagDefinition, diagRequest, diagConfig);
+-assert.equal(duplicateDiag.numeric_rows[0].candidate_count, 2);
++assert.equal(duplicateDiag.numeric_rows[0].candidate_count, null);
++assert.equal(duplicateDiag.numeric_rows[0].observed_candidate_count, 2);
+ assert.equal(duplicateDiag.numeric_rows[0].value_observation.value, null);
+ assert.throws(() => reader.collectRepresentationDiagnostics(diagRoot, diagDefinition, {...diagRequest, operation_request_id: 0}, diagConfig));
+ assert.throws(() => reader.collectRepresentationDiagnostics(diagRoot, {...diagDefinition, source_sha256: 'f'.repeat(64)}, diagRequest, diagConfig));
+--- initial003/v8-readback.js
++++ corrected003/v8-readback.js
+@@ -179,9 +179,15 @@
+     return policy;
+ }
+ function representationObjects(patcher,limit) {
+-    var objects=[],object=patcher&&patcher.firstobject;
+-    while(object&&objects.length<=limit){objects.push(object);object=object.nextobject;}
+-    return {objects:objects,complete:!object&&objects.length<=limit};
++    var objects=[],object,status="complete";
++    if(!patcher)return {objects:objects,complete:false,status:"unavailable",limit:limit};
++    try {
++        object=patcher.firstobject;
++        while(object&&objects.length<=limit){objects.push(object);object=object.nextobject;}
++        if(typeof object==="undefined")status="unavailable";
++        else if(object||objects.length>limit)status="overflow";
++    }catch(error){status="threw";}
++    return {objects:objects,complete:status==="complete",status:status,limit:limit};
+ }
+ function representationRectangle(object) {
+     try{return rectangle(object);}catch(error){return null;}
+@@ -226,9 +232,11 @@
+             candidates.push({runtime_class:object.maxclass,rect:rect,geometry_matches:!!geometry});
+             if(geometry)matches.push(object);
+         }
+-        var object=matches.length===1?matches[0]:null;
++        var object=rootInventory.complete&&matches.length===1?matches[0]:null;
+         var row={anchor:expected.anchor,source_box_sha256:expected.source_box_sha256,source_text_sha256:expected.source_text_sha256,
+-            source_class:expected.maxclass,expected_runtime_classes:expected.runtime_classes,candidate_count:matches.length,
++            source_class:expected.maxclass,expected_runtime_classes:expected.runtime_classes,
++            candidate_count:rootInventory.complete?matches.length:null,observed_candidate_count:matches.length,
++            candidate_count_complete:rootInventory.complete,
+             candidates:candidates,actual_runtime_class:object?object.maxclass:null,live_rect:object?representationRectangle(object):null};
+         diagnostic.root_rows.push(row);
+         if(!object||expected.runtime_classes.indexOf(object.maxclass)===-1)diagnostic.strict_mismatch=true;
+@@ -237,18 +245,35 @@
+         }
+     }
+     var numericInventory=representationObjects(basic,definition.boxes.length+(definition.observer_leaves||[]).length);
+-    if(!basic||!numericInventory.complete)diagnostic.strict_mismatch=true;
++    diagnostic.inventory_complete=rootInventory.complete&&numericInventory.complete;
++    diagnostic.inventory_coverage={};
++    for(var pair of [["root",rootInventory],["numeric",numericInventory]]) {
++        var inventory=pair[1];
++        diagnostic.inventory_coverage[pair[0]]={complete:inventory.complete,status:inventory.status,
++            observed_count:inventory.objects.length,complete_count:inventory.complete?inventory.objects.length:null,limit:inventory.limit};
++    }
++    if(!diagnostic.inventory_complete) {
++        diagnostic.strict_mismatch=true;
++        // A bounded prefix cannot establish a unique source binding or a complete count.
++        for(var row of diagnostic.root_rows) {
++            row.candidate_count=null;row.candidate_count_complete=false;
++            row.actual_runtime_class=null;row.live_rect=null;
++        }
++    }
+     for(var anchor of Object.keys(NUMERIC_REPRESENTATION_PINS)) {
+         var boxes=definition.boxes.filter(function(b){return b.anchor===anchor;});
+         if(boxes.length!==1||!controllerNumericRepresentationPolicy(boxes[0],definition,configuration))
+             throw Error("v8-numeric-diagnostic-source-binding");
+         var expected=boxes[0],name="__alive_help_"+expected.id.replace(/-/g,"_"),matches=[];
+         for(var object of numericInventory.objects)if(object.varname===name)matches.push(object);
+-        var object=matches.length===1?matches[0]:null,rect=object?representationRectangle(object):null;
+-        var geometry=!!rect&&sameData(rect,expected.rect),probe=geometry?object:{};
++        var object=diagnostic.inventory_complete&&matches.length===1?matches[0]:null,rect=object?representationRectangle(object):null;
++        var geometry=diagnostic.inventory_complete?!!rect&&sameData(rect,expected.rect):null,probe=geometry?object:{};
+         var row={anchor:anchor,source_box_sha256:expected.source_box_sha256,source_text_sha256:expected.source_text_sha256,
+-            source_class:"flonum",expected_runtime_classes:expected.runtime_classes,candidate_count:matches.length,
++            source_class:"flonum",expected_runtime_classes:expected.runtime_classes,
++            candidate_count:diagnostic.inventory_complete?matches.length:null,observed_candidate_count:matches.length,
++            candidate_count_complete:diagnostic.inventory_complete,
+             actual_runtime_class:object?object.maxclass:null,live_rect:rect,geometry_matches:geometry,
++            probe_disposition:!diagnostic.inventory_complete?"suppressed-incomplete-inventory":geometry?"observed":"source-candidate-unavailable",
+             receipt_tag_observed:false,format_observation:capabilityObservation(probe,"getattr","format"),
+             value_observation:capabilityObservation(probe,"getvalueof")};
+         diagnostic.numeric_rows.push(row);

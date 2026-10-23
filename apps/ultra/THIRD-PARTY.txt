@@ -1,0 +1,45 @@
+Build component provenance (upstream licenses remain unchanged)
+
+Alive/Ultra-owned code is AGPL-3.0-or-later. See ../../LICENSE and
+../../LICENSING.md in the source tree. Preserve all upstream notices.
+
+Clockwork: 94b67500c96e105491682ec68741b5018560eab7
+https://github.com/samaaron/clockwork/tree/94b67500c96e105491682ec68741b5018560eab7
+AGPL-3.0-or-later / upstream commercial option. This build has not obtained a commercial
+license. Preserve upstream LICENSE and component notices in corresponding source.
+No scsynth/Supersonic, optional Link, ASIO, Smoothie or plugin bridge is built.
+
+Faust: app-specific C++ DSP generated with pinned 2.88.0 from core/voice.dsp,
+checked in at core/generated/app_voice.hpp. Regenerate with core/generate_voice.py.
+The frozen experiments/faust-reference oracle is unchanged. Unmodified architecture
+headers and libraries are supplied by that fixture's pinned dependency setup;
+their notices and exceptions remain intact. See core/VOICE.txt for app provenance
+and the retained exceptions, and PLAN.md for component terms. The Faust compiler
+is build-time only, not a linked runtime.
+
+Clockwork Cargo.lock pins portable-atomic 1.15.0 (MIT OR Apache-2.0).
+The complete Tauri/Rust app dependency graph is pinned in src-tauri/Cargo.lock.
+Tauri 2.8.5 and tauri-build 2.4.1: MIT OR Apache-2.0.
+https://github.com/tauri-apps/tauri
+Cargo package license metadata and upstream notices apply to transitive crates.
+
+CPAL 0.18.2: Apache-2.0, RustAudio/cpal revision
+e1612d5d98152f8dc2a62e1b51ef7cbf4f7f26b7. Rust device I/O uses the platform
+backend; Linux enables PipeWire 0.10.1 bindings and ALSA 0.11.0 bindings.
+https://github.com/RustAudio/cpal/tree/v0.18.2
+The locked transitive graph and license metadata are in THIRD-PARTY-CRATES.json.
+System PipeWire/ALSA libraries remain dynamically linked, not bundled.
+
+JACK C ABI declarations follow official JACK2 1.9.22 headers (LGPL-2.1-or-later).
+https://github.com/jackaudio/jack2/tree/v1.9.22
+System libjack is dynamically loaded, not bundled or installed by this app.
+Linux GUI dynamically uses system GTK3/WebKitGTK4.1 and their dependencies.
+GTK is LGPL; WebKit has LGPL/BSD component terms. See distro copyright files.
+
+SoundCraft is a loose architecture/design reference only. No SoundCraft code,
+assets, name or branding is incorporated. The node patcher is original app code.
+
+The lockfile also fixes tauri-runtime 2.8.0 and tauri-runtime-wry 2.8.1 to the
+Tauri 2.8.5 release's compatible API pair. An initial unconstrained transitive
+resolution selected mismatched runtime versions and failed compilation; the
+checked-in lockfile is the tested build, not arbitrary latest minor versions.

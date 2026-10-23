@@ -1,0 +1,279 @@
+--- a/experiments/max-reference/int-float-runtime-20261022/controller.js
++++ b/experiments/max-reference/int-float-runtime-20261022/controller.js
+@@ -3,6 +3,7 @@
+ var configFile=jsarguments[1], config, shared, roots={}, revisions={}, seen=0, busy=false;
+ var ticker, pollTask, startupTask;
+ var anchorDiagnostics=[], geometryDispositions=[], numericModeObservations=[];
++var closeDiagnostics=null;
+ function read(path) {
+     var f=new File(path,"read"),text="";
+     if (!f.isopen) return null;
+@@ -303,7 +304,7 @@
+     throw Error("revision-definition-unavailable");
+ }
+ function setAction(command) {
+-    anchorDiagnostics=[];geometryDispositions=[];numericModeObservations=[];
++    anchorDiagnostics=[];geometryDispositions=[];numericModeObservations=[];closeDiagnostics=null;
+     shared.request_id=command.command_id;shared.step_id=command.step_id;shared.action=command.action;
+     shared.action_document=command.document;shared.action_revision=command.action_revision;
+ }
+@@ -313,9 +314,11 @@
+ }
+ function fail(command,error) {
+     record("harness-error",{error:String(error)});
+-    write(config.ack_path,{command_id:command.command_id,success:false,error_code:"numeric-controller-refused",
++    var value={command_id:command.command_id,success:false,error_code:"numeric-controller-refused",
+         anchor_diagnostics:anchorDiagnostics,geometry_dispositions:geometryDispositions,
+-        numeric_mode_observations:numericModeObservations});busy=false;
++        numeric_mode_observations:numericModeObservations};
++    if(closeDiagnostics&&closeDiagnostics.request_id===command.command_id)value.close_diagnostics=closeDiagnostics;
++    write(config.ack_path,value);busy=false;
+ }
+ function bind(patcher,definition) {
+     validateTree(patcher,definition);
+@@ -371,21 +374,79 @@
+     }
+     pollTask=new Task(poll,this);pollTask.schedule(100);
+ }
++function closeValue(value) {
++    var type=value===null?"null":typeof value,result={type:type};
++    if(type==="boolean"||type==="string")result.value=value;
++    else if(type==="number") {
++        if(finite(value))result.value=value;
++        else result.representation=value!==value?"nan":value>0?"positive-infinity":"negative-infinity";
++    }
++    return result;
++}
++function closeRead(read) {
++    try {
++        var value=closeValue(read());value.status="returned";return value;
++    }catch(error) {
++        var result={status:"threw",exception:closeValue(error)},name,message;
++        try{name=error.name;if(typeof name==="string")result.name=name;}catch(ignoredName){}
++        try{message=error.message;if(typeof message==="string")result.message=message;}catch(ignoredMessage){}
++        return result;
++    }
++}
++function closeSnapshot(state,phase,attempt) {
++    var sample={phase:phase,attempt:attempt,
++        root_valid:closeRead(function(){return state.patcher.valid;}),
++        reader_valid:closeRead(function(){return state.reader.valid;}),
++        disposer_valid:closeRead(function(){return state.disposer.valid;}),
++        root_filepath:closeRead(function(){return state.patcher.filepath;}),objects:[]};
++    var first,wind,associated;
++    sample.firstobject=closeRead(function(){first=state.patcher.firstobject;return first;});
++    sample.firstobject_valid=first&&(typeof first==="object"||typeof first==="function")?
++        closeRead(function(){return first.valid;}):null;
++    sample.wind=closeRead(function(){wind=state.patcher.wind;return wind;});
++    sample.wind_visible=null;sample.wind_assocclass=null;sample.wind_assoc=null;sample.wind_assoc_filepath=null;
++    if(wind&&(typeof wind==="object"||typeof wind==="function")) {
++        sample.wind_visible=closeRead(function(){return wind.visible;});
++        sample.wind_assocclass=closeRead(function(){return wind.assocclass;});
++        sample.wind_assoc=closeRead(function(){associated=wind.assoc;return associated;});
++        if(associated&&(typeof associated==="object"||typeof associated==="function"))
++            sample.wind_assoc_filepath=closeRead(function(){return associated.filepath;});
++    }
++    var anchors=Object.keys(state.objects).sort();
++    for(var i=0;i<anchors.length;i++) {
++        var anchor=anchors[i];
++        sample.objects.push({anchor:anchor,valid:closeRead(function(){return state.objects[anchor].valid;})});
++    }
++    closeDiagnostics.samples.push(sample);return sample;
++}
+ function closeOwner(command) {
+     var state=roots[command.document];if(!state)throw Error("absent-close-owner");
+     if(command.source_sha256!==state.definition.source_sha256||command.action_revision!==state.definition.revision)
+         throw Error("close-source-revision-binding");
+     if(!samePath(state.patcher.filepath,state.definition.working_windows_path))throw Error("close-owner-path-mismatch");
++    var helpers={};
++    for(var name in state.definition.helper_sha256)helpers[name]=state.definition.helper_sha256[name];
++    closeDiagnostics={request_id:command.command_id,step_id:command.step_id,action:command.action,
++        document:command.document,revision:state.definition.revision,source_sha256:state.definition.source_sha256,
++        working_path:state.definition.working_windows_path,helper_sha256:helpers,samples:[]};
++    closeSnapshot(state,"before-dispose",0);
+     // thispatcher dispose is documented to close its containing root; never save or dirty.
+-    state.disposer.message("dispose");var attempts=0;
++    closeDiagnostics.dispose={attempted:true,result:closeRead(function(){return state.disposer.message("dispose");})};
++    if(closeDiagnostics.dispose.result.status==="threw")throw Error("close-dispose-threw");
++    var attempts=0;
+     function poll() {
+         try {
+-            ++attempts;var rootValid=state.patcher.valid,readerValid=state.reader.valid,disposerValid=state.disposer.valid;
++            ++attempts;var sample=closeSnapshot(state,"poll",attempts);
++            if(sample.root_valid.status==="threw"||sample.reader_valid.status==="threw"||sample.disposer_valid.status==="threw")
++                throw Error("close-validity-read-threw");
++            var rootValid=sample.root_valid.value,readerValid=sample.reader_valid.value,disposerValid=sample.disposer_valid.value;
++            // Observations do not substitute for the existing three actual invalidity reads.
+             if((rootValid===false||rootValid===0)&&(readerValid===false||readerValid===0)&&
+                (disposerValid===false||disposerValid===0)) {
+                 delete roots[command.document];record("step-complete",{document:command.document,
+                     revision:state.definition.revision,source_sha256:state.definition.source_sha256,
+-                    closed_owner_absence_validated:true});ack(command,{closed_owner_absence_validated:true});return;
++                    closed_owner_absence_validated:true});ack(command,{closed_owner_absence_validated:true,
++                        close_diagnostics:closeDiagnostics});return;
+             }
+             if(attempts>=30)throw Error("closed-owner-absence-unproven");
+             pollTask=new Task(poll,this);pollTask.schedule(100);
+--- a/experiments/max-reference/int-float-runtime-20261022/test_controller.cjs
++++ b/experiments/max-reference/int-float-runtime-20261022/test_controller.cjs
+@@ -33,6 +33,8 @@
+   message(selector,value){this.last={selector,value};}};
+  const basic={firstobject:number,newdefault(){return {valid:true}},connect(){}};
+  const shell={maxclass:'patcher',varname:'basic_tab',getboxattr:()=>[0,0,100,100],subpatcher:()=>basic,nextobject:null};
++ // Conditional positive fixture: Patcher.valid is INVENTED here. Maxobj.valid is
++ // documented; this root property establishes no actual Patcher API capability.
+  const objects=[];const p={firstobject:shell,filepath:`Z:/private/${doc}-r${rev}.maxhelp`,valid:true,
+   getnamed:()=>shell,newdefault(x,y,cls){const o={valid:true,message(selector){if(selector==='dispose'){
+    p.valid=false;for(const object of objects)object.valid=false;
+@@ -67,4 +69,4 @@
+ assert.throws(()=>ctx.handle({op:'operation',action:'close',document:'float',source_sha256:'wrong',action_revision:2}));
+ assert.throws(()=>ctx.handle({op:'operation',action:'unknown',document:'int',action_revision:1,anchor:'root/obj-2/obj-1',
+  source_sha256:'a'.repeat(64),message:{selector:'bang',atoms:[]}}));
+-console.log('controller: float dispatch, exact geometry, empty startup, delayed install, dispose/reopen and ticker retention pass');
++console.log('controller: dispatch/geometry/startup/ticker pass; dispose/reopen positive uses invented conditional Patcher.valid');
+--- /dev/null
++++ b/experiments/max-reference/int-float-runtime-20261022/test_close.cjs
+@@ -0,0 +1,143 @@
++// Synthetic boundary APIs only; no Max, Wine, display, preparation or source files.
++const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
++const source=fs.readFileSync(path.join(__dirname,'controller.js'),'utf8');
++const helpers={'helpstarter.js':'a'.repeat(64),'helpname.js':'b'.repeat(64),
++ 'helpdetails.js':'c'.repeat(64),'helpargs.js':'d'.repeat(64)};
++const command={op:'operation',action:'close',document:'float',action_revision:1,
++ source_sha256:'e'.repeat(64),command_id:125,step_id:'close-float'};
++function run(options={}) {
++ const ctx=vm.createContext({jsarguments:['js','synthetic-config']});vm.runInContext(source,ctx);
++ const pending=[],acks=[],journal=[];let disposed=false,disposeCalls=0,serializedObjects=0;
++ function opaque(object) {
++  object.toJSON=()=>{++serializedObjects;throw Error('runtime object serialized');};
++  object.toString=()=>{++serializedObjects;throw Error('runtime object stringified');};return object;
++ }
++ function handle(read) {return opaque(Object.defineProperty({},'valid',{get:()=>read(disposed)}));}
++ const root=opaque({filepath:'Z:/private/float-r1.maxhelp'});
++ if(Object.hasOwn(options,'rootValid'))Object.defineProperty(root,'valid',{get:()=>options.rootValid(disposed)});
++ const reader=handle(options.readerValid||((closed)=>!closed));
++ const disposer=handle(options.disposerValid||((closed)=>!closed));
++ disposer.message=(selector)=>{assert.equal(selector,'dispose');++disposeCalls;
++  if(options.disposeThrow)throw options.disposeThrow;disposed=true;
++ };
++ const objects={};
++ for(let i=1;i<=23;++i)objects['root/obj-2/obj-'+i]=handle((closed)=>
++  options.originalValid?options.originalValid(i,closed):!closed);
++ const first=handle((closed)=>!closed);
++ Object.defineProperty(root,'firstobject',{get(){
++  if(options.firstobjectThrow)throw Error('firstobject unavailable');return disposed?null:first;
++ }});
++ const wind=opaque({assocclass:'patcher',assoc:root});
++ Object.defineProperty(wind,'visible',{get:()=>!disposed});
++ Object.defineProperty(root,'wind',{get(){if(options.windThrow)throw Error('wind unavailable');return wind;}});
++ const state={patcher:root,reader,disposer,objects,definition:{document:'float',revision:1,
++  source_sha256:'e'.repeat(64),working_windows_path:'Z:/private/float-r1.maxhelp',helper_sha256:helpers}};
++ const retained={};ctx.roots={int:retained,float:state};ctx.shared={};
++ ctx.config={ack_path:'synthetic-ack',command_path:'synthetic-command'};
++ ctx.Task=function(fn,owner){this.schedule=(ms)=>{assert.equal(ms,100);pending.push(()=>fn.call(owner));};};
++ ctx.read=()=>command;ctx.record=(kind,extra)=>journal.push({kind,...extra});
++ ctx.write=(filename,value)=>{assert.equal(filename,'synthetic-ack');acks.push(JSON.parse(JSON.stringify(value)));};
++ ctx.tick();let polls=0;while(pending.length){assert.ok(++polls<=30,'close polling must stay bounded');pending.shift()();}
++ assert.equal(disposeCalls,1);assert.equal(serializedObjects,0,'diagnostics must not serialize or stringify handles');
++ assert.equal(acks.length,1);assert.equal(ctx.roots.int,retained,'closing float must retain int');
++ return {ctx,state,ack:acks[0],acks,journal,polls};
++}
++function refused(result,polls=30) {
++ assert.equal(result.ack.success,false);assert.equal(result.ack.error_code,'numeric-controller-refused');
++ assert.equal(result.ctx.roots.float,result.state,'refusal must retain owner tracking');
++ assert.equal(result.journal.filter(x=>x.kind==='step-complete').length,0);
++ assert.equal(result.polls,polls);
++ const d=result.ack.close_diagnostics;assert.ok(d,'failed ACK must retain typed close diagnostics');return d;
++}
++
++// The realistic Patcher fixture omits undocumented .valid. Invalid Maxobj handles
++// must never turn that missing root capability into a successful close.
++const missing=run(),d=refused(missing);
++assert.deepEqual({request_id:d.request_id,step_id:d.step_id,action:d.action,document:d.document,
++ revision:d.revision,source_sha256:d.source_sha256,working_path:d.working_path,helper_sha256:d.helper_sha256},
++ {request_id:125,step_id:'close-float',action:'close',document:'float',revision:1,
++ source_sha256:'e'.repeat(64),working_path:'Z:/private/float-r1.maxhelp',helper_sha256:helpers});
++assert.deepEqual(d.dispose,{attempted:true,result:{status:'returned',type:'undefined'}});
++assert.equal(d.samples.length,31);
++for(let i=0;i<31;++i) {
++ const s=d.samples[i];assert.equal(s.phase,i===0?'before-dispose':'poll');assert.equal(s.attempt,i);
++ assert.deepEqual(s.root_valid,{status:'returned',type:'undefined'});
++ assert.deepEqual(s.reader_valid,{status:'returned',type:'boolean',value:i===0});
++ assert.deepEqual(s.disposer_valid,{status:'returned',type:'boolean',value:i===0});
++ assert.deepEqual(s.root_filepath,{status:'returned',type:'string',value:'Z:/private/float-r1.maxhelp'});
++ assert.deepEqual(s.firstobject,{status:'returned',type:i===0?'object':'null'});
++ assert.deepEqual(s.firstobject_valid,i===0?{status:'returned',type:'boolean',value:true}:null);
++ assert.deepEqual(s.wind,{status:'returned',type:'object'});
++ assert.deepEqual(s.wind_visible,{status:'returned',type:'boolean',value:i===0});
++ assert.deepEqual(s.wind_assocclass,{status:'returned',type:'string',value:'patcher'});
++ assert.deepEqual(s.wind_assoc,{status:'returned',type:'object'});
++ assert.deepEqual(s.wind_assoc_filepath,{status:'returned',type:'string',value:'Z:/private/float-r1.maxhelp'});
++ assert.equal(s.objects.length,23);
++ assert.deepEqual(s.objects.map(x=>x.anchor).sort(),Array.from({length:23},(_,j)=>'root/obj-2/obj-'+(j+1)).sort());
++ for(const o of s.objects)assert.deepEqual(o.valid,{status:'returned',type:'boolean',value:i===0});
++}
++assert.match(missing.journal.at(-1).error,/closed-owner-absence-unproven/);
++
++// Malformed observations in any of the three required reads retain their raw type.
++for(const field of ['rootValid','readerValid','disposerValid'])for(const [value,want] of [
++ [null,{status:'returned',type:'null'}],['0',{status:'returned',type:'string',value:'0'}],
++ [NaN,{status:'returned',type:'number',representation:'nan'}],
++ [Infinity,{status:'returned',type:'number',representation:'positive-infinity'}],
++ [-Infinity,{status:'returned',type:'number',representation:'negative-infinity'}],
++ [[],{status:'returned',type:'object'}],[()=>false,{status:'returned',type:'function'}],
++ [true,{status:'returned',type:'boolean',value:true}],[1,{status:'returned',type:'number',value:1}]
++]) {
++ const diag=refused(run({rootValid:(closed)=>!closed,[field]:()=>value}));
++ assert.deepEqual(diag.samples[0][field.replace('Valid','_valid')],want);
++ assert.deepEqual(diag.samples[30][field.replace('Valid','_valid')],want);
++}
++// Exceptions in any gate read must not hide the other reads or become absence.
++for(const field of ['rootValid','readerValid','disposerValid']) {
++ const diag=refused(run({rootValid:(closed)=>!closed,
++  [field]:(closed)=>{if(closed)throw Error('valid unavailable');return true;}}),1);
++ assert.equal(diag.samples.length,2);const s=diag.samples[1];
++ assert.deepEqual(s[field.replace('Valid','_valid')],{status:'threw',exception:{type:'object'},
++  name:'Error',message:'valid unavailable'});
++ for(const other of ['root','reader','disposer'])if(other+'Valid'!==field)
++  assert.deepEqual(s[other+'_valid'],{status:'returned',type:'boolean',value:false});
++ assert.equal(s.objects.length,23);
++}
++// A live reader/disposer keeps the existing conjunction closed.
++for(const field of ['readerValid','disposerValid']) {
++ const diag=refused(run({rootValid:(closed)=>!closed,[field]:()=>true}));
++ assert.deepEqual(diag.samples[30][field.replace('Valid','_valid')],{status:'returned',type:'boolean',value:true});
++}
++// Firstobject and original-handle probes are diagnostic only and retain exceptions.
++const access=refused(run({firstobjectThrow:true,originalValid:(i,closed)=>{
++ if(i===4)throw Error('original unavailable');return !closed;
++}}));
++assert.equal(access.samples[0].firstobject.status,'threw');
++assert.equal(access.samples[30].objects.find(x=>x.anchor==='root/obj-2/obj-4').valid.status,'threw');
++assert.equal(access.samples[30].objects.find(x=>x.anchor==='root/obj-2/obj-5').valid.value,false);
++const hostile={toJSON(){throw Error('exception serialized');}};
++for(const prop of ['name','message'])Object.defineProperty(hostile,prop,{get(){throw Error('error field unavailable');}});
++const exception=refused(run({rootValid:(closed)=>{if(closed)throw hostile;return true;}}),1);
++assert.deepEqual(exception.samples[1].root_valid,{status:'threw',exception:{type:'object'}});
++const dispatch=refused(run({disposeThrow:Error('dispose unavailable')}),0);
++assert.deepEqual(dispatch.dispose,{attempted:true,result:{status:'threw',exception:{type:'object'},
++ name:'Error',message:'dispose unavailable'}});assert.equal(dispatch.samples.length,1);
++
++// Conditional positive: this fixture INVENTS Patcher.valid. It tests the unchanged
++// conjunction and ACK retention, and establishes no real Patcher API capability.
++for(const invalid of [false,0]) {
++ const positive=run({rootValid:(closed)=>closed?invalid:true,windThrow:true,firstobjectThrow:true,
++  originalValid:()=>{throw Error('diagnostic only');},
++  readerValid:(closed)=>closed?invalid:true,disposerValid:(closed)=>closed?invalid:true});
++ assert.equal(positive.ack.success,true);assert.equal(positive.ack.closed_owner_absence_validated,true);
++ assert.equal(positive.ctx.roots.float,undefined);assert.equal(positive.ack.close_diagnostics.samples.length,2);
++ assert.deepEqual(positive.ack.close_diagnostics.samples[1].root_valid,
++  {status:'returned',type:typeof invalid,value:invalid});
++ const command2={...command,command_id:126,action:'event'};
++ positive.ctx.fail(command2,Error('next action refused'));
++ assert.equal(Object.hasOwn(positive.acks.at(-1),'close_diagnostics'),false,'another request must not inherit close diagnostics');
++ positive.ctx.setAction(command2);
++ // The original ACK is an independent JSON snapshot; later action state cannot mutate it.
++ assert.equal(positive.ack.close_diagnostics.request_id,125);
++ assert.equal(positive.ctx.closeDiagnostics,null);
++}
++console.log('close: missing/malformed/live/throwing validity refuses; bound typed diagnostics retained; invented positive is conditional');

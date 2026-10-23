@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "product_license": "AGPL-3.0-or-later (project-owned code; upstream component terms retained)",
+  "components": [
+    {
+      "name": "libpd",
+      "commit": "ba0dc63262901d658af8bbda5e619a60fa975e78",
+      "source": "https://github.com/libpd/libpd/tree/ba0dc63262901d658af8bbda5e619a60fa975e78",
+      "terms": "BSD-3-Clause style Standard Improved BSD; preserve notices; review individual exceptions",
+      "build": "MULTI=true UTIL=false EXTRA=false; reused unchanged"
+    },
+    {
+      "name": "Pure Data",
+      "version": "0.56.5",
+      "commit": "f009fd8d7b537e209e09898d487fdf1bf547da2b",
+      "source": "https://github.com/pure-data/pure-data/tree/f009fd8d7b537e209e09898d487fdf1bf547da2b",
+      "terms": "Standard Improved BSD; preserve notices; individual files may differ"
+    },
+    {
+      "name": "Cyclone",
+      "version": "0.9.4",
+      "commit": "173ea9f376711035a76e3bbf2374fae6c6d236c8",
+      "source": "https://github.com/porres/pd-cyclone/releases/tag/cyclone_0.9.4",
+      "archive_sha256": "4194fab4abbdf2d29d7645f2613dd420bfd9ef56e4a8dc2f3d66d06c5c2c3779",
+      "requires_pd": ">=0.56.2",
+      "terms": "BSD-3-Clause; LICENSE.txt retained in source archive; attribution/notice obligations apply",
+      "build": "Only unmodified gate.c, split.c, audio/clip.c; separate shared externals. No pd-lib-builder dependency used."
+    },
+    {
+      "name": "Faust",
+      "version": "2.88.0",
+      "source": "https://github.com/grame-cncm/faust/releases/tag/2.88.0",
+      "terms": "Compiler libfaust LGPL-2.1-or-later, build-time only; do not conflate compiler terms with generated DSP terms",
+      "build": "Official Linux x86_64 libfaust release; AOT C++ generation, no JIT/compiler loaded by probe"
+    },
+    {
+      "name": "Faust architecture and used DSP libraries",
+      "version": "bundled with Faust 2.88.0",
+      "terms": "Unmodified architecture headers LGPL-2.1-or-later with architecture exception; selected GRAME envelopes/maths/oscillator routines carry Faust exception. Oscillator library also contains separately marked STK routines, not a blanket license for every future DSP. Product legal review remains pending."
+    }
+  ],
+  "verified_files": [
+    {
+      "path": "../libpd-adapter/build/libpd.tar.gz",
+      "sha256": "7432b9108d6741f8ca5fd786ce83ed391d92b5197e93fd3762a5e81ae663095d"
+    },
+    {
+      "path": "../libpd-adapter/build/pd.tar.gz",
+      "sha256": "29ad07f1f13dd199e2ebcd3c486dca4c496e4874dd856c925dc3891e11e58267"
+    },
+    {
+      "path": "../faust-reference/.deps/faust.tar.gz",
+      "sha256": "e4e175cf236924b5b7d4784cbb8c50cc01e211159e169655dd9e6d8f92b871d9"
+    },
+    {
+      "path": "../faust-reference/.deps/libfaust.zip",
+      "sha256": "7f7784567d8770dfbc1351f53b32dfb4d4c5baef0ba5f39fd925d5407ab63ff2"
+    },
+    {
+      "path": "../faust-reference/.deps/lib/libfaust.so",
+      "sha256": "22b06ef2884d69e4a5660b98a635f411d1a94acdcec112b56902ad096b6b14b9"
+    },
+    {
+      "path": "../faust-reference/voice.dsp",
+      "sha256": "96784d649351e811eed211b63b1e08ad23c6a311a684c9ca13903c96ac778ed9"
+    },
+    {
+      "path": "../faust-reference/host.hpp",
+      "sha256": "ed85107cefb862f629612161ed0b7dcaf59b64716264f215d17b34e597fa1036"
+    },
+    {
+      "path": "../faust-reference/generated/voice.hpp",
+      "sha256": "6b0fcc41dcc30dfc47cad9d1e81f59edf02a951c1ae4f961dc94da06cbd70e84"
+    },
+    {
+      "path": "../faust-reference/.deps/faust-2.88.0/architecture/faust/dsp/dsp.h",
+      "sha256": "f6777be66b257b6e7c3cff74c62834f4e06195f79fdcd4aa6408814374aa0815"
+    },
+    {
+      "path": "../faust-reference/.deps/faust-2.88.0/architecture/faust/gui/MapUI.h",
+      "sha256": "8858160e10b05122933318c267015357b331dd641e7d48770272c0ba416080a0"
+    },
+    {
+      "path": "../faust-reference/.deps/faust-2.88.0/architecture/faust/gui/meta.h",
+      "sha256": "8fa12e998cb7eb7dbb4b099d03fc997ff1d54977639d311fdf4d0711611e8cf0"
+    },
+    {
+      "path": "../faust-reference/.deps/faust-2.88.0/architecture/faust/gui/UI.h",
+      "sha256": "e936abe6a7d3512dd0253ed9ff9881a474d6f9970b2e25843b48a13187ea5ccf"
+    },
+    {
+      "path": "../faust-reference/.deps/faust-2.88.0/architecture/faust/gui/PathBuilder.h",
+      "sha256": "2e50b6eb6faa5bbd69f667d92bc1ee457b8e312ec10a9751b15c043ac094d5a2"
+    },
+    {
+      "path": "../faust-reference/.deps/faust-2.88.0/architecture/faust/misc.h",
+      "sha256": "45d60a569a82ef9fa328d16cf87f9a057960eb3aaab49d144ba83044728155dc"
+    },
+    {
+      "path": "../faust-reference/.deps/faust-2.88.0/architecture/faust/export.h",
+      "sha256": "acd56b1246512b2fa3d9b85a8db855f0a03e51662c5489b282613cccd1e707f7"
+    },
+    {
+      "path": "../faust-reference/.deps/faust-2.88.0/libraries/oscillators.lib",
+      "sha256": "e7dfd0758bc7e43f399f47bcf6e55faf5394e874ab369c3ba5ded0e76aff523b"
+    },
+    {
+      "path": "../faust-reference/.deps/faust-2.88.0/libraries/envelopes.lib",
+      "sha256": "2d102bcb94f88bda4818824b7e24bd3d8c1397abffa17a090e4ae9ac638e5847"
+    },
+    {
+      "path": "../faust-reference/.deps/faust-2.88.0/libraries/maths.lib",
+      "sha256": "76de0cdb88f5e47563db87dc1905b18030be7856e5b4c0751c60d7fc6aa57ec6"
+    },
+    {
+      "path": "../faust-reference/.deps/faust-2.88.0/libraries/basics.lib",
+      "sha256": "eeeedec2e17d54cfdff94c7a66878fa100e2196f64fa5e015f7739f0fe4f9075"
+    },
+    {
+      "path": "../faust-reference/.deps/faust-2.88.0/libraries/signals.lib",
+      "sha256": "0c56b23b43cebd808f3f607c4870ecff5430390c0f6a50628edd2f401345d86a"
+    },
+    {
+      "path": "../faust-reference/.deps/faust-2.88.0/libraries/platform.lib",
+      "sha256": "4d09a4239f752bff5d44ec7ddbeea80c1cc76ec915d872ae3b0c467bd59288f5"
+    },
+    {
+      "path": "../faust-reference/.deps/faust-2.88.0/libraries/stdfaust.lib",
+      "sha256": "dc0b5d2fa3b3b9726658b220c6e825e333c1999a07fe59f55d778037c9f8daa0"
+    },
+    {
+      "path": "build/pd-cyclone-cyclone_0.9.4/cyclone_objects/binaries/control/gate.c",
+      "sha256": "81dd872f64f6d432b45e3555739629896edd90c6b07801ff1b6e5b9d817f0581"
+    },
+    {
+      "path": "build/pd-cyclone-cyclone_0.9.4/cyclone_objects/binaries/control/split.c",
+      "sha256": "ceca5752c37d4ff48e44c03a79820e05cba3c337989147987b0becb0e54d6f64"
+    },
+    {
+      "path": "build/pd-cyclone-cyclone_0.9.4/cyclone_objects/binaries/audio/clip.c",
+      "sha256": "6ca9305b3027a6d744dd68ab557efb61d885643e293de6cc1494f7d78b6ffe5b"
+    },
+    {
+      "path": "build/pd-cyclone-cyclone_0.9.4/shared/common/api.h",
+      "sha256": "f5ff7e759455eb46e10d950dd11ffcd334325ab428350a11b08d247ffef15dd3"
+    },
+    {
+      "path": "build/pd-cyclone-cyclone_0.9.4/LICENSE.txt",
+      "sha256": "a70285b30aae28f2f949942773768c14a7bf180fa679ff76c66343091bac88c1"
+    }
+  ]
+}

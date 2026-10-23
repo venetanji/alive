@@ -1,0 +1,107 @@
+{
+  "shipping_raster_assets": [],
+  "evidence_artifacts": [
+    {
+      "path": "README.md",
+      "sha256": "52a03e201360dc2b19eeb94369497f7047d316937e18ea0cd4329a14b414d20b",
+      "bytes": 2119
+    },
+    {
+      "path": "autocomplete.png",
+      "sha256": "97af2bec7947745960849c6f1895155dbc1cba3d6177e1117e8d4d0fb3e4e61a",
+      "bytes": 61349,
+      "dimensions": [
+        1440,
+        900
+      ],
+      "authorship": "Rendered self-authored Ultra UI; no generated or extracted assets",
+      "source": "Sandboxed Chromium loopback preview"
+    },
+    {
+      "path": "desktop.png",
+      "sha256": "7e05358ef2a0665d204d4c145f5fc64db0d46dd1ed8737b87dd0585e34e9dce1",
+      "bytes": 57723,
+      "dimensions": [
+        1440,
+        900
+      ],
+      "authorship": "Rendered self-authored Ultra UI; no generated or extracted assets",
+      "source": "Sandboxed Chromium loopback preview"
+    },
+    {
+      "path": "native-audio.f32",
+      "sha256": "21bd7dec6bc0e5090ad597302f0aff2d4b3cec9c3f5293b5d48fb156caaa5fa5",
+      "bytes": 384000
+    },
+    {
+      "path": "native-canvas.png",
+      "sha256": "71780743c7276598abb64eb1e65ab1138dd20cf4b2fc2b3b975f38e30ad7d57a",
+      "bytes": 47105,
+      "dimensions": [
+        1280,
+        840
+      ],
+      "authorship": "Rendered self-authored Ultra UI; no generated or extracted assets",
+      "source": "Actual rebuilt Tauri app on private Xvfb"
+    },
+    {
+      "path": "native-result.json",
+      "sha256": "f19b869aea38d2ba1fcc6b1a831bdc915fc39ea36ea163fa36afb23a7a53900a",
+      "bytes": 746
+    },
+    {
+      "path": "native-roundtrip.ultra.json",
+      "sha256": "c35c43b5efa218009e2e9ca0d2c92faf433f69ee2a7835d96be9d9b5b958fce2",
+      "bytes": 3517
+    },
+    {
+      "path": "port-help.png",
+      "sha256": "3fd93c28b7e8fd3c0eb0b4a6ba7c02b51b377ca89a5bd27822f9013fbcb81cec",
+      "bytes": 58218,
+      "dimensions": [
+        1440,
+        900
+      ],
+      "authorship": "Rendered self-authored Ultra UI; no generated or extracted assets",
+      "source": "Sandboxed Chromium loopback preview"
+    },
+    {
+      "path": "review.md",
+      "sha256": "ac79210663fc0b67be2feaadcafa38db5647df901f7d5dfd606cb5905c94b2c7",
+      "bytes": 3183
+    },
+    {
+      "path": "small-preview.png",
+      "sha256": "1a370396233d87dd0a7235aed1b634938ab5890dfd7996fe7b709adf20a1d702",
+      "bytes": 35124,
+      "dimensions": [
+        390,
+        844
+      ],
+      "authorship": "Rendered self-authored Ultra UI; no generated or extracted assets",
+      "source": "Sandboxed Chromium loopback preview"
+    },
+    {
+      "path": "user-941.png",
+      "sha256": "9ca093278a9941450c5256031d2a5a36e1d8f82f321a188449a63f777be90a68",
+      "bytes": 41001,
+      "dimensions": [
+        941,
+        510
+      ],
+      "authorship": "Rendered self-authored Ultra UI; no generated or extracted assets",
+      "source": "Sandboxed Chromium loopback preview"
+    },
+    {
+      "path": "validation.json",
+      "sha256": "0a30c0078c5b26bad6af5d9d31cf957d45e75f415e792fd08119eb1570dec6dd",
+      "bytes": 5505
+    }
+  ],
+  "notes": [
+    "Reference Max UI crops have separate provenance in experiments/max-ui-reference/manifest.json",
+    "Native captures bind to the release hashes in validation.json",
+    "Browser preview sources match source hashes in validation.json",
+    "No user desktop screenshot, proprietary executable or commercial patch is included"
+  ]
+}

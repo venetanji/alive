@@ -1,0 +1,58 @@
+{
+  "schema": "ultra-max-list-comparison-v1",
+  "compared": 714,
+  "passed": 714,
+  "mismatches": [],
+  "skipped": [
+    {
+      "fixture": "list-followup",
+      "input_id": "event_88",
+      "reason": "requires-feedback-topology; separate raw observation"
+    },
+    {
+      "fixture": "list-followup",
+      "input_id": "event_89",
+      "reason": "requires-feedback-topology; separate raw observation"
+    }
+  ],
+  "comparison": "ordered output outlet, selector/scalar type, atom count and values; numeric tags inside lists are unobserved",
+  "full_help_conformance": {
+    "passing": 0,
+    "denominator": 2103
+  },
+  "scores": [
+    {
+      "path": "experiments/max-reference/list-runtime-20261021/normalized-iter-recall.json",
+      "sha256": "cf3dd10e3715b1797be2084c03ec57e342a2b335975c330aa6a4a18ecb2865ab"
+    },
+    {
+      "path": "experiments/max-reference/list-runtime-20261021/normalized-list-cold.json",
+      "sha256": "e2fa424c0e17e0803b95130ff9624e71998013d8ae3423436c8ef940b5896500"
+    },
+    {
+      "path": "experiments/max-reference/list-runtime-20261021/normalized-list-edge.json",
+      "sha256": "abbca7061b056f1907a33305fcf2f00d012b24e339a15ac4a4948b9b2d915d9e"
+    },
+    {
+      "path": "experiments/max-reference/list-runtime-20261021/normalized-list-followup.json",
+      "sha256": "4b81b0a99bd7e61c65d808c0bc848cfc5e0112006872da00907fab64f1747894"
+    },
+    {
+      "path": "experiments/max-reference/list-runtime-20261021/normalized-list-objects.json",
+      "sha256": "28d17bdd52b5523eafb59f54fef3b89528394e90e20d0c1719324ae7d166eb96"
+    },
+    {
+      "path": "experiments/max-reference/list-runtime-20261021/normalized-list-precision.json",
+      "sha256": "b13d8b3de1e5c80d71120694db9f55985c99fa80f42216d0500407b726917231"
+    }
+  ],
+  "native_sources": {
+    "apps/ultra/src-tauri/native/patch_graph.hpp": "a633a96a21f9d9d3b0808889513e324507227eb8891a12dbae3ef5e7378cdb0c",
+    "apps/ultra/src-tauri/native/patch_graph.h": "cc1d168c0880c468f694c698f804d2f522a91adbfe49ad18a846a83f3c502b66",
+    "apps/ultra/src-tauri/native/canvas_message.hpp": "1b87147b1e20efb6640aa32a1162e11ba2c876653c2710746430162a22397460",
+    "apps/ultra/src-tauri/native/canvas_objects.hpp": "235f8b19fd162e0851d38627d0774f97da69411fbaf5ce4af91cca4a849830c0",
+    "apps/ultra/src-tauri/native/canvas_list_objects.hpp": "c83e71885c5ad41663663479500d545c114603eb3ecc47aa9eb60278665dd834"
+  },
+  "compiler": "c++ (GCC) 16.2.1 20260810",
+  "generated_runner_sha256": "d349490d75c10e4bdc5ab7db13a8673bfd88787d6bd44b3628622898aab09fe7"
+}

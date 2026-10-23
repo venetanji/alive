@@ -1,0 +1,272 @@
+{
+  "schema": "arithmetic-capture009-parent-verification-v1",
+  "status": "CAPTURE_FAILED_PARENT_INTEGRITY_CHECKS_PASSED_AUDIT_PENDING",
+  "evidence_id": "ev_2b367897874548f570647fd98f6b3ed116589181969d2dcc9f9b342f1a27540f",
+  "rea_exit": {
+    "code": 1,
+    "signal": 0,
+    "reason": "exited"
+  },
+  "rea_truncated": false,
+  "rea_cleanup": {
+    "owned_process_group": "verified",
+    "temporary_root": "removed",
+    "unverified_processes": [
+      {
+        "pid": 1109907,
+        "reason": "EACCES: permission denied, open '/proc/1109907/environ'"
+      },
+      {
+        "pid": 1109912,
+        "reason": "EACCES: permission denied, open '/proc/1109912/environ'"
+      },
+      {
+        "pid": 1109916,
+        "reason": "EACCES: permission denied, open '/proc/1109916/environ'"
+      },
+      {
+        "pid": 1109919,
+        "reason": "EACCES: permission denied, open '/proc/1109919/environ'"
+      },
+      {
+        "pid": 1110325,
+        "reason": "EACCES: permission denied, open '/proc/1110325/environ'"
+      },
+      {
+        "pid": 1110326,
+        "reason": "EACCES: permission denied, open '/proc/1110326/environ'"
+      },
+      {
+        "pid": 1110327,
+        "reason": "EACCES: permission denied, open '/proc/1110327/environ'"
+      },
+      {
+        "pid": 1110328,
+        "reason": "EACCES: permission denied, open '/proc/1110328/environ'"
+      },
+      {
+        "pid": 1110329,
+        "reason": "EACCES: permission denied, open '/proc/1110329/environ'"
+      },
+      {
+        "pid": 1110330,
+        "reason": "EACCES: permission denied, open '/proc/1110330/environ'"
+      },
+      {
+        "pid": 1110871,
+        "reason": "EACCES: permission denied, open '/proc/1110871/environ'"
+      },
+      {
+        "pid": 1112322,
+        "reason": "EACCES: permission denied, open '/proc/1112322/environ'"
+      },
+      {
+        "pid": 1112323,
+        "reason": "EACCES: permission denied, open '/proc/1112323/environ'"
+      },
+      {
+        "pid": 1112324,
+        "reason": "EACCES: permission denied, open '/proc/1112324/environ'"
+      },
+      {
+        "pid": 1112325,
+        "reason": "EACCES: permission denied, open '/proc/1112325/environ'"
+      },
+      {
+        "pid": 1112326,
+        "reason": "EACCES: permission denied, open '/proc/1112326/environ'"
+      }
+    ]
+  },
+  "rea_limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+    "Process trees are sampled and may omit short-lived descendants.",
+    "Filesystem observations are before/after snapshots, not syscall traces.",
+    "Inherited host environment variables are not recorded and may affect results."
+  ],
+  "capture_request": {
+    "executable": "python3",
+    "arguments": [
+      "-B",
+      "/home/venetanji/Work/alive/experiments/max-reference/arithmetic-roots-runtime-20261022/run-runtime.py",
+      "--execute",
+      "--work",
+      "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-009",
+      "--capture-name",
+      "arithmetic-009",
+      "--host-display",
+      ":0",
+      "--timeout-seconds",
+      "150"
+    ],
+    "working_directory": "/home/venetanji/Work/alive",
+    "filesystem_observation_paths": [
+      "/home/venetanji/Work/alive/experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-009"
+    ],
+    "timeout_ms": 170000,
+    "idle_timeout_ms": 165000,
+    "finalization_ms": 5000,
+    "settle_ms": 1000,
+    "terminal": {
+      "columns": 100,
+      "rows": 30,
+      "scrollback": 100
+    },
+    "limits": {
+      "output_bytes": 8000,
+      "files": 20,
+      "file_bytes": 2000000,
+      "filesystem_depth": 2,
+      "processes": 40
+    }
+  },
+  "direct_REA_file_hashes_verified": 6,
+  "original_public_files": [
+    {
+      "name": "cleanup.json",
+      "sha256": "0af152519c0b32b6f5feb8ee353e1549b467dc95d80bc77376f1ee04e5aca7d0",
+      "size": 1845
+    },
+    {
+      "name": "display-states.json",
+      "sha256": "87e16b38bab3eacfa1dbfd08f0abcff7e78314b6fdd32d4b050190a598c1777c",
+      "size": 20837
+    },
+    {
+      "name": "preferences-after.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "size": 205649
+    },
+    {
+      "name": "preferences-before.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "size": 205649
+    },
+    {
+      "name": "receipts.jsonl",
+      "sha256": "754fc5bc1aac4ccd22dc1273b4a78fe23dafc5118b8c49029e12f9d85c22a38c",
+      "size": 80250
+    },
+    {
+      "name": "session.json",
+      "sha256": "f21f2d44c6086ea19055943deb9547e22e24c25037d5ce1345e91e1719a5fe90",
+      "size": 72723
+    }
+  ],
+  "public_projection_sha256": "c2ddfe3b4b357a0cb522256f67f7c50ea1b399ea63e1c4063c0f44300887bbeb",
+  "source_review_sha256": "fb75ec09e581fae1117549d7b293e96af9f6f186e6f8fc35d6f3c6342e14f353",
+  "source_verification_sha256": "3c77c93ba41047e5e53fd6a587d86c62085f0e8d46cec6933a77169dd8f69509",
+  "concrete_review_sha256": "b3e2c68320b4f2db1a5f3a686afd9e755673caf9f16219f286fb7592cf7c3bac",
+  "concrete_binding_sha256": "2c695586ecfece43fc3ff9a59479f952bee3e1f0f17561d4e3f59d0e1e6002d2",
+  "prelaunch": {
+    "host_display_accessible": true,
+    "mapped_files": 16,
+    "marker_processes": 0,
+    "marker_unreadable_environments": 304,
+    "observations": 0,
+    "pidfd_available": true,
+    "preference_digests": {
+      "original": "33337899e32d500cf01edf2c6940d7552b5d82b0682945375bd4fb2ff3958618",
+      "reusable": "78230e06e1491569f8081f1466102c460711ab3616ef74f1046c5d2f331f361e"
+    },
+    "prefix_scans": {
+      "capture": {
+        "matches": 0,
+        "unreadable": 304
+      },
+      "original": {
+        "matches": 0,
+        "unreadable": 304
+      },
+      "reusable": {
+        "matches": 0,
+        "unreadable": 304
+      }
+    },
+    "private_directories": 4,
+    "private_display": ":200",
+    "private_display_existing_processes": 0,
+    "private_files": 23,
+    "runtime_invocations": 0,
+    "sealed_inputs": 22,
+    "status": "PRELAUNCH_FRESH"
+  },
+  "post_capture": {
+    "archive_preserved": true,
+    "current_preferences_match": true,
+    "display_processes": 0,
+    "installed_pristine_working_helpers_preserved": true,
+    "mapped_files": 16,
+    "marker_processes": 0,
+    "native_exact_five_preserved": true,
+    "owned_processes": 0,
+    "preferences_byte_equal": true,
+    "prefix_absent": true,
+    "prefix_processes": 0,
+    "preparation_and_lifecycle_revalidated": true,
+    "status": "POST_CAPTURE_VERIFIED",
+    "unreadable_environments": {
+      "display": 319,
+      "marker": 319,
+      "owned": 319,
+      "prefix": 319
+    },
+    "xvfb_exited": true
+  },
+  "preservation": {
+    "roots": 30,
+    "changed_roots": [
+      "arithmetic-max-runtime-009"
+    ],
+    "unchanged_roots": 29,
+    "capture_preservation_sha256": "aa7720cd8f3c23344e746bde3d86bedc37f1e5199607b56763e1c96901a1c707",
+    "original_28_preserved": true
+  },
+  "runtime": {
+    "status": "FAILED",
+    "complete": false,
+    "completed_operations": 52,
+    "events": 44,
+    "installs": 4,
+    "independent_closes": 4,
+    "live_readbacks": 48,
+    "numeric_states": 336,
+    "original_outputs": 94,
+    "command_requests": 101,
+    "retained_ACKs": 100,
+    "successful_ACKs": 100,
+    "journal_rows": 190,
+    "journal_harness_errors": 0,
+    "failure_request": 101,
+    "failure_type": "TimeoutError",
+    "failure_classification": "bounded-command-ack-timeout",
+    "command_ACK_wait_seconds": 10,
+    "minus_response_received": false,
+    "minus_collection_attempts_observed": null,
+    "minus_capability_outcomes_observed": null,
+    "minus_terminal_diagnostics_received": false,
+    "all_six_whole_capture_flags_false": true
+  },
+  "required": {
+    "operations": 78,
+    "events": 66,
+    "installs": 6,
+    "closes": 6,
+    "live_readbacks": 72,
+    "empty_checkpoints": 6,
+    "numeric_states": 504,
+    "original_outputs": 141,
+    "native_cable_deliveries": 90,
+    "native_typed_receipts": 297,
+    "commands": 150,
+    "barrier_command": 151
+  },
+  "qualification": {
+    "passed": 0,
+    "total": 2103,
+    "increment": 0
+  },
+  "saved_order_observed": false,
+  "independent_audit_pending": true
+}

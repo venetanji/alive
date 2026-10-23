@@ -1,0 +1,859 @@
+{
+  "fixture": "list-edge",
+  "labels": [
+    "zl.iter:0",
+    "zl.iter:1",
+    "zl.slice:0",
+    "zl.slice:1",
+    "zl.rot:0",
+    "zl.rot:1",
+    "iter-direct:0",
+    "prepend-direct:0",
+    "append-direct:0",
+    "zl.reg-direct:0",
+    "zl.reg-direct:1",
+    "zl.join-direct:0",
+    "zl.join-direct:1",
+    "zl.len-direct:0",
+    "zl.len-direct:1",
+    "zl.iter-direct:0",
+    "zl.iter-direct:1",
+    "zl.slice-direct:0",
+    "zl.slice-direct:1",
+    "zl.rev-direct:0",
+    "zl.rev-direct:1",
+    "zl.rot-direct:0",
+    "zl.rot-direct:1",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$feedback",
+    "$delivery"
+  ],
+  "targets": [
+    {
+      "id": "obj-1",
+      "key": "zl.iter",
+      "creation": "zl.iter 2",
+      "outlets": 2
+    },
+    {
+      "id": "obj-9",
+      "key": "zl.slice",
+      "creation": "zl.slice 2",
+      "outlets": 2
+    },
+    {
+      "id": "obj-17",
+      "key": "zl.rot",
+      "creation": "zl.rot 1",
+      "outlets": 2
+    },
+    {
+      "id": "obj-25",
+      "key": "iter-direct",
+      "creation": "iter",
+      "outlets": 1
+    },
+    {
+      "id": "obj-26",
+      "key": "prepend-direct",
+      "creation": "prepend head",
+      "outlets": 1
+    },
+    {
+      "id": "obj-27",
+      "key": "append-direct",
+      "creation": "append tail",
+      "outlets": 1
+    },
+    {
+      "id": "obj-28",
+      "key": "zl.reg-direct",
+      "creation": "zl.reg",
+      "outlets": 2
+    },
+    {
+      "id": "obj-29",
+      "key": "zl.join-direct",
+      "creation": "zl.join 9",
+      "outlets": 2
+    },
+    {
+      "id": "obj-30",
+      "key": "zl.len-direct",
+      "creation": "zl.len",
+      "outlets": 2
+    },
+    {
+      "id": "obj-31",
+      "key": "zl.iter-direct",
+      "creation": "zl.iter 2",
+      "outlets": 2
+    },
+    {
+      "id": "obj-32",
+      "key": "zl.slice-direct",
+      "creation": "zl.slice 2",
+      "outlets": 2
+    },
+    {
+      "id": "obj-33",
+      "key": "zl.rev-direct",
+      "creation": "zl.rev",
+      "outlets": 2
+    },
+    {
+      "id": "obj-34",
+      "key": "zl.rot-direct",
+      "creation": "zl.rot 1",
+      "outlets": 2
+    }
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_1",
+      "message": "zlclear",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "zlclear"
+    },
+    {
+      "id": "event_2",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_3",
+      "message": "bang",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_4",
+      "message": "zlreset",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "zlreset"
+    },
+    {
+      "id": "event_5",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_6",
+      "message": "bang",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_7",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-9",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_8",
+      "message": "zlclear",
+      "destination": "obj-9",
+      "inlet": 0,
+      "case": "zlclear"
+    },
+    {
+      "id": "event_9",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-9",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_10",
+      "message": "bang",
+      "destination": "obj-9",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_11",
+      "message": "zlreset",
+      "destination": "obj-9",
+      "inlet": 0,
+      "case": "zlreset"
+    },
+    {
+      "id": "event_12",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-9",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_13",
+      "message": "bang",
+      "destination": "obj-9",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_14",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_15",
+      "message": "zlclear",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "zlclear"
+    },
+    {
+      "id": "event_16",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_17",
+      "message": "bang",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_18",
+      "message": "zlreset",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "zlreset"
+    },
+    {
+      "id": "event_19",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_20",
+      "message": "bang",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_21",
+      "message": "list",
+      "selector": "list",
+      "atoms": [
+        1,
+        2,
+        3
+      ],
+      "destination": "obj-25",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_22",
+      "message": "list",
+      "selector": "list",
+      "atoms": [],
+      "destination": "obj-25",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_23",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-25",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_24",
+      "message": "symbol",
+      "selector": "symbol",
+      "atoms": [
+        "apple"
+      ],
+      "destination": "obj-25",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct symbol"
+    },
+    {
+      "id": "event_25",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-25",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_26",
+      "message": "list",
+      "selector": "list",
+      "atoms": [
+        1,
+        2,
+        3
+      ],
+      "destination": "obj-26",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_27",
+      "message": "list",
+      "selector": "list",
+      "atoms": [],
+      "destination": "obj-26",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_28",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-26",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_29",
+      "message": "symbol",
+      "selector": "symbol",
+      "atoms": [
+        "apple"
+      ],
+      "destination": "obj-26",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct symbol"
+    },
+    {
+      "id": "event_30",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-26",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_31",
+      "message": "list",
+      "selector": "list",
+      "atoms": [
+        1,
+        2,
+        3
+      ],
+      "destination": "obj-27",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_32",
+      "message": "list",
+      "selector": "list",
+      "atoms": [],
+      "destination": "obj-27",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_33",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-27",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_34",
+      "message": "symbol",
+      "selector": "symbol",
+      "atoms": [
+        "apple"
+      ],
+      "destination": "obj-27",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct symbol"
+    },
+    {
+      "id": "event_35",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-27",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_36",
+      "message": "list",
+      "selector": "list",
+      "atoms": [
+        1,
+        2,
+        3
+      ],
+      "destination": "obj-28",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_37",
+      "message": "list",
+      "selector": "list",
+      "atoms": [],
+      "destination": "obj-28",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_38",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-28",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_39",
+      "message": "symbol",
+      "selector": "symbol",
+      "atoms": [
+        "apple"
+      ],
+      "destination": "obj-28",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct symbol"
+    },
+    {
+      "id": "event_40",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-28",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_41",
+      "message": "list",
+      "selector": "list",
+      "atoms": [
+        1,
+        2,
+        3
+      ],
+      "destination": "obj-29",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_42",
+      "message": "list",
+      "selector": "list",
+      "atoms": [],
+      "destination": "obj-29",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_43",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-29",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_44",
+      "message": "symbol",
+      "selector": "symbol",
+      "atoms": [
+        "apple"
+      ],
+      "destination": "obj-29",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct symbol"
+    },
+    {
+      "id": "event_45",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-29",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_46",
+      "message": "list",
+      "selector": "list",
+      "atoms": [
+        1,
+        2,
+        3
+      ],
+      "destination": "obj-30",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_47",
+      "message": "list",
+      "selector": "list",
+      "atoms": [],
+      "destination": "obj-30",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_48",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-30",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_49",
+      "message": "symbol",
+      "selector": "symbol",
+      "atoms": [
+        "apple"
+      ],
+      "destination": "obj-30",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct symbol"
+    },
+    {
+      "id": "event_50",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-30",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_51",
+      "message": "list",
+      "selector": "list",
+      "atoms": [
+        1,
+        2,
+        3
+      ],
+      "destination": "obj-31",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_52",
+      "message": "list",
+      "selector": "list",
+      "atoms": [],
+      "destination": "obj-31",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_53",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-31",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_54",
+      "message": "symbol",
+      "selector": "symbol",
+      "atoms": [
+        "apple"
+      ],
+      "destination": "obj-31",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct symbol"
+    },
+    {
+      "id": "event_55",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-31",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_56",
+      "message": "list",
+      "selector": "list",
+      "atoms": [
+        1,
+        2,
+        3
+      ],
+      "destination": "obj-32",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_57",
+      "message": "list",
+      "selector": "list",
+      "atoms": [],
+      "destination": "obj-32",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_58",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-32",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_59",
+      "message": "symbol",
+      "selector": "symbol",
+      "atoms": [
+        "apple"
+      ],
+      "destination": "obj-32",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct symbol"
+    },
+    {
+      "id": "event_60",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-32",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_61",
+      "message": "list",
+      "selector": "list",
+      "atoms": [
+        1,
+        2,
+        3
+      ],
+      "destination": "obj-33",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_62",
+      "message": "list",
+      "selector": "list",
+      "atoms": [],
+      "destination": "obj-33",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_63",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-33",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_64",
+      "message": "symbol",
+      "selector": "symbol",
+      "atoms": [
+        "apple"
+      ],
+      "destination": "obj-33",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct symbol"
+    },
+    {
+      "id": "event_65",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-33",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_66",
+      "message": "list",
+      "selector": "list",
+      "atoms": [
+        1,
+        2,
+        3
+      ],
+      "destination": "obj-34",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_67",
+      "message": "list",
+      "selector": "list",
+      "atoms": [],
+      "destination": "obj-34",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_68",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-34",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    },
+    {
+      "id": "event_69",
+      "message": "symbol",
+      "selector": "symbol",
+      "atoms": [
+        "apple"
+      ],
+      "destination": "obj-34",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct symbol"
+    },
+    {
+      "id": "event_70",
+      "message": "bang",
+      "selector": "bang",
+      "atoms": [],
+      "destination": "obj-34",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct bang"
+    }
+  ],
+  "drain_ms": 100
+}

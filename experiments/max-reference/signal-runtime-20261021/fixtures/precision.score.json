@@ -1,0 +1,650 @@
+{
+  "fixture": "precision",
+  "sample_rate": 48000,
+  "signal_vector": 64,
+  "frames": 64,
+  "buffer": "alive_signal_reference",
+  "labels": [
+    "driver_left",
+    "driver_right",
+    "sr_left",
+    "sr_right",
+    "sigvs_left",
+    "sigvs_right",
+    "iovs_left",
+    "iovs_right",
+    "overdrive_left",
+    "overdrive_right",
+    "takeover_left",
+    "takeover_right",
+    "switch_left",
+    "switch_right",
+    "snapshot_offset_0",
+    "snapshot_offset_1",
+    "snapshot_offset_63",
+    "snapshot_automatic",
+    "max_error"
+  ],
+  "channels": [
+    {
+      "source": "obj-23",
+      "outlet": 0,
+      "label": "clip_reversed_-2.0",
+      "value": -2.0
+    },
+    {
+      "source": "obj-25",
+      "outlet": 0,
+      "label": "clip_reversed_0.0",
+      "value": 0.0
+    },
+    {
+      "source": "obj-27",
+      "outlet": 0,
+      "label": "clip_reversed_2.0",
+      "value": 2.0
+    },
+    {
+      "source": "obj-29",
+      "outlet": 0,
+      "label": "clip_mode1_1.5"
+    },
+    {
+      "source": "obj-30",
+      "outlet": 0,
+      "label": "phasor1000"
+    },
+    {
+      "source": "obj-31",
+      "outlet": 0,
+      "label": "cycle1000"
+    },
+    {
+      "source": "obj-32",
+      "outlet": 0,
+      "label": "noise_seed1_0"
+    },
+    {
+      "source": "obj-33",
+      "outlet": 0,
+      "label": "noise_seed1_1"
+    }
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "override 1",
+      "destination": "obj-1",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_1",
+      "message": "override 1",
+      "destination": "obj-3",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_2",
+      "message": "override 1",
+      "destination": "obj-5",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_3",
+      "message": "override 1",
+      "destination": "obj-7",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_4",
+      "message": "override 1",
+      "destination": "obj-9",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_5",
+      "message": "override 1",
+      "destination": "obj-11",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_6",
+      "message": "override 1",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_7",
+      "message": "0",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_8",
+      "message": "4",
+      "destination": "obj-1",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_9",
+      "message": "48000",
+      "destination": "obj-3",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_10",
+      "message": "64",
+      "destination": "obj-5",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_11",
+      "message": "512",
+      "destination": "obj-7",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_12",
+      "message": "0",
+      "destination": "obj-9",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_13",
+      "message": "0",
+      "destination": "obj-11",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_14",
+      "message": "bang",
+      "destination": "obj-34",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_15",
+      "message": "bang",
+      "destination": "obj-36",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_16",
+      "message": "bang",
+      "destination": "obj-38",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_17",
+      "message": "stop",
+      "destination": "obj-40",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_18",
+      "message": "sizeinsamps 64",
+      "destination": "obj-46",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_19",
+      "message": "loop 1",
+      "destination": "obj-47",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_20",
+      "message": "phase initial",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_21",
+      "message": "sizeinsamps 64",
+      "destination": "obj-43",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_22",
+      "message": "clear",
+      "destination": "obj-43",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_23",
+      "message": "1",
+      "destination": "obj-47",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_24",
+      "message": "start",
+      "destination": "obj-40",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_25",
+      "message": "seed 1",
+      "destination": "obj-32",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_26",
+      "message": "seed 1",
+      "destination": "obj-33",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_27",
+      "message": "1",
+      "destination": "obj-44",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_28",
+      "message": "1",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_29",
+      "message": "0",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 100
+    },
+    {
+      "id": "event_30",
+      "message": "0",
+      "destination": "obj-44",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_31",
+      "message": "capture initial",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_32",
+      "message": "stop",
+      "destination": "obj-40",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_33",
+      "message": "bang",
+      "destination": "obj-34",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_34",
+      "message": "bang",
+      "destination": "obj-36",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_35",
+      "message": "bang",
+      "destination": "obj-38",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_36",
+      "message": "capture last_initial alive_snapshot_reference",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_37",
+      "message": "phase restarted",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_38",
+      "message": "offset 63",
+      "destination": "obj-34",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_39",
+      "message": "offset 0",
+      "destination": "obj-36",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_40",
+      "message": "offset 1",
+      "destination": "obj-38",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_41",
+      "message": "5",
+      "destination": "obj-40",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_42",
+      "message": "sizeinsamps 64",
+      "destination": "obj-43",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_43",
+      "message": "clear",
+      "destination": "obj-43",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_44",
+      "message": "1",
+      "destination": "obj-47",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_45",
+      "message": "start",
+      "destination": "obj-40",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_46",
+      "message": "1",
+      "destination": "obj-44",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_47",
+      "message": "1",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_48",
+      "message": "0",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 100
+    },
+    {
+      "id": "event_49",
+      "message": "0",
+      "destination": "obj-44",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_50",
+      "message": "capture restarted",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_51",
+      "message": "stop",
+      "destination": "obj-40",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_52",
+      "message": "bang",
+      "destination": "obj-34",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_53",
+      "message": "bang",
+      "destination": "obj-36",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_54",
+      "message": "bang",
+      "destination": "obj-38",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_55",
+      "message": "capture last_restarted alive_snapshot_reference",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_56",
+      "message": "phase reset",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_57",
+      "message": "sizeinsamps 64",
+      "destination": "obj-43",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_58",
+      "message": "clear",
+      "destination": "obj-43",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_59",
+      "message": "1",
+      "destination": "obj-47",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_60",
+      "message": "start",
+      "destination": "obj-40",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_61",
+      "message": "seed 1",
+      "destination": "obj-32",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_62",
+      "message": "seed 1",
+      "destination": "obj-33",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_63",
+      "message": "0.25",
+      "destination": "obj-30",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_64",
+      "message": "reset 0.25",
+      "destination": "obj-31",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_65",
+      "message": "1",
+      "destination": "obj-44",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_66",
+      "message": "1",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_67",
+      "message": "0",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 100
+    },
+    {
+      "id": "event_68",
+      "message": "0",
+      "destination": "obj-44",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_69",
+      "message": "capture reset",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_70",
+      "message": "stop",
+      "destination": "obj-40",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_71",
+      "message": "bang",
+      "destination": "obj-34",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_72",
+      "message": "bang",
+      "destination": "obj-36",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_73",
+      "message": "bang",
+      "destination": "obj-38",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_74",
+      "message": "capture last_reset alive_snapshot_reference",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_75",
+      "message": "bang",
+      "destination": "obj-1",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_76",
+      "message": "bang",
+      "destination": "obj-3",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_77",
+      "message": "bang",
+      "destination": "obj-5",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_78",
+      "message": "bang",
+      "destination": "obj-7",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_79",
+      "message": "bang",
+      "destination": "obj-9",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_80",
+      "message": "bang",
+      "destination": "obj-11",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_81",
+      "message": "bang",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    }
+  ],
+  "drain_ms": 100
+}

@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "message_box",
+      "x": 80,
+      "y": 60,
+      "params": {
+        "text": "-7.5"
+      }
+    },
+    {
+      "id": 2,
+      "type": "abs",
+      "x": 80,
+      "y": 180,
+      "params": {
+        "numericmode": 2
+      }
+    },
+    {
+      "id": 3,
+      "type": "print",
+      "x": 80,
+      "y": 300,
+      "params": {
+        "label": "abs",
+        "level": 0,
+        "popup": 0
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 2,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    }
+  ]
+}

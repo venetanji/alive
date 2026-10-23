@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "metro",
+      "x": 60,
+      "y": 60,
+      "params": {
+        "interval": 20
+      }
+    },
+    {
+      "id": 2,
+      "type": "counter",
+      "x": 230,
+      "y": 60,
+      "params": {
+        "steps": 3
+      }
+    },
+    {
+      "id": 3,
+      "type": "number",
+      "x": 400,
+      "y": 60,
+      "params": {
+        "value": 0
+      }
+    },
+    {
+      "id": 4,
+      "type": "select",
+      "x": 570,
+      "y": 60,
+      "params": {
+        "args": "1"
+      }
+    },
+    {
+      "id": 5,
+      "type": "bang",
+      "x": 60,
+      "y": 190,
+      "params": {}
+    },
+    {
+      "id": 6,
+      "type": "bang",
+      "x": 230,
+      "y": 190,
+      "params": {}
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 2,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 4,
+      "inlet": 0
+    },
+    {
+      "from": 4,
+      "outlet": 0,
+      "to": 5,
+      "inlet": 0
+    },
+    {
+      "from": 4,
+      "outlet": 1,
+      "to": 6,
+      "inlet": 0
+    }
+  ]
+}

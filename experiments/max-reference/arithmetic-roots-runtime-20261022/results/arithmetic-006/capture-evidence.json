@@ -1,0 +1,98 @@
+{
+  "operation": "capture_process_scenario",
+  "evidence_id": "ev_a0ed6947bdad1fbe7e7ba19b62634a570fdff7803e7db65363b019dd0db409c8",
+  "session_sha256": "fc827c8b6638dffd69d6283b5d08f9cc94874521bdf95377fe0cae466c8bca36",
+  "cleanup_sha256": "b192d0167e47f7c40eefc58074d418e2a52bc134a9f4a6cbd496fb693627a117",
+  "status": "FAILED",
+  "complete": false,
+  "completed_operations": 26,
+  "required_operations": 78,
+  "readback_request_count": 24,
+  "successful_command_acknowledgements": 50,
+  "received_command_acknowledgements": 50,
+  "command_request_count": 51,
+  "observed_original_outlet_receipts": 47,
+  "required_original_outlet_receipts": 141,
+  "observed_numeric_states": 168,
+  "required_numeric_states": 504,
+  "independently_validated_closes": 2,
+  "required_closes": 6,
+  "failure_document": "plus",
+  "failure_revision": 1,
+  "failure_request_id": 51,
+  "failure_response_received": false,
+  "failure_type": "TimeoutError",
+  "retained_plus_numeric_capability_observations": 366,
+  "retained_plus_diagnostic_passes": 61,
+  "private_trace": {
+    "sha256": "2b3287e45de1123f8ac7582544aa13da5dbfba6650d2aa33e7a46b5f8be39a63",
+    "bytes": 568562,
+    "records": 1490,
+    "max_record_bytes": 955,
+    "max_recorded_attempt": 61,
+    "last_phase": "poll-scheduled",
+    "last_elapsed_ms": 9955,
+    "terminal_failure_recorded": false,
+    "capability_calls_returned": 366,
+    "phase_counts": {
+      "command-consumed": 1,
+      "openfile-enter": 1,
+      "openfile-return": 1,
+      "poll-scheduled": 62,
+      "poll-enter": 61,
+      "root-decision": 61,
+      "validate-enter": 61,
+      "observation-chunk": 22,
+      "plus-eligibility": 61,
+      "capability-enter": 366,
+      "capability-call-return": 366,
+      "capability-exit": 366,
+      "validate-refused": 61
+    },
+    "timing_includes_trace_io": true,
+    "unpadded_complete_capture": false
+  },
+  "rea_filesystem_hash_omissions": [],
+  "rea_public_file_hashes_verified_by_parent": 6,
+  "rea_public_file_hashes": [
+    {
+      "name": "cleanup.json",
+      "sha256": "b192d0167e47f7c40eefc58074d418e2a52bc134a9f4a6cbd496fb693627a117",
+      "size": 1843
+    },
+    {
+      "name": "display-states.json",
+      "sha256": "50d160ea440e467ac3fed2369ce10ad36bac17ffedda9d7ea69422b688c91888",
+      "size": 10451
+    },
+    {
+      "name": "preferences-after.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "size": 205649
+    },
+    {
+      "name": "preferences-before.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "size": 205649
+    },
+    {
+      "name": "receipts.jsonl",
+      "sha256": "627c33a76807cc5823ddff21632c22eb7a533b268186bf832733bc205f70669d",
+      "size": 40208
+    },
+    {
+      "name": "session.json",
+      "sha256": "fc827c8b6638dffd69d6283b5d08f9cc94874521bdf95377fe0cae466c8bca36",
+      "size": 40223
+    }
+  ],
+  "preferences_equal_by_runner": true,
+  "sources_and_helpers_preserved": true,
+  "exact_owned_cleanup_empty": true,
+  "prefix_removed": true,
+  "xvfb_exited": true,
+  "unrelated_processes_untouched": true,
+  "full_comparison_complete": false,
+  "qualification_increment": 0,
+  "saved_order_observed": false
+}

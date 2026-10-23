@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "scope": "built Tauri canvas + real JACK ABI",
+  "audio_environment": "private software-only PipeWire JACK at 48 kHz / 1024 frames",
+  "keyboard_create_edit_undo_lock": true,
+  "json_roundtrip": true,
+  "message_path_left_peak": 0.006200010888278484,
+  "untriggered_right_peak": 0,
+  "note_off_tail_peak": 0,
+  "capture": {
+    "scenario": "capture",
+    "period": 1024,
+    "onset_a": 9453,
+    "onset_b": -1,
+    "a_after_off_peak": 0.0059293434,
+    "b_sustained_peak": 0,
+    "tail_peak": 0,
+    "xruns": 0,
+    "send_errors": 0,
+    "discontinuities": 0,
+    "acquisition_complete": true,
+    "pass": null
+  },
+  "limits": [
+    "No hardware MIDI or latency qualification",
+    "No Max DSP equivalence claim"
+  ]
+}

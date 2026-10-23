@@ -1,0 +1,314 @@
+{
+  "schema_version": 1,
+  "stage": "arithmetic-full-root-runtime",
+  "snapshot": "capture005",
+  "status": "INCOMPLETE",
+  "max_capture_status": "FAILED",
+  "max_completed_operations": 26,
+  "max_readbacks": 24,
+  "max_validated_readbacks": 24,
+  "max_successful_command_acknowledgements": 50,
+  "max_received_command_acknowledgements": 50,
+  "max_command_requests": 51,
+  "native_score_status": "PASS",
+  "required_counts": {
+    "operations": 78,
+    "events": 66,
+    "installs": 6,
+    "closes": 6,
+    "live_checkpoints": 72,
+    "empty_checkpoints": 6,
+    "numeric_states": 504,
+    "original_outlet_emissions": 141,
+    "native_saved_cable_deliveries": 90,
+    "native_typed_receipts": 297
+  },
+  "observed_counts": {
+    "operations": 26,
+    "events": 22,
+    "installs": 2,
+    "closes": 2,
+    "live_checkpoints": 24,
+    "empty_checkpoints": 2,
+    "numeric_states": 168,
+    "original_outlet_emissions": 47
+  },
+  "observations": {
+    "completed_document": "times",
+    "completed_revisions": [
+      1,
+      2
+    ],
+    "matching_original_outlet_messages_against_complete_native_record": 47,
+    "matching_numeric_states_against_complete_native_record": 168,
+    "independent_closes_revalidated": 2,
+    "complete_basic_proofs_revalidated": 2,
+    "retained_close_history_revalidated": true,
+    "failure_document": "plus",
+    "failure_revision": 1,
+    "failure_request_id": 51,
+    "failure_step_id": "install-plus-r1",
+    "plus_geometry_differences": null,
+    "plus_numeric_class_differences": null,
+    "plus_numeric_format_observations": 0,
+    "plus_numeric_getter_observations": 0,
+    "plus_arithmetic_events_executed": 0,
+    "minus_operations_executed": 0,
+    "whole_capture_completion_gates": false,
+    "strict_complete_comparison_executed": false,
+    "failure_type": "TimeoutError",
+    "failure_response_received": false,
+    "plus_actual_capability_attempts": "unknown"
+  },
+  "qualification": {
+    "qualified": 0,
+    "total": 2103,
+    "increment": 0
+  },
+  "saved_order_observed": false,
+  "verification": {
+    "python_tests": 66,
+    "python_passed": 65,
+    "python_skipped": 1,
+    "node_helper_suite": "PASS",
+    "corrected_static_review": "PASS",
+    "concrete_review": "PASS",
+    "capture_audit": "OBSERVED_PREFIX_VERIFIED_COMPLETE_CAPTURE_FAILED",
+    "parent_observed_output_state_comparison_repeated": false,
+    "parent_independent_close_and_history_validation_repeated": false,
+    "sealed_inputs_verified": 22,
+    "historical_implementation_files_verified": 16,
+    "rea_public_file_hashes_verified_by_parent": 6,
+    "rea_filesystem_hash_omissions": 0,
+    "reviewer_raw_rea_record_access": false,
+    "cleanup_preserved": true,
+    "independent_observed_output_state_comparison": true,
+    "independent_close_and_history_validation": true
+  },
+  "evidence_id": "ev_0af2ac7e106424371ec5b4052b952ef28c14689a3b626d5eb474fd756e57a8c8",
+  "public_artifacts": [
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/score.json",
+      "sha256": "95012c9d56bc898d32b055d2f6d7fc925cac19afc4a18af254f7a3c871b67afb",
+      "bytes": 24179
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/native-result.json",
+      "sha256": "ce1976dfaecf4494ff876395a3c5df4add4f393f28235343cfc434120200a836",
+      "bytes": 37931
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/native-refusals.json",
+      "sha256": "49b4904521ca6db43cb486321b5fe7a85a8770a03202d217957c3a5be2eab430",
+      "bytes": 1022
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/admission-revalidation.json",
+      "sha256": "53954324db26d6d81078935e94742a04505f992517c0afec51d040a583f49755",
+      "bytes": 808
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/preparation-manifest-arithmetic005.json",
+      "sha256": "ac98ad06ce443b956710ae46f487e920bc7d178e0dcb1666b394cc188b2c87c4",
+      "bytes": 5716
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/max-preparation-005-design.md",
+      "sha256": "49f86c152210d1871155b4608c33cf6dd600551ee92ceb729f7453779693a9f0",
+      "bytes": 10676
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/max-preparation-005-report.md",
+      "sha256": "38efa2082a2e51f9f28025f180ed112c2bd6a275324c904ac6186bb8d156b988",
+      "bytes": 5551
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-005-review.md",
+      "sha256": "be83226b6d43422a27529680184576a36855a49976d151f66d24135969ab2e70",
+      "bytes": 9412
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-005-review.diff",
+      "sha256": "46b2dbda82ee5d432ff86659cb456421984b234b8c3c2e090ad55da53c30db10",
+      "bytes": 81932
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-005-review.json",
+      "sha256": "ad65195d652f0052ee694632b7d8862420d357fad61602a2304ee9af2aaaac7b",
+      "bytes": 5093
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/max-preparation-005-fix1-report.md",
+      "sha256": "cc57471ca98b0850411a9e21f3e56be8d1ca03d97dacf74e4b6b816ca0935417",
+      "bytes": 2841
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-005-fix1-brief.md",
+      "sha256": "73400d991d06ada55c841ce49e26730eb25f7a65d21fb8080649940c40312d2c",
+      "bytes": 2027
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-005-fix1-review.diff",
+      "sha256": "74ac7dc18c4a2ec4c3964b8526187dd088de6aafb5620d10f61741d9a1c77f79",
+      "bytes": 8305
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-005-fix1-review.json",
+      "sha256": "73cb137679e2528afa1ab2d8f82df1a5f68ffe0ec0eb18e40747042ae787e8e1",
+      "bytes": 5070
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-005-fix1-rereview.md",
+      "sha256": "3e0026ca150ee0b222c97b9e0381d38eba10786b506b074463b75f96fa22a441",
+      "bytes": 5775
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-005-concrete-brief.md",
+      "sha256": "d531ba8d1377e1fc512129543bb6dda77eacf2cd98555846a663fb79442b371f",
+      "bytes": 3164
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-005-concrete-review.md",
+      "sha256": "a1a730507fd2ef7812cae837d225539fcb8eccdfd72cca627e5f10fd2073e16f",
+      "bytes": 7038
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/capture-005-audit.md",
+      "sha256": "d2a9fe468be06f8b31d0e8371056530e9951821f44e9a64326b7eb25bf6a6950",
+      "bytes": 11115
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-005/capture-evidence.json",
+      "sha256": "964f487038acd028bbd9b80331f20f60dff0c527c361827d01de7c5d5cb2dd98",
+      "bytes": 2335
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-005/cleanup.json",
+      "sha256": "eff1be6a3acf5aaec17c320db343853020052e4b7f6ea0fab5fe1ba57b6db37a",
+      "bytes": 1843
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-005/display-states.json",
+      "sha256": "6a4a4377b9b09eef098192f22fa30c9a2e10926bea730ac82502ddd1cda15092",
+      "bytes": 10451
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-005/preferences-after.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "bytes": 205649
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-005/preferences-before.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "bytes": 205649
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-005/receipts.jsonl",
+      "sha256": "627c33a76807cc5823ddff21632c22eb7a533b268186bf832733bc205f70669d",
+      "bytes": 40208
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-005/session.json",
+      "sha256": "87961ed65de6fac8d92947f0f3e7ca26e48be7746cc5491a275bf0dfe9420fba",
+      "bytes": 40223
+    }
+  ],
+  "private_bindings": [
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/config.json",
+      "sha256": "6b10e826e5db6911324445247c1f3a9df5f95a93945fff7674fcb97eb5ce3e5e",
+      "bytes": 208940
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/seal.json",
+      "sha256": "5719addda2021688b475ef39e7c35fe0f7c990971ca99253ef4963b2ed582d74",
+      "bytes": 3486
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/command.json",
+      "sha256": "7a53e382e6d67241fef6ac8e313f76986896991c789971b5f7c2d1b3cdf93261",
+      "bytes": 231
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/ack.json",
+      "sha256": "e5aa7c4c07a7c17f4155bb0539f64953328ba2d5ca6e6454cdc050710664d7fd",
+      "bytes": 102719
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/private-failure.json",
+      "sha256": "b37e2b334c7544519df1c251fc8654aed113bb2571e7e461f5fa66063deb992c",
+      "bytes": 74
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/private-journal.jsonl",
+      "sha256": "5349a1d31b7d28ab875b3c7c0ec1d75a6afcb0f14bc144302e840a38a0e4041d",
+      "bytes": 32000
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/private-display-states.json",
+      "sha256": "0e5a16b2859da255536d3beffffd8d4c6e950684a1e25936a55527796fef773c",
+      "bytes": 164878
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/private-runtime.log",
+      "sha256": "da5f5e7f21d6d40eeb95bfca2c2e351fc6733866c85f7cd1b5c9385ddefc2ae9",
+      "bytes": 681
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/lifecycle-report.json",
+      "sha256": "d5d8000268baee68d0b64d25191ad6cce29a055124d9163b5092f54391696de0",
+      "bytes": 5298
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/observations/ack-request-43.json",
+      "sha256": "124596749ec73439226e7b5a899a82214697b972a909eb22fb8f1829a7816538",
+      "bytes": 102290
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/observations/validated-close-43.json",
+      "sha256": "89a002a835430a62ee84aea19f9b4cf2e5dff92d12115c832959f2e9d3c697a9",
+      "bytes": 381
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/observations/lifecycle-root-times-r1.json",
+      "sha256": "ed68b6377eaab6c5a8fc91460133531333f4c9ead240951b3fd5502917445a27",
+      "bytes": 15576
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/observations/retained-lifecycle-root-times-r1.json",
+      "sha256": "ed68b6377eaab6c5a8fc91460133531333f4c9ead240951b3fd5502917445a27",
+      "bytes": 15576
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/observations/ack-request-50.json",
+      "sha256": "e5aa7c4c07a7c17f4155bb0539f64953328ba2d5ca6e6454cdc050710664d7fd",
+      "bytes": 102719
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/observations/validated-close-50.json",
+      "sha256": "7914a2a48322554db14cde711816e265b101ec97fb1b9a1d224a718080275a43",
+      "bytes": 381
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/observations/lifecycle-root-times-r2.json",
+      "sha256": "d5c4cb2d8148617ca7808823ec839026af5ceb3103c0e3b7797c01642c53b65a",
+      "bytes": 15568
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-005/observations/retained-lifecycle-root-times-r2.json",
+      "sha256": "d5c4cb2d8148617ca7808823ec839026af5ceb3103c0e3b7797c01642c53b65a",
+      "bytes": 15568
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-package-005-historical/binding.json",
+      "sha256": "b5edd0895a0fe6554d6967b3ad79f1fda8740ad33b1304cb84a87b703239ec31",
+      "bytes": 1432
+    }
+  ],
+  "pending": [
+    "Determine the missing request51 response boundary; actual plus capability attempts remain unknown.",
+    "Preserve consumed005 and use a newly reviewed preparation for any instrumented capture.",
+    "Complete all78 Max operations and the strict complete-denominator comparison.",
+    "All-help qualification remains0/2103."
+  ]
+}

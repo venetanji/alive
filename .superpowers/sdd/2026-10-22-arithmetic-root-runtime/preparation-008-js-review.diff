@@ -1,0 +1,1015 @@
+--- final007/test_helpers.cjs
++++ current008/test_helpers.cjs
+@@ -1333,25 +1333,253 @@
+   const valid = plus007V8Fixture(), authored = ['newobj', 'newobj', 'newobj', 'jsui'];
+   valid.scopes.root[1].maxclass = 'jpatcher';
+   const diag = valid.reader.collectRepresentationDiagnostics(valid.root, valid.definition, valid.request, valid.context.config);
+   assert.deepEqual(plain(diag.root_rows.map(row => row.source_class)), authored);
+   assert.equal(diag.root_rows[1].actual_runtime_class, 'jpatcher');
+   assert.ok(diag.numeric_rows.every(row => row.actual_runtime_class === 'number'));
+   assert.equal(diag.inventory_coverage.root.complete_count, 8);
+   assert.equal(diag.inventory_coverage.numeric.complete_count, 35);
+   assert.equal(valid.calls.length, 6); assert.equal(diag.strict_mismatch, true);
+   valid.calls.length = 0;
+   assert.throws(() => valid.reader.collectReadback(valid.root, valid.definition, valid.request, valid.context.config),
+     /strict-v8-original-representation-refused/);
+   assert.equal(valid.calls.length, 6);
+   for (const anchor of ['root/obj-1', 'root/obj-2', 'root/obj-3', 'root/obj-4']) {
+     const f = plus007V8Fixture();
+     f.definition.full_inventory.find(b => b.anchor === anchor).maxclass = 'synthetic-forged-source-class';
+     assert.throws(() => f.reader.collectRepresentationDiagnostics(f.root, f.definition, f.request, f.context.config),
+       anchor + ': changed authored class must refuse before target calls');
+     assert.equal(f.calls.length, 0, anchor + ': changed authored class reached target calls');
+   }
+   const production = helper('v8-readback.js');
+   assert.deepEqual(plain(Object.values(production.PLUS_ROOT_DIAGNOSTIC_PINS).map(pin => pin.source_class)), authored);
+ });
+ console.log(JSON.stringify({completed007, failures007}));
+ assert.deepEqual(failures007, [], 'preparation007 behavioral regressions');
++
++// Private source metadata stays in memory; all host objects and calls are synthetic.
++const source008 = JSON.parse(require('node:child_process').execFileSync('python3', ['-B', '-c',
++  'import arithmetic,json; d,_,h=arithmetic.source_metadata(); print(json.dumps({"definition":next(x for x in d if x["document"]=="plus"),"helpers":h}))'],
++  {cwd: __dirname, encoding: 'utf8', maxBuffer: 1024 * 1024}));
++function plus008Fixture(revision = 1, action = 'install') {
++  const r = helper('v8-readback.js'), d = plain(source008.definition), calls = [], nongated = [], byAnchor = {}, byName = {};
++  Object.assign(d, {revision, lifecycle_owner_inlet: revision + 1, working_windows_path: `Z:/synthetic/plus-r${revision}.maxhelp`});
++  function object(b, name) {
++    const o = {varname: name, maxclass: b.v8_numeric_representation_policy ? 'number' :
++      b.v8_root_representation_policy ? 'jpatcher' : b.runtime_class,
++      live: plain((b.observed_geometry_policy || {}).live_rect || b.rect), valid: true,
++      patchcords: {inputs: [], outputs: []}, getboxattr() {return [...this.live];}};
++    byAnchor[b.anchor] = o; byName[name] = o;
++    if (['number', 'flonum'].includes(b.maxclass)) {
++      o.getvalueof = () => { (b.v8_numeric_representation_policy ? calls : nongated).push([b.anchor, 'value']);
++        return action === 'install' ? b.initial_numeric : b.initial_numeric + .25; };
++      if (b.v8_numeric_representation_policy) o.getattr = () => {calls.push([b.anchor, 'format']); return 6;};
++      else o.getvalueof = () => {nongated.push([b.anchor, 'value']); return 13;};
++    }
++    return o;
++  }
++  const originals = d.full_inventory.filter(b => b.anchor.split('/').length === 2).map(b => object(b, b.source_varname));
++  const basicObjects = d.boxes.map(b => object(b, '__alive_help_' + b.id.replace(/-/g, '_')));
++  const leaves = d.observer_leaves.map(l => object({anchor: l.varname, runtime_class: 'js', rect: [-4000, -4000, 100, 22]}, l.varname));
++  const basic = linkObjects([...basicObjects, ...leaves]);
++  byAnchor['root/obj-2'].subpatcher = () => basic; byAnchor['root/obj-3'].subpatcher = () => ({firstobject: null});
++  function connect(src, outlet, dst, inlet) {
++    const cord = {srcobject: src, srcoutlet: outlet, dstobject: dst, dstinlet: inlet};
++    src.patchcords.outputs.push(cord); dst.patchcords.inputs.push(cord);
++  }
++  for (const edge of d.saved_edges) connect(byAnchor[d.basic_anchor + '/' + edge.source[0]], edge.source[1],
++    byAnchor[d.basic_anchor + '/' + edge.destination[0]], edge.destination[1]);
++  for (const leaf of d.observer_leaves) connect(byAnchor[leaf.anchor], leaf.port, byName[leaf.varname], 0);
++  const channel = 'synthetic-plus-r' + revision;
++  const harness = [
++    ['__alive_arithmetic_reader', 'v8', [-3000, -3000, 160, 133], 'v8 synthetic'],
++    ['__alive_arithmetic_disposer', 'thispatcher', [-3100, -3000, 100, 22], 'thispatcher'],
++    ['__alive_arithmetic_freebang', 'freebang', [-3200, -3000, 100, 22], 'freebang'],
++    ['__alive_arithmetic_lifecycle_send', 'send', [-3400, -3000, 200, 64], 'send ' + channel]
++  ].map(([name, cls, rect, boxtext]) => Object.assign(object({anchor: name, runtime_class: cls, rect}, name), {boxtext}));
++  connect(harness[2], 0, harness[3], 0);
++  const root = Object.assign(linkObjects([...originals, ...harness]), {filepath: d.working_windows_path, parentpatcher: null,
++    getnamed: name => originals.find(o => o.varname === name)});
++  const owners = []; owners[revision + 1] = {inlet: revision + 1, document: 'plus', revision, source_sha256: d.source_sha256,
++    working_path: d.working_windows_path, channel, root_proof_path: 'Z:/synthetic/proof.json'};
++  const config = {helpers: plain(source008.helpers), documents: [d], lifecycle: {owners}};
++  const request = {op: action === 'close' ? 'operation' : 'readback', command_id: 100 + revision,
++    operation_request_id: action === 'close' ? 100 + revision : 90 + revision,
++    action, document: 'plus', revision, action_document: 'plus', action_revision: revision, source_sha256: d.source_sha256,
++    step_id: action === 'event' ? 'plus-A' + (revision === 1 ? '01' : '21') : action + '-plus-r' + revision};
++  return {reader: r, definition: d, request, config, calls, nongated, root, basic, byAnchor, byName, originals, harness};
++}
++const failures008 = [], completed008 = [];
++function case008(name, body) {
++  if (process.env.ARITHMETIC_008_CASE && process.env.ARITHMETIC_008_CASE !== name) return;
++  try {body(); completed008.push(name);} catch (error) {failures008.push({name, error: error.message.split('\n')[0]});}
++}
++const read008 = f => f.reader.collectReadback(f.root, f.definition, f.request, f.config);
++const close008 = f => f.reader.collectLifecycleProof(f.root, f.definition, f.request, f.config);
++case008('plus008_full_readback_and_fresh_close', () => {
++  for (const revision of [1, 2]) for (const action of ['install', 'event', 'close']) {
++    const f = plus008Fixture(revision, action), result = action === 'close' ? close008(f) : read008(f);
++    const w = result.v8_representation_witnesses;
++    assert.ok(w && w.version === 'plus-v8-representation-witnesses-v1', 'fresh plus witness missing');
++    assert.equal(f.calls.length, 6, 'gated calls must occur exactly once');
++    assert.equal(f.nongated.length, action === 'close' ? 0 : 4, 'live and close getter obligations differ');
++    assert.equal(w.numeric.length, 3); assert.equal(w.roots.length, 2);
++    assert.equal(w.request_id, f.request.command_id); assert.equal(w.operation_request_id, f.request.operation_request_id);
++    assert.equal(w.inventory_coverage.root.complete_count, 8); assert.equal(w.inventory_coverage.numeric.complete_count, 35);
++    assert.ok(JSON.stringify(Object.keys(w).sort()) === JSON.stringify(['version', 'engine', 'request_id', 'operation_request_id',
++      'step_id', 'action', 'action_document', 'action_revision', 'document', 'revision', 'source_sha256', 'helper_sha256',
++      'working_path', 'root_is_top_level', 'receipt_tag_observed', 'evidence', 'inventory_coverage', 'numeric', 'roots'].sort()), 'exact witness schema');
++    for (const row of w.numeric) assert.ok(JSON.stringify(Object.keys(row).sort()) === JSON.stringify(['anchor', 'source_box_sha256',
++      'source_text_sha256', 'source_class', 'actual_runtime_class', 'live_rect', 'candidate_count', 'candidate_count_complete',
++      'geometry_matches', 'receipt_tag_observed', 'format_observation', 'value_observation'].sort()), 'exact numeric witness schema');
++    for (const row of w.roots) assert.ok(JSON.stringify(Object.keys(row).sort()) === JSON.stringify(['anchor', 'source_box_sha256',
++      'source_text_sha256', 'source_class', 'actual_runtime_class', 'varname', 'live_rect', 'candidate_count', 'candidate_count_complete'].sort()), 'exact root witness schema');
++    assert.equal(Object.hasOwn(w, 'op'), false, 'op is request context only');
++    if (action !== 'close') {
++      assert.equal(result.numeric.length, 7); assert.equal(result.boxes.length, 35);
++      for (const row of w.numeric) assert.ok(result.numeric.some(n => n.anchor === row.anchor && n.value === row.value_observation.value &&
++        n.semantic_tag === 'float' && n.receipt_tag_observed === false), 'gated source semantics/value reuse missing');
++    } else {assert.equal(result.basic_retention.boxes.length, 35); assert.equal(Object.hasOwn(result, 'op'), false);}
++  }
++});
++case008('plus008_honest_diagnostics_and_no_external_authority', () => {
++  const f = plus008Fixture(), diag = f.reader.collectRepresentationDiagnostics(f.root, f.definition, f.request, f.config);
++  assert.equal(diag.strict_mismatch, true); assert.equal(diag.root_rows.length, 4); assert.equal(diag.numeric_rows.length, 3);
++  assert.equal(diag.root_rows.find(r => r.anchor === 'root/obj-1').candidates.length, 2);
++  assert.equal(diag.root_rows.find(r => r.anchor === 'root/obj-4').candidates.length, 2);
++  for (const supplied of [diag, plain(diag), {}, {strict_mismatch: false}])
++    assert.throws(() => f.reader.collectRepresentationWitnesses(f.root, f.definition, f.request, f.config, supplied));
++  f.calls.length = 0; assert.equal(read008(f).success, true); assert.equal(f.calls.length, 6, 'prior diagnostics must not replace fresh calls');
++});
++case008('plus008_metadata_preflight', () => {
++  const mutations = [
++    f => delete f.definition.boxes.find(b => b.v8_numeric_representation_policy).v8_numeric_representation_policy,
++    f => f.definition.boxes.push(plain(f.definition.boxes[0])),
++    f => f.definition.observer_leaves[0].v8_numeric_representation_policy = plain(f.definition.boxes.find(b => b.v8_numeric_representation_policy).v8_numeric_representation_policy),
++    f => f.definition.full_inventory[0].authored_empty = !f.definition.full_inventory[0].authored_empty,
++    f => {for (const v of ['boxes', 'full_inventory']) f.definition[v].find(b => b.anchor === 'root/obj-2/obj-1').inlets++;},
++    f => f.definition.boxes.at(-1).unknown = true,
++    f => f.definition.observer_leaves[0].port = false,
++    f => f.definition.saved_edges[0].source[1] = false,
++    f => f.definition.saved_edges[0].order = false,
++    f => f.definition.full_inventory.find(b => b.anchor === 'root/obj-2').saved_incoming_routes = false,
++    f => f.config.helpers[0].sha256 = 'x', f => f.request.op = 'operation', f => f.request.action_document = 'times',
++    f => f.config.lifecycle.owners[2].inlet = 3, f => f.config.documents = [plain(f.definition), plain(f.definition)],
++    f => f.root.parentpatcher = {}, f => f.root.filepath = 'Z:/wrong'
++  ];
++  for (const mutate of mutations) {const f = plus008Fixture(); mutate(f); assert.throws(() => read008(f)); assert.equal(f.calls.length, 0);}
++  for (const view of ['boxes', 'full_inventory']) for (const index of [0, 1, 2]) {
++    const f = plus008Fixture(), b = f.definition[view].filter(b => b.v8_numeric_representation_policy)[index];
++    for (const key of Object.keys(b.v8_numeric_representation_policy)) {
++      const g = plus008Fixture(), p = g.definition[view].find(x => x.anchor === b.anchor).v8_numeric_representation_policy;
++      delete p[key]; assert.throws(() => read008(g)); assert.equal(g.calls.length, 0, 'malformed policy reached capability');
++    }
++  }
++});
++case008('plus008_capability_shapes', () => {
++  assert.equal(read008(plus008Fixture()).success, true, 'positive capability control');
++  for (const method of ['getattr', 'getvalueof']) for (const raw of [null, undefined, [], [1], [1, 2], '6', true, NaN, Infinity, {}]) {
++    const f = plus008Fixture(); f.byAnchor['root/obj-2/obj-1'][method] = () => raw; assert.throws(() => read008(f));
++  }
++  for (const method of ['getattr', 'getvalueof']) for (const shape of ['unavailable', 'throws']) {
++    const f = plus008Fixture(); f.byAnchor['root/obj-2/obj-1'][method] = shape === 'throws' ? () => {throw Error('synthetic');} : null;
++    assert.throws(() => read008(f));
++  }
++  const wrongFormat = plus008Fixture(); wrongFormat.byAnchor['root/obj-2/obj-1'].getattr = () => 7; assert.throws(() => read008(wrongFormat));
++  const wrongDefault = plus008Fixture(); wrongDefault.byAnchor['root/obj-2/obj-1'].getvalueof = () => .5; assert.throws(() => read008(wrongDefault));
++});
++case008('plus008_last_getter_and_retention_currentness', () => {
++  assert.equal(read008(plus008Fixture()).success, true, 'positive freshness control');
++  const mutations = [
++    f => f.request.command_id++, f => f.request.op = 'invalid', f => f.config.lifecycle.owners[2].channel = 'changed',
++    f => f.config.lifecycle.owners = [...f.config.lifecycle.owners], f => f.config.documents = [plain(f.definition)],
++    f => f.config.helpers = plain(f.config.helpers), f => f.definition.boxes.at(-1).authored_empty = !f.definition.boxes.at(-1).authored_empty,
++    f => f.definition.boxes.find(b => b.v8_numeric_representation_policy).v8_numeric_representation_policy.finite_required = false,
++    f => f.definition.boxes.find(b => b.v8_numeric_representation_policy).initial_numeric = .5,
++    f => f.root.parentpatcher = {}, f => f.root.filepath = 'Z:/changed',
++    f => f.byAnchor['root/obj-2/obj-1'].maxclass = 'flonum',
++    f => f.byAnchor['root/obj-2/obj-1'].live[0] += .001
++  ];
++  for (const action of ['install', 'close']) for (const mutate of mutations) {
++    const f = plus008Fixture(1, action), last = f.byAnchor['root/obj-2/obj-23'], getter = last.getvalueof;
++    last.getvalueof = () => {const value = getter(); mutate(f); return value;};
++    assert.throws(() => action === 'close' ? close008(f) : read008(f)); assert.equal(f.calls.length, 6, 'no second gated pass');
++  }
++  for (const action of ['install', 'close']) {
++    const f = plus008Fixture(1, action), object = f.byAnchor['root/obj-2/obj-23']; let changed = false;
++    const cords = object.patchcords;
++    Object.defineProperty(object, 'patchcords', {get() {
++      if (!changed && f.calls.length === 6) {changed = true; f.request.command_id++;}
++      return cords;
++    }});
++    assert.throws(() => action === 'close' ? close008(f) : read008(f));
++    assert.equal(changed, true, 'mutation must occur during later retention');
++  }
++  const later = plus008Fixture(), b = later.definition.boxes.find(b => b.maxclass === 'number'), o = later.byAnchor[b.anchor], getter = o.getvalueof;
++  o.getvalueof = () => {const v = getter(); later.config.helpers[0].sha256 = 'changed'; return v;};
++  assert.throws(() => read008(later)); assert.equal(later.calls.length, 6); assert.equal(later.nongated.length, 1);
++});
++case008('plus008_inventory_preflight_and_retention', () => {
++  const mutations = [
++    f => f.basic.firstobject = f.basic.firstobject.nextobject,
++    f => f.byAnchor['root/obj-2/obj-1'].varname = f.byAnchor['root/obj-2/obj-24'].varname,
++    f => f.harness[0].maxclass = 'js', f => f.harness[0].valid = false,
++    f => f.originals[3].maxclass = 'comment', f => f.originals[0].live[0] += .1,
++    f => f.byName[f.definition.observer_leaves[0].varname].maxclass = 'comment',
++    f => f.byAnchor[f.definition.boxes.find(b => b.maxclass === 'comment').anchor].maxclass = 'button'
++  ];
++  for (const mutate of mutations) {const f = plus008Fixture(); mutate(f); assert.throws(() => read008(f)); assert.equal(f.calls.length, 0);}
++  const f = plus008Fixture(), c = f.byAnchor['root/obj-2/obj-1'].patchcords.outputs[0];
++  c.srcoutlet = 99; assert.throws(() => read008(f)); assert.equal(f.calls.length, 0);
++});
++case008('plus008_original_close_and_endpoint_identity', () => {
++  assert.ok(close008(plus008Fixture(1, 'close')).v8_representation_witnesses, 'positive close control');
++  for (const change of [{revision: 2}, {action_document: 'times'}, {operation_request_id: 1}]) {
++    const f = plus008Fixture(1, 'close'); Object.assign(f.request, change);
++    assert.throws(() => close008(f)); assert.equal(f.calls.length, 0, 'original request must bind before normalization');
++  }
++  const f = plus008Fixture(), cord = f.byAnchor['root/obj-2/obj-1'].patchcords.outputs[0];
++  cord.srcobject = {...cord.srcobject}; assert.throws(() => read008(f)); assert.equal(f.calls.length, 0, 'endpoint identity must be retained');
++  const closed = plus008Fixture(1, 'close'), rootCord = closed.harness[2].patchcords.outputs[0];
++  rootCord.srcobject = {...rootCord.srcobject}; assert.throws(() => close008(closed), 'root endpoint must bind the actual retained object');
++});
++case008('plus008_binding_read_snapshots_and_failure_prefix', () => {
++  for (const action of ['install', 'close']) {
++    const f = plus008Fixture(1, action), path = f.root.filepath; let changed = false;
++    Object.defineProperty(f.root, 'filepath', {get() {if (!changed) {changed = true; f.request.command_id++;} return path;}});
++    assert.throws(() => action === 'close' ? close008(f) : read008(f), 'first binding read must not change captured request');
++    assert.equal(f.calls.length, 0);
++  }
++  const f = plus008Fixture(), last = f.byAnchor['root/obj-2/obj-23'], getter = last.getvalueof;
++  last.getvalueof = () => {const value = getter(); f.request.command_id++; return value;};
++  let refused;try {read008(f);} catch (error) {refused = error;}
++  const diag = refused && refused.v8_representation_diagnostics;
++  assert.ok(diag && diag.strict_mismatch === true, 'raw mismatch/prefix must survive currentness refusal');
++  assert.equal(diag.numeric_rows.length, 3); assert.equal(diag.numeric_rows.at(-1).value_observation.status, 'returned');
++  const failed = plus008Fixture(), r = failed.reader, memory = new Map();
++  failed.byAnchor['root/obj-2/obj-1'].getvalueof = () => [];
++  failed.config.command_path = 'Z:/synthetic/request.json'; failed.request.output_path = 'Z:/synthetic/refusal.json';
++  r.configFile = 'Z:/synthetic/config.json'; r.documentName = 'plus'; r.revision = 1; r.File = memoryFile(memory);
++  memory.set(r.configFile, JSON.stringify(failed.config)); memory.set(failed.config.command_path, JSON.stringify(failed.request));
++  r.checkpoint.call({patcher: failed.root}, failed.request.command_id, failed.request.step_id);
++  const envelope = JSON.parse(memory.get(failed.request.output_path));
++  assert.ok(JSON.stringify(Object.keys(envelope).sort()) === JSON.stringify(['success', 'request_id', 'error_code',
++    'numeric_mode_observation', 'v8_representation_diagnostics'].sort()), 'five-key refusal envelope changed');
++  assert.equal(envelope.success, false); assert.equal(envelope.error_code, 'numeric-readback-refused');
++  assert.equal(envelope.numeric_mode_observation, null); assert.equal(envelope.v8_representation_diagnostics.strict_mismatch, true);
++  assert.equal(envelope.v8_representation_diagnostics.root_rows.length, 4); assert.equal(envelope.v8_representation_diagnostics.numeric_rows.length, 3);
++});
++case008('plus008_controller_coexistence', () => {
++  const f = plus008Fixture(), c = helper('controller.js'); c.config = f.config;
++  c.shared = {request_id: 51, step_id: 'install-plus-r1', action: 'install', action_document: 'plus', action_revision: 1};
++  f.root.firstobject = linkObjects(f.originals).firstobject;
++  f.basic.firstobject = linkObjects(f.definition.boxes.map(b => f.byAnchor[b.anchor])).firstobject;
++  for (const b of f.definition.full_inventory.filter(b => b.anchor.split('/').length === 2)) f.byAnchor[b.anchor].maxclass = b.runtime_class;
++  for (const b of f.definition.boxes.filter(b => b.v8_numeric_representation_policy)) {
++    const o = f.byAnchor[b.anchor]; o.getvalueof = () => [b.initial_numeric];
++  }
++  const pass = c.createPlusValidationPass(), accepted = pass.validate(f.root, f.definition);
++  assert.ok(accepted); assert.equal(c.anchorDiagnostics.length, 3); assert.equal(c.controllerRepresentationObservations.length, 3);
++  assert.ok(c.controllerRepresentationObservations.every(r => r.cohort_satisfied === true));
++});
++console.log(JSON.stringify({completed008, failures008}));
++assert.equal(failures008.length, 0, 'preparation008 behavioral regressions');
+--- final007/v8-readback.js
++++ current008/v8-readback.js
+@@ -218,50 +218,51 @@
+     var policy=expected.controller_numeric_representation_policy;if(typeof policy==="undefined")return null;
+     var pin=NUMERIC_REPRESENTATION_PINS[expected.anchor],configured={};
+     if(!pin||!definition||definition.document!=="times"||definition.source_sha256!==GEOMETRY_SOURCE||
+         !sameData(definition.helper_sha256,GEOMETRY_HELPERS)||!configuration||!configuration.helpers||configuration.helpers.length!==4)
+         throw Error("unobserved-controller-numeric-binding");
+     for(var i=0;i<configuration.helpers.length;i++)configured[configuration.helpers[i].name]=configuration.helpers[i].sha256;
+     var wanted={kind:"times-controller-numeric-representation-v1",engine:"js-controller",document:"times",
+         source_sha256:GEOMETRY_SOURCE,anchor:expected.anchor,source_class:"flonum",runtime_class:"number",
+         source_box_sha256:pin.source_box_sha256,source_text_sha256:pin.source_text_sha256,
+         saved_rect_sha256:pin.saved_rect_sha256,initial_numeric_sha256:pin.initial_numeric_sha256,
+         helper_sha256:GEOMETRY_HELPERS,evidence:NUMERIC_REPRESENTATION_EVIDENCE,
+         format_method:"getattr",format_attribute:"format",format_representation:"scalar-number",format_value:6,
+         getter_method:"getvalueof",getter_representation:"singleton-number-array",finite_required:true,source_initial_equality:true};
+     if(!sameData(policy,wanted)||!sameData(configured,GEOMETRY_HELPERS)||expected.maxclass!=="flonum"||
+         expected.runtime_class!=="flonum"||!sameData(expected.runtime_classes,["flonum"])||
+         expected.source_box_sha256!==pin.source_box_sha256||expected.source_text_sha256!==pin.source_text_sha256||
+         typeof expected.initial_numeric!=="number"||!isFinite(expected.initial_numeric)||
+         geometryVectorHash(expected.rect)!==pin.saved_rect_sha256||
+         geometryVectorHash([expected.initial_numeric,0,0,0])!==pin.initial_numeric_sha256||
+         (typeof definition.revision!=="undefined"&&
+             (typeof definition.revision!=="number"||Math.floor(definition.revision)!==definition.revision||
+                 (definition.revision!==1&&definition.revision!==2))))throw Error("controller-numeric-policy-changed");
+     return policy;
+ }
+ function v8RepresentationPolicy(expected,definition,configuration,numeric) {
++    if(definition.document==="plus")return plusV8Policy(expected,definition,configuration,numeric);
+     var policy=expected[numeric?"v8_numeric_representation_policy":"v8_root_representation_policy"];
+     if(typeof policy==="undefined")return null;
+     var pin=(numeric?NUMERIC_REPRESENTATION_PINS:V8_ROOT_REPRESENTATION_PINS)[expected.anchor],configured={};
+     if(!pin||!definition||definition.document!=="times"||definition.source_sha256!==GEOMETRY_SOURCE||
+         !sameData(definition.helper_sha256,GEOMETRY_HELPERS)||!configuration||!Array.isArray(configuration.helpers)||
+         configuration.helpers.length!==4)throw Error("unobserved-v8-representation-binding");
+     for(var helper of configuration.helpers)configured[helper.name]=helper.sha256;
+     var wanted=Object.assign({kind:"times-v8-"+(numeric?"numeric":"root")+"-representation-v1",engine:"v8",document:"times",
+         source_sha256:GEOMETRY_SOURCE,anchor:expected.anchor,source_class:numeric?"flonum":"newobj",
+         runtime_class:numeric?"number":"jpatcher"},pin,{helper_sha256:GEOMETRY_HELPERS,evidence:V8_REPRESENTATION_EVIDENCE});
+     if(numeric)Object.assign(wanted,{format_method:"getattr",format_attribute:"format",format_representation:"scalar-number",
+         format_value:6,getter_method:"getvalueof",getter_representation:"scalar-number",finite_required:true,initial_equality_action:"install"});
+     else Object.assign(wanted,{source_runtime_class:"patcher",saved_rect:expected.rect,live_rect:policy.live_rect,
+         source_varname:expected.source_varname,saved_incoming_routes:0,saved_outgoing_routes:0});
+     if(!sameData(policy,wanted)||!sameData(configured,GEOMETRY_HELPERS)||expected.maxclass!==(numeric?"flonum":"newobj")||
+         expected.runtime_class!==(numeric?"flonum":"patcher")||
+         !sameData(expected.runtime_classes,numeric?["flonum"]:["patcher","p"])||
+         expected.source_box_sha256!==pin.source_box_sha256||expected.source_text_sha256!==pin.source_text_sha256||
+         geometryVectorHash(expected.rect)!==pin.saved_rect_sha256||
+         (typeof definition.revision!=="undefined"&&(definition.revision!==1&&definition.revision!==2)))
+         throw Error("v8-representation-policy-changed");
+     if(numeric) {
+         if(typeof expected.initial_numeric!=="number"||!isFinite(expected.initial_numeric)||
+             geometryVectorHash([expected.initial_numeric,0,0,0])!==pin.initial_numeric_sha256)
+             throw Error("v8-source-derived-default-changed");
+@@ -272,75 +273,322 @@
+ }
+ function representationObjects(patcher,limit) {
+     var objects=[],object,status="complete";
+     if(!patcher)return {objects:objects,complete:false,status:"unavailable",limit:limit};
+     try {
+         object=patcher.firstobject;
+         while(object&&objects.length<=limit){objects.push(object);object=object.nextobject;}
+         if(typeof object==="undefined")status="unavailable";
+         else if(object||objects.length>limit)status="overflow";
+     }catch(error){status="threw";}
+     return {objects:objects,complete:status==="complete",status:status,limit:limit};
+ }
+ function representationRectangle(object) {
+     try{return rectangle(object);}catch(error){return null;}
+ }
+ var PLUS_ROOT_DIAGNOSTIC_PINS={};
+ for(var plusRootAnchor of ["root/obj-1","root/obj-2","root/obj-3"]) {
+     var plusRootPin=PLUS_GEOMETRY_PINS[plusRootAnchor];
+     PLUS_ROOT_DIAGNOSTIC_PINS[plusRootAnchor]={source_class:"newobj",source_box_sha256:plusRootPin.source_box_sha256,
+         source_text_sha256:plusRootPin.source_text_sha256,saved_rect_sha256:plusRootPin.saved_rect_sha256,
+         runtime_class:plusRootPin.runtime_class,runtime_classes:plusRootPin.runtime_class==="patcher"?["patcher","p"]:[plusRootPin.runtime_class]};
+ }
+ PLUS_ROOT_DIAGNOSTIC_PINS["root/obj-4"]={source_class:"jsui",source_box_sha256:"bff84f2c0e682d712f384b4d5f73017bcc936392a7d0b981ec4ef8ef7a3deb29",
+     source_text_sha256:"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     saved_rect_sha256:"54f83aaab9e2c42a561a2ccf3d705fb635c1c363d5ee0f1cac7a33a87d7debb9",runtime_class:"jsui",runtime_classes:["jsui"]};
+-function collectPlusRepresentationDiagnostics(root,definition,request,configuration) {
++var PLUS_V8_PROJECTION_SHA256="ba8d3d1ec23265bd75f16641fa95668466888d4033811fda95bcdef757da600f";
++var PLUS_V8_FORMAT_SHA256="dcdadd560ab2234a2bf2d2b5ed44e5d7640e88eefe6bdbc98aa84aaf31649983";
++var PLUS_V8_EVIDENCE={raw_sha256:"87459a07efa7a7f8d0bdcaba10148f138369d080104324e520cc7fb1aaf1fd71",
++    install_ack_sha256:"ba39c2e9b59c9983d938cb8e500f05aef3b82af830558548e50ef97d31df1a82",
++    readback_ack_sha256:"1c4dcdb18ed66194264e9fbfe914664c636ab066375636647cb4d3038fb62f01",
++    command_sha256:"be98938644e0ee42eabb329709effcc5ce40d32c6007ee4e139f6856ce7eab28",
++    config_sha256:"eb44b4930d0bb2504f9739367dad7b144c12b1baada9ac8d37f8bde127ae550b",
++    seal_sha256:"cedafaa9aa57b066b7fa19b95580c08b884ef2267bec42c6143429bbd41a9641",
++    manifest_sha256:"73b623f8893e5758f8f74cbc4c41f599e291c12cb9d3a662c572d55fcc40bc7f",
++    historical_binding_sha256:"97a59c54d9185b47c417c876b12ac8b8ebc4734bb80ad7b439e6e5790aaf991b",
++    historical_files_sha256:"f01f727c2f17b10175de23da47a536e6a10f19d609bb7d0e92add241811fedac",
++    package_sha256:"121d5aa5e3056337306bbe2d7a2771221f53e7adb9750572d934d20ac8a8c978",
++    controller_sha256:"da4473ac8014f39fd255b830121508738c16980b6e303fb0a9b8c963ce0f13a8",
++    reader_sha256:"7d857163d254c82ecbc02b6cd3ff43be1fdf9f67ed09ddf6eb554a7d87c175fa",
++    trace_sha256:"bc0e23dc19b130b4bcfe09777a74e56a48f62a9d39860cae7fdc8d3e1a837185",
++    audit_sha256:"2e96fed0d6acd58fff7b033a17294c1ccc54e15a56590862a142fe723eac704e",
++    investigation_sha256:"dacc776b2429cab7f76f44a589a131cc3b89dd624afbc25c2c85b98116a62d12",
++    rea_evidence_id:"ev_c19e98841d00f4654a6c405a8d80067f1d966cf11a11106234b93a05a70c13a5",
++    observation_role:"failed-install-readback-diagnostics",observed_revision:1,observed_request_id:52,
++    observed_operation_request_id:51,raw_success:false,raw_error_code:"numeric-readback-refused",observed_strict_mismatch:true};
++var PLUS_BOX_KEYS=["id","anchor","maxclass","runtime_class","runtime_classes","rect","inlets","outlets","authored_text",
++    "authored_empty","initial_numeric","role","source_box_sha256","source_text_sha256"];
++var PLUS_FULL_KEYS=["anchor","maxclass","runtime_class","runtime_classes","rect","child","source_varname","inlets","outlets",
++    "authored_text","authored_empty","source_text_sha256","source_box_sha256","saved_incoming_routes","saved_outgoing_routes"];
++function sortedSourceJSON(value) {
++    if(typeof value==="number"&&!isFinite(value))throw Error("plus-source-nonfinite");
++    if(Array.isArray(value))return value.map(sortedSourceJSON);
++    if(value&&typeof value==="object") {
++        var result={};for(var key of Object.keys(value).sort())result[key]=sortedSourceJSON(value[key]);return result;
++    }
++    return value;
++}
++function plusV8Policy(expected,definition,configuration,numeric) {
++    var field=numeric?"v8_numeric_representation_policy":"v8_root_representation_policy",policy=expected[field];
++    if(typeof policy==="undefined")return null;
++    var pin=numeric?PLUS_NUMERIC_PINS[expected.anchor]:
++        ["root/obj-2","root/obj-3"].includes(expected.anchor)&&PLUS_GEOMETRY_PINS[expected.anchor],configured={};
++    if(!pin||definition.source_sha256!==PLUS_SOURCE||!sameData(definition.helper_sha256,GEOMETRY_HELPERS)||
++        !configuration||!Array.isArray(configuration.helpers)||configuration.helpers.length!==4)
++        throw Error("plus-v8-source-policy-binding");
++    for(var helper of configuration.helpers)configured[helper.name]=helper.sha256;
++    var wanted={kind:"plus-v8-"+(numeric?"numeric":"root")+"-representation-v1",engine:"v8",document:"plus",
++        source_sha256:PLUS_SOURCE,anchor:expected.anchor,source_class:numeric?"flonum":"newobj",runtime_class:numeric?"number":"jpatcher",
++        source_box_sha256:pin.source_box_sha256,source_text_sha256:pin.source_text_sha256,saved_rect_sha256:pin.saved_rect_sha256,
++        helper_sha256:GEOMETRY_HELPERS,evidence:PLUS_V8_EVIDENCE};
++    if(numeric)Object.assign(wanted,{initial_numeric_sha256:"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121",
++        format_method:"getattr",format_attribute:"format",format_representation:"scalar-number",format_value_sha256:PLUS_V8_FORMAT_SHA256,
++        getter_method:"getvalueof",getter_representation:"scalar-number",finite_required:true,initial_equality_action:"install"});
++    else Object.assign(wanted,{live_rect_sha256:pin.live_rect_sha256,source_runtime_class:"patcher",saved_rect:expected.rect,
++        live_rect:policy.live_rect,source_varname:expected.source_varname,saved_incoming_routes:0,saved_outgoing_routes:0});
++    if(!sameData(policy,wanted)||!sameData(configured,GEOMETRY_HELPERS)||expected.maxclass!==(numeric?"flonum":"newobj")||
++        expected.runtime_class!==(numeric?"flonum":"patcher")||!sameData(expected.runtime_classes,numeric?["flonum"]:["patcher","p"])||
++        expected.source_box_sha256!==pin.source_box_sha256||expected.source_text_sha256!==pin.source_text_sha256||
++        geometryVectorHash(expected.rect)!==pin.saved_rect_sha256)throw Error("plus-v8-policy-changed");
++    if(numeric) {
++        if(typeof expected.initial_numeric!=="number"||!isFinite(expected.initial_numeric)||
++            geometryVectorHash([expected.initial_numeric,0,0,0])!==wanted.initial_numeric_sha256)throw Error("plus-v8-default-changed");
++    }else if(expected.source_varname!==(expected.anchor==="root/obj-2"?"basic_tab":"q_tab")||
++        expected.saved_incoming_routes!==0||expected.saved_outgoing_routes!==0||geometryVectorHash(policy.live_rect)!==pin.live_rect_sha256)
++        throw Error("plus-v8-root-policy-changed");
++    return policy;
++}
++function plusV8Metadata(definition,configuration) {
++    var fields=["v8_numeric_representation_policy","v8_root_representation_policy"],present=[];
++    for(var view of ["boxes","full_inventory","observer_leaves"])for(var b of definition[view]||[])
++        for(var field of fields)if(typeof b[field]!=="undefined")present.push(b[field]);
++    if(!present.length)return false;
++    if(definition.document!=="plus") {
++        if(present.some(p=>p&&typeof p.kind==="string"&&p.kind.indexOf("plus-")===0))throw Error("transferred-plus-v8-policy");
++        return false;
++    }
++    if(definition.source_sha256!==PLUS_SOURCE||!sameData(definition.helper_sha256,GEOMETRY_HELPERS)||
++        ![1,2].includes(definition.revision)||!plusControllerCohortMetadata(definition,configuration))throw Error("plus-v8-source-set-binding");
++    var projection={document:"plus",source_sha256:PLUS_SOURCE,helper_sha256:GEOMETRY_HELPERS,basic_anchor:definition.basic_anchor,
++        basic_varname:definition.basic_varname,saved_edges:definition.saved_edges,observer_leaves:definition.observer_leaves};
++    for(var pair of [["boxes",PLUS_BOX_KEYS],["full_inventory",PLUS_FULL_KEYS]]) {
++        var view=pair[0],keys=pair[1],entries=definition[view];
++        if(!Array.isArray(entries))throw Error("plus-v8-source-view-unavailable");
++        projection[view]=[];
++        for(var b of entries) {
++            var allowed=keys.slice(),anchor=b.anchor;
++            if(PLUS_GEOMETRY_PINS[anchor]) {
++                allowed.push("observed_geometry_policy");
++                if(view==="boxes")allowed.push("saved_incoming_routes","saved_outgoing_routes");
++                if(!b.observed_geometry_policy)throw Error("plus-v8-geometry-set-incomplete");
++                observedGeometryPolicy(b,definition,configuration);
++            }
++            if(PLUS_NUMERIC_PINS[anchor]) {
++                allowed.push("plus_controller_numeric_cohort_policy",fields[0]);
++                if(view==="full_inventory")allowed.push("initial_numeric");
++            }
++            if(view==="full_inventory"&&["root/obj-2","root/obj-3"].includes(anchor))allowed.push(fields[1]);
++            if(keys.some(k=>!Object.prototype.hasOwnProperty.call(b,k))||Object.keys(b).some(k=>!allowed.includes(k))||
++                !Number.isInteger(b.inlets)||b.inlets<0||!Number.isInteger(b.outlets)||b.outlets<0||typeof b.authored_empty!=="boolean"||
++                (view==="boxes"&&(typeof b.id!=="string"||anchor!=="root/obj-2/"+b.id))||
++                (view==="full_inventory"&&(typeof b.child!=="boolean"||![b.saved_incoming_routes,b.saved_outgoing_routes].every(n=>Number.isInteger(n)&&n>=0))))
++                throw Error("plus-v8-source-descriptor-fields");
++            var projected={};for(var key of keys)projected[key]=b[key];projection[view].push(projected);
++        }
++        for(var field of fields) {
++            var wanted=field===fields[0]?Object.keys(PLUS_NUMERIC_PINS):view==="full_inventory"?["root/obj-2","root/obj-3"]:[],
++                selected=entries.filter(b=>typeof b[field]!=="undefined");
++            if(!sameData(selected.map(b=>b.anchor).sort(),wanted.slice().sort()))throw Error("plus-v8-exact-policy-set");
++            for(var b of selected)plusV8Policy(b,definition,configuration,field===fields[0]);
++        }
++    }
++    if(!Array.isArray(definition.saved_edges)||!Array.isArray(definition.observer_leaves))throw Error("plus-v8-source-routes-unavailable");
++    for(var leaf of definition.observer_leaves) {
++        var b=definition.boxes.find(b=>b.anchor===leaf.anchor);
++        if(!b||!Number.isInteger(leaf.port)||leaf.port<0||leaf.port>=b.outlets)throw Error("plus-v8-source-leaf-port");
++    }
++    for(var edge of definition.saved_edges) {
++        for(var side of ["source","destination"]) {
++            var ep=edge[side],b=Array.isArray(ep)&&definition.boxes.find(b=>b.id===ep[0]);
++            if(!b||ep.length!==2||!Number.isInteger(ep[1])||ep[1]<0||ep[1]>=(side==="source"?b.outlets:b.inlets))
++                throw Error("plus-v8-source-edge-port");
++        }
++        if(typeof edge.order!=="undefined"&&edge.order!==null&&(!Number.isInteger(edge.order)||edge.order<0))throw Error("plus-v8-source-edge-order");
++    }
++    if(sourceTextHash(JSON.stringify(sortedSourceJSON(projection)))!==PLUS_V8_PROJECTION_SHA256)throw Error("plus-v8-pristine-projection-changed");
++    for(var b of definition.boxes) {
++        var copies=definition.full_inventory.filter(e=>e.anchor===b.anchor),common=PLUS_BOX_KEYS.filter(k=>PLUS_FULL_KEYS.includes(k));
++        if(copies.length!==1||common.some(k=>!sameData(b[k],copies[0][k])))throw Error("plus-v8-source-view-correspondence");
++        if(PLUS_NUMERIC_PINS[b.anchor]&&(!sameData(b.initial_numeric,copies[0].initial_numeric)||
++            !sameData(b[fields[0]],copies[0][fields[0]])))throw Error("plus-v8-numeric-copy-changed");
++    }
++    return true;
++}
++function plusV8RequestBinding(root,definition,request,configuration) {
++    var rev=definition.revision,owner=configuration.lifecycle&&configuration.lifecycle.owners&&
++        configuration.lifecycle.owners[definition.lifecycle_owner_inlet],event=/^plus-A([0-9]{2})$/.exec(request.step_id),n=event?Number(event[1]):0;
++    var step=request.action==="install"?request.step_id==="install-plus-r"+rev:request.action==="close"?
++        request.step_id==="close-plus-r"+rev:request.action==="event"&&event&&(rev===1?n>=1&&n<=20:n>=21&&n<=22);
++    var documents=(configuration.documents||[]).filter(d=>d.document==="plus"&&d.revision===rev);
++    if(![1,2].includes(rev)||request.op!==(request.action==="close"?"operation":"readback")||request.document!=="plus"||
++        request.revision!==rev||request.action_document!=="plus"||request.action_revision!==rev||request.source_sha256!==PLUS_SOURCE||!step||
++        !Number.isInteger(request.command_id)||request.command_id<1||!Number.isInteger(request.operation_request_id)||request.operation_request_id<1||
++        (request.action==="close"&&request.command_id!==request.operation_request_id)||definition.lifecycle_owner_inlet!==rev+1||
++        !owner||owner.inlet!==rev+1||owner.document!=="plus"||owner.revision!==rev||owner.source_sha256!==PLUS_SOURCE||
++        owner.working_path!==definition.working_windows_path||documents.length!==1||documents[0]!==definition||
++        !root||root.parentpatcher!==null||!samePath(root.filepath,definition.working_windows_path))throw Error("plus-v8-request-current-owner-binding");
++}
++function createPlusReadbackPass(root,definition,request,configuration,originalRequest) {
++    // Only this invocation owns the observations and their single consumption.
++    if(!plusV8Metadata(definition,configuration))return null;
++    var captures=[],seen=[],consumed=false,issued=false,live=null,diagnostic=null,witness=null;
++    function capture(value) {
++        if(!value||typeof value!=="object"||seen.includes(value))return;
++        seen.push(value);var keys=Object.keys(value),refs=keys.map(k=>value[k]);
++        captures.push({object:value,keys:keys,refs:refs,length:Array.isArray(value)?value.length:null});
++        for(var ref of refs)capture(ref);
++    }
++    capture(configuration);capture(definition);capture(request);capture(originalRequest);
++    function dataCurrent() {
++        for(var row of captures) {
++            var keys=Object.keys(row.object);
++            if(keys.length!==row.keys.length||(row.length!==null&&row.object.length!==row.length))throw Error("plus-v8-pass-input-changed");
++            for(var i=0;i<keys.length;i++)if(keys[i]!==row.keys[i]||row.object[keys[i]]!==row.refs[i])throw Error("plus-v8-pass-input-changed");
++        }
++        plusV8RequestBinding(root,definition,request,configuration);
++    }
++    function bindings() {
++        dataCurrent();var rootInventory=representationObjects(root,8);dataCurrent();
++        if(!rootInventory.complete||rootInventory.objects.length!==8)throw Error("plus-v8-root-inventory-incomplete");
++        var roots=definition.full_inventory.filter(b=>b.anchor.split("/").length===2),rows=[],used=[],basic=null;
++        for(var b of roots) {
++            var policy=observedGeometryPolicy(b,definition,configuration),v8=plusV8Policy(b,definition,configuration,false),matches=[];
++            for(var object of rootInventory.objects) {
++                var rect=rectangle(object);dataCurrent();
++                if((object.varname||"")===(b.source_varname||"")&&(v8?sameData(rect,v8.live_rect):
++                    sameData(rect,b.rect)||policy&&sameData(rect,policy.live_rect)))matches.push(object);
++            }
++            if(matches.length!==1||used.includes(matches[0]))throw Error("plus-v8-root-candidate-binding");
++            var object=matches[0];used.push(object);
++            if(v8?object.maxclass!=="jpatcher":!b.runtime_classes.includes(object.maxclass))throw Error("plus-v8-root-class-binding");
++            if(b.anchor===definition.basic_anchor){basic=object.subpatcher();dataCurrent();}
++        }
++        var owner=configuration.lifecycle.owners[definition.lifecycle_owner_inlet],harness=[
++            ["__alive_arithmetic_reader","v8",[-3000,-3000,160,133]],
++            ["__alive_arithmetic_disposer","thispatcher",[-3100,-3000,100,22]],
++            ["__alive_arithmetic_freebang","freebang",[-3200,-3000,100,22],"freebang"],
++            ["__alive_arithmetic_lifecycle_send","send",[-3400,-3000,200,64],"send "+owner.channel]];
++        for(var h of harness) {
++            var matches=rootInventory.objects.filter(o=>o.varname===h[0]);
++            if(matches.length!==1||used.includes(matches[0]))throw Error("plus-v8-root-harness-identity");
++            var object=matches[0];used.push(object);
++            if(object.maxclass!==h[1]||!sameData(rectangle(object),h[2])||(object.valid!==true&&object.valid!==1)||
++                typeof object.boxtext!=="string"||(h.length===4&&object.boxtext!==h[3]))throw Error("plus-v8-root-harness-binding");
++            dataCurrent();
++        }
++        var inventory=representationObjects(basic,35);dataCurrent();
++        if(!inventory.complete||inventory.objects.length!==35)throw Error("plus-v8-basic-inventory-incomplete");
++        for(var object of rootInventory.objects.concat(inventory.objects)) {
++            var rect=rectangle(object);dataCurrent();
++            rows.push({object:object,maxclass:object.maxclass,varname:object.varname,rect:rect,valid:object.valid,
++                boxtext:object.boxtext});dataCurrent();
++        }
++        return {root:rootInventory.objects,basic:basic,objects:inventory.objects,rows:rows,path:root.filepath,parent:root.parentpatcher};
++    }
++    function check() {
++        dataCurrent();var now=bindings();
++        if(live&&(now.basic!==live.basic||!sameData(now.path,live.path)||now.parent!==live.parent||
++            now.root.some((o,i)=>o!==live.root[i])||now.objects.some((o,i)=>o!==live.objects[i])||
++            now.rows.some((row,i)=>row.object!==live.rows[i].object||row.maxclass!==live.rows[i].maxclass||
++                row.varname!==live.rows[i].varname||row.valid!==live.rows[i].valid||row.boxtext!==live.rows[i].boxtext||
++                !sameData(row.rect,live.rows[i].rect))))throw Error("plus-v8-live-binding-changed");
++        dataCurrent();
++    }
++    live=bindings();
++    var placeholder={numeric:definition.boxes.filter(b=>b.v8_numeric_representation_policy).map(b=>({anchor:b.anchor,
++        actual_runtime_class:"number",live_rect:b.rect}))};
++    collectBasicRetention(root,definition,request,configuration,placeholder);check();
++    diagnostic=collectPlusRepresentationDiagnostics(root,definition,request,configuration,check);
++    try {
++        check();
++        if(!diagnostic.inventory_complete||diagnostic.numeric_rows.length!==3||diagnostic.root_rows.length!==4)
++            throw Error("plus-v8-five-policy-witness-unavailable");
++        var numeric=[];
++        for(var row of diagnostic.numeric_rows) {
++            var b=definition.boxes.find(b=>b.anchor===row.anchor),format=row.format_observation,value=row.value_observation;
++            if(!b||row.actual_runtime_class!=="number"||row.candidate_count!==1||!row.candidate_count_complete||!row.geometry_matches||
++                !sameData(row.live_rect,b.rect)||format.status!=="returned"||format.representation!=="scalar-number"||
++                value.status!=="returned"||value.representation!=="scalar-number"||typeof format.value!=="number"||!isFinite(format.value)||
++                typeof value.value!=="number"||!isFinite(value.value)||geometryVectorHash([format.value,0,0,0])!==PLUS_V8_FORMAT_SHA256||
++                (request.action==="install"&&value.value!==b.initial_numeric))throw Error("plus-v8-numeric-capability-refused");
++            var copy=Object.assign({},row);delete copy.expected_runtime_classes;delete copy.observed_candidate_count;delete copy.probe_disposition;
++            numeric.push(copy);
++        }
++        var roots=[];
++        for(var anchor of ["root/obj-2","root/obj-3"]) {
++            var row=diagnostic.root_rows.find(r=>r.anchor===anchor),b=definition.full_inventory.find(b=>b.anchor===anchor);
++            if(!row||row.actual_runtime_class!=="jpatcher"||row.candidate_count!==1||!row.candidate_count_complete||
++                !sameData(row.live_rect,b.v8_root_representation_policy.live_rect))throw Error("plus-v8-root-witness-refused");
++            roots.push({anchor:anchor,source_box_sha256:b.source_box_sha256,source_text_sha256:b.source_text_sha256,source_class:"newobj",
++                actual_runtime_class:"jpatcher",varname:b.source_varname,live_rect:row.live_rect,candidate_count:1,candidate_count_complete:true});
++        }
++        check();witness=JSON.parse(JSON.stringify({version:"plus-v8-representation-witnesses-v1",engine:"v8",request_id:request.command_id,
++            operation_request_id:request.operation_request_id,step_id:request.step_id,action:request.action,action_document:request.action_document,
++            action_revision:request.action_revision,document:"plus",revision:definition.revision,source_sha256:PLUS_SOURCE,
++            helper_sha256:GEOMETRY_HELPERS,working_path:definition.working_windows_path,root_is_top_level:true,receipt_tag_observed:false,
++            evidence:PLUS_V8_EVIDENCE,inventory_coverage:diagnostic.inventory_coverage,numeric:numeric,roots:roots}));issued=true;
++        return {diagnostic:diagnostic,basic:live.basic,check:check,consume:function(){
++            if(!issued||consumed)throw Error("plus-v8-witness-not-owned");check();consumed=true;return witness;}};
++    }catch(error){error.v8_representation_diagnostics=diagnostic;throw error;}
++}
++function collectPlusRepresentationDiagnostics(root,definition,request,configuration,current) {
++    var diagnostic={engine:"v8",request_id:request.command_id,operation_request_id:request.operation_request_id,
++        step_id:request.step_id,action:request.action,action_document:request.action_document,action_revision:request.action_revision,
++        document:"plus",revision:definition.revision,source_sha256:PLUS_SOURCE,helper_sha256:GEOMETRY_HELPERS,
++        receipt_tag_observed:false,root_rows:[],numeric_rows:[],strict_mismatch:false};
++    try {
++    plusV8Metadata(definition,configuration);
+     if(!plusControllerCohortMetadata(definition,configuration))return null;
+     var revision=definition.revision,owner=configuration.lifecycle&&configuration.lifecycle.owners&&
+         configuration.lifecycle.owners[definition.lifecycle_owner_inlet],event=/^plus-A([0-9]{2})$/.exec(request.step_id),n=event?Number(event[1]):0;
+     var step=request.action==="install"?request.step_id==="install-plus-r"+revision:
+         request.action==="close"?request.step_id==="close-plus-r"+revision:
+         request.action==="event"&&event&&(revision===1?n>=1&&n<=20:n>=21&&n<=22);
+     if((revision!==1&&revision!==2)||request.op!==(request.action==="close"?"operation":"readback")||
+         request.document!=="plus"||request.source_sha256!==PLUS_SOURCE||request.revision!==revision||
+         request.action_document!=="plus"||request.action_revision!==revision||!step||
+         !Number.isInteger(request.command_id)||request.command_id<1||!Number.isInteger(request.operation_request_id)||request.operation_request_id<1||
+         definition.lifecycle_owner_inlet!==revision+1||!owner||owner.inlet!==revision+1||owner.document!=="plus"||
+         owner.revision!==revision||owner.source_sha256!==PLUS_SOURCE||owner.working_path!==definition.working_windows_path||
+         !root||root.parentpatcher!==null||!samePath(root.filepath,definition.working_windows_path)||
+         definition.basic_anchor!=="root/obj-2"||definition.basic_varname!=="basic_tab")throw Error("plus-v8-request-owner-binding");
+     var documents=(configuration.documents||[]).filter(d=>d.document==="plus"&&d.revision===revision);
+     if(documents.length!==1||!sameData(documents[0],definition))throw Error("plus-v8-configured-definition-binding");
+     var originals=definition.full_inventory.filter(e=>e.anchor.split("/").length===2),boxes=definition.boxes,leaves=definition.observer_leaves||[];
+     if(definition.full_inventory.length!==20||originals.length!==4||boxes.length!==16||leaves.length!==19||
+         !sameData(originals.map(b=>b.anchor).sort(),Object.keys(PLUS_ROOT_DIAGNOSTIC_PINS).sort()))throw Error("plus-v8-source-inventory-binding");
+     var rootInventory=representationObjects(root,8),basic=null,rootMatches=[],rootIdentity=rootInventory.complete&&rootInventory.objects.length===8;
+-    var diagnostic={engine:"v8",request_id:request.command_id,operation_request_id:request.operation_request_id,
+-        step_id:request.step_id,action:request.action,action_document:request.action_document,action_revision:request.action_revision,
+-        document:"plus",revision:revision,source_sha256:PLUS_SOURCE,helper_sha256:GEOMETRY_HELPERS,receipt_tag_observed:false,
+-        root_rows:[],numeric_rows:[],strict_mismatch:false};
+     for(var expected of originals) {
+         var pin=PLUS_ROOT_DIAGNOSTIC_PINS[expected.anchor],policy=observedGeometryPolicy(expected,definition,configuration);
+         if(!pin||expected.maxclass!==pin.source_class||expected.source_box_sha256!==pin.source_box_sha256||expected.source_text_sha256!==pin.source_text_sha256||
+             expected.runtime_class!==pin.runtime_class||!sameData(expected.runtime_classes,pin.runtime_classes)||
+             geometryVectorHash(expected.rect)!==pin.saved_rect_sha256)throw Error("plus-v8-source-root-binding");
+         var candidates=[],matches=[];
+         for(var object of rootInventory.objects) {
+             if((object.varname||"")!==(expected.source_varname||""))continue;
+             var rect=representationRectangle(object),geometry=rect&&(sameData(rect,expected.rect)||policy&&sameData(rect,policy.live_rect));
+             candidates.push({runtime_class:object.maxclass,rect:rect,geometry_matches:!!geometry});if(geometry)matches.push(object);
+         }
+         var object=rootInventory.complete&&matches.length===1?matches[0]:null;
+         if(!object||rootMatches.includes(object))rootIdentity=false;else rootMatches.push(object);
+         diagnostic.root_rows.push({anchor:expected.anchor,source_box_sha256:expected.source_box_sha256,source_text_sha256:expected.source_text_sha256,
+             source_class:expected.maxclass,expected_runtime_classes:expected.runtime_classes,candidates:candidates,
+             candidate_count:object?1:null,observed_candidate_count:matches.length,candidate_count_complete:!!object,
+             actual_runtime_class:object?object.maxclass:null,live_rect:object?representationRectangle(object):null});
+         if(!object||expected.runtime_classes.indexOf(object.maxclass)===-1)diagnostic.strict_mismatch=true;
+         if(expected.anchor==="root/obj-2"&&object)try{basic=object.subpatcher();}catch(error){}
+     }
+     for(var name of ["__alive_arithmetic_reader","__alive_arithmetic_disposer","__alive_arithmetic_freebang","__alive_arithmetic_lifecycle_send"])
+         if(rootInventory.objects.filter(o=>o.varname===name).length!==1)rootIdentity=false;
+     var numericInventory=representationObjects(basic,35),numericIdentity=numericInventory.complete&&numericInventory.objects.length===35,byName={},wantedNames=[];
+     for(var b of boxes) {
+         var saved=definition.full_inventory.filter(e=>e.anchor===b.anchor),keys=["maxclass","runtime_class","runtime_classes","rect","source_box_sha256","source_text_sha256"];
+@@ -355,56 +603,60 @@
+     for(var b of boxes)for(var port=0;port<b.outlets;port++)wantedLeaves.push({anchor:b.anchor,port:port,varname:"__alive_help_leaf_"+b.id.replace(/-/g,"_")+"_"+port});
+     if(!sameData(wantedLeaves,leaves))throw Error("plus-v8-observer-source-inventory");
+     for(var leaf of leaves)wantedNames.push(leaf.varname);
+     if(new Set(wantedNames).size!==35)throw Error("plus-v8-source-name-collision");
+     for(var name of wantedNames)if(numericInventory.objects.filter(o=>o.varname===name).length!==1)numericIdentity=false;
+     diagnostic.inventory_complete=!!rootIdentity&&!!numericIdentity;
+     diagnostic.inventory_coverage={};
+     for(var pair of [["root",rootInventory,rootIdentity],["numeric",numericInventory,numericIdentity]]) {
+         var inventory=pair[1],complete=!!pair[2];
+         diagnostic.inventory_coverage[pair[0]]={complete:complete,status:!inventory.complete?inventory.status:complete?"complete":
+             inventory.objects.length!==inventory.limit?"count-mismatch":"identity-mismatch",observed_count:inventory.objects.length,
+             complete_count:complete?inventory.objects.length:null,limit:inventory.limit};
+     }
+     if(!diagnostic.inventory_complete) {
+         diagnostic.strict_mismatch=true;
+         for(var row of diagnostic.root_rows){row.candidate_count=null;row.candidate_count_complete=false;row.actual_runtime_class=null;row.live_rect=null;}
+     }
+     for(var anchor of Object.keys(PLUS_NUMERIC_PINS)) {
+         var expected=boxes.filter(b=>b.anchor===anchor)[0],name="__alive_help_"+expected.id.replace(/-/g,"_"),
+             matches=numericInventory.objects.filter(o=>o.varname===name),object=diagnostic.inventory_complete?byName[name]:null,
+             rect=object?representationRectangle(object):null,geometry=diagnostic.inventory_complete?!!rect&&sameData(rect,expected.rect):null;
+         var probe=geometry?object:{},row={anchor:anchor,source_box_sha256:expected.source_box_sha256,source_text_sha256:expected.source_text_sha256,
+             source_class:"flonum",expected_runtime_classes:expected.runtime_classes,candidate_count:diagnostic.inventory_complete?matches.length:null,
+             observed_candidate_count:matches.length,candidate_count_complete:diagnostic.inventory_complete,actual_runtime_class:object?object.maxclass:null,
+             live_rect:rect,geometry_matches:geometry,probe_disposition:!diagnostic.inventory_complete?"suppressed-incomplete-inventory":geometry?"observed":"source-candidate-unavailable",
+-            receipt_tag_observed:false,format_observation:capabilityObservation(probe,"getattr","format"),value_observation:capabilityObservation(probe,"getvalueof")};
++            receipt_tag_observed:false,format_observation:capabilityObservation({},"getattr","format"),value_observation:capabilityObservation({},"getvalueof")};
+         diagnostic.numeric_rows.push(row);
++        if(object&&object.maxclass!=="flonum")diagnostic.strict_mismatch=true;
++        if(current)current();row.format_observation=capabilityObservation(probe,"getattr","format");if(current)current();
++        row.value_observation=capabilityObservation(probe,"getvalueof");if(current)current();
+         if(!object||object.maxclass!=="flonum"||!geometry||row.value_observation.status!=="returned"||
+             ["scalar-number","singleton-number-array"].indexOf(row.value_observation.representation)===-1)diagnostic.strict_mismatch=true;
+     }
+     return diagnostic;
++    }catch(error){error.v8_representation_diagnostics=diagnostic;throw error;}
+ }
+ function collectRepresentationDiagnostics(root,definition,request,configuration) {
+     if(definition.document==="plus")return collectPlusRepresentationDiagnostics(root,definition,request,configuration);
+     if(definition.document!=="times")return null;
+     var revision=definition.revision,configured={},owner=configuration&&configuration.lifecycle&&
+         configuration.lifecycle.owners&&configuration.lifecycle.owners[definition.lifecycle_owner_inlet];
+     if(definition.source_sha256!==GEOMETRY_SOURCE||request.source_sha256!==GEOMETRY_SOURCE||
+         !sameData(definition.helper_sha256,GEOMETRY_HELPERS)||!configuration||!configuration.helpers||configuration.helpers.length!==4)
+         throw Error("v8-representation-source-binding");
+     for(var helper of configuration.helpers)configured[helper.name]=helper.sha256;
+     var event=/^times-A([0-9]{2})$/.exec(request.step_id),number=event?Number(event[1]):0;
+     var step=request.action==="install"?request.step_id==="install-times-r"+revision:
+         request.action==="close"?request.step_id==="close-times-r"+revision:
+         request.action==="event"&&event&&(revision===1?number>=1&&number<=20:number>=21&&number<=22);
+     if(!sameData(configured,GEOMETRY_HELPERS)||(revision!==1&&revision!==2)||
+         request.op!==(request.action==="close"?"operation":"readback")||
+         request.document!=="times"||request.revision!==revision||request.action_document!=="times"||
+         request.action_revision!==revision||!step||!Number.isInteger(request.command_id)||request.command_id<1||
+         !Number.isInteger(request.operation_request_id)||request.operation_request_id<1||
+         definition.lifecycle_owner_inlet!==revision-1||!owner||owner.document!=="times"||owner.revision!==revision||
+         owner.source_sha256!==GEOMETRY_SOURCE||owner.working_path!==definition.working_windows_path||
+         !samePath(root.filepath,definition.working_windows_path)||root.parentpatcher!=null)
+         throw Error("v8-representation-request-owner-binding");
+     var diagnostic={engine:"v8",request_id:request.command_id,operation_request_id:request.operation_request_id,
+         step_id:request.step_id,action:request.action,action_document:request.action_document,action_revision:request.action_revision,
+@@ -468,121 +720,128 @@
+         for(var object of numericInventory.objects)if(object.varname===name)matches.push(object);
+         var object=diagnostic.inventory_complete&&matches.length===1?matches[0]:null,rect=object?representationRectangle(object):null;
+         var geometry=diagnostic.inventory_complete?!!rect&&sameData(rect,expected.rect):null,probe=geometry?object:{};
+         var row={anchor:anchor,source_box_sha256:expected.source_box_sha256,source_text_sha256:expected.source_text_sha256,
+             source_class:"flonum",expected_runtime_classes:expected.runtime_classes,
+             candidate_count:diagnostic.inventory_complete?matches.length:null,observed_candidate_count:matches.length,
+             candidate_count_complete:diagnostic.inventory_complete,
+             actual_runtime_class:object?object.maxclass:null,live_rect:rect,geometry_matches:geometry,
+             probe_disposition:!diagnostic.inventory_complete?"suppressed-incomplete-inventory":geometry?"observed":"source-candidate-unavailable",
+             receipt_tag_observed:false,format_observation:capabilityObservation(probe,"getattr","format"),
+             value_observation:capabilityObservation(probe,"getvalueof")};
+         diagnostic.numeric_rows.push(row);
+         if(!geometry||!object||object.maxclass!==(v8Policy?"number":"flonum")||row.value_observation.status!=="returned"||
+             (v8Policy?(row.value_observation.representation!=="scalar-number"||row.format_observation.status!=="returned"||
+                 row.format_observation.representation!=="scalar-number"||row.format_observation.value!==6||
+                 (request.action==="install"&&row.value_observation.value!==expected.initial_numeric)):
+                 (row.value_observation.representation!=="scalar-number"&&row.value_observation.representation!=="singleton-number-array")))
+             diagnostic.strict_mismatch=true;
+     }
+     return diagnostic;
+ }
+ function collectRepresentationWitnesses(root,definition,request,configuration,diagnostic) {
+     var numeric=definition.boxes.filter(b=>typeof b.v8_numeric_representation_policy!=="undefined"),
+         roots=(definition.full_inventory||[]).filter(b=>typeof b.v8_root_representation_policy!=="undefined");
+     if(!numeric.length&&!roots.length)return null;
++    if(definition.document==="plus")throw Error("plus-v8-private-pass-required");
+     diagnostic=diagnostic||collectRepresentationDiagnostics(root,definition,request,configuration);
+     if(numeric.length!==3||roots.length!==2||!sameData(numeric.map(b=>b.anchor).sort(),Object.keys(NUMERIC_REPRESENTATION_PINS).sort())||
+         !sameData(roots.map(b=>b.anchor).sort(),Object.keys(V8_ROOT_REPRESENTATION_PINS).sort())||
+         !diagnostic||diagnostic.strict_mismatch||!diagnostic.inventory_complete||
+         diagnostic.inventory_coverage.root.complete_count!==8||
+         diagnostic.inventory_coverage.numeric.complete_count!==definition.boxes.length+(definition.observer_leaves||[]).length)
+         throw Error("v8-exact-live-witnesses-unavailable");
+     var numericRows=numeric.map(b=>{
+         var row=diagnostic.numeric_rows.find(r=>r.anchor===b.anchor);
+         return {anchor:b.anchor,source_box_sha256:b.source_box_sha256,source_text_sha256:b.source_text_sha256,
+             source_class:"flonum",actual_runtime_class:row.actual_runtime_class,live_rect:row.live_rect,
+             candidate_count:row.candidate_count,candidate_count_complete:row.candidate_count_complete,
+             geometry_matches:row.geometry_matches,receipt_tag_observed:false,
+             format_observation:row.format_observation,value_observation:row.value_observation};});
+     var rootRows=roots.map(b=>{
+         var row=diagnostic.root_rows.find(r=>r.anchor===b.anchor);
+         return {anchor:b.anchor,source_box_sha256:b.source_box_sha256,source_text_sha256:b.source_text_sha256,
+             source_class:"newobj",actual_runtime_class:row.actual_runtime_class,varname:b.source_varname,live_rect:row.live_rect,
+             candidate_count:row.candidate_count,candidate_count_complete:row.candidate_count_complete};});
+     return {version:"times-v8-representation-witnesses-v1",engine:"v8",request_id:request.command_id,
+         operation_request_id:request.operation_request_id,step_id:request.step_id,action:request.action,
+         action_document:request.action_document,action_revision:request.action_revision,document:"times",revision:definition.revision,
+         source_sha256:GEOMETRY_SOURCE,helper_sha256:GEOMETRY_HELPERS,working_path:definition.working_windows_path,
+         root_is_top_level:true,receipt_tag_observed:false,evidence:V8_REPRESENTATION_EVIDENCE,
+         inventory_coverage:diagnostic.inventory_coverage,numeric:numericRows,roots:rootRows};
+ }
+ function collectReadback(root,definition,request,configuration) {
++    var plusMetadata=plusV8Metadata(definition,configuration);
+     plusControllerCohortMetadata(definition,configuration);
+     if(request.op!=="readback"||request.document!==definition.document||request.revision!==definition.revision||
+         request.source_sha256!==definition.source_sha256||!Number.isInteger(request.command_id)||request.command_id<1||
+-        !samePath(root.filepath,definition.working_windows_path)||root.parentpatcher!=null)throw Error("checkpoint-owner-binding");
+-    var representation=collectRepresentationDiagnostics(root,definition,request,configuration);
++        (!plusMetadata&&(!samePath(root.filepath,definition.working_windows_path)||root.parentpatcher!=null)))throw Error("checkpoint-owner-binding");
++    var pass=createPlusReadbackPass(root,definition,request,configuration,request),
++        representation=pass?pass.diagnostic:collectRepresentationDiagnostics(root,definition,request,configuration);
+     try {
+-    if(representation&&representation.strict_mismatch)throw Error("strict-v8-original-representation-refused");
+-    var witnesses=collectRepresentationWitnesses(root,definition,request,configuration,representation);
+-    var basicBox=root.getnamed(definition.basic_varname);if(!basicBox)throw Error("basic-unavailable");
+-    var basic=basicBox.subpatcher(),boxes=[],objects={},inputs=[],outputs=[],messages=[],numeric=[],modes=[];
++    if(!pass&&representation&&representation.strict_mismatch)throw Error("strict-v8-original-representation-refused");
++    var witnesses=pass?pass.consume():collectRepresentationWitnesses(root,definition,request,configuration,representation);
++    var basicBox=pass?null:root.getnamed(definition.basic_varname);if(!pass&&!basicBox)throw Error("basic-unavailable");
++    if(pass)pass.check();
++    var basic=pass?pass.basic:basicBox.subpatcher(),boxes=[],objects={},inputs=[],outputs=[],messages=[],numeric=[],modes=[];
+     for(var o=basic.firstobject;o;o=o.nextobject) {
+         var name=o.varname;if(typeof name!=="string"||!name||objects[name])throw Error("box-identity-not-unique");
+         objects[name]=o;boxes.push({varname:name,maxclass:o.maxclass,rect:rectangle(o)});
+         var cords=o.patchcords;if(!cords||!Array.isArray(cords.inputs)||!Array.isArray(cords.outputs))throw Error("endpoint-inventory-unavailable");
+         for(var direction of ["inputs","outputs"])for(var cord of cords[direction]) {
+             var edge={source:endpoint(cord.srcobject,cord.srcoutlet),destination:endpoint(cord.dstobject,cord.dstinlet)};
+             (direction==="inputs"?inputs:outputs).push(edge);
+         }
+     }
+     for(var b of definition.boxes) {
+         var object=objects["__alive_help_"+b.id.replace(/-/g,"_")];if(!object)throw Error("original-unavailable");
+         observedGeometryPolicy(b,definition,configuration);
+         controllerNumericRepresentationPolicy(b,definition,configuration);
+         for(var key of ["annotation_width_policy","observer_policy","shell_height_policy","annotation_geometry_policy","numeric_mode_policy"])
+             if(typeof b[key]!=="undefined")throw Error("arithmetic-policy-not-admitted");
+         var v8Policy=v8RepresentationPolicy(b,definition,configuration,true);
+         if(v8Policy?object.maxclass!=="number":(b.runtime_classes||[b.runtime_class]).indexOf(object.maxclass)===-1)
+             throw Error("strict-v8-original-class-refused");
+         if(["number","flonum"].indexOf(b.maxclass)!==-1) {
+             if(v8Policy) {
+                 var row=witnesses.numeric.find(r=>r.anchor===b.anchor);
+                 numeric.push({anchor:b.anchor,class_name:object.maxclass,source_class:"flonum",value:row.value_observation.value,
+                     getter_method:"getvalueof",getter_representation:"scalar-number",semantic_tag:"float",
+                     semantic_tag_basis:"source-flonum-and-live-v8-format6",receipt_tag_observed:false});
+-            }else numeric.push(Object.assign({anchor:b.anchor,class_name:object.maxclass},numericValue(object,b.maxclass)));
+-        }
+-    }
+-    return {success:true,readback_method:"v8-numeric-getvalueof",request_id:request.command_id,
++            }else {numeric.push(Object.assign({anchor:b.anchor,class_name:object.maxclass},numericValue(object,b.maxclass)));
++                if(pass)pass.check();}
++        }
++    }
++    if(pass){collectBasicRetention(root,definition,request,configuration,witnesses);pass.check();}
++    var result={success:true,readback_method:"v8-numeric-getvalueof",request_id:request.command_id,
+         operation_request_id:request.operation_request_id,step_id:request.step_id,action:request.action,
+         action_document:request.action_document,action_revision:request.action_revision,
+         document:definition.document,revision:definition.revision,source_sha256:definition.source_sha256,
+         working_root_path:root.filepath,root_is_top_level:true,saved_order_observed:false,
+         boxes:boxes,messages:messages,numeric:numeric,numeric_modes:modes,input_routes:inputs,output_routes:outputs,
+         ...(witnesses?{v8_representation_witnesses:witnesses}:{})};
++    if(pass)pass.check();return result;
+     }catch(error){if(representation)error.v8_representation_diagnostics=representation;throw error;}
+ }
+ function checkpoint(requestId,stepId) {
+     var config=readPrivate(configFile),request=readPrivate(config.command_path),path=request.output_path;
+     try {
+         var definition=config.documents.find(d=>d.document===documentName&&d.revision===revision);
+         if(!definition||requestId!==request.command_id||stepId!==request.step_id)throw Error("checkpoint-request-binding");
+         writePrivate(path,collectReadback(this.patcher,definition,request,config));
+     }catch(error){writePrivate(path,{success:false,request_id:requestId,error_code:"numeric-readback-refused",
+         numeric_mode_observation:error.numeric_mode_observation||null,
+         v8_representation_diagnostics:error.v8_representation_diagnostics||null});}
+ }
+ function collectBasicRetention(root,definition,request,configuration,witnesses) {
+     plusControllerCohortMetadata(definition,configuration);
+     if(!Array.isArray(definition.boxes)||!Array.isArray(definition.full_inventory)||
+         !Array.isArray(definition.observer_leaves)||!Array.isArray(definition.saved_edges))throw Error("basic-source-inventory-unavailable");
+     var rootInventory=representationObjects(root,definition.full_inventory.filter(b=>b.anchor.split("/").length===2).length+4),
+         containers=rootInventory.objects.filter(o=>o.varname===definition.basic_varname),basicBox=containers[0];
+     if(!rootInventory.complete||containers.length!==1||!basicBox||typeof basicBox.subpatcher!=="function")
+         throw Error("basic-container-binding");
+     var inventory=representationObjects(basicBox.subpatcher(),definition.boxes.length+definition.observer_leaves.length);
+     if(!inventory.complete||inventory.objects.length!==inventory.limit)throw Error("basic-complete-inventory-unavailable");
+     var byName=Object.create(null),byId=Object.create(null),byAnchor=Object.create(null),expectedNames=[],leaves=[],boxes=[],inputs=[],outputs=[];
+     for(var b of definition.boxes) {
+         var name="__alive_help_"+b.id.replace(/-/g,"_");
+@@ -599,156 +858,165 @@
+         for(var port=0;port<b.outlets;port++)leaves.push({varname:"__alive_help_leaf_"+b.id.replace(/-/g,"_")+"_"+port,
+             anchor:b.anchor,port:port});
+     }
+     if(!sameData(leaves,definition.observer_leaves))throw Error("basic-observer-definition-changed");
+     for(var leaf of leaves)expectedNames.push(leaf.varname);
+     if(new Set(expectedNames).size!==expectedNames.length)throw Error("basic-source-name-not-unique");
+     for(var object of inventory.objects) {
+         var name=object.varname;
+         if(typeof name!=="string"||!name||byName[name]||!expectedNames.includes(name))throw Error("basic-object-identity-changed");
+         byName[name]=object;boxes.push({varname:name,maxclass:object.maxclass,rect:rectangle(object)});
+     }
+     if(Object.keys(byName).length!==expectedNames.length)throw Error("basic-object-inventory-changed");
+     for(var b of definition.boxes) {
+         var object=byName["__alive_help_"+b.id.replace(/-/g,"_")],policy=observedGeometryPolicy(b,definition,configuration),
+             numericPolicy=v8RepresentationPolicy(b,definition,configuration,true),rect=rectangle(object);
+         controllerNumericRepresentationPolicy(b,definition,configuration);
+         if(object.maxclass!==(numericPolicy?"number":b.runtime_class)||
+             !(sameData(rect,b.rect)||(policy&&sameData(rect,policy.live_rect))))throw Error("basic-original-class-or-geometry");
+         if(numericPolicy) {
+             var rows=witnesses&&witnesses.numeric.filter(r=>r.anchor===b.anchor);
+             if(!rows||rows.length!==1||rows[0].actual_runtime_class!==object.maxclass||!sameData(rows[0].live_rect,rect))
+                 throw Error("basic-live-numeric-witness-binding");
+         }
+     }
+     for(var leaf of leaves)if(byName[leaf.varname].maxclass!=="js")throw Error("basic-observer-class-changed");
+-    var portInventory=Object.create(null);
++    var portInventory=Object.create(null),strictEndpointIdentity=definition.document==="plus"&&
++        definition.boxes.some(b=>typeof b.v8_numeric_representation_policy!=="undefined");
+     for(var b of definition.boxes)portInventory["__alive_help_"+b.id.replace(/-/g,"_")]={inlets:b.inlets,outlets:b.outlets};
+     for(var leaf of leaves)portInventory[leaf.varname]={inlets:1,outlets:0};
+     function routeEndpoint(object,port,side) {
+         var name=object&&object.varname;
+-        if(typeof name!=="string"||!byName[name]||!Number.isInteger(port)||port<0||
++        if(typeof name!=="string"||!byName[name]||(strictEndpointIdentity&&byName[name]!==object)||!Number.isInteger(port)||port<0||
+             port>=portInventory[name][side==="source"?"outlets":"inlets"])throw Error("basic-runtime-endpoint-changed");
+         return {varname:name,port:port};
+     }
+     var expectedRoutes=[];
+     for(var edge of definition.saved_edges) {
+         var s=edge.source,d=edge.destination;
+         if(!Array.isArray(s)||s.length!==2||!Array.isArray(d)||d.length!==2||!byId[s[0]]||!byId[d[0]])
+             throw Error("basic-saved-endpoint-unavailable");
+         expectedRoutes.push({source:routeEndpoint(byName["__alive_help_"+s[0].replace(/-/g,"_")],s[1],"source"),
+             destination:routeEndpoint(byName["__alive_help_"+d[0].replace(/-/g,"_")],d[1],"destination")});
+     }
+     for(var leaf of leaves)expectedRoutes.push({source:{varname:"__alive_help_"+byAnchor[leaf.anchor].id.replace(/-/g,"_"),port:leaf.port},
+         destination:{varname:leaf.varname,port:0}});
+     for(var object of inventory.objects) {
+         var cords=object.patchcords;
+         if(!cords||!Array.isArray(cords.inputs)||!Array.isArray(cords.outputs))throw Error("basic-endpoint-inventory-unavailable");
+         for(var direction of ["inputs","outputs"])for(var cord of cords[direction]) {
+             var routes=direction==="inputs"?inputs:outputs;
+             if(routes.length>=expectedRoutes.length)throw Error("basic-endpoint-inventory-overflow");
+             routes.push({source:routeEndpoint(cord.srcobject,cord.srcoutlet,"source"),
+                 destination:routeEndpoint(cord.dstobject,cord.dstinlet,"destination")});
+         }
+     }
+     function routeKeys(routes){return routes.map(r=>JSON.stringify([r.source.varname,r.source.port,r.destination.varname,r.destination.port])).sort();}
+     var expectedKeys=routeKeys(expectedRoutes);
+     if(!sameData(routeKeys(inputs),expectedKeys)||!sameData(routeKeys(outputs),expectedKeys))throw Error("basic-endpoint-multiset-changed");
+     return {version:"arithmetic-basic-retention-v1",request_id:request.command_id,operation_request_id:request.command_id,
+         step_id:request.step_id,action:"close",document:definition.document,revision:definition.revision,
+         source_sha256:definition.source_sha256,working_path:definition.working_windows_path,basic_varname:definition.basic_varname,
+         boxes:boxes,input_routes:inputs,output_routes:outputs};
+ }
+ function collectLifecycleProof(root,definition,request,config,progress) {
++    var plusMetadata=plusV8Metadata(definition,config);
++    if(plusMetadata&&((typeof request.revision!=="undefined"&&request.revision!==definition.revision)||
++        (typeof request.action_document!=="undefined"&&request.action_document!==definition.document)||
++        (typeof request.operation_request_id!=="undefined"&&request.operation_request_id!==request.command_id)))
++        throw Error("plus-v8-original-close-request-binding");
+     if(progress)progress.stage="root-binding";
+     if(request.op!=="operation"||request.action!=="close"||request.document!==definition.document||
+         request.action_revision!==definition.revision||request.source_sha256!==definition.source_sha256||
+-        !Number.isInteger(request.command_id)||request.command_id<1||root.parentpatcher!=null||
+-        !samePath(root.filepath,definition.working_windows_path))throw Error("lifecycle-root-binding");
++        !Number.isInteger(request.command_id)||request.command_id<1||(!plusMetadata&&(root.parentpatcher!=null||
++        !samePath(root.filepath,definition.working_windows_path))))throw Error("lifecycle-root-binding");
+     var owner=config.lifecycle.owners[definition.lifecycle_owner_inlet];
+     if(progress)progress.stage="owner-map";
+     if(!owner||owner.document!==definition.document||owner.revision!==definition.revision||
+         owner.source_sha256!==definition.source_sha256||owner.working_path!==definition.working_windows_path)
+         throw Error("lifecycle-owner-map");
+     var witnessRequest=Object.assign({},request,{operation_request_id:request.command_id,revision:definition.revision,
+-        action_document:definition.document}),representation=collectRepresentationDiagnostics(root,definition,witnessRequest,config),witnesses;
++        action_document:definition.document}),pass=createPlusReadbackPass(root,definition,witnessRequest,config,request),
++        representation=pass?pass.diagnostic:collectRepresentationDiagnostics(root,definition,witnessRequest,config),witnesses;
+     try {
+-        if(representation&&representation.strict_mismatch)throw Error("strict-v8-preclose-representation-refused");
+-        witnesses=collectRepresentationWitnesses(root,definition,witnessRequest,config,representation);
++        if(!pass&&representation&&representation.strict_mismatch)throw Error("strict-v8-preclose-representation-refused");
++        witnesses=pass?pass.consume():collectRepresentationWitnesses(root,definition,witnessRequest,config,representation);
+     if(progress)progress.stage="basic-retention";
+     var basicRetention=collectBasicRetention(root,definition,request,config,witnesses);
+     var expected=[{varname:"__alive_arithmetic_reader",maxclass:"v8",rect:[-3000,-3000,160,133]},
+         {varname:"__alive_arithmetic_disposer",maxclass:"thispatcher",rect:[-3100,-3000,100,22]},
+         {varname:"__alive_arithmetic_freebang",maxclass:"freebang",rect:[-3200,-3000,100,22],boxtext:"freebang"},
+         {varname:"__alive_arithmetic_lifecycle_send",maxclass:"send",rect:[-3400,-3000,200,64],boxtext:"send "+owner.channel}];
+     var originals=[],harness=[],inputs=[],outputs=[],identities={},originalDefinitions=
+         definition.full_inventory.filter(e=>e.anchor.split("/").length===2);
+     function identify(o){
+         if(progress)progress.stage="geometry";
+         var rect=rectangle(o),found=expected.filter(e=>e.varname===o.varname);
+         if(found.length){var e=found[0];
+             if(progress)progress.stage="harness";
+             if(o.maxclass!==e.maxclass||JSON.stringify(rect)!==JSON.stringify(e.rect)||
+                 (o.valid!==true&&o.valid!==1)||typeof o.boxtext!=="string"||
+                 (e.boxtext!==undefined&&o.boxtext!==e.boxtext))throw Error("lifecycle-root-harness");
+             return {identity:e.varname,harness:true,rect:rect};}
+         if(progress)progress.stage="original";
+         found=originalDefinitions.filter(e=>{
+             for(var key of ["annotation_width_policy","observer_policy","shell_height_policy","annotation_geometry_policy","numeric_mode_policy"])
+                 if(typeof e[key]!=="undefined")throw Error("arithmetic-policy-not-admitted");
+             var policy=observedGeometryPolicy(e,definition,config),v8Policy=v8RepresentationPolicy(e,definition,config,false);
+             return (v8Policy?o.maxclass==="jpatcher":(e.runtime_classes||[e.runtime_class]).includes(o.maxclass))&&
+                 (o.varname||"")===(e.source_varname||"")&&
+                 (v8Policy?sameData(rect,v8Policy.live_rect):(sameData(rect,e.rect)||(policy&&sameData(rect,policy.live_rect))));});
+         if(found.length!==1)throw Error("lifecycle-root-original");
+         return {identity:found[0].anchor,harness:false,rect:rect};
+     }
+     if(progress)progress.stage="inventory";
+     for(var o=root.firstobject;o;o=o.nextobject){var id=identify(o);
+         if(progress)progress.stage="inventory";
+-        if(identities[id.identity])throw Error("lifecycle-root-duplicate");identities[id.identity]=true;
++        if(identities[id.identity])throw Error("lifecycle-root-duplicate");identities[id.identity]=plusMetadata?o:true;
+         if(id.harness)harness.push({varname:o.varname,maxclass:o.maxclass,rect:id.rect,boxtext:o.boxtext,valid:o.valid});
+         else originals.push({anchor:id.identity,varname:o.varname||"",maxclass:o.maxclass,rect:id.rect});
+     }
+     if(progress)progress.stage="count";
+     if(harness.length!==4||originals.length!==originalDefinitions.length)throw Error("lifecycle-root-count");
+-    function endpoint(o,port){var id=identify(o);if(!identities[id.identity]||!Number.isInteger(port)||port<0)
++    function endpoint(o,port){var id=identify(o);if(!identities[id.identity]||(plusMetadata&&identities[id.identity]!==o)||!Number.isInteger(port)||port<0)
+         throw Error("lifecycle-root-endpoint");return {identity:id.identity,port:port};}
+     if(progress)progress.stage="patchcords";
+     for(var o=root.firstobject;o;o=o.nextobject){var cords=o.patchcords;
+         if(!cords||!Array.isArray(cords.inputs)||!Array.isArray(cords.outputs))throw Error("lifecycle-root-cords");
+         for(var direction of ["inputs","outputs"])for(var c of cords[direction])
+             (direction==="inputs"?inputs:outputs).push({source:endpoint(c.srcobject,c.srcoutlet),destination:endpoint(c.dstobject,c.dstinlet)});
+     }
+     var edge={source:{identity:"__alive_arithmetic_freebang",port:0},destination:{identity:"__alive_arithmetic_lifecycle_send",port:0}};
+     if(progress)progress.stage="routes";
+     if(inputs.length!==1||outputs.length!==1||JSON.stringify(inputs[0])!==JSON.stringify(edge)||
+         JSON.stringify(outputs[0])!==JSON.stringify(edge))throw Error("lifecycle-root-routes");
+-    return {version:"arithmetic-freebang-v1",request_id:request.command_id,step_id:request.step_id,document:definition.document,
++    if(pass)pass.check();
++    var result={version:"arithmetic-freebang-v1",request_id:request.command_id,step_id:request.step_id,document:definition.document,
+         revision:definition.revision,source_sha256:definition.source_sha256,working_path:root.filepath,
+         root_is_top_level:true,originals:originals,harness:harness,input_routes:inputs,output_routes:outputs,basic_retention:basicRetention,
+         ...(witnesses?{v8_representation_witnesses:witnesses}:{})};
++    if(pass)pass.check();return result;
+     }catch(error){if(representation)error.v8_representation_diagnostics=representation;throw error;}
+ }
+ function rootDiagnosticValue(value,depth){
+     var type=value===null?"null":Array.isArray(value)?"array":typeof value,result={type:type};
+     if(type==="string"){
+         result.value=value.slice(0,256);
+         if(value.length>256){result.truncated=true;result.length=value.length;}
+     }else if(type==="boolean")result.value=value;
+     else if(type==="number"){
+         if(Number.isFinite(value))result.value=value;
+         else result.representation=Number.isNaN(value)?"nan":value>0?"positive-infinity":"negative-infinity";
+     }else if(type==="array"){
+         result.length=value.length;result.items=[];
+         var count=depth>=1?0:Math.min(value.length,16);
+         for(var index=0;index<count;index++)result.items.push(rootDiagnosticRead(()=>value[index],1));
+         if(count<value.length)result.truncated=true;
+     }
+     return result;
+ }
+ function rootDiagnosticException(error,compact){
+     var result={status:"threw"};
+     try{result.exception=rootDiagnosticValue(error,compact?1:0);}catch(ignored){result.exception={type:typeof error,unavailable:true};}
+     for(var key of ["name","message"])try{
+         var value=error[key];if(typeof value==="string"){
+             result[key]=value.slice(0,256);if(value.length>256)result[key+"_truncated"]=true;

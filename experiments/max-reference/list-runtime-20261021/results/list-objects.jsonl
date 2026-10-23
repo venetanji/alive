@@ -1,0 +1,1084 @@
+{"seq":1,"fixture":"list-objects","input_id":"event_0","label":"$input","selector":"stimulus","atoms":["event_0","bang","obj-1",0],"wall_ms":1792590210160}
+{"seq":2,"fixture":"list-objects","input_id":"event_0","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590210160}
+{"seq":3,"fixture":"list-objects","input_id":"event_1","label":"$input","selector":"stimulus","atoms":["event_1","42","obj-1",0],"wall_ms":1792590210203}
+{"seq":4,"fixture":"list-objects","input_id":"event_1","label":"$delivery","selector":"int","atoms":[42],"wall_ms":1792590210203}
+{"seq":5,"fixture":"list-objects","input_id":"event_1","label":"iter:0","selector":"int","atoms":[42],"wall_ms":1792590210204}
+{"seq":6,"fixture":"list-objects","input_id":"event_2","label":"$input","selector":"stimulus","atoms":["event_2","bang","obj-1",0],"wall_ms":1792590210647}
+{"seq":7,"fixture":"list-objects","input_id":"event_2","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590210648}
+{"seq":8,"fixture":"list-objects","input_id":"event_2","label":"iter:0","selector":"int","atoms":[42],"wall_ms":1792590210648}
+{"seq":9,"fixture":"list-objects","input_id":"event_3","label":"$input","selector":"stimulus","atoms":["event_3","42.","obj-1",0],"wall_ms":1792590211072}
+{"seq":10,"fixture":"list-objects","input_id":"event_3","label":"$delivery","selector":"float","atoms":[42],"wall_ms":1792590211073}
+{"seq":11,"fixture":"list-objects","input_id":"event_3","label":"iter:0","selector":"float","atoms":[42],"wall_ms":1792590211073}
+{"seq":12,"fixture":"list-objects","input_id":"event_4","label":"$input","selector":"stimulus","atoms":["event_4","list 42","obj-1",0],"wall_ms":1792590211101}
+{"seq":13,"fixture":"list-objects","input_id":"event_4","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211101}
+{"seq":14,"fixture":"list-objects","input_id":"event_4","label":"iter:0","selector":"int","atoms":[42],"wall_ms":1792590211101}
+{"seq":15,"fixture":"list-objects","input_id":"event_5","label":"$input","selector":"stimulus","atoms":["event_5","list 42.","obj-1",0],"wall_ms":1792590211102}
+{"seq":16,"fixture":"list-objects","input_id":"event_5","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211102}
+{"seq":17,"fixture":"list-objects","input_id":"event_5","label":"iter:0","selector":"float","atoms":[42],"wall_ms":1792590211102}
+{"seq":18,"fixture":"list-objects","input_id":"event_6","label":"$input","selector":"stimulus","atoms":["event_6","list apple","obj-1",0],"wall_ms":1792590211103}
+{"seq":19,"fixture":"list-objects","input_id":"event_6","label":"$delivery","selector":"list","atoms":["apple"],"wall_ms":1792590211104}
+{"seq":20,"fixture":"list-objects","input_id":"event_6","label":"iter:0","selector":"apple","atoms":[],"wall_ms":1792590211104}
+{"seq":21,"fixture":"list-objects","input_id":"event_7","label":"$input","selector":"stimulus","atoms":["event_7","symbol apple","obj-1",0],"wall_ms":1792590211105}
+{"seq":22,"fixture":"list-objects","input_id":"event_7","label":"$delivery","selector":"symbol","atoms":["apple"],"wall_ms":1792590211105}
+{"seq":23,"fixture":"list-objects","input_id":"event_7","label":"iter:0","selector":"symbol","atoms":[],"wall_ms":1792590211105}
+{"seq":24,"fixture":"list-objects","input_id":"event_7","label":"iter:0","selector":"apple","atoms":[],"wall_ms":1792590211105}
+{"seq":25,"fixture":"list-objects","input_id":"event_8","label":"$input","selector":"stimulus","atoms":["event_8","apple","obj-1",0],"wall_ms":1792590211107}
+{"seq":26,"fixture":"list-objects","input_id":"event_8","label":"$delivery","selector":"apple","atoms":[],"wall_ms":1792590211107}
+{"seq":27,"fixture":"list-objects","input_id":"event_8","label":"iter:0","selector":"apple","atoms":[],"wall_ms":1792590211107}
+{"seq":28,"fixture":"list-objects","input_id":"event_9","label":"$input","selector":"stimulus","atoms":["event_9","apple 3 pear","obj-1",0],"wall_ms":1792590211108}
+{"seq":29,"fixture":"list-objects","input_id":"event_9","label":"$delivery","selector":"apple","atoms":[3,"pear"],"wall_ms":1792590211109}
+{"seq":30,"fixture":"list-objects","input_id":"event_9","label":"iter:0","selector":"apple","atoms":[],"wall_ms":1792590211109}
+{"seq":31,"fixture":"list-objects","input_id":"event_9","label":"iter:0","selector":"int","atoms":[3],"wall_ms":1792590211109}
+{"seq":32,"fixture":"list-objects","input_id":"event_9","label":"iter:0","selector":"pear","atoms":[],"wall_ms":1792590211109}
+{"seq":33,"fixture":"list-objects","input_id":"event_10","label":"$input","selector":"stimulus","atoms":["event_10","list apple 3 pear","obj-1",0],"wall_ms":1792590211110}
+{"seq":34,"fixture":"list-objects","input_id":"event_10","label":"$delivery","selector":"list","atoms":["apple",3,"pear"],"wall_ms":1792590211110}
+{"seq":35,"fixture":"list-objects","input_id":"event_10","label":"iter:0","selector":"apple","atoms":[],"wall_ms":1792590211110}
+{"seq":36,"fixture":"list-objects","input_id":"event_10","label":"iter:0","selector":"int","atoms":[3],"wall_ms":1792590211110}
+{"seq":37,"fixture":"list-objects","input_id":"event_10","label":"iter:0","selector":"pear","atoms":[],"wall_ms":1792590211110}
+{"seq":38,"fixture":"list-objects","input_id":"event_11","label":"$input","selector":"stimulus","atoms":["event_11","list 1 2. apple 4","obj-1",0],"wall_ms":1792590211111}
+{"seq":39,"fixture":"list-objects","input_id":"event_11","label":"$delivery","selector":"list","atoms":[1,2,"apple",4],"wall_ms":1792590211111}
+{"seq":40,"fixture":"list-objects","input_id":"event_11","label":"iter:0","selector":"int","atoms":[1],"wall_ms":1792590211111}
+{"seq":41,"fixture":"list-objects","input_id":"event_11","label":"iter:0","selector":"float","atoms":[2],"wall_ms":1792590211111}
+{"seq":42,"fixture":"list-objects","input_id":"event_11","label":"iter:0","selector":"apple","atoms":[],"wall_ms":1792590211111}
+{"seq":43,"fixture":"list-objects","input_id":"event_11","label":"iter:0","selector":"int","atoms":[4],"wall_ms":1792590211111}
+{"seq":44,"fixture":"list-objects","input_id":"event_12","label":"$input","selector":"stimulus","atoms":["event_12","bang","obj-1",0],"wall_ms":1792590211113}
+{"seq":45,"fixture":"list-objects","input_id":"event_12","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211113}
+{"seq":46,"fixture":"list-objects","input_id":"event_12","label":"iter:0","selector":"int","atoms":[1],"wall_ms":1792590211113}
+{"seq":47,"fixture":"list-objects","input_id":"event_12","label":"iter:0","selector":"float","atoms":[2],"wall_ms":1792590211113}
+{"seq":48,"fixture":"list-objects","input_id":"event_12","label":"iter:0","selector":"apple","atoms":[],"wall_ms":1792590211113}
+{"seq":49,"fixture":"list-objects","input_id":"event_12","label":"iter:0","selector":"int","atoms":[4],"wall_ms":1792590211113}
+{"seq":50,"fixture":"list-objects","input_id":"event_13","label":"$input","selector":"stimulus","atoms":["event_13","list","obj-1",0],"wall_ms":1792590211114}
+{"seq":51,"fixture":"list-objects","input_id":"event_14","label":"$input","selector":"stimulus","atoms":["event_14","bang","obj-1",0],"wall_ms":1792590211115}
+{"seq":52,"fixture":"list-objects","input_id":"event_14","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211115}
+{"seq":53,"fixture":"list-objects","input_id":"event_14","label":"iter:0","selector":"int","atoms":[1],"wall_ms":1792590211115}
+{"seq":54,"fixture":"list-objects","input_id":"event_14","label":"iter:0","selector":"float","atoms":[2],"wall_ms":1792590211115}
+{"seq":55,"fixture":"list-objects","input_id":"event_14","label":"iter:0","selector":"apple","atoms":[],"wall_ms":1792590211115}
+{"seq":56,"fixture":"list-objects","input_id":"event_14","label":"iter:0","selector":"int","atoms":[4],"wall_ms":1792590211115}
+{"seq":57,"fixture":"list-objects","input_id":"event_15","label":"$input","selector":"stimulus","atoms":["event_15","set 8 9","obj-1",0],"wall_ms":1792590211117}
+{"seq":58,"fixture":"list-objects","input_id":"event_15","label":"$delivery","selector":"set","atoms":[8,9],"wall_ms":1792590211117}
+{"seq":59,"fixture":"list-objects","input_id":"event_15","label":"iter:0","selector":"set","atoms":[],"wall_ms":1792590211117}
+{"seq":60,"fixture":"list-objects","input_id":"event_15","label":"iter:0","selector":"int","atoms":[8],"wall_ms":1792590211117}
+{"seq":61,"fixture":"list-objects","input_id":"event_15","label":"iter:0","selector":"int","atoms":[9],"wall_ms":1792590211117}
+{"seq":62,"fixture":"list-objects","input_id":"event_16","label":"$input","selector":"stimulus","atoms":["event_16","bang","obj-1",0],"wall_ms":1792590211118}
+{"seq":63,"fixture":"list-objects","input_id":"event_16","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211118}
+{"seq":64,"fixture":"list-objects","input_id":"event_16","label":"iter:0","selector":"set","atoms":[],"wall_ms":1792590211118}
+{"seq":65,"fixture":"list-objects","input_id":"event_16","label":"iter:0","selector":"int","atoms":[8],"wall_ms":1792590211118}
+{"seq":66,"fixture":"list-objects","input_id":"event_16","label":"iter:0","selector":"int","atoms":[9],"wall_ms":1792590211118}
+{"seq":67,"fixture":"list-objects","input_id":"event_17","label":"$input","selector":"stimulus","atoms":["event_17","zlclear","obj-1",0],"wall_ms":1792590211119}
+{"seq":68,"fixture":"list-objects","input_id":"event_17","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211120}
+{"seq":69,"fixture":"list-objects","input_id":"event_17","label":"iter:0","selector":"zlclear","atoms":[],"wall_ms":1792590211120}
+{"seq":70,"fixture":"list-objects","input_id":"event_18","label":"$input","selector":"stimulus","atoms":["event_18","bang","obj-1",0],"wall_ms":1792590211121}
+{"seq":71,"fixture":"list-objects","input_id":"event_18","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211121}
+{"seq":72,"fixture":"list-objects","input_id":"event_18","label":"iter:0","selector":"zlclear","atoms":[],"wall_ms":1792590211121}
+{"seq":73,"fixture":"list-objects","input_id":"event_19","label":"$input","selector":"stimulus","atoms":["event_19","zlreset","obj-1",0],"wall_ms":1792590211122}
+{"seq":74,"fixture":"list-objects","input_id":"event_19","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211122}
+{"seq":75,"fixture":"list-objects","input_id":"event_19","label":"iter:0","selector":"zlreset","atoms":[],"wall_ms":1792590211122}
+{"seq":76,"fixture":"list-objects","input_id":"event_20","label":"$input","selector":"stimulus","atoms":["event_20","bang","obj-1",0],"wall_ms":1792590211123}
+{"seq":77,"fixture":"list-objects","input_id":"event_20","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211123}
+{"seq":78,"fixture":"list-objects","input_id":"event_20","label":"iter:0","selector":"zlreset","atoms":[],"wall_ms":1792590211123}
+{"seq":79,"fixture":"list-objects","input_id":"event_21","label":"$input","selector":"stimulus","atoms":["event_21","bang","obj-23",0],"wall_ms":1792590211125}
+{"seq":80,"fixture":"list-objects","input_id":"event_21","label":"prepend:0","selector":"head","atoms":[9,"bang"],"wall_ms":1792590211125}
+{"seq":81,"fixture":"list-objects","input_id":"event_21","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211125}
+{"seq":82,"fixture":"list-objects","input_id":"event_22","label":"$input","selector":"stimulus","atoms":["event_22","42","obj-23",0],"wall_ms":1792590211126}
+{"seq":83,"fixture":"list-objects","input_id":"event_22","label":"prepend:0","selector":"head","atoms":[9,42],"wall_ms":1792590211126}
+{"seq":84,"fixture":"list-objects","input_id":"event_22","label":"$delivery","selector":"int","atoms":[42],"wall_ms":1792590211126}
+{"seq":85,"fixture":"list-objects","input_id":"event_23","label":"$input","selector":"stimulus","atoms":["event_23","bang","obj-23",0],"wall_ms":1792590211127}
+{"seq":86,"fixture":"list-objects","input_id":"event_23","label":"prepend:0","selector":"head","atoms":[9,"bang"],"wall_ms":1792590211127}
+{"seq":87,"fixture":"list-objects","input_id":"event_23","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211127}
+{"seq":88,"fixture":"list-objects","input_id":"event_24","label":"$input","selector":"stimulus","atoms":["event_24","42.","obj-23",0],"wall_ms":1792590211127}
+{"seq":89,"fixture":"list-objects","input_id":"event_24","label":"prepend:0","selector":"head","atoms":[9,42],"wall_ms":1792590211127}
+{"seq":90,"fixture":"list-objects","input_id":"event_24","label":"$delivery","selector":"float","atoms":[42],"wall_ms":1792590211127}
+{"seq":91,"fixture":"list-objects","input_id":"event_25","label":"$input","selector":"stimulus","atoms":["event_25","list 42","obj-23",0],"wall_ms":1792590211129}
+{"seq":92,"fixture":"list-objects","input_id":"event_25","label":"prepend:0","selector":"head","atoms":[9,42],"wall_ms":1792590211129}
+{"seq":93,"fixture":"list-objects","input_id":"event_25","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211129}
+{"seq":94,"fixture":"list-objects","input_id":"event_26","label":"$input","selector":"stimulus","atoms":["event_26","list 42.","obj-23",0],"wall_ms":1792590211130}
+{"seq":95,"fixture":"list-objects","input_id":"event_26","label":"prepend:0","selector":"head","atoms":[9,42],"wall_ms":1792590211130}
+{"seq":96,"fixture":"list-objects","input_id":"event_26","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211130}
+{"seq":97,"fixture":"list-objects","input_id":"event_27","label":"$input","selector":"stimulus","atoms":["event_27","list apple","obj-23",0],"wall_ms":1792590211131}
+{"seq":98,"fixture":"list-objects","input_id":"event_27","label":"prepend:0","selector":"head","atoms":[9,"apple"],"wall_ms":1792590211131}
+{"seq":99,"fixture":"list-objects","input_id":"event_27","label":"$delivery","selector":"list","atoms":["apple"],"wall_ms":1792590211131}
+{"seq":100,"fixture":"list-objects","input_id":"event_28","label":"$input","selector":"stimulus","atoms":["event_28","symbol apple","obj-23",0],"wall_ms":1792590211133}
+{"seq":101,"fixture":"list-objects","input_id":"event_28","label":"prepend:0","selector":"head","atoms":[9,"symbol","apple"],"wall_ms":1792590211133}
+{"seq":102,"fixture":"list-objects","input_id":"event_28","label":"$delivery","selector":"symbol","atoms":["apple"],"wall_ms":1792590211133}
+{"seq":103,"fixture":"list-objects","input_id":"event_29","label":"$input","selector":"stimulus","atoms":["event_29","apple","obj-23",0],"wall_ms":1792590211134}
+{"seq":104,"fixture":"list-objects","input_id":"event_29","label":"prepend:0","selector":"head","atoms":[9,"apple"],"wall_ms":1792590211134}
+{"seq":105,"fixture":"list-objects","input_id":"event_29","label":"$delivery","selector":"apple","atoms":[],"wall_ms":1792590211134}
+{"seq":106,"fixture":"list-objects","input_id":"event_30","label":"$input","selector":"stimulus","atoms":["event_30","apple 3 pear","obj-23",0],"wall_ms":1792590211136}
+{"seq":107,"fixture":"list-objects","input_id":"event_30","label":"prepend:0","selector":"head","atoms":[9,"apple",3,"pear"],"wall_ms":1792590211136}
+{"seq":108,"fixture":"list-objects","input_id":"event_30","label":"$delivery","selector":"apple","atoms":[3,"pear"],"wall_ms":1792590211136}
+{"seq":109,"fixture":"list-objects","input_id":"event_31","label":"$input","selector":"stimulus","atoms":["event_31","list apple 3 pear","obj-23",0],"wall_ms":1792590211137}
+{"seq":110,"fixture":"list-objects","input_id":"event_31","label":"prepend:0","selector":"head","atoms":[9,"apple",3,"pear"],"wall_ms":1792590211137}
+{"seq":111,"fixture":"list-objects","input_id":"event_31","label":"$delivery","selector":"list","atoms":["apple",3,"pear"],"wall_ms":1792590211137}
+{"seq":112,"fixture":"list-objects","input_id":"event_32","label":"$input","selector":"stimulus","atoms":["event_32","list 1 2. apple 4","obj-23",0],"wall_ms":1792590211139}
+{"seq":113,"fixture":"list-objects","input_id":"event_32","label":"prepend:0","selector":"head","atoms":[9,1,2,"apple",4],"wall_ms":1792590211139}
+{"seq":114,"fixture":"list-objects","input_id":"event_32","label":"$delivery","selector":"list","atoms":[1,2,"apple",4],"wall_ms":1792590211139}
+{"seq":115,"fixture":"list-objects","input_id":"event_33","label":"$input","selector":"stimulus","atoms":["event_33","bang","obj-23",0],"wall_ms":1792590211140}
+{"seq":116,"fixture":"list-objects","input_id":"event_33","label":"prepend:0","selector":"head","atoms":[9,"bang"],"wall_ms":1792590211140}
+{"seq":117,"fixture":"list-objects","input_id":"event_33","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211140}
+{"seq":118,"fixture":"list-objects","input_id":"event_34","label":"$input","selector":"stimulus","atoms":["event_34","list","obj-23",0],"wall_ms":1792590211141}
+{"seq":119,"fixture":"list-objects","input_id":"event_35","label":"$input","selector":"stimulus","atoms":["event_35","bang","obj-23",0],"wall_ms":1792590211142}
+{"seq":120,"fixture":"list-objects","input_id":"event_35","label":"prepend:0","selector":"head","atoms":[9,"bang"],"wall_ms":1792590211142}
+{"seq":121,"fixture":"list-objects","input_id":"event_35","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211142}
+{"seq":122,"fixture":"list-objects","input_id":"event_36","label":"$input","selector":"stimulus","atoms":["event_36","set 8 9","obj-23",0],"wall_ms":1792590211144}
+{"seq":123,"fixture":"list-objects","input_id":"event_36","label":"$delivery","selector":"set","atoms":[8,9],"wall_ms":1792590211144}
+{"seq":124,"fixture":"list-objects","input_id":"event_37","label":"$input","selector":"stimulus","atoms":["event_37","bang","obj-23",0],"wall_ms":1792590211145}
+{"seq":125,"fixture":"list-objects","input_id":"event_37","label":"prepend:0","selector":"list","atoms":[8,9,"bang"],"wall_ms":1792590211145}
+{"seq":126,"fixture":"list-objects","input_id":"event_37","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211145}
+{"seq":127,"fixture":"list-objects","input_id":"event_38","label":"$input","selector":"stimulus","atoms":["event_38","zlclear","obj-23",0],"wall_ms":1792590211146}
+{"seq":128,"fixture":"list-objects","input_id":"event_38","label":"prepend:0","selector":"list","atoms":[8,9,"zlclear"],"wall_ms":1792590211146}
+{"seq":129,"fixture":"list-objects","input_id":"event_38","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211146}
+{"seq":130,"fixture":"list-objects","input_id":"event_39","label":"$input","selector":"stimulus","atoms":["event_39","bang","obj-23",0],"wall_ms":1792590211147}
+{"seq":131,"fixture":"list-objects","input_id":"event_39","label":"prepend:0","selector":"list","atoms":[8,9,"bang"],"wall_ms":1792590211147}
+{"seq":132,"fixture":"list-objects","input_id":"event_39","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211147}
+{"seq":133,"fixture":"list-objects","input_id":"event_40","label":"$input","selector":"stimulus","atoms":["event_40","zlreset","obj-23",0],"wall_ms":1792590211148}
+{"seq":134,"fixture":"list-objects","input_id":"event_40","label":"prepend:0","selector":"list","atoms":[8,9,"zlreset"],"wall_ms":1792590211148}
+{"seq":135,"fixture":"list-objects","input_id":"event_40","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211148}
+{"seq":136,"fixture":"list-objects","input_id":"event_41","label":"$input","selector":"stimulus","atoms":["event_41","bang","obj-23",0],"wall_ms":1792590211148}
+{"seq":137,"fixture":"list-objects","input_id":"event_41","label":"prepend:0","selector":"list","atoms":[8,9,"bang"],"wall_ms":1792590211148}
+{"seq":138,"fixture":"list-objects","input_id":"event_41","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211148}
+{"seq":139,"fixture":"list-objects","input_id":"event_42","label":"$input","selector":"stimulus","atoms":["event_42","bang","obj-45",0],"wall_ms":1792590211150}
+{"seq":140,"fixture":"list-objects","input_id":"event_42","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211150}
+{"seq":141,"fixture":"list-objects","input_id":"event_43","label":"$input","selector":"stimulus","atoms":["event_43","42","obj-45",0],"wall_ms":1792590211151}
+{"seq":142,"fixture":"list-objects","input_id":"event_43","label":"$delivery","selector":"int","atoms":[42],"wall_ms":1792590211151}
+{"seq":143,"fixture":"list-objects","input_id":"event_43","label":"append:0","selector":"list","atoms":[42,9,"tail"],"wall_ms":1792590211151}
+{"seq":144,"fixture":"list-objects","input_id":"event_44","label":"$input","selector":"stimulus","atoms":["event_44","bang","obj-45",0],"wall_ms":1792590211152}
+{"seq":145,"fixture":"list-objects","input_id":"event_44","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211152}
+{"seq":146,"fixture":"list-objects","input_id":"event_45","label":"$input","selector":"stimulus","atoms":["event_45","42.","obj-45",0],"wall_ms":1792590211153}
+{"seq":147,"fixture":"list-objects","input_id":"event_45","label":"$delivery","selector":"float","atoms":[42],"wall_ms":1792590211153}
+{"seq":148,"fixture":"list-objects","input_id":"event_45","label":"append:0","selector":"list","atoms":[42,9,"tail"],"wall_ms":1792590211154}
+{"seq":149,"fixture":"list-objects","input_id":"event_46","label":"$input","selector":"stimulus","atoms":["event_46","list 42","obj-45",0],"wall_ms":1792590211156}
+{"seq":150,"fixture":"list-objects","input_id":"event_46","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211156}
+{"seq":151,"fixture":"list-objects","input_id":"event_46","label":"append:0","selector":"list","atoms":[42,9,"tail"],"wall_ms":1792590211156}
+{"seq":152,"fixture":"list-objects","input_id":"event_47","label":"$input","selector":"stimulus","atoms":["event_47","list 42.","obj-45",0],"wall_ms":1792590211157}
+{"seq":153,"fixture":"list-objects","input_id":"event_47","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211157}
+{"seq":154,"fixture":"list-objects","input_id":"event_47","label":"append:0","selector":"list","atoms":[42,9,"tail"],"wall_ms":1792590211157}
+{"seq":155,"fixture":"list-objects","input_id":"event_48","label":"$input","selector":"stimulus","atoms":["event_48","list apple","obj-45",0],"wall_ms":1792590211158}
+{"seq":156,"fixture":"list-objects","input_id":"event_48","label":"$delivery","selector":"list","atoms":["apple"],"wall_ms":1792590211158}
+{"seq":157,"fixture":"list-objects","input_id":"event_48","label":"append:0","selector":"list","atoms":["apple",9,"tail"],"wall_ms":1792590211158}
+{"seq":158,"fixture":"list-objects","input_id":"event_49","label":"$input","selector":"stimulus","atoms":["event_49","symbol apple","obj-45",0],"wall_ms":1792590211159}
+{"seq":159,"fixture":"list-objects","input_id":"event_49","label":"$delivery","selector":"symbol","atoms":["apple"],"wall_ms":1792590211160}
+{"seq":160,"fixture":"list-objects","input_id":"event_49","label":"append:0","selector":"symbol","atoms":["apple",9,"tail"],"wall_ms":1792590211160}
+{"seq":161,"fixture":"list-objects","input_id":"event_50","label":"$input","selector":"stimulus","atoms":["event_50","apple","obj-45",0],"wall_ms":1792590211161}
+{"seq":162,"fixture":"list-objects","input_id":"event_50","label":"$delivery","selector":"apple","atoms":[],"wall_ms":1792590211161}
+{"seq":163,"fixture":"list-objects","input_id":"event_50","label":"append:0","selector":"apple","atoms":[9,"tail"],"wall_ms":1792590211161}
+{"seq":164,"fixture":"list-objects","input_id":"event_51","label":"$input","selector":"stimulus","atoms":["event_51","apple 3 pear","obj-45",0],"wall_ms":1792590211162}
+{"seq":165,"fixture":"list-objects","input_id":"event_51","label":"$delivery","selector":"apple","atoms":[3,"pear"],"wall_ms":1792590211162}
+{"seq":166,"fixture":"list-objects","input_id":"event_51","label":"append:0","selector":"apple","atoms":[3,"pear",9,"tail"],"wall_ms":1792590211162}
+{"seq":167,"fixture":"list-objects","input_id":"event_52","label":"$input","selector":"stimulus","atoms":["event_52","list apple 3 pear","obj-45",0],"wall_ms":1792590211163}
+{"seq":168,"fixture":"list-objects","input_id":"event_52","label":"$delivery","selector":"list","atoms":["apple",3,"pear"],"wall_ms":1792590211163}
+{"seq":169,"fixture":"list-objects","input_id":"event_52","label":"append:0","selector":"list","atoms":["apple",3,"pear",9,"tail"],"wall_ms":1792590211163}
+{"seq":170,"fixture":"list-objects","input_id":"event_53","label":"$input","selector":"stimulus","atoms":["event_53","list 1 2. apple 4","obj-45",0],"wall_ms":1792590211164}
+{"seq":171,"fixture":"list-objects","input_id":"event_53","label":"$delivery","selector":"list","atoms":[1,2,"apple",4],"wall_ms":1792590211164}
+{"seq":172,"fixture":"list-objects","input_id":"event_53","label":"append:0","selector":"list","atoms":[1,2,"apple",4,9,"tail"],"wall_ms":1792590211165}
+{"seq":173,"fixture":"list-objects","input_id":"event_54","label":"$input","selector":"stimulus","atoms":["event_54","bang","obj-45",0],"wall_ms":1792590211166}
+{"seq":174,"fixture":"list-objects","input_id":"event_54","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211166}
+{"seq":175,"fixture":"list-objects","input_id":"event_55","label":"$input","selector":"stimulus","atoms":["event_55","list","obj-45",0],"wall_ms":1792590211167}
+{"seq":176,"fixture":"list-objects","input_id":"event_56","label":"$input","selector":"stimulus","atoms":["event_56","bang","obj-45",0],"wall_ms":1792590211168}
+{"seq":177,"fixture":"list-objects","input_id":"event_56","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211168}
+{"seq":178,"fixture":"list-objects","input_id":"event_57","label":"$input","selector":"stimulus","atoms":["event_57","set 8 9","obj-45",0],"wall_ms":1792590211169}
+{"seq":179,"fixture":"list-objects","input_id":"event_57","label":"$delivery","selector":"set","atoms":[8,9],"wall_ms":1792590211169}
+{"seq":180,"fixture":"list-objects","input_id":"event_58","label":"$input","selector":"stimulus","atoms":["event_58","bang","obj-45",0],"wall_ms":1792590211171}
+{"seq":181,"fixture":"list-objects","input_id":"event_58","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211171}
+{"seq":182,"fixture":"list-objects","input_id":"event_59","label":"$input","selector":"stimulus","atoms":["event_59","zlclear","obj-45",0],"wall_ms":1792590211172}
+{"seq":183,"fixture":"list-objects","input_id":"event_59","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211173}
+{"seq":184,"fixture":"list-objects","input_id":"event_59","label":"append:0","selector":"zlclear","atoms":[8,9],"wall_ms":1792590211173}
+{"seq":185,"fixture":"list-objects","input_id":"event_60","label":"$input","selector":"stimulus","atoms":["event_60","bang","obj-45",0],"wall_ms":1792590211174}
+{"seq":186,"fixture":"list-objects","input_id":"event_60","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211174}
+{"seq":187,"fixture":"list-objects","input_id":"event_61","label":"$input","selector":"stimulus","atoms":["event_61","zlreset","obj-45",0],"wall_ms":1792590211175}
+{"seq":188,"fixture":"list-objects","input_id":"event_61","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211175}
+{"seq":189,"fixture":"list-objects","input_id":"event_61","label":"append:0","selector":"zlreset","atoms":[8,9],"wall_ms":1792590211175}
+{"seq":190,"fixture":"list-objects","input_id":"event_62","label":"$input","selector":"stimulus","atoms":["event_62","bang","obj-45",0],"wall_ms":1792590211176}
+{"seq":191,"fixture":"list-objects","input_id":"event_62","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211176}
+{"seq":192,"fixture":"list-objects","input_id":"event_63","label":"$input","selector":"stimulus","atoms":["event_63","bang","obj-67",0],"wall_ms":1792590211178}
+{"seq":193,"fixture":"list-objects","input_id":"event_63","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211178}
+{"seq":194,"fixture":"list-objects","input_id":"event_64","label":"$input","selector":"stimulus","atoms":["event_64","42","obj-67",0],"wall_ms":1792590211179}
+{"seq":195,"fixture":"list-objects","input_id":"event_64","label":"$delivery","selector":"int","atoms":[42],"wall_ms":1792590211179}
+{"seq":196,"fixture":"list-objects","input_id":"event_64","label":"zl.reg:0","selector":"int","atoms":[42],"wall_ms":1792590211179}
+{"seq":197,"fixture":"list-objects","input_id":"event_65","label":"$input","selector":"stimulus","atoms":["event_65","bang","obj-67",0],"wall_ms":1792590211180}
+{"seq":198,"fixture":"list-objects","input_id":"event_65","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211180}
+{"seq":199,"fixture":"list-objects","input_id":"event_65","label":"zl.reg:0","selector":"int","atoms":[42],"wall_ms":1792590211180}
+{"seq":200,"fixture":"list-objects","input_id":"event_66","label":"$input","selector":"stimulus","atoms":["event_66","42.","obj-67",0],"wall_ms":1792590211182}
+{"seq":201,"fixture":"list-objects","input_id":"event_66","label":"$delivery","selector":"float","atoms":[42],"wall_ms":1792590211182}
+{"seq":202,"fixture":"list-objects","input_id":"event_66","label":"zl.reg:0","selector":"float","atoms":[42],"wall_ms":1792590211182}
+{"seq":203,"fixture":"list-objects","input_id":"event_67","label":"$input","selector":"stimulus","atoms":["event_67","list 42","obj-67",0],"wall_ms":1792590211183}
+{"seq":204,"fixture":"list-objects","input_id":"event_67","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211183}
+{"seq":205,"fixture":"list-objects","input_id":"event_67","label":"zl.reg:0","selector":"int","atoms":[42],"wall_ms":1792590211183}
+{"seq":206,"fixture":"list-objects","input_id":"event_68","label":"$input","selector":"stimulus","atoms":["event_68","list 42.","obj-67",0],"wall_ms":1792590211184}
+{"seq":207,"fixture":"list-objects","input_id":"event_68","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211184}
+{"seq":208,"fixture":"list-objects","input_id":"event_68","label":"zl.reg:0","selector":"float","atoms":[42],"wall_ms":1792590211184}
+{"seq":209,"fixture":"list-objects","input_id":"event_69","label":"$input","selector":"stimulus","atoms":["event_69","list apple","obj-67",0],"wall_ms":1792590211185}
+{"seq":210,"fixture":"list-objects","input_id":"event_69","label":"$delivery","selector":"list","atoms":["apple"],"wall_ms":1792590211185}
+{"seq":211,"fixture":"list-objects","input_id":"event_69","label":"zl.reg:0","selector":"apple","atoms":[],"wall_ms":1792590211185}
+{"seq":212,"fixture":"list-objects","input_id":"event_70","label":"$input","selector":"stimulus","atoms":["event_70","symbol apple","obj-67",0],"wall_ms":1792590211187}
+{"seq":213,"fixture":"list-objects","input_id":"event_70","label":"$delivery","selector":"symbol","atoms":["apple"],"wall_ms":1792590211187}
+{"seq":214,"fixture":"list-objects","input_id":"event_70","label":"zl.reg:0","selector":"symbol","atoms":["apple"],"wall_ms":1792590211187}
+{"seq":215,"fixture":"list-objects","input_id":"event_71","label":"$input","selector":"stimulus","atoms":["event_71","apple","obj-67",0],"wall_ms":1792590211188}
+{"seq":216,"fixture":"list-objects","input_id":"event_71","label":"$delivery","selector":"apple","atoms":[],"wall_ms":1792590211188}
+{"seq":217,"fixture":"list-objects","input_id":"event_71","label":"zl.reg:0","selector":"apple","atoms":[],"wall_ms":1792590211188}
+{"seq":218,"fixture":"list-objects","input_id":"event_72","label":"$input","selector":"stimulus","atoms":["event_72","apple 3 pear","obj-67",0],"wall_ms":1792590211189}
+{"seq":219,"fixture":"list-objects","input_id":"event_72","label":"$delivery","selector":"apple","atoms":[3,"pear"],"wall_ms":1792590211189}
+{"seq":220,"fixture":"list-objects","input_id":"event_72","label":"zl.reg:0","selector":"apple","atoms":[3,"pear"],"wall_ms":1792590211189}
+{"seq":221,"fixture":"list-objects","input_id":"event_73","label":"$input","selector":"stimulus","atoms":["event_73","list apple 3 pear","obj-67",0],"wall_ms":1792590211190}
+{"seq":222,"fixture":"list-objects","input_id":"event_73","label":"$delivery","selector":"list","atoms":["apple",3,"pear"],"wall_ms":1792590211190}
+{"seq":223,"fixture":"list-objects","input_id":"event_73","label":"zl.reg:0","selector":"apple","atoms":[3,"pear"],"wall_ms":1792590211190}
+{"seq":224,"fixture":"list-objects","input_id":"event_74","label":"$input","selector":"stimulus","atoms":["event_74","list 1 2. apple 4","obj-67",0],"wall_ms":1792590211192}
+{"seq":225,"fixture":"list-objects","input_id":"event_74","label":"$delivery","selector":"list","atoms":[1,2,"apple",4],"wall_ms":1792590211192}
+{"seq":226,"fixture":"list-objects","input_id":"event_74","label":"zl.reg:0","selector":"list","atoms":[1,2,"apple",4],"wall_ms":1792590211192}
+{"seq":227,"fixture":"list-objects","input_id":"event_75","label":"$input","selector":"stimulus","atoms":["event_75","bang","obj-67",0],"wall_ms":1792590211193}
+{"seq":228,"fixture":"list-objects","input_id":"event_75","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211193}
+{"seq":229,"fixture":"list-objects","input_id":"event_75","label":"zl.reg:0","selector":"list","atoms":[1,2,"apple",4],"wall_ms":1792590211193}
+{"seq":230,"fixture":"list-objects","input_id":"event_76","label":"$input","selector":"stimulus","atoms":["event_76","list","obj-67",0],"wall_ms":1792590211194}
+{"seq":231,"fixture":"list-objects","input_id":"event_77","label":"$input","selector":"stimulus","atoms":["event_77","bang","obj-67",0],"wall_ms":1792590211195}
+{"seq":232,"fixture":"list-objects","input_id":"event_77","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211196}
+{"seq":233,"fixture":"list-objects","input_id":"event_77","label":"zl.reg:0","selector":"list","atoms":[1,2,"apple",4],"wall_ms":1792590211196}
+{"seq":234,"fixture":"list-objects","input_id":"event_78","label":"$input","selector":"stimulus","atoms":["event_78","set 8 9","obj-67",0],"wall_ms":1792590211205}
+{"seq":235,"fixture":"list-objects","input_id":"event_78","label":"$delivery","selector":"set","atoms":[8,9],"wall_ms":1792590211206}
+{"seq":236,"fixture":"list-objects","input_id":"event_78","label":"zl.reg:0","selector":"set","atoms":[8,9],"wall_ms":1792590211206}
+{"seq":237,"fixture":"list-objects","input_id":"event_79","label":"$input","selector":"stimulus","atoms":["event_79","bang","obj-67",0],"wall_ms":1792590211207}
+{"seq":238,"fixture":"list-objects","input_id":"event_79","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211207}
+{"seq":239,"fixture":"list-objects","input_id":"event_79","label":"zl.reg:0","selector":"set","atoms":[8,9],"wall_ms":1792590211207}
+{"seq":240,"fixture":"list-objects","input_id":"event_80","label":"$input","selector":"stimulus","atoms":["event_80","zlclear","obj-67",0],"wall_ms":1792590211208}
+{"seq":241,"fixture":"list-objects","input_id":"event_80","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211208}
+{"seq":242,"fixture":"list-objects","input_id":"event_81","label":"$input","selector":"stimulus","atoms":["event_81","bang","obj-67",0],"wall_ms":1792590211210}
+{"seq":243,"fixture":"list-objects","input_id":"event_81","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211210}
+{"seq":244,"fixture":"list-objects","input_id":"event_82","label":"$input","selector":"stimulus","atoms":["event_82","zlreset","obj-67",0],"wall_ms":1792590211211}
+{"seq":245,"fixture":"list-objects","input_id":"event_82","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211211}
+{"seq":246,"fixture":"list-objects","input_id":"event_83","label":"$input","selector":"stimulus","atoms":["event_83","bang","obj-67",0],"wall_ms":1792590211213}
+{"seq":247,"fixture":"list-objects","input_id":"event_83","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211213}
+{"seq":248,"fixture":"list-objects","input_id":"event_84","label":"$input","selector":"stimulus","atoms":["event_84","list 1 2 3 4 5","obj-67",0],"wall_ms":1792590211216}
+{"seq":249,"fixture":"list-objects","input_id":"event_84","label":"$delivery","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211216}
+{"seq":250,"fixture":"list-objects","input_id":"event_84","label":"zl.reg:0","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211216}
+{"seq":251,"fixture":"list-objects","input_id":"event_85","label":"$input","selector":"stimulus","atoms":["event_85","bang","obj-67",1],"wall_ms":1792590211217}
+{"seq":252,"fixture":"list-objects","input_id":"event_85","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211217}
+{"seq":253,"fixture":"list-objects","input_id":"event_86","label":"$input","selector":"stimulus","atoms":["event_86","bang","obj-67",0],"wall_ms":1792590211218}
+{"seq":254,"fixture":"list-objects","input_id":"event_86","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211218}
+{"seq":255,"fixture":"list-objects","input_id":"event_86","label":"zl.reg:0","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211218}
+{"seq":256,"fixture":"list-objects","input_id":"event_87","label":"$input","selector":"stimulus","atoms":["event_87","list 7 8","obj-67",1],"wall_ms":1792590211221}
+{"seq":257,"fixture":"list-objects","input_id":"event_87","label":"$delivery","selector":"list","atoms":[7,8],"wall_ms":1792590211221}
+{"seq":258,"fixture":"list-objects","input_id":"event_88","label":"$input","selector":"stimulus","atoms":["event_88","bang","obj-67",0],"wall_ms":1792590211222}
+{"seq":259,"fixture":"list-objects","input_id":"event_88","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211222}
+{"seq":260,"fixture":"list-objects","input_id":"event_88","label":"zl.reg:0","selector":"list","atoms":[7,8],"wall_ms":1792590211222}
+{"seq":261,"fixture":"list-objects","input_id":"event_89","label":"$input","selector":"stimulus","atoms":["event_89","3","obj-67",1],"wall_ms":1792590211223}
+{"seq":262,"fixture":"list-objects","input_id":"event_89","label":"$delivery","selector":"int","atoms":[3],"wall_ms":1792590211223}
+{"seq":263,"fixture":"list-objects","input_id":"event_90","label":"$input","selector":"stimulus","atoms":["event_90","bang","obj-67",0],"wall_ms":1792590211225}
+{"seq":264,"fixture":"list-objects","input_id":"event_90","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211225}
+{"seq":265,"fixture":"list-objects","input_id":"event_90","label":"zl.reg:0","selector":"int","atoms":[3],"wall_ms":1792590211225}
+{"seq":266,"fixture":"list-objects","input_id":"event_91","label":"$input","selector":"stimulus","atoms":["event_91","0","obj-67",1],"wall_ms":1792590211226}
+{"seq":267,"fixture":"list-objects","input_id":"event_91","label":"$delivery","selector":"int","atoms":[0],"wall_ms":1792590211226}
+{"seq":268,"fixture":"list-objects","input_id":"event_92","label":"$input","selector":"stimulus","atoms":["event_92","bang","obj-67",0],"wall_ms":1792590211227}
+{"seq":269,"fixture":"list-objects","input_id":"event_92","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211227}
+{"seq":270,"fixture":"list-objects","input_id":"event_92","label":"zl.reg:0","selector":"int","atoms":[0],"wall_ms":1792590211227}
+{"seq":271,"fixture":"list-objects","input_id":"event_93","label":"$input","selector":"stimulus","atoms":["event_93","-1","obj-67",1],"wall_ms":1792590211228}
+{"seq":272,"fixture":"list-objects","input_id":"event_93","label":"$delivery","selector":"int","atoms":[-1],"wall_ms":1792590211228}
+{"seq":273,"fixture":"list-objects","input_id":"event_94","label":"$input","selector":"stimulus","atoms":["event_94","bang","obj-67",0],"wall_ms":1792590211230}
+{"seq":274,"fixture":"list-objects","input_id":"event_94","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211230}
+{"seq":275,"fixture":"list-objects","input_id":"event_94","label":"zl.reg:0","selector":"int","atoms":[-1],"wall_ms":1792590211230}
+{"seq":276,"fixture":"list-objects","input_id":"event_95","label":"$input","selector":"stimulus","atoms":["event_95","list","obj-67",1],"wall_ms":1792590211231}
+{"seq":277,"fixture":"list-objects","input_id":"event_96","label":"$input","selector":"stimulus","atoms":["event_96","bang","obj-67",0],"wall_ms":1792590211232}
+{"seq":278,"fixture":"list-objects","input_id":"event_96","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211232}
+{"seq":279,"fixture":"list-objects","input_id":"event_96","label":"zl.reg:0","selector":"int","atoms":[-1],"wall_ms":1792590211232}
+{"seq":280,"fixture":"list-objects","input_id":"event_97","label":"$input","selector":"stimulus","atoms":["event_97","zlreset","obj-67",0],"wall_ms":1792590211233}
+{"seq":281,"fixture":"list-objects","input_id":"event_97","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211233}
+{"seq":282,"fixture":"list-objects","input_id":"event_98","label":"$input","selector":"stimulus","atoms":["event_98","bang","obj-67",0],"wall_ms":1792590211234}
+{"seq":283,"fixture":"list-objects","input_id":"event_98","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211235}
+{"seq":284,"fixture":"list-objects","input_id":"event_99","label":"$input","selector":"stimulus","atoms":["event_99","zlclear","obj-67",0],"wall_ms":1792590211236}
+{"seq":285,"fixture":"list-objects","input_id":"event_99","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211236}
+{"seq":286,"fixture":"list-objects","input_id":"event_100","label":"$input","selector":"stimulus","atoms":["event_100","bang","obj-67",0],"wall_ms":1792590211237}
+{"seq":287,"fixture":"list-objects","input_id":"event_100","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211237}
+{"seq":288,"fixture":"list-objects","input_id":"event_101","label":"$input","selector":"stimulus","atoms":["event_101","bang","obj-106",0],"wall_ms":1792590211238}
+{"seq":289,"fixture":"list-objects","input_id":"event_101","label":"zl.join:0","selector":"tail","atoms":[9],"wall_ms":1792590211238}
+{"seq":290,"fixture":"list-objects","input_id":"event_101","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211238}
+{"seq":291,"fixture":"list-objects","input_id":"event_102","label":"$input","selector":"stimulus","atoms":["event_102","42","obj-106",0],"wall_ms":1792590211239}
+{"seq":292,"fixture":"list-objects","input_id":"event_102","label":"zl.join:0","selector":"list","atoms":[42,"tail",9],"wall_ms":1792590211239}
+{"seq":293,"fixture":"list-objects","input_id":"event_102","label":"$delivery","selector":"int","atoms":[42],"wall_ms":1792590211239}
+{"seq":294,"fixture":"list-objects","input_id":"event_103","label":"$input","selector":"stimulus","atoms":["event_103","bang","obj-106",0],"wall_ms":1792590211241}
+{"seq":295,"fixture":"list-objects","input_id":"event_103","label":"zl.join:0","selector":"list","atoms":[42,"tail",9],"wall_ms":1792590211241}
+{"seq":296,"fixture":"list-objects","input_id":"event_103","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211241}
+{"seq":297,"fixture":"list-objects","input_id":"event_104","label":"$input","selector":"stimulus","atoms":["event_104","42.","obj-106",0],"wall_ms":1792590211242}
+{"seq":298,"fixture":"list-objects","input_id":"event_104","label":"zl.join:0","selector":"list","atoms":[42,"tail",9],"wall_ms":1792590211242}
+{"seq":299,"fixture":"list-objects","input_id":"event_104","label":"$delivery","selector":"float","atoms":[42],"wall_ms":1792590211242}
+{"seq":300,"fixture":"list-objects","input_id":"event_105","label":"$input","selector":"stimulus","atoms":["event_105","list 42","obj-106",0],"wall_ms":1792590211243}
+{"seq":301,"fixture":"list-objects","input_id":"event_105","label":"zl.join:0","selector":"list","atoms":[42,"tail",9],"wall_ms":1792590211243}
+{"seq":302,"fixture":"list-objects","input_id":"event_105","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211243}
+{"seq":303,"fixture":"list-objects","input_id":"event_106","label":"$input","selector":"stimulus","atoms":["event_106","list 42.","obj-106",0],"wall_ms":1792590211244}
+{"seq":304,"fixture":"list-objects","input_id":"event_106","label":"zl.join:0","selector":"list","atoms":[42,"tail",9],"wall_ms":1792590211245}
+{"seq":305,"fixture":"list-objects","input_id":"event_106","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211245}
+{"seq":306,"fixture":"list-objects","input_id":"event_107","label":"$input","selector":"stimulus","atoms":["event_107","list apple","obj-106",0],"wall_ms":1792590211246}
+{"seq":307,"fixture":"list-objects","input_id":"event_107","label":"zl.join:0","selector":"apple","atoms":["tail",9],"wall_ms":1792590211246}
+{"seq":308,"fixture":"list-objects","input_id":"event_107","label":"$delivery","selector":"list","atoms":["apple"],"wall_ms":1792590211246}
+{"seq":309,"fixture":"list-objects","input_id":"event_108","label":"$input","selector":"stimulus","atoms":["event_108","symbol apple","obj-106",0],"wall_ms":1792590211247}
+{"seq":310,"fixture":"list-objects","input_id":"event_108","label":"zl.join:0","selector":"symbol","atoms":["apple","tail",9],"wall_ms":1792590211247}
+{"seq":311,"fixture":"list-objects","input_id":"event_108","label":"$delivery","selector":"symbol","atoms":["apple"],"wall_ms":1792590211247}
+{"seq":312,"fixture":"list-objects","input_id":"event_109","label":"$input","selector":"stimulus","atoms":["event_109","apple","obj-106",0],"wall_ms":1792590211247}
+{"seq":313,"fixture":"list-objects","input_id":"event_109","label":"zl.join:0","selector":"apple","atoms":["tail",9],"wall_ms":1792590211248}
+{"seq":314,"fixture":"list-objects","input_id":"event_109","label":"$delivery","selector":"apple","atoms":[],"wall_ms":1792590211248}
+{"seq":315,"fixture":"list-objects","input_id":"event_110","label":"$input","selector":"stimulus","atoms":["event_110","apple 3 pear","obj-106",0],"wall_ms":1792590211249}
+{"seq":316,"fixture":"list-objects","input_id":"event_110","label":"zl.join:0","selector":"apple","atoms":[3,"pear","tail",9],"wall_ms":1792590211249}
+{"seq":317,"fixture":"list-objects","input_id":"event_110","label":"$delivery","selector":"apple","atoms":[3,"pear"],"wall_ms":1792590211249}
+{"seq":318,"fixture":"list-objects","input_id":"event_111","label":"$input","selector":"stimulus","atoms":["event_111","list apple 3 pear","obj-106",0],"wall_ms":1792590211251}
+{"seq":319,"fixture":"list-objects","input_id":"event_111","label":"zl.join:0","selector":"apple","atoms":[3,"pear","tail",9],"wall_ms":1792590211251}
+{"seq":320,"fixture":"list-objects","input_id":"event_111","label":"$delivery","selector":"list","atoms":["apple",3,"pear"],"wall_ms":1792590211251}
+{"seq":321,"fixture":"list-objects","input_id":"event_112","label":"$input","selector":"stimulus","atoms":["event_112","list 1 2. apple 4","obj-106",0],"wall_ms":1792590211252}
+{"seq":322,"fixture":"list-objects","input_id":"event_112","label":"zl.join:0","selector":"list","atoms":[1,2,"apple",4,"tail",9],"wall_ms":1792590211252}
+{"seq":323,"fixture":"list-objects","input_id":"event_112","label":"$delivery","selector":"list","atoms":[1,2,"apple",4],"wall_ms":1792590211252}
+{"seq":324,"fixture":"list-objects","input_id":"event_113","label":"$input","selector":"stimulus","atoms":["event_113","bang","obj-106",0],"wall_ms":1792590211254}
+{"seq":325,"fixture":"list-objects","input_id":"event_113","label":"zl.join:0","selector":"list","atoms":[1,2,"apple",4,"tail",9],"wall_ms":1792590211255}
+{"seq":326,"fixture":"list-objects","input_id":"event_113","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211255}
+{"seq":327,"fixture":"list-objects","input_id":"event_114","label":"$input","selector":"stimulus","atoms":["event_114","list","obj-106",0],"wall_ms":1792590211256}
+{"seq":328,"fixture":"list-objects","input_id":"event_115","label":"$input","selector":"stimulus","atoms":["event_115","bang","obj-106",0],"wall_ms":1792590211258}
+{"seq":329,"fixture":"list-objects","input_id":"event_115","label":"zl.join:0","selector":"list","atoms":[1,2,"apple",4,"tail",9],"wall_ms":1792590211258}
+{"seq":330,"fixture":"list-objects","input_id":"event_115","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211258}
+{"seq":331,"fixture":"list-objects","input_id":"event_116","label":"$input","selector":"stimulus","atoms":["event_116","set 8 9","obj-106",0],"wall_ms":1792590211259}
+{"seq":332,"fixture":"list-objects","input_id":"event_116","label":"zl.join:0","selector":"set","atoms":[8,9,"tail",9],"wall_ms":1792590211259}
+{"seq":333,"fixture":"list-objects","input_id":"event_116","label":"$delivery","selector":"set","atoms":[8,9],"wall_ms":1792590211259}
+{"seq":334,"fixture":"list-objects","input_id":"event_117","label":"$input","selector":"stimulus","atoms":["event_117","bang","obj-106",0],"wall_ms":1792590211261}
+{"seq":335,"fixture":"list-objects","input_id":"event_117","label":"zl.join:0","selector":"set","atoms":[8,9,"tail",9],"wall_ms":1792590211261}
+{"seq":336,"fixture":"list-objects","input_id":"event_117","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211261}
+{"seq":337,"fixture":"list-objects","input_id":"event_118","label":"$input","selector":"stimulus","atoms":["event_118","zlclear","obj-106",0],"wall_ms":1792590211262}
+{"seq":338,"fixture":"list-objects","input_id":"event_118","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211262}
+{"seq":339,"fixture":"list-objects","input_id":"event_119","label":"$input","selector":"stimulus","atoms":["event_119","bang","obj-106",0],"wall_ms":1792590211263}
+{"seq":340,"fixture":"list-objects","input_id":"event_119","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211263}
+{"seq":341,"fixture":"list-objects","input_id":"event_120","label":"$input","selector":"stimulus","atoms":["event_120","zlreset","obj-106",0],"wall_ms":1792590211266}
+{"seq":342,"fixture":"list-objects","input_id":"event_120","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211267}
+{"seq":343,"fixture":"list-objects","input_id":"event_121","label":"$input","selector":"stimulus","atoms":["event_121","bang","obj-106",0],"wall_ms":1792590211268}
+{"seq":344,"fixture":"list-objects","input_id":"event_121","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211268}
+{"seq":345,"fixture":"list-objects","input_id":"event_122","label":"$input","selector":"stimulus","atoms":["event_122","list 1 2 3 4 5","obj-106",0],"wall_ms":1792590211269}
+{"seq":346,"fixture":"list-objects","input_id":"event_122","label":"zl.join:0","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211269}
+{"seq":347,"fixture":"list-objects","input_id":"event_122","label":"$delivery","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211269}
+{"seq":348,"fixture":"list-objects","input_id":"event_123","label":"$input","selector":"stimulus","atoms":["event_123","bang","obj-106",1],"wall_ms":1792590211270}
+{"seq":349,"fixture":"list-objects","input_id":"event_123","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211270}
+{"seq":350,"fixture":"list-objects","input_id":"event_124","label":"$input","selector":"stimulus","atoms":["event_124","bang","obj-106",0],"wall_ms":1792590211271}
+{"seq":351,"fixture":"list-objects","input_id":"event_124","label":"zl.join:0","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211271}
+{"seq":352,"fixture":"list-objects","input_id":"event_124","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211271}
+{"seq":353,"fixture":"list-objects","input_id":"event_125","label":"$input","selector":"stimulus","atoms":["event_125","list 7 8","obj-106",1],"wall_ms":1792590211273}
+{"seq":354,"fixture":"list-objects","input_id":"event_125","label":"$delivery","selector":"list","atoms":[7,8],"wall_ms":1792590211273}
+{"seq":355,"fixture":"list-objects","input_id":"event_126","label":"$input","selector":"stimulus","atoms":["event_126","bang","obj-106",0],"wall_ms":1792590211274}
+{"seq":356,"fixture":"list-objects","input_id":"event_126","label":"zl.join:0","selector":"list","atoms":[1,2,3,4,5,7,8],"wall_ms":1792590211274}
+{"seq":357,"fixture":"list-objects","input_id":"event_126","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211274}
+{"seq":358,"fixture":"list-objects","input_id":"event_127","label":"$input","selector":"stimulus","atoms":["event_127","3","obj-106",1],"wall_ms":1792590211275}
+{"seq":359,"fixture":"list-objects","input_id":"event_127","label":"$delivery","selector":"int","atoms":[3],"wall_ms":1792590211275}
+{"seq":360,"fixture":"list-objects","input_id":"event_128","label":"$input","selector":"stimulus","atoms":["event_128","bang","obj-106",0],"wall_ms":1792590211276}
+{"seq":361,"fixture":"list-objects","input_id":"event_128","label":"zl.join:0","selector":"list","atoms":[1,2,3,4,5,3],"wall_ms":1792590211276}
+{"seq":362,"fixture":"list-objects","input_id":"event_128","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211276}
+{"seq":363,"fixture":"list-objects","input_id":"event_129","label":"$input","selector":"stimulus","atoms":["event_129","0","obj-106",1],"wall_ms":1792590211278}
+{"seq":364,"fixture":"list-objects","input_id":"event_129","label":"$delivery","selector":"int","atoms":[0],"wall_ms":1792590211278}
+{"seq":365,"fixture":"list-objects","input_id":"event_130","label":"$input","selector":"stimulus","atoms":["event_130","bang","obj-106",0],"wall_ms":1792590211279}
+{"seq":366,"fixture":"list-objects","input_id":"event_130","label":"zl.join:0","selector":"list","atoms":[1,2,3,4,5,0],"wall_ms":1792590211279}
+{"seq":367,"fixture":"list-objects","input_id":"event_130","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211279}
+{"seq":368,"fixture":"list-objects","input_id":"event_131","label":"$input","selector":"stimulus","atoms":["event_131","-1","obj-106",1],"wall_ms":1792590211280}
+{"seq":369,"fixture":"list-objects","input_id":"event_131","label":"$delivery","selector":"int","atoms":[-1],"wall_ms":1792590211280}
+{"seq":370,"fixture":"list-objects","input_id":"event_132","label":"$input","selector":"stimulus","atoms":["event_132","bang","obj-106",0],"wall_ms":1792590211282}
+{"seq":371,"fixture":"list-objects","input_id":"event_132","label":"zl.join:0","selector":"list","atoms":[1,2,3,4,5,-1],"wall_ms":1792590211282}
+{"seq":372,"fixture":"list-objects","input_id":"event_132","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211282}
+{"seq":373,"fixture":"list-objects","input_id":"event_133","label":"$input","selector":"stimulus","atoms":["event_133","list","obj-106",1],"wall_ms":1792590211283}
+{"seq":374,"fixture":"list-objects","input_id":"event_134","label":"$input","selector":"stimulus","atoms":["event_134","bang","obj-106",0],"wall_ms":1792590211284}
+{"seq":375,"fixture":"list-objects","input_id":"event_134","label":"zl.join:0","selector":"list","atoms":[1,2,3,4,5,-1],"wall_ms":1792590211284}
+{"seq":376,"fixture":"list-objects","input_id":"event_134","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211284}
+{"seq":377,"fixture":"list-objects","input_id":"event_135","label":"$input","selector":"stimulus","atoms":["event_135","zlreset","obj-106",0],"wall_ms":1792590211285}
+{"seq":378,"fixture":"list-objects","input_id":"event_135","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211285}
+{"seq":379,"fixture":"list-objects","input_id":"event_136","label":"$input","selector":"stimulus","atoms":["event_136","bang","obj-106",0],"wall_ms":1792590211287}
+{"seq":380,"fixture":"list-objects","input_id":"event_136","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211287}
+{"seq":381,"fixture":"list-objects","input_id":"event_137","label":"$input","selector":"stimulus","atoms":["event_137","zlclear","obj-106",0],"wall_ms":1792590211288}
+{"seq":382,"fixture":"list-objects","input_id":"event_137","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211288}
+{"seq":383,"fixture":"list-objects","input_id":"event_138","label":"$input","selector":"stimulus","atoms":["event_138","bang","obj-106",0],"wall_ms":1792590211289}
+{"seq":384,"fixture":"list-objects","input_id":"event_138","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211289}
+{"seq":385,"fixture":"list-objects","input_id":"event_139","label":"$input","selector":"stimulus","atoms":["event_139","bang","obj-145",0],"wall_ms":1792590211290}
+{"seq":386,"fixture":"list-objects","input_id":"event_139","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211290}
+{"seq":387,"fixture":"list-objects","input_id":"event_140","label":"$input","selector":"stimulus","atoms":["event_140","42","obj-145",0],"wall_ms":1792590211292}
+{"seq":388,"fixture":"list-objects","input_id":"event_140","label":"$delivery","selector":"int","atoms":[42],"wall_ms":1792590211292}
+{"seq":389,"fixture":"list-objects","input_id":"event_140","label":"zl.len:0","selector":"int","atoms":[1],"wall_ms":1792590211292}
+{"seq":390,"fixture":"list-objects","input_id":"event_141","label":"$input","selector":"stimulus","atoms":["event_141","bang","obj-145",0],"wall_ms":1792590211293}
+{"seq":391,"fixture":"list-objects","input_id":"event_141","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211293}
+{"seq":392,"fixture":"list-objects","input_id":"event_141","label":"zl.len:0","selector":"int","atoms":[1],"wall_ms":1792590211293}
+{"seq":393,"fixture":"list-objects","input_id":"event_142","label":"$input","selector":"stimulus","atoms":["event_142","42.","obj-145",0],"wall_ms":1792590211294}
+{"seq":394,"fixture":"list-objects","input_id":"event_142","label":"$delivery","selector":"float","atoms":[42],"wall_ms":1792590211294}
+{"seq":395,"fixture":"list-objects","input_id":"event_142","label":"zl.len:0","selector":"int","atoms":[1],"wall_ms":1792590211294}
+{"seq":396,"fixture":"list-objects","input_id":"event_143","label":"$input","selector":"stimulus","atoms":["event_143","list 42","obj-145",0],"wall_ms":1792590211295}
+{"seq":397,"fixture":"list-objects","input_id":"event_143","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211296}
+{"seq":398,"fixture":"list-objects","input_id":"event_143","label":"zl.len:0","selector":"int","atoms":[1],"wall_ms":1792590211296}
+{"seq":399,"fixture":"list-objects","input_id":"event_144","label":"$input","selector":"stimulus","atoms":["event_144","list 42.","obj-145",0],"wall_ms":1792590211297}
+{"seq":400,"fixture":"list-objects","input_id":"event_144","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211297}
+{"seq":401,"fixture":"list-objects","input_id":"event_144","label":"zl.len:0","selector":"int","atoms":[1],"wall_ms":1792590211297}
+{"seq":402,"fixture":"list-objects","input_id":"event_145","label":"$input","selector":"stimulus","atoms":["event_145","list apple","obj-145",0],"wall_ms":1792590211298}
+{"seq":403,"fixture":"list-objects","input_id":"event_145","label":"$delivery","selector":"list","atoms":["apple"],"wall_ms":1792590211298}
+{"seq":404,"fixture":"list-objects","input_id":"event_145","label":"zl.len:0","selector":"int","atoms":[1],"wall_ms":1792590211298}
+{"seq":405,"fixture":"list-objects","input_id":"event_146","label":"$input","selector":"stimulus","atoms":["event_146","symbol apple","obj-145",0],"wall_ms":1792590211299}
+{"seq":406,"fixture":"list-objects","input_id":"event_146","label":"$delivery","selector":"symbol","atoms":["apple"],"wall_ms":1792590211299}
+{"seq":407,"fixture":"list-objects","input_id":"event_146","label":"zl.len:0","selector":"int","atoms":[2],"wall_ms":1792590211299}
+{"seq":408,"fixture":"list-objects","input_id":"event_147","label":"$input","selector":"stimulus","atoms":["event_147","apple","obj-145",0],"wall_ms":1792590211302}
+{"seq":409,"fixture":"list-objects","input_id":"event_147","label":"$delivery","selector":"apple","atoms":[],"wall_ms":1792590211302}
+{"seq":410,"fixture":"list-objects","input_id":"event_147","label":"zl.len:0","selector":"int","atoms":[1],"wall_ms":1792590211302}
+{"seq":411,"fixture":"list-objects","input_id":"event_148","label":"$input","selector":"stimulus","atoms":["event_148","apple 3 pear","obj-145",0],"wall_ms":1792590211303}
+{"seq":412,"fixture":"list-objects","input_id":"event_148","label":"$delivery","selector":"apple","atoms":[3,"pear"],"wall_ms":1792590211304}
+{"seq":413,"fixture":"list-objects","input_id":"event_148","label":"zl.len:0","selector":"int","atoms":[3],"wall_ms":1792590211304}
+{"seq":414,"fixture":"list-objects","input_id":"event_149","label":"$input","selector":"stimulus","atoms":["event_149","list apple 3 pear","obj-145",0],"wall_ms":1792590211305}
+{"seq":415,"fixture":"list-objects","input_id":"event_149","label":"$delivery","selector":"list","atoms":["apple",3,"pear"],"wall_ms":1792590211305}
+{"seq":416,"fixture":"list-objects","input_id":"event_149","label":"zl.len:0","selector":"int","atoms":[3],"wall_ms":1792590211305}
+{"seq":417,"fixture":"list-objects","input_id":"event_150","label":"$input","selector":"stimulus","atoms":["event_150","list 1 2. apple 4","obj-145",0],"wall_ms":1792590211306}
+{"seq":418,"fixture":"list-objects","input_id":"event_150","label":"$delivery","selector":"list","atoms":[1,2,"apple",4],"wall_ms":1792590211306}
+{"seq":419,"fixture":"list-objects","input_id":"event_150","label":"zl.len:0","selector":"int","atoms":[4],"wall_ms":1792590211306}
+{"seq":420,"fixture":"list-objects","input_id":"event_151","label":"$input","selector":"stimulus","atoms":["event_151","bang","obj-145",0],"wall_ms":1792590211307}
+{"seq":421,"fixture":"list-objects","input_id":"event_151","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211307}
+{"seq":422,"fixture":"list-objects","input_id":"event_151","label":"zl.len:0","selector":"int","atoms":[4],"wall_ms":1792590211307}
+{"seq":423,"fixture":"list-objects","input_id":"event_152","label":"$input","selector":"stimulus","atoms":["event_152","list","obj-145",0],"wall_ms":1792590211309}
+{"seq":424,"fixture":"list-objects","input_id":"event_153","label":"$input","selector":"stimulus","atoms":["event_153","bang","obj-145",0],"wall_ms":1792590211310}
+{"seq":425,"fixture":"list-objects","input_id":"event_153","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211310}
+{"seq":426,"fixture":"list-objects","input_id":"event_153","label":"zl.len:0","selector":"int","atoms":[4],"wall_ms":1792590211310}
+{"seq":427,"fixture":"list-objects","input_id":"event_154","label":"$input","selector":"stimulus","atoms":["event_154","set 8 9","obj-145",0],"wall_ms":1792590211312}
+{"seq":428,"fixture":"list-objects","input_id":"event_154","label":"$delivery","selector":"set","atoms":[8,9],"wall_ms":1792590211312}
+{"seq":429,"fixture":"list-objects","input_id":"event_154","label":"zl.len:0","selector":"int","atoms":[3],"wall_ms":1792590211312}
+{"seq":430,"fixture":"list-objects","input_id":"event_155","label":"$input","selector":"stimulus","atoms":["event_155","bang","obj-145",0],"wall_ms":1792590211313}
+{"seq":431,"fixture":"list-objects","input_id":"event_155","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211313}
+{"seq":432,"fixture":"list-objects","input_id":"event_155","label":"zl.len:0","selector":"int","atoms":[3],"wall_ms":1792590211313}
+{"seq":433,"fixture":"list-objects","input_id":"event_156","label":"$input","selector":"stimulus","atoms":["event_156","zlclear","obj-145",0],"wall_ms":1792590211314}
+{"seq":434,"fixture":"list-objects","input_id":"event_156","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211314}
+{"seq":435,"fixture":"list-objects","input_id":"event_157","label":"$input","selector":"stimulus","atoms":["event_157","bang","obj-145",0],"wall_ms":1792590211315}
+{"seq":436,"fixture":"list-objects","input_id":"event_157","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211315}
+{"seq":437,"fixture":"list-objects","input_id":"event_158","label":"$input","selector":"stimulus","atoms":["event_158","zlreset","obj-145",0],"wall_ms":1792590211316}
+{"seq":438,"fixture":"list-objects","input_id":"event_158","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211316}
+{"seq":439,"fixture":"list-objects","input_id":"event_159","label":"$input","selector":"stimulus","atoms":["event_159","bang","obj-145",0],"wall_ms":1792590211318}
+{"seq":440,"fixture":"list-objects","input_id":"event_159","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211318}
+{"seq":441,"fixture":"list-objects","input_id":"event_160","label":"$input","selector":"stimulus","atoms":["event_160","list 1 2 3 4 5","obj-145",0],"wall_ms":1792590211319}
+{"seq":442,"fixture":"list-objects","input_id":"event_160","label":"$delivery","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211319}
+{"seq":443,"fixture":"list-objects","input_id":"event_160","label":"zl.len:0","selector":"int","atoms":[5],"wall_ms":1792590211319}
+{"seq":444,"fixture":"list-objects","input_id":"event_161","label":"$input","selector":"stimulus","atoms":["event_161","bang","obj-145",1],"wall_ms":1792590211330}
+{"seq":445,"fixture":"list-objects","input_id":"event_161","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211330}
+{"seq":446,"fixture":"list-objects","input_id":"event_162","label":"$input","selector":"stimulus","atoms":["event_162","bang","obj-145",0],"wall_ms":1792590211331}
+{"seq":447,"fixture":"list-objects","input_id":"event_162","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211331}
+{"seq":448,"fixture":"list-objects","input_id":"event_162","label":"zl.len:0","selector":"int","atoms":[5],"wall_ms":1792590211331}
+{"seq":449,"fixture":"list-objects","input_id":"event_163","label":"$input","selector":"stimulus","atoms":["event_163","list 7 8","obj-145",1],"wall_ms":1792590211332}
+{"seq":450,"fixture":"list-objects","input_id":"event_163","label":"$delivery","selector":"list","atoms":[7,8],"wall_ms":1792590211332}
+{"seq":451,"fixture":"list-objects","input_id":"event_164","label":"$input","selector":"stimulus","atoms":["event_164","bang","obj-145",0],"wall_ms":1792590211334}
+{"seq":452,"fixture":"list-objects","input_id":"event_164","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211334}
+{"seq":453,"fixture":"list-objects","input_id":"event_164","label":"zl.len:0","selector":"int","atoms":[5],"wall_ms":1792590211334}
+{"seq":454,"fixture":"list-objects","input_id":"event_165","label":"$input","selector":"stimulus","atoms":["event_165","3","obj-145",1],"wall_ms":1792590211335}
+{"seq":455,"fixture":"list-objects","input_id":"event_165","label":"$delivery","selector":"int","atoms":[3],"wall_ms":1792590211335}
+{"seq":456,"fixture":"list-objects","input_id":"event_166","label":"$input","selector":"stimulus","atoms":["event_166","bang","obj-145",0],"wall_ms":1792590211336}
+{"seq":457,"fixture":"list-objects","input_id":"event_166","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211336}
+{"seq":458,"fixture":"list-objects","input_id":"event_166","label":"zl.len:0","selector":"int","atoms":[5],"wall_ms":1792590211336}
+{"seq":459,"fixture":"list-objects","input_id":"event_167","label":"$input","selector":"stimulus","atoms":["event_167","0","obj-145",1],"wall_ms":1792590211337}
+{"seq":460,"fixture":"list-objects","input_id":"event_167","label":"$delivery","selector":"int","atoms":[0],"wall_ms":1792590211337}
+{"seq":461,"fixture":"list-objects","input_id":"event_168","label":"$input","selector":"stimulus","atoms":["event_168","bang","obj-145",0],"wall_ms":1792590211339}
+{"seq":462,"fixture":"list-objects","input_id":"event_168","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211339}
+{"seq":463,"fixture":"list-objects","input_id":"event_168","label":"zl.len:0","selector":"int","atoms":[5],"wall_ms":1792590211339}
+{"seq":464,"fixture":"list-objects","input_id":"event_169","label":"$input","selector":"stimulus","atoms":["event_169","-1","obj-145",1],"wall_ms":1792590211340}
+{"seq":465,"fixture":"list-objects","input_id":"event_169","label":"$delivery","selector":"int","atoms":[-1],"wall_ms":1792590211340}
+{"seq":466,"fixture":"list-objects","input_id":"event_170","label":"$input","selector":"stimulus","atoms":["event_170","bang","obj-145",0],"wall_ms":1792590211341}
+{"seq":467,"fixture":"list-objects","input_id":"event_170","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211341}
+{"seq":468,"fixture":"list-objects","input_id":"event_170","label":"zl.len:0","selector":"int","atoms":[5],"wall_ms":1792590211341}
+{"seq":469,"fixture":"list-objects","input_id":"event_171","label":"$input","selector":"stimulus","atoms":["event_171","list","obj-145",1],"wall_ms":1792590211342}
+{"seq":470,"fixture":"list-objects","input_id":"event_172","label":"$input","selector":"stimulus","atoms":["event_172","bang","obj-145",0],"wall_ms":1792590211344}
+{"seq":471,"fixture":"list-objects","input_id":"event_172","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211344}
+{"seq":472,"fixture":"list-objects","input_id":"event_172","label":"zl.len:0","selector":"int","atoms":[5],"wall_ms":1792590211344}
+{"seq":473,"fixture":"list-objects","input_id":"event_173","label":"$input","selector":"stimulus","atoms":["event_173","zlreset","obj-145",0],"wall_ms":1792590211345}
+{"seq":474,"fixture":"list-objects","input_id":"event_173","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211345}
+{"seq":475,"fixture":"list-objects","input_id":"event_174","label":"$input","selector":"stimulus","atoms":["event_174","bang","obj-145",0],"wall_ms":1792590211346}
+{"seq":476,"fixture":"list-objects","input_id":"event_174","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211346}
+{"seq":477,"fixture":"list-objects","input_id":"event_175","label":"$input","selector":"stimulus","atoms":["event_175","zlclear","obj-145",0],"wall_ms":1792590211347}
+{"seq":478,"fixture":"list-objects","input_id":"event_175","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211347}
+{"seq":479,"fixture":"list-objects","input_id":"event_176","label":"$input","selector":"stimulus","atoms":["event_176","bang","obj-145",0],"wall_ms":1792590211349}
+{"seq":480,"fixture":"list-objects","input_id":"event_176","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211349}
+{"seq":481,"fixture":"list-objects","input_id":"event_177","label":"$input","selector":"stimulus","atoms":["event_177","bang","obj-184",0],"wall_ms":1792590211350}
+{"seq":482,"fixture":"list-objects","input_id":"event_177","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211350}
+{"seq":483,"fixture":"list-objects","input_id":"event_178","label":"$input","selector":"stimulus","atoms":["event_178","42","obj-184",0],"wall_ms":1792590211351}
+{"seq":484,"fixture":"list-objects","input_id":"event_178","label":"zl.iter:0","selector":"int","atoms":[42],"wall_ms":1792590211351}
+{"seq":485,"fixture":"list-objects","input_id":"event_178","label":"$delivery","selector":"int","atoms":[42],"wall_ms":1792590211352}
+{"seq":486,"fixture":"list-objects","input_id":"event_179","label":"$input","selector":"stimulus","atoms":["event_179","bang","obj-184",0],"wall_ms":1792590211353}
+{"seq":487,"fixture":"list-objects","input_id":"event_179","label":"zl.iter:0","selector":"int","atoms":[42],"wall_ms":1792590211353}
+{"seq":488,"fixture":"list-objects","input_id":"event_179","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211353}
+{"seq":489,"fixture":"list-objects","input_id":"event_180","label":"$input","selector":"stimulus","atoms":["event_180","42.","obj-184",0],"wall_ms":1792590211354}
+{"seq":490,"fixture":"list-objects","input_id":"event_180","label":"zl.iter:0","selector":"float","atoms":[42],"wall_ms":1792590211354}
+{"seq":491,"fixture":"list-objects","input_id":"event_180","label":"$delivery","selector":"float","atoms":[42],"wall_ms":1792590211354}
+{"seq":492,"fixture":"list-objects","input_id":"event_181","label":"$input","selector":"stimulus","atoms":["event_181","list 42","obj-184",0],"wall_ms":1792590211356}
+{"seq":493,"fixture":"list-objects","input_id":"event_181","label":"zl.iter:0","selector":"int","atoms":[42],"wall_ms":1792590211356}
+{"seq":494,"fixture":"list-objects","input_id":"event_181","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211356}
+{"seq":495,"fixture":"list-objects","input_id":"event_182","label":"$input","selector":"stimulus","atoms":["event_182","list 42.","obj-184",0],"wall_ms":1792590211357}
+{"seq":496,"fixture":"list-objects","input_id":"event_182","label":"zl.iter:0","selector":"float","atoms":[42],"wall_ms":1792590211357}
+{"seq":497,"fixture":"list-objects","input_id":"event_182","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211357}
+{"seq":498,"fixture":"list-objects","input_id":"event_183","label":"$input","selector":"stimulus","atoms":["event_183","list apple","obj-184",0],"wall_ms":1792590211358}
+{"seq":499,"fixture":"list-objects","input_id":"event_183","label":"zl.iter:0","selector":"apple","atoms":[],"wall_ms":1792590211358}
+{"seq":500,"fixture":"list-objects","input_id":"event_183","label":"$delivery","selector":"list","atoms":["apple"],"wall_ms":1792590211358}
+{"seq":501,"fixture":"list-objects","input_id":"event_184","label":"$input","selector":"stimulus","atoms":["event_184","symbol apple","obj-184",0],"wall_ms":1792590211359}
+{"seq":502,"fixture":"list-objects","input_id":"event_184","label":"zl.iter:0","selector":"symbol","atoms":["apple"],"wall_ms":1792590211359}
+{"seq":503,"fixture":"list-objects","input_id":"event_184","label":"$delivery","selector":"symbol","atoms":["apple"],"wall_ms":1792590211359}
+{"seq":504,"fixture":"list-objects","input_id":"event_185","label":"$input","selector":"stimulus","atoms":["event_185","apple","obj-184",0],"wall_ms":1792590211361}
+{"seq":505,"fixture":"list-objects","input_id":"event_185","label":"zl.iter:0","selector":"apple","atoms":[],"wall_ms":1792590211361}
+{"seq":506,"fixture":"list-objects","input_id":"event_185","label":"$delivery","selector":"apple","atoms":[],"wall_ms":1792590211361}
+{"seq":507,"fixture":"list-objects","input_id":"event_186","label":"$input","selector":"stimulus","atoms":["event_186","apple 3 pear","obj-184",0],"wall_ms":1792590211362}
+{"seq":508,"fixture":"list-objects","input_id":"event_186","label":"zl.iter:0","selector":"apple","atoms":[3],"wall_ms":1792590211362}
+{"seq":509,"fixture":"list-objects","input_id":"event_186","label":"zl.iter:0","selector":"pear","atoms":[],"wall_ms":1792590211362}
+{"seq":510,"fixture":"list-objects","input_id":"event_186","label":"$delivery","selector":"apple","atoms":[3,"pear"],"wall_ms":1792590211362}
+{"seq":511,"fixture":"list-objects","input_id":"event_187","label":"$input","selector":"stimulus","atoms":["event_187","list apple 3 pear","obj-184",0],"wall_ms":1792590211363}
+{"seq":512,"fixture":"list-objects","input_id":"event_187","label":"zl.iter:0","selector":"apple","atoms":[3],"wall_ms":1792590211363}
+{"seq":513,"fixture":"list-objects","input_id":"event_187","label":"zl.iter:0","selector":"pear","atoms":[],"wall_ms":1792590211363}
+{"seq":514,"fixture":"list-objects","input_id":"event_187","label":"$delivery","selector":"list","atoms":["apple",3,"pear"],"wall_ms":1792590211363}
+{"seq":515,"fixture":"list-objects","input_id":"event_188","label":"$input","selector":"stimulus","atoms":["event_188","list 1 2. apple 4","obj-184",0],"wall_ms":1792590211364}
+{"seq":516,"fixture":"list-objects","input_id":"event_188","label":"zl.iter:0","selector":"list","atoms":[1,2],"wall_ms":1792590211364}
+{"seq":517,"fixture":"list-objects","input_id":"event_188","label":"zl.iter:0","selector":"apple","atoms":[4],"wall_ms":1792590211364}
+{"seq":518,"fixture":"list-objects","input_id":"event_188","label":"$delivery","selector":"list","atoms":[1,2,"apple",4],"wall_ms":1792590211364}
+{"seq":519,"fixture":"list-objects","input_id":"event_189","label":"$input","selector":"stimulus","atoms":["event_189","bang","obj-184",0],"wall_ms":1792590211366}
+{"seq":520,"fixture":"list-objects","input_id":"event_189","label":"zl.iter:0","selector":"list","atoms":[1,2],"wall_ms":1792590211366}
+{"seq":521,"fixture":"list-objects","input_id":"event_189","label":"zl.iter:0","selector":"apple","atoms":[4],"wall_ms":1792590211366}
+{"seq":522,"fixture":"list-objects","input_id":"event_189","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211366}
+{"seq":523,"fixture":"list-objects","input_id":"event_190","label":"$input","selector":"stimulus","atoms":["event_190","list","obj-184",0],"wall_ms":1792590211368}
+{"seq":524,"fixture":"list-objects","input_id":"event_191","label":"$input","selector":"stimulus","atoms":["event_191","bang","obj-184",0],"wall_ms":1792590211369}
+{"seq":525,"fixture":"list-objects","input_id":"event_191","label":"zl.iter:0","selector":"list","atoms":[1,2],"wall_ms":1792590211370}
+{"seq":526,"fixture":"list-objects","input_id":"event_191","label":"zl.iter:0","selector":"apple","atoms":[4],"wall_ms":1792590211370}
+{"seq":527,"fixture":"list-objects","input_id":"event_191","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211370}
+{"seq":528,"fixture":"list-objects","input_id":"event_192","label":"$input","selector":"stimulus","atoms":["event_192","set 8 9","obj-184",0],"wall_ms":1792590211371}
+{"seq":529,"fixture":"list-objects","input_id":"event_192","label":"zl.iter:0","selector":"set","atoms":[8],"wall_ms":1792590211371}
+{"seq":530,"fixture":"list-objects","input_id":"event_192","label":"zl.iter:0","selector":"int","atoms":[9],"wall_ms":1792590211371}
+{"seq":531,"fixture":"list-objects","input_id":"event_192","label":"$delivery","selector":"set","atoms":[8,9],"wall_ms":1792590211371}
+{"seq":532,"fixture":"list-objects","input_id":"event_193","label":"$input","selector":"stimulus","atoms":["event_193","bang","obj-184",0],"wall_ms":1792590211372}
+{"seq":533,"fixture":"list-objects","input_id":"event_193","label":"zl.iter:0","selector":"set","atoms":[8],"wall_ms":1792590211372}
+{"seq":534,"fixture":"list-objects","input_id":"event_193","label":"zl.iter:0","selector":"int","atoms":[9],"wall_ms":1792590211372}
+{"seq":535,"fixture":"list-objects","input_id":"event_193","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211372}
+{"seq":536,"fixture":"list-objects","input_id":"event_194","label":"$input","selector":"stimulus","atoms":["event_194","zlclear","obj-184",0],"wall_ms":1792590211373}
+{"seq":537,"fixture":"list-objects","input_id":"event_194","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211373}
+{"seq":538,"fixture":"list-objects","input_id":"event_195","label":"$input","selector":"stimulus","atoms":["event_195","bang","obj-184",0],"wall_ms":1792590211374}
+{"seq":539,"fixture":"list-objects","input_id":"event_195","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211375}
+{"seq":540,"fixture":"list-objects","input_id":"event_196","label":"$input","selector":"stimulus","atoms":["event_196","zlreset","obj-184",0],"wall_ms":1792590211376}
+{"seq":541,"fixture":"list-objects","input_id":"event_196","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211376}
+{"seq":542,"fixture":"list-objects","input_id":"event_197","label":"$input","selector":"stimulus","atoms":["event_197","bang","obj-184",0],"wall_ms":1792590211377}
+{"seq":543,"fixture":"list-objects","input_id":"event_197","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211377}
+{"seq":544,"fixture":"list-objects","input_id":"event_198","label":"$input","selector":"stimulus","atoms":["event_198","list 1 2 3 4 5","obj-184",0],"wall_ms":1792590211378}
+{"seq":545,"fixture":"list-objects","input_id":"event_198","label":"$delivery","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211378}
+{"seq":546,"fixture":"list-objects","input_id":"event_199","label":"$input","selector":"stimulus","atoms":["event_199","bang","obj-184",1],"wall_ms":1792590211379}
+{"seq":547,"fixture":"list-objects","input_id":"event_199","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211379}
+{"seq":548,"fixture":"list-objects","input_id":"event_200","label":"$input","selector":"stimulus","atoms":["event_200","bang","obj-184",0],"wall_ms":1792590211381}
+{"seq":549,"fixture":"list-objects","input_id":"event_200","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211381}
+{"seq":550,"fixture":"list-objects","input_id":"event_201","label":"$input","selector":"stimulus","atoms":["event_201","list 7 8","obj-184",1],"wall_ms":1792590211383}
+{"seq":551,"fixture":"list-objects","input_id":"event_201","label":"$delivery","selector":"list","atoms":[7,8],"wall_ms":1792590211383}
+{"seq":552,"fixture":"list-objects","input_id":"event_202","label":"$input","selector":"stimulus","atoms":["event_202","bang","obj-184",0],"wall_ms":1792590211384}
+{"seq":553,"fixture":"list-objects","input_id":"event_202","label":"zl.iter:0","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211384}
+{"seq":554,"fixture":"list-objects","input_id":"event_202","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211384}
+{"seq":555,"fixture":"list-objects","input_id":"event_203","label":"$input","selector":"stimulus","atoms":["event_203","3","obj-184",1],"wall_ms":1792590211385}
+{"seq":556,"fixture":"list-objects","input_id":"event_203","label":"$delivery","selector":"int","atoms":[3],"wall_ms":1792590211385}
+{"seq":557,"fixture":"list-objects","input_id":"event_204","label":"$input","selector":"stimulus","atoms":["event_204","bang","obj-184",0],"wall_ms":1792590211386}
+{"seq":558,"fixture":"list-objects","input_id":"event_204","label":"zl.iter:0","selector":"list","atoms":[1,2,3],"wall_ms":1792590211386}
+{"seq":559,"fixture":"list-objects","input_id":"event_204","label":"zl.iter:0","selector":"list","atoms":[4,5],"wall_ms":1792590211386}
+{"seq":560,"fixture":"list-objects","input_id":"event_204","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211386}
+{"seq":561,"fixture":"list-objects","input_id":"event_205","label":"$input","selector":"stimulus","atoms":["event_205","0","obj-184",1],"wall_ms":1792590211386}
+{"seq":562,"fixture":"list-objects","input_id":"event_205","label":"$delivery","selector":"int","atoms":[0],"wall_ms":1792590211386}
+{"seq":563,"fixture":"list-objects","input_id":"event_206","label":"$input","selector":"stimulus","atoms":["event_206","bang","obj-184",0],"wall_ms":1792590211388}
+{"seq":564,"fixture":"list-objects","input_id":"event_206","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211388}
+{"seq":565,"fixture":"list-objects","input_id":"event_207","label":"$input","selector":"stimulus","atoms":["event_207","-1","obj-184",1],"wall_ms":1792590211389}
+{"seq":566,"fixture":"list-objects","input_id":"event_207","label":"$delivery","selector":"int","atoms":[-1],"wall_ms":1792590211389}
+{"seq":567,"fixture":"list-objects","input_id":"event_208","label":"$input","selector":"stimulus","atoms":["event_208","bang","obj-184",0],"wall_ms":1792590211390}
+{"seq":568,"fixture":"list-objects","input_id":"event_208","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211390}
+{"seq":569,"fixture":"list-objects","input_id":"event_209","label":"$input","selector":"stimulus","atoms":["event_209","list","obj-184",1],"wall_ms":1792590211391}
+{"seq":570,"fixture":"list-objects","input_id":"event_210","label":"$input","selector":"stimulus","atoms":["event_210","bang","obj-184",0],"wall_ms":1792590211393}
+{"seq":571,"fixture":"list-objects","input_id":"event_210","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211393}
+{"seq":572,"fixture":"list-objects","input_id":"event_211","label":"$input","selector":"stimulus","atoms":["event_211","zlreset","obj-184",0],"wall_ms":1792590211394}
+{"seq":573,"fixture":"list-objects","input_id":"event_211","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211394}
+{"seq":574,"fixture":"list-objects","input_id":"event_212","label":"$input","selector":"stimulus","atoms":["event_212","bang","obj-184",0],"wall_ms":1792590211395}
+{"seq":575,"fixture":"list-objects","input_id":"event_212","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211395}
+{"seq":576,"fixture":"list-objects","input_id":"event_213","label":"$input","selector":"stimulus","atoms":["event_213","zlclear","obj-184",0],"wall_ms":1792590211397}
+{"seq":577,"fixture":"list-objects","input_id":"event_213","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211397}
+{"seq":578,"fixture":"list-objects","input_id":"event_214","label":"$input","selector":"stimulus","atoms":["event_214","bang","obj-184",0],"wall_ms":1792590211398}
+{"seq":579,"fixture":"list-objects","input_id":"event_214","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211398}
+{"seq":580,"fixture":"list-objects","input_id":"event_215","label":"$input","selector":"stimulus","atoms":["event_215","bang","obj-223",0],"wall_ms":1792590211400}
+{"seq":581,"fixture":"list-objects","input_id":"event_215","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211400}
+{"seq":582,"fixture":"list-objects","input_id":"event_216","label":"$input","selector":"stimulus","atoms":["event_216","42","obj-223",0],"wall_ms":1792590211401}
+{"seq":583,"fixture":"list-objects","input_id":"event_216","label":"$delivery","selector":"int","atoms":[42],"wall_ms":1792590211401}
+{"seq":584,"fixture":"list-objects","input_id":"event_216","label":"zl.slice:0","selector":"int","atoms":[42],"wall_ms":1792590211401}
+{"seq":585,"fixture":"list-objects","input_id":"event_217","label":"$input","selector":"stimulus","atoms":["event_217","bang","obj-223",0],"wall_ms":1792590211402}
+{"seq":586,"fixture":"list-objects","input_id":"event_217","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211403}
+{"seq":587,"fixture":"list-objects","input_id":"event_217","label":"zl.slice:0","selector":"int","atoms":[42],"wall_ms":1792590211403}
+{"seq":588,"fixture":"list-objects","input_id":"event_218","label":"$input","selector":"stimulus","atoms":["event_218","42.","obj-223",0],"wall_ms":1792590211404}
+{"seq":589,"fixture":"list-objects","input_id":"event_218","label":"$delivery","selector":"float","atoms":[42],"wall_ms":1792590211404}
+{"seq":590,"fixture":"list-objects","input_id":"event_218","label":"zl.slice:0","selector":"float","atoms":[42],"wall_ms":1792590211404}
+{"seq":591,"fixture":"list-objects","input_id":"event_219","label":"$input","selector":"stimulus","atoms":["event_219","list 42","obj-223",0],"wall_ms":1792590211405}
+{"seq":592,"fixture":"list-objects","input_id":"event_219","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211405}
+{"seq":593,"fixture":"list-objects","input_id":"event_219","label":"zl.slice:0","selector":"int","atoms":[42],"wall_ms":1792590211405}
+{"seq":594,"fixture":"list-objects","input_id":"event_220","label":"$input","selector":"stimulus","atoms":["event_220","list 42.","obj-223",0],"wall_ms":1792590211407}
+{"seq":595,"fixture":"list-objects","input_id":"event_220","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211407}
+{"seq":596,"fixture":"list-objects","input_id":"event_220","label":"zl.slice:0","selector":"float","atoms":[42],"wall_ms":1792590211407}
+{"seq":597,"fixture":"list-objects","input_id":"event_221","label":"$input","selector":"stimulus","atoms":["event_221","list apple","obj-223",0],"wall_ms":1792590211408}
+{"seq":598,"fixture":"list-objects","input_id":"event_221","label":"$delivery","selector":"list","atoms":["apple"],"wall_ms":1792590211408}
+{"seq":599,"fixture":"list-objects","input_id":"event_221","label":"zl.slice:0","selector":"apple","atoms":[],"wall_ms":1792590211408}
+{"seq":600,"fixture":"list-objects","input_id":"event_222","label":"$input","selector":"stimulus","atoms":["event_222","symbol apple","obj-223",0],"wall_ms":1792590211409}
+{"seq":601,"fixture":"list-objects","input_id":"event_222","label":"$delivery","selector":"symbol","atoms":["apple"],"wall_ms":1792590211409}
+{"seq":602,"fixture":"list-objects","input_id":"event_222","label":"zl.slice:0","selector":"symbol","atoms":["apple"],"wall_ms":1792590211409}
+{"seq":603,"fixture":"list-objects","input_id":"event_223","label":"$input","selector":"stimulus","atoms":["event_223","apple","obj-223",0],"wall_ms":1792590211410}
+{"seq":604,"fixture":"list-objects","input_id":"event_223","label":"$delivery","selector":"apple","atoms":[],"wall_ms":1792590211410}
+{"seq":605,"fixture":"list-objects","input_id":"event_223","label":"zl.slice:0","selector":"apple","atoms":[],"wall_ms":1792590211410}
+{"seq":606,"fixture":"list-objects","input_id":"event_224","label":"$input","selector":"stimulus","atoms":["event_224","apple 3 pear","obj-223",0],"wall_ms":1792590211412}
+{"seq":607,"fixture":"list-objects","input_id":"event_224","label":"$delivery","selector":"apple","atoms":[3,"pear"],"wall_ms":1792590211412}
+{"seq":608,"fixture":"list-objects","input_id":"event_224","label":"zl.slice:1","selector":"pear","atoms":[],"wall_ms":1792590211412}
+{"seq":609,"fixture":"list-objects","input_id":"event_224","label":"zl.slice:0","selector":"apple","atoms":[3],"wall_ms":1792590211412}
+{"seq":610,"fixture":"list-objects","input_id":"event_225","label":"$input","selector":"stimulus","atoms":["event_225","list apple 3 pear","obj-223",0],"wall_ms":1792590211413}
+{"seq":611,"fixture":"list-objects","input_id":"event_225","label":"$delivery","selector":"list","atoms":["apple",3,"pear"],"wall_ms":1792590211413}
+{"seq":612,"fixture":"list-objects","input_id":"event_225","label":"zl.slice:1","selector":"pear","atoms":[],"wall_ms":1792590211413}
+{"seq":613,"fixture":"list-objects","input_id":"event_225","label":"zl.slice:0","selector":"apple","atoms":[3],"wall_ms":1792590211413}
+{"seq":614,"fixture":"list-objects","input_id":"event_226","label":"$input","selector":"stimulus","atoms":["event_226","list 1 2. apple 4","obj-223",0],"wall_ms":1792590211414}
+{"seq":615,"fixture":"list-objects","input_id":"event_226","label":"$delivery","selector":"list","atoms":[1,2,"apple",4],"wall_ms":1792590211414}
+{"seq":616,"fixture":"list-objects","input_id":"event_226","label":"zl.slice:1","selector":"apple","atoms":[4],"wall_ms":1792590211414}
+{"seq":617,"fixture":"list-objects","input_id":"event_226","label":"zl.slice:0","selector":"list","atoms":[1,2],"wall_ms":1792590211414}
+{"seq":618,"fixture":"list-objects","input_id":"event_227","label":"$input","selector":"stimulus","atoms":["event_227","bang","obj-223",0],"wall_ms":1792590211416}
+{"seq":619,"fixture":"list-objects","input_id":"event_227","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211416}
+{"seq":620,"fixture":"list-objects","input_id":"event_227","label":"zl.slice:1","selector":"apple","atoms":[4],"wall_ms":1792590211416}
+{"seq":621,"fixture":"list-objects","input_id":"event_227","label":"zl.slice:0","selector":"list","atoms":[1,2],"wall_ms":1792590211416}
+{"seq":622,"fixture":"list-objects","input_id":"event_228","label":"$input","selector":"stimulus","atoms":["event_228","list","obj-223",0],"wall_ms":1792590211417}
+{"seq":623,"fixture":"list-objects","input_id":"event_229","label":"$input","selector":"stimulus","atoms":["event_229","bang","obj-223",0],"wall_ms":1792590211418}
+{"seq":624,"fixture":"list-objects","input_id":"event_229","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211418}
+{"seq":625,"fixture":"list-objects","input_id":"event_229","label":"zl.slice:1","selector":"apple","atoms":[4],"wall_ms":1792590211418}
+{"seq":626,"fixture":"list-objects","input_id":"event_229","label":"zl.slice:0","selector":"list","atoms":[1,2],"wall_ms":1792590211418}
+{"seq":627,"fixture":"list-objects","input_id":"event_230","label":"$input","selector":"stimulus","atoms":["event_230","set 8 9","obj-223",0],"wall_ms":1792590211420}
+{"seq":628,"fixture":"list-objects","input_id":"event_230","label":"$delivery","selector":"set","atoms":[8,9],"wall_ms":1792590211420}
+{"seq":629,"fixture":"list-objects","input_id":"event_230","label":"zl.slice:1","selector":"int","atoms":[9],"wall_ms":1792590211420}
+{"seq":630,"fixture":"list-objects","input_id":"event_230","label":"zl.slice:0","selector":"set","atoms":[8],"wall_ms":1792590211420}
+{"seq":631,"fixture":"list-objects","input_id":"event_231","label":"$input","selector":"stimulus","atoms":["event_231","bang","obj-223",0],"wall_ms":1792590211421}
+{"seq":632,"fixture":"list-objects","input_id":"event_231","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211421}
+{"seq":633,"fixture":"list-objects","input_id":"event_231","label":"zl.slice:1","selector":"int","atoms":[9],"wall_ms":1792590211421}
+{"seq":634,"fixture":"list-objects","input_id":"event_231","label":"zl.slice:0","selector":"set","atoms":[8],"wall_ms":1792590211421}
+{"seq":635,"fixture":"list-objects","input_id":"event_232","label":"$input","selector":"stimulus","atoms":["event_232","zlclear","obj-223",0],"wall_ms":1792590211422}
+{"seq":636,"fixture":"list-objects","input_id":"event_232","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211422}
+{"seq":637,"fixture":"list-objects","input_id":"event_233","label":"$input","selector":"stimulus","atoms":["event_233","bang","obj-223",0],"wall_ms":1792590211424}
+{"seq":638,"fixture":"list-objects","input_id":"event_233","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211424}
+{"seq":639,"fixture":"list-objects","input_id":"event_234","label":"$input","selector":"stimulus","atoms":["event_234","zlreset","obj-223",0],"wall_ms":1792590211425}
+{"seq":640,"fixture":"list-objects","input_id":"event_234","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211425}
+{"seq":641,"fixture":"list-objects","input_id":"event_235","label":"$input","selector":"stimulus","atoms":["event_235","bang","obj-223",0],"wall_ms":1792590211426}
+{"seq":642,"fixture":"list-objects","input_id":"event_235","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211426}
+{"seq":643,"fixture":"list-objects","input_id":"event_236","label":"$input","selector":"stimulus","atoms":["event_236","list 1 2 3 4 5","obj-223",0],"wall_ms":1792590211427}
+{"seq":644,"fixture":"list-objects","input_id":"event_236","label":"$delivery","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211427}
+{"seq":645,"fixture":"list-objects","input_id":"event_236","label":"zl.slice:1","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211428}
+{"seq":646,"fixture":"list-objects","input_id":"event_237","label":"$input","selector":"stimulus","atoms":["event_237","bang","obj-223",1],"wall_ms":1792590211430}
+{"seq":647,"fixture":"list-objects","input_id":"event_237","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211430}
+{"seq":648,"fixture":"list-objects","input_id":"event_238","label":"$input","selector":"stimulus","atoms":["event_238","bang","obj-223",0],"wall_ms":1792590211431}
+{"seq":649,"fixture":"list-objects","input_id":"event_238","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211431}
+{"seq":650,"fixture":"list-objects","input_id":"event_238","label":"zl.slice:1","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211431}
+{"seq":651,"fixture":"list-objects","input_id":"event_239","label":"$input","selector":"stimulus","atoms":["event_239","list 7 8","obj-223",1],"wall_ms":1792590211433}
+{"seq":652,"fixture":"list-objects","input_id":"event_239","label":"$delivery","selector":"list","atoms":[7,8],"wall_ms":1792590211433}
+{"seq":653,"fixture":"list-objects","input_id":"event_240","label":"$input","selector":"stimulus","atoms":["event_240","bang","obj-223",0],"wall_ms":1792590211434}
+{"seq":654,"fixture":"list-objects","input_id":"event_240","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211434}
+{"seq":655,"fixture":"list-objects","input_id":"event_240","label":"zl.slice:0","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211434}
+{"seq":656,"fixture":"list-objects","input_id":"event_241","label":"$input","selector":"stimulus","atoms":["event_241","3","obj-223",1],"wall_ms":1792590211435}
+{"seq":657,"fixture":"list-objects","input_id":"event_241","label":"$delivery","selector":"int","atoms":[3],"wall_ms":1792590211436}
+{"seq":658,"fixture":"list-objects","input_id":"event_242","label":"$input","selector":"stimulus","atoms":["event_242","bang","obj-223",0],"wall_ms":1792590211437}
+{"seq":659,"fixture":"list-objects","input_id":"event_242","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211437}
+{"seq":660,"fixture":"list-objects","input_id":"event_242","label":"zl.slice:1","selector":"list","atoms":[4,5],"wall_ms":1792590211437}
+{"seq":661,"fixture":"list-objects","input_id":"event_242","label":"zl.slice:0","selector":"list","atoms":[1,2,3],"wall_ms":1792590211437}
+{"seq":662,"fixture":"list-objects","input_id":"event_243","label":"$input","selector":"stimulus","atoms":["event_243","0","obj-223",1],"wall_ms":1792590211438}
+{"seq":663,"fixture":"list-objects","input_id":"event_243","label":"$delivery","selector":"int","atoms":[0],"wall_ms":1792590211438}
+{"seq":664,"fixture":"list-objects","input_id":"event_244","label":"$input","selector":"stimulus","atoms":["event_244","bang","obj-223",0],"wall_ms":1792590211440}
+{"seq":665,"fixture":"list-objects","input_id":"event_244","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211440}
+{"seq":666,"fixture":"list-objects","input_id":"event_244","label":"zl.slice:1","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211440}
+{"seq":667,"fixture":"list-objects","input_id":"event_245","label":"$input","selector":"stimulus","atoms":["event_245","-1","obj-223",1],"wall_ms":1792590211441}
+{"seq":668,"fixture":"list-objects","input_id":"event_245","label":"$delivery","selector":"int","atoms":[-1],"wall_ms":1792590211441}
+{"seq":669,"fixture":"list-objects","input_id":"event_246","label":"$input","selector":"stimulus","atoms":["event_246","bang","obj-223",0],"wall_ms":1792590211452}
+{"seq":670,"fixture":"list-objects","input_id":"event_246","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211452}
+{"seq":671,"fixture":"list-objects","input_id":"event_246","label":"zl.slice:1","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211452}
+{"seq":672,"fixture":"list-objects","input_id":"event_247","label":"$input","selector":"stimulus","atoms":["event_247","list","obj-223",1],"wall_ms":1792590211453}
+{"seq":673,"fixture":"list-objects","input_id":"event_248","label":"$input","selector":"stimulus","atoms":["event_248","bang","obj-223",0],"wall_ms":1792590211455}
+{"seq":674,"fixture":"list-objects","input_id":"event_248","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211455}
+{"seq":675,"fixture":"list-objects","input_id":"event_248","label":"zl.slice:1","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211455}
+{"seq":676,"fixture":"list-objects","input_id":"event_249","label":"$input","selector":"stimulus","atoms":["event_249","zlreset","obj-223",0],"wall_ms":1792590211456}
+{"seq":677,"fixture":"list-objects","input_id":"event_249","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211456}
+{"seq":678,"fixture":"list-objects","input_id":"event_250","label":"$input","selector":"stimulus","atoms":["event_250","bang","obj-223",0],"wall_ms":1792590211457}
+{"seq":679,"fixture":"list-objects","input_id":"event_250","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211457}
+{"seq":680,"fixture":"list-objects","input_id":"event_251","label":"$input","selector":"stimulus","atoms":["event_251","zlclear","obj-223",0],"wall_ms":1792590211459}
+{"seq":681,"fixture":"list-objects","input_id":"event_251","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211459}
+{"seq":682,"fixture":"list-objects","input_id":"event_252","label":"$input","selector":"stimulus","atoms":["event_252","bang","obj-223",0],"wall_ms":1792590211460}
+{"seq":683,"fixture":"list-objects","input_id":"event_252","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211460}
+{"seq":684,"fixture":"list-objects","input_id":"event_253","label":"$input","selector":"stimulus","atoms":["event_253","bang","obj-262",0],"wall_ms":1792590211461}
+{"seq":685,"fixture":"list-objects","input_id":"event_253","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211461}
+{"seq":686,"fixture":"list-objects","input_id":"event_254","label":"$input","selector":"stimulus","atoms":["event_254","42","obj-262",0],"wall_ms":1792590211462}
+{"seq":687,"fixture":"list-objects","input_id":"event_254","label":"zl.rev:0","selector":"int","atoms":[42],"wall_ms":1792590211462}
+{"seq":688,"fixture":"list-objects","input_id":"event_254","label":"$delivery","selector":"int","atoms":[42],"wall_ms":1792590211462}
+{"seq":689,"fixture":"list-objects","input_id":"event_255","label":"$input","selector":"stimulus","atoms":["event_255","bang","obj-262",0],"wall_ms":1792590211463}
+{"seq":690,"fixture":"list-objects","input_id":"event_255","label":"zl.rev:0","selector":"int","atoms":[42],"wall_ms":1792590211464}
+{"seq":691,"fixture":"list-objects","input_id":"event_255","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211464}
+{"seq":692,"fixture":"list-objects","input_id":"event_256","label":"$input","selector":"stimulus","atoms":["event_256","42.","obj-262",0],"wall_ms":1792590211465}
+{"seq":693,"fixture":"list-objects","input_id":"event_256","label":"zl.rev:0","selector":"float","atoms":[42],"wall_ms":1792590211465}
+{"seq":694,"fixture":"list-objects","input_id":"event_256","label":"$delivery","selector":"float","atoms":[42],"wall_ms":1792590211465}
+{"seq":695,"fixture":"list-objects","input_id":"event_257","label":"$input","selector":"stimulus","atoms":["event_257","list 42","obj-262",0],"wall_ms":1792590211466}
+{"seq":696,"fixture":"list-objects","input_id":"event_257","label":"zl.rev:0","selector":"int","atoms":[42],"wall_ms":1792590211466}
+{"seq":697,"fixture":"list-objects","input_id":"event_257","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211466}
+{"seq":698,"fixture":"list-objects","input_id":"event_258","label":"$input","selector":"stimulus","atoms":["event_258","list 42.","obj-262",0],"wall_ms":1792590211467}
+{"seq":699,"fixture":"list-objects","input_id":"event_258","label":"zl.rev:0","selector":"float","atoms":[42],"wall_ms":1792590211468}
+{"seq":700,"fixture":"list-objects","input_id":"event_258","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211468}
+{"seq":701,"fixture":"list-objects","input_id":"event_259","label":"$input","selector":"stimulus","atoms":["event_259","list apple","obj-262",0],"wall_ms":1792590211469}
+{"seq":702,"fixture":"list-objects","input_id":"event_259","label":"zl.rev:0","selector":"apple","atoms":[],"wall_ms":1792590211469}
+{"seq":703,"fixture":"list-objects","input_id":"event_259","label":"$delivery","selector":"list","atoms":["apple"],"wall_ms":1792590211469}
+{"seq":704,"fixture":"list-objects","input_id":"event_260","label":"$input","selector":"stimulus","atoms":["event_260","symbol apple","obj-262",0],"wall_ms":1792590211470}
+{"seq":705,"fixture":"list-objects","input_id":"event_260","label":"zl.rev:0","selector":"apple","atoms":["symbol"],"wall_ms":1792590211470}
+{"seq":706,"fixture":"list-objects","input_id":"event_260","label":"$delivery","selector":"symbol","atoms":["apple"],"wall_ms":1792590211470}
+{"seq":707,"fixture":"list-objects","input_id":"event_261","label":"$input","selector":"stimulus","atoms":["event_261","apple","obj-262",0],"wall_ms":1792590211471}
+{"seq":708,"fixture":"list-objects","input_id":"event_261","label":"zl.rev:0","selector":"apple","atoms":[],"wall_ms":1792590211472}
+{"seq":709,"fixture":"list-objects","input_id":"event_261","label":"$delivery","selector":"apple","atoms":[],"wall_ms":1792590211472}
+{"seq":710,"fixture":"list-objects","input_id":"event_262","label":"$input","selector":"stimulus","atoms":["event_262","apple 3 pear","obj-262",0],"wall_ms":1792590211473}
+{"seq":711,"fixture":"list-objects","input_id":"event_262","label":"zl.rev:0","selector":"pear","atoms":[3,"apple"],"wall_ms":1792590211473}
+{"seq":712,"fixture":"list-objects","input_id":"event_262","label":"$delivery","selector":"apple","atoms":[3,"pear"],"wall_ms":1792590211473}
+{"seq":713,"fixture":"list-objects","input_id":"event_263","label":"$input","selector":"stimulus","atoms":["event_263","list apple 3 pear","obj-262",0],"wall_ms":1792590211474}
+{"seq":714,"fixture":"list-objects","input_id":"event_263","label":"zl.rev:0","selector":"pear","atoms":[3,"apple"],"wall_ms":1792590211474}
+{"seq":715,"fixture":"list-objects","input_id":"event_263","label":"$delivery","selector":"list","atoms":["apple",3,"pear"],"wall_ms":1792590211474}
+{"seq":716,"fixture":"list-objects","input_id":"event_264","label":"$input","selector":"stimulus","atoms":["event_264","list 1 2. apple 4","obj-262",0],"wall_ms":1792590211476}
+{"seq":717,"fixture":"list-objects","input_id":"event_264","label":"zl.rev:0","selector":"list","atoms":[4,"apple",2,1],"wall_ms":1792590211476}
+{"seq":718,"fixture":"list-objects","input_id":"event_264","label":"$delivery","selector":"list","atoms":[1,2,"apple",4],"wall_ms":1792590211476}
+{"seq":719,"fixture":"list-objects","input_id":"event_265","label":"$input","selector":"stimulus","atoms":["event_265","bang","obj-262",0],"wall_ms":1792590211514}
+{"seq":720,"fixture":"list-objects","input_id":"event_265","label":"zl.rev:0","selector":"list","atoms":[4,"apple",2,1],"wall_ms":1792590211514}
+{"seq":721,"fixture":"list-objects","input_id":"event_265","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211514}
+{"seq":722,"fixture":"list-objects","input_id":"event_266","label":"$input","selector":"stimulus","atoms":["event_266","list","obj-262",0],"wall_ms":1792590211515}
+{"seq":723,"fixture":"list-objects","input_id":"event_267","label":"$input","selector":"stimulus","atoms":["event_267","bang","obj-262",0],"wall_ms":1792590211517}
+{"seq":724,"fixture":"list-objects","input_id":"event_267","label":"zl.rev:0","selector":"list","atoms":[4,"apple",2,1],"wall_ms":1792590211517}
+{"seq":725,"fixture":"list-objects","input_id":"event_267","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211517}
+{"seq":726,"fixture":"list-objects","input_id":"event_268","label":"$input","selector":"stimulus","atoms":["event_268","set 8 9","obj-262",0],"wall_ms":1792590211518}
+{"seq":727,"fixture":"list-objects","input_id":"event_268","label":"zl.rev:0","selector":"list","atoms":[9,8,"set"],"wall_ms":1792590211519}
+{"seq":728,"fixture":"list-objects","input_id":"event_268","label":"$delivery","selector":"set","atoms":[8,9],"wall_ms":1792590211519}
+{"seq":729,"fixture":"list-objects","input_id":"event_269","label":"$input","selector":"stimulus","atoms":["event_269","bang","obj-262",0],"wall_ms":1792590211520}
+{"seq":730,"fixture":"list-objects","input_id":"event_269","label":"zl.rev:0","selector":"list","atoms":[9,8,"set"],"wall_ms":1792590211520}
+{"seq":731,"fixture":"list-objects","input_id":"event_269","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211520}
+{"seq":732,"fixture":"list-objects","input_id":"event_270","label":"$input","selector":"stimulus","atoms":["event_270","zlclear","obj-262",0],"wall_ms":1792590211521}
+{"seq":733,"fixture":"list-objects","input_id":"event_270","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211521}
+{"seq":734,"fixture":"list-objects","input_id":"event_271","label":"$input","selector":"stimulus","atoms":["event_271","bang","obj-262",0],"wall_ms":1792590211523}
+{"seq":735,"fixture":"list-objects","input_id":"event_271","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211523}
+{"seq":736,"fixture":"list-objects","input_id":"event_272","label":"$input","selector":"stimulus","atoms":["event_272","zlreset","obj-262",0],"wall_ms":1792590211524}
+{"seq":737,"fixture":"list-objects","input_id":"event_272","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211524}
+{"seq":738,"fixture":"list-objects","input_id":"event_273","label":"$input","selector":"stimulus","atoms":["event_273","bang","obj-262",0],"wall_ms":1792590211525}
+{"seq":739,"fixture":"list-objects","input_id":"event_273","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211525}
+{"seq":740,"fixture":"list-objects","input_id":"event_274","label":"$input","selector":"stimulus","atoms":["event_274","list 1 2 3 4 5","obj-262",0],"wall_ms":1792590211527}
+{"seq":741,"fixture":"list-objects","input_id":"event_274","label":"zl.rev:0","selector":"list","atoms":[5,4,3,2,1],"wall_ms":1792590211527}
+{"seq":742,"fixture":"list-objects","input_id":"event_274","label":"$delivery","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211527}
+{"seq":743,"fixture":"list-objects","input_id":"event_275","label":"$input","selector":"stimulus","atoms":["event_275","bang","obj-262",1],"wall_ms":1792590211528}
+{"seq":744,"fixture":"list-objects","input_id":"event_275","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211528}
+{"seq":745,"fixture":"list-objects","input_id":"event_276","label":"$input","selector":"stimulus","atoms":["event_276","bang","obj-262",0],"wall_ms":1792590211529}
+{"seq":746,"fixture":"list-objects","input_id":"event_276","label":"zl.rev:0","selector":"list","atoms":[5,4,3,2,1],"wall_ms":1792590211529}
+{"seq":747,"fixture":"list-objects","input_id":"event_276","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211529}
+{"seq":748,"fixture":"list-objects","input_id":"event_277","label":"$input","selector":"stimulus","atoms":["event_277","list 7 8","obj-262",1],"wall_ms":1792590211530}
+{"seq":749,"fixture":"list-objects","input_id":"event_277","label":"$delivery","selector":"list","atoms":[7,8],"wall_ms":1792590211530}
+{"seq":750,"fixture":"list-objects","input_id":"event_278","label":"$input","selector":"stimulus","atoms":["event_278","bang","obj-262",0],"wall_ms":1792590211531}
+{"seq":751,"fixture":"list-objects","input_id":"event_278","label":"zl.rev:0","selector":"list","atoms":[5,4,3,2,1],"wall_ms":1792590211532}
+{"seq":752,"fixture":"list-objects","input_id":"event_278","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211532}
+{"seq":753,"fixture":"list-objects","input_id":"event_279","label":"$input","selector":"stimulus","atoms":["event_279","3","obj-262",1],"wall_ms":1792590211533}
+{"seq":754,"fixture":"list-objects","input_id":"event_279","label":"$delivery","selector":"int","atoms":[3],"wall_ms":1792590211534}
+{"seq":755,"fixture":"list-objects","input_id":"event_280","label":"$input","selector":"stimulus","atoms":["event_280","bang","obj-262",0],"wall_ms":1792590211536}
+{"seq":756,"fixture":"list-objects","input_id":"event_280","label":"zl.rev:0","selector":"list","atoms":[5,4,3,2,1],"wall_ms":1792590211536}
+{"seq":757,"fixture":"list-objects","input_id":"event_280","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211536}
+{"seq":758,"fixture":"list-objects","input_id":"event_281","label":"$input","selector":"stimulus","atoms":["event_281","0","obj-262",1],"wall_ms":1792590211537}
+{"seq":759,"fixture":"list-objects","input_id":"event_281","label":"$delivery","selector":"int","atoms":[0],"wall_ms":1792590211538}
+{"seq":760,"fixture":"list-objects","input_id":"event_282","label":"$input","selector":"stimulus","atoms":["event_282","bang","obj-262",0],"wall_ms":1792590211539}
+{"seq":761,"fixture":"list-objects","input_id":"event_282","label":"zl.rev:0","selector":"list","atoms":[5,4,3,2,1],"wall_ms":1792590211539}
+{"seq":762,"fixture":"list-objects","input_id":"event_282","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211539}
+{"seq":763,"fixture":"list-objects","input_id":"event_283","label":"$input","selector":"stimulus","atoms":["event_283","-1","obj-262",1],"wall_ms":1792590211541}
+{"seq":764,"fixture":"list-objects","input_id":"event_283","label":"$delivery","selector":"int","atoms":[-1],"wall_ms":1792590211541}
+{"seq":765,"fixture":"list-objects","input_id":"event_284","label":"$input","selector":"stimulus","atoms":["event_284","bang","obj-262",0],"wall_ms":1792590211542}
+{"seq":766,"fixture":"list-objects","input_id":"event_284","label":"zl.rev:0","selector":"list","atoms":[5,4,3,2,1],"wall_ms":1792590211542}
+{"seq":767,"fixture":"list-objects","input_id":"event_284","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211542}
+{"seq":768,"fixture":"list-objects","input_id":"event_285","label":"$input","selector":"stimulus","atoms":["event_285","list","obj-262",1],"wall_ms":1792590211544}
+{"seq":769,"fixture":"list-objects","input_id":"event_286","label":"$input","selector":"stimulus","atoms":["event_286","bang","obj-262",0],"wall_ms":1792590211545}
+{"seq":770,"fixture":"list-objects","input_id":"event_286","label":"zl.rev:0","selector":"list","atoms":[5,4,3,2,1],"wall_ms":1792590211545}
+{"seq":771,"fixture":"list-objects","input_id":"event_286","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211545}
+{"seq":772,"fixture":"list-objects","input_id":"event_287","label":"$input","selector":"stimulus","atoms":["event_287","zlreset","obj-262",0],"wall_ms":1792590211546}
+{"seq":773,"fixture":"list-objects","input_id":"event_287","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211546}
+{"seq":774,"fixture":"list-objects","input_id":"event_288","label":"$input","selector":"stimulus","atoms":["event_288","bang","obj-262",0],"wall_ms":1792590211548}
+{"seq":775,"fixture":"list-objects","input_id":"event_288","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211548}
+{"seq":776,"fixture":"list-objects","input_id":"event_289","label":"$input","selector":"stimulus","atoms":["event_289","zlclear","obj-262",0],"wall_ms":1792590211549}
+{"seq":777,"fixture":"list-objects","input_id":"event_289","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211549}
+{"seq":778,"fixture":"list-objects","input_id":"event_290","label":"$input","selector":"stimulus","atoms":["event_290","bang","obj-262",0],"wall_ms":1792590211550}
+{"seq":779,"fixture":"list-objects","input_id":"event_290","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211550}
+{"seq":780,"fixture":"list-objects","input_id":"event_291","label":"$input","selector":"stimulus","atoms":["event_291","bang","obj-301",0],"wall_ms":1792590211552}
+{"seq":781,"fixture":"list-objects","input_id":"event_291","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211552}
+{"seq":782,"fixture":"list-objects","input_id":"event_292","label":"$input","selector":"stimulus","atoms":["event_292","42","obj-301",0],"wall_ms":1792590211553}
+{"seq":783,"fixture":"list-objects","input_id":"event_292","label":"$delivery","selector":"int","atoms":[42],"wall_ms":1792590211553}
+{"seq":784,"fixture":"list-objects","input_id":"event_292","label":"zl.rot:0","selector":"int","atoms":[42],"wall_ms":1792590211553}
+{"seq":785,"fixture":"list-objects","input_id":"event_293","label":"$input","selector":"stimulus","atoms":["event_293","bang","obj-301",0],"wall_ms":1792590211554}
+{"seq":786,"fixture":"list-objects","input_id":"event_293","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211554}
+{"seq":787,"fixture":"list-objects","input_id":"event_293","label":"zl.rot:0","selector":"int","atoms":[42],"wall_ms":1792590211554}
+{"seq":788,"fixture":"list-objects","input_id":"event_294","label":"$input","selector":"stimulus","atoms":["event_294","42.","obj-301",0],"wall_ms":1792590211556}
+{"seq":789,"fixture":"list-objects","input_id":"event_294","label":"$delivery","selector":"float","atoms":[42],"wall_ms":1792590211556}
+{"seq":790,"fixture":"list-objects","input_id":"event_294","label":"zl.rot:0","selector":"float","atoms":[42],"wall_ms":1792590211556}
+{"seq":791,"fixture":"list-objects","input_id":"event_295","label":"$input","selector":"stimulus","atoms":["event_295","list 42","obj-301",0],"wall_ms":1792590211557}
+{"seq":792,"fixture":"list-objects","input_id":"event_295","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211557}
+{"seq":793,"fixture":"list-objects","input_id":"event_295","label":"zl.rot:0","selector":"int","atoms":[42],"wall_ms":1792590211557}
+{"seq":794,"fixture":"list-objects","input_id":"event_296","label":"$input","selector":"stimulus","atoms":["event_296","list 42.","obj-301",0],"wall_ms":1792590211558}
+{"seq":795,"fixture":"list-objects","input_id":"event_296","label":"$delivery","selector":"list","atoms":[42],"wall_ms":1792590211558}
+{"seq":796,"fixture":"list-objects","input_id":"event_296","label":"zl.rot:0","selector":"float","atoms":[42],"wall_ms":1792590211558}
+{"seq":797,"fixture":"list-objects","input_id":"event_297","label":"$input","selector":"stimulus","atoms":["event_297","list apple","obj-301",0],"wall_ms":1792590211559}
+{"seq":798,"fixture":"list-objects","input_id":"event_297","label":"$delivery","selector":"list","atoms":["apple"],"wall_ms":1792590211560}
+{"seq":799,"fixture":"list-objects","input_id":"event_297","label":"zl.rot:0","selector":"apple","atoms":[],"wall_ms":1792590211560}
+{"seq":800,"fixture":"list-objects","input_id":"event_298","label":"$input","selector":"stimulus","atoms":["event_298","symbol apple","obj-301",0],"wall_ms":1792590211561}
+{"seq":801,"fixture":"list-objects","input_id":"event_298","label":"$delivery","selector":"symbol","atoms":["apple"],"wall_ms":1792590211561}
+{"seq":802,"fixture":"list-objects","input_id":"event_298","label":"zl.rot:0","selector":"apple","atoms":["symbol"],"wall_ms":1792590211561}
+{"seq":803,"fixture":"list-objects","input_id":"event_299","label":"$input","selector":"stimulus","atoms":["event_299","apple","obj-301",0],"wall_ms":1792590211562}
+{"seq":804,"fixture":"list-objects","input_id":"event_299","label":"$delivery","selector":"apple","atoms":[],"wall_ms":1792590211562}
+{"seq":805,"fixture":"list-objects","input_id":"event_299","label":"zl.rot:0","selector":"apple","atoms":[],"wall_ms":1792590211562}
+{"seq":806,"fixture":"list-objects","input_id":"event_300","label":"$input","selector":"stimulus","atoms":["event_300","apple 3 pear","obj-301",0],"wall_ms":1792590211564}
+{"seq":807,"fixture":"list-objects","input_id":"event_300","label":"$delivery","selector":"apple","atoms":[3,"pear"],"wall_ms":1792590211564}
+{"seq":808,"fixture":"list-objects","input_id":"event_300","label":"zl.rot:0","selector":"pear","atoms":["apple",3],"wall_ms":1792590211564}
+{"seq":809,"fixture":"list-objects","input_id":"event_301","label":"$input","selector":"stimulus","atoms":["event_301","list apple 3 pear","obj-301",0],"wall_ms":1792590211576}
+{"seq":810,"fixture":"list-objects","input_id":"event_301","label":"$delivery","selector":"list","atoms":["apple",3,"pear"],"wall_ms":1792590211576}
+{"seq":811,"fixture":"list-objects","input_id":"event_301","label":"zl.rot:0","selector":"pear","atoms":["apple",3],"wall_ms":1792590211576}
+{"seq":812,"fixture":"list-objects","input_id":"event_302","label":"$input","selector":"stimulus","atoms":["event_302","list 1 2. apple 4","obj-301",0],"wall_ms":1792590211579}
+{"seq":813,"fixture":"list-objects","input_id":"event_302","label":"$delivery","selector":"list","atoms":[1,2,"apple",4],"wall_ms":1792590211579}
+{"seq":814,"fixture":"list-objects","input_id":"event_302","label":"zl.rot:0","selector":"list","atoms":[4,1,2,"apple"],"wall_ms":1792590211579}
+{"seq":815,"fixture":"list-objects","input_id":"event_303","label":"$input","selector":"stimulus","atoms":["event_303","bang","obj-301",0],"wall_ms":1792590211580}
+{"seq":816,"fixture":"list-objects","input_id":"event_303","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211580}
+{"seq":817,"fixture":"list-objects","input_id":"event_303","label":"zl.rot:0","selector":"list","atoms":[4,1,2,"apple"],"wall_ms":1792590211580}
+{"seq":818,"fixture":"list-objects","input_id":"event_304","label":"$input","selector":"stimulus","atoms":["event_304","list","obj-301",0],"wall_ms":1792590211581}
+{"seq":819,"fixture":"list-objects","input_id":"event_305","label":"$input","selector":"stimulus","atoms":["event_305","bang","obj-301",0],"wall_ms":1792590211582}
+{"seq":820,"fixture":"list-objects","input_id":"event_305","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211583}
+{"seq":821,"fixture":"list-objects","input_id":"event_305","label":"zl.rot:0","selector":"list","atoms":[4,1,2,"apple"],"wall_ms":1792590211583}
+{"seq":822,"fixture":"list-objects","input_id":"event_306","label":"$input","selector":"stimulus","atoms":["event_306","set 8 9","obj-301",0],"wall_ms":1792590211584}
+{"seq":823,"fixture":"list-objects","input_id":"event_306","label":"$delivery","selector":"set","atoms":[8,9],"wall_ms":1792590211584}
+{"seq":824,"fixture":"list-objects","input_id":"event_306","label":"zl.rot:0","selector":"list","atoms":[9,"set",8],"wall_ms":1792590211584}
+{"seq":825,"fixture":"list-objects","input_id":"event_307","label":"$input","selector":"stimulus","atoms":["event_307","bang","obj-301",0],"wall_ms":1792590211585}
+{"seq":826,"fixture":"list-objects","input_id":"event_307","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211585}
+{"seq":827,"fixture":"list-objects","input_id":"event_307","label":"zl.rot:0","selector":"list","atoms":[9,"set",8],"wall_ms":1792590211585}
+{"seq":828,"fixture":"list-objects","input_id":"event_308","label":"$input","selector":"stimulus","atoms":["event_308","zlclear","obj-301",0],"wall_ms":1792590211586}
+{"seq":829,"fixture":"list-objects","input_id":"event_308","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211586}
+{"seq":830,"fixture":"list-objects","input_id":"event_309","label":"$input","selector":"stimulus","atoms":["event_309","bang","obj-301",0],"wall_ms":1792590211587}
+{"seq":831,"fixture":"list-objects","input_id":"event_309","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211588}
+{"seq":832,"fixture":"list-objects","input_id":"event_310","label":"$input","selector":"stimulus","atoms":["event_310","zlreset","obj-301",0],"wall_ms":1792590211589}
+{"seq":833,"fixture":"list-objects","input_id":"event_310","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211589}
+{"seq":834,"fixture":"list-objects","input_id":"event_311","label":"$input","selector":"stimulus","atoms":["event_311","bang","obj-301",0],"wall_ms":1792590211590}
+{"seq":835,"fixture":"list-objects","input_id":"event_311","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211590}
+{"seq":836,"fixture":"list-objects","input_id":"event_312","label":"$input","selector":"stimulus","atoms":["event_312","list 1 2 3 4 5","obj-301",0],"wall_ms":1792590211591}
+{"seq":837,"fixture":"list-objects","input_id":"event_312","label":"$delivery","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211591}
+{"seq":838,"fixture":"list-objects","input_id":"event_312","label":"zl.rot:0","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211591}
+{"seq":839,"fixture":"list-objects","input_id":"event_313","label":"$input","selector":"stimulus","atoms":["event_313","bang","obj-301",1],"wall_ms":1792590211592}
+{"seq":840,"fixture":"list-objects","input_id":"event_313","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211592}
+{"seq":841,"fixture":"list-objects","input_id":"event_314","label":"$input","selector":"stimulus","atoms":["event_314","bang","obj-301",0],"wall_ms":1792590211594}
+{"seq":842,"fixture":"list-objects","input_id":"event_314","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211594}
+{"seq":843,"fixture":"list-objects","input_id":"event_314","label":"zl.rot:0","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211594}
+{"seq":844,"fixture":"list-objects","input_id":"event_315","label":"$input","selector":"stimulus","atoms":["event_315","list 7 8","obj-301",1],"wall_ms":1792590211595}
+{"seq":845,"fixture":"list-objects","input_id":"event_315","label":"$delivery","selector":"list","atoms":[7,8],"wall_ms":1792590211595}
+{"seq":846,"fixture":"list-objects","input_id":"event_316","label":"$input","selector":"stimulus","atoms":["event_316","bang","obj-301",0],"wall_ms":1792590211596}
+{"seq":847,"fixture":"list-objects","input_id":"event_316","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211596}
+{"seq":848,"fixture":"list-objects","input_id":"event_316","label":"zl.rot:0","selector":"list","atoms":[4,5,1,2,3],"wall_ms":1792590211596}
+{"seq":849,"fixture":"list-objects","input_id":"event_317","label":"$input","selector":"stimulus","atoms":["event_317","3","obj-301",1],"wall_ms":1792590211597}
+{"seq":850,"fixture":"list-objects","input_id":"event_317","label":"$delivery","selector":"int","atoms":[3],"wall_ms":1792590211598}
+{"seq":851,"fixture":"list-objects","input_id":"event_318","label":"$input","selector":"stimulus","atoms":["event_318","bang","obj-301",0],"wall_ms":1792590211599}
+{"seq":852,"fixture":"list-objects","input_id":"event_318","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211599}
+{"seq":853,"fixture":"list-objects","input_id":"event_318","label":"zl.rot:0","selector":"list","atoms":[3,4,5,1,2],"wall_ms":1792590211599}
+{"seq":854,"fixture":"list-objects","input_id":"event_319","label":"$input","selector":"stimulus","atoms":["event_319","0","obj-301",1],"wall_ms":1792590211600}
+{"seq":855,"fixture":"list-objects","input_id":"event_319","label":"$delivery","selector":"int","atoms":[0],"wall_ms":1792590211600}
+{"seq":856,"fixture":"list-objects","input_id":"event_320","label":"$input","selector":"stimulus","atoms":["event_320","bang","obj-301",0],"wall_ms":1792590211601}
+{"seq":857,"fixture":"list-objects","input_id":"event_320","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211601}
+{"seq":858,"fixture":"list-objects","input_id":"event_320","label":"zl.rot:0","selector":"list","atoms":[1,2,3,4,5],"wall_ms":1792590211601}
+{"seq":859,"fixture":"list-objects","input_id":"event_321","label":"$input","selector":"stimulus","atoms":["event_321","-1","obj-301",1],"wall_ms":1792590211603}
+{"seq":860,"fixture":"list-objects","input_id":"event_321","label":"$delivery","selector":"int","atoms":[-1],"wall_ms":1792590211603}
+{"seq":861,"fixture":"list-objects","input_id":"event_322","label":"$input","selector":"stimulus","atoms":["event_322","bang","obj-301",0],"wall_ms":1792590211604}
+{"seq":862,"fixture":"list-objects","input_id":"event_322","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211604}
+{"seq":863,"fixture":"list-objects","input_id":"event_322","label":"zl.rot:0","selector":"list","atoms":[2,3,4,5,1],"wall_ms":1792590211604}
+{"seq":864,"fixture":"list-objects","input_id":"event_323","label":"$input","selector":"stimulus","atoms":["event_323","list","obj-301",1],"wall_ms":1792590211605}
+{"seq":865,"fixture":"list-objects","input_id":"event_324","label":"$input","selector":"stimulus","atoms":["event_324","bang","obj-301",0],"wall_ms":1792590211606}
+{"seq":866,"fixture":"list-objects","input_id":"event_324","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211606}
+{"seq":867,"fixture":"list-objects","input_id":"event_324","label":"zl.rot:0","selector":"list","atoms":[2,3,4,5,1],"wall_ms":1792590211606}
+{"seq":868,"fixture":"list-objects","input_id":"event_325","label":"$input","selector":"stimulus","atoms":["event_325","zlreset","obj-301",0],"wall_ms":1792590211607}
+{"seq":869,"fixture":"list-objects","input_id":"event_325","label":"$delivery","selector":"zlreset","atoms":[],"wall_ms":1792590211608}
+{"seq":870,"fixture":"list-objects","input_id":"event_326","label":"$input","selector":"stimulus","atoms":["event_326","bang","obj-301",0],"wall_ms":1792590211609}
+{"seq":871,"fixture":"list-objects","input_id":"event_326","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211609}
+{"seq":872,"fixture":"list-objects","input_id":"event_327","label":"$input","selector":"stimulus","atoms":["event_327","zlclear","obj-301",0],"wall_ms":1792590211610}
+{"seq":873,"fixture":"list-objects","input_id":"event_327","label":"$delivery","selector":"zlclear","atoms":[],"wall_ms":1792590211610}
+{"seq":874,"fixture":"list-objects","input_id":"event_328","label":"$input","selector":"stimulus","atoms":["event_328","bang","obj-301",0],"wall_ms":1792590211611}
+{"seq":875,"fixture":"list-objects","input_id":"event_328","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211611}
+{"seq":876,"fixture":"list-objects","input_id":"event_329","label":"$input","selector":"stimulus","atoms":["event_329","bang","obj-340",0],"wall_ms":1792590211613}
+{"seq":877,"fixture":"list-objects","input_id":"event_329","label":"prepend-default:0","selector":"bang","atoms":[],"wall_ms":1792590211613}
+{"seq":878,"fixture":"list-objects","input_id":"event_329","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211613}
+{"seq":879,"fixture":"list-objects","input_id":"event_330","label":"$input","selector":"stimulus","atoms":["event_330","list 1 2 3","obj-340",0],"wall_ms":1792590211614}
+{"seq":880,"fixture":"list-objects","input_id":"event_330","label":"prepend-default:0","selector":"list","atoms":[1,2,3],"wall_ms":1792590211614}
+{"seq":881,"fixture":"list-objects","input_id":"event_330","label":"$delivery","selector":"list","atoms":[1,2,3],"wall_ms":1792590211614}
+{"seq":882,"fixture":"list-objects","input_id":"event_331","label":"$input","selector":"stimulus","atoms":["event_331","bang","obj-340",0],"wall_ms":1792590211615}
+{"seq":883,"fixture":"list-objects","input_id":"event_331","label":"prepend-default:0","selector":"bang","atoms":[],"wall_ms":1792590211615}
+{"seq":884,"fixture":"list-objects","input_id":"event_331","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211615}
+{"seq":885,"fixture":"list-objects","input_id":"event_332","label":"$input","selector":"stimulus","atoms":["event_332","list","obj-340",0],"wall_ms":1792590211616}
+{"seq":886,"fixture":"list-objects","input_id":"event_333","label":"$input","selector":"stimulus","atoms":["event_333","bang","obj-340",0],"wall_ms":1792590211618}
+{"seq":887,"fixture":"list-objects","input_id":"event_333","label":"prepend-default:0","selector":"bang","atoms":[],"wall_ms":1792590211618}
+{"seq":888,"fixture":"list-objects","input_id":"event_333","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211618}
+{"seq":889,"fixture":"list-objects","input_id":"event_334","label":"$input","selector":"stimulus","atoms":["event_334","set","obj-340",0],"wall_ms":1792590211619}
+{"seq":890,"fixture":"list-objects","input_id":"event_334","label":"$delivery","selector":"set","atoms":[],"wall_ms":1792590211619}
+{"seq":891,"fixture":"list-objects","input_id":"event_335","label":"$input","selector":"stimulus","atoms":["event_335","bang","obj-340",0],"wall_ms":1792590211620}
+{"seq":892,"fixture":"list-objects","input_id":"event_335","label":"prepend-default:0","selector":"bang","atoms":[],"wall_ms":1792590211620}
+{"seq":893,"fixture":"list-objects","input_id":"event_335","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211620}
+{"seq":894,"fixture":"list-objects","input_id":"event_336","label":"$input","selector":"stimulus","atoms":["event_336","bang","obj-348",0],"wall_ms":1792590211621}
+{"seq":895,"fixture":"list-objects","input_id":"event_336","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211621}
+{"seq":896,"fixture":"list-objects","input_id":"event_337","label":"$input","selector":"stimulus","atoms":["event_337","list 1 2 3","obj-348",0],"wall_ms":1792590211623}
+{"seq":897,"fixture":"list-objects","input_id":"event_337","label":"append-default:0","selector":"list","atoms":[1,2,3],"wall_ms":1792590211623}
+{"seq":898,"fixture":"list-objects","input_id":"event_337","label":"$delivery","selector":"list","atoms":[1,2,3],"wall_ms":1792590211623}
+{"seq":899,"fixture":"list-objects","input_id":"event_338","label":"$input","selector":"stimulus","atoms":["event_338","bang","obj-348",0],"wall_ms":1792590211624}
+{"seq":900,"fixture":"list-objects","input_id":"event_338","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211624}
+{"seq":901,"fixture":"list-objects","input_id":"event_339","label":"$input","selector":"stimulus","atoms":["event_339","list","obj-348",0],"wall_ms":1792590211625}
+{"seq":902,"fixture":"list-objects","input_id":"event_340","label":"$input","selector":"stimulus","atoms":["event_340","bang","obj-348",0],"wall_ms":1792590211626}
+{"seq":903,"fixture":"list-objects","input_id":"event_340","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211626}
+{"seq":904,"fixture":"list-objects","input_id":"event_341","label":"$input","selector":"stimulus","atoms":["event_341","set","obj-348",0],"wall_ms":1792590211628}
+{"seq":905,"fixture":"list-objects","input_id":"event_341","label":"$delivery","selector":"set","atoms":[],"wall_ms":1792590211628}
+{"seq":906,"fixture":"list-objects","input_id":"event_342","label":"$input","selector":"stimulus","atoms":["event_342","bang","obj-348",0],"wall_ms":1792590211629}
+{"seq":907,"fixture":"list-objects","input_id":"event_342","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211629}
+{"seq":908,"fixture":"list-objects","input_id":"event_343","label":"$input","selector":"stimulus","atoms":["event_343","bang","obj-356",0],"wall_ms":1792590211630}
+{"seq":909,"fixture":"list-objects","input_id":"event_343","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211631}
+{"seq":910,"fixture":"list-objects","input_id":"event_343","label":"reg-initial:0","selector":"first","atoms":[7],"wall_ms":1792590211631}
+{"seq":911,"fixture":"list-objects","input_id":"event_344","label":"$input","selector":"stimulus","atoms":["event_344","list 1 2 3","obj-356",0],"wall_ms":1792590211632}
+{"seq":912,"fixture":"list-objects","input_id":"event_344","label":"$delivery","selector":"list","atoms":[1,2,3],"wall_ms":1792590211632}
+{"seq":913,"fixture":"list-objects","input_id":"event_344","label":"reg-initial:0","selector":"list","atoms":[1,2,3],"wall_ms":1792590211632}
+{"seq":914,"fixture":"list-objects","input_id":"event_345","label":"$input","selector":"stimulus","atoms":["event_345","bang","obj-356",0],"wall_ms":1792590211633}
+{"seq":915,"fixture":"list-objects","input_id":"event_345","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211633}
+{"seq":916,"fixture":"list-objects","input_id":"event_345","label":"reg-initial:0","selector":"list","atoms":[1,2,3],"wall_ms":1792590211633}
+{"seq":917,"fixture":"list-objects","input_id":"event_346","label":"$input","selector":"stimulus","atoms":["event_346","list","obj-356",0],"wall_ms":1792590211635}
+{"seq":918,"fixture":"list-objects","input_id":"event_347","label":"$input","selector":"stimulus","atoms":["event_347","bang","obj-356",0],"wall_ms":1792590211637}
+{"seq":919,"fixture":"list-objects","input_id":"event_347","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211637}
+{"seq":920,"fixture":"list-objects","input_id":"event_347","label":"reg-initial:0","selector":"list","atoms":[1,2,3],"wall_ms":1792590211637}
+{"seq":921,"fixture":"list-objects","input_id":"event_348","label":"$input","selector":"stimulus","atoms":["event_348","set","obj-356",0],"wall_ms":1792590211638}
+{"seq":922,"fixture":"list-objects","input_id":"event_348","label":"$delivery","selector":"set","atoms":[],"wall_ms":1792590211638}
+{"seq":923,"fixture":"list-objects","input_id":"event_348","label":"reg-initial:0","selector":"set","atoms":[],"wall_ms":1792590211638}
+{"seq":924,"fixture":"list-objects","input_id":"event_349","label":"$input","selector":"stimulus","atoms":["event_349","bang","obj-356",0],"wall_ms":1792590211639}
+{"seq":925,"fixture":"list-objects","input_id":"event_349","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211639}
+{"seq":926,"fixture":"list-objects","input_id":"event_349","label":"reg-initial:0","selector":"set","atoms":[],"wall_ms":1792590211639}
+{"seq":927,"fixture":"list-objects","input_id":"event_350","label":"$input","selector":"stimulus","atoms":["event_350","bang","obj-364",0],"wall_ms":1792590211640}
+{"seq":928,"fixture":"list-objects","input_id":"event_350","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211641}
+{"seq":929,"fixture":"list-objects","input_id":"event_351","label":"$input","selector":"stimulus","atoms":["event_351","list 1 2 3","obj-364",0],"wall_ms":1792590211642}
+{"seq":930,"fixture":"list-objects","input_id":"event_351","label":"join-default:0","selector":"list","atoms":[1,2,3],"wall_ms":1792590211642}
+{"seq":931,"fixture":"list-objects","input_id":"event_351","label":"$delivery","selector":"list","atoms":[1,2,3],"wall_ms":1792590211642}
+{"seq":932,"fixture":"list-objects","input_id":"event_352","label":"$input","selector":"stimulus","atoms":["event_352","bang","obj-364",0],"wall_ms":1792590211643}
+{"seq":933,"fixture":"list-objects","input_id":"event_352","label":"join-default:0","selector":"list","atoms":[1,2,3],"wall_ms":1792590211644}
+{"seq":934,"fixture":"list-objects","input_id":"event_352","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211644}
+{"seq":935,"fixture":"list-objects","input_id":"event_353","label":"$input","selector":"stimulus","atoms":["event_353","list","obj-364",0],"wall_ms":1792590211645}
+{"seq":936,"fixture":"list-objects","input_id":"event_354","label":"$input","selector":"stimulus","atoms":["event_354","bang","obj-364",0],"wall_ms":1792590211646}
+{"seq":937,"fixture":"list-objects","input_id":"event_354","label":"join-default:0","selector":"list","atoms":[1,2,3],"wall_ms":1792590211646}
+{"seq":938,"fixture":"list-objects","input_id":"event_354","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211646}
+{"seq":939,"fixture":"list-objects","input_id":"event_355","label":"$input","selector":"stimulus","atoms":["event_355","set","obj-364",0],"wall_ms":1792590211647}
+{"seq":940,"fixture":"list-objects","input_id":"event_355","label":"join-default:0","selector":"set","atoms":[],"wall_ms":1792590211647}
+{"seq":941,"fixture":"list-objects","input_id":"event_355","label":"$delivery","selector":"set","atoms":[],"wall_ms":1792590211647}
+{"seq":942,"fixture":"list-objects","input_id":"event_356","label":"$input","selector":"stimulus","atoms":["event_356","bang","obj-364",0],"wall_ms":1792590211649}
+{"seq":943,"fixture":"list-objects","input_id":"event_356","label":"join-default:0","selector":"set","atoms":[],"wall_ms":1792590211649}
+{"seq":944,"fixture":"list-objects","input_id":"event_356","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211649}
+{"seq":945,"fixture":"list-objects","input_id":"event_357","label":"$input","selector":"stimulus","atoms":["event_357","bang","obj-372",0],"wall_ms":1792590211650}
+{"seq":946,"fixture":"list-objects","input_id":"event_357","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211650}
+{"seq":947,"fixture":"list-objects","input_id":"event_358","label":"$input","selector":"stimulus","atoms":["event_358","list 1 2 3","obj-372",0],"wall_ms":1792590211651}
+{"seq":948,"fixture":"list-objects","input_id":"event_358","label":"$delivery","selector":"list","atoms":[1,2,3],"wall_ms":1792590211651}
+{"seq":949,"fixture":"list-objects","input_id":"event_359","label":"$input","selector":"stimulus","atoms":["event_359","bang","obj-372",0],"wall_ms":1792590211652}
+{"seq":950,"fixture":"list-objects","input_id":"event_359","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211652}
+{"seq":951,"fixture":"list-objects","input_id":"event_360","label":"$input","selector":"stimulus","atoms":["event_360","list","obj-372",0],"wall_ms":1792590211654}
+{"seq":952,"fixture":"list-objects","input_id":"event_361","label":"$input","selector":"stimulus","atoms":["event_361","bang","obj-372",0],"wall_ms":1792590211655}
+{"seq":953,"fixture":"list-objects","input_id":"event_361","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211655}
+{"seq":954,"fixture":"list-objects","input_id":"event_362","label":"$input","selector":"stimulus","atoms":["event_362","set","obj-372",0],"wall_ms":1792590211656}
+{"seq":955,"fixture":"list-objects","input_id":"event_362","label":"$delivery","selector":"set","atoms":[],"wall_ms":1792590211656}
+{"seq":956,"fixture":"list-objects","input_id":"event_363","label":"$input","selector":"stimulus","atoms":["event_363","bang","obj-372",0],"wall_ms":1792590211657}
+{"seq":957,"fixture":"list-objects","input_id":"event_363","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211657}
+{"seq":958,"fixture":"list-objects","input_id":"event_364","label":"$input","selector":"stimulus","atoms":["event_364","bang","obj-380",0],"wall_ms":1792590211659}
+{"seq":959,"fixture":"list-objects","input_id":"event_364","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211659}
+{"seq":960,"fixture":"list-objects","input_id":"event_365","label":"$input","selector":"stimulus","atoms":["event_365","list 1 2 3","obj-380",0],"wall_ms":1792590211660}
+{"seq":961,"fixture":"list-objects","input_id":"event_365","label":"$delivery","selector":"list","atoms":[1,2,3],"wall_ms":1792590211660}
+{"seq":962,"fixture":"list-objects","input_id":"event_365","label":"slice-default:1","selector":"list","atoms":[1,2,3],"wall_ms":1792590211660}
+{"seq":963,"fixture":"list-objects","input_id":"event_366","label":"$input","selector":"stimulus","atoms":["event_366","bang","obj-380",0],"wall_ms":1792590211661}
+{"seq":964,"fixture":"list-objects","input_id":"event_366","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211661}
+{"seq":965,"fixture":"list-objects","input_id":"event_366","label":"slice-default:1","selector":"list","atoms":[1,2,3],"wall_ms":1792590211661}
+{"seq":966,"fixture":"list-objects","input_id":"event_367","label":"$input","selector":"stimulus","atoms":["event_367","list","obj-380",0],"wall_ms":1792590211663}
+{"seq":967,"fixture":"list-objects","input_id":"event_368","label":"$input","selector":"stimulus","atoms":["event_368","bang","obj-380",0],"wall_ms":1792590211664}
+{"seq":968,"fixture":"list-objects","input_id":"event_368","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211664}
+{"seq":969,"fixture":"list-objects","input_id":"event_368","label":"slice-default:1","selector":"list","atoms":[1,2,3],"wall_ms":1792590211664}
+{"seq":970,"fixture":"list-objects","input_id":"event_369","label":"$input","selector":"stimulus","atoms":["event_369","set","obj-380",0],"wall_ms":1792590211665}
+{"seq":971,"fixture":"list-objects","input_id":"event_369","label":"$delivery","selector":"set","atoms":[],"wall_ms":1792590211665}
+{"seq":972,"fixture":"list-objects","input_id":"event_369","label":"slice-default:1","selector":"set","atoms":[],"wall_ms":1792590211665}
+{"seq":973,"fixture":"list-objects","input_id":"event_370","label":"$input","selector":"stimulus","atoms":["event_370","bang","obj-380",0],"wall_ms":1792590211666}
+{"seq":974,"fixture":"list-objects","input_id":"event_370","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211666}
+{"seq":975,"fixture":"list-objects","input_id":"event_370","label":"slice-default:1","selector":"set","atoms":[],"wall_ms":1792590211666}
+{"seq":976,"fixture":"list-objects","input_id":"event_371","label":"$input","selector":"stimulus","atoms":["event_371","bang","obj-388",0],"wall_ms":1792590211668}
+{"seq":977,"fixture":"list-objects","input_id":"event_371","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211668}
+{"seq":978,"fixture":"list-objects","input_id":"event_372","label":"$input","selector":"stimulus","atoms":["event_372","list 1 2 3","obj-388",0],"wall_ms":1792590211669}
+{"seq":979,"fixture":"list-objects","input_id":"event_372","label":"rot-default:0","selector":"list","atoms":[1,2,3],"wall_ms":1792590211669}
+{"seq":980,"fixture":"list-objects","input_id":"event_372","label":"$delivery","selector":"list","atoms":[1,2,3],"wall_ms":1792590211669}
+{"seq":981,"fixture":"list-objects","input_id":"event_373","label":"$input","selector":"stimulus","atoms":["event_373","bang","obj-388",0],"wall_ms":1792590211670}
+{"seq":982,"fixture":"list-objects","input_id":"event_373","label":"rot-default:0","selector":"list","atoms":[1,2,3],"wall_ms":1792590211670}
+{"seq":983,"fixture":"list-objects","input_id":"event_373","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211670}
+{"seq":984,"fixture":"list-objects","input_id":"event_374","label":"$input","selector":"stimulus","atoms":["event_374","list","obj-388",0],"wall_ms":1792590211670}
+{"seq":985,"fixture":"list-objects","input_id":"event_375","label":"$input","selector":"stimulus","atoms":["event_375","bang","obj-388",0],"wall_ms":1792590211672}
+{"seq":986,"fixture":"list-objects","input_id":"event_375","label":"rot-default:0","selector":"list","atoms":[1,2,3],"wall_ms":1792590211672}
+{"seq":987,"fixture":"list-objects","input_id":"event_375","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211672}
+{"seq":988,"fixture":"list-objects","input_id":"event_376","label":"$input","selector":"stimulus","atoms":["event_376","set","obj-388",0],"wall_ms":1792590211674}
+{"seq":989,"fixture":"list-objects","input_id":"event_376","label":"rot-default:0","selector":"set","atoms":[],"wall_ms":1792590211674}
+{"seq":990,"fixture":"list-objects","input_id":"event_376","label":"$delivery","selector":"set","atoms":[],"wall_ms":1792590211674}
+{"seq":991,"fixture":"list-objects","input_id":"event_377","label":"$input","selector":"stimulus","atoms":["event_377","bang","obj-388",0],"wall_ms":1792590211675}
+{"seq":992,"fixture":"list-objects","input_id":"event_377","label":"rot-default:0","selector":"set","atoms":[],"wall_ms":1792590211675}
+{"seq":993,"fixture":"list-objects","input_id":"event_377","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211675}
+{"seq":994,"fixture":"list-objects","input_id":"event_378","label":"$input","selector":"stimulus","atoms":["event_378","bang","obj-396",0],"wall_ms":1792590211676}
+{"seq":995,"fixture":"list-objects","input_id":"event_378","label":"prepend-list:0","selector":"list","atoms":["bang"],"wall_ms":1792590211676}
+{"seq":996,"fixture":"list-objects","input_id":"event_378","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211676}
+{"seq":997,"fixture":"list-objects","input_id":"event_379","label":"$input","selector":"stimulus","atoms":["event_379","8","obj-396",0],"wall_ms":1792590211678}
+{"seq":998,"fixture":"list-objects","input_id":"event_379","label":"prepend-list:0","selector":"list","atoms":[8],"wall_ms":1792590211678}
+{"seq":999,"fixture":"list-objects","input_id":"event_379","label":"$delivery","selector":"int","atoms":[8],"wall_ms":1792590211678}
+{"seq":1000,"fixture":"list-objects","input_id":"event_380","label":"$input","selector":"stimulus","atoms":["event_380","list 8","obj-396",0],"wall_ms":1792590211679}
+{"seq":1001,"fixture":"list-objects","input_id":"event_380","label":"prepend-list:0","selector":"list","atoms":[8],"wall_ms":1792590211679}
+{"seq":1002,"fixture":"list-objects","input_id":"event_380","label":"$delivery","selector":"list","atoms":[8],"wall_ms":1792590211679}
+{"seq":1003,"fixture":"list-objects","input_id":"event_381","label":"$input","selector":"stimulus","atoms":["event_381","symbol apple","obj-396",0],"wall_ms":1792590211680}
+{"seq":1004,"fixture":"list-objects","input_id":"event_381","label":"prepend-list:0","selector":"list","atoms":["symbol","apple"],"wall_ms":1792590211680}
+{"seq":1005,"fixture":"list-objects","input_id":"event_381","label":"$delivery","selector":"symbol","atoms":["apple"],"wall_ms":1792590211680}
+{"seq":1006,"fixture":"list-objects","input_id":"event_382","label":"$input","selector":"stimulus","atoms":["event_382","apple 3","obj-396",0],"wall_ms":1792590211682}
+{"seq":1007,"fixture":"list-objects","input_id":"event_382","label":"prepend-list:0","selector":"list","atoms":["apple",3],"wall_ms":1792590211682}
+{"seq":1008,"fixture":"list-objects","input_id":"event_382","label":"$delivery","selector":"apple","atoms":[3],"wall_ms":1792590211682}
+{"seq":1009,"fixture":"list-objects","input_id":"event_383","label":"$input","selector":"stimulus","atoms":["event_383","set foo 9","obj-396",0],"wall_ms":1792590211683}
+{"seq":1010,"fixture":"list-objects","input_id":"event_383","label":"$delivery","selector":"set","atoms":["foo",9],"wall_ms":1792590211683}
+{"seq":1011,"fixture":"list-objects","input_id":"event_384","label":"$input","selector":"stimulus","atoms":["event_384","bang","obj-396",0],"wall_ms":1792590211684}
+{"seq":1012,"fixture":"list-objects","input_id":"event_384","label":"prepend-list:0","selector":"foo","atoms":[9,"bang"],"wall_ms":1792590211684}
+{"seq":1013,"fixture":"list-objects","input_id":"event_384","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211684}
+{"seq":1014,"fixture":"list-objects","input_id":"event_385","label":"$input","selector":"stimulus","atoms":["event_385","8","obj-396",0],"wall_ms":1792590211684}
+{"seq":1015,"fixture":"list-objects","input_id":"event_385","label":"prepend-list:0","selector":"foo","atoms":[9,8],"wall_ms":1792590211685}
+{"seq":1016,"fixture":"list-objects","input_id":"event_385","label":"$delivery","selector":"int","atoms":[8],"wall_ms":1792590211685}
+{"seq":1017,"fixture":"list-objects","input_id":"event_386","label":"$input","selector":"stimulus","atoms":["event_386","set","obj-396",0],"wall_ms":1792590211686}
+{"seq":1018,"fixture":"list-objects","input_id":"event_386","label":"$delivery","selector":"set","atoms":[],"wall_ms":1792590211686}
+{"seq":1019,"fixture":"list-objects","input_id":"event_387","label":"$input","selector":"stimulus","atoms":["event_387","bang","obj-396",0],"wall_ms":1792590211687}
+{"seq":1020,"fixture":"list-objects","input_id":"event_387","label":"prepend-list:0","selector":"bang","atoms":[],"wall_ms":1792590211687}
+{"seq":1021,"fixture":"list-objects","input_id":"event_387","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211687}
+{"seq":1022,"fixture":"list-objects","input_id":"event_388","label":"$input","selector":"stimulus","atoms":["event_388","list 1 2","obj-396",0],"wall_ms":1792590211699}
+{"seq":1023,"fixture":"list-objects","input_id":"event_388","label":"prepend-list:0","selector":"list","atoms":[1,2],"wall_ms":1792590211699}
+{"seq":1024,"fixture":"list-objects","input_id":"event_388","label":"$delivery","selector":"list","atoms":[1,2],"wall_ms":1792590211699}
+{"seq":1025,"fixture":"list-objects","input_id":"event_389","label":"$input","selector":"stimulus","atoms":["event_389","bang","obj-408",0],"wall_ms":1792590211700}
+{"seq":1026,"fixture":"list-objects","input_id":"event_389","label":"prepend-numeric:0","selector":"list","atoms":[7,"bang"],"wall_ms":1792590211700}
+{"seq":1027,"fixture":"list-objects","input_id":"event_389","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211700}
+{"seq":1028,"fixture":"list-objects","input_id":"event_390","label":"$input","selector":"stimulus","atoms":["event_390","8","obj-408",0],"wall_ms":1792590211701}
+{"seq":1029,"fixture":"list-objects","input_id":"event_390","label":"prepend-numeric:0","selector":"list","atoms":[7,8],"wall_ms":1792590211701}
+{"seq":1030,"fixture":"list-objects","input_id":"event_390","label":"$delivery","selector":"int","atoms":[8],"wall_ms":1792590211701}
+{"seq":1031,"fixture":"list-objects","input_id":"event_391","label":"$input","selector":"stimulus","atoms":["event_391","list 8","obj-408",0],"wall_ms":1792590211702}
+{"seq":1032,"fixture":"list-objects","input_id":"event_391","label":"prepend-numeric:0","selector":"list","atoms":[7,8],"wall_ms":1792590211702}
+{"seq":1033,"fixture":"list-objects","input_id":"event_391","label":"$delivery","selector":"list","atoms":[8],"wall_ms":1792590211702}
+{"seq":1034,"fixture":"list-objects","input_id":"event_392","label":"$input","selector":"stimulus","atoms":["event_392","symbol apple","obj-408",0],"wall_ms":1792590211704}
+{"seq":1035,"fixture":"list-objects","input_id":"event_392","label":"prepend-numeric:0","selector":"list","atoms":[7,"symbol","apple"],"wall_ms":1792590211704}
+{"seq":1036,"fixture":"list-objects","input_id":"event_392","label":"$delivery","selector":"symbol","atoms":["apple"],"wall_ms":1792590211704}
+{"seq":1037,"fixture":"list-objects","input_id":"event_393","label":"$input","selector":"stimulus","atoms":["event_393","apple 3","obj-408",0],"wall_ms":1792590211705}
+{"seq":1038,"fixture":"list-objects","input_id":"event_393","label":"prepend-numeric:0","selector":"list","atoms":[7,"apple",3],"wall_ms":1792590211705}
+{"seq":1039,"fixture":"list-objects","input_id":"event_393","label":"$delivery","selector":"apple","atoms":[3],"wall_ms":1792590211705}
+{"seq":1040,"fixture":"list-objects","input_id":"event_394","label":"$input","selector":"stimulus","atoms":["event_394","set foo 9","obj-408",0],"wall_ms":1792590211706}
+{"seq":1041,"fixture":"list-objects","input_id":"event_394","label":"$delivery","selector":"set","atoms":["foo",9],"wall_ms":1792590211706}
+{"seq":1042,"fixture":"list-objects","input_id":"event_395","label":"$input","selector":"stimulus","atoms":["event_395","bang","obj-408",0],"wall_ms":1792590211708}
+{"seq":1043,"fixture":"list-objects","input_id":"event_395","label":"prepend-numeric:0","selector":"foo","atoms":[9,"bang"],"wall_ms":1792590211708}
+{"seq":1044,"fixture":"list-objects","input_id":"event_395","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211708}
+{"seq":1045,"fixture":"list-objects","input_id":"event_396","label":"$input","selector":"stimulus","atoms":["event_396","8","obj-408",0],"wall_ms":1792590211709}
+{"seq":1046,"fixture":"list-objects","input_id":"event_396","label":"prepend-numeric:0","selector":"foo","atoms":[9,8],"wall_ms":1792590211709}
+{"seq":1047,"fixture":"list-objects","input_id":"event_396","label":"$delivery","selector":"int","atoms":[8],"wall_ms":1792590211709}
+{"seq":1048,"fixture":"list-objects","input_id":"event_397","label":"$input","selector":"stimulus","atoms":["event_397","set","obj-408",0],"wall_ms":1792590211710}
+{"seq":1049,"fixture":"list-objects","input_id":"event_397","label":"$delivery","selector":"set","atoms":[],"wall_ms":1792590211710}
+{"seq":1050,"fixture":"list-objects","input_id":"event_398","label":"$input","selector":"stimulus","atoms":["event_398","bang","obj-408",0],"wall_ms":1792590211711}
+{"seq":1051,"fixture":"list-objects","input_id":"event_398","label":"prepend-numeric:0","selector":"bang","atoms":[],"wall_ms":1792590211711}
+{"seq":1052,"fixture":"list-objects","input_id":"event_398","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211711}
+{"seq":1053,"fixture":"list-objects","input_id":"event_399","label":"$input","selector":"stimulus","atoms":["event_399","list 1 2","obj-408",0],"wall_ms":1792590211712}
+{"seq":1054,"fixture":"list-objects","input_id":"event_399","label":"prepend-numeric:0","selector":"list","atoms":[1,2],"wall_ms":1792590211713}
+{"seq":1055,"fixture":"list-objects","input_id":"event_399","label":"$delivery","selector":"list","atoms":[1,2],"wall_ms":1792590211713}
+{"seq":1056,"fixture":"list-objects","input_id":"event_400","label":"$input","selector":"stimulus","atoms":["event_400","bang","obj-420",0],"wall_ms":1792590211714}
+{"seq":1057,"fixture":"list-objects","input_id":"event_400","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211714}
+{"seq":1058,"fixture":"list-objects","input_id":"event_401","label":"$input","selector":"stimulus","atoms":["event_401","8","obj-420",0],"wall_ms":1792590211715}
+{"seq":1059,"fixture":"list-objects","input_id":"event_401","label":"append-symbol:0","selector":"list","atoms":[8,"tail"],"wall_ms":1792590211715}
+{"seq":1060,"fixture":"list-objects","input_id":"event_401","label":"$delivery","selector":"int","atoms":[8],"wall_ms":1792590211715}
+{"seq":1061,"fixture":"list-objects","input_id":"event_402","label":"$input","selector":"stimulus","atoms":["event_402","list 8","obj-420",0],"wall_ms":1792590211716}
+{"seq":1062,"fixture":"list-objects","input_id":"event_402","label":"append-symbol:0","selector":"list","atoms":[8,"tail"],"wall_ms":1792590211716}
+{"seq":1063,"fixture":"list-objects","input_id":"event_402","label":"$delivery","selector":"list","atoms":[8],"wall_ms":1792590211716}
+{"seq":1064,"fixture":"list-objects","input_id":"event_403","label":"$input","selector":"stimulus","atoms":["event_403","symbol apple","obj-420",0],"wall_ms":1792590211717}
+{"seq":1065,"fixture":"list-objects","input_id":"event_403","label":"append-symbol:0","selector":"symbol","atoms":["apple","tail"],"wall_ms":1792590211718}
+{"seq":1066,"fixture":"list-objects","input_id":"event_403","label":"$delivery","selector":"symbol","atoms":["apple"],"wall_ms":1792590211718}
+{"seq":1067,"fixture":"list-objects","input_id":"event_404","label":"$input","selector":"stimulus","atoms":["event_404","apple 3","obj-420",0],"wall_ms":1792590211719}
+{"seq":1068,"fixture":"list-objects","input_id":"event_404","label":"append-symbol:0","selector":"apple","atoms":[3,"tail"],"wall_ms":1792590211719}
+{"seq":1069,"fixture":"list-objects","input_id":"event_404","label":"$delivery","selector":"apple","atoms":[3],"wall_ms":1792590211719}
+{"seq":1070,"fixture":"list-objects","input_id":"event_405","label":"$input","selector":"stimulus","atoms":["event_405","set foo 9","obj-420",0],"wall_ms":1792590211720}
+{"seq":1071,"fixture":"list-objects","input_id":"event_405","label":"$delivery","selector":"set","atoms":["foo",9],"wall_ms":1792590211720}
+{"seq":1072,"fixture":"list-objects","input_id":"event_406","label":"$input","selector":"stimulus","atoms":["event_406","bang","obj-420",0],"wall_ms":1792590211721}
+{"seq":1073,"fixture":"list-objects","input_id":"event_406","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211721}
+{"seq":1074,"fixture":"list-objects","input_id":"event_407","label":"$input","selector":"stimulus","atoms":["event_407","8","obj-420",0],"wall_ms":1792590211722}
+{"seq":1075,"fixture":"list-objects","input_id":"event_407","label":"append-symbol:0","selector":"list","atoms":[8,"foo",9],"wall_ms":1792590211722}
+{"seq":1076,"fixture":"list-objects","input_id":"event_407","label":"$delivery","selector":"int","atoms":[8],"wall_ms":1792590211722}
+{"seq":1077,"fixture":"list-objects","input_id":"event_408","label":"$input","selector":"stimulus","atoms":["event_408","set","obj-420",0],"wall_ms":1792590211724}
+{"seq":1078,"fixture":"list-objects","input_id":"event_408","label":"$delivery","selector":"set","atoms":[],"wall_ms":1792590211724}
+{"seq":1079,"fixture":"list-objects","input_id":"event_409","label":"$input","selector":"stimulus","atoms":["event_409","bang","obj-420",0],"wall_ms":1792590211725}
+{"seq":1080,"fixture":"list-objects","input_id":"event_409","label":"$delivery","selector":"bang","atoms":[],"wall_ms":1792590211725}
+{"seq":1081,"fixture":"list-objects","input_id":"event_410","label":"$input","selector":"stimulus","atoms":["event_410","list 1 2","obj-420",0],"wall_ms":1792590211726}
+{"seq":1082,"fixture":"list-objects","input_id":"event_410","label":"append-symbol:0","selector":"list","atoms":[1,2],"wall_ms":1792590211726}
+{"seq":1083,"fixture":"list-objects","input_id":"event_410","label":"$delivery","selector":"list","atoms":[1,2],"wall_ms":1792590211726}
+{"seq":1084,"fixture":"list-objects","input_id":"event_410","label":"$harness","selector":"complete","atoms":[411],"wall_ms":1792590211826}

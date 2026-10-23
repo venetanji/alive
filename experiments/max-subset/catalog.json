@@ -1,0 +1,726 @@
+{
+  "schema_version": 1,
+  "profile": "max-subset-v1 (proposed; not implemented)",
+  "claim": "Documentation catalog and inventory support only. No class has verified Max execution compatibility. Candidates identify research targets, not selected implementations or interchangeable semantics.",
+  "objects": [
+    {
+      "class": "button",
+      "aliases": [],
+      "domain": "UI_MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "1 message inlet; 1 bang outlet. Click or incoming message triggers bang.",
+      "candidate_backends": [
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/button/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Message filters, ignoreclick, GUI activation versus message input.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "toggle",
+      "aliases": [],
+      "domain": "UI_MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "1 numeric/bang inlet; 1 integer outlet. Bang alternates state; incoming numbers are converted to integers and passed through, not universally normalized to 0/1.",
+      "candidate_backends": [
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/toggle/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Nonzero values, negative values, float conversion and set without output.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "number",
+      "aliases": [],
+      "domain": "UI_MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "Numeric/message input and value output; numeric format and attributes affect coercion. Preserve saved port declarations; no inferred auxiliary outlet behavior.",
+      "candidate_backends": [
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/number/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Max version and format: current docs include Int/Float/List/Text modes; clipping and editing output.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "flonum",
+      "aliases": [],
+      "domain": "UI_MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "Numeric input and floating-point value output. set changes stored/displayed value without output; saved ports retained.",
+      "candidate_backends": [
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/flonum/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Precision, clipping, float conversion, keyboard/drag actions and auxiliary outlet behavior.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "message",
+      "aliases": [],
+      "domain": "MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "2 inlets: left triggers stored message/substitution; right replaces contents silently. Message outlet may emit multiple messages.",
+      "candidate_backends": [
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/message/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Dollar substitution, comma/semicolon syntax, escaping, selector/type preservation; never execute text during import.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "trigger",
+      "aliases": [
+        "t"
+      ],
+      "domain": "MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "1 input; argument-defined typed outlets, emitted right-to-left. No args gives two integer outlets.",
+      "candidate_backends": [
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/trigger/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Types i/f/b/l/s, constants, list/anything coercion, synchronous depth-first fan-out.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": [
+        "https://docs.cycling74.com/reference/t/"
+      ]
+    },
+    {
+      "class": "pack",
+      "aliases": [],
+      "domain": "MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "Argument-defined inlets store list elements; left inlet emits list, other inlets update silently. 1 output.",
+      "candidate_backends": [
+        "PD",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/pack/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Typed defaults/coercion, lists across inlets, set, bang, nth/send extensions.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "unpack",
+      "aliases": [],
+      "domain": "MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "1 list/message input; argument-defined typed element outlets. Outlet ordering remains a reference-test gate.",
+      "candidate_backends": [
+        "PD",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/unpack/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Type conversion, short/long lists and selector handling. Capture actual outlet delivery order.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "select",
+      "aliases": [
+        "sel"
+      ],
+      "domain": "MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "Match input emits bang on matching outlet; rightmost outlet emits unmatched input. Arguments determine match outlets; single integer/no argument adds cold comparison inlet.",
+      "candidate_backends": [
+        "PD",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/select/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Mixed selector types, matchfloat/fuzzy, equality and rejection payload.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": [
+        "https://docs.cycling74.com/reference/sel/"
+      ]
+    },
+    {
+      "class": "route",
+      "aliases": [],
+      "domain": "MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "1 input, selector-defined outlets plus unmatched outlet. Matching selector is removed for routed payload; unmatched messages retain content.",
+      "candidate_backends": [
+        "PD",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/route/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Type selectors, bang and one-atom matches, int/float/anything distinctions.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "+",
+      "aliases": [],
+      "domain": "MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "2 numeric inlets; left computes/emits, right stores operand; 1 numeric output. Argument type controls integer/float behavior.",
+      "candidate_backends": [
+        "PD",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/plus/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Overflow, conversion, list/set/bang and arithmetic precision.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "-",
+      "aliases": [],
+      "domain": "MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "2 numeric inlets; left subtracts stored right operand and emits; right stores silently. 1 numeric output.",
+      "candidate_backends": [
+        "PD",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/minus/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Operand direction, overflow, argument-controlled numeric type and list/set/bang.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "*",
+      "aliases": [],
+      "domain": "MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "2 numeric inlets; left multiplies/emits, right stores operand; 1 numeric output.",
+      "candidate_backends": [
+        "PD",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/times/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Argument-controlled numeric type, overflow, list/set/bang.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "/",
+      "aliases": [],
+      "domain": "MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "2 numeric inlets; left dividend computes/emits, right stores divisor. Floating argument selects floating output; otherwise integer conversion applies.",
+      "candidate_backends": [
+        "PD",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/div/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Zero division, truncation, overflow, float argument distinction; documentation URL div is not a proven class alias.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "metro",
+      "aliases": [],
+      "domain": "SCHEDULER",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "Left inlet starts/stops periodic bang output; right inlet supplies interval. 1 bang output.",
+      "candidate_backends": [
+        "PD",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/metro/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Initial tick, restart, time formats, transport, overdrive/audio interrupt settings and cancellation.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "delay",
+      "aliases": [
+        "del"
+      ],
+      "domain": "SCHEDULER",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "Left inlet schedules bang; right inlet sets delay. 1 bang output.",
+      "candidate_backends": [
+        "PD",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/delay/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Retrigger, stop, simultaneous deadlines, time formats and scheduler priority.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": [
+        "https://docs.cycling74.com/reference/del/"
+      ]
+    },
+    {
+      "class": "pipe",
+      "aliases": [],
+      "domain": "SCHEDULER",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "Argument-defined typed value inlets/outlets with final delay-time inlet; queues delayed messages.",
+      "candidate_backends": [
+        "PD",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/pipe/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Multiple queued values, clear/flush, outlet order, typed defaults and cancellation.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "loadbang",
+      "aliases": [],
+      "domain": "INITIALIZATION",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "Message inlet and bang outlet; emits during patch opening/initialization or on bang.",
+      "candidate_backends": [
+        "PD",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/loadbang/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Parent/child load order, suppression during opening and graph lifecycle.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "send",
+      "aliases": [
+        "s"
+      ],
+      "domain": "NAMED_MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "Input messages delivered to matching named receive objects; no patchcord output.",
+      "candidate_backends": [
+        "PD",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/send/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Namespace scope, dynamic destination, receiver delivery order and #0 expansion. Official docs explicitly say multiple-receiver reception order is nondeterministic; do not require a single global receiver order.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": [
+        "https://docs.cycling74.com/reference/s/"
+      ]
+    },
+    {
+      "class": "receive",
+      "aliases": [
+        "r"
+      ],
+      "domain": "NAMED_MESSAGE",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "Receives named messages and emits through message outlet; name reassignment behavior requires reference coverage.",
+      "candidate_backends": [
+        "PD",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/receive/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Namespace lifetime, multiple receivers, ordering and name changes. Official docs explicitly say multiple-receiver reception order is nondeterministic; do not require a single global receiver order.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": [
+        "https://docs.cycling74.com/reference/r/"
+      ]
+    },
+    {
+      "class": "cycle~",
+      "aliases": [],
+      "domain": "SIGNAL",
+      "message_types": [
+        "numeric_message",
+        "signal"
+      ],
+      "ports": "Left numeric/signal frequency inlet; right numeric/signal phase inlet; 1 signal output, cosine by default.",
+      "candidate_backends": [
+        "FAUST",
+        "CYCLONE",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/cycle~/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Default phase, table interpolation, reset, buffer dependency, sample rate and vector behavior. Pd osc~ or a Faust oscillator is not an established equivalent.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "sig~",
+      "aliases": [],
+      "domain": "SIGNAL",
+      "message_types": [
+        "numeric_message",
+        "signal"
+      ],
+      "ports": "Numeric input becomes constant-valued signal output.",
+      "candidate_backends": [
+        "PD",
+        "FAUST",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/sig~/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Initial value, numeric precision and sample-offset message application.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "line~",
+      "aliases": [],
+      "domain": "SIGNAL_SCHEDULER",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "Left target or target/time sequence; right duration; signal ramp output and completion bang outlet. activeout adds a middle activity-signal outlet; never assume a fixed outlet count.",
+      "candidate_backends": [
+        "CYCLONE",
+        "FAUST",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/line~/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Duration consumption/reset, interrupted ramps, endpoint rounding, completion timing and scheduler settings; Pd line~ is not established equivalent.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "*~",
+      "aliases": [],
+      "domain": "SIGNAL",
+      "message_types": [
+        "numeric_message",
+        "signal"
+      ],
+      "ports": "2 signal/numeric inputs; 1 signal output multiplies the operands.",
+      "candidate_backends": [
+        "PD",
+        "FAUST",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/times~/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Unconnected inlet defaults, scalar/signal precedence, floating precision and exceptional values.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "gain~",
+      "aliases": [],
+      "domain": "UI_SIGNAL",
+      "message_types": [
+        "bang",
+        "int",
+        "float",
+        "symbol",
+        "list",
+        "anything"
+      ],
+      "ports": "Left signal/slider-value input; right ramp-time input. Left scaled signal output, right slider integer output.",
+      "candidate_backends": [
+        "FAUST",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/gain~/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Nonlinear slider law, range and ramp smoothing (documented default 10 ms), silent set; not a linear multiply alias.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    },
+    {
+      "class": "dac~",
+      "aliases": [],
+      "domain": "HOST_SIGNAL",
+      "message_types": [
+        "numeric_message",
+        "signal"
+      ],
+      "ports": "Signal inputs mapped to hardware channels by arguments; no signal outlet. Control messages affect audio lifecycle.",
+      "candidate_backends": [
+        "PD",
+        "ULTRA"
+      ],
+      "candidate_status": "RESEARCH_ONLY_NOT_EQUIVALENT",
+      "evidence_status": "DOC_ONLY",
+      "max_compatibility_verified": false,
+      "docs_url": "https://docs.cycling74.com/reference/dac~/",
+      "docs_checked_utc": "2026-10-20",
+      "reference_gates": "Host channel mapping, lifecycle, device configuration and unavailable-host refusal.",
+      "message_type_scope": "Vocabulary to investigate, not a claim that every listed type is accepted by every inlet. See ports and official reference.",
+      "alias_docs_urls": []
+    }
+  ],
+  "unsupported_families": [
+    "gen/gen~",
+    "jit.*",
+    "live.*",
+    "js/jsui/v8/v8ui/node.script/mxj/jweb",
+    "mc.*",
+    "unknown externals/abstractions",
+    "embedded patchers",
+    "AMXD containers"
+  ],
+  "scheduler_contract": {
+    "status": "REQUIRES_REFERENCE_TRACES",
+    "requirements": [
+      "Preserve bang/int/float/symbol/list/anything identities and Max-specific coercion.",
+      "Model hot/cold state separately from triggering output.",
+      "Depth-first synchronous message traversal, right-to-left trigger outlets and explicit patchline order.",
+      "Unspecified patchline order is unresolved: source array order is not asserted execution order.",
+      "Bound recursion, message count, timers and cancellation; fail visibly rather than silently discard.",
+      "Capture high/low priority, overdrive, scheduler-in-audio-interrupt, signal vector and I/O vector settings.",
+      "Keep defer/deferlow, initialization, named receiver order and DSP/message boundaries unimplemented until measured."
+    ],
+    "docs": [
+      "https://docs.cycling74.com/userguide/scheduler/",
+      "https://docs.cycling74.com/userguide/sample_accurate_messages/"
+    ]
+  }
+}

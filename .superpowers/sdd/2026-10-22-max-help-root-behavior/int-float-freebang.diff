@@ -1,0 +1,1860 @@
+--- package006/controller.js
++++ package007/controller.js
+@@ -371,7 +371,18 @@
+         configFile,definition.document,definition.revision);
+     reader.varname="__alive_numeric_reader";
+     var disposer=patcher.newdefault(-3100,-3000,"thispatcher");disposer.varname="__alive_numeric_disposer";
+-    return {patcher:patcher,basic:basic,objects:objects,reader:reader,disposer:disposer,definition:definition};
++    var owner=config.lifecycle.owners[definition.lifecycle_owner_inlet];
++    if(!owner||owner.document!==definition.document||owner.revision!==definition.revision)throw Error("lifecycle-install-owner");
++    var freebang=patcher.newdefault(-3200,-3000,"freebang");freebang.varname="__alive_numeric_freebang";
++    var lifecycleSend=patcher.newdefault(-3400,-3000,"send",owner.channel);
++    lifecycleSend.varname="__alive_numeric_lifecycle_send";
++    reader.setboxattr("patching_rect",[-3000,-3000,160,22]);
++    disposer.setboxattr("patching_rect",[-3100,-3000,100,22]);
++    freebang.setboxattr("patching_rect",[-3200,-3000,100,22]);
++    lifecycleSend.setboxattr("patching_rect",[-3400,-3000,200,22]);
++    patcher.connect(freebang,0,lifecycleSend,0);
++    return {patcher:patcher,basic:basic,objects:objects,reader:reader,disposer:disposer,
++        freebang:freebang,lifecycleSend:lifecycleSend,definition:definition};
+ }
+ function install(command) {
+     var doc=command.document,revision=command.revision;
+@@ -422,7 +433,10 @@
+         root_valid:closeRead(function(){return state.patcher.valid;}),
+         reader_valid:closeRead(function(){return state.reader.valid;}),
+         disposer_valid:closeRead(function(){return state.disposer.valid;}),
+-        root_filepath:closeRead(function(){return state.patcher.filepath;}),objects:[]};
++        root_filepath:closeRead(function(){return state.patcher.filepath;}),objects:[],
++        retained_firstobject_valid:closeRead(function(){return state.retainedFirstobject.valid;}),
++        harness_objects:[{anchor:"__alive_numeric_freebang",valid:closeRead(function(){return state.freebang.valid;})},
++            {anchor:"__alive_numeric_lifecycle_send",valid:closeRead(function(){return state.lifecycleSend.valid;})}]};
+     var first,wind,associated;
+     sample.firstobject=closeRead(function(){first=state.patcher.firstobject;return first;});
+     sample.firstobject_valid=first&&(typeof first==="object"||typeof first==="function")?
+@@ -443,6 +457,54 @@
+     }
+     closeDiagnostics.samples.push(sample);return sample;
+ }
++function lifecycleControl(kind,index,command) {
++    var observer=this.patcher.getnamed("__alive_numeric_lifecycle_observer");
++    if(!observer||(observer.valid!==true&&observer.valid!==1))throw Error("lifecycle-driver-unavailable");
++    observer.message("lifecyclecontrol",kind,index,command.command_id,command.step_id);
++    var report=read(config.lifecycle.report_path);
++    if(!report||report.version!=="freebang-v1"||report.monitor_epoch!==config.lifecycle.monitor_epoch||
++        report.request_id!==command.command_id||report.step_id!==command.step_id||report.control!==kind||
++        !report.observer_report||!report.observer_report.failures)throw Error("lifecycle-observer-refused");
++    return report;
++}
++function requestLifecycleProof(state,command,done) {
++    var owner=config.lifecycle.owners[state.definition.lifecycle_owner_inlet],attempts=0;
++    state.reader.message("lifecycleproof",command.command_id,command.step_id);
++    function wait(){try{
++        ++attempts;var proof=read(owner.root_proof_path);
++        if(proof&&proof.request_id===command.command_id){
++            if(proof.version!=="freebang-v1"||proof.step_id!==command.step_id||proof.document!==command.document||
++                proof.revision!==command.action_revision||proof.source_sha256!==command.source_sha256||
++                !samePath(proof.working_path,state.definition.working_windows_path))throw Error("lifecycle-root-proof-refused");
++            done(proof);return;
++        }
++        if(attempts>=30)throw Error("lifecycle-root-proof-timeout");
++        pollTask=new Task(wait,this);pollTask.schedule(100);
++    }catch(error){fail(command,error);}}
++    pollTask=new Task(wait,this);pollTask.schedule(100);
++}
++function validity(reading) {
++    if(!reading||reading.status!=="returned"||
++        !((reading.type==="boolean"&&typeof reading.value==="boolean")||
++          (reading.type==="number"&&typeof reading.value==="number"&&(reading.value===0||reading.value===1))))
++        throw Error("close-owned-validity-malformed");
++    return reading.value===true||reading.value===1;
++}
++function ownedValidity(sample) {
++    var reads=[sample.reader_valid,sample.disposer_valid,sample.retained_firstobject_valid];
++    for(var i=0;i<sample.objects.length;i++)reads.push(sample.objects[i].valid);
++    for(var i=0;i<sample.harness_objects.length;i++)reads.push(sample.harness_objects[i].valid);
++    var values=[];for(var i=0;i<reads.length;i++)values.push(validity(reads[i]));return values;
++}
++function lifecycleEvidence(command,state,proof,report) {
++    var binding={monitor_epoch:config.lifecycle.monitor_epoch,request_id:command.command_id,step_id:command.step_id,
++        action:command.action,document:command.document,revision:state.definition.revision,
++        source_sha256:command.source_sha256,working_path:state.definition.working_windows_path,
++        observer_helper_sha256:config.package_sha256["lifecycle-observer.js"]};
++    return {version:"freebang-v1",binding:binding,
++        root_route_path:config.lifecycle.owners[state.definition.lifecycle_owner_inlet].root_proof_path,
++        root_route_proof:proof,driver_route_proof:report.driver_route_proof,observer_report:report.observer_report};
++}
+ function closeOwner(command) {
+     var state=roots[command.document];if(!state)throw Error("absent-close-owner");
+     if(command.source_sha256!==state.definition.source_sha256||command.action_revision!==state.definition.revision)
+@@ -453,30 +515,43 @@
+     closeDiagnostics={request_id:command.command_id,step_id:command.step_id,action:command.action,
+         document:command.document,revision:state.definition.revision,source_sha256:state.definition.source_sha256,
+         working_path:state.definition.working_windows_path,helper_sha256:helpers,samples:[]};
+-    closeSnapshot(state,"before-dispose",0);
+-    // thispatcher dispose is documented to close its containing root; never save or dirty.
+-    closeDiagnostics.dispose={attempted:true,result:closeRead(function(){return state.disposer.message("dispose");})};
+-    if(closeDiagnostics.dispose.result.status==="threw")throw Error("close-dispose-threw");
+-    var attempts=0;
+-    function poll() {
+-        try {
+-            ++attempts;var sample=closeSnapshot(state,"poll",attempts);
+-            if(sample.root_valid.status==="threw"||sample.reader_valid.status==="threw"||sample.disposer_valid.status==="threw")
+-                throw Error("close-validity-read-threw");
+-            var rootValid=sample.root_valid.value,readerValid=sample.reader_valid.value,disposerValid=sample.disposer_valid.value;
+-            // Observations do not substitute for the existing three actual invalidity reads.
+-            if((rootValid===false||rootValid===0)&&(readerValid===false||readerValid===0)&&
+-               (disposerValid===false||disposerValid===0)) {
+-                delete roots[command.document];record("step-complete",{document:command.document,
+-                    revision:state.definition.revision,source_sha256:state.definition.source_sha256,
+-                    closed_owner_absence_validated:true});ack(command,{closed_owner_absence_validated:true,
+-                        close_diagnostics:closeDiagnostics});return;
+-            }
+-            if(attempts>=30)throw Error("closed-owner-absence-unproven");
+-            pollTask=new Task(poll,this);pollTask.schedule(100);
+-        }catch(error){fail(command,error);}
+-    }
+-    pollTask=new Task(poll,this);pollTask.schedule(100);
++    requestLifecycleProof(state,command,function(proof){
++        var index=state.definition.lifecycle_owner_inlet,attempts=0,jointlyInvalid=false,invalidityError=null;
++        var report=lifecycleControl("attest",index,command);
++        closeDiagnostics.lifecycle_evidence=lifecycleEvidence(command,state,proof,report);
++        if(report.observer_report.failures.length)throw Error("lifecycle-observer-refused");
++        try{state.retainedFirstobject=state.patcher.firstobject;}catch(error){state.retainedFirstobject=null;}
++        var before=ownedValidity(closeSnapshot(state,"before-dispose",0));
++        if(before.indexOf(false)!==-1)throw Error("close-owned-handle-not-valid-before");
++        report=lifecycleControl("arm",index,command);
++        report=lifecycleControl("dispatch-start",index,command);
++        if(report.observer_report.failures.length)throw Error("lifecycle-observer-refused");
++        // Only disposal can create an eligible bang; no harness event inlet is invoked.
++        closeDiagnostics.dispose={attempted:true,result:closeRead(function(){return state.disposer.message("dispose");})};
++        if(closeDiagnostics.dispose.result.status==="threw")throw Error("close-dispose-threw");
++        try{report=lifecycleControl("dispatch-return",index,command);}catch(error){invalidityError=error;}
++        function poll(){try{
++            ++attempts;var sample=closeSnapshot(state,"poll",attempts),values=null;
++            try{values=ownedValidity(sample);
++                if(jointlyInvalid&&values.indexOf(true)!==-1)throw Error("close-owned-handle-revived");
++                if(values.indexOf(true)===-1)jointlyInvalid=true;
++            }catch(error){invalidityError=invalidityError||error;}
++            if(attempts<30){pollTask=new Task(poll,this);pollTask.schedule(100);return;}
++            // Retain a final observer report on refusal as well as on success.
++            try{report=lifecycleControl("attest",index,command);}catch(error){invalidityError=invalidityError||error;}
++            closeDiagnostics.lifecycle_evidence=lifecycleEvidence(command,state,proof,report);
++            if(invalidityError)throw invalidityError;
++            if(report.observer_report.failures.length)throw Error("lifecycle-observer-refused");
++            if(!jointlyInvalid||!values||values.indexOf(true)!==-1)throw Error("closed-owner-absence-unproven");
++            report=lifecycleControl("close-validated",index,command);
++            closeDiagnostics.lifecycle_evidence=lifecycleEvidence(command,state,proof,report);
++            if(report.observer_report.failures.length)throw Error("lifecycle-observer-refused");
++            delete roots[command.document];record("step-complete",{document:command.document,
++                revision:state.definition.revision,source_sha256:state.definition.source_sha256,
++                closed_owner_absence_validated:true});ack(command,{closed_owner_absence_validated:true,close_diagnostics:closeDiagnostics});
++        }catch(error){fail(command,error);}}
++        pollTask=new Task(poll,this);pollTask.schedule(100);
++    });
+ }
+ function handle(command) {
+     if(command.op==="operation") {
+@@ -498,6 +573,15 @@
+         var state=roots[command.document];
+         if(!state||command.revision!==state.definition.revision)throw Error("readback-owner-binding");
+         state.reader.message("checkpoint",command.command_id,command.step_id);ack(command,{});
++    } else if(command.op==="lifecycle-barrier"){
++        if(command.step_id!=="capture-complete"||!roots.int||!roots.float||
++            roots.int.definition.revision!==2||roots.float.definition.revision!==2)throw Error("lifecycle-final-live-owners");
++        var report=lifecycleControl("barrier",-1,command);
++        if(report.observer_report.failures.length||report.observer_report.sealed!==true)throw Error("lifecycle-barrier-refused");
++        ack(command,{lifecycle_evidence:{version:"freebang-v1",binding:{monitor_epoch:config.lifecycle.monitor_epoch,
++            request_id:command.command_id,step_id:command.step_id,action:"lifecycle-barrier",
++            observer_helper_sha256:config.package_sha256["lifecycle-observer.js"]},
++            driver_route_proof:report.driver_route_proof,observer_report:report.observer_report}});
+     } else throw Error("finite-command-required");
+ }
+ function tick() {
+@@ -511,6 +595,12 @@
+ }
+ function start() {
+     config=read(configFile);shared=new Global(config.global_name);shared.seq=0;shared.dispatch_active=0;
++    for(var i=0;i<config.lifecycle.driver_inventory.length;i++){
++        var expected=config.lifecycle.driver_inventory[i],object=this.patcher.getnamed(expected.varname);
++        if(!object)throw Error("lifecycle-driver-startup");object.setboxattr("patching_rect",expected.rect);
++    }
++    var report=lifecycleControl("attest",-1,{command_id:0,step_id:"startup"});
++    if(report.observer_report.failures.length)throw Error("lifecycle-driver-startup-refused");
+     shared.step_id="startup";write(config.ready_path,{ready:true,live_owners:{},source_roots_opened:0});
+     ticker=new Task(tick,this);ticker.interval=25;ticker.repeat();
+ }
+--- package006/lifecycle-fixture.cjs
++++ package007/lifecycle-fixture.cjs
+@@ -0,0 +1,34 @@
++// In-memory Max APIs for lifecycle fixtures; no runtime or private-file access.
++const fs=require('fs'),vm=require('vm'),path=require('path');
++module.exports=function create(){
++ const owners=Array.from({length:4},(_,inlet)=>({inlet,document:inlet<2?'int':'float',revision:inlet%2+1,
++  channel:'private_'+inlet,working_path:'Z:/private/'+inlet,source_sha256:'a'.repeat(64)}));
++ const inventory=[{varname:'__alive_numeric_controller',maxclass:'js',boxtext:'js synthetic',rect:[0,0,100,22]},
++  {varname:'__alive_numeric_lifecycle_observer',maxclass:'v8',boxtext:'v8 synthetic',rect:[0,30,100,22]},
++  ...owners.map(o=>({varname:'__alive_numeric_lifecycle_receive_'+o.inlet,maxclass:'receive',
++   boxtext:'receive '+o.channel,rect:[0,60+o.inlet*30,100,22]}))];
++ const config={lifecycle:{version:'freebang-v1',monitor_epoch:'e'.repeat(48),owners,
++  driver_inventory:inventory,report_path:'synthetic-report'}};
++ const files={'synthetic-config':JSON.stringify(config)};
++ class File{
++  constructor(filename,mode){this.name=filename;this.isopen=mode!=='read'||Object.hasOwn(files,filename);
++   if(mode!=='read')files[filename]='';this.position=0;}
++  get eof(){return (files[this.name]||'').length;}
++  set eof(n){files[this.name]=(files[this.name]||'').slice(0,n);}
++  readstring(n){const chunk=files[this.name].slice(this.position,this.position+n);this.position+=chunk.length;return chunk;}
++  writestring(s){const old=files[this.name];files[this.name]=old.slice(0,this.position)+s+old.slice(this.position+s.length);
++   this.position+=s.length;}
++  close(){this.isopen=false;}
++ }
++ const boxes=inventory.map(e=>({...e,valid:true,getboxattr:()=>e.rect.slice(),patchcords:{inputs:[],outputs:[]}}));
++ boxes.forEach((b,i)=>b.nextobject=boxes[i+1]||null);
++ owners.forEach((o,i)=>{const cord={srcobject:boxes[i+2],srcoutlet:0,dstobject:boxes[1],dstinlet:i+1};
++  boxes[i+2].patchcords.outputs.push(cord);boxes[1].patchcords.inputs.push(cord);});
++ const ctx=vm.createContext({File,jsarguments:['v8','synthetic-config'],inlet:0,patcher:{firstobject:boxes[0]}});
++ vm.runInContext(fs.readFileSync(path.join(__dirname,'lifecycle-observer.js'),'utf8'),ctx);
++ function report(){return JSON.parse(files['synthetic-report']);}
++ function control(kind,inlet=2,request=125,step='close-float'){
++  ctx.inlet=0;ctx.lifecyclecontrol(kind,inlet,request,step);return report();}
++ function fire(index=2,callback='bang'){ctx.inlet=index+1;ctx[callback]();return report();}
++ return {ctx,owners,config,boxes,files,report,control,fire};
++};
+--- package006/lifecycle-observer.js
++++ package007/lifecycle-observer.js
+@@ -0,0 +1,111 @@
++// Private driver-owned lifecycle evidence. Never writes the score journal.
++autowatch=0;inlets=5;outlets=0;
++var lifecycleCallbacks=(function(runtime){
++var configFile=runtime.jsarguments[1],config,monitor=null,lastRequest=0,lastStep="",lastControl="monitoring";
++function readPrivate(path){var f=new File(path,"read"),s="";if(!f.isopen)throw Error("lifecycle-file-unavailable");
++    try{while(f.position<f.eof){var before=f.position,chunk=f.readstring(Math.min(4096,f.eof-before));
++        if(!chunk||f.position!==before+chunk.length)throw Error("lifecycle-read-progress");s+=chunk;}
++        return JSON.parse(s);}finally{f.close();}}
++function writePrivate(path,value){var s=JSON.stringify(value).replace(/[\u007f-\uffff]/g,
++    c=>"\\u"+("0000"+c.charCodeAt(0).toString(16)).slice(-4))+"\n";
++    var f=new File(path,"write","TEXT");if(!f.isopen)throw Error("lifecycle-file-unavailable");
++    try{f.eof=0;f.position=0;for(var i=0;i<s.length;i+=4096){var chunk=s.slice(i,i+4096),before=f.position;
++        f.writestring(chunk);if(f.position!==before+chunk.length)throw Error("lifecycle-write-progress");}
++        if(f.eof!==s.length)throw Error("lifecycle-write-size");}finally{f.close();}}
++function ensureMonitor(){
++    if(!config)config=readPrivate(configFile);
++    if(!monitor){
++        if(config.lifecycle.version!=="freebang-v1"||config.lifecycle.owners.length!==4)throw Error("lifecycle-config");
++        monitor={monitor_epoch:config.lifecycle.monitor_epoch,seq:0,transitions:[],events:[],
++            states:config.lifecycle.owners.map((o,i)=>{
++                if(o.inlet!==i)throw Error("lifecycle-inlet-map");
++                return {inlet:i,state:"monitoring",request_id:0,step_id:"",witness_count:0};}),failures:[],sealed:false};
++    }
++}
++function reject(code){monitor.failures.push(code);}
++function transition(kind,index,request,step){
++    ensureMonitor();if(monitor.sealed)throw Error("lifecycle-sealed");
++    if(!Number.isInteger(index)||!Number.isInteger(request)||request<1||typeof step!=="string"){
++        reject("control-binding");return;}
++    var row={seq:++monitor.seq,kind:kind,inlet:index,request_id:request,step_id:step};
++    monitor.transitions.push(row);
++    if(kind==="barrier"){
++        if(index!==-1||step!=="capture-complete")reject("barrier-binding");
++        for(var owner of config.lifecycle.owners){var s=monitor.states[owner.inlet];
++            if(owner.revision===1?(s.state!=="closed"||s.witness_count!==1):
++                (s.state!=="monitoring"||s.witness_count!==0))reject("barrier-owner-state");}
++        if(!monitor.failures.length)monitor.sealed=true;return;
++    }
++    var state=monitor.states[index];if(!state){reject("control-owner");return;}
++    if(kind==="arm"){
++        if(state.state!=="monitoring"||monitor.states.some(s=>["armed","dispatching","witnessed"].includes(s.state)))
++            reject("arm-state");
++        else{state.state="armed";state.request_id=request;state.step_id=step;}
++    }else if(request!==state.request_id||step!==state.step_id)reject("stale-control");
++    else if(kind==="dispatch-start"&&state.state==="armed")state.state="dispatching";
++    else if(kind==="dispatch-return"&&["dispatching","witnessed"].includes(state.state)){
++        if(monitor.transitions.filter(t=>t.kind==="dispatch-return"&&t.inlet===index).length!==1)reject("duplicate-dispatch-return");
++    }else if(kind==="close-validated"&&state.state==="witnessed"&&state.witness_count===1&&
++        monitor.transitions.some(t=>t.kind==="dispatch-return"&&t.inlet===index))state.state="closed";
++    else reject("control-state");
++}
++function observe(kind,physical){
++    ensureMonitor();if(monitor.sealed)return;
++    var index=physical-1,state=monitor.states[index];
++    monitor.events.push({seq:++monitor.seq,inlet:index,payload_kind:kind,
++        request_id:state?state.request_id:0,step_id:state?state.step_id:""});
++    if(!state||kind!=="bang"||state.state!=="dispatching"||state.witness_count!==0)reject("unexpected-notification");
++    else{state.witness_count++;state.state="witnessed";}
++    persist();
++}
++function bang(physical,count){observe(count===0?"bang":"bang-with-atoms",physical);}
++function msg_int(physical){observe("int",physical);}
++function msg_float(physical){observe("float",physical);}
++function list(physical){observe("list",physical);}
++function anything(physical){observe("anything",physical);}
++function driverProof(root){
++    var boxes=[],inputs=[],outputs=[],objects={},expected=config.lifecycle.driver_inventory;
++    for(var o=root.firstobject;o;o=o.nextobject){
++        var matches=expected.filter(e=>e.varname===o.varname);
++        if(matches.length!==1||objects[o.varname])throw Error("lifecycle-driver-inventory");
++        var wanted=matches[0],rect=Array.from(o.getboxattr("patching_rect"));
++        if(o.maxclass!==wanted.maxclass||o.boxtext!==wanted.boxtext||JSON.stringify(rect)!==JSON.stringify(wanted.rect)||
++            (o.valid!==true&&o.valid!==1))throw Error("lifecycle-driver-object");
++        objects[o.varname]=wanted;
++        boxes.push({varname:o.varname,maxclass:o.maxclass,boxtext:o.boxtext,rect:rect,valid:o.valid});
++    }
++    if(boxes.length!==expected.length)throw Error("lifecycle-driver-count");
++    function endpoint(o,p){var e=objects[o.varname];if(!e||o.maxclass!==e.maxclass||
++        JSON.stringify(Array.from(o.getboxattr("patching_rect")))!==JSON.stringify(e.rect)||!Number.isInteger(p)||p<0)
++        throw Error("lifecycle-driver-endpoint");return {identity:o.varname,port:p};}
++    for(var o=root.firstobject;o;o=o.nextobject){var cords=o.patchcords;
++        if(!cords||!Array.isArray(cords.inputs)||!Array.isArray(cords.outputs))throw Error("lifecycle-driver-cords");
++        for(var direction of ["inputs","outputs"])for(var c of cords[direction])
++            (direction==="inputs"?inputs:outputs).push({source:endpoint(c.srcobject,c.srcoutlet),destination:endpoint(c.dstobject,c.dstinlet)});
++    }
++    var routes=config.lifecycle.owners.map(owner=>({source:{identity:"__alive_numeric_lifecycle_receive_"+owner.inlet,port:0},
++        destination:{identity:"__alive_numeric_lifecycle_observer",port:owner.inlet+1}}));
++    function sorted(v){return v.map(x=>JSON.stringify(x)).sort().join("\n");}
++    if(sorted(inputs)!==sorted(routes)||sorted(outputs)!==sorted(routes))throw Error("lifecycle-driver-routes");
++    return {boxes:boxes,input_routes:inputs,output_routes:outputs,declared_inlets:inlets,declared_outlets:outlets};
++}
++function persist(){
++    ensureMonitor();writePrivate(config.lifecycle.report_path,{version:"freebang-v1",monitor_epoch:config.lifecycle.monitor_epoch,
++        request_id:lastRequest,step_id:lastStep,control:lastControl,
++        driver_route_proof:driverProof(runtime.patcher),observer_report:monitor});
++}
++function lifecyclecontrol(physical,kind,index,request,step,count){
++    ensureMonitor();if(physical!==0||count!==4){observe("control-selector",physical);return;}
++    lastRequest=request;lastStep=step;lastControl=kind;
++    if(kind!=="attest")transition(kind,index,request,step);
++    persist();
++}
++
++return {bang:bang,msg_int:msg_int,msg_float:msg_float,list:list,anything:anything,lifecyclecontrol:lifecyclecontrol};
++})(this);
++function bang(){lifecycleCallbacks.bang(inlet,arguments.length);}
++function msg_int(){lifecycleCallbacks.msg_int(inlet);}
++function msg_float(){lifecycleCallbacks.msg_float(inlet);}
++function list(){lifecycleCallbacks.list(inlet);}
++function anything(){lifecycleCallbacks.anything(inlet);}
++function lifecyclecontrol(kind,index,request,step){lifecycleCallbacks.lifecyclecontrol(inlet,kind,index,request,step,arguments.length);}
+--- package006/lifecycle.py
++++ package007/lifecycle.py
+@@ -0,0 +1,554 @@
++"""Independent, private freebang-v1 evidence validation using only the stdlib."""
++from collections import Counter
++import hashlib
++import json
++import math
++import os
++from pathlib import Path
++import re
++import stat
++
++
++VERSION = 'freebang-v1'
++OBSERVER = '__alive_numeric_lifecycle_observer'
++FREEBANG = '__alive_numeric_freebang'
++SEND = '__alive_numeric_lifecycle_send'
++HARNESS = {
++    '__alive_numeric_reader': ('v8', [-3000, -3000, 160, 22]),
++    '__alive_numeric_disposer': ('thispatcher', [-3100, -3000, 100, 22]),
++    FREEBANG: ('freebang', [-3200, -3000, 100, 22]),
++    SEND: ('send', [-3400, -3000, 200, 22]),
++}
++
++
++def _require(condition, label):
++    if not condition:
++        raise ValueError('Invalid lifecycle ' + label)
++
++
++def _keys(value, required, optional=()):
++    _require(type(value) is dict, 'object')
++    _require(set(required) <= value.keys() <= set(required) | set(optional), 'fields')
++
++
++def _int(value, minimum=0, maximum=None):
++    _require(type(value) is int and value >= minimum and (maximum is None or value <= maximum), 'integer')
++    return value
++
++
++def _text(value, empty=False):
++    _require(type(value) is str and (empty or bool(value)), 'text')
++    return value
++
++
++def _list(value):
++    _require(type(value) is list, 'list')
++    return value
++
++
++def _canonical(value):
++    try:
++        return json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False).encode('utf-8')
++    except (ValueError, TypeError):
++        raise ValueError('Invalid lifecycle JSON value') from None
++
++
++def _same(left, right):
++    return _canonical(left) == _canonical(right)
++
++
++def _digest(data):
++    return hashlib.sha256(data).hexdigest()
++
++
++def _sha(value):
++    _require(type(value) is str and re.fullmatch('[0-9a-f]{64}', value), 'digest')
++    return value
++
++
++def _json(data):
++    def pairs(items):
++        result = {}
++        for key, value in items:
++            _require(key not in result, 'duplicate JSON field')
++            result[key] = value
++        return result
++
++    def constant(_):
++        raise ValueError('Invalid lifecycle JSON constant')
++
++    try:
++        return json.loads(data, object_pairs_hook=pairs, parse_constant=constant)
++    except (UnicodeError, json.JSONDecodeError):
++        raise ValueError('Invalid lifecycle raw JSON') from None
++
++
++def _directory(path):
++    try:
++        info = path.lstat()
++    except OSError:
++        raise ValueError('Invalid lifecycle private directory') from None
++    _require(stat.S_ISDIR(info.st_mode) and stat.S_IMODE(info.st_mode) == 0o700, 'private directory')
++
++
++def _work(value):
++    path = Path(value).absolute()
++    _require(path.resolve() == path, 'work symlink')
++    _directory(path)
++    return path
++
++
++def _path(work, value):
++    if isinstance(value, Path):
++        path = value
++    else:
++        value = _text(value)
++        path = Path(value[2:] if value.startswith('Z:/') else value)
++    _require(path.is_absolute() and '..' not in path.parts, 'absolute private path')
++    try:
++        relative = path.relative_to(work)
++    except ValueError:
++        raise ValueError('Invalid lifecycle private path scope') from None
++    _require(relative.parts and path.resolve() == path, 'private path symlink')
++    parent = work
++    _directory(parent)
++    for component in relative.parts[:-1]:
++        parent = parent / component
++        _directory(parent)
++    return path
++
++
++def _read(work, value):
++    path = _path(work, value)
++    try:
++        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
++        with os.fdopen(fd, 'rb') as handle:
++            before = os.fstat(handle.fileno())
++            _require(stat.S_ISREG(before.st_mode) and stat.S_IMODE(before.st_mode) == 0o600
++                     and before.st_nlink == 1, 'private file')
++            data = handle.read()
++            after = os.fstat(handle.fileno())
++        current = path.lstat()
++    except OSError:
++        raise ValueError('Invalid lifecycle private file read') from None
++    identity = lambda info: (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns)
++    _require(identity(before) == identity(after) == identity(current) and len(data) == after.st_size,
++             'stable private file')
++    return data
++
++
++def _retain(work, path, data):
++    path = _path(work, path)
++    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
++    with os.fdopen(fd, 'wb') as handle:
++        os.fchmod(handle.fileno(), 0o600)
++        handle.write(data)
++        handle.flush()
++        os.fsync(handle.fileno())
++    _require(_read(work, path) == data, 'retained bytes')
++    return path
++
++
++def _rect(value):
++    _require(type(value) is list and len(value) == 4 and
++             all(type(v) in (int, float) and math.isfinite(v) for v in value), 'rectangle')
++
++
++def _positive(value):
++    _require(type(value) is bool or type(value) in (int, float) and math.isfinite(value)
++             and value in (0, 1), 'primitive validity')
++    _require(value is True or type(value) in (int, float) and value == 1, 'live route handle')
++
++
++def _configuration(work, config):
++    _require(type(config) is dict and config.get('work') == str(work), 'work binding')
++    raw = _read(work, work / 'config.json')
++    _require(_same(_json(raw), config), 'sealed config equality')
++    seal = _json(_read(work, work / 'seal.json'))
++    _require(type(seal) is dict and type(seal.get('files')) is dict and
++             seal['files'].get('config.json') == _digest(raw), 'sealed config digest')
++    lifecycle = config.get('lifecycle')
++    _keys(lifecycle, ('version', 'monitor_epoch', 'observer_path', 'report_path', 'driver_inventory', 'owners'))
++    _require(lifecycle['version'] == VERSION and type(lifecycle['monitor_epoch']) is str and
++             re.fullmatch('[0-9a-f]{48}', lifecycle['monitor_epoch']), 'version or epoch')
++    helper_path = _path(work, lifecycle['observer_path'])
++    _require(helper_path == work / 'lifecycle-observer.js' and
++             _path(work, lifecycle['report_path']) == work / 'lifecycle-report.json', 'observer paths')
++    helper_sha = _digest(_read(work, helper_path))
++    _require(type(config.get('package_sha256')) is dict and
++             config['package_sha256'].get('lifecycle-observer.js') == helper_sha ==
++             seal['files'].get('lifecycle-observer.js'), 'observer helper digest')
++    owners = _list(lifecycle['owners'])
++    _require(len(owners) == 4, 'owner count')
++    documents = _list(config.get('documents'))
++    definitions = {}
++    for definition in documents:
++        _require(type(definition) is dict, 'definition')
++        key = (definition.get('document'), _int(definition.get('revision'), 1, 2))
++        _require(key not in definitions, 'duplicate definition')
++        definitions[key] = definition
++    _require(set(definitions) == {('int', 1), ('int', 2), ('float', 1), ('float', 2)}, 'definitions')
++    channels = set()
++    for inlet, (owner, identity) in enumerate(zip(owners, (('int', 1), ('int', 2), ('float', 1), ('float', 2)))):
++        _keys(owner, ('document', 'revision', 'source_sha256', 'working_path', 'channel', 'inlet', 'root_proof_path'))
++        _require((owner['document'], _int(owner['revision'], 1, 2)) == identity and
++                 _int(owner['inlet'], 0, 3) == inlet, 'owner map')
++        definition = definitions[identity]
++        _require(_int(definition.get('lifecycle_owner_inlet'), 0, 3) == inlet and
++                 owner['source_sha256'] == _sha(definition.get('source_sha256')) and
++                 owner['working_path'] == definition.get('working_windows_path'), 'owner definition binding')
++        _path(work, owner['working_path'])
++        _require(_path(work, owner['root_proof_path']) == work / 'observations' /
++                 f'lifecycle-root-{identity[0]}-r{identity[1]}.json', 'root proof path')
++        channel = owner['channel']
++        _require(type(channel) is str and re.fullmatch('[A-Za-z_][A-Za-z0-9_]*', channel)
++                 and channel not in channels, 'unique channel')
++        channels.add(channel)
++    inventory = _list(lifecycle['driver_inventory'])
++    expected_classes = {'__alive_numeric_controller': 'js', OBSERVER: 'v8'}
++    expected_classes.update({'__alive_numeric_lifecycle_receive_' + str(i): 'receive' for i in range(4)})
++    _require(len(inventory) == 6, 'driver construction count')
++    seen = set()
++    for box in inventory:
++        _keys(box, ('varname', 'maxclass', 'boxtext', 'rect'))
++        name = _text(box['varname'])
++        _require(name not in seen and expected_classes.get(name) == box['maxclass'], 'driver construction identity')
++        seen.add(name)
++        _text(box['boxtext'])
++        _rect(box['rect'])
++        if box['maxclass'] == 'receive':
++            inlet = int(name.rsplit('_', 1)[1])
++            _require(box['boxtext'] == 'receive ' + owners[inlet]['channel'], 'receiver construction channel')
++    _require(seen == set(expected_classes), 'driver construction inventory')
++    return lifecycle, definitions, helper_sha
++
++
++def _ack(work, ack):
++    _require(type(ack) is dict and ack.get('success') is True, 'ACK success')
++    request = _int(ack.get('command_id'), 1)
++    raw = _read(work, work / 'observations' / f'ack-request-{request}.json')
++    _require(_same(_json(raw), ack), 'retained ACK equality')
++    return request, raw
++
++
++def _routes(proof, expected):
++    expected_counts = Counter(_canonical(row) for row in expected)
++    for key in ('input_routes', 'output_routes'):
++        routes = _list(proof[key])
++        for route in routes:
++            _keys(route, ('source', 'destination'))
++            for endpoint in route.values():
++                _keys(endpoint, ('identity', 'port'))
++                _text(endpoint['identity'])
++                _int(endpoint['port'])
++        _require(Counter(_canonical(row) for row in routes) == expected_counts, 'route multiset')
++
++
++def _edge(source, destination, inlet=0):
++    return dict(source=dict(identity=source, port=0), destination=dict(identity=destination, port=inlet))
++
++
++def _driver(proof, lifecycle):
++    _keys(proof, ('boxes', 'input_routes', 'output_routes', 'declared_inlets', 'declared_outlets'))
++    _require(_int(proof['declared_inlets']) == 5 and _int(proof['declared_outlets']) == 0, 'observer declarations')
++    expected = {box['varname']: box for box in lifecycle['driver_inventory']}
++    boxes = _list(proof['boxes'])
++    _require(len(boxes) == len(expected), 'driver object count')
++    seen = set()
++    for box in boxes:
++        _keys(box, ('varname', 'maxclass', 'boxtext', 'rect', 'valid'))
++        name = _text(box['varname'])
++        _require(name in expected and name not in seen, 'driver object identity')
++        seen.add(name)
++        _rect(box['rect'])
++        _require(box['rect'] == expected[name]['rect'] and box['maxclass'] == expected[name]['maxclass']
++                 and box['boxtext'] == expected[name]['boxtext'], 'driver construction readback')
++        _positive(box['valid'])
++    _routes(proof, [_edge('__alive_numeric_lifecycle_receive_' + str(i), OBSERVER, i + 1) for i in range(4)])
++
++
++def _root(proof, owner, definition, request, step):
++    _keys(proof, ('version', 'request_id', 'step_id', 'document', 'revision', 'source_sha256',
++                  'working_path', 'root_is_top_level', 'originals', 'harness', 'input_routes', 'output_routes'))
++    _require(proof['version'] == VERSION and _int(proof['request_id'], 1) == request and
++             proof['step_id'] == step and proof['document'] == owner['document'] and
++             _int(proof['revision'], 1, 2) == owner['revision'] and proof['source_sha256'] == owner['source_sha256']
++             and proof['working_path'] == owner['working_path'] and proof['root_is_top_level'] is True, 'root binding')
++    expected = {box['anchor']: box for box in definition['full_inventory'] if box['anchor'].count('/') == 1}
++    originals = _list(proof['originals'])
++    _require(expected and len(originals) == len(expected), 'root original count')
++    seen = set()
++    for box in originals:
++        _keys(box, ('anchor', 'varname', 'maxclass', 'rect'))
++        anchor = _text(box['anchor'])
++        _require(anchor in expected and anchor not in seen, 'root original identity')
++        seen.add(anchor)
++        definition_box = expected[anchor]
++        classes = definition_box.get('runtime_classes', [definition_box['runtime_class']])
++        _require(box['maxclass'] in classes and box['varname'] == (definition_box.get('source_varname') or ''),
++                 'root original class or name')
++        _rect(box['rect'])
++        if box['rect'] != definition_box['rect']:
++            policy = definition_box.get('shell_height_policy')
++            _require(type(policy) is dict and policy.get('document') == owner['document'] and
++                     policy.get('source_sha256') == owner['source_sha256'] and policy.get('anchor') == anchor and
++                     policy.get('runtime_class') == box['maxclass'] and policy.get('saved_rect') == definition_box['rect']
++                     and policy.get('live_rect') == box['rect'] and
++                     policy.get('helper_sha256') == definition['helper_sha256'], 'sealed root geometry policy')
++    harness = _list(proof['harness'])
++    _require(len(harness) == 4, 'root harness count')
++    seen = set()
++    for box in harness:
++        _keys(box, ('varname', 'maxclass', 'rect', 'boxtext', 'valid'))
++        name = _text(box['varname'])
++        _require(name in HARNESS and name not in seen, 'root harness identity')
++        seen.add(name)
++        _rect(box['rect'])
++        _require((box['maxclass'], box['rect']) == HARNESS[name], 'root harness class or geometry')
++        _text(box['boxtext'])
++        _positive(box['valid'])
++        if name in (FREEBANG, SEND):
++            _require(box['boxtext'] == ('freebang' if name == FREEBANG else 'send ' + owner['channel']),
++                     'owner channel text')
++    _routes(proof, [_edge(FREEBANG, SEND)])
++
++
++def _value(value):
++    _require(type(value) is dict and type(value.get('type')) is str, 'typed diagnostic value')
++    kind = value['type']
++    if kind in ('undefined', 'null', 'object', 'function'):
++        _keys(value, ('type',))
++    elif kind in ('boolean', 'string'):
++        _keys(value, ('type', 'value'))
++        _require(type(value['value']) is (bool if kind == 'boolean' else str), 'diagnostic primitive')
++    elif kind == 'number':
++        if 'representation' in value:
++            _keys(value, ('type', 'representation'))
++            _require(value['representation'] in ('nan', 'positive-infinity', 'negative-infinity'), 'number representation')
++        else:
++            _keys(value, ('type', 'value'))
++            _require(type(value['value']) in (int, float) and math.isfinite(value['value']), 'diagnostic number')
++    else:
++        raise ValueError('Invalid lifecycle diagnostic type')
++
++
++def _diagnostic(value, nullable=False):
++    if value is None and nullable:
++        return
++    _require(type(value) is dict, 'typed diagnostic')
++    if value.get('status') == 'returned':
++        _value({key: item for key, item in value.items() if key != 'status'})
++    else:
++        _keys(value, ('status', 'exception'), ('name', 'message'))
++        _require(value['status'] == 'threw', 'diagnostic status')
++        _value(value['exception'])
++        for key in ('name', 'message'):
++            if key in value:
++                _text(value[key], empty=True)
++
++
++def _valid(value):
++    _keys(value, ('status', 'type', 'value'))
++    _require(value['status'] == 'returned', 'validity read status')
++    if value['type'] == 'boolean':
++        _require(type(value['value']) is bool, 'boolean validity')
++    else:
++        _require(value['type'] == 'number' and type(value['value']) in (int, float)
++                 and math.isfinite(value['value']) and value['value'] in (0, 1), 'numeric validity')
++    return bool(value['value'])
++
++
++def _samples(diagnostics, definition):
++    samples = _list(diagnostics['samples'])
++    _require(len(samples) == 31, 'complete samples')
++    anchors = {box['anchor'] for box in definition['boxes']}
++    _require(anchors and len(anchors) == len(definition['boxes']), 'required original anchors')
++    required = ('phase', 'attempt', 'root_valid', 'reader_valid', 'disposer_valid', 'root_filepath',
++                'objects', 'firstobject', 'firstobject_valid', 'wind', 'wind_visible', 'wind_assocclass',
++                'wind_assoc', 'wind_assoc_filepath', 'harness_objects', 'retained_firstobject_valid')
++    joint_invalid = False
++    for attempt, sample in enumerate(samples):
++        _keys(sample, required)
++        _require(_int(sample['attempt']) == attempt and sample['phase'] ==
++                 ('before-dispose' if attempt == 0 else 'poll'), 'sample sequence')
++        values = [_valid(sample[name]) for name in ('reader_valid', 'disposer_valid', 'retained_firstobject_valid')]
++        for key, expected in (('objects', anchors), ('harness_objects', {FREEBANG, SEND})):
++            rows = _list(sample[key])
++            seen = set()
++            _require(len(rows) == len(expected), 'sample handle count')
++            for row in rows:
++                _keys(row, ('anchor', 'valid'))
++                _require(type(row['anchor']) is str and row['anchor'] in expected and row['anchor'] not in seen,
++                         'sample handle identity')
++                seen.add(row['anchor'])
++                values.append(_valid(row['valid']))
++        for field in ('root_valid', 'root_filepath', 'firstobject', 'wind'):
++            _diagnostic(sample[field])
++        for field in ('firstobject_valid', 'wind_visible', 'wind_assocclass', 'wind_assoc', 'wind_assoc_filepath'):
++            _diagnostic(sample[field], nullable=True)
++        if attempt == 0:
++            _require(all(values), 'positive before-dispose handles')
++        else:
++            _require(not joint_invalid or not any(values), 'handle revival')
++            joint_invalid = joint_invalid or not any(values)
++    _require(joint_invalid and not any(values), 'bounded invalidity convergence')
++    dispose = diagnostics['dispose']
++    _keys(dispose, ('attempted', 'result'))
++    _require(dispose['attempted'] is True, 'dispose attempt')
++    _diagnostic(dispose['result'])
++    _require(dispose['result']['status'] == 'returned', 'nonthrowing dispose')
++
++
++def _report(report, lifecycle, request, step, inlet=None, barrier=False):
++    _keys(report, ('monitor_epoch', 'seq', 'transitions', 'events', 'states', 'failures', 'sealed'))
++    _require(report['monitor_epoch'] == lifecycle['monitor_epoch'] and type(report['sealed']) is bool
++             and report['sealed'] is barrier, 'report epoch or sealing')
++    _require(_list(report['failures']) == [], 'sticky observer failure')
++    transitions = _list(report['transitions'])
++    events = _list(report['events'])
++    combined = []
++    for rows, event in ((transitions, False), (events, True)):
++        previous = 0
++        for row in rows:
++            _keys(row, ('seq', 'inlet', 'request_id', 'step_id', 'payload_kind' if event else 'kind'))
++            sequence = _int(row['seq'], 1)
++            _require(sequence > previous, 'ordered report collection')
++            previous = sequence
++            _int(row['request_id'], 1)
++            _text(row['step_id'])
++            combined.append((sequence, event, row))
++    combined.sort(key=lambda item: item[0])
++    _require(combined and [item[0] for item in combined] == list(range(1, len(combined) + 1))
++             and _int(report['seq']) == len(combined), 'contiguous observer sequence')
++    states = [dict(inlet=i, state='monitoring', request_id=0, step_id='', witness_count=0) for i in range(4)]
++    active = None
++    returned = set()
++    used_requests = set()
++    latest_request = 0
++    for sequence, event, row in combined:
++        channel = _int(row['inlet'], -1, 3)
++        kind = row['payload_kind'] if event else row['kind']
++        if not event and kind == 'barrier':
++            _require(barrier and sequence == len(combined) and channel == -1 and active is None and
++                     row['request_id'] == request and row['request_id'] > latest_request and
++                     row['step_id'] == 'capture-complete', 'final barrier transition')
++            continue
++        _require(channel >= 0 and lifecycle['owners'][channel]['revision'] == 1, 'scored owner inlet')
++        state = states[channel]
++        if not event and kind == 'arm':
++            _require(active is None and state['state'] == 'monitoring' and
++                     row['request_id'] not in used_requests and row['request_id'] > latest_request and
++                     row['step_id'] == 'close-' + lifecycle['owners'][channel]['document'], 'fresh arm')
++            state.update(state='armed', request_id=row['request_id'], step_id=row['step_id'])
++            active = channel
++            used_requests.add(row['request_id'])
++            latest_request = row['request_id']
++            continue
++        _require(active == channel and row['request_id'] == state['request_id'] and
++                 row['step_id'] == state['step_id'], 'active request binding')
++        if event:
++            _require(kind == 'bang' and state['state'] == 'dispatching' and state['witness_count'] == 0,
++                     'single eligible automatic witness')
++            state.update(state='witnessed', witness_count=1)
++        elif kind == 'dispatch-start':
++            _require(state['state'] == 'armed', 'single disposal dispatch')
++            state['state'] = 'dispatching'
++        elif kind == 'dispatch-return':
++            _require(state['state'] in ('dispatching', 'witnessed') and channel not in returned,
++                     'single disposal return')
++            returned.add(channel)
++        elif kind == 'close-validated':
++            _require(state['state'] == 'witnessed' and state['witness_count'] == 1 and channel in returned,
++                     'validated close witness')
++            state['state'] = 'closed'
++            active = None
++        else:
++            raise ValueError('Invalid lifecycle control transition')
++    observed_states = _list(report['states'])
++    _require(len(observed_states) == 4, 'observer state count')
++    for index, state in enumerate(observed_states):
++        _keys(state, ('inlet', 'state', 'request_id', 'step_id', 'witness_count'))
++        _require(_int(state['inlet'], 0, 3) == index, 'ordered owner states')
++        _int(state['request_id'])
++        _int(state['witness_count'], 0, 1)
++        _text(state['step_id'], empty=True)
++    _require(_same(observed_states, states) and active is None, 'derived observer states')
++    last = combined[-1]
++    if barrier:
++        _require(not last[1] and last[2]['kind'] == 'barrier' and
++                 all(state['state'] == ('closed' if i in (0, 2) else 'monitoring') and
++                     state['witness_count'] == (1 if i in (0, 2) else 0) for i, state in enumerate(states)),
++                 'final owner lifetime set')
++    else:
++        _require(not last[1] and last[2]['kind'] == 'close-validated' and last[2]['inlet'] == inlet and
++                 last[2]['request_id'] == request and last[2]['step_id'] == step, 'final close boundary')
++
++
++def validate_close(work, config, command, ack):
++    """Validate one retained close ACK; exclusively retain its exact root proof."""
++    work = _work(work)
++    lifecycle, definitions, helper_sha = _configuration(work, config)
++    _keys(command, ('command_id', 'op', 'step_id', 'action', 'document', 'action_revision', 'source_sha256'))
++    request = _int(command['command_id'], 1)
++    revision = _int(command['action_revision'], 1, 2)
++    _require(command['op'] == 'operation' and command['action'] == 'close' and revision == 1 and
++             command['document'] in ('int', 'float') and command['step_id'] == 'close-' + command['document'],
++             'close operation')
++    definition = definitions[command['document'], revision]
++    owner = lifecycle['owners'][definition['lifecycle_owner_inlet']]
++    _require(command['source_sha256'] == owner['source_sha256'], 'command source')
++    ack_request, ack_raw = _ack(work, ack)
++    _require(ack_request == request and ack.get('step_id') == command['step_id'] and
++             ack.get('closed_owner_absence_validated') is True, 'controller close conjunction')
++    diagnostics = ack.get('close_diagnostics')
++    _keys(diagnostics, ('request_id', 'step_id', 'action', 'document', 'revision', 'source_sha256',
++                        'working_path', 'helper_sha256', 'samples', 'dispose', 'lifecycle_evidence'))
++    _require(_int(diagnostics['request_id'], 1) == request and diagnostics['step_id'] == command['step_id'] and
++             diagnostics['action'] == 'close' and diagnostics['document'] == owner['document'] and
++             _int(diagnostics['revision'], 1, 2) == revision and diagnostics['source_sha256'] == owner['source_sha256']
++             and diagnostics['working_path'] == owner['working_path'] and
++             _same(diagnostics['helper_sha256'], definition['helper_sha256']), 'close diagnostic binding')
++    evidence = diagnostics['lifecycle_evidence']
++    _keys(evidence, ('version', 'binding', 'root_route_path', 'root_route_proof', 'driver_route_proof', 'observer_report'))
++    binding = evidence['binding']
++    _keys(binding, ('monitor_epoch', 'request_id', 'step_id', 'action', 'document', 'revision',
++                    'source_sha256', 'working_path', 'observer_helper_sha256'))
++    _int(binding['request_id'], 1)
++    _int(binding['revision'], 1, 2)
++    expected_binding = dict(monitor_epoch=lifecycle['monitor_epoch'], request_id=request,
++                            step_id=command['step_id'], action='close', document=owner['document'], revision=revision,
++                            source_sha256=owner['source_sha256'], working_path=owner['working_path'],
++                            observer_helper_sha256=helper_sha)
++    _require(evidence['version'] == VERSION and _same(binding, expected_binding) and
++             evidence['root_route_path'] == owner['root_proof_path'], 'lifecycle close binding')
++    root_raw = _read(work, evidence['root_route_path'])
++    _require(_same(_json(root_raw), evidence['root_route_proof']), 'embedded root proof equality')
++    retained = _retain(work, work / 'observations' /
++                       f"retained-lifecycle-root-{owner['document']}-r{owner['revision']}.json", root_raw)
++    _root(evidence['root_route_proof'], owner, definition, request, command['step_id'])
++    _driver(evidence['driver_route_proof'], lifecycle)
++    _samples(diagnostics, definition)
++    _report(evidence['observer_report'], lifecycle, request, command['step_id'], owner['inlet'])
++    return dict(close_proof_validated=True, root_raw_path=str(retained), root_sha256=_digest(root_raw),
++                root_bytes=len(root_raw), ack_sha256=_digest(ack_raw), ack_bytes=len(ack_raw))
++
++
++def validate_barrier(work, config, evidence, expected_live):
++    """Validate the final private ACK while closed revision channels are monitored."""
++    work = _work(work)
++    lifecycle, _, helper_sha = _configuration(work, config)
++    _require(type(expected_live) is dict and set(expected_live) == {'int', 'float'} and
++             all(type(value) is int and value == 2 for value in expected_live.values()), 'expected live owners')
++    _keys(evidence, ('command_id', 'success', 'step_id', 'lifecycle_evidence'))
++    request, _ = _ack(work, evidence)
++    _require(evidence['step_id'] == 'capture-complete', 'barrier step')
++    proof = evidence['lifecycle_evidence']
++    _keys(proof, ('version', 'binding', 'driver_route_proof', 'observer_report'))
++    binding = proof['binding']
++    _keys(binding, ('monitor_epoch', 'request_id', 'step_id', 'action', 'observer_helper_sha256'))
++    _int(binding['request_id'], 1)
++    _require(proof['version'] == VERSION and _same(binding, dict(monitor_epoch=lifecycle['monitor_epoch'],
++             request_id=request, step_id='capture-complete', action='lifecycle-barrier',
++             observer_helper_sha256=helper_sha)), 'barrier binding')
++    _driver(proof['driver_route_proof'], lifecycle)
++    _report(proof['observer_report'], lifecycle, request, 'capture-complete', barrier=True)
+--- package006/numeric.py
++++ package007/numeric.py
+@@ -8,6 +8,7 @@
+ import math
+ from pathlib import Path
+ import re
++import secrets
+ import shutil
+ 
+ ROOT=Path(__file__).resolve().parent
+@@ -503,7 +504,7 @@
+                 shutil.copyfile(doc['source_path'],path);path.chmod(0o600);common.require_digest(path,doc['source_sha256'])
+             revisions.append(dict(doc,revision=revision,pristine_path=str(pristine),working_path=str(working),
+                                   working_windows_path=windows_path(working)))
+-    for name in ['controller.js','observer.js','v8-readback.js']:
++    for name in ['controller.js','observer.js','v8-readback.js','lifecycle-observer.js']:
+         shutil.copyfile(ROOT/name,work/name);(work/name).chmod(0o600)
+     paths={name:windows_path(work/(name+'.json')) for name in ['command','ack','ready']}
+     config=dict(schema_version=1,work=str(work),documents=revisions,helpers=helpers,source_metadata=public,
+@@ -514,8 +515,40 @@
+         journal_path=windows_path(work/'private-journal.jsonl'),observer_path=windows_path(work/'observer.js'),
+         readback_helper_path=windows_path(work/'v8-readback.js'),
+         **{name+'_path':value for name,value in paths.items()})
+-    driver=dict(patcher=dict(fileversion=1,rect=[0,0,400,160],locked=1,boxes=[dict(box=dict(id='driver',maxclass='newobj',
+-        text='js controller.js '+json.dumps(windows_path(work/'config.json')),patching_rect=[20,20,350,23]))],lines=[]))
++    epoch=secrets.token_hex(24);owners=[]
++    # Channel symbols are private, fresh, and disjoint from source/score strings.
++    def strings(value):
++        if isinstance(value,str):yield value
++        elif isinstance(value,dict):
++            for v in value.values():yield from strings(v)
++        elif isinstance(value,list):
++            for v in value:yield from strings(v)
++    forbidden=set(strings(load_score()))
++    for doc in docs:
++        for value in strings(json.loads(Path(doc['source_path']).read_text())):
++            forbidden.add(value);forbidden.update(value.split())
++    for inlet,definition in enumerate(revisions):
++        channel='__alive_lifecycle_'+epoch+'_'+str(inlet)
++        if channel in forbidden:raise ValueError('Lifecycle channel collides with source/score')
++        definition['lifecycle_owner_inlet']=inlet
++        owners.append(dict(document=definition['document'],revision=definition['revision'],
++            source_sha256=definition['source_sha256'],working_path=definition['working_windows_path'],
++            channel=channel,inlet=inlet,root_proof_path=windows_path(work/'observations'/
++                ('lifecycle-root-'+definition['document']+'-r'+str(definition['revision'])+'.json'))))
++    inventory=[dict(varname='__alive_numeric_controller',maxclass='js',
++        boxtext='js controller.js '+json.dumps(windows_path(work/'config.json')),rect=[20,20,350,22]),
++        dict(varname='__alive_numeric_lifecycle_observer',maxclass='v8',
++        boxtext='v8 lifecycle-observer.js '+json.dumps(windows_path(work/'config.json')),rect=[-2000,-2000,300,22])]
++    inventory.extend(dict(varname='__alive_numeric_lifecycle_receive_'+str(o['inlet']),maxclass='receive',
++        boxtext='receive '+o['channel'],rect=[-2000,-2100-30*o['inlet'],300,22]) for o in owners)
++    config['lifecycle']=dict(version='freebang-v1',monitor_epoch=epoch,
++        observer_path=windows_path(work/'lifecycle-observer.js'),report_path=windows_path(work/'lifecycle-report.json'),
++        driver_inventory=inventory,owners=owners)
++    driver=dict(patcher=dict(fileversion=1,rect=[0,0,400,160],locked=1,
++        boxes=[dict(box=dict(id=e['varname'],varname=e['varname'],maxclass='newobj',text=e['boxtext'],
++            patching_rect=e['rect'])) for e in inventory],
++        lines=[dict(patchline=dict(source=['__alive_numeric_lifecycle_receive_'+str(o['inlet']),0],
++            destination=['__alive_numeric_lifecycle_observer',o['inlet']+1])) for o in owners]))
+     write_json(work/'driver.maxpat',driver);write_json(work/'config.json',config)
+     seal={str(p.relative_to(work)):digest(p) for p in work.rglob('*') if p.is_file()}
+     write_json(work/'seal.json',dict(files=seal,score_binding=score_binding()))
+--- package006/run-runtime.py
++++ package007/run-runtime.py
+@@ -15,6 +15,7 @@
+ 
+ sys.dont_write_bytecode=True
+ import numeric as n
++import lifecycle as lifecycle_validation
+ 
+ # Import, rather than reimplement, the audited marker/prefix/display/start/pidfd utilities.
+ sys.modules.setdefault('help_runtime',n.common)
+@@ -64,13 +65,14 @@
+         numeric_readback_validated=False,numeric_getters_silent_validated=False,
+         runtime_endpoint_readback_validated=False,typed_float_dispatch_validated=False,
+         synchronous_destination_outputs_validated=False)
+-    snapshots=[];launches=[];xvfb=None;process=None;log=None;command_id=0;prior={};seen_seq=0
++    snapshots=[];launches=[];xvfb=None;process=None;log=None;command_id=0;prior={};seen_seq=0;private_requests=[]
+     live={};definitions={(d['document'],d['revision']):d for d in config['documents']}
+-    def send(value):
++    def send(value,private=False):
+         nonlocal command_id
+         command_id+=1;value=dict(value,command_id=command_id)
+         record={key:value[key] for key in ['step_id','document','op','revision','action_revision'] if key in value}
+-        record['request_id']=command_id;session['command_requests'].append(record)
++        record['request_id']=command_id
++        (private_requests if private else session['command_requests']).append(record)
+         n.write_json(work/'command.json',value)
+         safety.wait_json(work/'ack.json',lambda a:a.get('command_id')==command_id,10)
+         payload=(work/'ack.json').read_bytes()
+@@ -130,9 +132,14 @@
+             command={k:v for k,v in expected.items() if k!='live_owners'}
+             request_id,ack=send(dict(command,op='operation'))
+             operation=dict(expected,request_id=request_id,checkpoint_request_ids=[],working_paths={})
++            if expected['action']=='close':
++                # Retained raw ACK/proof validation precedes every public close gate.
++                metadata=lifecycle_validation.validate_close(work,config,dict(command,op='operation',command_id=request_id),ack)
++                n.retain_raw(work/'observations'/('validated-close-'+str(request_id)+'.json'),
++                    (json.dumps(metadata,sort_keys=True)+'\n').encode())
++                if ack.get('closed_owner_absence_validated') is not True:
++                    raise ValueError('Closed owner absence not proven')
+             live=dict(expected['live_owners'])
+-            if expected['action']=='close' and ack.get('closed_owner_absence_validated') is not True:
+-                raise ValueError('Closed owner absence not proven')
+             rows=private_rows(work);action_rows=[r for r in rows if r['seq']>seen_seq];seen_seq=len(rows)
+             verify_journal(action_rows,operation)
+             if operation['step_id'] in n.MAIN_EVENTS:
+@@ -180,6 +187,11 @@
+             n.write_json(output/'session.json',session)
+         if len(snapshots)!=102 or sum(len(s['numeric_states']) for s in snapshots)!=612:
+             raise ValueError('Finite checkpoint coverage mismatch')
++        # This private completion command adds no score/readback/public request row.
++        barrier_id,barrier_ack=send(dict(op='lifecycle-barrier',step_id='capture-complete'),private=True)
++        lifecycle_validation.validate_barrier(work,config,barrier_ack,live)
++        n.retain_raw(work/'lifecycle-completion.json',(json.dumps(dict(request_id=barrier_id,
++            command_requests=private_requests,expected_live=live,lifecycle_barrier_validated=True),sort_keys=True)+'\n').encode())
+         session.update(status='COMPLETE',complete=True,initial_message_prototypes_validated=True,
+             initial_numeric_readback_validated=True,numeric_readback_validated=True,numeric_getters_silent_validated=True,
+             runtime_endpoint_readback_validated=True,synchronous_destination_outputs_validated=len(session['destination_order_witnesses'])==21)
+--- package006/test_annotations.cjs
++++ package007/test_annotations.cjs
+@@ -49,8 +49,9 @@
+ const container={maxclass:'patcher',getboxattr:()=>[0,0,50,22],subpatcher:()=>basic,nextobject:null};
+ const root={firstobject:container,getnamed:()=>container};let mutations=0,connections=0;
+ basic.newdefault=()=>{mutations++;return {}};basic.connect=()=>{connections++};
+-root.newdefault=()=>{mutations++;return {}};
+-const full={...definition,basic_varname:'synthetic_basic',boxes:expected,
++root.newdefault=()=>{mutations++;return {setboxattr(){}}};root.connect=()=>{};
++ctx.config.lifecycle={owners:[{document:'int',revision:1,channel:'synthetic_private'}]};
++const full={...definition,lifecycle_owner_inlet:0,basic_varname:'synthetic_basic',boxes:expected,
+  full_inventory:[{anchor:'root/obj-2',runtime_class:'patcher',maxclass:'newobj',rect:[0,0,50,22],child:true},...expected]};
+ ctx.bind(root,full);
+ assert.equal(ctx.geometryDispositions.length,2,'full-tree and Basic matches deduplicate');
+--- package006/test_close.cjs
++++ package007/test_close.cjs
+@@ -1,143 +1,75 @@
+-// Synthetic boundary APIs only; no Max, Wine, display, preparation or source files.
++// Synthetic supported close proof; no Max/Wine/display/source/preparation access.
+ const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
+ const source=fs.readFileSync(path.join(__dirname,'controller.js'),'utf8');
++const createLifecycle=require('./lifecycle-fixture.cjs');
+ const helpers={'helpstarter.js':'a'.repeat(64),'helpname.js':'b'.repeat(64),
+  'helpdetails.js':'c'.repeat(64),'helpargs.js':'d'.repeat(64)};
+ const command={op:'operation',action:'close',document:'float',action_revision:1,
+  source_sha256:'e'.repeat(64),command_id:125,step_id:'close-float'};
+ function run(options={}) {
+  const ctx=vm.createContext({jsarguments:['js','synthetic-config']});vm.runInContext(source,ctx);
+- const pending=[],acks=[],journal=[];let disposed=false,disposeCalls=0,serializedObjects=0;
+- function opaque(object) {
+-  object.toJSON=()=>{++serializedObjects;throw Error('runtime object serialized');};
+-  object.toString=()=>{++serializedObjects;throw Error('runtime object stringified');};return object;
+- }
+- function handle(read) {return opaque(Object.defineProperty({},'valid',{get:()=>read(disposed)}));}
++ const life=createLifecycle(),owners=life.owners;
++ const pending=[],acks=[],journal=[];let disposed=false,disposeCalls=0,serializedObjects=0,poll=0;
++ function opaque(object) {object.toJSON=()=>{++serializedObjects;throw Error('runtime object serialized');};
++  object.toString=()=>{++serializedObjects;throw Error('runtime object stringified');};return object;}
++ function handle(name) {return opaque(Object.defineProperty({},'valid',{get:()=>{
++  if(options.valid)return options.valid(name,disposed,poll);return !disposed;}}));}
+  const root=opaque({filepath:'Z:/private/float-r1.maxhelp'});
+- if(Object.hasOwn(options,'rootValid'))Object.defineProperty(root,'valid',{get:()=>options.rootValid(disposed)});
+- const reader=handle(options.readerValid||((closed)=>!closed));
+- const disposer=handle(options.disposerValid||((closed)=>!closed));
+- disposer.message=(selector)=>{assert.equal(selector,'dispose');++disposeCalls;
+-  if(options.disposeThrow)throw options.disposeThrow;disposed=true;
++ if(options.rootValid)Object.defineProperty(root,'valid',{get:()=>options.rootValid(disposed)});
++ const reader=handle('reader'),disposer=handle('disposer'),freebang=handle('freebang'),send=handle('send');
++ disposer.message=selector=>{assert.equal(selector,'dispose');++disposeCalls;
++  if(options.disposeThrow)throw Error('dispose unavailable');disposed=true;
++  if(options.witness!==false){life.fire(options.crossOwner?0:2);if(options.duplicate)life.fire();}
+  };
+- const objects={};
+- for(let i=1;i<=23;++i)objects['root/obj-2/obj-'+i]=handle((closed)=>
+-  options.originalValid?options.originalValid(i,closed):!closed);
+- const first=handle((closed)=>!closed);
+- Object.defineProperty(root,'firstobject',{get(){
+-  if(options.firstobjectThrow)throw Error('firstobject unavailable');return disposed?null:first;
+- }});
+- const wind=opaque({assocclass:'patcher',assoc:root});
+- Object.defineProperty(wind,'visible',{get:()=>!disposed});
+- Object.defineProperty(root,'wind',{get(){if(options.windThrow)throw Error('wind unavailable');return wind;}});
+- const state={patcher:root,reader,disposer,objects,definition:{document:'float',revision:1,
+-  source_sha256:'e'.repeat(64),working_windows_path:'Z:/private/float-r1.maxhelp',helper_sha256:helpers}};
++ const objects={};for(let i=1;i<=23;++i)objects['root/obj-2/obj-'+i]=handle('original-'+i);
++ const first=handle('first');Object.defineProperty(root,'firstobject',{get(){
++  if(options.firstobjectThrow)throw Error('firstobject unavailable');return disposed?null:first;}});
++ const wind=opaque({assocclass:'jpatcher',assoc:root});
++ Object.defineProperty(wind,'visible',{get:()=>true});Object.defineProperty(root,'wind',{get:()=>wind});
++ const state={patcher:root,reader,disposer,freebang,lifecycleSend:send,objects,definition:{document:'float',revision:1,
++  source_sha256:'e'.repeat(64),working_windows_path:'Z:/private/float-r1.maxhelp',helper_sha256:helpers,
++  lifecycle_owner_inlet:2}};
++ owners[2]={...owners[2],working_path:root.filepath,root_proof_path:'synthetic-proof'};
+  const retained={};ctx.roots={int:retained,float:state};ctx.shared={};
+- ctx.config={ack_path:'synthetic-ack',command_path:'synthetic-command'};
+- ctx.Task=function(fn,owner){this.schedule=(ms)=>{assert.equal(ms,100);pending.push(()=>fn.call(owner));};};
++ ctx.config={ack_path:'synthetic-ack',command_path:'synthetic-command',
++  package_sha256:{'lifecycle-observer.js':'d'.repeat(64)},lifecycle:life.config.lifecycle};
++ ctx.Task=function(fn,owner){this.schedule=ms=>{assert.equal(ms,100);pending.push(()=>{++poll;fn.call(owner);});};};
+  ctx.read=()=>command;ctx.record=(kind,extra)=>journal.push({kind,...extra});
+  ctx.write=(filename,value)=>{assert.equal(filename,'synthetic-ack');acks.push(JSON.parse(JSON.stringify(value)));};
+- ctx.tick();let polls=0;while(pending.length){assert.ok(++polls<=30,'close polling must stay bounded');pending.shift()();}
+- assert.equal(disposeCalls,1);assert.equal(serializedObjects,0,'diagnostics must not serialize or stringify handles');
+- assert.equal(acks.length,1);assert.equal(ctx.roots.int,retained,'closing float must retain int');
+- return {ctx,state,ack:acks[0],acks,journal,polls};
++ ctx.requestLifecycleProof=(s,c,done)=>done({version:'freebang-v1',request_id:c.command_id});
++ ctx.lifecycleControl=(kind,index,c)=>life.control(kind,index,c.command_id,c.step_id);
++ ctx.tick();while(pending.length){assert.ok(poll<30);pending.shift()();}
++ assert.equal(serializedObjects,0);assert.equal(acks.length,1);assert.equal(ctx.roots.int,retained);
++ return {ctx,state,ack:acks[0],journal,polls:poll,disposeCalls};
+ }
+-function refused(result,polls=30) {
+- assert.equal(result.ack.success,false);assert.equal(result.ack.error_code,'numeric-controller-refused');
+- assert.equal(result.ctx.roots.float,result.state,'refusal must retain owner tracking');
+- assert.equal(result.journal.filter(x=>x.kind==='step-complete').length,0);
+- assert.equal(result.polls,polls);
+- const d=result.ack.close_diagnostics;assert.ok(d,'failed ACK must retain typed close diagnostics');return d;
++function refused(result,attempted=true){assert.equal(result.ack.success,false);assert.equal(result.ctx.roots.float,result.state);
++ assert.equal(result.disposeCalls,attempted?1:0);assert.equal(result.journal.filter(x=>x.kind==='step-complete').length,0);
++ if(attempted&&!result.ack.close_diagnostics.dispose.result.status.includes('threw'))assert.equal(result.polls,30);
++ return result.ack.close_diagnostics;}
++for(const invalid of [false,0]){
++ const positive=run({valid:(name,closed)=>closed?invalid:true});
++ assert.equal(positive.ack.success,true);assert.equal(positive.ack.closed_owner_absence_validated,true);
++ assert.equal(positive.ctx.roots.float,undefined);assert.equal(positive.polls,30);
++ const d=positive.ack.close_diagnostics;assert.equal(d.samples.length,31);assert.equal(d.lifecycle_evidence.version,'freebang-v1');
++ for(let i=0;i<31;++i){const s=d.samples[i];assert.equal(s.phase,i?'poll':'before-dispose');assert.equal(s.attempt,i);
++  assert.deepEqual(s.root_valid,{status:'returned',type:'undefined'});assert.equal(s.objects.length,23);
++  assert.equal(s.harness_objects.length,2);assert.equal(s.retained_firstobject_valid.value,i?invalid:true);
++  assert.equal(s.firstobject.type,i?'null':'object');assert.equal(s.wind_visible.value,true);
++  assert.equal(s.root_filepath.value,'Z:/private/float-r1.maxhelp');assert.equal(s.wind_assocclass.value,'jpatcher');}
++ const c2={...command,command_id:126};positive.ctx.fail(c2,Error('next refusal'));
++ assert.equal(positive.ack.close_diagnostics.request_id,125);
+ }
+-
+-// The realistic Patcher fixture omits undocumented .valid. Invalid Maxobj handles
+-// must never turn that missing root capability into a successful close.
+-const missing=run(),d=refused(missing);
+-assert.deepEqual({request_id:d.request_id,step_id:d.step_id,action:d.action,document:d.document,
+- revision:d.revision,source_sha256:d.source_sha256,working_path:d.working_path,helper_sha256:d.helper_sha256},
+- {request_id:125,step_id:'close-float',action:'close',document:'float',revision:1,
+- source_sha256:'e'.repeat(64),working_path:'Z:/private/float-r1.maxhelp',helper_sha256:helpers});
+-assert.deepEqual(d.dispose,{attempted:true,result:{status:'returned',type:'undefined'}});
+-assert.equal(d.samples.length,31);
+-for(let i=0;i<31;++i) {
+- const s=d.samples[i];assert.equal(s.phase,i===0?'before-dispose':'poll');assert.equal(s.attempt,i);
+- assert.deepEqual(s.root_valid,{status:'returned',type:'undefined'});
+- assert.deepEqual(s.reader_valid,{status:'returned',type:'boolean',value:i===0});
+- assert.deepEqual(s.disposer_valid,{status:'returned',type:'boolean',value:i===0});
+- assert.deepEqual(s.root_filepath,{status:'returned',type:'string',value:'Z:/private/float-r1.maxhelp'});
+- assert.deepEqual(s.firstobject,{status:'returned',type:i===0?'object':'null'});
+- assert.deepEqual(s.firstobject_valid,i===0?{status:'returned',type:'boolean',value:true}:null);
+- assert.deepEqual(s.wind,{status:'returned',type:'object'});
+- assert.deepEqual(s.wind_visible,{status:'returned',type:'boolean',value:i===0});
+- assert.deepEqual(s.wind_assocclass,{status:'returned',type:'string',value:'patcher'});
+- assert.deepEqual(s.wind_assoc,{status:'returned',type:'object'});
+- assert.deepEqual(s.wind_assoc_filepath,{status:'returned',type:'string',value:'Z:/private/float-r1.maxhelp'});
+- assert.equal(s.objects.length,23);
+- assert.deepEqual(s.objects.map(x=>x.anchor).sort(),Array.from({length:23},(_,j)=>'root/obj-2/obj-'+(j+1)).sort());
+- for(const o of s.objects)assert.deepEqual(o.valid,{status:'returned',type:'boolean',value:i===0});
++refused(run({witness:false}));refused(run({duplicate:true}));refused(run({crossOwner:true}));
++for(const handle of ['reader','disposer','freebang','send','first','original-4']){
++ refused(run({valid:(name,closed)=>name===handle?true:!closed}));
++ for(const bad of [undefined,null,'0',NaN,Infinity,2,{},()=>false])
++  refused(run({valid:(name,closed)=>closed&&name===handle?bad:!closed}));
++ refused(run({valid:(name,closed)=>{if(closed&&name===handle)throw Error('unavailable');return !closed;}}));
+ }
+-assert.match(missing.journal.at(-1).error,/closed-owner-absence-unproven/);
+-
+-// Malformed observations in any of the three required reads retain their raw type.
+-for(const field of ['rootValid','readerValid','disposerValid'])for(const [value,want] of [
+- [null,{status:'returned',type:'null'}],['0',{status:'returned',type:'string',value:'0'}],
+- [NaN,{status:'returned',type:'number',representation:'nan'}],
+- [Infinity,{status:'returned',type:'number',representation:'positive-infinity'}],
+- [-Infinity,{status:'returned',type:'number',representation:'negative-infinity'}],
+- [[],{status:'returned',type:'object'}],[()=>false,{status:'returned',type:'function'}],
+- [true,{status:'returned',type:'boolean',value:true}],[1,{status:'returned',type:'number',value:1}]
+-]) {
+- const diag=refused(run({rootValid:(closed)=>!closed,[field]:()=>value}));
+- assert.deepEqual(diag.samples[0][field.replace('Valid','_valid')],want);
+- assert.deepEqual(diag.samples[30][field.replace('Valid','_valid')],want);
+-}
+-// Exceptions in any gate read must not hide the other reads or become absence.
+-for(const field of ['rootValid','readerValid','disposerValid']) {
+- const diag=refused(run({rootValid:(closed)=>!closed,
+-  [field]:(closed)=>{if(closed)throw Error('valid unavailable');return true;}}),1);
+- assert.equal(diag.samples.length,2);const s=diag.samples[1];
+- assert.deepEqual(s[field.replace('Valid','_valid')],{status:'threw',exception:{type:'object'},
+-  name:'Error',message:'valid unavailable'});
+- for(const other of ['root','reader','disposer'])if(other+'Valid'!==field)
+-  assert.deepEqual(s[other+'_valid'],{status:'returned',type:'boolean',value:false});
+- assert.equal(s.objects.length,23);
+-}
+-// A live reader/disposer keeps the existing conjunction closed.
+-for(const field of ['readerValid','disposerValid']) {
+- const diag=refused(run({rootValid:(closed)=>!closed,[field]:()=>true}));
+- assert.deepEqual(diag.samples[30][field.replace('Valid','_valid')],{status:'returned',type:'boolean',value:true});
+-}
+-// Firstobject and original-handle probes are diagnostic only and retain exceptions.
+-const access=refused(run({firstobjectThrow:true,originalValid:(i,closed)=>{
+- if(i===4)throw Error('original unavailable');return !closed;
+-}}));
+-assert.equal(access.samples[0].firstobject.status,'threw');
+-assert.equal(access.samples[30].objects.find(x=>x.anchor==='root/obj-2/obj-4').valid.status,'threw');
+-assert.equal(access.samples[30].objects.find(x=>x.anchor==='root/obj-2/obj-5').valid.value,false);
+-const hostile={toJSON(){throw Error('exception serialized');}};
+-for(const prop of ['name','message'])Object.defineProperty(hostile,prop,{get(){throw Error('error field unavailable');}});
+-const exception=refused(run({rootValid:(closed)=>{if(closed)throw hostile;return true;}}),1);
+-assert.deepEqual(exception.samples[1].root_valid,{status:'threw',exception:{type:'object'}});
+-const dispatch=refused(run({disposeThrow:Error('dispose unavailable')}),0);
+-assert.deepEqual(dispatch.dispose,{attempted:true,result:{status:'threw',exception:{type:'object'},
+- name:'Error',message:'dispose unavailable'}});assert.equal(dispatch.samples.length,1);
+-
+-// Conditional positive: this fixture INVENTS Patcher.valid. It tests the unchanged
+-// conjunction and ACK retention, and establishes no real Patcher API capability.
+-for(const invalid of [false,0]) {
+- const positive=run({rootValid:(closed)=>closed?invalid:true,windThrow:true,firstobjectThrow:true,
+-  originalValid:()=>{throw Error('diagnostic only');},
+-  readerValid:(closed)=>closed?invalid:true,disposerValid:(closed)=>closed?invalid:true});
+- assert.equal(positive.ack.success,true);assert.equal(positive.ack.closed_owner_absence_validated,true);
+- assert.equal(positive.ctx.roots.float,undefined);assert.equal(positive.ack.close_diagnostics.samples.length,2);
+- assert.deepEqual(positive.ack.close_diagnostics.samples[1].root_valid,
+-  {status:'returned',type:typeof invalid,value:invalid});
+- const command2={...command,command_id:126,action:'event'};
+- positive.ctx.fail(command2,Error('next action refused'));
+- assert.equal(Object.hasOwn(positive.acks.at(-1),'close_diagnostics'),false,'another request must not inherit close diagnostics');
+- positive.ctx.setAction(command2);
+- // The original ACK is an independent JSON snapshot; later action state cannot mutate it.
+- assert.equal(positive.ack.close_diagnostics.request_id,125);
+- assert.equal(positive.ctx.closeDiagnostics,null);
+-}
+-console.log('close: missing/malformed/live/throwing validity refuses; bound typed diagnostics retained; invented positive is conditional');
++const delayed=run({valid:(name,closed,poll)=>!closed||poll<5});assert.equal(delayed.ack.success,true);
++refused(run({valid:(name,closed,poll)=>!closed||(name==='reader'&&poll===20)}));
++refused(run({firstobjectThrow:true}),false);
++const thrown=refused(run({disposeThrow:true}));assert.equal(thrown.samples.length,1);
++// Patcher.valid, including a throwing getter, is retained diagnostic information only.
++assert.equal(run({rootValid:()=>{throw Error('undocumented');}}).ack.success,true);
++console.log('close: missing Patcher.valid supported only with witness+owned invalidity; full31 typed diagnostics and bounded convergence pass');
+--- package006/test_controller.cjs
++++ package007/test_controller.cjs
+@@ -24,7 +24,8 @@
+ ctx.Global=function(){return {};};
+ ctx.write=(p,v)=>written.push(v);ctx.record=(kind,v)=>journal.push({kind,...v});
+ ctx.read=()=>ctx.config;
+-ctx.config={global_name:'synthetic',ready_path:'private',ack_path:'ack',documents:[]};
++ctx.config={global_name:'synthetic',ready_path:'private',ack_path:'ack',documents:[],lifecycle:{driver_inventory:[],owners:[]}};
++ctx.lifecycleControl=()=>({observer_report:{failures:[]}});
+ ctx.start();const recurring=ctx.ticker;
+ assert.ok(recurring,'start must retain the repeating task');
+ assert.deepEqual(Object.keys(ctx.roots),[],'driver must start with no owners');
+@@ -33,19 +34,18 @@
+   message(selector,value){this.last={selector,value};}};
+  const basic={firstobject:number,newdefault(){return {valid:true}},connect(){}};
+  const shell={maxclass:'patcher',varname:'basic_tab',getboxattr:()=>[0,0,100,100],subpatcher:()=>basic,nextobject:null};
+- // Conditional positive fixture: Patcher.valid is INVENTED here. Maxobj.valid is
+- // documented; this root property establishes no actual Patcher API capability.
+- const objects=[];const p={firstobject:shell,filepath:`Z:/private/${doc}-r${rev}.maxhelp`,valid:true,
+-  getnamed:()=>shell,newdefault(x,y,cls){const o={valid:true,message(selector){if(selector==='dispose'){
+-   p.valid=false;for(const object of objects)object.valid=false;
+-  }}};objects.push(o);return o;}};
++ const objects=[];const p={firstobject:shell,filepath:`Z:/private/${doc}-r${rev}.maxhelp`,
++  getnamed:()=>shell,connect(){},newdefault(x,y,cls){const o={valid:true,setboxattr(){},message(){}};
++   objects.push(o);return o;}};
+  return p;
+ }
+-for(const doc of ['int','float'])for(const rev of [1,2])ctx.config.documents.push({document:doc,revision:rev,
++for(const doc of ['int','float'])for(const rev of [1,2]){
++ const inlet=ctx.config.lifecycle.owners.length;ctx.config.lifecycle.owners.push({document:doc,revision:rev,channel:'synthetic_'+inlet});
++ ctx.config.documents.push({document:doc,revision:rev,lifecycle_owner_inlet:inlet,
+  source_sha256:doc==='int'?'a'.repeat(64):'b'.repeat(64),working_windows_path:`Z:/private/${doc}-r${rev}.maxhelp`,
+  basic_varname:'basic_tab',boxes:[{id:'obj-1',anchor:'root/obj-2/obj-1',maxclass:'number',runtime_class:'number',rect:[1,2,30,20],outlets:2}],
+  full_inventory:[{anchor:'root/obj-2',maxclass:'newobj',runtime_class:'patcher',rect:[0,0,100,100],child:true},
+- {anchor:'root/obj-2/obj-1',maxclass:'number',runtime_class:'number',rect:[1,2,30,20],child:false}]});
++ {anchor:'root/obj-2/obj-1',maxclass:'number',runtime_class:'number',rect:[1,2,30,20],child:false}]});}
+ ctx.max={message(selector,name,filepath){opened.push(filepath);const m=/\/(int|float)-r(\d)/.exec(filepath);this.frontpatcher=root(m[1],+m[2]);}};
+ function drain(){let count=0;while(tasks.length){assert.ok(++count<200);tasks.shift().fn();}}
+ function install(doc,rev,id){ctx.handle({op:'operation',action:'install',document:doc,revision:rev,action_revision:rev,
+@@ -59,8 +59,9 @@
+ assert.throws(()=>ctx.handle({op:'operation',action:'event',document:'int',source_sha256:'a'.repeat(64),action_revision:1,
+  command_id:3,step_id:'bad-inlet',anchor:'root/obj-2/obj-1',inlet:1,message:{selector:'bang',atoms:[]}}));
+ install('float',1,2);assert.equal(ctx.roots.int,retainedInt,'install F must retain I');
+-ctx.handle({op:'operation',action:'close',document:'float',source_sha256:'b'.repeat(64),action_revision:1,command_id:3,step_id:'close-F'});drain();
+-assert.equal(written.at(-1).closed_owner_absence_validated,true);
++// Supported close and survival of the other owner are exercised in test_close.
++// Simulate that established postcondition here to isolate fresh-path reinstall.
++delete ctx.roots.float;
+ assert.deepEqual(Object.keys(ctx.roots),['int']);
+ install('float',2,4);assert.equal(ctx.roots.int,retainedInt);assert.equal(ctx.roots.float.definition.revision,2);
+ assert.equal(opened.length,3);assert.equal(new Set(opened).size,3,'reopened owner needs a fresh path');
+@@ -69,4 +70,4 @@
+ assert.throws(()=>ctx.handle({op:'operation',action:'close',document:'float',source_sha256:'wrong',action_revision:2}));
+ assert.throws(()=>ctx.handle({op:'operation',action:'unknown',document:'int',action_revision:1,anchor:'root/obj-2/obj-1',
+  source_sha256:'a'.repeat(64),message:{selector:'bang',atoms:[]}}));
+-console.log('controller: dispatch/geometry/startup/ticker pass; dispose/reopen positive uses invented conditional Patcher.valid');
++console.log('controller: dispatch/geometry/startup/ticker and fresh-path reinstall pass; supported close has separate fixtures');
+--- package006/test_float_mode.cjs
++++ package007/test_float_mode.cjs
+@@ -90,7 +90,8 @@
+ const raw=reader.collectReadback(root,full,request);
+ assert.equal(raw.numeric_modes.length,4);assert.equal(raw.boxes[0].maxclass,'number');
+ let mutations=0,connections=0;basic.newdefault=()=>{mutations++;return {}};
+-basic.connect=()=>{connections++};root.newdefault=()=>{mutations++;return {}};
++basic.connect=()=>{connections++};root.newdefault=()=>{mutations++;return {setboxattr(){}}};root.connect=()=>{};
++ctx.config.lifecycle={owners:[{document:'float',revision:1,channel:'synthetic_private'}]};full.lifecycle_owner_inlet=0;
+ ctx.bind(root,full);assert.equal(ctx.numericModeObservations.length,4);assert.equal(connections,8);
+ mutations=0;modeObjects[0].getattr=()=>'6';
+ assert.throws(()=>ctx.bind(root,full));assert.equal(mutations,0);
+--- package006/test_lifecycle.cjs
++++ package007/test_lifecycle.cjs
+@@ -0,0 +1,65 @@
++// Synthetic lifecycle state machine and actual-route fixtures; no Max launch.
++const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
++const create=require('./lifecycle-fixture.cjs');
++let fixture=create();
++const owners=fixture.owners;
++function control(kind,index=2,request=125,step='close-float'){return fixture.control(kind,index,request,step);}
++function monitor(){return fixture.report().observer_report;}
++control('arm');control('dispatch-start');fixture.fire();control('dispatch-return');control('close-validated');
++assert.equal(monitor().states[2].state,'closed');assert.equal(monitor().events.length,1);
++assert.deepEqual(monitor().failures,[]);assert.equal(monitor().seq,5);
++for(const scenario of ['missing','early','duplicate','cross-owner','nonbang','stale']) {
++ fixture=create();if(scenario==='early')fixture.fire();
++ control('arm');control('dispatch-start');
++ if(scenario==='nonbang')fixture.fire(2,'msg_int');else if(scenario!=='missing')fixture.fire(scenario==='cross-owner'?0:2);
++ if(scenario==='duplicate')fixture.fire();
++ control('dispatch-return');control('close-validated');if(scenario==='stale')fixture.fire();
++ assert.ok(monitor().failures.length,scenario+' must refuse');
++}
++fixture=create();
++for(const [i,r,s] of [[2,125,'close-float'],[0,147,'close-int']]) {
++ control('arm',i,r,s);control('dispatch-start',i,r,s);control('dispatch-return',i,r,s);
++ fixture.fire(i);control('close-validated',i,r,s);
++}
++control('barrier',-1,157,'capture-complete');assert.equal(monitor().sealed,true);assert.deepEqual(monitor().failures,[]);
++const before=fixture.files['synthetic-report'];fixture.fire(1);
++assert.equal(fixture.files['synthetic-report'],before,'post-barrier cleanup is never a witness');
++for(const attack of ['bang-control','control-event','transition','persist','readPrivate','observe']){
++ fixture=create();control('attest');
++ if(attack==='bang-control'){fixture.ctx.inlet=0;fixture.ctx.bang();}
++ else if(attack==='control-event'){fixture.ctx.inlet=3;fixture.ctx.lifecyclecontrol('arm',2,125,'close-float');}
++ else{assert.equal(typeof fixture.ctx[attack],'undefined','internal functions must be encapsulated');
++  fixture.ctx.inlet=3;fixture.ctx.messagename=attack;fixture.ctx.anything();}
++ assert.ok(monitor().failures.length,attack+' must refuse');assert.equal(monitor().transitions.length,0);
++}
++fixture=create();control('arm');control('dispatch-start');fixture.ctx.inlet=3;fixture.ctx.bang(7);
++assert.ok(monitor().failures.length,'bang with atoms is never an automatic witness');
++fixture=create();fixture.boxes[2].boxtext='receive wrong';assert.throws(()=>control('attest'),/driver-object/);
++fixture=create();fixture.boxes[2].patchcords.inputs.push(fixture.boxes[2].patchcords.outputs[0]);
++assert.throws(()=>control('attest'),/driver-routes/);
++const reader=vm.createContext({jsarguments:['v8','private','float',1]});
++vm.runInContext(fs.readFileSync(path.join(__dirname,'v8-readback.js'),'utf8'),reader);
++function box(varname,maxclass,rect,boxtext='') {return {varname,maxclass,boxtext,valid:true,
++ getboxattr:()=>rect,patchcords:{inputs:[],outputs:[]}};}
++const original=box('','comment',[0,0,10,10]);
++const rootBoxes=[original,box('__alive_numeric_reader','v8',[-3000,-3000,160,22]),
++ box('__alive_numeric_disposer','thispatcher',[-3100,-3000,100,22]),
++ box('__alive_numeric_freebang','freebang',[-3200,-3000,100,22],'freebang'),
++ box('__alive_numeric_lifecycle_send','send',[-3400,-3000,200,22],'send private_2')];
++rootBoxes.forEach((b,i)=>b.nextobject=rootBoxes[i+1]||null);
++const cord={srcobject:rootBoxes[3],srcoutlet:0,dstobject:rootBoxes[4],dstinlet:0};
++rootBoxes[3].patchcords.outputs.push(cord);rootBoxes[4].patchcords.inputs.push(cord);
++const definition={document:'float',revision:1,source_sha256:'a'.repeat(64),working_windows_path:'Z:/private/2',
++ lifecycle_owner_inlet:2,full_inventory:[{anchor:'root/obj-1',source_varname:null,
++ runtime_classes:['comment'],rect:[0,0,10,10]}]};
++const request={op:'operation',action:'close',command_id:125,step_id:'close-float',document:'float',
++ action_revision:1,source_sha256:'a'.repeat(64)};
++const root={filepath:'Z:/private/2',parentpatcher:null,firstobject:original};
++const proof=reader.collectLifecycleProof(root,definition,request,{lifecycle:{owners}});
++assert.equal(proof.originals.length,1);assert.equal(proof.harness.length,4);
++assert.equal(proof.input_routes.length,1);assert.equal(proof.output_routes.length,1);
++rootBoxes[3].patchcords.inputs.push(cord);
++assert.throws(()=>reader.collectLifecycleProof(root,definition,request,{lifecycle:{owners}}),/routes/);
++rootBoxes[3].patchcords.inputs=[];rootBoxes[4].boxtext='send wrong';
++assert.throws(()=>reader.collectLifecycleProof(root,definition,request,{lifecycle:{owners}}),/harness/);
++console.log('lifecycle: automatic inlet provenance, synchronous/asynchronous receipt, sticky refusal and final barrier pass');
+--- package006/test_lifecycle.py
++++ package007/test_lifecycle.py
+@@ -0,0 +1,396 @@
++"""Synthetic lifecycle proofs only; no installed patcher or helper bodies."""
++import copy
++import hashlib
++import importlib.util
++import json
++from pathlib import Path
++import tempfile
++import unittest
++
++
++ROOT = Path(__file__).resolve().parent
++MODULE = ROOT / 'lifecycle.py'
++if MODULE.exists():
++    SPEC = importlib.util.spec_from_file_location('numeric_lifecycle', MODULE)
++    lifecycle = importlib.util.module_from_spec(SPEC)
++    SPEC.loader.exec_module(lifecycle)
++else:
++    lifecycle = None
++
++
++def digest(data):
++    return hashlib.sha256(data).hexdigest()
++
++
++def windows(path):
++    return 'Z:' + str(path)
++
++
++def typed(value):
++    return dict(status='returned', type='boolean' if type(value) is bool else 'number', value=value)
++
++
++def edge(source, destination, inlet=0):
++    return dict(source=dict(identity=source, port=0),
++                destination=dict(identity=destination, port=inlet))
++
++
++class Fixture:
++    def __init__(self):
++        self.tmp = tempfile.TemporaryDirectory()
++        self.work = Path(self.tmp.name)
++        self.work.chmod(0o700)
++        (self.work / 'observations').mkdir(mode=0o700)
++        helper = b'// Original synthetic lifecycle helper fixture.\n'
++        self.write_bytes(self.work / 'lifecycle-observer.js', helper)
++        self.helper_sha = digest(helper)
++        owners = []
++        documents = []
++        self.root_paths = []
++        for inlet, (document, revision) in enumerate((('int', 1), ('int', 2), ('float', 1), ('float', 2))):
++            owner_path = windows(self.work / f'{document}-r{revision}.maxhelp')
++            root_path = self.work / 'observations' / f'lifecycle-root-{document}-r{revision}.json'
++            self.root_paths.append(root_path)
++            source_sha = ('a' if document == 'int' else 'b') * 64
++            owners.append(dict(document=document, revision=revision, source_sha256=source_sha,
++                               working_path=owner_path, channel='fixture_channel_' + str(inlet),
++                               inlet=inlet, root_proof_path=windows(root_path)))
++            documents.append(dict(document=document, revision=revision, source_sha256=source_sha,
++                                  working_windows_path=owner_path, lifecycle_owner_inlet=inlet,
++                                  helper_sha256={'fixture-source-helper.js': 'c' * 64},
++                                  boxes=[dict(anchor='root/obj-2/obj-1'), dict(anchor='root/obj-2/obj-3')],
++                                  full_inventory=[
++                                      dict(anchor='root/obj-1', runtime_class='js', runtime_classes=['js'],
++                                           rect=[0, 0, 100, 20], source_varname=None),
++                                      dict(anchor='root/obj-2', runtime_class='patcher',
++                                           runtime_classes=['patcher', 'p'], rect=[0, 30, 100, 20],
++                                           source_varname='basic_tab')]))
++        inventory = [dict(varname='__alive_numeric_controller', maxclass='js',
++                          boxtext='js synthetic-controller.js', rect=[-1, -1, 100, 22]),
++                     dict(varname='__alive_numeric_lifecycle_observer', maxclass='v8',
++                          boxtext='v8 ' + windows(self.work / 'lifecycle-observer.js'),
++                          rect=[-2, -2, 100, 22])]
++        inventory += [dict(varname='__alive_numeric_lifecycle_receive_' + str(i), maxclass='receive',
++                           boxtext='receive ' + owner['channel'], rect=[-10 - i, -10, 100, 22])
++                      for i, owner in enumerate(owners)]
++        self.config = dict(work=str(self.work), documents=documents,
++                           package_sha256={'lifecycle-observer.js': self.helper_sha},
++                           lifecycle=dict(version='freebang-v1', monitor_epoch='d' * 48,
++                                          observer_path=windows(self.work / 'lifecycle-observer.js'),
++                                          report_path=windows(self.work / 'lifecycle-report.json'),
++                                          driver_inventory=inventory, owners=owners))
++        owner = owners[2]
++        self.command = dict(command_id=125, op='operation', step_id='close-float', action='close',
++                            document='float', action_revision=1, source_sha256=owner['source_sha256'])
++        harness = [dict(varname=name, maxclass=cls, rect=rect, boxtext=text, valid=1)
++                   for name, cls, rect, text in (
++                       ('__alive_numeric_reader', 'v8', [-3000, -3000, 160, 22], 'v8 fixture-reader.js'),
++                       ('__alive_numeric_disposer', 'thispatcher', [-3100, -3000, 100, 22], 'thispatcher'),
++                       ('__alive_numeric_freebang', 'freebang', [-3200, -3000, 100, 22], 'freebang'),
++                       ('__alive_numeric_lifecycle_send', 'send', [-3400, -3000, 200, 22],
++                        'send ' + owner['channel']))]
++        root = dict(version='freebang-v1', request_id=125, step_id='close-float', document='float',
++                    revision=1, source_sha256=owner['source_sha256'], working_path=owner['working_path'],
++                    root_is_top_level=True,
++                    originals=[dict(anchor='root/obj-1', varname='', maxclass='js', rect=[0, 0, 100, 20]),
++                               dict(anchor='root/obj-2', varname='basic_tab', maxclass='patcher', rect=[0, 30, 100, 20])],
++                    harness=harness,
++                    input_routes=[edge('__alive_numeric_freebang', '__alive_numeric_lifecycle_send')],
++                    output_routes=[edge('__alive_numeric_freebang', '__alive_numeric_lifecycle_send')])
++        samples = []
++        for attempt in range(31):
++            value = 1 if attempt == 0 else 0
++            samples.append(dict(phase='before-dispose' if attempt == 0 else 'poll', attempt=attempt,
++                                root_valid=dict(status='returned', type='undefined'), reader_valid=typed(value),
++                                disposer_valid=typed(value), retained_firstobject_valid=typed(value),
++                                root_filepath=dict(status='returned', type='string', value=owner['working_path']),
++                                objects=[dict(anchor=b['anchor'], valid=typed(value)) for b in documents[2]['boxes']],
++                                harness_objects=[dict(anchor=name, valid=typed(value)) for name in
++                                                 ('__alive_numeric_freebang', '__alive_numeric_lifecycle_send')],
++                                firstobject=dict(status='returned', type='object'), firstobject_valid=typed(value),
++                                wind=dict(status='returned', type='object'),
++                                wind_visible=dict(status='returned', type='boolean', value=True),
++                                wind_assocclass=dict(status='returned', type='string', value='jpatcher'),
++                                wind_assoc=dict(status='returned', type='object'),
++                                wind_assoc_filepath=dict(status='returned', type='string', value=owner['working_path'])))
++        evidence = dict(version='freebang-v1', binding=dict(monitor_epoch='d' * 48, request_id=125,
++                        step_id='close-float', action='close', document='float', revision=1,
++                        source_sha256=owner['source_sha256'], working_path=owner['working_path'],
++                        observer_helper_sha256=self.helper_sha), root_route_path=owner['root_proof_path'],
++                        root_route_proof=root, driver_route_proof=self.driver(), observer_report=self.report())
++        self.ack = dict(command_id=125, success=True, step_id='close-float',
++                        closed_owner_absence_validated=True,
++                        close_diagnostics=dict(request_id=125, step_id='close-float', action='close',
++                        document='float', revision=1, source_sha256=owner['source_sha256'],
++                        working_path=owner['working_path'], helper_sha256=documents[2]['helper_sha256'],
++                        dispose=dict(attempted=True, result=dict(status='returned', type='function')),
++                        samples=samples, lifecycle_evidence=evidence))
++        self.persist()
++
++    def __enter__(self):
++        return self
++
++    def __exit__(self, *args):
++        self.tmp.cleanup()
++
++    def write_bytes(self, path, data):
++        path.write_bytes(data)
++        path.chmod(0o600)
++
++    def write_json(self, path, value):
++        self.write_bytes(path, (json.dumps(value, sort_keys=True) + '\n').encode())
++
++    def seal(self):
++        self.write_json(self.work / 'config.json', self.config)
++        self.write_json(self.work / 'seal.json', dict(files={
++            'config.json': digest((self.work / 'config.json').read_bytes()),
++            'lifecycle-observer.js': self.helper_sha}))
++
++    def persist(self):
++        self.seal()
++        evidence = self.ack['close_diagnostics'].get('lifecycle_evidence')
++        if evidence is not None:
++            self.write_json(self.root_paths[2], evidence['root_route_proof'])
++        self.write_json(self.work / 'observations' / 'ack-request-125.json', self.ack)
++
++    def evidence(self):
++        return self.ack['close_diagnostics']['lifecycle_evidence']
++
++    def driver(self):
++        boxes = [dict(row, valid=True) for row in self.config['lifecycle']['driver_inventory']]
++        routes = [edge('__alive_numeric_lifecycle_receive_' + str(i), '__alive_numeric_lifecycle_observer', i + 1)
++                  for i in range(4)]
++        return dict(boxes=boxes, input_routes=routes, output_routes=copy.deepcopy(routes),
++                    declared_inlets=5, declared_outlets=0)
++
++    def report(self, barrier=False):
++        transitions = []
++        events = []
++        states = [dict(inlet=i, state='monitoring', request_id=0, step_id='', witness_count=0) for i in range(4)]
++        for inlet, request, step in ((2, 125, 'close-float'), (0, 130, 'close-int'))[:2 if barrier else 1]:
++            start = len(transitions) + len(events)
++            transitions += [dict(seq=start + offset, kind=kind, inlet=inlet, request_id=request, step_id=step)
++                            for offset, kind in ((1, 'arm'), (2, 'dispatch-start'),
++                                                 (4, 'dispatch-return'), (5, 'close-validated'))]
++            events.append(dict(seq=start + 3, inlet=inlet, payload_kind='bang', request_id=request, step_id=step))
++            states[inlet] = dict(inlet=inlet, state='closed', request_id=request, step_id=step, witness_count=1)
++        if barrier:
++            transitions.append(dict(seq=11, kind='barrier', inlet=-1, request_id=200, step_id='capture-complete'))
++        return dict(monitor_epoch='d' * 48, seq=11 if barrier else 5, transitions=transitions,
++                    events=events, states=states, failures=[], sealed=barrier)
++
++    def barrier(self):
++        ack = dict(command_id=200, success=True, step_id='capture-complete', lifecycle_evidence=dict(
++            version='freebang-v1', binding=dict(monitor_epoch='d' * 48, request_id=200,
++            step_id='capture-complete', action='lifecycle-barrier', observer_helper_sha256=self.helper_sha),
++            driver_route_proof=self.driver(), observer_report=self.report(barrier=True)))
++        self.write_json(self.work / 'observations' / 'ack-request-200.json', ack)
++        return ack
++
++
++class LifecycleTests(unittest.TestCase):
++    def close(self, fixture):
++        self.assertIsNotNone(lifecycle, 'independent lifecycle validator is not implemented')
++        return lifecycle.validate_close(fixture.work, fixture.config, fixture.command, fixture.ack)
++
++    def reject(self, mutate):
++        with Fixture() as f:
++            mutate(f)
++            f.persist()
++            with self.assertRaises(ValueError):
++                self.close(f)
++
++    def test_complete_synchronous_witness_accepts_undefined_root_validity(self):
++        with Fixture() as f:
++            got = self.close(f)
++            self.assertIs(got['close_proof_validated'], True)
++            retained = f.work / 'observations' / 'retained-lifecycle-root-float-r1.json'
++            original = f.root_paths[2].read_bytes()
++            self.assertEqual(retained.read_bytes(), original)
++            self.assertEqual(got['root_raw_path'], str(retained))
++            self.assertEqual(got['root_sha256'], digest(original))
++            self.assertEqual(got['root_bytes'], len(original))
++            self.assertEqual(retained.stat().st_mode & 0o777, 0o600)
++
++    def test_delayed_convergence_and_async_witness_are_accepted(self):
++        with Fixture() as f:
++            for sample in f.ack['close_diagnostics']['samples'][1:5]:
++                sample['reader_valid'] = typed(True)
++            report = f.evidence()['observer_report']
++            report['transitions'][2]['seq'] = 3
++            report['events'][0]['seq'] = 4
++            f.persist()
++            self.assertIs(self.close(f)['close_proof_validated'], True)
++
++    def test_current_firstobject_and_window_unavailability_are_diagnostics(self):
++        with Fixture() as f:
++            for sample in f.ack['close_diagnostics']['samples'][1:]:
++                sample['firstobject'] = dict(status='returned', type='null')
++                sample['firstobject_valid'] = None
++                for field in ('wind', 'wind_visible', 'wind_assocclass', 'wind_assoc', 'wind_assoc_filepath'):
++                    sample[field] = None if field != 'wind' else dict(status='returned', type='null')
++            f.persist()
++            self.assertIs(self.close(f)['close_proof_validated'], True)
++
++    def test_true_boolean_alone_never_authorizes_close(self):
++        self.reject(lambda f: f.ack['close_diagnostics'].pop('lifecycle_evidence'))
++
++    def test_missing_witness_and_live_final_handle_refuse(self):
++        self.reject(lambda f: f.evidence()['observer_report']['events'].clear())
++        self.reject(lambda f: f.ack['close_diagnostics']['samples'][-1].update(reader_valid=typed(1)))
++
++    def test_revival_after_joint_invalidity_refuses(self):
++        self.reject(lambda f: f.ack['close_diagnostics']['samples'][8].update(disposer_valid=typed(1)))
++
++    def test_required_read_types_cannot_be_coerced(self):
++        for value in (None, dict(status='threw', exception=dict(type='object')),
++                      dict(status='returned', type='undefined'), typed(2),
++                      dict(status='returned', type='number', value=True),
++                      dict(status='returned', type='boolean', value=1),
++                      dict(status='returned', type='number', value=float('nan'))):
++            with self.subTest(value=value):
++                self.reject(lambda f, v=value: f.ack['close_diagnostics']['samples'][1].update(reader_valid=v))
++
++    def test_retained_firstobject_and_all_originals_are_required(self):
++        self.reject(lambda f: f.ack['close_diagnostics']['samples'][0].update(retained_firstobject_valid=typed(0)))
++        self.reject(lambda f: f.ack['close_diagnostics']['samples'][4].pop('retained_firstobject_valid'))
++        self.reject(lambda f: f.ack['close_diagnostics']['samples'][3]['objects'].pop())
++        self.reject(lambda f: f.ack['close_diagnostics']['samples'][4]['harness_objects'].pop())
++
++    def test_complete_ordered_samples_are_required(self):
++        self.reject(lambda f: f.ack['close_diagnostics']['samples'].pop())
++        self.reject(lambda f: f.ack['close_diagnostics']['samples'][9].update(attempt=True))
++        self.reject(lambda f: f.ack['close_diagnostics']['samples'][0].update(phase='poll'))
++
++    def test_sticky_failure_and_invalid_dispose_refuse(self):
++        self.reject(lambda f: f.evidence()['observer_report']['failures'].append('fixture-refusal'))
++        self.reject(lambda f: f.ack['close_diagnostics']['dispose'].update(attempted=False))
++        self.reject(lambda f: f.ack['close_diagnostics']['dispose'].update(
++            result=dict(status='threw', exception=dict(type='object'))))
++
++    def test_early_duplicate_wrong_inlet_and_nonbang_events_refuse(self):
++        self.reject(lambda f: f.evidence()['observer_report']['events'][0].update(seq=1))
++        self.reject(lambda f: f.evidence()['observer_report']['events'].append(
++            dict(seq=6, inlet=2, payload_kind='bang', request_id=125, step_id='close-float')))
++        self.reject(lambda f: f.evidence()['observer_report']['events'][0].update(inlet=0))
++        self.reject(lambda f: f.evidence()['observer_report']['events'][0].update(payload_kind='int'))
++        self.reject(lambda f: f.evidence()['observer_report']['events'][0].update(request_id=124))
++
++    def test_control_order_duplicate_dispatch_and_forged_state_refuse(self):
++        self.reject(lambda f: f.evidence()['observer_report']['transitions'][1].update(kind='dispatch-return'))
++        self.reject(lambda f: f.evidence()['observer_report']['transitions'].append(
++            dict(seq=6, kind='dispatch-start', inlet=2, request_id=125, step_id='close-float')))
++        self.reject(lambda f: f.evidence()['observer_report']['states'][2].update(witness_count=0))
++        self.reject(lambda f: f.evidence()['observer_report'].update(seq=6))
++
++    def test_root_and_driver_exact_text_topology_and_inventory_are_required(self):
++        mutations = [
++            lambda f: f.evidence()['root_route_proof']['harness'][-1].update(boxtext='send wrong_channel'),
++            lambda f: f.evidence()['root_route_proof']['input_routes'].append(
++                edge('__alive_numeric_freebang', '__alive_numeric_lifecycle_send')),
++            lambda f: f.evidence()['root_route_proof']['output_routes'][0]['source'].update(identity='root/obj-1'),
++            lambda f: f.evidence()['root_route_proof']['harness'][2].update(maxclass='button'),
++            lambda f: f.evidence()['root_route_proof']['harness'].append(
++                copy.deepcopy(f.evidence()['root_route_proof']['harness'][0])),
++            lambda f: f.evidence()['driver_route_proof']['boxes'][2].update(boxtext='receive other_channel'),
++            lambda f: f.evidence()['driver_route_proof']['input_routes'].append(
++                edge('__alive_numeric_controller', '__alive_numeric_lifecycle_receive_2')),
++            lambda f: f.evidence()['driver_route_proof']['output_routes'][0]['destination'].update(port=2),
++            lambda f: f.evidence()['driver_route_proof']['boxes'][1].update(valid=False),
++            lambda f: f.evidence()['driver_route_proof'].update(declared_inlets=True),
++        ]
++        for mutate in mutations:
++            with self.subTest(mutation=mutations.index(mutate)):
++                self.reject(mutate)
++
++    def test_source_owner_helper_epoch_and_exact_int_binding_refuse_tampering(self):
++        for field, value in (('request_id', True), ('request_id', 124), ('revision', True),
++                             ('working_path', 'Z:/other.maxhelp'), ('source_sha256', 'e' * 64),
++                             ('observer_helper_sha256', 'f' * 64), ('monitor_epoch', 'f' * 48)):
++            with self.subTest(field=field, value=value):
++                self.reject(lambda f, k=field, v=value: f.evidence()['binding'].update({k: v}))
++        self.reject(lambda f: f.evidence()['root_route_proof'].update(request_id=124))
++        self.reject(lambda f: f.command.update(command_id=True))
++
++    def test_unknown_private_fields_refuse(self):
++        for target in ('evidence', 'binding', 'root', 'driver', 'report', 'event', 'sample'):
++            def mutate(f):
++                choices = {'evidence': f.evidence(), 'binding': f.evidence()['binding'],
++                           'root': f.evidence()['root_route_proof'], 'driver': f.evidence()['driver_route_proof'],
++                           'report': f.evidence()['observer_report'], 'event': f.evidence()['observer_report']['events'][0],
++                           'sample': f.ack['close_diagnostics']['samples'][0]}
++                choices[target]['unexpected'] = True
++            with self.subTest(target=target):
++                self.reject(mutate)
++
++    def test_raw_proof_ack_and_sealed_config_are_independently_bound(self):
++        with Fixture() as f:
++            f.root_paths[2].unlink()
++            with self.assertRaises(ValueError):
++                self.close(f)
++        with Fixture() as f:
++            f.write_json(f.root_paths[2], dict(f.evidence()['root_route_proof'], request_id=124))
++            with self.assertRaises(ValueError):
++                self.close(f)
++        with Fixture() as f:
++            f.ack['closed_owner_absence_validated'] = False
++            with self.assertRaises(ValueError):
++                self.close(f)
++        with Fixture() as f:
++            f.config['lifecycle']['monitor_epoch'] = 'e' * 48
++            with self.assertRaises(ValueError):
++                self.close(f)
++
++    def test_raw_and_embedded_json_must_preserve_boolean_number_types(self):
++        with Fixture() as f:
++            changed = copy.deepcopy(f.evidence()['root_route_proof'])
++            changed['root_is_top_level'] = 1
++            f.write_json(f.root_paths[2], changed)
++            with self.assertRaises(ValueError):
++                self.close(f)
++
++    def test_event_route_cannot_enter_the_dedicated_control_inlet(self):
++        self.reject(lambda f: f.evidence()['driver_route_proof']['output_routes'][0]['destination'].update(port=0))
++
++    def test_proof_path_escape_symlink_and_exclusive_retention_refuse(self):
++        self.reject(lambda f: f.evidence().update(root_route_path='Z:/tmp/escaped-proof.json'))
++        with Fixture() as f:
++            original = f.root_paths[2]
++            linked = original.with_suffix('.linked')
++            original.rename(linked)
++            original.symlink_to(linked)
++            with self.assertRaises(ValueError):
++                self.close(f)
++        with Fixture() as f:
++            self.close(f)
++            with self.assertRaises(FileExistsError):
++                self.close(f)
++
++    def test_final_barrier_accepts_only_closed_revision_one_and_live_revision_two(self):
++        with Fixture() as f:
++            self.assertIsNotNone(lifecycle, 'independent lifecycle validator is not implemented')
++            self.assertIsNone(lifecycle.validate_barrier(f.work, f.config, f.barrier(), {'int': 2, 'float': 2}))
++
++    def test_barrier_rejects_stale_events_live_owner_events_and_unsealed_reports(self):
++        for change in ('stale', 'live', 'unsealed', 'missing-close', 'wrong-live'):
++            with self.subTest(change=change), Fixture() as f:
++                ack = f.barrier()
++                report = ack['lifecycle_evidence']['observer_report']
++                expected = {'int': 2, 'float': 2}
++                if change in ('stale', 'live'):
++                    report['events'].append(dict(seq=12, inlet=2 if change == 'stale' else 1,
++                                                 payload_kind='bang', request_id=125, step_id='close-float'))
++                elif change == 'unsealed':
++                    report['sealed'] = False
++                elif change == 'missing-close':
++                    report['states'][0].update(state='monitoring', witness_count=0, request_id=0, step_id='')
++                else:
++                    expected['int'] = True
++                f.write_json(f.work / 'observations' / 'ack-request-200.json', ack)
++                self.assertIsNotNone(lifecycle, 'independent lifecycle validator is not implemented')
++                with self.assertRaises(ValueError):
++                    lifecycle.validate_barrier(f.work, f.config, ack, expected)
++
++
++if __name__ == '__main__':
++    unittest.main()
+--- package006/test_prepare.py
++++ package007/test_prepare.py
+@@ -14,7 +14,7 @@
+ def synthetic_preparation():
+     with tempfile.TemporaryDirectory() as tmp:
+         base=Path(tmp);package=base/'package';package.mkdir(mode=0o700)
+-        for filename in ['controller.js','observer.js','v8-readback.js']:
++        for filename in ['controller.js','observer.js','v8-readback.js','lifecycle-observer.js']:
+             (package/filename).write_text('// Original synthetic test harness\noutlets=0;\n')
+         resources=base/'resources';(resources/'help/max').mkdir(parents=True,mode=0o700)
+         (resources/'help/resources').mkdir(mode=0o700)
+@@ -39,6 +39,15 @@
+         with synthetic_preparation() as (work,resources,package):
+             config=n.prepare_private(work,resources)
+             self.assertEqual(len(config['documents']),4)
++            lifecycle=config['lifecycle']
++            self.assertEqual(lifecycle['version'],'freebang-v1')
++            self.assertEqual(len(lifecycle['owners']),4)
++            self.assertEqual(len({o['channel'] for o in lifecycle['owners']}),4)
++            self.assertEqual([o['inlet'] for o in lifecycle['owners']],list(range(4)))
++            driver=json.loads((work/'driver.maxpat').read_text())['patcher']
++            self.assertEqual(len(driver['boxes']),6)
++            self.assertEqual(len(driver['lines']),4)
++            self.assertEqual(len(lifecycle['driver_inventory']),6)
+             paths=[]
+             for d in config['documents']:
+                 for key in ['pristine_path','working_path']:
+--- package006/v8-readback.js
++++ package007/v8-readback.js
+@@ -124,3 +124,62 @@
+     }catch(error){writePrivate(path,{success:false,request_id:requestId,error_code:"numeric-readback-refused",
+         numeric_mode_observation:error.numeric_mode_observation||null});}
+ }
++function collectLifecycleProof(root,definition,request,config) {
++    if(request.op!=="operation"||request.action!=="close"||request.document!==definition.document||
++        request.action_revision!==definition.revision||request.source_sha256!==definition.source_sha256||
++        !Number.isInteger(request.command_id)||request.command_id<1||root.parentpatcher!=null||
++        !samePath(root.filepath,definition.working_windows_path))throw Error("lifecycle-root-binding");
++    var owner=config.lifecycle.owners[definition.lifecycle_owner_inlet];
++    if(!owner||owner.document!==definition.document||owner.revision!==definition.revision||
++        owner.source_sha256!==definition.source_sha256||owner.working_path!==definition.working_windows_path)
++        throw Error("lifecycle-owner-map");
++    var expected=[{varname:"__alive_numeric_reader",maxclass:"v8",rect:[-3000,-3000,160,22]},
++        {varname:"__alive_numeric_disposer",maxclass:"thispatcher",rect:[-3100,-3000,100,22]},
++        {varname:"__alive_numeric_freebang",maxclass:"freebang",rect:[-3200,-3000,100,22],boxtext:"freebang"},
++        {varname:"__alive_numeric_lifecycle_send",maxclass:"send",rect:[-3400,-3000,200,22],boxtext:"send "+owner.channel}];
++    var originals=[],harness=[],inputs=[],outputs=[],identities={},originalDefinitions=
++        definition.full_inventory.filter(e=>e.anchor.split("/").length===2);
++    function identify(o){
++        var rect=rectangle(o),found=expected.filter(e=>e.varname===o.varname);
++        if(found.length){var e=found[0];
++            if(o.maxclass!==e.maxclass||JSON.stringify(rect)!==JSON.stringify(e.rect)||
++                (o.valid!==true&&o.valid!==1)||typeof o.boxtext!=="string"||
++                (e.boxtext!==undefined&&o.boxtext!==e.boxtext))throw Error("lifecycle-root-harness");
++            return {identity:e.varname,harness:true,rect:rect};}
++        found=originalDefinitions.filter(e=>{
++            var policy=e.shell_height_policy,wanted=policy?policy.live_rect:e.rect;
++            return (e.runtime_classes||[e.runtime_class]).includes(o.maxclass)&&
++                (o.varname||"")===(e.source_varname||"")&&JSON.stringify(rect)===JSON.stringify(wanted);});
++        if(found.length!==1)throw Error("lifecycle-root-original");
++        return {identity:found[0].anchor,harness:false,rect:rect};
++    }
++    for(var o=root.firstobject;o;o=o.nextobject){var id=identify(o);
++        if(identities[id.identity])throw Error("lifecycle-root-duplicate");identities[id.identity]=true;
++        if(id.harness)harness.push({varname:o.varname,maxclass:o.maxclass,rect:id.rect,boxtext:o.boxtext,valid:o.valid});
++        else originals.push({anchor:id.identity,varname:o.varname||"",maxclass:o.maxclass,rect:id.rect});
++    }
++    if(harness.length!==4||originals.length!==originalDefinitions.length)throw Error("lifecycle-root-count");
++    function endpoint(o,port){var id=identify(o);if(!identities[id.identity]||!Number.isInteger(port)||port<0)
++        throw Error("lifecycle-root-endpoint");return {identity:id.identity,port:port};}
++    for(var o=root.firstobject;o;o=o.nextobject){var cords=o.patchcords;
++        if(!cords||!Array.isArray(cords.inputs)||!Array.isArray(cords.outputs))throw Error("lifecycle-root-cords");
++        for(var direction of ["inputs","outputs"])for(var c of cords[direction])
++            (direction==="inputs"?inputs:outputs).push({source:endpoint(c.srcobject,c.srcoutlet),destination:endpoint(c.dstobject,c.dstinlet)});
++    }
++    var edge={source:{identity:"__alive_numeric_freebang",port:0},destination:{identity:"__alive_numeric_lifecycle_send",port:0}};
++    if(inputs.length!==1||outputs.length!==1||JSON.stringify(inputs[0])!==JSON.stringify(edge)||
++        JSON.stringify(outputs[0])!==JSON.stringify(edge))throw Error("lifecycle-root-routes");
++    return {version:"freebang-v1",request_id:request.command_id,step_id:request.step_id,document:definition.document,
++        revision:definition.revision,source_sha256:definition.source_sha256,working_path:root.filepath,
++        root_is_top_level:true,originals:originals,harness:harness,input_routes:inputs,output_routes:outputs};
++}
++function lifecycleproof(requestId,stepId) {
++    var config=readPrivate(configFile),request=readPrivate(config.command_path);
++    var definition=config.documents.find(d=>d.document===documentName&&d.revision===revision);
++    if(!definition)throw Error("lifecycle-definition");
++    var path=config.lifecycle.owners[definition.lifecycle_owner_inlet].root_proof_path;
++    try{
++        if(requestId!==request.command_id||stepId!==request.step_id)throw Error("lifecycle-proof-request");
++        writePrivate(path,collectLifecycleProof(this.patcher,definition,request,config));
++    }catch(error){writePrivate(path,{success:false,request_id:requestId,error_code:"lifecycle-root-proof-refused"});}
++}

@@ -1,0 +1,19 @@
+{
+  "schema": "arithmetic-admission-revalidation-v1",
+  "historical_index": "experiments/max-reference/arithmetic-help-admission-20261022/verification-current.json",
+  "historical_index_sha256": "e26ccbc86a2d599716010af845055c2c05dc379ba875a74f0f0050a3956675f9",
+  "bindings_checked": 128,
+  "unchanged": 127,
+  "authorized_source_deltas": [
+    {
+      "section": "source_sha256",
+      "path": "apps/ultra/tests/ci/check-contracts.sh",
+      "before": "804be4705742d990b14dbaae421d0cb5813aa370823ecdb643ca9c5ddb24fbc2",
+      "current": "799bed0fc22bb37c7791af2605964185b93afa0d84fc6156182b8910121783af"
+    }
+  ],
+  "delta_reason": "Add original arithmetic runtime and helper tests to CI",
+  "unexpected_deltas": [],
+  "product_and_installed_bindings_unchanged": true,
+  "qualification_passes_added": 0
+}

@@ -1,0 +1,183 @@
+{
+  "schema": "arithmetic-preparation010-source-verification-v1",
+  "status": "INTEGRATED_SOURCE_VERIFICATION_PASSED",
+  "canonical_sixteen_file_map_sha256": "625b52d524b49919ac149287ac06274d3e067ffe211fbbdbd9fbed1bdfb8e400",
+  "design_sha256": "ca16153b8ccf1911d32ade6cb799026e251216578bbdf5398ac712a6592e229e",
+  "design_review_sha256": "6834443607ee29a13525863fc774e3febb323f5917a2562d307614c79f6fea65",
+  "implementation_report_sha256": "a3c705ea1c8b2a3326e61f97b3de12dfd1bf44bf3c2e10e2eac167cc1d0d2dea",
+  "independent_source_review_pending": false,
+  "independent_source_review": "PASS",
+  "initial_source_review_sha256": "18d7c22350519e7921d8be9b183eb3e48cad03a65c6288bc3d63d670d951c5a9",
+  "source_rereview_sha256": "c4d26b6757bea31a6968f92af2cef3151d800357f0f9bbee44807db7772e3979",
+  "source_review_map_sha256": "a6790ed0840efe8492ed53eeb2e38ca0454eadbd0e0339294cac76c237b054b2",
+  "source_diff_sha256": "9d337b17684c39c807691143aaee2dedd3b3915a7199b2d7d3eb0b3ba6f494c4",
+  "package_sha256": "1088afc53c372cc4e3e60e0def3f7e3785e3ee80235e8af20629c53fcc39cdf2",
+  "score_sha256": "95012c9d56bc898d32b055d2f6d7fc925cac19afc4a18af254f7a3c871b67afb",
+  "native_result_sha256": "ce1976dfaecf4494ff876395a3c5df4add4f393f28235343cfc434120200a836",
+  "node": {
+    "command": "node test_helpers.cjs",
+    "exit_code": 0,
+    "preparation007_groups": 10,
+    "preparation008_groups": 11,
+    "preparation009_groups": 16,
+    "preparation010_groups": 14,
+    "failures": [],
+    "prior_controls_pass": true,
+    "work": [
+      {
+        "work010": "stable",
+        "counts": {
+          "canonical": {
+            "command": 1,
+            "definition": 1,
+            "configuration": 1,
+            "owner": 1
+          },
+          "source": 1,
+          "geometry": 63,
+          "rectangles": 20820,
+          "filepaths": 159,
+          "samples": 89
+        }
+      },
+      {
+        "work010": "ineligible",
+        "counts": {
+          "canonical": {
+            "command": 1,
+            "definition": 1,
+            "configuration": 1,
+            "owner": 1
+          },
+          "source": 1,
+          "geometry": 43,
+          "rectangles": 19040,
+          "filepaths": 70,
+          "samples": 70
+        }
+      },
+      {
+        "readOracle010": {
+          "samples": 89,
+          "readsPerSample": 274,
+          "orderedDigest": "bd9606c23777bcc7bce36c56f688eaea22d3314bf88b55110394d03059fbfea6"
+        }
+      }
+    ],
+    "prototype_fix_cases": [
+      {
+        "fix1010": {
+          "form": "object",
+          "phase": "lookup",
+          "calls": 0,
+          "serializationCalls": 0,
+          "stale": true
+        }
+      },
+      {
+        "fix1010": {
+          "form": "object",
+          "phase": "outcome",
+          "calls": 1,
+          "serializationCalls": 0,
+          "stale": true
+        }
+      },
+      {
+        "fix1010": {
+          "form": "object",
+          "phase": "later",
+          "calls": 6,
+          "serializationCalls": 0,
+          "stale": true
+        }
+      },
+      {
+        "fix1010": {
+          "form": "array",
+          "phase": "lookup",
+          "calls": 0,
+          "serializationCalls": 0,
+          "stale": true
+        }
+      },
+      {
+        "fix1010": {
+          "form": "array",
+          "phase": "outcome",
+          "calls": 1,
+          "serializationCalls": 0,
+          "stale": true
+        }
+      },
+      {
+        "fix1010": {
+          "form": "array",
+          "phase": "later",
+          "calls": 6,
+          "serializationCalls": 0,
+          "stale": true
+        }
+      }
+    ]
+  },
+  "python": {
+    "command": "python3 -B -m unittest discover -p 'test_*.py'",
+    "tests_run": 89,
+    "tests_passed": 88,
+    "tests_skipped": 1,
+    "seconds": 22.45,
+    "exit_code": 0,
+    "skip_reason": "existing actual-native-evidence test requires explicit external private paths"
+  },
+  "syntax": {
+    "all_pass": true,
+    "bytecode_written": false,
+    "javascript_syntax_files": 5,
+    "python_ast_files": 11
+  },
+  "real_source_reconstruction": {
+    "canonical_ascii_bytes": 18681,
+    "cross_language_configuration": true,
+    "cross_language_projection": true,
+    "definitions_reconstructed": 6,
+    "helpers": 4,
+    "historical_code_executed": false,
+    "installed_sources": 3,
+    "live_geometry_pins": 4,
+    "private_writes": 0,
+    "production_source_gate": true,
+    "projection_keys": 9,
+    "source_pins": 7,
+    "source_projection_sha256": "c17962fba204a882ce5b0bca6c792e55c0a4181366c7dfe0c39b28152215084e",
+    "synthetic_substitutions": 0
+  },
+  "preservation": {
+    "all_private_inventories_unchanged": true,
+    "private_roots": 30,
+    "private_entries": 1523,
+    "other_mapped_files_unchanged": 14,
+    "authorized_changed_files": [
+      "controller.js",
+      "test_helpers.cjs"
+    ],
+    "score_frozen": true,
+    "native_exact_five_preserved": true
+  },
+  "obligations": {
+    "operations": 78,
+    "live_checkpoints": 72,
+    "empty_checkpoints": 6,
+    "numeric_states": 504,
+    "original_emissions": 141,
+    "independent_closes": 6,
+    "native_cable_deliveries": 90,
+    "native_typed_receipts": 297,
+    "saved_order_observed": false
+  },
+  "max_runtime_executed": false,
+  "preparation010_created": false,
+  "qualification_passes_added": 0,
+  "qualified_help_files": 0,
+  "total_help_files": 2103
+}

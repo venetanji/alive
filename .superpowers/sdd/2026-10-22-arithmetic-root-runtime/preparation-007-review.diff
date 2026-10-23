@@ -1,0 +1,1332 @@
+--- historical006/arithmetic.py
++++ current007/arithmetic.py
+@@ -73,6 +73,30 @@
+ PLUS_EVIDENCE = {'ack_sha256': 'ed2fe5493d43ee8d00ee06cb76bd39bf5ddbbe00723e9b8ed62730ab66394cd6', 'config_sha256': 'cc06829fbbd1e0e89888152e0f2d4407df5a4e9a3817d7aa7e3a1a40e5ac74fb', 'seal_sha256': 'c3f37c41129eead48fc0f97597731d2c9e3ae3596746ee8d9551ee89d0426e5c', 'command_sha256': '7a53e382e6d67241fef6ac8e313f76986896991c789971b5f7c2d1b3cdf93261', 'manifest_sha256': '9b00b30ab36278e5e387bdac9deeb42364fdfa2948cf902be0a015488a04cd11', 'package_sha256': '22d237c6efd59c8aa87acad901da09028999e369d62c89deb1cc3fe646da177a', 'rea_evidence_id': 'ev_ebf222bc4a6c33847e6667ce57f8dffcf8eb185e38e981a0efbfee44492f47a1', 'audit_sha256': '925a70d2cda0811794b03eb8f59ff76127ccfed10c0c843b36f368550ba88c53'}
+ PLUS_GEOMETRY_PINS = {'root/obj-1': {'source_box_sha256': 'c4af8c73939eab75ed8940ff6b03159859ca0a782cd411601e0ea594db29d8e2', 'source_text_sha256': 'e86f190fbc376badcc5d7b14a552d4e84fad436e0789bb2c7cc221fa38bf9390', 'saved_rect_sha256': '7c282ca427b38aa6bf81f9155d70ce5720fd0f12f6ab4ef4da21f6441c947cd6', 'runtime_class': 'js', 'changed_dimension': 3, 'live_rect_sha256': 'da868357a7d43088775aeb0784d73cae93002d63fcabbd3ceddd53521cd20e84'}, 'root/obj-2': {'source_box_sha256': 'bbc5fe757f0ef027839d4a09709a97b50451ae9a5fec7d7f38aa810d53ce9f92', 'source_text_sha256': '484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393', 'saved_rect_sha256': 'd354caae9baa0021746491027a9c4aa1da57065450298612fc0a7b77682b0ceb', 'runtime_class': 'patcher', 'changed_dimension': 3, 'live_rect_sha256': '6dff8399adb73f3c4d2f1e05a7407d37381968cd2b51bdbb9eb2cc5ee9f849d3'}, 'root/obj-2/obj-4': {'source_box_sha256': 'd9b8da7ef51019bd5837726c704eda09de39cffe89f08bd61e32811cde5acd0f', 'source_text_sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'saved_rect_sha256': 'a421ba89c6cd1917427e84dbab006bf66255f8cf04f84b0b83de8c6c6b4646d2', 'runtime_class': 'jsui', 'changed_dimension': 2, 'live_rect_sha256': 'ef478f664cd641a901af80ccc3be0b0f9a1388d863a267d636bdb72fd1a5908a'}, 'root/obj-3': {'source_box_sha256': '310417ef44ee7139be2082fc5bbc63c5a65dfa5d10ab54894b29fe164b84c100', 'source_text_sha256': 'bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a', 'saved_rect_sha256': 'd9aad27455a8969fb33a22e3689241f29c2d83d1eac360baf98c043f897e0e86', 'runtime_class': 'patcher', 'changed_dimension': 3, 'live_rect_sha256': '1b3974a5eef49edf4381887e103169ef36e333facb4d2ccab310ef62ea699926'}}
+ PLUS_NUMERIC_PINS = {'root/obj-2/obj-1': {'source_box_sha256': 'c873e45cc1ebc4c71b93a736b509fc0f622d4764df74edb3a21f5bad4d999a78', 'source_text_sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'saved_rect_sha256': '97bd3d008866faa2c6cdc5bf0de64333c64bd29bf79bae29b6ae070ec6823267'}, 'root/obj-2/obj-24': {'source_box_sha256': 'd84cf4a6a5daa8db1d4b2616b5c1f94385a15d274a80be64ca07ddcb728d8cb3', 'source_text_sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'saved_rect_sha256': '14acfb0d484e461a00397ecfb34329cfe8167d5e47b6360edbd54f0fabbd91bc'}, 'root/obj-2/obj-23': {'source_box_sha256': '5b0e92ade41a0633d5d5dc178c9fd1ebc519f7014d331e4a924afff0dfe07982', 'source_text_sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'saved_rect_sha256': '38b2cd4242257c9f9802ef997eccb7d32e451c1b05f37868136baa42fb89636c'}}
++# Capture006 is an incomplete controller trace, with no install ACK or V8 admission.
++PLUS_CONTROLLER_COHORT_PINS = {anchor: dict(pin,
++    initial_numeric_sha256='1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121')
++    for anchor, pin in PLUS_NUMERIC_PINS.items()}
++PLUS_CONTROLLER_COHORT_BINDING = '31e249de8a69dd317ae9b50f93bca88e3da8392edda68dd7b66865e6a0c98a89'
++PLUS_CONTROLLER_COHORT_FORMAT_SHA256 = 'dcdadd560ab2234a2bf2d2b5ed44e5d7640e88eefe6bdbc98aa84aaf31649983'
++PLUS_CONTROLLER_COHORT_HISTORY_MAP_SHA256 = 'c6132cd1dc86becaad8b129a41dfe9a8bf778edc95bc6351f917e7fcabcefc9c'
++PLUS_CONTROLLER_COHORT_COMMAND_SHA256 = '7a53e382e6d67241fef6ac8e313f76986896991c789971b5f7c2d1b3cdf93261'
++PLUS_CONTROLLER_COHORT_OBSERVATION_SHA256 = {
++    'getattr': '1a66370eea964e643299a17b32c10e81a91757360fcec24b5ba08c16f7b85710',
++    'getvalueof': '2aac570e7076cb6271561b1eb337b2852262955ae09001c25a63b9ba6a5caf4c'}
++PLUS_CONTROLLER_COHORT_EVIDENCE = dict(
++    trace_sha256='2b3287e45de1123f8ac7582544aa13da5dbfba6650d2aa33e7a46b5f8be39a63',
++    trace_role='incomplete-install-prefix', observed_revision=1,
++    config_sha256='4a922bf0b1e2d2c5755eb339d0fa8e73a4139f74c5acc3b92352388e85a167ad',
++    seal_sha256='3e5b31cdcb62618e08444d35c2ec20815cf07a21aad86de4d058ca6a94170935',
++    manifest_sha256='c4fc2bf8badc5cfc98b85d2b1bc8dad9cd7df42f730665521080631ecefad898',
++    controller_sha256='c0b0a45ef7a72a484fa976774f5a10e1ca9fcf6892603f723fb7df6c220a3d97',
++    historical_binding_sha256='bce1edf4484c73bf95a5c1c1648ff7e7f8f3ce479fe96c92be6639fa6e466df6',
++    package_sha256='b140eddbac9d134e162ff4cfdf2388be1285cf45b9127bd8bcc0d253ff0e99e5',
++    audit_sha256='9ded6e777503d6181120dc92c3f4745ec4eb565e5a6f29e9bd52c38755870e8d',
++    investigation_sha256='7b555ff81a58e426185fb9fca93b23216e18cf0205a8a923b3ca70c892e3e54b',
++    verification_sha256='081856c4f782f6c1603d998e6637c2355c84585635c7a3deca980e1b1cce2bfc',
++    rea_evidence_id='ev_a0ed6947bdad1fbe7e7ba19b62634a570fdff7803e7db65363b019dd0db409c8')
+ TIMES_NUMERIC_PINS = {'root/obj-4/obj-1': '3c1b5b23cac75bca82bf1aa6c7c161ca91e8e050d41c2fed4549959291d45360', 'root/obj-4/obj-24': 'd46ddd6aff2b7184bce9a8b1218416dcb47db543026c78a533139b289cb73b42', 'root/obj-4/obj-23': 'f122ac20a6bf9ecec78a24a73a0cbd911d938b441439337f9298ae4dfbcc853c'}
+ NUMERIC_REPRESENTATION_EVIDENCE = {'ack_sha256': '47764e9dac8f1ec69514509e22e93849e6d8d9a13783c60843757d8a0a3fb22a',
+     'config_sha256': '801e50b51d1055791cc07221776ebeaf1c1d755088a36c86d05722a3cfb94ec3',
+@@ -409,6 +433,239 @@
+         elif b['maxclass'] != 'flonum' or b['runtime_class'] != 'flonum' or live != saved:
+             raise ValueError('Capture004 plus numeric class-only evidence changed')
+     return result
++
++
++def plus_controller_cohort_policy(box):
++    return dict(kind='plus-controller-numeric-cohort-v1', engine='js-controller', document='plus',
++        source_sha256=PLUS_SOURCE, anchor=box['anchor'], source_class='flonum', runtime_class='number',
++        cohort_anchors=list(PLUS_CONTROLLER_COHORT_PINS), cohort_binding_sha256=PLUS_CONTROLLER_COHORT_BINDING,
++        **PLUS_CONTROLLER_COHORT_PINS[box['anchor']], helper_sha256=dict(HELPERS),
++        evidence=dict(PLUS_CONTROLLER_COHORT_EVIDENCE), format_method='getattr', format_attribute='format',
++        format_representation='scalar-number', format_value_sha256=PLUS_CONTROLLER_COHORT_FORMAT_SHA256,
++        getter_method='getvalueof', getter_representation='singleton-number-array', finite_required=True,
++        source_initial_equality=True, fresh_complete_cohort_required=True)
++
++
++def validate_plus_controller_cohort_policy(document, box, policy):
++    pin = PLUS_CONTROLLER_COHORT_PINS.get(box.get('anchor'))
++    if (not pin or document.get('document') != 'plus' or document.get('source_sha256') != PLUS_SOURCE or
++        document.get('helper_sha256') != HELPERS or
++        ('revision' in document and (type(document['revision']) is not int or document['revision'] not in (1, 2))) or
++        box.get('maxclass') != 'flonum' or box.get('runtime_class') != 'flonum' or box.get('runtime_classes') != ['flonum'] or
++        box.get('source_box_sha256') != pin['source_box_sha256'] or box.get('source_text_sha256') != pin['source_text_sha256'] or
++        not finite(box.get('initial_numeric')) or type(policy) is not dict):
++        raise ValueError('Unobserved plus controller cohort binding')
++    if (geometry_vector_digest(box.get('rect')) != pin['saved_rect_sha256'] or
++        geometry_vector_digest([box['initial_numeric'], 0, 0, 0]) != pin['initial_numeric_sha256'] or
++        canonical(policy) != canonical(plus_controller_cohort_policy(box))):
++        raise ValueError('Plus controller cohort policy changed')
++    return policy
++
++
++def validate_plus_controller_cohort_metadata(document):
++    field = 'plus_controller_numeric_cohort_policy'
++    views = [[box for box in document.get(view, []) if field in box] for view in ('boxes', 'full_inventory')]
++    if not any(views): return False
++    for boxes in views:
++        if Counter(box.get('anchor') for box in boxes) != Counter(PLUS_CONTROLLER_COHORT_PINS.keys()):
++            raise ValueError('Complete plus controller cohort metadata required')
++        for box in boxes: validate_plus_controller_cohort_policy(document, box, box[field])
++    for anchor in PLUS_CONTROLLER_COHORT_PINS:
++        copies = [next(box for box in view if box['anchor'] == anchor) for view in views]
++        if canonical(copies[0][field]) != canonical(copies[1][field]):
++            raise ValueError('Plus controller cohort descriptor copies changed')
++        for view in ('boxes', 'full_inventory'):
++            if sum(box.get('anchor') == anchor for box in document[view]) != 1:
++                raise ValueError('Unique plus controller cohort descriptors required')
++    return True
++
++
++def _plus_controller_trace(payload, definition):
++    """Validate the complete retained prefix; no terminal success is present."""
++    if (not payload.endswith(b'\n') or not payload.isascii() or len(payload.splitlines()) != 1490 or
++        max(map(len, payload.splitlines())) > 955):
++        raise ValueError('Capture006 complete ASCII trace prefix required')
++    rows = [parse_json(line) for line in payload.splitlines()]
++    base_keys = {'seq', 'request_id', 'step_id', 'action', 'document', 'revision', 'source_sha256',
++        'owner_inlet', 'attempt', 'phase', 'clock', 'at_ms', 'elapsed_ms'}
++    identity = dict(request_id=51, step_id='install-plus-r1', action='install', document='plus', revision=1,
++        source_sha256=PLUS_SOURCE, owner_inlet=2, clock='wall-ms')
++    position, previous, origin = 0, None, None
++
++    def take(phase, attempt, extra=None):
++        nonlocal position, previous, origin
++        if position >= len(rows): raise ValueError('Capture006 trace truncated')
++        row = rows[position]; position += 1; extra = extra or {}
++        if (type(row) is not dict or set(row) != base_keys | set(extra) or
++            any(type(row.get(key)) is not int for key in ('seq', 'request_id', 'revision', 'owner_inlet', 'attempt', 'at_ms', 'elapsed_ms')) or
++            row['seq'] != position or row['attempt'] != attempt or row['phase'] != phase or
++            any(type(row.get(key)) is not type(value) or row[key] != value for key, value in identity.items()) or
++            any(type(row.get(key)) is not type(value) or row[key] != value for key, value in extra.items())):
++            raise ValueError('Capture006 trace schema, sequence or identity changed')
++        if origin is None: origin = row['at_ms']
++        if (row['at_ms'] < 0 or row['elapsed_ms'] < 0 or row['at_ms'] - origin != row['elapsed_ms'] or
++            (previous is not None and row['at_ms'] < previous)):
++            raise ValueError('Capture006 trace wall-clock relationship changed')
++        previous = row['at_ms']
++        return row
++
++    take('command-consumed', 0, dict(working_path=definition['working_windows_path']))
++    for phase in ('openfile-enter', 'openfile-return', 'poll-scheduled'): take(phase, 0)
++    geometry_anchors = list(PLUS_GEOMETRY_PINS)
++    chunk_specs = [('geometry', anchor, 4) for anchor in geometry_anchors[:3]]
++    chunk_specs += [('anchor', anchor, 2) for anchor in PLUS_CONTROLLER_COHORT_PINS]
++    chunk_specs += [('geometry', geometry_anchors[3], 4)]
++    source_boxes = {box['anchor']: box for box in definition['boxes']}
++    inventory = {box['anchor']: box for box in definition['full_inventory']}
++    candidate_key = lambda row: (row['maxclass'], geometry_vector_digest(row['rect']))
++    expected_candidates = Counter(candidate_key(dict(maxclass='number' if box['maxclass'] == 'flonum' else box['runtime_class'],
++        rect=box.get('observed_geometry_policy', {}).get('live_rect', box['rect']))) for box in source_boxes.values())
++    for attempt in range(1, 62):
++        take('poll-enter', attempt); take('root-decision', attempt, dict(root_present=True, path_match=True)); take('validate-enter', attempt)
++        if attempt == 1:
++            for identity_number, (kind, anchor, parts) in enumerate(chunk_specs, 1):
++                chunks = []
++                for part in range(parts):
++                    if (position >= len(rows) or type(rows[position]) is not dict or
++                        type(rows[position].get('data')) is not str or not rows[position]['data']):
++                        raise ValueError('Capture006 observation chunk unavailable')
++                    chunks.append(take('observation-chunk', attempt, dict(observation_kind=kind, observation_id=identity_number,
++                        part=part, parts=parts, data=rows[position]['data']))['data'])
++                observation = parse_json(''.join(chunks))
++                if kind == 'geometry':
++                    expected = dict(document='plus', revision=1, source_sha256=PLUS_SOURCE, anchor=anchor,
++                        policy=inventory[anchor]['observed_geometry_policy'])
++                    if type(observation) is not dict or type(observation.get('policy')) is not dict:
++                        raise ValueError('Capture006 geometry chunk schema changed')
++                    for key in ('saved_rect', 'live_rect'):
++                        if common.finite_rectangle(observation['policy'].get(key)) != common.finite_rectangle(expected['policy'][key]):
++                            raise ValueError('Capture006 geometry chunk rectangle changed')
++                        observation['policy'][key] = expected['policy'][key]
++                    if canonical(observation) != canonical(expected): raise ValueError('Capture006 geometry chunk binding changed')
++                    validate_geometry_policy(definition, inventory[anchor], observation['policy'])
++                else:
++                    box = source_boxes[anchor]
++                    if (type(observation) is not dict or set(observation) != {'expected_anchor', 'expected_maxclass', 'expected_runtime_class', 'expected_rect', 'candidates'} or
++                        observation['expected_anchor'] != anchor or observation['expected_maxclass'] != 'flonum' or
++                        observation['expected_runtime_class'] != 'flonum' or common.finite_rectangle(observation['expected_rect']) != box['rect'] or
++                        type(observation['candidates']) is not list or len(observation['candidates']) != 16):
++                        raise ValueError('Capture006 numeric diagnostic binding changed')
++                    for candidate in observation['candidates']:
++                        if type(candidate) is not dict or set(candidate) != {'maxclass', 'rect'} or type(candidate['maxclass']) is not str:
++                            raise ValueError('Capture006 numeric candidate schema changed')
++                    if Counter(map(candidate_key, observation['candidates'])) != expected_candidates:
++                        raise ValueError('Capture006 exact numeric candidate inventory changed')
++                    matches = [candidate for candidate in observation['candidates'] if common.finite_rectangle(candidate['rect']) == box['rect']]
++                    if len(matches) != 1 or matches[0]['maxclass'] != 'number':
++                        raise ValueError('Capture006 unique numeric candidate changed')
++        take('plus-eligibility', attempt, dict(ready=True, candidates=3, diagnostics=3))
++        for anchor, pin in PLUS_CONTROLLER_COHORT_PINS.items():
++            for method in ('getattr', 'getvalueof'):
++                bracket = dict(anchor=anchor, method=method)
++                take('capability-enter', attempt, bracket); take('capability-call-return', attempt, bracket)
++                if position >= len(rows) or type(rows[position]) is not dict or type(rows[position].get('observation')) is not dict:
++                    raise ValueError('Capture006 capability observation unavailable')
++                observation = take('capability-exit', attempt, dict(bracket, observation=rows[position]['observation']))['observation']
++                expected = dict(method=method, status='returned', representation='scalar-number' if method == 'getattr' else 'singleton-number-array',
++                    value=observation.get('value'))
++                if method == 'getattr': expected['attribute'] = 'format'
++                value = observation.get('value')
++                if (not finite(value) or canonical(observation) != canonical(expected) or
++                    hashlib.sha256(canonical(observation)).hexdigest() != PLUS_CONTROLLER_COHORT_OBSERVATION_SHA256[method] or
++                    geometry_vector_digest([value, 0, 0, 0]) != (PLUS_CONTROLLER_COHORT_FORMAT_SHA256 if method == 'getattr' else pin['initial_numeric_sha256']) or
++                    (method == 'getvalueof' and value != source_boxes[anchor]['initial_numeric'])):
++                    raise ValueError('Capture006 capability shape or source witness changed')
++        take('validate-refused', attempt, dict(diagnostics=3, geometry_dispositions=4)); take('poll-scheduled', attempt)
++    if position != len(rows): raise ValueError('Capture006 unexpected terminal or trailing trace row')
++    return {anchor:source_boxes[anchor]['initial_numeric'] for anchor in PLUS_CONTROLLER_COHORT_PINS}
++
++
++def load_plus_controller_cohort_measurements():
++    """Independently bind immutable006 bytes and source-derived controller witnesses."""
++    work = Path.home() / '.cache/alive-ultra-evidence/arithmetic-max-runtime-006'
++    history = Path.home() / '.cache/alive-ultra-evidence/arithmetic-package-006-historical'
++    evidence = PLUS_CONTROLLER_COHORT_EVIDENCE
++    payloads = {key:read_private(work, work / name) for key, name in (
++        ('config', 'config.json'), ('seal', 'seal.json'), ('trace', 'install-plus-r1-trace.jsonl'), ('controller', 'controller.js'))}
++    for key, payload in payloads.items():
++        if hashlib.sha256(payload).hexdigest() != evidence[key + '_sha256']:
++            raise ValueError('Immutable capture006 cohort evidence changed')
++    public = [('manifest', ROOT / 'preparation-manifest-arithmetic006.json'), ('verification', ROOT / 'verification-capture006.json')]
++    public += [(key, REPO / '.superpowers/sdd/2026-10-22-arithmetic-root-runtime' / name) for key, name in (
++        ('audit', 'capture-006-audit.md'), ('investigation', 'capture-006-trace-investigation.md'))]
++    public_payloads = {}
++    for key, path in public:
++        if path.is_symlink() or not path.is_file() or digest(path) != evidence[key + '_sha256']:
++            raise ValueError('Capture006 immutable public provenance changed')
++        public_payloads[key] = path.read_bytes()
++    historical_payload = read_private(history, history / 'binding.json')
++    if hashlib.sha256(historical_payload).hexdigest() != evidence['historical_binding_sha256']:
++        raise ValueError('Capture006 historical binding changed')
++    historical = parse_json(historical_payload); historical_files = historical.get('files')
++    history_names = set(PACKAGE_FILES) | {'compare.py', 'native_score.py', 'run-runtime.py', 'test_comparison.py', 'test_native_score.py', 'test_runner.py'}
++    if (type(historical_files) is not dict or set(historical_files) != history_names or
++        hashlib.sha256(canonical(historical_files)).hexdigest() != PLUS_CONTROLLER_COHORT_HISTORY_MAP_SHA256 or
++        historical.get('package_sha256') != evidence['package_sha256'] or historical.get('score_sha256') != SCORE_SHA256):
++        raise ValueError('Capture006 historical package inventory changed')
++    for name, sha in historical_files.items():
++        if hashlib.sha256(read_private(history, history / name)).hexdigest() != sha:
++            raise ValueError('Capture006 consumed historical package file changed')
++    config, seal = (parse_json(payloads[key]) for key in ('config', 'seal'))
++    binding = seal.get('package_binding', {}); package_files = {name:historical_files[name] for name in PACKAGE_FILES}
++    if (binding != dict(package_files=package_files, package_sha256=evidence['package_sha256']) or
++        hashlib.sha256(canonical(package_files)).hexdigest() != evidence['package_sha256'] or
++        parse_json(public_payloads['manifest']).get('package_binding') != binding or config.get('package_sha256') != package_files or
++        config.get('work') != str(work) or type(config.get('helpers')) is not list or len(config['helpers']) != 4 or
++        {helper['name']:helper['sha256'] for helper in config['helpers']} != HELPERS):
++        raise ValueError('Capture006 consumed package, helper or owner changed')
++    sealed_names = {'config.json', 'controller.js', 'driver.maxpat', 'lifecycle-observer.js', 'observer.js', 'v8-readback.js'}
++    sealed_names |= {'helpers/' + name for name in HELPERS}
++    sealed_names |= {area + '/' + name + '-r' + str(revision) + '.maxhelp' for area in ('pristine', 'working') for name in ('times', 'plus', 'minus') for revision in (1, 2)}
++    if type(seal.get('files')) is not dict or set(seal['files']) != sealed_names or len(sealed_names) != 22:
++        raise ValueError('Capture006 exact twenty-two sealed inputs required')
++    for name, sha in seal['files'].items():
++        if hashlib.sha256(read_private(work, work / name)).hexdigest() != sha:
++            raise ValueError('Capture006 sealed input changed')
++    for name, sha in HELPERS.items():
++        if seal['files']['helpers/' + name] != sha: raise ValueError('Capture006 sealed helper identity changed')
++    command_payload = read_private(work, work / 'command.json')
++    if hashlib.sha256(command_payload).hexdigest() != PLUS_CONTROLLER_COHORT_COMMAND_SHA256:
++        raise ValueError('Capture006 immutable pending command changed')
++    command = parse_json(command_payload)
++    expected_command = dict(command_id=51, op='operation', action='install', action_revision=1,
++        document='plus', revision=1, source_sha256=PLUS_SOURCE, step_id='install-plus-r1')
++    if canonical(command) != canonical(expected_command): raise ValueError('Capture006 pending request51 identity changed')
++    definitions = [row for row in config.get('documents', []) if row.get('document') == 'plus' and row.get('revision') == 1]
++    if len(definitions) != 1: raise ValueError('Capture006 exact plus revision1 source required')
++    definition = definitions[0]
++    if (type(definition.get('revision')) is not int or definition.get('source_sha256') != PLUS_SOURCE or
++        definition.get('helper_sha256') != HELPERS or type(definition.get('lifecycle_owner_inlet')) is not int or
++        definition['lifecycle_owner_inlet'] != 2 or definition.get('pristine_path') != str(work / 'pristine/plus-r1.maxhelp') or
++        definition.get('working_path') != str(work / 'working/plus-r1.maxhelp') or
++        definition.get('working_windows_path') != windows_path(work / 'working/plus-r1.maxhelp')):
++        raise ValueError('Capture006 plus source, path or owner binding changed')
++    source = read_private(work, definition['pristine_path'])
++    if hashlib.sha256(source).hexdigest() != PLUS_SOURCE: raise ValueError('Capture006 pristine plus source changed')
++    boxes, inventory, edges = source_inventory('plus', parse_json(source)['patcher'], config['helpers'])
++    for view, original in (('boxes', boxes), ('full_inventory', inventory)):
++        for box in original:
++            if box['anchor'] not in PLUS_GEOMETRY_PINS: continue
++            matches = [entry for entry in definition[view] if entry['anchor'] == box['anchor']]
++            if len(matches) != 1: raise ValueError('Capture006 geometry descriptor not unique')
++            policy = matches[0].get('observed_geometry_policy')
++            box.update(observed_geometry_policy=policy, saved_incoming_routes=0, saved_outgoing_routes=0)
++            validate_geometry_policy(definition, box, policy)
++        if canonical(original) != canonical(definition[view]): raise ValueError('Capture006 source-derived inventory changed')
++    if canonical(edges) != canonical(definition['saved_edges']): raise ValueError('Capture006 saved source edges changed')
++    cohort = [dict(anchor=anchor, source_box_sha256=pin['source_box_sha256'], source_text_sha256=pin['source_text_sha256'])
++        for anchor, pin in PLUS_CONTROLLER_COHORT_PINS.items()]
++    if hashlib.sha256(canonical(cohort)).hexdigest() != PLUS_CONTROLLER_COHORT_BINDING:
++        raise ValueError('Capture006 ordered source cohort binding changed')
++    for anchor in PLUS_CONTROLLER_COHORT_PINS:
++        matches = [box for box in boxes if box['anchor'] == anchor]
++        if len(matches) != 1: raise ValueError('Capture006 source numeric anchor not unique')
++        validate_plus_controller_cohort_policy(definition, matches[0], plus_controller_cohort_policy(matches[0]))
++    return _plus_controller_trace(payloads['trace'], definition)
+ 
+ 
+ def controller_representation_policy(box):
+@@ -908,6 +1165,17 @@
+                 if entry['anchor'] not in V8_ROOT_REPRESENTATION_PINS: continue
+                 entry['v8_root_representation_policy'] = validate_v8_representation_policy(definition, entry,
+                     v8_representation_policy(entry, False, observed_v8['roots'][entry['anchor']]), False)
++        if document == 'plus' and source == PLUS_SOURCE:
++            observed_cohort = load_plus_controller_cohort_measurements()
++            for box in boxes:
++                if box['anchor'] not in PLUS_CONTROLLER_COHORT_PINS: continue
++                if box['initial_numeric'] != observed_cohort[box['anchor']]:
++                    raise ValueError('Observed plus controller source-derived default changed')
++                policy = validate_plus_controller_cohort_policy(definition, box, plus_controller_cohort_policy(box))
++                box['plus_controller_numeric_cohort_policy'] = policy
++                entry = next(entry for entry in inventory if entry['anchor'] == box['anchor'])
++                entry.update(initial_numeric=box['initial_numeric'], plus_controller_numeric_cohort_policy=copy.deepcopy(policy))
++            validate_plus_controller_cohort_metadata(definition)
+         definition['observer_leaves'] = observer_definitions(definition)
+         documents.append(definition)
+         public.append(dict(document=document, source_sha256=source, bytes=path.stat().st_size,
+@@ -918,6 +1186,7 @@
+ 
+ 
+ def validate_checkpoint(document, raw, request_id, step_id, action, geometry_dispositions=None, numeric_mode_observations=None):
++    validate_plus_controller_cohort_metadata(document)
+     for box in document['boxes']:
+         if 'controller_numeric_representation_policy' in box:
+             validate_controller_representation_policy(document, box, box['controller_numeric_representation_policy'])
+--- historical006/controller.js
++++ current007/controller.js
+@@ -178,6 +178,50 @@
+ var TIMES_NUMERIC_PINS={"root/obj-4/obj-1":"3c1b5b23cac75bca82bf1aa6c7c161ca91e8e050d41c2fed4549959291d45360","root/obj-4/obj-24":"d46ddd6aff2b7184bce9a8b1218416dcb47db543026c78a533139b289cb73b42","root/obj-4/obj-23":"f122ac20a6bf9ecec78a24a73a0cbd911d938b441439337f9298ae4dfbcc853c"};
+ var NUMERIC_REPRESENTATION_EVIDENCE={"ack_sha256":"47764e9dac8f1ec69514509e22e93849e6d8d9a13783c60843757d8a0a3fb22a","config_sha256":"801e50b51d1055791cc07221776ebeaf1c1d755088a36c86d05722a3cfb94ec3","seal_sha256":"cdfd0f740b0705af080b6bff21d7ace7004bb94bc0713addd99e1eebf84b084d","manifest_sha256":"40bca79b06ddbbcd8644fca527e4240fab68f79b7acc8b526a6467399c562616","rea_evidence_id":"ev_51b14ef10881b6c5b881216a7fd4fa1b0f0c5c5e8bc05f75694dcbc9c4426d5d"};
+ var NUMERIC_REPRESENTATION_PINS={"root/obj-4/obj-1":{"source_box_sha256":"3c1b5b23cac75bca82bf1aa6c7c161ca91e8e050d41c2fed4549959291d45360","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"be69f9cbfae7d8916a7697c10b45556c60dab2bf806f472f39a1f743c6b71562","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"},"root/obj-4/obj-24":{"source_box_sha256":"d46ddd6aff2b7184bce9a8b1218416dcb47db543026c78a533139b289cb73b42","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"3ae5be738626430c7205dcb01a2fba671d0f93a83677c43e9ba362422cdd0754","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"},"root/obj-4/obj-23":{"source_box_sha256":"f122ac20a6bf9ecec78a24a73a0cbd911d938b441439337f9298ae4dfbcc853c","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"6172628b9bf9e972a77a1773539e5ffe75c0b592876ec787c48026a2e90b89f2","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"}};
++var PLUS_CONTROLLER_COHORT_PINS={"root/obj-2/obj-1":{"source_box_sha256":"c873e45cc1ebc4c71b93a736b509fc0f622d4764df74edb3a21f5bad4d999a78","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"97bd3d008866faa2c6cdc5bf0de64333c64bd29bf79bae29b6ae070ec6823267","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"},"root/obj-2/obj-24":{"source_box_sha256":"d84cf4a6a5daa8db1d4b2616b5c1f94385a15d274a80be64ca07ddcb728d8cb3","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"14acfb0d484e461a00397ecfb34329cfe8167d5e47b6360edbd54f0fabbd91bc","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"},"root/obj-2/obj-23":{"source_box_sha256":"5b0e92ade41a0633d5d5dc178c9fd1ebc519f7014d331e4a924afff0dfe07982","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"38b2cd4242257c9f9802ef997eccb7d32e451c1b05f37868136baa42fb89636c","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"}};
++var PLUS_CONTROLLER_COHORT_BINDING="31e249de8a69dd317ae9b50f93bca88e3da8392edda68dd7b66865e6a0c98a89";
++var PLUS_CONTROLLER_FORMAT_SHA256="dcdadd560ab2234a2bf2d2b5ed44e5d7640e88eefe6bdbc98aa84aaf31649983";
++var PLUS_CONTROLLER_COHORT_EVIDENCE={"trace_sha256":"2b3287e45de1123f8ac7582544aa13da5dbfba6650d2aa33e7a46b5f8be39a63","config_sha256":"4a922bf0b1e2d2c5755eb339d0fa8e73a4139f74c5acc3b92352388e85a167ad","seal_sha256":"3e5b31cdcb62618e08444d35c2ec20815cf07a21aad86de4d058ca6a94170935","manifest_sha256":"c4fc2bf8badc5cfc98b85d2b1bc8dad9cd7df42f730665521080631ecefad898","controller_sha256":"c0b0a45ef7a72a484fa976774f5a10e1ca9fcf6892603f723fb7df6c220a3d97","package_sha256":"b140eddbac9d134e162ff4cfdf2388be1285cf45b9127bd8bcc0d253ff0e99e5","historical_binding_sha256":"bce1edf4484c73bf95a5c1c1648ff7e7f8f3ce479fe96c92be6639fa6e466df6","audit_sha256":"9ded6e777503d6181120dc92c3f4745ec4eb565e5a6f29e9bd52c38755870e8d","investigation_sha256":"7b555ff81a58e426185fb9fca93b23216e18cf0205a8a923b3ca70c892e3e54b","verification_sha256":"081856c4f782f6c1603d998e6637c2355c84585635c7a3deca980e1b1cce2bfc","rea_evidence_id":"ev_a0ed6947bdad1fbe7e7ba19b62634a570fdff7803e7db65363b019dd0db409c8","trace_role":"incomplete-install-prefix","observed_revision":1};
++function plusControllerNumericCohortPolicy(expected,definition,configuration) {
++    var policy=expected.plus_controller_numeric_cohort_policy;
++    if(typeof policy==="undefined")return null;
++    var pin=PLUS_CONTROLLER_COHORT_PINS[expected.anchor],configured={};
++    if(configuration&&Array.isArray(configuration.helpers)&&configuration.helpers.length===4)
++        for(var i=0;i<configuration.helpers.length;i++)configured[configuration.helpers[i].name]=configuration.helpers[i].sha256;
++    if(!pin||!definition||definition.document!=="plus"||definition.source_sha256!==PLUS_SOURCE||
++        !sameData(definition.helper_sha256,GEOMETRY_HELPERS)||!sameData(configured,GEOMETRY_HELPERS)||
++        (typeof definition.revision!=="undefined"&&definition.revision!==1&&definition.revision!==2)||
++        expected.maxclass!=="flonum"||expected.runtime_class!=="flonum"||!sameData(expected.runtime_classes,["flonum"])||
++        expected.source_box_sha256!==pin.source_box_sha256||expected.source_text_sha256!==pin.source_text_sha256||
++        geometryVectorHash(expected.rect)!==pin.saved_rect_sha256||typeof expected.initial_numeric!=="number"||
++        !isFinite(expected.initial_numeric)||geometryVectorHash([expected.initial_numeric,0,0,0])!==pin.initial_numeric_sha256)
++        throw Error("plus-controller-cohort-source-binding");
++    var wanted={kind:"plus-controller-numeric-cohort-v1",engine:"js-controller",document:"plus",source_sha256:PLUS_SOURCE,
++        anchor:expected.anchor,source_class:"flonum",runtime_class:"number",source_box_sha256:pin.source_box_sha256,
++        source_text_sha256:pin.source_text_sha256,saved_rect_sha256:pin.saved_rect_sha256,initial_numeric_sha256:pin.initial_numeric_sha256,
++        cohort_anchors:Object.keys(PLUS_NUMERIC_PINS),cohort_binding_sha256:PLUS_CONTROLLER_COHORT_BINDING,
++        helper_sha256:GEOMETRY_HELPERS,evidence:PLUS_CONTROLLER_COHORT_EVIDENCE,
++        format_method:"getattr",format_attribute:"format",format_representation:"scalar-number",format_value_sha256:PLUS_CONTROLLER_FORMAT_SHA256,
++        getter_method:"getvalueof",getter_representation:"singleton-number-array",finite_required:true,
++        source_initial_equality:true,fresh_complete_cohort_required:true};
++    if(!sameData(policy,wanted))throw Error("plus-controller-cohort-policy-changed");
++    return policy;
++}
++function plusControllerCohortMetadata(definition,configuration) {
++    var boxes=definition.boxes||[],inventory=definition.full_inventory||[],selected=[],saved=[],anchors=Object.keys(PLUS_NUMERIC_PINS);
++    for(var i=0;i<boxes.length;i++)if(typeof boxes[i].plus_controller_numeric_cohort_policy!=="undefined")selected.push(boxes[i]);
++    for(var i=0;i<inventory.length;i++)if(typeof inventory[i].plus_controller_numeric_cohort_policy!=="undefined")saved.push(inventory[i]);
++    if(!selected.length&&!saved.length)return false;
++    if(selected.length!==3||saved.length!==3)throw Error("incomplete-plus-controller-cohort-policy");
++    var keys=["maxclass","runtime_class","runtime_classes","rect","source_box_sha256","source_text_sha256","initial_numeric","plus_controller_numeric_cohort_policy"];
++    for(var i=0;i<anchors.length;i++) {
++        var anchor=anchors[i],a=selected.filter(function(b){return b.anchor===anchor;}),b=saved.filter(function(b){return b.anchor===anchor;});
++        if(a.length!==1||b.length!==1)throw Error("plus-controller-cohort-member-inventory");
++        plusControllerNumericCohortPolicy(a[0],definition,configuration);plusControllerNumericCohortPolicy(b[0],definition,configuration);
++        for(var j=0;j<keys.length;j++)if(!sameData(a[0][keys[j]],b[0][keys[j]]))throw Error("plus-controller-cohort-descriptor-copy");
++    }
++    return true;
++}
+ function sameData(a,b) {
+     if(a===b)return true;
+     if(!a||!b||typeof a!=="object"||typeof b!=="object"||Array.isArray(a)!==Array.isArray(b))return false;
+@@ -298,12 +342,17 @@
+         !finite(shared.request_id)||shared.request_id<1||Math.floor(shared.request_id)!==shared.request_id)
+         throw Error("unobserved-plus-numeric-preflight-binding");
+ }
+-function numericPreflightObservation(object,expected,definition) {
++function numericPreflightObservation(object,expected,definition,cohort) {
+     if(definition&&definition.document==="plus") {
+-        if(!plusPreflightContext||plusPreflightContext.definition!==definition||
+-            !plusPreflightContext.candidates.some(function(row){return row.object===object&&row.expected===expected;}))
++        var context=cohort||plusPreflightContext;
++        if(!context||context.definition!==definition||
++            !context.candidates.some(function(row){return row.object===object&&row.expected===expected;}))
+             throw Error("incomplete-plus-numeric-preflight-inventory");
+-        plusNumericPreflightBinding(object,expected,definition,plusPreflightContext.root);
++        plusNumericPreflightBinding(object,expected,definition,context.root);
++        if(cohort&&(!sameData(cohort.request_snapshot,plusInstallIdentity())||
++            cohort.definition_snapshot!==JSON.stringify(definition)||
++            cohort.owner_snapshot!==JSON.stringify(config.lifecycle.owners[definition.lifecycle_owner_inlet])))
++            throw Error("plus-controller-cohort-preflight-changed");
+     }else{
+         var configured={};
+         if(config&&config.helpers&&config.helpers.length===4)for(var i=0;i<config.helpers.length;i++)
+@@ -317,12 +366,19 @@
+             typeof shared.request_id!=="number"||shared.request_id<1||Math.floor(shared.request_id)!==shared.request_id||
+             typeof shared.step_id!=="string")throw Error("unobserved-numeric-preflight-binding");
+     }
+-    return {anchor:expected.anchor,document:definition.document,revision:definition.revision,
++    var observation={anchor:expected.anchor,document:definition.document,revision:definition.revision,
+         source_sha256:definition.source_sha256,source_box_sha256:expected.source_box_sha256,
+         request_id:shared.request_id,step_id:shared.step_id,operation_action:"install",
+-        source_class:"flonum",runtime_class:"number",receipt_tag_observed:false,
+-        format_observation:capabilityObservation(object,"getattr","format",expected.anchor),
+-        value_observation:capabilityObservation(object,"getvalueof",null,expected.anchor)};
++        source_class:"flonum",runtime_class:"number",receipt_tag_observed:false};
++    if(cohort) {
++        observation.engine="js-controller";observation.cohort_satisfied=false;
++        observation.policy=plusControllerNumericCohortPolicy(expected,definition,config);
++        context.candidates.filter(function(row){return row.object===object;})[0].diagnostic.numeric_preflight_observation=observation;
++        controllerRepresentationObservations.push(observation);
++    }
++    observation.format_observation=capabilityObservation(object,"getattr","format",expected.anchor);
++    observation.value_observation=capabilityObservation(object,"getvalueof",null,expected.anchor);
++    return observation;
+ }
+ function controllerNumericRepresentationPolicy(expected,definition,configuration) {
+     var policy=expected.controller_numeric_representation_policy;if(typeof policy==="undefined")return null;
+@@ -384,19 +440,20 @@
+         row.value_observation.value!==expected.initial_numeric)throw Error("controller-numeric-live-representation-refused");
+     return row;
+ }
+-function resolve(patcher,expected,definition,dispositions,plusCandidates) {
++function resolve(patcher,expected,definition,dispositions,plusCandidates,bindings) {
+     var forbidden=["annotation_width_policy","observer_policy","shell_height_policy","annotation_geometry_policy","numeric_mode_policy"];
+     for(var i=0;i<forbidden.length;i++)if(typeof expected[forbidden[i]]!=="undefined")
+         throw Error("arithmetic-policy-not-admitted");
++    plusControllerNumericCohortPolicy(expected,definition,config);
+     var policy=observedGeometryPolicy(expected,definition,config);
+     var representation=controllerNumericRepresentationPolicy(expected,definition,config);
+-    var found=[],diagnostic={expected_anchor:expected.anchor,expected_rect:expected.rect,
++    var found=[],foundRects=[],diagnostic={expected_anchor:expected.anchor,expected_rect:expected.rect,
+         expected_maxclass:expected.maxclass,expected_runtime_class:expected.runtime_class,candidates:[]};
+     for(var o=patcher.firstobject;o;o=o.nextobject) {
+         var rect=null;try{rect=o.getboxattr("patching_rect");}catch(error){}
+         diagnostic.candidates.push({maxclass:o.maxclass,rect:rect});
+         var savedMatches=policy&&definition.document==="plus"?sameNumbers(rect,expected.rect):sameRect(rect,expected.rect);
+-        if(savedMatches||(policy&&sameNumbers(rect,policy.live_rect)))found.push(o);
++        if(savedMatches||(policy&&sameNumbers(rect,policy.live_rect))){found.push(o);foundRects.push(rect);}
+     }
+     var classes=representation?["number"]:(expected.runtime_classes||[expected.runtime_class]);
+     if(found.length!==1||classes.indexOf(found[0].maxclass)===-1||
+@@ -418,6 +475,8 @@
+             if(dispositions===geometryDispositions)installTraceObservation("geometry",dispositions.length-1,dispositions[dispositions.length-1]);
+         }
+     }
++    if(bindings)bindings.push({object:found[0],expected:expected,parent:patcher,
++        rect:foundRects[0].slice(0),runtime_class:found[0].maxclass});
+     return found[0];
+ }
+ function tree(patcher) {
+@@ -430,7 +489,14 @@
+ }
+ function validateTree(patcher,definition) {
+     anchorDiagnostics=[];geometryDispositions=[];numericModeObservations=[];controllerRepresentationObservations=[];
+-    plusPreflightContext=null;var plusCandidates=[];
++    plusPreflightContext=null;var plusCandidates=[],plusPolicy=false,plusPolicyError=null,bindings=[],scopeHandles={};
++    try{plusPolicy=plusControllerCohortMetadata(definition,config);}catch(error){plusPolicyError=error;}
++    var cohort=null;
++    if(plusPolicy) {
++        var owners=config&&config.lifecycle&&config.lifecycle.owners;
++        cohort={definition:definition,candidates:plusCandidates,root:patcher,request_snapshot:plusInstallIdentity(),
++            definition_snapshot:JSON.stringify(definition),owner_snapshot:JSON.stringify(owners&&owners[definition.lifecycle_owner_inlet])};
++    }
+     var actualTotal=tree(patcher).length;
+     if(actualTotal!==definition.full_inventory.length)retainAnchorDiagnostic({scope:"root",diagnostic_type:"tree-count",
+         expected_count:definition.full_inventory.length,actual_count:actualTotal});
+@@ -442,13 +508,14 @@
+         return found.length===1?found[0]:null;
+     }
+     function scope(p,parent) {
++        scopeHandles[parent]=p;
+         var expected=definition.full_inventory.filter(function(b){return b.anchor.slice(0,b.anchor.lastIndexOf("/"))===parent;});
+         var actual=0;for(var o=p.firstobject;o;o=o.nextobject)actual++;
+         if(actual!==expected.length)retainAnchorDiagnostic({scope:parent,diagnostic_type:"scope-count",
+             expected_count:expected.length,actual_count:actual});
+         for(var i=0;i<expected.length;i++) {
+             var b=expected[i],object=null,before=anchorDiagnostics.length;
+-            try{object=resolve(p,b,definition,geometryDispositions,plusCandidates);}catch(error){
++            try{object=resolve(p,b,definition,geometryDispositions,plusCandidates,plusPolicy?bindings:null);}catch(error){
+                 if(error&&error.install_trace_refusal)throw error;
+                 if(anchorDiagnostics.length===before)retainAnchorDiagnostic({expected_anchor:b.anchor,
+                     expected_rect:b.rect,expected_runtime_class:b.runtime_class,diagnostic_type:"invalid-anchor-binding",
+@@ -466,11 +533,12 @@
+     scope(patcher,"root");
+     installTraceCollected();
+     // Defer plus getters until the entire inventory and all three bindings are checked.
+-    var plusEligibilityReported=false;
++    var plusEligibilityReported=false,plusSatisfied=false;
+     if(definition.document==="plus"&&actualTotal===20&&definition.full_inventory.length===20&&
+         anchorDiagnostics.length===3&&plusCandidates.length===3) {
+-        var ready=true,anchors={};
++        var ready=!plusPolicyError,anchors={};
+         try{
++            if(plusPolicyError)throw plusPolicyError;
+             for(var anchor in PLUS_GEOMETRY_PINS) {
+                 var originals=definition.full_inventory.filter(function(b){return b.anchor===anchor;});
+                 if(originals.length!==1||!originals[0].observed_geometry_policy)
+@@ -481,19 +549,107 @@
+                 var row=plusCandidates[i];if(anchors[row.expected.anchor])throw Error("duplicate-plus-preflight-anchor");
+                 anchors[row.expected.anchor]=true;plusNumericPreflightBinding(row.object,row.expected,definition,patcher);
+             }
++            if(plusPolicy) {
++                if(definition.basic_anchor!=="root/obj-2"||definition.basic_varname!=="basic_tab"||
++                    !scopeHandles[definition.basic_anchor]||definition.boxes.length!==16||bindings.length!==17||
++                    definition.full_inventory.filter(function(b){return b.anchor.slice(0,b.anchor.lastIndexOf("/"))===definition.basic_anchor;}).length!==16)
++                    throw Error("plus-controller-cohort-complete-handles");
++                var fields=["maxclass","runtime_class","runtime_classes","rect","source_box_sha256","source_text_sha256",
++                    "inlets","outlets","authored_text","authored_empty"],seen={};
++                for(var i=0;i<definition.boxes.length;i++) {
++                    var box=definition.boxes[i],saved=definition.full_inventory.filter(function(b){return b.anchor===box.anchor;});
++                    if(seen[box.anchor]||saved.length!==1||box.anchor!==definition.basic_anchor+"/"+box.id||
++                        box.anchor.slice(0,box.anchor.lastIndexOf("/"))!==definition.basic_anchor)
++                        throw Error("plus-controller-cohort-basic-descriptor");
++                    seen[box.anchor]=true;
++                    for(var j=0;j<fields.length;j++)if(!sameData(box[fields[j]],saved[0][fields[j]]))
++                        throw Error("plus-controller-cohort-basic-copy");
++                }
++                if(!sameData(cohort.request_snapshot,plusInstallIdentity())||cohort.definition_snapshot!==JSON.stringify(definition)||
++                    cohort.owner_snapshot!==JSON.stringify(config.lifecycle.owners[definition.lifecycle_owner_inlet]))
++                    throw Error("plus-controller-cohort-preflight-changed");
++            }
+         }catch(error){ready=false;}
+         plusEligibilityReported=true;
+         installTraceEvent("plus-eligibility",{ready:ready,candidates:plusCandidates.length,diagnostics:anchorDiagnostics.length});
+         if(ready) {
+-            plusPreflightContext={definition:definition,candidates:plusCandidates,root:patcher};
++            if(!plusPolicy)cohort={definition:definition,candidates:plusCandidates,root:patcher};
++            if(!plusPolicy)plusPreflightContext=cohort;
+             try{for(var i=0;i<plusCandidates.length;i++) {
+                 var row=plusCandidates[i];
+-                row.diagnostic.numeric_preflight_observation=numericPreflightObservation(row.object,row.expected,definition);
++                row.diagnostic.numeric_preflight_observation=numericPreflightObservation(row.object,row.expected,definition,plusPolicy?cohort:null);
+             }}finally{plusPreflightContext=null;}
++            if(plusPolicy) {
++                plusSatisfied=controllerRepresentationObservations.length===3&&
++                    sameData(cohort.request_snapshot,plusInstallIdentity())&&cohort.definition_snapshot===JSON.stringify(definition)&&
++                    cohort.owner_snapshot===JSON.stringify(config.lifecycle.owners[definition.lifecycle_owner_inlet]);
++                for(var i=0;i<controllerRepresentationObservations.length;i++) {
++                    var observation=controllerRepresentationObservations[i],format=observation.format_observation,value=observation.value_observation;
++                    var expected=plusCandidates[i].expected;
++                    if(!format||format.status!=="returned"||format.representation!=="scalar-number"||!finite(format.value)||
++                        geometryVectorHash([format.value,0,0,0])!==PLUS_CONTROLLER_FORMAT_SHA256||
++                        !value||value.status!=="returned"||value.representation!=="singleton-number-array"||!finite(value.value)||
++                        value.value!==expected.initial_numeric)plusSatisfied=false;
++                }
++                for(var i=0;i<controllerRepresentationObservations.length;i++)
++                    controllerRepresentationObservations[i].cohort_satisfied=plusSatisfied;
++            }
+         }
+     }
+     if(!plusEligibilityReported)installTraceEvent("plus-eligibility",{ready:false,candidates:plusCandidates.length,diagnostics:anchorDiagnostics.length});
+-    if(anchorDiagnostics.length)throw Error("aggregate-original-hierarchy-preflight-failed");
++    if(plusPolicyError||plusPolicy&&!plusSatisfied||anchorDiagnostics.length&&!plusSatisfied)
++        throw Error("aggregate-original-hierarchy-preflight-failed");
++    if(plusSatisfied) {
++        for(var i=0;i<plusCandidates.length;i++)bindings.push({object:plusCandidates[i].object,expected:plusCandidates[i].expected,
++            parent:scopeHandles[definition.basic_anchor],rect:plusCandidates[i].expected.rect.slice(0),runtime_class:"number"});
++        var objects={};
++        for(var i=0;i<definition.boxes.length;i++) {
++            var box=definition.boxes[i],matches=bindings.filter(function(b){return b.expected.anchor===box.anchor;});
++            if(matches.length!==1)throw Error("plus-controller-cohort-handle-map");objects[box.anchor]=matches[0].object;
++        }
++        return {root:patcher,definition:definition,basic:scopeHandles[definition.basic_anchor],objects:objects,bindings:bindings,
++            candidates:plusCandidates,definition_snapshot:cohort.definition_snapshot,request_snapshot:cohort.request_snapshot,
++            owner_snapshot:cohort.owner_snapshot};
++    }
++}
++function plusInstallIdentity() {
++    return {request_id:shared.request_id,step_id:shared.step_id,action:shared.action,
++        action_document:shared.action_document,action_revision:shared.action_revision};
++}
++function createPlusValidationPass() {
++    var active=true,validated=false,consumed=false,issued=null,payload=null;
++    return {
++        validate:function(root,definition) {
++            if(!active||validated)throw Error("plus-validation-pass-expired");validated=true;
++            payload=validateTree(root,definition);
++            if(!payload)return null;
++            issued={};return issued;
++        },
++        bind:function(root,definition,result) {
++            // Authenticate the reference before inspecting any supplied object's properties.
++            if(!active||consumed||!issued||result!==issued||root!==payload.root||definition!==payload.definition)
++                throw Error("plus-validation-result-not-owned");
++            active=false;
++            if(payload.definition_snapshot!==JSON.stringify(definition)||!sameData(payload.request_snapshot,plusInstallIdentity())||
++                !plusControllerCohortMetadata(definition,config))throw Error("plus-validation-binding-changed");
++            for(var i=0;i<payload.candidates.length;i++) {
++                var row=payload.candidates[i];plusNumericPreflightBinding(row.object,row.expected,definition,root);
++            }
++            for(var i=0;i<payload.bindings.length;i++) {
++                var row=payload.bindings[i];
++                if(row.object.maxclass!==row.runtime_class||!sameNumbers(row.object.getboxattr("patching_rect"),row.rect)||
++                    row.expected.child&&row.object.varname!==row.expected.source_varname)
++                    throw Error("plus-validation-handle-changed");
++            }
++            if(!sameData(payload.request_snapshot,plusInstallIdentity())||
++                payload.definition_snapshot!==JSON.stringify(definition)||
++                payload.owner_snapshot!==JSON.stringify(config.lifecycle.owners[definition.lifecycle_owner_inlet]))
++                throw Error("plus-validation-owner-changed");
++            consumed=true;
++            return attachBindings(root,definition,payload.basic,payload.objects);
++        },
++        expire:function(){active=false;issued=null;payload=null;}
++    };
+ }
+ function dispatch(object,message) {
+     if(!message||Object.keys(message).length!==2||!Array.isArray(message.atoms))throw Error("message-shape");
+@@ -549,6 +705,7 @@
+     busy=false;
+ }
+ function bind(patcher,definition) {
++    if(plusControllerCohortMetadata(definition,config))throw Error("plus-validation-result-required");
+     validateTree(patcher,definition);
+     var box=patcher.getnamed(definition.basic_varname);
+     if(!box)throw Error("saved-basic-unavailable");
+@@ -563,6 +720,9 @@
+         }
+     }
+     if(anchorDiagnostics.length)throw Error("aggregate-basic-preflight-failed");
++    return attachBindings(patcher,definition,basic,objects);
++}
++function attachBindings(patcher,definition,basic,objects) {
+     for(var i=0;i<definition.boxes.length;i++) {
+         var b=definition.boxes[i],object=objects[b.anchor];object.varname="__alive_help_"+b.id.replace(/-/g,"_");
+         for(var port=0;port<b.outlets;port++) {
+@@ -600,6 +760,7 @@
+     function poll() {
+         // A scheduled callback remains owned by this install after the global trace changes.
+         if(terminalFailure)return;
++        var pass=createPlusValidationPass(),validation=null;
+         try {
+             if(installTrace&&installTrace.active)installTrace.attempt=attempts+1;
+             installTraceEvent("poll-enter");
+@@ -608,7 +769,7 @@
+             installTraceEvent("root-decision",{root_present:!!p,path_match:!!matches});
+             if(matches) {
+                 installTraceEvent("validate-enter");
+-                try{validateTree(p,definition);stable++;installTraceEvent("validate-return");}catch(e){
++                try{validation=pass.validate(p,definition);stable++;installTraceEvent("validate-return");}catch(e){
+                     stable=0;if(e&&e.install_trace_refusal)throw e;
+                     if(installTrace&&installTrace.active)installTrace.original_error=String(e);
+                     installTraceCollected();installTraceEvent("validate-refused",{diagnostics:anchorDiagnostics.length,
+@@ -618,7 +779,7 @@
+                 // The pinned helper's deferred initialization must have settled before binding.
+                 if(stable>=5&&attempts>=10) {
+                     installTraceEvent("bind-enter");
+-                    roots[doc]=bind(p,definition);revisions[doc]=revision;
++                    roots[doc]=validation?pass.bind(p,definition,validation):bind(p,definition);revisions[doc]=revision;
+                     installTraceEvent("bind-return");
+                     record("step-complete",{document:doc,revision:revision,source_sha256:definition.source_sha256});
+                     installTraceEvent("install-ready-for-ack");
+@@ -632,7 +793,7 @@
+             if(attempts>=80)throw Error("bounded-helper-settling-timeout");
+             pollTask=new Task(poll,this);pollTask.schedule(100);
+             installTraceEvent("poll-scheduled");
+-        }catch(error){terminalFailure=true;fail(command,error);}
++        }catch(error){terminalFailure=true;fail(command,error);}finally{pass.expire();}
+     }
+     try {
+         pollTask=new Task(poll,this);pollTask.schedule(100);
+--- historical006/test_helpers.cjs
++++ current007/test_helpers.cjs
+@@ -1122,3 +1122,212 @@
+   casesWithUnexpectedQueue: scheduledFailures.filter(row => !row.expectedQueue).length}));
+ assert.ok(scheduledFailures.every(row => row.activityUnchanged && row.ackUnchanged && row.expectedQueue),
+   'every failed install must leave already queued callbacks inert, including after a new install');
++
++// These fixtures exercise the script boundary; only Max/File/Task are synthetic.
++function plus007Policy(c, expected) {
++  return {kind: 'plus-controller-numeric-cohort-v1', engine: 'js-controller', document: 'plus',
++    source_sha256: c.PLUS_SOURCE, anchor: expected.anchor, source_class: 'flonum', runtime_class: 'number',
++    ...plain(c.PLUS_CONTROLLER_COHORT_PINS[expected.anchor]),
++    cohort_anchors: Object.keys(c.PLUS_NUMERIC_PINS), cohort_binding_sha256: c.PLUS_CONTROLLER_COHORT_BINDING,
++    helper_sha256: plain(c.GEOMETRY_HELPERS), evidence: plain(c.PLUS_CONTROLLER_COHORT_EVIDENCE || {}),
++    format_method: 'getattr', format_attribute: 'format', format_representation: 'scalar-number',
++    format_value_sha256: hash([6, 0, 0, 0]), getter_method: 'getvalueof',
++    getter_representation: 'singleton-number-array', finite_required: true, source_initial_equality: true,
++    fresh_complete_cohort_required: true};
++}
++function plus007Fixture(base = plusPreflightFixture()) {
++  const f = base, c = f.context, d = f.definition;
++  d.basic_anchor = 'root/obj-2'; d.basic_varname = 'basic_tab'; d.saved_edges = [];
++  const basicEntries = d.full_inventory.filter(b => b.anchor.startsWith('root/obj-2/'));
++  const extraClasses = ['number', 'number', 'number', 'number', '*', '*', 'button', 'comment', 'comment', 'comment', 'comment', 'jsui'];
++  basicEntries.forEach((b, i) => {
++    b.id = b.anchor.split('/').at(-1); b.authored_text = ''; b.authored_empty = true; b.inlets = 1;
++    if (i >= 4) {
++      const cls = extraClasses[i - 4]; b.maxclass = cls === '*' ? 'newobj' : cls;
++      b.runtime_class = cls; b.runtime_classes = [cls]; f.scopes['root/obj-2'][i].maxclass = cls;
++    }
++    b.outlets = ['number', 'flonum'].includes(b.maxclass) ? 2 : b.maxclass === 'comment' ? 0 : 1;
++    b.initial_numeric = ['number', 'flonum'].includes(b.maxclass) ? 123.5 : null;
++  });
++  c.PLUS_CONTROLLER_COHORT_PINS = Object.fromEntries(f.targets.map(({expected: b}) => [b.anchor,
++    {...plain(c.PLUS_NUMERIC_PINS[b.anchor]), initial_numeric_sha256: hash([123.5, 0, 0, 0])}]));
++  c.PLUS_CONTROLLER_COHORT_BINDING = 'd'.repeat(64);
++  c.PLUS_CONTROLLER_FORMAT_SHA256 = hash([6, 0, 0, 0]);
++  for (const {expected: b} of f.targets) b.plus_controller_numeric_cohort_policy = plus007Policy(c, b);
++  d.boxes = plain(basicEntries);
++  d.observer_leaves = d.boxes.flatMap(b => Array.from({length: b.outlets}, (_, port) =>
++    ({anchor: b.anchor, port, varname: '__alive_help_leaf_' + b.id.replace(/-/g, '_') + '_' + port})));
++  const basic = {firstobject: f.scopes['root/obj-2'][0]}, activity = [];
++  f.scopes.root[1].subpatcher = () => basic;
++  f.root.getnamed = () => assert.fail('plus bind must reuse the validated Basic handle');
++  function attach(scope) {
++    scope.newdefault = (...args) => {activity.push(['newdefault', ...args]); return {setboxattr() {}};};
++    scope.connect = (...args) => activity.push(['connect', args.length]);
++  }
++  attach(f.root); attach(basic); f.basic = basic; f.activity = activity;
++  return f;
++}
++const failures007 = [], completed007 = [];
++function case007(name, body) {
++  if (process.env.ARITHMETIC_007_CASE && process.env.ARITHMETIC_007_CASE !== name) return;
++  try {body(); completed007.push(name);} catch (error) {failures007.push({name, error: error.message});}
++}
++case007('plus007_preflight_suppresses_capabilities', () => {
++  for (const mutation of ['policy', 'partial', 'box-copy', 'basic-duplicate', 'port-copy', 'extra-diagnostic', 'parent', 'owner']) {
++    const f = plus007Fixture();
++    if (mutation === 'policy') f.targets[0].expected.plus_controller_numeric_cohort_policy.evidence.bad = true;
++    if (mutation === 'partial') delete f.targets[0].expected.plus_controller_numeric_cohort_policy;
++    if (mutation === 'box-copy') f.definition.boxes[1].source_box_sha256 = 'f'.repeat(64);
++    if (mutation === 'basic-duplicate') f.definition.boxes[15] = plain(f.definition.boxes[14]);
++    if (mutation === 'port-copy') f.definition.boxes[15].outlets++;
++    if (mutation === 'extra-diagnostic') f.scopes['root/obj-2'].at(-1).maxclass = 'wrong';
++    if (mutation === 'parent') delete f.root.parentpatcher;
++    if (mutation === 'owner') f.context.config.lifecycle.owners[2].inlet = '2';
++    assert.throws(() => f.context.validateTree(f.root, f.definition), mutation + ': invalid preflight accepted');
++    assert.equal(f.calls.length, 0, mutation + ': invalid preflight probed target');
++  }
++});
++case007('plus007_current_capability_refusal', () => {
++  for (const change of [{getattr: () => [6]}, {getattr: () => 5}, {getattr: undefined},
++    {getattr() {throw Error('synthetic');}}, {getvalueof: () => 123.5}, {getvalueof: () => [124]},
++    {getvalueof: () => null}, {getvalueof: () => undefined}, {getvalueof: () => [NaN]}, {getvalueof: () => [1, 2]}]) {
++    const f = plus007Fixture(); Object.assign(f.targets[0].object, change);
++    assert.throws(() => f.context.validateTree(f.root, f.definition));
++    assert.equal(f.context.anchorDiagnostics.length, 3);
++    assert.equal(f.context.controllerRepresentationObservations.length, 3, 'all cohort outcomes must be retained');
++    assert.ok(f.context.controllerRepresentationObservations.every(r => r.cohort_satisfied === false));
++    assert.equal(f.activity.length, 0);
++  }
++});
++case007('plus007_fresh_cohort_bind_reuse', () => {
++  const f = plus007Fixture(installTraceFixture()); f.start(); f.finish();
++  assert.equal(f.ack().success, true); assert.equal(f.counts().polls, 10); assert.equal(f.calls.length, 60);
++  assert.equal(f.context.anchorDiagnostics.length, 3, 'original class facts must survive accepted cohort');
++  assert.equal(f.context.controllerRepresentationObservations.length, 3);
++  assert.ok(f.context.controllerRepresentationObservations.every(r => r.cohort_satisfied === true));
++  assert.equal(f.activity.filter(row => row[0] === 'newdefault').length, 23);
++  assert.equal(f.context.roots.plus.basic, f.basic);
++  for (const t of f.targets) assert.equal(f.context.roots.plus.objects[t.expected.anchor], t.object);
++});
++case007('plus007_result_ownership_lifetime', () => {
++  for (const mutation of ['request', 'owner', 'definition']) {
++    const f = plus007Fixture(), c = f.context, first = f.scopes.root[0], geometry = first.getboxattr;
++    let changed = false;
++    first.getboxattr = (...args) => {
++      if (!changed) {
++        changed = true;
++        if (mutation === 'request') c.shared.request_id++;
++        if (mutation === 'owner') c.config.lifecycle.owners[2].channel = 'changed';
++        if (mutation === 'definition') f.definition.boxes.at(-1).outlets++;
++      }
++      return geometry.apply(first, args);
++    };
++    assert.throws(() => c.createPlusValidationPass().validate(f.root, f.definition),
++      mutation + ': traversal must not change ownership before capabilities');
++    assert.equal(f.calls.length, 0); assert.equal(f.activity.length, 0);
++  }
++  for (const mutation of ['request', 'owner', 'definition']) {
++    const f = plus007Fixture(), c = f.context, last = f.targets.at(-1).object, getter = last.getvalueof;
++    last.getvalueof = () => {
++      const value = getter();
++      if (mutation === 'request') c.shared.request_id++;
++      if (mutation === 'owner') c.config.lifecycle.owners[2].channel = 'changed';
++      if (mutation === 'definition') f.definition.boxes.at(-1).outlets++;
++      return value;
++    };
++    assert.throws(() => c.createPlusValidationPass().validate(f.root, f.definition),
++      mutation + ': a getter must not change ownership while minting a result');
++    assert.equal(f.calls.length, 6); assert.equal(f.activity.length, 0);
++    assert.ok(c.controllerRepresentationObservations.every(r => r.cohort_satisfied === false));
++  }
++  for (const mutation of ['forged', 'foreign', 'expired', 'consumed', 'request', 'root', 'definition', 'owner', 'geometry', 'revision']) {
++    const f = plus007Fixture(), c = f.context;
++    assert.equal(typeof c.createPlusValidationPass, 'function', 'local cohort issuer missing');
++    const pass = c.createPlusValidationPass(), result = pass.validate(f.root, f.definition);
++    assert.equal(f.calls.length, 6);
++    let supplied = result, root = f.root, definition = f.definition, consuming = pass;
++    if (mutation === 'forged') supplied = {get consume() {assert.fail('forged consume getter executed');}};
++    if (mutation === 'foreign') consuming = c.createPlusValidationPass();
++    if (mutation === 'expired') pass.expire();
++    if (mutation === 'consumed') pass.bind(root, definition, result);
++    if (mutation === 'request') c.shared.request_id++;
++    if (mutation === 'root') root = {...root};
++    if (mutation === 'definition') definition = plain(definition);
++    if (mutation === 'owner') c.config.lifecycle.owners[2].working_path = 'wrong';
++    if (mutation === 'geometry') f.targets[0].object.live[0] += .001;
++    if (mutation === 'revision') c.shared.action_revision = 2;
++    const before = f.activity.length;
++    assert.throws(() => consuming.bind(root, definition, supplied), mutation);
++    assert.equal(f.activity.length, before); assert.equal(f.calls.length, 6);
++    assert.throws(() => c.bind(root, definition, supplied));
++    assert.equal(f.activity.length, before, 'ordinary bind must not accept a forged result');
++  }
++});
++case007('plus007_both_independent_revisions', () => {
++  for (const revision of [1, 2]) {
++    const f = plus007Fixture(plusPreflightFixture(revision)), c = f.context;
++    assert.equal(typeof c.createPlusValidationPass, 'function');
++    const a = c.createPlusValidationPass(), result = a.validate(f.root, f.definition);
++    const state = a.bind(f.root, f.definition, result);
++    assert.equal(state.definition.revision, revision); assert.equal(f.calls.length, 6);
++    assert.equal(c.controllerRepresentationObservations.length, 3);
++    assert.ok(c.controllerRepresentationObservations.every(r => r.revision === revision));
++  }
++});
++case007('plus007_old_fixture_refusal', () => {
++  const old = plusPreflightFixture(); assert.throws(() => old.context.validateTree(old.root, old.definition));
++  assert.equal(old.calls.length, 6); assert.equal(old.context.controllerRepresentationObservations.length, 0);
++  const malformed = plus007Fixture(); delete malformed.definition.boxes[1].plus_controller_numeric_cohort_policy;
++  assert.throws(() => malformed.context.validateTree(malformed.root, malformed.definition));
++  assert.equal(malformed.calls.length, 0);
++});
++function plus007V8Fixture() {
++  const f = plus007Fixture(), c = f.context, r = helper('v8-readback.js');
++  for (const key of ['PLUS_GEOMETRY_PINS', 'PLUS_NUMERIC_PINS', 'PLUS_CONTROLLER_COHORT_PINS',
++    'PLUS_CONTROLLER_COHORT_BINDING', 'PLUS_CONTROLLER_FORMAT_SHA256']) r[key] = plain(c[key]);
++  r.PLUS_ROOT_DIAGNOSTIC_PINS = Object.fromEntries(f.definition.full_inventory.filter(b => b.anchor.split('/').length === 2).map(b =>
++    [b.anchor, {source_box_sha256: b.source_box_sha256, source_text_sha256: b.source_text_sha256,
++      runtime_class: b.runtime_class, runtime_classes: b.runtime_classes, saved_rect_sha256: hash(b.rect)}]));
++  f.scopes['root/obj-2'].forEach((o, i) => {o.varname = '__alive_help_' + f.definition.boxes[i].id.replace(/-/g, '_');});
++  const leaves = f.definition.observer_leaves.map(leaf => ({maxclass: 'js', varname: leaf.varname, nextobject: null}));
++  f.basic.firstobject = linkObjects([...f.scopes['root/obj-2'], ...leaves]).firstobject;
++  f.root.firstobject = linkObjects([...f.scopes.root, ...harnessSpecs.map(([varname, maxclass]) => ({varname, maxclass}))]).firstobject;
++  f.root.getnamed = () => f.scopes.root[1];
++  const request = {op: 'readback', command_id: 52, operation_request_id: 51, step_id: 'install-plus-r1',
++    action: 'install', action_document: 'plus', action_revision: 1, document: 'plus', revision: 1, source_sha256: c.PLUS_SOURCE};
++  f.reader = r; f.request = request; return f;
++}
++case007('plus007_v8_complete_diagnostics', () => {
++  const f = plus007V8Fixture(), diag = f.reader.collectRepresentationDiagnostics(f.root, f.definition, f.request, f.context.config);
++  assert.ok(diag, 'plus V8 diagnostic producer is missing');
++  assert.equal(diag.root_rows.length, 4); assert.equal(diag.numeric_rows.length, 3); assert.equal(f.calls.length, 6);
++  assert.equal(diag.inventory_coverage.root.complete_count, 8); assert.equal(diag.inventory_coverage.numeric.complete_count, 35);
++  assert.ok(diag.numeric_rows.every(row => row.actual_runtime_class === 'number'));
++  assert.equal(diag.strict_mismatch, true);
++});
++case007('plus007_v8_incomplete_suppression', () => {
++  for (const mutation of ['root-missing', 'basic-missing', 'extra', 'duplicate', 'unknown', 'throw', 'ambiguous']) {
++    const f = plus007V8Fixture();
++    if (mutation === 'root-missing') f.root.firstobject = f.root.firstobject.nextobject;
++    if (mutation === 'basic-missing') f.basic.firstobject = f.basic.firstobject.nextobject;
++    if (mutation === 'extra') f.basic.firstobject = {maxclass: 'comment', nextobject: f.basic.firstobject};
++    if (mutation === 'duplicate') f.scopes['root/obj-2'][0].varname = f.scopes['root/obj-2'][1].varname;
++    if (mutation === 'unknown') f.scopes['root/obj-2'][0].varname = 'unknown';
++    if (mutation === 'throw') Object.defineProperty(f.basic, 'firstobject', {get() {throw Error('synthetic');}});
++    if (mutation === 'ambiguous') f.scopes.root[3].live = [...f.scopes.root[0].live];
++    const diag = f.reader.collectRepresentationDiagnostics(f.root, f.definition, f.request, f.context.config);
++    assert.ok(diag, 'plus diagnostics missing'); assert.equal(diag.inventory_complete, false, mutation);
++    assert.equal(f.calls.length, 0, mutation); assert.ok(diag.numeric_rows.every(r => r.candidate_count === null && r.actual_runtime_class === null));
++  }
++});
++case007('plus007_v8_recognition_is_not_admission', () => {
++  const f = plus007V8Fixture(); let refusal;
++  try {f.reader.collectReadback(f.root, f.definition, f.request, f.context.config);} catch (error) {refusal = error;}
++  assert.match(String(refusal), /strict-v8-original-representation-refused/);
++  assert.equal(refusal.v8_representation_diagnostics.numeric_rows.length, 3);
++  f.calls.length = 0; f.targets[0].expected.plus_controller_numeric_cohort_policy.evidence.bad = true;
++  assert.throws(() => f.reader.collectRepresentationDiagnostics(f.root, f.definition, f.request, f.context.config));
++  assert.equal(f.calls.length, 0);
++});
++console.log(JSON.stringify({completed007, failures007}));
++assert.deepEqual(failures007, [], 'preparation007 behavioral regressions');
+--- historical006/test_preparation.py
++++ current007/test_preparation.py
+@@ -9,7 +9,7 @@
+ import tempfile
+ import unittest
+ from unittest.mock import patch
+-from contextlib import ExitStack, redirect_stderr, redirect_stdout
++from contextlib import ExitStack, contextmanager, redirect_stderr, redirect_stdout
+ 
+ ROOT = Path(__file__).resolve().parent
+ 
+@@ -152,7 +152,284 @@
+     return document, raw, numeric_pins, root_pins
+ 
+ 
++@contextmanager
++def capture006_fixture(n):
++    """Complete synthetic evidence; mutation tests rebind hashes to reach parser guards."""
++    with tempfile.TemporaryDirectory() as temporary, ExitStack() as patches:
++        base = Path(temporary); work = base / '.cache/alive-ultra-evidence/arithmetic-max-runtime-006'
++        history = base / '.cache/alive-ultra-evidence/arithmetic-package-006-historical'
++        package = base / 'package'; repo = base / 'repo'
++        for path in (work, history, package, repo): path.mkdir(parents=True, mode=0o700)
++        root = synthetic_source(n, 'plus')
++        def float_rectangles(patcher):
++            for item in patcher['boxes']:
++                box=item['box']; box['patching_rect']=[float(value) for value in box['patching_rect']]
++                if 'patcher' in box: float_rectangles(box['patcher'])
++        float_rectangles(root); source = n.canonical(dict(patcher=root))
++        source_sha = hashlib.sha256(source).hexdigest(); helper_payload = b'Synthetic helper.'
++        helper_sha = hashlib.sha256(helper_payload).hexdigest(); helpers = {name: helper_sha for name in n.HELPERS}
++        for name, value in [('ROOT', package), ('REPO', repo), ('PLUS_SOURCE', source_sha), ('HELPERS', helpers)]:
++            patches.enter_context(patch.object(n, name, value))
++        patches.enter_context(patch.object(Path, 'home', return_value=base))
++        argument = hashlib.sha256(b'synthetic').hexdigest()
++        patches.enter_context(patch.dict(n.HELPER_ARGUMENT_HASHES, plus=(argument, argument)))
++        patches.enter_context(patch.dict(n.STARTER_HASHES, plus=hashlib.sha256(b'js helpstarter.js synthetic').hexdigest()))
++        patches.enter_context(patch.dict(n.OPERATOR_HASHES, plus=[hashlib.sha256(s.encode()).hexdigest() for s in ('+ 91827', '+ 91827.25')]))
++        helper_rows = [dict(name=name, sha256=sha, bytes=len(helper_payload), path='help/resources/' + name) for name, sha in helpers.items()]
++        boxes, inventory, edges = n.source_inventory('plus', root, helper_rows)
++        numeric = {}; geometry = {}; geo_policies = {}
++        for entry in inventory:
++            anchor = entry['anchor']
++            if anchor in n.PLUS_NUMERIC_PINS:
++                numeric[anchor] = dict(source_box_sha256=entry['source_box_sha256'], source_text_sha256=entry['source_text_sha256'],
++                    saved_rect_sha256=n.geometry_vector_digest(entry['rect']), initial_numeric_sha256=n.geometry_vector_digest([0, 0, 0, 0]))
++            if anchor in n.PLUS_GEOMETRY_PINS:
++                live = entry['rect'][:]; old = n.PLUS_GEOMETRY_PINS[anchor]; live[old['changed_dimension']] += 2
++                geometry[anchor] = dict(old, source_box_sha256=entry['source_box_sha256'], source_text_sha256=entry['source_text_sha256'],
++                    saved_rect_sha256=n.geometry_vector_digest(entry['rect']), live_rect_sha256=n.geometry_vector_digest(live))
++                geo_policies[anchor] = dict(kind='plus-observed-geometry-v1', document='plus', source_sha256=source_sha,
++                    anchor=anchor, **geometry[anchor], saved_rect=entry['rect'], live_rect=live, helper_sha256=helpers,
++                    evidence=dict(n.PLUS_EVIDENCE), saved_incoming_routes=0, saved_outgoing_routes=0)
++        geometry = {anchor:geometry[anchor] for anchor in n.PLUS_GEOMETRY_PINS}
++        for name, value in [('PLUS_NUMERIC_PINS', {a: {k:v for k,v in p.items() if k != 'initial_numeric_sha256'} for a,p in numeric.items()}),
++                ('PLUS_CONTROLLER_COHORT_PINS', numeric), ('PLUS_GEOMETRY_PINS', geometry),
++                ('PLUS_CONTROLLER_COHORT_FORMAT_SHA256', n.geometry_vector_digest([6, 0, 0, 0]))]:
++            patches.enter_context(patch.object(n, name, value))
++        cohort_binding = hashlib.sha256(n.canonical([dict(anchor=a, source_box_sha256=p['source_box_sha256'],
++            source_text_sha256=p['source_text_sha256']) for a,p in numeric.items()])).hexdigest()
++        patches.enter_context(patch.object(n, 'PLUS_CONTROLLER_COHORT_BINDING', cohort_binding))
++        for entry in boxes + inventory:
++            if entry['anchor'] in geo_policies:
++                entry.update(observed_geometry_policy=copy.deepcopy(geo_policies[entry['anchor']]), saved_incoming_routes=0, saved_outgoing_routes=0)
++        definition = dict(document='plus', revision=1, source_sha256=source_sha, helper_sha256=helpers,
++            pristine_path=str(work / 'pristine/plus-r1.maxhelp'), working_path=str(work / 'working/plus-r1.maxhelp'),
++            working_windows_path=n.windows_path(work / 'working/plus-r1.maxhelp'), boxes=boxes, full_inventory=inventory,
++            saved_edges=edges, lifecycle_owner_inlet=2)
++        package_names = tuple(n.PACKAGE_FILES) + ('compare.py', 'native_score.py', 'run-runtime.py', 'test_comparison.py', 'test_native_score.py', 'test_runner.py')
++        history_files = {}
++        for name in package_names:
++            n.retain_raw(history / name, ('Synthetic ' + name).encode()); history_files[name] = n.digest(history / name)
++        package_files = {name: history_files[name] for name in n.PACKAGE_FILES}
++        binding = dict(package_files=package_files, package_sha256=hashlib.sha256(n.canonical(package_files)).hexdigest())
++        historical = dict(schema_version=1, role='final006-historical-not-yet-executed', files=history_files,
++            package_sha256=binding['package_sha256'], score_sha256=n.SCORE_SHA256,
++            fix1_report_sha256='a' * 64, fix1_review_map_sha256='b' * 64)
++        n.write_json(history / 'binding.json', historical)
++        config = dict(work=str(work), documents=[definition], helpers=helper_rows, package_sha256=package_files)
++        sealed_names = ['config.json', 'controller.js', 'driver.maxpat', 'lifecycle-observer.js', 'observer.js', 'v8-readback.js']
++        sealed_names += ['helpers/' + name for name in helpers]
++        sealed_names += [area + '/' + doc + '-r' + str(rev) + '.maxhelp' for area in ('pristine', 'working') for doc in ('times', 'plus', 'minus') for rev in (1, 2)]
++        for name in sealed_names:
++            path = work / name; path.parent.mkdir(mode=0o700, exist_ok=True)
++            payload = n.canonical(config) if name == 'config.json' else helper_payload if name.startswith('helpers/') else source if name.endswith('.maxhelp') else (history / name).read_bytes() if name in package_files else b'Synthetic driver.'
++            n.retain_raw(path, payload)
++        seal = dict(files={name:n.digest(work / name) for name in sealed_names}, package_binding=binding)
++        n.write_json(work / 'seal.json', seal)
++        command = dict(command_id=51, op='operation', action='install', action_revision=1, document='plus', revision=1,
++            source_sha256=source_sha, step_id='install-plus-r1'); n.write_json(work / 'command.json', command)
++        patches.enter_context(patch.object(n, 'PLUS_CONTROLLER_COHORT_COMMAND_SHA256', n.digest(work / 'command.json')))
++        manifest = package / 'preparation-manifest-arithmetic006.json'; manifest.write_bytes(n.canonical(dict(package_binding=binding)))
++        report_dir = repo / '.superpowers/sdd/2026-10-22-arithmetic-root-runtime'; report_dir.mkdir(parents=True)
++        for name in ('capture-006-audit.md', 'capture-006-trace-investigation.md'): (report_dir / name).write_bytes(('Synthetic ' + name).encode())
++        verification = package / 'verification-capture006.json'; verification.write_bytes(b'{"synthetic":true}')
++        evidence = dict(n.PLUS_CONTROLLER_COHORT_EVIDENCE)
++        evidence.update(config_sha256=n.digest(work / 'config.json'), seal_sha256=n.digest(work / 'seal.json'),
++            manifest_sha256=n.digest(manifest), controller_sha256=n.digest(work / 'controller.js'), package_sha256=binding['package_sha256'],
++            historical_binding_sha256=n.digest(history / 'binding.json'), audit_sha256=n.digest(report_dir / 'capture-006-audit.md'),
++            investigation_sha256=n.digest(report_dir / 'capture-006-trace-investigation.md'), verification_sha256=n.digest(verification))
++        patches.enter_context(patch.object(n, 'PLUS_CONTROLLER_COHORT_EVIDENCE', evidence))
++        patches.enter_context(patch.object(n, 'PLUS_CONTROLLER_COHORT_HISTORY_MAP_SHA256', hashlib.sha256(n.canonical(history_files)).hexdigest()))
++        observations = [dict(document='plus', revision=1, source_sha256=source_sha, anchor=a, policy=geo_policies[a]) for a in list(geometry)[:3]]
++        for anchor in numeric:
++            box = next(b for b in boxes if b['anchor'] == anchor)
++            observations.append(dict(expected_anchor=anchor, expected_maxclass='flonum', expected_runtime_class='flonum', expected_rect=box['rect'],
++                candidates=[dict(maxclass='number' if b['maxclass']=='flonum' else b['runtime_class'],
++                    rect=b.get('observed_geometry_policy',{}).get('live_rect',b['rect'])) for b in boxes]))
++        anchor = list(geometry)[3]; observations.append(dict(document='plus', revision=1, source_sha256=source_sha, anchor=anchor, policy=geo_policies[anchor]))
++        rows = []
++        def row(phase, attempt, **extra):
++            rows.append(dict(seq=len(rows)+1, request_id=51, step_id='install-plus-r1', action='install', document='plus', revision=1,
++                source_sha256=source_sha, owner_inlet=2, attempt=attempt, phase=phase, clock='wall-ms', at_ms=100000+len(rows), elapsed_ms=len(rows), **extra))
++        row('command-consumed', 0, working_path=definition['working_windows_path'])
++        for phase in ('openfile-enter', 'openfile-return', 'poll-scheduled'): row(phase, 0)
++        for attempt in range(1, 62):
++            row('poll-enter', attempt); row('root-decision', attempt, root_present=True, path_match=True); row('validate-enter', attempt)
++            if attempt == 1:
++                for identity, observation in enumerate(observations, 1):
++                    kind = 'geometry' if 'policy' in observation else 'anchor'; parts = 4 if kind=='geometry' else 2
++                    observation=copy.deepcopy(observation)
++                    if kind=='geometry': observation['policy']['saved_rect']=[int(v) for v in observation['policy']['saved_rect']]
++                    data = n.canonical(observation).decode(); width = (len(data)+parts-1)//parts
++                    for part in range(parts): row('observation-chunk', attempt, observation_kind=kind, observation_id=identity, part=part, parts=parts, data=data[part*width:(part+1)*width])
++            row('plus-eligibility', attempt, ready=True, candidates=3, diagnostics=3)
++            for anchor in numeric:
++                for method in ('getattr', 'getvalueof'):
++                    for phase in ('capability-enter', 'capability-call-return'): row(phase, attempt, anchor=anchor, method=method)
++                    observation = dict(method=method, status='returned', representation='scalar-number' if method=='getattr' else 'singleton-number-array', value=6 if method=='getattr' else 0)
++                    if method=='getattr': observation['attribute']='format'
++                    row('capability-exit', attempt, anchor=anchor, method=method, observation=observation)
++            row('validate-refused', attempt, diagnostics=3, geometry_dispositions=4); row('poll-scheduled', attempt)
++        normal = [r['observation'] for r in rows if r['phase']=='capability-exit']
++        patches.enter_context(patch.object(n, 'PLUS_CONTROLLER_COHORT_OBSERVATION_SHA256', {method:hashlib.sha256(n.canonical(next(o for o in normal if o['method']==method))).hexdigest() for method in ('getattr','getvalueof')}))
++        def write_trace(changed):
++            path=work / 'install-plus-r1-trace.jsonl'; path.write_bytes(b''.join(n.canonical(r)+b'\n' for r in changed)); path.chmod(0o600)
++            evidence['trace_sha256']=n.digest(path)
++        write_trace(rows)
++        yield dict(work=work, history=history, package=package, definition=definition, evidence=evidence,
++            config=config, seal=seal, command=command, rows=rows, write_trace=write_trace, numeric=numeric)
++
++
+ class PreparationTests(unittest.TestCase):
++    def test_capture006_cohort_loader_bindings(self):
++        n = module('arithmetic')
++        self.assertTrue(hasattr(n, 'load_plus_controller_cohort_measurements'), 'Immutable006 cohort loader missing')
++        with capture006_fixture(n) as f:
++            expected = {anchor:0 for anchor in f['numeric']}
++            self.assertEqual(n.load_plus_controller_cohort_measurements(), expected)
++            for mutation in ('source', 'owner', 'revision', 'helpers', 'inventory', 'working-path', 'package'):
++                changed = copy.deepcopy(f['config']); definition=changed['documents'][0]
++                if mutation=='source': definition['source_sha256']='f'*64
++                if mutation=='owner': definition['lifecycle_owner_inlet']=True
++                if mutation=='revision': definition['revision']=2
++                if mutation=='helpers': changed['helpers'][0]['sha256']='f'*64
++                if mutation=='inventory': definition['full_inventory'][0]['source_box_sha256']='f'*64
++                if mutation=='working-path': definition['working_windows_path']='Z:/unbound.maxhelp'
++                if mutation=='package': changed['package_sha256']={}
++                path=f['work']/'config.json'; path.write_bytes(n.canonical(changed)); f['evidence']['config_sha256']=n.digest(path)
++                f['seal']['files']['config.json']=n.digest(path)
++                (f['work']/'seal.json').write_bytes(n.canonical(f['seal'])); f['evidence']['seal_sha256']=n.digest(f['work']/'seal.json')
++                with self.subTest(mutation=mutation), self.assertRaises(ValueError): n.load_plus_controller_cohort_measurements()
++            path=f['work']/'config.json'; path.write_bytes(n.canonical(f['config'])); f['evidence']['config_sha256']=n.digest(path)
++            f['seal']['files']['config.json']=n.digest(path); (f['work']/'seal.json').write_bytes(n.canonical(f['seal'])); f['evidence']['seal_sha256']=n.digest(f['work']/'seal.json')
++            for name in ('controller.js', 'helpers/helpargs.js', 'pristine/plus-r1.maxhelp'):
++                path=f['work']/name; original=path.read_bytes(); path.write_bytes(b'Corrupt synthetic sealed bytes.')
++                with self.subTest(sealed=name), self.assertRaises(ValueError): n.load_plus_controller_cohort_measurements()
++                path.write_bytes(original)
++            historical=f['history']/'test_runner.py'; historical.write_bytes(b'Corrupt historical file.')
++            with self.assertRaises(ValueError): n.load_plus_controller_cohort_measurements()
++
++    def test_capture006_cohort_trace_prefix(self):
++        n=module('arithmetic')
++        self.assertTrue(hasattr(n, 'load_plus_controller_cohort_measurements'), 'Immutable006 trace parser missing')
++        with capture006_fixture(n) as f:
++            self.assertEqual(len(f['rows']),1490)
++            self.assertEqual(len(n.load_plus_controller_cohort_measurements()),3)
++            for mutation in ('missing', 'duplicate', 'reorder', 'row-type', 'seq-type', 'attempt-type', 'identity', 'clock', 'time', 'root', 'eligibility',
++                    'bracket', 'anchor', 'format-shape', 'getter-shape', 'format-value', 'getter-value', 'getter-type',
++                    'chunk-part', 'chunk-data', 'chunk-geometry', 'chunk-diagnostic', 'chunk-provenance', 'terminal', 'ack'):
++                rows=copy.deepcopy(f['rows'])
++                exit_index=next(i for i,r in enumerate(rows) if r['phase']=='capability-exit')
++                chunk_index=next(i for i,r in enumerate(rows) if r['phase']=='observation-chunk')
++                if mutation=='missing': rows.pop()
++                if mutation=='duplicate': rows[-1]=copy.deepcopy(rows[-2])
++                if mutation=='reorder': rows[exit_index-1],rows[exit_index-2]=rows[exit_index-2],rows[exit_index-1]
++                if mutation=='row-type': rows[exit_index]=[]
++                if mutation=='seq-type': rows[exit_index]['seq']=float(rows[exit_index]['seq'])
++                if mutation=='attempt-type': rows[exit_index]['attempt']=True
++                if mutation=='identity': rows[exit_index]['revision']=2
++                if mutation=='clock': rows[exit_index]['clock']='monotonic'
++                if mutation=='time': rows[exit_index]['elapsed_ms']+=1
++                if mutation=='root': next(r for r in rows if r['phase']=='root-decision')['root_present']=1
++                if mutation=='eligibility': next(r for r in rows if r['phase']=='plus-eligibility')['candidates']=2
++                if mutation=='bracket': rows[exit_index-1]['phase']='capability-enter'
++                if mutation=='anchor': rows[exit_index]['anchor']='root/transferred'
++                if mutation=='format-shape': rows[exit_index]['observation']['representation']='singleton-number-array'
++                if mutation=='getter-shape': rows[exit_index+3]['observation']['value']=[0]
++                if mutation=='format-value': rows[exit_index]['observation']['value']=7
++                if mutation=='getter-value': rows[exit_index+3]['observation']['value']=1
++                if mutation=='getter-type': rows[exit_index+3]['observation']['value']=False
++                if mutation=='chunk-part': rows[chunk_index]['part']=True
++                if mutation=='chunk-data': rows[chunk_index]['data']='{corrupt'
++                if mutation in ('chunk-geometry','chunk-diagnostic','chunk-provenance'):
++                    identity=4 if mutation=='chunk-diagnostic' else 1
++                    chunks=[r for r in rows if r['phase']=='observation-chunk' and r['observation_id']==identity]
++                    observation=n.parse_json(''.join(r['data'] for r in chunks))
++                    if mutation=='chunk-geometry': observation['policy']['saved_rect'][0]+=.001
++                    if mutation=='chunk-diagnostic': observation['candidates'].pop()
++                    if mutation=='chunk-provenance': observation['revision']=True
++                    data=n.canonical(observation).decode(); width=(len(data)+len(chunks)-1)//len(chunks)
++                    for part,chunk in enumerate(chunks): chunk['data']=data[part*width:(part+1)*width]
++                if mutation=='terminal': rows[-1]['phase']='bind-enter'
++                if mutation=='ack': rows[-1]['ack_id']=51
++                f['write_trace'](rows)
++                with self.subTest(mutation=mutation), ExitStack() as guards:
++                    if mutation in ('format-value','getter-value'):
++                        observation=rows[exit_index if mutation=='format-value' else exit_index+3]['observation']
++                        guards.enter_context(patch.dict(n.PLUS_CONTROLLER_COHORT_OBSERVATION_SHA256,
++                            {observation['method']:hashlib.sha256(n.canonical(observation)).hexdigest()}))
++                    with self.assertRaises(ValueError): n.load_plus_controller_cohort_measurements()
++            f['write_trace'](f['rows']); path=f['work']/'install-plus-r1-trace.jsonl'; payload=path.read_bytes()
++            path.write_bytes(payload[:-1]); f['evidence']['trace_sha256']=n.digest(path)
++            with self.assertRaises(ValueError): n.load_plus_controller_cohort_measurements()
++
++    def test_plus_cohort_policy_binding(self):
++        n=module('arithmetic')
++        self.assertTrue(hasattr(n,'validate_plus_controller_cohort_policy'),'Distinct plus cohort policy missing')
++        with capture006_fixture(n) as f:
++            document=copy.deepcopy(f['definition'])
++            for box in document['boxes']:
++                if box['anchor'] not in f['numeric']: continue
++                policy=n.plus_controller_cohort_policy(box)
++                box['plus_controller_numeric_cohort_policy']=policy
++                entry=next(b for b in document['full_inventory'] if b['anchor']==box['anchor'])
++                entry.update(initial_numeric=box['initial_numeric'],plus_controller_numeric_cohort_policy=copy.deepcopy(policy))
++            for revision in (1,2):
++                document['revision']=revision
++                self.assertEqual(n.validate_plus_controller_cohort_metadata(document), True)
++                for mutation in ('document','source','helper','revision','class','classes','initial','geometry','box','text','policy-type','bool','evidence','extra',
++                        'missing','duplicate','copy','inventory-default','transferred'):
++                    changed=copy.deepcopy(document); box=next(b for b in changed['boxes'] if b['anchor'] in f['numeric']); p=box['plus_controller_numeric_cohort_policy']
++                    if mutation=='document': changed['document']='times'
++                    if mutation=='source': changed['source_sha256']='f'*64
++                    if mutation=='helper': changed['helper_sha256']['helpargs.js']='f'*64
++                    if mutation=='revision': changed['revision']=True
++                    if mutation=='class': box['runtime_class']='number'
++                    if mutation=='classes': box['runtime_classes']=['flonum','number']
++                    if mutation=='initial': box['initial_numeric']=False
++                    if mutation=='geometry': box['rect'][0]+=.001
++                    if mutation=='box': box['source_box_sha256']='f'*64
++                    if mutation=='text': box['source_text_sha256']='f'*64
++                    if mutation=='policy-type': box['plus_controller_numeric_cohort_policy']=None
++                    if mutation=='bool': p['finite_required']=1
++                    if mutation=='evidence': p['evidence']['observed_revision']=True
++                    if mutation=='extra': p['ack_sha256']='f'*64
++                    if mutation=='missing': box.pop('plus_controller_numeric_cohort_policy')
++                    if mutation=='duplicate': changed['boxes'].append(copy.deepcopy(box))
++                    if mutation=='copy': next(b for b in changed['full_inventory'] if b['anchor']==box['anchor'])['plus_controller_numeric_cohort_policy']['engine']='v8'
++                    if mutation=='inventory-default': next(b for b in changed['full_inventory'] if b['anchor']==box['anchor']).pop('initial_numeric')
++                    if mutation=='transferred': next(b for b in changed['boxes'] if b['anchor'] not in f['numeric'])['plus_controller_numeric_cohort_policy']=copy.deepcopy(p)
++                    with self.subTest(revision=revision,mutation=mutation),self.assertRaises(ValueError): n.validate_plus_controller_cohort_metadata(changed)
++            checkpoint,raw=synthetic_checkpoint(n); checkpoint.update(document='plus',source_sha256=n.PLUS_SOURCE,helper_sha256=dict(n.HELPERS))
++            raw.update(document='plus',source_sha256=n.PLUS_SOURCE)
++            for index,anchor in enumerate(f['numeric'],4):
++                target=checkpoint['boxes'][index]; previous=target['anchor']; replacement=copy.deepcopy(next(b for b in document['boxes'] if b['anchor']==anchor))
++                target.update(replacement,id='synthetic-'+str(index));raw['boxes'][index].update(varname=n.original_varname(target),rect=target['rect'])
++                next(v for v in raw['numeric'] if v['anchor']==previous)['anchor']=anchor
++            checkpoint['full_inventory']=copy.deepcopy(checkpoint['boxes']);checkpoint['observer_leaves']=n.observer_definitions(checkpoint)
++            self.assertEqual(len(n.validate_checkpoint(checkpoint,raw,7,'synthetic','event')['numeric_states']),7)
++            raw['boxes'][4]['maxclass']='number'
++            with self.assertRaisesRegex(ValueError,'Exact arithmetic runtime class changed'): n.validate_checkpoint(checkpoint,raw,7,'synthetic','event')
++
++    def test_plus_cohort_source_metadata_keeps_both_complete_descriptor_views(self):
++        n=module('arithmetic')
++        self.assertTrue(hasattr(n,'load_plus_controller_cohort_measurements'),'Plus cohort metadata producer missing')
++        with capture006_fixture(n) as f, ExitStack() as patches:
++            resources=f['package']/'resources'; (resources/'help/max').mkdir(parents=True); (resources/'help/resources').mkdir()
++            source=(f['work']/'pristine/plus-r1.maxhelp').read_bytes(); (resources/'help/max/plus.maxhelp').write_bytes(source)
++            for name in n.HELPERS: (resources/'help/resources'/name).write_bytes((f['work']/'helpers'/name).read_bytes())
++            patches.enter_context(patch.object(n,'IDENTITIES',{'plus':n.PLUS_SOURCE}))
++            patches.enter_context(patch.object(n,'SOURCE_BYTES',{'plus':len(source)}))
++            measured={b['anchor']:b['observed_geometry_policy']['live_rect'] for b in f['definition']['full_inventory'] if 'observed_geometry_policy' in b}
++            patches.enter_context(patch.object(n,'load_plus_measurements',return_value=measured))
++            docs,public,helpers=n.source_metadata(resources); document=docs[0]
++            self.assertTrue(n.validate_plus_controller_cohort_metadata(document))
++            for view in ('boxes','full_inventory'):
++                cohort=[b for b in document[view] if 'plus_controller_numeric_cohort_policy' in b]
++                self.assertEqual([b['anchor'] for b in cohort],list(f['numeric']))
++                self.assertTrue(all(b['maxclass']=='flonum' and b['runtime_class']=='flonum' and b['runtime_classes']==['flonum'] and type(b['initial_numeric']) is int for b in cohort))
++                self.assertTrue(all('controller_numeric_representation_policy' not in b and 'v8_numeric_representation_policy' not in b for b in cohort))
++            self.assertNotIn('initial_numeric',json.dumps(public))
++
+     def test_plus_geometry_is_separately_bound_without_numeric_admission(self):
+         n = module('arithmetic')
+         self.assertTrue(hasattr(n, 'PLUS_GEOMETRY_PINS'), 'Capture004 plus geometry gate missing')
+--- historical006/v8-readback.js
++++ current007/v8-readback.js
+@@ -71,6 +71,51 @@
+ var TIMES_ROOT_REPRESENTATION_PINS={"root/obj-3":{"source_box_sha256":"c7355e6a1bd3aef210bfd59ead9d88a6faa6c3aaba8fb2eda9ccbaa5accf6ec9","source_text_sha256":"0ca81c69553c5299b7dc137769cb0887e0f1dc26c73bfe08c0e04891d8a99d02","runtime_class":"js","runtime_classes":["js"],"saved_rect_sha256":"4814549a20cdea1cfbb09260659e96090b0f19f029fd07d1405c2a48d7288f69"},"root/obj-4":{"source_box_sha256":"339c2bd0981f0070983da5a867fef9356a4a992df87739ff60b05a946df309fc","source_text_sha256":"484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393","runtime_class":"patcher","runtime_classes":["patcher","p"],"saved_rect_sha256":"d354caae9baa0021746491027a9c4aa1da57065450298612fc0a7b77682b0ceb"},"root/obj-6":{"source_box_sha256":"5562fc5360aa673a78e47e08bba066124d3ef242ee7484a0c59c1b30bbb5e5a1","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","runtime_class":"jsui","runtime_classes":["jsui"],"saved_rect_sha256":"54f83aaab9e2c42a561a2ccf3d705fb635c1c363d5ee0f1cac7a33a87d7debb9"},"root/obj-1":{"source_box_sha256":"ae8f1b27f351f9a4adb1997619d3b70f80666212c66402864934e5c5b753ab6e","source_text_sha256":"bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a","runtime_class":"patcher","runtime_classes":["patcher","p"],"saved_rect_sha256":"d9aad27455a8969fb33a22e3689241f29c2d83d1eac360baf98c043f897e0e86"}};
+ var V8_REPRESENTATION_EVIDENCE={"raw_sha256":"b3c8518d4d2930f2d18c3066e9ace27038f7893d4ae3644a6d002d99b56a71d6","ack_sha256":"ae28ae272f4fe7743c121f5f8aacdc28026e29256bf9b4cdef31c0fa10ad08be","config_sha256":"a406709cab7224f3d297baa14de204565407e4572eadd6c7c0c3d6166ef46fe5","seal_sha256":"3ab64f6487e0a5f182acd9623728df66664e355472216fdad98545d9753cf5fa","manifest_sha256":"357e4296de98f953faae2a17bded5a4df66fe5438ee3b4a23ea5ada00f41260c","rea_evidence_id":"ev_de849ca377d9aa0cada5598c4443c3f57f501c23b073fa1430f610873112f8cd","audit_sha256":"0102fdaea0e0ee5bcd2e77217b25aef4c467b53124d27bca3426759f5c9fe1b1"};
+ var V8_ROOT_REPRESENTATION_PINS={"root/obj-4":{"source_box_sha256":"339c2bd0981f0070983da5a867fef9356a4a992df87739ff60b05a946df309fc","source_text_sha256":"484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393","saved_rect_sha256":"d354caae9baa0021746491027a9c4aa1da57065450298612fc0a7b77682b0ceb","live_rect_sha256":"6dff8399adb73f3c4d2f1e05a7407d37381968cd2b51bdbb9eb2cc5ee9f849d3"},"root/obj-1":{"source_box_sha256":"ae8f1b27f351f9a4adb1997619d3b70f80666212c66402864934e5c5b753ab6e","source_text_sha256":"bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a","saved_rect_sha256":"d9aad27455a8969fb33a22e3689241f29c2d83d1eac360baf98c043f897e0e86","live_rect_sha256":"1b3974a5eef49edf4381887e103169ef36e333facb4d2ccab310ef62ea699926"}};
++var PLUS_NUMERIC_PINS={"root/obj-2/obj-1":{"source_box_sha256":"c873e45cc1ebc4c71b93a736b509fc0f622d4764df74edb3a21f5bad4d999a78","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"97bd3d008866faa2c6cdc5bf0de64333c64bd29bf79bae29b6ae070ec6823267"},"root/obj-2/obj-24":{"source_box_sha256":"d84cf4a6a5daa8db1d4b2616b5c1f94385a15d274a80be64ca07ddcb728d8cb3","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"14acfb0d484e461a00397ecfb34329cfe8167d5e47b6360edbd54f0fabbd91bc"},"root/obj-2/obj-23":{"source_box_sha256":"5b0e92ade41a0633d5d5dc178c9fd1ebc519f7014d331e4a924afff0dfe07982","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"38b2cd4242257c9f9802ef997eccb7d32e451c1b05f37868136baa42fb89636c"}};
++var PLUS_CONTROLLER_COHORT_PINS={"root/obj-2/obj-1":{"source_box_sha256":"c873e45cc1ebc4c71b93a736b509fc0f622d4764df74edb3a21f5bad4d999a78","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"97bd3d008866faa2c6cdc5bf0de64333c64bd29bf79bae29b6ae070ec6823267","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"},"root/obj-2/obj-24":{"source_box_sha256":"d84cf4a6a5daa8db1d4b2616b5c1f94385a15d274a80be64ca07ddcb728d8cb3","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"14acfb0d484e461a00397ecfb34329cfe8167d5e47b6360edbd54f0fabbd91bc","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"},"root/obj-2/obj-23":{"source_box_sha256":"5b0e92ade41a0633d5d5dc178c9fd1ebc519f7014d331e4a924afff0dfe07982","source_text_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","saved_rect_sha256":"38b2cd4242257c9f9802ef997eccb7d32e451c1b05f37868136baa42fb89636c","initial_numeric_sha256":"1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121"}};
++var PLUS_CONTROLLER_COHORT_BINDING="31e249de8a69dd317ae9b50f93bca88e3da8392edda68dd7b66865e6a0c98a89";
++var PLUS_CONTROLLER_FORMAT_SHA256="dcdadd560ab2234a2bf2d2b5ed44e5d7640e88eefe6bdbc98aa84aaf31649983";
++var PLUS_CONTROLLER_COHORT_EVIDENCE={"trace_sha256":"2b3287e45de1123f8ac7582544aa13da5dbfba6650d2aa33e7a46b5f8be39a63","config_sha256":"4a922bf0b1e2d2c5755eb339d0fa8e73a4139f74c5acc3b92352388e85a167ad","seal_sha256":"3e5b31cdcb62618e08444d35c2ec20815cf07a21aad86de4d058ca6a94170935","manifest_sha256":"c4fc2bf8badc5cfc98b85d2b1bc8dad9cd7df42f730665521080631ecefad898","controller_sha256":"c0b0a45ef7a72a484fa976774f5a10e1ca9fcf6892603f723fb7df6c220a3d97","package_sha256":"b140eddbac9d134e162ff4cfdf2388be1285cf45b9127bd8bcc0d253ff0e99e5","historical_binding_sha256":"bce1edf4484c73bf95a5c1c1648ff7e7f8f3ce479fe96c92be6639fa6e466df6","audit_sha256":"9ded6e777503d6181120dc92c3f4745ec4eb565e5a6f29e9bd52c38755870e8d","investigation_sha256":"7b555ff81a58e426185fb9fca93b23216e18cf0205a8a923b3ca70c892e3e54b","verification_sha256":"081856c4f782f6c1603d998e6637c2355c84585635c7a3deca980e1b1cce2bfc","rea_evidence_id":"ev_a0ed6947bdad1fbe7e7ba19b62634a570fdff7803e7db65363b019dd0db409c8","trace_role":"incomplete-install-prefix","observed_revision":1};
++function plusControllerNumericCohortPolicy(expected,definition,configuration) {
++    var policy=expected.plus_controller_numeric_cohort_policy;
++    if(typeof policy==="undefined")return null;
++    var pin=PLUS_CONTROLLER_COHORT_PINS[expected.anchor],configured={};
++    if(configuration&&Array.isArray(configuration.helpers)&&configuration.helpers.length===4)
++        for(var i=0;i<configuration.helpers.length;i++)configured[configuration.helpers[i].name]=configuration.helpers[i].sha256;
++    if(!pin||!definition||definition.document!=="plus"||definition.source_sha256!==PLUS_SOURCE||
++        !sameData(definition.helper_sha256,GEOMETRY_HELPERS)||!sameData(configured,GEOMETRY_HELPERS)||
++        (typeof definition.revision!=="undefined"&&definition.revision!==1&&definition.revision!==2)||
++        expected.maxclass!=="flonum"||expected.runtime_class!=="flonum"||!sameData(expected.runtime_classes,["flonum"])||
++        expected.source_box_sha256!==pin.source_box_sha256||expected.source_text_sha256!==pin.source_text_sha256||
++        geometryVectorHash(expected.rect)!==pin.saved_rect_sha256||typeof expected.initial_numeric!=="number"||
++        !isFinite(expected.initial_numeric)||geometryVectorHash([expected.initial_numeric,0,0,0])!==pin.initial_numeric_sha256)
++        throw Error("plus-controller-cohort-source-binding");
++    var wanted={kind:"plus-controller-numeric-cohort-v1",engine:"js-controller",document:"plus",source_sha256:PLUS_SOURCE,
++        anchor:expected.anchor,source_class:"flonum",runtime_class:"number",source_box_sha256:pin.source_box_sha256,
++        source_text_sha256:pin.source_text_sha256,saved_rect_sha256:pin.saved_rect_sha256,initial_numeric_sha256:pin.initial_numeric_sha256,
++        cohort_anchors:Object.keys(PLUS_NUMERIC_PINS),cohort_binding_sha256:PLUS_CONTROLLER_COHORT_BINDING,
++        helper_sha256:GEOMETRY_HELPERS,evidence:PLUS_CONTROLLER_COHORT_EVIDENCE,
++        format_method:"getattr",format_attribute:"format",format_representation:"scalar-number",format_value_sha256:PLUS_CONTROLLER_FORMAT_SHA256,
++        getter_method:"getvalueof",getter_representation:"singleton-number-array",finite_required:true,
++        source_initial_equality:true,fresh_complete_cohort_required:true};
++    if(!sameData(policy,wanted))throw Error("plus-controller-cohort-policy-changed");
++    return policy;
++}
++function plusControllerCohortMetadata(definition,configuration) {
++    var boxes=definition.boxes||[],inventory=definition.full_inventory||[],selected=[],saved=[],anchors=Object.keys(PLUS_NUMERIC_PINS);
++    for(var i=0;i<boxes.length;i++)if(typeof boxes[i].plus_controller_numeric_cohort_policy!=="undefined")selected.push(boxes[i]);
++    for(var i=0;i<inventory.length;i++)if(typeof inventory[i].plus_controller_numeric_cohort_policy!=="undefined")saved.push(inventory[i]);
++    if(!selected.length&&!saved.length)return false;
++    if(selected.length!==3||saved.length!==3)throw Error("incomplete-plus-controller-cohort-policy");
++    var keys=["maxclass","runtime_class","runtime_classes","rect","source_box_sha256","source_text_sha256","initial_numeric","plus_controller_numeric_cohort_policy"];
++    for(var i=0;i<anchors.length;i++) {
++        var anchor=anchors[i],a=selected.filter(function(b){return b.anchor===anchor;}),b=saved.filter(function(b){return b.anchor===anchor;});
++        if(a.length!==1||b.length!==1)throw Error("plus-controller-cohort-member-inventory");
++        plusControllerNumericCohortPolicy(a[0],definition,configuration);plusControllerNumericCohortPolicy(b[0],definition,configuration);
++        for(var j=0;j<keys.length;j++)if(!sameData(a[0][keys[j]],b[0][keys[j]]))throw Error("plus-controller-cohort-descriptor-copy");
++    }
++    return true;
++}
+ function sameData(a,b) {
+     if(a===b)return true;
+     if(!a||!b||typeof a!=="object"||typeof b!=="object"||Array.isArray(a)!==Array.isArray(b))return false;
+@@ -239,7 +284,108 @@
+ function representationRectangle(object) {
+     try{return rectangle(object);}catch(error){return null;}
+ }
++var PLUS_ROOT_DIAGNOSTIC_PINS={};
++for(var plusRootAnchor of ["root/obj-1","root/obj-2","root/obj-3"]) {
++    var plusRootPin=PLUS_GEOMETRY_PINS[plusRootAnchor];
++    PLUS_ROOT_DIAGNOSTIC_PINS[plusRootAnchor]={source_box_sha256:plusRootPin.source_box_sha256,
++        source_text_sha256:plusRootPin.source_text_sha256,saved_rect_sha256:plusRootPin.saved_rect_sha256,
++        runtime_class:plusRootPin.runtime_class,runtime_classes:plusRootPin.runtime_class==="patcher"?["patcher","p"]:[plusRootPin.runtime_class]};
++}
++PLUS_ROOT_DIAGNOSTIC_PINS["root/obj-4"]={source_box_sha256:"bff84f2c0e682d712f384b4d5f73017bcc936392a7d0b981ec4ef8ef7a3deb29",
++    source_text_sha256:"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++    saved_rect_sha256:"54f83aaab9e2c42a561a2ccf3d705fb635c1c363d5ee0f1cac7a33a87d7debb9",runtime_class:"jsui",runtime_classes:["jsui"]};
++function collectPlusRepresentationDiagnostics(root,definition,request,configuration) {
++    if(!plusControllerCohortMetadata(definition,configuration))return null;
++    var revision=definition.revision,owner=configuration.lifecycle&&configuration.lifecycle.owners&&
++        configuration.lifecycle.owners[definition.lifecycle_owner_inlet],event=/^plus-A([0-9]{2})$/.exec(request.step_id),n=event?Number(event[1]):0;
++    var step=request.action==="install"?request.step_id==="install-plus-r"+revision:
++        request.action==="close"?request.step_id==="close-plus-r"+revision:
++        request.action==="event"&&event&&(revision===1?n>=1&&n<=20:n>=21&&n<=22);
++    if((revision!==1&&revision!==2)||request.op!==(request.action==="close"?"operation":"readback")||
++        request.document!=="plus"||request.source_sha256!==PLUS_SOURCE||request.revision!==revision||
++        request.action_document!=="plus"||request.action_revision!==revision||!step||
++        !Number.isInteger(request.command_id)||request.command_id<1||!Number.isInteger(request.operation_request_id)||request.operation_request_id<1||
++        definition.lifecycle_owner_inlet!==revision+1||!owner||owner.inlet!==revision+1||owner.document!=="plus"||
++        owner.revision!==revision||owner.source_sha256!==PLUS_SOURCE||owner.working_path!==definition.working_windows_path||
++        !root||root.parentpatcher!==null||!samePath(root.filepath,definition.working_windows_path)||
++        definition.basic_anchor!=="root/obj-2"||definition.basic_varname!=="basic_tab")throw Error("plus-v8-request-owner-binding");
++    var documents=(configuration.documents||[]).filter(d=>d.document==="plus"&&d.revision===revision);
++    if(documents.length!==1||!sameData(documents[0],definition))throw Error("plus-v8-configured-definition-binding");
++    var originals=definition.full_inventory.filter(e=>e.anchor.split("/").length===2),boxes=definition.boxes,leaves=definition.observer_leaves||[];
++    if(definition.full_inventory.length!==20||originals.length!==4||boxes.length!==16||leaves.length!==19||
++        !sameData(originals.map(b=>b.anchor).sort(),Object.keys(PLUS_ROOT_DIAGNOSTIC_PINS).sort()))throw Error("plus-v8-source-inventory-binding");
++    var rootInventory=representationObjects(root,8),basic=null,rootMatches=[],rootIdentity=rootInventory.complete&&rootInventory.objects.length===8;
++    var diagnostic={engine:"v8",request_id:request.command_id,operation_request_id:request.operation_request_id,
++        step_id:request.step_id,action:request.action,action_document:request.action_document,action_revision:request.action_revision,
++        document:"plus",revision:revision,source_sha256:PLUS_SOURCE,helper_sha256:GEOMETRY_HELPERS,receipt_tag_observed:false,
++        root_rows:[],numeric_rows:[],strict_mismatch:false};
++    for(var expected of originals) {
++        var pin=PLUS_ROOT_DIAGNOSTIC_PINS[expected.anchor],policy=observedGeometryPolicy(expected,definition,configuration);
++        if(!pin||expected.source_box_sha256!==pin.source_box_sha256||expected.source_text_sha256!==pin.source_text_sha256||
++            expected.runtime_class!==pin.runtime_class||!sameData(expected.runtime_classes,pin.runtime_classes)||
++            geometryVectorHash(expected.rect)!==pin.saved_rect_sha256)throw Error("plus-v8-source-root-binding");
++        var candidates=[],matches=[];
++        for(var object of rootInventory.objects) {
++            if((object.varname||"")!==(expected.source_varname||""))continue;
++            var rect=representationRectangle(object),geometry=rect&&(sameData(rect,expected.rect)||policy&&sameData(rect,policy.live_rect));
++            candidates.push({runtime_class:object.maxclass,rect:rect,geometry_matches:!!geometry});if(geometry)matches.push(object);
++        }
++        var object=rootInventory.complete&&matches.length===1?matches[0]:null;
++        if(!object||rootMatches.includes(object))rootIdentity=false;else rootMatches.push(object);
++        diagnostic.root_rows.push({anchor:expected.anchor,source_box_sha256:expected.source_box_sha256,source_text_sha256:expected.source_text_sha256,
++            source_class:expected.maxclass,expected_runtime_classes:expected.runtime_classes,candidates:candidates,
++            candidate_count:object?1:null,observed_candidate_count:matches.length,candidate_count_complete:!!object,
++            actual_runtime_class:object?object.maxclass:null,live_rect:object?representationRectangle(object):null});
++        if(!object||expected.runtime_classes.indexOf(object.maxclass)===-1)diagnostic.strict_mismatch=true;
++        if(expected.anchor==="root/obj-2"&&object)try{basic=object.subpatcher();}catch(error){}
++    }
++    for(var name of ["__alive_arithmetic_reader","__alive_arithmetic_disposer","__alive_arithmetic_freebang","__alive_arithmetic_lifecycle_send"])
++        if(rootInventory.objects.filter(o=>o.varname===name).length!==1)rootIdentity=false;
++    var numericInventory=representationObjects(basic,35),numericIdentity=numericInventory.complete&&numericInventory.objects.length===35,byName={},wantedNames=[];
++    for(var b of boxes) {
++        var saved=definition.full_inventory.filter(e=>e.anchor===b.anchor),keys=["maxclass","runtime_class","runtime_classes","rect","source_box_sha256","source_text_sha256"];
++        if(saved.length!==1||b.anchor!=="root/obj-2/"+b.id||keys.some(k=>!sameData(saved[0][k],b[k])))throw Error("plus-v8-basic-source-copy");
++        var name="__alive_help_"+b.id.replace(/-/g,"_"),matches=numericInventory.objects.filter(o=>o.varname===name),policy=observedGeometryPolicy(b,definition,configuration);
++        wantedNames.push(name);
++        var rect=matches.length===1?representationRectangle(matches[0]):null;
++        if(matches.length!==1||!rect||!(sameData(rect,b.rect)||policy&&sameData(rect,policy.live_rect)))numericIdentity=false;
++        else byName[name]=matches[0];
++    }
++    var wantedLeaves=[];
++    for(var b of boxes)for(var port=0;port<b.outlets;port++)wantedLeaves.push({anchor:b.anchor,port:port,varname:"__alive_help_leaf_"+b.id.replace(/-/g,"_")+"_"+port});
++    if(!sameData(wantedLeaves,leaves))throw Error("plus-v8-observer-source-inventory");
++    for(var leaf of leaves)wantedNames.push(leaf.varname);
++    if(new Set(wantedNames).size!==35)throw Error("plus-v8-source-name-collision");
++    for(var name of wantedNames)if(numericInventory.objects.filter(o=>o.varname===name).length!==1)numericIdentity=false;
++    diagnostic.inventory_complete=!!rootIdentity&&!!numericIdentity;
++    diagnostic.inventory_coverage={};
++    for(var pair of [["root",rootInventory,rootIdentity],["numeric",numericInventory,numericIdentity]]) {
++        var inventory=pair[1],complete=!!pair[2];
++        diagnostic.inventory_coverage[pair[0]]={complete:complete,status:!inventory.complete?inventory.status:complete?"complete":
++            inventory.objects.length!==inventory.limit?"count-mismatch":"identity-mismatch",observed_count:inventory.objects.length,
++            complete_count:complete?inventory.objects.length:null,limit:inventory.limit};
++    }
++    if(!diagnostic.inventory_complete) {
++        diagnostic.strict_mismatch=true;
++        for(var row of diagnostic.root_rows){row.candidate_count=null;row.candidate_count_complete=false;row.actual_runtime_class=null;row.live_rect=null;}
++    }
++    for(var anchor of Object.keys(PLUS_NUMERIC_PINS)) {
++        var expected=boxes.filter(b=>b.anchor===anchor)[0],name="__alive_help_"+expected.id.replace(/-/g,"_"),
++            matches=numericInventory.objects.filter(o=>o.varname===name),object=diagnostic.inventory_complete?byName[name]:null,
++            rect=object?representationRectangle(object):null,geometry=diagnostic.inventory_complete?!!rect&&sameData(rect,expected.rect):null;
++        var probe=geometry?object:{},row={anchor:anchor,source_box_sha256:expected.source_box_sha256,source_text_sha256:expected.source_text_sha256,
++            source_class:"flonum",expected_runtime_classes:expected.runtime_classes,candidate_count:diagnostic.inventory_complete?matches.length:null,
++            observed_candidate_count:matches.length,candidate_count_complete:diagnostic.inventory_complete,actual_runtime_class:object?object.maxclass:null,
++            live_rect:rect,geometry_matches:geometry,probe_disposition:!diagnostic.inventory_complete?"suppressed-incomplete-inventory":geometry?"observed":"source-candidate-unavailable",
++            receipt_tag_observed:false,format_observation:capabilityObservation(probe,"getattr","format"),value_observation:capabilityObservation(probe,"getvalueof")};
++        diagnostic.numeric_rows.push(row);
++        if(!object||object.maxclass!=="flonum"||!geometry||row.value_observation.status!=="returned"||
++            ["scalar-number","singleton-number-array"].indexOf(row.value_observation.representation)===-1)diagnostic.strict_mismatch=true;
++    }
++    return diagnostic;
++}
+ function collectRepresentationDiagnostics(root,definition,request,configuration) {
++    if(definition.document==="plus")return collectPlusRepresentationDiagnostics(root,definition,request,configuration);
+     if(definition.document!=="times")return null;
+     var revision=definition.revision,configured={},owner=configuration&&configuration.lifecycle&&
+         configuration.lifecycle.owners&&configuration.lifecycle.owners[definition.lifecycle_owner_inlet];
+@@ -371,6 +517,7 @@
+         inventory_coverage:diagnostic.inventory_coverage,numeric:numericRows,roots:rootRows};
+ }
+ function collectReadback(root,definition,request,configuration) {
++    plusControllerCohortMetadata(definition,configuration);
+     if(request.op!=="readback"||request.document!==definition.document||request.revision!==definition.revision||
+         request.source_sha256!==definition.source_sha256||!Number.isInteger(request.command_id)||request.command_id<1||
+         !samePath(root.filepath,definition.working_windows_path)||root.parentpatcher!=null)throw Error("checkpoint-owner-binding");
+@@ -427,6 +574,7 @@
+         v8_representation_diagnostics:error.v8_representation_diagnostics||null});}
+ }
+ function collectBasicRetention(root,definition,request,configuration,witnesses) {
++    plusControllerCohortMetadata(definition,configuration);
+     if(!Array.isArray(definition.boxes)||!Array.isArray(definition.full_inventory)||
+         !Array.isArray(definition.observer_leaves)||!Array.isArray(definition.saved_edges))throw Error("basic-source-inventory-unavailable");
+     var rootInventory=representationObjects(root,definition.full_inventory.filter(b=>b.anchor.split("/").length===2).length+4),

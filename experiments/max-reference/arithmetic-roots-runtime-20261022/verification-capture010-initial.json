@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "capture": "arithmetic-010",
+  "status": "FAILED",
+  "complete": false,
+  "evidence_id": "ev_7e2cc3a5915c4685d125f751389b1227bc5a28ee82a8b910278ae8a192c25221",
+  "rea_exit": {
+    "code": 1,
+    "signal": 0,
+    "reason": "exited"
+  },
+  "rea_truncated": false,
+  "complete_original_rea_response_retained_in_session_store": true,
+  "original_rea_file_hashes_directly_verified_before_projection": true,
+  "original_rea_files": [
+    {
+      "name": "cleanup.json",
+      "size": 1845,
+      "sha256": "6b13161782421de9004fdc21d196bccf3394e3dbcc587f89c59dac6d6ddf34f5"
+    },
+    {
+      "name": "display-states.json",
+      "size": 20837,
+      "sha256": "d619821c052d9f60be122ee19193e9cb7aadd13cd0be0894e1a8bf816943f939"
+    },
+    {
+      "name": "preferences-after.json",
+      "size": 205649,
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329"
+    },
+    {
+      "name": "preferences-before.json",
+      "size": 205649,
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329"
+    },
+    {
+      "name": "receipts.jsonl",
+      "size": 80493,
+      "sha256": "c3c1a65546120b1607873830dc13781e370e343dae1439d8fa3561b74e9f0153"
+    },
+    {
+      "name": "session.json",
+      "size": 72824,
+      "sha256": "712412727928c1fecbb03b23d33075cb63ba0ff3b922a59532c02b97b0d16419"
+    }
+  ],
+  "rea_limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+    "Process trees are sampled and may omit short-lived descendants.",
+    "Filesystem observations are before/after snapshots, not syscall traces.",
+    "Inherited host environment variables are not recorded and may affect results."
+  ],
+  "rea_unverified_process_count": 9,
+  "prelaunch_acceptance": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-010-prelaunch-acceptance.json",
+  "postflight": {
+    "all_six_whole_capture_flags_false": true,
+    "command_requests": 101,
+    "complete": false,
+    "completed_operations": 52,
+    "failure_type": "ValueError",
+    "independent_closes": 4,
+    "journal_kinds": {
+      "harness-error": 1,
+      "receipt": 94,
+      "step-complete": 52,
+      "stimulus": 44
+    },
+    "journal_rows": 191,
+    "last_accepted_step": "close-plus-r2",
+    "last_ack": 101,
+    "mapped_files": 16,
+    "marker_processes": 0,
+    "minus_envelope_received": false,
+    "minus_internal_progress": "UNKNOWN",
+    "minus_terminal_diagnostics": 7,
+    "native_exact_five": true,
+    "numeric_states": 336,
+    "original_outputs": 94,
+    "owned_processes": 0,
+    "package_sha256": "1088afc53c372cc4e3e60e0def3f7e3785e3ee80235e8af20629c53fcc39cdf2",
+    "preference_bytes_equal": true,
+    "preferences_match_current": true,
+    "prefix_absent": true,
+    "prefix_processes": 0,
+    "private_display_processes": 0,
+    "private_files": 242,
+    "private_subdirectories": 4,
+    "qualification_increment": 0,
+    "readbacks": 48,
+    "retained_acknowledgements": 101,
+    "runtime_invocations": 1,
+    "sealed_inputs": 22,
+    "source_helper_preservation": true,
+    "status": "FAILED",
+    "successful_acknowledgements": 100,
+    "unreadable_environments": {
+      "display": 314,
+      "marker": 314,
+      "owned": 314,
+      "prefix": 314
+    },
+    "xvfb_exited": true
+  },
+  "source_review_sha256": "c4d26b6757bea31a6968f92af2cef3151d800357f0f9bbee44807db7772e3979",
+  "concrete_review_sha256": "f1b5c4bfa7fea2498176adcbfcb02e367f1ff1148463b7433ae25d571a5a9277",
+  "independent_capture_audit": "PENDING",
+  "diagnostic_investigation": "PENDING",
+  "qualification": {
+    "qualified": 0,
+    "total": 2103,
+    "increment": 0
+  }
+}

@@ -1,0 +1,2711 @@
+{
+  "corpus_help_files": 2103,
+  "corpus_support_files": 42,
+  "frozen_corpus_sha256": "ad56e65dad84c9f2f9479219d670ab3f77b31fd5fa4d3e1718889de9e8715342",
+  "full_help_conformance": {
+    "passing": 0,
+    "denominator": 2103
+  },
+  "inventory": "static inventory; classic zl mode aliases resolved against hash-matched local JSON",
+  "union_help_files": 302,
+  "resolved_help_instances": 1028,
+  "counts": {
+    "iter": {
+      "literal_help_instances": 35,
+      "literal_help_files": 18,
+      "resolved_help_instances": 35,
+      "resolved_help_files": 18,
+      "support_instances": 4,
+      "support_files": 2
+    },
+    "prepend": {
+      "literal_help_instances": 724,
+      "literal_help_files": 277,
+      "resolved_help_instances": 724,
+      "resolved_help_files": 277,
+      "support_instances": 60,
+      "support_files": 6
+    },
+    "append": {
+      "literal_help_instances": 24,
+      "literal_help_files": 12,
+      "resolved_help_instances": 24,
+      "resolved_help_files": 12,
+      "support_instances": 0,
+      "support_files": 0
+    },
+    "zl.reg": {
+      "literal_help_instances": 4,
+      "literal_help_files": 2,
+      "resolved_help_instances": 67,
+      "resolved_help_files": 37,
+      "support_instances": 5,
+      "support_files": 4
+    },
+    "zl.join": {
+      "literal_help_instances": 5,
+      "literal_help_files": 4,
+      "resolved_help_instances": 30,
+      "resolved_help_files": 12,
+      "support_instances": 0,
+      "support_files": 0
+    },
+    "zl.len": {
+      "literal_help_instances": 11,
+      "literal_help_files": 10,
+      "resolved_help_instances": 23,
+      "resolved_help_files": 18,
+      "support_instances": 1,
+      "support_files": 1
+    },
+    "zl.iter": {
+      "literal_help_instances": 6,
+      "literal_help_files": 4,
+      "resolved_help_instances": 11,
+      "resolved_help_files": 8,
+      "support_instances": 0,
+      "support_files": 0
+    },
+    "zl.slice": {
+      "literal_help_instances": 11,
+      "literal_help_files": 7,
+      "resolved_help_instances": 79,
+      "resolved_help_files": 29,
+      "support_instances": 1,
+      "support_files": 1
+    },
+    "zl.rev": {
+      "literal_help_instances": 3,
+      "literal_help_files": 2,
+      "resolved_help_instances": 16,
+      "resolved_help_files": 8,
+      "support_instances": 0,
+      "support_files": 0
+    },
+    "zl.rot": {
+      "literal_help_instances": 1,
+      "literal_help_files": 1,
+      "resolved_help_instances": 19,
+      "resolved_help_files": 12,
+      "support_instances": 0,
+      "support_files": 0
+    }
+  },
+  "files": [
+    {
+      "path": "help/jitter/demovideo.maxpat",
+      "sha256": "eabb3886f22ca6d06c78bc581b54d8761304386fe47dcb5d5042ff59ffddbfab",
+      "kind": "support-patch",
+      "counts": {
+        "prepend": 14,
+        "iter": 2
+      }
+    },
+    {
+      "path": "help/jitter/demovideo2.maxpat",
+      "sha256": "1c13a1f75b48f4b6faa2932d4b5416a352ecacff50e7afb38af61e8077a8a16d",
+      "kind": "support-patch",
+      "counts": {
+        "prepend": 14,
+        "iter": 2
+      }
+    },
+    {
+      "path": "help/jitter/jit.anim.drive.maxhelp",
+      "sha256": "4dd638a43540f0165e7432ad7e0ce2fd7df238ea2d6ab467b72fc1173f258010",
+      "kind": "help",
+      "counts": {
+        "append": 3,
+        "prepend": 4
+      }
+    },
+    {
+      "path": "help/jitter/jit.anim.path.maxhelp",
+      "sha256": "04ede7010d79566f0580915d61cf5985a5f9004bc20dee4b599bd06e23798f51",
+      "kind": "help",
+      "counts": {
+        "zl.slice": 5
+      }
+    },
+    {
+      "path": "help/jitter/jit.avc.maxhelp",
+      "sha256": "a14acb857243ce9120588613f0d03169a9202a2b1c67e3560834103de80079c6",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.axis2quat.maxhelp",
+      "sha256": "8af6a93733ecb447df01e8ffa245bad593f54a74b25aa288ea598f4045641716",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.bfg.maxhelp",
+      "sha256": "baa5d78083e4a7f53ee515cca6fc90e5fe097a70c7c356fcd55336275ca62a4b",
+      "kind": "help",
+      "counts": {
+        "prepend": 26
+      }
+    },
+    {
+      "path": "help/jitter/jit.brass.maxhelp",
+      "sha256": "8dd0e3392cb9fb3ed408569854c2340795f7c18d4085e55d71c425f806228078",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.conway.maxhelp",
+      "sha256": "5cef500bb15666e16e62064303617029dab2d4f0769b0c35d9cef728198bce58",
+      "kind": "help",
+      "counts": {
+        "prepend": 4,
+        "zl.rot": 1,
+        "zl.slice": 2,
+        "zl.iter": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.displays.maxhelp",
+      "sha256": "b06130211f3c3422bdba651ae9ae3c0e865b8e6588c64b383153bf86d75f38e8",
+      "kind": "help",
+      "counts": {
+        "prepend": 4,
+        "zl.slice": 2
+      }
+    },
+    {
+      "path": "help/jitter/jit.dx.grab.maxhelp",
+      "sha256": "1be34a32f15a680971f2a1f4f04050be3efb650e62424bb8c587eefdd57b8a67",
+      "kind": "help",
+      "counts": {
+        "prepend": 3,
+        "iter": 3
+      }
+    },
+    {
+      "path": "help/jitter/jit.euler2quat.maxhelp",
+      "sha256": "8e1520b7e8df1315b11586e63af7b2585add69b12234718645cf93ec9604c05e",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.freeframe.maxhelp",
+      "sha256": "98993e00ff773cf740121951d591de2e72e5856214cf8be66d504e26b2547812",
+      "kind": "help",
+      "counts": {
+        "iter": 1,
+        "prepend": 4
+      }
+    },
+    {
+      "path": "help/jitter/jit.gl.bfg.maxhelp",
+      "sha256": "13682987e01246705ed0ddf4edd3a2ca1b3b8356e195848717b3a6fbfbaaac9d",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.gl.cubemap.maxhelp",
+      "sha256": "900cb223e5192baa64862fc08fdae635173a2906a31e40ea8badcbed08e73e0b",
+      "kind": "help",
+      "counts": {
+        "prepend": 3
+      }
+    },
+    {
+      "path": "help/jitter/jit.gl.isosurf.maxhelp",
+      "sha256": "6dfedc1679e01d74b80c4d25b9232e80644f208b2638b3168908b29220526821",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/jitter/jit.gl.material.maxhelp",
+      "sha256": "cf874cba7d0027548390aa8ce87a5b2919fd27105aab2afed7805a3e6a7517aa",
+      "kind": "help",
+      "counts": {
+        "prepend": 4
+      }
+    },
+    {
+      "path": "help/jitter/jit.gl.mesh.maxhelp",
+      "sha256": "51fa7138ddfb99922ddf5958c815af51def9913fd7d213a0c068603fe24b42e6",
+      "kind": "help",
+      "counts": {
+        "iter": 2,
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/jitter/jit.gl.model.maxhelp",
+      "sha256": "54d6b9b5fc57c31d4ef79dd53973e41284ffab46d41a379d20f7e2937da02e4e",
+      "kind": "help",
+      "counts": {
+        "prepend": 13,
+        "iter": 2
+      }
+    },
+    {
+      "path": "help/jitter/jit.gl.multiple.maxhelp",
+      "sha256": "192b607b5d9aaa1c471b6c2c4aff5e619755b3d05991a910936d0a7fb5a86ace",
+      "kind": "help",
+      "counts": {
+        "zl.rev": 1,
+        "prepend": 8
+      }
+    },
+    {
+      "path": "help/jitter/jit.gl.path.maxhelp",
+      "sha256": "999b6ba7bd2c756c06bd4fc10abe3cd179574738b5c477c28006c76d75de9ff5",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/jitter/jit.gl.picker.maxhelp",
+      "sha256": "325424b7accd313970d884f4dccdeb3470723e664c566aadf387bcd2e3519a94",
+      "kind": "help",
+      "counts": {
+        "prepend": 3,
+        "zl.rev": 2
+      }
+    },
+    {
+      "path": "help/jitter/jit.gl.shader.maxhelp",
+      "sha256": "6ef94ce2fe7ff9e6e383c901e1e5ae6c746446ba359aa4cac64090a139f848e6",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.gl.sketch.maxhelp",
+      "sha256": "93b4d8ec0b241beeab8d1068f5cc3d1e8a72a1c1e279575b3c5ec7c06773b1db",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.gl.text.maxhelp",
+      "sha256": "86ce72dda4eb0a8c445ed09c8235bdedd84c964f65a91e819ef245dd79bbd0f0",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/jitter/jit.grab.maxhelp",
+      "sha256": "820c23971dc584771d3ae269b29a8cbf2dd000b390fd9707dc953872c5c998ff",
+      "kind": "help",
+      "counts": {
+        "iter": 4,
+        "prepend": 4
+      }
+    },
+    {
+      "path": "help/jitter/jit.gradient.maxhelp",
+      "sha256": "223ed474a5c6d8e698341fc5f748892d86058738e817cbb7329f2a624dd1130d",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.keyscreen.maxhelp",
+      "sha256": "bbef6270cc312c61f107c90473b7c7faeee9a2cfa32fed8495b7a9feea5eda2d",
+      "kind": "help",
+      "counts": {
+        "zl.slice": 1,
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.lcd.maxhelp",
+      "sha256": "351bb0f4f30358427814e3622bb143a03a6d1a84dcb56958dd66d8b7d8c5c14d",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/jitter/jit.mxform2d.maxhelp",
+      "sha256": "820c208c49b9e9acb50ab4894dea19142fe9a973a372e84e56135cfb9d6eae40",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.op.maxhelp",
+      "sha256": "ed3bb6b06ff82b9e06383f76a6472951427b66333c11a45b54746c8d71392570",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.path.maxhelp",
+      "sha256": "75f0b78a66a2c1a1050a49d8d0a0cd9d9ca6db518a6da06c57ce1d6e429e1df3",
+      "kind": "help",
+      "counts": {
+        "prepend": 8
+      }
+    },
+    {
+      "path": "help/jitter/jit.phys.body.maxhelp",
+      "sha256": "86bc8174e43a06e3261ccfe07d0ffa19bab3a49749815c89199adc0a4c98d60c",
+      "kind": "help",
+      "counts": {
+        "prepend": 2,
+        "zl.join": 2
+      }
+    },
+    {
+      "path": "help/jitter/jit.phys.ghost.maxhelp",
+      "sha256": "40f69963f9ffe65e74402e36e7a863c8789b5846d4dbca56493b9817632c295c",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.phys.multiple.maxhelp",
+      "sha256": "faefe127673128fcae0923e370408fa775ef404a6c8453fe7d7ed12b10f040d9",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.planeop.maxhelp",
+      "sha256": "1012348f67c5b421ebf843b330336343b6d16681759177442cbbdb74d504b713",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/jitter/jit.playlist.maxhelp",
+      "sha256": "8dd69f35003f0fbd25fc072d84338255f443d30374e8c94c3506a2af586b5b98",
+      "kind": "help",
+      "counts": {
+        "zl.len": 2
+      }
+    },
+    {
+      "path": "help/jitter/jit.plot.maxhelp",
+      "sha256": "fb6501b5f7ef0e6bdf0ea7d0b13ce3c913d0fa7facee9940ecb7f87069317ed6",
+      "kind": "help",
+      "counts": {
+        "prepend": 4
+      }
+    },
+    {
+      "path": "help/jitter/jit.proxy.maxhelp",
+      "sha256": "89e851d7520e6c9f522718be89f2842aeb5ab6b3cab04fa063af449f18abfee0",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.quat.maxhelp",
+      "sha256": "207a13e2fcea191cece0062b16ddc238ce579493637d76580b1bbbcd4a7f2af7",
+      "kind": "help",
+      "counts": {
+        "prepend": 6
+      }
+    },
+    {
+      "path": "help/jitter/jit.quat2axis.maxhelp",
+      "sha256": "5d67660b3d88c5627a7e525fd06fce1828d6855d0bfc9288c9bab4e095b591c8",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.quat2euler.maxhelp",
+      "sha256": "fa9d3cc481fc66fad19a501100e40d66dbb93c7a9ab13280af2c2cb1280ff71f",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.record.maxhelp",
+      "sha256": "93adde808fd3a48cc579820a5efa069f681a86f873b0b0ef5b496bf9a037362b",
+      "kind": "help",
+      "counts": {
+        "iter": 1,
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/jitter/jit.str.regexp.maxhelp",
+      "sha256": "f64a10ed34274ba8ea74e0f82183ab7a9ea6864f5beb8753be22be01559b10ee",
+      "kind": "help",
+      "counts": {
+        "prepend": 3
+      }
+    },
+    {
+      "path": "help/jitter/jit.uldl.maxhelp",
+      "sha256": "03421cda2f953bc330529d999a077d79a282443e0db00b7c51cdae8f67527489",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.vcr.maxhelp",
+      "sha256": "1abd04840bc2c6462e83fb74641d7b1b4cf9225b45d2c1d423be630a44278be2",
+      "kind": "help",
+      "counts": {
+        "prepend": 3,
+        "iter": 1
+      }
+    },
+    {
+      "path": "help/jitter/jit.world.maxhelp",
+      "sha256": "4ef2d9783a24278e9b8f13b3f9cf922409f08c3b4b6acf06dcfb90f1fcbb7c89",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/m4l/chucker~.maxhelp",
+      "sha256": "5f7c9c60aa72e9932fcfbb9adabfa25f38c593e963f0d6908b2aefb91e2bdf4e",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/m4l/live.colors.maxhelp",
+      "sha256": "79045b4294ceafd055c3d32631924fb2004feb69422015058fca83ad62576242",
+      "kind": "help",
+      "counts": {
+        "prepend": 4,
+        "zl.join": 4,
+        "zl.slice": 3,
+        "iter": 1
+      }
+    },
+    {
+      "path": "help/m4l/live.grid.maxhelp",
+      "sha256": "49eaba83248dd65a129be1f9fbe3409ba6fea8d24c441f91130da648f8306094",
+      "kind": "help",
+      "counts": {
+        "zl.iter": 2,
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/m4l/live.miditool.in.maxhelp",
+      "sha256": "9349fd2f866148435bdba1b52d35d2ed32f25567531b6db540db1dc0639c6ad4",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/m4l/live.miditool.out.maxhelp",
+      "sha256": "5ce345c02de9c91515460c2e41ea6d1c6771dd7898a16ab9548fddd9c25b3088",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/m4l/live.modulate~.maxhelp",
+      "sha256": "25890268072d0e31874694ba8f21e261a4621d2549b221b2f59d086b48e052b1",
+      "kind": "help",
+      "counts": {
+        "zl.slice": 16,
+        "prepend": 10,
+        "zl.reg": 8,
+        "append": 8,
+        "zl.join": 8
+      }
+    },
+    {
+      "path": "help/m4l/live.push.maxhelp",
+      "sha256": "aada4b74f95b30e4f0b134794dd894023dfce60790f6ba669ff073d4eacb4297",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 3,
+        "zl.iter": 1,
+        "prepend": 5
+      }
+    },
+    {
+      "path": "help/m4l/live.remote~.maxhelp",
+      "sha256": "611387463d2436f30942f97447ea5b36ca26dbcd92f27e3d2973be1c3504e576",
+      "kind": "help",
+      "counts": {
+        "prepend": 2,
+        "zl.slice": 2,
+        "zl.reg": 1,
+        "append": 1,
+        "zl.join": 1
+      }
+    },
+    {
+      "path": "help/m4l/live.routing.maxhelp",
+      "sha256": "0b6e782bc18e25a55de5878fe0b40c35a39d3061086d48846cdab48f411924ea",
+      "kind": "help",
+      "counts": {
+        "prepend": 24,
+        "iter": 8
+      }
+    },
+    {
+      "path": "help/m4l/live.step.maxhelp",
+      "sha256": "6e60b442dc127d8c584f2df82fc7023dccb46df34a3227ca01d33e47ba204fc2",
+      "kind": "help",
+      "counts": {
+        "prepend": 5,
+        "zl.reg": 1,
+        "append": 1
+      }
+    },
+    {
+      "path": "help/max/append.maxhelp",
+      "sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+      "kind": "help",
+      "counts": {
+        "append": 3
+      }
+    },
+    {
+      "path": "help/max/array.frombuffer.maxhelp",
+      "sha256": "309e2a241cc939e99fbec4114d5b4a0464a17279c2bde0978d3d6c2462f5c2f1",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/array.tobuffer.maxhelp",
+      "sha256": "cec9ddbf78002bff3d3c77d34f48de2d52e1b3573719bea17c008d75ddef63f9",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/max/attrui.maxhelp",
+      "sha256": "1e2f9c83eb1164e5a437e91e07a73afd525657d7f47eb8c803d1e1ab8371d917",
+      "kind": "help",
+      "counts": {
+        "prepend": 3
+      }
+    },
+    {
+      "path": "help/max/bgcolor.maxhelp",
+      "sha256": "4fe83cd5ab1e7b6efbc35df654c8c412f12ad9b275a15888ef827887c5e93167",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/cartopol.maxhelp",
+      "sha256": "978c15dd7414a7988f0984ccdce11d13471b3aeec9819c3bca87de71379f62f8",
+      "kind": "help",
+      "counts": {
+        "prepend": 6
+      }
+    },
+    {
+      "path": "help/max/colorpicker.maxhelp",
+      "sha256": "43b28479099b74bf079aea4fd5dad3f3f70fa0d7ad9eb2129f3db89addd7ea18",
+      "kind": "help",
+      "counts": {
+        "prepend": 4
+      }
+    },
+    {
+      "path": "help/max/combine.maxhelp",
+      "sha256": "6443224730f5b08278b5c378c2f5e8cf564d66d13bfdfb74bf4891c3a0d088b1",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/conformpath.maxhelp",
+      "sha256": "7794d068d6989dcfc342809d267093749ab91e4dfe9dd97493d93bc598c1bfd8",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/max/dict.deserialize.maxhelp",
+      "sha256": "a4910cc09c2d3494580dd8e82b6efc3862cbc2efc0df1b84c361184b9a4738bd",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/dict.maxhelp",
+      "sha256": "38a54855d954ddfd55078224cd3e3a35d6efb7776a97289ad95d6161478e9908",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.slice": 1
+      }
+    },
+    {
+      "path": "help/max/dict.serialize.maxhelp",
+      "sha256": "c80907885e9ab2a6849cfa7cd38a5f578c94626fc41817c8ba3d95f84ba084b6",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/filepath.maxhelp",
+      "sha256": "07bef0e6de100d24784569059327c230da321ba40299bff46330f79c3a123eda",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/max/folder.maxhelp",
+      "sha256": "2fb11d49d25ee95cfdf39698ff1a5f6c77a9a3a26e802f5c4c444103d56823f1",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/fontlist.maxhelp",
+      "sha256": "ca980c36588847e7d7ed4ad392ff988ee5230a9d602a0f3e233621f583155374",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/function.maxhelp",
+      "sha256": "d1d2c39277d5ed4a9925a9dd9c01648c3fa5617d624ef5d38f3ebde706071e74",
+      "kind": "help",
+      "counts": {
+        "prepend": 5
+      }
+    },
+    {
+      "path": "help/max/gamepad.maxhelp",
+      "sha256": "d4fd7f5ae3a8b3e33f8bef7013a3b4c778d25dc078d0479559a71167242ba069",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.join": 1
+      }
+    },
+    {
+      "path": "help/max/gen.maxhelp",
+      "sha256": "e266ed4494ba59aef16337ca102a5a53341a64832f90792d9e0e058b82b69cbc",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/getattr.maxhelp",
+      "sha256": "62f0cc0f12f2d3080f908c7b17fb7e947acaa3e8030064564c5f50801d15d6cc",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.iter": 1
+      }
+    },
+    {
+      "path": "help/max/hid.maxhelp",
+      "sha256": "b70352971d88ac3306290bd54f97c367bd750a14cb6d5c5ec3be2db35b11d45f",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 2,
+        "prepend": 3
+      }
+    },
+    {
+      "path": "help/max/itable.maxhelp",
+      "sha256": "8ddbcd4584ab180cb5bce313c96804fd63bcbba967197357b01ab36060145076",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/iter.maxhelp",
+      "sha256": "5a134d4bd917a9346d8a9a5faf758076b4a1f2254688dab7ac26ac0c57ff39f9",
+      "kind": "help",
+      "counts": {
+        "iter": 2
+      }
+    },
+    {
+      "path": "help/max/jit.cellblock.maxhelp",
+      "sha256": "997f69900b23f75ad195dad6918d5e47cac84d0dabf5da9b11d6f48c74dffb1a",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/join.maxhelp",
+      "sha256": "92cfd2935a73aea720f6a7b6522ab2cac53602d6dc23d2f0ef4a40fefe8ee810",
+      "kind": "help",
+      "counts": {
+        "zl.len": 1
+      }
+    },
+    {
+      "path": "help/max/jsui.maxhelp",
+      "sha256": "4dfc2082ad4c09959dc45fae14790c61e11b39e902f4b96f90c5d6e6cc704020",
+      "kind": "help",
+      "counts": {
+        "prepend": 4
+      }
+    },
+    {
+      "path": "help/max/jweb.maxhelp",
+      "sha256": "83bef26b070e05a2a2dc1b071370d155ddf0d3e55bcfba1984e0b7163d052ab1",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/lcd.maxhelp",
+      "sha256": "5a76cef305f485354530dcd86922b18ba8e53918dd646c1b8985f2e78e3af4c8",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/max/menubar.maxhelp",
+      "sha256": "945159371ff5f3a7a0a6f90b4a8bfed747174f27bd3cb3cb61c2f6e182889aac",
+      "kind": "help",
+      "counts": {
+        "zl.join": 1,
+        "zl.slice": 1,
+        "zl.reg": 1
+      }
+    },
+    {
+      "path": "help/max/multislider.maxhelp",
+      "sha256": "505c3744352f34d9d6a4f118f3d5eee19b76328a9b11320a979cdbc347d73984",
+      "kind": "help",
+      "counts": {
+        "iter": 1
+      }
+    },
+    {
+      "path": "help/max/nodes.maxhelp",
+      "sha256": "fbedf7e2455ea7f2c2d1abcc422d428c6baeeb7531a079b7af1ed8fdf95becb0",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/pack.maxhelp",
+      "sha256": "bdc8583d15f82e398f553d9223794451138312d67e41eb251f8c541ab5df0d79",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/pattrstorage.maxhelp",
+      "sha256": "e160cbb800e9f79072a85ae1a96c8d0c4066a50a4f61dadb488803e2b078fcf2",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/max/pipe.maxhelp",
+      "sha256": "01667ad841f5226d56c912afc43eb6ab0c24580978021ee4346b8d3d7a510138",
+      "kind": "help",
+      "counts": {
+        "prepend": 4
+      }
+    },
+    {
+      "path": "help/max/playbar.maxhelp",
+      "sha256": "3b03785ab090dfb3708d162239b22b5518aaee2dcea51d0adb52c07fe3e29a3b",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/max/poltocar.maxhelp",
+      "sha256": "01acb86f8fbd64a6ab90aa1c1785c504c6537f2495525fd1d086f0f4fb4d3ee4",
+      "kind": "help",
+      "counts": {
+        "prepend": 6
+      }
+    },
+    {
+      "path": "help/max/prepend.maxhelp",
+      "sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/max/quickthresh.maxhelp",
+      "sha256": "44bc97071f4acf19026d0bac9c229cec294de56453d5017eea2322a678709003",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/max/radiogroup.maxhelp",
+      "sha256": "76331a9d3a12a5ac95694a1bb8068f386608b72661a7e4604863c5c33cb64704",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/regexp.maxhelp",
+      "sha256": "0370a088e20ec2310ed99cc995494bb31d5e2516439c3f2a5317d55a3318bc0c",
+      "kind": "help",
+      "counts": {
+        "zl.len": 1
+      }
+    },
+    {
+      "path": "help/max/savedialog.maxhelp",
+      "sha256": "ea8b73c769fa744b4b669189a4f997168ade3e805ff0291f4a626f6301a5616e",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/schedule.maxhelp",
+      "sha256": "893e3b6abe95f9d9b34ad030836e41a5e6907378549f66ed82e39679e234c2fe",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/sprintf.maxhelp",
+      "sha256": "f016340b95ba7d4094cde5d38b727c787b76808b6931a5aaec143a0168196b89",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/string.tolist.maxhelp",
+      "sha256": "9080ce9ce864ea41cdb434ede5e30107e6bff853a4d81eb02de08d7fb093368d",
+      "kind": "help",
+      "counts": {
+        "zl.len": 1
+      }
+    },
+    {
+      "path": "help/max/swatch.maxhelp",
+      "sha256": "7914cce190108a79a22aad35ba1acf81c43bfb76c3aeee2ce875ea988aa1d0fe",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/max/tab.maxhelp",
+      "sha256": "af8014363d971554b494b3109df6c0333ceefa3d46f03fad814aa189246e9523",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "append": 1
+      }
+    },
+    {
+      "path": "help/max/textedit.maxhelp",
+      "sha256": "0fc64db9302100166e7fe29f3106ac2ab3a78077b8fb5848c94dbdba2f587520",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/themecolor.maxhelp",
+      "sha256": "602c8fd3d60c5fbe2bc9a10efc46db39a06d60ef1518bf94954acf4fcabff560",
+      "kind": "help",
+      "counts": {
+        "prepend": 8,
+        "zl.join": 3,
+        "zl.slice": 2,
+        "iter": 1
+      }
+    },
+    {
+      "path": "help/max/timer.maxhelp",
+      "sha256": "af9b9cb7032bf7c00a01dd67fe2ffe581a57fa588ddf970f85438e0cf66c9ddb",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/transport.maxhelp",
+      "sha256": "71a0d08df227d70d8cf4597ae768fd70d81155451db25645cd321815fe0a9477",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/umenu.maxhelp",
+      "sha256": "1065960d17839e964b8aca1c5ebe95060c79495394cbce6862a575a3978e4ef5",
+      "kind": "help",
+      "counts": {
+        "prepend": 3
+      }
+    },
+    {
+      "path": "help/max/v8ui.maxhelp",
+      "sha256": "0f889ab89329746520fcdc07b59e5f673699aadd2d8da05854a73a92893a97f1",
+      "kind": "help",
+      "counts": {
+        "prepend": 4
+      }
+    },
+    {
+      "path": "help/max/vstscan.maxhelp",
+      "sha256": "4df957bacffa713bd0932501423187fd2acd2311729b9dc07c28c5898b8722d5",
+      "kind": "help",
+      "counts": {
+        "prepend": 6
+      }
+    },
+    {
+      "path": "help/max/zl.change.maxhelp",
+      "sha256": "2b37d1af4c448a0c1836654a0f99137c8dbaa5d192282b6ec99afe786e7b7c95",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.compare.maxhelp",
+      "sha256": "d8699d9c95a738021eac7edc02f4fbd5fd6142b4f3a13fa4b4fd01ad9d5b531a",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.delace.maxhelp",
+      "sha256": "6d44d821568b34f60532015211b75510575ad3d2121461b736c7873178878d9b",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.ecils.maxhelp",
+      "sha256": "adddcfb2f5d9eddcdddd6d3c58d5d9d894b4aa93f9d1befe6dfe689091cae6bd",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.filter.maxhelp",
+      "sha256": "90f085dcc37ac7900861333338eba1a050111b5709a5cf16d08824bf01724f47",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.group.maxhelp",
+      "sha256": "010d7ad4f097dbe1cda7f40d666fe228821afe5fd60017305ad22d3e99878537",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.indexmap.maxhelp",
+      "sha256": "60af569d8dcdccc1058dda3be93b9e61d7b11e2ca6ee78afad89efc537bf0077",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.iter.maxhelp",
+      "sha256": "dd7b864e8bc69e2929680ce06a79beb6df574453a9e5376c85d17c8554259f90",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.iter": 2
+      }
+    },
+    {
+      "path": "help/max/zl.join.maxhelp",
+      "sha256": "57db60424fdd778d721bcf3291f0d5d4011a198a040864480a108918f264f575",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.join": 2
+      }
+    },
+    {
+      "path": "help/max/zl.lace.maxhelp",
+      "sha256": "9592595929e9b80bd28b84230f9d787f1032d694f1beb310eafc96f154318dbd",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.len.maxhelp",
+      "sha256": "d2bd2df108b6267b22739a035c4c9d35d97ba8ac0acc54551175ce8d708b1b1d",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.len": 2
+      }
+    },
+    {
+      "path": "help/max/zl.lookup.maxhelp",
+      "sha256": "e5398753bd01f244405b7c24eebe4f72486d6eb74f7a9e6fb7d6a5e60f0b3d05",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.maxhelp",
+      "sha256": "09f31e631fb8d0a5b904662ff3972893a3b80bee6607acadaa58488ab13860d8",
+      "kind": "help",
+      "counts": {
+        "zl.len": 4,
+        "zl.iter": 1,
+        "zl.join": 1,
+        "zl.slice": 2,
+        "zl.rot": 1,
+        "zl.rev": 1,
+        "zl.reg": 1
+      }
+    },
+    {
+      "path": "help/max/zl.median.maxhelp",
+      "sha256": "eb546f31dcda012e6905d49328230029cac9c35f2a097f5b5dc767111fda192b",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.mth.maxhelp",
+      "sha256": "64a9d1a6013280015e15362e8d6cbb0d1601c550487908bfa99990dfa062443d",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.nth.maxhelp",
+      "sha256": "08a19f6cc675e056a4be7648769de6e97987a23a3bc0dcbf337389718d431b32",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.queue.maxhelp",
+      "sha256": "64f791a413a0e1857c136fd547072599f0fe4abed15cb4114444af2571e852b1",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.reg.maxhelp",
+      "sha256": "74ece65ba7e0c66f344a3b90e21baee676ceac3e3e2415fc778c93c47c667240",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.reg": 2
+      }
+    },
+    {
+      "path": "help/max/zl.rev.maxhelp",
+      "sha256": "7c20c373ecb1f1c1e502faeb4f5f08746a3e0964a1e98ce4ace3640928be6874",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.rev": 2
+      }
+    },
+    {
+      "path": "help/max/zl.rot.maxhelp",
+      "sha256": "8db62d00e18cf65bdbc83f8594d9bb9cd3a4b0523476899f89a770c0a6a5b8e2",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.rot": 2
+      }
+    },
+    {
+      "path": "help/max/zl.scramble.maxhelp",
+      "sha256": "cf7543eaaba84b89e58ce999120df783273e4ec4cba51143193915e9dcb46a1c",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.sect.maxhelp",
+      "sha256": "2d2c421a078eb28c361d6c767a7eb3591ff61c07768d2909c5e60cb16f1980c5",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.slice.maxhelp",
+      "sha256": "48dc14f3aea152bf33e4748dbd2e1b8a6488468703da696d060064adb1fcb134",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.slice": 2
+      }
+    },
+    {
+      "path": "help/max/zl.sort.maxhelp",
+      "sha256": "b62899bd023cb75097354c187ffcaeb5266eb27ac8d2c2f4710cd64e97f8608b",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.stack.maxhelp",
+      "sha256": "007009015ca74e7e2eae3bfcbc36f92cc58aea4131fbdade01877d28aa467e93",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.stream.maxhelp",
+      "sha256": "462ca77e64bc60bd90eeff155ea237d275618832b806a6e5e6d07bdb635fcc91",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.sub.maxhelp",
+      "sha256": "f67e581b4575bc52f3767cd3140e87aa79d9363e13a500474da04809eed6ad3a",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.sum.maxhelp",
+      "sha256": "4bb23a9c873c20464e7e650507e633cbc6a8708a1e307ef14e68b53d96fc700d",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.swap.maxhelp",
+      "sha256": "80140868f52d2895796e196aea782d89cf90e277f2beb446dddee7e41b370962",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.thin.maxhelp",
+      "sha256": "8e3d729e8628bbbcc1d1b63b8d0bc828cbf6f9aebb19e4ccf6b760cc2902eb5c",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.union.maxhelp",
+      "sha256": "f15421c378913370cd83594604baf1d021c550e3cecb0f59dc2a935b2ca67cd9",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/max/zl.unique.maxhelp",
+      "sha256": "794a830f290a47135930252062c5b7fb4774819a6aff274dd920368ffd89f0a8",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/msp/adsr~.maxhelp",
+      "sha256": "a45c467bc3710c13cd7f35b227276544bc7ff54831fd9bf043c651f41cef4250",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/msp/allpass~.maxhelp",
+      "sha256": "cd21b3e4a6dc7b83b02189be9992657f89e47c680b486bb49819b43be6eecd09",
+      "kind": "help",
+      "counts": {
+        "prepend": 2,
+        "zl.len": 1
+      }
+    },
+    {
+      "path": "help/msp/amxd~.maxhelp",
+      "sha256": "685d9707a90328a7be6ab9383389153c621e0ad5d62ada3b48fcd720a0f896ee",
+      "kind": "help",
+      "counts": {
+        "zl.rot": 1
+      }
+    },
+    {
+      "path": "help/msp/atan2~.maxhelp",
+      "sha256": "cf1d72ece3053df911edca5af3455cb5907b732c92e1656aca221661f467cd2f",
+      "kind": "help",
+      "counts": {
+        "prepend": 5
+      }
+    },
+    {
+      "path": "help/msp/buffer~.maxhelp",
+      "sha256": "85d122652303b0ffe8b87e7810dfd0ce3d1af7b5883b53d46957962095474542",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/msp/cartopol~.maxhelp",
+      "sha256": "69f7bf76e8f44bc55bfd0372689e5d13cd6c728c6ad5dcd6057e4d7d3b615196",
+      "kind": "help",
+      "counts": {
+        "prepend": 5
+      }
+    },
+    {
+      "path": "help/msp/click~.maxhelp",
+      "sha256": "43f8221d833858a77e4660f5bee6bb618111fe0f137cd72b95c55d9ffdefadf0",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/msp/demompe.maxpat",
+      "sha256": "e6ebb81dcf4cd68a44fdd3dc8cc97be5810193e40d5daa04ca1886efac8e212c",
+      "kind": "support-patch",
+      "counts": {
+        "prepend": 12,
+        "zl.reg": 1
+      }
+    },
+    {
+      "path": "help/msp/demosound.maxpat",
+      "sha256": "5809fcdee9b5bfe0ac84ee8cb32d33cb68f260a3985bd297d105b04a8e2003ca",
+      "kind": "support-patch",
+      "counts": {
+        "prepend": 17,
+        "zl.slice": 1
+      }
+    },
+    {
+      "path": "help/msp/ez-synth-automute.maxpat",
+      "sha256": "6827ee088941193f0115e8f2324b4b53498474d4b69191b955a1ff62d36964f0",
+      "kind": "support-patch",
+      "counts": {
+        "zl.reg": 1
+      }
+    },
+    {
+      "path": "help/msp/ez-synth.maxpat",
+      "sha256": "4a3e23366e21fd7080bbbe5ae4ecc485caa99fc148bdd67b6038f3e52a134d7c",
+      "kind": "support-patch",
+      "counts": {
+        "zl.reg": 1
+      }
+    },
+    {
+      "path": "help/msp/fffb~.maxhelp",
+      "sha256": "60e1efddf8c219b464941262c99734c2d6cc7b8e9d0539cb762b431952b59c34",
+      "kind": "help",
+      "counts": {
+        "prepend": 9
+      }
+    },
+    {
+      "path": "help/msp/filterdesign.maxhelp",
+      "sha256": "3f4d06e6938004b9ed969dfbc372a68a2239d62a2e9141c7f4936b7a026fbe79",
+      "kind": "help",
+      "counts": {
+        "zl.len": 1
+      }
+    },
+    {
+      "path": "help/msp/filterdetail.maxhelp",
+      "sha256": "5e04e99cb4c63f3241638afebbbb62ca46c3dd0887194f6a63ad3d83b534ddac",
+      "kind": "help",
+      "counts": {
+        "prepend": 2,
+        "zl.len": 1
+      }
+    },
+    {
+      "path": "help/msp/filtergraph~.maxhelp",
+      "sha256": "e4c1dea68d87c4593025ec2324c4c5a179cd4d5dd4bb179f636ac971e30b5024",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/msp/frame~.maxhelp",
+      "sha256": "b05ac872514f82880edfc0e11b3353511d40d1c527db6107866f4f20750d96ae",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.slice": 1
+      }
+    },
+    {
+      "path": "help/msp/gen~.maxhelp",
+      "sha256": "1817e835910b62ddd81a20a709ef7ebc8b792b513cda8b2bc2c20a87e00ec8df",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/msp/ioscbank~.maxhelp",
+      "sha256": "f001c4e77e91631b5d796f8dce9038f84e56cecdf0f19aec1faef7ca72e1514f",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/msp/mc.bands~.maxpat",
+      "sha256": "fd939b402bddea1ab5197f71a6a7f8dd87959601f64a6838cba66307bc0997e0",
+      "kind": "support-patch",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/msp/mc.makelist.maxhelp",
+      "sha256": "ae511288917951c9fd0ada08f85dfe0f29dffabf43368a9861511c411299b948",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/msp/mc.pattern~.maxhelp",
+      "sha256": "74f59c60087fd3147ce0db69566ad0796273bdda1adcc57109b42bc68a6e2a54",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/msp/mc.playlist~.maxhelp",
+      "sha256": "b9c5f72e8bfeb0a55d340493c1d77d5242962788e1aa4d265a1c5e40e32ae34e",
+      "kind": "help",
+      "counts": {
+        "zl.len": 1
+      }
+    },
+    {
+      "path": "help/msp/mc.targetlist.maxhelp",
+      "sha256": "0459bcb9f38b44a8912d37cc3dda855cd5714e01b74b7f5ec09ce899b25c95fb",
+      "kind": "help",
+      "counts": {
+        "append": 1
+      }
+    },
+    {
+      "path": "help/msp/omx/omx.4band~.maxhelp",
+      "sha256": "907bb621d8067a632fcbe8b2106bd1d018ca2cc781f35691372f35f1ed2d9481",
+      "kind": "help",
+      "counts": {
+        "zl.slice": 1
+      }
+    },
+    {
+      "path": "help/msp/omx/omx.5band~.maxhelp",
+      "sha256": "1089fc84997ee11823fdb420eff6fca5abed81673fdcf8fe0b41568e2e0ab1ff",
+      "kind": "help",
+      "counts": {
+        "zl.slice": 2
+      }
+    },
+    {
+      "path": "help/msp/oscbank~.maxhelp",
+      "sha256": "8b1e508eed515e6f37120093aae224e9e063d228928a98d66e446a5049427df2",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/msp/playlist~.maxhelp",
+      "sha256": "ceb363613efed25c5cf3688343a4d4ed81e84f118ffb954bbd88b393e00902f5",
+      "kind": "help",
+      "counts": {
+        "zl.len": 1
+      }
+    },
+    {
+      "path": "help/msp/poltocar~.maxhelp",
+      "sha256": "fd966f1d6de255534ce80fbea665841e411701b53a4ce570236063293b759c21",
+      "kind": "help",
+      "counts": {
+        "prepend": 5
+      }
+    },
+    {
+      "path": "help/msp/polybuffer~.maxhelp",
+      "sha256": "ed8fbcca3bbee20a2aeac6d64718bcd5c15cfc7cec609bf1af6f7e850ca701ca",
+      "kind": "help",
+      "counts": {
+        "prepend": 3
+      }
+    },
+    {
+      "path": "help/msp/poly~.maxhelp",
+      "sha256": "648a5de187225836d140cc8d54e5ced4104316f5744e5d50a2de4ce24405c81c",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/msp/rate~.maxhelp",
+      "sha256": "7fd27dcb06bf8cc7eb58a0a0d4b7eb52ac7bcd9af008e06ae65dd89ba794d25b",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/msp/retune~.maxhelp",
+      "sha256": "c7ee3d6c043601287a72f938c7841f106127a5c0fbc0e2c5dc65e7d75f2e2a3c",
+      "kind": "help",
+      "counts": {
+        "zl.len": 1,
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/msp/sfizz~.maxhelp",
+      "sha256": "72ebddf45825a91edb3ce438a9ebfb954aa716e3d6a0ac8ae05337e1a997172d",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/msp/sfplay~.maxhelp",
+      "sha256": "67021478a98f4bc222039f316362d8dfec7baf1f438daf71d85c747114219135",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "help/msp/sfrecord~.maxhelp",
+      "sha256": "61a6a3759182915b4031818faeb1d2871afe066edea13091e76c7a2cd8c01ac0",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/msp/smallstep.maxpat",
+      "sha256": "858b313211c54984c9c760eda7e82fe1ccc729d55c415005ef556868769bfc0d",
+      "kind": "support-patch",
+      "counts": {
+        "zl.reg": 2,
+        "prepend": 2,
+        "zl.len": 1
+      }
+    },
+    {
+      "path": "help/msp/vst~.maxhelp",
+      "sha256": "893fc6f874f84b869a552583c22b1307696989414e44ceee5a99214edd5c3a5e",
+      "kind": "help",
+      "counts": {
+        "prepend": 3
+      }
+    },
+    {
+      "path": "help/msp/wave~.maxhelp",
+      "sha256": "b76b0a230eb4355d57df912196759b852ea60407374b8bd1df926c877cc062a1",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "help/msp/zigzag~.maxhelp",
+      "sha256": "bc27800f30f8652302de2cb17ccee542fd8c9dddfccbcfe954e3b3cd4601881d",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.32-band analysis.maxhelp",
+      "sha256": "e65d45d25f975c4e030b50d4774dd2f65af9ef6e810845fed03e29e2ca467fcb",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Arbitrary Note Map.maxhelp",
+      "sha256": "6d8c31d4e9874551ce6f41e6ff041c2c4650261c0a948bdd13bccc927da576a3",
+      "kind": "help",
+      "counts": {
+        "prepend": 4,
+        "zl.rev": 1,
+        "zl.reg": 4,
+        "zl.rot": 1,
+        "iter": 1,
+        "zl.len": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Arc Ring CC.maxhelp",
+      "sha256": "cbc397d8d4db00e839dbc60ec0625f2d0509b71deba4df1af1f46325a866dc4d",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Arc Ring.maxhelp",
+      "sha256": "48a15e8d101602b7aa6ee46721a63e191df779d41268e2b2800312352e0ead1f",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Arpeggiator.maxhelp",
+      "sha256": "50bc620bf7bcd55a3d8fab27ec02f038f2bb4ed7744fe9812559e4691d5e411f",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Cell.maxhelp",
+      "sha256": "c548bdc1f0d0cffecdd8d526d3028c2c29cb0f3b25b8ea061b31bba1ce164a25",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Classic Vocoder.maxhelp",
+      "sha256": "fe9616a2d0c0dd0012c733e82235db35d84f5e630c336482c11e7860f8081ef7",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Curvy.maxhelp",
+      "sha256": "8d2024fa03119de067b9fc2c57d223f4bbbbe41c60f23266ff8b493bba550657",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Drum Sequencer.maxhelp",
+      "sha256": "8b8d9df9a832e55a31b65bc1f02a3a9231da9e3acc5e5db724be6c0a8f7abb34",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 6,
+        "zl.rot": 2,
+        "zl.slice": 4,
+        "zl.rev": 4,
+        "iter": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Dual Gate Sequencer.maxhelp",
+      "sha256": "54f221ccbc928bd93bafe2ab2864a35973ed78726d0e5a273cd4abc97af13e71",
+      "kind": "help",
+      "counts": {
+        "zl.rot": 3,
+        "zl.reg": 1,
+        "prepend": 6,
+        "zl.slice": 4,
+        "zl.rev": 4,
+        "iter": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.GL LFO.maxhelp",
+      "sha256": "e8bfbb102093cdc6626f934549a9670a8818c6c966cb0e2ee50c12a8b20e7cb8",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 3
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.GL Scope.maxhelp",
+      "sha256": "018f6fd33c001ee70393e5981d6fc807f0f7983d3b24a7f095090f31ddfae3ce",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 3
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Granular.maxhelp",
+      "sha256": "2b2f60cb84201baca7c9791f074e258ea9dce10e20951cd671d8940b379a01bb",
+      "kind": "help",
+      "counts": {
+        "prepend": 14
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Graphic ADSR.maxhelp",
+      "sha256": "2f759a3212ebb513e7234015c21b61b4af21851dd8dcadb1e3c2f992ef3c94bb",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Grid Monitor.maxhelp",
+      "sha256": "91815b339436e1414df28c35b1038135745707f5990a710fb21fa84e30f7f16e",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 7,
+        "zl.slice": 3
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Gridscope.maxhelp",
+      "sha256": "5bc378926ae9cb6e0636503342de239899a29716daae8b1d639aacc374630f1c",
+      "kind": "help",
+      "counts": {
+        "prepend": 12,
+        "zl.slice": 6
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Launchpad.maxhelp",
+      "sha256": "a331be24e4285d67cb22c8dcce2a0b623f77fe4ab3e8d87642ef9301a63c26f2",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.MFFB.maxhelp",
+      "sha256": "ed2660c84d9c39a51a46a10f20c35f045124b17140f100085ea998610df79105",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.MMF.maxhelp",
+      "sha256": "61fbe005d95b70c1945f322bdca8dfb9663e2cdd6c6f76e4dce8bad793126191",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Macro Oscillator.maxhelp",
+      "sha256": "ebd01e7978c180ce20aaba962a7c5832bf04a8258b90551b336757cafefbfd6b",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Metro Pulse.maxhelp",
+      "sha256": "0ffccab9a852da0477b016cec35b94d6db03a035618f7bb2880675eefed5f935",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Mono Risset Oscillator.maxhelp",
+      "sha256": "86c95577e52ea54d3661e8403f3d76cf3012b03431aa1e4ad5b8ec88a0524e9e",
+      "kind": "help",
+      "counts": {
+        "prepend": 4
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Monobright.maxhelp",
+      "sha256": "b6ef3ba6509c2d2a9db9bb82b3fe9d2789828049e682ce33bf0d4bd9085dfa86",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Morphing Sequencer.maxhelp",
+      "sha256": "697f47c90c5689bdcaeb9d0c8421a8e84f902992ef64a826150df2293366327c",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.reg": 2,
+        "zl.rot": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Noise.maxhelp",
+      "sha256": "237be0f30daa19b6555b22de9d037356d0d0ddda2f42080f8aa9dde2461b673d",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.reg": 2,
+        "zl.slice": 1,
+        "zl.len": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Pan.maxhelp",
+      "sha256": "55793307560f369f74d4d2a0dc56e3213cab904f0ec23dba8f8e80de1a4adf6f",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 3
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Phase Vocoder.maxhelp",
+      "sha256": "6013c1e78e7f3de298eac229fcb5e30a88f9a103d524aa83ca384cd9b0340009",
+      "kind": "help",
+      "counts": {
+        "prepend": 10
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Piano Roll Sequencer.maxhelp",
+      "sha256": "95b45d48495fd00e443b7e593d6a166eba090f66af3d69f1f0abb577509be7fa",
+      "kind": "help",
+      "counts": {
+        "prepend": 5
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Pitch to CV.maxhelp",
+      "sha256": "be58d656be61fb00d62a67006829910b785d3fcb0b7a32b7ae432eb4d605e063",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Plane-P.maxhelp",
+      "sha256": "1befe1a7d92d8ca88f6a08bdd5c5860deb1f60c1c01c5dbeb37cf35af3063d3b",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 3
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Poly4.maxhelp",
+      "sha256": "b86aee6d91cf65cbdd775ad7e96c5b7338a4763f90cbd8a85304136727f33553",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Polygome.maxhelp",
+      "sha256": "12455a4c65fd1bcca70f260d619cc5d60de2fee6ada35890da2ddba927887e44",
+      "kind": "help",
+      "counts": {
+        "zl.rot": 1,
+        "zl.reg": 1,
+        "prepend": 3
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Polyphonic Drone.maxhelp",
+      "sha256": "80b4b952c11b532d1e58c5d0e437618feeea59b5836fa5b88c9df86e432738d7",
+      "kind": "help",
+      "counts": {
+        "iter": 2,
+        "zl.reg": 1,
+        "prepend": 4,
+        "zl.rot": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.QUNEODrumpad.maxhelp",
+      "sha256": "5840215678efae13eddd713f515549533fa243e498a00237f3c32519db325d08",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Quad Harmonic Oscillator.maxhelp",
+      "sha256": "3d0fda0c11f96dc796501a57d8ee0d7c50679706f4a07bab3bb4ea24114b6ecd",
+      "kind": "help",
+      "counts": {
+        "prepend": 2,
+        "zl.reg": 12,
+        "zl.rot": 4,
+        "zl.slice": 8,
+        "zl.join": 4
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Quantizer-MIDI.maxhelp",
+      "sha256": "c2838ccc0c1693ec060823a8319405955b049e1004f33612598e8464c0161e57",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 4
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.QuantizerMIDI(2).maxhelp",
+      "sha256": "29d9622ad9d486e90d70614d6b7b717100a11215c6b58c027028aeea0250e8be",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 4
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Ratios.maxhelp",
+      "sha256": "72ad2734d6c521718ae0aef8f8f78bebad6e1a1747ed0d0a1914797d4f1a0335",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Reverb 1.maxhelp",
+      "sha256": "a9503d3d0ff54ea24d30c8b8b5b1611c22273acd06ad8a80d073a9dab305267f",
+      "kind": "help",
+      "counts": {
+        "append": 1,
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Reverb 2.maxhelp",
+      "sha256": "83825c3e67a55aca90e47b15e3e646cdb4fdad7cee4f959fbc401d40101b39a3",
+      "kind": "help",
+      "counts": {
+        "append": 1,
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Rotating Clock Divider.maxhelp",
+      "sha256": "b8ef54af328c118542dc05f4af97aa2c3b8b7d3baed5fb267ba21f839ae5837e",
+      "kind": "help",
+      "counts": {
+        "zl.iter": 1,
+        "zl.reg": 2,
+        "iter": 2,
+        "zl.len": 1,
+        "zl.join": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Smooth Delay.maxhelp",
+      "sha256": "e08c839c1cbb8b5c64bf24aa4f4f0bc2011f340df3fc3852d78620b8921afdd3",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.reg": 2,
+        "zl.rot": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Spectral Filter.maxhelp",
+      "sha256": "3091a1aa62ecbe5a00b5a3f89d5eac7dacecb9ee0397882fd86d1ebd045ae6e1",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.reg": 2,
+        "zl.slice": 1,
+        "zl.len": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Spectral Image Filter.maxhelp",
+      "sha256": "aaf13675982f344db26a4660028edd7486cd2e18860c2344271cd559ae3116e6",
+      "kind": "help",
+      "counts": {
+        "prepend": 1,
+        "zl.slice": 1,
+        "zl.len": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Splittr.maxhelp",
+      "sha256": "ce21d7b2d9bc793d360ec35b5db7c564fac5972baa87f12ffe2143c4d5aaac25",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.Trigger Monster.maxhelp",
+      "sha256": "b715f8847449f37d2d5cc48e156e5b9e7610da3ad3fcfa8893b7b6a3f6af61cf",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.serialosc.maxhelp",
+      "sha256": "95e04ff66e08dde597c89d335d05acd6d277b83a6f3eb97117beb0b206acd86e",
+      "kind": "help",
+      "counts": {
+        "prepend": 6,
+        "zl.slice": 3
+      }
+    },
+    {
+      "path": "packages/BEAP/Help/bp.\u00b5Seq.maxhelp",
+      "sha256": "957a461ce44dc8da6289e434f02572208ceba49129838748d2e52218196c4ad2",
+      "kind": "help",
+      "counts": {
+        "zl.reg": 1,
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/Jitter Geometry/help/jit.geom.displace.maxhelp",
+      "sha256": "73ce91080fb204cdbe59fb22b44184990628057680811de8e2cce3096df7308c",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/Jitter Geometry/help/jit.geom.prop.maxhelp",
+      "sha256": "623f356c30f9b8b5895e92ecb1bd097c486359ac8e25f8357775ce2243e906c8",
+      "kind": "help",
+      "counts": {
+        "prepend": 3
+      }
+    },
+    {
+      "path": "packages/Jitter Geometry/help/jit.geom.twist.maxhelp",
+      "sha256": "7f9885e05213320b6da55cdd9082a2113f91e54bbd51d09809f6588d5c9d4267",
+      "kind": "help",
+      "counts": {
+        "prepend": 3
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit.fx-help/jit.fx.an.max.maxhelp",
+      "sha256": "57eec32629dcaa48f196000d4bd89037e0cdd9097a7487d50d3ba017f0eb4980",
+      "kind": "help",
+      "counts": {
+        "zl.slice": 1
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit.fx-help/jit.fx.an.mean.maxhelp",
+      "sha256": "1f414803410c4f072a66c69f2b20e4bdda2604a875576573179695564506cbcd",
+      "kind": "help",
+      "counts": {
+        "zl.slice": 1
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit.fx-help/jit.fx.an.min.maxhelp",
+      "sha256": "effdc83235f4716be99bca3fd0e4d7cadda5e88d9f8b9599a1606f6c206230cc",
+      "kind": "help",
+      "counts": {
+        "zl.slice": 1
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit.fx-help/jit.fx.co.accum.maxhelp",
+      "sha256": "35271b76688f5429edc12b8a5b7e902d3871032233656fbd0e1eb5b1e864f254",
+      "kind": "help",
+      "counts": {
+        "prepend": 3,
+        "append": 2
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit.gl.buffer.maxhelp",
+      "sha256": "b51276eb7d4751543ae4c18ea2d3e93c1e4c9801114a654cb2d8c614f94dddf2",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit.gl.environment.maxhelp",
+      "sha256": "d55bcd22736ac456ed13dc4ec3f22d68af0d41db4b92b3d515e851c7378501f9",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit.gl.meshwarp.maxhelp",
+      "sha256": "d8330d30bfc92ac4e2889d9707a172b13e83a94c8bcdc5a61577f1682a09dd67",
+      "kind": "help",
+      "counts": {
+        "prepend": 4
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit.gl.pbr.maxhelp",
+      "sha256": "947010d1a0e8916c96f2839434d9a4b231c430795e3cfe0b39bb89ab4156486c",
+      "kind": "help",
+      "counts": {
+        "prepend": 5
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit.gl.textmult.maxhelp",
+      "sha256": "b3685b0156f0b51a0896be89aa448a81502f41dba71a5171d61e0792866e7750",
+      "kind": "help",
+      "counts": {
+        "prepend": 4,
+        "zl.len": 1
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit.gl.textureset.maxhelp",
+      "sha256": "afd70ca0082f7d1e3520bb48d8dc370119ba1f079dfdbde8fa36974470b1f128",
+      "kind": "help",
+      "counts": {
+        "append": 1,
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit.polymovie.maxhelp",
+      "sha256": "d3db9739004d258f0b51ce0c89a6c1e610ca7f2f88f2006b858d134a297cd333",
+      "kind": "help",
+      "counts": {
+        "zl.join": 2,
+        "zl.slice": 1,
+        "prepend": 21
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit_ui_help/jit.ui.button.maxhelp",
+      "sha256": "1aa7eb16b656161cca3d995ccd22a2875dbcd043e72f503badc9956fb20f9449",
+      "kind": "help",
+      "counts": {
+        "prepend": 9
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit_ui_help/jit.ui.canvas.maxhelp",
+      "sha256": "b4ec7f602ddfe75207c71bc7c723a155a461f6ed18b2fe9093a562f7d716d5cc",
+      "kind": "help",
+      "counts": {
+        "prepend": 8
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit_ui_help/jit.ui.group.maxhelp",
+      "sha256": "89093c185feaac46d8b29da205b70406530921bb5f6696e7ca496f43b92e1688",
+      "kind": "help",
+      "counts": {
+        "prepend": 18
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit_ui_help/jit.ui.number.maxhelp",
+      "sha256": "967025b046568c04dc0bee4e045a9c2f33a5491dd9b0ad79be3059bf32408262",
+      "kind": "help",
+      "counts": {
+        "prepend": 8
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit_ui_help/jit.ui.slider.maxhelp",
+      "sha256": "8cb249ce767c91787976ba78c35effbe213a1bde5194947bbf7fb66ec29bc88b",
+      "kind": "help",
+      "counts": {
+        "prepend": 12
+      }
+    },
+    {
+      "path": "packages/Jitter Tools/help/jit_ui_help/jit.ui.toggle.maxhelp",
+      "sha256": "41f5d4d0a2aca25305aa0886288808b63311ad5ecec17ff994b149e135a27516",
+      "kind": "help",
+      "counts": {
+        "prepend": 12
+      }
+    },
+    {
+      "path": "packages/Node for Max/help/node.script.maxhelp",
+      "sha256": "ad96f24a7f0f513cae16ce83d4d9503d383d824f409505958439aba69168680f",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/RNBO/help/rnbo.remote.maxhelp",
+      "sha256": "26a1bc4e8ecf01eaf08df11ce5766f0f61ea14151169f7715946437aa059aa37",
+      "kind": "help",
+      "counts": {
+        "zl.iter": 2,
+        "prepend": 3
+      }
+    },
+    {
+      "path": "packages/RNBO/help/rnbo_bendin.maxhelp",
+      "sha256": "f574d0586a23f411be74b3e2da5e5521826406bcf049c3b30356064bd802664a",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/RNBO/help/rnbo_bendout.maxhelp",
+      "sha256": "9c7dff4427b35b268f6a22adb23a6632b55b04da8dcb2e4476f62553a615a305",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/RNBO/help/rnbo_codebox.maxhelp",
+      "sha256": "d06168a8eff87b72d7a3ca5cd325754365a8059e03519f5f1960d0494eb60219",
+      "kind": "help",
+      "counts": {
+        "append": 1
+      }
+    },
+    {
+      "path": "packages/RNBO/help/rnbo_param~.maxhelp",
+      "sha256": "934967c8487efe69f059f393abd50d53676102f77f4a9ea2d25ce45d7f297ddf",
+      "kind": "help",
+      "counts": {
+        "prepend": 4
+      }
+    },
+    {
+      "path": "packages/RNBO/help/rnbo~.maxhelp",
+      "sha256": "cadcd307e51397b36d378a926957edf65a06e152d9c85913c250b563324a76c7",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/Vizzie/help/vz.midigrabbr.maxhelp",
+      "sha256": "ca871547b7e831a968d9a70a19bd36585b0157ebf18b9a6cbbbeeef9bbe61c19",
+      "kind": "help",
+      "counts": {
+        "iter": 1
+      }
+    },
+    {
+      "path": "packages/ableton-dsp/help/abl.device.roar~.maxhelp",
+      "sha256": "4f696454557d5976b1ce2b73fbfcab5364c77201a7c278977d5b200d2785af72",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/ableton-dsp/help/abl.device.spectralresonator~.maxhelp",
+      "sha256": "e8f016fcfb3f9af376dc34e69073e700892f8c5975491d640da0d6b56e04d7af",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/jit.mo/help/jit.framecount.maxhelp",
+      "sha256": "b1cc9974fa100b1d6340ba62ac11c81471bd7c2024d55752326bad00b7efad3e",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/jit.mo/help/jit.mo.join.maxhelp",
+      "sha256": "9b18239bb287995007f7b78fd8c4e91578050fe370c2f5c57d0ef91111c2df33",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/jit.mo/help/jit.mo.time.maxhelp",
+      "sha256": "79792891487fe137104899bbb069cacb400d8d8c338550e8e8ca60ef0182f949",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/GMDrums.maxhelp",
+      "sha256": "35d18ef35242961d33638d74c7099b11395b5807a3806cceb68e225372701d07",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/SpeakTest.maxhelp",
+      "sha256": "46a2ce1688422baba5147d64862b59c3b161e74e93cfe3565a53aac0252d473f",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/StockWatch.maxhelp",
+      "sha256": "2cfa04e716710e6c4a2d7bf3fb15344d32fb43201bdd902fa4c581d1e907d27e",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/WhichThread.maxhelp",
+      "sha256": "2a98f7925f868e6145e088ce4a2458e2e2b0663d4e4880b3784550c3388a15c3",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/gaussian.maxhelp",
+      "sha256": "091d96eb272345d761844d96200e33b7b9e1620d2381dcd714eef9085b61c99d",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/hotbits.maxhelp",
+      "sha256": "24002fdf6170a23a855ad2035c88b529ed52d91eb0ebc749026e0e030d734349",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Demultiplex.maxhelp",
+      "sha256": "5e0f7d0180aa8b332ca20753e75dd8df60499050e9467bf9327222ca089e2f20",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Ecils.maxhelp",
+      "sha256": "8d9a1087c67bd2f8bcc47e34660220484a82682d697ba1e51077c560ac9b581c",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Group.maxhelp",
+      "sha256": "7abc99f1f2346135ec1832efb48f863b87b7843e0b785183484cdf2e63348512",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Intersection.maxhelp",
+      "sha256": "8dc77e6f72d1255856d990d73ec8334fbdcd21b389fddd8edd0c2bac53a28f62",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Join.maxhelp",
+      "sha256": "bcfb48b6ff680e49f6341de2a926535d886e561a16ccd50ebab2650f2f78e12a",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Length.maxhelp",
+      "sha256": "40bd0201a81c9f6d2ff02004592652a679ec0b63787c4115cdf13507aff067ec",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Mth.maxhelp",
+      "sha256": "adfae8295cdd7d805713890d5b8fcdca60ac39aec1d98f3c01f199c1492d2491",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Multiplex.maxhelp",
+      "sha256": "34a880428f98de5ee60f7be58fe3e03d3e68ad65ae6c735993f1c26d24b5b856",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Nth.maxhelp",
+      "sha256": "b648fa2a5be8a98d9861c2346973ef9c7b71bcf7f847e05e12c8473f94761d67",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Permutation.maxhelp",
+      "sha256": "ff52c3dfc910ba51c1023a8859436af6aaba78e1f723d17d34b734eaeb60ff13",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Position.maxhelp",
+      "sha256": "e1a610c76892dec95baa852a12a945388df98b81aacf5ce96c87bbb854a31769",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Queue.maxhelp",
+      "sha256": "6933ec5286d54b68de038c160ddcab0e96335fd0cf3ce08e6f63b95adbbbe2ea",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.RandomSample.maxhelp",
+      "sha256": "59d6bd8f2d30ccf682d60cd1009d533f9815e00172877df62a045cd722fe621b",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Reg.maxhelp",
+      "sha256": "686351f689fd7f7ade6a10f0664f6f7d4b223538574600230fb1763f745e5ffb",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Replace.maxhelp",
+      "sha256": "027964d773e728334eb5519a0e136da706417857ec031861d6cd8ead26ac22d3",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Replicate.maxhelp",
+      "sha256": "87a09b6d4299bb282bda8d890ec62366ac6c6786f9e6154d34665ec1cedfed98",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Reverse.maxhelp",
+      "sha256": "fcc92571954348786d5b28897279d1e3e94e9e481f53f0182268d501a3a94d57",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Rotate.maxhelp",
+      "sha256": "481e24cb76aff279ed63639e4620ead69ffe5ae9f44de11eca4d9bb99a379e60",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Shuffle.maxhelp",
+      "sha256": "cec880a5cd9121b86304a9e90c9b2f1ebe132a8f5d533a613f31090af51a1171",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Slice.maxhelp",
+      "sha256": "23e47c291b0b94812423266ae0d8c48e09478a6a82fdf3f919528b17052744e4",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Sort.maxhelp",
+      "sha256": "c095ec1219247d8b81a6af07e5d096fc77efb4a5a53c247fc35d07da57385d5e",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Sub.maxhelp",
+      "sha256": "cb9916890ddf511f9389e7240366b49b8b663abf9b2916b250e4d027c6f12001",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Union.maxhelp",
+      "sha256": "58218b83ee9d5baea5255b32f634a459580941f86f4f02adae63c8b7c9cf8e1d",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.Unique.maxhelp",
+      "sha256": "8e1d7defd524fcbd1372cd8cdbdeab8e9b9f460a8c3c236b5e2a5cf585e0e8b2",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.delta.maxhelp",
+      "sha256": "b7a23004ce1612245ae014334bcf9eca6f7f741861d39607e631f5e18ceace79",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/list.sum.maxhelp",
+      "sha256": "fce3d29779d902c32a6dc2325e4560503260fc9aea168f2f8c620bad56f13767",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/listpackage.maxhelp",
+      "sha256": "a0d22b79e896146171155adaa9f682b618c067f5a0ad350b1288c37255e59313",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/net.domain.maxhelp",
+      "sha256": "d47ae83b24f5f8d53e13bb1bcd3c1eeed227b2c6448c1664a9ff60df5d0c0416",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/net.ip.maxhelp",
+      "sha256": "608e99e1858c06abafbf5053c751bd2e2d8e56d0726a792f942b479ec74913a9",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/net.local.maxhelp",
+      "sha256": "e5fe1a69cfc039217430a3dd532ce664724d6e827666c5e23b5a57b4f95ebaf7",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/net.maxhole.maxhelp",
+      "sha256": "d3d4d97d4712dc4142bb7c8ed985d8f988d375420dbd332874358ded8578aef2",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/net.multi.recv.maxhelp",
+      "sha256": "b0796c755606384c5c5fe3d56caa434bbf4c21fca52ac8ec6a22e4113196338e",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/net.multi.send.maxhelp",
+      "sha256": "2c95ff69e17eb660f2d4e9af483127f57ba914d873e51a60bd14f9c127e054e7",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/net.tcp.recv.maxhelp",
+      "sha256": "25727574d6563007cafc09efdcb412c0134ea42c0dbce7d2a5fdcd3992baf7da",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/net.tcp.send.maxhelp",
+      "sha256": "29c965154c1ad78f3d51c0d2f0c7a3c1ed0e681f41453f073f9d6a094602eb7d",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/net.udp.recv.maxhelp",
+      "sha256": "a509f950bcaaefd45d902e23e1dccc13526b4311bcdd2ee0030d564551cadd5f",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/net.udp.send.maxhelp",
+      "sha256": "396760b93b04e29d3e70e0a66d58d57c6b8837759e70d1edc73b7cb610e61f4b",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/plinko.maxhelp",
+      "sha256": "e5c29d8a7ef11704b9e24367c702f80a00b14627b43397ab2d886fa5c6a3b048",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/sbuf.maxhelp",
+      "sha256": "07ab58049de408e698171773fc5d8fe826d08078314b21d0854944e4e900169e",
+      "kind": "help",
+      "counts": {
+        "prepend": 15
+      }
+    },
+    {
+      "path": "packages/max-mxj/help/scriptoscript.maxhelp",
+      "sha256": "a7437fab52fa2b8a8cb98b70d1e8c3a819e831e005db40e75cb22d8161947cc3",
+      "kind": "help",
+      "counts": {
+        "prepend": 2
+      }
+    },
+    {
+      "path": "packages/maxforlive-elements/help/live.adsrui.maxhelp",
+      "sha256": "9d952d0150935bec95a1156f3e7a27b76a9425d0379f7a38a76d535a0e5d1f6c",
+      "kind": "help",
+      "counts": {
+        "prepend": 1
+      }
+    },
+    {
+      "path": "packages/mira/help/mira.frame.maxhelp",
+      "sha256": "d7ad3e03f8f5faa60846efd93b937cca81fb81ef5a0a38d0e1b8028f518ffd1c",
+      "kind": "help",
+      "counts": {
+        "zl.slice": 1
+      }
+    },
+    {
+      "path": "packages/mira/help/mira.multitouch.maxhelp",
+      "sha256": "462ea2b9868889079802b12f6dba677bdbc9cd823be7a815f87f14b853dd8c8e",
+      "kind": "help",
+      "counts": {
+        "zl.rev": 1
+      }
+    }
+  ]
+}

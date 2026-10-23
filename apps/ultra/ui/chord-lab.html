@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ultra · Chord lab</title>
+  <link rel="stylesheet" href="components/components.css">
+  <link rel="stylesheet" href="chord-lab.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" id="patcher-link" href="index.html" title="Stop audio and return to the patcher">ultra<span> / research instruments</span></a>
+    <nav aria-label="Workspace"><a id="canvas-link" href="canvas.html" title="Stop audio and open the editable canvas">Canvas ↗</a><span class="selected-tab">Chord lab</span><button id="preset-button" class="preset-button">Preset…</button></nav>
+    <div class="engine-controls">
+      <span class="engine-badge" id="engine-badge"><i></i><span id="engine-label">Checking engine</span></span>
+      <button id="start-audio" class="primary">Start audio</button>
+      <button id="stop-audio" disabled>Stop audio</button>
+      <button id="panic" class="panic" disabled>Panic</button>
+    </div>
+  </header>
+  <main>
+    <section class="intro" aria-label="About this instrument">
+      <div><div class="eyebrow">TIMING → NUMBERS → SOUND</div><h1>A chord, one step at a time.</h1><p>Start audio. Run the native clock. Play along on the keyboard.</p></div>
+      <div class="scope"><strong>Read-only routing · live controls</strong><p>These boxes expose one fixed native patch.<br>No graph compilation. No browser audio substitute.</p></div>
+    </section>
+    <div id="preview-banner" class="preview-banner" hidden>Browser preview · view and edit the pitch map only. Playback needs the native Ultra app and JACK; no audio or transport is simulated.</div>
+    <section class="patch-scroll" aria-label="Connected native instrument patch">
+      <div class="patch" id="patch">
+        <div class="lane-label timing-label">01 / NATIVE CONTROL CLOCK</div>
+        <div class="lane-label sound-label">02 / TWO SINE INSTRUMENTS</div>
+        <svg id="patch-cables" aria-hidden="true"></svg>
+
+        <article class="object transport" id="transport">
+          <div class="object-head"><span class="object-type">transport</span><span class="tag">A</span></div>
+          <span class="port right control" data-port="out" title="Native clock control"></span>
+          <div class="object-body">
+            <div class="transport-buttons"><button id="run-transport" class="run" disabled>▶ Run</button><button id="stop-transport" disabled>■ Stop</button></div>
+            <label class="select-row">Clock<select id="clock-source"><option value="0">Internal · sample clock</option><option value="1">External · JACK MIDI</option></select></label>
+            <p class="micro" id="transport-help">Audio and transport are separate switches.</p>
+          </div>
+        </article>
+
+        <article class="object metro" id="metro">
+          <div class="object-head"><span class="object-type">metro 16n</span><span class="tag">CLOCK</span></div>
+          <span class="port left control" data-port="in"></span><span class="port right control" data-port="out"></span>
+          <div class="object-body">
+            <div id="tempo-control" class="control-mount"></div>
+            <div class="metro-readout"><span class="beat-light" id="beat-light"></span><output id="period-readout">138.9 ms</output><span>/ step</span></div>
+            <div id="gate-control" class="control-mount"></div>
+            <p class="micro">16ths · 6 MIDI clock pulses per step</p>
+          </div>
+        </article>
+
+        <article class="object cycle" id="cycle">
+          <div class="object-head"><span class="object-type">cycle</span><span class="tag">1…8</span></div>
+          <span class="port left control" data-port="in"></span><span class="port bottom control" data-port="out"></span>
+          <div class="object-body">
+            <div id="steps-control" class="control-mount"></div>
+            <div class="step-row" id="step-row" aria-label="Native sequence steps"></div>
+            <div class="tiny-row"><span>Current step</span><output id="step-readout">—</output></div>
+            <p class="micro">Settings changes stop the sequence.<br>Press Run again to hear the new pattern.</p>
+          </div>
+        </article>
+
+        <article class="object chord" id="chord">
+          <div class="object-head"><span class="object-type">chord intervals</span><span class="tag">LIST</span></div>
+          <span class="port bottom control" data-port="out"></span>
+          <div class="object-body">
+            <label class="select-row">Shape<select id="chord-shape"><option value="0">Major · 0 4 7</option><option value="1">Minor · 0 3 7</option><option value="2">Sus4 · 0 5 7</option></select></label>
+            <div id="root-control" class="control-mount"></div>
+            <div class="chord-list" id="chord-list"><span>0</span><span>4</span><span>7</span></div>
+            <p class="micro" id="root-readout">Root C3 · MIDI 48</p>
+          </div>
+        </article>
+
+        <article class="object keyboard-object" id="keyboard-object">
+          <div class="object-head"><span class="object-type">note.in / keyboard</span><span class="tag">B · MIDI 2</span></div>
+          <span class="port bottom control" data-port="out"></span>
+          <div class="object-body">
+            <div class="keyboard" id="keyboard" aria-label="Playable keyboard for instrument B"></div>
+            <p class="micro keyboard-help">A W S E D F T G Y H U J K · MIDI 60–72 · pointer or typing<br>JACK MIDI 1 → A when unarmed; MIDI 2 → B. A is reserved while the sequence is armed.</p>
+          </div>
+        </article>
+
+        <article class="object math" id="math">
+          <div class="object-head"><span class="object-type">% 3 / div 3 / × 12</span><span class="tag">MATH</span></div>
+          <span class="port top control" data-port="in"></span><span class="port right control" data-port="out"></span>
+          <div class="object-body">
+            <div class="math-equation"><span>interval[i % 3]</span><b>+</b><span>12 × floor(i / 3)</span></div>
+            <div class="tiny-row"><span>Zero-based index i</span><output id="math-index">—</output></div>
+            <p class="micro" id="math-readout">Triad repeats; every third step adds an octave.</p>
+          </div>
+        </article>
+
+        <article class="object pitch" id="pitch">
+          <div class="object-head"><span class="object-type">+ transpose / clip 0 127</span><span class="tag">MIDI</span></div>
+          <span class="port left control" data-port="in"></span><span class="port bottom control" data-port="out"></span>
+          <div class="object-body">
+            <div id="transpose-control" class="control-mount"></div>
+            <div id="velocity-control" class="control-mount"></div>
+            <p class="micro">root + interval + octave + transpose<br>Final pitch is clamped to MIDI 0…127.</p>
+          </div>
+        </article>
+
+        <article class="object envelope" id="envelope">
+          <div class="object-head"><span class="object-type">envelope.asr~</span><span class="tag">A + B</span></div>
+          <span class="port right control" data-port="out"></span>
+          <div class="object-body">
+            <div id="attack-control" class="control-mount"></div><div class="envelope-time"><output id="attack-time">32 ms</output><span>attack</span></div>
+            <div id="release-control" class="control-mount"></div><div class="envelope-time"><output id="release-time">224 ms</output><span>release</span></div>
+            <p class="micro">Applied to the next notes on both devices.<br>0 = 16 frames (0.333 ms at 48 kHz).</p>
+          </div>
+        </article>
+
+        <article class="object voice" id="voice">
+          <div class="object-head"><span class="object-type">sine.voice~</span><span class="tag">4 × 2</span></div>
+          <span class="port top control" data-port="notes"></span><span class="port left control" data-port="envelope"></span><span class="port right audio mono-a" data-port="a" title="A · mono bus"></span><span class="port right audio mono-b" data-port="b" title="B · mono bus"></span>
+          <div class="object-body">
+            <div class="voice-note"><span>A / SEQUENCE</span><output id="note-readout">—</output><small id="midi-readout">MIDI —</small></div>
+            <div class="tiny-row"><span>B / held keys</span><output id="held-readout">—</output></div>
+            <p class="micro">Four sine / ASR voices per device.<br>Oldest-voice stealing · fixed native guest</p>
+          </div>
+        </article>
+
+        <article class="object gain" id="gain">
+          <div class="object-head"><span class="object-type">gain~</span><span class="tag">A + B</span></div>
+          <span class="port left audio mono-a" data-port="a-in" title="A · mono bus"></span><span class="port left audio mono-b" data-port="b-in" title="B · mono bus"></span><span class="port right audio mono-a" data-port="a-out" title="A · mono bus"></span><span class="port right audio mono-b" data-port="b-out" title="B · mono bus"></span>
+          <div class="object-body">
+            <div id="gain-control" class="control-mount"></div>
+            <div class="level-value"><output id="gain-readout">90</output><span>/ 127</span></div>
+            <p class="micro">Linked level; separate<br>A + B mono buses.<br>Release slider to apply.</p>
+          </div>
+        </article>
+
+        <article class="object join" id="join">
+          <div class="object-head"><span class="object-type">join~ 2</span><span class="tag">BUS</span></div>
+          <span class="port left audio mono-a" data-port="a" title="A · mono bus"></span><span class="port left audio mono-b" data-port="b" title="B · mono bus"></span><span class="port right audio bundle" data-port="out" title="One stereo bus · 2 channels"></span>
+          <div class="object-body">
+            <div class="pack-diagram"><span>A · mono</span><span>B · mono</span><b>↓</b><strong>[ A, B ] <small>×2</small></strong></div>
+            <p class="micro">Explicit channel packing.<br>One stereo bus out.<br>Fixed native adapter.</p>
+          </div>
+        </article>
+
+        <article class="object output" id="output">
+          <div class="object-head"><span class="object-type">audio.out~</span><span class="tag">×2</span></div>
+          <span class="port left audio bundle" data-port="in" title="One stereo bus · 2 channels"></span>
+          <div class="object-body">
+            <div class="output-channels"><i class="channel-light" id="output-light"></i><span id="hardware-map">[0] → L · [1] → R</span></div>
+            <div class="tiny-row"><span>Native sample rate</span><output id="sample-rate">—</output></div>
+            <div class="tiny-row"><span>Adapter delay</span><output id="adapter-delay">—</output></div>
+            <p class="micro">2-channel JACK output.<br>Hardware mapping lives here,<br>not in the logical devices.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section class="pattern-panel" aria-label="Computed pitch map">
+      <div><span class="eyebrow">PITCH MAP</span><span class="pattern-caption">Calculated from controls, not live audio</span></div>
+      <ol id="pitch-map"></ol>
+    </section>
+    <section class="status-strip" aria-label="Native engine status">
+      <div class="legend"><span><i class="control-line"></i>control</span><span><i class="audio-line"></i>audio</span></div>
+      <dl><div><dt>Frames</dt><dd id="frames">—</dd></div><div><dt>Notes triggered</dt><dd id="ticks">—</dd></div><div><dt>Xruns</dt><dd id="xruns">—</dd></div><div><dt>Rejected</dt><dd id="rejected">—</dd></div></dl>
+      <span class="poll-note">Native status polled at ≤10 Hz · not a timing scope</span>
+    </section>
+  </main>
+  <footer><span class="status-dot"></span><span id="notice" role="status" aria-live="polite">Preparing the patch…</span><span class="footer-note">Focus loss stops transport and releases notes.</span></footer>
+  <dialog id="preset-dialog">
+    <form method="dialog"><button class="close-dialog" aria-label="Close preset">×</button></form>
+    <div class="eyebrow">FIXED PATCH / PORTABLE CONTROLS</div>
+    <h2>Chord lab preset</h2>
+    <p>Copy these controls to save your patch, or paste an Ultra Chord lab v1 preset to load. This describes the fixed two-instrument stereo adapter, not an arbitrary graph. Loading never starts transport.</p>
+    <textarea id="preset-json" aria-label="Chord lab preset JSON" spellcheck="false"></textarea>
+    <div class="preset-actions"><button id="copy-preset">Copy JSON</button><button id="load-preset" class="primary">Load pasted preset</button></div>
+    <p id="preset-status" role="status"></p>
+  </dialog>
+  <script type="module" src="chord-lab.mjs"></script>
+</body>
+</html>

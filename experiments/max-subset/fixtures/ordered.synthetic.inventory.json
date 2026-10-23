@@ -1,0 +1,193 @@
+{
+  "profile": "max-subset-inventory-v1",
+  "accepted": true,
+  "executable": false,
+  "evidence_status": "UNVERIFIED_SOURCE",
+  "source_sha256": "774c3073e2fd343ff3733b836d1c746252dc009a021182194aa8b6821cdd0d4e",
+  "source_text": "{\n  \"patcher\": {\n    \"boxes\": [\n      {\"box\": {\"id\": \"a\", \"maxclass\": \"button\", \"numinlets\": 1, \"numoutlets\": 1, \"patching_rect\": [10, 20, 24, 24]}},\n      {\"box\": {\"id\": \"b\", \"maxclass\": \"newobj\", \"text\": \"t b i\", \"numinlets\": 1, \"numoutlets\": 2, \"presentation\": 1, \"presentation_rect\": [30, 40, 50, 22]}}\n    ],\n    \"lines\": [\n      {\"patchline\": {\"source\": [\"a\", 0], \"destination\": [\"b\", 0], \"order\": 1}},\n      {\"patchline\": {\"source\": [\"b\", 1], \"destination\": [\"a\", 0], \"order\": 0}}\n    ]\n  }\n}\n",
+  "source": {
+    "patcher": {
+      "boxes": [
+        {
+          "box": {
+            "id": "a",
+            "maxclass": "button",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "patching_rect": [
+              10,
+              20,
+              24,
+              24
+            ]
+          }
+        },
+        {
+          "box": {
+            "id": "b",
+            "maxclass": "newobj",
+            "text": "t b i",
+            "numinlets": 1,
+            "numoutlets": 2,
+            "presentation": 1,
+            "presentation_rect": [
+              30,
+              40,
+              50,
+              22
+            ]
+          }
+        }
+      ],
+      "lines": [
+        {
+          "patchline": {
+            "source": [
+              "a",
+              0
+            ],
+            "destination": [
+              "b",
+              0
+            ],
+            "order": 1
+          }
+        },
+        {
+          "patchline": {
+            "source": [
+              "b",
+              1
+            ],
+            "destination": [
+              "a",
+              0
+            ],
+            "order": 0
+          }
+        }
+      ]
+    }
+  },
+  "objects": [
+    {
+      "id": "a",
+      "source_index": 0,
+      "maxclass": "button",
+      "declared_class": "button",
+      "canonical_class": "button",
+      "text": "",
+      "ports": {
+        "numinlets": 1,
+        "numoutlets": 1
+      },
+      "layout": {
+        "patching_rect": [
+          10,
+          20,
+          24,
+          24
+        ]
+      },
+      "evidence_status": "DOC_ONLY",
+      "source": {
+        "id": "a",
+        "maxclass": "button",
+        "numinlets": 1,
+        "numoutlets": 1,
+        "patching_rect": [
+          10,
+          20,
+          24,
+          24
+        ]
+      }
+    },
+    {
+      "id": "b",
+      "source_index": 1,
+      "maxclass": "newobj",
+      "declared_class": "t",
+      "canonical_class": "trigger",
+      "text": "t b i",
+      "ports": {
+        "numinlets": 1,
+        "numoutlets": 2
+      },
+      "layout": {
+        "presentation_rect": [
+          30,
+          40,
+          50,
+          22
+        ],
+        "presentation": 1
+      },
+      "evidence_status": "DOC_ONLY",
+      "source": {
+        "id": "b",
+        "maxclass": "newobj",
+        "text": "t b i",
+        "numinlets": 1,
+        "numoutlets": 2,
+        "presentation": 1,
+        "presentation_rect": [
+          30,
+          40,
+          50,
+          22
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source_index": 0,
+      "source": [
+        "a",
+        0
+      ],
+      "destination": [
+        "b",
+        0
+      ],
+      "order": 1,
+      "source_record": {
+        "source": [
+          "a",
+          0
+        ],
+        "destination": [
+          "b",
+          0
+        ],
+        "order": 1
+      }
+    },
+    {
+      "source_index": 1,
+      "source": [
+        "b",
+        1
+      ],
+      "destination": [
+        "a",
+        0
+      ],
+      "order": 0,
+      "source_record": {
+        "source": [
+          "b",
+          1
+        ],
+        "destination": [
+          "a",
+          0
+        ],
+        "order": 0
+      }
+    }
+  ],
+  "dependencies": [],
+  "diagnostics": []
+}

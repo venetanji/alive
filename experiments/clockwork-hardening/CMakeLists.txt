@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.24)
+project(ClockworkHardening LANGUAGES C CXX)
+set(CMAKE_CXX_STANDARD 20)
+add_subdirectory(../../apps/ultra/core ultra)
+add_executable(check_core test.cpp ../clockwork-faust/instrument.cpp)
+target_link_options(check_core PRIVATE -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock)
+target_link_libraries(check_core PRIVATE ultra_core)
+target_include_directories(check_core SYSTEM PRIVATE ../faust-reference/.deps/faust-2.88.0/architecture)

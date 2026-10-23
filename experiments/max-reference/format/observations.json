@@ -1,0 +1,230 @@
+{
+  "scope": "Observed structure of our self-created JSON inputs. Max-saved pairs are separately identified when available.",
+  "observations": [
+    {
+      "fixture": "format/argument.maxpat",
+      "status": "authored-input-not-Max-saved",
+      "delta": [
+        {
+          "path": "$[\"patcher\"][\"boxes\"][1][\"box\"][\"text\"]",
+          "before": "+ 1",
+          "after": "+ 2"
+        }
+      ]
+    },
+    {
+      "fixture": "format/attribute.maxpat",
+      "status": "authored-input-not-Max-saved",
+      "delta": [
+        {
+          "path": "$[\"patcher\"][\"boxes\"][2][\"box\"][\"minimum\"]",
+          "after": 0,
+          "before_absent": true
+        }
+      ]
+    },
+    {
+      "fixture": "format/connection.maxpat",
+      "status": "authored-input-not-Max-saved",
+      "delta": [
+        {
+          "path": "$[\"patcher\"][\"lines\"][0][\"patchline\"][\"destination\"][0]",
+          "before": "obj-3",
+          "after": "obj-2"
+        },
+        {
+          "path": "$[\"patcher\"][\"lines\"][0][\"patchline\"][\"source\"][0]",
+          "before": "obj-2",
+          "after": "obj-3"
+        }
+      ]
+    },
+    {
+      "fixture": "format/connection_order.maxpat",
+      "status": "authored-input-not-Max-saved",
+      "delta": [
+        {
+          "path": "$[\"patcher\"][\"lines\"][0][\"patchline\"][\"order\"]",
+          "after": 0,
+          "before_absent": true
+        }
+      ]
+    },
+    {
+      "fixture": "format/coordinates.maxpat",
+      "status": "authored-input-not-Max-saved",
+      "delta": [
+        {
+          "path": "$[\"patcher\"][\"boxes\"][1][\"box\"][\"patching_rect\"][0]",
+          "before": 210.0,
+          "after": 45.0
+        },
+        {
+          "path": "$[\"patcher\"][\"boxes\"][1][\"box\"][\"patching_rect\"][1]",
+          "before": 70.0,
+          "after": 135.0
+        }
+      ]
+    },
+    {
+      "fixture": "format/dependency.maxpat",
+      "status": "authored-input-not-Max-saved",
+      "delta": [
+        {
+          "path": "$[\"patcher\"][\"dependency_cache\"]",
+          "after": [
+            {
+              "name": "scoped-bus.maxpat",
+              "type": "JSON",
+              "implicit": 1
+            }
+          ],
+          "before_absent": true
+        }
+      ]
+    },
+    {
+      "fixture": "format/embedded.maxpat",
+      "status": "authored-input-not-Max-saved",
+      "delta": [
+        {
+          "path": "$[\"patcher\"][\"boxes\"][1][\"box\"][\"patcher\"]",
+          "after": {
+            "fileversion": 1,
+            "appversion": {
+              "major": 9,
+              "minor": 1,
+              "revision": 5,
+              "architecture": "x64",
+              "modernui": 1
+            },
+            "classnamespace": "box",
+            "rect": [
+              0.0,
+              0.0,
+              1020.0,
+              850.0
+            ],
+            "openinpresentation": 0,
+            "boxes": [
+              {
+                "box": {
+                  "id": "obj-1",
+                  "maxclass": "comment",
+                  "patching_rect": [
+                    20.0,
+                    10.0,
+                    880.0,
+                    40.0
+                  ],
+                  "text": "Nested named receive"
+                }
+              },
+              {
+                "box": {
+                  "id": "obj-2",
+                  "maxclass": "newobj",
+                  "patching_rect": [
+                    210.0,
+                    70.0,
+                    175.0,
+                    22.0
+                  ],
+                  "text": "r alive_reference_global"
+                }
+              },
+              {
+                "box": {
+                  "id": "obj-3",
+                  "maxclass": "newobj",
+                  "patching_rect": [
+                    400.0,
+                    70.0,
+                    175.0,
+                    22.0
+                  ],
+                  "text": "outlet"
+                }
+              }
+            ],
+            "lines": [
+              {
+                "patchline": {
+                  "source": [
+                    "obj-2",
+                    0
+                  ],
+                  "destination": [
+                    "obj-3",
+                    0
+                  ]
+                }
+              }
+            ]
+          },
+          "before_absent": true
+        },
+        {
+          "path": "$[\"patcher\"][\"boxes\"][1][\"box\"][\"text\"]",
+          "before": "+ 1",
+          "after": "p nested"
+        }
+      ]
+    },
+    {
+      "fixture": "format/parameter.maxpat",
+      "status": "authored-input-not-Max-saved",
+      "delta": [
+        {
+          "path": "$[\"patcher\"][\"boxes\"][2][\"box\"][\"parameter_enable\"]",
+          "after": 1,
+          "before_absent": true
+        },
+        {
+          "path": "$[\"patcher\"][\"boxes\"][2][\"box\"][\"saved_attribute_attributes\"]",
+          "after": {
+            "valueof": {
+              "parameter_initial_enable": 1,
+              "parameter_initial": [
+                17
+              ]
+            }
+          },
+          "before_absent": true
+        }
+      ]
+    },
+    {
+      "fixture": "format/presentation.maxpat",
+      "status": "authored-input-not-Max-saved",
+      "delta": [
+        {
+          "path": "$[\"patcher\"][\"boxes\"][2][\"box\"][\"presentation\"]",
+          "after": 1,
+          "before_absent": true
+        },
+        {
+          "path": "$[\"patcher\"][\"boxes\"][2][\"box\"][\"presentation_rect\"]",
+          "after": [
+            20.0,
+            20.0,
+            70.0,
+            22.0
+          ],
+          "before_absent": true
+        }
+      ]
+    },
+    {
+      "fixture": "format/text.maxpat",
+      "status": "authored-input-not-Max-saved",
+      "delta": [
+        {
+          "path": "$[\"patcher\"][\"boxes\"][1][\"box\"][\"text\"]",
+          "before": "+ 1",
+          "after": "* 1"
+        }
+      ]
+    }
+  ]
+}

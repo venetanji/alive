@@ -1,0 +1,34 @@
+{
+  "fixture": "15-scope",
+  "question": "Named send crosses nested patchers; #0 in two abstraction instances isolates local buses",
+  "labels": [
+    "root_receive",
+    "nested_receive",
+    "instance_A",
+    "instance_B"
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "41",
+      "destination": "obj-2",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_1",
+      "message": "7",
+      "destination": "obj-5",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_2",
+      "message": "8",
+      "destination": "obj-6",
+      "inlet": 0,
+      "wait_ms": 0
+    }
+  ],
+  "drain_ms": 100
+}

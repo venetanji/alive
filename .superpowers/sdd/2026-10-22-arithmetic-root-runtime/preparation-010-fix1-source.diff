@@ -1,0 +1,100 @@
+--- initial010/controller.js
++++ fix1/controller.js
+@@ -428,6 +428,10 @@
+     var configuration=config,action=shared,documents=config.documents,helpers=config.helpers,lifecycle=config.lifecycle;
+     var owners=lifecycle&&lifecycle.owners,owner=owners&&owners[4],bridge=minusIntrinsicApply;
+     var initial=null,authority=null,sourceValidated=false,root=null,retained=null,evidence=null,attempted=false;
++    var nativeFunctionString=Function.prototype.toString,objectConstructorString=nativeFunctionString.call(Object),
++        arrayConstructorString=nativeFunctionString.call(Array);
++    var plainPrototypes=[{prototype:Object.prototype,array:false,parent:null},
++        {prototype:Array.prototype,array:true,parent:Object.prototype}];
+     function inputs() {
+         if(config!==configuration||shared!==action||config.documents!==documents||config.helpers!==helpers||
+             config.lifecycle!==lifecycle||!lifecycle||lifecycle.owners!==owners||owners[4]!==owner||
+@@ -441,17 +445,31 @@
+         authority={command:JSON.parse(initial.command),definition:JSON.parse(initial.definition),
+             configuration:JSON.parse(initial.configuration),owner:JSON.parse(initial.owner)};
+     }catch(initialError){initial=null;}
++    function plainPrototype(prototype,array) {
++        if(prototype===null)return true;
++        for(var i=0;i<plainPrototypes.length;i++) {
++            var allowed=plainPrototypes[i];
++            if(prototype!==allowed.prototype)continue;
++            if(array!==allowed.array||Object.getPrototypeOf(prototype)!==allowed.parent||
++                Object.getOwnPropertyDescriptor(prototype,"toJSON"))return false;
++            return !array||plainPrototype(allowed.parent,false);
++        }
++        // A foreign realm's intrinsic constructor must point back to this exact prototype.
++        var constructor=Object.getOwnPropertyDescriptor(prototype,"constructor");
++        if(!constructor||typeof constructor.value!=="function")return false;
++        var descriptor=Object.getOwnPropertyDescriptor(constructor.value,"prototype"),parent=Object.getPrototypeOf(prototype);
++        if(!descriptor||descriptor.value!==prototype||nativeFunctionString.call(constructor.value)!==
++            (array?arrayConstructorString:objectConstructorString)||Object.getOwnPropertyDescriptor(prototype,"toJSON"))return false;
++        if(array?!Array.isArray(prototype)||!plainPrototype(parent,false):parent!==null)return false;
++        plainPrototypes.push({prototype:prototype,array:array,parent:parent});return true;
++    }
+     function samePlain(current,expected) {
+         var remaining=100000,ancestors=[];
+         function compare(value,snapshot,depth) {
+             if(--remaining<0||depth>128||typeof value!==typeof snapshot)return false;
+             if(snapshot===null||typeof snapshot!=="object")return value===snapshot;
+             if(!value||Array.isArray(value)!==Array.isArray(snapshot)||ancestors.indexOf(value)!==-1)return false;
+-            var prototype=Object.getPrototypeOf(value);
+-            if(Array.isArray(value)) {
+-                if(prototype!==null&&(!Array.isArray(prototype)||!Object.getPrototypeOf(prototype)||
+-                    Object.getPrototypeOf(Object.getPrototypeOf(prototype))!==null))return false;
+-            }else if(prototype!==null&&Object.getPrototypeOf(prototype)!==null)return false;
++            if(!plainPrototype(Object.getPrototypeOf(value),Array.isArray(value)))return false;
+             if(typeof Object.getOwnPropertySymbols==="function"&&Object.getOwnPropertySymbols(value).length)return false;
+             var keys=Object.getOwnPropertyNames(value),expectedKeys=Object.getOwnPropertyNames(snapshot);
+             if(keys.length!==expectedKeys.length)return false;
+--- initial010/test_helpers.cjs
++++ fix1/test_helpers.cjs
+@@ -2170,5 +2170,47 @@
+     if (phase === 'collection') {assert.equal(e.collection.first_failure.code, code); assert.equal(e.collection.first_failure.stage, 'guard-after-outcome');}
+   }
+ });
++for (const form of ['object', 'array']) for (const phase of ['lookup', 'outcome', 'later'])
++  case010('minus010_fix1_inherited_hook_' + form + '_' + phase, () => {
++    const f = minus009Fixture(); f.c.config.synthetic = form === 'object' ? {value: 0} : [0];
++    let serializationCalls = 0;
++    const prototype = form === 'object' ? Object.create(null) : Object.setPrototypeOf([], Object.prototype);
++    prototype.toJSON = () => {serializationCalls++; return null;};
++    const mutate = () => {Object.setPrototypeOf(f.c.config.synthetic, prototype);};
++    const object = f.byAnchor[f.targets[0]], original = object.getattr;
++    if (phase === 'lookup') Object.defineProperty(object, 'getattr', {get() {mutate(); return original;}});
++    if (phase === 'outcome') object.getattr = function (...args) {const result = original.apply(this, args); mutate(); return result;};
++    f.start(); f.run(); if (phase === 'later') mutate(); f.finish();
++    const e = refused009(f), prefix = phase === 'lookup' ? 0 : phase === 'outcome' ? 1 : 6;
++    console.log(JSON.stringify({fix1010: {form, phase, calls: f.calls.length, serializationCalls, stale: e.terminal_context.stale}}));
++    assert.equal(serializationCalls, 0, 'inherited serialization hooks must never execute');
++    assert.equal(f.calls.length, prefix, form + '/' + phase + ': exact invocation prefix');
++    assert.deepEqual(e.counts, {lookups_attempted: phase === 'later' ? 6 : 1, invocation_attempts: prefix,
++      invocation_outcomes_retained: prefix, completed_pairs: phase === 'later' ? 3 : 0});
++    assert.equal(e.terminal_context.stale, true);
++    assert.deepEqual(e.terminal_context.first_invalidation, {poll_index: phase === 'later' ? 2 : 1,
++      stage: phase === 'later' ? 'later-validation' : 'collection-guard', code: 'guard-threw'});
++    assert.equal(e.collection.status, phase === 'later' ? 'complete' : 'stopped');
++    assert.deepEqual(e.collection.first_failure, phase === 'later' ? null : {
++      stage: phase === 'lookup' ? 'guard-before-invocation' : 'guard-after-outcome', method_index: 0, code: 'guard-threw'});
++    if (prefix) {assert.equal(e.methods[0].invocation_status, 'returned'); assert.equal(e.methods[0].observation.value, 9);}
++    else {assert.equal(e.methods[0].lookup_status, 'callable'); assert.equal(e.methods[0].invocation_status, 'unattempted'); assert.equal(e.methods[0].observation, null);}
++    assert.ok(e.methods.slice(prefix).every(row => row.invocation_status === 'unattempted'));
++  });
++case010('minus010_fix1_plain_cross_realm_and_null_prototype', () => {
++  for (const form of ['local-object', 'local-array', 'foreign-object', 'foreign-array', 'null-object', 'null-array']) {
++    const f = minus009Fixture(); f.c.config.synthetic = form.endsWith('array') ? [0] : {value: 0};
++    let replacement;
++    if (form.startsWith('local-')) replacement = vm.runInContext(form.endsWith('array') ? '[0]' : '({value: 0})', f.c);
++    else if (form.startsWith('foreign-')) replacement = vm.runInNewContext(form.endsWith('array') ? '[0]' : '({value: 0})');
++    else replacement = Object.setPrototypeOf(form.endsWith('array') ? [0] : {value: 0}, null);
++    const object = f.byAnchor[f.targets[0]], original = object.getattr;
++    object.getattr = function (...args) {f.c.config.synthetic = replacement; return original.apply(this, args);};
++    f.start(); f.finish(); const e = refused009(f);
++    assert.equal(f.calls.length, 6, form); assert.equal(e.collection.status, 'complete');
++    assert.deepEqual(e.terminal_context, {stale: false, first_invalidation: null});
++    assert.deepEqual(e.counts, {lookups_attempted: 6, invocation_attempts: 6, invocation_outcomes_retained: 6, completed_pairs: 3});
++  }
++});
+ console.log(JSON.stringify({completed010, failures010}));
+ assert.equal(failures010.length, 0, 'preparation010 behavioral regressions');

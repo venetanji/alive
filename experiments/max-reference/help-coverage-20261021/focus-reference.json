@@ -1,0 +1,1398 @@
+[
+  {
+    "path": "docs/refpages/max-ref/button.maxref.xml",
+    "sha256": "874e9f61811b11ee7910dbdc52e02900ffeb589318ac1d59b5c60c19c5731e3b",
+    "class": "button",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "anything",
+      "(mouse)"
+    ],
+    "attributes": [
+      {
+        "name": "annotation_name",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "bgcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "blinkcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "blinktime",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "fgcolor",
+        "type": "atom",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "outlinecolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "param_connect",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "parameter_enable",
+        "type": "int",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "parameter_mappable",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "style",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      }
+    ],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/defer.maxref.xml",
+    "sha256": "6bc059a5ea994ab9f34b722dcd3a73f542bf7ed8743045b9705c8d3ba302d21f",
+    "class": "defer",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "anything"
+    ],
+    "attributes": [],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/deferlow.maxref.xml",
+    "sha256": "aea78955f48df3c15612c4804a1e63c0101fb5a0608d9f281a5ca472d2fcb5ce",
+    "class": "deferlow",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "anything"
+    ],
+    "attributes": [],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/delay.maxref.xml",
+    "sha256": "845bedd5402b2c47e636cb81245173e9d17f5a3cd838b4400bb2d2ea70c38c4d",
+    "class": "delay",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "anything",
+      "clock",
+      "stop"
+    ],
+    "attributes": [
+      {
+        "name": "delaytime",
+        "type": "Time Value",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "quantize",
+        "type": "Time Value",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "transport",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      }
+    ],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/float.maxref.xml",
+    "sha256": "6d88281ad80a17f68ce727db2321035f42a123cddcd2fc3e813daf8cd0171567",
+    "class": "float",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "in1",
+      "send",
+      "set"
+    ],
+    "attributes": [],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/flonum.maxref.xml",
+    "sha256": "b36cc948295ad443b152e5b2d7e12138c791186cc1027ecae9c4b5a7bf8e9072",
+    "class": "flonum",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "max",
+      "min",
+      "(mouse)",
+      "select",
+      "set"
+    ],
+    "attributes": [
+      {
+        "name": "bgcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "bordercolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "cantchange",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "hbgcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "htextcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "htricolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "maximum",
+        "type": "atom",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "minimum",
+        "type": "atom",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "mouseup",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "numdecimalplaces",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "outputonclick",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "parameter_enable",
+        "type": "int",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "textcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "triangle",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "tricolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "triscale",
+        "type": "float",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      }
+    ],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/int.maxref.xml",
+    "sha256": "0f2bc1d6a2b7ff31be636cb0f7b7dc0fd460f1b7d86538eed74b35a33d265011",
+    "class": "int",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "in1",
+      "send",
+      "set"
+    ],
+    "attributes": [],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/line.maxref.xml",
+    "sha256": "3a9d28ea7e01cb8b21dc00aa8454b0250072e6ef608a73ad3c79c3166d79914b",
+    "class": "line",
+    "module": "max",
+    "methods": [
+      "int",
+      "float",
+      "list",
+      "clock",
+      "pause",
+      "resume",
+      "set",
+      "stop"
+    ],
+    "attributes": [
+      {
+        "name": "compatmode",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "floatoutput",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "grain",
+        "type": "float",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "maxpoints",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      }
+    ],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/loadbang.maxref.xml",
+    "sha256": "53d68b41ce7023b487c44782fa4e87fa33e8916b9953cd34e7d5db12f292c411",
+    "class": "loadbang",
+    "module": "max",
+    "methods": [
+      "bang",
+      "(mouse)",
+      "loadbang"
+    ],
+    "attributes": [],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/message.maxref.xml",
+    "sha256": "465a0fdb7df97c1e7693dc6bfe96aa20087f0adbd65e1e8ae27d264ee9e371c5",
+    "class": "message",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "anything",
+      "append",
+      "(mouse)",
+      "prepend",
+      "set",
+      "setargs",
+      "symbol"
+    ],
+    "attributes": [
+      {
+        "name": "bgcolor",
+        "type": "atom",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "bgcolor2",
+        "type": "atom",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "bgfillcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "convertobj",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "dontreplace",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "gradient",
+        "type": "atom",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "style",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      }
+    ],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/metro.maxref.xml",
+    "sha256": "c3d8998cbf47b867bdb65fa06b3a96e8eb41994e667320fa812ff6f7778eb2c8",
+    "class": "metro",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "anything",
+      "clock",
+      "stop"
+    ],
+    "attributes": [
+      {
+        "name": "active",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "autostart",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "autostarttime",
+        "type": "Time Value",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "defer",
+        "type": "float",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "interval",
+        "type": "Time Value",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "quantize",
+        "type": "Time Value",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "transport",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      }
+    ],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/number.maxref.xml",
+    "sha256": "ba955a3f6984509b3fe718c4653fd0f00921effc23bcdb56fb58b62e892d07f5",
+    "class": "number",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "anything",
+      "clear",
+      "max",
+      "min",
+      "(mouse)",
+      "select",
+      "set"
+    ],
+    "attributes": [
+      {
+        "name": "annotation_name",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "bgcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "bordercolor",
+        "type": "atom",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "cantchange",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "format",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "hbgcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "htextcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "htricolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "maximum",
+        "type": "atom",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "minimum",
+        "type": "atom",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "mousefilter",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "numdecimalplaces",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "outputonclick",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "param_connect",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "parameter_enable",
+        "type": "int",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "parameter_mappable",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "style",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "textcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "triangle",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "tricolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "triscale",
+        "type": "float",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      }
+    ],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/pack.maxref.xml",
+    "sha256": "43bad217a251635f0c3bb21369f40e595681cec7bd7a38ee7e7b718246dac742",
+    "class": "pack",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "anything",
+      "nth",
+      "send",
+      "set",
+      "symbol"
+    ],
+    "attributes": [],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/pipe.maxref.xml",
+    "sha256": "c9ecd23cf62a840c3806d290e5906689f7c24db06237e1499482d0b2f8ed5151",
+    "class": "pipe",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "anything",
+      "clear",
+      "flush",
+      "stop"
+    ],
+    "attributes": [
+      {
+        "name": "clock",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "delaytime",
+        "type": "Time Value",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "quantize",
+        "type": "Time Value",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      }
+    ],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/receive.maxref.xml",
+    "sha256": "360289408f81a609674a25a189f7567b33cd1810ad5c23169ad9ce888ad550dd",
+    "class": "receive",
+    "module": "max",
+    "methods": [
+      "(mouse)",
+      "set"
+    ],
+    "attributes": [],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/route.maxref.xml",
+    "sha256": "772ab0cc1d3339fb86b5554acc7ff0ac4cfb90cb71fd60bd13d30422fd52e990",
+    "class": "route",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "anything"
+    ],
+    "attributes": [],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/select.maxref.xml",
+    "sha256": "8051a768b2169bf72f40021e66123d14877ab9b2d6654f6d5e5a549b7fe463d1",
+    "class": "select",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "anything",
+      "in1",
+      "symbol"
+    ],
+    "attributes": [
+      {
+        "name": "fuzzy",
+        "type": "atom",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "matchfloat",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      }
+    ],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/send.maxref.xml",
+    "sha256": "b4883d20eb847abcdd89c37666bb545282f1282318a0cd4da0cc29be5f954a73",
+    "class": "send",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "anything",
+      "(mouse)"
+    ],
+    "attributes": [],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/slider.maxref.xml",
+    "sha256": "c6608cbf9ccb51592c8d9fcc16d19450a1a02e639f02801e31a45f4e7b4b9eab",
+    "class": "slider",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "(mouse)",
+      "set",
+      "setminmax"
+    ],
+    "attributes": [
+      {
+        "name": "annotation_name",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "bgcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "bordercolor",
+        "type": "atom",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "drawoffcolor",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "elementcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "floatoutput",
+        "type": "atom_long",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "inputrangemode",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "knobcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "knobshape",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "min",
+        "type": "float",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "mult",
+        "type": "float",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "orientation",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "param_connect",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "parameter_enable",
+        "type": "int",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "parameter_mappable",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "relative",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "size",
+        "type": "float",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "style",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "thickness",
+        "type": "float",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      }
+    ],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/toggle.maxref.xml",
+    "sha256": "01a5f92464918a1b05f17982a45fed85783235206e4b0c5e79fcfce48ee09ada",
+    "class": "toggle",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "(drag)",
+      "(mouse)",
+      "outputvalue",
+      "read",
+      "set"
+    ],
+    "attributes": [
+      {
+        "name": "annotation_name",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "bgcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "bordercolor",
+        "type": "atom",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "checkedcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "param_connect",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "parameter_enable",
+        "type": "int",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "parameter_mappable",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "size",
+        "type": "float",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "style",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "svg",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "thickness",
+        "type": "float",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "uncheckedcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      }
+    ],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/trigger.maxref.xml",
+    "sha256": "8e0eeed2e84257b8bf9ad0cf706945e19a584c6cc7045de867faf8c1e93a2361",
+    "class": "trigger",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "anything"
+    ],
+    "attributes": [],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/max-ref/unpack.maxref.xml",
+    "sha256": "77849f4d7100ed8f9c77dfade3c54dadbf0a49a5320d61cd7b951f8c78aa6214",
+    "class": "unpack",
+    "module": "max",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "anything"
+    ],
+    "attributes": [],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/msp-ref/cycle~.maxref.xml",
+    "sha256": "5f97357b3799cb051a507711b6631cf33436b354fb6190bee224ccd8567a7703",
+    "class": "cycle~",
+    "module": "msp",
+    "methods": [
+      "float",
+      "(mouse)",
+      "reset",
+      "set",
+      "setall",
+      "signal"
+    ],
+    "attributes": [
+      {
+        "name": "buffer",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "buffer_offset",
+        "type": "atom_long",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "buffer_sizeinsamps",
+        "type": "atom_long",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "frequency",
+        "type": "float",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "phase",
+        "type": "float",
+        "size": "1",
+        "documented_default": []
+      }
+    ],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/msp-ref/dac~.maxref.xml",
+    "sha256": "c79cff2fcbd9dd7dffc4dcaf2ff4896793209191cd8bafa78b1d47f53f6f571b",
+    "class": "dac~",
+    "module": "msp",
+    "methods": [
+      "int",
+      "list",
+      "(mouse)",
+      "open",
+      "set",
+      "signal",
+      "start",
+      "startwindow",
+      "stop",
+      "wclose"
+    ],
+    "attributes": [],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/msp-ref/gain~.maxref.xml",
+    "sha256": "5ec8c73b4f5eaa802156ec03f4f47c2b683d4b034addce41b711ef1fccc2a768",
+    "class": "gain~",
+    "module": "msp",
+    "methods": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "color",
+      "ft1",
+      "(mouse)",
+      "set",
+      "setvalue",
+      "signal"
+    ],
+    "attributes": [
+      {
+        "name": "annotation_name",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "bgcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "bordercolor",
+        "type": "atom",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "inc",
+        "type": "float",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "interp",
+        "type": "float",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "interpinlet",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "knobcolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "multislider",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "orientation",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "param_connect",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "parameter_enable",
+        "type": "int",
+        "size": "1",
+        "documented_default": []
+      },
+      {
+        "name": "parameter_mappable",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "relative",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "scale",
+        "type": "float",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "size",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "stripecolor",
+        "type": "float",
+        "size": "4",
+        "documented_default": []
+      },
+      {
+        "name": "style",
+        "type": "symbol",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      }
+    ],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/msp-ref/line~.maxref.xml",
+    "sha256": "05234bec696c40ca5f4e4d5e6883f87fb5c1d727dd66ab266977badc58335216",
+    "class": "line~",
+    "module": "msp",
+    "methods": [
+      "int",
+      "float",
+      "list",
+      "anything",
+      "pause",
+      "resume",
+      "stop"
+    ],
+    "attributes": [
+      {
+        "name": "activeout",
+        "type": "int",
+        "size": "1",
+        "documented_default": [
+          ""
+        ]
+      },
+      {
+        "name": "maxpoints",
+        "type": "int",
+        "size": "1",
+        "documented_default": []
+      }
+    ],
+    "status": "documentation-only-not-executed"
+  },
+  {
+    "path": "docs/refpages/msp-ref/sig~.maxref.xml",
+    "sha256": "eaad45d6835e696cd23d07d2c98a9a23d6cf453c6f5cb54ba3f70708623391d0",
+    "class": "sig~",
+    "module": "msp",
+    "methods": [
+      "int",
+      "float",
+      "list",
+      "set",
+      "signal"
+    ],
+    "attributes": [],
+    "status": "documentation-only-not-executed"
+  }
+]

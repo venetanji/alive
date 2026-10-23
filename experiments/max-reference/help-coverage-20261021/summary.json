@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "boundary": "resources/help and resources/packages/**/*.maxhelp; core help/**/*.maxpat support files",
+  "help_files": 2103,
+  "core_help_files": 973,
+  "package_help_files": 1130,
+  "core_support_maxpat_files": 42,
+  "core_domains": {
+    "jitter": 203,
+    "m4l": 32,
+    "max": 472,
+    "msp": 265,
+    "resources": 1
+  },
+  "packages": {
+    "BEAP": 172,
+    "Jitter Geometry": 26,
+    "Jitter Tools": 99,
+    "Node for Max": 2,
+    "RNBO": 563,
+    "Vizzie": 114,
+    "ableton-dsp": 74,
+    "jit.mo": 12,
+    "max-mxj": 62,
+    "maxforlive-elements": 3,
+    "mira": 3
+  },
+  "parsed_files": 2145,
+  "parse_failures": [],
+  "core_basic_tabs": 966,
+  "distinct_namespace_token_pairs": 2080,
+  "coverage": {
+    "core_inventory": {
+      "numerator": 973,
+      "denominator": 973,
+      "percent": 100.0
+    },
+    "full_help_conformance": {
+      "numerator": 0,
+      "denominator": 2103,
+      "percent": 0.0,
+      "meaning": "No installed help file has been run end-to-end in Ultra or compared against Max by this inventory"
+    },
+    "object_compatibility_percent": null,
+    "note": "Filenames, tokens, parsed graphs and UI resemblance do not certify object behavior. Aliases and namespaces remain distinct."
+  },
+  "execution_policy": "Inventory first. No file is admitted automatically; scripts, attributes, branches, dependencies, clocks and expected outputs need explicit case contracts."
+}

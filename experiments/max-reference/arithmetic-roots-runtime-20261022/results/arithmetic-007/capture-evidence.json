@@ -1,0 +1,119 @@
+{
+  "operation": "capture_process_scenario",
+  "evidence_id": "ev_c19e98841d00f4654a6c405a8d80067f1d966cf11a11106234b93a05a70c13a5",
+  "session_sha256": "34f5e431030d88cab6b2813ab06f40b72510b60cc47b74baf5a4febedc36453f",
+  "cleanup_sha256": "864893767cfe0692596f3634b993631313f83a502baf2b8b7f61015536b594d8",
+  "status": "FAILED",
+  "complete": false,
+  "completed_operations": 26,
+  "required_operations": 78,
+  "readback_request_count": 25,
+  "successful_command_acknowledgements": 52,
+  "received_command_acknowledgements": 52,
+  "command_request_count": 52,
+  "observed_original_outlet_receipts": 47,
+  "required_original_outlet_receipts": 141,
+  "observed_numeric_states": 168,
+  "required_numeric_states": 504,
+  "independently_validated_closes": 2,
+  "required_closes": 6,
+  "failure_document": "plus",
+  "failure_revision": 1,
+  "failure_request_id": 52,
+  "failure_response_received": true,
+  "failure_type": "ValueError",
+  "plus_install_request_id": 51,
+  "plus_install_ack_success": true,
+  "plus_readback_success": false,
+  "plus_v8_inventory_complete": true,
+  "plus_v8_inventory_coverage": {
+    "root": {
+      "complete": true,
+      "status": "complete",
+      "observed_count": 8,
+      "complete_count": 8,
+      "limit": 8
+    },
+    "numeric": {
+      "complete": true,
+      "status": "complete",
+      "observed_count": 35,
+      "complete_count": 35,
+      "limit": 35
+    }
+  },
+  "plus_v8_strict_mismatch": true,
+  "plus_v8_root_diagnostic_rows": 4,
+  "plus_v8_numeric_diagnostic_rows": 3,
+  "private_trace": {
+    "sha256": "bc0e23dc19b130b4bcfe09777a74e56a48f62a9d39860cae7fdc8d3e1a837185",
+    "bytes": 110008,
+    "records": 268,
+    "max_record_bytes": 954,
+    "max_recorded_attempt": 10,
+    "last_phase": "install-ready-for-ack",
+    "phase_counts": {
+      "command-consumed": 1,
+      "openfile-enter": 1,
+      "openfile-return": 1,
+      "poll-scheduled": 10,
+      "poll-enter": 10,
+      "root-decision": 10,
+      "validate-enter": 10,
+      "observation-chunk": 22,
+      "plus-eligibility": 10,
+      "capability-enter": 60,
+      "capability-call-return": 60,
+      "capability-exit": 60,
+      "validate-return": 10,
+      "bind-enter": 1,
+      "bind-return": 1,
+      "install-ready-for-ack": 1
+    },
+    "capability_calls_returned": 60,
+    "timing_includes_trace_io": true
+  },
+  "rea_filesystem_hash_omissions": [],
+  "rea_public_file_hashes_verified_by_parent": 6,
+  "rea_public_file_hashes": [
+    {
+      "name": "cleanup.json",
+      "sha256": "864893767cfe0692596f3634b993631313f83a502baf2b8b7f61015536b594d8",
+      "size": 1843
+    },
+    {
+      "name": "display-states.json",
+      "sha256": "7bac63baeb254bd53e65253b44e6ce5134ee5836a4819df2f0f9fec67516577e",
+      "size": 10451
+    },
+    {
+      "name": "preferences-after.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "size": 205649
+    },
+    {
+      "name": "preferences-before.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "size": 205649
+    },
+    {
+      "name": "receipts.jsonl",
+      "sha256": "63d37827b6ffb93afba8a48aff2b22c049ee1f4f91a7ee1f1bf77d95dc0cbad4",
+      "size": 40483
+    },
+    {
+      "name": "session.json",
+      "sha256": "34f5e431030d88cab6b2813ab06f40b72510b60cc47b74baf5a4febedc36453f",
+      "size": 41052
+    }
+  ],
+  "preferences_equal_by_runner": true,
+  "sources_and_helpers_preserved": true,
+  "exact_owned_cleanup_empty": true,
+  "prefix_removed": true,
+  "xvfb_exited": true,
+  "unrelated_processes_untouched": true,
+  "full_comparison_complete": false,
+  "qualification_increment": 0,
+  "saved_order_observed": false
+}

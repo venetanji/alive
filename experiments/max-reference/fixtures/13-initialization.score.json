@@ -1,0 +1,19 @@
+{
+  "fixture": "13-initialization",
+  "question": "Loadbang order across nested patchers and explicit saved parameter initial state",
+  "labels": [
+    "root_loadbang",
+    "child_loadbang",
+    "parameter"
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "bang",
+      "destination": "obj-4",
+      "inlet": 0,
+      "wait_ms": 0
+    }
+  ],
+  "drain_ms": 100
+}

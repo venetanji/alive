@@ -1,0 +1,103 @@
+--- initial005/controller.js
++++ fix1/controller.js
+@@ -175,9 +175,9 @@
+     if(!pin||!definition||definition.document!=="plus"||definition.source_sha256!==PLUS_SOURCE||
+         !sameData(definition.helper_sha256,GEOMETRY_HELPERS)||!sameData(configured,GEOMETRY_HELPERS)||
+         (revision!==1&&revision!==2)||definition.lifecycle_owner_inlet!==revision+1||
+-        !owner||owner.document!=="plus"||owner.revision!==revision||owner.source_sha256!==PLUS_SOURCE||
++        !owner||owner.inlet!==definition.lifecycle_owner_inlet||owner.document!=="plus"||owner.revision!==revision||owner.source_sha256!==PLUS_SOURCE||
+         typeof definition.working_windows_path!=="string"||!definition.working_windows_path||
+-        !root||!samePath(root.filepath,definition.working_windows_path)||
++        !root||root.parentpatcher!==null||!samePath(root.filepath,definition.working_windows_path)||
+         owner.working_path!==definition.working_windows_path||documents.length!==1||
+         documents[0].source_sha256!==PLUS_SOURCE||documents[0].working_windows_path!==definition.working_windows_path||
+         documents[0].lifecycle_owner_inlet!==definition.lifecycle_owner_inlet||originals.length!==1||!sameData(originals[0],expected)||
+@@ -286,7 +286,8 @@
+     for(var o=patcher.firstobject;o;o=o.nextobject) {
+         var rect=null;try{rect=o.getboxattr("patching_rect");}catch(error){}
+         diagnostic.candidates.push({maxclass:o.maxclass,rect:rect});
+-        if(sameRect(rect,expected.rect)||(policy&&sameNumbers(rect,policy.live_rect)))found.push(o);
++        var savedMatches=policy&&definition.document==="plus"?sameNumbers(rect,expected.rect):sameRect(rect,expected.rect);
++        if(savedMatches||(policy&&sameNumbers(rect,policy.live_rect)))found.push(o);
+     }
+     var classes=representation?["number"]:(expected.runtime_classes||[expected.runtime_class]);
+     if(found.length!==1||classes.indexOf(found[0].maxclass)===-1||
+--- initial005/test_helpers.cjs
++++ fix1/test_helpers.cjs
+@@ -712,10 +712,10 @@
+   context.PLUS_GEOMETRY_PINS = geometry; context.PLUS_NUMERIC_PINS = numeric;
+   const definition = {document: 'plus', revision, source_sha256: context.PLUS_SOURCE, helper_sha256: plain(context.GEOMETRY_HELPERS),
+     working_windows_path: `Z:/synthetic/plus-r${revision}.maxhelp`, lifecycle_owner_inlet: revision + 1, full_inventory: inventory};
+-  const owners = []; owners[revision + 1] = {document: 'plus', revision, source_sha256: context.PLUS_SOURCE, working_path: definition.working_windows_path};
++  const owners = []; owners[revision + 1] = {inlet: revision + 1, document: 'plus', revision, source_sha256: context.PLUS_SOURCE, working_path: definition.working_windows_path};
+   context.config = {helpers: Object.entries(context.GEOMETRY_HELPERS).map(([name, sha256]) => ({name, sha256})), documents: [definition], lifecycle: {owners}};
+   context.shared = {request_id: 51, step_id: `install-plus-r${revision}`, action: 'install', action_document: 'plus', action_revision: revision};
+-  return {context, calls, definition, targets, scopes, root: {firstobject: scopes.root[0], filepath: definition.working_windows_path}};
++  return {context, calls, definition, targets, scopes, root: {firstobject: scopes.root[0], filepath: definition.working_windows_path, parentpatcher: null}};
+ }
+ for (const revision of [1, 2]) {
+   const f = plusPreflightFixture(revision);
+@@ -796,3 +796,63 @@
+ assert.ok(plusSerialized.anchor_diagnostics.every(row => row.numeric_preflight_observation));
+ assert.deepEqual(plusSerialized.controller_representation_observations, []); assert.deepEqual(plusSerialized.numeric_mode_observations, []);
+ console.log('capture004 plus: four exact geometry gates and three diagnostic-only probes pass');
++
++function serializePlusRefusal(fixture, error) {
++  const memory = new Map([['Z:/synthetic/journal.jsonl', '']]), context = fixture.context;
++  context.File = memoryFile(memory); context.shared.seq = 0;
++  context.config.ack_path = 'Z:/synthetic/fix1-ack.json'; context.config.journal_path = 'Z:/synthetic/journal.jsonl';
++  context.fail({command_id: 51}, error);
++  return JSON.parse(memory.get(context.config.ack_path));
++}
++const fix1Invalid = [];
++for (const revision of [1, 2]) {
++  const variants = ['nested-root', 'unknown-parent', 'throwing-parent', 'missing-owner-inlet', 'boolean-owner-inlet', 'wrong-owner-inlet'];
++  const anchors = Object.keys(plain(helper('controller.js').PLUS_GEOMETRY_PINS));
++  for (const variant of [...variants, ...anchors]) {
++    const f = plusPreflightFixture(revision), owner = f.context.config.lifecycle.owners[revision + 1];
++    if (variant === 'nested-root') f.root.parentpatcher = {};
++    if (variant === 'unknown-parent') delete f.root.parentpatcher;
++    if (variant === 'throwing-parent') Object.defineProperty(f.root, 'parentpatcher', {get() {throw Error('synthetic parent unavailable');}});
++    if (variant === 'missing-owner-inlet') delete owner.inlet;
++    if (variant === 'boolean-owner-inlet') owner.inlet = true;
++    if (variant === 'wrong-owner-inlet') owner.inlet = 99;
++    if (anchors.includes(variant)) {
++      const index = f.definition.full_inventory.findIndex(box => box.anchor === variant), expected = f.definition.full_inventory[index];
++      const scope = variant.slice(0, variant.lastIndexOf('/'));
++      const scopeBoxes = f.definition.full_inventory.filter(box => box.anchor.slice(0, box.anchor.lastIndexOf('/')) === scope);
++      const object = f.scopes[scope][scopeBoxes.indexOf(expected)];
++      object.live = [...expected.rect]; object.live[0] += .005;
++    }
++    let failure; try {f.context.validateTree(f.root, f.definition);} catch (error) {failure = error;}
++    assert.ok(failure, `plus revision${revision}:${variant}: install must refuse`);
++    const directObservations = f.context.anchorDiagnostics.filter(row => row.numeric_preflight_observation).length;
++    const ack = serializePlusRefusal(f, failure);
++    assert.equal(ack.success, false); assert.ok(ack.anchor_diagnostics.length >= 3);
++    assert.equal(ack.geometry_dispositions.length, anchors.includes(variant) ? 3 : 4,
++      'retain only the geometry dispositions actually collected');
++    assert.deepEqual(ack.numeric_mode_observations, []); assert.deepEqual(ack.controller_representation_observations, []);
++    fix1Invalid.push({revision, variant, calls: f.calls.length, directObservations,
++      serializedObservations: ack.anchor_diagnostics.filter(row => row.numeric_preflight_observation).length});
++  }
++  for (const anchor of anchors) {
++    const f = plusPreflightFixture(revision), expected = f.definition.full_inventory.find(box => box.anchor === anchor);
++    const scope = anchor.slice(0, anchor.lastIndexOf('/'));
++    const scopeBoxes = f.definition.full_inventory.filter(box => box.anchor.slice(0, box.anchor.lastIndexOf('/')) === scope);
++    f.scopes[scope][scopeBoxes.indexOf(expected)].live = [...expected.rect];
++    assert.throws(() => f.context.validateTree(f.root, f.definition));
++    assert.equal(f.calls.length, 6, 'exact saved plus geometry remains permitted');
++    assert.equal(f.context.geometryDispositions.length, 3);
++    assert.equal(f.context.anchorDiagnostics.filter(row => row.numeric_preflight_observation).length, 3);
++  }
++}
++const nearSavedTimes = {maxclass: 'jsui', nextobject: null, getboxattr: () => [4.005, 8, 40, 20]};
++const timesTolerance = helper('controller.js'); timesTolerance.TIMES_GEOMETRY_PINS = {[measuredAnchor]: syntheticPin};
++timesTolerance.config = gateConfig;
++assert.equal(timesTolerance.resolve({firstobject: nearSavedTimes}, measuredExpected, measuredDefinition, []), nearSavedTimes,
++  'the plus correction must retain existing times saved-geometry tolerance');
++console.log(JSON.stringify({fix1IdentityCases: 12, fix1GeometryCases: 8,
++  invalidCasesWithCalls: fix1Invalid.filter(row => row.calls !== 0).length,
++  directCasesWithObservations: fix1Invalid.filter(row => row.directObservations !== 0).length,
++  serializedCasesWithObservations: fix1Invalid.filter(row => row.serializedObservations !== 0).length}));
++assert.ok(fix1Invalid.every(row => row.calls === 0 && row.directObservations === 0 && row.serializedObservations === 0),
++  'every invalid plus identity/geometry case must suppress calls and numeric observations');

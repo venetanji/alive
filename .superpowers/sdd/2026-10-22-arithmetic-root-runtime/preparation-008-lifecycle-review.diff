@@ -1,0 +1,781 @@
+--- final007/lifecycle.py
++++ current008/lifecycle.py
+@@ -53,20 +53,69 @@
+         source_text_sha256='e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+         saved_rect_sha256='3ae5be738626430c7205dcb01a2fba671d0f93a83677c43e9ba362422cdd0754',
+         initial_numeric_sha256='1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121'),
+     'root/obj-4/obj-23': dict(source_box_sha256='f122ac20a6bf9ecec78a24a73a0cbd911d938b441439337f9298ae4dfbcc853c',
+         source_text_sha256='e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+         saved_rect_sha256='6172628b9bf9e972a77a1773539e5ffe75c0b592876ec787c48026a2e90b89f2',
+         initial_numeric_sha256='1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121')}
+ V8_ROOT_REPRESENTATION_PINS = {anchor: {key: value for key, value in TIMES_GEOMETRY_PINS[anchor].items()
+     if key in {'source_box_sha256', 'source_text_sha256', 'saved_rect_sha256', 'live_rect_sha256'}}
+     for anchor in ('root/obj-4', 'root/obj-1')}
++
++
++PLUS_V8_NUMERIC_PINS = {'root/obj-2/obj-1': {'source_box_sha256': 'c873e45cc1ebc4c71b93a736b509fc0f622d4764df74edb3a21f5bad4d999a78', 'source_text_sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'saved_rect_sha256': '97bd3d008866faa2c6cdc5bf0de64333c64bd29bf79bae29b6ae070ec6823267'}, 'root/obj-2/obj-24': {'source_box_sha256': 'd84cf4a6a5daa8db1d4b2616b5c1f94385a15d274a80be64ca07ddcb728d8cb3', 'source_text_sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'saved_rect_sha256': '14acfb0d484e461a00397ecfb34329cfe8167d5e47b6360edbd54f0fabbd91bc'}, 'root/obj-2/obj-23': {'source_box_sha256': '5b0e92ade41a0633d5d5dc178c9fd1ebc519f7014d331e4a924afff0dfe07982', 'source_text_sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'saved_rect_sha256': '38b2cd4242257c9f9802ef997eccb7d32e451c1b05f37868136baa42fb89636c'}}
++PLUS_V8_NUMERIC_PINS = {anchor: dict(pin, initial_numeric_sha256=
++    '1c10b03518fff8fc374a20bbf5107c66496656bec0662d6c6db123d4a898f121') for anchor, pin in PLUS_V8_NUMERIC_PINS.items()}
++PLUS_V8_ROOT_PINS = {anchor: {key: value for key, value in PLUS_GEOMETRY_PINS[anchor].items()
++    if key in {'source_box_sha256', 'source_text_sha256', 'saved_rect_sha256', 'live_rect_sha256'}}
++    for anchor in ('root/obj-2', 'root/obj-3')}
++PLUS_V8_PROJECTION_SHA256 = 'ba8d3d1ec23265bd75f16641fa95668466888d4033811fda95bcdef757da600f'
++PLUS_V8_FORMAT_SHA256 = 'dcdadd560ab2234a2bf2d2b5ed44e5d7640e88eefe6bdbc98aa84aaf31649983'
++PLUS_CONTROLLER_BINDING = '31e249de8a69dd317ae9b50f93bca88e3da8392edda68dd7b66865e6a0c98a89'
++PLUS_V8_EVIDENCE = dict(
++    raw_sha256='87459a07efa7a7f8d0bdcaba10148f138369d080104324e520cc7fb1aaf1fd71',
++    install_ack_sha256='ba39c2e9b59c9983d938cb8e500f05aef3b82af830558548e50ef97d31df1a82',
++    readback_ack_sha256='1c4dcdb18ed66194264e9fbfe914664c636ab066375636647cb4d3038fb62f01',
++    command_sha256='be98938644e0ee42eabb329709effcc5ce40d32c6007ee4e139f6856ce7eab28',
++    config_sha256='eb44b4930d0bb2504f9739367dad7b144c12b1baada9ac8d37f8bde127ae550b',
++    seal_sha256='cedafaa9aa57b066b7fa19b95580c08b884ef2267bec42c6143429bbd41a9641',
++    manifest_sha256='73b623f8893e5758f8f74cbc4c41f599e291c12cb9d3a662c572d55fcc40bc7f',
++    historical_binding_sha256='97a59c54d9185b47c417c876b12ac8b8ebc4734bb80ad7b439e6e5790aaf991b',
++    historical_files_sha256='f01f727c2f17b10175de23da47a536e6a10f19d609bb7d0e92add241811fedac',
++    package_sha256='121d5aa5e3056337306bbe2d7a2771221f53e7adb9750572d934d20ac8a8c978',
++    controller_sha256='da4473ac8014f39fd255b830121508738c16980b6e303fb0a9b8c963ce0f13a8',
++    reader_sha256='7d857163d254c82ecbc02b6cd3ff43be1fdf9f67ed09ddf6eb554a7d87c175fa',
++    trace_sha256='bc0e23dc19b130b4bcfe09777a74e56a48f62a9d39860cae7fdc8d3e1a837185',
++    audit_sha256='2e96fed0d6acd58fff7b033a17294c1ccc54e15a56590862a142fe723eac704e',
++    investigation_sha256='dacc776b2429cab7f76f44a589a131cc3b89dd624afbc25c2c85b98116a62d12',
++    rea_evidence_id='ev_c19e98841d00f4654a6c405a8d80067f1d966cf11a11106234b93a05a70c13a5',
++    observation_role='failed-install-readback-diagnostics', observed_revision=1, observed_request_id=52,
++    observed_operation_request_id=51, raw_success=False, raw_error_code='numeric-readback-refused', observed_strict_mismatch=True)
++PLUS_CONTROLLER_EVIDENCE = dict(
++    trace_sha256='2b3287e45de1123f8ac7582544aa13da5dbfba6650d2aa33e7a46b5f8be39a63',
++    trace_role='incomplete-install-prefix', observed_revision=1,
++    config_sha256='4a922bf0b1e2d2c5755eb339d0fa8e73a4139f74c5acc3b92352388e85a167ad',
++    seal_sha256='3e5b31cdcb62618e08444d35c2ec20815cf07a21aad86de4d058ca6a94170935',
++    manifest_sha256='c4fc2bf8badc5cfc98b85d2b1bc8dad9cd7df42f730665521080631ecefad898',
++    controller_sha256='c0b0a45ef7a72a484fa976774f5a10e1ca9fcf6892603f723fb7df6c220a3d97',
++    historical_binding_sha256='bce1edf4484c73bf95a5c1c1648ff7e7f8f3ce479fe96c92be6639fa6e466df6',
++    package_sha256='b140eddbac9d134e162ff4cfdf2388be1285cf45b9127bd8bcc0d253ff0e99e5',
++    audit_sha256='9ded6e777503d6181120dc92c3f4745ec4eb565e5a6f29e9bd52c38755870e8d',
++    investigation_sha256='7b555ff81a58e426185fb9fca93b23216e18cf0205a8a923b3ca70c892e3e54b',
++    verification_sha256='081856c4f782f6c1603d998e6637c2355c84585635c7a3deca980e1b1cce2bfc',
++    rea_evidence_id='ev_a0ed6947bdad1fbe7e7ba19b62634a570fdff7803e7db65363b019dd0db409c8')
++
++PLUS_BOX_FIELDS = frozenset(('id', 'anchor', 'maxclass', 'runtime_class', 'runtime_classes', 'rect', 'inlets', 'outlets',
++    'authored_text', 'authored_empty', 'initial_numeric', 'role', 'source_box_sha256', 'source_text_sha256'))
++PLUS_FULL_FIELDS = frozenset(('anchor', 'maxclass', 'runtime_class', 'runtime_classes', 'rect', 'child', 'source_varname',
++    'inlets', 'outlets', 'authored_text', 'authored_empty', 'source_box_sha256', 'source_text_sha256',
++    'saved_incoming_routes', 'saved_outgoing_routes'))
+ 
+ 
+ def _require(condition, label):
+     if not condition:
+         raise ValueError('Invalid lifecycle ' + label)
+ 
+ 
+ def _keys(value, required, optional=()):
+     _require(type(value) is dict, 'object')
+     _require(set(required) <= value.keys() <= set(required) | set(optional), 'fields')
+@@ -353,82 +402,198 @@
+              original.get('source_box_sha256') == pin['source_box_sha256'] and
+              original.get('source_text_sha256') == pin['source_text_sha256'] and
+              original.get('saved_incoming_routes') == original.get('saved_outgoing_routes') == 0 and
+              _geometry_vector_digest(original['rect']) == pin['saved_rect_sha256'] and
+              _geometry_vector_digest(policy['live_rect']) == pin['live_rect_sha256'] and
+              [index for index, pair in enumerate(zip(original['rect'], policy['live_rect'])) if pair[0] != pair[1]] == [pin['changed_dimension']],
+              'exact observed geometry vector or source box binding')
+     return policy
+ 
+ 
++def _source_normalized(value):
++    if type(value) is dict:
++        return {key: _source_normalized(item) for key, item in value.items()}
++    if type(value) is list:
++        return [_source_normalized(item) for item in value]
++    if type(value) is float:
++        _require(math.isfinite(value), 'finite source projection')
++        return int(value) if value == math.trunc(value) else value
++    return value
++
++
++def _plus_controller_policy(box):
++    pin = PLUS_V8_NUMERIC_PINS[box['anchor']]
++    expected = dict(kind='plus-controller-numeric-cohort-v1', engine='js-controller', document='plus',
++        source_sha256=PLUS_SOURCE, anchor=box['anchor'], source_class='flonum', runtime_class='number',
++        cohort_anchors=list(PLUS_V8_NUMERIC_PINS), cohort_binding_sha256=PLUS_CONTROLLER_BINDING,
++        **pin, helper_sha256=ROOT_HELPERS, evidence=PLUS_CONTROLLER_EVIDENCE,
++        format_method='getattr', format_attribute='format', format_representation='scalar-number',
++        format_value_sha256=PLUS_V8_FORMAT_SHA256, getter_method='getvalueof', getter_representation='singleton-number-array',
++        finite_required=True, source_initial_equality=True, fresh_complete_cohort_required=True)
++    _require(_same(box.get('plus_controller_numeric_cohort_policy'), expected), 'exact plus controller cohort policy')
++
++
++def _plus_source_projection(owner, definition):
++    """Validate identities before numeric canonicalization can erase their JSON types."""
++    _require(definition.get('document') == owner['document'] == 'plus' and
++        definition.get('source_sha256') == owner['source_sha256'] == PLUS_SOURCE and
++        _same(definition.get('helper_sha256'), ROOT_HELPERS) and
++        definition.get('basic_anchor') == 'root/obj-2' and definition.get('basic_varname') == 'basic_tab',
++        'plus pristine source binding')
++    views = {}
++    for view, fields in (('boxes', PLUS_BOX_FIELDS), ('full_inventory', PLUS_FULL_FIELDS)):
++        entries = _list(definition.get(view)); projected = []
++        _require(len(entries) == (16 if view == 'boxes' else 20), 'plus complete source view')
++        anchors = set()
++        for box in entries:
++            _require(type(box) is dict, 'plus source descriptor')
++            anchor = _text(box.get('anchor'))
++            _require(anchor not in anchors, 'plus unique source descriptor'); anchors.add(anchor)
++            allowed = set(fields)
++            if anchor in PLUS_GEOMETRY_PINS:
++                allowed.add('observed_geometry_policy')
++                if view == 'boxes': allowed.update(('saved_incoming_routes', 'saved_outgoing_routes'))
++                _require('observed_geometry_policy' in box, 'plus retained geometry policy')
++                _observed_geometry(owner, definition, box)
++            if anchor in PLUS_V8_NUMERIC_PINS:
++                allowed.update(('plus_controller_numeric_cohort_policy', 'v8_numeric_representation_policy'))
++                if view == 'full_inventory': allowed.add('initial_numeric')
++                _plus_controller_policy(box)
++                _v8_representation_policy(owner, definition, box, True)
++            if view == 'full_inventory' and anchor in PLUS_V8_ROOT_PINS:
++                allowed.add('v8_root_representation_policy')
++                _v8_representation_policy(owner, definition, box, False)
++            _keys(box, fields, allowed - fields)
++            _int(box['inlets']); _int(box['outlets']); _rect(box['rect'])
++            _require(type(box['authored_empty']) is bool, 'plus source empty type')
++            for field in ('saved_incoming_routes', 'saved_outgoing_routes'):
++                if field in box: _int(box[field])
++            if view == 'boxes':
++                _require(anchor == 'root/obj-2/' + _text(box['id']), 'plus source anchor id')
++                initial = box['initial_numeric']
++                _require(initial is None or type(initial) in (int, float) and math.isfinite(initial), 'plus source scalar')
++            else:
++                _require(type(box['child']) is bool, 'plus source child type')
++            projected.append({field: box[field] for field in fields})
++        views[view] = projected
++    boxes = definition['boxes']
++    by_id = {box['id']:box for box in boxes}; by_anchor = {box['anchor']:box for box in boxes}
++    edges = _list(definition.get('saved_edges')); leaves = _list(definition.get('observer_leaves'))
++    _require(len(edges) == 8 and len(leaves) == 19, 'plus complete source graph')
++    for index, edge in enumerate(edges):
++        _keys(edge, ('index', 'source', 'destination'))
++        _require(_int(edge['index']) == index, 'plus source edge index')
++        for side in ('source', 'destination'):
++            endpoint = _list(edge[side])
++            _require(len(endpoint) == 2, 'plus source endpoint shape')
++            identity = _text(endpoint[0]); port = _int(endpoint[1])
++            _require(identity in by_id and port < by_id[identity]['outlets' if side == 'source' else 'inlets'],
++                'plus source endpoint identity or bounds')
++    for leaf in leaves:
++        _keys(leaf, ('anchor', 'port', 'varname'))
++        anchor = _text(leaf['anchor']); _text(leaf['varname']); port = _int(leaf['port'])
++        _require(anchor in by_anchor and port < by_anchor[anchor]['outlets'], 'plus source leaf identity or bounds')
++    expected_leaves = [dict(anchor=b['anchor'], port=port,
++        varname='__alive_help_leaf_' + b['id'].replace('-', '_') + '_' + str(port))
++        for b in boxes for port in range(b['outlets'])]
++    _require(_same(leaves, expected_leaves), 'plus complete ordered source leaves')
++    projection = dict(document='plus', source_sha256=PLUS_SOURCE, helper_sha256=ROOT_HELPERS,
++        basic_anchor='root/obj-2', basic_varname='basic_tab', **views, saved_edges=edges, observer_leaves=leaves)
++    _require(_digest(_canonical(_source_normalized(projection))) == PLUS_V8_PROJECTION_SHA256, 'plus pristine projection digest')
++    for box in boxes:
++        corresponding = [entry for entry in definition['full_inventory'] if entry['anchor'] == box['anchor']]
++        _require(len(corresponding) == 1, 'plus corresponding source descriptor')
++        entry = corresponding[0]
++        for field in PLUS_BOX_FIELDS & PLUS_FULL_FIELDS:
++            _require(_same(_source_normalized(box[field]), _source_normalized(entry[field])), 'plus source view correspondence')
++        if box['anchor'] in PLUS_V8_NUMERIC_PINS:
++            initial = entry.get('initial_numeric')
++            _require(type(initial) in (int, float) and math.isfinite(initial) and initial == box['initial_numeric'] and
++                _same(entry.get('v8_numeric_representation_policy'), box['v8_numeric_representation_policy']),
++                'plus source initial value or policy copy')
++
++
+ def _v8_representation_policy(owner, definition, box, numeric):
+-    pin = (NUMERIC_REPRESENTATION_PINS if numeric else V8_ROOT_REPRESENTATION_PINS).get(box['anchor'])
++    plus = definition['document'] == 'plus'
++    name, source, evidence = ('plus', PLUS_SOURCE, PLUS_V8_EVIDENCE) if plus else ('times', GEOMETRY_SOURCE, V8_REPRESENTATION_EVIDENCE)
++    numeric_pins = PLUS_V8_NUMERIC_PINS if plus else NUMERIC_REPRESENTATION_PINS
++    root_pins = PLUS_V8_ROOT_PINS if plus else V8_ROOT_REPRESENTATION_PINS
++    pin = (numeric_pins if numeric else root_pins).get(box['anchor'])
+     policy = box.get('v8_numeric_representation_policy' if numeric else 'v8_root_representation_policy')
+-    _require(pin is not None and type(policy) is dict and owner['document'] == definition['document'] == 'times'
+-             and owner['source_sha256'] == definition['source_sha256'] == GEOMETRY_SOURCE
++    _require(pin is not None and type(policy) is dict and owner['document'] == definition['document'] == name
++             and owner['source_sha256'] == definition['source_sha256'] == source
+              and _int(definition.get('revision'), 1, 2) == owner['revision']
+              and _same(definition.get('helper_sha256'), ROOT_HELPERS), 'V8 source or helper binding')
+     _require(box.get('maxclass') == ('flonum' if numeric else 'newobj') and
+              box.get('runtime_class') == ('flonum' if numeric else 'patcher') and
+              _same(box.get('runtime_classes'), ['flonum'] if numeric else ['patcher', 'p']) and
+              box.get('source_box_sha256') == pin['source_box_sha256'] and
+              box.get('source_text_sha256') == pin['source_text_sha256'] and
+              _geometry_vector_digest(box.get('rect')) == pin['saved_rect_sha256'], 'V8 source box binding')
+-    expected = dict(kind='times-v8-' + ('numeric' if numeric else 'root') + '-representation-v1', engine='v8',
+-        document='times', source_sha256=GEOMETRY_SOURCE, anchor=box['anchor'],
++    expected = dict(kind=name + '-v8-' + ('numeric' if numeric else 'root') + '-representation-v1', engine='v8',
++        document=name, source_sha256=source, anchor=box['anchor'],
+         source_class='flonum' if numeric else 'newobj', runtime_class='number' if numeric else 'jpatcher',
+-        **pin, helper_sha256=ROOT_HELPERS, evidence=V8_REPRESENTATION_EVIDENCE)
++        **pin, helper_sha256=ROOT_HELPERS, evidence=evidence)
+     if numeric:
+         initial = box.get('initial_numeric')
+         _require(type(initial) in (int, float) and math.isfinite(initial) and
+                  _geometry_vector_digest([initial, 0, 0, 0]) == pin['initial_numeric_sha256'], 'V8 source default binding')
+         expected.update(format_method='getattr', format_attribute='format', format_representation='scalar-number',
+             format_value=6, getter_method='getvalueof', getter_representation='scalar-number',
+             finite_required=True, initial_equality_action='install')
++        if plus:
++            expected.pop('format_value')
++            expected['format_value_sha256'] = PLUS_V8_FORMAT_SHA256
+     else:
+-        _require(box.get('source_varname') == ('basic_tab' if box['anchor'] == 'root/obj-4' else 'q_tab') and
++        _require(box.get('source_varname') == ('basic_tab' if box['anchor'] == ('root/obj-2' if plus else 'root/obj-4') else 'q_tab') and
+                  _int(box.get('saved_incoming_routes'), 0, 0) == _int(box.get('saved_outgoing_routes'), 0, 0) == 0 and
+                  _geometry_vector_digest(policy.get('live_rect')) == pin['live_rect_sha256'], 'V8 measured root binding')
+         expected.update(source_runtime_class='patcher', saved_rect=box['rect'], live_rect=policy['live_rect'],
+             source_varname=box['source_varname'], saved_incoming_routes=0, saved_outgoing_routes=0)
+     _require(_same_geometry_fields(policy, expected, () if numeric else ('saved_rect', 'live_rect')),
+              'exact V8 representation policy')
+     return policy
+ 
+ 
+ def _v8_representation_witnesses(proof, owner, definition, request, step):
++    plus = definition['document'] == 'plus'
++    if plus: _plus_source_projection(owner, definition)
++    name, source, evidence = ('plus', PLUS_SOURCE, PLUS_V8_EVIDENCE) if plus else ('times', GEOMETRY_SOURCE, V8_REPRESENTATION_EVIDENCE)
++    numeric_pins = PLUS_V8_NUMERIC_PINS if plus else NUMERIC_REPRESENTATION_PINS
++    root_pins = PLUS_V8_ROOT_PINS if plus else V8_ROOT_REPRESENTATION_PINS
+     boxes = _list(definition.get('boxes'))
+     inventory = _list(definition.get('full_inventory'))
+     _require(all(type(box) is dict for box in boxes + inventory), 'V8 source inventory')
+     numeric = [box for box in boxes if 'v8_numeric_representation_policy' in box]
+     roots = [box for box in inventory if 'v8_root_representation_policy' in box]
+     if not numeric and not roots:
+         _require('v8_representation_witnesses' not in proof, 'unadmitted V8 witnesses')
+         return {}
+     witness = proof.get('v8_representation_witnesses')
+     _require(len(numeric) == 3 and len(roots) == 2 and type(witness) is dict and
+-             Counter(_text(box.get('anchor')) for box in numeric) == Counter(NUMERIC_REPRESENTATION_PINS.keys()) and
+-             Counter(_text(box.get('anchor')) for box in roots) == Counter(V8_ROOT_REPRESENTATION_PINS.keys()),
++             Counter(_text(box.get('anchor')) for box in numeric) == Counter(numeric_pins.keys()) and
++             Counter(_text(box.get('anchor')) for box in roots) == Counter(root_pins.keys()),
+              'exact five V8 policies and witnesses')
+     for selected, numeric_kind in ((numeric, True), (roots, False)):
+         for box in selected:
+             _v8_representation_policy(owner, definition, box, numeric_kind)
+     revision = owner['revision']
+-    _require(_int(definition.get('lifecycle_owner_inlet'), 0, 1) == revision - 1 and step == 'close-times-r' + str(revision),
++    _require(_int(definition.get('lifecycle_owner_inlet'), 0, 5) == revision + (1 if plus else -1) and
++             _int(owner.get('inlet'), 0, 5) == definition['lifecycle_owner_inlet'] and step == 'close-' + name + '-r' + str(revision),
+              'V8 closing owner')
+     def coverage(count):
+         return dict(complete=True, status='complete', observed_count=count, complete_count=count, limit=count)
+-    expected = dict(version='times-v8-representation-witnesses-v1', engine='v8', request_id=request,
+-        operation_request_id=request, step_id=step, action='close', action_document='times', action_revision=revision,
+-        document='times', revision=revision, source_sha256=GEOMETRY_SOURCE, helper_sha256=ROOT_HELPERS,
++    expected = dict(version=name + '-v8-representation-witnesses-v1', engine='v8', request_id=request,
++        operation_request_id=request, step_id=step, action='close', action_document=name, action_revision=revision,
++        document=name, revision=revision, source_sha256=source, helper_sha256=ROOT_HELPERS,
+         working_path=owner['working_path'], root_is_top_level=True, receipt_tag_observed=False,
+-        evidence=V8_REPRESENTATION_EVIDENCE, inventory_coverage=dict(root=coverage(8),
++        evidence=evidence, inventory_coverage=dict(root=coverage(8),
+             numeric=coverage(len(boxes) + len(_list(definition.get('observer_leaves'))))),
+         numeric=witness.get('numeric'), roots=witness.get('roots'))
+     _require(_same(witness, expected), 'V8 witness source request evidence or inventory binding')
+     result = {}
+     for field, selected, numeric_kind in (('numeric', numeric, True), ('roots', roots, False)):
+         entries = _list(witness[field])
+         expected_boxes = {box['anchor']: box for box in selected}
+         _require(all(type(row) is dict for row in entries) and len(entries) == len(expected_boxes) and
+                  Counter(_text(row.get('anchor')) for row in entries) == Counter(expected_boxes.keys()),
+                  'V8 witness multiplicity')
+@@ -439,20 +604,27 @@
+                 actual_runtime_class='number' if numeric_kind else 'jpatcher',
+                 live_rect=box['rect'] if numeric_kind else box['v8_root_representation_policy']['live_rect'],
+                 candidate_count=1, candidate_count_complete=True)
+             if numeric_kind:
+                 observation = row.get('value_observation')
+                 _require(type(observation) is dict and type(observation.get('value')) in (int, float) and
+                          math.isfinite(observation['value']), 'finite V8 close getter')
+                 expected_row.update(geometry_matches=True, receipt_tag_observed=False,
+                     format_observation=dict(method='getattr', attribute='format', status='returned', representation='scalar-number', value=6),
+                     value_observation=dict(method='getvalueof', status='returned', representation='scalar-number', value=observation['value']))
++                if plus:
++                    format_observation = row.get('format_observation')
++                    _require(type(format_observation) is dict, 'plus finite format observation')
++                    value = format_observation.get('value')
++                    _require(type(value) in (int, float) and math.isfinite(value) and
++                        _geometry_vector_digest([value, 0, 0, 0]) == PLUS_V8_FORMAT_SHA256, 'plus format scalar pin')
++                    expected_row['format_observation']['value'] = value
+             else:
+                 expected_row['varname'] = box['source_varname']
+             _require(_same_geometry_fields(row, expected_row, ('live_rect',)), 'exact V8 live witness')
+             result[box['anchor']] = row
+     return result
+ 
+ 
+ def _basic_retention(proof, owner, definition, request, step, witnesses):
+     _keys(proof, ('version', 'request_id', 'operation_request_id', 'step_id', 'action', 'document', 'revision',
+                   'source_sha256', 'working_path', 'basic_varname', 'boxes', 'input_routes', 'output_routes'))
+--- final007/test_lifecycle.py
++++ current008/test_lifecycle.py
+@@ -9,20 +9,38 @@
+ from unittest.mock import patch
+ 
+ ROOT = Path(__file__).resolve().parent
+ 
+ 
+ def load():
+     path = ROOT / 'lifecycle.py'
+     if not path.exists(): raise AssertionError('Arithmetic six-owner lifecycle implementation is missing')
+     spec = importlib.util.spec_from_file_location('synthetic_arithmetic_lifecycle', path)
+     result = importlib.util.module_from_spec(spec); spec.loader.exec_module(result)
++    if hasattr(result, '_plus_source_projection'):
++        pristine_preflight = result._plus_source_projection
++
++        def synthetic_minimal_preflight(owner, definition):
++            # Original generic retention tests predate the complete plus source gate.
++            # Substitute only that gate for their exact minimal source identity.
++            if (definition.get('basic_anchor') == 'root/synthetic' and
++                    definition.get('basic_varname') == 'basic_tab' and
++                    [b.get('anchor') for b in definition.get('boxes', [])] == [
++                        'root/synthetic/synthetic-value', 'root/synthetic/synthetic-button',
++                        'root/synthetic/synthetic-operator'] and
++                    not any(any(key.endswith('_policy') for key in b)
++                        for view in ('boxes', 'full_inventory') for b in definition.get(view, []))):
++                return None
++            return pristine_preflight(owner, definition)
++
++        result._plus_source_projection = synthetic_minimal_preflight
++        result._real_plus_source_projection = pristine_preflight
+     return result
+ 
+ 
+ def sha(payload): return hashlib.sha256(payload).hexdigest()
+ def windows(path): return 'Z:' + str(path)
+ def valid(value): return dict(status='returned', type='boolean', value=value)
+ def edge(source, destination, inlet=0):
+     return dict(source=dict(identity=source, port=0), destination=dict(identity=destination, port=inlet))
+ 
+ 
+@@ -291,21 +309,426 @@
+             numeric=numeric_rows, roots=root_rows)
+         for sample in ack['close_diagnostics']['samples']:
+             sample['objects'] = [dict(anchor=b['anchor'], valid=valid(sample['attempt'] == 0)) for b in definition['boxes']]
+         self.persist_close(index, ack)
+         return command, ack
+ 
+     def forge_retained(self, index, change):
+         self.forge_root(index, lambda root: change(root['v8_representation_witnesses']))
+ 
+ 
++class PlusV8Evidence(Evidence):
++    """Entirely original synthetic state; only public evidence hash vocabulary is reused."""
++    def __init__(self, lifecycle, work):
++        super().__init__(lifecycle, work)
++        self.numeric_pins, self.root_pins, self.geometry_pins = {}, {}, {}
++        self.format_value = 17
++        self.format_sha = sha(lifecycle._canonical([self.format_value, 0, 0, 0]))
++        self.evidence = copy.deepcopy(getattr(lifecycle, 'PLUS_V8_EVIDENCE', {}))
++        self.controller_evidence = copy.deepcopy(getattr(lifecycle, 'PLUS_CONTROLLER_EVIDENCE', {}))
++        for definition in self.config['documents'][2:4]:
++            boxes = []
++            identities = ['obj-1', 'obj-24', 'obj-23'] + ['synthetic-' + str(i) for i in range(12)] + ['obj-4']
++            for i, identity in enumerate(identities):
++                anchor = 'root/obj-2/' + identity
++                numeric = i < 3
++                rect = [31 * i, 130, 26, 18]
++                text = '' if numeric else 'synthetic body ' + str(i)
++                box = dict(id=identity, anchor=anchor, maxclass='flonum' if numeric else 'jsui' if i == 15 else 'number',
++                    runtime_class='flonum' if numeric else 'jsui' if i == 15 else 'number', rect=rect,
++                    inlets=1, outlets=2 if i < 3 else 1, authored_text=text, authored_empty=not bool(text),
++                    initial_numeric=29 if numeric else None, role='synthetic-' + str(i),
++                    source_text_sha256=sha(text.encode()), source_box_sha256=sha(('synthetic box ' + str(i)).encode()))
++                box['runtime_classes'] = [box['runtime_class']]
++                if numeric:
++                    pin = dict(source_box_sha256=box['source_box_sha256'], source_text_sha256=box['source_text_sha256'],
++                        saved_rect_sha256=sha(lifecycle._canonical(rect)), initial_numeric_sha256=sha(lifecycle._canonical([29, 0, 0, 0])))
++                    self.numeric_pins[anchor] = pin
++                    policy = dict(kind='plus-v8-numeric-representation-v1', engine='v8', document='plus',
++                        source_sha256=lifecycle.PLUS_SOURCE, anchor=anchor, source_class='flonum', runtime_class='number',
++                        **pin, helper_sha256=dict(lifecycle.ROOT_HELPERS), evidence=copy.deepcopy(self.evidence),
++                        format_method='getattr', format_attribute='format', format_representation='scalar-number',
++                        format_value_sha256=self.format_sha, getter_method='getvalueof', getter_representation='scalar-number',
++                        finite_required=True, initial_equality_action='install')
++                    box['v8_numeric_representation_policy'] = policy
++                    box['plus_controller_numeric_cohort_policy'] = dict(kind='plus-controller-numeric-cohort-v1',
++                        engine='js-controller', document='plus', source_sha256=lifecycle.PLUS_SOURCE, anchor=anchor,
++                        source_class='flonum', runtime_class='number', cohort_anchors=list(self.numeric_pins),
++                        cohort_binding_sha256=getattr(lifecycle, 'PLUS_CONTROLLER_BINDING', 'a' * 64), **pin,
++                        helper_sha256=dict(lifecycle.ROOT_HELPERS), evidence=copy.deepcopy(self.controller_evidence),
++                        format_method='getattr', format_attribute='format', format_representation='scalar-number',
++                        format_value_sha256=self.format_sha, getter_method='getvalueof', getter_representation='singleton-number-array',
++                        finite_required=True, source_initial_equality=True, fresh_complete_cohort_required=True)
++                boxes.append(box)
++            for box in boxes[:3]:
++                box['plus_controller_numeric_cohort_policy']['cohort_anchors'] = list(self.numeric_pins)
++            roots = []
++            for i in range(4):
++                anchor = 'root/obj-' + str(i + 1)
++                text = 'synthetic root ' + str(i)
++                roots.append(dict(anchor=anchor, maxclass='jsui' if i == 3 else 'newobj',
++                    runtime_class='patcher' if i in (1, 2) else 'jsui' if i == 3 else 'js',
++                    runtime_classes=['patcher', 'p'] if i in (1, 2) else ['jsui'] if i == 3 else ['js'],
++                    rect=[81 * i, 31, 61, 21], child=i in (1, 2),
++                    source_varname='basic_tab' if i == 1 else 'q_tab' if i == 2 else None,
++                    inlets=1, outlets=1, authored_text=text, authored_empty=False,
++                    source_text_sha256=sha(text.encode()), source_box_sha256=sha(('synthetic root box ' + str(i)).encode()),
++                    saved_incoming_routes=0, saved_outgoing_routes=0))
++            full = copy.deepcopy(roots)
++            for box in boxes:
++                entry = {k:copy.deepcopy(v) for k, v in box.items() if k not in ('id', 'role', 'initial_numeric')}
++                entry.update(child=False, source_varname=None, saved_incoming_routes=0, saved_outgoing_routes=0)
++                if box in boxes[:3]: entry['initial_numeric'] = box['initial_numeric']
++                full.append(entry)
++            for entry in full:
++                if entry['anchor'] not in ('root/obj-1', 'root/obj-2', 'root/obj-3', 'root/obj-2/obj-4'): continue
++                saved = entry['rect']; live = copy.deepcopy(saved)
++                dimension = 2 if entry['runtime_class'] == 'jsui' else 3
++                live[dimension] += 2
++                pin = dict(source_box_sha256=entry['source_box_sha256'], source_text_sha256=entry['source_text_sha256'],
++                    saved_rect_sha256=sha(lifecycle._canonical(saved)), live_rect_sha256=sha(lifecycle._canonical(live)),
++                    runtime_class=entry['runtime_class'], changed_dimension=dimension)
++                self.geometry_pins[entry['anchor']] = pin
++                policy = dict(kind='plus-observed-geometry-v1', document='plus', source_sha256=lifecycle.PLUS_SOURCE,
++                    anchor=entry['anchor'], **pin, saved_rect=copy.deepcopy(saved), live_rect=live,
++                    helper_sha256=dict(lifecycle.ROOT_HELPERS), evidence=copy.deepcopy(lifecycle.PLUS_EVIDENCE),
++                    saved_incoming_routes=0, saved_outgoing_routes=0)
++                entry['observed_geometry_policy'] = policy
++                if entry['anchor'].startswith('root/obj-2/'):
++                    box = next(b for b in boxes if b['anchor'] == entry['anchor'])
++                    box.update(observed_geometry_policy=copy.deepcopy(policy), saved_incoming_routes=0, saved_outgoing_routes=0)
++                if entry['anchor'] in ('root/obj-2', 'root/obj-3'):
++                    root_pin = {k:v for k,v in pin.items() if k not in ('runtime_class', 'changed_dimension')}
++                    self.root_pins[entry['anchor']] = root_pin
++                    entry['v8_root_representation_policy'] = dict(kind='plus-v8-root-representation-v1', engine='v8',
++                        document='plus', source_sha256=lifecycle.PLUS_SOURCE, anchor=entry['anchor'], source_class='newobj',
++                        runtime_class='jpatcher', **root_pin, helper_sha256=dict(lifecycle.ROOT_HELPERS), evidence=copy.deepcopy(self.evidence),
++                        source_runtime_class='patcher', saved_rect=copy.deepcopy(saved), live_rect=copy.deepcopy(live),
++                        source_varname=entry['source_varname'], saved_incoming_routes=0, saved_outgoing_routes=0)
++            leaves = [dict(varname='__alive_help_leaf_' + b['id'].replace('-', '_') + '_' + str(port), anchor=b['anchor'], port=port)
++                for b in boxes for port in range(b['outlets'])]
++            edges = [dict(index=i, source=[boxes[i]['id'], 0], destination=[boxes[i+1]['id'], 0]) for i in range(8)]
++            definition.update(basic_anchor='root/obj-2', basic_varname='basic_tab', boxes=boxes, full_inventory=full,
++                observer_leaves=leaves, saved_edges=edges)
++        definition = self.config['documents'][2]
++        box_keys = set(definition['boxes'][3])
++        full_keys = set(definition['full_inventory'][-2])
++        projection = dict(document='plus', source_sha256=lifecycle.PLUS_SOURCE, helper_sha256=dict(lifecycle.ROOT_HELPERS),
++            basic_anchor='root/obj-2', basic_varname='basic_tab', boxes=[{k:b[k] for k in box_keys} for b in definition['boxes']],
++            full_inventory=[{k:b[k] for k in full_keys} for b in definition['full_inventory']],
++            saved_edges=definition['saved_edges'], observer_leaves=definition['observer_leaves'])
++        self.projection_sha = sha(lifecycle._canonical(projection))
++        self.reseal()
++
++    def reseal(self):
++        self.json(self.work / 'config.json', self.config)
++        self.json(self.work / 'seal.json', dict(files={'config.json':sha((self.work / 'config.json').read_bytes()),
++            'lifecycle-observer.js':self.helper_sha}))
++
++    def gates(self):
++        return patch.multiple(self.l, PLUS_V8_NUMERIC_PINS=self.numeric_pins, PLUS_V8_ROOT_PINS=self.root_pins,
++            PLUS_GEOMETRY_PINS=self.geometry_pins, PLUS_V8_PROJECTION_SHA256=self.projection_sha,
++            PLUS_V8_FORMAT_SHA256=self.format_sha, create=True)
++
++    def close(self, index):
++        command, ack = super().close(index)
++        if index not in (2, 3): return command, ack
++        owner, definition = self.owner(index), self.config['documents'][index]
++        root = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']
++        roots = [b for b in definition['full_inventory'] if b['anchor'].count('/') == 1]
++        root['originals'] = [dict(anchor=b['anchor'], varname=b['source_varname'] or '',
++            maxclass='jpatcher' if b['anchor'] in self.root_pins else b['runtime_class'],
++            rect=copy.deepcopy(b['v8_root_representation_policy']['live_rect'] if b['anchor'] in self.root_pins else b['rect'])) for b in roots]
++        numeric_rows = [dict(anchor=b['anchor'], source_box_sha256=b['source_box_sha256'], source_text_sha256=b['source_text_sha256'],
++            source_class='flonum', actual_runtime_class='number', live_rect=copy.deepcopy(b['rect']), candidate_count=1,
++            candidate_count_complete=True, geometry_matches=True, receipt_tag_observed=False,
++            format_observation=dict(method='getattr', attribute='format', status='returned', representation='scalar-number', value=self.format_value),
++            value_observation=dict(method='getvalueof', status='returned', representation='scalar-number', value=71.25 + index)) for b in definition['boxes'][:3]]
++        root_rows = [dict(anchor=b['anchor'], source_box_sha256=b['source_box_sha256'], source_text_sha256=b['source_text_sha256'],
++            source_class='newobj', actual_runtime_class='jpatcher', varname=b['source_varname'],
++            live_rect=copy.deepcopy(b['v8_root_representation_policy']['live_rect']), candidate_count=1, candidate_count_complete=True)
++            for b in roots if b['anchor'] in self.root_pins]
++        coverage = lambda n:dict(complete=True, status='complete', observed_count=n, complete_count=n, limit=n)
++        root['v8_representation_witnesses'] = dict(version='plus-v8-representation-witnesses-v1', engine='v8',
++            request_id=command['command_id'], operation_request_id=command['command_id'], step_id=command['step_id'], action='close',
++            action_document='plus', action_revision=owner['revision'], document='plus', revision=owner['revision'],
++            source_sha256=owner['source_sha256'], helper_sha256=dict(self.l.ROOT_HELPERS), working_path=owner['working_path'],
++            root_is_top_level=True, receipt_tag_observed=False, evidence=copy.deepcopy(self.evidence),
++            inventory_coverage=dict(root=coverage(8), numeric=coverage(35)), numeric=numeric_rows, roots=root_rows)
++        self.persist_close(index, ack)
++        return command, ack
++
++
+ class LifecycleTests(unittest.TestCase):
++    def test_plus_v8_close_accepts_both_owners_evolved_values_and_all_six_histories(self):
++        lifecycle = load()
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = PlusV8Evidence(lifecycle, Path(temporary))
++            with fixture.gates():
++                for index in range(6):
++                    try:
++                        _, ack = fixture.accept(index)
++                    except ValueError as error:
++                        self.fail('Fresh six-owner plus close conjunction refused: ' + str(error))
++                    if index in (2, 3):
++                        root = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']
++                        witness = root['v8_representation_witnesses']
++                        self.assertEqual((len(witness['numeric']), len(witness['roots'])), (3, 2))
++                        self.assertEqual(witness['request_id'], 100 + index)
++                        self.assertNotEqual(witness['numeric'][0]['value_observation']['value'], 29)
++                self.assertIsNone(lifecycle.validate_barrier(fixture.work, fixture.config, fixture.barrier(), {}))
++
++    def test_plus_v8_close_rejects_nested_identity_types_before_normalization(self):
++        lifecycle = load()
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = PlusV8Evidence(lifecycle, Path(temporary))
++            with fixture.gates():
++                command, ack = fixture.close(2)
++                root = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']
++                baseline = copy.deepcopy(fixture.config['documents'][2])
++                for target in ('leaf', 'edge-index', 'source-port', 'destination-port', 'box-inlets', 'full-routes'):
++                    for value in (0.0, False, '0', None):
++                        with self.subTest(target=target, value_type=type(value).__name__):
++                            d = copy.deepcopy(baseline)
++                            if target == 'leaf': d['observer_leaves'][0]['port'] = value
++                            elif target == 'edge-index': d['saved_edges'][0]['index'] = value
++                            elif target == 'source-port': d['saved_edges'][0]['source'][1] = value
++                            elif target == 'destination-port': d['saved_edges'][0]['destination'][1] = value
++                            elif target == 'box-inlets': d['boxes'][0]['inlets'] = value
++                            else: d['full_inventory'][0]['saved_incoming_routes'] = value
++                            with self.assertRaises(ValueError): lifecycle._root(root, fixture.owner(2), d, 102, command['step_id'])
++
++    def test_plus_v8_old_metadata_refuses_without_synthetic_preflight_substitution(self):
++        lifecycle = load()
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = Evidence(lifecycle, Path(temporary))
++            with self.assertRaises(ValueError):
++                lifecycle._real_plus_source_projection(fixture.owner(2), fixture.config['documents'][2])
++
++    def test_plus_v8_all_policy_fields_and_pristine_views_are_independently_bound(self):
++        lifecycle = load()
++        def corrupt(value):
++            if type(value) is bool: return not value
++            if type(value) in (int, float): return value + 1
++            if type(value) is str: return value + '-corrupt'
++            if type(value) is list: return value + ['extra']
++            if type(value) is dict: return dict(value, extra=True)
++            return 'corrupt'
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = PlusV8Evidence(lifecycle, Path(temporary))
++            with fixture.gates():
++                for owner_index in (2, 3):
++                    command, ack = fixture.close(owner_index)
++                    root = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']
++                    baseline = fixture.config['documents'][owner_index]
++                    lifecycle._root(root, fixture.owner(owner_index), baseline, 100 + owner_index, command['step_id'])
++                    for view in ('boxes', 'full_inventory'):
++                        for index, box in enumerate(baseline[view]):
++                            for policy_name in ('v8_numeric_representation_policy', 'v8_root_representation_policy',
++                                    'plus_controller_numeric_cohort_policy', 'observed_geometry_policy'):
++                                if policy_name not in box: continue
++                                policy = box[policy_name]
++                                for field in list(policy) + ['missing-policy', 'extra-policy-field']:
++                                    with self.subTest(owner=owner_index, view=view, anchor=box['anchor'], policy=policy_name, field=field):
++                                        d = copy.deepcopy(baseline); changed = d[view][index]
++                                        if field == 'missing-policy': del changed[policy_name]
++                                        elif field == 'extra-policy-field': changed[policy_name]['extra'] = True
++                                        else: changed[policy_name][field] = corrupt(changed[policy_name][field])
++                                        with self.assertRaises(ValueError): lifecycle._root(root, fixture.owner(owner_index), d, 100 + owner_index, command['step_id'])
++                    mutations = ('consistent-authored-text', 'consistent-box-hash', 'consistent-ports', 'role', 'leaf-extra',
++                        'edge-extra', 'edge-duplicate', 'source-endpoint-extra', 'source-bounds', 'destination-bounds',
++                        'leaf-bounds', 'leaf-duplicate', 'box-extra', 'full-extra', 'missing-original', 'missing-root',
++                        'transfer-numeric', 'transfer-root', 'numeric-on-leaf', 'root-on-box', 'duplicate-original', 'default-copy')
++                    for mutation in mutations:
++                        with self.subTest(owner=owner_index, mutation=mutation):
++                            d = copy.deepcopy(baseline); b = d['boxes'][3]; full = next(x for x in d['full_inventory'] if x['anchor'] == b['anchor'])
++                            if mutation == 'consistent-authored-text':
++                                for x in (b, full): x.update(authored_text='other synthetic text', source_text_sha256=sha(b'other synthetic text'))
++                            elif mutation == 'consistent-box-hash':
++                                for x in (b, full): x['source_box_sha256'] = 'f' * 64
++                            elif mutation == 'consistent-ports':
++                                for x in (b, full): x['inlets'] += 1
++                            elif mutation == 'role': b['role'] = 'other-role'
++                            elif mutation == 'leaf-extra': d['observer_leaves'][0]['extra'] = 1
++                            elif mutation == 'edge-extra': d['saved_edges'][0]['extra'] = 1
++                            elif mutation == 'edge-duplicate': d['saved_edges'][1] = copy.deepcopy(d['saved_edges'][0])
++                            elif mutation == 'source-endpoint-extra': d['saved_edges'][0]['source'].append(0)
++                            elif mutation == 'source-bounds': d['saved_edges'][0]['source'][1] = 2
++                            elif mutation == 'destination-bounds': d['saved_edges'][0]['destination'][1] = 1
++                            elif mutation == 'leaf-bounds': d['observer_leaves'][0]['port'] = 2
++                            elif mutation == 'leaf-duplicate': d['observer_leaves'][1] = copy.deepcopy(d['observer_leaves'][0])
++                            elif mutation == 'box-extra': b['extra'] = 1
++                            elif mutation == 'full-extra': full['extra'] = 1
++                            elif mutation == 'missing-original': d['boxes'].pop()
++                            elif mutation == 'missing-root': d['full_inventory'].pop(0)
++                            elif mutation == 'transfer-numeric': b['v8_numeric_representation_policy'] = copy.deepcopy(d['boxes'][0]['v8_numeric_representation_policy'])
++                            elif mutation == 'transfer-root': full['v8_root_representation_policy'] = copy.deepcopy(d['full_inventory'][1]['v8_root_representation_policy'])
++                            elif mutation == 'numeric-on-leaf': d['observer_leaves'][0]['v8_numeric_representation_policy'] = copy.deepcopy(d['boxes'][0]['v8_numeric_representation_policy'])
++                            elif mutation == 'root-on-box': b['v8_root_representation_policy'] = copy.deepcopy(d['full_inventory'][1]['v8_root_representation_policy'])
++                            elif mutation == 'duplicate-original': d['boxes'][-1] = copy.deepcopy(d['boxes'][0])
++                            elif mutation == 'default-copy': next(x for x in d['full_inventory'] if x['anchor'] == d['boxes'][0]['anchor'])['initial_numeric'] += 1
++                            with self.assertRaises(ValueError): lifecycle._root(root, fixture.owner(owner_index), d, 100 + owner_index, command['step_id'])
++
++    def test_plus_v8_witness_exact_schema_bindings_and_capability_shapes(self):
++        lifecycle = load()
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = PlusV8Evidence(lifecycle, Path(temporary))
++            with fixture.gates():
++                for owner_index in (2, 3):
++                    command, ack = fixture.close(owner_index)
++                    baseline = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']
++                    owner, definition = fixture.owner(owner_index), fixture.config['documents'][owner_index]
++                    def check(root): lifecycle._root(root, owner, definition, 100 + owner_index, command['step_id'])
++                    witness = baseline['v8_representation_witnesses']
++                    for field in list(witness) + ['extra', 'missing-witness']:
++                        with self.subTest(owner=owner_index, witness_field=field):
++                            root = copy.deepcopy(baseline); w = root['v8_representation_witnesses']
++                            if field == 'missing-witness': del root['v8_representation_witnesses']
++                            elif field == 'extra': w['op'] = 'operation'
++                            else: del w[field]
++                            with self.assertRaises(ValueError): check(root)
++                    for field, value in (('request_id', 52), ('operation_request_id', 51), ('action', 'install'),
++                            ('step_id', 'install-plus-r1'), ('action', 'event'), ('step_id', 'plus-A01'),
++                            ('revision', 3 - owner['revision']), ('action_revision', True), ('request_id', float(100 + owner_index)),
++                            ('working_path', fixture.owner(5 - owner_index)['working_path']), ('root_is_top_level', 1)):
++                        with self.subTest(owner=owner_index, field=field, value_type=type(value).__name__):
++                            root = copy.deepcopy(baseline); root['v8_representation_witnesses'][field] = value
++                            with self.assertRaises(ValueError): check(root)
++                    for kind in ('numeric', 'roots'):
++                        for row_index, row in enumerate(witness[kind]):
++                            for field in list(row) + ['extra', 'duplicate-row']:
++                                with self.subTest(owner=owner_index, kind=kind, row=row_index, field=field):
++                                    root = copy.deepcopy(baseline); rows = root['v8_representation_witnesses'][kind]
++                                    if field == 'extra': rows[row_index]['extra'] = True
++                                    elif field == 'duplicate-row': rows[1 - row_index if kind == 'roots' else (row_index + 1) % 3] = copy.deepcopy(rows[row_index])
++                                    else: del rows[row_index][field]
++                                    with self.assertRaises(ValueError): check(root)
++                    for kind in ('root', 'numeric'):
++                        for field in ('complete', 'status', 'observed_count', 'complete_count', 'limit', 'extra'):
++                            root = copy.deepcopy(baseline); coverage = root['v8_representation_witnesses']['inventory_coverage'][kind]
++                            coverage[field] = False if field == 'complete' else 'incomplete' if field == 'status' else 8.0 if kind == 'root' else 35.0
++                            with self.subTest(owner=owner_index, coverage=kind, field=field), self.assertRaises(ValueError): check(root)
++                    for method in ('format_observation', 'value_observation'):
++                        for value in ([17], [17, 18], '17', True, None, float('nan'), float('inf'), float('-inf')):
++                            root = copy.deepcopy(baseline); root['v8_representation_witnesses']['numeric'][0][method]['value'] = value
++                            with self.subTest(owner=owner_index, method=method, value_type=type(value).__name__), self.assertRaises(ValueError): check(root)
++                        for field, value in (('status', 'threw'), ('representation', 'singleton-array'), ('method', 'other'), ('extra', True)):
++                            root = copy.deepcopy(baseline); root['v8_representation_witnesses']['numeric'][0][method][field] = value
++                            with self.subTest(owner=owner_index, method=method, field=field), self.assertRaises(ValueError): check(root)
++                    for kind in ('numeric', 'roots'):
++                        for field, value in (('candidate_count', 1.0), ('candidate_count', True), ('candidate_count_complete', 1),
++                                ('actual_runtime_class', 'flonum' if kind == 'numeric' else 'patcher')):
++                            root = copy.deepcopy(baseline); root['v8_representation_witnesses'][kind][0][field] = value
++                            with self.subTest(owner=owner_index, kind=kind, field=field), self.assertRaises(ValueError): check(root)
++
++    def test_plus_v8_fresh_close_command_and_cross_owner_witness_conjunction(self):
++        lifecycle = load()
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = PlusV8Evidence(lifecycle, Path(temporary))
++            with fixture.gates():
++                fixture.accept(0); fixture.accept(1)
++                command, ack = fixture.close(2)
++                for field, value in (('op', 'readback'), ('action', 'install'), ('action_revision', 2),
++                        ('step_id', 'install-plus-r1'), ('document', 'times'), ('command_id', 52)):
++                    changed = dict(command); changed[field] = value
++                    with self.subTest(field=field), self.assertRaises(ValueError): lifecycle.validate_close(fixture.work, fixture.config, changed, ack)
++                fixture.accept(2)
++                command, ack = fixture.close(3)
++                previous = json.loads((fixture.work / 'observations/ack-request-102.json').read_bytes())
++                ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']['v8_representation_witnesses'] = copy.deepcopy(
++                    previous['close_diagnostics']['lifecycle_evidence']['root_route_proof']['v8_representation_witnesses'])
++                fixture.persist_close(3, ack)
++                with self.assertRaises(ValueError): lifecycle.validate_close(fixture.work, fixture.config, command, ack)
++
++    def test_plus_v8_all_five_retained_witness_rows_are_revalidated_after_digest_rebinding(self):
++        lifecycle = load()
++        for owner_index in (2, 3):
++            for kind, count in (('numeric', 3), ('roots', 2)):
++                for row_index in range(count):
++                    with self.subTest(owner=owner_index, kind=kind, row=row_index), tempfile.TemporaryDirectory() as temporary:
++                        fixture = PlusV8Evidence(lifecycle, Path(temporary))
++                        with fixture.gates():
++                            for index in range(6): fixture.accept(index)
++                            def change(root): root['v8_representation_witnesses'][kind][row_index]['actual_runtime_class'] = 'toggle'
++                            fixture.forge_root(owner_index, change)
++                            with self.assertRaises(ValueError): lifecycle.validate_barrier(fixture.work, fixture.config, fixture.barrier(), {})
++
++    def test_plus_v8_next_close_revalidates_prior_fresh_witness_after_digest_rebinding(self):
++        lifecycle = load()
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = PlusV8Evidence(lifecycle, Path(temporary))
++            with fixture.gates():
++                for index in range(3): fixture.accept(index)
++                fixture.forge_root(2, lambda root: root['v8_representation_witnesses'].update(operation_request_id=51))
++                command, ack = fixture.close(3)
++                with self.assertRaises(ValueError): lifecycle.validate_close(fixture.work, fixture.config, command, ack)
++
++    def test_plus_v8_full_retention_coexists_with_five_policy_exception(self):
++        lifecycle = load()
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = PlusV8Evidence(lifecycle, Path(temporary))
++            with fixture.gates():
++                for owner_index in (2, 3):
++                    command, ack = fixture.close(owner_index)
++                    baseline = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']
++                    for mutation in ('ungated-class', 'ungated-geometry', 'missing-original', 'duplicate-original', 'missing-leaf',
++                            'leaf-class', 'missing-route', 'extra-route', 'route-port', 'route-port-type', 'route-identity',
++                            'missing-root', 'duplicate-root', 'root-class', 'root-name', 'root-geometry', 'harness-class',
++                            'harness-duplicate', 'harness-geometry', 'root-route', 'top-level'):
++                        with self.subTest(owner=owner_index, mutation=mutation):
++                            root = copy.deepcopy(baseline); basic = root['basic_retention']
++                            if mutation == 'ungated-class': basic['boxes'][3]['maxclass'] = 'toggle'
++                            elif mutation == 'ungated-geometry': basic['boxes'][3]['rect'][0] += 1
++                            elif mutation == 'missing-original': basic['boxes'].pop(3)
++                            elif mutation == 'duplicate-original': basic['boxes'][3] = copy.deepcopy(basic['boxes'][0])
++                            elif mutation == 'missing-leaf': basic['boxes'].pop()
++                            elif mutation == 'leaf-class': basic['boxes'][-1]['maxclass'] = 'number'
++                            elif mutation == 'missing-route': basic['input_routes'].pop()
++                            elif mutation == 'extra-route': basic['output_routes'].append(copy.deepcopy(basic['output_routes'][0]))
++                            elif mutation == 'route-port': basic['input_routes'][0]['destination']['port'] = 1
++                            elif mutation == 'route-port-type': basic['input_routes'][0]['destination']['port'] = 0.0
++                            elif mutation == 'route-identity': basic['output_routes'][0]['destination']['varname'] = 'unknown'
++                            elif mutation == 'missing-root': root['originals'].pop()
++                            elif mutation == 'duplicate-root': root['originals'][1] = copy.deepcopy(root['originals'][0])
++                            elif mutation == 'root-class': root['originals'][0]['maxclass'] = 'jpatcher'
++                            elif mutation == 'root-name': root['originals'][0]['varname'] = 'unknown'
++                            elif mutation == 'root-geometry': root['originals'][0]['rect'][0] += 1
++                            elif mutation == 'harness-class': root['harness'][0]['maxclass'] = 'js'
++                            elif mutation == 'harness-duplicate': root['harness'][1] = copy.deepcopy(root['harness'][0])
++                            elif mutation == 'harness-geometry': root['harness'][0]['rect'][0] += 1
++                            elif mutation == 'root-route': root['output_routes'].clear()
++                            elif mutation == 'top-level': root['root_is_top_level'] = False
++                            with self.assertRaises(ValueError): lifecycle._root(root, fixture.owner(owner_index), fixture.config['documents'][owner_index], 100 + owner_index, command['step_id'])
++
++    def test_plus_v8_geometry_and_scalar_numeric_equivalence_preserve_strict_identities(self):
++        lifecycle = load()
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = PlusV8Evidence(lifecycle, Path(temporary))
++            with fixture.gates():
++                for owner_index in (2, 3):
++                    command, ack = fixture.close(owner_index)
++                    root = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']
++                    definition = copy.deepcopy(fixture.config['documents'][owner_index])
++                    for view in ('boxes', 'full_inventory'):
++                        for box in definition[view]:
++                            box['rect'] = [float(v) for v in box['rect']]
++                            if type(box.get('initial_numeric')) is int: box['initial_numeric'] = float(box['initial_numeric'])
++                            for key in ('observed_geometry_policy', 'v8_root_representation_policy'):
++                                if key in box:
++                                    for field in ('saved_rect', 'live_rect'): box[key][field] = [float(v) for v in box[key][field]]
++                    for row in root['v8_representation_witnesses']['numeric'] + root['v8_representation_witnesses']['roots']:
++                        row['live_rect'] = [float(v) for v in row['live_rect']]
++                    for row in root['v8_representation_witnesses']['numeric']: row['format_observation']['value'] = float(fixture.format_value)
++                    lifecycle._root(root, fixture.owner(owner_index), definition, 100 + owner_index, command['step_id'])
++                    root['v8_representation_witnesses']['numeric'][0]['live_rect'][0] += 1e-12
++                    with self.assertRaises(ValueError): lifecycle._root(root, fixture.owner(owner_index), definition, 100 + owner_index, command['step_id'])
++
+     def test_basic_retention_accepts_all_six_owners_with_duplicate_cables(self):
+         lifecycle = load()
+         with tempfile.TemporaryDirectory() as temporary:
+             fixture = V8Evidence(lifecycle, Path(temporary))
+             with fixture.gates():
+                 for index in range(6):
+                     try:
+                         _, ack = fixture.accept(index)
+                     except ValueError as error:
+                         self.fail('Complete Basic retention was refused: ' + str(error))

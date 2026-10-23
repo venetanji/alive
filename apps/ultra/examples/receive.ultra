@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "message",
+      "x": 65,
+      "y": 65,
+      "params": {
+        "text": "60 100"
+      }
+    },
+    {
+      "id": 2,
+      "type": "send",
+      "x": 65,
+      "y": 125,
+      "params": {
+        "name": "ultra-help-notes"
+      }
+    },
+    {
+      "id": 3,
+      "type": "receive",
+      "x": 330,
+      "y": 125,
+      "params": {
+        "name": "ultra-help-notes"
+      }
+    },
+    {
+      "id": 4,
+      "type": "print",
+      "x": 330,
+      "y": 200,
+      "params": {
+        "label": "named-notes",
+        "level": 0,
+        "popup": 0
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 2,
+      "inlet": 0
+    },
+    {
+      "from": 3,
+      "outlet": 0,
+      "to": 4,
+      "inlet": 0
+    }
+  ]
+}

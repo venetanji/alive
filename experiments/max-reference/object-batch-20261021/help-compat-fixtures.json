@@ -1,0 +1,52 @@
+{
+  "provenance": "ORIGINAL_ULTRA_FIXTURES_NOT_MAX_CAPTURE",
+  "scope": "Exercises the existing Ultra canvas and native runtime only; none of these fixtures implements a selected Max object.",
+  "cases": [
+    {
+      "name": "ordered-cold-store-hot-read-fractional-add",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {"id": 1, "type": "message", "x": 40, "y": 40, "params": {"text": "7.5"}},
+          {"id": 2, "type": "number", "x": 40, "y": 100, "params": {"value": 0}},
+          {"id": 3, "type": "bang", "x": 180, "y": 100, "params": {}},
+          {"id": 4, "type": "add", "x": 40, "y": 180, "params": {"rhs": 0.25}},
+          {"id": 5, "type": "number", "x": 40, "y": 240, "params": {"value": 0}}
+        ],
+        "edges": [
+          {"from": 1, "outlet": 0, "to": 2, "inlet": 1},
+          {"from": 1, "outlet": 0, "to": 3, "inlet": 0},
+          {"from": 3, "outlet": 0, "to": 2, "inlet": 0},
+          {"from": 2, "outlet": 0, "to": 4, "inlet": 0},
+          {"from": 4, "outlet": 0, "to": 5, "inlet": 0}
+        ]
+      },
+      "operations": [
+        {"node": 1, "inlet": 0, "value": null, "expected": [{"id": 2, "value": 7.5, "pulses": 2}, {"id": 5, "value": 7.75, "pulses": 1}]},
+        {"node": 2, "inlet": 1, "value": [-2.25], "expected": [{"id": 2, "value": -2.25, "pulses": 3}, {"id": 5, "value": 7.75, "pulses": 1}]},
+        {"node": 2, "inlet": 0, "value": null, "expected": [{"id": 5, "value": -2, "pulses": 2}]}
+      ]
+    },
+    {
+      "name": "incompatible-list-does-not-emit-from-number",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {"id": 1, "type": "message", "x": 40, "y": 40, "params": {"text": "5 9"}},
+          {"id": 2, "type": "number", "x": 40, "y": 100, "params": {"value": 3}},
+          {"id": 3, "type": "number", "x": 40, "y": 160, "params": {"value": 0}}
+        ],
+        "edges": [
+          {"from": 1, "outlet": 0, "to": 2, "inlet": 0},
+          {"from": 2, "outlet": 0, "to": 3, "inlet": 0}
+        ]
+      },
+      "operations": [
+        {"node": 1, "inlet": 0, "value": null, "expected": [{"id": 2, "pulses": 1}, {"id": 3, "value": 0, "pulses": 0}]},
+        {"node": 2, "inlet": 0, "value": null, "expected": [{"id": 3, "value": 3, "pulses": 1}]}
+      ]
+    }
+  ]
+}

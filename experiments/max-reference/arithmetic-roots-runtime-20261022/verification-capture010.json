@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "capture": "arithmetic-010",
+  "status": "FAILED",
+  "complete": false,
+  "evidence_id": "ev_7e2cc3a5915c4685d125f751389b1227bc5a28ee82a8b910278ae8a192c25221",
+  "postflight": {
+    "all_six_whole_capture_flags_false": true,
+    "command_requests": 101,
+    "complete": false,
+    "completed_operations": 52,
+    "failure_type": "ValueError",
+    "independent_closes": 4,
+    "journal_kinds": {
+      "harness-error": 1,
+      "receipt": 94,
+      "step-complete": 52,
+      "stimulus": 44
+    },
+    "journal_rows": 191,
+    "last_accepted_step": "close-plus-r2",
+    "last_ack": 101,
+    "mapped_files": 16,
+    "marker_processes": 0,
+    "minus_envelope_received": false,
+    "minus_internal_progress": "UNKNOWN",
+    "minus_terminal_diagnostics": 7,
+    "native_exact_five": true,
+    "numeric_states": 336,
+    "original_outputs": 94,
+    "owned_processes": 0,
+    "package_sha256": "1088afc53c372cc4e3e60e0def3f7e3785e3ee80235e8af20629c53fcc39cdf2",
+    "preference_bytes_equal": true,
+    "preferences_match_current": true,
+    "prefix_absent": true,
+    "prefix_processes": 0,
+    "private_display_processes": 0,
+    "private_files": 242,
+    "private_subdirectories": 4,
+    "qualification_increment": 0,
+    "readbacks": 48,
+    "retained_acknowledgements": 101,
+    "runtime_invocations": 1,
+    "sealed_inputs": 22,
+    "source_helper_preservation": true,
+    "status": "FAILED",
+    "successful_acknowledgements": 100,
+    "unreadable_environments": {
+      "display": 314,
+      "marker": 314,
+      "owned": 314,
+      "prefix": 314
+    },
+    "xvfb_exited": true
+  },
+  "independent_capture_audit": {
+    "verdict": "PASS",
+    "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/capture-010-audit.md",
+    "sha256": "887ca54266bcc50013c180f9587f4e2449a0c2b7ac2b51521825521de8e7b4b7"
+  },
+  "diagnostic_investigation": {
+    "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/capture-010-diagnostic-investigation.md",
+    "sha256": "7b173060d225ca6ba343e2f04e991b648bb2fc58aa08b9f8160cab6982ffb357",
+    "collector_present_and_observe_call_reached": true,
+    "eligibility_and_capability_progress": "UNKNOWN",
+    "causal_defect_demonstrated": false
+  },
+  "original_rea_files_verified_by_parent": [
+    {
+      "name": "cleanup.json",
+      "size": 1845,
+      "sha256": "6b13161782421de9004fdc21d196bccf3394e3dbcc587f89c59dac6d6ddf34f5"
+    },
+    {
+      "name": "display-states.json",
+      "size": 20837,
+      "sha256": "d619821c052d9f60be122ee19193e9cb7aadd13cd0be0894e1a8bf816943f939"
+    },
+    {
+      "name": "preferences-after.json",
+      "size": 205649,
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329"
+    },
+    {
+      "name": "preferences-before.json",
+      "size": 205649,
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329"
+    },
+    {
+      "name": "receipts.jsonl",
+      "size": 80493,
+      "sha256": "c3c1a65546120b1607873830dc13781e370e343dae1439d8fa3561b74e9f0153"
+    },
+    {
+      "name": "session.json",
+      "size": 72824,
+      "sha256": "712412727928c1fecbb03b23d33075cb63ba0ff3b922a59532c02b97b0d16419"
+    }
+  ],
+  "rea_exit": {
+    "code": 1,
+    "signal": 0,
+    "reason": "exited"
+  },
+  "rea_truncated": false,
+  "original_response_retained": true,
+  "initial_parent_record_sha256": "9b8bd435d844211ccb4bb044ef5352bac4b9f17a29b55534295c6461a5c89425",
+  "preservation_record_sha256": "b3cae3500b83c030eca4ff5100aefa5bb6ff1bac5fe423f6b83e25a09e987f93",
+  "public_projection_sha256": "99e00d5f0c963dc5c7e892fc6d6519d718b77796f3abde3683000dc56f0729b3",
+  "parent_postreview_inventory": {
+    "roots": 32,
+    "entries": 1788,
+    "changed_roots": []
+  },
+  "source_as_audited": {
+    "map_file": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-010-source-review-fix1.json",
+    "map_file_sha256": "a6790ed0840efe8492ed53eeb2e38ca0454eadbd0e0339294cac76c237b054b2",
+    "canonical_map_sha256": "625b52d524b49919ac149287ac06274d3e067ffe211fbbdbd9fbed1bdfb8e400"
+  },
+  "qualification": {
+    "qualified": 0,
+    "total": 2103,
+    "increment": 0
+  },
+  "next_step": "DIAGNOSTIC_ONLY_PROGRESS_IMPLEMENTATION_AFTER_ACCEPTED_DESIGN"
+}

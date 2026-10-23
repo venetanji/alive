@@ -1,0 +1,1696 @@
+{
+  "schema": "ultra-max-list-score-v1",
+  "fixture": "list-cold",
+  "evidence": "observed Max 9.1.5; collector arrival order",
+  "numeric_list_atom_tags": "unknown_numeric; JSON alone cannot prove per-atom int/float types",
+  "sources": {
+    "fixtures/list-cold.maxpat": "8a41309fa378ec9510d623cce716cd93b4abbeb115d5c69d55ba7cd55b6b4ad2",
+    "fixtures/list-cold.score.json": "9965b25197d23e340f1b36cf658a1b69d2c9297ecde9884223b781aa0de7d485",
+    "results/list-cold.jsonl": "21d595e2ea41a4764180960bfca6a9b49473a9c9200fdce0ac4b516a2dee9a7c",
+    "fixtures/probe.js": "e38037e55519c290325624bdeb126ca874821922700b7da0e4de0848823a24b7"
+  },
+  "targets": [
+    {
+      "id": "obj-1",
+      "key": "zl.iter",
+      "creation": "zl.iter 1",
+      "outlets": 2
+    },
+    {
+      "id": "obj-17",
+      "key": "zl.slice",
+      "creation": "zl.slice 1",
+      "outlets": 2
+    },
+    {
+      "id": "obj-33",
+      "key": "zl.rot",
+      "creation": "zl.rot 1",
+      "outlets": 2
+    },
+    {
+      "id": "obj-49",
+      "key": "list3",
+      "creation": "iter",
+      "outlets": 1
+    },
+    {
+      "id": "obj-53",
+      "key": "list5",
+      "creation": "iter",
+      "outlets": 1
+    },
+    {
+      "id": "obj-57",
+      "key": "scalar-first",
+      "creation": "iter",
+      "outlets": 1
+    },
+    {
+      "id": "obj-61",
+      "key": "list1-first",
+      "creation": "iter",
+      "outlets": 1
+    },
+    {
+      "id": "obj-65",
+      "key": "list-empty",
+      "creation": "iter",
+      "outlets": 1
+    }
+  ],
+  "cases": [
+    {
+      "input_id": "event_0",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_1",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "list 2 apple",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          2,
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_2",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            3,
+            4
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_3",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "list 2.9 8",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          2.9,
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_4",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            3,
+            4
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_5",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "2.9",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          2.9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_6",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            3,
+            4
+          ]
+        },
+        {
+          "target": "zl.iter",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_7",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "-2.9",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          -2.9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_8",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_9",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "symbol 3",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_10",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_11",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "apple 2",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_12",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_13",
+      "target": "zl.iter",
+      "inlet": 1,
+      "message": "list apple 2",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_14",
+      "target": "zl.iter",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_15",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_16",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "list 2 apple",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          2,
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_17",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_18",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "list 2.9 8",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          2.9,
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_19",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_20",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "2.9",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          2.9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_21",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "target": "zl.slice",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_22",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "-2.9",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          -2.9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_23",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_24",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "symbol 3",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_25",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_26",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "apple 2",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_27",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_28",
+      "target": "zl.slice",
+      "inlet": 1,
+      "message": "list apple 2",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_29",
+      "target": "zl.slice",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.slice",
+          "outlet": 1,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_30",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            5,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_31",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "list 2 apple",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          2,
+          "apple"
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_32",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            4,
+            5,
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_33",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "list 2.9 8",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          2.9,
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_34",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            4,
+            5,
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_35",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "2.9",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          2.9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_36",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            4,
+            5,
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_37",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "-2.9",
+      "delivery": true,
+      "input": {
+        "selector": "float",
+        "atoms": [
+          -2.9
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_38",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            3,
+            4,
+            5,
+            1,
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_39",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "symbol 3",
+      "delivery": true,
+      "input": {
+        "selector": "symbol",
+        "atoms": [
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_40",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_41",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "apple 2",
+      "delivery": true,
+      "input": {
+        "selector": "apple",
+        "atoms": [
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_42",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_43",
+      "target": "zl.rot",
+      "inlet": 1,
+      "message": "list apple 2",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          "apple",
+          2
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": []
+    },
+    {
+      "input_id": "event_44",
+      "target": "zl.rot",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "zl.rot",
+          "outlet": 0,
+          "selector": "list",
+          "atoms": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_45",
+      "target": "list3",
+      "inlet": 0,
+      "message": "list 1 2 3",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list3",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list3",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list3",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_46",
+      "target": "list3",
+      "inlet": 0,
+      "message": "foo 1 2 3",
+      "delivery": true,
+      "input": {
+        "selector": "foo",
+        "atoms": [
+          1,
+          2,
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list3",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": []
+        },
+        {
+          "target": "list3",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list3",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list3",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_47",
+      "target": "list3",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list3",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list3",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list3",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_48",
+      "target": "list5",
+      "inlet": 0,
+      "message": "list 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_49",
+      "target": "list5",
+      "inlet": 0,
+      "message": "foo 1 2 3 4 5",
+      "delivery": true,
+      "input": {
+        "selector": "foo",
+        "atoms": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": []
+        },
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_50",
+      "target": "list5",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        },
+        {
+          "target": "list5",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            5
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_51",
+      "target": "scalar-first",
+      "inlet": 0,
+      "message": "8",
+      "delivery": true,
+      "input": {
+        "selector": "int",
+        "atoms": [
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "scalar-first",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_52",
+      "target": "scalar-first",
+      "inlet": 0,
+      "message": "foo 1",
+      "delivery": true,
+      "input": {
+        "selector": "foo",
+        "atoms": [
+          1
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "scalar-first",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": []
+        },
+        {
+          "target": "scalar-first",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_53",
+      "target": "scalar-first",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "scalar-first",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_54",
+      "target": "list1-first",
+      "inlet": 0,
+      "message": "list 8",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          8
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list1-first",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_55",
+      "target": "list1-first",
+      "inlet": 0,
+      "message": "foo 1",
+      "delivery": true,
+      "input": {
+        "selector": "foo",
+        "atoms": [
+          1
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list1-first",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": []
+        },
+        {
+          "target": "list1-first",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_56",
+      "target": "list1-first",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list1-first",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_57",
+      "target": "list-empty",
+      "inlet": 0,
+      "message": "list 1 2 3",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": [
+          1,
+          2,
+          3
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list-empty",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list-empty",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list-empty",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_58",
+      "target": "list-empty",
+      "inlet": 0,
+      "message": "list",
+      "delivery": true,
+      "input": {
+        "selector": "list",
+        "atoms": []
+      },
+      "delivery_source": "direct-js-target-call",
+      "expected": [],
+      "direct_selector": "list",
+      "direct_atoms": []
+    },
+    {
+      "input_id": "event_59",
+      "target": "list-empty",
+      "inlet": 0,
+      "message": "foo 1 2 3 4",
+      "delivery": true,
+      "input": {
+        "selector": "foo",
+        "atoms": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list-empty",
+          "outlet": 0,
+          "selector": "foo",
+          "atoms": []
+        },
+        {
+          "target": "list-empty",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list-empty",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list-empty",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "list-empty",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "input_id": "event_60",
+      "target": "list-empty",
+      "inlet": 0,
+      "message": "bang",
+      "delivery": true,
+      "input": {
+        "selector": "bang",
+        "atoms": []
+      },
+      "delivery_source": "observed-message-box-outlet",
+      "expected": [
+        {
+          "target": "list-empty",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            1
+          ]
+        },
+        {
+          "target": "list-empty",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            2
+          ]
+        },
+        {
+          "target": "list-empty",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            3
+          ]
+        },
+        {
+          "target": "list-empty",
+          "outlet": 0,
+          "selector": "int",
+          "atoms": [
+            4
+          ]
+        }
+      ]
+    }
+  ]
+}

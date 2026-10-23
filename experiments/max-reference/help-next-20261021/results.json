@@ -1,0 +1,6319 @@
+{
+  "schema_version": 1,
+  "scope": "Read installed help JSON, create temporary partial structural graphs, validate them using the current production model, and execute separate original Ultra scenarios in the native core. No Max help importer or whole-help execution is claimed.",
+  "selected_objects": [
+    "int",
+    "float",
+    "flonum",
+    "slider",
+    "pack",
+    "unpack",
+    "select",
+    "route",
+    "trigger",
+    "line",
+    "metro",
+    "counter",
+    "delay",
+    "pipe",
+    "change",
+    "gate",
+    "switch",
+    "split",
+    "clip",
+    "scale"
+  ],
+  "node_version": "v22.23.3",
+  "production_registry_types": [
+    "bang",
+    "message",
+    "number",
+    "toggle",
+    "add",
+    "multiply",
+    "metro",
+    "counter",
+    "chord",
+    "makenote",
+    "midiin",
+    "voice",
+    "gain",
+    "join",
+    "dac",
+    "int",
+    "float",
+    "flonum",
+    "slider",
+    "pack",
+    "unpack",
+    "select",
+    "route",
+    "trigger",
+    "line"
+  ],
+  "extraction_policy": [
+    "Only nested p basic tabs are considered for fragment validation.",
+    "Boxes without an explicit research adapter are omitted and every omission and crossing edge is reported.",
+    "Retained edges keep the saved port indices; invalid ports fail production validation.",
+    "Current same-name counter is refused because its contract differs from Max.",
+    "All converted layouts use neutral coordinates; UI initialization and unlisted attributes are not preserved.",
+    "Only target-containing connected components are counted; accepted fragments can be incomplete and are never compatibility passes.",
+    "No proprietary source graph, message text, object argument text or helper script is retained in this report."
+  ],
+  "summary": {
+    "installed_help_files_read": 20,
+    "direct_help_accepted": 0,
+    "basic_tabs_inspected": 20,
+    "target_components_examined": 24,
+    "target_components_graph_valid": 24,
+    "graph_valid_components_with_cables": 20,
+    "isolated_target_components": 4,
+    "objects_with_graph_valid_connected_target_fragment": [
+      "int",
+      "float",
+      "flonum",
+      "slider",
+      "pack",
+      "unpack",
+      "select",
+      "route",
+      "trigger",
+      "line",
+      "metro"
+    ],
+    "installed_help_executed": 0,
+    "extracted_help_fragments_executed": 0,
+    "browser_scenarios_executed": 0,
+    "original_native_scenarios_pass": 6,
+    "original_native_behavioral_assertions_pass": 60,
+    "adapter_boundary_assertions_pass": 8
+  },
+  "files": [
+    {
+      "object": "int",
+      "batch": "current-ten",
+      "installed_relative_path": "resources/help/max/int.maxhelp",
+      "source_sha256": "bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61",
+      "source_bytes": 26001,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "recursive_patchers": 3,
+      "recursive_boxes": 25,
+      "recursive_edges": 10,
+      "target_saved_port_shapes": [
+        {
+          "token": "int",
+          "inlets": 2,
+          "outlets": 1,
+          "count": 2
+        },
+        {
+          "token": "i",
+          "inlets": 2,
+          "outlets": 1,
+          "count": 1
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 21,
+          "source_edges": 10,
+          "mapped_boxes": 13,
+          "mapped_edges": 9,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-5",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-1",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-23",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-31",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-32",
+              "token": "r",
+              "is_selected_target": false,
+              "reason": "Unknown object \"r\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-34",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 1,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-16",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-17",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-21",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-29",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-33",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [
+            {
+              "source_box_ids": [
+                "obj-28",
+                "obj-29",
+                "obj-35"
+              ],
+              "target_box_ids": [
+                "obj-28"
+              ],
+              "nodes": 3,
+              "edges": 2,
+              "graph_sha256": "720e5becb4fca52226e74b3095630648f7730dfd4a0ef2ed06d89fe98dcd38b9",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            },
+            {
+              "source_box_ids": [
+                "obj-9"
+              ],
+              "target_box_ids": [
+                "obj-9"
+              ],
+              "nodes": 1,
+              "edges": 0,
+              "graph_sha256": "05d8e54d4866de4e3fa9eaa91eeb66a710b2b8962ea5bc5b0bed6b39114198ee",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            },
+            {
+              "source_box_ids": [
+                "obj-16",
+                "obj-20",
+                "obj-22",
+                "obj-30",
+                "obj-24",
+                "obj-21",
+                "obj-17",
+                "obj-18"
+              ],
+              "target_box_ids": [
+                "obj-22"
+              ],
+              "nodes": 8,
+              "edges": 7,
+              "graph_sha256": "b876c5be5d3ddb5b500ec408a143ae5f10bbaa47fda273d999c95d986e9d37cb",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            }
+          ],
+          "semantic_cautions": [
+            "Lexical numeric type and Max attributes/state are not all represented by Ultra numeric creation parameters.",
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number.",
+            "A parseable literal or named selector does not certify the receiver implements that selector. Max message editing and cold-inlet replacement are not adapted."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "float",
+      "batch": "current-ten",
+      "installed_relative_path": "resources/help/max/float.maxhelp",
+      "source_sha256": "c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c",
+      "source_bytes": 28070,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "recursive_patchers": 3,
+      "recursive_boxes": 27,
+      "recursive_edges": 12,
+      "target_saved_port_shapes": [
+        {
+          "token": "float",
+          "inlets": 2,
+          "outlets": 1,
+          "count": 2
+        },
+        {
+          "token": "f",
+          "inlets": 2,
+          "outlets": 1,
+          "count": 1
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 23,
+          "source_edges": 12,
+          "mapped_boxes": 15,
+          "mapped_edges": 11,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-6",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-3",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-1",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-5",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-32",
+              "token": "r",
+              "is_selected_target": false,
+              "reason": "Unknown object \"r\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-34",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 1,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-29",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [
+            {
+              "source_box_ids": [
+                "obj-28",
+                "obj-29",
+                "obj-35"
+              ],
+              "target_box_ids": [
+                "obj-28"
+              ],
+              "nodes": 3,
+              "edges": 2,
+              "graph_sha256": "063c179bfd954f95f06098be195c93c8094725fc9136bfc4327f3aaf4de805af",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            },
+            {
+              "source_box_ids": [
+                "obj-9"
+              ],
+              "target_box_ids": [
+                "obj-9"
+              ],
+              "nodes": 1,
+              "edges": 0,
+              "graph_sha256": "c57b6ee582fba576fa8a3db1c549c701aa659a8aa2cce6668411a5635c8ca92c",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            },
+            {
+              "source_box_ids": [
+                "obj-16",
+                "obj-23",
+                "obj-20",
+                "obj-22",
+                "obj-30",
+                "obj-24",
+                "obj-21",
+                "obj-17",
+                "obj-19",
+                "obj-18"
+              ],
+              "target_box_ids": [
+                "obj-22"
+              ],
+              "nodes": 10,
+              "edges": 9,
+              "graph_sha256": "4536ad04729f40b7e229a12909f7f2b8bf9e4e52caeddf8cf3b894fac905d812",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            }
+          ],
+          "semantic_cautions": [
+            "Lexical numeric type and Max attributes/state are not all represented by Ultra numeric creation parameters.",
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "A parseable literal or named selector does not certify the receiver implements that selector. Max message editing and cold-inlet replacement are not adapted."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "flonum",
+      "batch": "current-ten",
+      "installed_relative_path": "resources/help/max/flonum.maxhelp",
+      "source_sha256": "b1251b92a08e8c6bc248bce5561c87459680c95540d3a20e9ac87294507aeefa",
+      "source_bytes": 41266,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "recursive_patchers": 4,
+      "recursive_boxes": 39,
+      "recursive_edges": 17,
+      "target_saved_port_shapes": [
+        {
+          "token": "flonum",
+          "inlets": 1,
+          "outlets": 2,
+          "count": 3
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 17,
+          "source_edges": 10,
+          "mapped_boxes": 11,
+          "mapped_edges": 9,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-5",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-3",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-1",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-28",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 1,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-14",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-26",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-27",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-30",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-31",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-32",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-33",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-34",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-35",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [
+            {
+              "source_box_ids": [
+                "obj-37",
+                "obj-14",
+                "obj-31",
+                "obj-30",
+                "obj-27",
+                "obj-26"
+              ],
+              "target_box_ids": [
+                "obj-37"
+              ],
+              "nodes": 6,
+              "edges": 5,
+              "graph_sha256": "155de48c4838585e5ab8caa1845ae4c910acb1ce05cba8d8ed1a8c595051a08b",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            },
+            {
+              "source_box_ids": [
+                "obj-36",
+                "obj-35",
+                "obj-34",
+                "obj-33",
+                "obj-32"
+              ],
+              "target_box_ids": [
+                "obj-36"
+              ],
+              "nodes": 5,
+              "edges": 4,
+              "graph_sha256": "6d085194161f279e0941045d12f3a5467f6176b5bf9ed4f8ec53bbf46f898b9d",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [
+                {
+                  "source": [
+                    "obj-36",
+                    0
+                  ],
+                  "destination": [
+                    "obj-28",
+                    0
+                  ],
+                  "source_token": "flonum",
+                  "destination_token": "print",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                }
+              ],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            }
+          ],
+          "semantic_cautions": [
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number.",
+            "A parseable literal or named selector does not certify the receiver implements that selector. Max message editing and cold-inlet replacement are not adapted."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "slider",
+      "batch": "current-ten",
+      "installed_relative_path": "resources/help/max/slider.maxhelp",
+      "source_sha256": "f79e46e3bef25bc48d6757914c96d7f52e0939de6216638b0c168c06c3a98d9d",
+      "source_bytes": 52156,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "recursive_patchers": 5,
+      "recursive_boxes": 51,
+      "recursive_edges": 18,
+      "target_saved_port_shapes": [
+        {
+          "token": "slider",
+          "inlets": 1,
+          "outlets": 1,
+          "count": 8
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-3"
+          ],
+          "source_boxes": 22,
+          "source_edges": 11,
+          "mapped_boxes": 14,
+          "mapped_edges": 9,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-36",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-15",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-24",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-26",
+              "token": "number",
+              "is_selected_target": false,
+              "reason": "Max number bounds cannot be preserved by the current Ultra number parameters."
+            },
+            {
+              "box_id": "obj-27",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-28",
+              "token": "message",
+              "is_selected_target": false,
+              "reason": "Message must be at most 127 ASCII bytes, without substitution, quotes, backslashes, commas or semicolons."
+            },
+            {
+              "box_id": "obj-30",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 2,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-18",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-19",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-20",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-21",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-22",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-29",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-31",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [
+            {
+              "source_box_ids": [
+                "obj-35",
+                "obj-34"
+              ],
+              "target_box_ids": [
+                "obj-34"
+              ],
+              "nodes": 2,
+              "edges": 1,
+              "graph_sha256": "619c239126856c2c557c6e7e95f3b529935439ae937c3050b9620e439e514173",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            },
+            {
+              "source_box_ids": [
+                "obj-14"
+              ],
+              "target_box_ids": [
+                "obj-14"
+              ],
+              "nodes": 1,
+              "edges": 0,
+              "graph_sha256": "c48231d5fd984e6fd20aba415bb166616ccb4a5c43c66579a5cd2e88faf92e04",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            },
+            {
+              "source_box_ids": [
+                "obj-17",
+                "obj-21",
+                "obj-20",
+                "obj-19",
+                "obj-18",
+                "obj-23",
+                "obj-22"
+              ],
+              "target_box_ids": [
+                "obj-17"
+              ],
+              "nodes": 7,
+              "edges": 6,
+              "graph_sha256": "d22799468d7b6a9425a866cec9bc85b798061accb6e03ed51bf9d4d1ce9b3fec",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            },
+            {
+              "source_box_ids": [
+                "obj-25",
+                "obj-29"
+              ],
+              "target_box_ids": [
+                "obj-25"
+              ],
+              "nodes": 2,
+              "edges": 1,
+              "graph_sha256": "970aba8937842338734b80ba31cb0b908e68f188ec37e0974dc52a69460a6f0c",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [
+                {
+                  "source": [
+                    "obj-28",
+                    0
+                  ],
+                  "destination": [
+                    "obj-25",
+                    0
+                  ],
+                  "source_token": "message",
+                  "destination_token": "slider",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                }
+              ],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            },
+            {
+              "source_box_ids": [
+                "obj-31",
+                "obj-32"
+              ],
+              "target_box_ids": [
+                "obj-32"
+              ],
+              "nodes": 2,
+              "edges": 1,
+              "graph_sha256": "2c4d0bb264932a0c35a8a6a57e377ff9a5ce15eab0d6e2f622aed9649c8a5026",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            }
+          ],
+          "semantic_cautions": [
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "A parseable literal or named selector does not certify the receiver implements that selector. Max message editing and cold-inlet replacement are not adapted.",
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "pack",
+      "batch": "current-ten",
+      "installed_relative_path": "resources/help/max/pack.maxhelp",
+      "source_sha256": "bdc8583d15f82e398f553d9223794451138312d67e41eb251f8c541ab5df0d79",
+      "source_bytes": 67352,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Patch exceeds 64 KiB."
+      },
+      "bare_authoring_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "recursive_patchers": 5,
+      "recursive_boxes": 68,
+      "recursive_edges": 32,
+      "target_saved_port_shapes": [
+        {
+          "token": "pack",
+          "inlets": 2,
+          "outlets": 1,
+          "count": 3
+        },
+        {
+          "token": "pack",
+          "inlets": 4,
+          "outlets": 1,
+          "count": 3
+        },
+        {
+          "token": "pack",
+          "inlets": 3,
+          "outlets": 1,
+          "count": 1
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 12,
+          "source_edges": 5,
+          "mapped_boxes": 4,
+          "mapped_edges": 3,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-1",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-20",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-16",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-14",
+              "token": "umenu",
+              "is_selected_target": false,
+              "reason": "No research box adapter for umenu."
+            },
+            {
+              "box_id": "obj-11",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-7",
+              "token": "message",
+              "is_selected_target": false,
+              "reason": "An empty Max message display requires storage/editing behavior absent from this adapter."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 2,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-9",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [
+            {
+              "source_box_ids": [
+                "obj-18",
+                "obj-5",
+                "obj-9",
+                "obj-13"
+              ],
+              "target_box_ids": [
+                "obj-5"
+              ],
+              "nodes": 4,
+              "edges": 3,
+              "graph_sha256": "6004f8fc11e5eb9d4d4659498abc16e9654743077a86d2218cd849818b6eafa5",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [
+                {
+                  "source": [
+                    "obj-14",
+                    1
+                  ],
+                  "destination": [
+                    "obj-5",
+                    2
+                  ],
+                  "source_token": "umenu",
+                  "destination_token": "pack",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-5",
+                    0
+                  ],
+                  "destination": [
+                    "obj-7",
+                    1
+                  ],
+                  "source_token": "pack",
+                  "destination_token": "message",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                }
+              ],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            }
+          ],
+          "semantic_cautions": [
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "unpack",
+      "batch": "current-ten",
+      "installed_relative_path": "resources/help/max/unpack.maxhelp",
+      "source_sha256": "3a4c1f749bfa9928a7cc92be3efbc4c651aadf6b27999077601f487350e4dce1",
+      "source_bytes": 46425,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "recursive_patchers": 4,
+      "recursive_boxes": 47,
+      "recursive_edges": 23,
+      "target_saved_port_shapes": [
+        {
+          "token": "unpack",
+          "inlets": 1,
+          "outlets": 3,
+          "count": 2
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 15,
+          "source_edges": 8,
+          "mapped_boxes": 6,
+          "mapped_edges": 5,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-6",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-25",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-19",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-15",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-9",
+              "token": "message",
+              "is_selected_target": false,
+              "reason": "An empty Max message display requires storage/editing behavior absent from this adapter."
+            },
+            {
+              "box_id": "obj-8",
+              "token": "message",
+              "is_selected_target": false,
+              "reason": "An empty Max message display requires storage/editing behavior absent from this adapter."
+            },
+            {
+              "box_id": "obj-7",
+              "token": "message",
+              "is_selected_target": false,
+              "reason": "An empty Max message display requires storage/editing behavior absent from this adapter."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 3,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-21",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-17",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-13",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-11",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [
+            {
+              "source_box_ids": [
+                "obj-23",
+                "obj-5",
+                "obj-21",
+                "obj-17",
+                "obj-13",
+                "obj-11"
+              ],
+              "target_box_ids": [
+                "obj-5"
+              ],
+              "nodes": 6,
+              "edges": 5,
+              "graph_sha256": "6b43d9e5ef3afc897789b1e1dbb103ce8d2b2e318cd7cf0fa32b2dca951c19df",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [
+                {
+                  "source": [
+                    "obj-5",
+                    0
+                  ],
+                  "destination": [
+                    "obj-7",
+                    1
+                  ],
+                  "source_token": "unpack",
+                  "destination_token": "message",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-5",
+                    1
+                  ],
+                  "destination": [
+                    "obj-8",
+                    1
+                  ],
+                  "source_token": "unpack",
+                  "destination_token": "message",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-5",
+                    2
+                  ],
+                  "destination": [
+                    "obj-9",
+                    1
+                  ],
+                  "source_token": "unpack",
+                  "destination_token": "message",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                }
+              ],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            }
+          ],
+          "semantic_cautions": [
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "A parseable literal or named selector does not certify the receiver implements that selector. Max message editing and cold-inlet replacement are not adapted."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "select",
+      "batch": "current-ten",
+      "installed_relative_path": "resources/help/max/select.maxhelp",
+      "source_sha256": "f096ff4673dbdbbca73863f35af3f8c91b5fa4d24ffc0c678566c8a57a114668",
+      "source_bytes": 42264,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "recursive_patchers": 4,
+      "recursive_boxes": 39,
+      "recursive_edges": 14,
+      "target_saved_port_shapes": [
+        {
+          "token": "select",
+          "inlets": 2,
+          "outlets": 2,
+          "count": 2
+        },
+        {
+          "token": "sel",
+          "inlets": 2,
+          "outlets": 2,
+          "count": 1
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 16,
+          "source_edges": 7,
+          "mapped_boxes": 9,
+          "mapped_edges": 7,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-7",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-11",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-14",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-20",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-41",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 0,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-18",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-22",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-24",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [
+            {
+              "source_box_ids": [
+                "obj-16",
+                "obj-19",
+                "obj-24",
+                "obj-23",
+                "obj-22",
+                "obj-21",
+                "obj-18",
+                "obj-17"
+              ],
+              "target_box_ids": [
+                "obj-19"
+              ],
+              "nodes": 8,
+              "edges": 7,
+              "graph_sha256": "7d8125d3eaf7270a60b9a341788bf82bc954002b326ec3194c6efb6a627b9d41",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            },
+            {
+              "source_box_ids": [
+                "obj-42"
+              ],
+              "target_box_ids": [
+                "obj-42"
+              ],
+              "nodes": 1,
+              "edges": 0,
+              "graph_sha256": "28ebea21e59de743c7b5c2ae451164267aab3d57d2a1d5c130c8bf00fe34e5da",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            }
+          ],
+          "semantic_cautions": [
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "route",
+      "batch": "current-ten",
+      "installed_relative_path": "resources/help/max/route.maxhelp",
+      "source_sha256": "1546c9f3437eba81723df60ded860507b099904fe87aa40b719efacf4549635e",
+      "source_bytes": 57546,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "recursive_patchers": 4,
+      "recursive_boxes": 55,
+      "recursive_edges": 35,
+      "target_saved_port_shapes": [
+        {
+          "token": "route",
+          "inlets": 5,
+          "outlets": 5,
+          "count": 1
+        },
+        {
+          "token": "route",
+          "inlets": 2,
+          "outlets": 2,
+          "count": 2
+        },
+        {
+          "token": "route",
+          "inlets": 3,
+          "outlets": 3,
+          "count": 1
+        },
+        {
+          "token": "route",
+          "inlets": 4,
+          "outlets": 4,
+          "count": 1
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 24,
+          "source_edges": 16,
+          "mapped_boxes": 11,
+          "mapped_edges": 9,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-7",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-11",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-28",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-29",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-30",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-3",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-22",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-33",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-34",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-6",
+              "token": "textbutton",
+              "is_selected_target": false,
+              "reason": "No research box adapter for textbutton."
+            },
+            {
+              "box_id": "obj-31",
+              "token": "textbutton",
+              "is_selected_target": false,
+              "reason": "No research box adapter for textbutton."
+            }
+          ],
+          "omitted_boundary_edges": 7,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-36",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-37",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-39",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-21",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-23",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-24",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-25",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-26",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [
+            {
+              "source_box_ids": [
+                "obj-1",
+                "obj-40",
+                "obj-39",
+                "obj-37",
+                "obj-36"
+              ],
+              "target_box_ids": [
+                "obj-1"
+              ],
+              "nodes": 5,
+              "edges": 4,
+              "graph_sha256": "f344e1656ebda08e40ee8c2d5dd6fa7ed3c736c91ebca0125c6c74fb80115557",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [
+                {
+                  "source": [
+                    "obj-1",
+                    0
+                  ],
+                  "destination": [
+                    "obj-28",
+                    0
+                  ],
+                  "source_token": "route",
+                  "destination_token": "print",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-1",
+                    1
+                  ],
+                  "destination": [
+                    "obj-29",
+                    0
+                  ],
+                  "source_token": "route",
+                  "destination_token": "print",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-1",
+                    2
+                  ],
+                  "destination": [
+                    "obj-30",
+                    0
+                  ],
+                  "source_token": "route",
+                  "destination_token": "print",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                }
+              ],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            },
+            {
+              "source_box_ids": [
+                "obj-21",
+                "obj-35",
+                "obj-26",
+                "obj-25",
+                "obj-24",
+                "obj-23"
+              ],
+              "target_box_ids": [
+                "obj-35"
+              ],
+              "nodes": 6,
+              "edges": 5,
+              "graph_sha256": "0dd99df9dbd293399f15aadb4d7aa21e629aa61104ed36d6486e07bbec5ff6ec",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [
+                {
+                  "source": [
+                    "obj-35",
+                    3
+                  ],
+                  "destination": [
+                    "obj-22",
+                    0
+                  ],
+                  "source_token": "route",
+                  "destination_token": "print",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-35",
+                    2
+                  ],
+                  "destination": [
+                    "obj-3",
+                    0
+                  ],
+                  "source_token": "route",
+                  "destination_token": "print",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-35",
+                    0
+                  ],
+                  "destination": [
+                    "obj-33",
+                    0
+                  ],
+                  "source_token": "route",
+                  "destination_token": "print",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-35",
+                    1
+                  ],
+                  "destination": [
+                    "obj-34",
+                    0
+                  ],
+                  "source_token": "route",
+                  "destination_token": "print",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                }
+              ],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            }
+          ],
+          "semantic_cautions": [
+            "A parseable literal or named selector does not certify the receiver implements that selector. Max message editing and cold-inlet replacement are not adapted.",
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "trigger",
+      "batch": "current-ten",
+      "installed_relative_path": "resources/help/max/trigger.maxhelp",
+      "source_sha256": "b4e655f02c012203c9141aca9f0bb096de1bf03be9bbd665727925a51f807095",
+      "source_bytes": 54093,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "recursive_patchers": 4,
+      "recursive_boxes": 53,
+      "recursive_edges": 37,
+      "target_saved_port_shapes": [
+        {
+          "token": "t",
+          "inlets": 1,
+          "outlets": 2,
+          "count": 5
+        },
+        {
+          "token": "t",
+          "inlets": 1,
+          "outlets": 5,
+          "count": 1
+        },
+        {
+          "token": "trigger",
+          "inlets": 1,
+          "outlets": 5,
+          "count": 1
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 20,
+          "source_edges": 14,
+          "mapped_boxes": 7,
+          "mapped_edges": 5,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-10",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-36",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-33",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-32",
+              "token": "message",
+              "is_selected_target": false,
+              "reason": "An empty Max message display requires storage/editing behavior absent from this adapter."
+            },
+            {
+              "box_id": "obj-28",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-27",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-26",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-25",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-16",
+              "token": "message",
+              "is_selected_target": false,
+              "reason": "An empty Max message display requires storage/editing behavior absent from this adapter."
+            },
+            {
+              "box_id": "obj-13",
+              "token": "message",
+              "is_selected_target": false,
+              "reason": "An empty Max message display requires storage/editing behavior absent from this adapter."
+            },
+            {
+              "box_id": "obj-11",
+              "token": "message",
+              "is_selected_target": false,
+              "reason": "An empty Max message display requires storage/editing behavior absent from this adapter."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 9,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-31",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-15",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [
+            {
+              "source_box_ids": [
+                "obj-31",
+                "obj-5",
+                "obj-7",
+                "obj-9",
+                "obj-15"
+              ],
+              "target_box_ids": [
+                "obj-5"
+              ],
+              "nodes": 5,
+              "edges": 4,
+              "graph_sha256": "8dff00145659cb20f7472cdf2f3fc1852d0c990551d2ec8e863dc9d50cddc7bc",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [
+                {
+                  "source": [
+                    "obj-5",
+                    1
+                  ],
+                  "destination": [
+                    "obj-11",
+                    1
+                  ],
+                  "source_token": "trigger",
+                  "destination_token": "message",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-5",
+                    2
+                  ],
+                  "destination": [
+                    "obj-13",
+                    1
+                  ],
+                  "source_token": "trigger",
+                  "destination_token": "message",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-5",
+                    3
+                  ],
+                  "destination": [
+                    "obj-16",
+                    1
+                  ],
+                  "source_token": "trigger",
+                  "destination_token": "message",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-5",
+                    4
+                  ],
+                  "destination": [
+                    "obj-32",
+                    1
+                  ],
+                  "source_token": "trigger",
+                  "destination_token": "message",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                }
+              ],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            },
+            {
+              "source_box_ids": [
+                "obj-30",
+                "obj-24"
+              ],
+              "target_box_ids": [
+                "obj-24"
+              ],
+              "nodes": 2,
+              "edges": 1,
+              "graph_sha256": "b1c98dd2ec5eb578b2d7dd195d3f2ffcae87ad68b250fa3d2574ad7eea01321b",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [
+                {
+                  "source": [
+                    "obj-24",
+                    0
+                  ],
+                  "destination": [
+                    "obj-25",
+                    0
+                  ],
+                  "source_token": "t",
+                  "destination_token": "print",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-24",
+                    1
+                  ],
+                  "destination": [
+                    "obj-26",
+                    0
+                  ],
+                  "source_token": "t",
+                  "destination_token": "print",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-24",
+                    2
+                  ],
+                  "destination": [
+                    "obj-27",
+                    0
+                  ],
+                  "source_token": "t",
+                  "destination_token": "print",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-24",
+                    3
+                  ],
+                  "destination": [
+                    "obj-28",
+                    0
+                  ],
+                  "source_token": "t",
+                  "destination_token": "print",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                },
+                {
+                  "source": [
+                    "obj-24",
+                    4
+                  ],
+                  "destination": [
+                    "obj-33",
+                    0
+                  ],
+                  "source_token": "t",
+                  "destination_token": "print",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                }
+              ],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            }
+          ],
+          "semantic_cautions": [
+            "A parseable literal or named selector does not certify the receiver implements that selector. Max message editing and cold-inlet replacement are not adapted.",
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "line",
+      "batch": "current-ten",
+      "installed_relative_path": "resources/help/max/line.maxhelp",
+      "source_sha256": "84a7eba118672092e25e4c55921d790549c9e223c34bd213ec093a2542e1f94a",
+      "source_bytes": 111616,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Patch exceeds 64 KiB."
+      },
+      "bare_authoring_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "recursive_patchers": 6,
+      "recursive_boxes": 119,
+      "recursive_edges": 63,
+      "target_saved_port_shapes": [
+        {
+          "token": "line",
+          "inlets": 3,
+          "outlets": 2,
+          "count": 9
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 20,
+          "source_edges": 8,
+          "mapped_boxes": 8,
+          "mapped_edges": 6,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-7",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-6",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-5",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-3",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-1",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-10",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-14",
+              "token": "message",
+              "is_selected_target": false,
+              "reason": "Message must be at most 127 ASCII bytes, without substitution, quotes, backslashes, commas or semicolons."
+            },
+            {
+              "box_id": "obj-17",
+              "token": "message",
+              "is_selected_target": false,
+              "reason": "Message must be at most 127 ASCII bytes, without substitution, quotes, backslashes, commas or semicolons."
+            },
+            {
+              "box_id": "obj-35",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-93",
+              "token": "textbutton",
+              "is_selected_target": false,
+              "reason": "No research box adapter for textbutton."
+            }
+          ],
+          "omitted_boundary_edges": 2,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-21",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [
+            {
+              "source_box_ids": [
+                "obj-13",
+                "obj-15",
+                "obj-16"
+              ],
+              "target_box_ids": [
+                "obj-15"
+              ],
+              "nodes": 3,
+              "edges": 2,
+              "graph_sha256": "00170fbea7131745137824310d1e7f7096bf17af1b085a99a4a917c2167c749a",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [
+                {
+                  "source": [
+                    "obj-14",
+                    0
+                  ],
+                  "destination": [
+                    "obj-15",
+                    0
+                  ],
+                  "source_token": "message",
+                  "destination_token": "line",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                }
+              ],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            },
+            {
+              "source_box_ids": [
+                "obj-18",
+                "obj-24",
+                "obj-32",
+                "obj-21",
+                "obj-19"
+              ],
+              "target_box_ids": [
+                "obj-24"
+              ],
+              "nodes": 5,
+              "edges": 4,
+              "graph_sha256": "388ab90510352c3a6e8006fcbde4ccbdf2fbebe89ce40d8e9b775868c260f17e",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [
+                {
+                  "source": [
+                    "obj-17",
+                    0
+                  ],
+                  "destination": [
+                    "obj-24",
+                    0
+                  ],
+                  "source_token": "message",
+                  "destination_token": "line",
+                  "reason": "One or both endpoint boxes have no accepted research mapping."
+                }
+              ],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            }
+          ],
+          "semantic_cautions": [
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "Lexical numeric type and Max attributes/state are not all represented by Ultra numeric creation parameters.",
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "metro",
+      "batch": "next-control-candidates",
+      "installed_relative_path": "resources/help/max/metro.maxhelp",
+      "source_sha256": "93015ebf920aaff1d0957317f38858dcb8dfb6d94df56af71c25c1082d8d7a53",
+      "source_bytes": 29704,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "recursive_patchers": 3,
+      "recursive_boxes": 30,
+      "recursive_edges": 10,
+      "target_saved_port_shapes": [
+        {
+          "token": "metro",
+          "inlets": 2,
+          "outlets": 1,
+          "count": 3
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 26,
+          "source_edges": 10,
+          "mapped_boxes": 11,
+          "mapped_edges": 5,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-7",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-6",
+              "token": "bpatcher",
+              "is_selected_target": false,
+              "reason": "No research box adapter for bpatcher."
+            },
+            {
+              "box_id": "obj-13",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-1",
+              "token": "metro",
+              "is_selected_target": true,
+              "reason": "interval must be a finite number."
+            },
+            {
+              "box_id": "obj-16",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-21",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-24",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-27",
+              "token": "clocker",
+              "is_selected_target": false,
+              "reason": "Unknown object \"clocker\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-28",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-44",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-43",
+              "token": "metro",
+              "is_selected_target": true,
+              "reason": "Unknown metro option \"@defer\". Supported options: @interval."
+            },
+            {
+              "box_id": "obj-42",
+              "token": "qmetro",
+              "is_selected_target": false,
+              "reason": "Unknown object \"qmetro\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-41",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 5,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-35",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-18",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-29",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-31",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [
+            {
+              "source_box_ids": [
+                "obj-35",
+                "obj-20",
+                "obj-11",
+                "obj-17"
+              ],
+              "target_box_ids": [
+                "obj-20"
+              ],
+              "nodes": 4,
+              "edges": 3,
+              "graph_sha256": "bac46d6d6484d966d4d880de6c2091fca09e29e6e6f7d0593fe7a74b8ef0bbed",
+              "production_graph_validation": {
+                "accepted": true,
+                "error": null
+              },
+              "omitted_boundary_edges": [],
+              "complete_source_basic_graph": false,
+              "source_graph_executed": false
+            }
+          ],
+          "semantic_cautions": [
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number.",
+            "A parseable literal or named selector does not certify the receiver implements that selector. Max message editing and cold-inlet replacement are not adapted."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "counter",
+      "batch": "next-control-candidates",
+      "installed_relative_path": "resources/help/max/counter.maxhelp",
+      "source_sha256": "205877e5f544e8762fcf7c31d88fbd009642a77fc75193b386478d5e8cfef109",
+      "source_bytes": 89693,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Patch exceeds 64 KiB."
+      },
+      "bare_authoring_probe": {
+        "accepted": true,
+        "error": null
+      },
+      "recursive_patchers": 5,
+      "recursive_boxes": 100,
+      "recursive_edges": 50,
+      "target_saved_port_shapes": [
+        {
+          "token": "counter",
+          "inlets": 5,
+          "outlets": 4,
+          "count": 13
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 29,
+          "source_edges": 15,
+          "mapped_boxes": 15,
+          "mapped_edges": 0,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-32",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-31",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-29",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-3",
+              "token": "counter",
+              "is_selected_target": true,
+              "reason": "Max counter uses five inlets/four outlets; Ultra counter uses two/one and a different argument/state contract."
+            },
+            {
+              "box_id": "obj-24",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-23",
+              "token": "counter",
+              "is_selected_target": true,
+              "reason": "Max counter uses five inlets/four outlets; Ultra counter uses two/one and a different argument/state contract."
+            },
+            {
+              "box_id": "obj-25",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-12",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-30",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-26",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-19",
+              "token": "counter",
+              "is_selected_target": true,
+              "reason": "Max counter uses five inlets/four outlets; Ultra counter uses two/one and a different argument/state contract."
+            },
+            {
+              "box_id": "obj-15",
+              "token": "counter",
+              "is_selected_target": true,
+              "reason": "Max counter uses five inlets/four outlets; Ultra counter uses two/one and a different argument/state contract."
+            },
+            {
+              "box_id": "obj-1",
+              "token": "counter",
+              "is_selected_target": true,
+              "reason": "Max counter uses five inlets/four outlets; Ultra counter uses two/one and a different argument/state contract."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 15,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-20",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-9",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-6",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-8",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-21",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-17",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-13",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-7",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [],
+          "semantic_cautions": [
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number.",
+            "A parseable literal or named selector does not certify the receiver implements that selector. Max message editing and cold-inlet replacement are not adapted."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "delay",
+      "batch": "next-control-candidates",
+      "installed_relative_path": "resources/help/max/delay.maxhelp",
+      "source_sha256": "383441d755e5ec412064a28bb4820a4c1a510f9d3d1a9b66f0722637470d60d9",
+      "source_bytes": 32088,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": false,
+        "error": "Unknown object \"delay\". Choose a supported object from the list."
+      },
+      "recursive_patchers": 4,
+      "recursive_boxes": 34,
+      "recursive_edges": 15,
+      "target_saved_port_shapes": [
+        {
+          "token": "delay",
+          "inlets": 2,
+          "outlets": 1,
+          "count": 2
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 12,
+          "source_edges": 6,
+          "mapped_boxes": 4,
+          "mapped_edges": 0,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-12",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-11",
+              "token": "dial",
+              "is_selected_target": false,
+              "reason": "No research box adapter for dial."
+            },
+            {
+              "box_id": "obj-7",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-6",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-3",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-1",
+              "token": "delay",
+              "is_selected_target": true,
+              "reason": "Unknown object \"delay\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 6,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-17",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-21",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [],
+          "semantic_cautions": [
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number.",
+            "A parseable literal or named selector does not certify the receiver implements that selector. Max message editing and cold-inlet replacement are not adapted."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "pipe",
+      "batch": "next-control-candidates",
+      "installed_relative_path": "resources/help/max/pipe.maxhelp",
+      "source_sha256": "01667ad841f5226d56c912afc43eb6ab0c24580978021ee4346b8d3d7a510138",
+      "source_bytes": 134789,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Patch exceeds 64 KiB."
+      },
+      "bare_authoring_probe": {
+        "accepted": false,
+        "error": "Unknown object \"pipe\". Choose a supported object from the list."
+      },
+      "recursive_patchers": 8,
+      "recursive_boxes": 121,
+      "recursive_edges": 84,
+      "target_saved_port_shapes": [
+        {
+          "token": "pipe",
+          "inlets": 2,
+          "outlets": 1,
+          "count": 5
+        },
+        {
+          "token": "pipe",
+          "inlets": 4,
+          "outlets": 3,
+          "count": 1
+        },
+        {
+          "token": "pipe",
+          "inlets": 13,
+          "outlets": 12,
+          "count": 1
+        },
+        {
+          "token": "pipe",
+          "inlets": 3,
+          "outlets": 2,
+          "count": 1
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-3"
+          ],
+          "source_boxes": 24,
+          "source_edges": 13,
+          "mapped_boxes": 13,
+          "mapped_edges": 0,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-46",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-45",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-44",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-33",
+              "token": "pipe",
+              "is_selected_target": true,
+              "reason": "Unknown object \"pipe\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-29",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-22",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-21",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-18",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-5",
+              "token": "pipe",
+              "is_selected_target": true,
+              "reason": "Unknown object \"pipe\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 13,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-37",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-35",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-28",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-25",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-13",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-12",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-11",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [],
+          "semantic_cautions": [
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "A parseable literal or named selector does not certify the receiver implements that selector. Max message editing and cold-inlet replacement are not adapted.",
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "change",
+      "batch": "next-control-candidates",
+      "installed_relative_path": "resources/help/max/change.maxhelp",
+      "source_sha256": "8b8789419edaa4e9a8f9f308a31a5c39aecbf4a8224fb24257c7252f5d9d05bd",
+      "source_bytes": 37101,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": false,
+        "error": "Unknown object \"change\". Choose a supported object from the list."
+      },
+      "recursive_patchers": 4,
+      "recursive_boxes": 36,
+      "recursive_edges": 17,
+      "target_saved_port_shapes": [
+        {
+          "token": "change",
+          "inlets": 1,
+          "outlets": 3,
+          "count": 4
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 20,
+          "source_edges": 11,
+          "mapped_boxes": 7,
+          "mapped_edges": 0,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-29",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-24",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-19",
+              "token": "change",
+              "is_selected_target": true,
+              "reason": "Unknown object \"change\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-18",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-16",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-15",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-14",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-12",
+              "token": "incdec",
+              "is_selected_target": false,
+              "reason": "No research box adapter for incdec."
+            },
+            {
+              "box_id": "obj-7",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-6",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-5",
+              "token": "change",
+              "is_selected_target": true,
+              "reason": "Unknown object \"change\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 11,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-28",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-23",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-22",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-21",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-11",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-9",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [],
+          "semantic_cautions": [
+            "A parseable literal or named selector does not certify the receiver implements that selector. Max message editing and cold-inlet replacement are not adapted.",
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "gate",
+      "batch": "next-control-candidates",
+      "installed_relative_path": "resources/help/max/gate.maxhelp",
+      "source_sha256": "d99006027882f1443fe20f71a11ea76910e028476ce8a482c1a1c0843207a6a5",
+      "source_bytes": 36555,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": false,
+        "error": "Unknown object \"gate\". Choose a supported object from the list."
+      },
+      "recursive_patchers": 4,
+      "recursive_boxes": 34,
+      "recursive_edges": 16,
+      "target_saved_port_shapes": [
+        {
+          "token": "gate",
+          "inlets": 2,
+          "outlets": 1,
+          "count": 1
+        },
+        {
+          "token": "gate",
+          "inlets": 2,
+          "outlets": 3,
+          "count": 2
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 14,
+          "source_edges": 7,
+          "mapped_boxes": 4,
+          "mapped_edges": 0,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-22",
+              "token": "counter",
+              "is_selected_target": false,
+              "reason": "Max counter uses five inlets/four outlets; Ultra counter uses two/one and a different argument/state contract."
+            },
+            {
+              "box_id": "obj-21",
+              "token": "metro",
+              "is_selected_target": false,
+              "reason": "Unknown metro option \"@active\". Supported options: @interval."
+            },
+            {
+              "box_id": "obj-14",
+              "token": "gate",
+              "is_selected_target": true,
+              "reason": "Unknown object \"gate\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-11",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-12",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-10",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-9",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-5",
+              "token": "radiogroup",
+              "is_selected_target": false,
+              "reason": "No research box adapter for radiogroup."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 7,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-20",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-18",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-16",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-7",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [],
+          "semantic_cautions": [
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number.",
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "switch",
+      "batch": "next-control-candidates",
+      "installed_relative_path": "resources/help/max/switch.maxhelp",
+      "source_sha256": "9b6c1f44dce58ae6f273aefd9d6665c76bed99e30d33bf14756852bd216a811c",
+      "source_bytes": 21867,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": false,
+        "error": "Unknown object \"switch\". Choose a supported object from the list."
+      },
+      "recursive_patchers": 3,
+      "recursive_boxes": 19,
+      "recursive_edges": 11,
+      "target_saved_port_shapes": [
+        {
+          "token": "switch",
+          "inlets": 3,
+          "outlets": 1,
+          "count": 1
+        },
+        {
+          "token": "switch",
+          "inlets": 5,
+          "outlets": 1,
+          "count": 1
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 14,
+          "source_edges": 11,
+          "mapped_boxes": 10,
+          "mapped_edges": 0,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-8",
+              "token": "umenu",
+              "is_selected_target": false,
+              "reason": "No research box adapter for umenu."
+            },
+            {
+              "box_id": "obj-26",
+              "token": "switch",
+              "is_selected_target": true,
+              "reason": "Unknown object \"switch\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 11,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-3",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-20",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-16",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-17",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-18",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-19",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [],
+          "semantic_cautions": [
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number.",
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "A parseable literal or named selector does not certify the receiver implements that selector. Max message editing and cold-inlet replacement are not adapted."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "split",
+      "batch": "next-control-candidates",
+      "installed_relative_path": "resources/help/max/split.maxhelp",
+      "source_sha256": "a182edcf1cc9414015caaf34f0aaf4e7fb22ca338ca9eb8bdb4eb2eea7cec4f1",
+      "source_bytes": 20411,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": false,
+        "error": "Unknown object \"split\". Choose a supported object from the list."
+      },
+      "recursive_patchers": 3,
+      "recursive_boxes": 18,
+      "recursive_edges": 6,
+      "target_saved_port_shapes": [
+        {
+          "token": "split",
+          "inlets": 3,
+          "outlets": 2,
+          "count": 1
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 14,
+          "source_edges": 6,
+          "mapped_boxes": 6,
+          "mapped_edges": 0,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-7",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-5",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-3",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-15",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-21",
+              "token": "split",
+              "is_selected_target": true,
+              "reason": "Unknown object \"split\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-28",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 6,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-17",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-19",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-22",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-23",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-24",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [],
+          "semantic_cautions": [
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "clip",
+      "batch": "next-control-candidates",
+      "installed_relative_path": "resources/help/max/clip.maxhelp",
+      "source_sha256": "0563703f5583093679fadbef08408da2f0f2e6177ce706cdcd7e66bd1d0c774a",
+      "source_bytes": 32221,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Unknown patch field: patcher."
+      },
+      "bare_authoring_probe": {
+        "accepted": false,
+        "error": "Unknown object \"clip\". Choose a supported object from the list."
+      },
+      "recursive_patchers": 4,
+      "recursive_boxes": 30,
+      "recursive_edges": 11,
+      "target_saved_port_shapes": [
+        {
+          "token": "clip",
+          "inlets": 3,
+          "outlets": 1,
+          "count": 2
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 17,
+          "source_edges": 8,
+          "mapped_boxes": 7,
+          "mapped_edges": 0,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-13",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-21",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-20",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-15",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-12",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-9",
+              "token": "print",
+              "is_selected_target": false,
+              "reason": "Unknown object \"print\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-8",
+              "token": "clip",
+              "is_selected_target": true,
+              "reason": "Unknown object \"clip\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-7",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 8,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-10",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-3",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-14",
+              "token": "message",
+              "saved": {
+                "inlets": 2,
+                "outlets": 1
+              },
+              "adapted": {
+                "inlets": 1,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [],
+          "semantic_cautions": [
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number.",
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved.",
+            "A parseable literal or named selector does not certify the receiver implements that selector. Max message editing and cold-inlet replacement are not adapted."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    },
+    {
+      "object": "scale",
+      "batch": "next-control-candidates",
+      "installed_relative_path": "resources/help/max/scale.maxhelp",
+      "source_sha256": "c3b587efaa35d99c7189cff5577c3acc48318fed1c20c12d4139b7d92cb29bba",
+      "source_bytes": 75910,
+      "source_json_parses": true,
+      "direct_production_parser": {
+        "accepted": false,
+        "error": "Patch exceeds 64 KiB."
+      },
+      "bare_authoring_probe": {
+        "accepted": false,
+        "error": "Unknown object \"scale\". Choose a supported object from the list."
+      },
+      "recursive_patchers": 5,
+      "recursive_boxes": 74,
+      "recursive_edges": 44,
+      "target_saved_port_shapes": [
+        {
+          "token": "scale",
+          "inlets": 6,
+          "outlets": 1,
+          "count": 9
+        }
+      ],
+      "basic_tabs": [
+        {
+          "box_path": [
+            "obj-2"
+          ],
+          "source_boxes": 26,
+          "source_edges": 13,
+          "mapped_boxes": 13,
+          "mapped_edges": 3,
+          "omitted_boxes": [
+            {
+              "box_id": "obj-36",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-35",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-34",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-33",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-32",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-26",
+              "token": "scale",
+              "is_selected_target": true,
+              "reason": "Unknown object \"scale\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-21",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-20",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-18",
+              "token": "comment",
+              "is_selected_target": false,
+              "reason": "No research box adapter for comment."
+            },
+            {
+              "box_id": "obj-14",
+              "token": "scale",
+              "is_selected_target": true,
+              "reason": "Unknown object \"scale\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-5",
+              "token": "scale",
+              "is_selected_target": true,
+              "reason": "Unknown object \"scale\". Choose a supported object from the list."
+            },
+            {
+              "box_id": "obj-2",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            },
+            {
+              "box_id": "obj-4",
+              "token": "jsui",
+              "is_selected_target": false,
+              "reason": "No research box adapter for jsui."
+            }
+          ],
+          "omitted_boundary_edges": 10,
+          "saved_port_differences": [
+            {
+              "box_id": "obj-31",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-30",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-29",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-28",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-23",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-24",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-10",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            },
+            {
+              "box_id": "obj-8",
+              "token": "number",
+              "saved": {
+                "inlets": 1,
+                "outlets": 2
+              },
+              "adapted": {
+                "inlets": 2,
+                "outlets": 1
+              }
+            }
+          ],
+          "structural_induced_graph_validation": {
+            "accepted": true,
+            "error": null
+          },
+          "target_components": [],
+          "semantic_cautions": [
+            "Max integer number-box coercion, bounds, gestures and Tab behavior are not reproduced by a structural mapping to Ultra number.",
+            "Saved UI initialization, appearance, scripting, automation and attributes beyond the adapter allowlist are not preserved."
+          ]
+        }
+      ],
+      "installed_help_executed": false,
+      "extracted_fragment_executed": false
+    }
+  ],
+  "adapter_boundary_checks": [
+    {
+      "name": "Max counter refuses accidental same-name conversion",
+      "accepted": false,
+      "error": "Max counter uses five inlets/four outlets; Ultra counter uses two/one and a different argument/state contract.",
+      "expected": "reject",
+      "assertion_pass": true
+    },
+    {
+      "name": "Numeric metro fits the bounded Ultra contract",
+      "accepted": true,
+      "error": null,
+      "expected": "accept",
+      "assertion_pass": true
+    },
+    {
+      "name": "Transport metro time symbol is not silently converted",
+      "accepted": false,
+      "error": "interval must be a finite number.",
+      "expected": "reject",
+      "assertion_pass": true
+    },
+    {
+      "name": "Message substitution is not silently removed",
+      "accepted": false,
+      "error": "Message must be at most 127 ASCII bytes, without substitution, quotes, backslashes, commas or semicolons.",
+      "expected": "reject",
+      "assertion_pass": true
+    },
+    {
+      "name": "Comma-sequenced line message requires explicit rewrite",
+      "accepted": false,
+      "error": "Message must be at most 127 ASCII bytes, without substitution, quotes, backslashes, commas or semicolons.",
+      "expected": "reject",
+      "assertion_pass": true
+    },
+    {
+      "name": "Empty message display does not become a default stored literal",
+      "accepted": false,
+      "error": "An empty Max message display requires storage/editing behavior absent from this adapter.",
+      "expected": "reject",
+      "assertion_pass": true
+    },
+    {
+      "name": "Message cold display inlet is rejected by production validation",
+      "accepted": false,
+      "error": "Inlet index must be an integer from 0 to 0.",
+      "expected": "reject",
+      "assertion_pass": true
+    },
+    {
+      "name": "Max number Tab outlet is rejected by production validation",
+      "accepted": false,
+      "error": "Outlet index must be an integer from 0 to 0.",
+      "expected": "reject",
+      "assertion_pass": true
+    }
+  ],
+  "original_native_scenarios": {
+    "provenance": "ORIGINAL_AUTHORED_ULTRA_SCENARIOS",
+    "scope": "Independent multi-object scenarios exercise useful current Ultra contracts; none is an adapted or executed installed Max help graph.",
+    "compiler": "g++ (GCC) 16.2.1 20260810",
+    "compile_arguments": [
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-I <repo>",
+      "native-scenario.cpp",
+      "-o <temporary binary>"
+    ],
+    "sample_rate_hz": 48000,
+    "audio_device_opened": false,
+    "browser_executed": false,
+    "tauri_executed": false,
+    "rust_preparation_executed": false,
+    "installed_help_executed": false,
+    "max_executed": false,
+    "cases": [
+      {
+        "name": "scalar-cold-trigger",
+        "objects": [
+          "trigger",
+          "float",
+          "int"
+        ],
+        "purpose": "The right trigger outlet stores a float before the left bang recalls it; the next integer stage truncates toward zero.",
+        "patch_file": "fixtures/scalar-cold-trigger.ultra",
+        "operations": [
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "-7.75"
+            },
+            "expected": [
+              {
+                "id": 2,
+                "value": -7.75
+              },
+              {
+                "id": 4,
+                "value": -7,
+                "pulses": 1
+              }
+            ]
+          },
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "6.25"
+            },
+            "expected": [
+              {
+                "id": 4,
+                "value": 6,
+                "pulses": 2
+              }
+            ]
+          }
+        ],
+        "patch_sha256": "18e44f34580a6086fb99339e703bde274ed10d5c8ea9ba312c10e2228a0ef17d",
+        "nodes": 4,
+        "edges": 4,
+        "production_parser_accepted": true,
+        "native_compiled_and_executed": true,
+        "assertion_count": 5,
+        "assertions_pass": true,
+        "actual": [
+          {
+            "step": 0,
+            "nodes": [
+              {
+                "id": 1,
+                "value": -7.75,
+                "pulses": 3,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 2,
+                "value": -7.75,
+                "pulses": 2,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 3,
+                "value": -7,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": -7.75
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": -7,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": -7
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "step": 1,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 6.25,
+                "pulses": 6,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 2,
+                "value": 6.25,
+                "pulses": 4,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 3,
+                "value": 6,
+                "pulses": 2,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 6.25
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 6,
+                "pulses": 2,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 6
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "pack-unpack-cold-order",
+        "objects": [
+          "pack",
+          "unpack"
+        ],
+        "purpose": "A cold typed pack field survives a hot update, unpack reaches the arithmetic cold inlet before its hot inlet, and set stays silent until recall.",
+        "patch_file": "fixtures/pack-unpack-cold-order.ultra",
+        "operations": [
+          {
+            "event": {
+              "node": 1,
+              "inlet": 1,
+              "text": "4.25"
+            },
+            "expected": [
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 0
+              }
+            ]
+          },
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "7.9"
+            },
+            "expected": [
+              {
+                "id": 4,
+                "value": 11.25,
+                "pulses": 1
+              },
+              {
+                "id": 2,
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 7
+                  }
+                ],
+                "value": 7
+              }
+            ]
+          },
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "set 5 2.5"
+            },
+            "expected": [
+              {
+                "id": 4,
+                "value": 11.25,
+                "pulses": 1
+              }
+            ]
+          },
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "bang"
+            },
+            "expected": [
+              {
+                "id": 4,
+                "value": 7.5,
+                "pulses": 2
+              }
+            ]
+          }
+        ],
+        "patch_sha256": "f89ac1ca66fbd10cd493065e9599f6be39f5b6cfdbb0c42897da58e00ed1b417",
+        "nodes": 4,
+        "edges": 4,
+        "production_parser_accepted": true,
+        "native_compiled_and_executed": true,
+        "assertion_count": 10,
+        "assertions_pass": true,
+        "actual": [
+          {
+            "step": 0,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 0,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 4.25
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 3,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          },
+          {
+            "step": 1,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 0,
+                "pulses": 2,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 7.9
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 7,
+                "pulses": 3,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "value": 11.25,
+                "pulses": 2,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 11.25,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 11.25
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "step": 2,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 0,
+                "pulses": 3,
+                "selector": "set",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 5
+                  },
+                  {
+                    "tag": 1,
+                    "value": 2.5
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 7,
+                "pulses": 3,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "value": 11.25,
+                "pulses": 2,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 7
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 11.25,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 11.25
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "step": 3,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 0,
+                "pulses": 4,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 2,
+                "value": 5,
+                "pulses": 6,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 5
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "value": 7.5,
+                "pulses": 4,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 5
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 7.5,
+                "pulses": 2,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 7.5
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "route-select-branches",
+        "objects": [
+          "route",
+          "select"
+        ],
+        "purpose": "Route strips a named selector before select matches the remaining number; matched, unmatched, second-route and default branches stay distinct.",
+        "patch_file": "fixtures/route-select-branches.ultra",
+        "operations": [
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "red 4"
+            },
+            "expected": [
+              {
+                "id": 3,
+                "pulses": 1
+              },
+              {
+                "id": 4,
+                "pulses": 0
+              },
+              {
+                "id": 5,
+                "pulses": 0
+              }
+            ]
+          },
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "red 9"
+            },
+            "expected": [
+              {
+                "id": 5,
+                "value": 9,
+                "pulses": 1
+              }
+            ]
+          },
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "blue 3.5"
+            },
+            "expected": [
+              {
+                "id": 6,
+                "value": 3.5,
+                "pulses": 1
+              }
+            ]
+          },
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "green 2"
+            },
+            "expected": [
+              {
+                "id": 7,
+                "pulses": 1
+              },
+              {
+                "id": 6,
+                "value": 3.5,
+                "pulses": 1
+              }
+            ]
+          }
+        ],
+        "patch_sha256": "99f843c620b338fb196003688b66c2ee26103ddce5b8dae6f035dd52c9a42212",
+        "nodes": 7,
+        "edges": 6,
+        "production_parser_accepted": true,
+        "native_compiled_and_executed": true,
+        "assertion_count": 10,
+        "assertions_pass": true,
+        "actual": [
+          {
+            "step": 0,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 4,
+                "pulses": 2,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 4
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 0,
+                "pulses": 2,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 3,
+                "value": 0,
+                "pulses": 1,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 5,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 6,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 7,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          },
+          {
+            "step": 1,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 9,
+                "pulses": 4,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 9
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 9,
+                "pulses": 4,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 9
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "value": 0,
+                "pulses": 1,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 5,
+                "value": 9,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 9
+                  }
+                ]
+              },
+              {
+                "id": 6,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 7,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          },
+          {
+            "step": 2,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 3.5,
+                "pulses": 6,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 3.5
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 9,
+                "pulses": 4,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 9
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "value": 0,
+                "pulses": 1,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 5,
+                "value": 9,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 9
+                  }
+                ]
+              },
+              {
+                "id": 6,
+                "value": 3.5,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 3.5
+                  }
+                ]
+              },
+              {
+                "id": 7,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          },
+          {
+            "step": 3,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 2,
+                "pulses": 8,
+                "selector": "green",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 2
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 9,
+                "pulses": 4,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 9
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "value": 0,
+                "pulses": 1,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 5,
+                "value": 9,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 9
+                  }
+                ]
+              },
+              {
+                "id": 6,
+                "value": 3.5,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 3.5
+                  }
+                ]
+              },
+              {
+                "id": 7,
+                "value": 0,
+                "pulses": 1,
+                "selector": "green",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 2
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "slider-flonum-bounds",
+        "objects": [
+          "slider",
+          "flonum"
+        ],
+        "purpose": "Slider raw-to-output scaling precedes flonum clamping; a silent slider set waits for bang and flonum Tab uses its second outlet.",
+        "patch_file": "fixtures/slider-flonum-bounds.ultra",
+        "operations": [
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "12"
+            },
+            "expected": [
+              {
+                "id": 3,
+                "value": 14,
+                "pulses": 1
+              }
+            ]
+          },
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "set 4"
+            },
+            "expected": [
+              {
+                "id": 3,
+                "value": 14,
+                "pulses": 1
+              }
+            ]
+          },
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "bang"
+            },
+            "expected": [
+              {
+                "id": 3,
+                "value": 12,
+                "pulses": 2
+              }
+            ]
+          },
+          {
+            "event": {
+              "node": 2,
+              "inlet": 0,
+              "text": "tab"
+            },
+            "expected": [
+              {
+                "id": 3,
+                "value": 12,
+                "pulses": 2
+              },
+              {
+                "id": 4,
+                "pulses": 1
+              }
+            ]
+          }
+        ],
+        "patch_sha256": "5b3fef8c6dac70d7d472a58bd89b0f99e8e9b386ea1f766cb7525a6684e55e09",
+        "nodes": 4,
+        "edges": 3,
+        "production_parser_accepted": true,
+        "native_compiled_and_executed": true,
+        "assertion_count": 9,
+        "assertions_pass": true,
+        "actual": [
+          {
+            "step": 0,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 12,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 12
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 14,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 16
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "value": 14,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 14
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          },
+          {
+            "step": 1,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 4,
+                "pulses": 2,
+                "selector": "set",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 4
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 14,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 16
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "value": 14,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 14
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          },
+          {
+            "step": 2,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 4,
+                "pulses": 3,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 2,
+                "value": 12,
+                "pulses": 2,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 12
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "value": 12,
+                "pulses": 2,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 12
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          },
+          {
+            "step": 3,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 4,
+                "pulses": 3,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 2,
+                "value": 12,
+                "pulses": 4,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 3,
+                "value": 12,
+                "pulses": 2,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 12
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 1,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "line-grain-completion",
+        "objects": [
+          "line"
+        ],
+        "purpose": "A 20 ms explicit float ramp emits at 10 ms grains and completes once; stop cancels a later ramp before another output.",
+        "patch_file": "fixtures/line-grain-completion.ultra",
+        "operations": [
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "10 20"
+            },
+            "expected": [
+              {
+                "id": 3,
+                "pulses": 0
+              },
+              {
+                "id": 4,
+                "pulses": 0
+              }
+            ]
+          },
+          {
+            "advance_frames": 481,
+            "expected": [
+              {
+                "id": 3,
+                "value": 5,
+                "pulses": 2
+              },
+              {
+                "id": 4,
+                "pulses": 0
+              }
+            ]
+          },
+          {
+            "advance_frames": 480,
+            "expected": [
+              {
+                "id": 3,
+                "value": 10,
+                "pulses": 3
+              },
+              {
+                "id": 4,
+                "pulses": 1
+              }
+            ]
+          },
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "0 20"
+            },
+            "expected": [
+              {
+                "id": 3,
+                "value": 10,
+                "pulses": 3
+              }
+            ]
+          },
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "stop"
+            },
+            "expected": [
+              {
+                "id": 3,
+                "value": 10,
+                "pulses": 3
+              }
+            ]
+          },
+          {
+            "advance_frames": 2000,
+            "expected": [
+              {
+                "id": 3,
+                "value": 10,
+                "pulses": 3
+              },
+              {
+                "id": 4,
+                "pulses": 1
+              }
+            ]
+          }
+        ],
+        "patch_sha256": "732787d7c0a759cb40195f36635130d65589ee41180d0922257f661212d35974",
+        "nodes": 4,
+        "edges": 3,
+        "production_parser_accepted": true,
+        "native_compiled_and_executed": true,
+        "assertion_count": 15,
+        "assertions_pass": true,
+        "actual": [
+          {
+            "step": 0,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 0,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 10
+                  },
+                  {
+                    "tag": 0,
+                    "value": 20
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 3,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          },
+          {
+            "step": 1,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 5,
+                "pulses": 3,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 5
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 5,
+                "pulses": 2,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 5
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "value": 5,
+                "pulses": 2,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 5
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          },
+          {
+            "step": 2,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 10,
+                "pulses": 5,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 2,
+                "value": 10,
+                "pulses": 3,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 10
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "value": 10,
+                "pulses": 3,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 10
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 1,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          },
+          {
+            "step": 3,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 10,
+                "pulses": 6,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 0
+                  },
+                  {
+                    "tag": 0,
+                    "value": 20
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 10,
+                "pulses": 3,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 10
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "value": 10,
+                "pulses": 3,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 10
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 1,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          },
+          {
+            "step": 4,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 10,
+                "pulses": 7,
+                "selector": "stop",
+                "atoms": []
+              },
+              {
+                "id": 2,
+                "value": 10,
+                "pulses": 3,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 10
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "value": 10,
+                "pulses": 3,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 10
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 1,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          },
+          {
+            "step": 5,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 10,
+                "pulses": 7,
+                "selector": "stop",
+                "atoms": []
+              },
+              {
+                "id": 2,
+                "value": 10,
+                "pulses": 3,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 10
+                  }
+                ]
+              },
+              {
+                "id": 3,
+                "value": 10,
+                "pulses": 3,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 1,
+                    "value": 10
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 1,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "metro-counter-bounded",
+        "objects": [
+          "metro",
+          "counter"
+        ],
+        "purpose": "Exercise the current Ultra contracts: a 20 ms metro advances a modulo-three counter, select detects one, and zero stops future ticks. This is not the Max counter contract.",
+        "patch_file": "fixtures/metro-counter-bounded.ultra",
+        "operations": [
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "1"
+            },
+            "expected": [
+              {
+                "id": 3,
+                "pulses": 0
+              }
+            ]
+          },
+          {
+            "advance_frames": 2881,
+            "expected": [
+              {
+                "id": 3,
+                "value": 0,
+                "pulses": 4
+              },
+              {
+                "id": 5,
+                "pulses": 1
+              },
+              {
+                "id": 6,
+                "pulses": 3
+              }
+            ]
+          },
+          {
+            "event": {
+              "node": 1,
+              "inlet": 0,
+              "text": "0"
+            },
+            "expected": [
+              {
+                "id": 3,
+                "value": 0,
+                "pulses": 4
+              }
+            ]
+          },
+          {
+            "advance_frames": 2000,
+            "expected": [
+              {
+                "id": 3,
+                "value": 0,
+                "pulses": 4
+              },
+              {
+                "id": 5,
+                "pulses": 1
+              },
+              {
+                "id": 6,
+                "pulses": 3
+              }
+            ]
+          }
+        ],
+        "patch_sha256": "629522864424d9d3eddf0bf3405da1d0140c856e1ddbf0760b4d8e128a62d2dc",
+        "nodes": 6,
+        "edges": 5,
+        "production_parser_accepted": true,
+        "native_compiled_and_executed": true,
+        "assertion_count": 11,
+        "assertions_pass": true,
+        "actual": [
+          {
+            "step": 0,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 1,
+                "pulses": 1,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 3,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 3,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 5,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 6,
+                "value": 0,
+                "pulses": 0,
+                "selector": "",
+                "atoms": []
+              }
+            ]
+          },
+          {
+            "step": 1,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 1,
+                "pulses": 5,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 2,
+                "value": 0,
+                "pulses": 4,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 3,
+                "value": 0,
+                "pulses": 4,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 8,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "id": 5,
+                "value": 0,
+                "pulses": 1,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 6,
+                "value": 0,
+                "pulses": 3,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "step": 2,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 0,
+                "pulses": 6,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 0,
+                "pulses": 4,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 3,
+                "value": 0,
+                "pulses": 4,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 8,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "id": 5,
+                "value": 0,
+                "pulses": 1,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 6,
+                "value": 0,
+                "pulses": 3,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "step": 3,
+            "nodes": [
+              {
+                "id": 1,
+                "value": 0,
+                "pulses": 6,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "id": 2,
+                "value": 0,
+                "pulses": 4,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 3,
+                "value": 0,
+                "pulses": 4,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "id": 4,
+                "value": 0,
+                "pulses": 8,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 0
+                  }
+                ]
+              },
+              {
+                "id": 5,
+                "value": 0,
+                "pulses": 1,
+                "selector": "",
+                "atoms": []
+              },
+              {
+                "id": 6,
+                "value": 0,
+                "pulses": 3,
+                "selector": "",
+                "atoms": [
+                  {
+                    "tag": 0,
+                    "value": 0
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "evidence_sources": [
+    {
+      "path": "apps/ultra/ui/canvas-model.mjs",
+      "sha256": "d1cc66ef8844a1ab984bae33cbaa68843784b2c42e373c8c0ab075d1a2807913"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-catalog.mjs",
+      "sha256": "9636347b0babaed801847a43881e74900b71fbc5540b76bcb6121be8de1d11c2"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/patch_graph.hpp",
+      "sha256": "6a427ea229b7b09abc52e41a935750663d16804fd55c526baffa580a36ed6a6f"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/canvas_message.hpp",
+      "sha256": "bc950c00d981a964d5f1019cd04da7f6bdc42f96225dbf5ceb7901a7edbe3cba"
+    },
+    {
+      "path": "experiments/max-reference/help-next-20261021/check-help.mjs",
+      "sha256": "8331f79a28e4ddd8a55c841ddaf377dcd9d681f14dc22d5406350cde5b7af545"
+    },
+    {
+      "path": "experiments/max-reference/help-next-20261021/native-scenario.cpp",
+      "sha256": "74579055631442bcfa2efb007d6ccb7f28aea55c997429c8e81c4643995b88ed"
+    },
+    {
+      "path": "experiments/max-reference/help-next-20261021/fixtures/scenarios.json",
+      "sha256": "dd04df69aa42ca29d6bb2d0c709b166a526c27b222df8275a2856c6315323884"
+    }
+  ],
+  "limitations": [
+    "Structural fragment acceptance says nothing about complete Max runtime equivalence.",
+    "The whole corpus denominator remains 2103 installed help files; zero whole-help execution passes are added.",
+    "Only basic tabs are selected for graph conversion. Other tabs, dependency resolution, helper code, global send/receive and transport scheduling remain outside this adapter.",
+    "Native scenarios use a research descriptor transport and call production C++ compile_canvas/CanvasRuntime; they do not run Rust preparation, the browser, Tauri IPC, the audio device, or Max.",
+    "No new Max runtime reference or timing oracle is captured by this experiment."
+  ]
+}
