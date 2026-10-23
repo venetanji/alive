@@ -8,9 +8,12 @@ Updated: 2026-10-24. Combined release integration includes packaging/audit PR #2
 editable repeating note clips, cutoff/level automation, mixer, and optional Ultra
 editors whose lifetimes do not own DSP.
 
-**Foundation:** Isolated `feat/alive-session-host` starts at combined integration
-`bf4301e570068241fc33b442dd50018aacb60945`, fetched from
+**Foundation:** Isolated `feat/alive-session-host` initially started at combined
+integration `bf4301e570068241fc33b442dd50018aacb60945`, fetched from
 `origin/integration/ultra-rc1-review` (also merged PR #5 on the release branch).
+After fetching again, it rebased onto release foundation
+`31033483eb3baf15edab1734b966cc6d55c4b8c7`, preserving the admitted-range endpoint
+rendering fix and its DOM regression. Only this feature branch was rebased.
 It contains PR #4 at `ab8b0e250044ad2d2abe23490969337ee52d2e45` and the
 guarded Quit/history fixes. PR #2 and PR #4 remain open against main. Do not edit
 or merge those branches; reconcile refs again before final testing.
@@ -33,17 +36,24 @@ setting changes. Existing integration remains a dependency until main contains i
 ### Task 1: Headless Timing And Device Host
 
 - [x] Read local instructions/product/manifest/probe; fetch refs; isolate branch.
-- [ ] Add bounded session API/runtime in
+- [x] Add bounded session API/runtime in
   `apps/ultra/src-tauri/native/alive_session.h` and `.hpp`; integrate with
   `backend.cpp`. Consume prepared Ultra roots; provide transport, schedule,
   mixer and meters on the same audio clock.
-- [ ] First failing `alive_session_test.cpp`: events at `0,1,31,63,64,127`,
+- [x] First failing `alive_session_test.cpp`: events at `0,1,31,63,64,127`,
   comparing `render({1}) == render({32,64,127,1024})` without forcing callback
   splits at event boundaries. Cover isolation, stop/seek/loop/removal, overload,
   parameter ownership and mute/solo; guard callback allocation/free/locks.
-- [ ] Measure native-signal versus legacy Clockwork event placement; distinguish
+- [x] Measure native-signal versus legacy Clockwork event placement; distinguish
   intrinsic latency from deliberate buffering. Reject unsupported mixed paths.
-- [ ] Run native regression gates and commit the working slice before UI work.
+- [x] Run native regression gates and commit the working slice before UI work.
+
+Native implementation `e31caba` and independent-review fix `42172fe` pass the
+full native gate and callback allocation/free/mutex guards. Review reproduced
+and fixed live arithmetic-mode constraint admission and the Stop/Start queue
+snapshot race with deterministic regressions. Native placement is exact at
+all six offsets; legacy Clockwork output is offset+64. Hosted alignment delay
+is zero, and the hosted profile rejects legacy Voice and named cross-root paths.
 
 ### Task 2: Session Persistence And Device Admission
 
@@ -57,15 +67,15 @@ setting changes. Existing integration remains a dependency until main contains i
   rendering this saved example to WAV and a machine-readable report.
 - [x] Run Rust/headless checks and commit the complete persistence slice.
 
-Task 2 evidence (`4072eb9` + review fix `d8fa119`): ten Rust session tests pass.
+Task 2 evidence (`f28172a` + review fix `7e30d8e`): ten Rust session tests pass.
 The actual display-free CLI renders 412452 frames per comparison through two
 saved devices. Samples match across fixed1024 and arbitrary1/31/63/64/127/1024/
 17/509 partitions. It proves second-cycle audio, two loop generations, frame
 position, seek generation/voice termination, automation ownership, isolation,
 mute/solo, removal and save/reopen/play. This is offline native evidence;
 desktop, endurance and physical audio are not established by it. Independent
-review also found two native admission/Stop-ordering issues under Task1, now
-being corrected before the interface proceeds.
+review found two native admission/Stop-ordering issues under Task1; their
+corrections passed scoped re-review before the interface proceeded.
 An additional real saved-device fixture schedules notes plus cutoff/level on
 both instances at frames0,1,31,63,64,127. It observes all twelve effective-value
 pairs on the scheduled sample and compares one-frame output with irregular
@@ -74,16 +84,27 @@ measurement; it does not infer audible onset from an ADSR's first nonzero sample
 
 ### Task 3: Minimal Native Interface And Editor Lifetime
 
-- [ ] Add transport/two tracks, editable notes and automation, manifest-driven
+- [x] Add transport/two tracks, editable notes and automation, manifest-driven
   controls, gain/mute/solo/meters in the existing compact visual language.
-- [ ] Open Ultra editor for a hosted device; bound parameter edits are live;
+- [x] Open Ultra editor for a hosted device; bound parameter edits are live;
   close/reopen preserves DSP and playback. Structure uses stopped prepare/apply.
-- [ ] Atomic Save/Open and unsaved-state handling; full real Tauri walkthrough
+- [x] Atomic Save/Open and unsaved-state handling; full real Tauri walkthrough
   with playback capture and screenshots, including save/reopen/play again.
+
+Task 3 is implemented in `3a84a3f`, display corrections `130b2b1`, and native
+lifecycle/packaging/CI `7b5e76c`. The actual native journey created a session,
+loaded the source device twice, edited note duration/velocity and both lanes,
+played, changed bases/mixer, closed/reopened the real hosted graph editor,
+saved/reopened/played, preserved playback on missing-device Open, and removed a
+stopped device. A 25.045-second software capture is finite, nonzero and exactly
+equal across the authored duplicated-mono stereo channels. Scoped backend and
+frontend reviews have no remaining Critical/Important implementation findings.
+Graph structure is read-only while hosted; stopped source editing and Replace
+are explicit. New defaults to the packaged usable example, with one/two tracks.
 
 ### Task 4: Acceptance And Draft PR
 
-- [ ] Reconcile refs; preserve UI/native/Rust/package regression gates and add
+- [x] Reconcile refs; preserve UI/native/Rust/package regression gates and add
   headless session tests to CI.
 - [ ] At least 600 seconds of native playback with repeated transport/edit
   operations; record errors, resource growth and only observable underruns,
@@ -93,9 +114,15 @@ measurement; it does not infer audible onset from an ADSR's first nonzero sample
 - [ ] Audit every goal requirement against current evidence. A reproducible
   architectural blocker gets a working slice and narrow decision.
 
-Current evidence: clean combined-integration baseline; native build passes
-(`/tmp/alive-host-baseline-build.log`); native regression gate running.
-Prior instrument evidence below is not session acceptance evidence.
+Current local gates: full native adapter/callback guards, 150 Rust tests (two
+intentional ignores), 442 UI/component tests, 103 rendered Chromium tests,
+full recorded-reference/contracts gate and 14 package/notice tests pass. The
+fresh headless CLI includes actual saved-device boundary observations and all
+transport/isolation/round-trip checks. Pending-history admission, application
+Quit generations and scoped Stop regressions remain passing. A final native
+600-playing-second run retains stream metrics before every I/O reset and
+samples process-tree resources; completion evidence and final pushed CI remain
+pending. Prior standalone instrument evidence below is not session acceptance.
 
 ## Reusable Subtractive Instrument: Completed Foundation
 

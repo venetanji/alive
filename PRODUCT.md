@@ -6,9 +6,9 @@
 
 web
 
-Ultra's editor uses local HTML/CSS/JavaScript inside the existing Rust/Tauri Linux
-desktop app. The browser preview edits documents; the native app executes control
-messages and audio.
+Ultra's editor and Alive's session view use local HTML/CSS/JavaScript inside the
+existing Rust/Tauri Linux desktop app. The browser preview edits documents; the
+native app executes control messages, device hosting, transport and audio.
 
 ## Users
 
@@ -19,15 +19,23 @@ compact visual language as the blueprint.
 ## Product Purpose
 
 Author, understand, connect, save, reopen, and play a bounded patch without having
-to configure every object through permanent side panels.
+to configure every object through permanent side panels. Host reusable saved
+instruments in a small, reopenable Alive session with clips, automation and a mixer.
 
 ## Capabilities and Constraints
 
 - A patch-authored four-voice subtractive instrument combines Faust saw/filter/
   ADSR primitives, explicit voice-lane mixdown and stereo output. Its Perform
   panel, saved parameter/preset interface, independent instances and headless
-  host harness form the reusable-device slice. Alive session hosting is absent;
-  panel keys and an authored score provide playback without physical MIDI.
+  host harness form the reusable-device slice. Alive now loads that same saved
+  device independently on up to two tracks through its versioned interface.
+  A native shared transport plays editable chord clips with note velocity and
+  duration, cutoff/level automation, gain/mute/solo and stereo peak meters.
+  Session files preserve references/bases, musical data and mixer values.
+  Optional hosted Ultra graph editors make supported bound parameter edits
+  without owning DSP lifetime. Clip/automation and device structure changes
+  require stopped preparation; the first hosted graph view is read-only for
+  structure. See `apps/alive/README.md` and `apps/alive/SESSION_CONTRACT.md`.
 
 - Up to 16 native patch, help and example windows each run an independent
   `ultra-canvas-v1` graph with 66 native object kinds, 32 nodes and 64 edges. Ports
@@ -76,7 +84,8 @@ to configure every object through permanent side panels.
 
 ## Brand Commitments
 
-The product is Ultra. The user confirmed a close Max visual and workflow match
+Ultra is the patch editor and device authoring environment; Alive is its compact
+session host. The user confirmed a close Max visual and workflow match
 on 2026-10-20. Build original controls and help content; do not redistribute Max
 code, fonts, proprietary help patches, icons, or application assets.
 

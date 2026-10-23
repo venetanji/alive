@@ -65,8 +65,11 @@ def detail():
 
 
 def log(action):
-    operations.append({'action': action, 'monotonic': time.monotonic(), 'audio': detail()})
+    audio = detail()
+    operations.append({'action': action, 'monotonic': time.monotonic(), 'audio': audio})
     (ui.output / 'operations.json').write_text(json.dumps(operations, indent=2))
+    assert audio['Audio stream errors'] == '0' and audio['Audio failed'] == 'false', audio
+    assert audio['Rejected commands'] == '0', audio
 
 
 def transport(action):
@@ -283,6 +286,7 @@ def run():
         samples.append(process_sample())
         while played < required:
             started = time.monotonic()
+            frame_before = int(value('Absolute frame'))
             numeric('Cutoff base', 700 + cycles % 5 * 200)
             numeric('Pulse gain', .45 + cycles % 3 * .05)
             numeric('Seek beat', cycles % 4 * 2)
@@ -291,7 +295,11 @@ def run():
                 editor_edit(800 + cycles % 5 * 100)
             time.sleep(min(8, max(0, required - played)))
             wait_value('Transport playing', lambda s: s == 'true')
+            assert int(value('Absolute frame')) > frame_before, 'Audio frame clock stopped advancing'
             played += time.monotonic() - started
+            # Driver metrics reset when Apply restarts I/O. Retain and check
+            # every stream before that boundary, rather than only the last one.
+            log(f'endurance cycle {cycles + 1} before Stop/possible Apply')
             transport('stop')
             wait_value('Track 1 active voices', lambda s: s == '0')
             wait_value('Track 2 active voices', lambda s: s == '0')
@@ -323,6 +331,28 @@ def run():
               'process_tree_samples': samples, 'final_audio': final, 'operations': operations}
     (ui.output / 'native-session-report.json').write_text(json.dumps(report, indent=2))
     screenshot('session-device-removed.png')
+    ui.click('Quit Alive')
+    windows.focus('Unsaved Alive Session')
+    ui.click('Cancel')
+    windows.focus(MAIN)
+    transport('start')
+    report['quit_cancel_preserved_session'] = True
+    ui.click('Quit Alive')
+    windows.focus('Unsaved Alive Session')
+    ui.click('Discard')
+    deadline = time.monotonic() + 8
+    while time.monotonic() < deadline:
+        try:
+            state = Path(f'/proc/{ui.pid}/stat').read_text().split(') ', 1)[1].split()[0]
+            if state == 'Z':
+                break
+        except FileNotFoundError:
+            break
+        time.sleep(.1)
+    else:
+        raise AssertionError('Alive Quit did not exit after Discard')
+    report['quit_discard_exited'] = True
+    (ui.output / 'native-session-report.json').write_text(json.dumps(report, indent=2))
     print(json.dumps(report, indent=2), flush=True)
 
 
