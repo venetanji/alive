@@ -211,6 +211,9 @@ name updates the port layout through an ordinary structural edit.
 
 Name-and-argument entry appears near the pointer or edited object as a compact
 object-sized field. Its size and type track canvas zoom; text expands its width.
+New entry starts as a blank standard object with top and bottom rails and a
+focused caret. Completion stays hidden until text is entered; Enter on an empty
+new box cancels without changing the document.
 Suggestions and argument help occupy a separate unscaled overlay, placed above
 or below the field to fit the viewport. Suggestions use amber names, positional
 signatures, a plain explanation and a blue active row. A compact argument guide
@@ -259,6 +262,9 @@ invalid or empty drops leave the document intact. Escape, lost pointer capture,
 focus loss, locking and history actions clear the gesture and its feedback.
 Port hit areas grow outward to preserve the compact face for object dragging;
 variadic objects keep enough width to target adjacent ports independently.
+Inlet notches curve into the top rail; outlet notches mirror them on the bottom
+rail. Hover and keyboard focus use selection blue, while invalid wire targets
+retain error coloring.
 
 Hover and focus provide concise help. The inlet menu lists accepted messages;
 the outlet menu lists emitted data. Both expose original per-object help. The

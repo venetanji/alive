@@ -43,7 +43,7 @@ export function completionFor(text,caret=text.length) {
   const entryParameter=key=>parameter(entry,key,name?.text);
   const base={object:entry,parameters:entry?(entry.options||entry.args).map(entryParameter):[],syntax:entry?signature(entry):'',parameter:null};
   if(!entry||caret<=name.end) {
-    const choices=suggestObjects(name?.text||'').map(s=>({
+    const choices=(name?suggestObjects(name.text):[]).map(s=>({
       kind:'object',object:s,label:s.name,detail:s.summary,syntax:signature(s),insert:s.name,
       start:name?.start||0,end:name?.end||caret,
     }));

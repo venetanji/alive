@@ -10,6 +10,7 @@ export function createObjectEntry({document:doc,window:win,commit,onClose=()=>{}
     completion=completionFor(input.value,input.selectionStart??input.value.length);
     multiline=completion.object?.type==='comment';
     if(multiline)completion={...completion,mode:'arguments',choices:[],parameter:null};
+    box.classList.toggle('multiline-entry',multiline);
     input.setAttribute('role',multiline?'textbox':'combobox');
     input.setAttribute('aria-label',multiline?'Comment text':'Object name and arguments');
     input.setAttribute('aria-autocomplete',multiline?'none':'list');
@@ -30,6 +31,7 @@ export function createObjectEntry({document:doc,window:win,commit,onClose=()=>{}
     const object=completion.mode==='objects'?choices[active]?.object:completion.object;
     const p=completion.parameter||choices[active]?.parameter;
     guide.replaceChildren();guide.hidden=!object||completion.mode==='objects';
+    assistance.hidden=!input.value.trim()&&!$('object-error').textContent;
     box.classList.toggle('completing-name',completion.mode==='objects');
     list.hidden=choices.length===0;
     if(object) {
@@ -43,7 +45,7 @@ export function createObjectEntry({document:doc,window:win,commit,onClose=()=>{}
     }
     list.setAttribute('aria-label',completion.mode==='objects'?'Supported objects':completion.mode==='options'?'Supported options':'Parameter values');
     if(multiline)input.removeAttribute?.('aria-expanded');else input.setAttribute('aria-expanded',String(choices.length>0));
-    input.setAttribute('aria-activedescendant',choices[active]?`suggestion-${active}`:'');
+    if(choices[active])input.setAttribute('aria-activedescendant',`suggestion-${active}`);else input.removeAttribute?.('aria-activedescendant');
     const viewportWidth=win.innerWidth||1280,viewportHeight=win.innerHeight||840;
     const lines=multiline?input.value.split('\n'):[];
     const measure=multiline?lines.reduce((longest,line)=>Math.max(longest,line.length),0):input.value.length;
@@ -71,6 +73,7 @@ export function createObjectEntry({document:doc,window:win,commit,onClose=()=>{}
     context=rest;active=0;originalText=text;input.value=text;originalDisplay=input.value;input.setAttribute('aria-invalid','false');$('object-error').textContent='';box.hidden=false;
     anchor={x:clientX,y:clientY};
     entryWidth=width;entryHeight=height;fontSize=font;
+    box.style.setProperty('--entry-scale',String(height/24));
     input.focus();if(text)input.select();render();
   }
   input.addEventListener('input',()=>{active=0;input.setAttribute('aria-invalid','false');$('object-error').textContent='';render();});
@@ -88,11 +91,12 @@ export function createObjectEntry({document:doc,window:win,commit,onClose=()=>{}
     } else if(e.key==='Tab'){e.preventDefault();complete();}
     else if(e.key==='Enter'){
       e.preventDefault();
+      if(!input.value.trim()&&!context.nodeId){close();return;}
       try{
         const name=input.value.trim().split(/\s+/)[0];
         if(completion.mode==='objects'&&choices.length&&!choices.some(s=>s.object.name===name||s.object.aliases.includes(name)))complete();
         commit(multiline&&input.value===originalDisplay?originalText:input.value,context);close();
-      }catch(error){$('object-error').textContent=error.message;input.setAttribute('aria-invalid','true');}
+      }catch(error){$('object-error').textContent=error.message;assistance.hidden=false;input.setAttribute('aria-invalid','true');}
     }
   });
   return{open,close,isOpen:()=>!box.hidden};

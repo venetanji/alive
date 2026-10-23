@@ -2,6 +2,10 @@ import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {completionFor} from './canvas-completion.mjs';
 
+test('empty object text has no implicit completion',()=>{
+  for(const text of ['', ' ', '\t'])assert.deepEqual(completionFor(text).choices,[]);
+});
+
 test('object completion exposes syntax and argument guidance from the validated profile',()=>{
   const c=completionFor('mak');
   assert.equal(c.mode,'objects');assert.equal(c.choices[0].label,'makenote');

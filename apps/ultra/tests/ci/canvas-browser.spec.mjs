@@ -246,6 +246,52 @@ test('empty undo and redo stacks still clear all pending cord feedback',async({p
   }
 });
 
+test('new object starts as a blank box and offers completion only after typing',async({page},testInfo)=>{
+  await page.goto('/canvas.html');
+  const original=await exportPatch(page);
+  await page.locator('#workspace').focus();await page.keyboard.press('n');
+  const input=page.locator('#object-text'),assistance=page.locator('#entry-assistance');
+  await expect(input).toBeFocused();await expect(input).toHaveValue('');
+  await expect(assistance).toBeHidden();
+  expect(await input.getAttribute('placeholder')).toBeFalsy();
+  await expect(input).toHaveAttribute('aria-expanded','false');
+  await page.screenshot({path:testInfo.outputPath('blank-object-desktop.png')});
+  await input.press('Tab');await expect(input).toHaveValue('');
+  await input.fill('met');await expect(assistance).toBeVisible();
+  await expect(page.locator('.suggestion').first()).toContainText('metro');
+  await input.fill('');await expect(assistance).toBeHidden();
+  await input.press('Enter');await expect(page.locator('#object-entry')).toBeHidden();
+  expect(await exportPatch(page)).toEqual(original);
+  await page.locator('#add-object').click();await expect(assistance).toBeHidden();
+  await input.fill('metro 225');await input.press('Enter');
+  const patch=await exportPatch(page);
+  expect(patch.nodes).toHaveLength(original.nodes.length+1);
+  expect(patch.nodes.at(-1)).toMatchObject({type:'metro',params:{interval:225}});
+  await page.locator('#undo').click();expect(await exportPatch(page)).toEqual(original);
+});
+
+test('blank entry stays compact at zoom and existing-object errors remain visible',async({page},testInfo)=>{
+  await page.setViewportSize({width:390,height:844});await page.goto('/canvas.html');
+  await page.locator('#canvas-zoom').selectOption('2');
+  const workspace=await page.locator('#workspace').boundingBox();
+  await page.mouse.move(workspace.x+120,workspace.y+120);
+  await page.locator('#workspace').focus();await page.keyboard.press('n');
+  const input=page.locator('#object-text'),box=await input.boundingBox();
+  expect(box.width).toBe(200);expect(box.height).toBe(48);
+  await expect(page.locator('#entry-assistance')).toBeHidden();
+  await expect(input).toBeInViewport();
+  await page.screenshot({path:testInfo.outputPath('blank-object-narrow-200.png')});
+  await input.press('Escape');
+  await page.locator('#canvas-zoom').selectOption('1');
+  await page.locator('[data-node="2"] .object-label').dblclick();
+  await input.fill('');await input.press('Enter');
+  await expect(input).toHaveAttribute('aria-invalid','true');
+  await expect(page.locator('#object-error')).toBeVisible();
+  await expect(page.locator('#object-error')).not.toBeEmpty();
+  await input.press('Escape');
+  await expect(page.locator('[data-node="2"] .object-label')).toContainText('metro');
+});
+
 test('autocomplete guides arguments, completes named options and keeps typed values on Enter',async({page},testInfo)=>{
   await page.goto('/canvas.html');await page.locator('#workspace').focus();await page.keyboard.press('n');
   const input=page.locator('#object-text'),help=page.locator('#object-arguments');
