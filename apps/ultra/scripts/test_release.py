@@ -40,7 +40,7 @@ class ReleaseTests(unittest.TestCase):
     def test_bundled_alive_example_resolves_its_external_device(self):
         for target in release.TARGETS:
             with self.subTest(target=target), tempfile.TemporaryDirectory() as d:
-                package = Path(d)
+                package = Path(d).resolve()
                 resources = release.bundle_config(target)['bundle']['resources']
                 for source, destination in resources.items():
                     if destination.startswith('alive-session/'):
