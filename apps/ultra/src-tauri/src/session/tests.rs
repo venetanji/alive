@@ -172,5 +172,18 @@ fn rust_host_installs_the_saved_session_without_editor_windows() {
     let report = probe::run(&example_path(), &output).unwrap();
     assert_eq!(report["passed"], true);
     assert_eq!(report["editorWindowsCreated"], 0);
+    assert!(report["loopProof"]["secondCycleEnergy"].as_f64().unwrap_or(0.) > 1e-9);
+    assert!(report["loopProof"]["wrapGenerations"].as_u64().unwrap_or(0) >= 2);
+    assert_eq!(report["seekProof"]["generationAdvanced"], true);
+    let mut broken = read(&example_path()).unwrap();
+    let graph = &mut broken.tracks[1].graph;
+    let sink = graph.nodes[..graph.node_count as usize].iter().position(|n| n.id == 11).unwrap();
+    graph.nodes[sink..].rotate_left(1);
+    graph.node_count -= 1;
+    let edges: Vec<_> = graph.edges[..graph.edge_count as usize].iter().filter(|e| e.from != 11 && e.to != 11).cloned().collect();
+    graph.edge_count = edges.len() as u32;
+    for (slot, edge) in edges.into_iter().enumerate() { graph.edges[slot] = edge; }
+    let error = host::Host::default().validate(&broken).unwrap_err();
+    assert!(error.contains("Harmony") && error.contains("subtractive.ultra") && error.contains("stereo"), "{error}");
     std::fs::remove_dir_all(output).unwrap();
 }

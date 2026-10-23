@@ -52,6 +52,7 @@ pub struct State {
 }
 
 extern "C" {
+    pub fn alive_session_validate_graph(track: *const Track, graph: *const NativeGraph) -> i32;
     pub fn alive_session_validate_prepared(config: *const Config, graphs: *const NativeGraph, count: u32) -> i32;
     pub fn alive_session_configure(config: *const Config) -> i32;
     pub fn alive_session_reset() -> i32;

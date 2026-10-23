@@ -54,6 +54,12 @@ impl Host {
     /// Prospective admission leaves the current playback and document untouched.
     pub fn validate(&self, prepared: &PreparedSession) -> Result<(), String> {
         let (config, graphs) = self.configuration(prepared);
+        for (index, graph) in graphs.iter().enumerate() {
+            if unsafe { native::alive_session_validate_graph(&config.tracks[index], graph) } == 0 {
+                let track = &prepared.document.tracks[index];
+                return Err(format!("Track '{}' ({}): {}", track.name, track.device.path, native::error()));
+            }
+        }
         if unsafe { native::alive_session_validate_prepared(&*config, graphs.as_ptr(), graphs.len() as u32) } == 0 {
             return Err(native::error());
         }

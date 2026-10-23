@@ -45,11 +45,20 @@ pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
     let _shutdown = Shutdown;
     let prepared = read(path)?;
     require(prepared.tracks.len() == 2, "The session proof requires two saved device references")?;
+    require(prepared.document.loop_enabled, "The session proof requires an enabled loop")?;
     let mut host = Host::default();
     host.install(prepared.clone())?;
     start()?;
+    let loop_start = native::state()?;
     let count = prepared.length_frames as usize * 2 + 1024;
     let baseline = render(count, &[1024])?;
+    let loop_end = native::state()?;
+    let second_cycle = energy(&baseline[prepared.length_frames as usize * 2..prepared.length_frames as usize * 4]);
+    let wraps = loop_end.generation.saturating_sub(loop_start.generation + 1);
+    require(loop_end.playing == 1 && loop_end.position == count as u64 % prepared.length_frames
+        && loop_end.absolute_frame - loop_start.absolute_frame == count as u64
+        && wraps == count as u64 / prepared.length_frames && second_cycle > 1e-9,
+        "Loop did not wrap on the expected frame/generation and produce second-cycle audio")?;
     require(energy(&baseline) > 1e-9, "Saved Alive session produced no sound")?;
     unsafe { native::ultra_audio_stop(); }
     host.install(prepared.clone())?;
@@ -90,10 +99,12 @@ pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
     host.mixer(1, 0.7, false, false)?;
     require(unsafe { native::alive_session_start() } != 0, &native::error())?;
     render(128, &[128])?;
+    let before_seek = native::state()?;
     require(unsafe { native::alive_session_seek(17) } != 0, &native::error())?;
     render(1, &[1])?;
     let sought = native::state()?;
-    require(sought.position == 18 && sought.tracks.iter().all(|t| t.active_voices == 0), "Seek retained pre-seek notes or used the wrong frame")?;
+    require(sought.position == 18 && sought.generation > before_seek.generation
+        && sought.tracks.iter().all(|t| t.active_voices == 0), "Seek retained pre-seek notes or used the wrong frame/generation")?;
 
     let view = host.view()?;
     let saved = save(&output.join("reopened.alive"), view.document, view.path)?;
@@ -122,6 +133,8 @@ pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
         "editorWindowsCreated":0,"sampleRate":48000,"masterChannels":2,"renderedFramesPerComparison":count,
         "partitions":partitions,"partitionSamplesIdentical":true,"audioSha256":digest(&baseline),
         "energy":{"twoDevices":energy(&baseline),"secondOnly":second_only,"reopened":reopened_energy},
+        "loopProof":{"secondCycleEnergy":second_cycle,"wrapGenerations":wraps,"position":loop_end.position},
+        "seekProof":{"generationAdvanced":sought.generation > before_seek.generation,"position":sought.position},
         "checked":["real-device-dependencies","loop","arbitrary-partitions","automation-ownership","device-isolation","mute-solo","stop","seek","session-save-reopen","device-removal"],
         "timingBoundaryOffsets":[0,1,31,63,64,127],"timingEvidence":"alive_session_test.cpp measures native sample at offset and legacy Clockwork sample at offset+64; the session profile rejects legacy Voice"});
     std::fs::write(output.join("report.json"), serde_json::to_vec_pretty(&report).unwrap()).map_err(|e|e.to_string())?;
