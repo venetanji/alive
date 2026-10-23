@@ -59,6 +59,19 @@ export function createDocumentSession({invoke,getPatch,adopt,beforeSave=async()=
       if(invoke)await invoke('document_close_flushed',request);
     },
     cancelClose(request){if(closing.get(request.requestLabel)?.token===request.token)closing.delete(request.requestLabel);},
-    async saveBeforeClose(){const saved=await this.save();if(saved&&!dirty&&invoke)await invoke('document_close_confirmed');return saved&&!dirty;},
+    async saveBeforeClose(request){
+      const args=request?.quitToken===undefined?undefined:{quitToken:request.quitToken};
+      let confirmed=false;
+      try {
+        const saved=await this.save();
+        if(!saved||dirty)return false;
+        if(invoke&&await invoke('document_close_confirmed',args)===false)return false;
+        confirmed=true;return true;
+      } finally {
+        // A frontend preflight failure never reaches native Save. Release the
+        // Quit transaction for that case as well as picker/save cancellation.
+        if(!confirmed&&invoke)await invoke('document_cancel_close',args);
+      }
+    },
   };
 }

@@ -16,6 +16,8 @@ struct HierarchyDocument {
     profile: String,
     nodes: Vec<HierarchyNode>,
     edges: Vec<Edge>,
+    #[serde(default, deserialize_with = "super::device::present")]
+    device: Option<super::device::Device>,
     #[serde(default, rename = "helpShell", deserialize_with = "present_help_shell")]
     help_shell: Option<HelpShell>,
 }
@@ -73,7 +75,7 @@ pub(super) fn prepare(patch: Value) -> Result<Prepared, String> {
     let mut nodes = Vec::new();
     let mut edges = Vec::new();
     lower_scope(root, &mut nodes, &mut edges)?;
-    prepare_flat(Document { version: 1, profile: "ultra-canvas-v1".into(), nodes, edges }, true)
+    prepare_flat(Document { version: 1, profile: "ultra-canvas-v1".into(), nodes, edges, device: doc.device }, true)
 }
 
 fn validate_scope(scope: &Scope, depth: usize, bounds: &mut Bounds) -> Result<(), String> {

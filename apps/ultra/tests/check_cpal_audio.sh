@@ -71,8 +71,11 @@ WIREPLUMBER_CONFIG_DIR=/usr/share/wireplumber \
 policy=$!
 sleep .3
 kill -0 "$policy"
-# Writing to stdout requests raw PCM on both PipeWire 1.0 and newer versions.
-timeout --signal=INT --kill-after=5s 40s pw-cat --record --rate=48000 --format=f32 --channels=2 --channel-map=FL,FR --target=0 \
+# Newer pw-cat defaults stdout to an AU container; older releases write raw PCM.
+pw-cat --help >"$out/capture-help.txt"
+capture_args=()
+if grep -q -- '--raw' "$out/capture-help.txt"; then capture_args+=(--raw); fi
+timeout --signal=INT --kill-after=5s 40s pw-cat "${capture_args[@]}" --record --rate=48000 --format=f32 --channels=2 --channel-map=FL,FR --target=0 \
     --properties='{ node.name = Ultra-Capture }' - >"$out/loopback.f32" 2>"$out/capture.log" &
 capture=$!
 for attempt in {1..80}; do

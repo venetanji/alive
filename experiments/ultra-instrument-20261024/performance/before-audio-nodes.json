@@ -1,0 +1,92 @@
+[
+  {
+    "id": 14,
+    "props": {
+      "clock.id": "monotonic",
+      "clock.name": "clock.system.monotonic",
+      "clock.quantum-limit": 8192,
+      "factory.id": 6,
+      "factory.name": "support.node.driver",
+      "node.driver": true,
+      "node.group": "pipewire.dummy",
+      "node.loop.name": "data-loop.0",
+      "node.name": "Ultra-Test-Driver",
+      "object.id": 14,
+      "object.serial": 14,
+      "priority.driver": 20000
+    },
+    "format": []
+  },
+  {
+    "id": 15,
+    "props": {
+      "audio.channels": 2,
+      "audio.position": "[ FL FR ]",
+      "clock.quantum-limit": 8192,
+      "factory.id": 10,
+      "factory.name": "support.null-audio-sink",
+      "library.name": "audioconvert/libspa-audioconvert",
+      "media.class": "Audio/Sink",
+      "node.description": "Ultra-Software-Output",
+      "node.driver": true,
+      "node.loop.name": "data-loop.0",
+      "node.name": "Ultra-Software-Output",
+      "object.id": 15,
+      "object.serial": 15,
+      "port.group": "stream.0"
+    },
+    "format": [
+      {
+        "mediaType": "audio",
+        "mediaSubtype": "raw",
+        "format": "F32P",
+        "rate": 48000,
+        "channels": 2,
+        "position": [
+          "FL",
+          "FR"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "props": {
+      "adapt.follower.spa-node": "",
+      "client.id": 31,
+      "clock.quantum-limit": 8192,
+      "factory.id": 9,
+      "library.name": "audioconvert/libspa-audioconvert",
+      "media.category": "Playback",
+      "media.class": "Stream/Output/Audio",
+      "media.name": "cpal-playback-170100",
+      "media.type": "Audio",
+      "node.async": true,
+      "node.autoconnect": true,
+      "node.driver-id": 15,
+      "node.group": "cpal-170100",
+      "node.loop.class": "main",
+      "node.loop.name": "main-loop",
+      "node.name": "ultra",
+      "node.want-driver": true,
+      "object.id": 32,
+      "object.register": false,
+      "object.serial": 37,
+      "port.group": "stream.0",
+      "stream.is-live": true
+    },
+    "format": [
+      {
+        "mediaType": "audio",
+        "mediaSubtype": "raw",
+        "format": "F32LE",
+        "rate": 48000,
+        "channels": 2,
+        "position": [
+          "FL",
+          "FR"
+        ]
+      }
+    ]
+  }
+]

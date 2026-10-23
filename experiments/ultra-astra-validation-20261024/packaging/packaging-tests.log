@@ -1,0 +1,16 @@
+test_inventory_covers_complete_lockfile (test_notices.NoticesTests.test_inventory_covers_complete_lockfile) ... ok
+test_inventory_preserves_lock_checksums_and_local_fork (test_notices.NoticesTests.test_inventory_preserves_lock_checksums_and_local_fork) ... ok
+test_metadata_uses_utf8_under_windows_legacy_locale (test_notices.NoticesTests.test_metadata_uses_utf8_under_windows_legacy_locale) ... ok
+test_release_validation_rejects_stale_inventory (test_notices.NoticesTests.test_release_validation_rejects_stale_inventory) ... ok
+test_artifact_validation (test_release.ReleaseTests.test_artifact_validation) ... ok
+test_bundle_paths (test_release.ReleaseTests.test_bundle_paths) ... ok
+test_loader_matches_product_directory (test_release.ReleaseTests.test_loader_matches_product_directory) ... ok
+test_packaged_notices_must_match_sources (test_release.ReleaseTests.test_packaged_notices_must_match_sources) ... ok
+test_platforms (test_release.ReleaseTests.test_platforms) ... ok
+test_release_does_not_grant_pr_writes (test_release.ReleaseTests.test_release_does_not_grant_pr_writes) ... ok
+test_version_guard (test_release.ReleaseTests.test_version_guard) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.092s
+
+OK

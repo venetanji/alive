@@ -35,6 +35,47 @@ fn document_identity_is_independent_and_reused_slots_have_new_labels() {
     assert!(registry.get(&main.label).is_err());
     assert_eq!(registry.get(&other.label).unwrap().id, 1);
 }
+#[test]
+fn instantiating_clones_the_current_authored_root_into_an_independent_unsaved_owner() {
+    let mut registry=Registry::default();let original=hierarchy();
+    let root=registry.add("Saved Instrument".into(),Kind::Example,Some(original.clone()),Some(PathBuf::from("/tmp/instrument.ultra")),Some("example".into())).unwrap();
+    let (child,_)=registry.open_view(&root.label,1).unwrap();
+    registry.get_mut(&root.label).unwrap().source=Some("import source".into());
+    registry.prepare_runtime(&root.label,|_|Ok(42.into())).unwrap();
+    let mut edited=original;edited["nodes"][0]["patcher"]["nodes"][0]["params"]["value"]=serde_json::json!(12);
+    registry.commit(&root.label,0,edited.clone(),true,|_,_|Ok(42.into())).unwrap();
+    let instance=registry.instantiate(&child.label).unwrap();
+    assert_ne!(instance.id,root.id);assert_ne!(instance.owner_label,root.owner_label);
+    assert_eq!(instance.label,instance.owner_label);assert!(instance.view_path.is_empty());
+    assert_eq!(instance.title,"Untitled");assert_eq!(instance.kind,Kind::Patch);assert_eq!(instance.patch,Some(edited.clone()));
+    assert!(instance.path.is_none() && instance.source.is_none() && instance.source_name.is_none() && instance.help_key.is_none());
+    assert!(instance.dirty);assert!(!instance.can_undo && !instance.can_redo);
+    assert_eq!((instance.authoring_revision,instance.runtime_revision,instance.message_text_serial),(0,0,0));
+    let activated=registry.prepare_runtime(&instance.label,|owner|{assert_eq!(owner.id,instance.id);Ok(7.into())}).unwrap();
+    assert_eq!(activated.runtime_revision,7);assert_eq!(registry.get(&root.label).unwrap().runtime_revision,42);
+    let mut changed=edited.clone();changed["nodes"][0]["patcher"]["nodes"][0]["params"]["value"]=serde_json::json!(99);
+    registry.commit(&instance.label,0,changed,true,|_,_|Ok(7.into())).unwrap();
+    assert_eq!(registry.get(&root.label).unwrap().patch,Some(edited));
+    registry.remove(&instance.label);assert_eq!(registry.get(&root.label).unwrap().runtime_revision,42);
+}
+#[test]
+fn instantiating_revalidates_and_retains_canonical_device_metadata() {
+    let mut registry=Registry::default();
+    let source=serde_json::json!({"version":1,"profile":"ultra-canvas-v1","nodes":[
+        {"id":1,"type":"poly_note","x":0,"y":0,"params":{}},
+        {"id":2,"type":"adsr_voice","x":0,"y":0,"params":{}}],"edges":[],
+        "device":{"version":1,"id":"org.alive.test","name":"Test","midi":{"node":1,"inlet":0},
+            "audio":{"inputs":0,"outputs":2,"layout":"stereo"},
+            "parameters":[{"key":"attack","label":"Attack","node":2,"param":"attack","min":1,"max":10000}],
+            "presets":[{"name":"Init","values":{"attack":10}}]}});
+    let root=registry.add("Device".into(),Kind::Patch,Some(source.clone()),None,None).unwrap();
+    let instance=registry.instantiate(&root.label).unwrap();assert_eq!(instance.patch,Some(source.clone()));
+    let dir=directory();let file=dir.join("instance.ultra");save_patch(&file,instance.patch.as_ref().unwrap()).unwrap();
+    assert_eq!(read_patch(&file).unwrap().patch,Some(source));
+    registry.get_mut(&root.label).unwrap().patch.as_mut().unwrap()["device"]["midi"]["node"]=serde_json::json!(99);
+    assert!(registry.instantiate(&root.label).is_err());assert_eq!(registry.list().len(),2);
+    fs::remove_dir_all(dir).unwrap();
+}
 
 #[test]
 fn full_registry_retains_all_documents_and_closing_frees_one_slot() {

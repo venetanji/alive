@@ -14,8 +14,8 @@ does not read repository secrets or use `pull_request_target`.
    and multi-document workspace execution tests. Document tests cover save/dirty
    races and independent new/open actions; send/receive tests
    cover typed names, ports and supported import semantics. The original help
-   manifest is checked against the browser library and 60 native object kinds plus patcher/comment constructs
-   (125 original help/example/starter entries).
+   manifest is checked against the browser library and 66 native object kinds plus patcher/comment constructs
+   (138 original help/example/starter entries).
    The list-runtime check compiles the production native headers and compares
    ordered outlets, selectors and values against recorded Max cases, including
    scalar integer/float identity. The recordings cannot establish numeric atom
@@ -127,15 +127,17 @@ The loopback script starts only its own PipeWire server, policy-only WirePlumber
 and D-Bus session under a fresh mode-0700 temporary runtime directory. No hardware
 monitors, system service reconfiguration, device permissions, or security bypasses
 are needed. Ubuntu 24.04's WirePlumber 0.4 uses upstream `policy.conf`; newer
-WirePlumber uses its `policy` profile. Capture uses raw stdout (supported by
-PipeWire 1.0), not newer `--raw` / `--sample-count` flags. Recording stops cleanly
+WirePlumber uses its `policy` profile. Capture requests `--raw` when advertised
+by `pw-cat --help`, because newer versions otherwise write an AU container to
+stdout; PipeWire 1.0's raw stdout remains supported without that flag. Recording stops cleanly
 after the real Rust test, so frame count varies. The analyzer requires a recorded
 planned SIGINT, a passing probe, empty recorder stderr, and valid stereo PCM.
-It accepts exit status 1 only for matching compiled/linked PipeWire 1.0.5 or
-1.6.9: upstream
+It accepts exit status 1 only for matching compiled/linked PipeWire 1.0.5,
+1.6.9 or 1.6.10: upstream
 [`pw-cat` returns success only after playback drain](https://github.com/PipeWire/pipewire/blob/1.0.5/src/tools/pw-cat.c#L1916-L1921),
 not for a recording stopped by SIGINT. The
-[same shutdown behavior remains in 1.6.9](https://github.com/PipeWire/pipewire/blob/1.6.9/src/tools/pw-cat.c#L2655-L2660).
+[same shutdown behavior remains in 1.6.9](https://github.com/PipeWire/pipewire/blob/1.6.9/src/tools/pw-cat.c#L2655-L2660)
+and [1.6.10](https://github.com/PipeWire/pipewire/blob/1.6.10/src/tools/pw-cat.c#L2645-L2650).
 The raw exit status remains in the report;
 unknown-version status 1, timeouts, missing stop evidence, errors, and invalid PCM
 are rejected. `check_cpal_capture.py --self-test` covers these cases in the
@@ -281,6 +283,35 @@ done
 
 These tests use the external host render API and open no audio
 device; the separate CPAL loopback gate verifies device callback integration.
+
+Run the complete compiled-backend gate with:
+
+```sh
+bash apps/ultra/tests/ci/check-native.sh
+```
+
+The portable contract gate includes `canvas_voice_objects_test.cpp` for the six
+authored four-voice objects, exact lane admission, allocator behavior and Faust
+signal processing. The compiled-backend gate also runs
+`canvas_voice_backend_test.cpp` with the backend and core linked statically.
+Linker wrappers count allocation, free and mutex calls during render while the
+test exercises voice termination, saturated ingress and callback partitions.
+
+The native CI job renders the original saved instrument through the real Rust
+document admission path, with both desktop display variables removed:
+
+```sh
+env -u DISPLAY -u WAYLAND_DISPLAY LD_LIBRARY_PATH="$PWD/apps/ultra/build" \
+  apps/ultra/src-tauri/target/release/ultra --instrument-probe \
+  apps/ultra/examples/subtractive.ultra apps/ultra/build/instrument-evidence
+```
+
+This host creates two independent roots without creating an editor, then checks
+live level, cutoff and envelope edits, metadata and preset retention, isolated
+Stop/close and an audible cable disconnection/restoration. The command fails if
+an assertion fails and writes stereo float32 WAV segments plus `report.json`.
+CI uploads those artifacts for seven days. This proves standalone saved-graph
+processing; Alive session hosting and hardware timing remain outside the probe.
 
 ## Dependency and cache policy
 

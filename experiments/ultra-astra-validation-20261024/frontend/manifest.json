@@ -1,0 +1,98 @@
+{
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 3883,
+      "sha256": "1741afa6e6b9dfc63157bebc9e805670cbf121ecc32fa7ad8d1ca21c49c51238"
+    },
+    {
+      "path": "cache-invalidation-snapshots.json",
+      "bytes": 71143,
+      "sha256": "16cce39446f33c32f2f267f9cae9beadfa16e318d912fdc827e6c3a4f076bc64"
+    },
+    {
+      "path": "native-cache-gain-2/cache-after-wiring.png",
+      "bytes": 52774,
+      "sha256": "1bfa0f62162a11e2f140b5d18d385fa945e3d7c7064b736b7e83ebda826443e3"
+    },
+    {
+      "path": "native-cache-gain-2/gain-saved.png",
+      "bytes": 50711,
+      "sha256": "41113fba89fab78c83902741169b9c2199af4bb053537f4e341f93e98df5633f"
+    },
+    {
+      "path": "native-cache-gain-2/native-child.png",
+      "bytes": 51342,
+      "sha256": "a655a1d8048eb9d5a529ba5ce55705a6e8491dc578f6ac90f8c95511d9e8ba41"
+    },
+    {
+      "path": "native-cache-gain-2/result.json",
+      "bytes": 55018,
+      "sha256": "8c5d48658d675acbaf4355d3e29299dd776edc8989d8d4f44c6badd556b7a199"
+    },
+    {
+      "path": "native-cache-gain-2/snapshots.json",
+      "bytes": 53053,
+      "sha256": "6b317a90b030a3b927d22d2576d7786d04f5118ce6199fcef13ef4befe17fcdc"
+    },
+    {
+      "path": "native-cache-gain.md",
+      "bytes": 3363,
+      "sha256": "efe56cf7e7452fd0c732c463097fcee10be1ef3cd4760f5400b49a72d7c8821c"
+    },
+    {
+      "path": "native-history-2/redo-retry-enter.png",
+      "bytes": 50197,
+      "sha256": "78bb062b5e931e00b38d5e68fb7b46331dabbe1b2c4e63d406b9271e9eeaaa00"
+    },
+    {
+      "path": "native-history-2/result.json",
+      "bytes": 25922,
+      "sha256": "9123e146ab8866d14a21b4e6e4c4d31c2d583a9b7256fe86d2e9a5e020432c1a"
+    },
+    {
+      "path": "native-history-2/snapshots.json",
+      "bytes": 25705,
+      "sha256": "f56cb9a92c63d8cfb08115c179c454968459d56cb591404061e75960a8004c29"
+    },
+    {
+      "path": "native-history-2/undo-retry-enter.png",
+      "bytes": 50112,
+      "sha256": "415183d8c0bfbd9fc98a4fddd79db4a46f183e29600de55dc575c8aac617b28d"
+    },
+    {
+      "path": "native-history.md",
+      "bytes": 3205,
+      "sha256": "5a1e02a5ab1057560d822c59fdc8cd0849975945ad09b452c597739f314fdec5"
+    },
+    {
+      "path": "probe-results.txt",
+      "bytes": 2886,
+      "sha256": "f0b3d09e244681387b7b22126f28ff2b7f19b52257e85df26c0e7e3352e0f0ff"
+    },
+    {
+      "path": "probes.test.mjs",
+      "bytes": 15426,
+      "sha256": "6f390ec05c07e639f917172ddd4b837f1b34a6fe954a30c94c9746d1dc709522"
+    }
+  ],
+  "reviewed_frontend_sha": "6d524cb474e54e6cea21897295921ed9cee5bb72",
+  "native_build_sha": "de663840346a12d0fe5b49eb669af1cc1788f25f",
+  "portable_probe_result": {
+    "tests": 6,
+    "pass": 4,
+    "fail": 2,
+    "expected_exit_code": 1
+  },
+  "modifications": [
+    "Probes use repository-relative file URLs; optional ALIVE_VALIDATION_REPO_ROOT supports external validation.",
+    "Unused help reference fixture declarations removed; strict six test cases byte-identical to original.",
+    "Machine-specific JSON document paths replaced by named placeholders; all other result/snapshot values preserved.",
+    "Probe output path references normalized, status glyphs rendered as ASCII.",
+    "Native addenda rewritten concisely for included evidence and manual steps; raw local harness dependencies omitted.",
+    "Selected PNG files copied byte-for-byte.",
+    "Passing run1 cache snapshots extracted into compact JSON without omitted failed wiring attempt claiming success.",
+    "Large snapshot JSON is serialized compactly; all parsed values preserved.",
+    "Probe log trailing whitespace normalized; numeric finding priority aligned with the audit P2."
+  ]
+}

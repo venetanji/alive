@@ -1,0 +1,37 @@
+{
+  "sha": "de663840346a12d0fe5b49eb669af1cc1788f25f",
+  "instrumented": false,
+  "scope": "Actual release Tauri/WebKit, private Xvfb + twm, CPAL PipeWire software output",
+  "samples": [
+    {
+      "sample": "off-visible-1",
+      "seconds": 30.029712244999246,
+      "process_tree_cpu_percent_one_core": 22.477737864851026,
+      "cpu_by_process_name": {
+        "ultra": 4.22914475383123,
+        "WebKitNetworkPr": 0.0,
+        "WebKitWebProces": 18.248593111019794
+      },
+      "pss_mib_mean": 327.95293598790323,
+      "pss_mib_max": 341.298828125,
+      "pss_missing": [],
+      "first_metric": null,
+      "last_metric": null
+    },
+    {
+      "sample": "off-visible-2",
+      "seconds": 30.030317652999656,
+      "process_tree_cpu_percent_one_core": 21.644792689532974,
+      "cpu_by_process_name": {
+        "ultra": 3.696264597751016,
+        "WebKitNetworkPr": 0.0,
+        "WebKitWebProces": 17.948528091781956
+      },
+      "pss_mib_mean": 337.06621723790323,
+      "pss_mib_max": 338.693359375,
+      "pss_missing": [],
+      "first_metric": null,
+      "last_metric": null
+    }
+  ]
+}

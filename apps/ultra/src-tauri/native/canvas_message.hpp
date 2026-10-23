@@ -2,7 +2,7 @@
 #include "patch_graph.h"
 #include <array>
 #include <algorithm>
-#include <charconv>
+#include "vendor/fast_float/fast_float.h"
 #include <cmath>
 #include <cstring>
 
@@ -13,7 +13,8 @@ enum CanvasKind : unsigned {
  Iter,Prepend,Append,ZlReg,ZlJoin,ZlLen,ZlIter,ZlSlice,ZlRev,ZlRot,
  Sig,SignalAdd,SignalSubtract,SignalMultiply,SignalDivide,Cycle,Phasor,Noise,SignalClip,LineSignal,Snapshot,SignalDac,
  Inlet,Outlet,NumberInt,MessageBox,
- Subtract,Divide,Modulo,ReverseSubtract,ReverseDivide,Abs
+ Subtract,Divide,Modulo,ReverseSubtract,ReverseDivide,Abs,
+ PolyNote,SawVoice,FilterVoice,AdsrVoice,MultiplyVoice,MixVoice
 };
 struct CanvasMessage {
  uint32_t count=0;
@@ -75,16 +76,15 @@ inline bool canvas_parse_atom(const char* token,CanvasMessage& result,unsigned i
   }
   if(*p)return false;
   if(*begin=='+')++begin;
-  double value=0;const auto parsed=std::from_chars(begin,end,value,std::chars_format::general);
+  // Locale-independent and allocation-free on libstdc++, libc++ and MSVC.
+  // libc++ lacks long-double from_chars and gates double parsing on macOS 26.
+  double value=0;const auto parsed=fast_float::from_chars(begin,end,value,fast_float::chars_format::general);
+  if(parsed.ptr!=end)return false;
   if(parsed.ec==std::errc::result_out_of_range){
-   long double extended=0;const auto wider=std::from_chars(begin,end,extended,std::chars_format::general);
-   if(wider.ec==std::errc{}&&wider.ptr==end)value=static_cast<double>(extended);
-   else {
-    const char* exponent=std::strpbrk(begin,"eE");
-    if(!exponent||exponent[1]!='-')return false;
-    value=begin[0]=='-'?-0.:0.;
-   }
-  }else if(parsed.ec!=std::errc{}||parsed.ptr!=end)return false;
+   // fast_float writes correctly signed zero on underflow and infinity on
+   // overflow. Preserve bounded underflow acceptance; never admit overflow.
+   if(value!=0)return false;
+  }else if(parsed.ec!=std::errc{})return false;
   if(!canvas_number(value))return false;
   result.values[index]=value;result.tags[index]=std::strpbrk(token,".eE")?1:0;return true;
  }
@@ -173,3 +173,4 @@ inline bool canvas_numeric_message(const CanvasMessage& message) noexcept {
 inline bool canvas_bang(const CanvasMessage& message) noexcept {return !message.count&&!message.selector[0];}
 inline bool canvas_named(const CanvasMessage& message,const char* name) noexcept {return std::strcmp(message.selector,name)==0;}
 }
+

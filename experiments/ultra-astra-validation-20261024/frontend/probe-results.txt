@@ -1,0 +1,57 @@
+FAIL probe: numeric input rejected by history remains retryable (42.380402ms)
+FAIL probe: drag during history fails without uncaught error and restores preview (10.425935ms)
+PASS probe: object entry retains typed work across history rejection (12.994229ms)
+PASS probe: history barrier rejects every authoring method atomically then admits after Undo and Redo (15.049928ms)
+PASS probe: admitted event survives later deletion but Stop and Panic invalidate it (9.086954ms)
+PASS probe: stopped status cache invalidates for hierarchy document switching and reuses thereafter (20.070437ms)
+INFO tests 6
+INFO suites 0
+INFO pass 4
+INFO fail 2
+INFO cancelled 0
+INFO skipped 0
+INFO todo 0
+INFO duration_ms 185.782964
+
+FAIL failing tests:
+
+test at experiments/ultra-astra-validation-20261024/frontend/probes.test.mjs:127:1
+FAIL probe: numeric input rejected by history remains retryable (42.380402ms)
+  AssertionError [ERR_ASSERTION]: Retrying Enter after admission must save the typed value
+
+  0 !== 73
+
+      at TestContext.<anonymous> (experiments/ultra-astra-validation-20261024/frontend/probes.test.mjs:136:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 73,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at experiments/ultra-astra-validation-20261024/frontend/probes.test.mjs:139:1
+FAIL probe: drag during history fails without uncaught error and restores preview (10.425935ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted rejection: History barrier must be handled by the drag UI
+  Actual message: "Native history is pending. Wait before editing."
+      at async TestContext.<anonymous> (experiments/ultra-astra-validation-20261024/frontend/probes.test.mjs:146:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Native history is pending. Wait before editing.
+        at edit (apps/ultra/ui/canvas-shared.mjs:168:54)
+        at Proxy.<anonymous> (apps/ultra/ui/canvas-shared.mjs:275:39)
+        at finishDrag (apps/ultra/ui/canvas.mjs:303:30)
+        at experiments/ultra-astra-validation-20261024/frontend/probes.test.mjs:26:165
+        at Array.map (<anonymous>)
+        at Element.fire (experiments/ultra-astra-validation-20261024/frontend/probes.test.mjs:26:158)
+        at TestContext.<anonymous> (experiments/ultra-astra-validation-20261024/frontend/probes.test.mjs:146:37)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    expected: undefined,
+    operator: 'doesNotReject',
+    diff: 'simple'
+  }

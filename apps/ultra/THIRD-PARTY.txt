@@ -11,6 +11,13 @@ No scsynth/Supersonic, optional Link, ASIO, Smoothie or plugin bridge is built.
 
 Faust: app-specific C++ DSP generated with pinned 2.88.0 from core/voice.dsp,
 checked in at core/generated/app_voice.hpp. Regenerate with core/generate_voice.py.
+The authored four-voice graph additionally uses core/voice_saw.dsp,
+core/voice_filter.dsp and core/voice_adsr.dsp, checked in as core/generated/voice_*.hpp
+and regenerated with core/generate_voice_kernels.py. These reuse os.sawtooth,
+fi.resonlp and en.adsr. Generated metadata retains the GRAME LGPL-2.1-or-later
+generated-code exception and function-specific STK 4.3 notices for the Julius O.
+Smith III oscillator/filter dependencies. The complete retained STK 4.3 permission
+and warranty notice and the existing GRAME exceptions are in core/VOICE.txt.
 The frozen experiments/faust-reference oracle is unchanged. Unmodified architecture
 headers and libraries are supplied by that fixture's pinned dependency setup;
 their notices and exceptions remain intact. See core/VOICE.txt for app provenance
@@ -43,3 +50,31 @@ The lockfile also fixes tauri-runtime 2.8.0 and tauri-runtime-wry 2.8.1 to the
 Tauri 2.8.5 release's compatible API pair. An initial unconstrained transitive
 resolution selected mismatched runtime versions and failed compilation; the
 checked-in lockfile is the tested build, not arbitrary latest minor versions.
+
+
+fast_float 8.0.2, revision 50a80a73ab2ab256ba1c3bf86923ddd8b4202bc7:
+https://github.com/fastfloat/fast_float/tree/50a80a73ab2ab256ba1c3bf86923ddd8b4202bc7
+Vendored unmodified include/fast_float headers under src-tauri/native/vendor/fast_float.
+Used under the MIT option; upstream Apache-2.0 and Boost alternatives are retained.
+Locale-independent, allocation-free numeric parsing avoids libc++ availability gaps.
+See that directory's upstream LICENSE-* texts and PROVENANCE.md.
+
+Windows packages include app-local Microsoft Visual C++ release runtime DLLs
+selected by CMake InstallRequiredSystemLibraries from the build toolset's redist
+directory. These Microsoft components retain their vendor redistribution terms,
+not AGPL. No debug/non-redistributable CRT is selected.
+https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files
+
+Rust inventory maintenance: THIRD-PARTY-CRATES.json covers every third-party
+package in src-tauri/Cargo.lock, including build-time and all platform packages.
+Regenerate with `python apps/ultra/scripts/notices.py --write` from the repository
+root. It reads unfiltered `cargo metadata --locked` and upstream manifest license
+metadata, and retains lockfile checksums. Release builds reject stale inventory;
+package verification checks the bundled notice files against the source copies.
+This conservative inventory does not assert that every listed crate is linked.
+
+tauri-plugin-dialog 2.4.2 and tauri-plugin-fs 2.4.4: Apache-2.0 OR MIT.
+tauri-plugin-single-instance 2.3.4: Apache-2.0 OR MIT; local vendored fork at
+src-tauri/vendor/tauri-plugin-single-instance, not an unmodified registry copy.
+See its ULTRA_PATCH.md for the upstream archive checksum and local change.
+The upstream LICENSE_APACHE-2.0 and LICENSE_MIT files are retained there.
