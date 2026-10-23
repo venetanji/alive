@@ -98,6 +98,17 @@ receipts/assets and current runtime source identities. Verify with:
 python3 experiments/alive-session-20261024/verify.py
 ```
 
+The first remote native run after those compatibility changes exposed a fixture
+gap: WirePlumber 0.4's policy-only profile loads the default-nodes API without
+creating default-node metadata. The default CPAL output consequently reports
+`StreamInvalidated: no target node available` before any callback, while an
+explicit sink renders. This was reproduced with Ubuntu's isolated 0.4.17 policy
+on the local private server. The shared software fixture now publishes typed
+`default.audio.sink` metadata for its sole sink; the same diagnostic then renders
+143872 frames on both routes with no error. The native desktop CI exercises the
+default route, while the existing CPAL gate exercises explicit sink selection.
+This correction changes test-server setup, not application or DSP runtime code.
+
 The verifier checks retained receipt integrity and acceptance assertions; it
 does not replay the desktop or recover the uncommitted raw captures.
 
