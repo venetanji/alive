@@ -180,18 +180,18 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     }
     return result;
   }
-  function parameter(id,key,value,{history=true}={}) {
-    const node=document.patch.nodes.find(node=>node.id===id);
+  function parameter(id,key,value,{history=true,root=false}={}) {
+    const node=(root?treeNodes(document.document):document.patch.nodes).find(node=>node.id===id);
     if(!node)throw Error('Missing object.');
     const structural=structuralParameter(node.type,key);
     const parameter=typeof value==='number'&&!structural&&!['comment','patcher','help_helper'].includes(node.type)?
       {node:id,key,value,hot:key==='value'&&['number','number_int','toggle','int','float','flonum','slider'].includes(node.type)}:undefined;
     const messageText=node.type==='message_box'&&key==='text'?{node:id,text:value}:undefined;
-    return edit((...args)=>document.parameter(...args),[id,key,value,{history}],{history,parameter,messageText});
+    return edit((...args)=>root?document.parameterRoot(...args):document.parameter(...args),[id,key,value,{history}],{history,parameter,messageText});
   }
-  function event(node,inlet=0,value=null,action) {
+  function event(node,inlet=0,value=null,action,root=false) {
     if(disposed||detaching||closeBarriers.size||!descriptor)return Promise.resolve(false);
-    const target=document.patch.nodes.find(item=>item.id===node),port=target&&nodeSpec(target).inlets[inlet];
+    const target=(root?treeNodes(document.document):document.patch.nodes).find(item=>item.id===node),port=target&&nodeSpec(target).inlets[inlet];
     if(!port||!(port.accepts??[port.type]).includes('control'))throw Error('Events require an inlet that accepts control messages.');
     if(typeof value==='string'){
       if(target.type==='message_box'&&(inlet===1||/^set(?:\s|$)/.test(value.trimStart())))parseMessageTemplate(value);
@@ -259,6 +259,8 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     detaching=true;epoch++;await flush();disposed=true;observations={};
   }
   return {getState,prepare,adoptDescriptor,acceptDescriptor,flush,flushBeforeClose,cancelClose,poll,dispose,disposeDocument:dispose,parameter,event,tab,stop,
+    deviceParameter:(id,key,value,options)=>parameter(id,key,value,{...options,root:true}),
+    deviceEvent:(node,inlet,value)=>event(node,inlet,value,undefined,true),
     startAudio:()=>{const token=epoch;return operation(async()=>{if(token!==epoch)return false;if(panicked){report('Panic is latched. Stop audio, then Start audio to recover.');return false;}
       if(!descriptor&&!(await prepare()))return false;faulted=false;await invoke('audio_start');await poll();
       notice=status.running?'Audio running.':'Audio could not start.';emit();return !!status.running;});},

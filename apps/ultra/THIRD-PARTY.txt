@@ -11,6 +11,13 @@ No scsynth/Supersonic, optional Link, ASIO, Smoothie or plugin bridge is built.
 
 Faust: app-specific C++ DSP generated with pinned 2.88.0 from core/voice.dsp,
 checked in at core/generated/app_voice.hpp. Regenerate with core/generate_voice.py.
+The authored four-voice graph additionally uses core/voice_saw.dsp,
+core/voice_filter.dsp and core/voice_adsr.dsp, checked in as core/generated/voice_*.hpp
+and regenerated with core/generate_voice_kernels.py. These reuse os.sawtooth,
+fi.resonlp and en.adsr. Generated metadata retains the GRAME LGPL-2.1-or-later
+generated-code exception and function-specific STK 4.3 notices for the Julius O.
+Smith III oscillator/filter dependencies. The complete retained STK 4.3 permission
+and warranty notice and the existing GRAME exceptions are in core/VOICE.txt.
 The frozen experiments/faust-reference oracle is unchanged. Unmodified architecture
 headers and libraries are supplied by that fixture's pinned dependency setup;
 their notices and exceptions remain intact. See core/VOICE.txt for app provenance

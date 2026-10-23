@@ -1,0 +1,196 @@
+{
+  "evidence_id": "ev_4c897cf79d0a149cdda72e4d861db0376b87ca15deb3623691c803c53d0ae1be",
+  "provider": {
+    "id": "rea-process",
+    "name": "REA process capture",
+    "version": "3"
+  },
+  "operation": "capture_process_scenario",
+  "confidence": "observed",
+  "authority": "controlled-replay",
+  "started_at": "2026-10-23T16:39:48.743Z",
+  "completed_at": "2026-10-23T16:42:13.766Z",
+  "exit": {
+    "code": 0,
+    "signal": 0,
+    "reason": "exited"
+  },
+  "frames": [
+    {
+      "sequence": 0,
+      "at_ms": 26130,
+      "data": "{\"stage\": \"ready\", \"display\": \":0\"}\r\n"
+    },
+    {
+      "sequence": 1,
+      "at_ms": 49880,
+      "data": "{\"stage\": \"focus\", \"kind\": \"click\"}\r\n"
+    },
+    {
+      "sequence": 2,
+      "at_ms": 50610,
+      "data": "{\"stage\": \"unlocked\", \"kind\": \"keys\"}\r\n"
+    },
+    {
+      "sequence": 3,
+      "at_ms": 51340,
+      "data": "{\"stage\": \"new-entry\", \"kind\": \"keys\"}\r\n"
+    },
+    {
+      "sequence": 4,
+      "at_ms": 61450,
+      "data": "{\"stage\": \"autocomplete-met\", \"kind\": \"text\"}\r\n"
+    },
+    {
+      "sequence": 5,
+      "at_ms": 77150,
+      "data": "{\"stage\": \"select-metro\", \"kind\": \"keys\"}\r\n"
+    },
+    {
+      "sequence": 6,
+      "at_ms": 77880,
+      "data": "{\"stage\": \"complete-metro\", \"kind\": \"keys\"}\r\n"
+    },
+    {
+      "sequence": 7,
+      "at_ms": 78610,
+      "data": "{\"stage\": \"unselect\", \"kind\": \"click\"}\r\n"
+    },
+    {
+      "sequence": 8,
+      "at_ms": 97920,
+      "data": "{\"stage\": \"save-authorization\", \"kind\": \"keys\"}\r\n"
+    },
+    {
+      "sequence": 9,
+      "at_ms": 120440,
+      "data": "{\"stage\": \"file-menu\", \"kind\": \"keys\"}\r\n"
+    },
+    {
+      "sequence": 10,
+      "at_ms": 144850,
+      "data": "{\"stage\": \"cleaned\", \"original_preferences_unchanged\": true, \"source_preferences_unchanged\": true, \"owned_prefix_remaining\": 0, \"prefix_removed\": true, \"display_exited\": true}\r\n"
+    }
+  ],
+  "files_after": [
+    {
+      "path": "root_0:.",
+      "mode": 33188,
+      "size": 1434,
+      "type": "file",
+      "sha256": "9b9fe659bb58519eefc3bb73d7577aad486679ff000aa3bc52676c4d720e52e2",
+      "symlink_target": null
+    },
+    {
+      "path": "root_1:.",
+      "mode": 33188,
+      "size": 168,
+      "type": "file",
+      "sha256": "7223b64cc913d3ccd86eeab26031fd2c8c9bf00f08dd1b608cec08fb48eba17e",
+      "symlink_target": null
+    }
+  ],
+  "cleanup": {
+    "owned_process_group": "verified",
+    "temporary_root": "removed",
+    "unverified_processes": [
+      {
+        "pid": 198116,
+        "reason": "EACCES: permission denied, open '/proc/198116/environ'"
+      },
+      {
+        "pid": 198947,
+        "reason": "EACCES: permission denied, open '/proc/198947/environ'"
+      },
+      {
+        "pid": 199108,
+        "reason": "EACCES: permission denied, open '/proc/199108/environ'"
+      },
+      {
+        "pid": 199130,
+        "reason": "EACCES: permission denied, open '/proc/199130/environ'"
+      },
+      {
+        "pid": 199205,
+        "reason": "EACCES: permission denied, open '/proc/199205/environ'"
+      },
+      {
+        "pid": 199562,
+        "reason": "EACCES: permission denied, open '/proc/199562/environ'"
+      },
+      {
+        "pid": 201413,
+        "reason": "EACCES: permission denied, open '/proc/201413/environ'"
+      },
+      {
+        "pid": 206448,
+        "reason": "EACCES: permission denied, open '/proc/206448/environ'"
+      },
+      {
+        "pid": 206449,
+        "reason": "EACCES: permission denied, open '/proc/206449/environ'"
+      }
+    ]
+  },
+  "limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+    "Process trees are sampled and may omit short-lived descendants.",
+    "Filesystem observations are before/after snapshots, not syscall traces.",
+    "Inherited host environment variables are not recorded and may affect results."
+  ],
+  "residual_unknowns": [
+    {
+      "scope": "process",
+      "reason": "Process trees are sampled and may omit short-lived descendants."
+    },
+    {
+      "scope": "process",
+      "reason": "The executable digest is a prelaunch file sample; operating-system image binding is not atomically observed."
+    },
+    {
+      "scope": "environment",
+      "reason": "Inherited host environment variables are not recorded."
+    },
+    {
+      "scope": "network",
+      "reason": "Network activity is not observed by this capture."
+    },
+    {
+      "scope": "process",
+      "reason": "Ownership of unrelated process 198116 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/198116/environ'"
+    },
+    {
+      "scope": "process",
+      "reason": "Ownership of unrelated process 198947 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/198947/environ'"
+    },
+    {
+      "scope": "process",
+      "reason": "Ownership of unrelated process 199108 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/199108/environ'"
+    },
+    {
+      "scope": "process",
+      "reason": "Ownership of unrelated process 199130 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/199130/environ'"
+    },
+    {
+      "scope": "process",
+      "reason": "Ownership of unrelated process 199205 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/199205/environ'"
+    },
+    {
+      "scope": "process",
+      "reason": "Ownership of unrelated process 199562 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/199562/environ'"
+    },
+    {
+      "scope": "process",
+      "reason": "Ownership of unrelated process 201413 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/201413/environ'"
+    },
+    {
+      "scope": "process",
+      "reason": "Ownership of unrelated process 206448 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/206448/environ'"
+    },
+    {
+      "scope": "process",
+      "reason": "Ownership of unrelated process 206449 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/206449/environ'"
+    }
+  ]
+}

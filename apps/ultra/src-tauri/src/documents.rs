@@ -83,6 +83,16 @@ impl Snapshot {
 #[derive(Serialize)]
 pub struct CommitResult { pub accepted: bool, pub document: Document }
 impl Registry {
+    pub fn instantiate(&mut self, label: &str) -> Result<Document, String> {
+        let source=self.get_open(label)?;
+        let patch=source.patch.clone().ok_or("Patch is not ready to instantiate")?;
+        crate::canvas::prepare(patch.clone())?;
+        let instance=self.add("Untitled".into(),Kind::Patch,Some(patch),None,None)?;
+        let stored=self.get_mut(&instance.label)?;
+        stored.saved_patch=empty_patch();
+        stored.dirty=stored.patch.as_ref()!=Some(&stored.saved_patch);
+        Ok(stored.clone())
+    }
     pub fn add(&mut self, title: String, kind: Kind, patch: Option<Value>, path: Option<PathBuf>, help_key: Option<String>) -> Result<Document, String> {
         let id = (0..MAX_DOCUMENTS as u32).find(|id| self.entries.values().all(|doc| doc.id != *id))
             .ok_or("Up to 16 patch windows can be open. Close a window and try again.")?;

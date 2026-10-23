@@ -1,0 +1,92 @@
+{
+  "date": "2026-10-24",
+  "base": "821745888794e3b792e76e455962db2d61858755",
+  "base_branch": "main (no staging branch)",
+  "binary_sha256": "b93478713770ab3586cfb40aef8090e0c26ebe086ee09bed5eb3d49d02dad280",
+  "native_library_sha256": "0f848147e80757b9ae40bbcd51a936c9dfa5594fdaad0ddb287d938ae437933e",
+  "example_file_sha256": "57abff57231ecdb2c56e908c644a1b456f0d8f53c645dc15376797e178a58283",
+  "checks": [
+    {
+      "command": "bash apps/ultra/build.sh",
+      "status": "passed",
+      "log": "final-build.log",
+      "log_sha256": "b95c63be5d56dfb85bae07469eb513ab4f4847e8a5bcc67787eed0abd9657518"
+    },
+    {
+      "command": "node --test --test-timeout=30000 apps/ultra/ui/*.test.mjs apps/ultra/ui/components/*.test.mjs",
+      "status": "passed",
+      "passed": 409,
+      "failed": 0,
+      "source_log": "final-ui2.log",
+      "log_sha256": "6746745db1caa0730a3d25f6b686d15adf9d44c7961923172826e1f8ebf44169"
+    },
+    {
+      "command": "bash apps/ultra/tests/ci/check-contracts.sh",
+      "status": "passed",
+      "exit_code": 0,
+      "source_log": "contracts-final.log",
+      "log_sha256": "b01a56d795e59b545728f5ae674c7e0b833f2c750d7a78b3ce62c77ca0a16301"
+    },
+    {
+      "command": "npm run test:browser (apps/ultra/tests/ci)",
+      "status": "passed",
+      "exit_code": 0,
+      "passed": 103,
+      "source_log": "browser-final.log",
+      "log_sha256": "14f8e77725666a2fb77a7947e1bd211d732a8f42b095c389f78d795fe2a25068"
+    },
+    {
+      "command": "bash apps/ultra/tests/ci/check-native.sh",
+      "status": "passed",
+      "log": "final-native.log",
+      "log_sha256": "104e2205895c57e74c30703d4e0be859fc7b0821fe7d98a42ad6b18091b6a8da"
+    },
+    {
+      "command": "cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked",
+      "status": "passed",
+      "passed": 127,
+      "failed": 0,
+      "ignored": 2,
+      "log": "final-rust.log",
+      "log_sha256": "5229c54804576c7b8cb438eeda85c0cafbd168cae4b465af2edc276d4f74151e"
+    },
+    {
+      "command": "ultra --instrument-probe apps/ultra/examples/subtractive.ultra <output> (without DISPLAY or WAYLAND_DISPLAY)",
+      "status": "passed",
+      "report": "../host/report.json"
+    },
+    {
+      "command": "bash apps/ultra/tests/check_cpal_audio.sh <output>",
+      "status": "passed",
+      "report": "../cpal/result.json"
+    },
+    {
+      "command": "ULTRA_TEST_SCRIPT=$PWD/apps/ultra/tests/check_instrument_desktop.py bash apps/ultra/tests/check_canvas_desktop.sh <output>",
+      "status": "passed",
+      "report": "../desktop/instrument-result.json"
+    },
+    {
+      "command": "Isolated Ubuntu GCC 13.3.0 compile of backend.cpp with the native guard flags",
+      "status": "passed",
+      "before_exit_code": 1,
+      "after_exit_code": 0,
+      "report": "gcc13-results.json"
+    }
+  ],
+  "cloud_ci": "Final pushed-commit status and run URL are recorded on the draft PR.",
+  "local_logs": "/tmp/ultra-instrument-evidence; selected small logs retained here",
+  "limits": [
+    "Two intentional Rust ignores require a private PipeWire graph and the user's licensed local Max installation identity. The CPAL test was separately run by the software audio gate; local Max observations are retained separately in reference/.",
+    "Software loopback and private Xvfb do not qualify hardware realtime deadlines or physical MIDI-to-analog latency.",
+    "pw-top batch output was empty; no direct PipeWire underrun count is retained.",
+    "Performance comparison uses its separately hashed earlier after artifact; final desktop checks use binary_sha256 above."
+  ],
+  "recovered_validation_failures": [
+    "Mobile toolbar overflow after adding Perform was fixed and the full rendered-browser suite rerun.",
+    "Desktop harness now explicitly dismisses export dialogs and holds G during numeric edits so Ctrl+A does not release the tested note.",
+    "A stale generated target/release/deps/libultra_native.so shadowed the current library in Cargo tests; moved aside before the passing full Rust suite.",
+    "Newer pw-cat stdout uses an AU container and PipeWire 1.6.10 returns 1 after recording SIGINT. The runner now explicitly requests supported raw output and strictly validates the known shutdown, with 16 analyzer self-tests.",
+    "Earlier outer runner exits of 143 after pass output were resolved by recording actual child exits; final contracts and browser children both exited zero.",
+    "The first cloud native gate failed when GCC 13 promoted an existing publisher bounds warning to an error. Added an explicit document-index range check, reproduced the failure before and clean compilation after with isolated Ubuntu GCC 13.3.0, then reran native/Rust/host/release/desktop checks. Final cloud result is recorded on the draft PR."
+  ]
+}

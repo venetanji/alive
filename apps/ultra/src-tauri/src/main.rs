@@ -6,6 +6,7 @@ mod help_reference;
 mod audio;
 mod documents;
 mod document_windows;
+mod instrument_probe;
 use serde::{Deserialize, Serialize};
 use std::{
     ffi::{c_char, CStr},
@@ -795,6 +796,14 @@ mod tests {
     }
 }
 fn main() {
+    let arguments:Vec<_>=std::env::args_os().collect();
+    if arguments.get(1).is_some_and(|argument|argument=="--instrument-probe") {
+        if arguments.len()!=4 {eprintln!("Usage: ultra --instrument-probe <patch.ultra> <output-directory>");std::process::exit(2);}
+        match instrument_probe::run(std::path::Path::new(&arguments[2]),std::path::Path::new(&arguments[3])) {
+            Ok(report)=>{println!("{}",serde_json::to_string_pretty(&report).unwrap());return;},
+            Err(error)=>{eprintln!("Instrument probe failed: {error}");std::process::exit(1);},
+        }
+    }
     #[cfg(target_os = "linux")]
     if std::env::var_os("DISPLAY").is_none() && std::env::var_os("WAYLAND_DISPLAY").is_none() {
         eprintln!("Ultra needs a Linux desktop session (DISPLAY or WAYLAND_DISPLAY). For offline checks run ultra-diagnostic --render-demo demo.wav.");
@@ -859,6 +868,7 @@ fn main() {
             document_windows::commands::document_open_patcher,
             document_windows::commands::document_close_flushed,
             document_windows::document_new,
+            document_windows::document_instantiate,
             document_windows::document_open,
             document_windows::document_save,
             document_windows::document_set_dirty,

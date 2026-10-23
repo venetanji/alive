@@ -1,7 +1,8 @@
 Application Faust voice and native bus contract
 =============================================
 
-The app uses voice.dsp -> generated/app_voice.hpp, class UltraAppVoice. It no
+The legacy fixed Voice object uses voice.dsp -> generated/app_voice.hpp, class
+UltraAppVoice. It no
 longer imports experiments/faust-reference/host.hpp in production. That original
 fixed-envelope fixture and experiments/clockwork-faust remain unchanged oracles.
 
@@ -114,3 +115,123 @@ Complete notices and LGPL terms are in the pinned Faust source distribution.
 Transitive architecture/library notices and function-specific terms are not
 removed or superseded by the excerpts above. The compiler is never linked into
 the render process.
+
+Authored four-voice canvas instrument
+------------------------------------
+The authored instrument is a separate graph profile within the existing native
+canvas evaluator. Its six primitives are PolyNote (60, poly.note~), SawVoice (61,
+saw.voice~), FilterVoice (62, lowpass.voice~), AdsrVoice (63, adsr.voice~),
+MultiplyVoice (64, *.voice~), and MixVoice (65, mix.voice~). The graph's cables
+connect these operations; the engine contains no hidden fixed subtractive route.
+The example multiplies the oscillator/filter result by envelope and velocity,
+then reduces the four lanes through mix.voice~ before gain~/join~/stereo.dac~.
+
+Native port type 5 and the Voices dependency domain describe exactly four
+discrete voice lanes, including when the allocator's structural capacity is
+1..3. They never implicitly connect to mono, stereo, control, or transparent
+mono/control relay ports. Every compiled signal edge records its exact width.
+MixVoice explicitly sums the four lanes and divides by four for headroom. Public
+native audio output remains mono/stereo; voice lanes are not speaker channels.
+Partial authoring graphs can omit PolyNote and remain silent. One allocator is
+allowed per document, and every node/lane's DSP and MIDI state is independent.
+
+PolyNote receives [MIDI pitch, velocity] on inlet 0 and sustain 0..127 on inlet 1.
+Its outlets are frequency in Hz, gate 0/1, and normalized velocity 0..1. Velocity
+zero releases the oldest still-held matching pitch. Sustain values >=64 hold
+released keys until a value <64 arrives. Notes have no lease while held or
+sustained. Allocation uses the oldest voice when every configured slot is busy;
+stealing clears that lane's prepared kernels before retriggering. Repeated note
+offs do not extend release. Each release snapshots the maximum authored ADSR
+release duration in that document (1..10000ms); the lane retires no later than
+that deadline even if live edits subsequently lengthen the release parameter.
+Disconnected or shorter envelopes can become silent before this conservative
+retirement deadline. Panic on inlet 0, document Stop, graph replacement, close,
+global Stop, and stopped audio teardown immediately clear allocator/DSP state.
+
+FilterVoice's scalar inlets 1/2 and live parameters p0/p1 are cutoff 20..20000Hz
+and Q 0.1..20. AdsrVoice's scalar inlets 1..4 and p0..p3 are attack/decay/release
+1..10000ms and sustain 0..1. Their defaults are 2400Hz/Q0.7 and
+10ms/150ms/0.65/300ms. All ADSR parameters stay live, in contrast to the legacy
+Voice object's latched ASR. Unsupported creation fields remain zero; capacity
+changes require structural graph replacement.
+
+voice_saw.dsp, voice_filter.dsp and voice_adsr.dsp import the pinned Faust 2.88.0
+stdlib's os.sawtooth (saw2), fi.resonlp and en.adsr. Regenerate with:
+  python3 apps/ultra/core/generate_voice_kernels.py
+The generated voice_*.hpp files retain exact compiler flags, function/library
+versions, author and license metadata. Their signal-only interfaces require no
+MapUI or compiler in the host. The private minimal architecture in
+native/canvas_voice_objects.hpp is project-owned and supplies only the generated
+empty UI/metadata interfaces. No upstream architecture header is modified.
+Each document prepares its fixed per-node/per-lane kernel storage before callback
+exposure; render performs bounded clears, parameter/input writes and compute(1).
+It performs no allocation, DSP initialization, ownership destruction or locking.
+
+The new kernels execute in CanvasRuntime::signal_sample on the native host
+timeline alongside the retained Clockwork guest. They are not hosted inside that
+guest and do not acquire its 64-frame causal voice delay. The existing startup
+and graph-install silence guard remains. The guest and native path still share
+the engine's callback/clock/fault boundary. Full-queue noteoff, sustain-release
+and panic use an out-of-band Stop mailbox. A bounded control-thread walk follows
+authored control cables and static Send/Receive names across all 16 admitted
+documents, each limited to 32 nodes. An unnamed, runtime-rebindable Receive is
+conservatively treated as a possible match for every Send. The walk ignores
+message transforms: a rejected bang into a stored release message can therefore
+request Stop even though its original payload does not identify a note-off.
+
+Every document with a modeled control path to an affected Voice/PolyNote is
+stopped, including related producers and timer sources. Their epochs discard
+older accepted FIFO actions, so a queued note-on from another sender cannot
+rearm the target. A grouped atomic mailbox reasserts the complete Stop group if
+the callback observed only part of its epoch updates. Documents without a
+modeled path keep running. This is conservative termination of related roots;
+it does not attempt to evaluate the rejected authored message. Release-shaped
+messages report accepted safety termination; unclassified messages still report
+rejection after requesting Stop. Direct gate-on and sustain-on messages reject
+without this fallback. A later newly accepted note can start a document again.
+Int/Float's dynamic `send <name>` method is outside this route inference; its
+overload ingress rejection does not provide the modeled-path Stop guarantee.
+
+Additional retained terms for these generated functions: os.sawtooth's saw2ptr
+and fi.resonlp's resonlp/tf2s/tf2/fir/iir dependencies identify LicenseRef-STK-4.3,
+authored by Julius O. Smith III. Their bundled notices permit copying,
+distribution and modification, retain the original notices, and disclaim
+warranties. This function-specific notice is in addition to the GRAME
+LGPL-2.1-or-later generated-code exception already reproduced above. Complete
+notices remain in the pinned stdlib's oscillators.lib and filters.lib. This is
+an inventory of the used functions, not a license claim about the full compiler.
+
+Retained STK 4.3 notice from filters.lib:
+Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+Any person wishing to distribute modifications to the Software is asked to send
+the modifications to the original developer so that they can be incorporated
+into the canonical version.  For software copyrighted by Julius O. Smith III,
+email your modifications to <jos@ccrma.stanford.edu>.  This is, however, not a
+binding provision of this license.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+The new native tests are tests/canvas_voice_objects_test.cpp (real authored DSP,
+exact channel validation, live parameters, sustain, release bounds, allocation,
+mono/stereo and disconnect behavior) and tests/canvas_voice_backend_test.cpp
+(real Clockwork/backend, independent roots, stale FIFO termination, Stop/restart,
+graph replacement and seven callback partitions). The latter links allocator,
+free and mutex wrappers, plus C++ new/delete hooks, around actual render calls.
+These offline checks do not qualify hardware latency or realtime deadlines.
