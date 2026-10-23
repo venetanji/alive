@@ -87,7 +87,7 @@ stereo frames / 60 seconds across 18 edit/zoom/pan cycles, with output in every
 analyzed one-second window. Actual CPAL/PipeWire output was 48 kHz stereo,
 512 frames / 10.67 ms, with zero stream errors; `pw-top` returned no batch
 counters, so no direct PipeWire underrun count is claimed. The separate CPAL
-gate passed with 151040 finite stereo frames and 271 callbacks. This remains
+gate passed with 150528 finite stereo frames and 271 callbacks. This remains
 software-loopback evidence on a Ryzen 9 5900HS, not hardware qualification.
 Review identified nested Perform target resolution and transformed release at
 full FIFO; regression fixes are included. Final local checks pass: 409 UI tests,

@@ -102,6 +102,7 @@ struct PublishedMessageBoxes {
 };
 std::array<PublishedMessageBoxes,MaxDocuments> published_message_boxes{};
 void publish_message_boxes(unsigned document){
+ if(document>=MaxDocuments)return;
  auto& published=published_message_boxes[document];const auto& runtime=canvas.runtime(document);const auto& plan=runtime.plan();
  std::array<unsigned,32> slots{};unsigned count=0;
  if(canvas.live(document))for(unsigned i=0;i<plan.graph.node_count;++i)if(plan.graph.nodes[i].kind==ultra::MessageBox)slots[count++]=i;

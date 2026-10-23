@@ -65,6 +65,11 @@ CI performs these gates, the display-free host and private CPAL loopback.
 and 127 Rust tests passed (two intentional environment-dependent ignores).
 Small build/native/Rust logs are retained alongside it. Final pushed-commit
 CI status and its run URL are recorded on the draft PR.
+The first cloud native gate found a GCC 13 bounds warning in the existing
+message-observation publisher. An explicit document-index range check fixes
+the diagnostic while keeping warnings fatal. An isolated Ubuntu GCC 13.3.0
+compile reproduces failure before and success after the check; native, Rust,
+headless host, release build and actual desktop checks were repeated afterward.
 
 Native tests cover oscillator/filter/ADSR response, exact four-lane mixdown,
 mono/stereo matching, four-voice capacity/oldest stealing, repeated notes,
@@ -107,7 +112,7 @@ The host was an AMD Ryzen 9 5900HS, Linux 7.2.8-10-omarchy, Xvfb/WebKitGTK and
 Rust CPAL/PipeWire `default_output` at 48 kHz stereo. The callback reported
 512 frames / 10.67 ms and zero stream errors. `pw-top` batch output was empty,
 so a direct PipeWire underrun count is unavailable. The separate private CPAL
-gate recorded 151040 finite stereo frames, 271 callbacks and zero stream errors;
+gate recorded 150528 finite stereo frames, 271 callbacks and zero stream errors;
 its report and probe log are retained in `cpal/`. Neither run measures physical
 MIDI-to-analog latency or qualifies hardware deadlines.
 
