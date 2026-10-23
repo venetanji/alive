@@ -9,9 +9,10 @@ help corpus, Faust compiler, scsynth, Steam publishing or updater service is
 required. The optional JACK diagnostic remains Linux-only; desktop audio uses
 CPAL on every target.
 
-This PR is stacked on the research checkpoint until PR #1 is merged. Retarget
-and rebase it onto main after that merge. Do not tag the unmerged research branch.
-The separate checkpoint safety/portable-contract fixes must land before release.
+PR #1 and its checkpoint safety/portable-contract fixes are merged on main
+(`821745888794e3b792e76e455962db2d61858755`). The packaging branch includes
+that main history and PR #2 targets main. Verify the combined exact-head CI
+before merging the packaging changes; do not tag an unmerged work branch.
 
 ## Builds
 
@@ -70,7 +71,7 @@ override rather than silently changing that development command into a release.
 
 ## Tag-triggered publication
 
-1. Merge and verify the checkpoint cleanup and this PR on main.
+1. Merge and verify the packaging PR on main; the checkpoint cleanup is already merged.
 2. Set the same desired SemVer in Cargo.toml and tauri.conf.json; update Cargo.lock
    with Cargo if the package version changes. Commit and pass CI.
 3. An authorized maintainer pushes exactly `v<committed version>`, e.g.
@@ -98,7 +99,8 @@ Configure these **names** as repository secrets or secrets in the protected
 - `ASC_API_KEY_ID`: key identifier.
 - `ASC_API_ISSUER_ID`: issuer identifier.
 
-No values are stored in source, and their existence has not been verified.
+No values are stored in source. The maintainer reports that signing secrets are
+configured; their contents and authenticated signing have not been inspected or tested.
 Configure credentials directly in GitHub, not chat. Limit `desktop-build`
 access to approved release tags; `desktop-checks` needs no secrets. Review
 GitHub environment protection rules before enabling release signing.
