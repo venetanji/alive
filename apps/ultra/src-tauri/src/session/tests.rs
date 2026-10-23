@@ -175,6 +175,8 @@ fn rust_host_installs_the_saved_session_without_editor_windows() {
     assert!(report["loopProof"]["secondCycleEnergy"].as_f64().unwrap_or(0.) > 1e-9);
     assert!(report["loopProof"]["wrapGenerations"].as_u64().unwrap_or(0) >= 2);
     assert_eq!(report["seekProof"]["generationAdvanced"], true);
+    assert_eq!(report["savedDeviceBoundaryProof"]["partitionsIdentical"], true);
+    assert_eq!(report["savedDeviceBoundaryProof"]["observations"].as_array().map(Vec::len), Some(12));
     let mut broken = read(&example_path()).unwrap();
     let graph = &mut broken.tracks[1].graph;
     let sink = graph.nodes[..graph.node_count as usize].iter().position(|n| n.id == 11).unwrap();

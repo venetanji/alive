@@ -47,15 +47,30 @@ setting changes. Existing integration remains a dependency until main contains i
 
 ### Task 2: Session Persistence And Device Admission
 
-- [ ] Add Rust model/loader/FFI in `apps/ultra/src-tauri/src/session/`. Schema
+- [x] Add Rust model/loader/FFI in `apps/ultra/src-tauri/src/session/`. Schema
   stores path/id/version, base parameters, notes/durations/velocity, automation,
   tempo/loop and mixer. Prepare all dependencies before replacing active state.
-- [ ] Add `apps/alive/examples/two-instruments.alive`, referencing the saved
+- [x] Add `apps/alive/examples/two-instruments.alive`, referencing the saved
   `apps/ultra/examples/subtractive.ultra` twice without copying patch or DSP.
-- [ ] Test `decode(encode(session)) == session`, missing/incompatible dependency
+- [x] Test `decode(encode(session)) == session`, missing/incompatible dependency
   rollback, bounds and invalid bindings. Add display-free `--session-probe`
   rendering this saved example to WAV and a machine-readable report.
-- [ ] Run Rust/headless checks and commit the complete persistence slice.
+- [x] Run Rust/headless checks and commit the complete persistence slice.
+
+Task 2 evidence (`4072eb9` + review fix `d8fa119`): ten Rust session tests pass.
+The actual display-free CLI renders 412452 frames per comparison through two
+saved devices. Samples match across fixed1024 and arbitrary1/31/63/64/127/1024/
+17/509 partitions. It proves second-cycle audio, two loop generations, frame
+position, seek generation/voice termination, automation ownership, isolation,
+mute/solo, removal and save/reopen/play. This is offline native evidence;
+desktop, endurance and physical audio are not established by it. Independent
+review also found two native admission/Stop-ordering issues under Task1, now
+being corrected before the interface proceeds.
+An additional real saved-device fixture schedules notes plus cutoff/level on
+both instances at frames0,1,31,63,64,127. It observes all twelve effective-value
+pairs on the scheduled sample and compares one-frame output with irregular
+17/127/64/31/1 partitions. This supplements the native timing-kernel latency
+measurement; it does not infer audible onset from an ADSR's first nonzero sample.
 
 ### Task 3: Minimal Native Interface And Editor Lifetime
 

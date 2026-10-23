@@ -7,6 +7,7 @@ shared transport and a stereo master. Each track loads a saved `.ultra` file
 through Ultra's versioned manifest and graph validator. Track identity and DSP
 state are independent even when their device paths are identical. No DSP source
 or patch copy is embedded in the Alive example or host.
+Sessions span at most 256 beats and 512 seconds (30..240 BPM).
 
 ## Clock And Execution
 

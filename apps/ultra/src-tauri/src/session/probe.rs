@@ -40,6 +40,55 @@ fn digest(wave: &[f32]) -> String {
     for sample in wave { hash.update(sample.to_le_bytes()); }
     format!("{:x}", hash.finalize())
 }
+fn saved_device_boundaries(host: &mut Host, source: &super::PreparedSession, output: &Path) -> Result<Value, String> {
+    let offsets = [0u64, 1, 31, 63, 64, 127];
+    let mut document = source.document.clone();
+    document.tempo = 120.; document.length_beats = 1.; document.loop_enabled = true;
+    for (track, model) in document.tracks.iter_mut().enumerate() {
+        model.gain = 0.7; model.mute = false; model.solo = false;
+        model.notes = offsets.iter().enumerate().map(|(index, &frame)| super::Note {
+            beat: frame as f64 / 24000., duration: 128. / 24000.,
+            pitch: 60 + index as u32 + track as u32 * 12, velocity: 80 + index as u32 * 5,
+        }).collect();
+        model.automation = ["cutoff", "level"].iter().map(|&key| super::Lane {
+            key: key.into(), enabled: true,
+            points: offsets.iter().enumerate().map(|(index, &frame)| super::Point {
+                beat: frame as f64 / 24000., value: if key == "cutoff" { 700. + index as f64 * 1000. + track as f64 * 100. }
+                    else { 30. + index as f64 * 10. + track as f64 * 5. },
+            }).collect(),
+        }).collect();
+    }
+    let prepared = prepare(&document, &source.origin)?;
+    unsafe { native::ultra_audio_stop(); }
+    host.install(prepared.clone())?; start()?;
+    let mut baseline = Vec::with_capacity(1024);
+    let mut observations = Vec::new();
+    for frame in 0..512 {
+        baseline.extend(render(1, &[1])?);
+        if let Some(index) = offsets.iter().position(|&at| at == frame) {
+            let state = native::state()?;
+            require(state.position == frame + 1, "Saved-device boundary event used the wrong frame")?;
+            for track in 0..2 {
+                let manifest = &prepared.tracks[track].manifest;
+                let cutoff = manifest.parameters.iter().position(|p| p.key == "cutoff").unwrap();
+                let level = manifest.parameters.iter().position(|p| p.key == "level").unwrap();
+                let expected_cutoff = 700. + index as f64 * 1000. + track as f64 * 100.;
+                let expected_level = 30. + index as f64 * 10. + track as f64 * 5.;
+                require(state.tracks[track].effective[cutoff] == expected_cutoff
+                    && state.tracks[track].effective[level] == expected_level,
+                    "Saved-device automation did not take effect on its timestamped sample")?;
+                observations.push(json!({"frame":frame,"track":track,"effectiveCutoff":expected_cutoff,"effectiveLevel":expected_level}));
+            }
+        }
+    }
+    require(energy(&baseline) > 0., "Saved-device boundary fixture produced no audio")?;
+    unsafe { native::ultra_audio_stop(); }
+    host.install(prepared)?; start()?;
+    let partitioned = render(512, &[17, 127, 64, 31, 1])?;
+    require(baseline == partitioned, "Saved-device boundary fixture depends on buffer partitioning")?;
+    crate::instrument_probe::write_wav(&output.join("boundary-events.wav"), &baseline).map_err(|e|e.to_string())?;
+    Ok(json!({"offsets":offsets,"observations":observations,"partitionsIdentical":true,"audioSha256":digest(&baseline),"energy":energy(&baseline)}))
+}
 pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
     std::fs::create_dir_all(output).map_err(|e| e.to_string())?;
     let _shutdown = Shutdown;
@@ -127,6 +176,7 @@ pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
     require(native::state()?.track_count == 1, "Removed device is still configured")?;
     unsafe { native::alive_session_stop(); }
     require(energy(&render(1024, &[1024])?) == 0., "Device removal/Stop retained notes")?;
+    let boundary_proof = saved_device_boundaries(&mut host, &prepared, output)?;
 
     let report = json!({"passed":true,"scope":"real saved Alive session, native offline DSP; no physical audio or desktop claim",
         "source":path.canonicalize().map_err(|e|e.to_string())?,"devices":prepared.tracks.iter().map(|t|json!({"path":t.path,"id":t.manifest.id,"output":t.manifest.output})).collect::<Vec<_>>(),
@@ -135,6 +185,7 @@ pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
         "energy":{"twoDevices":energy(&baseline),"secondOnly":second_only,"reopened":reopened_energy},
         "loopProof":{"secondCycleEnergy":second_cycle,"wrapGenerations":wraps,"position":loop_end.position},
         "seekProof":{"generationAdvanced":sought.generation > before_seek.generation,"position":sought.position},
+        "savedDeviceBoundaryProof":boundary_proof,
         "checked":["real-device-dependencies","loop","arbitrary-partitions","automation-ownership","device-isolation","mute-solo","stop","seek","session-save-reopen","device-removal"],
         "timingBoundaryOffsets":[0,1,31,63,64,127],"timingEvidence":"alive_session_test.cpp measures native sample at offset and legacy Clockwork sample at offset+64; the session profile rejects legacy Voice"});
     std::fs::write(output.join("report.json"), serde_json::to_vec_pretty(&report).unwrap()).map_err(|e|e.to_string())?;
