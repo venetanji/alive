@@ -20,8 +20,8 @@ python3 experiments/max-reference/list-runtime-20261021/verify.py
 python3 experiments/max-reference/list-runtime-20261021/compare-native.py
 PYTHONDONTWRITEBYTECODE=1 python3 experiments/max-reference/signal-runtime-20261021/verify.py
 python3 experiments/max-reference/signal-runtime-20261021/compare-native.py
-PYTHONDONTWRITEBYTECODE=1 python3 experiments/max-reference/hierarchy-reference-20261021/verify.py
-PYTHONDONTWRITEBYTECODE=1 python3 experiments/max-reference/hierarchy-reference-20261021/summarize.py --check
+PYTHONDONTWRITEBYTECODE=1 python3 experiments/max-reference/hierarchy-reference-20261021/test_verify.py
+PYTHONDONTWRITEBYTECODE=1 python3 experiments/max-reference/hierarchy-reference-20261021/verify.py --allow-unavailable
 python3 experiments/max-ui-reference/verify.py
 python3 -m unittest discover -v -s experiments/max-reference/help-coverage-20261021 -p 'test_*.py'
 python3 apps/ultra/tests/check_cpal_capture.py --self-test

@@ -7,6 +7,28 @@ or license material. Static facts and observed execution are separated.
 These captures do not execute a complete installed help file and do not change
 the historical full-help conformance count of0/2103.
 
+## Public checkout and optional local evidence
+
+This public checkout retains the original probe generators and JavaScript, but
+not `sources.json`, `bundle.json`, `summary.json`, generated patch files or raw
+hierarchy captures. The historical observations below describe local evidence;
+they are not newly reproduced results or public conformance passes.
+
+Public CI runs original portable resource, import, graph and hierarchy tests.
+The import module loads installed-source identities only when local resource
+verification is requested; portable tests supply independently authored data and
+explicit fixture hashes. Production recognition remains bound to the existing
+installed-source hashes, and resource/helper byte checks remain mandatory.
+Missing local identities produce an explicit error rather than recognition.
+
+`verify.py --allow-unavailable` reports `UNAVAILABLE` only when the entire local
+oracle output is absent. Partial outputs fail. If a bundle is present, exact
+whole-bundle identities and the retained-capture summary must both pass; changed
+or extra files still fail. The strict default continues to reject absent
+bundles. No portable fixture is labeled as a Max observation. Reproduce local
+evidence only against separately licensed resources with the commands below;
+do not publish installed patches, helpers, binaries or documentation bodies.
+
 ## Whole Help Source Facts
 
 `sources.json` identifies the complete installed `append`, `prepend`, `int`, and

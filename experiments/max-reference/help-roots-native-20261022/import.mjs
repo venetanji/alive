@@ -8,12 +8,16 @@ import {HELP_OBJECTS,probeHelpShell} from '../../../apps/ultra/ui/canvas-help-sh
 import {importMaxPatcher} from '../../../apps/ultra/ui/canvas-max-import.mjs';
 import {lowerHierarchy} from '../../../apps/ultra/ui/canvas-hierarchy.mjs';
 
-const catalog=JSON.parse(readFileSync(new URL('../hierarchy-reference-20261021/sources.json',import.meta.url),'utf8'));
+// Loading this module for portable tests must not require licensed local evidence.
+export function loadLocalCatalog(){
+  try{return JSON.parse(readFileSync(new URL('../hierarchy-reference-20261021/sources.json',import.meta.url),'utf8'));}
+  catch(error){if(error.code==='ENOENT')throw Error('Optional installed-source identities are unavailable; generate sources.json with inventory.py against your licensed local resources. No source recognition was performed.');throw error;}
+}
 const repo=resolve(fileURLToPath(new URL('../../../',import.meta.url)));
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const contained=(path,root)=>path===root||path.startsWith(root+sep);
 
-export async function verifyResources(directory,object,identities=catalog){
+export async function verifyResources(directory,object,identities=loadLocalCatalog()){
   if(!HELP_OBJECTS.includes(object)||!identities.help?.[object])throw Error('Choose a recognized help root.');
   const root=await realpath(directory);
   async function verified(identity){

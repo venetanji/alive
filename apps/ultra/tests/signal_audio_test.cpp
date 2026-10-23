@@ -107,6 +107,16 @@ int main(int argc,char** argv) {
  close_documents();ultra_audio_stop();
  const auto expected=wave(64);for(unsigned block:{1u,127u,256u,1024u})assert(wave(block)==expected);
  assert(cross_document(0)==cross_document(1));global_restart();
+ // A queued replacement/cold edit must retain its values without resuming
+ // continuous DSP across a later scoped Stop boundary.
+ const auto replacement=constant("0.25 0.25");
+ assert(ultra_canvas_install_document(0,&replacement));
+ assert(ultra_canvas_param_hot_document(0,replacement.revision,2,0,0.5,0));
+ assert(ultra_canvas_stop_document(0));render();render();
+ for(unsigned i=0;i<left.size();++i)assert(left[i]==0.f&&right[i]==0.f);
+ UltraCanvasStatus stopped{};ultra_canvas_status_document(0,&stopped);
+ assert(stopped.revision==replacement.revision);
+
  close_documents();ultra_audio_stop();
  std::puts("PASS: native MSP sums, ramps, document Stop/resume, global DSP restart, cross-window sample ordering and callback partition invariance");
 }

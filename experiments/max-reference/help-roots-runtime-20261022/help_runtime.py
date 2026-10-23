@@ -49,7 +49,10 @@ def require_helpers(resources,helpers):
 
 
 def helper_metadata(resources=RESOURCES):
-    catalog=json.loads((ROOT.parent/'hierarchy-reference-20261021/sources.json').read_text())
+    try:
+        catalog=json.loads((ROOT.parent/'hierarchy-reference-20261021/sources.json').read_text())
+    except FileNotFoundError as error:
+        raise ValueError('Optional installed-source identities unavailable: generate hierarchy sources.json against licensed local resources; no source preparation performed') from error
     helpers=[dict(name=name,**value) for name,value in sorted(catalog['scripts'].items())]
     require_helpers(resources,helpers)
     return helpers

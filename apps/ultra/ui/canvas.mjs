@@ -1,5 +1,6 @@
 import {createCanvasController,parsePatch,validatePatch,nodeSpec,structuralParameter} from './canvas-model.mjs';
 import {arithmeticCreationParams,isArithmetic} from './canvas-arithmetic.mjs';
+import {visiblePatcher} from './canvas-hierarchy.mjs';
 import {createSharedCanvasController} from './canvas-shared.mjs';
 import {OBJECTS,objectText,parseObjectText,portHelp} from './canvas-catalog.mjs';
 import {createObjectEntry} from './canvas-entry.mjs';
@@ -247,7 +248,13 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
         if(direction===pending.direction)continue;
         view.ports[direction].forEach((button,index)=>{
           const target={id,direction,index};let error='';
-          try{validatePatch({...state.patch,edges:[...state.patch.edges,cableEdge(target)]});}catch(reason){error=reason.message;}
+          try{
+            // Help helpers and boundary ports are admitted in their owner tree,
+            // just as CanvasDocument.connect validates the eventual edit.
+            const candidate=structuredClone(state.document);
+            visiblePatcher(candidate,state.path).edges.push(cableEdge(target));
+            validatePatch(candidate);
+          }catch(reason){error=reason.message;}
           wireTargets.set(portKey(target),{target,button,error});
         });
       }

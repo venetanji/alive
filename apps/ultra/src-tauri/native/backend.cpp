@@ -57,11 +57,17 @@ enum class ControlKind { Event, Route, Sequence, CanvasInstall, CanvasEvent, Can
 struct Control {
  alive::Event event{}; unsigned mask=0; ControlKind kind=ControlKind::Event; UltraSequenceConfig sequence{};
  ultra::CanvasPlan canvas{};uint32_t document=0;uint64_t revision=0;uint32_t node=0,inlet=0,param=0;ultra::CanvasMessage message{};double value=0;
- ultra::CanvasMessageTemplate message_template{};uint64_t text_edit_serial=0;
+ ultra::CanvasMessageTemplate message_template{};uint64_t text_edit_serial=0,stop_epoch=0;
 };
 constexpr unsigned MaxDocuments=ultra::CanvasWorkspace::MaxDocuments;
 std::array<ultra::CanvasPlan,MaxDocuments> admitted_canvas{}; // Serialized control-thread ownership.
 std::array<uint64_t,MaxDocuments> admitted_message_serial{};
+// Out-of-band, coalescing safety mailbox. Never competes with the edit FIFO.
+std::array<std::atomic<uint64_t>,MaxDocuments> document_stop_epoch{};
+std::array<uint64_t,MaxDocuments> applied_stop_epoch{}; // Callback owner.
+void request_document_stop(unsigned document){document_stop_epoch[document].fetch_add(1,std::memory_order_release);}
+bool document_action(ControlKind kind){return kind==ControlKind::CanvasEvent||kind==ControlKind::CanvasTab||kind==ControlKind::CanvasParamHot;}
+
 std::array<uint64_t,MaxDocuments> closed_console_revision{};
 ultra::CanvasWorkspace canvas; // One callback owner across independent document slots.
 using CanvasClock=std::chrono::steady_clock;
@@ -216,6 +222,7 @@ bool queue_control(Control control,bool panic_on_overflow=true){
  auto status=engine.status();if(!status.ready||status.fault)return false;
  const auto head=control_head.load(std::memory_order_relaxed),next=(head+1)%(ControlCapacity+1);
  if(next==control_tail.load(std::memory_order_acquire)){if(panic_on_overflow)engine.panic();return false;}
+ if(document_action(control.kind)||control.kind==ControlKind::CanvasInstall||control.kind==ControlKind::CanvasParam)control.stop_epoch=document_stop_epoch[control.document].load(std::memory_order_acquire);
  controls[head]=control;control_head.store(next,std::memory_order_release);return true;
 }
 void drain_stopped_canvas_controls(){
@@ -223,16 +230,26 @@ void drain_stopped_canvas_controls(){
  // synth events are discarded because the audio engine is already stopped.
  auto discard=[](alive::Event){return true;};canvas.begin_callback();
  const auto end=control_head.load(std::memory_order_acquire);auto tail=control_tail.load(std::memory_order_relaxed);
+ std::array<uint64_t,MaxDocuments> stop_epochs{};
+ for(unsigned d=0;d<MaxDocuments;++d){
+  stop_epochs[d]=document_stop_epoch[d].load(std::memory_order_acquire);
+  if(stop_epochs[d]!=applied_stop_epoch[d]){
+   canvas.stop(d,0,discard);applied_stop_epoch[d]=stop_epochs[d];document_silence[d]=64;
+  }
+ }
+
  for(unsigned i=0;tail!=end&&i<ControlCapacity;++i){
   const auto& control=controls[tail];tail=(tail+1)%(ControlCapacity+1);
-  if(control.kind==ControlKind::CanvasInstall)canvas.install(control.document,control.canvas,0,discard);
+  if(document_action(control.kind)&&control.kind!=ControlKind::CanvasParamHot&&control.stop_epoch!=stop_epochs[control.document])continue;
+  if(control.kind==ControlKind::CanvasInstall){canvas.install(control.document,control.canvas,0,discard);if(control.stop_epoch!=stop_epochs[control.document])canvas.stop(control.document,0,discard);}
   else if(control.kind==ControlKind::CanvasEvent)canvas.event(control.document,control.revision,control.node,control.inlet,control.message,0,discard);
   else if(control.kind==ControlKind::CanvasMessageText)canvas.runtime(control.document).message_text(control.revision,control.node,control.text_edit_serial,control.message_template);
   else if(control.kind==ControlKind::CanvasTab)canvas.tab(control.document,control.revision,control.node,0,discard);
   else if(control.kind==ControlKind::CanvasParam||control.kind==ControlKind::CanvasParamHot){
    if(canvas.live(control.document)&&control.revision==canvas.runtime(control.document).plan().graph.revision){
     if(!canvas.runtime(control.document).param(control.canvas,control.node,control.param,control.value,0,discard))canvas.runtime(control.document).fail();
-    else if(control.kind==ControlKind::CanvasParamHot)canvas.event(control.document,control.revision,control.node,0,control.message,0,discard);
+    else if(control.kind==ControlKind::CanvasParamHot&&control.stop_epoch==stop_epochs[control.document])canvas.event(control.document,control.revision,control.node,0,control.message,0,discard);
+    if(control.stop_epoch!=stop_epochs[control.document])canvas.stop(control.document,0,discard);
    }
   }else if(control.kind==ControlKind::CanvasStop)canvas.stop(control.document,0,discard);
   else if(control.kind==ControlKind::CanvasClose){canvas.close(control.document,0,discard);canvas.runtime(control.document).reset_console_count();}
@@ -266,8 +283,17 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
  // One FIFO orders route cleanup, sequence replacement and manual UI input.
  // Snapshot once: edits during MIDI acquisition belong to the next callback.
  const auto end=control_head.load(std::memory_order_acquire);auto tail=control_tail.load(std::memory_order_relaxed);
+ std::array<uint64_t,MaxDocuments> stop_epochs{};
+ for(unsigned d=0;d<MaxDocuments;++d){
+  stop_epochs[d]=document_stop_epoch[d].load(std::memory_order_acquire);
+  if(stop_epochs[d]!=applied_stop_epoch[d]){
+   canvas.stop(d,0,emit);applied_stop_epoch[d]=stop_epochs[d];document_silence[d]=64;
+  }
+ }
+
  for(unsigned i=0;tail!=end&&i<ControlCapacity;i++){
   const auto control=controls[tail];tail=(tail+1)%(ControlCapacity+1);
+  if(document_action(control.kind)&&control.kind!=ControlKind::CanvasParamHot&&control.stop_epoch!=stop_epochs[control.document])continue;
   if(control.kind==ControlKind::Route){
    leave_canvas();
    if((callback_routes^control.mask)&1)sequence.stop(0,emit);
@@ -281,6 +307,7 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
   }else if(control.kind==ControlKind::CanvasInstall){
    sequence.stop(0,emit);sequence_requested.store(false,std::memory_order_relaxed);
    if(!canvas.install(control.document,control.canvas,0,emit))engine.panic();
+   if(control.stop_epoch!=stop_epochs[control.document])canvas.stop(control.document,0,emit);
    callback_canvas=canvas.any();document_silence[control.document]=64;
   }else if(control.kind==ControlKind::CanvasEvent){
    if(canvas.live(control.document)&&control.revision==canvas.runtime(control.document).plan().graph.revision)
@@ -292,7 +319,8 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
   }else if(control.kind==ControlKind::CanvasParam||control.kind==ControlKind::CanvasParamHot){
    if(canvas.live(control.document)&&control.revision==canvas.runtime(control.document).plan().graph.revision){
     if(!canvas.runtime(control.document).param(control.canvas,control.node,control.param,control.value,0,emit))canvas.runtime(control.document).fail();
-    else if(control.kind==ControlKind::CanvasParamHot)canvas.event(control.document,control.revision,control.node,0,control.message,0,emit);
+    else if(control.kind==ControlKind::CanvasParamHot&&control.stop_epoch==stop_epochs[control.document])canvas.event(control.document,control.revision,control.node,0,control.message,0,emit);
+    if(control.stop_epoch!=stop_epochs[control.document])canvas.stop(control.document,0,emit);
    }
   }else if(control.kind==ControlKind::CanvasStop){
    canvas.stop(control.document,0,emit);document_silence[control.document]=64;
@@ -490,7 +518,12 @@ int ultra_canvas_message_document(uint32_t document,uint64_t revision,uint32_t n
  const auto m=ultra::canvas_message_from_pod(*message);
  if(!ultra::canvas_event_valid(admitted_canvas[document],revision,node,inlet,m))return 0;
  if(running.load()){
-  Control c{};c.kind=ControlKind::CanvasEvent;c.document=document;c.revision=revision;c.node=node;c.inlet=inlet;c.message=m;return queue_control(c,false);
+  Control c{};c.kind=ControlKind::CanvasEvent;c.document=document;c.revision=revision;c.node=node;c.inlet=inlet;c.message=m;
+  if(queue_control(c,false))return 1;
+  // A rejected note-off must invalidate previously accepted future gate-ons.
+  const int slot=admitted_canvas[document].find(node);
+  if(slot>=0&&admitted_canvas[document].graph.nodes[slot].kind==ultra::Voice&&inlet==0&&m.count==2&&ultra::canvas_numeric_message(m)&&m.values[1]==0){request_document_stop(document);return 1;}
+  return 0;
  }
  if(engine.status().ready)return 0;
  tick_canvas_idle();canvas.begin_callback();auto discard=[](alive::Event){return true;};
@@ -564,7 +597,7 @@ int ultra_canvas_param_hot_document(uint32_t document,uint64_t revision,uint32_t
 int ultra_canvas_stop_document(uint32_t document){
  if(document>=MaxDocuments)return 0;
  if(!requested_documents[document].load())return 1;
- if(running.load()){Control c{};c.kind=ControlKind::CanvasStop;c.document=document;return queue_control(c,false);}
+ if(running.load()){request_document_stop(document);return 1;}
  if(engine.status().ready)return 0;
  tick_canvas_idle();auto discard=[](alive::Event){return true;};canvas.stop(document,0,discard);publish_canvas();return 1;
 }
@@ -579,7 +612,7 @@ int ultra_canvas_close_document(uint32_t document){
  requested_documents[document]=false;update_canvas_requested();discard_canvas_console(document);return 1;
 }
 void ultra_canvas_stop_all(){
- if(running.load()){Control c{};c.kind=ControlKind::CanvasStopAll;queue_control(c);}
+ if(running.load()){for(unsigned d=0;d<MaxDocuments;++d)request_document_stop(d);}
  else if(engine.status().ready)engine.panic();
  else {canvas.clear_timers();reset_canvas_idle_clock();publish_canvas();}
 }

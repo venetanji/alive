@@ -49,3 +49,19 @@ test('private bundle output is new, exclusive and outside the source worktree',a
   await assert.rejects(()=>writePrivateBundle(bundle,output),/exist/i);
   await assert.rejects(()=>writePrivateBundle(bundle,new URL('./forbidden-bundle',import.meta.url).pathname),/worktree/);
 }));
+
+// Repository-authored portable data exercises the real resource path without
+// pretending that its bytes are an installed-source identity or oracle pass.
+test('portable fixture resources bind exact source and helper bytes without a local catalog',async()=>temporary(async directory=>{
+  const source=await readFile(new URL('../../../apps/ultra/tests/fixtures/help-shell.maxpat',import.meta.url));
+  const helper=Buffer.from('// Original portable test helper; no Max implementation.\n');
+  await mkdir(join(directory,'help/max'),{recursive:true});await mkdir(join(directory,'help/resources'),{recursive:true});
+  await writeFile(join(directory,'help/max/append.maxhelp'),source);
+  await writeFile(join(directory,'help/resources/original.js'),helper);
+  const identities={help:{append:{path:'help/max/append.maxhelp',sha256:digest(source)}},
+    scripts:{original:{path:'help/resources/original.js',sha256:digest(helper)}}};
+  const result=await verifyResources(directory,'append',identities);
+  assert.equal(result.sourceSha256,digest(source));assert.equal(result.helpers[0].sha256,digest(helper));
+  await writeFile(join(directory,'help/max/append.maxhelp'),Buffer.concat([source,Buffer.from(' ')]));
+  await assert.rejects(()=>verifyResources(directory,'append',identities),/identity mismatch/);
+}));

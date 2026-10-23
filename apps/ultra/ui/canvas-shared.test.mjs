@@ -322,3 +322,57 @@ test('local Basic navigation preserves numeric Message and Print observations an
   const after=owner.getState();assert.deepEqual(after.observations,before.observations);assert.deepEqual(after.messageBoxes,before.messageBoxes);assert.deepEqual(after.printPopups,before.printPopups);
   assert.deepEqual(host.calls,calls);assert.deepEqual(child.getState().path,[3]);assert.equal(after.revision,before.revision);
 });
+
+
+test('Panic then global Stop Audio recovers even when scoped stop rejects the fault state',async()=>{
+  const host=nativeService();const native=host.invoke('owner');let panic=false,running=true;
+  const controller=createSharedCanvasController({invoke:async(name,args)=>{
+    if(name==='audio_panic')panic=true;
+    if(name==='canvas_stop'&&panic)throw Error('fault state');
+    if(name==='audio_stop'){running=false;panic=false;}
+    return native(name,args);
+  }});
+  await controller.prepare();await controller.panic();assert.equal(controller.getState().faulted,true);
+  assert.equal(await controller.stopAudio(),true);assert.equal(running,false);
+  assert.equal(controller.getState().faulted,false);assert.equal(controller.getState().ready,true);
+  assert.equal(host.calls.filter(call=>call.name==='audio_stop').length,1);
+});
+
+test('continuous edits retain bounded snapshots and their native undo boundary',async()=>{
+  const {host,child}=await views();const release=host.holdNextCommit();
+  child.parameter(4,'value',1);await tick();
+  child.parameter(4,'value',2);
+  for(let value=3;value<=1000;value++)child.parameter(4,'value',value,{history:false});
+  assert.equal(child.getState().desiredRevision-child.getState().activeDocumentRevision,2);
+  release();await child.flush();
+  assert.equal(host.calls.filter(call=>call.name==='document_commit').length,2);
+  assert.equal(host.patch.nodes[2].patcher.nodes[0].params.value,1000);
+  await child.undo();assert.equal(host.patch.nodes[2].patcher.nodes[0].params.value,1);
+  await child.undo();assert.equal(host.patch.nodes[2].patcher.nodes[0].params.value,0);
+});
+
+test('coalescing cannot cross an event or discrete undo boundary and backlog rejects atomically',async()=>{
+  const {host,child}=await views();const release=host.holdNextCommit();
+  child.parameter(4,'value',1);await tick();
+  child.parameter(4,'value',2,{history:false});const event=child.event(4,0,[9]);
+  child.parameter(4,'value',3,{history:false});
+  for(let value=4;value<=64;value++)child.parameter(4,'value',value);
+  assert.throws(()=>child.parameter(4,'value',65),/Edit queue full/);
+  assert.equal(child.getState().patch.nodes[0].params.value,64);
+  release();await event;await child.flush();
+  const relevant=host.calls.filter(call=>['document_commit','canvas_event'].includes(call.name));
+  assert.deepEqual(relevant.slice(0,4).map(call=>call.name),['document_commit','document_commit','canvas_event','document_commit']);
+  assert.equal(host.patch.nodes[2].patcher.nodes[0].params.value,64);
+});
+
+test('Stop and Panic run immediately after in-flight admission ahead of queued edits in request order',async()=>{
+  const {host,child}=await views();const release=host.holdNextCommit();
+  child.parameter(4,'value',1);await tick();child.parameter(4,'value',2);
+  const event=child.event(4,0,[9]),start=child.startAudio(),panic=child.panic(),stop=child.stopAudio();
+  release();await Promise.all([panic,stop,event,start]);await child.flush();
+  const names=host.calls.filter(call=>['document_commit','canvas_event','audio_panic','canvas_stop','audio_stop'].includes(call.name)).map(call=>call.name);
+  assert.deepEqual(names,['document_commit','audio_panic','canvas_stop','audio_stop','document_commit']);
+  assert.equal(host.calls.some(call=>call.name==='audio_start'),false);
+  assert.deepEqual(host.hotEvents.map(event=>event.value),[1]);
+  assert.equal(host.patch.nodes[2].patcher.nodes[0].params.value,2);
+});

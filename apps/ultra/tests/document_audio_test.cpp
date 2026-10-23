@@ -45,6 +45,27 @@ int main() {
  for(unsigned d=0;d<16;++d){assert(ultra_canvas_install_document(d,&g));assert(ultra_canvas_message_document(d,6,1,0,&note));}
  render();
  for(unsigned i=0;i<left.size();++i)assert(std::abs(left[i]-16*single[i])<1e-6f&&left[i]==right[i]);
+ // Fill the FIFO with accepted future gate-ons, then release a held Voice.
+ // The safety fallback clears only document 0 and cancels its queued starts.
+ assert(ultra_canvas_close_document(1));render();
+ for(unsigned d=2;d<16;++d)assert(ultra_canvas_close_document(d));
+ render();
+ for(unsigned i=0;i<64;++i)assert(ultra_canvas_message_document(0,6,1,0,&note));
+ UltraCanvasMessage off=note;off.values[1]=0;
+ assert(ultra_canvas_message_document(0,6,1,0,&off));
+ render();render();assert(energy()==0);assert(ultra_audio_flags()==3);
+ // A later start remains usable after the overload safety boundary.
+ assert(ultra_canvas_message_document(0,6,1,0,&note));render();assert(energy()>1e-5);
+ g.revision=7;assert(ultra_canvas_install_document(1,&g));
+ assert(ultra_canvas_message_document(1,7,1,0,&note));render();
+ for(unsigned i=0;i<64;++i)assert(ultra_canvas_message_document(0,6,1,0,&note));
+ assert(ultra_canvas_stop_document(0));render();render();
+ // Document 1 survives; document 0 cannot rearm after the stop.
+ assert(energy()>1e-5);
+ assert(ultra_canvas_stop_document(1));render();render();assert(energy()==0);
+ // Global stop is coalesced out of band as well, even with a full FIFO.
+ for(unsigned i=0;i<64;++i)assert(ultra_canvas_message_document(0,6,1,0,&note));
+ ultra_canvas_stop_all();render();render();assert(energy()==0);assert(ultra_audio_flags()==3);
  // Legacy ingress still rejects document-bank addresses.
  assert(!ultra_audio_event(2,0,69,100));
  ultra_audio_stop();

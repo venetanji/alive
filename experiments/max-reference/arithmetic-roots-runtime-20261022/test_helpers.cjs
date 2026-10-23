@@ -1356,10 +1356,14 @@ case007('plus007_fix1_v8_root_source_class_binding', () => {
 console.log(JSON.stringify({completed007, failures007}));
 assert.deepEqual(failures007, [], 'preparation007 behavioral regressions');
 
-// Private source metadata stays in memory; all host objects and calls are synthetic.
-const source008 = JSON.parse(require('node:child_process').execFileSync('python3', ['-B', '-c',
+// This block uses licensed source descriptors and private capture007 evidence.
+// All earlier/later original in-memory helper suites remain portable and active.
+const local008Present = JSON.parse(require('node:child_process').execFileSync('python3', ['-B', '-c',
+  'import arithmetic,json; from pathlib import Path; p=Path.home()/".cache/alive-ultra-evidence"; paths=[arithmetic.common.RESOURCES,p/"arithmetic-max-runtime-007",p/"arithmetic-package-007-historical"]; print(json.dumps(any(x.exists() or x.is_symlink() for x in paths)))'],
+  {cwd: __dirname, encoding: 'utf8'}));
+const source008 = local008Present ? JSON.parse(require('node:child_process').execFileSync('python3', ['-B', '-c',
   'import arithmetic,json; d,_,h=arithmetic.source_metadata(); print(json.dumps({"definition":next(x for x in d if x["document"]=="plus"),"helpers":h}))'],
-  {cwd: __dirname, encoding: 'utf8', maxBuffer: 1024 * 1024}));
+  {cwd: __dirname, encoding: 'utf8', maxBuffer: 1024 * 1024})) : null;
 function plus008Fixture(revision = 1, action = 'install') {
   const r = helper('v8-readback.js'), d = plain(source008.definition), calls = [], nongated = [], byAnchor = {}, byName = {};
   Object.assign(d, {revision, lifecycle_owner_inlet: revision + 1, working_windows_path: `Z:/synthetic/plus-r${revision}.maxhelp`});
@@ -1408,8 +1412,9 @@ function plus008Fixture(revision = 1, action = 'install') {
     step_id: action === 'event' ? 'plus-A' + (revision === 1 ? '01' : '21') : action + '-plus-r' + revision};
   return {reader: r, definition: d, request, config, calls, nongated, root, basic, byAnchor, byName, originals, harness};
 }
-const failures008 = [], completed008 = [];
+const failures008 = [], completed008 = [], unavailable008 = [];
 function case008(name, body) {
+  if (!local008Present) {unavailable008.push(name); return;}
   if (process.env.ARITHMETIC_008_CASE && process.env.ARITHMETIC_008_CASE !== name) return;
   try {body(); completed008.push(name);} catch (error) {failures008.push({name, error: error.message.split('\n')[0]});}
 }
@@ -1610,7 +1615,9 @@ for (const action of ['install', 'close']) case008('plus008_fix1_final_binding_r
     assert.ok(diagnostic.numeric_rows.every(row => row.value_observation.status === 'returned'), 'terminal refusal must retain all returned numeric observations');
   }
 });
-console.log(JSON.stringify({completed008, failures008}));
+console.log(JSON.stringify({completed008, failures008, unavailable008,
+  oracleStatus: local008Present ? 'LOCAL_TESTS_EXECUTED' : 'UNAVAILABLE: licensed resources and capture007 evidence absent; no oracle pass'}));
+if (!local008Present) assert.equal(unavailable008.length, 11, 'only the eleven private-derived cases may be unavailable');
 assert.equal(failures008.length, 0, 'preparation008 behavioral regressions');
 
 // Wholly original source data: only public anchor identities match the request.

@@ -1,4 +1,4 @@
-"""Original synthetic fixtures for the finite arithmetic reference package."""
+"""Portable original fixtures plus explicitly optional private capture007 tests."""
 from collections import Counter
 import copy
 import hashlib
@@ -465,6 +465,31 @@ def extraction_memory_storage(n, payload):
         yield dict(work=work,path=path,retained=retained,files=files,writes=writes,reads=reads)
 
 
+class LocalOracleAvailabilityTests(unittest.TestCase):
+    def test_only_wholly_absent_local007_evidence_is_unavailable(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            self.assertFalse(local007_oracle_present(base))
+            parent = base / '.cache/alive-ultra-evidence'
+            parent.mkdir(parents=True)
+            for name in ('arithmetic-max-runtime-007', 'arithmetic-package-007-historical'):
+                marker = parent / name
+                marker.mkdir()
+                self.assertTrue(local007_oracle_present(base))
+                marker.rmdir()
+            marker.symlink_to(parent / 'missing-target')
+            self.assertTrue(local007_oracle_present(base))
+
+
+def local007_oracle_present(base=None):
+    """Only wholly absent licensed evidence may be unavailable; partial stays strict."""
+    parent = (Path.home() if base is None else Path(base)) / '.cache/alive-ultra-evidence'
+    return any((parent / name).exists() or (parent / name).is_symlink() for name in
+               ('arithmetic-max-runtime-007', 'arithmetic-package-007-historical'))
+
+
+@unittest.skipUnless(local007_oracle_present(),
+    'UNAVAILABLE: optional licensed local capture007 oracle; no Max comparison performed')
 class Preparation008Tests(unittest.TestCase):
     def test_plus_v8_independent007_loader(self):
         n=module('arithmetic')

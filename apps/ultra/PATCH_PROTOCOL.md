@@ -27,6 +27,16 @@ Start/Stop audio, audio settings and Panic affect that shared output. Stop audio
 clears timers and notes across all documents. `canvas_stop` also freezes and
 silences that document's signal graph; closing a child detaches only its view,
 while closing the owner disposes its graph and closes its child windows.
+Scoped Stop uses a coalescing per-document safety epoch outside the 64-entry
+control FIFO. The callback scans at most 16 epochs before draining at most 64
+controls. Stop invalidates older queued events, Tab and hot emissions, cancels
+that document's timers/voices and mutes its causal tail. Saved edits still apply
+without resuming pre-stop work. A rejected direct Voice `[pitch, 0]` at a full
+FIFO requests the same scoped safety stop; unrelated roots keep running. This
+fallback can end other notes in the target document. A later accepted action
+can resume it. Global Panic remains an engine-wide fail-closed action, and
+Stop Audio remains available even if scoped Stop rejects a fault state.
+
 An accepted local event, parameter change or incoming named Receive resumes a
 locally stopped continuous signal graph. Explicit global DSP restart resumes
 continuous signals in every document, including locally stopped ones, but does

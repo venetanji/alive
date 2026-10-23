@@ -14,8 +14,8 @@ does not read repository secrets or use `pull_request_target`.
    and multi-document workspace execution tests. Document tests cover save/dirty
    races and independent new/open actions; send/receive tests
    cover typed names, ports and supported import semantics. The original help
-   manifest is checked against the browser library and all 50 object kinds
-   (101 original help/example/starter entries).
+   manifest is checked against the browser library and 60 native object kinds plus patcher/comment constructs
+   (125 original help/example/starter entries).
    The list-runtime check compiles the production native headers and compares
    ordered outlets, selectors and values against recorded Max cases, including
    scalar integer/float identity. The recordings cannot establish numeric atom
@@ -27,7 +27,18 @@ does not read repository secrets or use `pull_request_target`.
    DSP precision. Portable signal tests cover mixed ports, summed inputs,
    separate dependency graphs, ramps, snapshots and native lifecycle behavior.
    Exact noise sequences and periodic snapshot scheduling remain outside the
-   compatibility claim. The reference checks do not run Max or establish
+   compatibility claim. The unpublished local hierarchy oracle is explicitly reported as `UNAVAILABLE`
+   in a public checkout; original portable hierarchy/resource tests still run.
+   Partial or changed local oracle bundles fail identity checks. This is no
+   Max comparison pass. Eight `Preparation008Tests` methods additionally require
+   the separate private capture007 runtime and historical directories. They are
+   explicitly skipped only when both are wholly absent; any partial local
+   directory or symlink makes them execute their unchanged strict checks. The
+   remaining arithmetic preparation tests use original portable synthetic
+   fixtures and still run. Eleven private-derived `plus008` helper cases likewise
+   report `UNAVAILABLE` only when licensed resources and both capture007
+   directories are wholly absent; all original in-memory helper suites remain
+   active. The reference checks do not run Max or establish
    whole-help compatibility. Signal source identities and observations are in
    `experiments/max-reference/signal-runtime-20261021/`.
 2. **Chromium canvas editing smoke:** the actual HTML/CSS/modules served over

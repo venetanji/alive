@@ -68,6 +68,10 @@ int main() {
  assert(event(8,2,1,21));assert(ultra_canvas_close_document(9));receiver.revision=6;
  assert(ultra_canvas_install_document(9,&receiver));assert(event(8,2,1,22));render(64);
  assert(ultra_canvas_console_document(9,rows,128,&dropped)==1&&rows[0].revision==6&&rows[0].message.values[0]==22);
+ // A stop also invalidates queued starts during the audio-to-idle handoff.
+ assert(event(10,1,1,1));assert(ultra_canvas_stop_document(10));ultra_audio_stop();
+ assert(status(10).nodes[0].value==0);
+ assert(ultra_external_start());
  ultra_canvas_stop_all();render(1024);const auto stopped=status(10).nodes[2].pulses;
  render(1024);assert(status(10).nodes[2].pulses==stopped);
  const auto counter=status(10).nodes[2];assert(event(8,2,1,41));ultra_audio_stop();

@@ -31,6 +31,8 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
   let status={},observations={},messageBoxes={},printPopups={},consoleRecords=[],consoleDropped=0,consoleBaseline=0,consoleEpoch=0;
   let notice='Preparing shared native patch...',faulted=false,panicked=false,disposed=false,detaching=false,epoch=0;
   const queue=[],closeBarriers=new Map();
+  const MAX_PENDING_EDITS=64;
+  let activeItem=null;
   const getState=()=>({patch:copy(document.patch),document:copy(document.document),path:[...document.path],...helpView.getState(),
     native:true,shared:true,revision:descriptor?.runtimeRevision??null,
     desiredRevision:(descriptor?.authoringRevision??0)+queue.filter(item=>item.kind==='edit').length,
@@ -104,7 +106,7 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
       try{patch=new CanvasDocument(rebase(item.base,item.patch,descriptor.patch)).document;}
       catch(error){throw Error(`Edit conflict: ${error.message} The authoritative document was retained.`);}
       const result=await invoke('document_commit',{baseRevision:descriptor.authoringRevision,patch,
-        ...(item.parameter?{parameter:item.parameter}:{}),...(item.messageText?{messageText:item.messageText}:{}),history:item.history, ...(item.force?{force:true}:{})});
+        ...(item.parameter?{parameter:{...item.parameter,hot:item.parameter.hot&&item.epoch===epoch}}:{}),...(item.messageText?{messageText:item.messageText}:{}),history:item.history, ...(item.force?{force:true}:{})});
       if(acceptResult(result))return true;
     }
     throw Error('Edit conflict: the document is changing in another view. The authoritative document was retained.');
@@ -113,7 +115,7 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     if(drainTask)return drainTask;
     drainTask=Promise.resolve().then(async()=>{
       while(queue.length&&!disposed) {
-        const item=queue[0];
+        const item=queue[0];activeItem=item;
         try {
           let result;
           if(item.kind==='edit')result=await commit(item);
@@ -148,22 +150,34 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
           }
         }
       }
-    }).finally(()=>{drainTask=null;emit();if(queue.length&&!disposed)pump();});
+    }).finally(()=>{activeItem=null;drainTask=null;emit();if(queue.length&&!disposed)pump();});
     return drainTask;
   }
-  function enqueue(item) {
-    const promise=new Promise(resolve=>item.resolve=resolve);queue.push(item);emit();pump();return promise;
+  function enqueue(item,{priority=false}={}) {
+    const promise=new Promise(resolve=>item.resolve=resolve);
+    if(priority){item.safety=true;let index=activeItem?1:0;while(queue[index]?.safety)index++;queue.splice(index,0,item);}else queue.push(item);
+    emit();pump();return promise;
   }
-  function edit(method,args,{history=true,parameter,messageText,force=false}={}) {
+  function edit(method,args,{history=true,parameter,messageText,force=false,coalesceKey}={}) {
     if(disposed||detaching)throw Error('This patcher view is detached.');
     if(closeBarriers.size)throw Error('This patcher is closing. Cancel closing before editing.');
     if(!descriptor)throw Error('Wait for the shared document to prepare.');
+    coalesceKey??=parameter?`parameter:${parameter.node}:${parameter.key}`:undefined;
+    const tail=queue.at(-1);
+    const coalesce=history===false&&coalesceKey&&tail?.kind==='edit'&&tail!==activeItem&&tail.coalesceKey===coalesceKey&&tail.epoch===epoch;
+    // Refuse before mutating the optimistic document; discrete undo boundaries
+    // and event/history ordering are never silently merged or discarded.
+    if(!coalesce&&queue.filter(item=>item.kind==='edit').length>=MAX_PENDING_EDITS)
+      throw Error('Edit queue full. Wait for native admission before editing.');
     const base=copy(document.document),result=method(...args);
     reconcileHelp();
     // A hot control may restore its saved value after incoming messages changed
     // only live state. Native must admit that action even with an unchanged tree.
     if(messageText)delete messageBoxes[messageText.node];
-    if(force||messageText||parameter?.hot||!equal(base,document.document))enqueue({kind:'edit',base,patch:copy(document.document),history,parameter,messageText,force});
+    if(force||messageText||parameter?.hot||!equal(base,document.document)) {
+      if(coalesce){tail.patch=copy(document.document);tail.parameter=parameter;emit();}
+      else enqueue({kind:'edit',base,patch:copy(document.document),history,parameter,messageText,force,coalesceKey,epoch});
+    }
     return result;
   }
   function parameter(id,key,value,{history=true}={}) {
@@ -235,26 +249,26 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     if(closeBarriers.get(request.requestLabel)?.token!==request.token)return;
     closeBarriers.delete(request.requestLabel);emit();
   }
-  function operation(run) {if(disposed||detaching)return Promise.resolve(false);return enqueue({kind:'operation',run});}
+  function operation(run,priority=false) {if(disposed||detaching)return Promise.resolve(false);return enqueue({kind:'operation',run},{priority});}
   function stop(message='Timers and notes stopped.') {
     epoch++;observations={};
-    return operation(async()=>{await invoke('canvas_stop');observations={};notice=message;return true;});
+    return operation(async()=>{await invoke('canvas_stop');observations={};notice=message;return true;},true);
   }
   async function dispose() {
     if(disposed)return;
     detaching=true;epoch++;await flush();disposed=true;observations={};
   }
   return {getState,prepare,adoptDescriptor,acceptDescriptor,flush,flushBeforeClose,cancelClose,poll,dispose,disposeDocument:dispose,parameter,event,tab,stop,
-    startAudio:()=>operation(async()=>{if(panicked){report('Panic is latched. Stop audio, then Start audio to recover.');return false;}
+    startAudio:()=>{const token=epoch;return operation(async()=>{if(token!==epoch)return false;if(panicked){report('Panic is latched. Stop audio, then Start audio to recover.');return false;}
       if(!descriptor&&!(await prepare()))return false;faulted=false;await invoke('audio_start');await poll();
-      notice=status.running?'Audio running.':'Audio could not start.';emit();return !!status.running;}),
-    stopAudio:()=>{epoch++;return operation(async()=>{await invoke('canvas_stop');await invoke('audio_stop');status={...status,running:false};faulted=false;panicked=false;observations={};notice='Audio stopped.';return true;});},
-    panic:()=>{epoch++;panicked=true;faulted=true;return operation(async()=>{await invoke('audio_panic');notice='Native Panic sent. Stop audio, then Start audio to recover.';return true;});},
+      notice=status.running?'Audio running.':'Audio could not start.';emit();return !!status.running;});},
+    stopAudio:()=>{epoch++;return operation(async()=>{try{await invoke('canvas_stop');}catch{/* Global stop remains available after a canvas fault. */}await invoke('audio_stop');status={...status,running:false};faulted=false;panicked=false;observations={};notice='Audio stopped.';return true;},true);},
+    panic:()=>{epoch++;panicked=true;faulted=true;return operation(async()=>{await invoke('audio_panic');notice='Native Panic sent. Stop audio, then Start audio to recover.';return true;},true);},
     enter:id=>{document.enter(id);helpView.navigate(document);emit();},leave:depth=>{document.leave(depth);helpView.navigate(document);emit();},reveal:id=>{document.reveal(id);helpView.navigate(document);emit();},
     hostHelpBasic:()=>{if(disposed||detaching||closeBarriers.size)return false;const hosted=helpView.hostBasic(document);if(hosted)emit();return hosted;},
     clearConsole:()=>{consoleRecords=[];consoleBaseline=consoleDropped;consoleEpoch++;emit();},
     ...Object.fromEntries(['add','configure','remove','removeMany','connect','disconnect','move','moveMany','resize','style']
-      .map(method=>[method,(...args)=>edit((...values)=>document[method](...values),args,{history:args.at(-1)?.history!==false})])),
+      .map(method=>[method,(...args)=>edit((...values)=>document[method](...values),args,{history:args.at(-1)?.history!==false,coalesceKey:`${method}:${JSON.stringify(args[0])}`})])),
     configure:(id,type,params)=>type==='message_box'&&document.patch.nodes.find(node=>node.id===id)?.type===type?
       parameter(id,'text',params.text):edit((...args)=>document.configure(...args),[id,type,params]),
     undo:()=>operationHistory('undo'),redo:()=>operationHistory('redo'),

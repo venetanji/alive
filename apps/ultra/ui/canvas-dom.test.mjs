@@ -61,6 +61,21 @@ test('help shell hosts Basic while question/reference navigation preserves the n
   assert.equal(p.calls.some(c=>c.name==='document_open_patcher'),false);
   await p.dispose();
 });
+test('Basic cable feedback validates the complete help shell like the committed edit',async()=>{
+  const patch=helpPatch();patch.nodes.find(n=>n.id===3).patcher.edges=[];
+  const p=await mount();p.controller.load(patch);await p.controller.flush();
+  assert.deepEqual(p.controller.getState().path,[3]);
+  const port=(id,direction)=>descendants(p.all('objects').find(e=>Number(e.dataset.node)===id)).find(e=>e.dataset.direction===direction);
+  await port(7,'out').fire('click');
+  assert.equal(port(8,'in').classList.contains('compatible'),true,'Valid Basic cable must be offered with the shell metadata retained.');
+  assert.equal(port(8,'in').classList.contains('unavailable'),false);
+  await port(8,'in').fire('click');await p.controller.flush();
+  assert.deepEqual(p.controller.getState().patch.edges,[{from:7,outlet:0,to:8,inlet:0}]);
+  assert.ok(p.controller.getState().document.helpShell,'The edit preserves shell identity.');
+  await port(7,'out').fire('click');
+  assert.equal(port(8,'in').classList.contains('unavailable'),true,'Full-tree validation still refuses duplicate cables.');
+  await p.dispose();
+});
 test('help reference replies cannot attach to a replacement shell and unavailable states stay readable',async()=>{
   let resolve;
   const patch=helpPatch(),descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Help.ultra',kind:'patch',patch,dirty:false,viewPath:[],authoringRevision:1,runtimeRevision:1};

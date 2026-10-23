@@ -106,11 +106,12 @@ if sys.argv[1:]==['--adapter']:
         audio.ultra_canvas_stop();l,r=step();assert not any(l+r)
         assert not event(1,(60,100))
         audio.ultra_audio_stop();assert audio.ultra_audio_start();l,r=render();assert not any(l+r)
-        # Rejected note termination fails closed, never silently leaves a voice held.
+        # Overloaded note termination uses scoped stop, cancelling queued starts.
         install();render();assert event(1,(60,100));render()
         for _ in range(64):assert event(1,(60,100))
-        assert not event(1,(60,0));assert audio.ultra_audio_flags()&4
-        l,r=step();assert not any(l+r)
+        assert event(1,(60,0));assert not audio.ultra_audio_flags()&4
+        l,r=render();assert not any(l+r)
+        assert event(1,(60,100));l,r=render();assert any(l)
         audio.ultra_audio_stop();assert audio.ultra_audio_start();l,r=render();assert not any(l+r)
     finally:audio.ultra_audio_stop()
     print('PASS: real Engine canvas rewires/swap/duplicate/silence, bounded publication, MIDI, messages/math, sample timers, no-reset params, stale generation, stop/restart and fail-closed overflow')
