@@ -1,5 +1,6 @@
 #include "../src-tauri/native/backend.h"
 #include "../src-tauri/native/alive_session.h"
+#include "../src-tauri/native/alive_session.hpp"
 #include "canvas_callback_guard.hpp"
 #include "../core/engine.hpp"
 #include <algorithm>
@@ -8,6 +9,7 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <memory>
 #include <vector>
 
 namespace {
@@ -87,6 +89,58 @@ void shared_frame_and_sustain(){
  for(unsigned i=0;i<128;++i){const float expected=i<32?.25f:i<63?float(.25*64/127):i==63||i==127?0.f:.25f;assert(l[i]==expected&&r[i]==expected);}
  alive_session_stop();render(1);assert(state().tracks[0].active_voices==0);
 }
+void live_base_preserves_structural_constraints(){
+ auto c=prepare();auto graph=instrument();
+ graph.nodes[graph.node_count].id=6;graph.nodes[graph.node_count].kind=4;
+ graph.nodes[graph.node_count].p1=1;++graph.node_count;
+ assert(ultra_canvas_install_document(0,&graph));c.tracks[0].revision=graph.revision;
+ c.tracks[0].parameters[0]={6,0,0,0,0,-100,100};add(c,0,0,2,60,127);
+ assert(alive_session_configure(&c));assert(ultra_external_start());assert(alive_session_start());render(1);
+ assert(l[0]==.25f&&ultra_audio_flags()==3);
+ assert(!alive_session_base(0,0,.5));render(1);
+ assert(l[0]==.25f&&ultra_audio_flags()==3&&state().tracks[0].base[0]==0);
+ assert(alive_session_base(0,0,2));render(1);
+ assert(l[0]==.25f&&ultra_audio_flags()==3&&state().tracks[0].base[0]==2);
+ for(unsigned kind:{17u,52u})for(unsigned param:{1u,2u}){
+  graph.nodes[graph.node_count].id=7;graph.nodes[graph.node_count].kind=kind;
+  graph.nodes[graph.node_count].p2=10;++graph.node_count;
+  c.tracks[0].parameters[0]={7,param,0,0,param==1?0.:10.,-100,100};
+  assert(!alive_session_validate_prepared(&c,&graph,1));
+  --graph.node_count;graph.nodes[graph.node_count]={};
+ }
+ render(1);assert(l[0]==.25f&&ultra_audio_flags()==3);
+}
+ultra::AliveSession* interleaved_session=nullptr;
+bool interleaved_seek=false;
+void stop_then_command()noexcept{
+ ultra::alive_session_test_boundary=nullptr;
+ interleaved_session->stop();
+ if(interleaved_seek)assert(interleaved_session->seek(17));
+ else assert(interleaved_session->start());
+}
+void stop_snapshot_preserves_later_commands(){
+ auto workspace=std::make_unique<ultra::CanvasWorkspace>();
+ auto session=std::make_unique<ultra::AliveSession>();
+ const auto graph=instrument();ultra::CanvasPlan plan{};assert(ultra::compile_canvas(graph,plan));
+ auto discard=[](alive::Event){return true;};assert(workspace->install(0,plan,0,discard));
+ AliveSessionConfig config{};config.version=1;config.track_count=1;config.length_frames=256;
+ auto& track=config.tracks[0];track.document=0;track.revision=graph.revision;
+ track.note_node=1;track.output_channels=2;track.output_layout=2;track.gain=1;
+ for(bool seek:{false,true}){
+  assert(session->configure(config,*workspace));interleaved_session=session.get();interleaved_seek=seek;
+  ultra::alive_session_test_boundary=stop_then_command;
+  callback_guard::begin();
+  session->begin(*workspace);session->publish(*workspace);
+  session->begin(*workspace);session->publish(*workspace);
+  callback_guard::end();
+  AliveSessionState result{};assert(session->snapshot(result));
+  assert(seek?(!result.playing&&result.position==17):result.playing);
+  assert(session->seek(23));assert(session->start());session->stop();
+  callback_guard::begin();session->begin(*workspace);session->publish(*workspace);callback_guard::end();
+  assert(session->snapshot(result));assert(!result.playing&&result.position==(seek?17u:0u));
+ }
+ interleaved_session=nullptr;
+}
 void chase_disable_remove(){
  auto c=prepare();add(c,31,0,1,0,64);add(c,31,0,2,60,127);
  assert(alive_session_configure(&c));assert(ultra_external_start());assert(alive_session_seek(10));assert(alive_session_start());render(1);
@@ -110,4 +164,4 @@ void measured_paths(){
  }
 }
 }
-int main(){const auto expected=score({1});assert(score({32,64,127,1024})==expected);ownership_and_stop();isolation_loop_mixer();admission();shared_frame_and_sustain();chase_disable_remove();measured_paths();ultra_audio_stop();assert(alive_session_reset());std::puts("PASS: Alive exact frames, partitions, ownership, overload Stop, seek, loop, isolation, mono join, mixer and callback guard");}
+int main(){const auto expected=score({1});assert(score({32,64,127,1024})==expected);ownership_and_stop();isolation_loop_mixer();admission();shared_frame_and_sustain();live_base_preserves_structural_constraints();stop_snapshot_preserves_later_commands();chase_disable_remove();measured_paths();ultra_audio_stop();assert(alive_session_reset());std::puts("PASS: Alive exact frames, partitions, ownership, overload Stop, seek, loop, isolation, mono join, mixer and callback guard");}

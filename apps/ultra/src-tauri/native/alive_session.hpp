@@ -6,6 +6,9 @@
 #include <limits>
 
 namespace ultra {
+#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+inline void (*alive_session_test_boundary)()noexcept=nullptr;
+#endif
 class AliveSession {
  struct Command {unsigned kind=0,track=0,param=0,mute=0,solo=0;double value=0;uint64_t frame=0,epoch=0;};
  AliveSessionConfig config_{};
@@ -17,7 +20,8 @@ class AliveSession {
  std::array<std::atomic<uint64_t>,Words> published_{};
  std::atomic<uint64_t> publication_{0};
  unsigned next_event_=0;
- std::array<std::array<unsigned,16>,2> parameter_kinds_{};
+ // Control-thread snapshots retain structural constraints for queued base edits.
+ std::array<CanvasPlan,2> parameter_plans_{};
  const char* error_="No Alive session configured.";
  static bool flag(unsigned value)noexcept{return value<=1;}
  static bool gain(double value)noexcept{return std::isfinite(value)&&value>=0&&value<=4;}
@@ -110,6 +114,9 @@ class AliveSession {
   if(!stereo)return reject("Alive device has no explicit stereo output route.");
   // Validate every declared base using the real graph compiler off callback.
   for(unsigned p=0;p<track.parameter_count;++p){const auto& b=track.parameters[p];
+   const int slot=plan.find(b.node);
+   if(slot>=0&&(graph.nodes[unsigned(slot)].kind==Flonum||graph.nodes[unsigned(slot)].kind==NumberInt)&&(b.param==1||b.param==2))
+    return reject("Alive numeric UI min/max bounds are structural; bind the value instead.");
    if(!change_canvas_param(plan,b.node,b.param,b.base))return reject("Alive bound parameter is incompatible with its native node.");
   }
   error_="Alive device validated.";return true;
@@ -130,16 +137,19 @@ class AliveSession {
  }
  bool configure(const AliveSessionConfig& c,CanvasWorkspace& workspace)noexcept{
   if(!validate(c))return false;
+  std::array<CanvasPlan,2> parameter_plans{};
   for(unsigned t=0;t<c.track_count;++t){if(!workspace.live(c.tracks[t].document))return reject("Alive document graph is missing.");
    const auto& graph=workspace.runtime(c.tracks[t].document).plan().graph;
    if(!validate_graph(c.tracks[t],graph)||!validate_values(c,t,graph))return false;
+   parameter_plans[t]=workspace.runtime(c.tracks[t].document).plan();
+   for(unsigned p=0;p<c.tracks[t].parameter_count;++p){const auto& b=c.tracks[t].parameters[p];
+    if(!change_canvas_param(parameter_plans[t],b.node,b.param,b.base))return reject("Alive base parameter cannot be prepared.");
+   }
   }
   for(unsigned d=0;d<CanvasWorkspace::MaxDocuments;++d)if(workspace.live(d)){bool found=false;for(unsigned t=0;t<c.track_count;++t)found|=c.tracks[t].document==d;if(!found)return reject("Alive session cannot mix unrelated document roots.");}
-  config_=c;const uint64_t absolute=state_.absolute_frame,generation=state_.generation;state_={};state_.absolute_frame=absolute;state_.generation=generation;
+  parameter_plans_=parameter_plans;config_=c;const uint64_t absolute=state_.absolute_frame,generation=state_.generation;state_={};state_.absolute_frame=absolute;state_.generation=generation;
   state_.configured=1;state_.track_count=c.track_count;head_=0;tail_=0;applied_stop_=stop_epoch_.load();
-  for(unsigned t=0;t<c.track_count;++t){auto& ts=state_.tracks[t];ts.gain=c.tracks[t].gain;ts.mute=c.tracks[t].mute;ts.solo=c.tracks[t].solo;for(unsigned p=0;p<c.tracks[t].parameter_count;++p){ts.base[p]=c.tracks[t].parameters[p].base;
-   const auto& plan=workspace.runtime(c.tracks[t].document).plan();parameter_kinds_[t][p]=plan.graph.nodes[unsigned(plan.find(c.tracks[t].parameters[p].node))].kind;
-  }}
+  for(unsigned t=0;t<c.track_count;++t){auto& ts=state_.tracks[t];ts.gain=c.tracks[t].gain;ts.mute=c.tracks[t].mute;ts.solo=c.tracks[t].solo;for(unsigned p=0;p<c.tracks[t].parameter_count;++p)ts.base[p]=c.tracks[t].parameters[p].base;}
   discontinuity(workspace);publish(workspace);return true;
  }
  void reset(CanvasWorkspace& workspace)noexcept{
@@ -151,17 +161,27 @@ class AliveSession {
  bool base(unsigned track,unsigned param,double value)noexcept{
   if(track>=config_.track_count||param>=config_.tracks[track].parameter_count)return reject("Alive parameter binding does not exist.");
   const auto& b=config_.tracks[track].parameters[param];
-  if(!std::isfinite(value)||value<b.minimum||value>b.maximum||!canvas_param_valid(parameter_kinds_[track][param],b.param,value))return reject("Alive base parameter is outside its declared native range/type.");
-  Command c{};c.kind=3;c.track=track;c.param=param;c.value=value;return enqueue(c);
+  if(!std::isfinite(value)||value<b.minimum||value>b.maximum)return reject("Alive base parameter is outside its declared native range/type.");
+  auto next=parameter_plans_[track];
+  if(!change_canvas_param(next,b.node,b.param,value))return reject("Alive base parameter violates its prepared node constraints.");
+  Command c{};c.kind=3;c.track=track;c.param=param;c.value=value;
+  if(!enqueue(c))return false;
+  parameter_plans_[track]=next;return true;
  }
  bool mixer(unsigned track,double level,unsigned mute,unsigned solo)noexcept{
   if(track>=config_.track_count||!gain(level)||!flag(mute)||!flag(solo))return reject("Invalid Alive mixer edit.");
   Command c{};c.kind=4;c.track=track;c.value=level;c.mute=mute;c.solo=solo;return enqueue(c);
  }
  void begin(CanvasWorkspace& workspace)noexcept{
+  // An acquired command head also orders the producer's preceding Stop.
+  // Snapshot it first so a newly published Start/Seek cannot look stale.
+  const unsigned end=head_.load(std::memory_order_acquire);
+#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+  if(alive_session_test_boundary)alive_session_test_boundary();
+#endif
   const uint64_t stop=stop_epoch_.load(std::memory_order_acquire);
   if(stop!=applied_stop_){state_.playing=0;discontinuity(workspace);applied_stop_=stop;}
-  const unsigned end=head_.load(std::memory_order_acquire);unsigned tail=tail_.load(std::memory_order_relaxed);
+  unsigned tail=tail_.load(std::memory_order_relaxed);
   for(unsigned budget=0;tail!=end&&budget<64;++budget){const auto& c=commands_[tail];tail=(tail+1)%65;
    if(c.kind<=2&&c.epoch!=stop)continue;
    if(c.kind==1){if(!state_.playing){if(state_.position>=config_.length_frames)state_.position=0;state_.playing=1;discontinuity(workspace);}}
