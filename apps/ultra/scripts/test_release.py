@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import shutil
 from pathlib import Path
 import tempfile
 import unittest
@@ -35,6 +36,26 @@ class ReleaseTests(unittest.TestCase):
             with self.subTest(target=target):
                 resources = release.bundle_config(target)['bundle']['resources']
                 self.assertEqual(resources.get('../core/VOICE.txt'), 'licenses/Faust-VOICE.txt')
+
+    def test_bundled_alive_example_resolves_its_external_device(self):
+        for target in release.TARGETS:
+            with self.subTest(target=target), tempfile.TemporaryDirectory() as d:
+                package = Path(d)
+                resources = release.bundle_config(target)['bundle']['resources']
+                for source, destination in resources.items():
+                    if destination.startswith('alive-session/'):
+                        dest = package / destination
+                        dest.parent.mkdir(parents=True, exist_ok=True)
+                        shutil.copy2(release.APP / 'src-tauri' / source, dest)
+                session_path = package / 'alive-session/alive/examples/two-instruments.alive'
+                session = json.loads(session_path.read_text())
+                self.assertEqual(len(session['tracks']), 2)
+                for track in session['tracks']:
+                    device_path = (session_path.parent / track['device']['path']).resolve(strict=True)
+                    self.assertTrue(device_path.is_relative_to(package))
+                    device = json.loads(device_path.read_text())['device']
+                    self.assertEqual((device['id'], device['version']),
+                                     (track['device']['id'], track['device']['version']))
 
     def test_packaged_faust_notice_must_match_source_bytes(self):
         with tempfile.TemporaryDirectory() as d:

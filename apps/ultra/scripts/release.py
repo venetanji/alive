@@ -56,6 +56,8 @@ def version(tag=None):
 def bundle_config(target, runtime_names=()):
     system, _, library, _ = TARGETS[target]
     bundle = {'active': True, 'resources': {'../../../LICENSE': 'licenses/Alive-LICENSE', '../THIRD-PARTY.txt': 'licenses/THIRD-PARTY.txt', '../core/VOICE.txt': 'licenses/Faust-VOICE.txt', '../THIRD-PARTY-CRATES.json': 'licenses/THIRD-PARTY-CRATES.json', 'native/vendor/fast_float/LICENSE-MIT': 'licenses/fast_float-MIT'}, 'icon': ['icons/release/icon.ico', 'icons/release/icon.icns', 'icons/release/128x128.png']}
+    bundle['resources'].update({'../../alive/examples/two-instruments.alive': 'alive-session/alive/examples/two-instruments.alive',
+                                '../examples/subtractive.ultra': 'alive-session/ultra/examples/subtractive.ultra'})
     if system == 'Darwin':
         # Tauri copies/signs this nested library in Contents/Frameworks.
         bundle['macOS'] = {'frameworks': ['../build/' + library], 'minimumSystemVersion': '14.0'}

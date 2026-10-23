@@ -2,6 +2,6 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "patch-windows",
   "description": "Local patch windows listen for document actions and can close themselves.",
-  "windows": ["main", "patch-*"],
+  "windows": ["main", "patch-*", "alive-editor-*"],
   "permissions": ["core:event:default", "core:window:allow-close"]
 }

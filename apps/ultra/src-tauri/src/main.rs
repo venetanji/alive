@@ -817,6 +817,11 @@ fn main() {
         eprintln!("Ultra needs a Linux desktop session (DISPLAY or WAYLAND_DISPLAY). For offline checks run ultra-diagnostic --render-demo demo.wav.");
         std::process::exit(2);
     }
+    if arguments.get(1).is_some_and(|argument|argument=="--alive") {
+        if arguments.len()>3 { eprintln!("Usage: ultra --alive [session.alive]"); std::process::exit(2); }
+        session::desktop::run(arguments.get(2).map(std::path::PathBuf::from));
+        return;
+    }
     tauri::Builder::default()
         .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {
             // The single-instance service can receive files before setup has

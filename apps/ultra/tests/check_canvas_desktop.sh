@@ -118,8 +118,22 @@ if [[ ${ULTRA_TEST_WM:-0} == 1 ]]; then
   sleep .3
   kill -0 "$ultra_wm_pid"
 fi
+ultra_launch_arguments=("$ultra_initial_patch")
+if [[ ${ULTRA_TEST_ALIVE:-0} == 1 ]]; then
+  ultra_initial_session="$ULTRA_TEST_OUTPUT_DIR/initial.alive"
+  python3 - "${ULTRA_TEST_ALIVE_SESSION:-$ROOT/apps/alive/examples/two-instruments.alive}" "$ultra_initial_session" <<'PY'
+import json, sys
+from pathlib import Path
+source, target = map(Path, sys.argv[1:])
+session = json.loads(source.read_text())
+for track in session['tracks']:
+    track['device']['path'] = str((source.parent / track['device']['path']).resolve(strict=True))
+target.write_text(json.dumps(session, indent=2) + '\n')
+PY
+  ultra_launch_arguments=(--alive "$ultra_initial_session")
+fi
 LD_LIBRARY_PATH="$ROOT/apps/ultra/src-tauri/target/release${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
-  "$ROOT/apps/ultra/src-tauri/target/release/ultra" "$ultra_initial_patch" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
+  "$ROOT/apps/ultra/src-tauri/target/release/ultra" "${ultra_launch_arguments[@]}" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
 ultra_test_pid=$!
 export ULTRA_TEST_PID="$ultra_test_pid"
 if [[ -n ${ULTRA_TEST_SCRIPT:-} ]]; then

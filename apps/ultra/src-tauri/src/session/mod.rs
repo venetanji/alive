@@ -8,6 +8,7 @@ pub use persistence::{read, save};
 pub mod native;
 pub mod host;
 pub mod probe;
+pub mod desktop;
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]

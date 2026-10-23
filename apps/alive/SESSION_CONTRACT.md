@@ -72,6 +72,18 @@ slot even across removal and rollback. Prospective native admission runs before
 replacement. An unexpected apply failure attempts restoration of the prior
 prepared state with fresh revisions and reports any restoration failure.
 
+The desktop exposes `ultra --alive [session.alive]` in the existing executable.
+New opens the packaged two-track template. The current profile permits one or
+two tracks and rejects removal of the last track explicitly. Musical changes
+are retained separately from the prepared schedule until stopped Apply; latest
+accepted live bases and mixer values are merged before preparation. File and
+Quit actions resolve draft Apply/Discard/Cancel before Save/Discard/Cancel.
+Editor commands authenticate the actual native window label and generation;
+stale editors cannot edit a replacement instance. UI polling never blocks the
+main thread behind a native file/message dialog. Neither editor lifetime nor
+polling owns the callback. The JACK diagnostic retains its legacy 64-frame
+latency declaration; Alive desktop uses CPAL and the tested native host profile.
+
 ## Persistence And Errors
 
 An `alive-session-v1` JSON file records tempo, looping/range, tracks with stable
