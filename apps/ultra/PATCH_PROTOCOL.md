@@ -63,12 +63,92 @@ protected from overwrite. Advanced JSON / Max import is the explicit workflow
 for replacing the current graph. Browser preview uses separate preview windows,
 file input and downloads, without native execution.
 
-Help & Examples contains 125 original entries: help and an example for each of
-the 60 native kinds and two authoring constructs, plus the starter. Object Help opens or focuses a native help patch
+Help & Examples contains 138 original entries: help and an example for each of
+the 66 native kinds and two authoring constructs, plus the starter and subtractive instrument. Object Help opens or focuses a native help patch
 window. The library also lists open native documents for focusing; proprietary
 Max help content is not bundled.
 
 ## Document and IPC
+
+### Reusable instrument interface
+
+Either document version may add root-only `device` metadata. It is part of saved
+authoring state and history, excluded from native executable graph equality.
+Metadata, preset storage and live numeric parameter edits retain the running
+native revision. The complete authored graph remains the device implementation.
+
+```json
+{
+  "version": 1,
+  "id": "org.alive.subtractive",
+  "name": "Subtractive",
+  "midi": {"node": 2, "inlet": 0},
+  "audio": {"inputs": 0, "outputs": 2, "layout": "stereo"},
+  "parameters": [
+    {"key": "cutoff", "label": "Cutoff", "node": 4, "param": "cutoff", "min": 20, "max": 20000, "unit": "Hz"}
+  ],
+  "presets": [{"name": "Init", "values": {"cutoff": 2400}}]
+}
+```
+
+The MIDI entry must identify the graph's `poly_note` note inlet. Bindings address
+globally unique node IDs, including descendants, and existing live numeric
+parameters. They cannot address structural/text parameters. There are 1..16
+bindings and 0..16 full presets. Keys are unique ASCII identifiers of at most
+31 bytes; `__proto__`, `prototype` and `constructor` are refused. Device IDs use
+1..127 ASCII identifier characters with optional dot-separated segments. Names,
+labels and preset names are 1..64 printable ASCII bytes; optional units allow
+0..16. Binding ranges must lie inside the object's bounds, honor integer types
+and contain its saved value. Presets contain exactly the binding keys and valid
+numeric values. Duplicate keys, target pairs, names and unknown fields reject.
+
+`document_instantiate` clones the current canonical root into an untitled,
+independent native owner with no shared path, source, history or runtime state.
+The editor's device commands address the root tree while retaining the current
+view. This is a standalone interface suitable for a future Alive adapter;
+Alive session/device hosting and automation are not implemented. The
+`--instrument-probe <patch> <directory>` CLI is the current host harness: it
+loads and validates the saved document, binds its named parameters, schedules
+bounded notes and renders two instances without a display or editor.
+
+### Authored polyphonic DSP
+
+Kinds 60..65 extend the existing native signal evaluator with AOT Faust kernels.
+They share the host timeline alongside the legacy Clockwork guest; these new
+nodes do not execute inside that guest or inherit its separate 64-frame delay.
+
+| Saved Type / Entry | Inputs | Outputs / Bounds |
+| --- | --- | --- |
+| `poly_note` / `poly.note~` | MIDI `[pitch velocity]` or `panic`; sustain 0..127 | Frequency, gate, velocity: each exactly four discrete lanes; 1..4 voices, default 4 |
+| `saw_voice` / `saw.voice~` | Four frequency lanes | Four saw lanes, Faust `os.sawtooth` |
+| `filter_voice` / `lowpass.voice~` | Four audio lanes, cutoff, resonance Q | Four filtered lanes; cutoff 20..20000 Hz (2400), Q 0.1..20 (0.7) |
+| `adsr_voice` / `adsr.voice~` | Four gates, A/D/S/R controls | Four envelopes; A/D/R 1..10000 ms (10/150/300), S 0..1 (0.65) |
+| `multiply_voice` / `*.voice~` | Two four-lane bundles | Corresponding lane products |
+| `mix_voice` / `mix.voice~` | Four lanes | Explicit mono sum divided by four |
+
+Native port type 5 / UI `voice4` denotes four discrete voice lanes, not four
+speaker feeds. Mono and stereo ports carry explicit channel counts 1 and 2.
+Exact matching is required; no implicit up/downmix or arbitrary multichannel
+support is introduced. The example explicitly fans mono into `join~` L/R.
+Only one allocator is admitted per graph. New notes take a free lane or steal
+the oldest; repeated pitches release the oldest matching held lane first.
+Sustain defers note-off until pedal release. Released lanes retire within the
+maximum admitted envelope release even if release is edited repeatedly.
+
+All kernel initialization, allocation and ownership destruction occur outside
+the render callback. Prepared states use bounded clears and scalar parameter
+writes while rendering. The 64-entry ordinary queue rejects overload. A rejected
+event that may reach a voice allocator through control transformations or static
+Send/Receive links conservatively requests Stop for its related producer roots.
+The bounded forward/reverse walk invalidates old queued actions from every
+related sender and disarms their timers; unrelated sounding roots continue.
+Unnamed/rebindable Receive acts as a wildcard for this safety analysis. A direct
+gate-on is rejected without this fallback. Recognized release-shaped requests
+report safety termination as accepted; unclassified transformed requests still
+report rejection after requesting Stop. Perform also requests Stop if its release
+is refused. Dynamic Int/Float `send <name>` methods are not inferred by this
+analysis; explicit Stop/Panic remain available out of band. Tests wrap
+allocation/free and blocking mutex calls during actual native rendering.
 
 ### Embedded authoring documents
 

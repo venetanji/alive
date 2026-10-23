@@ -129,3 +129,52 @@ test('a real shared-controller admission rejection sends a failed native close a
   await assert.rejects(session.flushBeforeClose({requestLabel:'main',token:6}),/not admitted/);
   assert.deepEqual(calls.find(call=>call.name==='document_close_flushed').args,{requestLabel:'main',token:6,error:'Native canvas parameter was not admitted'});
 });
+
+
+for(const failure of ['preflight','save','cancelled','dirty','confirmation'])test(`save-before-close cancels the native transaction on ${failure}`,async()=>{
+  const {createDocumentSession}=await import('./canvas-documents.mjs');const calls=[];
+  const initial={shared:true,ownerLabel:'main',label:'main',title:'Owner',patch:patch(),authoringRevision:1,dirty:true};
+  const session=createDocumentSession({getPatch:patch,adopt:()=>{},
+    beforeSave:async()=>{if(failure==='preflight')throw Error('preflight rejected');},
+    invoke:async(name)=>{
+      calls.push(name);
+      if(name==='document_current')return initial;
+      if(name==='document_save'){
+        if(failure==='save')throw Error('save rejected');
+        return failure==='cancelled'?null:{...initial,dirty:failure==='dirty'};
+      }
+      if(name==='document_close_confirmed')throw Error('confirmation rejected');
+      return true;
+    }});
+  await session.ready();
+  if(['preflight','save','confirmation'].includes(failure))await assert.rejects(session.saveBeforeClose(),/rejected/);
+  else assert.equal(await session.saveBeforeClose(),false);
+  assert.equal(calls.filter(name=>name==='document_cancel_close').length,1);
+  assert.equal(calls.includes('document_close_confirmed'),failure==='confirmation');
+});
+
+test('successful save-before-close confirms once without cancelling the native transaction',async()=>{
+  const initial={shared:true,ownerLabel:'main',label:'main',title:'Owner',patch:patch(),authoringRevision:1,dirty:true};
+  const p=await setup({document_current:initial,document_save:{...initial,dirty:false},document_close_confirmed:true});
+  await p.session.ready();assert.equal(await p.session.saveBeforeClose(),true);
+  assert.equal(p.calls.filter(call=>call.name==='document_close_confirmed').length,1);
+  assert.equal(p.calls.some(call=>call.name==='document_cancel_close'),false);
+});
+
+
+for(const accepted of [true,false])test(`save-before-close preserves the Quit generation when confirmation is ${accepted}`,async()=>{
+  const initial={shared:true,ownerLabel:'main',label:'main',title:'Owner',patch:patch(),authoringRevision:1,dirty:true};
+  const p=await setup({document_current:initial,document_save:{...initial,dirty:false},document_close_confirmed:accepted});
+  await p.session.ready();assert.equal(await p.session.saveBeforeClose({quitToken:17}),accepted);
+  assert.deepEqual(p.calls.find(call=>call.name==='document_close_confirmed').args,{quitToken:17});
+  if(!accepted)assert.deepEqual(p.calls.find(call=>call.name==='document_cancel_close').args,{quitToken:17});
+  else assert.equal(p.calls.some(call=>call.name==='document_cancel_close'),false);
+});
+
+test('save-before-close retains the Quit generation when frontend preflight fails',async()=>{
+  const {createDocumentSession}=await import('./canvas-documents.mjs');const calls=[];
+  const session=createDocumentSession({getPatch:patch,adopt:()=>{},beforeSave:async()=>{throw Error('flush failed');},
+    invoke:async(name,args)=>{calls.push({name,args});return true;}});
+  await assert.rejects(session.saveBeforeClose({quitToken:23}),/flush failed/);
+  assert.deepEqual(calls,[{name:'document_cancel_close',args:{quitToken:23}}]);
+});

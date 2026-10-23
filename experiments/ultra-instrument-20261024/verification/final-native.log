@@ -1,0 +1,15 @@
+PASS: route ordering, fresh UI presses, B isolation, FIFO overflow, stopped cleanup and current recovery errors
+PASS: explicit fake-JACK adapter tests (NOT real JACK/hardware execution)
+PASS: native sequencer chord maths, million-frame partition invariance, rational metro, gate/stop/reconfigure, MIDI Start/Continue/Stop/clock, clock-loss release and rejection safety
+PASS: real native adapter sequence, A reservation/B isolation, config/route/AllOff/Panic/restart, external transport and clock-loss termination, ingress overflow
+PASS: native canvas validation, actual routing plans, depth-first messages/math, MIDI, stale events, million-step bounded timers, partition invariance, live params, stop and rejection safety
+PASS: real Engine canvas rewires/swap/duplicate/silence, bounded publication, MIDI, messages/math, sample timers, no-reset params, stale generation, stop/restart and fail-closed overflow
+PASS: Rust-host native ABI, callback partition invariance, audible output and bounded failure
+PASS: document console epochs, close/reuse, named subscriber removal, timer isolation and full-FIFO close rejection
+PASS: one engine, independent document audio, isolated replace/close/stop and legacy device bounds
+PASS: native MSP sums, ramps, document Stop/resume, global DSP restart, cross-window sample ordering and callback partition invariance
+numeric UI backend admission, callback order and stop drain passed
+message UI backend admission and FIFO passed
+print popup backend nonconsuming publication and threaded reads passed
+overflow release safety: saved message=1, named route=1, related sender=1
+PASS: authored backend overload noteoff/transformed release/sustain/panic, stale FIFO invalidation, Stop/restart, independent roots and seven callback partitions

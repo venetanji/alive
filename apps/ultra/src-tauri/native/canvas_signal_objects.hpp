@@ -5,10 +5,11 @@
 
 namespace ultra {
 inline bool canvas_signal_kind(unsigned kind)noexcept{return kind>=Sig&&kind<=SignalDac;}
+inline bool canvas_voice_kind(unsigned kind)noexcept{return kind>=PolyNote&&kind<=MixVoice;}
 inline bool canvas_control_port(unsigned type)noexcept{return type==1||type==4;}
-inline bool canvas_signal_port(unsigned type)noexcept{return type==2||type==3||type==4;}
+inline bool canvas_signal_port(unsigned type)noexcept{return type==2||type==3||type==4||type==5;}
 inline bool canvas_ports_match(unsigned output,unsigned input)noexcept{
- return output==1?canvas_control_port(input):output==3?input==3:output==2?(input==2||input==4):output==4&&(input==1||input==2||input==4);
+ return output==5?input==5:output==1?canvas_control_port(input):output==3?input==3:output==2?(input==2||input==4):output==4&&(input==1||input==2||input==4);
 }
 inline bool canvas_signal_args(const UltraCanvasNode& node,CanvasMessage& args)noexcept{
  if(!canvas_parse_args(node.text,args)||!args.count||!canvas_numeric_message(args))return false;

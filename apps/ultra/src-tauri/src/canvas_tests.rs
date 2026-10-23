@@ -34,6 +34,115 @@ fn empty_document_is_a_valid_silent_graph() {
     assert_eq!(p.native.node_count, 0);
 }
 #[test]
+fn authored_voice_objects_compile_with_exact_discrete_lanes_and_live_parameters() {
+    let source = patch(vec![node(1,"poly_note",json!({})), node(2,"saw_voice",json!({})),
+        node(3,"filter_voice",json!({})),node(4,"adsr_voice",json!({})),
+        node(5,"multiply_voice",json!({})),node(6,"mix_voice",json!({})),
+        node(7,"gain",json!({})),node(8,"join",json!({})),node(9,"dac",json!({}))],
+        vec![edge(1,0,2,0),edge(2,0,3,0),edge(1,1,4,0),edge(3,0,5,0),edge(4,0,5,1),
+        edge(5,0,6,0),edge(6,0,7,0),edge(7,0,8,0),edge(7,0,8,1),edge(8,0,9,0)]);
+    let prepared = prepare(source.clone()).unwrap();
+    assert_eq!(prepared.native.nodes[..6].iter().map(|node|node.kind).collect::<Vec<_>>(),vec![60,61,62,63,64,65]);
+    assert_eq!(prepared.native.nodes[0].p0,4.);
+    assert_eq!((prepared.native.nodes[2].p0,prepared.native.nodes[2].p1),(2400.,0.7));
+    assert_eq!((prepared.native.nodes[3].p0,prepared.native.nodes[3].p1,prepared.native.nodes[3].p2,prepared.native.nodes[3].p3),(10.,150.,0.65,300.));
+    let mut state=CanvasState::default(); let revision=state.install(prepared,|_|true).unwrap();
+    assert!(state.parameter(revision,3,"cutoff",800.,|slot,value|slot==0 && value==800.).is_ok());
+    assert!(state.parameter(revision,4,"release",900.,|slot,value|slot==3 && value==900.).is_ok());
+    assert!(state.parameter(revision,1,"voices",2.,|_,_|panic!("voice count is structural")).is_err());
+    assert!(state.event(revision,1,0,json!([60,100])).is_ok());
+    assert!(state.event(revision,1,1,json!([127])).is_ok());
+    for (from,outlet,to,inlet) in [(1,0,7,0),(7,0,3,0),(8,0,3,0),(1,2,9,0)] {
+        let mut invalid=source.clone(); invalid["edges"]=json!([edge(from,outlet,to,inlet)]);
+        assert!(prepare(invalid).is_err(),"voice lanes must not silently mix with audio/control");
+    }
+    assert!(prepare(patch(vec![node(1,"saw_voice",json!({})),node(2,"filter_voice",json!({}))],vec![edge(1,0,2,0),edge(2,0,1,0)])).is_err());
+    assert!(prepare(patch(vec![node(1,"poly_note",json!({})),node(2,"poly_note",json!({}))],vec![])).is_err());
+    assert!(prepare(patch(vec![node(1,"saw_voice",json!({})),node(2,"mix_voice",json!({}))],vec![edge(1,0,2,0)])).is_ok());
+}
+#[test]
+fn authored_voice_parameter_bounds_are_strict() {
+    for (name,key,values) in [("poly_note","voices",vec![0.,1.5,5.]),("filter_voice","cutoff",vec![19.,20001.]),
+        ("filter_voice","resonance",vec![0.09,20.01]),("adsr_voice","attack",vec![0.,10001.]),
+        ("adsr_voice","decay",vec![0.,10001.]),("adsr_voice","sustain",vec![-0.01,1.01]),
+        ("adsr_voice","release",vec![0.,10001.])] {
+        for value in values { let mut params=json!({});params[key]=json!(value);assert!(prepare(patch(vec![node(1,name,params)],vec![])).is_err()); }
+    }
+}
+fn reusable_device_patch() -> Value {
+    let mut source=patch(vec![node(1,"poly_note",json!({})),node(2,"adsr_voice",json!({})),node(3,"filter_voice",json!({}))],vec![]);
+    source["device"]=json!({"version":1,"id":"org.alive.subtractive","name":"Subtractive",
+        "midi":{"node":1,"inlet":0},"audio":{"inputs":0,"outputs":2,"layout":"stereo"},
+        "parameters":[{"key":"attack","label":"Attack","node":2,"param":"attack","min":1,"max":10000,"unit":"ms"},
+            {"key":"cutoff","label":"Cutoff","node":3,"param":"cutoff","min":20,"max":20000}],
+        "presets":[{"name":"Init","values":{"attack":10,"cutoff":2400}}]});
+    source
+}
+#[test]
+fn reusable_device_manifest_binds_live_saved_parameters_without_changing_runtime() {
+    let source=reusable_device_patch();let prepared=prepare(source.clone()).unwrap();
+    let mut ordinary=source.clone();ordinary.as_object_mut().unwrap().remove("device");
+    let mut state=CanvasState::default();state.install(prepare(ordinary).unwrap(),|_|true).unwrap();
+    assert!(state.matches(&prepared));
+    let mut hierarchical=json!({"version":2,"profile":"ultra-patcher-v2","device":source["device"],
+        "nodes":[{"id":10,"type":"patcher","x":0,"y":0,"params":{"name":"instrument"},"patcher":{"nodes":source["nodes"],"edges":[]}}],"edges":[]});
+    assert!(prepare(hierarchical.clone()).is_ok());
+    hierarchical["device"]["parameters"][0]["node"]=json!(10);assert!(prepare(hierarchical).is_err());
+}
+#[test]
+fn reusable_device_manifest_rejects_invalid_schema_bindings_and_presets() {
+    let valid=reusable_device_patch();
+    let cases=[("/device/version",json!(2)),("/device/id",json!("bad id")),("/device/name",json!("")),
+        ("/device/midi/node",json!(2)),("/device/midi/inlet",json!(1)),("/device/audio/inputs",json!(1)),
+        ("/device/audio/outputs",json!(4)),("/device/audio/layout",json!("discrete")),
+        ("/device/parameters/0/key",json!("__proto__")),("/device/parameters/0/key",json!("prototype")),
+        ("/device/parameters/0/key",json!("constructor")),("/device/parameters/0/key",json!("2attack")),
+        ("/device/parameters/0/label",json!("bad\nlabel")),("/device/parameters/0/unit",json!("x".repeat(17))),
+        ("/device/parameters/0/unit",Value::Null),
+        ("/device/parameters/0/node",json!(99)),("/device/parameters/0/param",json!("missing")),
+        ("/device/parameters/0/min",json!(0)),("/device/parameters/0/max",json!(10001)),
+        ("/device/parameters/0/min",json!(10000)),("/device/parameters/0/min",json!(20)),
+        ("/device/parameters/1/key",json!("attack")),("/device/presets/0/values",json!({"attack":10})),
+        ("/device/presets/0/values/attack",json!(0)),("/device/presets/0/values/extra",json!(1)),
+        ("/device/presets/0/name",json!("")),("/device",Value::Null)];
+    for (path,value) in cases {let mut invalid=valid.clone();
+        if path.ends_with("/extra") {invalid["device"]["presets"][0]["values"]["extra"]=value;} else {*invalid.pointer_mut(path).unwrap()=value;}
+        assert!(prepare(invalid).is_err(),"accepted invalid manifest at {path}");
+    }
+    let mut invalid=valid.clone();invalid["device"]["parameters"][1]=invalid["device"]["parameters"][0].clone();
+    invalid["device"]["parameters"][1]["key"]=json!("duplicate_binding");assert!(prepare(invalid).is_err());
+    let mut invalid=valid.clone();invalid["device"]["presets"].as_array_mut().unwrap().push(valid["device"]["presets"][0].clone());assert!(prepare(invalid).is_err());
+    let mut invalid=valid.clone();invalid["device"]["parameters"][0]=json!({"key":"voices","label":"Voices","node":1,"param":"voices","min":1,"max":4});assert!(prepare(invalid).is_err());
+    let mut invalid=valid;invalid["device"]["unknown"]=json!(true);assert!(prepare(invalid).is_err());
+}
+#[test]
+fn reusable_device_manifest_bounds_counts_and_integer_bindings() {
+    let mut source=reusable_device_patch();
+    source["nodes"]=json!([node(1,"poly_note",json!({}))]);
+    let mut bindings=Vec::new();let mut values=serde_json::Map::new();
+    for id in 2..=17 {
+        source["nodes"].as_array_mut().unwrap().push(node(id,"gain",json!({})));
+        let key=if id==2 {"a".repeat(31)}else{format!("level_{id}")};
+        values.insert(key.clone(),json!(90));
+        bindings.push(json!({"key":key,"label":"x".repeat(64),"node":id,"param":"value","min":0,"max":127,"unit":"x".repeat(16)}));
+    }
+    source["device"]["id"]=json!("x".repeat(127));source["device"]["name"]=json!("x".repeat(64));
+    source["device"]["parameters"]=json!(bindings);
+    source["device"]["presets"]=json!((0..16).map(|index|json!({"name":format!("Preset {index}"),"values":values})).collect::<Vec<_>>());
+    assert!(prepare(source.clone()).is_ok());
+    let mut invalid=source.clone();invalid["device"]["parameters"][0]["min"]=json!(0.5);assert!(prepare(invalid).is_err());
+    let mut invalid=source.clone();invalid["device"]["presets"][0]["values"]["a".repeat(31)]=json!(90.5);assert!(prepare(invalid).is_err());
+    let mut invalid=source.clone();invalid["device"]["presets"].as_array_mut().unwrap().push(json!({"name":"Overflow","values":values}));assert!(prepare(invalid).is_err());
+    let mut invalid=source.clone();invalid["device"]["parameters"].as_array_mut().unwrap().clear();assert!(prepare(invalid).is_err());
+    for id in ["".into(),"x".repeat(128),"a..b".into(),".a".into(),"a.".into()] {
+        let mut invalid=source.clone();invalid["device"]["id"]=json!(id);assert!(prepare(invalid).is_err());
+    }
+    source["device"]["presets"]=json!([]);assert!(prepare(source.clone()).is_ok());
+    source["nodes"].as_array_mut().unwrap().push(node(18,"gain",json!({})));
+    source["device"]["parameters"].as_array_mut().unwrap().push(json!({"key":"overflow","label":"Overflow","node":18,"param":"value","min":0,"max":127}));
+    assert!(prepare(source).is_err());
+}
+#[test]
 fn arithmetic_modes_preserve_legacy_defaults_and_validate_new_descriptors() {
     for (name,id,default) in [("add",4,0.),("multiply",5,1.)] {
         let prepared=prepare(patch(vec![node(1,name,json!({}))],vec![])).unwrap();

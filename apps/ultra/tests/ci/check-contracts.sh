@@ -6,6 +6,8 @@ cd "$ROOT"
 # Node executes the existing tests, including the controller's asynchronous IPC
 # boundary tests. No JavaScript timer is accepted as native audio evidence.
 node --test apps/ultra/ui/*.test.mjs apps/ultra/ui/components/*.test.mjs
+# Preserve the original validation probes as a regression gate on current code.
+node --test experiments/ultra-astra-validation-20261024/frontend/probes.test.mjs
 node --test experiments/max-reference/help-roots-native-20261022/import.test.mjs
 node --test experiments/max-reference/arithmetic-help-admission-20261022/import.test.mjs
 PYTHONDONTWRITEBYTECODE=1 python3 experiments/max-reference/help-roots-native-20261022/test-replay.py
@@ -47,6 +49,9 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
 c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
   apps/ultra/tests/canvas_signal_objects_test.cpp -o "$TEST_DIR/canvas-signal-objects-test"
 "$TEST_DIR/canvas-signal-objects-test"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
+  apps/ultra/tests/canvas_voice_objects_test.cpp -o "$TEST_DIR/canvas-voice-objects-test"
+"$TEST_DIR/canvas-voice-objects-test"
 c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
   apps/ultra/tests/canvas_hierarchy_test.cpp -o "$TEST_DIR/canvas-hierarchy-test"
 "$TEST_DIR/canvas-hierarchy-test"

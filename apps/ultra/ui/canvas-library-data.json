@@ -1,6 +1,389 @@
 {
   "entries": [
     {
+      "key": "example:subtractive",
+      "kind": "example",
+      "title": "Subtractive instrument",
+      "group": "Instruments",
+      "summary": "An editable four-voice saw, resonant filter and ADSR device. Perform opens its keyboard, controls and presets.",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {
+            "id": 1,
+            "type": "midiin",
+            "x": 75,
+            "y": 50,
+            "params": {
+              "channel": 1
+            }
+          },
+          {
+            "id": 2,
+            "type": "poly_note",
+            "x": 75,
+            "y": 115,
+            "params": {
+              "voices": 4
+            }
+          },
+          {
+            "id": 3,
+            "type": "saw_voice",
+            "x": 75,
+            "y": 190,
+            "params": {}
+          },
+          {
+            "id": 4,
+            "type": "filter_voice",
+            "x": 75,
+            "y": 260,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 5,
+            "type": "adsr_voice",
+            "x": 350,
+            "y": 260,
+            "params": {
+              "attack": 10,
+              "decay": 150,
+              "sustain": 0.65,
+              "release": 300
+            }
+          },
+          {
+            "id": 6,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 345,
+            "params": {}
+          },
+          {
+            "id": 7,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 415,
+            "params": {}
+          },
+          {
+            "id": 8,
+            "type": "mix_voice",
+            "x": 170,
+            "y": 480,
+            "params": {}
+          },
+          {
+            "id": 9,
+            "type": "gain",
+            "x": 170,
+            "y": 535,
+            "params": {
+              "value": 90
+            },
+            "style": {
+              "width": 180,
+              "height": 30,
+              "orientation": 1
+            }
+          },
+          {
+            "id": 10,
+            "type": "join",
+            "x": 170,
+            "y": 610,
+            "params": {}
+          },
+          {
+            "id": 11,
+            "type": "dac",
+            "x": 170,
+            "y": 675,
+            "params": {}
+          },
+          {
+            "id": 12,
+            "type": "toggle",
+            "x": 660,
+            "y": 50,
+            "params": {
+              "value": 0
+            }
+          },
+          {
+            "id": 13,
+            "type": "metro",
+            "x": 660,
+            "y": 115,
+            "params": {
+              "interval": 250
+            }
+          },
+          {
+            "id": 14,
+            "type": "counter",
+            "x": 660,
+            "y": 190,
+            "params": {
+              "steps": 8
+            }
+          },
+          {
+            "id": 15,
+            "type": "chord",
+            "x": 660,
+            "y": 260,
+            "params": {
+              "root": 48,
+              "shape": 1
+            }
+          },
+          {
+            "id": 16,
+            "type": "makenote",
+            "x": 660,
+            "y": 345,
+            "params": {
+              "velocity": 100,
+              "duration": 400
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 0
+          },
+          {
+            "from": 5,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 1
+          },
+          {
+            "from": 6,
+            "outlet": 0,
+            "to": 7,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 2,
+            "to": 7,
+            "inlet": 1
+          },
+          {
+            "from": 7,
+            "outlet": 0,
+            "to": 8,
+            "inlet": 0
+          },
+          {
+            "from": 8,
+            "outlet": 0,
+            "to": 9,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 1
+          },
+          {
+            "from": 10,
+            "outlet": 0,
+            "to": 11,
+            "inlet": 0
+          },
+          {
+            "from": 12,
+            "outlet": 0,
+            "to": 13,
+            "inlet": 0
+          },
+          {
+            "from": 13,
+            "outlet": 0,
+            "to": 14,
+            "inlet": 0
+          },
+          {
+            "from": 14,
+            "outlet": 0,
+            "to": 15,
+            "inlet": 0
+          },
+          {
+            "from": 15,
+            "outlet": 0,
+            "to": 16,
+            "inlet": 0
+          },
+          {
+            "from": 16,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          }
+        ],
+        "device": {
+          "version": 1,
+          "id": "org.alive.subtractive",
+          "name": "Subtractive",
+          "midi": {
+            "node": 2,
+            "inlet": 0
+          },
+          "audio": {
+            "inputs": 0,
+            "outputs": 2,
+            "layout": "stereo"
+          },
+          "parameters": [
+            {
+              "key": "attack",
+              "label": "Attack",
+              "node": 5,
+              "param": "attack",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "decay",
+              "label": "Decay",
+              "node": 5,
+              "param": "decay",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "sustain",
+              "label": "Sustain",
+              "node": 5,
+              "param": "sustain",
+              "min": 0,
+              "max": 1,
+              "unit": ""
+            },
+            {
+              "key": "release",
+              "label": "Release",
+              "node": 5,
+              "param": "release",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 4,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 4,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            },
+            {
+              "key": "level",
+              "label": "Level",
+              "node": 9,
+              "param": "value",
+              "min": 0,
+              "max": 127,
+              "unit": "raw"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "attack": 10,
+                "decay": 150,
+                "sustain": 0.65,
+                "release": 300,
+                "cutoff": 2400,
+                "resonance": 0.7,
+                "level": 90
+              }
+            },
+            {
+              "name": "Soft",
+              "values": {
+                "attack": 80,
+                "decay": 450,
+                "sustain": 0.5,
+                "release": 800,
+                "cutoff": 700,
+                "resonance": 0.8,
+                "level": 80
+              }
+            },
+            {
+              "name": "Pluck",
+              "values": {
+                "attack": 2,
+                "decay": 170,
+                "sustain": 0.12,
+                "release": 120,
+                "cutoff": 4200,
+                "resonance": 2.5,
+                "level": 85
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
       "key": "example:starter",
       "kind": "example",
       "title": "Chord sequencer",
@@ -11415,6 +11798,4614 @@
             "inlet": 0
           }
         ]
+      }
+    },
+    {
+      "key": "help:poly_note",
+      "kind": "help",
+      "title": "poly.note~ help",
+      "group": "Messages & Numbers",
+      "summary": "Allocate up to four MIDI voices with frequency, gate and velocity lanes.",
+      "objectType": "poly_note",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {
+            "id": 1,
+            "type": "midiin",
+            "x": 75,
+            "y": 50,
+            "params": {
+              "channel": 1
+            }
+          },
+          {
+            "id": 2,
+            "type": "poly_note",
+            "x": 75,
+            "y": 115,
+            "params": {
+              "voices": 4
+            }
+          },
+          {
+            "id": 3,
+            "type": "saw_voice",
+            "x": 75,
+            "y": 190,
+            "params": {}
+          },
+          {
+            "id": 4,
+            "type": "filter_voice",
+            "x": 75,
+            "y": 260,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 5,
+            "type": "adsr_voice",
+            "x": 350,
+            "y": 260,
+            "params": {
+              "attack": 10,
+              "decay": 150,
+              "sustain": 0.65,
+              "release": 300
+            }
+          },
+          {
+            "id": 6,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 345,
+            "params": {}
+          },
+          {
+            "id": 7,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 415,
+            "params": {}
+          },
+          {
+            "id": 8,
+            "type": "mix_voice",
+            "x": 170,
+            "y": 480,
+            "params": {}
+          },
+          {
+            "id": 9,
+            "type": "gain",
+            "x": 170,
+            "y": 535,
+            "params": {
+              "value": 90
+            },
+            "style": {
+              "width": 180,
+              "height": 30,
+              "orientation": 1
+            }
+          },
+          {
+            "id": 10,
+            "type": "join",
+            "x": 170,
+            "y": 610,
+            "params": {}
+          },
+          {
+            "id": 11,
+            "type": "dac",
+            "x": 170,
+            "y": 675,
+            "params": {}
+          },
+          {
+            "id": 12,
+            "type": "toggle",
+            "x": 660,
+            "y": 50,
+            "params": {
+              "value": 0
+            }
+          },
+          {
+            "id": 13,
+            "type": "metro",
+            "x": 660,
+            "y": 115,
+            "params": {
+              "interval": 250
+            }
+          },
+          {
+            "id": 14,
+            "type": "counter",
+            "x": 660,
+            "y": 190,
+            "params": {
+              "steps": 8
+            }
+          },
+          {
+            "id": 15,
+            "type": "chord",
+            "x": 660,
+            "y": 260,
+            "params": {
+              "root": 48,
+              "shape": 1
+            }
+          },
+          {
+            "id": 16,
+            "type": "makenote",
+            "x": 660,
+            "y": 345,
+            "params": {
+              "velocity": 100,
+              "duration": 400
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 0
+          },
+          {
+            "from": 5,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 1
+          },
+          {
+            "from": 6,
+            "outlet": 0,
+            "to": 7,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 2,
+            "to": 7,
+            "inlet": 1
+          },
+          {
+            "from": 7,
+            "outlet": 0,
+            "to": 8,
+            "inlet": 0
+          },
+          {
+            "from": 8,
+            "outlet": 0,
+            "to": 9,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 1
+          },
+          {
+            "from": 10,
+            "outlet": 0,
+            "to": 11,
+            "inlet": 0
+          },
+          {
+            "from": 12,
+            "outlet": 0,
+            "to": 13,
+            "inlet": 0
+          },
+          {
+            "from": 13,
+            "outlet": 0,
+            "to": 14,
+            "inlet": 0
+          },
+          {
+            "from": 14,
+            "outlet": 0,
+            "to": 15,
+            "inlet": 0
+          },
+          {
+            "from": 15,
+            "outlet": 0,
+            "to": 16,
+            "inlet": 0
+          },
+          {
+            "from": 16,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          }
+        ],
+        "device": {
+          "version": 1,
+          "id": "org.alive.subtractive",
+          "name": "Subtractive",
+          "midi": {
+            "node": 2,
+            "inlet": 0
+          },
+          "audio": {
+            "inputs": 0,
+            "outputs": 2,
+            "layout": "stereo"
+          },
+          "parameters": [
+            {
+              "key": "attack",
+              "label": "Attack",
+              "node": 5,
+              "param": "attack",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "decay",
+              "label": "Decay",
+              "node": 5,
+              "param": "decay",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "sustain",
+              "label": "Sustain",
+              "node": 5,
+              "param": "sustain",
+              "min": 0,
+              "max": 1,
+              "unit": ""
+            },
+            {
+              "key": "release",
+              "label": "Release",
+              "node": 5,
+              "param": "release",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 4,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 4,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            },
+            {
+              "key": "level",
+              "label": "Level",
+              "node": 9,
+              "param": "value",
+              "min": 0,
+              "max": 127,
+              "unit": "raw"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "attack": 10,
+                "decay": 150,
+                "sustain": 0.65,
+                "release": 300,
+                "cutoff": 2400,
+                "resonance": 0.7,
+                "level": 90
+              }
+            },
+            {
+              "name": "Soft",
+              "values": {
+                "attack": 80,
+                "decay": 450,
+                "sustain": 0.5,
+                "release": 800,
+                "cutoff": 700,
+                "resonance": 0.8,
+                "level": 80
+              }
+            },
+            {
+              "name": "Pluck",
+              "values": {
+                "attack": 2,
+                "decay": 170,
+                "sustain": 0.12,
+                "release": 120,
+                "cutoff": 4200,
+                "resonance": 2.5,
+                "level": 85
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "example:poly_note",
+      "kind": "example",
+      "title": "poly.note~ example",
+      "group": "Messages & Numbers",
+      "summary": "Allocate up to four MIDI voices with frequency, gate and velocity lanes.",
+      "objectType": "poly_note",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {
+            "id": 1,
+            "type": "midiin",
+            "x": 75,
+            "y": 50,
+            "params": {
+              "channel": 1
+            }
+          },
+          {
+            "id": 2,
+            "type": "poly_note",
+            "x": 75,
+            "y": 115,
+            "params": {
+              "voices": 4
+            }
+          },
+          {
+            "id": 3,
+            "type": "saw_voice",
+            "x": 75,
+            "y": 190,
+            "params": {}
+          },
+          {
+            "id": 4,
+            "type": "filter_voice",
+            "x": 75,
+            "y": 260,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 5,
+            "type": "adsr_voice",
+            "x": 350,
+            "y": 260,
+            "params": {
+              "attack": 10,
+              "decay": 150,
+              "sustain": 0.65,
+              "release": 300
+            }
+          },
+          {
+            "id": 6,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 345,
+            "params": {}
+          },
+          {
+            "id": 7,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 415,
+            "params": {}
+          },
+          {
+            "id": 8,
+            "type": "mix_voice",
+            "x": 170,
+            "y": 480,
+            "params": {}
+          },
+          {
+            "id": 9,
+            "type": "gain",
+            "x": 170,
+            "y": 535,
+            "params": {
+              "value": 90
+            },
+            "style": {
+              "width": 180,
+              "height": 30,
+              "orientation": 1
+            }
+          },
+          {
+            "id": 10,
+            "type": "join",
+            "x": 170,
+            "y": 610,
+            "params": {}
+          },
+          {
+            "id": 11,
+            "type": "dac",
+            "x": 170,
+            "y": 675,
+            "params": {}
+          },
+          {
+            "id": 12,
+            "type": "toggle",
+            "x": 660,
+            "y": 50,
+            "params": {
+              "value": 0
+            }
+          },
+          {
+            "id": 13,
+            "type": "metro",
+            "x": 660,
+            "y": 115,
+            "params": {
+              "interval": 250
+            }
+          },
+          {
+            "id": 14,
+            "type": "counter",
+            "x": 660,
+            "y": 190,
+            "params": {
+              "steps": 8
+            }
+          },
+          {
+            "id": 15,
+            "type": "chord",
+            "x": 660,
+            "y": 260,
+            "params": {
+              "root": 48,
+              "shape": 1
+            }
+          },
+          {
+            "id": 16,
+            "type": "makenote",
+            "x": 660,
+            "y": 345,
+            "params": {
+              "velocity": 100,
+              "duration": 400
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 0
+          },
+          {
+            "from": 5,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 1
+          },
+          {
+            "from": 6,
+            "outlet": 0,
+            "to": 7,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 2,
+            "to": 7,
+            "inlet": 1
+          },
+          {
+            "from": 7,
+            "outlet": 0,
+            "to": 8,
+            "inlet": 0
+          },
+          {
+            "from": 8,
+            "outlet": 0,
+            "to": 9,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 1
+          },
+          {
+            "from": 10,
+            "outlet": 0,
+            "to": 11,
+            "inlet": 0
+          },
+          {
+            "from": 12,
+            "outlet": 0,
+            "to": 13,
+            "inlet": 0
+          },
+          {
+            "from": 13,
+            "outlet": 0,
+            "to": 14,
+            "inlet": 0
+          },
+          {
+            "from": 14,
+            "outlet": 0,
+            "to": 15,
+            "inlet": 0
+          },
+          {
+            "from": 15,
+            "outlet": 0,
+            "to": 16,
+            "inlet": 0
+          },
+          {
+            "from": 16,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          }
+        ],
+        "device": {
+          "version": 1,
+          "id": "org.alive.subtractive",
+          "name": "Subtractive",
+          "midi": {
+            "node": 2,
+            "inlet": 0
+          },
+          "audio": {
+            "inputs": 0,
+            "outputs": 2,
+            "layout": "stereo"
+          },
+          "parameters": [
+            {
+              "key": "attack",
+              "label": "Attack",
+              "node": 5,
+              "param": "attack",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "decay",
+              "label": "Decay",
+              "node": 5,
+              "param": "decay",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "sustain",
+              "label": "Sustain",
+              "node": 5,
+              "param": "sustain",
+              "min": 0,
+              "max": 1,
+              "unit": ""
+            },
+            {
+              "key": "release",
+              "label": "Release",
+              "node": 5,
+              "param": "release",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 4,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 4,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            },
+            {
+              "key": "level",
+              "label": "Level",
+              "node": 9,
+              "param": "value",
+              "min": 0,
+              "max": 127,
+              "unit": "raw"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "attack": 10,
+                "decay": 150,
+                "sustain": 0.65,
+                "release": 300,
+                "cutoff": 2400,
+                "resonance": 0.7,
+                "level": 90
+              }
+            },
+            {
+              "name": "Soft",
+              "values": {
+                "attack": 80,
+                "decay": 450,
+                "sustain": 0.5,
+                "release": 800,
+                "cutoff": 700,
+                "resonance": 0.8,
+                "level": 80
+              }
+            },
+            {
+              "name": "Pluck",
+              "values": {
+                "attack": 2,
+                "decay": 170,
+                "sustain": 0.12,
+                "release": 120,
+                "cutoff": 4200,
+                "resonance": 2.5,
+                "level": 85
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "help:saw_voice",
+      "kind": "help",
+      "title": "saw.voice~ help",
+      "group": "Messages & Numbers",
+      "summary": "Faust saw oscillator on four voice lanes.",
+      "objectType": "saw_voice",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {
+            "id": 1,
+            "type": "midiin",
+            "x": 75,
+            "y": 50,
+            "params": {
+              "channel": 1
+            }
+          },
+          {
+            "id": 2,
+            "type": "poly_note",
+            "x": 75,
+            "y": 115,
+            "params": {
+              "voices": 4
+            }
+          },
+          {
+            "id": 3,
+            "type": "saw_voice",
+            "x": 75,
+            "y": 190,
+            "params": {}
+          },
+          {
+            "id": 4,
+            "type": "filter_voice",
+            "x": 75,
+            "y": 260,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 5,
+            "type": "adsr_voice",
+            "x": 350,
+            "y": 260,
+            "params": {
+              "attack": 10,
+              "decay": 150,
+              "sustain": 0.65,
+              "release": 300
+            }
+          },
+          {
+            "id": 6,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 345,
+            "params": {}
+          },
+          {
+            "id": 7,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 415,
+            "params": {}
+          },
+          {
+            "id": 8,
+            "type": "mix_voice",
+            "x": 170,
+            "y": 480,
+            "params": {}
+          },
+          {
+            "id": 9,
+            "type": "gain",
+            "x": 170,
+            "y": 535,
+            "params": {
+              "value": 90
+            },
+            "style": {
+              "width": 180,
+              "height": 30,
+              "orientation": 1
+            }
+          },
+          {
+            "id": 10,
+            "type": "join",
+            "x": 170,
+            "y": 610,
+            "params": {}
+          },
+          {
+            "id": 11,
+            "type": "dac",
+            "x": 170,
+            "y": 675,
+            "params": {}
+          },
+          {
+            "id": 12,
+            "type": "toggle",
+            "x": 660,
+            "y": 50,
+            "params": {
+              "value": 0
+            }
+          },
+          {
+            "id": 13,
+            "type": "metro",
+            "x": 660,
+            "y": 115,
+            "params": {
+              "interval": 250
+            }
+          },
+          {
+            "id": 14,
+            "type": "counter",
+            "x": 660,
+            "y": 190,
+            "params": {
+              "steps": 8
+            }
+          },
+          {
+            "id": 15,
+            "type": "chord",
+            "x": 660,
+            "y": 260,
+            "params": {
+              "root": 48,
+              "shape": 1
+            }
+          },
+          {
+            "id": 16,
+            "type": "makenote",
+            "x": 660,
+            "y": 345,
+            "params": {
+              "velocity": 100,
+              "duration": 400
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 0
+          },
+          {
+            "from": 5,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 1
+          },
+          {
+            "from": 6,
+            "outlet": 0,
+            "to": 7,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 2,
+            "to": 7,
+            "inlet": 1
+          },
+          {
+            "from": 7,
+            "outlet": 0,
+            "to": 8,
+            "inlet": 0
+          },
+          {
+            "from": 8,
+            "outlet": 0,
+            "to": 9,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 1
+          },
+          {
+            "from": 10,
+            "outlet": 0,
+            "to": 11,
+            "inlet": 0
+          },
+          {
+            "from": 12,
+            "outlet": 0,
+            "to": 13,
+            "inlet": 0
+          },
+          {
+            "from": 13,
+            "outlet": 0,
+            "to": 14,
+            "inlet": 0
+          },
+          {
+            "from": 14,
+            "outlet": 0,
+            "to": 15,
+            "inlet": 0
+          },
+          {
+            "from": 15,
+            "outlet": 0,
+            "to": 16,
+            "inlet": 0
+          },
+          {
+            "from": 16,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          }
+        ],
+        "device": {
+          "version": 1,
+          "id": "org.alive.subtractive",
+          "name": "Subtractive",
+          "midi": {
+            "node": 2,
+            "inlet": 0
+          },
+          "audio": {
+            "inputs": 0,
+            "outputs": 2,
+            "layout": "stereo"
+          },
+          "parameters": [
+            {
+              "key": "attack",
+              "label": "Attack",
+              "node": 5,
+              "param": "attack",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "decay",
+              "label": "Decay",
+              "node": 5,
+              "param": "decay",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "sustain",
+              "label": "Sustain",
+              "node": 5,
+              "param": "sustain",
+              "min": 0,
+              "max": 1,
+              "unit": ""
+            },
+            {
+              "key": "release",
+              "label": "Release",
+              "node": 5,
+              "param": "release",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 4,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 4,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            },
+            {
+              "key": "level",
+              "label": "Level",
+              "node": 9,
+              "param": "value",
+              "min": 0,
+              "max": 127,
+              "unit": "raw"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "attack": 10,
+                "decay": 150,
+                "sustain": 0.65,
+                "release": 300,
+                "cutoff": 2400,
+                "resonance": 0.7,
+                "level": 90
+              }
+            },
+            {
+              "name": "Soft",
+              "values": {
+                "attack": 80,
+                "decay": 450,
+                "sustain": 0.5,
+                "release": 800,
+                "cutoff": 700,
+                "resonance": 0.8,
+                "level": 80
+              }
+            },
+            {
+              "name": "Pluck",
+              "values": {
+                "attack": 2,
+                "decay": 170,
+                "sustain": 0.12,
+                "release": 120,
+                "cutoff": 4200,
+                "resonance": 2.5,
+                "level": 85
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "example:saw_voice",
+      "kind": "example",
+      "title": "saw.voice~ example",
+      "group": "Messages & Numbers",
+      "summary": "Faust saw oscillator on four voice lanes.",
+      "objectType": "saw_voice",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {
+            "id": 1,
+            "type": "midiin",
+            "x": 75,
+            "y": 50,
+            "params": {
+              "channel": 1
+            }
+          },
+          {
+            "id": 2,
+            "type": "poly_note",
+            "x": 75,
+            "y": 115,
+            "params": {
+              "voices": 4
+            }
+          },
+          {
+            "id": 3,
+            "type": "saw_voice",
+            "x": 75,
+            "y": 190,
+            "params": {}
+          },
+          {
+            "id": 4,
+            "type": "filter_voice",
+            "x": 75,
+            "y": 260,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 5,
+            "type": "adsr_voice",
+            "x": 350,
+            "y": 260,
+            "params": {
+              "attack": 10,
+              "decay": 150,
+              "sustain": 0.65,
+              "release": 300
+            }
+          },
+          {
+            "id": 6,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 345,
+            "params": {}
+          },
+          {
+            "id": 7,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 415,
+            "params": {}
+          },
+          {
+            "id": 8,
+            "type": "mix_voice",
+            "x": 170,
+            "y": 480,
+            "params": {}
+          },
+          {
+            "id": 9,
+            "type": "gain",
+            "x": 170,
+            "y": 535,
+            "params": {
+              "value": 90
+            },
+            "style": {
+              "width": 180,
+              "height": 30,
+              "orientation": 1
+            }
+          },
+          {
+            "id": 10,
+            "type": "join",
+            "x": 170,
+            "y": 610,
+            "params": {}
+          },
+          {
+            "id": 11,
+            "type": "dac",
+            "x": 170,
+            "y": 675,
+            "params": {}
+          },
+          {
+            "id": 12,
+            "type": "toggle",
+            "x": 660,
+            "y": 50,
+            "params": {
+              "value": 0
+            }
+          },
+          {
+            "id": 13,
+            "type": "metro",
+            "x": 660,
+            "y": 115,
+            "params": {
+              "interval": 250
+            }
+          },
+          {
+            "id": 14,
+            "type": "counter",
+            "x": 660,
+            "y": 190,
+            "params": {
+              "steps": 8
+            }
+          },
+          {
+            "id": 15,
+            "type": "chord",
+            "x": 660,
+            "y": 260,
+            "params": {
+              "root": 48,
+              "shape": 1
+            }
+          },
+          {
+            "id": 16,
+            "type": "makenote",
+            "x": 660,
+            "y": 345,
+            "params": {
+              "velocity": 100,
+              "duration": 400
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 0
+          },
+          {
+            "from": 5,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 1
+          },
+          {
+            "from": 6,
+            "outlet": 0,
+            "to": 7,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 2,
+            "to": 7,
+            "inlet": 1
+          },
+          {
+            "from": 7,
+            "outlet": 0,
+            "to": 8,
+            "inlet": 0
+          },
+          {
+            "from": 8,
+            "outlet": 0,
+            "to": 9,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 1
+          },
+          {
+            "from": 10,
+            "outlet": 0,
+            "to": 11,
+            "inlet": 0
+          },
+          {
+            "from": 12,
+            "outlet": 0,
+            "to": 13,
+            "inlet": 0
+          },
+          {
+            "from": 13,
+            "outlet": 0,
+            "to": 14,
+            "inlet": 0
+          },
+          {
+            "from": 14,
+            "outlet": 0,
+            "to": 15,
+            "inlet": 0
+          },
+          {
+            "from": 15,
+            "outlet": 0,
+            "to": 16,
+            "inlet": 0
+          },
+          {
+            "from": 16,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          }
+        ],
+        "device": {
+          "version": 1,
+          "id": "org.alive.subtractive",
+          "name": "Subtractive",
+          "midi": {
+            "node": 2,
+            "inlet": 0
+          },
+          "audio": {
+            "inputs": 0,
+            "outputs": 2,
+            "layout": "stereo"
+          },
+          "parameters": [
+            {
+              "key": "attack",
+              "label": "Attack",
+              "node": 5,
+              "param": "attack",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "decay",
+              "label": "Decay",
+              "node": 5,
+              "param": "decay",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "sustain",
+              "label": "Sustain",
+              "node": 5,
+              "param": "sustain",
+              "min": 0,
+              "max": 1,
+              "unit": ""
+            },
+            {
+              "key": "release",
+              "label": "Release",
+              "node": 5,
+              "param": "release",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 4,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 4,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            },
+            {
+              "key": "level",
+              "label": "Level",
+              "node": 9,
+              "param": "value",
+              "min": 0,
+              "max": 127,
+              "unit": "raw"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "attack": 10,
+                "decay": 150,
+                "sustain": 0.65,
+                "release": 300,
+                "cutoff": 2400,
+                "resonance": 0.7,
+                "level": 90
+              }
+            },
+            {
+              "name": "Soft",
+              "values": {
+                "attack": 80,
+                "decay": 450,
+                "sustain": 0.5,
+                "release": 800,
+                "cutoff": 700,
+                "resonance": 0.8,
+                "level": 80
+              }
+            },
+            {
+              "name": "Pluck",
+              "values": {
+                "attack": 2,
+                "decay": 170,
+                "sustain": 0.12,
+                "release": 120,
+                "cutoff": 4200,
+                "resonance": 2.5,
+                "level": 85
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "help:filter_voice",
+      "kind": "help",
+      "title": "lowpass.voice~ help",
+      "group": "Messages & Numbers",
+      "summary": "Resonant Faust low-pass filter on four voice lanes.",
+      "objectType": "filter_voice",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {
+            "id": 1,
+            "type": "midiin",
+            "x": 75,
+            "y": 50,
+            "params": {
+              "channel": 1
+            }
+          },
+          {
+            "id": 2,
+            "type": "poly_note",
+            "x": 75,
+            "y": 115,
+            "params": {
+              "voices": 4
+            }
+          },
+          {
+            "id": 3,
+            "type": "saw_voice",
+            "x": 75,
+            "y": 190,
+            "params": {}
+          },
+          {
+            "id": 4,
+            "type": "filter_voice",
+            "x": 75,
+            "y": 260,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 5,
+            "type": "adsr_voice",
+            "x": 350,
+            "y": 260,
+            "params": {
+              "attack": 10,
+              "decay": 150,
+              "sustain": 0.65,
+              "release": 300
+            }
+          },
+          {
+            "id": 6,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 345,
+            "params": {}
+          },
+          {
+            "id": 7,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 415,
+            "params": {}
+          },
+          {
+            "id": 8,
+            "type": "mix_voice",
+            "x": 170,
+            "y": 480,
+            "params": {}
+          },
+          {
+            "id": 9,
+            "type": "gain",
+            "x": 170,
+            "y": 535,
+            "params": {
+              "value": 90
+            },
+            "style": {
+              "width": 180,
+              "height": 30,
+              "orientation": 1
+            }
+          },
+          {
+            "id": 10,
+            "type": "join",
+            "x": 170,
+            "y": 610,
+            "params": {}
+          },
+          {
+            "id": 11,
+            "type": "dac",
+            "x": 170,
+            "y": 675,
+            "params": {}
+          },
+          {
+            "id": 12,
+            "type": "toggle",
+            "x": 660,
+            "y": 50,
+            "params": {
+              "value": 0
+            }
+          },
+          {
+            "id": 13,
+            "type": "metro",
+            "x": 660,
+            "y": 115,
+            "params": {
+              "interval": 250
+            }
+          },
+          {
+            "id": 14,
+            "type": "counter",
+            "x": 660,
+            "y": 190,
+            "params": {
+              "steps": 8
+            }
+          },
+          {
+            "id": 15,
+            "type": "chord",
+            "x": 660,
+            "y": 260,
+            "params": {
+              "root": 48,
+              "shape": 1
+            }
+          },
+          {
+            "id": 16,
+            "type": "makenote",
+            "x": 660,
+            "y": 345,
+            "params": {
+              "velocity": 100,
+              "duration": 400
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 0
+          },
+          {
+            "from": 5,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 1
+          },
+          {
+            "from": 6,
+            "outlet": 0,
+            "to": 7,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 2,
+            "to": 7,
+            "inlet": 1
+          },
+          {
+            "from": 7,
+            "outlet": 0,
+            "to": 8,
+            "inlet": 0
+          },
+          {
+            "from": 8,
+            "outlet": 0,
+            "to": 9,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 1
+          },
+          {
+            "from": 10,
+            "outlet": 0,
+            "to": 11,
+            "inlet": 0
+          },
+          {
+            "from": 12,
+            "outlet": 0,
+            "to": 13,
+            "inlet": 0
+          },
+          {
+            "from": 13,
+            "outlet": 0,
+            "to": 14,
+            "inlet": 0
+          },
+          {
+            "from": 14,
+            "outlet": 0,
+            "to": 15,
+            "inlet": 0
+          },
+          {
+            "from": 15,
+            "outlet": 0,
+            "to": 16,
+            "inlet": 0
+          },
+          {
+            "from": 16,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          }
+        ],
+        "device": {
+          "version": 1,
+          "id": "org.alive.subtractive",
+          "name": "Subtractive",
+          "midi": {
+            "node": 2,
+            "inlet": 0
+          },
+          "audio": {
+            "inputs": 0,
+            "outputs": 2,
+            "layout": "stereo"
+          },
+          "parameters": [
+            {
+              "key": "attack",
+              "label": "Attack",
+              "node": 5,
+              "param": "attack",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "decay",
+              "label": "Decay",
+              "node": 5,
+              "param": "decay",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "sustain",
+              "label": "Sustain",
+              "node": 5,
+              "param": "sustain",
+              "min": 0,
+              "max": 1,
+              "unit": ""
+            },
+            {
+              "key": "release",
+              "label": "Release",
+              "node": 5,
+              "param": "release",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 4,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 4,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            },
+            {
+              "key": "level",
+              "label": "Level",
+              "node": 9,
+              "param": "value",
+              "min": 0,
+              "max": 127,
+              "unit": "raw"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "attack": 10,
+                "decay": 150,
+                "sustain": 0.65,
+                "release": 300,
+                "cutoff": 2400,
+                "resonance": 0.7,
+                "level": 90
+              }
+            },
+            {
+              "name": "Soft",
+              "values": {
+                "attack": 80,
+                "decay": 450,
+                "sustain": 0.5,
+                "release": 800,
+                "cutoff": 700,
+                "resonance": 0.8,
+                "level": 80
+              }
+            },
+            {
+              "name": "Pluck",
+              "values": {
+                "attack": 2,
+                "decay": 170,
+                "sustain": 0.12,
+                "release": 120,
+                "cutoff": 4200,
+                "resonance": 2.5,
+                "level": 85
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "example:filter_voice",
+      "kind": "example",
+      "title": "lowpass.voice~ example",
+      "group": "Messages & Numbers",
+      "summary": "Resonant Faust low-pass filter on four voice lanes.",
+      "objectType": "filter_voice",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {
+            "id": 1,
+            "type": "midiin",
+            "x": 75,
+            "y": 50,
+            "params": {
+              "channel": 1
+            }
+          },
+          {
+            "id": 2,
+            "type": "poly_note",
+            "x": 75,
+            "y": 115,
+            "params": {
+              "voices": 4
+            }
+          },
+          {
+            "id": 3,
+            "type": "saw_voice",
+            "x": 75,
+            "y": 190,
+            "params": {}
+          },
+          {
+            "id": 4,
+            "type": "filter_voice",
+            "x": 75,
+            "y": 260,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 5,
+            "type": "adsr_voice",
+            "x": 350,
+            "y": 260,
+            "params": {
+              "attack": 10,
+              "decay": 150,
+              "sustain": 0.65,
+              "release": 300
+            }
+          },
+          {
+            "id": 6,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 345,
+            "params": {}
+          },
+          {
+            "id": 7,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 415,
+            "params": {}
+          },
+          {
+            "id": 8,
+            "type": "mix_voice",
+            "x": 170,
+            "y": 480,
+            "params": {}
+          },
+          {
+            "id": 9,
+            "type": "gain",
+            "x": 170,
+            "y": 535,
+            "params": {
+              "value": 90
+            },
+            "style": {
+              "width": 180,
+              "height": 30,
+              "orientation": 1
+            }
+          },
+          {
+            "id": 10,
+            "type": "join",
+            "x": 170,
+            "y": 610,
+            "params": {}
+          },
+          {
+            "id": 11,
+            "type": "dac",
+            "x": 170,
+            "y": 675,
+            "params": {}
+          },
+          {
+            "id": 12,
+            "type": "toggle",
+            "x": 660,
+            "y": 50,
+            "params": {
+              "value": 0
+            }
+          },
+          {
+            "id": 13,
+            "type": "metro",
+            "x": 660,
+            "y": 115,
+            "params": {
+              "interval": 250
+            }
+          },
+          {
+            "id": 14,
+            "type": "counter",
+            "x": 660,
+            "y": 190,
+            "params": {
+              "steps": 8
+            }
+          },
+          {
+            "id": 15,
+            "type": "chord",
+            "x": 660,
+            "y": 260,
+            "params": {
+              "root": 48,
+              "shape": 1
+            }
+          },
+          {
+            "id": 16,
+            "type": "makenote",
+            "x": 660,
+            "y": 345,
+            "params": {
+              "velocity": 100,
+              "duration": 400
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 0
+          },
+          {
+            "from": 5,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 1
+          },
+          {
+            "from": 6,
+            "outlet": 0,
+            "to": 7,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 2,
+            "to": 7,
+            "inlet": 1
+          },
+          {
+            "from": 7,
+            "outlet": 0,
+            "to": 8,
+            "inlet": 0
+          },
+          {
+            "from": 8,
+            "outlet": 0,
+            "to": 9,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 1
+          },
+          {
+            "from": 10,
+            "outlet": 0,
+            "to": 11,
+            "inlet": 0
+          },
+          {
+            "from": 12,
+            "outlet": 0,
+            "to": 13,
+            "inlet": 0
+          },
+          {
+            "from": 13,
+            "outlet": 0,
+            "to": 14,
+            "inlet": 0
+          },
+          {
+            "from": 14,
+            "outlet": 0,
+            "to": 15,
+            "inlet": 0
+          },
+          {
+            "from": 15,
+            "outlet": 0,
+            "to": 16,
+            "inlet": 0
+          },
+          {
+            "from": 16,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          }
+        ],
+        "device": {
+          "version": 1,
+          "id": "org.alive.subtractive",
+          "name": "Subtractive",
+          "midi": {
+            "node": 2,
+            "inlet": 0
+          },
+          "audio": {
+            "inputs": 0,
+            "outputs": 2,
+            "layout": "stereo"
+          },
+          "parameters": [
+            {
+              "key": "attack",
+              "label": "Attack",
+              "node": 5,
+              "param": "attack",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "decay",
+              "label": "Decay",
+              "node": 5,
+              "param": "decay",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "sustain",
+              "label": "Sustain",
+              "node": 5,
+              "param": "sustain",
+              "min": 0,
+              "max": 1,
+              "unit": ""
+            },
+            {
+              "key": "release",
+              "label": "Release",
+              "node": 5,
+              "param": "release",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 4,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 4,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            },
+            {
+              "key": "level",
+              "label": "Level",
+              "node": 9,
+              "param": "value",
+              "min": 0,
+              "max": 127,
+              "unit": "raw"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "attack": 10,
+                "decay": 150,
+                "sustain": 0.65,
+                "release": 300,
+                "cutoff": 2400,
+                "resonance": 0.7,
+                "level": 90
+              }
+            },
+            {
+              "name": "Soft",
+              "values": {
+                "attack": 80,
+                "decay": 450,
+                "sustain": 0.5,
+                "release": 800,
+                "cutoff": 700,
+                "resonance": 0.8,
+                "level": 80
+              }
+            },
+            {
+              "name": "Pluck",
+              "values": {
+                "attack": 2,
+                "decay": 170,
+                "sustain": 0.12,
+                "release": 120,
+                "cutoff": 4200,
+                "resonance": 2.5,
+                "level": 85
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "help:adsr_voice",
+      "kind": "help",
+      "title": "adsr.voice~ help",
+      "group": "Messages & Numbers",
+      "summary": "Faust ADSR envelopes with live controls for four voice lanes.",
+      "objectType": "adsr_voice",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {
+            "id": 1,
+            "type": "midiin",
+            "x": 75,
+            "y": 50,
+            "params": {
+              "channel": 1
+            }
+          },
+          {
+            "id": 2,
+            "type": "poly_note",
+            "x": 75,
+            "y": 115,
+            "params": {
+              "voices": 4
+            }
+          },
+          {
+            "id": 3,
+            "type": "saw_voice",
+            "x": 75,
+            "y": 190,
+            "params": {}
+          },
+          {
+            "id": 4,
+            "type": "filter_voice",
+            "x": 75,
+            "y": 260,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 5,
+            "type": "adsr_voice",
+            "x": 350,
+            "y": 260,
+            "params": {
+              "attack": 10,
+              "decay": 150,
+              "sustain": 0.65,
+              "release": 300
+            }
+          },
+          {
+            "id": 6,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 345,
+            "params": {}
+          },
+          {
+            "id": 7,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 415,
+            "params": {}
+          },
+          {
+            "id": 8,
+            "type": "mix_voice",
+            "x": 170,
+            "y": 480,
+            "params": {}
+          },
+          {
+            "id": 9,
+            "type": "gain",
+            "x": 170,
+            "y": 535,
+            "params": {
+              "value": 90
+            },
+            "style": {
+              "width": 180,
+              "height": 30,
+              "orientation": 1
+            }
+          },
+          {
+            "id": 10,
+            "type": "join",
+            "x": 170,
+            "y": 610,
+            "params": {}
+          },
+          {
+            "id": 11,
+            "type": "dac",
+            "x": 170,
+            "y": 675,
+            "params": {}
+          },
+          {
+            "id": 12,
+            "type": "toggle",
+            "x": 660,
+            "y": 50,
+            "params": {
+              "value": 0
+            }
+          },
+          {
+            "id": 13,
+            "type": "metro",
+            "x": 660,
+            "y": 115,
+            "params": {
+              "interval": 250
+            }
+          },
+          {
+            "id": 14,
+            "type": "counter",
+            "x": 660,
+            "y": 190,
+            "params": {
+              "steps": 8
+            }
+          },
+          {
+            "id": 15,
+            "type": "chord",
+            "x": 660,
+            "y": 260,
+            "params": {
+              "root": 48,
+              "shape": 1
+            }
+          },
+          {
+            "id": 16,
+            "type": "makenote",
+            "x": 660,
+            "y": 345,
+            "params": {
+              "velocity": 100,
+              "duration": 400
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 0
+          },
+          {
+            "from": 5,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 1
+          },
+          {
+            "from": 6,
+            "outlet": 0,
+            "to": 7,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 2,
+            "to": 7,
+            "inlet": 1
+          },
+          {
+            "from": 7,
+            "outlet": 0,
+            "to": 8,
+            "inlet": 0
+          },
+          {
+            "from": 8,
+            "outlet": 0,
+            "to": 9,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 1
+          },
+          {
+            "from": 10,
+            "outlet": 0,
+            "to": 11,
+            "inlet": 0
+          },
+          {
+            "from": 12,
+            "outlet": 0,
+            "to": 13,
+            "inlet": 0
+          },
+          {
+            "from": 13,
+            "outlet": 0,
+            "to": 14,
+            "inlet": 0
+          },
+          {
+            "from": 14,
+            "outlet": 0,
+            "to": 15,
+            "inlet": 0
+          },
+          {
+            "from": 15,
+            "outlet": 0,
+            "to": 16,
+            "inlet": 0
+          },
+          {
+            "from": 16,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          }
+        ],
+        "device": {
+          "version": 1,
+          "id": "org.alive.subtractive",
+          "name": "Subtractive",
+          "midi": {
+            "node": 2,
+            "inlet": 0
+          },
+          "audio": {
+            "inputs": 0,
+            "outputs": 2,
+            "layout": "stereo"
+          },
+          "parameters": [
+            {
+              "key": "attack",
+              "label": "Attack",
+              "node": 5,
+              "param": "attack",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "decay",
+              "label": "Decay",
+              "node": 5,
+              "param": "decay",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "sustain",
+              "label": "Sustain",
+              "node": 5,
+              "param": "sustain",
+              "min": 0,
+              "max": 1,
+              "unit": ""
+            },
+            {
+              "key": "release",
+              "label": "Release",
+              "node": 5,
+              "param": "release",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 4,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 4,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            },
+            {
+              "key": "level",
+              "label": "Level",
+              "node": 9,
+              "param": "value",
+              "min": 0,
+              "max": 127,
+              "unit": "raw"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "attack": 10,
+                "decay": 150,
+                "sustain": 0.65,
+                "release": 300,
+                "cutoff": 2400,
+                "resonance": 0.7,
+                "level": 90
+              }
+            },
+            {
+              "name": "Soft",
+              "values": {
+                "attack": 80,
+                "decay": 450,
+                "sustain": 0.5,
+                "release": 800,
+                "cutoff": 700,
+                "resonance": 0.8,
+                "level": 80
+              }
+            },
+            {
+              "name": "Pluck",
+              "values": {
+                "attack": 2,
+                "decay": 170,
+                "sustain": 0.12,
+                "release": 120,
+                "cutoff": 4200,
+                "resonance": 2.5,
+                "level": 85
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "example:adsr_voice",
+      "kind": "example",
+      "title": "adsr.voice~ example",
+      "group": "Messages & Numbers",
+      "summary": "Faust ADSR envelopes with live controls for four voice lanes.",
+      "objectType": "adsr_voice",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {
+            "id": 1,
+            "type": "midiin",
+            "x": 75,
+            "y": 50,
+            "params": {
+              "channel": 1
+            }
+          },
+          {
+            "id": 2,
+            "type": "poly_note",
+            "x": 75,
+            "y": 115,
+            "params": {
+              "voices": 4
+            }
+          },
+          {
+            "id": 3,
+            "type": "saw_voice",
+            "x": 75,
+            "y": 190,
+            "params": {}
+          },
+          {
+            "id": 4,
+            "type": "filter_voice",
+            "x": 75,
+            "y": 260,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 5,
+            "type": "adsr_voice",
+            "x": 350,
+            "y": 260,
+            "params": {
+              "attack": 10,
+              "decay": 150,
+              "sustain": 0.65,
+              "release": 300
+            }
+          },
+          {
+            "id": 6,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 345,
+            "params": {}
+          },
+          {
+            "id": 7,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 415,
+            "params": {}
+          },
+          {
+            "id": 8,
+            "type": "mix_voice",
+            "x": 170,
+            "y": 480,
+            "params": {}
+          },
+          {
+            "id": 9,
+            "type": "gain",
+            "x": 170,
+            "y": 535,
+            "params": {
+              "value": 90
+            },
+            "style": {
+              "width": 180,
+              "height": 30,
+              "orientation": 1
+            }
+          },
+          {
+            "id": 10,
+            "type": "join",
+            "x": 170,
+            "y": 610,
+            "params": {}
+          },
+          {
+            "id": 11,
+            "type": "dac",
+            "x": 170,
+            "y": 675,
+            "params": {}
+          },
+          {
+            "id": 12,
+            "type": "toggle",
+            "x": 660,
+            "y": 50,
+            "params": {
+              "value": 0
+            }
+          },
+          {
+            "id": 13,
+            "type": "metro",
+            "x": 660,
+            "y": 115,
+            "params": {
+              "interval": 250
+            }
+          },
+          {
+            "id": 14,
+            "type": "counter",
+            "x": 660,
+            "y": 190,
+            "params": {
+              "steps": 8
+            }
+          },
+          {
+            "id": 15,
+            "type": "chord",
+            "x": 660,
+            "y": 260,
+            "params": {
+              "root": 48,
+              "shape": 1
+            }
+          },
+          {
+            "id": 16,
+            "type": "makenote",
+            "x": 660,
+            "y": 345,
+            "params": {
+              "velocity": 100,
+              "duration": 400
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 0
+          },
+          {
+            "from": 5,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 1
+          },
+          {
+            "from": 6,
+            "outlet": 0,
+            "to": 7,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 2,
+            "to": 7,
+            "inlet": 1
+          },
+          {
+            "from": 7,
+            "outlet": 0,
+            "to": 8,
+            "inlet": 0
+          },
+          {
+            "from": 8,
+            "outlet": 0,
+            "to": 9,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 1
+          },
+          {
+            "from": 10,
+            "outlet": 0,
+            "to": 11,
+            "inlet": 0
+          },
+          {
+            "from": 12,
+            "outlet": 0,
+            "to": 13,
+            "inlet": 0
+          },
+          {
+            "from": 13,
+            "outlet": 0,
+            "to": 14,
+            "inlet": 0
+          },
+          {
+            "from": 14,
+            "outlet": 0,
+            "to": 15,
+            "inlet": 0
+          },
+          {
+            "from": 15,
+            "outlet": 0,
+            "to": 16,
+            "inlet": 0
+          },
+          {
+            "from": 16,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          }
+        ],
+        "device": {
+          "version": 1,
+          "id": "org.alive.subtractive",
+          "name": "Subtractive",
+          "midi": {
+            "node": 2,
+            "inlet": 0
+          },
+          "audio": {
+            "inputs": 0,
+            "outputs": 2,
+            "layout": "stereo"
+          },
+          "parameters": [
+            {
+              "key": "attack",
+              "label": "Attack",
+              "node": 5,
+              "param": "attack",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "decay",
+              "label": "Decay",
+              "node": 5,
+              "param": "decay",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "sustain",
+              "label": "Sustain",
+              "node": 5,
+              "param": "sustain",
+              "min": 0,
+              "max": 1,
+              "unit": ""
+            },
+            {
+              "key": "release",
+              "label": "Release",
+              "node": 5,
+              "param": "release",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 4,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 4,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            },
+            {
+              "key": "level",
+              "label": "Level",
+              "node": 9,
+              "param": "value",
+              "min": 0,
+              "max": 127,
+              "unit": "raw"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "attack": 10,
+                "decay": 150,
+                "sustain": 0.65,
+                "release": 300,
+                "cutoff": 2400,
+                "resonance": 0.7,
+                "level": 90
+              }
+            },
+            {
+              "name": "Soft",
+              "values": {
+                "attack": 80,
+                "decay": 450,
+                "sustain": 0.5,
+                "release": 800,
+                "cutoff": 700,
+                "resonance": 0.8,
+                "level": 80
+              }
+            },
+            {
+              "name": "Pluck",
+              "values": {
+                "attack": 2,
+                "decay": 170,
+                "sustain": 0.12,
+                "release": 120,
+                "cutoff": 4200,
+                "resonance": 2.5,
+                "level": 85
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "help:multiply_voice",
+      "kind": "help",
+      "title": "*.voice~ help",
+      "group": "Messages & Numbers",
+      "summary": "Multiply matching voice lanes for envelope or velocity scaling.",
+      "objectType": "multiply_voice",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {
+            "id": 1,
+            "type": "midiin",
+            "x": 75,
+            "y": 50,
+            "params": {
+              "channel": 1
+            }
+          },
+          {
+            "id": 2,
+            "type": "poly_note",
+            "x": 75,
+            "y": 115,
+            "params": {
+              "voices": 4
+            }
+          },
+          {
+            "id": 3,
+            "type": "saw_voice",
+            "x": 75,
+            "y": 190,
+            "params": {}
+          },
+          {
+            "id": 4,
+            "type": "filter_voice",
+            "x": 75,
+            "y": 260,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 5,
+            "type": "adsr_voice",
+            "x": 350,
+            "y": 260,
+            "params": {
+              "attack": 10,
+              "decay": 150,
+              "sustain": 0.65,
+              "release": 300
+            }
+          },
+          {
+            "id": 6,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 345,
+            "params": {}
+          },
+          {
+            "id": 7,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 415,
+            "params": {}
+          },
+          {
+            "id": 8,
+            "type": "mix_voice",
+            "x": 170,
+            "y": 480,
+            "params": {}
+          },
+          {
+            "id": 9,
+            "type": "gain",
+            "x": 170,
+            "y": 535,
+            "params": {
+              "value": 90
+            },
+            "style": {
+              "width": 180,
+              "height": 30,
+              "orientation": 1
+            }
+          },
+          {
+            "id": 10,
+            "type": "join",
+            "x": 170,
+            "y": 610,
+            "params": {}
+          },
+          {
+            "id": 11,
+            "type": "dac",
+            "x": 170,
+            "y": 675,
+            "params": {}
+          },
+          {
+            "id": 12,
+            "type": "toggle",
+            "x": 660,
+            "y": 50,
+            "params": {
+              "value": 0
+            }
+          },
+          {
+            "id": 13,
+            "type": "metro",
+            "x": 660,
+            "y": 115,
+            "params": {
+              "interval": 250
+            }
+          },
+          {
+            "id": 14,
+            "type": "counter",
+            "x": 660,
+            "y": 190,
+            "params": {
+              "steps": 8
+            }
+          },
+          {
+            "id": 15,
+            "type": "chord",
+            "x": 660,
+            "y": 260,
+            "params": {
+              "root": 48,
+              "shape": 1
+            }
+          },
+          {
+            "id": 16,
+            "type": "makenote",
+            "x": 660,
+            "y": 345,
+            "params": {
+              "velocity": 100,
+              "duration": 400
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 0
+          },
+          {
+            "from": 5,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 1
+          },
+          {
+            "from": 6,
+            "outlet": 0,
+            "to": 7,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 2,
+            "to": 7,
+            "inlet": 1
+          },
+          {
+            "from": 7,
+            "outlet": 0,
+            "to": 8,
+            "inlet": 0
+          },
+          {
+            "from": 8,
+            "outlet": 0,
+            "to": 9,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 1
+          },
+          {
+            "from": 10,
+            "outlet": 0,
+            "to": 11,
+            "inlet": 0
+          },
+          {
+            "from": 12,
+            "outlet": 0,
+            "to": 13,
+            "inlet": 0
+          },
+          {
+            "from": 13,
+            "outlet": 0,
+            "to": 14,
+            "inlet": 0
+          },
+          {
+            "from": 14,
+            "outlet": 0,
+            "to": 15,
+            "inlet": 0
+          },
+          {
+            "from": 15,
+            "outlet": 0,
+            "to": 16,
+            "inlet": 0
+          },
+          {
+            "from": 16,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          }
+        ],
+        "device": {
+          "version": 1,
+          "id": "org.alive.subtractive",
+          "name": "Subtractive",
+          "midi": {
+            "node": 2,
+            "inlet": 0
+          },
+          "audio": {
+            "inputs": 0,
+            "outputs": 2,
+            "layout": "stereo"
+          },
+          "parameters": [
+            {
+              "key": "attack",
+              "label": "Attack",
+              "node": 5,
+              "param": "attack",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "decay",
+              "label": "Decay",
+              "node": 5,
+              "param": "decay",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "sustain",
+              "label": "Sustain",
+              "node": 5,
+              "param": "sustain",
+              "min": 0,
+              "max": 1,
+              "unit": ""
+            },
+            {
+              "key": "release",
+              "label": "Release",
+              "node": 5,
+              "param": "release",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 4,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 4,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            },
+            {
+              "key": "level",
+              "label": "Level",
+              "node": 9,
+              "param": "value",
+              "min": 0,
+              "max": 127,
+              "unit": "raw"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "attack": 10,
+                "decay": 150,
+                "sustain": 0.65,
+                "release": 300,
+                "cutoff": 2400,
+                "resonance": 0.7,
+                "level": 90
+              }
+            },
+            {
+              "name": "Soft",
+              "values": {
+                "attack": 80,
+                "decay": 450,
+                "sustain": 0.5,
+                "release": 800,
+                "cutoff": 700,
+                "resonance": 0.8,
+                "level": 80
+              }
+            },
+            {
+              "name": "Pluck",
+              "values": {
+                "attack": 2,
+                "decay": 170,
+                "sustain": 0.12,
+                "release": 120,
+                "cutoff": 4200,
+                "resonance": 2.5,
+                "level": 85
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "example:multiply_voice",
+      "kind": "example",
+      "title": "*.voice~ example",
+      "group": "Messages & Numbers",
+      "summary": "Multiply matching voice lanes for envelope or velocity scaling.",
+      "objectType": "multiply_voice",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {
+            "id": 1,
+            "type": "midiin",
+            "x": 75,
+            "y": 50,
+            "params": {
+              "channel": 1
+            }
+          },
+          {
+            "id": 2,
+            "type": "poly_note",
+            "x": 75,
+            "y": 115,
+            "params": {
+              "voices": 4
+            }
+          },
+          {
+            "id": 3,
+            "type": "saw_voice",
+            "x": 75,
+            "y": 190,
+            "params": {}
+          },
+          {
+            "id": 4,
+            "type": "filter_voice",
+            "x": 75,
+            "y": 260,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 5,
+            "type": "adsr_voice",
+            "x": 350,
+            "y": 260,
+            "params": {
+              "attack": 10,
+              "decay": 150,
+              "sustain": 0.65,
+              "release": 300
+            }
+          },
+          {
+            "id": 6,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 345,
+            "params": {}
+          },
+          {
+            "id": 7,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 415,
+            "params": {}
+          },
+          {
+            "id": 8,
+            "type": "mix_voice",
+            "x": 170,
+            "y": 480,
+            "params": {}
+          },
+          {
+            "id": 9,
+            "type": "gain",
+            "x": 170,
+            "y": 535,
+            "params": {
+              "value": 90
+            },
+            "style": {
+              "width": 180,
+              "height": 30,
+              "orientation": 1
+            }
+          },
+          {
+            "id": 10,
+            "type": "join",
+            "x": 170,
+            "y": 610,
+            "params": {}
+          },
+          {
+            "id": 11,
+            "type": "dac",
+            "x": 170,
+            "y": 675,
+            "params": {}
+          },
+          {
+            "id": 12,
+            "type": "toggle",
+            "x": 660,
+            "y": 50,
+            "params": {
+              "value": 0
+            }
+          },
+          {
+            "id": 13,
+            "type": "metro",
+            "x": 660,
+            "y": 115,
+            "params": {
+              "interval": 250
+            }
+          },
+          {
+            "id": 14,
+            "type": "counter",
+            "x": 660,
+            "y": 190,
+            "params": {
+              "steps": 8
+            }
+          },
+          {
+            "id": 15,
+            "type": "chord",
+            "x": 660,
+            "y": 260,
+            "params": {
+              "root": 48,
+              "shape": 1
+            }
+          },
+          {
+            "id": 16,
+            "type": "makenote",
+            "x": 660,
+            "y": 345,
+            "params": {
+              "velocity": 100,
+              "duration": 400
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 0
+          },
+          {
+            "from": 5,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 1
+          },
+          {
+            "from": 6,
+            "outlet": 0,
+            "to": 7,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 2,
+            "to": 7,
+            "inlet": 1
+          },
+          {
+            "from": 7,
+            "outlet": 0,
+            "to": 8,
+            "inlet": 0
+          },
+          {
+            "from": 8,
+            "outlet": 0,
+            "to": 9,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 1
+          },
+          {
+            "from": 10,
+            "outlet": 0,
+            "to": 11,
+            "inlet": 0
+          },
+          {
+            "from": 12,
+            "outlet": 0,
+            "to": 13,
+            "inlet": 0
+          },
+          {
+            "from": 13,
+            "outlet": 0,
+            "to": 14,
+            "inlet": 0
+          },
+          {
+            "from": 14,
+            "outlet": 0,
+            "to": 15,
+            "inlet": 0
+          },
+          {
+            "from": 15,
+            "outlet": 0,
+            "to": 16,
+            "inlet": 0
+          },
+          {
+            "from": 16,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          }
+        ],
+        "device": {
+          "version": 1,
+          "id": "org.alive.subtractive",
+          "name": "Subtractive",
+          "midi": {
+            "node": 2,
+            "inlet": 0
+          },
+          "audio": {
+            "inputs": 0,
+            "outputs": 2,
+            "layout": "stereo"
+          },
+          "parameters": [
+            {
+              "key": "attack",
+              "label": "Attack",
+              "node": 5,
+              "param": "attack",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "decay",
+              "label": "Decay",
+              "node": 5,
+              "param": "decay",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "sustain",
+              "label": "Sustain",
+              "node": 5,
+              "param": "sustain",
+              "min": 0,
+              "max": 1,
+              "unit": ""
+            },
+            {
+              "key": "release",
+              "label": "Release",
+              "node": 5,
+              "param": "release",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 4,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 4,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            },
+            {
+              "key": "level",
+              "label": "Level",
+              "node": 9,
+              "param": "value",
+              "min": 0,
+              "max": 127,
+              "unit": "raw"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "attack": 10,
+                "decay": 150,
+                "sustain": 0.65,
+                "release": 300,
+                "cutoff": 2400,
+                "resonance": 0.7,
+                "level": 90
+              }
+            },
+            {
+              "name": "Soft",
+              "values": {
+                "attack": 80,
+                "decay": 450,
+                "sustain": 0.5,
+                "release": 800,
+                "cutoff": 700,
+                "resonance": 0.8,
+                "level": 80
+              }
+            },
+            {
+              "name": "Pluck",
+              "values": {
+                "attack": 2,
+                "decay": 170,
+                "sustain": 0.12,
+                "release": 120,
+                "cutoff": 4200,
+                "resonance": 2.5,
+                "level": 85
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "help:mix_voice",
+      "kind": "help",
+      "title": "mix.voice~ help",
+      "group": "Messages & Numbers",
+      "summary": "Mix four voice lanes to one mono channel, with headroom.",
+      "objectType": "mix_voice",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {
+            "id": 1,
+            "type": "midiin",
+            "x": 75,
+            "y": 50,
+            "params": {
+              "channel": 1
+            }
+          },
+          {
+            "id": 2,
+            "type": "poly_note",
+            "x": 75,
+            "y": 115,
+            "params": {
+              "voices": 4
+            }
+          },
+          {
+            "id": 3,
+            "type": "saw_voice",
+            "x": 75,
+            "y": 190,
+            "params": {}
+          },
+          {
+            "id": 4,
+            "type": "filter_voice",
+            "x": 75,
+            "y": 260,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 5,
+            "type": "adsr_voice",
+            "x": 350,
+            "y": 260,
+            "params": {
+              "attack": 10,
+              "decay": 150,
+              "sustain": 0.65,
+              "release": 300
+            }
+          },
+          {
+            "id": 6,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 345,
+            "params": {}
+          },
+          {
+            "id": 7,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 415,
+            "params": {}
+          },
+          {
+            "id": 8,
+            "type": "mix_voice",
+            "x": 170,
+            "y": 480,
+            "params": {}
+          },
+          {
+            "id": 9,
+            "type": "gain",
+            "x": 170,
+            "y": 535,
+            "params": {
+              "value": 90
+            },
+            "style": {
+              "width": 180,
+              "height": 30,
+              "orientation": 1
+            }
+          },
+          {
+            "id": 10,
+            "type": "join",
+            "x": 170,
+            "y": 610,
+            "params": {}
+          },
+          {
+            "id": 11,
+            "type": "dac",
+            "x": 170,
+            "y": 675,
+            "params": {}
+          },
+          {
+            "id": 12,
+            "type": "toggle",
+            "x": 660,
+            "y": 50,
+            "params": {
+              "value": 0
+            }
+          },
+          {
+            "id": 13,
+            "type": "metro",
+            "x": 660,
+            "y": 115,
+            "params": {
+              "interval": 250
+            }
+          },
+          {
+            "id": 14,
+            "type": "counter",
+            "x": 660,
+            "y": 190,
+            "params": {
+              "steps": 8
+            }
+          },
+          {
+            "id": 15,
+            "type": "chord",
+            "x": 660,
+            "y": 260,
+            "params": {
+              "root": 48,
+              "shape": 1
+            }
+          },
+          {
+            "id": 16,
+            "type": "makenote",
+            "x": 660,
+            "y": 345,
+            "params": {
+              "velocity": 100,
+              "duration": 400
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 0
+          },
+          {
+            "from": 5,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 1
+          },
+          {
+            "from": 6,
+            "outlet": 0,
+            "to": 7,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 2,
+            "to": 7,
+            "inlet": 1
+          },
+          {
+            "from": 7,
+            "outlet": 0,
+            "to": 8,
+            "inlet": 0
+          },
+          {
+            "from": 8,
+            "outlet": 0,
+            "to": 9,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 1
+          },
+          {
+            "from": 10,
+            "outlet": 0,
+            "to": 11,
+            "inlet": 0
+          },
+          {
+            "from": 12,
+            "outlet": 0,
+            "to": 13,
+            "inlet": 0
+          },
+          {
+            "from": 13,
+            "outlet": 0,
+            "to": 14,
+            "inlet": 0
+          },
+          {
+            "from": 14,
+            "outlet": 0,
+            "to": 15,
+            "inlet": 0
+          },
+          {
+            "from": 15,
+            "outlet": 0,
+            "to": 16,
+            "inlet": 0
+          },
+          {
+            "from": 16,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          }
+        ],
+        "device": {
+          "version": 1,
+          "id": "org.alive.subtractive",
+          "name": "Subtractive",
+          "midi": {
+            "node": 2,
+            "inlet": 0
+          },
+          "audio": {
+            "inputs": 0,
+            "outputs": 2,
+            "layout": "stereo"
+          },
+          "parameters": [
+            {
+              "key": "attack",
+              "label": "Attack",
+              "node": 5,
+              "param": "attack",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "decay",
+              "label": "Decay",
+              "node": 5,
+              "param": "decay",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "sustain",
+              "label": "Sustain",
+              "node": 5,
+              "param": "sustain",
+              "min": 0,
+              "max": 1,
+              "unit": ""
+            },
+            {
+              "key": "release",
+              "label": "Release",
+              "node": 5,
+              "param": "release",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 4,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 4,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            },
+            {
+              "key": "level",
+              "label": "Level",
+              "node": 9,
+              "param": "value",
+              "min": 0,
+              "max": 127,
+              "unit": "raw"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "attack": 10,
+                "decay": 150,
+                "sustain": 0.65,
+                "release": 300,
+                "cutoff": 2400,
+                "resonance": 0.7,
+                "level": 90
+              }
+            },
+            {
+              "name": "Soft",
+              "values": {
+                "attack": 80,
+                "decay": 450,
+                "sustain": 0.5,
+                "release": 800,
+                "cutoff": 700,
+                "resonance": 0.8,
+                "level": 80
+              }
+            },
+            {
+              "name": "Pluck",
+              "values": {
+                "attack": 2,
+                "decay": 170,
+                "sustain": 0.12,
+                "release": 120,
+                "cutoff": 4200,
+                "resonance": 2.5,
+                "level": 85
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "example:mix_voice",
+      "kind": "example",
+      "title": "mix.voice~ example",
+      "group": "Messages & Numbers",
+      "summary": "Mix four voice lanes to one mono channel, with headroom.",
+      "objectType": "mix_voice",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "nodes": [
+          {
+            "id": 1,
+            "type": "midiin",
+            "x": 75,
+            "y": 50,
+            "params": {
+              "channel": 1
+            }
+          },
+          {
+            "id": 2,
+            "type": "poly_note",
+            "x": 75,
+            "y": 115,
+            "params": {
+              "voices": 4
+            }
+          },
+          {
+            "id": 3,
+            "type": "saw_voice",
+            "x": 75,
+            "y": 190,
+            "params": {}
+          },
+          {
+            "id": 4,
+            "type": "filter_voice",
+            "x": 75,
+            "y": 260,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 5,
+            "type": "adsr_voice",
+            "x": 350,
+            "y": 260,
+            "params": {
+              "attack": 10,
+              "decay": 150,
+              "sustain": 0.65,
+              "release": 300
+            }
+          },
+          {
+            "id": 6,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 345,
+            "params": {}
+          },
+          {
+            "id": 7,
+            "type": "multiply_voice",
+            "x": 170,
+            "y": 415,
+            "params": {}
+          },
+          {
+            "id": 8,
+            "type": "mix_voice",
+            "x": 170,
+            "y": 480,
+            "params": {}
+          },
+          {
+            "id": 9,
+            "type": "gain",
+            "x": 170,
+            "y": 535,
+            "params": {
+              "value": 90
+            },
+            "style": {
+              "width": 180,
+              "height": 30,
+              "orientation": 1
+            }
+          },
+          {
+            "id": 10,
+            "type": "join",
+            "x": 170,
+            "y": 610,
+            "params": {}
+          },
+          {
+            "id": 11,
+            "type": "dac",
+            "x": 170,
+            "y": 675,
+            "params": {}
+          },
+          {
+            "id": 12,
+            "type": "toggle",
+            "x": 660,
+            "y": 50,
+            "params": {
+              "value": 0
+            }
+          },
+          {
+            "id": 13,
+            "type": "metro",
+            "x": 660,
+            "y": 115,
+            "params": {
+              "interval": 250
+            }
+          },
+          {
+            "id": 14,
+            "type": "counter",
+            "x": 660,
+            "y": 190,
+            "params": {
+              "steps": 8
+            }
+          },
+          {
+            "id": 15,
+            "type": "chord",
+            "x": 660,
+            "y": 260,
+            "params": {
+              "root": 48,
+              "shape": 1
+            }
+          },
+          {
+            "id": 16,
+            "type": "makenote",
+            "x": 660,
+            "y": 345,
+            "params": {
+              "velocity": 100,
+              "duration": 400
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 0
+          },
+          {
+            "from": 5,
+            "outlet": 0,
+            "to": 6,
+            "inlet": 1
+          },
+          {
+            "from": 6,
+            "outlet": 0,
+            "to": 7,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 2,
+            "to": 7,
+            "inlet": 1
+          },
+          {
+            "from": 7,
+            "outlet": 0,
+            "to": 8,
+            "inlet": 0
+          },
+          {
+            "from": 8,
+            "outlet": 0,
+            "to": 9,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 0
+          },
+          {
+            "from": 9,
+            "outlet": 0,
+            "to": 10,
+            "inlet": 1
+          },
+          {
+            "from": 10,
+            "outlet": 0,
+            "to": 11,
+            "inlet": 0
+          },
+          {
+            "from": 12,
+            "outlet": 0,
+            "to": 13,
+            "inlet": 0
+          },
+          {
+            "from": 13,
+            "outlet": 0,
+            "to": 14,
+            "inlet": 0
+          },
+          {
+            "from": 14,
+            "outlet": 0,
+            "to": 15,
+            "inlet": 0
+          },
+          {
+            "from": 15,
+            "outlet": 0,
+            "to": 16,
+            "inlet": 0
+          },
+          {
+            "from": 16,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          }
+        ],
+        "device": {
+          "version": 1,
+          "id": "org.alive.subtractive",
+          "name": "Subtractive",
+          "midi": {
+            "node": 2,
+            "inlet": 0
+          },
+          "audio": {
+            "inputs": 0,
+            "outputs": 2,
+            "layout": "stereo"
+          },
+          "parameters": [
+            {
+              "key": "attack",
+              "label": "Attack",
+              "node": 5,
+              "param": "attack",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "decay",
+              "label": "Decay",
+              "node": 5,
+              "param": "decay",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "sustain",
+              "label": "Sustain",
+              "node": 5,
+              "param": "sustain",
+              "min": 0,
+              "max": 1,
+              "unit": ""
+            },
+            {
+              "key": "release",
+              "label": "Release",
+              "node": 5,
+              "param": "release",
+              "min": 1,
+              "max": 10000,
+              "unit": "ms"
+            },
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 4,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 4,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            },
+            {
+              "key": "level",
+              "label": "Level",
+              "node": 9,
+              "param": "value",
+              "min": 0,
+              "max": 127,
+              "unit": "raw"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "attack": 10,
+                "decay": 150,
+                "sustain": 0.65,
+                "release": 300,
+                "cutoff": 2400,
+                "resonance": 0.7,
+                "level": 90
+              }
+            },
+            {
+              "name": "Soft",
+              "values": {
+                "attack": 80,
+                "decay": 450,
+                "sustain": 0.5,
+                "release": 800,
+                "cutoff": 700,
+                "resonance": 0.8,
+                "level": 80
+              }
+            },
+            {
+              "name": "Pluck",
+              "values": {
+                "attack": 2,
+                "decay": 170,
+                "sustain": 0.12,
+                "release": 120,
+                "cutoff": 4200,
+                "resonance": 2.5,
+                "level": 85
+              }
+            }
+          ]
+        }
       }
     }
   ]

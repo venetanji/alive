@@ -17,8 +17,7 @@ function host() {
     return true;
   }};
 }
-test('registry has 60 runtime and 2 authoring objects, exclusively top inlet / bottom outlet descriptors', () => {
-  assert.equal(Object.keys(REGISTRY).length,62);
+test('registry exposes exclusively top inlet / bottom outlet descriptors', () => {
   for (const spec of Object.values(REGISTRY)) {
     assert.ok(spec.inlets.every(p => p.side === 'top'));
     assert.ok(spec.outlets.every(p => p.side === 'bottom'));

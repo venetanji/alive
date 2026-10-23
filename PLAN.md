@@ -1,6 +1,103 @@
 # Alive / Ultra Plan
 
-Updated: 2026-10-23. PR #1 is merged on main. PR #2 now prepares 0.1.0-rc.1 with the reviewed Stop-epoch, shared-editor ordering, macOS Quit/menu, complete dependency-notice and cable-invalidation fixes. Targeted regressions are added; exact-head CI and authenticated tag-release validation remain separate gates. Earlier experiments below retain their historical evidence and limits.
+Updated: 2026-10-24. Combined release integration includes packaging/audit PR #2, reusable-instrument PR #4 at `ab8b0e2`, and preserved validation PR #5 at `8da5fd2`. The 0.1.0-rc.1 candidate fixes the remaining native Quit and pending-history admission findings before final combined CI. Earlier evidence below retains its original source revisions and hardware limits.
+
+## Reusable Subtractive Instrument: Active Work
+
+Goal: author, play, save/reopen and instantiate a complete four-voice subtractive
+instrument through the existing canvas. Deliver a tested draft PR with an original
+example and explicit limits on Alive integration and hardware qualification.
+
+Design: preserve Rust/Tauri, native document ownership and the existing
+Clockwork/Faust host. Extend the existing native signal evaluator with AOT Faust
+primitives, not a separate fixed synthesizer. Six objects use an explicit discrete
+four-channel voice bundle (not speaker channels): `poly.note~` produces frequency,
+gate and velocity bundles; `saw.voice~`, `lowpass.voice~`, `adsr.voice~` and
+`*.voice~` operate on these bundles; `mix.voice~` reduces to mono. Existing
+`gain~`, `join~` and `stereo.dac~` provide the output path. Mono/stereo remain the
+only public audio output layouts. One allocator per document, 1..4 active voices,
+oldest-voice stealing, bounded queues and out-of-band Stop/Panic termination.
+
+The device is the saved authored graph plus a versioned manifest containing its
+stable identifier, MIDI entry node, exact stereo output layout, seven parameter
+bindings and bounded presets. A compact Perform panel operates those bindings;
+its on-screen keyboard sends MIDI note pairs through the same entry. A new
+instance creates an independent native root. A headless host harness loads the
+same example to prove processing without an editor. Alive session hosting remains
+unimplemented and will be labeled explicitly.
+
+Alternatives considered: extending the old fixed sine/ASR bank would leave the
+synth unauthorable; unrestricted Faust/JIT patch compilation adds unnecessary
+compiler/publication infrastructure. The small AOT object set permits real wiring
+and focused safety tests within the current engine. Native signal DSP shares the
+host timeline alongside the legacy Clockwork guest; do not claim these new nodes
+run inside the legacy guest or inherit its 64-frame voice delay.
+
+Execution and acceptance checklist (update evidence here as each slice passes):
+
+- [x] Fetch repository, identify merged foundation, inspect current docs/tests and
+  establish an isolated branch. Current worktree was clean at entry.
+- [x] Measure release-build process-tree CPU and PSS for audio off/on and visible/
+  minimized; investigate repeated WebKit work. First reproduce with private
+  Xvfb mapped/unmapped and explicitly distinguish desktop minimization.
+- [x] Add failing native voice/DSP/channel tests, implement only the six required
+  objects with preinitialized Faust state, and prove voice stealing, termination,
+  channel rejection and independent document state. Native object kinds 60..65;
+  native port type 5 is exactly four discrete voice lanes.
+- [x] Add Rust and JS object admission/catalog support with matching bounds and
+  channel validation. Preserve blank inline entry and top/bottom ports.
+- [x] Add strict saved device manifest, parameter/preset roundtrip tests, Perform
+  panel, keyboard release safety and independent instance command. Bindings name
+  existing node parameters; no hidden hardcoded synthesis route.
+- [x] Ship the original subtractive example and host harness. Test audible filter,
+  envelope and level changes without restarting output; prove that disconnecting
+  a required audio cable changes/silences the rendered result.
+- [x] Run a real release Tauri walkthrough from an empty canvas, play, edit, save,
+  close/reopen, recall presets and use two independent instances. Capture actual
+  output while editing/zooming/panning, exact host/backend/rate/buffer and errors.
+- [x] Compare performance with the same command/workload, retain screenshots and
+  machine-readable measurements, and document repeatable commands/reference scope.
+- [x] Review the final diff and run applicable local checks; retain evidence and
+  gaps for the draft PR. Delivery gate: push the draft and inspect CI on the
+  final pushed commit before handoff; record that result on the PR.
+
+Safety gates: no render-callback allocation/free, DSP compilation/initialization,
+destruction or blocking locks; all new DSP state is prepared outside render and
+bounded clears/parameter writes are permitted. Full queues must preserve release
+via document Stop; old queued note-ons cannot rearm after that boundary. Audio
+must continue while the editor is busy or absent in the host harness.
+
+Evidence: `experiments/ultra-instrument-20261024/performance/` retains actual
+release before/after process-tree samples on the identical connected starter.
+CPU (one logical core) falls 38.1 -> 11.6% visible / 28.5 -> 2.8% minimized with
+DSP off, and 40.1 -> 24.2% / 31.0 -> 20.6% with its score running. Native WM
+Normal/Iconic states are verified. PSS falls modestly. This single paired private
+Xvfb/software-PipeWire run does not qualify compositor/hardware performance;
+active sequencing still causes significant WebKit work.
+
+Local native ABI/callback-safety checks and the full Rust suite (127 pass, two
+intentional ignores) pass. The headless probe renders 207744 stereo frames at
+48 kHz, exercises three saved presets and two independent roots, preserves
+runtime on metadata/live changes, and proves filter/envelope response plus
+exact mute/disconnection/Stop silence. The real Tauri walkthrough authored all
+16 objects and 18 cables from empty entry, saved/recalled/reopened a preset and
+used two independent instances. A held note remained audible during a cutoff
+edit, and release settled to exact silence. Sustained output covered 2880000
+stereo frames / 60 seconds across 18 edit/zoom/pan cycles, with output in every
+analyzed one-second window. Actual CPAL/PipeWire output was 48 kHz stereo,
+512 frames / 10.67 ms, with zero stream errors; `pw-top` returned no batch
+counters, so no direct PipeWire underrun count is claimed. The separate CPAL
+gate passed with 150528 finite stereo frames and 271 callbacks. This remains
+software-loopback evidence on a Ryzen 9 5900HS, not hardware qualification.
+Review identified nested Perform target resolution and transformed release at
+full FIFO; regression fixes are included. Final local checks pass: 409 UI tests,
+103 rendered-browser tests, full contracts/native gates and the Rust/host/audio
+checks described above. Final pushed-commit CI status and run URL are recorded
+on the draft PR. Logs and raw captures are under
+`/tmp/ultra-instrument-evidence/`; curated reports, screenshots, original host
+audio and reproducible commands are retained in the experiment folder.
+The missing Python validator was installed only into an
+isolated temporary tools environment, without changing system configuration.
 
 Status: architecture research, a constrained Clockwork/Faust host, and an early Rust/Tauri Ultra patch-editor test build. There is no production DAW or Live/Max compatibility implementation. Offline, actual Linux desktop and real PipeWire-JACK evidence are distinguished below from unmeasured physical audio/MIDI latency and unqualified realtime performance. This plan makes no delivery-date or broad compatibility claim.
 
@@ -11,7 +108,7 @@ Status: architecture research, a constrained Clockwork/Faust host, and an early 
 1. **Make the editable patch canvas the primary interface.** The Rust/Tauri app now opens a compact, object-first canvas with inline name/argument entry, supported-object autocomplete, lock/edit modes, selection and group movement, top inlets/bottom outlets, contextual help, live numeric controls, undo/redo and bounded JSON save/reopen. View-only zoom/Fit exists; cursor-anchored zoom and Space/middle-button drag panning are now implemented, with ten passing rendered-browser interaction checks. Message and bang execute with DSP off through the native bounded control worker; starting audio hands clock ownership to the callback. Native shared root documents own their embedded views, histories and execution state. The fixed Chord lab and original patcher remain separate reference profiles. Rust owns native commands and authoritative validation. SoundCraft supplies loose model/command-layer ideas, not copied code or its egui UI stack.
 2. **Use the tested constrained host contract.** Complete aligned 64-frame Clockwork calls behind a causal adapter provide one declared 64-frame delay across arbitrary input/output partitions. Exclusive ingress, 16 events per engine block, bounded queues/horizon and readiness checks avoid the raw-host admission/initialization gaps within this application profile.
 3. **Fail visibly and safely, not silently.** Panic and engine faults globally mute until stopped restart. Document Stop uses an out-of-band coalescing epoch; a full-FIFO direct Voice note-off falls back to that scoped Stop, clearing the target document while preserving other roots. Older queued events cannot rearm it; saved edits remain admitted without pre-stop hot emission. Ordinary held notes/sustain have no lease. Other admission overflow rejects explicitly.
-4. **Keep the first patch subset honest.** The registry has 60 native kinds plus patcher/comment authoring constructs, including typed controls, list/routing/named messages, arithmetic and twelve mono signal kinds. `ultra-canvas-v1` and embedded `ultra-patcher-v2` lower to bounded executable graphs. Wires determine native message execution and actual output mapping. DSP still uses two prepared four-voice Faust banks; this is not arbitrary Faust compilation, full Max/Pd compatibility, live code loading or a complete device library. The older Chord lab remains a fixed instrument profile.
+4. **Keep the first patch subset honest.** The registry has 66 native kinds plus patcher/comment authoring constructs, including typed controls, list/routing/named messages, arithmetic and twelve mono signal kinds. `ultra-canvas-v1` and embedded `ultra-patcher-v2` lower to bounded executable graphs. Wires determine native message execution and actual output mapping. The legacy Voice route retains two prepared four-voice Faust banks; the authored instrument uses prepared AOT Faust saw/filter/ADSR kernels in the native signal evaluator; this is not arbitrary Faust compilation, full Max/Pd compatibility, live code loading or a complete device library. The older Chord lab remains a fixed instrument profile.
 5. **Treat the downloadable build as a research test app.** Rust/Tauri and native binaries compile locally; core/offline, graph, negative-control and backend test-double checks pass. Earlier target-desktop Tauri/direct-JACK runs exercised software MIDI/audio at 512/256/128/64 frames. The current desktop uses CPAL with native PipeWire/ALSA discovery and explicit output settings; direct JACK remains in `ultra-diagnostic` and regression fixtures. Physical MIDI and external MIDI clock are absent on the CPAL desktop path. Physical MIDI-to-analog latency and sustained realtime acceptance remain pending; xruns occurred during desktop interactions. The user confirmed that the missing HDMI right channel was a speaker cable issue and is resolved. The Linux binary has explicit runtime requirements, not universal portability.
 6. **Reuse patch execution before rebuilding it.** A new headless libpd/Cyclone/Faust probe demonstrates selected real Pd externals and bit-exact same-voice DSP at tick boundaries. Evaluate this as a whole-device patch profile, not a replacement for the native sample-accurate contract. The reusable UI controls, compact-editor observations and 26-class Max catalog/intake reader remain separate from compatibility execution. The installed-help map inventories 2,103 help files plus 42 supporting patches, with no full-help conformance passes; the supplied Max 9.1.5 corpus now supports bounded synchronous comparison, with confirmed typing/state differences and incomplete scheduling/format evidence.
 7. **Use AGPL-3.0-or-later for Alive/Ultra-owned code.** See `LICENSE` and `LICENSING.md`; upstream component licenses, notices and exceptions remain intact. The app's actual native core uses Clockwork's existing AGPL/commercial-licensed code with audited Faust-generated DSP; no commercial agreement is assumed. Rust/Tauri and system JACK/GTK/WebKit terms are separate. scsynth/Supersonic and its costs are not part of this custom Faust guest.

@@ -30,6 +30,29 @@ class ReleaseTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             release.bundle_config('x86_64-pc-windows-msvc', ['../escape.dll'])
         self.assertEqual(win['bundle']['resources']['../build/ultra_native.dll'], 'ultra_native.dll')
+    def test_faust_notice_bundled_on_every_target(self):
+        for target in release.TARGETS:
+            with self.subTest(target=target):
+                resources = release.bundle_config(target)['bundle']['resources']
+                self.assertEqual(resources.get('../core/VOICE.txt'), 'licenses/Faust-VOICE.txt')
+
+    def test_packaged_faust_notice_must_match_source_bytes(self):
+        with tempfile.TemporaryDirectory() as d:
+            package = Path(d)
+            for name in ('THIRD-PARTY.txt', 'THIRD-PARTY-CRATES.json'):
+                (package/name).write_bytes((release.APP/name).read_bytes())
+            with self.assertRaisesRegex(ValueError, 'Faust-VOICE.txt'):
+                release.verify_notice_resources(package)
+            voice = package/'Faust-VOICE.txt'
+            voice.write_bytes((release.APP/'core/VOICE.txt').read_bytes())
+            release.verify_notice_resources(package)
+            voice.write_bytes(voice.read_bytes() + b'altered')
+            with self.assertRaisesRegex(ValueError, 'Faust-VOICE.txt'):
+                release.verify_notice_resources(package)
+            voice.rename(package/'VOICE.txt')
+            with self.assertRaisesRegex(ValueError, 'Faust-VOICE.txt'):
+                release.verify_notice_resources(package)
+
     def test_loader_matches_product_directory(self):
         root = Path(__file__).resolve().parents[1]
         name = json.loads((root/'src-tauri/tauri.conf.json').read_text())['productName']
@@ -50,6 +73,7 @@ class ReleaseTests(unittest.TestCase):
                 release.verify_notice_resources(package)
             for name in ('THIRD-PARTY.txt', 'THIRD-PARTY-CRATES.json'):
                 (package/name).write_bytes((release.APP/name).read_bytes())
+            (package/'Faust-VOICE.txt').write_bytes((release.APP/'core/VOICE.txt').read_bytes())
             release.verify_notice_resources(package)
             (package/'THIRD-PARTY-CRATES.json').write_text('{}')
             with self.assertRaises(ValueError):

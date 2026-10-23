@@ -15,23 +15,35 @@ import {applyNodeAppearance} from './canvas-appearance-view.mjs';
 import {mountHelpShell,createHelpHelperView} from './canvas-help-view.mjs';
 import {cableBounds,cablePath} from './canvas-cable-path.mjs';
 import {translatedMidpoints} from './canvas-cable-geometry.mjs';
+import {canvasRenderKey,createCanvasPoller} from './canvas-poll.mjs';
+import {mountDevicePanel} from './canvas-device-panel.mjs';
 
 export function mountCanvas({document:doc=globalThis.document,window:win=globalThis.window,invoke=win?.__TAURI__?.core?.invoke}={}) {
   const $=id=>doc.querySelector('#'+id),make=(tag,className,text)=>{const e=doc.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;};
-  let initialized=false,selection=null,selected=new Set(),pending=null,locked=false,zoom=1,panel=null,inspectorKey='',helpKey='',drag=null,marquee=null,leaving=false,timer=null;
+  let initialized=false,selection=null,selected=new Set(),pending=null,locked=false,zoom=1,panel=null,inspectorKey='',helpKey='',drag=null,marquee=null,leaving=false;
   let pointer={x:80,y:90},pointerClient=null,panX=0,panY=0,pan=null,spaceHeld=false,suppressPanClick=false;
   let wireGesture=null,wireTarget=null,wireKey='',suppressWireClick=false;
   const wireTargets=new Map();
   const views=new Map(),fields=new Map();
   let appearanceInspector=null,documents=null,helpView=null;
-  const onState=state=>{if(initialized)render(state);};
+  let stateKey='',observationKey='',settleObservation=false;
+  const onState=state=>{
+    if(!initialized)return;
+    const key=canvasRenderKey(state),observations=JSON.stringify(state.observations);
+    if(key!==stateKey||settleObservation){stateKey=key;render(state);}
+    // A final unchanged observation clears a bang's one-poll flash.
+    settleObservation=observations!==observationKey;observationKey=observations;
+  };
   let activeController=createCanvasController({invoke,onState});
   // Panels and controls retain this reference when native ownership is adopted.
   const controller=new Proxy({},{get:(_,key)=>activeController[key]});
+  const poller=createCanvasPoller({poll:()=>controller.poll(),hidden:()=>doc.hidden,
+    setTimeout:(fn,ms)=>win.setTimeout(fn,ms),clearTimeout:id=>win.clearTimeout(id)});
   const audioSettings=mountAudioSettings({document:doc,invoke,controller});
   const maxDialog=mountMaxImportDialog({doc,invoke});
   const consoleView=mountConsole({doc,controller,select:source=>guard(()=>revealSource(source))()});
   const guard=fn=>(...args)=>{try{return Promise.resolve(fn(...args)).catch(error=>controller.notice(error));}catch(error){controller.notice(error);}};
+  const devicePanel=mountDevicePanel({doc,win,controller,invoke,beforeOpen:()=>{panel=null;applyPanel();}});
   helpView=mountHelpShell({doc,win,invoke,onChange:()=>{if(initialized)render(controller.getState());},beforeRead:()=>controller.flush(),
     beforeNavigate:async()=>{finishDrag();entry.close();closeMenus();cancelWire(false);for(const view of views.values())view.cancelInteraction?.();await controller.flush();},
     hostBasic:()=>controller.hostHelpBasic()});
@@ -111,6 +123,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     }));
   }
   function showPanel(mode) {
+    devicePanel.close();
     closeMenus();
     panel=panel===mode?null:mode;return applyPanel();
   }
@@ -300,15 +313,20 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   }
   function finishDrag() {
     if(!drag)return;const d=drag;drag=null;
-    if(d.dx||d.dy)controller.moveMany(d.nodes.map(n=>({id:n.id,x:n.x+d.dx,y:n.y+d.dy})));
+    try {
+      if(d.dx||d.dy)controller.moveMany(d.nodes.map(n=>({id:n.id,x:n.x+d.dx,y:n.y+d.dy})));
+    } catch(error) { controller.notice(error); }
+    // A rejected admission must remove the displaced gesture preview now.
+    render(controller.getState());
   }
   function operate(id,e) {
     if(!locked&&!e.ctrlKey&&!e.metaKey){if(!selected.has(id))selectNode(id,e.shiftKey);return;}
     return guard(()=>controller.event(id,0,null))();
   }
   function parameter(id,key,value,options){
-    if(locked&&structuralParameter(getNode(id)?.type,key)){controller.notice('Unlock the patch to change this structural parameter.');return;}
-    return guard(()=>controller.parameter(id,key,value,options))();
+    if(locked&&structuralParameter(getNode(id)?.type,key)){controller.notice('Unlock the patch to change this structural parameter.');return false;}
+    try { controller.parameter(id,key,value,options);return true; }
+    catch(error) { controller.notice(error);return false; }
   }
   function removeSelection() {
     if(locked)return;
@@ -316,28 +334,30 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     else if(selected.size)controller.removeMany([...selected]);
     clearSelection();cancelWire();render(controller.getState());
   }
-  let cableRenderKey='';
+  let cableKey='';
   function drawCables(patch,onlyIfChanged=false) {
-    // Status notifications can update controls without changing cable geometry.
-    // Measure ports too: runtime text or a resized view can move an endpoint.
-    const base=$('canvas').getBoundingClientRect();
-    const geometry=[...views.values()].map(view=>['in','out'].map(direction=>
-      view.ports[direction].map(port=>{const r=port.getBoundingClientRect();return[r.left-base.left,r.top-base.top,r.width,r.height];})));
-    const key=JSON.stringify([patch,geometry,zoom,locked,selection?.kind==='edge'?selection.index:null,
-      pending, pending?[pointer,wireTarget]:null,drag?[drag.dx,drag.dy]:null]);
-    if(onlyIfChanged&&key===cableRenderKey)return;
-    cableRenderKey=key;
-    const svg=$('cables');svg.replaceChildren();
+    const svg=$('cables'),base=$('canvas').getBoundingClientRect();
     const endpoint=(id,direction,index)=>{
-      const base=$('canvas').getBoundingClientRect(),r=views.get(id).ports[direction][index].getBoundingClientRect();
+      const r=views.get(id).ports[direction][index].getBoundingClientRect();
       return{x:(r.left-base.left+r.width/2)/zoom,y:(r.top-base.top+r.height/2)/zoom};
     };
     const positions=drag?.nodes.map(node=>({id:node.id,x:node.x+drag.dx,y:node.y+drag.dy}));
-    patch.edges.forEach((edge,index)=>{
-      if(!views.has(edge.from)||!views.has(edge.to))return;
+    const cables=patch.edges.flatMap((edge,index)=>{
+      if(!views.has(edge.from)||!views.has(edge.to))return [];
       const source=patch.nodes.find(n=>n.id===edge.from),kind=nodeSpec(source).outlets[edge.outlet].type;
       const midpoints=positions?translatedMidpoints(edge,positions,patch.nodes):edge.midpoints;
       const d=cablePath(endpoint(edge.from,'out',edge.outlet),endpoint(edge.to,'in',edge.inlet),midpoints);
+      return [{edge,index,kind,d}];
+    });
+    let pendingPath=null;
+    if(pending&&views.has(pending.id)){
+      const target=wireTarget&&wireTargets.get(portKey(wireTarget)),end=target&&!target.error?endpoint(wireTarget.id,wireTarget.direction,wireTarget.index):pointer,start=endpoint(pending.id,pending.direction,pending.index);
+      pendingPath=pending.direction==='out'?cablePath(start,end):cablePath(end,start);
+    }
+    const key=JSON.stringify([patch,controller.getState().path,cables,zoom,locked,selection?.kind==='edge'?selection.index:null,pendingPath]);
+    if(onlyIfChanged&&key===cableKey)return;
+    cableKey=key;svg.replaceChildren();
+    cables.forEach(({edge,index,kind,d})=>{
       const path=doc.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',d);path.setAttribute('class',`cable ${kind}${selection?.kind==='edge'&&selection.index===index?' selected':''}`);path.dataset.edge=String(index);
       path.setAttribute('aria-label',`Cable ${edge.from}:${edge.outlet} to ${edge.to}:${edge.inlet}`);
       const choose=e=>{if(locked)return;e.stopPropagation();selected.clear();selection={kind:'edge',index};inspectorKey='';render(controller.getState());};
@@ -348,9 +368,8 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
       hit.addEventListener('contextmenu',context);
       svg.append(hit,path);
     });
-    if(pending&&views.has(pending.id)){
-      const target=wireTarget&&wireTargets.get(portKey(wireTarget)),end=target&&!target.error?endpoint(wireTarget.id,wireTarget.direction,wireTarget.index):pointer,start=endpoint(pending.id,pending.direction,pending.index);
-      const path=doc.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('class','cable pending-cable');path.setAttribute('d',pending.direction==='out'?cablePath(start,end):cablePath(end,start));svg.append(path);
+    if(pendingPath!==null){
+      const path=doc.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('class','cable pending-cable');path.setAttribute('d',pendingPath);svg.append(path);
     }
   }
   function renderInspector(state) {
@@ -410,6 +429,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     renderPatcherPath(state);
     consoleView.render(state);
     audioSettings.update(state);
+    devicePanel.update(state);
     $('audio-format').textContent=state.status.running&&state.status.period?`48 kHz / ${state.status.period} frames`:'48 kHz / stereo';
     $('preview-banner').hidden=state.native;$('runtime-label').textContent=state.native?'Native editor':'Browser preview';
     $('legacy-link').hidden=state.native;$('lab-link').hidden=state.native;
@@ -576,13 +596,13 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)&&selected.size){e.preventDefault();const step=e.shiftKey?10:1,dx=step*(e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0),dy=step*(e.key==='ArrowDown'?1:e.key==='ArrowUp'?-1:0);controller.moveMany(controller.getState().patch.nodes.filter(n=>selected.has(n.id)).map(n=>({id:n.id,x:Math.max(0,Math.min(4000,n.x+dx)),y:Math.max(0,Math.min(4000,n.y+dy))})));}
   }));
   win.addEventListener('blur',()=>{for(const view of views.values())view.cancelInteraction?.();cancelWire();releaseNavigation();finishDrag();});
-  doc.addEventListener('visibilitychange',()=>{if(doc.hidden){for(const view of views.values())view.cancelInteraction?.();cancelWire();releaseNavigation();finishDrag();}});
+  doc.addEventListener('visibilitychange',()=>{poller.visibilityChanged();if(doc.hidden){for(const view of views.values())view.cancelInteraction?.();cancelWire();releaseNavigation();finishDrag();}});
   win.addEventListener('pagehide',()=>{
-    leaving=true;documents?.dispose();
+    leaving=true;poller.stop();devicePanel.dispose();documents?.dispose();
     // Native close may already have removed this document's graph.
     controller.disposeDocument?.().catch(()=>{});
   });
-  for(const id of ['legacy-link','lab-link'])$(id).addEventListener('click',guard(async e=>{e.preventDefault();if(leaving)return;leaving=true;if(timer!==null)win.clearTimeout(timer);try{await controller.dispose();win.location.assign(e.currentTarget?.href||$(id).href);}catch(error){leaving=false;timer=win.setTimeout(poll,100);throw error;}}));
+  for(const id of ['legacy-link','lab-link'])$(id).addEventListener('click',guard(async e=>{e.preventDefault();if(leaving)return;leaving=true;poller.stop();try{await controller.dispose();win.location.assign(e.currentTarget?.href||$(id).href);}catch(error){leaving=false;poller.start();throw error;}}));
   function dialog(mode){entry.close();closeMenus();maxDialog.reset(mode==='open');$('dialog-title').textContent=mode==='open'?'Open patch':'Save / export patch';$('patch-json').value=mode==='open'?'':controller.export();$('dialog-status').textContent=mode==='open'?'The whole document is validated before replacing your current patch. Max files show a compatibility report first.':'Copy or download this JSON to keep the patch. Export contains authored state, not running timers.';$('patch-dialog').showModal();$('patch-json').focus();if(mode!=='open')$('patch-json').select();}
   $('export-patch').addEventListener('click',()=>dialog('save'));$('open-patch').addEventListener('click',()=>dialog('open'));
   $('import-patch').addEventListener('click',async()=>{try{
@@ -615,15 +635,14 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   $('object-profile-note').textContent=`${Object.keys(OBJECTS).length} supported objects. Names and arguments belong to Ultra's bounded profile.`;
   $('workspace').addEventListener('click',guard(e=>{if(!e.altKey)return;const node=e.target?.closest?.('[data-node]');if(node){e.preventDefault();e.stopPropagation();const type=getNode(Number(node.dataset.node)).type;return type==='help_helper'?helpView.openReference(helpView.object):documents.openHelp(`help:${type}`);}}),true);
   initialized=true;render(controller.getState());
-  const poll=async()=>{if(leaving)return;await controller.poll();if(!leaving)timer=win.setTimeout(poll,100);};
   const ready=documents.ready().then(adopted=>{
     if(!adopted)controller.prepare();
     const descriptor=documents.session.document;
     if(descriptor.revealNode&&descriptor.revealRevision===controller.getState().revision)selectRevealed(descriptor.revealNode);
     if(descriptor.helpKey){const type=descriptor.helpKey.split(':')[1],node=controller.getState().patch.nodes.find(node=>node.type===type);if(node)selectNode(node.id);panel='help';applyPanel();fitPatch();}
-    if(!leaving)timer=win.setTimeout(poll,100);
-  }).catch(error=>{controller.notice(error);controller.prepare();if(!leaving)timer=win.setTimeout(poll,100);});
+    if(!leaving)poller.start();
+  }).catch(error=>{controller.notice(error);controller.prepare();if(!leaving)poller.start();});
   win.addEventListener('resize',()=>{closeMenus();entry.close();drawCables(controller.getState().patch);});
-  return{controller,render,ready,documents,dispose:async()=>{leaving=true;helpView.dispose();documents.dispose();if(timer!==null)win.clearTimeout(timer);for(const view of views.values())view.dispose?.();await controller.dispose();}};
+  return{controller,render,ready,documents,devicePanel,dispose:async()=>{leaving=true;devicePanel.dispose();helpView.dispose();documents.dispose();poller.stop();for(const view of views.values())view.dispose?.();await controller.dispose();}};
 }
 if(typeof document!=='undefined'&&typeof window!=='undefined')mountCanvas();

@@ -93,7 +93,7 @@ export function mountDocuments({doc,win,invoke,getPatch,adopt,beforeSave,beforeC
   }
   const subscriptions=invoke?Promise.all([
     listen('document-action',event=>actions[event.payload]?.()),
-    listen('document-save-before-close',()=>session.saveBeforeClose()),
+    listen('document-save-before-close',event=>session.saveBeforeClose(event.payload)),
     listen('document-flush-before-close',async event=>{if(readyTask)await readyTask;return session.flushBeforeClose(event.payload);}),
     listen('document-close-cancelled',async event=>{if(readyTask)await readyTask;session.cancelClose(event.payload);return onCloseCancelled(event.payload);}),
     listen('document-error',event=>notice(event.payload)),

@@ -73,6 +73,17 @@ async function views({broadcast=false,patch}={}) {
 }
 
 test('shared controller is available',()=>assert.equal(typeof createSharedCanvasController,'function'));
+test('device bindings address the root tree while retaining the current child view',async()=>{
+  const {host,owner,child}=await views();
+  child.deviceParameter(1,'value',17);await child.flush();
+  owner.deviceParameter(4,'value',23);await owner.flush();
+  assert.equal(host.patch.nodes[0].params.value,17);
+  assert.equal(host.patch.nodes[2].patcher.nodes[0].params.value,23);
+  assert.equal(await child.deviceEvent(1,0,[60,100]),true);
+  assert.equal(await owner.deviceEvent(4,0,[60,0]),true);
+  assert.deepEqual(child.getState().path,[3]);assert.deepEqual(owner.getState().path,[]);
+  assert.equal(host.calls.some(call=>call.name==='canvas_apply'),false);
+});
 test('shared root and child modes commit structurally while operands retain live admission',async()=>{
   const patch={version:2,profile:'ultra-patcher-v2',nodes:[makeNode('add',1,0,0,{rhs:2,numericmode:1}),
     {...makeNode('patcher',3),patcher:{nodes:[makeNode('modulo',4,0,0,{rhs:3,numericmode:1})],edges:[]}}],edges:[]};

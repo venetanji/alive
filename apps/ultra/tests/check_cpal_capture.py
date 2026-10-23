@@ -11,7 +11,7 @@ import unittest
 
 KNOWN_SIGINT_VERSIONS = {
     ('pw-cat', f'Compiled with libpipewire {version}', f'Linked with libpipewire {version}')
-    for version in ('1.0.5', '1.6.9')
+    for version in ('1.0.5', '1.6.9', '1.6.10')
 }
 
 
@@ -26,6 +26,7 @@ def analyze(out, capture_status):
     # recording SIGINT therefore returns 1. Never normalize other failures.
     # https://github.com/PipeWire/pipewire/blob/1.0.5/src/tools/pw-cat.c#L1916-L1921
     # https://github.com/PipeWire/pipewire/blob/1.6.9/src/tools/pw-cat.c#L2655-L2660
+    # https://github.com/PipeWire/pipewire/blob/1.6.10/src/tools/pw-cat.c#L2645-L2650
     known_sigint = (
         capture_status == 1
         and tuple((out / 'capture-version.txt').read_text().splitlines()) in KNOWN_SIGINT_VERSIONS
@@ -49,7 +50,7 @@ def analyze(out, capture_status):
         'capture_known_sigint_exit': known_sigint,
         'capture_note': 'Recording stopped with SIGINT after the passing Rust test; '
                         'frame count varies. Status 1 is allowed only for the '
-                        'documented PipeWire 1.0.5 or 1.6.9 recording shutdown, with empty '
+                        'documented PipeWire 1.0.5, 1.6.9 or 1.6.10 recording shutdown, with empty '
                         'stderr and valid PCM; raw status is retained.',
         'note_score': 'both channels A4 / MIDI 69 velocity 70; on at +2s, off +2.6s; '
                       'score wall times approximate, not latency measurements',
@@ -87,6 +88,9 @@ class CaptureRegression(unittest.TestCase):
 
     def test_known_planned_sigint_1_6_9(self):
         self.check(version='1.6.9', valid=True)
+
+    def test_known_planned_sigint_1_6_10(self):
+        self.check(version='1.6.10', valid=True)
 
     def test_mismatched_compile_link_versions(self):
         self.check(version='1.6.9', linked_version='1.0.5')

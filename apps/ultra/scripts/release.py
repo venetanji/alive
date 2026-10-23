@@ -55,7 +55,7 @@ def version(tag=None):
 
 def bundle_config(target, runtime_names=()):
     system, _, library, _ = TARGETS[target]
-    bundle = {'active': True, 'resources': {'../../../LICENSE': 'licenses/Alive-LICENSE', '../THIRD-PARTY.txt': 'licenses/THIRD-PARTY.txt', '../THIRD-PARTY-CRATES.json': 'licenses/THIRD-PARTY-CRATES.json', 'native/vendor/fast_float/LICENSE-MIT': 'licenses/fast_float-MIT'}, 'icon': ['icons/release/icon.ico', 'icons/release/icon.icns', 'icons/release/128x128.png']}
+    bundle = {'active': True, 'resources': {'../../../LICENSE': 'licenses/Alive-LICENSE', '../THIRD-PARTY.txt': 'licenses/THIRD-PARTY.txt', '../core/VOICE.txt': 'licenses/Faust-VOICE.txt', '../THIRD-PARTY-CRATES.json': 'licenses/THIRD-PARTY-CRATES.json', 'native/vendor/fast_float/LICENSE-MIT': 'licenses/fast_float-MIT'}, 'icon': ['icons/release/icon.ico', 'icons/release/icon.icns', 'icons/release/128x128.png']}
     if system == 'Darwin':
         # Tauri copies/signs this nested library in Contents/Frameworks.
         bundle['macOS'] = {'frameworks': ['../build/' + library], 'minimumSystemVersion': '14.0'}
@@ -109,9 +109,14 @@ def collect_artifacts(bundle, output, target, ver):
 
 def verify_notice_resources(package):
     """Require exact committed notices inside the extracted/staged package."""
-    for name in ('THIRD-PARTY.txt', 'THIRD-PARTY-CRATES.json'):
+    notices = {
+        'THIRD-PARTY.txt': APP/'THIRD-PARTY.txt',
+        'THIRD-PARTY-CRATES.json': APP/'THIRD-PARTY-CRATES.json',
+        'Faust-VOICE.txt': APP/'core/VOICE.txt',
+    }
+    for name, source in notices.items():
         matches = list(package.rglob(name))
-        if len(matches) != 1 or digest(matches[0]) != digest(APP/name):
+        if len(matches) != 1 or digest(matches[0]) != digest(source):
             raise ValueError('Package is missing or has stale notice: ' + name)
 
 def verify_packages(bundle, target):

@@ -3,6 +3,12 @@ import {ARITHMETIC,isArithmetic,arithmeticCreationParams,arithmeticModeChoices,a
 
 // This is Ultra's documented authoring vocabulary, not a Max class resolver.
 const definitions = {
+  poly_note:{name:'poly.note~',aliases:[],args:['voices'],ui:'object',summary:'Allocate up to four MIDI voices with frequency, gate and velocity lanes.',example:'poly.note~ 4'},
+  saw_voice:{name:'saw.voice~',aliases:[],args:[],ui:'object',summary:'Faust saw oscillator on four voice lanes.',example:'saw.voice~'},
+  filter_voice:{name:'lowpass.voice~',aliases:[],args:['cutoff','resonance'],ui:'object',summary:'Resonant Faust low-pass filter on four voice lanes.',example:'lowpass.voice~ 2400 0.7'},
+  adsr_voice:{name:'adsr.voice~',aliases:[],args:['attack','decay','sustain','release'],ui:'object',summary:'Faust ADSR envelopes with live controls for four voice lanes.',example:'adsr.voice~ 10 150 0.65 300'},
+  multiply_voice:{name:'*.voice~',aliases:[],args:[],ui:'object',summary:'Multiply matching voice lanes for envelope or velocity scaling.',example:'*.voice~'},
+  mix_voice:{name:'mix.voice~',aliases:[],args:[],ui:'object',summary:'Mix four voice lanes to one mono channel, with headroom.',example:'mix.voice~'},
   patcher:{name:'p',aliases:['patcher'],args:['name'],ui:'object',summary:'Edit an embedded patcher in the same document and runtime.',example:'p basic'},
   comment:{name:'comment',aliases:[],args:['text'],ui:'comment',summary:'Add a saved patch annotation.',example:'comment A shared patcher'},
   inlet:{name:'inlet',aliases:[],args:[],ui:'object',summary:'Receive parent messages and mono signals inside a patcher.',example:'inlet'},
