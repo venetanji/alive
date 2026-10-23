@@ -11,8 +11,8 @@ INVENTORY = APP/'THIRD-PARTY-CRATES.json'
 
 
 def inventory(metadata, app=APP):
-    root = tomllib.loads((app/'src-tauri/Cargo.toml').read_text())['package']['name']
-    lock = tomllib.loads((app/'src-tauri/Cargo.lock').read_text())
+    root = tomllib.loads((app/'src-tauri/Cargo.toml').read_text(encoding='utf-8'))['package']['name']
+    lock = tomllib.loads((app/'src-tauri/Cargo.lock').read_text(encoding='utf-8'))
     locked = {(p['name'], p['version']): p for p in lock['package'] if p['name'] != root}
     packages = []
     for p in metadata['packages']:
@@ -48,9 +48,9 @@ def inventory(metadata, app=APP):
 def validate(app=APP):
     metadata = json.loads(subprocess.check_output([
         'cargo', 'metadata', '--manifest-path', str(app/'src-tauri/Cargo.toml'),
-        '--locked', '--format-version', '1'], text=True))
+        '--locked', '--format-version', '1'], text=True, encoding='utf-8'))
     expected = inventory(metadata, app)
-    if json.loads((app/'THIRD-PARTY-CRATES.json').read_text()) != expected:
+    if json.loads((app/'THIRD-PARTY-CRATES.json').read_text(encoding='utf-8')) != expected:
         raise ValueError('Third-party inventory is stale; run python apps/ultra/scripts/notices.py --write')
     return expected
 
@@ -62,8 +62,8 @@ def main():
     if args.write:
         metadata = json.loads(subprocess.check_output([
             'cargo', 'metadata', '--manifest-path', str(APP/'src-tauri/Cargo.toml'),
-            '--locked', '--format-version', '1'], text=True))
-        INVENTORY.write_text(json.dumps(inventory(metadata), indent=2) + '\n')
+            '--locked', '--format-version', '1'], text=True, encoding='utf-8'))
+        INVENTORY.write_text(json.dumps(inventory(metadata), indent=2) + '\n', encoding='utf-8')
     else:
         validate()
 
