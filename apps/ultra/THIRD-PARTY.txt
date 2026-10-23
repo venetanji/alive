@@ -57,3 +57,17 @@ selected by CMake InstallRequiredSystemLibraries from the build toolset's redist
 directory. These Microsoft components retain their vendor redistribution terms,
 not AGPL. No debug/non-redistributable CRT is selected.
 https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files
+
+Rust inventory maintenance: THIRD-PARTY-CRATES.json covers every third-party
+package in src-tauri/Cargo.lock, including build-time and all platform packages.
+Regenerate with `python apps/ultra/scripts/notices.py --write` from the repository
+root. It reads unfiltered `cargo metadata --locked` and upstream manifest license
+metadata, and retains lockfile checksums. Release builds reject stale inventory;
+package verification checks the bundled notice files against the source copies.
+This conservative inventory does not assert that every listed crate is linked.
+
+tauri-plugin-dialog 2.4.2 and tauri-plugin-fs 2.4.4: Apache-2.0 OR MIT.
+tauri-plugin-single-instance 2.3.4: Apache-2.0 OR MIT; local vendored fork at
+src-tauri/vendor/tauri-plugin-single-instance, not an unmodified registry copy.
+See its ULTRA_PATCH.md for the upstream archive checksum and local change.
+The upstream LICENSE_APACHE-2.0 and LICENSE_MIT files are retained there.

@@ -871,6 +871,9 @@ fn main() {
         .build(tauri::generate_context!())
         .expect("Unable to start Ultra window")
         .run(|app, event| {
+            if let tauri::RunEvent::ExitRequested { api, .. } = &event {
+                document_windows::request_quit(app, api);
+            }
             if matches!(event, tauri::RunEvent::Exit) {
                 app.state::<CanvasIdleClock>().0.store(false, Ordering::Release);
                 let state = app.state::<Audio>();

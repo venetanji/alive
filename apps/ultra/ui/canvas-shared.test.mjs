@@ -376,3 +376,35 @@ test('Stop and Panic run immediately after in-flight admission ahead of queued e
   assert.deepEqual(host.hotEvents.map(event=>event.value),[1]);
   assert.equal(host.patch.nodes[2].patcher.nodes[0].params.value,2);
 });
+
+
+test('queued event dispatch uses the admitted tree before a later deletion',async()=>{
+  const {host,child}=await views();const release=host.holdNextCommit();
+  child.move(4,120,130);await tick();
+  const event=child.event(4,0,[17]);child.remove(4);
+  assert.equal(child.getState().patch.nodes.length,0);
+  release();assert.equal(await event,true);await child.flush();
+  const names=host.calls.filter(call=>['document_commit','canvas_event'].includes(call.name)).map(call=>call.name);
+  assert.deepEqual(names,['document_commit','canvas_event','document_commit']);
+  assert.equal(host.patch.nodes[2].patcher.nodes.length,0);
+});
+
+test('pending native history blocks authoring until its canonical base arrives',async()=>{
+  const host=nativeService(),native=host.invoke('child');let release,held=false;
+  const controller=createSharedCanvasController({invoke:async(name,args)=>{
+    if(name==='document_history'&&held)await new Promise(resolve=>release=resolve);
+    return native(name,args);
+  }});
+  await controller.prepare();controller.parameter(4,'value',20);await controller.flush();
+  for(const direction of ['undo','redo']) {
+    held=true;const history=controller[direction]();await tick();
+    const before=controller.getState().document;
+    assert.throws(()=>controller.parameter(4,'value',30),/history.*pending/i);
+    assert.deepEqual(controller.getState().document,before);
+    release();await history;held=false;
+  }
+  await controller.undo();controller.parameter(4,'value',30);await controller.flush();
+  assert.equal(host.patch.nodes[2].patcher.nodes[0].params.value,30);
+  assert.doesNotMatch(controller.getState().notice,/conflict/i);
+  await controller.undo();assert.equal(host.patch.nodes[2].patcher.nodes[0].params.value,0);
+});

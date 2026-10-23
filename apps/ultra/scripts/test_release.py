@@ -43,6 +43,18 @@ class ReleaseTests(unittest.TestCase):
         self.assertIn('persist-credentials: false', workflow)
         self.assertEqual(workflow.count('contents: write'), 1)
         self.assertIn("if: github.event_name == 'push' && runner.os == 'macOS'", workflow)
+    def test_packaged_notices_must_match_sources(self):
+        with tempfile.TemporaryDirectory() as d:
+            package = Path(d)
+            with self.assertRaises(ValueError):
+                release.verify_notice_resources(package)
+            for name in ('THIRD-PARTY.txt', 'THIRD-PARTY-CRATES.json'):
+                (package/name).write_bytes((release.APP/name).read_bytes())
+            release.verify_notice_resources(package)
+            (package/'THIRD-PARTY-CRATES.json').write_text('{}')
+            with self.assertRaises(ValueError):
+                release.verify_notice_resources(package)
+
     def test_artifact_validation(self):
         with tempfile.TemporaryDirectory() as d:
             p = Path(d)

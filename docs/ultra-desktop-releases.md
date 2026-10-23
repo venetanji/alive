@@ -14,6 +14,16 @@ PR #1 and its checkpoint safety/portable-contract fixes are merged on main
 that main history and PR #2 targets main. Verify the combined exact-head CI
 before merging the packaging changes; do not tag an unmerged work branch.
 
+## 0.1.0-rc.1 readiness
+
+The prerelease candidate includes review fixes for scoped Stop under queued Gain
+edits, native application Quit through document flush/save/cancel, macOS app-wide
+menus, shared-editor event/history ordering, complete locked dependency notices
+and unchanged-status cable redraws. Cargo, Cargo.lock and Tauri share the exact
+version `0.1.0-rc.1`. Passing PR checks do not prove release signing: tag builds
+must still pass the protected signing environment, notarization and all package
+checks before publication. Do not overwrite an existing tag or release.
+
 ## Builds
 
 `.github/workflows/ultra-desktop.yml` runs unsigned packaging on relevant PRs
@@ -38,7 +48,9 @@ public distribution. macOS PR/manual builds are ad-hoc signed,
 not notarized release downloads. Actual device/MIDI/latency and interactive UI
 acceptance still require platform hardware testing.
 
-Each job verifies version consistency, runs packaging-helper unit tests, builds
+Each job verifies version consistency, runs packaging-helper unit tests, checks
+the complete unfiltered locked Rust dependency inventory and exact bundled notice
+bytes, builds
 the real native engine, checks the shared ABI with a sounding Faust voice,
 note termination and stop/restart, runs Rust tests and builds the installer.
 Artifacts are uploaded as `ultra-<Rust target>` for 14 days with SHA256 manifests.

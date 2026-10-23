@@ -14,6 +14,8 @@ import tempfile
 import tomllib
 import urllib.request
 
+from notices import validate as validate_notices
+
 ROOT = Path(__file__).resolve().parents[3]
 APP = ROOT / 'apps/ultra'
 TARGETS = {
@@ -105,6 +107,13 @@ def collect_artifacts(bundle, output, target, ver):
     (output/f'SHA256SUMS-{target}.txt').write_text(''.join(f'{digest(p)}  {p.name}\n' for p in copied))
     return copied
 
+def verify_notice_resources(package):
+    """Require exact committed notices inside the extracted/staged package."""
+    for name in ('THIRD-PARTY.txt', 'THIRD-PARTY-CRATES.json'):
+        matches = list(package.rglob(name))
+        if len(matches) != 1 or digest(matches[0]) != digest(APP/name):
+            raise ValueError('Package is missing or has stale notice: ' + name)
+
 def verify_packages(bundle, target):
     """Check staged layouts without allowing the build-tree search path to hide errors."""
     system, _, library, _ = TARGETS[target]
@@ -119,6 +128,7 @@ def verify_packages(bundle, target):
             if len(debs) != 1:
                 raise ValueError('Expected one DEB to verify')
             run('dpkg-deb', '--extract', debs[0], dest)
+            verify_notice_resources(dest)
             exe = dest/'usr/bin/ultra'
             native = dest/'usr/lib/Ultra Research'/library
             if not exe.is_file() or not native.is_file():
@@ -133,12 +143,14 @@ def verify_packages(bundle, target):
                 raise ValueError('Expected one AppImage to verify')
             images[0].chmod(images[0].stat().st_mode | 0o100)
             subprocess.run([str(images[0]), '--appimage-extract'], cwd=dest, env=env, stdout=subprocess.DEVNULL, check=True)
+            verify_notice_resources(dest/'squashfs-root')
             packaged = dest/'squashfs-root/usr/lib/Ultra Research'/library
             if not packaged.is_file():
                 raise ValueError('AppImage lacks its native library')
             run('python', APP/'scripts/smoke_native.py', packaged, env=env)
     elif system == 'Darwin':
         app = bundle/'macos/Ultra Research.app'
+        verify_notice_resources(app)
         native = app/'Contents/Frameworks'/library
         if not native.is_file():
             raise ValueError('App bundle lacks native framework library')
@@ -154,6 +166,7 @@ def verify_packages(bundle, target):
             if len(installers) != 1:
                 raise ValueError('Expected one NSIS installer to verify')
             run('7z', 'x', '-y', '-o' + str(dest), installers[0])
+            verify_notice_resources(dest)
             dlls = list(dest.rglob(library))
             if len(dlls) != 1 or not (dlls[0].parent/'ultra.exe').is_file():
                 raise ValueError('NSIS payload must place native DLL beside ultra.exe')
@@ -188,6 +201,7 @@ def main():
         collect_artifacts(out/'bundle', ROOT/'dist/ultra', args.target, ver)
         return
     prepare_dependencies()
+    validate_notices()
     build = APP/'build'
     configure = ['cmake', '-S', APP, '-B', build, '-DCMAKE_BUILD_TYPE=Release', '-DULTRA_BUILD_MERGED_ARCHIVE=OFF']
     if system == 'Windows':

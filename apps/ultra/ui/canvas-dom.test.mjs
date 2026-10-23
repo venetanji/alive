@@ -651,3 +651,36 @@ test('a close request arriving before initial native adoption binds to the share
   assert.equal(page.controller.getState().closing,false);assert.equal(page.ids.get('workspace').inert,false);
   await page.dispose();
 });
+
+test('unchanged stopped status polls preserve cable paths while cable inputs invalidate them',async()=>{
+  const p=await mount(true),svg=p.ids.get('cables');
+  let rebuilds=0,pathWrites=0;
+  const replace=svg.replaceChildren.bind(svg),create=p.document.createElementNS;
+  svg.replaceChildren=(...children)=>{rebuilds++;replace(...children);};
+  p.document.createElementNS=(...args)=>{const element=create(...args),set=element.setAttribute.bind(element);element.setAttribute=(key,value)=>{if(key==='d')pathWrites++;set(key,value);};return element;};
+  const original=[...svg.children],edgeCount=p.controller.getState().patch.edges.length;
+  assert.equal(original.length,32);assert.equal(original.length,edgeCount*2);
+  for(let i=0;i<10;i++)await p.controller.poll();
+  assert.equal(pathWrites,0,'Unchanged polls must not write SVG path data');
+  assert.equal(rebuilds,0,'Ten unchanged stopped polls must not rebuild the cable SVG');
+  assert.deepEqual(svg.children,original);
+  const expectRedraw=async action=>{const before=pathWrites;await action();assert.ok(pathWrites>before,'Changed cable inputs must write fresh path data');};
+  await expectRedraw(()=>original.find(e=>e.dataset.edge==='0').fire('click'));
+  assert.match(svg.children.find(e=>e.dataset.edge==='0').attrs.class,/selected/);
+  await expectRedraw(()=>p.ids.get('workspace').fire('wheel',{ctrlKey:true,deltaY:-200,deltaMode:0,clientX:120,clientY:100}));
+  const source=p.all('objects').find(e=>e.dataset.node==='1'),outlet=descendants(source).find(e=>e.dataset.direction==='out');
+  await expectRedraw(()=>outlet.fire('click'));
+  assert.ok(svg.children.some(e=>e.attrs.class==='cable pending-cable'));
+  await expectRedraw(()=>p.ids.get('workspace').fire('pointermove',{clientX:240,clientY:180}));
+  await p.windowEvents.fire('keydown',{key:'Escape'});
+  const port=descendants(source).find(e=>e.dataset.direction==='out');
+  port.getBoundingClientRect=()=>({left:30,top:20,width:10,height:10});
+  await expectRedraw(()=>p.controller.poll());
+  await expectRedraw(()=>p.windowEvents.fire('resize'));
+  const node=p.controller.getState().patch.nodes.find(n=>n.id===1);
+  await expectRedraw(()=>p.controller.move(node.id,node.x+20,node.y+10));
+  await p.controller.flush();
+  await expectRedraw(()=>p.controller.disconnect(0));
+  await p.controller.flush();
+  await p.dispose();
+});

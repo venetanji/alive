@@ -316,7 +316,17 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     else if(selected.size)controller.removeMany([...selected]);
     clearSelection();cancelWire();render(controller.getState());
   }
-  function drawCables(patch) {
+  let cableRenderKey='';
+  function drawCables(patch,onlyIfChanged=false) {
+    // Status notifications can update controls without changing cable geometry.
+    // Measure ports too: runtime text or a resized view can move an endpoint.
+    const base=$('canvas').getBoundingClientRect();
+    const geometry=[...views.values()].map(view=>['in','out'].map(direction=>
+      view.ports[direction].map(port=>{const r=port.getBoundingClientRect();return[r.left-base.left,r.top-base.top,r.width,r.height];})));
+    const key=JSON.stringify([patch,geometry,zoom,locked,selection?.kind==='edge'?selection.index:null,
+      pending, pending?[pointer,wireTarget]:null,drag?[drag.dx,drag.dy]:null]);
+    if(onlyIfChanged&&key===cableRenderKey)return;
+    cableRenderKey=key;
     const svg=$('cables');svg.replaceChildren();
     const endpoint=(id,direction,index)=>{
       const base=$('canvas').getBoundingClientRect(),r=views.get(id).ports[direction][index].getBoundingClientRect();
@@ -431,7 +441,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     const width=Math.max(760,(bounds?.right??0)+35,...state.patch.nodes.map(n=>n.x+Math.max(350,n.style?.width??0))),height=Math.max(740,(bounds?.bottom??0)+35,...state.patch.nodes.map(n=>n.y+Math.max(160,n.style?.height??0)));
     $('canvas').style.width=`${width}px`;$('canvas').style.height=`${height}px`;$('canvas').style.transform=`translate(${panX}px, ${panY}px) scale(${zoom})`;
     $('canvas-space').style.width=`${Math.max(width*zoom,$('workspace').clientWidth||0)}px`;$('canvas-space').style.height=`${Math.max(height*zoom,$('workspace').clientHeight||0)}px`;
-    wireFeedback(state);renderInspector(state);drawCables(state.patch);
+    wireFeedback(state);renderInspector(state);drawCables(state.patch,true);
     if(panel==='help'&&helpKey!==helpIdentity(currentNode()))renderHelp(currentNode());
   }
   function zoomLabel() {

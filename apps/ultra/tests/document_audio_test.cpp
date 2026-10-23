@@ -62,6 +62,19 @@ int main() {
  assert(ultra_canvas_stop_document(0));render();render();
  // Document 1 survives; document 0 cannot rearm after the stop.
  assert(energy()>1e-5);
+ // Accepted cold edits before Stop retain their saved values without repeating
+ // physical voice cleanup or exhausting the shared engine event budget.
+ for(unsigned edits:{8u,64u}){
+  for(unsigned i=0;i<edits;++i)assert(ultra_canvas_param_document(0,6,2,0,120-i));
+  assert(ultra_canvas_stop_document(0));render();render();
+  assert(ultra_audio_flags()==3);assert(energy()>1e-5);
+  ultra_canvas_status_document(0,&status);assert(status.nodes[1].value==121-edits);
+ }
+ // The retained Gain is used by the next deliberate start, and another stop
+ // epoch still clears it while leaving the other document audible.
+ assert(ultra_canvas_message_document(0,6,1,0,&note));render();
+ assert(ultra_canvas_stop_document(0));render();render();
+ assert(ultra_audio_flags()==3);assert(energy()>1e-5);
  assert(ultra_canvas_stop_document(1));render();render();assert(energy()==0);
  // Global stop is coalesced out of band as well, even with a full FIFO.
  for(unsigned i=0;i<64;++i)assert(ultra_canvas_message_document(0,6,1,0,&note));

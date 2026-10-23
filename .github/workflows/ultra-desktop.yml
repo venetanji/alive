@@ -64,6 +64,7 @@ jobs:
           EVENT: ${{ github.event_name }}
         run: |
           python apps/ultra/scripts/test_release.py
+          python apps/ultra/scripts/test_notices.py
           if [[ "$EVENT" == push ]]; then
             python apps/ultra/scripts/release.py check-version --tag "$RELEASE_TAG"
             git merge-base --is-ancestor HEAD origin/main

@@ -1,6 +1,6 @@
 # Alive / Ultra Plan
 
-Updated: 2026-10-23. Current cleanup starts from `1b5abc9` on draft PR #1. Earlier experiments below retain their historical evidence and limits; current implementation and verification are distinguished here.
+Updated: 2026-10-23. PR #1 is merged on main. PR #2 now prepares 0.1.0-rc.1 with the reviewed Stop-epoch, shared-editor ordering, macOS Quit/menu, complete dependency-notice and cable-invalidation fixes. Targeted regressions are added; exact-head CI and authenticated tag-release validation remain separate gates. Earlier experiments below retain their historical evidence and limits.
 
 Status: architecture research, a constrained Clockwork/Faust host, and an early Rust/Tauri Ultra patch-editor test build. There is no production DAW or Live/Max compatibility implementation. Offline, actual Linux desktop and real PipeWire-JACK evidence are distinguished below from unmeasured physical audio/MIDI latency and unqualified realtime performance. This plan makes no delivery-date or broad compatibility claim.
 

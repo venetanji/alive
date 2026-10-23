@@ -283,6 +283,9 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
   if(e.offset<engine_frame){engine.panic();return false;}
   e.offset-=engine_frame;return engine.submit_document(e);
  };
+ // A stale edit must stay logically stopped, but its epoch's physical voice
+ // cleanup was already emitted by the mailbox before draining this FIFO.
+ auto stopped_edit=[](alive::Event){return true;};
  canvas.begin_callback();
  auto leave_canvas=[&]{if(callback_canvas){for(unsigned d=0;d<MaxDocuments;++d)canvas.close(d,0,emit);canvas_silence=64;callback_canvas=false;for(unsigned d=0;d<2;++d)emit({0,uint8_t(d),alive::Kind::Reset,0,0});}};
  auto manual=[&](alive::Event e){
@@ -320,7 +323,7 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
   }else if(control.kind==ControlKind::CanvasInstall){
    sequence.stop(0,emit);sequence_requested.store(false,std::memory_order_relaxed);
    if(!canvas.install(control.document,control.canvas,0,emit))engine.panic();
-   if(control.stop_epoch!=stop_epochs[control.document])canvas.stop(control.document,0,emit);
+   if(control.stop_epoch!=stop_epochs[control.document])canvas.stop(control.document,0,stopped_edit);
    callback_canvas=canvas.any();document_silence[control.document]=64;
   }else if(control.kind==ControlKind::CanvasEvent){
    if(canvas.live(control.document)&&control.revision==canvas.runtime(control.document).plan().graph.revision)
@@ -333,7 +336,7 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
    if(canvas.live(control.document)&&control.revision==canvas.runtime(control.document).plan().graph.revision){
     if(!canvas.runtime(control.document).param(control.canvas,control.node,control.param,control.value,0,emit))canvas.runtime(control.document).fail();
     else if(control.kind==ControlKind::CanvasParamHot&&control.stop_epoch==stop_epochs[control.document])canvas.event(control.document,control.revision,control.node,0,control.message,0,emit);
-    if(control.stop_epoch!=stop_epochs[control.document])canvas.stop(control.document,0,emit);
+    if(control.stop_epoch!=stop_epochs[control.document])canvas.stop(control.document,0,stopped_edit);
    }
   }else if(control.kind==ControlKind::CanvasStop){
    canvas.stop(control.document,0,emit);document_silence[control.document]=64;

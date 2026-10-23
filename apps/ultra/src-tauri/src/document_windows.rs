@@ -17,15 +17,19 @@ fn title(document: &Document) -> String {
 fn update_title(window: &WebviewWindow, document: &Document) { let _ = window.set_title(&title(document)); }
 
 fn create_window(app: &AppHandle, document: Document) -> Result<Document, String> {
-    let result = document_menu(app, &document.label).and_then(|menu| WebviewWindowBuilder::new(app, &document.label, WebviewUrl::App("canvas.html".into()))
-        .menu(menu)
+    let result = (|| -> tauri::Result<WebviewWindow> {
+    let builder = WebviewWindowBuilder::new(app, &document.label, WebviewUrl::App("canvas.html".into()));
+    #[cfg(not(target_os = "macos"))]
+    let builder = builder.menu(document_menu(app, &document.label)?);
+    builder
         .title(title(&document)).inner_size(1120., 780.).min_inner_size(640., 480.)
         .position(60. + f64::from(document.id % 8) * 26., 50. + f64::from(document.id % 8) * 26.)
         .build().and_then(|window| {
             #[cfg(target_os = "linux")]
             crate::canvas_pinch::install(&window)?;
             Ok(window)
-        }));
+        })
+    })();
     match result {
         Ok(_) => Ok(document),
         Err(error) => {
@@ -180,15 +184,39 @@ pub fn document_close_confirmed(window: WebviewWindow, state: tauri::State<Docum
     Ok(true)
 }
 
+fn quit_targets(registry: &Registry) -> Vec<String> {
+    registry.list().into_iter().map(|doc| doc.label).collect()
+}
+
+fn menu_target<'a>(id: &'a str, focused: Option<&'a str>) -> Option<(&'a str, &'a str)> {
+    let (label, action) = id.strip_prefix("doc:")?.split_once(':')?;
+    Some((if label == "focused" { focused? } else { label }, action))
+}
+
+/// Native Quit must use the same editor flush / Save / Discard / Cancel gate
+/// as the window close button. Never terminate while any owner remains alive.
+pub fn request_quit(app: &AppHandle, api: &tauri::ExitRequestApi) {
+    let Some(state) = app.try_state::<Documents>() else { return; };
+    let Ok(registry) = state.0.lock() else { api.prevent_exit(); return; };
+    let owners = quit_targets(&registry);
+    if owners.is_empty() { return; }
+    api.prevent_exit();
+    drop(registry);
+    commands::close_views(app, owners);
+}
+
 pub fn window_event(window: &tauri::Window, event: &tauri::WindowEvent) {
     let app = window.app_handle();
     let Some(state) = app.try_state::<Documents>() else { return; };
     if matches!(event, tauri::WindowEvent::Destroyed) {
         if let Ok(mut registry) = state.0.lock() {
-            registry.remove(window.label());
+            let removed_owner = registry.remove(window.label()).is_some();
+            let empty = registry.list().is_empty();
             let completed = registry.take_completed_closes();
             drop(registry);
             commands::close_views(app, completed);
+            // Auxiliary windows must not keep a completed Quit alive.
+            if removed_owner && empty { app.exit(0); }
         }
         return;
     }
@@ -307,23 +335,115 @@ fn document_menu(app: &AppHandle, label: &str) -> tauri::Result<tauri::menu::Men
     let file = SubmenuBuilder::new(app, "File").text(id("new"), "New Patch").text(id("open"), "Open...")
         .separator().text(id("save"), "Save").text(id("save-as"), "Save As...").separator().text(id("close"), "Close Window").build()?;
     let help = SubmenuBuilder::new(app, "Help").text(id("library"), "Help & Examples").build()?;
-    MenuBuilder::new(app).item(&file).item(&help).build()
+    let menu = MenuBuilder::new(app);
+    #[cfg(target_os = "macos")]
+    let menu = menu.item(&SubmenuBuilder::new(app, "Ultra")
+        .item(&tauri::menu::PredefinedMenuItem::quit(app, None)?).build()?);
+    menu.item(&file).item(&help).build()
 }
 
 pub fn install_menu(app: &AppHandle) -> tauri::Result<()> {
     // A shared GTK menu caches native handles after destruction. Independent
     // menus survive handle reuse, and their IDs preserve the source document.
+    #[cfg(target_os = "macos")]
+    app.set_menu(document_menu(app, "focused")?)?;
+    #[cfg(not(target_os = "macos"))]
     if let Some(window) = app.get_webview_window("main") {
         window.set_menu(document_menu(app, "main")?)?;
         #[cfg(target_os = "linux")]
         crate::canvas_pinch::install(&window)?;
     }
     app.on_menu_event(|app, event| {
-        if let Some((label, action)) = event.id().as_ref().strip_prefix("doc:").and_then(|id| id.split_once(':')) {
-            if let Some(window) = app.get_webview_window(label) {
+        let focused = app.webview_windows().into_values().find(|window| window.is_focused().unwrap_or(false));
+        if let Some((label, action)) = menu_target(event.id().as_ref(), focused.as_ref().map(|window| window.label())) {
+            if let Some(window) = app.get_webview_window(label).filter(|window| app.state::<Documents>().0.lock().ok()
+                .is_some_and(|registry| registry.get(window.label()).is_ok())) {
                 let _ = window.emit_to(tauri::EventTarget::webview_window(window.label()), "document-action", action);
             }
         }
     });
     Ok(())
+}
+
+#[cfg(test)]
+mod lifecycle_tests {
+    use super::*;
+
+    #[test]
+    fn quit_targets_every_owner_until_all_have_closed() {
+        let mut registry = Registry::default();
+        let a = registry.add("A".into(), Kind::Patch, Some(documents::empty_patch()), None, None).unwrap();
+        let b = registry.add("B".into(), Kind::Patch, Some(documents::empty_patch()), None, None).unwrap();
+        assert_eq!(quit_targets(&registry), vec![a.label.clone(), b.label.clone()]);
+        registry.remove(&a.label);
+        assert_eq!(quit_targets(&registry), vec![b.label.clone()]);
+        registry.remove(&b.label);
+        assert!(quit_targets(&registry).is_empty());
+    }
+
+    #[test]
+    fn app_menu_routes_to_focus_and_window_menu_keeps_its_source() {
+        assert_eq!(menu_target("doc:focused:save", Some("child-2")), Some(("child-2", "save")));
+        assert_eq!(menu_target("doc:focused:close", None), None);
+        assert_eq!(menu_target("doc:main:save", Some("child-2")), Some(("main", "save")));
+        assert_eq!(menu_target("unrelated", Some("main")), None);
+    }
+
+    #[test]
+    fn focused_child_menu_retains_owner_authority() {
+        let mut registry = Registry::default();
+        let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[{"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"nodes":[],"edges":[]}}],"edges":[]});
+        let owner = registry.add("Owner".into(), Kind::Patch, Some(patch), None, None).unwrap();
+        let child = registry.open_view(&owner.label, 1).unwrap().0;
+        let (target, action) = menu_target("doc:focused:save", Some(&child.label)).unwrap();
+        assert_eq!(action, "save");
+        assert_eq!(target, child.label);
+        assert_eq!(registry.get(target).unwrap().label, owner.label);
+        assert_eq!(quit_targets(&registry), vec![owner.label]);
+    }
+
+    #[test]
+    fn quit_save_retains_owner_until_save_and_final_close() {
+        let mut registry = Registry::default();
+        let patch = documents::empty_patch();
+        let owner = registry.add("Owner".into(), Kind::Patch, Some(patch.clone()), None, None).unwrap();
+        registry.get_mut(&owner.label).unwrap().dirty = true;
+        registry.mark_ready(&owner.label).unwrap();
+        let documents::CloseGate::Flush { token, .. } = registry.begin_close(&owner.label).unwrap() else { panic!("missing flush"); };
+        registry.acknowledge_close(&owner.label, &owner.label, token).unwrap();
+        assert!(matches!(registry.begin_close(&owner.label).unwrap(), documents::CloseGate::Proceed));
+        registry.release_close(&owner.label); // Native Save delegates to editor save command.
+        assert!(registry.get(&owner.label).unwrap().dirty);
+        assert_eq!(quit_targets(&registry), vec![owner.label.clone()]);
+        registry.saved(&owner.label, PathBuf::from("saved.ultra"), patch).unwrap();
+        assert!(!registry.get(&owner.label).unwrap().dirty);
+        assert!(!quit_targets(&registry).is_empty(), "saving alone must never authorize native app exit");
+        registry.remove(&owner.label);
+        assert!(quit_targets(&registry).is_empty());
+    }
+
+    #[test]
+    fn multi_owner_quit_waits_for_each_flush_and_cancel_preserves_owner() {
+        let mut registry = Registry::default();
+        let patch = documents::empty_patch();
+        let a = registry.add("A".into(), Kind::Patch, Some(patch.clone()), None, None).unwrap();
+        let b = registry.add("B".into(), Kind::Patch, Some(patch), None, None).unwrap();
+        for doc in [&a, &b] { registry.mark_ready(&doc.label).unwrap(); }
+        let mut tokens = Vec::new();
+        for label in quit_targets(&registry) {
+            let documents::CloseGate::Flush { token, .. } = registry.begin_close(&label).unwrap() else { panic!("Quit must flush each owner"); };
+            tokens.push((label, token));
+        }
+        for (label, _) in &tokens { assert!(matches!(registry.begin_close(label).unwrap(), documents::CloseGate::Waiting)); }
+        registry.reject_close(&a.label, &a.label, tokens[0].1).unwrap();
+        assert!(registry.get_open(&a.label).is_ok(), "failed pending operations must retain the owner");
+        assert!(registry.acknowledge_close(&b.label, &b.label, tokens[1].1).unwrap());
+        assert!(matches!(registry.begin_close(&b.label).unwrap(), documents::CloseGate::Proceed));
+        registry.release_close(&b.label); // Cancel / save picker cancellation.
+        assert_eq!(registry.list().len(), 2);
+        registry.allow_close_once(&b.label).unwrap(); // Discard after successful flush.
+        assert!(matches!(registry.begin_close(&b.label).unwrap(), documents::CloseGate::Proceed));
+        registry.remove(&b.label);
+        assert_eq!(registry.list().len(), 1, "cancelled owner prevents final native exit");
+    }
 }

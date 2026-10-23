@@ -130,7 +130,8 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
           } else if(item.kind==='event') {
             result=false;
             if(item.epoch===epoch&&!faulted&&!panicked) {
-              const node=treeNodes(document.document).find(node=>node.id===item.node);
+              // Later optimistic edits must not change an earlier event's target.
+              const node=treeNodes(descriptor.patch).find(node=>node.id===item.node);
               if(node)result=await invoke('canvas_event',{revision:descriptor.runtimeRevision,node:item.node,inlet:item.inlet,value:item.value,...(item.action?{action:item.action}:{})});
             }
           } else result=await item.run();
@@ -162,6 +163,9 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     if(disposed||detaching)throw Error('This patcher view is detached.');
     if(closeBarriers.size)throw Error('This patcher is closing. Cancel closing before editing.');
     if(!descriptor)throw Error('Wait for the shared document to prepare.');
+    // History has no speculative tree: wait for its canonical result before
+    // capturing another edit base, including while its IPC is in flight.
+    if(queue.some(item=>item.kind==='history'))throw Error('Native history is pending. Wait before editing.');
     coalesceKey??=parameter?`parameter:${parameter.node}:${parameter.key}`:undefined;
     const tail=queue.at(-1);
     const coalesce=history===false&&coalesceKey&&tail?.kind==='edit'&&tail!==activeItem&&tail.coalesceKey===coalesceKey&&tail.epoch===epoch;
