@@ -1,0 +1,17 @@
+{
+  "evidence_id": "LOCAL-R2",
+  "authority": "runtime-observation",
+  "pid": 284724,
+  "process_start_ticks": "2567029",
+  "selected_mapping_lines": [
+    "140000000-140001000 r--p 00000000 00:1d 6522330                          /home/venetanji/.cache/alive-live-reference-20261024/wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Program/Ableton Live 12 Suite.exe",
+    "14618c000-148285000 r--p 0618a000 00:1d 6522330                          /home/venetanji/.cache/alive-live-reference-20261024/wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Program/Ableton Live 12 Suite.exe",
+    "148ad8000-148f5d000 r--p 08835000 00:1d 6522330                          /home/venetanji/.cache/alive-live-reference-20261024/wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Program/Ableton Live 12 Suite.exe",
+    "148f5d000-148f5e000 rw-p 08cba000 00:1d 6522330                          /home/venetanji/.cache/alive-live-reference-20261024/wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Program/Ableton Live 12 Suite.exe",
+    "148fac000-148fd5000 rw-p 08d08000 00:1d 6522330                          /home/venetanji/.cache/alive-live-reference-20261024/wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Program/Ableton Live 12 Suite.exe",
+    "6fffe5860000-6fffe5861000 r--p 00000000 00:1d 6545192                    /home/venetanji/.cache/alive-live-reference-20261024/wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Devices/Pc/Analog_64.dll"
+  ],
+  "limitations": [
+    "Memory mapping establishes loaded files at capture time. It does not establish particular calls, render execution, process-wide plugin isolation or realtime behavior."
+  ]
+}
