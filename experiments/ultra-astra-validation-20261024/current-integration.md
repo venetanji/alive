@@ -48,3 +48,17 @@ failed; its logs return 404 BlobNotFound, so the cause is unknown. Separate bran
 CI is historical evidence only. Release lookup through gh API previously returned
 Forbidden for /repos/venetanji/alive/releases/tags/v0.1.0-rc.1; absence of a tag
 alone does not resolve that release-existence blocker. No release tag was created.
+
+## Range endpoint follow-up
+
+Combined Chromium CI exposed a real one-sample range-thumb lag: parameter
+admission rendered synchronously while the input still held the preceding pointer
+sample. A synchronous production-page regression reproduced canonical value100
+with thumb position0.9375. Publishing the retryable draft before admission fixes
+the render order without relaxing the browser endpoint assertion. Updated UI
+suite:403 passed,13 skipped; original six frontend probes all passed. Final
+combined CI is required again on the follow-up commit.
+
+Parent independently confirmed authenticated GitHub connector release and matching
+tag listings were empty at17:41UTC. The previous gh endpoint denial is not retried;
+parent can refresh that check before publication.

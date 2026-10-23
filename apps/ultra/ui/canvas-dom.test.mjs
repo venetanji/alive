@@ -828,3 +828,15 @@ test('native save-before-close events retain their Quit generation through the p
   assert.deepEqual(p.calls.find(call=>call.name==='document_close_confirmed').args,{quitToken:29});
   assert.equal(p.calls.some(call=>call.name==='document_cancel_close'),false);await p.dispose();
 });
+
+test('range thumb reflects the admitted endpoint in the same pointer dispatch',async()=>{
+  const p=await mount(false);
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'slider',x:40,y:40,params:{size:101,value:0}}],edges:[]});
+  await p.controller.flush();await p.ids.get('lock-patch').fire('click');
+  const element=p.all('objects').find(e=>e.dataset.node==='1');
+  element.closest=()=>null;
+  const dispatch=(type,x)=>{const event={type,target:element,button:0,pointerId:1,clientX:x,clientY:45,preventDefault(){},stopPropagation(){}};for(const listener of element.listeners[type]??[])listener(event);};
+  dispatch('pointerdown',80);dispatch('pointermove',150);dispatch('pointermove',160);dispatch('pointerup',160);
+  assert.equal(JSON.parse(p.controller.export()).nodes[0].params.value,100);
+  assert.equal(element.style['--slider-position'],'1');
+});

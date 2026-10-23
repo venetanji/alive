@@ -56,8 +56,9 @@ export function createNodeView(node,{doc,select,dragStart,edit,portClick,portDow
     value=Number(value.toFixed(9));
     const unchanged=value===displayedValue;
     if(unchanged&&(!dirty||(!authoringPending&&value===currentNode.params.value))){input.value=String(value);dirty=false;return false;}
-    // Keep the draft through synchronous admission failures and their renders.
-    dirty=true;
+    // Publish the draft before admission can synchronously render its thumb.
+    // Keep it retryable through admission failures and their renders.
+    dirty=true;input.value=String(value);
     if(parameter(node.id,'value',value,{history})===false)return false;
     input.value=String(value);displayedValue=value;dirty=false;return true;
   }
