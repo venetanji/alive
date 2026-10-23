@@ -1,0 +1,3 @@
+Expected regression reproduced against bfe42ff060931eb23384093d9c133ab873f02546
+Probe exit code: -6 (SIGABRT)
+gain_stop_regression: native/gain_stop_regression.cpp:22: main(int, char**)::<lambda()>: Assertion `ultra_external_render(left.size(),left.data(),right.data())' failed.

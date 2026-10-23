@@ -1,0 +1,91 @@
+{
+  "head_sha": "de663840346a12d0fe5b49eb669af1cc1788f25f",
+  "run_id": 39988671475,
+  "job_id": 120534744057,
+  "artifact_id": 12517423125,
+  "artifact_zip_sha256": "73aa29a9d28b5a25377cba0e715db2de228dd1584a599d90e14a5901cb2abf5e",
+  "artifact_zip_matches_github_digest": true,
+  "extraction_tools": "DEB: Python ar member reader + tarfile filter=data; AppImage: 7-Zip 26.05 SquashFS read; no executable/library run during this notice inspection",
+  "packages": [
+    {
+      "package": "Ultra-0.1.0-rc.1-x86_64-unknown-linux-gnu.deb",
+      "package_sha256": "4cd5729dcf8e452422183891bf821290bb6e15dd1bc24d28ce48fcf8738574a6",
+      "matches_ci_sha256sums": true,
+      "notices": [
+        {
+          "name": "THIRD-PARTY.txt",
+          "path": "extracted/linux-deb/usr/lib/Ultra Research/licenses/THIRD-PARTY.txt",
+          "source_path": "apps/ultra/THIRD-PARTY.txt",
+          "bytes": 4471,
+          "sha256": "f4978676a34291c49548d6b501b34e3a243a1fd94d4548e4b31c836debde15b0",
+          "matches_exact_head_source": true
+        },
+        {
+          "name": "THIRD-PARTY-CRATES.json",
+          "path": "extracted/linux-deb/usr/lib/Ultra Research/licenses/THIRD-PARTY-CRATES.json",
+          "source_path": "apps/ultra/THIRD-PARTY-CRATES.json",
+          "bytes": 197411,
+          "sha256": "45032e14f48889834352858d00a8e37f7b52b4f983dd2c64f7dfa6a848142f2e",
+          "matches_exact_head_source": true
+        },
+        {
+          "name": "Alive-LICENSE",
+          "path": "extracted/linux-deb/usr/lib/Ultra Research/licenses/Alive-LICENSE",
+          "source_path": "LICENSE",
+          "bytes": 34523,
+          "sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
+          "matches_exact_head_source": true
+        },
+        {
+          "name": "fast_float-MIT",
+          "path": "extracted/linux-deb/usr/lib/Ultra Research/licenses/fast_float-MIT",
+          "source_path": "apps/ultra/src-tauri/native/vendor/fast_float/LICENSE-MIT",
+          "bytes": 1079,
+          "sha256": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6",
+          "matches_exact_head_source": true
+        }
+      ],
+      "inventory_count": 568
+    },
+    {
+      "package": "Ultra-0.1.0-rc.1-x86_64-unknown-linux-gnu.AppImage",
+      "package_sha256": "81ce4d70511f6f203faca02c3cda3f26fd9e2bd54bbfe866cb9a11ff533c206b",
+      "matches_ci_sha256sums": true,
+      "notices": [
+        {
+          "name": "THIRD-PARTY.txt",
+          "path": "extracted/linux-appimage/usr/lib/Ultra Research/licenses/THIRD-PARTY.txt",
+          "source_path": "apps/ultra/THIRD-PARTY.txt",
+          "bytes": 4471,
+          "sha256": "f4978676a34291c49548d6b501b34e3a243a1fd94d4548e4b31c836debde15b0",
+          "matches_exact_head_source": true
+        },
+        {
+          "name": "THIRD-PARTY-CRATES.json",
+          "path": "extracted/linux-appimage/usr/lib/Ultra Research/licenses/THIRD-PARTY-CRATES.json",
+          "source_path": "apps/ultra/THIRD-PARTY-CRATES.json",
+          "bytes": 197411,
+          "sha256": "45032e14f48889834352858d00a8e37f7b52b4f983dd2c64f7dfa6a848142f2e",
+          "matches_exact_head_source": true
+        },
+        {
+          "name": "Alive-LICENSE",
+          "path": "extracted/linux-appimage/usr/lib/Ultra Research/licenses/Alive-LICENSE",
+          "source_path": "LICENSE",
+          "bytes": 34523,
+          "sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
+          "matches_exact_head_source": true
+        },
+        {
+          "name": "fast_float-MIT",
+          "path": "extracted/linux-appimage/usr/lib/Ultra Research/licenses/fast_float-MIT",
+          "source_path": "apps/ultra/src-tauri/native/vendor/fast_float/LICENSE-MIT",
+          "bytes": 1079,
+          "sha256": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6",
+          "matches_exact_head_source": true
+        }
+      ],
+      "inventory_count": 568
+    }
+  ]
+}
