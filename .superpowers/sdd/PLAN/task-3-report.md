@@ -106,3 +106,28 @@ Native Save/Open, failure preservation, actual editor close/reopen playback,
 missing/incompatible device rejection and endurance remain parent acceptance
 items at this handoff. Frontend commits and final native evidence are recorded
 by the parent after integrating this report.
+
+## Frontend Review Follow-Up
+
+The reviewed P3 stale automation-base segment is corrected. Lane drawing uses
+a dependency key containing the selected track, clip length, lane data and the
+current manifest binding ranges/bases. Live base edits repaint the pre-first-
+point segment and empty-lane base line, while unchanged polling snapshots retain
+the existing SVG elements. A real-view DOM regression first reproduced the stale
+coordinates, then passed after the fix; it also checks unchanged SVG identity.
+
+The hosted editor's Zoom selector now follows the actual graph fit, using a
+dynamic percentage option for fitted scales outside the fixed zoom choices.
+The native screenshot's prior graph-69%/selector-75% mismatch is covered by a
+failing-then-passing test for initial fit, manual zoom and another Fit action.
+
+Fresh post-review verification:
+
+- `node --test apps/ultra/ui/alive-model.test.mjs apps/ultra/ui/alive-dom.test.mjs`:
+  10 passed, 0 failed.
+- `node --test apps/ultra/ui/*.test.mjs`: 426 passed, 0 failed.
+- Inspected `/tmp/alive-native-journey5/hosted-editor.png`: actual prepared graph,
+  cables and separate saved-base/automation-effective readouts are visible. The
+  zoom fix changes the selector value only; the graph geometry stays intact.
+- Preserved the parent's Session status label in alive.html. The review follow-up
+  touches only Alive view modules, the DOM regression tests and this report.

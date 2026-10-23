@@ -8,6 +8,7 @@ export function mountHostedEditor({doc=globalThis.document,win=globalThis.window
   const $=id=>doc.getElementById(id),make=(tag,cls,text)=>{const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
   let snapshot=null,patch=null,path=[],zoom=.75,identity='',queue=Promise.resolve(),disposed=false,autoFit=true;
   const views=new Map(),controls=new Map();
+  const fittedZoom=make('option');fittedZoom.hidden=true;$('hosted-zoom').append(fittedZoom);
   function notice(text,error=false){$('hosted-notice').textContent=String(text);$('hosted-notice').classList.toggle('error',error);}
   function enqueue(work){const result=queue.then(work);queue=result.catch(error=>notice(error,true));return result;}
   const guard=work=>(...args)=>{try{Promise.resolve(work(...args)).catch(error=>notice(error,true));}catch(error){notice(error,true);}};
@@ -64,6 +65,7 @@ export function mountHostedEditor({doc=globalThis.document,win=globalThis.window
     const container=$('objects');if(container.children.length!==rendered.length||rendered.some((e,i)=>container.children[i]!==e))container.replaceChildren(...rendered);
     const bounds=cableBounds(current.edges),width=Math.max(600,(bounds?.right??0)+40,...current.nodes.map(n=>n.x+Math.max(n.style?.width??0,230))),height=Math.max(400,(bounds?.bottom??0)+40,...current.nodes.map(n=>n.y+Math.max(n.style?.height??0,100)));
     if(autoFit){zoom=Math.min(1,Math.max(.25,Math.min((($('workspace').clientWidth||1000)-30)/width,(($('workspace').clientHeight||500)-30)/height)));autoFit=false;}
+    fittedZoom.hidden=[.5,.75,1,1.25].includes(zoom);fittedZoom.value=String(zoom);fittedZoom.textContent=`${Math.round(zoom*100)}% (Fit)`;$('hosted-zoom').value=String(zoom);
     $('canvas').style.width=`${width}px`;$('canvas').style.height=`${height}px`;$('canvas').style.transform=`scale(${zoom})`;$('hosted-space').style.width=`${width*zoom}px`;$('hosted-space').style.height=`${height*zoom}px`;
     $('hosted-summary').textContent=`${current.nodes.length} objects / ${current.edges.length} cables / ${Math.round(zoom*100)}%`;
     $('hosted-path').replaceChildren();const root=make('button','','Root');root.addEventListener('click',()=>navigate(null));$('hosted-path').append(root);let tree=patch;

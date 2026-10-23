@@ -71,6 +71,25 @@ test('draft writes precede file actions and actual native metrics remain visible
   view.dispose();
 });
 
+test('automation base segments follow live controls without rebuilding unchanged poll frames',async()=>{
+  const page=dom('./alive.html'),native=backend(state());
+  native.snapshot.document.tracks[0].automation.find(l=>l.key==='cutoff').points[0].beat=1;
+  native.snapshot.document.tracks[0].automation.find(l=>l.key==='level').points=[];
+  const view=mountAlive({...page,invoke:native.invoke});await settle();
+  const curve=key=>page.ids.get('lanes').children.find(e=>e.dataset.lane===key).querySelector('svg').children[0];
+  const cutoffBefore=curve('cutoff'),levelBefore=curve('level');
+  await view.refresh();assert.equal(curve('cutoff'),cutoffBefore);assert.equal(curve('level'),levelBefore);
+  const cutoff=page.find('Cutoff base');cutoff.value='3500';await cutoff.fire('change');await settle();
+  const binding=native.snapshot.devices[0].parameters.find(p=>p.key==='cutoff'),baseY=36-(3500-binding.min)/(binding.max-binding.min)*31;
+  assert.equal(curve('cutoff').attrs.d.split(' H ')[0],`M 0 ${baseY}`);
+  assert.notEqual(curve('cutoff'),cutoffBefore);assert.equal(curve('cutoff').attrs.d.slice(curve('cutoff').attrs.d.indexOf(' H ')),cutoffBefore.attrs.d.slice(cutoffBefore.attrs.d.indexOf(' H ')));
+  const level=page.find('Level base');level.value='80';await level.fire('change');await settle();
+  assert.equal(curve('level').attrs.d,`M 0 ${36-80/127*31} H 600`);
+  const cutoffAfter=curve('cutoff'),levelAfter=curve('level');await view.refresh();
+  assert.equal(curve('cutoff'),cutoffAfter);assert.equal(curve('level'),levelAfter);
+  view.dispose();
+});
+
 test('a rejected draft sync blocks save and keeps local musical edits',async()=>{
   const page=dom('./alive.html'),native=backend(state()),calls=[];
   const invoke=async(name,args)=>{calls.push(name);if(name==='alive_draft')throw Error('Draft admission failed');return native.invoke(name,args);};
@@ -90,5 +109,15 @@ test('hosted editor uses real patch objects and shared base command; close only 
   const level=page.find('Hosted Level graph base');assert.ok(level);level.value='61';await level.fire('input');await settle();
   assert.equal(native.calls.filter(c=>c.name==='alive_base').at(-1).args.key,'level');
   await page.ids.get('hosted-close').fire('click');await settle();assert.deepEqual(closed,['close']);assert.equal(native.calls.some(c=>/stop|reset|apply|install/.test(c.name)),false);
+  view.dispose();
+});
+
+test('hosted zoom selection follows fitted and manually selected graph scale',async()=>{
+  const page=dom('./alive-editor.html'),native=backend(state(true)),view=mountHostedEditor({...page,invoke:native.invoke});await view.ready;
+  const zoom=page.ids.get('hosted-zoom'),canvas=page.ids.get('canvas'),actualScale=()=>Number(canvas.style.transform.match(/scale\(([^)]+)\)/)[1]);
+  assert.equal(Number(zoom.value),actualScale());
+  zoom.value='0.75';await zoom.fire('change');assert.equal(actualScale(),.75);
+  await page.ids.get('hosted-fit').fire('click');assert.equal(Number(zoom.value),actualScale());
+  assert.match(page.ids.get('hosted-summary').textContent,new RegExp(`${Math.round(actualScale()*100)}%$`));
   view.dispose();
 });

@@ -2,7 +2,7 @@ import {createAliveModel,parameterReading} from './alive-model.mjs';
 
 export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke=win?.__TAURI__?.core?.invoke}={}){
   const $=id=>doc.getElementById(id),make=(tag,cls,text)=>{const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
-  const model=createAliveModel();let selected=0,queue=Promise.resolve(),disposed=false,trackKey='',musicKey='',parameterKey='';
+  const model=createAliveModel();let selected=0,queue=Promise.resolve(),disposed=false,trackKey='',musicKey='',parameterKey='',laneKey='';
   const trackViews=[],parameterViews=new Map(),diagnostics=new Map();
   function notice(text,error=false){$('notice').textContent=String(text);$('notice').classList.toggle('error',error);}
   function enqueue(work){const result=queue.then(work);queue=result.catch(error=>notice(error,true));return result;}
@@ -91,10 +91,13 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       });
       section.append(heading,graph,points);$('lanes').append(section);
     }
-    paintLanes();
+    laneKey='';paintLanes();
   }
   function paintLanes(){
     const document=model.document(),track=document.tracks[selected];
+    const bindings=model.snapshot().devices[selected]?.parameters.filter(p=>p.key==='cutoff'||p.key==='level')??[];
+    const nextKey=JSON.stringify([selected,document.lengthBeats,track.automation,bindings.map(p=>[p.key,p.min,p.max,p.base])]);
+    if(nextKey===laneKey)return;laneKey=nextKey;
     for(const section of $('lanes').children){
       const key=section.dataset.lane,binding=model.snapshot().devices[selected].parameters.find(p=>p.key===key),lane=track.automation.find(l=>l.key===key),svg=section.querySelector('svg'),x=beat=>beat/document.lengthBeats*600,y=value=>36-(value-binding.min)/(binding.max-binding.min)*31;
       svg.setAttribute('viewBox','0 0 600 40');svg.setAttribute('preserveAspectRatio','none');svg.replaceChildren();
@@ -126,6 +129,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     const nextTracks=JSON.stringify([snapshot.generation,document.tracks.map(t=>[t.id,t.name])]);if(nextTracks!==trackKey){trackKey=nextTracks;buildTracks(document);}
     const nextMusic=JSON.stringify([selected,document.tempo,document.lengthBeats,document.loopEnabled,document.tracks[selected]?.notes,document.tracks[selected]?.automation]);
     if(nextMusic!==musicKey){musicKey=nextMusic;buildMusic(document);}
+    paintLanes();
     const nextParameters=JSON.stringify([snapshot.generation,selected,snapshot.devices[selected]?.id]);if(nextParameters!==parameterKey){parameterKey=nextParameters;buildParameters(snapshot);}
     document.tracks.forEach((track,index)=>{
       const view=trackViews[index],runtime=snapshot.state.tracks[index];view.row.classList.toggle('selected',selected===index);view.row.setAttribute('aria-label',`${track.name} track`);view.detail.textContent=`${track.notes.length} notes / stereo`;
