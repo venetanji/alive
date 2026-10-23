@@ -80,6 +80,12 @@ pub fn document_new(app: AppHandle) -> Result<Document, String> {
 }
 
 #[tauri::command]
+pub fn document_instantiate(window: WebviewWindow, state: tauri::State<Documents>) -> Result<Document, String> {
+    let document=state.0.lock().map_err(|_| "Document lock poisoned")?.instantiate(window.label())?;
+    create_window(window.app_handle(),document)
+}
+
+#[tauri::command]
 pub async fn document_open(window: WebviewWindow, path: Option<String>) -> Result<Option<Document>, String> {
     let app = window.app_handle().clone();
     tauri::async_runtime::spawn_blocking(move || {

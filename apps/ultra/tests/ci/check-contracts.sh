@@ -48,6 +48,9 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
   apps/ultra/tests/canvas_signal_objects_test.cpp -o "$TEST_DIR/canvas-signal-objects-test"
 "$TEST_DIR/canvas-signal-objects-test"
 c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
+  apps/ultra/tests/canvas_voice_objects_test.cpp -o "$TEST_DIR/canvas-voice-objects-test"
+"$TEST_DIR/canvas-voice-objects-test"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
   apps/ultra/tests/canvas_hierarchy_test.cpp -o "$TEST_DIR/canvas-hierarchy-test"
 "$TEST_DIR/canvas-hierarchy-test"
 c++ -std=c++20 -O2 -Wall -Wextra -Werror \

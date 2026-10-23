@@ -16,6 +16,8 @@ const NUMBER_LIMIT: f64 = 100_000.;
 
 #[path = "canvas_hierarchy.rs"]
 mod hierarchy;
+#[path = "canvas_device.rs"]
+mod device;
 
 // Keep these C-layout types in sync with native/patch_graph.h. Tests pin sizes.
 #[repr(C)]
@@ -267,6 +269,8 @@ struct Document {
     profile: String,
     nodes: Vec<Node>,
     edges: Vec<Edge>,
+    #[serde(default, deserialize_with = "device::present")]
+    device: Option<device::Device>,
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -337,6 +341,7 @@ enum Port {
     Mono,
     Stereo,
     Mixed,
+    Voice4,
 }
 impl Port {
     fn domains(self) -> u8 {
@@ -345,6 +350,7 @@ impl Port {
             Self::Mono => 2,
             Self::Stereo => 4,
             Self::Mixed => 3,
+            Self::Voice4 => 8,
         }
     }
 }
@@ -375,6 +381,11 @@ fn inlet(node: &NativeNode, port: u32) -> Option<Port> {
         48 if port == 1 => Some(Port::Control),
         49 if port < count => Some(Port::Mono),
         50..=51 if port == 0 => Some(Port::Mixed),
+        60 if port <= 1 => Some(Port::Control),
+        61..=63 | 65 if port == 0 => Some(Port::Voice4),
+        62 if port <= 2 => Some(Port::Control),
+        63 if port <= 4 => Some(Port::Control),
+        64 if port <= 1 => Some(Port::Voice4),
         _ => None,
     }
 }
@@ -393,6 +404,9 @@ fn outlet(node: &NativeNode, port: u32) -> Option<Port> {
         47 if port == 1 => Some(Port::Control),
         48 if port == 0 => Some(Port::Control),
         50..=51 if port == 0 => Some(Port::Mixed),
+        60 if port <= 2 => Some(Port::Voice4),
+        61..=64 if port == 0 => Some(Port::Voice4),
+        65 if port == 0 => Some(Port::Mono),
         _ => None,
     }
 }
@@ -416,6 +430,7 @@ fn kind(name: &str) -> Option<u32> {
         "sig", "signal_add", "signal_subtract", "signal_multiply", "signal_divide", "cycle", "phasor", "noise", "signal_clip", "line_signal", "snapshot", "signal_dac",
         "inlet", "outlet", "number_int", "message_box",
         "subtract", "divide", "modulo", "reverse_subtract", "reverse_divide", "abs",
+        "poly_note", "saw_voice", "filter_voice", "adsr_voice", "multiply_voice", "mix_voice",
     ]
     .iter()
     .position(|candidate| *candidate == name)
@@ -460,6 +475,17 @@ fn parameters(kind: u32) -> &'static [Parameter] {
         54 | 57 => &[p!("rhs", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true), p!("numericmode", 1, 1., 1., 2., true, false)],
         55..=56 | 58 => &[p!("rhs", 0, 1., -NUMBER_LIMIT, NUMBER_LIMIT, false, true), p!("numericmode", 1, 1., 1., 2., true, false)],
         59 => &[p!("numericmode", 1, 1., 1., 2., true, false)],
+        60 => &[p!("voices", 0, 4., 1., 4., true, false)],
+        62 => &[
+            p!("cutoff", 0, 2400., 20., 20000., false, true),
+            p!("resonance", 1, 0.7, 0.1, 20., false, true),
+        ],
+        63 => &[
+            p!("attack", 0, 10., 1., 10000., false, true),
+            p!("decay", 1, 150., 1., 10000., false, true),
+            p!("sustain", 2, 0.65, 0., 1., false, true),
+            p!("release", 3, 300., 1., 10000., false, true),
+        ],
         6 => &[p!("interval", 0, 150., 20., 2000., false, true)],
         7 => &[p!("steps", 0, 8., 1., 32., true, true)],
         8 => &[
@@ -892,8 +918,8 @@ fn prepare_flat(doc: Document, allow_relays: bool) -> Result<Prepared, String> {
         if kind == 11 && !devices.insert(native.device) {
             return Err("Only one voice per logical device is supported".into());
         }
-        if (kind == 13 || kind == 14) && !singletons.insert(kind) {
-            return Err("Only one join and one dac are supported".into());
+        if matches!(kind, 13 | 14 | 60) && !singletons.insert(kind) {
+            return Err("Only one join, one dac and one poly.note~ allocator are supported".into());
         }
         graph.nodes[index] = native;
     }
@@ -908,7 +934,7 @@ fn prepare_flat(doc: Document, allow_relays: bool) -> Result<Prepared, String> {
         let input = inlet(&b, edge.inlet).ok_or("Invalid inlet")?;
         let domains = out.domains() & input.domains();
         if domains == 0 {
-            return Err("Control, mono audio and stereo audio ports cannot be mixed".into());
+            return Err("Control, mono, stereo and discrete four-voice ports require matching types".into());
         }
         if !cords.insert((edge.from, edge.outlet, edge.to, edge.inlet)) {
             return Err("Duplicate canvas edge".into());
@@ -940,7 +966,7 @@ fn prepare_flat(doc: Document, allow_relays: bool) -> Result<Prepared, String> {
     let mut signals = vec![Vec::new(); doc.nodes.len()];
     for (from, to, domains, out) in edge_domains {
         if domains & 1 != 0 { controls[from].push(to); }
-        if domains & 4 != 0 || domains & 2 != 0 && (out == Port::Mono || active_mono[from]) {
+        if domains & (4 | 8) != 0 || domains & 2 != 0 && (out == Port::Mono || active_mono[from]) {
             signals[from].push(to);
         }
     }
@@ -972,6 +998,7 @@ fn prepare_flat(doc: Document, allow_relays: bool) -> Result<Prepared, String> {
             return Err("Signal cycles require a delay object and are not supported".into());
         }
     }
+    device::validate(doc.device.as_ref(), &graph)?;
     Ok(Prepared { native: graph })
 }
 

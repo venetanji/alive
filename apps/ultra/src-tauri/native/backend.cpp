@@ -64,8 +64,15 @@ std::array<ultra::CanvasPlan,MaxDocuments> admitted_canvas{}; // Serialized cont
 std::array<uint64_t,MaxDocuments> admitted_message_serial{};
 // Out-of-band, coalescing safety mailbox. Never competes with the edit FIFO.
 std::array<std::atomic<uint64_t>,MaxDocuments> document_stop_epoch{};
+std::atomic<unsigned> document_stop_group{0};
 std::array<uint64_t,MaxDocuments> applied_stop_epoch{}; // Callback owner.
-void request_document_stop(unsigned document){document_stop_epoch[document].fetch_add(1,std::memory_order_release);}
+static_assert(MaxDocuments<32);
+void request_documents_stop(unsigned mask){
+ for(unsigned d=0;d<MaxDocuments;++d)if(mask&(1u<<d))document_stop_epoch[d].fetch_add(1,std::memory_order_release);
+ // Reassert the whole group if a callback observed only some epoch increments.
+ document_stop_group.fetch_or(mask,std::memory_order_release);
+}
+void request_document_stop(unsigned document){request_documents_stop(1u<<document);}
 bool document_action(ControlKind kind){return kind==ControlKind::CanvasEvent||kind==ControlKind::CanvasTab||kind==ControlKind::CanvasParamHot;}
 
 std::array<uint64_t,MaxDocuments> closed_console_revision{};
@@ -183,7 +190,7 @@ void synchronize_canvas_runtime(bool stop_timers){
   else canvas.close(d,0,discard);
   document_silence[d]=64;
  }
- if(stop_timers)canvas.clear_timers();
+ if(stop_timers)for(unsigned d=0;d<MaxDocuments;++d)canvas.stop(d,0,discard);
  callback_canvas=canvas.any();
 }
 void configure_canvas_audio(){
@@ -230,10 +237,11 @@ void drain_stopped_canvas_controls(){
  // synth events are discarded because the audio engine is already stopped.
  auto discard=[](alive::Event){return true;};canvas.begin_callback();
  const auto end=control_head.load(std::memory_order_acquire);auto tail=control_tail.load(std::memory_order_relaxed);
+ const unsigned stop_group=document_stop_group.exchange(0,std::memory_order_acquire);
  std::array<uint64_t,MaxDocuments> stop_epochs{};
  for(unsigned d=0;d<MaxDocuments;++d){
   stop_epochs[d]=document_stop_epoch[d].load(std::memory_order_acquire);
-  if(stop_epochs[d]!=applied_stop_epoch[d]){
+  if(stop_epochs[d]!=applied_stop_epoch[d]||(stop_group&(1u<<d))){
    canvas.stop(d,0,discard);applied_stop_epoch[d]=stop_epochs[d];document_silence[d]=64;
   }
  }
@@ -253,7 +261,7 @@ void drain_stopped_canvas_controls(){
    }
   }else if(control.kind==ControlKind::CanvasStop)canvas.stop(control.document,0,discard);
   else if(control.kind==ControlKind::CanvasClose){canvas.close(control.document,0,discard);canvas.runtime(control.document).reset_console_count();}
-  else if(control.kind==ControlKind::CanvasStopAll)canvas.clear_timers();
+  else if(control.kind==ControlKind::CanvasStopAll)for(unsigned d=0;d<MaxDocuments;++d)canvas.stop(d,0,discard);
   else if(control.kind==ControlKind::Route||control.kind==ControlKind::Sequence)
    for(unsigned d=0;d<MaxDocuments;++d)canvas.close(d,0,discard);
  }
@@ -283,10 +291,11 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
  // One FIFO orders route cleanup, sequence replacement and manual UI input.
  // Snapshot once: edits during MIDI acquisition belong to the next callback.
  const auto end=control_head.load(std::memory_order_acquire);auto tail=control_tail.load(std::memory_order_relaxed);
+ const unsigned stop_group=document_stop_group.exchange(0,std::memory_order_acquire);
  std::array<uint64_t,MaxDocuments> stop_epochs{};
  for(unsigned d=0;d<MaxDocuments;++d){
   stop_epochs[d]=document_stop_epoch[d].load(std::memory_order_acquire);
-  if(stop_epochs[d]!=applied_stop_epoch[d]){
+  if(stop_epochs[d]!=applied_stop_epoch[d]||(stop_group&(1u<<d))){
    canvas.stop(d,0,emit);applied_stop_epoch[d]=stop_epochs[d];document_silence[d]=64;
   }
  }
@@ -495,6 +504,51 @@ unsigned ultra_sequence_clock_source(){return sequence_clock_source.load(std::me
 static void discard_canvas_console(unsigned document){
  UltraCanvasConsoleRecord row{};for(unsigned i=0;i<128&&canvas.runtime(document).pop_console(row);++i){}
 }
+static bool canvas_release_message(unsigned document,unsigned node,unsigned inlet,const ultra::CanvasMessage& message){
+ const auto& plan=admitted_canvas[document];const int start=plan.find(node);if(start<0)return false;
+ const bool noteoff=message.count==2&&ultra::canvas_numeric_message(message)&&message.values[1]==0;
+ const bool pedal=message.count==1&&ultra::canvas_numeric_message(message)&&message.values[0]<64;
+ const bool panic=!message.count&&ultra::canvas_named(message,"panic");
+ const auto kind=plan.graph.nodes[unsigned(start)].kind;
+ // A direct gate-on cannot hide an authored release transform.
+ if((kind==ultra::Voice||kind==ultra::PolyNote)&&!inlet&&message.count==2&&ultra::canvas_numeric_message(message)&&message.values[1]>0)return false;
+ if((kind==ultra::Voice&&inlet)||(kind==ultra::PolyNote&&inlet&&message.count==1&&ultra::canvas_numeric_message(message)&&message.values[0]>=64))return false;
+ constexpr unsigned Slots=32,Nodes=MaxDocuments*Slots;
+ std::array<bool,MaxDocuments> live{};for(unsigned d=0;d<MaxDocuments;++d)live[d]=requested_documents[d].load();
+ std::array<bool,Nodes> reached{},targets{};std::array<unsigned,Nodes> pending{};unsigned head=0,tail=0;
+ auto push=[&](unsigned d,unsigned slot){const unsigned index=d*Slots+slot;if(!reached[index]){reached[index]=true;pending[head++]=index;}};
+ auto target=[&](unsigned d,unsigned slot,unsigned port){const auto k=admitted_canvas[d].graph.nodes[slot].kind;if(k==ultra::PolyNote||(k==ultra::Voice&&!port))targets[d*Slots+slot]=true;};
+ auto named_link=[](const UltraCanvasNode& sender,const UltraCanvasNode& receiver){return !receiver.text[0]||!std::strcmp(sender.text,receiver.text);};
+ target(document,unsigned(start),inlet);push(document,unsigned(start));
+ // Treat control transforms conservatively. A bang may emit a stored note-off.
+ // Static named links and rebindable (unnamed) Receives share this bounded walk.
+ while(tail<head){
+  const unsigned index=pending[tail++],d=index/Slots,slot=index%Slots;const auto& current=admitted_canvas[d];
+  for(unsigned e=0;e<current.graph.edge_count;++e){const auto& edge=current.edges[e];if((edge.domains&ultra::CanvasPlan::Control)&&edge.from==slot){target(d,edge.to,edge.inlet);push(d,edge.to);}}
+  const auto& sender=current.graph.nodes[slot];if(sender.kind!=ultra::Send)continue;
+  for(unsigned other=0;other<MaxDocuments;++other)if(live[other]){
+   const auto& graph=admitted_canvas[other].graph;
+   for(unsigned s=0;s<graph.node_count;++s)if(graph.nodes[s].kind==ultra::Receive&&named_link(sender,graph.nodes[s]))push(other,s);
+  }
+ }
+ bool any=false;reached.fill(false);head=tail=0;
+ for(unsigned index=0;index<Nodes;++index)if(targets[index]){any=true;push(index/Slots,index%Slots);}
+ if(!any)return false;
+ // Invalidate every related producer, including queued gate-ons from a different
+ // sender. Stopping those producers also disarms timers that could rearm a root.
+ while(tail<head){
+  const unsigned index=pending[tail++],d=index/Slots,slot=index%Slots;const auto& current=admitted_canvas[d];
+  for(unsigned e=0;e<current.graph.edge_count;++e){const auto& edge=current.edges[e];if((edge.domains&ultra::CanvasPlan::Control)&&edge.to==slot&&(current.graph.nodes[slot].kind!=ultra::Voice||!edge.inlet))push(d,edge.from);}
+  const auto& receiver=current.graph.nodes[slot];if(receiver.kind!=ultra::Receive)continue;
+  for(unsigned other=0;other<MaxDocuments;++other)if(live[other]){
+   const auto& graph=admitted_canvas[other].graph;
+   for(unsigned s=0;s<graph.node_count;++s)if(graph.nodes[s].kind==ultra::Send&&named_link(graph.nodes[s],receiver))push(other,s);
+  }
+ }
+ unsigned related=0;for(unsigned d=0;d<MaxDocuments;++d)for(unsigned s=0;s<admitted_canvas[d].graph.node_count;++s)if(reached[d*Slots+s])related|=1u<<d;
+ request_documents_stop(related);
+ return noteoff||pedal||panic;
+}
 int ultra_canvas_install_document(uint32_t document,const UltraCanvasGraph* graph){
  if(document>=MaxDocuments||!graph||graph->revision<=admitted_canvas[document].graph.revision)return 0;
  ultra::CanvasPlan next{};if(!ultra::compile_canvas(*graph,next))return 0;
@@ -520,9 +574,9 @@ int ultra_canvas_message_document(uint32_t document,uint64_t revision,uint32_t n
  if(running.load()){
   Control c{};c.kind=ControlKind::CanvasEvent;c.document=document;c.revision=revision;c.node=node;c.inlet=inlet;c.message=m;
   if(queue_control(c,false))return 1;
-  // A rejected note-off must invalidate previously accepted future gate-ons.
-  const int slot=admitted_canvas[document].find(node);
-  if(slot>=0&&admitted_canvas[document].graph.nodes[slot].kind==ultra::Voice&&inlet==0&&m.count==2&&ultra::canvas_numeric_message(m)&&m.values[1]==0){request_document_stop(document);return 1;}
+  // Release-shaped messages report accepted safety termination; an unclassified
+  // transformed message still reports rejection after conservative scoped Stop.
+  if(canvas_release_message(document,node,inlet,m))return 1;
   return 0;
  }
  if(engine.status().ready)return 0;
@@ -612,9 +666,9 @@ int ultra_canvas_close_document(uint32_t document){
  requested_documents[document]=false;update_canvas_requested();discard_canvas_console(document);return 1;
 }
 void ultra_canvas_stop_all(){
- if(running.load()){for(unsigned d=0;d<MaxDocuments;++d)request_document_stop(d);}
+ if(running.load())request_documents_stop((1u<<MaxDocuments)-1);
  else if(engine.status().ready)engine.panic();
- else {canvas.clear_timers();reset_canvas_idle_clock();publish_canvas();}
+ else {auto discard=[](alive::Event){return true;};for(unsigned d=0;d<MaxDocuments;++d)canvas.stop(d,0,discard);reset_canvas_idle_clock();publish_canvas();}
 }
 void ultra_canvas_idle_tick(){tick_canvas_idle();}
 uint32_t ultra_canvas_console_document(uint32_t document,UltraCanvasConsoleRecord* records,uint32_t capacity,uint64_t* dropped){

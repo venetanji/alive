@@ -55,13 +55,15 @@ fi
 export GDK_BACKEND=x11 GDK_SCALE=1 GDK_DPI_SCALE=1
 export GTK_USE_PORTAL=0 GIO_USE_VFS=local XDG_CURRENT_DESKTOP=GNOME
 ultra_a11y_file=$(mktemp)
-ultra_a11y_pid='' ultra_registry_pid='' ultra_test_pid=''
+ultra_a11y_pid='' ultra_registry_pid='' ultra_test_pid='' ultra_wm_pid=''
 cleanup() {
   result=$?
   trap - EXIT
-  for pid in "$ultra_test_pid" "$ultra_registry_pid" "$ultra_a11y_pid"; do
+  for pid in "$ultra_test_pid" "$ultra_wm_pid" "$ultra_registry_pid" "$ultra_a11y_pid"; do
     if [[ -n "$pid" ]]; then
       kill "$pid" 2>/dev/null || true
+      # Motif may retain the session after TERM; never leave the private WM alive.
+      if [[ "$pid" == "$ultra_wm_pid" ]]; then sleep .1; kill -KILL "$pid" 2>/dev/null || true; fi
       wait "$pid" 2>/dev/null || true
     fi
   done
@@ -91,11 +93,26 @@ if [[ ${ULTRA_TEST_PINCH_ONLY:-0} == 1 ]]; then
 fi
 # Test the same build checked above, not run.sh's preferred packaged copy.
 ultra_initial_patch="$ULTRA_TEST_OUTPUT_DIR/initial.ultra"
-printf '%s\n' '{"version":1,"profile":"ultra-canvas-v1","nodes":[],"edges":[]}' > "$ultra_initial_patch"
+if [[ -n ${ULTRA_TEST_INITIAL_PATCH:-} ]]; then
+  cp -- "$ULTRA_TEST_INITIAL_PATCH" "$ultra_initial_patch"
+else
+  printf '%s\n' '{"version":1,"profile":"ultra-canvas-v1","nodes":[],"edges":[]}' > "$ultra_initial_patch"
+fi
+if [[ ${ULTRA_TEST_WM:-0} == 1 ]]; then
+  mwm -xrm 'Mwm*interactivePlacement: False' -xrm 'Mwm*usePPosition: on' \
+    -xrm 'Mwm*configFile: /dev/null' >"$ULTRA_TEST_OUTPUT_DIR/wm.log" 2>&1 &
+  ultra_wm_pid=$!
+  sleep .3
+  kill -0 "$ultra_wm_pid"
+fi
 LD_LIBRARY_PATH="$ROOT/apps/ultra/src-tauri/target/release${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
   "$ROOT/apps/ultra/src-tauri/target/release/ultra" "$ultra_initial_patch" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
 ultra_test_pid=$!
 export ULTRA_TEST_PID="$ultra_test_pid"
+if [[ -n ${ULTRA_TEST_SCRIPT:-} ]]; then
+  python3 "$ULTRA_TEST_SCRIPT"
+  exit
+fi
 if [[ ${ULTRA_TEST_COMMENTS_ONLY:-0} == 1 ]]; then
   python3 "$ROOT/apps/ultra/tests/check_comments_desktop.py"
   exit

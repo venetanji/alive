@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Ultra - patcher</title><link rel="stylesheet" href="canvas.css"><link rel="stylesheet" href="canvas-console.css"><link rel="stylesheet" href="canvas-help.css">
+  <title>Ultra - patcher</title><link rel="stylesheet" href="canvas.css"><link rel="stylesheet" href="canvas-console.css"><link rel="stylesheet" href="canvas-help.css"><link rel="stylesheet" href="canvas-device.css">
 </head>
 <body>
 <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -59,6 +59,7 @@
     <label class="zoom-control" title="Z / Shift Z: zoom in / out at pointer. Ctrl / Cmd wheel or pinch: zoom. Scroll to move; Shift scroll moves horizontally. Space + drag or middle drag: pan."><span class="sr-only">Canvas zoom</span><select id="canvas-zoom" aria-label="Canvas zoom"><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option><option id="zoom-fit" value="fit" hidden>Fit</option></select></label>
     <button id="fit-patch" class="icon-button" aria-label="Fit patch" title="Fit patch to window"><svg><use href="#i-fit"/></svg></button>
     <div class="toolbar-end">
+      <button id="show-instrument" aria-label="Perform instrument" aria-controls="instrument-panel" aria-pressed="false">Perform</button>
       <button id="show-console" class="icon-button" aria-label="Console" aria-controls="patch-console" title="Console (Ctrl M)" aria-pressed="false"><svg><use href="#i-console"/></svg><span id="console-count" hidden></span></button>
       <button id="show-inspector" class="icon-button" aria-label="Inspector" title="Inspector (Ctrl I)" aria-pressed="false"><svg><use href="#i-inspect"/></svg></button>
       <button id="show-help" class="icon-button" aria-label="Patcher help" title="Patcher help (F1)"><svg><use href="#i-help"/></svg></button>
@@ -101,10 +102,22 @@
       <button id="audio-stop-configured" class="panel-action">Stop audio to edit settings</button>
       <p id="audio-settings-notice" role="status" class="audio-settings-notice"></p>
       <div class="audio-live-heading"><h3>Live output</h3><button id="audio-refresh">Refresh devices</button></div>
-      <dl class="audio-live"><dt>Status</dt><dd id="audio-live-state">Audio off</dd><dt>Output</dt><dd id="audio-live-device">Not started</dd><dt>Observed buffer</dt><dd id="audio-live-buffer">Waiting for audio</dd><dt>DSP pipeline</dt><dd>64 frames / 1.33 ms</dd><dt>Stream errors</dt><dd id="audio-live-errors">0</dd></dl>
+      <dl class="audio-live"><dt>Status</dt><dd id="audio-live-state">Audio off</dd><dt>Output</dt><dd id="audio-live-device">Not started</dd><dt>Observed buffer</dt><dd id="audio-live-buffer">Waiting for audio</dd><dt>Legacy Voice pipeline</dt><dd>64 frames / 1.33 ms</dd><dt>Stream errors</dt><dd id="audio-live-errors">0</dd></dl>
       <p class="audio-hint">Observed buffer comes from the device callback and may differ from your request. Buffer duration is not total speaker latency.</p>
       <p class="audio-hint">This output path does not capture a microphone. Physical MIDI input is not connected through CPAL yet.</p>
     </section>
+  </aside>
+  <aside id="instrument-panel" aria-label="Instrument panel" hidden>
+    <header class="panel-header"><h2 id="instrument-title">Instrument</h2><button id="instrument-close" class="icon-button" aria-label="Close instrument panel"><svg><use href="#i-close"/></svg></button></header>
+    <section id="instrument-empty"><p>Wire a poly.note~, saw.voice~, lowpass.voice~, adsr.voice~, *.voice~ and mix.voice~ into gain~ and stereo output. Package the graph to expose its controls here.</p></section>
+    <section id="instrument-playable" hidden>
+      <div id="instrument-controls"></div>
+      <div class="instrument-presets"><select id="instrument-preset" aria-label="Instrument preset"></select><button id="instrument-recall">Recall</button></div>
+      <div class="instrument-presets"><input id="instrument-preset-name" aria-label="New preset name" placeholder="Preset name" maxlength="64"><button id="instrument-store">Store preset</button></div>
+      <p id="instrument-keyboard-note"></p><div id="instrument-keyboard" aria-label="Instrument keyboard" role="group" tabindex="0"></div>
+      <div class="instrument-actions"><button id="instrument-release">Release all</button><button id="instrument-instance">New instance</button></div>
+    </section>
+    <section><label class="instrument-name-field">Instrument name<input id="instrument-name" maxlength="64" placeholder="Subtractive instrument"></label><button id="instrument-package" class="panel-action">Package instrument</button><p>Save the patch to keep its device interface and presets. Alive session hosting is not connected yet.</p></section>
   </aside>
 </main>
 <section id="patch-console" aria-label="Console" hidden>

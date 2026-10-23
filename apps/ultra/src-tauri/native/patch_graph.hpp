@@ -5,6 +5,7 @@
 #include "canvas_objects.hpp"
 #include "canvas_list_objects.hpp"
 #include "canvas_signal_objects.hpp"
+#include "canvas_voice_objects.hpp"
 #include "../../core/engine.hpp"
 #include <array>
 #include <algorithm>
@@ -22,11 +23,12 @@ inline bool canvas_arithmetic_valid(const UltraCanvasNode& node)noexcept {
   &&!node.p2&&!node.p3&&!node.p4&&!node.p5&&!node.text[0];
 }
 inline unsigned canvas_inlets(unsigned kind) noexcept {
- static constexpr unsigned n[]={1,1,2,1,2,2,2,2,2,3,0,3,2,2,1,2,2,1,1,2,1,2,2,1,3,1,1,1,1,1,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,1,3,2,2,2,1,1,1,2,2,2,2,2,2,1};return kind<=Abs?n[kind]:0;
+ static constexpr unsigned n[]={1,1,2,1,2,2,2,2,2,3,0,3,2,2,1,2,2,1,1,2,1,2,2,1,3,1,1,1,1,1,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,1,3,2,2,2,1,1,1,2,2,2,2,2,2,1,2,1,3,5,2,1};return kind<=MixVoice?n[kind]:0;
 }
-// 0 absent, 1 control, 2 mono signal, 3 legacy stereo bundle, 4 signal/control.
+// 5 is exactly four discrete voice lanes, distinct from stereo speaker feeds.
 inline unsigned canvas_input(unsigned kind,unsigned inlet) noexcept {
  if(inlet>=canvas_inlets(kind))return 0;
+ if(canvas_voice_kind(kind))return kind==PolyNote?1:inlet==0||kind==MultiplyVoice?5:1;
  if(kind==Gain&&inlet==0)return 2;
  if(kind==Join)return 2;
  if(kind==Dac)return 3;
@@ -36,6 +38,7 @@ inline unsigned canvas_input(unsigned kind,unsigned inlet) noexcept {
  return 1;
 }
 inline unsigned canvas_output(unsigned kind,unsigned outlet) noexcept {
+ if(canvas_voice_kind(kind))return outlet<(kind==PolyNote?3u:1u)?kind==MixVoice?2:5:0;
  if(outlet>unsigned((kind>=ZlReg&&kind<=ZlRot)||kind==LineSignal||kind==Flonum||kind==NumberInt)||kind>Abs||kind==Dac||kind==Print||kind==Send||kind==SignalDac)return 0;
  if(canvas_relay_kind(kind))return 4;
  if(kind>=Sig&&kind<=LineSignal)return kind==LineSignal&&outlet?1:2;
@@ -65,6 +68,9 @@ inline bool canvas_param_valid(unsigned kind,unsigned param,double value) noexce
  case Cycle:case Phasor:case SignalClip:return param<2&&canvas_number(value);
  case LineSignal:return param==0?canvas_number(value):param==1&&canvas_range(value,0,100000);
  case Snapshot:return param==0?canvas_range(value,0,100000):param==1&&canvas_range(value,0,63,true);
+ case PolyNote:return false;
+ case FilterVoice:return param==0?canvas_range(value,20,20000):param==1&&canvas_range(value,.1,20);
+ case AdsrVoice:return param==2?canvas_range(value,0,1):param<4&&canvas_range(value,1,10000);
  default:return false;
  }
 }
@@ -79,6 +85,7 @@ inline unsigned canvas_inlets(const UltraCanvasNode& node) noexcept {
  return canvas_inlets(node.kind);
 }
 inline unsigned canvas_outlets(const UltraCanvasNode& node) noexcept {
+ if(node.kind==PolyNote)return 3;
  CanvasMessage args{};
  if(node.kind==Sig)return canvas_signal_args(node,args)?args.count:0;
  if(node.kind==Unpack||node.kind==Select||node.kind==Route||node.kind==Trigger){
@@ -90,18 +97,18 @@ inline unsigned canvas_outlets(const UltraCanvasNode& node) noexcept {
 inline unsigned canvas_input(const UltraCanvasNode& node,unsigned inlet) noexcept {
  if(inlet>=canvas_inlets(node))return 0;
  if(canvas_relay_kind(node.kind))return 4;
- return node.kind==SignalDac?2:canvas_signal_kind(node.kind)||node.kind<=Dac?canvas_input(node.kind,inlet):1;
+ return node.kind==SignalDac?2:canvas_signal_kind(node.kind)||canvas_voice_kind(node.kind)||node.kind<=Dac?canvas_input(node.kind,inlet):1;
 }
 inline unsigned canvas_output(const UltraCanvasNode& node,unsigned outlet) noexcept {
  if(outlet>=canvas_outlets(node))return 0;
  if(canvas_relay_kind(node.kind))return 4;
  if(node.kind==Sig)return 2;
- return canvas_signal_kind(node.kind)||node.kind<=Dac?canvas_output(node.kind,outlet):1;
+ return canvas_signal_kind(node.kind)||canvas_voice_kind(node.kind)||node.kind<=Dac?canvas_output(node.kind,outlet):1;
 }
 struct CanvasPlan {
  UltraCanvasGraph graph{};
- enum Domain : unsigned {Control=1,Mono=2,Stereo=4};
- struct Edge {unsigned from=0,to=0,inlet=0,outlet=0,domains=0;};
+ enum Domain : unsigned {Control=1,Mono=2,Stereo=4,Voices=8};
+ struct Edge {unsigned from=0,to=0,inlet=0,outlet=0,domains=0,width=0;};
  std::array<Edge,64> edges{};
  std::array<CanvasMessage,32> arguments{};
  std::array<CanvasMessageTemplate,32> message_templates{};
@@ -110,6 +117,7 @@ struct CanvasPlan {
  std::array<int,32> signal_first{};
  std::array<int,64> signal_next{};
  unsigned signal_count=0;
+ int allocator=-1;
  std::array<int,2> output{{-1,-1}}; // physical channel -> prepared voice bank
  int find(uint32_t id)const noexcept {for(unsigned i=0;i<graph.node_count;i++)if(graph.nodes[i].id==id)return int(i);return -1;}
 };
@@ -118,12 +126,24 @@ inline bool compile_canvas(const UltraCanvasGraph& g,CanvasPlan& out) noexcept {
  CanvasPlan p{};p.graph=g;p.signal_first.fill(-1);p.signal_next.fill(-1);
  unsigned devices=0,joins=0,dacs=0;
  for(unsigned i=0;i<g.node_count;i++){
-  const auto& n=g.nodes[i];if(!n.id||n.kind>Abs||!canvas_number(n.p0)||!canvas_number(n.p1)||!canvas_number(n.p2)||!canvas_number(n.p3)||!canvas_number(n.p4)||!canvas_number(n.p5)||(n.kind!=MessageBox&&!canvas_text(n.text,128)))return false;
+  const auto& n=g.nodes[i];if(!n.id||n.kind>MixVoice||!canvas_number(n.p0)||!canvas_number(n.p1)||!canvas_number(n.p2)||!canvas_number(n.p3)||!canvas_number(n.p4)||!canvas_number(n.p5)||(n.kind!=MessageBox&&!canvas_text(n.text,128)))return false;
   for(unsigned j=0;j<i;j++)if(g.nodes[j].id==n.id)return false;
   if(n.kind!=Voice&&n.device)return false;
   if(n.kind!=Message&&n.count)return false;
   if(n.kind<Dac+1&&(n.p3||n.p4||n.p5||(n.kind!=Message&&n.text[0])))return false;
   switch(n.kind){
+   case PolyNote:
+    if(p.allocator>=0||!canvas_range(n.p0,1,4,true)||n.p1||n.p2||n.p3||n.p4||n.p5||n.text[0])return false;
+    p.allocator=int(i);break;
+   case FilterVoice:
+    if(!canvas_param_valid(n.kind,0,n.p0)||!canvas_param_valid(n.kind,1,n.p1)||n.p2||n.p3||n.p4||n.p5||n.text[0])return false;
+    break;
+   case AdsrVoice:
+    if(!canvas_param_valid(n.kind,0,n.p0)||!canvas_param_valid(n.kind,1,n.p1)||!canvas_param_valid(n.kind,2,n.p2)||!canvas_param_valid(n.kind,3,n.p3)||n.p4||n.p5||n.text[0])return false;
+    break;
+   case SawVoice:case MultiplyVoice:case MixVoice:
+    if(n.p0||n.p1||n.p2||n.p3||n.p4||n.p5||n.text[0])return false;
+    break;
    case Add:case Multiply:case Subtract:case Divide:case Modulo:case ReverseSubtract:case ReverseDivide:case Abs:
     if(!canvas_arithmetic_valid(n))return false;
     break;
@@ -212,9 +232,11 @@ inline bool compile_canvas(const UltraCanvasGraph& g,CanvasPlan& out) noexcept {
   auto& e=p.edges[i];const auto& source=g.nodes[e.from];const auto& target=g.nodes[e.to];
   const auto output=canvas_output(source,e.outlet),input=canvas_input(target,e.inlet);
   if(canvas_control_port(output)&&canvas_control_port(input)){e.domains|=CanvasPlan::Control;++control_indegree[e.to];}
-  if(output==3)e.domains|=CanvasPlan::Stereo;
+  if(output==5){e.domains|=CanvasPlan::Voices;e.width=4;}
+  else if(output==3){e.domains|=CanvasPlan::Stereo;e.width=2;}
   else if((output==2||(output==4&&relay_signal[e.from]))&&(input==2||input==4))e.domains|=CanvasPlan::Mono;
-  if(!(e.domains&(CanvasPlan::Mono|CanvasPlan::Stereo)))continue;
+  if(e.domains&CanvasPlan::Mono)e.width=1;
+  if(!(e.domains&(CanvasPlan::Mono|CanvasPlan::Stereo|CanvasPlan::Voices)))continue;
   ++signal_indegree[e.to];++audio_out[e.from];p.signal_connected[e.to][e.inlet]=true;
   p.signal_next[i]=p.signal_first[e.to];p.signal_first[e.to]=int(i);
   if(source.kind==Voice&&target.kind==Gain)gain_voice[e.to]=e.from;
@@ -229,7 +251,7 @@ inline bool compile_canvas(const UltraCanvasGraph& g,CanvasPlan& out) noexcept {
    const unsigned slot=queue[head++];
    for(unsigned e=0;e<g.edge_count;e++){
     const auto& edge=p.edges[e];
-    const unsigned domains=signal?CanvasPlan::Mono|CanvasPlan::Stereo:CanvasPlan::Control;
+    const unsigned domains=signal?CanvasPlan::Mono|CanvasPlan::Stereo|CanvasPlan::Voices:CanvasPlan::Control;
     if(edge.from!=slot||!(edge.domains&domains))continue;
     if(!--indegree[edge.to])queue[tail++]=edge.to;
    }
@@ -301,12 +323,15 @@ class CanvasRuntime {
   std::array<double,4> targets{},times{};
   unsigned segments=0,segment=0;
   std::array<double,8> signal{};
+  std::array<std::array<double,4>,3> voices{};
   std::array<double,64> snapshot_current{},snapshot_previous{};
   double phase=0,reset_phase=0;
   bool snapshot_running=false;
   uint32_t random=1;
  };
  std::array<State,32> states_{};
+ std::array<CanvasVoiceKernels,32> voice_dsp_{};
+ CanvasPolyVoices poly_{};
  struct Timer {uint64_t due=0;unsigned slot=0,pitch=0;bool active=false;};
  std::array<Timer,64> timers_{};
  uint64_t text_edit_serial_=0;
@@ -366,7 +391,17 @@ class CanvasRuntime {
   if(!emit({offset,uint8_t(device_base_+device),kind,uint8_t(note),uint8_t(value)})){fail();return false;}return true;
  }
  bool dispatch_failed()const noexcept{return failed_||(context_&&context_->failed);}
+ uint64_t voice_release_frames()const noexcept{
+  double release=1;
+  for(unsigned i=0;i<plan_.graph.node_count;i++)if(plan_.graph.nodes[i].kind==AdsrVoice)release=std::max(release,plan_.graph.nodes[i].p3);
+  return duration(release);
+ }
+ void clear_voice_lane(unsigned voice)noexcept{for(unsigned i=0;i<plan_.graph.node_count;i++)if(canvas_voice_kind(plan_.graph.nodes[i].kind))voice_dsp_[i].clear(voice);}
+ void clear_voice_state()noexcept{
+  poly_.clear();for(unsigned i=0;i<plan_.graph.node_count;i++)if(canvas_voice_kind(plan_.graph.nodes[i].kind)){voice_dsp_[i].clear();states_[i].voices={};}
+ }
  public:
+ unsigned active_voice_count()const noexcept{return poly_.active();}
  bool pop_console(UltraCanvasConsoleRecord& record)noexcept {
   const auto tail=console_tail_.load(std::memory_order_relaxed);
   if(tail==console_head_.load(std::memory_order_acquire))return false;
@@ -397,6 +432,7 @@ class CanvasRuntime {
  void audio_started()noexcept{signal_active_=true;signal_vector_frame_=0;for(unsigned i=0;i<plan_.graph.node_count;i++)if(plan_.graph.nodes[i].kind==Cycle)states_[i].phase=states_[i].reset_phase;}
  void reset(const CanvasPlan& p,bool reset_budget=true)noexcept{
   text_edit_serial_=0;plan_=p;states_={};timers_={};frame_=0;signal_frame_=0;signal_vector_frame_=0;signal_active_=true;signal_notifications_=0;if(reset_budget)budget_=4096;failed_=false;
+  clear_voice_state();
   for(unsigned i=0;i<plan_.graph.node_count;i++){
    const auto& n=plan_.graph.nodes[i];auto& s=states_[i];s.value=n.kind==Int?std::trunc(n.p0):(n.kind==Flonum||n.kind==NumberInt)?std::clamp(n.p0,n.p1,n.p2):n.p0;
    s.stored=plan_.arguments[i];
@@ -413,7 +449,7 @@ class CanvasRuntime {
  }
  void clear_timers()noexcept{for(unsigned i=0;i<plan_.graph.node_count;i++){stop_line(states_[i]);if(plan_.graph.nodes[i].kind==Toggle){plan_.graph.nodes[i].p0=0;states_[i].value=0;}if(plan_.graph.nodes[i].kind==Metro)states_[i].value=0;}for(auto& t:timers_)t.active=false;}
  template<class Emit> bool stop(unsigned offset,Emit& emit)noexcept{
-  signal_active_=false;signal_notifications_=0;clear_timers();return emit_event(offset,0,alive::Kind::HardClear,0,0,emit)&&emit_event(offset,1,alive::Kind::HardClear,0,0,emit);
+  signal_active_=false;signal_notifications_=0;clear_timers();clear_voice_state();return emit_event(offset,0,alive::Kind::HardClear,0,0,emit)&&emit_event(offset,1,alive::Kind::HardClear,0,0,emit);
  }
  template<class Emit> bool configure_voices(unsigned offset,Emit& emit)noexcept{
   // Gain is evaluated per connection so Voice fan-out preserves independent levels.
@@ -455,6 +491,13 @@ class CanvasRuntime {
     push(0,canvas_sequence_message(canvas_list_range(msg,item.cursor,count)));return;
    }
    CanvasMessage list_input{},affixed{};
+   if(!item.output&&canvas_voice_kind(node.kind)){
+    const bool scalar=msg.count==1&&canvas_numeric_message(msg);
+    bool supported=false;
+    if(node.kind==PolyNote)supported=item.inlet?scalar&&canvas_range(msg.values[0],0,127,true):(!msg.count&&canvas_named(msg,"panic"))||(msg.count==2&&canvas_numeric_message(msg)&&canvas_range(msg.values[0],0,127,true)&&canvas_range(msg.values[1],0,127,true));
+    else if(node.kind==FilterVoice||node.kind==AdsrVoice)supported=item.inlet&&scalar&&canvas_param_valid(node.kind,item.inlet-1,msg.values[0]);
+    if(!supported){reject_signal(item.slot,work);return;}
+   }
    if(!item.output&&canvas_signal_kind(node.kind)){
     const bool scalar=msg.count==1&&canvas_numeric_message(msg),numbers=msg.count&&canvas_numeric_message(msg),bang=canvas_bang(msg);
     bool supported=false;
@@ -564,6 +607,14 @@ class CanvasRuntime {
      case Voice:
       if(item.inlet){if(scalar){unsigned v=midi(msg.values[0]);if(item.inlet==1)node.p0=v;else node.p1=v;emit_event(offset,node.device,item.inlet==1?alive::Kind::Attack:alive::Kind::Release,0,v,emit);}break;}
       if(msg.count==2&&canvas_numeric_message(msg)){unsigned pitch=midi(msg.values[0]),velocity=midi(msg.values[1]);emit_event(offset,node.device,velocity?alive::Kind::On:alive::Kind::Off,pitch,velocity,emit);}break;
+     case PolyNote:
+      if(item.inlet)poly_.pedal(msg.values[0]>=64,signal_frame_,voice_release_frames());
+      else if(canvas_named(msg,"panic"))clear_voice_state();
+      else {const int voice=poly_.note(unsigned(msg.values[0]),unsigned(msg.values[1]),unsigned(node.p0),signal_frame_,voice_release_frames());if(voice>=0)clear_voice_lane(unsigned(voice));}
+      state.value=poly_.active();break;
+     case FilterVoice:case AdsrVoice:
+      if(item.inlet==1)node.p0=msg.values[0];else if(item.inlet==2)node.p1=msg.values[0];else if(item.inlet==3)node.p2=msg.values[0];else if(item.inlet==4)node.p3=msg.values[0];
+      break;
      case Gain:
       if(item.inlet==1&&scalar)node.p0=midi(msg.values[0]);
       break;
@@ -787,9 +838,11 @@ class CanvasRuntime {
   return accepted;
  }
  template<class Emit> bool midi_input(unsigned channel,unsigned pitch,unsigned velocity,unsigned offset,Emit& emit)noexcept{
-  bool accepted=true;
-  for(unsigned i=0;i<plan_.graph.node_count;i++)if(plan_.graph.nodes[i].kind==MidiIn&&plan_.graph.nodes[i].p0==channel)
-   if(!dispatch(i,0,{2,{double(pitch),double(velocity),0}},offset,emit,true)){accepted=false;if(dispatch_failed())return false;}
+  bool accepted=true,matched=false;
+  for(unsigned i=0;i<plan_.graph.node_count;i++)if(plan_.graph.nodes[i].kind==MidiIn&&plan_.graph.nodes[i].p0==channel){
+   matched=true;if(!dispatch(i,0,{2,{double(pitch),double(velocity),0}},offset,emit,true)){accepted=false;if(dispatch_failed())return false;}
+  }
+  if(accepted&&matched)signal_active_=true;
   return accepted;
  }
  template<class Emit> bool sample(unsigned offset,Emit& emit)noexcept{
@@ -831,16 +884,37 @@ class CanvasRuntime {
   std::array<double,2> mix{};
   if(!signal_active_||dispatch_failed())return mix;
   signal_notifications_=0;
+  poly_.retire(signal_frame_);
   for(unsigned order=0;order<plan_.signal_count;order++){
    const unsigned slot=plan_.signal_order[order];auto& node=plan_.graph.nodes[slot];auto& state=states_[slot];
    std::array<double,8> input{};
+   std::array<std::array<double,4>,2> voice_input{};
    for(int e=plan_.signal_first[slot];e>=0;e=plan_.signal_next[unsigned(e)]){
     const auto& edge=plan_.edges[unsigned(e)];const auto& source=states_[edge.from].signal;
-    if(edge.domains&CanvasPlan::Stereo){input[0]+=source[0];input[1]+=source[1];}
+    if(edge.domains&CanvasPlan::Voices){for(unsigned voice=0;voice<4;voice++)voice_input[edge.inlet][voice]+=states_[edge.from].voices[edge.outlet][voice];}
+    else if(edge.domains&CanvasPlan::Stereo){input[0]+=source[0];input[1]+=source[1];}
     else input[edge.inlet]+=source[edge.outlet];
    }
    const auto& connected=plan_.signal_connected[slot];
    switch(node.kind){
+    case PolyNote:
+     for(unsigned voice=0;voice<4;voice++){const auto& lane=poly_.lanes[voice];state.voices[0][voice]=lane.note>=0?lane.frequency:0;state.voices[1][voice]=lane.gate?1:0;state.voices[2][voice]=lane.note>=0?lane.velocity:0;}
+     state.value=poly_.active();break;
+    case SawVoice:case FilterVoice:case AdsrVoice:case MultiplyVoice:
+     for(unsigned voice=0;voice<4;voice++){
+      double value=0;
+      if(poly_.lanes[voice].note>=0){
+       if(node.kind==SawVoice&&voice_input[0][voice]>0)value=voice_dsp_[slot].saw(voice,std::clamp(voice_input[0][voice],1.,20000.));
+       else if(node.kind==FilterVoice)value=voice_dsp_[slot].filter(voice,voice_input[0][voice],node.p0,node.p1);
+       else if(node.kind==AdsrVoice)value=voice_dsp_[slot].adsr(voice,voice_input[0][voice],node);
+       else if(node.kind==MultiplyVoice)value=voice_input[0][voice]*voice_input[1][voice];
+      }
+      state.voices[0][voice]=canvas_safe_signal(value);
+     }
+     break;
+    case MixVoice:
+     state.signal[0]=0;for(unsigned voice=0;voice<4;voice++)state.signal[0]+=voice_input[0][voice]*.25;
+     state.signal[0]=canvas_safe_signal(state.signal[0]);break;
     case Inlet:case Outlet:state.signal[0]=input[0];break;
     case Voice:state.signal[0]=node.device?voice_b:voice_a;break;
     case Gain:state.signal[0]=input[0]*node.p0/127.;break;

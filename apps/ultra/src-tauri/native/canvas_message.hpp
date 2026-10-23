@@ -13,7 +13,8 @@ enum CanvasKind : unsigned {
  Iter,Prepend,Append,ZlReg,ZlJoin,ZlLen,ZlIter,ZlSlice,ZlRev,ZlRot,
  Sig,SignalAdd,SignalSubtract,SignalMultiply,SignalDivide,Cycle,Phasor,Noise,SignalClip,LineSignal,Snapshot,SignalDac,
  Inlet,Outlet,NumberInt,MessageBox,
- Subtract,Divide,Modulo,ReverseSubtract,ReverseDivide,Abs
+ Subtract,Divide,Modulo,ReverseSubtract,ReverseDivide,Abs,
+ PolyNote,SawVoice,FilterVoice,AdsrVoice,MultiplyVoice,MixVoice
 };
 struct CanvasMessage {
  uint32_t count=0;

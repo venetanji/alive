@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {readFileSync} from 'node:fs';
+import {OBJECTS} from './canvas-catalog.mjs';
 
 // This executes the real page module with a small DOM adapter. It does not prove rendered geometry or native sound.
 class Element {
@@ -23,7 +24,7 @@ const settle=()=>new Promise(r=>setImmediate(r));
 const helpPatch=()=>JSON.parse(readFileSync(new URL('../tests/fixtures/help-shell-schema.json',import.meta.url),'utf8'))[0].patch;
 const reference=(name='append')=>({status:'available',object:name,sourceSha256:'a'.repeat(64),digest:'Original <digest>',description:'Synthetic description.\nSecond paragraph.',
   arguments:[{name:'tail',type:'anything',optional:true,description:'Synthetic argument.'}],methods:[{name:'bang',description:'Synthetic method.'}],inlets:[],outlets:[],related:[{name:'pack',available:true},{name:'outside',available:false}]});
-async function mount(native=false,{documentCurrent=null,tauri,observeInvoke=()=>{},helpReference,documentCommit}={}){
+async function mount(native=false,{documentCurrent=null,tauri,observeInvoke=()=>{},helpReference,documentCommit,audioStatus={}}={}){
   const html=readFileSync(new URL('./canvas.html',import.meta.url),'utf8'),ids=new Map();
   for(const[,tag,id]of html.matchAll(/<([\w-]+)\b[^>]*\bid="([^"]+)"/g))ids.set(id,new Element(tag));
   ids.get('object-entry').hidden=true;
@@ -33,7 +34,7 @@ async function mount(native=false,{documentCurrent=null,tauri,observeInvoke=()=>
   const window={addEventListener:(...a)=>windowEvents.addEventListener(...a),setTimeout:(fn,ms)=>{timeouts.push({fn,ms});return timeouts.length;},clearTimeout(){},location:{href:'http://localhost/canvas.html',assign:href=>navigations.push(href)},open:url=>{const child={url};previews.push(child);return child;}};
   if(tauri)window.__TAURI__=tauri;
   ids.get('legacy-link').href='index.html';ids.get('lab-link').href='chord-lab.html';
-  const invoke=native?async(name,args={})=>{calls.push({name,args});observeInvoke(name,args);if(name==='document_commit'&&documentCommit)return documentCommit(args);if(name==='help_reference')return helpReference?.(args.name);if(name==='document_current')return documentCurrent;if(name==='document_list')return[{id:1,label:'main',title:'First.ultra',kind:'patch'},{id:2,label:'patch-2',title:'Second.ultra',kind:'patch'}];if(name==='document_save')return{id:1,title:'Saved.ultra',kind:'patch'};if(name==='audio_devices')return{config:{host:'default',device:'default',sample_rate:48000,buffer_frames:null},hosts:['PipeWire'],effective_host:'PipeWire',devices:[{id:'default',name:'System default - Speakers',compatible:true}],notice:'Audio is off.'};if(name==='canvas_apply'){patch=args.patch;return{revision:++revision};}if(name==='audio_start')running=true;if(name==='audio_stop')running=false;if(name==='audio_status')return{running};if(name==='canvas_status')return{revision,active:true,nodes:patch.nodes.map(n=>({id:n.id,value:0,pulses:0,...observed[n.id]})),console:consoleRecords.splice(0),print_popups:popupSnapshots.value};return true;}:undefined;
+  const invoke=native?async(name,args={})=>{calls.push({name,args});observeInvoke(name,args);if(name==='document_commit'&&documentCommit)return documentCommit(args);if(name==='help_reference')return helpReference?.(args.name);if(name==='document_current')return documentCurrent;if(name==='document_list')return[{id:1,label:'main',title:'First.ultra',kind:'patch'},{id:2,label:'patch-2',title:'Second.ultra',kind:'patch'}];if(name==='document_save')return{id:1,title:'Saved.ultra',kind:'patch'};if(name==='audio_devices')return{config:{host:'default',device:'default',sample_rate:48000,buffer_frames:null},hosts:['PipeWire'],effective_host:'PipeWire',devices:[{id:'default',name:'System default - Speakers',compatible:true}],notice:'Audio is off.'};if(name==='canvas_apply'){patch=args.patch;return{revision:++revision};}if(name==='audio_start')running=true;if(name==='audio_stop')running=false;if(name==='audio_status')return{running,...audioStatus};if(name==='canvas_status')return{revision,active:true,nodes:patch.nodes.map(n=>({id:n.id,value:0,pulses:0,...observed[n.id]})),console:consoleRecords.splice(0),print_popups:popupSnapshots.value};return true;}:undefined;
   const {mountCanvas}=await import('./canvas.mjs');const page=mountCanvas({document,window,invoke});await page.ready;await page.controller.flush();await settle();
   return{...page,ids,calls,timeouts,navigations,previews,observed,consoleRecords,popupSnapshots,windowEvents,documentEvents,document,all:id=>descendants(ids.get(id))};
 }
@@ -197,7 +198,7 @@ test('console source links reveal descendant objects from the root view',async()
 });
 test('browser page mounts editable palette, honest preview, and exclusively top/bottom typed ports',async()=>{
   const p=await mount();assert.equal(p.ids.get('preview-banner').hidden,false);assert.equal(p.ids.get('start-audio').disabled,true);
-  assert.equal(p.all('palette').filter(e=>e.dataset.add).length,62);
+  assert.deepEqual(p.all('palette').filter(e=>e.dataset.add).map(e=>e.dataset.add).sort(),Object.keys(OBJECTS).sort());
   const ports=p.all('objects').filter(e=>e.dataset.direction);assert.ok(ports.length>30);
   for(const port of ports)assert.equal(port.dataset.side,port.dataset.direction==='in'?'top':'bottom');
   await p.ids.get('export-patch').fire('click');assert.equal(p.ids.get('patch-dialog').open,true);assert.equal(JSON.parse(p.ids.get('patch-json').value).profile,'ultra-canvas-v1');assert.equal(p.calls.length,0);
@@ -261,6 +262,61 @@ test('pagehide handles an already-closed native graph without an unhandled rejec
   const p=await mount(true);p.controller.disposeDocument=async()=>{throw Error('The document is already closed.');};
   await p.windowEvents.fire('pagehide');await settle();
   assert.equal(p.calls.filter(call=>call.name==='audio_stop').length,0);
+});
+test('status polls retain cable elements while selection and endpoint changes redraw them',async()=>{
+  const p=await mount(true);
+  await p.controller.poll();await p.controller.poll();
+  const before=[...p.ids.get('cables').children];assert.ok(before.length>0);
+  p.observed[1]={value:1,pulses:4};await p.controller.poll();
+  assert.ok(before.every((element,index)=>p.ids.get('cables').children[index]===element),'Live observations do not replace stable cable elements.');
+  const path=before.find(element=>element.dataset.edge==='0');
+  await path.fire('click');
+  assert.ok(p.ids.get('cables').children.some(element=>element.attrs.class?.includes('selected')));
+  const geometry=p.ids.get('cables').children[0].attrs.d;
+  const port=p.all('objects').find(element=>element.dataset.direction==='out');
+  port.getBoundingClientRect=()=>({left:40,top:60,width:10,height:8});
+  await p.windowEvents.fire('resize');
+  assert.notEqual(p.ids.get('cables').children[0].attrs.d,geometry,'Window resize remeasures the port geometry.');
+  const resized=p.ids.get('cables').children[0].attrs.d;
+  p.ids.get('canvas-zoom').value='2';await p.ids.get('canvas-zoom').fire('change');
+  assert.notEqual(p.ids.get('cables').children[0].attrs.d,resized,'Zoom redraws measured endpoints in canvas coordinates.');
+  const count=p.ids.get('cables').children.length;p.controller.disconnect(0);await p.controller.flush();
+  assert.equal(p.ids.get('cables').children.length,count-2,'Editing the graph invalidates cached cables.');
+  await p.dispose();
+});
+test('a bang flash still clears on the next unchanged observation',async()=>{
+  const p=await mount(true);await p.controller.poll();await p.controller.poll();
+  const trigger=p.all('objects').find(element=>element.attrs['aria-label']==='Trigger bang object 13');assert.ok(trigger);
+  p.observed[13]={value:0,pulses:1};await p.controller.poll();
+  assert.equal(trigger.classList.contains('pulse'),true);
+  await p.controller.poll();assert.equal(trigger.classList.contains('pulse'),false);
+  await p.dispose();
+});
+test('advancing diagnostics stay current without rewriting the canvas and faults remain visible',async()=>{
+  const audioStatus={frames:100,output:{callbacks:1,stream_errors:0}},p=await mount(true,{audioStatus});
+  await p.controller.poll();await p.controller.poll();
+  const element=p.ids.get('engine-state');let text=element.textContent,writes=0;
+  Object.defineProperty(element,'textContent',{get:()=>text,set:value=>{text=value;writes++;}});
+  audioStatus.frames=200;audioStatus.output={callbacks:2,stream_errors:0};
+  await p.controller.poll();
+  assert.equal(p.controller.getState().status.frames,200);
+  assert.equal(p.controller.getState().status.output.callbacks,2);
+  assert.equal(writes,0,'Diagnostic counters alone do not repaint the canvas.');
+  audioStatus.fault=true;audioStatus.message='test output lost';await p.controller.poll();
+  assert.match(element.textContent,/Fault/);assert.match(p.ids.get('notice').textContent,/test output lost/);
+  await p.dispose();
+});
+test('hidden windows poll less often and restore immediately without stopping audio',async()=>{
+  const p=await mount(true);await p.controller.startAudio();
+  p.document.hidden=true;await p.documentEvents.fire('visibilitychange');
+  assert.equal(p.timeouts.at(-1).ms,1000);
+  p.document.hidden=false;await p.documentEvents.fire('visibilitychange');
+  assert.equal(p.timeouts.at(-1).ms,0);
+  await p.timeouts.at(-1).fn();
+  assert.equal(p.timeouts.at(-1).ms,100);
+  assert.equal(p.controller.getState().status.running,true);
+  assert.equal(p.calls.some(call=>['audio_stop','canvas_stop','audio_panic'].includes(call.name)),false);
+  await p.dispose();
 });
 test('import replacing a reused node ID rebuilds its type-specific controls and ports',async()=>{
   const p=await mount();p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'join',x:50,y:50,params:{}}],edges:[]});

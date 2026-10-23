@@ -2,6 +2,49 @@
 
 The native window opens `canvas.html`, supporting flat `ultra-canvas-v1` and embedded `ultra-patcher-v2` documents. Its compact interface follows the locally observed Max 9.1.5 patcher. Up to 16 root patch, help and example documents run independent graphs through one shared native audio engine and output device. Each root owns its tree, history, control state, timers and voices; native child views attach to that same owner. The old research patcher and fixed Chord lab remain available in the browser preview's File menu; native canvas windows hide these engine-wide legacy adapters. Playback uses native code, never WebAudio or a JavaScript note clock.
 
+## Playable Subtractive Instrument
+
+Open `apps/ultra/examples/subtractive.ultra` with File / Open, or search for
+Subtractive in Help & Examples. Start audio, then open **Perform**. The seven
+controls edit the saved ADSR, resonant filter and gain objects while sound runs.
+Focus the keyboard and play A W S E D F T G Y H U J K, or hold an on-screen key.
+Closing the panel, losing focus or hiding the window releases its held keys.
+Lock the canvas and click the separate toggle to run the authored deterministic
+score. Stop patch releases notes and stops the score; Panic mutes all documents.
+Physical MIDI input remains absent on the CPAL desktop path.
+
+To build it yourself, create `midiin`, `poly.note~ 4`, `saw.voice~`,
+`lowpass.voice~ 2400 0.7`, `adsr.voice~ 10 150 0.65 300`, two `*.voice~`,
+`mix.voice~`, `gain~ 90`, `join~` and `stereo.dac~` through N entry. Wire the
+allocator's frequency to saw, gate to ADSR and velocity to the second multiply.
+Filter the saw, multiply by ADSR then velocity, mix down to mono, apply gain,
+duplicate into both join inputs and connect join to stereo output. Every route
+is an editable cable. The four-lane voice bundles have their own dashed cord
+style and cannot connect directly to mono/stereo ports.
+
+**Package instrument** exposes the graph's one allocator, ADSR, filter and gain
+through a versioned saved interface. Store named presets, then Save to retain
+them. Recall edits the bound object parameters; it does not replace DSP state.
+**New instance** copies the current authoritative graph into an independent
+untitled document, with separate voices, parameters, history and file ownership.
+Save/close/reopen restores the graph, values and presets; running notes/timers
+are deliberately not serialized. Bindings also work across embedded patchers.
+
+Alive session hosting is not connected. The standalone native host exercises
+the same saved interface without creating a desktop or editor:
+
+```sh
+bash apps/ultra/build.sh
+env -u DISPLAY -u WAYLAND_DISPLAY LD_LIBRARY_PATH="$PWD/apps/ultra/build" \
+  apps/ultra/src-tauri/target/release/ultra --instrument-probe \
+  apps/ultra/examples/subtractive.ultra /tmp/ultra-instrument-probe
+```
+
+The probe writes float32 WAV segments and a checked JSON report for two instances,
+presets, audible live controls, cable disconnection and isolated Stop/close.
+See `../PATCH_PROTOCOL.md` for the interface and
+`experiments/ultra-instrument-20261024/` for desktop/performance evidence.
+
 ## Embedded Patchers
 
 Type `p basic` to create an embedded patcher. Double-click its object or press Enter on its focused header to open its native window; reopening focuses the existing child. The path bar focuses a parent window. Browser preview retains inline navigation. Create `inlet` and `outlet` objects inside it to expose parent ports, ordered by horizontal position. These boundaries pass both typed messages and mono signals. Every descendant shares one root native graph, history and saved file. Opening or closing a child preserves playback and live state; Save and export from a child include the complete tree. Edits broadcast across views and Undo/Redo follows the owner's history. Console links open and reveal the source's owning view, and each view receives console records independently. A root permits up to 64 child views without using additional audio slots. Comments are saved annotations. Max initialization and help helpers remain separate work.
@@ -11,14 +54,14 @@ V2 authoring allows 512 total objects, 1024 cables, 16 embedded levels and 1 MiB
 ## Editable canvas workflow
 
 - **Ctrl E** locks/unlocks the patch. Edit mode selects and moves controls; locked mode operates them. Control objects work with audio stopped. For sound, start audio, lock, then click the top-left toggle to run `metro → counter → chord → makenote → voice`. Native code owns metro pulses, ramps and note-off scheduling; its background worker clocks controls when DSP is off. The separate bang/message chain triggers a note. The current CPAL desktop path has no physical MIDI ingress; `midiin` routing is exercised only through the legacy JACK adapter/tests. Ctrl/Cmd-click can operate a control while editing.
-- **N** or double-click blank canvas creates an object at the pointer. Type its name and positional arguments, such as `metro 150`, `+ 12`, `line 0 20`, or `pack i f s`. Arrow keys select a suggestion, Tab completes, Enter commits and Escape cancels. B/M/T begin bang/message/toggle entry. I/F/S immediately create a number, float box or vertical slider at the pointer; each creation undoes in one step. Double-click an object, or select it and press Enter/F2, to edit its text. Unsupported classes and invalid arguments remain visible as errors without replacing the current object. The optional object palette lists 54 native kinds and the p/comment authoring constructs, including control/list processors and the twelve signal kinds `sig~`, `+~`, `-~`, `*~`, `/~`, `cycle~`, `phasor~`, `noise~`, `clip~`, `line~`, `snapshot~` and `dac~`.
+- **N** or double-click blank canvas creates an object at the pointer. Type its name and positional arguments, such as `metro 150`, `+ 12`, `line 0 20`, or `pack i f s`. Arrow keys select a suggestion, Tab completes, Enter commits and Escape cancels. B/M/T begin bang/message/toggle entry. I/F/S immediately create a number, float box or vertical slider at the pointer; each creation undoes in one step. Double-click an object, or select it and press Enter/F2, to edit its text. Unsupported classes and invalid arguments remain visible as errors without replacing the current object. The optional object palette lists 66 native kinds and the p/comment authoring constructs, including control/list processors and the twelve signal kinds `sig~`, `+~`, `-~`, `*~`, `/~`, `cycle~`, `phasor~`, `noise~`, `clip~`, `line~`, `snapshot~` and `dac~`.
 - Every inlet is on the **top**, every outlet on the **bottom**, indexed left to right. Click an outlet, then a matching inlet. Control, mono audio and legacy stereo bundles have distinct ports and cable styles; mixed inlets accept control or mono signals. Hover or focus a port for help; right-click an inlet for **Accepts**, an outlet for **Emits**. These descriptions follow Ultra's contract. Multiple control sources may enter an inlet; mono signal sources sum at a signal input. Saved cable array order controls control-message fan-out order. Control and signal dependency graphs are checked separately, allowing sampled feedback through `snapshot~` while refusing a cycle within either graph.
 - Drag object bodies/headers, Shift-select or marquee a group, and use arrow keys to nudge. Group moves/deletes undo in one step. Wheel or two-finger scrolling moves the view; Shift+wheel scrolls horizontally. Space+drag or middle-button drag also pans, including when starting over an object. **Z** zooms in around the pointer and **Shift Z** zooms out, following Max's key commands. Ctrl/Cmd+wheel (including browser trackpad pinch events) also zooms at the pointer; Ctrl/Cmd +/- zooms and Ctrl/Cmd 0 or Reset view restores 100% at the origin. Navigation works in edit and locked mode; typing and Ctrl/Cmd Z undo keep their usual behavior. Zoom and Fit change only the view, never graph coordinates or audio state. Ctrl I opens the optional inspector for all parameters; F1 or the context menu opens help with literal and runnable examples. Numbers, sliders and gain controls operate while locked. Range controls use flat position bars; gain uses a hatched track. Their output stays available in the Inspector and accessible value text. Locked UI controls hide their port markings while cords retain their endpoints. Native numeric observations update display without modifying saved parameters or feeding back as UI events.
 - Select a cable or object and use **Delete selection** or Delete/Backspace. Undo/redo preserves stable IDs, cable order, parameters and positions. Numeric-parameter undo remains live; structural undo resets notes/timers. Layout undo never reapplies the native graph.
 - Native shared views serialize authoring edits through owner CAS, retain at most 64 pending edit snapshots and coalesce adjacent updates within the same continuous gesture. Discrete history boundaries and intervening events remain ordered; a full backlog refuses a new edit before changing the document. Stop/Panic bypass waiting edits after the current IPC; pending hot numeric edits still save their authoring values but no longer emit control messages after that safety request. Global Stop Audio remains available if scoped canvas Stop rejects a fault. The standalone preview controller coalesces numeric updates while dragging. Compatible Message text edits update one box silently without replacing the graph; runtime cold/set messages change its live display without rewriting saved text. Message text editing is disabled while locked. Legacy message text, MIDI channel, voice device, node and cable changes remain structural. Structural edits prepare a replacement graph and reset only that document's timers, notes and signal state. Continuous signals run from reset state while DSP is on; controls and metros require an explicit new operation. This is **not seamless hot swapping**. Invalid local edits leave the document unchanged; native rejection resynchronizes shared views with the authoritative graph and cancels dependent queued events. Desired document and active native revisions are shown separately.
 - **Stop patch** and Esc stop this document's native timers and notes and freeze/silence its signal graph, including when ordinary number/gain/Inspector inputs have focus. An accepted event, parameter change, incoming Receive or explicit global DSP restart resumes its continuous signals. Focus changes and hidden windows preserve playback. Closing a document disposes only its graph. Escape inside object entry cancels that edit instead; modal/context menus retain their dismissal behavior. **Start audio**, **Stop audio**, audio settings and **Panic** apply to the shared output. Stop audio clears timers and notes in every document; controls can be triggered again while audio is off. Starting audio resumes continuous signals in all documents without replacing graphs, ordinary values or runtime receive bindings; stopped metros remain off. Cycle restarts at its reset phase and Phasor retains its phase across DSP off/on. Panic latches native silence until Stop audio / Start audio. Event-queue overflow fails closed instead of discarding a possible note-off. Abrupt process termination still cannot guarantee webview IPC completion.
 - **New** (Ctrl/Cmd N) and **Open** (Ctrl/Cmd O) create separate native patch windows. Open uses the OS file picker; dropping a patch file also opens a window. Reopening an already-open file focuses its window. **Save** (Ctrl/Cmd S) and **Save As** (Ctrl/Cmd Shift S) atomically write validated Ultra JSON through the OS, normally as `.ultra`; `.json` is also accepted. The title's asterisk follows saved content, including undo and edits during a pending save. Closing first flushes pending edits from the affected views and pauses new authoring until the close decision. Failed edit or history admission keeps the window open. Closing a modified patch offers Save, Discard or Cancel. Max source opens an empty document with a compatibility report and always saves to a separate Ultra file after import, including when the source used `.json`. **Advanced JSON / Max import** retains pasted JSON and explicit replacement of the current graph; **Export JSON** retains selectable JSON, Copy and Download. No autosave is implied. `canvas-preset.json` is the supplied starter. Per-document limits: 32 objects, 64 edges, 64 KiB; unknown fields/types, invalid values/ports, cycles within the separate control or signal dependency graphs, and unsupported bundle connections are rejected. Omitted known parameters receive protocol defaults.
-- **Help & Examples** in the document toolbar searches 113 original entries by name, alias, description or topic: help and an example for each supported kind, plus the starter. Each opens a separate window, as do F1, Alt/Option-click and the object's context-menu or Inspector Help action. Opening the same help entry again focuses its existing window. The library also lists open native windows for focusing. The object palette remains a separate authoring tool.
+- **Help & Examples** in the document toolbar searches 138 original entries by name, alias, description or topic: help and an example for each supported kind, plus the starter. Each opens a separate window, as do F1, Alt/Option-click and the object's context-menu or Inspector Help action. Opening the same help entry again focuses its existing window. The library also lists open native windows for focusing. The object palette remains a separate authoring tool.
 
 The native mono signal graph evaluates sources, arithmetic, clipping and ramps at 48 kHz. Mono cables can fan out, and multiple sources sum at an input. `dac~` accepts 1..8 mono inputs mapped to physical channel 1 (left) or 2 (right); repeated mappings sum. The older custom `voice → gain → join~ → stereo.dac~` path retains two prepared sine/ASR voice buses, at most one voice per logical device and one legacy join/sink per document. Its saved sink type remains `dac`, preserving old files; the new mono-input `dac~` has a separate kind. Gain evaluates independently on each branch. The custom Voice pipeline retains its 64-frame delay; new MSP sources run immediately at the native sample rate. Missing output paths are silent. Voice attack uses raw × 4 ms, release raw × 8 ms, and raw 0 means 16 frames, latched on note-on. Both paths mix into the same selected CPAL stereo device.
 
@@ -59,7 +102,7 @@ reference observations and production-native replay are in
 complete execution of installed Max help patches.
 
 `canvas-catalog.mjs` is the UI name/argument/port-help contract over the same
-54-kind native registry plus two authoring constructs. It rejects Max classes and execution attributes that
+66-kind native registry plus two authoring constructs. It rejects Max classes and execution attributes that
 lack runtime support. `cycle~` is supported for numeric frequency/phase behavior;
 waveform buffers, `ezdac~`, transport scheduling and signal feedback remain
 unsupported. `int` and `flonum` are separate runtime kinds;
