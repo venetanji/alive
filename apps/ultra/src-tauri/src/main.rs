@@ -1,5 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 mod canvas;
+#[cfg(target_os = "linux")]
+mod canvas_pinch;
 mod help_reference;
 mod audio;
 mod documents;

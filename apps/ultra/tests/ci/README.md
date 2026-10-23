@@ -190,6 +190,17 @@ checks in the same isolated harness:
 ULTRA_TEST_DOCUMENTS_ONLY=1 bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/ultra-documents-results
 ```
 
+For the native trackpad-pinch regression in the same isolated harness:
+
+```sh
+ULTRA_TEST_PINCH_ONLY=1 bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/ultra-pinch-results
+```
+
+This injects synthetic GDK touchpad-pinch events into the actual Tauri/WebKitGTK
+widget. It checks canvas zoom, unchanged toolbar geometry, cancelled-gesture
+recovery and pinches over toolbar controls. The probe runs only in its test
+process; physical trackpad hardware and Wayland delivery still require a manual check.
+
 The harness owns its private X display, D-Bus/accessibility session and
 software-only PipeWire output; it does not drive the user's desktop or connect
 to hardware audio. The `--software-audio` spelling remains accepted for

@@ -21,7 +21,11 @@ fn create_window(app: &AppHandle, document: Document) -> Result<Document, String
         .menu(menu)
         .title(title(&document)).inner_size(1120., 780.).min_inner_size(640., 480.)
         .position(60. + f64::from(document.id % 8) * 26., 50. + f64::from(document.id % 8) * 26.)
-        .build());
+        .build().and_then(|window| {
+            #[cfg(target_os = "linux")]
+            crate::canvas_pinch::install(&window)?;
+            Ok(window)
+        }));
     match result {
         Ok(_) => Ok(document),
         Err(error) => {
@@ -309,7 +313,11 @@ fn document_menu(app: &AppHandle, label: &str) -> tauri::Result<tauri::menu::Men
 pub fn install_menu(app: &AppHandle) -> tauri::Result<()> {
     // A shared GTK menu caches native handles after destruction. Independent
     // menus survive handle reuse, and their IDs preserve the source document.
-    if let Some(window) = app.get_webview_window("main") { window.set_menu(document_menu(app, "main")?)?; }
+    if let Some(window) = app.get_webview_window("main") {
+        window.set_menu(document_menu(app, "main")?)?;
+        #[cfg(target_os = "linux")]
+        crate::canvas_pinch::install(&window)?;
+    }
     app.on_menu_event(|app, event| {
         if let Some((label, action)) = event.id().as_ref().strip_prefix("doc:").and_then(|id| id.split_once(':')) {
             if let Some(window) = app.get_webview_window(label) {

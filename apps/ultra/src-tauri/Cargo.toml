@@ -22,3 +22,4 @@ tauri-plugin-single-instance = { version = "=2.3.4", path = "vendor/tauri-plugin
 
 [target.'cfg(target_os = "linux")'.dependencies]
 cpal = { version = "=0.18.2", features = ["pipewire"] }
+gtk = "=0.18.2"

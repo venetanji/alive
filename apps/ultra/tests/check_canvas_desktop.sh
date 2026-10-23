@@ -85,6 +85,10 @@ ultra_registry_pid=$!
 cd "$ROOT"
 python3 "$ROOT/apps/ultra/tests/check_document_startup.py"
 if [[ ${ULTRA_TEST_STARTUP_ONLY:-0} == 1 ]]; then exit; fi
+if [[ ${ULTRA_TEST_PINCH_ONLY:-0} == 1 ]]; then
+  python3 "$ROOT/apps/ultra/tests/check_canvas_pinch.py"
+  exit
+fi
 # Test the same build checked above, not run.sh's preferred packaged copy.
 ultra_initial_patch="$ULTRA_TEST_OUTPUT_DIR/initial.ultra"
 printf '%s\n' '{"version":1,"profile":"ultra-canvas-v1","nodes":[],"edges":[]}' > "$ultra_initial_patch"
