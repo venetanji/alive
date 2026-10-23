@@ -10,7 +10,9 @@
 #include <cstring>
 #include <chrono>
 #include <limits>
+#if defined(__linux__)
 #include <dlfcn.h>
+#endif
 #include <string>
 #include <vector>
 // ABI declarations from JACK2 1.9.22 jack.h/types.h/midiport.h (LGPL-2.1-or-later).
@@ -37,7 +39,14 @@ struct Jack {
  const char** (*get_ports)(jack_client_t*,const char*,const char*,unsigned long)=nullptr;
  const char* (*port_name)(const jack_port_t*)=nullptr;
  int (*connect)(jack_client_t*,const char*,const char*)=nullptr; void (*free_fn)(void*)=nullptr;
+ void close_library(){
+#if defined(__linux__)
+  if(lib)dlclose(lib);
+#endif
+  lib=nullptr;
+ }
  bool load(){
+#if defined(__linux__)
   lib=dlopen("libjack.so.0",RTLD_NOW|RTLD_LOCAL);if(!lib)return false;
 #define SYM(field,name) field=reinterpret_cast<decltype(field)>(dlsym(lib,name));if(!field)return false
   SYM(client_open,"jack_client_open"); SYM(client_close,"jack_client_close"); SYM(activate,"jack_activate"); SYM(deactivate,"jack_deactivate");
@@ -48,6 +57,10 @@ struct Jack {
   SYM(get_ports,"jack_get_ports"); SYM(port_name,"jack_port_name"); SYM(connect,"jack_connect"); SYM(free_fn,"jack_free");
 #undef SYM
   return true;
+#else
+  // Desktop audio uses Rust/CPAL. The optional JACK diagnostic is Linux-only.
+  return false;
+#endif
  }
 } jack;
 alive::Engine engine; const char* error="Audio is stopped.";
@@ -427,11 +440,17 @@ extern "C" {
 static void stop_audio_impl(bool stop_timers){
  if(!running.load()&&!engine.status().ready)tick_canvas_idle();
  running.store(false);if(jack.client){jack.deactivate(jack.client);jack.client_close(jack.client);jack.client=nullptr;}
- engine.shutdown();drain_stopped_canvas_controls();sequence.clear();publish_sequence();synchronize_canvas_runtime(stop_timers);reset_canvas_idle_clock();publish_canvas();sequence_requested=false;control_head=0;control_tail=0;if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}lost.store(false);error="Audio is stopped.";
+ engine.shutdown();drain_stopped_canvas_controls();sequence.clear();publish_sequence();synchronize_canvas_runtime(stop_timers);reset_canvas_idle_clock();publish_canvas();sequence_requested=false;control_head=0;control_tail=0;jack.close_library();lost.store(false);error="Audio is stopped.";
 }
 void ultra_audio_stop(){stop_audio_impl(true);}
 static int start_impl(){
- stop_audio_impl(false);if(!jack.load()){if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}error="libjack.so.0 is unavailable. Install your distro's JACK/PipeWire JACK compatibility package, then restart.";return 0;}
+ stop_audio_impl(false);if(!jack.load()){jack.close_library();
+#if defined(__linux__)
+error="libjack.so.0 is unavailable. Install your distro's JACK/PipeWire JACK compatibility package, then restart.";
+#else
+error="The JACK diagnostic is Linux-only. Use the desktop CPAL audio backend.";
+#endif
+return 0;}
  unsigned status=0;jack.client=jack.client_open("ultra",1u,&status); // JackNoStartServer
  if(!jack.client){error="Cannot connect to JACK. Start your existing JACK server, or launch Ultra through pw-jack on PipeWire. No server/settings were changed.";return 0;}
  if(jack.get_sample_rate(jack.client)!=48000){ultra_audio_stop();error="This research instrument requires a 48,000 Hz JACK server. Audio remains stopped.";return 0;}
@@ -717,3 +736,4 @@ int ultra_render_chord_demo(const char*path){try{return render_chord_demo_impl(p
 int ultra_render_demo(const char*path){try{return render_demo_impl(path);}catch(...){ultra_audio_stop();return 0;}}
 
 }
+

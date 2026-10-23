@@ -15,11 +15,22 @@ add_subdirectory("${CLOCKWORK_SOURCE}" clockwork)
 add_library(ultra_core STATIC engine.cpp)
 target_include_directories(ultra_core PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 target_link_libraries(ultra_core PUBLIC clockwork_bundle)
-# Single archive for Rust/native consumers: Clockwork already produces a merged bundle.
-add_custom_command(TARGET ultra_core POST_BUILD COMMAND ${CMAKE_COMMAND}
- -DCORE=$<TARGET_FILE:ultra_core> -DBUNDLE=$<TARGET_FILE:clockwork> -DGUEST=$<TARGET_FILE:ultra_hardened_guest> -DRUST=${CLOCKWORK_SOURCE}/rust/target/release/libclockwork_native.a
- -DOUTPUT=${CMAKE_CURRENT_BINARY_DIR}/libultra_core_bundle.a -DAR=${CMAKE_AR}
- -P ${CMAKE_CURRENT_SOURCE_DIR}/merge.cmake)
+# Optional GNU archive for legacy standalone C consumers. The desktop shared
+# library uses clockwork_bundle's transitive target graph on every platform.
+set(_ultra_merge_default OFF)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+ set(_ultra_merge_default ON)
+endif()
+option(ULTRA_BUILD_MERGED_ARCHIVE "Build legacy GNU merged static archive" ${_ultra_merge_default})
+if(ULTRA_BUILD_MERGED_ARCHIVE)
+ if(NOT CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  message(FATAL_ERROR "The legacy merged archive requires GNU ar on Linux")
+ endif()
+ add_custom_command(TARGET ultra_core POST_BUILD COMMAND ${CMAKE_COMMAND}
+  -DCORE=$<TARGET_FILE:ultra_core> -DBUNDLE=$<TARGET_FILE:clockwork> -DGUEST=$<TARGET_FILE:ultra_hardened_guest> -DRUST=${CLOCKWORK_SOURCE}/rust/target/release/libclockwork_native.a
+  -DOUTPUT=${CMAKE_CURRENT_BINARY_DIR}/libultra_core_bundle.a -DAR=${CMAKE_AR}
+  -P ${CMAKE_CURRENT_SOURCE_DIR}/merge.cmake)
+endif()
 
 option(ULTRA_BUILD_CORE_TESTS "Build real Clockwork application envelope tests" OFF)
 if(ULTRA_BUILD_CORE_TESTS)
@@ -33,3 +44,4 @@ if(ULTRA_BUILD_CORE_TESTS)
   "${ALIVE_ROOT}/experiments/faust-reference/.deps/faust-2.88.0/architecture")
  add_test(NAME app_envelope COMMAND check_ultra_envelope)
 endif()
+
