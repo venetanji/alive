@@ -796,6 +796,11 @@ mod tests {
         assert!(validate_patch(&n, &e).is_err());
     }
 }
+fn desktop_context() -> tauri::Context<tauri::Wry> {
+    // One macro expansion also emits exactly one macOS embedded Info.plist.
+    tauri::generate_context!()
+}
+
 fn main() {
     let arguments:Vec<_>=std::env::args_os().collect();
     if arguments.get(1).is_some_and(|argument|argument=="--session-probe") {
@@ -892,7 +897,7 @@ fn main() {
             document_windows::document_close_confirmed
         ])
         .on_window_event(document_windows::window_event)
-        .build(tauri::generate_context!())
+        .build(desktop_context())
         .expect("Unable to start Ultra window")
         .run(|app, event| {
             if let tauri::RunEvent::ExitRequested { api, .. } = &event {

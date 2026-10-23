@@ -72,7 +72,7 @@ def run():
 
             def ready_windows():
                 frames = {}
-                for root in Atspi.get_desktop(0):
+                for root in ui.desktop_apps():
                     try:
                         if root.get_process_id() != primary.pid:
                             continue

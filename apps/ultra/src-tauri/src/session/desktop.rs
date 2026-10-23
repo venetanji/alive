@@ -157,10 +157,31 @@ pub async fn alive_editor(window: WebviewWindow, state: tauri::State<'_, Desktop
     let name = &prepared.document.tracks.get(track).ok_or("Unknown track")?.name;
     let label = editor_label(generation, track);
     if let Some(editor) = window.app_handle().get_webview_window(&label) { editor.set_focus().map_err(|e| e.to_string())?; }
-    else { tauri::WebviewWindowBuilder::new(window.app_handle(), label, tauri::WebviewUrl::App("alive-editor.html".into()))
+    else { let editor = tauri::WebviewWindowBuilder::new(window.app_handle(), label, tauri::WebviewUrl::App("alive-editor.html".into()))
         .title(format!("{name} - Ultra Hosted Editor")).inner_size(1100., 760.).min_inner_size(720., 500.)
-        .build().map_err(|e| e.to_string())?; }
+        .build().map_err(|e| e.to_string())?;
+        #[cfg(target_os = "linux")]
+        install_editor_teardown(&editor).map_err(|e| e.to_string())?;
+        #[cfg(not(target_os = "linux"))]
+        let _ = editor;
+    }
     Ok(())
+}
+#[cfg(target_os = "linux")]
+fn install_editor_teardown(editor: &WebviewWindow) -> tauri::Result<()> {
+    use gtk::{glib::{self, subclass::SignalId, translate::IntoGlib}, prelude::*};
+    editor.with_webview(|webview| {
+        webview.inner().connect_destroy(|view| {
+            let manager: glib::Object = view.property("user-content-manager");
+            if let Some(signal) = SignalId::lookup("script-message-received", manager.type_()) {
+                // Wry 0.53.5's IPC closure strongly captures its WebView. Break
+                // that manager/view cycle only when the editor is destroyed.
+                unsafe { glib::gobject_ffi::g_signal_handlers_disconnect_matched(
+                    manager.as_ptr(), glib::gobject_ffi::G_SIGNAL_MATCH_ID,
+                    signal.into_glib(), 0, std::ptr::null_mut(), std::ptr::null_mut(), std::ptr::null_mut()); }
+            }
+        });
+    })
 }
 fn close_stale_editors(app: &tauri::AppHandle, generation: u64) {
     for (label, window) in app.webview_windows() {
@@ -296,7 +317,7 @@ fn request_close(app: &tauri::AppHandle) {
     let _ = app.emit_to("main", "alive-close-requested", ());
 }
 pub fn run(path: Option<PathBuf>) {
-    let mut context = tauri::generate_context!();
+    let mut context = crate::desktop_context();
     context.config_mut().app.windows.clear();
     tauri::Builder::default().plugin(tauri_plugin_dialog::init())
         .setup(move |app| {

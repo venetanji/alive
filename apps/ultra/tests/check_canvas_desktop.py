@@ -25,6 +25,11 @@ pid = int(os.environ['ULTRA_TEST_PID'])
 output = Path(os.environ['ULTRA_TEST_OUTPUT_DIR'])
 
 
+def desktop_apps():
+    desktop = Atspi.get_desktop(0)
+    return (desktop.get_child_at_index(i) for i in range(desktop.get_child_count()))
+
+
 def walk(a):
     if a is None:
         return
@@ -38,7 +43,7 @@ def walk(a):
 
 
 def find(name, text_content=False):
-    for root in Atspi.get_desktop(0):
+    for root in desktop_apps():
         try:
             if root.get_process_id() != pid:
                 continue
@@ -61,7 +66,7 @@ def wait_for(name, text_content=False):
         except (StopIteration, GLib.GError):
             time.sleep(.1)
     nodes = []
-    for root in Atspi.get_desktop(0):
+    for root in desktop_apps():
         if root.get_process_id() != pid:
             continue
         for item in walk(root):
@@ -84,7 +89,7 @@ def click(name):
         time.sleep(.1)
     if not control.get_state_set().contains(Atspi.StateType.ENABLED):
         names = []
-        for root in Atspi.get_desktop(0):
+        for root in desktop_apps():
             if root.get_process_id() != pid:
                 continue
             for a in walk(root):
@@ -111,7 +116,7 @@ def click(name):
 def text(name, value):
     target = wait_for(name)
     candidates = list(walk(target))
-    for root in Atspi.get_desktop(0):
+    for root in desktop_apps():
         try:
             if root.get_process_id() != pid:
                 continue
@@ -444,7 +449,7 @@ def print_popup_scenario():
             Gdk.pixbuf_get_from_window(root, 0, 0, root.get_width(), root.get_height()).savev(
                 str(output/'print-popup-first-poll.png'), 'png', [], [])
             nodes = []
-            for app in Atspi.get_desktop(0):
+            for app in desktop_apps():
                 if app.get_process_id() != pid:
                     continue
                 for item in walk(app):
@@ -745,7 +750,7 @@ def run():
             time.sleep(.1)
         if not settings:
             names = []
-            for root in Atspi.get_desktop(0):
+            for root in desktop_apps():
                 try:
                     if root.get_process_id() != pid: continue
                     for a in walk(root):

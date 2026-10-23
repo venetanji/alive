@@ -170,6 +170,20 @@ jobs:
           path: apps/ultra/build/session-desktop-evidence/
           if-no-files-found: warn
           retention-days: 7
+      - name: Bound hosted editor resources across repeated close and reopen
+        timeout-minutes: 4
+        env:
+          ULTRA_TEST_ALIVE: '1'
+          ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_editor_resources.py
+        run: bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/editor-resource-evidence"
+      - name: Save hosted editor resource evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: alive-editor-resources-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/editor-resource-evidence/
+          if-no-files-found: warn
+          retention-days: 7
       - name: Gate real CPAL output through a private software-only PipeWire graph
         timeout-minutes: 5
         run: bash apps/ultra/tests/check_cpal_audio.sh "$GITHUB_WORKSPACE/apps/ultra/build/cpal-evidence"
