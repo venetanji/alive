@@ -1,6 +1,6 @@
 #include "backend.h"
 #include "sequence.hpp"
-#include "patch_graph.hpp"
+#include "canvas_workspace.hpp"
 #include "../../core/engine.hpp"
 #include <atomic>
 #include <array>
@@ -9,6 +9,7 @@
 #include <cstdio>
 #include <cstring>
 #include <chrono>
+#include <limits>
 #include <dlfcn.h>
 #include <string>
 #include <vector>
@@ -52,52 +53,148 @@ struct Jack {
 alive::Engine engine; const char* error="Audio is stopped.";
 std::atomic<unsigned> routes{0},fault_reason{0};
 std::atomic<bool> running{false},lost{false}; std::atomic<unsigned> period{0},xruns{0};
-enum class ControlKind { Event, Route, Sequence, CanvasInstall, CanvasEvent, CanvasParam, CanvasStop };
+enum class ControlKind { Event, Route, Sequence, CanvasInstall, CanvasEvent, CanvasTab, CanvasMessageText, CanvasParam, CanvasParamHot, CanvasStop, CanvasClose, CanvasStopAll };
 struct Control {
  alive::Event event{}; unsigned mask=0; ControlKind kind=ControlKind::Event; UltraSequenceConfig sequence{};
- ultra::CanvasPlan canvas{};uint64_t revision=0;uint32_t node=0,inlet=0,param=0;ultra::CanvasMessage message{};double value=0;
+ ultra::CanvasPlan canvas{};uint32_t document=0;uint64_t revision=0;uint32_t node=0,inlet=0,param=0;ultra::CanvasMessage message{};double value=0;
+ ultra::CanvasMessageTemplate message_template{};uint64_t text_edit_serial=0;
 };
-ultra::CanvasPlan admitted_canvas; // Control-thread only; serialized by Rust.
-ultra::CanvasRuntime canvas; // Callback-owned while running; control-owned after shutdown.
+constexpr unsigned MaxDocuments=ultra::CanvasWorkspace::MaxDocuments;
+std::array<ultra::CanvasPlan,MaxDocuments> admitted_canvas{}; // Serialized control-thread ownership.
+std::array<uint64_t,MaxDocuments> admitted_message_serial{};
+std::array<uint64_t,MaxDocuments> closed_console_revision{};
+ultra::CanvasWorkspace canvas; // One callback owner across independent document slots.
 using CanvasClock=std::chrono::steady_clock;
 auto canvas_idle_mark=CanvasClock::now();
 double canvas_idle_fraction=0;
+std::array<std::atomic<bool>,MaxDocuments> requested_documents{};
 std::atomic<bool> canvas_requested{false};bool callback_canvas=false;
 unsigned canvas_silence=0;
-std::array<std::array<float,1024>,2> canvas_audio{};
+std::array<unsigned,MaxDocuments> document_silence{};
 struct PublishedCanvasNode {std::atomic<uint32_t> id{0};std::atomic<uint64_t> value{0},pulses{0};};
-std::array<PublishedCanvasNode,32> canvas_nodes{};
-std::atomic<uint64_t> canvas_generation{0},canvas_revision{0};
-std::atomic<unsigned> canvas_count{0},canvas_active{0};
-uint64_t double_bits(double v){uint64_t bits;std::memcpy(&bits,&v,sizeof bits);return bits;}
-double bits_double(uint64_t v){double result;std::memcpy(&result,&v,sizeof result);return result;}
-void publish_canvas(){
- canvas_generation.fetch_add(1,std::memory_order_acq_rel);
- const auto& p=canvas.plan();canvas_revision.store(p.graph.revision,std::memory_order_relaxed);
- canvas_count.store(p.graph.node_count,std::memory_order_relaxed);canvas_active.store(callback_canvas&&!canvas.failed(),std::memory_order_relaxed);
- for(unsigned i=0;i<p.graph.node_count;i++){
-  canvas_nodes[i].id.store(p.graph.nodes[i].id,std::memory_order_relaxed);
-  canvas_nodes[i].value.store(double_bits(canvas.value(i)),std::memory_order_relaxed);
-  canvas_nodes[i].pulses.store(canvas.pulses(i),std::memory_order_relaxed);
+struct PublishedCanvas {
+ std::array<PublishedCanvasNode,32> nodes{};
+ std::atomic<uint64_t> generation{0},revision{0};
+ std::atomic<unsigned> count{0},active{0};
+};
+std::array<PublishedCanvas,MaxDocuments> published_canvases{};
+static_assert(std::atomic<uint64_t>::is_always_lock_free);
+static_assert(sizeof(UltraCanvasMessageBoxObservation)==440);
+struct PublishedMessageBoxes {
+ std::atomic<uint64_t> generation{0},revision{0},serial{0},count{0};
+ std::array<std::array<std::atomic<uint64_t>,55>,32> words{};
+ // Only the runtime writer accesses this cache.
+ uint64_t last_revision=0,last_serial=0;unsigned last_count=0;
+ std::array<uint64_t,32> last_generations{};
+};
+std::array<PublishedMessageBoxes,MaxDocuments> published_message_boxes{};
+void publish_message_boxes(unsigned document){
+ auto& published=published_message_boxes[document];const auto& runtime=canvas.runtime(document);const auto& plan=runtime.plan();
+ std::array<unsigned,32> slots{};unsigned count=0;
+ if(canvas.live(document))for(unsigned i=0;i<plan.graph.node_count;++i)if(plan.graph.nodes[i].kind==ultra::MessageBox)slots[count++]=i;
+ const bool reset=published.last_revision!=plan.graph.revision||published.last_count!=count;
+ bool dirty=reset||published.last_serial!=runtime.text_edit_serial();
+ for(unsigned i=0;i<count;++i)dirty|=published.last_generations[i]!=runtime.message_box(slots[i]).generation;
+ if(!dirty)return;
+ // Every shared payload word is atomic; sequential order also fences the two
+ // generation reads against payload loads in a successful reader snapshot.
+ published.generation.fetch_add(1);
+ published.revision.store(plan.graph.revision);published.serial.store(runtime.text_edit_serial());published.count.store(count);
+ for(unsigned i=0;i<count;++i){
+  const auto& box=runtime.message_box(slots[i]);
+  if(!reset&&published.last_generations[i]==box.generation)continue;
+  UltraCanvasMessageBoxObservation row;std::memset(&row,0,sizeof row);
+  row.id=plan.graph.nodes[slots[i]].id;row.flags=box.content.empty;row.generation=box.generation;
+  const auto& prototype=box.content.prototype;row.prototype.count=prototype.count;
+  for(unsigned a=0;a<8;++a){row.prototype.values[a]=prototype.values[a];row.prototype.tags[a]=prototype.tags[a];std::memcpy(row.prototype.symbols[a],prototype.symbols[a],32);row.placeholders[a]=box.content.placeholders[a];}
+  std::memcpy(row.prototype.selector,prototype.selector,32);
+  std::array<uint64_t,55> words{};std::memcpy(words.data(),&row,sizeof row);
+  for(unsigned w=0;w<words.size();++w)published.words[i][w].store(words[w]);
+  published.last_generations[i]=box.generation;
  }
- canvas_generation.fetch_add(1,std::memory_order_release);
+ published.last_revision=plan.graph.revision;published.last_serial=runtime.text_edit_serial();published.last_count=count;
+ published.generation.fetch_add(1);
+}
+uint64_t double_bits(double v){uint64_t bits;std::memcpy(&bits,&v,sizeof bits);return bits;}
+static_assert(sizeof(UltraCanvasPrintPopupObservation)==424);
+struct PublishedPrintPopups {
+ std::atomic<uint64_t> generation{0},revision{0},frame{0},count{0};
+ std::array<std::array<std::atomic<uint64_t>,53>,32> words{};
+ uint64_t last_revision=0;unsigned last_count=0;
+ std::array<uint64_t,32> last_generations{};
+};
+std::array<PublishedPrintPopups,MaxDocuments> published_print_popups{};
+void publish_print_popups(unsigned document){
+ auto& published=published_print_popups[document];const auto& runtime=canvas.runtime(document);const auto& plan=runtime.plan();
+ std::array<unsigned,32> slots{};unsigned count=0;
+ if(canvas.live(document))for(unsigned i=0;i<plan.graph.node_count;++i)if(plan.graph.nodes[i].kind==ultra::Print)slots[count++]=i;
+ const bool reset=published.last_revision!=plan.graph.revision||published.last_count!=count;
+ // Advance the snapshot clock even when receipt generations are unchanged.
+ // Atomic words and sequential generation checks keep concurrent reads coherent.
+ published.generation.fetch_add(1);
+ published.revision.store(plan.graph.revision);published.frame.store(runtime.frame());published.count.store(count);
+ for(unsigned i=0;i<count;++i){
+  const auto& popup=runtime.print_popup(slots[i]);
+  if(!reset&&published.last_generations[i]==popup.generation)continue;
+  UltraCanvasPrintPopupObservation row;std::memset(&row,0,sizeof row);
+  row.id=plan.graph.nodes[slots[i]].id;row.enabled=plan.graph.nodes[slots[i]].p1!=0;
+  row.has_value=popup.has_value;row.generation=popup.generation;row.frame=popup.frame;row.message=ultra::canvas_message_to_pod(popup.message);
+  std::array<uint64_t,53> words{};std::memcpy(words.data(),&row,sizeof row);
+  for(unsigned w=0;w<words.size();++w)published.words[i][w].store(words[w]);
+  published.last_generations[i]=popup.generation;
+ }
+ published.last_revision=plan.graph.revision;published.last_count=count;published.generation.fetch_add(1);
+}
+double bits_double(uint64_t v){double result;std::memcpy(&result,&v,sizeof result);return result;}
+void update_canvas_requested(){bool any=false;for(auto& requested:requested_documents)any|=requested.load();canvas_requested=any;}
+void clear_canvas_requests(){for(auto& requested:requested_documents)requested=false;canvas_requested=false;}
+void publish_canvas(){
+ for(unsigned d=0;d<MaxDocuments;++d){
+  auto& published=published_canvases[d];const auto& runtime=canvas.runtime(d);const auto& p=runtime.plan();
+  published.generation.fetch_add(1,std::memory_order_acq_rel);
+  published.revision.store(p.graph.revision,std::memory_order_relaxed);
+  const unsigned count=canvas.live(d)?p.graph.node_count:0;
+  published.count.store(count,std::memory_order_relaxed);
+  published.active.store(callback_canvas&&canvas.live(d)&&!runtime.failed(),std::memory_order_relaxed);
+  for(unsigned i=0;i<count;++i){
+   published.nodes[i].id.store(p.graph.nodes[i].id,std::memory_order_relaxed);
+   published.nodes[i].value.store(double_bits(runtime.value(i)),std::memory_order_relaxed);
+   published.nodes[i].pulses.store(runtime.pulses(i),std::memory_order_relaxed);
+  }
+  published.generation.fetch_add(1,std::memory_order_release);
+  publish_message_boxes(d);
+  publish_print_popups(d);
+ }
 }
 void reset_canvas_idle_clock(){canvas_idle_mark=CanvasClock::now();canvas_idle_fraction=0;}
+void synchronize_canvas_runtime(bool stop_timers){
+ auto discard=[](alive::Event){return true;};canvas.begin_callback();
+ for(unsigned d=0;d<MaxDocuments;++d){
+  if(canvas.runtime(d).failed())canvas.runtime(d).recover();
+  if(requested_documents[d].load()){
+   if(!canvas.live(d)||canvas.runtime(d).plan().graph.revision!=admitted_canvas[d].graph.revision)canvas.install(d,admitted_canvas[d],0,discard);
+  }
+  else canvas.close(d,0,discard);
+  document_silence[d]=64;
+ }
+ if(stop_timers)canvas.clear_timers();
+ callback_canvas=canvas.any();
+}
+void configure_canvas_audio(){
+ auto emit=[](alive::Event e){return engine.submit_document(e);};
+ for(unsigned d=0;d<MaxDocuments;++d)if(canvas.live(d)){
+  canvas.runtime(d).audio_started();
+  canvas.runtime(d).configure_voices(0,emit);
+ }
+}
 void tick_canvas_idle(){
- // Rust serializes this with every lifecycle/control call. A stopped engine is
- // required because a disconnected audio callback may still own the runtime.
  if(running.load()||engine.status().ready||!canvas_requested.load()||!callback_canvas){reset_canvas_idle_clock();return;}
  const auto now=CanvasClock::now();
  const double elapsed=std::chrono::duration<double>(now-canvas_idle_mark).count();canvas_idle_mark=now;
- // Bound catch-up after suspension. The native scheduler still advances in
- // sample frames, with the same work budget as the active audio path.
  const double frames=std::min(elapsed,.1)*48000.+canvas_idle_fraction;
  const auto count=static_cast<unsigned>(frames);canvas_idle_fraction=frames-count;
  auto discard=[](alive::Event){return true;};
- for(unsigned i=0;i<count&&!canvas.failed();i++){
-  if(i%1024==0)canvas.begin_callback();
-  canvas.sample(0,discard);
- }
+ for(unsigned i=0;i<count&&!canvas.failed();++i){if(i%1024==0)canvas.begin_callback();canvas.sample(0,discard);}
  publish_canvas();
 }
 ultra::Sequencer sequence;
@@ -115,11 +212,35 @@ constexpr unsigned ControlCapacity=64;
 std::array<Control,ControlCapacity+1> controls{};
 std::atomic<unsigned> control_head{0},control_tail{0};
 unsigned callback_routes=0; // Callback-owned; initialized only while stopped.
-bool queue_control(Control control){
+bool queue_control(Control control,bool panic_on_overflow=true){
  auto status=engine.status();if(!status.ready||status.fault)return false;
  const auto head=control_head.load(std::memory_order_relaxed),next=(head+1)%(ControlCapacity+1);
- if(next==control_tail.load(std::memory_order_acquire)){engine.panic();return false;}
+ if(next==control_tail.load(std::memory_order_acquire)){if(panic_on_overflow)engine.panic();return false;}
  controls[head]=control;control_head.store(next,std::memory_order_release);return true;
+}
+void drain_stopped_canvas_controls(){
+ // The callback has quiesced. Preserve admitted control edits at the handoff;
+ // synth events are discarded because the audio engine is already stopped.
+ auto discard=[](alive::Event){return true;};canvas.begin_callback();
+ const auto end=control_head.load(std::memory_order_acquire);auto tail=control_tail.load(std::memory_order_relaxed);
+ for(unsigned i=0;tail!=end&&i<ControlCapacity;++i){
+  const auto& control=controls[tail];tail=(tail+1)%(ControlCapacity+1);
+  if(control.kind==ControlKind::CanvasInstall)canvas.install(control.document,control.canvas,0,discard);
+  else if(control.kind==ControlKind::CanvasEvent)canvas.event(control.document,control.revision,control.node,control.inlet,control.message,0,discard);
+  else if(control.kind==ControlKind::CanvasMessageText)canvas.runtime(control.document).message_text(control.revision,control.node,control.text_edit_serial,control.message_template);
+  else if(control.kind==ControlKind::CanvasTab)canvas.tab(control.document,control.revision,control.node,0,discard);
+  else if(control.kind==ControlKind::CanvasParam||control.kind==ControlKind::CanvasParamHot){
+   if(canvas.live(control.document)&&control.revision==canvas.runtime(control.document).plan().graph.revision){
+    if(!canvas.runtime(control.document).param(control.canvas,control.node,control.param,control.value,0,discard))canvas.runtime(control.document).fail();
+    else if(control.kind==ControlKind::CanvasParamHot)canvas.event(control.document,control.revision,control.node,0,control.message,0,discard);
+   }
+  }else if(control.kind==ControlKind::CanvasStop)canvas.stop(control.document,0,discard);
+  else if(control.kind==ControlKind::CanvasClose){canvas.close(control.document,0,discard);canvas.runtime(control.document).reset_console_count();}
+  else if(control.kind==ControlKind::CanvasStopAll)canvas.clear_timers();
+  else if(control.kind==ControlKind::Route||control.kind==ControlKind::Sequence)
+   for(unsigned d=0;d<MaxDocuments;++d)canvas.close(d,0,discard);
+ }
+ control_tail.store(tail,std::memory_order_release);
 }
 int render_audio(Frames n,float* l,float* r,bool with_midi){
  period.store(n,std::memory_order_relaxed);
@@ -127,9 +248,13 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
   if(n>1024){fault_reason.store(4);engine.panic();}
   sequence.clear();sequence_requested=false;canvas.clear_timers();publish_canvas();publish_sequence();std::fill(l,l+n,0);std::fill(r,r+n,0);return 0;
  }
- auto emit=[](alive::Event e){return engine.submit(e);};
+ unsigned engine_frame=0;
+ auto emit=[&](alive::Event e){
+  if(e.offset<engine_frame){engine.panic();return false;}
+  e.offset-=engine_frame;return engine.submit_document(e);
+ };
  canvas.begin_callback();
- auto leave_canvas=[&]{if(callback_canvas){canvas.stop(0,emit);canvas_silence=64;callback_canvas=false;for(unsigned d=0;d<2;d++)emit({0,uint8_t(d),alive::Kind::Reset,0,0});}};
+ auto leave_canvas=[&]{if(callback_canvas){for(unsigned d=0;d<MaxDocuments;++d)canvas.close(d,0,emit);canvas_silence=64;callback_canvas=false;for(unsigned d=0;d<2;++d)emit({0,uint8_t(d),alive::Kind::Reset,0,0});}};
  auto manual=[&](alive::Event e){
   // A has a single owner while armed. B and A's envelope/level remain independent.
   if(e.device==0){
@@ -155,14 +280,28 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
    sequence.configure(control.sequence,emit);
   }else if(control.kind==ControlKind::CanvasInstall){
    sequence.stop(0,emit);sequence_requested.store(false,std::memory_order_relaxed);
-   canvas.reset(control.canvas,false);callback_canvas=true;canvas_silence=64;
-   canvas.stop(0,emit);canvas.configure_voices(0,emit);
+   if(!canvas.install(control.document,control.canvas,0,emit))engine.panic();
+   callback_canvas=canvas.any();document_silence[control.document]=64;
   }else if(control.kind==ControlKind::CanvasEvent){
-   if(callback_canvas&&control.revision==canvas.plan().graph.revision)canvas.event(control.revision,control.node,control.inlet,control.message,0,emit);
-  }else if(control.kind==ControlKind::CanvasParam){
-   if(callback_canvas&&control.revision==canvas.plan().graph.revision&&!canvas.param(control.canvas,control.node,control.param,control.value,0,emit))canvas.fail();
+   if(canvas.live(control.document)&&control.revision==canvas.runtime(control.document).plan().graph.revision)
+    canvas.event(control.document,control.revision,control.node,control.inlet,control.message,0,emit);
+  }else if(control.kind==ControlKind::CanvasMessageText){
+   canvas.runtime(control.document).message_text(control.revision,control.node,control.text_edit_serial,control.message_template);
+  }else if(control.kind==ControlKind::CanvasTab){
+   canvas.tab(control.document,control.revision,control.node,0,emit);
+  }else if(control.kind==ControlKind::CanvasParam||control.kind==ControlKind::CanvasParamHot){
+   if(canvas.live(control.document)&&control.revision==canvas.runtime(control.document).plan().graph.revision){
+    if(!canvas.runtime(control.document).param(control.canvas,control.node,control.param,control.value,0,emit))canvas.runtime(control.document).fail();
+    else if(control.kind==ControlKind::CanvasParamHot)canvas.event(control.document,control.revision,control.node,0,control.message,0,emit);
+   }
   }else if(control.kind==ControlKind::CanvasStop){
-   if(callback_canvas){canvas.stop(0,emit);canvas_silence=64;}
+   canvas.stop(control.document,0,emit);document_silence[control.document]=64;
+  }else if(control.kind==ControlKind::CanvasClose){
+   canvas.close(control.document,0,emit);canvas.runtime(control.document).reset_console_count();
+   document_silence[control.document]=64;callback_canvas=canvas.any();
+   if(!callback_canvas)canvas_silence=64;
+  }else if(control.kind==ControlKind::CanvasStopAll){
+   for(unsigned d=0;d<MaxDocuments;++d){canvas.stop(d,0,emit);document_silence[d]=64;}
   }else if(!callback_canvas)manual(control.event);
   if(canvas.failed()){engine.panic();break;}
  }
@@ -183,15 +322,20 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
  }
  // Merge external clock/transport and musical events on the audio timeline.
  // At most 1024 samples and 128 MIDI records, never an unbounded catch-up loop.
+ std::array<float,alive::DocumentDevices> voice_frame{};
+ std::array<float*,alive::DocumentDevices> voice_buses{};
+ for(unsigned d=0;d<voice_buses.size();++d)voice_buses[d]=&voice_frame[d];
+ if(callback_canvas){std::fill(l,l+n,0.f);std::fill(r,r+n,0.f);}
  unsigned next=0;
  for(unsigned frame=0;frame<n&&!engine.status().fault;frame++){
+  if(callback_canvas)engine_frame=frame;
   while(next<admitted&&input[next].time==frame){
    const auto& e=input[next++];const auto status=e.data[0];
    if(callback_canvas){
     const unsigned channel=(status&15)+1,cmd=status&0xf0;
     if(e.size==3&&(cmd==0x90||cmd==0x80)){
      if(e.data[1]>127||e.data[2]>127){engine.panic();break;}
-     canvas.midi_input(channel,e.data[1],cmd==0x80?0:e.data[2],frame,emit);
+     for(unsigned d=0;d<MaxDocuments;++d)if(canvas.live(d))canvas.runtime(d).midi_input(channel,e.data[1],cmd==0x80?0:e.data[2],frame,emit);
     }
     continue;
    }
@@ -204,15 +348,28 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
    else continue;
    if(e.data[1]>127||e.data[2]>127){engine.panic();break;}manual(event);
   }
-  if(callback_canvas){if(!canvas.sample(frame,emit))engine.panic();}else sequence.sample(frame,emit);
+  if(callback_canvas){
+   if(!canvas.sample(frame,emit)){engine.panic();break;}
+   engine.render_devices({voice_buses.data(),unsigned(voice_buses.size())},nullptr,1);
+   // Signal observations can emit controls for the next engine input sample.
+   engine_frame=frame+1;
+   double left=0,right=0;
+   for(unsigned d=0;d<MaxDocuments;++d)if(canvas.live(d)){
+    const auto sample=canvas.runtime(d).signal_sample(voice_frame[d*2],voice_frame[d*2+1],frame+1,emit,true);
+    if(!document_silence[d]){left+=sample[0];right+=sample[1];}
+    else --document_silence[d];
+   }
+   // Finish every document's signal frame before delivering sampled controls.
+   for(unsigned d=0;d<MaxDocuments;++d)if(canvas.live(d))
+    if(!canvas.runtime(d).flush_signal_events(frame+1,emit))break;
+   if(canvas.failed()||!std::isfinite(left)||!std::isfinite(right)||std::abs(left)>std::numeric_limits<float>::max()||std::abs(right)>std::numeric_limits<float>::max()){
+    engine.panic();break;
+   }
+   l[frame]=float(left);r[frame]=float(right);
+  }else sequence.sample(frame,emit);
  }
  if(callback_canvas){
-  float* buses[]={canvas_audio[0].data(),canvas_audio[1].data()};engine.render_bus({buses,2},nullptr,n);
-  const auto& map=canvas.plan().output;
-  for(unsigned f=0;f<n;f++){
-   l[f]=canvas_silence||map[0]<0?0:canvas_audio[map[0]][f];r[f]=canvas_silence||map[1]<0?0:canvas_audio[map[1]][f];
-   if(canvas_silence)--canvas_silence;
-  }
+  if(engine.status().fault){std::fill(l,l+n,0.f);std::fill(r,r+n,0.f);}
  }else{
   float* channels[]={l,r};engine.render_bus({channels,2},nullptr,n);
   const unsigned mute=std::min(canvas_silence,n);std::fill(l,l+mute,0.f);std::fill(r,r+mute,0.f);canvas_silence-=mute;
@@ -239,20 +396,22 @@ void put16(FILE*f,uint16_t n){unsigned char b[]={static_cast<unsigned char>(n),s
 void put32(FILE*f,uint32_t n){put16(f,n);put16(f,n>>16);}
 }
 extern "C" {
-void ultra_audio_stop(){
+static void stop_audio_impl(bool stop_timers){
+ if(!running.load()&&!engine.status().ready)tick_canvas_idle();
  running.store(false);if(jack.client){jack.deactivate(jack.client);jack.client_close(jack.client);jack.client=nullptr;}
- engine.shutdown();sequence.clear();publish_sequence();canvas.reset(admitted_canvas);callback_canvas=canvas_requested.load();canvas.clear_timers();reset_canvas_idle_clock();publish_canvas();sequence_requested=false;control_head=0;control_tail=0;if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}lost.store(false);error="Audio is stopped.";
+ engine.shutdown();drain_stopped_canvas_controls();sequence.clear();publish_sequence();synchronize_canvas_runtime(stop_timers);reset_canvas_idle_clock();publish_canvas();sequence_requested=false;control_head=0;control_tail=0;if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}lost.store(false);error="Audio is stopped.";
 }
+void ultra_audio_stop(){stop_audio_impl(true);}
 static int start_impl(){
- ultra_audio_stop();if(!jack.load()){if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}error="libjack.so.0 is unavailable. Install your distro's JACK/PipeWire JACK compatibility package, then restart.";return 0;}
+ stop_audio_impl(false);if(!jack.load()){if(jack.lib){dlclose(jack.lib);jack.lib=nullptr;}error="libjack.so.0 is unavailable. Install your distro's JACK/PipeWire JACK compatibility package, then restart.";return 0;}
  unsigned status=0;jack.client=jack.client_open("ultra",1u,&status); // JackNoStartServer
  if(!jack.client){error="Cannot connect to JACK. Start your existing JACK server, or launch Ultra through pw-jack on PipeWire. No server/settings were changed.";return 0;}
  if(jack.get_sample_rate(jack.client)!=48000){ultra_audio_stop();error="This research instrument requires a 48,000 Hz JACK server. Audio remains stopped.";return 0;}
  if(!jack.get_buffer_size(jack.client)||jack.get_buffer_size(jack.client)>1024){ultra_audio_stop();error="JACK period above 1024 frames is unsupported.";return 0;}
  if(!engine.init(48000)){ultra_audio_stop();error="Clockwork/Faust guest initialization was refused.";return 0;}
  callback_routes=routes.load();
- callback_canvas=canvas_requested.load();canvas.reset(admitted_canvas);canvas_silence=64;
- if(callback_canvas){auto emit=[](alive::Event e){return engine.submit(e);};canvas.configure_voices(0,emit);}
+ synchronize_canvas_runtime(false);canvas_silence=64;
+ if(callback_canvas)configure_canvas_audio();
  publish_canvas();
  jack.l=jack.port_register(jack.client,"audio_out_l","32 bit float mono audio",2,0);jack.r=jack.port_register(jack.client,"audio_out_r","32 bit float mono audio",2,0);jack.midi=jack.port_register(jack.client,"midi_in","8 bit raw midi",1,0);
  if(!jack.l||!jack.r||!jack.midi||jack.set_process_callback(jack.client,process,nullptr)||jack.set_xrun_callback(jack.client,xrun,nullptr)||jack.set_sample_rate_callback(jack.client,rate,nullptr)||jack.set_latency_callback(jack.client,latency,nullptr)){
@@ -267,11 +426,10 @@ static int start_impl(){
 int ultra_audio_start(){try{return start_impl();}catch(...){ultra_audio_stop();error="Native audio initialization failed (exception). Audio is stopped.";return 0;}}
 int ultra_external_start(){
  try{
-  ultra_audio_stop();
+  stop_audio_impl(false);
   if(!engine.init(48000)){error="Clockwork/Faust guest initialization was refused.";return 0;}
-  callback_routes=routes.load();callback_canvas=canvas_requested.load();
-  canvas.reset(admitted_canvas);canvas_silence=64;
-  if(callback_canvas){auto emit=[](alive::Event e){return engine.submit(e);};canvas.configure_voices(0,emit);}
+  callback_routes=routes.load();synchronize_canvas_runtime(false);canvas_silence=64;
+  if(callback_canvas)configure_canvas_audio();
   publish_canvas();fault_reason=0;lost=false;xruns=0;period=0;running=true;
   error="Rust audio output is running.";return 1;
  }catch(...){ultra_audio_stop();error="Native DSP initialization failed. Audio is stopped.";return 0;}
@@ -291,13 +449,13 @@ int ultra_audio_event(unsigned device,unsigned kind,unsigned note,unsigned value
 int ultra_audio_sequence(const UltraSequenceConfig* config){
  if(!config||!ultra::valid_sequence(*config)||!running.load()||(config->enabled&&!(routes.load()&1)))return 0;
  const bool accepted=queue_control({{},0,ControlKind::Sequence,*config});
- if(accepted){sequence_requested.store(config->enabled!=0,std::memory_order_release);canvas_requested.store(false,std::memory_order_release);}
+ if(accepted){sequence_requested.store(config->enabled!=0,std::memory_order_release);clear_canvas_requests();}
  return accepted;
 }
 void ultra_audio_routes(unsigned mask){
  mask&=3;unsigned old=routes.load(std::memory_order_relaxed);
  routes.store(mask);const bool was_canvas=canvas_requested.load();
- if(old!=mask||was_canvas){if((old^mask)&1)sequence_requested=false;if(engine.status().ready){if(queue_control({{},mask,ControlKind::Route,{}}))canvas_requested=false;}else {canvas_requested=false;callback_canvas=false;canvas.clear_timers();publish_canvas();}}
+ if(old!=mask||was_canvas){if((old^mask)&1)sequence_requested=false;if(engine.status().ready){if(queue_control({{},mask,ControlKind::Route,{}}))clear_canvas_requests();}else {clear_canvas_requests();auto discard=[](alive::Event){return true;};for(unsigned d=0;d<MaxDocuments;++d)canvas.close(d,0,discard);callback_canvas=false;publish_canvas();}}
 }
 void ultra_audio_panic(){fault_reason.store(1);sequence_requested=false;engine.panic();}
 unsigned ultra_sequence_enabled(){return running.load()&&!engine.status().fault&&sequence_enabled.load(std::memory_order_acquire);}
@@ -306,63 +464,162 @@ unsigned ultra_sequence_note(){return ultra_sequence_enabled()?sequence_note.loa
 uint64_t ultra_sequence_ticks(){return sequence_ticks.load(std::memory_order_relaxed);}
 unsigned ultra_sequence_clock_source(){return sequence_clock_source.load(std::memory_order_relaxed);}
 
-int ultra_canvas_install(const UltraCanvasGraph* graph){
- if(!graph||graph->revision<=admitted_canvas.graph.revision)return 0;
+static void discard_canvas_console(unsigned document){
+ UltraCanvasConsoleRecord row{};for(unsigned i=0;i<128&&canvas.runtime(document).pop_console(row);++i){}
+}
+int ultra_canvas_install_document(uint32_t document,const UltraCanvasGraph* graph){
+ if(document>=MaxDocuments||!graph||graph->revision<=admitted_canvas[document].graph.revision)return 0;
  ultra::CanvasPlan next{};if(!ultra::compile_canvas(*graph,next))return 0;
  const bool was_running=running.load();
  if(was_running){
-  Control c{};c.kind=ControlKind::CanvasInstall;c.canvas=next;if(!queue_control(c))return 0;
+  Control c{};c.kind=ControlKind::CanvasInstall;c.document=document;c.canvas=next;if(!queue_control(c,false))return 0;
  }else if(engine.status().ready)return 0;
- admitted_canvas=next;canvas_requested=true;sequence_requested=false;
- if(!was_running){canvas.reset(next);callback_canvas=true;canvas.clear_timers();reset_canvas_idle_clock();publish_canvas();}
+ if(!was_running)tick_canvas_idle();
+ admitted_canvas[document]=next;admitted_message_serial[document]=0;requested_documents[document]=true;update_canvas_requested();sequence_requested=false;
+ if(!was_running){auto discard=[](alive::Event){return true;};canvas.begin_callback();canvas.install(document,next,0,discard);callback_canvas=canvas.any();publish_canvas();}
  return 1;
 }
-int ultra_canvas_event(uint64_t revision,uint32_t node,uint32_t inlet,uint32_t count,const double* values){
+int ultra_canvas_event_document(uint32_t document,uint64_t revision,uint32_t node,uint32_t inlet,uint32_t count,const double* values){
  if(count>8||(count&&!values))return 0;
  UltraCanvasMessage message{};message.count=count;
- for(unsigned i=0;i<count;i++){message.values[i]=values[i];message.tags[i]=std::floor(values[i])==values[i]?0:1;}
- return ultra_canvas_message(revision,node,inlet,&message);
+ for(unsigned i=0;i<count;++i){message.values[i]=values[i];message.tags[i]=std::floor(values[i])==values[i]?0:1;}
+ return ultra_canvas_message_document(document,revision,node,inlet,&message);
 }
-int ultra_canvas_message(uint64_t revision,uint32_t node,uint32_t inlet,const UltraCanvasMessage* message){
- if(!message||!canvas_requested.load())return 0;
+int ultra_canvas_message_document(uint32_t document,uint64_t revision,uint32_t node,uint32_t inlet,const UltraCanvasMessage* message){
+ if(document>=MaxDocuments||!message||!requested_documents[document].load())return 0;
  const auto m=ultra::canvas_message_from_pod(*message);
- if(!ultra::canvas_event_valid(admitted_canvas,revision,node,inlet,m))return 0;
+ if(!ultra::canvas_event_valid(admitted_canvas[document],revision,node,inlet,m))return 0;
  if(running.load()){
-  Control c{};c.kind=ControlKind::CanvasEvent;c.revision=revision;c.node=node;c.inlet=inlet;c.message=m;return queue_control(c);
+  Control c{};c.kind=ControlKind::CanvasEvent;c.document=document;c.revision=revision;c.node=node;c.inlet=inlet;c.message=m;return queue_control(c,false);
  }
  if(engine.status().ready)return 0;
  tick_canvas_idle();canvas.begin_callback();auto discard=[](alive::Event){return true;};
- const bool accepted=canvas.event(revision,node,inlet,m,0,discard);publish_canvas();return accepted;
+ const bool accepted=canvas.event(document,revision,node,inlet,m,0,discard);publish_canvas();return accepted;
 }
-int ultra_canvas_param(uint64_t revision,uint32_t node,uint32_t param,double value){
- if(!canvas_requested.load()||revision!=admitted_canvas.graph.revision)return 0;
- auto next=admitted_canvas;if(!ultra::change_canvas_param(next,node,param,value))return 0;
+int ultra_canvas_message_text_document(uint32_t document,uint64_t revision,uint32_t node,uint64_t serial,const char* text,uint32_t length){
+ if(document>=MaxDocuments||!requested_documents[document].load()||revision!=admitted_canvas[document].graph.revision||!serial||serial>9007199254740991ULL||serial<=admitted_message_serial[document]||!text||length>127)return 0;
+ const int slot=admitted_canvas[document].find(node);if(slot<0||admitted_canvas[document].graph.nodes[slot].kind!=ultra::MessageBox)return 0;
+ char source[128]{};for(unsigned i=0;i<length;++i){if(!text[i])return 0;source[i]=text[i];}
+ ultra::CanvasMessageTemplate content{};if(!ultra::canvas_message_template(source,content))return 0;
+ const bool was_running=running.load();
+ if(was_running){Control c{};c.kind=ControlKind::CanvasMessageText;c.document=document;c.revision=revision;c.node=node;c.text_edit_serial=serial;c.message_template=content;if(!queue_control(c,false))return 0;}
+ else if(engine.status().ready)return 0;
+ if(!was_running){tick_canvas_idle();if(!canvas.runtime(document).message_text(revision,node,serial,content))return 0;publish_canvas();}
+ auto& plan=admitted_canvas[document];std::memcpy(plan.graph.nodes[slot].text,source,128);plan.message_templates[slot]=content;admitted_message_serial[document]=serial;return 1;
+}
+int ultra_canvas_message_boxes_document(uint32_t document,UltraCanvasMessageBoxSnapshot* result){
+ if(document>=MaxDocuments||!result||!requested_documents[document].load())return 0;
+ const auto& published=published_message_boxes[document];
+ for(unsigned attempt=0;attempt<4;++attempt){
+  const auto before=published.generation.load();if(before&1)continue;
+  UltraCanvasMessageBoxSnapshot snapshot{};snapshot.revision=published.revision.load();snapshot.text_edit_serial=published.serial.load();snapshot.node_count=published.count.load();
+  if(snapshot.node_count>32)continue;
+  for(unsigned i=0;i<snapshot.node_count;++i){std::array<uint64_t,55> words{};for(unsigned w=0;w<words.size();++w)words[w]=published.words[i][w].load();std::memcpy(&snapshot.nodes[i],words.data(),sizeof snapshot.nodes[i]);}
+  if(before==published.generation.load()){*result=snapshot;return 1;}
+ }
+ return 0;
+}
+int ultra_canvas_print_popups_document(uint32_t document,UltraCanvasPrintPopupSnapshot* result){
+ if(document>=MaxDocuments||!result||!requested_documents[document].load())return 0;
+ const auto& published=published_print_popups[document];
+ for(unsigned attempt=0;attempt<4;++attempt){
+  const auto before=published.generation.load();if(before&1)continue;
+  UltraCanvasPrintPopupSnapshot snapshot{};snapshot.revision=published.revision.load();snapshot.frame=published.frame.load();snapshot.node_count=published.count.load();
+  if(snapshot.node_count>32)continue;
+  for(unsigned i=0;i<snapshot.node_count;++i){std::array<uint64_t,53> words{};for(unsigned w=0;w<words.size();++w)words[w]=published.words[i][w].load();std::memcpy(&snapshot.nodes[i],words.data(),sizeof snapshot.nodes[i]);}
+  if(before==published.generation.load()){*result=snapshot;return 1;}
+ }
+ return 0;
+}
+int ultra_canvas_param_document(uint32_t document,uint64_t revision,uint32_t node,uint32_t param,double value){
+ return ultra_canvas_param_hot_document(document,revision,node,param,value,0);
+}
+int ultra_canvas_tab_document(uint32_t document,uint64_t revision,uint32_t node){
+ if(document>=MaxDocuments||!requested_documents[document].load()||!ultra::canvas_tab_valid(admitted_canvas[document],revision,node))return 0;
+ if(running.load()){
+  Control c{};c.kind=ControlKind::CanvasTab;c.document=document;c.revision=revision;c.node=node;return queue_control(c,false);
+ }
+ if(engine.status().ready)return 0;
+ tick_canvas_idle();canvas.begin_callback();auto discard=[](alive::Event){return true;};
+ const bool accepted=canvas.tab(document,revision,node,0,discard);publish_canvas();return accepted;
+}
+int ultra_canvas_param_hot_document(uint32_t document,uint64_t revision,uint32_t node,uint32_t param,double value,uint32_t hot){
+ if(hot>1)return 0;
+ if(document>=MaxDocuments||!requested_documents[document].load()||revision!=admitted_canvas[document].graph.revision)return 0;
+ auto next=admitted_canvas[document];if(!ultra::change_canvas_param(next,node,param,value))return 0;
+ ultra::CanvasMessage message{1,{value,0,0}};message.tags[0]=std::floor(value)==value?0:1;
+ if(hot&&!ultra::canvas_event_valid(next,revision,node,0,message))return 0;
  const bool was_running=running.load();
  if(was_running){
-  Control c{};c.kind=ControlKind::CanvasParam;c.revision=revision;c.node=node;c.param=param;c.value=value;c.canvas=next;if(!queue_control(c))return 0;
+  Control c{};c.kind=hot?ControlKind::CanvasParamHot:ControlKind::CanvasParam;c.document=document;c.revision=revision;c.node=node;c.param=param;c.value=value;c.canvas=next;c.message=message;if(!queue_control(c,false))return 0;
  }else if(engine.status().ready)return 0;
- if(!was_running){tick_canvas_idle();canvas.begin_callback();auto discard=[](alive::Event){return true;};if(!canvas.param(next,node,param,value,0,discard))return 0;publish_canvas();}
- admitted_canvas=next;
- return 1;
+ if(!was_running){
+  tick_canvas_idle();canvas.begin_callback();auto discard=[](alive::Event){return true;};
+  if(!canvas.runtime(document).param(next,node,param,value,0,discard))return 0;
+  if(hot)canvas.event(document,revision,node,0,message,0,discard);
+  publish_canvas();
+ }
+ admitted_canvas[document]=next;return 1;
 }
-void ultra_canvas_stop(){
- if(!canvas_requested.load())return;
- if(running.load()){Control c{};c.kind=ControlKind::CanvasStop;queue_control(c);}
- else if(engine.status().ready){engine.panic();} // Shutdown may still own callback state.
+int ultra_canvas_stop_document(uint32_t document){
+ if(document>=MaxDocuments)return 0;
+ if(!requested_documents[document].load())return 1;
+ if(running.load()){Control c{};c.kind=ControlKind::CanvasStop;c.document=document;return queue_control(c,false);}
+ if(engine.status().ready)return 0;
+ tick_canvas_idle();auto discard=[](alive::Event){return true;};canvas.stop(document,0,discard);publish_canvas();return 1;
+}
+int ultra_canvas_close_document(uint32_t document){
+ if(document>=MaxDocuments)return 0;
+ if(!requested_documents[document].load()){discard_canvas_console(document);return 1;}
+ const bool was_running=running.load();
+ if(was_running){Control c{};c.kind=ControlKind::CanvasClose;c.document=document;if(!queue_control(c,false))return 0;}
+ else if(engine.status().ready)return 0;
+ if(!was_running){tick_canvas_idle();auto discard=[](alive::Event){return true;};canvas.close(document,0,discard);canvas.runtime(document).reset_console_count();callback_canvas=canvas.any();publish_canvas();}
+ closed_console_revision[document]=admitted_canvas[document].graph.revision;
+ requested_documents[document]=false;update_canvas_requested();discard_canvas_console(document);return 1;
+}
+void ultra_canvas_stop_all(){
+ if(running.load()){Control c{};c.kind=ControlKind::CanvasStopAll;queue_control(c);}
+ else if(engine.status().ready)engine.panic();
  else {canvas.clear_timers();reset_canvas_idle_clock();publish_canvas();}
 }
 void ultra_canvas_idle_tick(){tick_canvas_idle();}
-void ultra_canvas_status(UltraCanvasStatus* result){
+uint32_t ultra_canvas_console_document(uint32_t document,UltraCanvasConsoleRecord* records,uint32_t capacity,uint64_t* dropped){
+ if(document>=MaxDocuments||!records||!dropped)return 0;
+ unsigned count=0;UltraCanvasConsoleRecord row{};auto& runtime=canvas.runtime(document);
+ // A closed/reused slot must never publish records from its previous graph.
+ const bool requested=requested_documents[document].load();const auto revision=closed_console_revision[document];
+ for(unsigned i=0;i<128&&count<std::min(capacity,128u)&&runtime.pop_console(row);++i)
+  if(requested&&row.revision>revision)records[count++]=row;
+ *dropped=runtime.console_dropped();return count;
+}
+void ultra_canvas_status_document(uint32_t document,UltraCanvasStatus* result){
  if(!result)return;
- // Every field is atomic. Four attempts bound UI work under callback contention.
- for(unsigned attempt=0;attempt<4;attempt++){
-  auto before=canvas_generation.load(std::memory_order_acquire);if(before&1)continue;
-  UltraCanvasStatus s{};s.revision=canvas_revision.load(std::memory_order_relaxed);s.node_count=canvas_count.load(std::memory_order_relaxed);s.active=canvas_active.load(std::memory_order_relaxed);
-  for(unsigned i=0;i<s.node_count;i++){s.nodes[i].id=canvas_nodes[i].id.load(std::memory_order_relaxed);s.nodes[i].value=bits_double(canvas_nodes[i].value.load(std::memory_order_relaxed));s.nodes[i].pulses=canvas_nodes[i].pulses.load(std::memory_order_relaxed);}
-  if(before==canvas_generation.load(std::memory_order_acquire)){*result=s;return;}
+ if(document>=MaxDocuments){*result={};return;}
+ const auto& published=published_canvases[document];
+ for(unsigned attempt=0;attempt<4;++attempt){
+  auto before=published.generation.load(std::memory_order_acquire);if(before&1)continue;
+  UltraCanvasStatus status{};status.revision=published.revision.load(std::memory_order_relaxed);status.node_count=published.count.load(std::memory_order_relaxed);status.active=published.active.load(std::memory_order_relaxed);
+  for(unsigned i=0;i<status.node_count;++i){status.nodes[i].id=published.nodes[i].id.load(std::memory_order_relaxed);status.nodes[i].value=bits_double(published.nodes[i].value.load(std::memory_order_relaxed));status.nodes[i].pulses=published.nodes[i].pulses.load(std::memory_order_relaxed);}
+  if(before==published.generation.load(std::memory_order_acquire)){*result=status;return;}
  }
  *result={};
 }
+static int legacy_canvas_result(int accepted){
+ // Preserve the old fail-closed overflow contract only for legacy doc-0 ingress.
+ if(!accepted&&running.load()){
+  const auto next=(control_head.load(std::memory_order_relaxed)+1)%(ControlCapacity+1);
+  if(next==control_tail.load(std::memory_order_acquire))engine.panic();
+ }
+ return accepted;
+}
+int ultra_canvas_install(const UltraCanvasGraph* graph){return legacy_canvas_result(ultra_canvas_install_document(0,graph));}
+int ultra_canvas_event(uint64_t revision,uint32_t node,uint32_t inlet,uint32_t count,const double* values){return legacy_canvas_result(ultra_canvas_event_document(0,revision,node,inlet,count,values));}
+int ultra_canvas_message(uint64_t revision,uint32_t node,uint32_t inlet,const UltraCanvasMessage* message){return legacy_canvas_result(ultra_canvas_message_document(0,revision,node,inlet,message));}
+int ultra_canvas_param(uint64_t revision,uint32_t node,uint32_t param,double value){return legacy_canvas_result(ultra_canvas_param_document(0,revision,node,param,value));}
+void ultra_canvas_stop(){if(!ultra_canvas_stop_document(0)&&engine.status().ready)engine.panic();}
+uint32_t ultra_canvas_console(UltraCanvasConsoleRecord* records,uint32_t capacity,uint64_t* dropped){return ultra_canvas_console_document(0,records,capacity,dropped);}
+void ultra_canvas_status(UltraCanvasStatus* result){ultra_canvas_status_document(0,result);}
 const char* ultra_audio_error(){
  const auto status=engine.status();if(status.ready&&status.fault){switch(fault_reason.load()){
  case 1:return "Panic muted the engine. Stop then Start to reset.";

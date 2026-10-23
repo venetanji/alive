@@ -1,0 +1,152 @@
+--- a/experiments/max-reference/int-float-runtime-20261022/controller.js
++++ b/experiments/max-reference/int-float-runtime-20261022/controller.js
+@@ -7,12 +7,36 @@
+ function read(path) {
+     var f=new File(path,"read"),text="";
+     if (!f.isopen) return null;
+-    while(f.position<f.eof)text+=f.readline()+"\n";
+-    f.close();return JSON.parse(text);
++    try {
++        var length=f.eof;
++        if(!finite(length)||length<0||Math.floor(length)!==length)throw Error("private-file-read-size");
++        if(f.position!==0)throw Error("private-file-read-position");
++        while(f.position<length) {
++            var before=f.position,count=Math.min(4096,length-before),chunk=f.readstring(count);
++            if(typeof chunk!=="string"||chunk.length===0||chunk.length>count||f.position!==before+chunk.length)
++                throw Error("private-file-read-progress");
++            text+=chunk;
++        }
++        if(f.position!==length||f.eof!==length)throw Error("private-file-read-size");
++        return JSON.parse(text);
++    }finally{f.close();}
+ }
+ function write(path,value) {
++    // ASCII chunks avoid Max's observed 32768-byte line limit and split UTF-16 pairs safely.
++    var text=JSON.stringify(value).replace(/[\u007f-\uffff]/g,function(character){
++        return "\\u"+("0000"+character.charCodeAt(0).toString(16)).slice(-4);
++    })+"\n";
+     var f=new File(path,"write","TEXT");if(!f.isopen)throw Error("private-file-unavailable");
+-    f.eof=0;f.writeline(JSON.stringify(value));f.close();
++    try {
++        f.eof=0;f.position=0;
++        if(f.eof!==0||f.position!==0)throw Error("private-file-truncate-refused");
++        for(var offset=0;offset<text.length;offset+=4096) {
++            var chunk=text.slice(offset,offset+4096),before=f.position;
++            f.writestring(chunk);
++            if(f.position!==before+chunk.length)throw Error("private-file-write-progress");
++        }
++        if(f.eof!==text.length)throw Error("private-file-write-size");
++    }finally{f.close();}
+ }
+ function record(kind,extra) {
+     var row={seq:++shared.seq,request_id:shared.request_id,step_id:shared.step_id,action:shared.action,
+--- /dev/null
++++ b/experiments/max-reference/int-float-runtime-20261022/test_transport.cjs
+@@ -0,0 +1,107 @@
++// Real controller JSON transport against a synthetic File boundary; no target launch.
++const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
++const source=fs.readFileSync(path.join(__dirname,'controller.js'),'utf8');
++function fixture(initial={},fault=null) {
++ const disk=new Map(Object.entries(initial).map(([name,text])=>[name,Buffer.from(text,'utf8')]));
++ const handles=[],writes=[],reads=[];let writeCalls=0,readCalls=0;
++ const ctx=vm.createContext({jsarguments:['js','synthetic-config']});vm.runInContext(source,ctx);
++ ctx.File=function(name,mode) {
++  const file=this;let position=fault==='read-start'?1:0;
++  this.isopen=fault!=='unavailable'&&(mode!=='read'||disk.has(name));this.closed=false;handles.push(this);
++  if(mode!=='read'&&!disk.has(name))disk.set(name,Buffer.alloc(0));
++  Object.defineProperty(this,'position',{get:()=>position,set:v=>{position=fault==='bad-reset'?1:v;}});
++  Object.defineProperty(this,'eof',{get:()=>disk.get(name).length+(fault==='bad-eof'&&writeCalls?1:0),set:v=>{
++   if(fault==='truncate-throw')throw Error('synthetic truncate failure');
++   const old=disk.get(name),next=Buffer.alloc(v);old.copy(next,0,0,Math.min(old.length,v));disk.set(name,next);
++  }});
++  function append(text) {
++   const bytes=Buffer.from(text,'utf8'),old=disk.get(name),next=Buffer.alloc(Math.max(old.length,position+bytes.length));
++   old.copy(next);bytes.copy(next,position);disk.set(name,next);position+=bytes.length;
++  }
++  this.writeline=text=>{append(text.slice(0,32768)+'\n');};
++  this.writestring=text=>{
++   assert.equal(file.closed,false);assert.ok(text.length<=4096,'every write must stay below the observed boundary');
++   assert.ok(/^[\x00-\x7f]*$/.test(text),'chunks must contain only ASCII bytes');writes.push(text.length);++writeCalls;
++   if(fault==='write-throw'&&writeCalls===2)throw Error('synthetic write failure');
++   if(fault==='write-stall'&&writeCalls===2)return;
++   append(fault==='write-short'&&writeCalls===2?text.slice(0,-1):text);
++  };
++  this.readline=(count=512)=>{
++   const bytes=disk.get(name),end=bytes.indexOf(10,position),stop=Math.min(position+count,end<0?bytes.length:end);
++   const text=bytes.subarray(position,stop).toString('utf8');position=stop;
++   if(position<bytes.length&&bytes[position]===10)++position;return text;
++  };
++  this.readstring=count=>{
++   assert.equal(file.closed,false);assert.ok(count>0&&count<=4096,'reads must be bounded');reads.push(count);++readCalls;
++   if(fault==='read-throw'&&readCalls===2)throw Error('synthetic read failure');
++   if(fault==='read-stall'&&readCalls===2)return '';
++   if(fault==='read-eof'&&readCalls===2)disk.set(name,disk.get(name).subarray(0,position));
++   const bytes=disk.get(name),length=Math.min(count,bytes.length-position)-(fault==='read-short'&&readCalls===2?1:0);
++   const text=bytes.subarray(position,position+length).toString('utf8');position+=length;
++   if(fault==='read-grow'&&readCalls===1)disk.set(name,Buffer.concat([bytes,Buffer.from('extra')]));
++   return fault==='read-loss'&&readCalls===2?text.slice(0,-1):text;
++  };
++  this.close=()=>{this.closed=true;};
++ };
++ return {ctx,disk,writes,reads,handles,closed(){
++  for(const h of handles)if(h.isopen)assert.equal(h.closed,true,'every opened handle must close, including failures');
++ }};
++}
++function plain(value){return JSON.parse(JSON.stringify(value));}
++const samples=Array.from({length:31},(_,attempt)=>({phase:attempt?'poll':'before-dispose',attempt,
++ root_valid:{status:'returned',type:'undefined'},
++ reader_valid:{status:'returned',type:'number',value:attempt?0:1},
++ disposer_valid:{status:'returned',type:'number',value:attempt?0:1},
++ root_filepath:{status:'returned',type:'string',value:'Z:/private/float-r1.maxhelp'},
++ firstobject:{status:'returned',type:'object'},firstobject_valid:{status:'returned',type:'number',value:attempt?0:1},
++ wind:{status:'returned',type:'object'},wind_visible:{status:'returned',type:'boolean',value:true},
++ wind_assocclass:{status:'returned',type:'string',value:'patcher'},wind_assoc:{status:'returned',type:'object'},
++ wind_assoc_filepath:{status:'returned',type:'string',value:'Z:/private/float-r1.maxhelp'},
++ objects:Array.from({length:23},(_,index)=>({anchor:'root/obj-2/obj-'+(index+1),
++  valid:{status:'returned',type:'number',value:attempt?0:1}}))}));
++const fullAck={command_id:125,success:false,error_code:'numeric-controller-refused',anchor_diagnostics:[],
++ geometry_dispositions:[],numeric_mode_observations:[],close_diagnostics:{request_id:125,step_id:'close-float',
++ action:'close',document:'float',revision:1,source_sha256:'e'.repeat(64),working_path:'Z:/private/float-r1.maxhelp',
++ helper_sha256:{'helpstarter.js':'a'.repeat(64),'helpname.js':'b'.repeat(64),
++  'helpdetails.js':'c'.repeat(64),'helpargs.js':'d'.repeat(64)},samples,
++ dispose:{attempted:true,result:{status:'returned',type:'undefined'}}}};
++const mode=process.argv[2];
++if(mode!=='read') {
++ const f=fixture({ack:'stale'.repeat(30000)});f.ctx.write('ack',fullAck);f.closed();
++ const bytes=f.disk.get('ack'),expected=JSON.stringify(fullAck)+'\n';assert.ok(expected.length>32768);
++ assert.equal(bytes.length,expected.length,'complete ACK must survive the observed 32768-byte writeline cutoff');
++ assert.deepEqual(JSON.parse(bytes.toString('ascii')),fullAck);
++ assert.equal(bytes.toString('ascii'),expected,'exact JSON bytes must replace every stale suffix');
++ assert.equal(JSON.parse(bytes).close_diagnostics.samples.length,31);
++ for(const s of JSON.parse(bytes).close_diagnostics.samples)assert.equal(s.objects.length,23);
++ assert.deepEqual(plain(f.ctx.read('ack')),fullAck);f.closed();
++ for(const total of [4095,4096,4097,32767,32768,32769,65536]) {
++  const item='x'.repeat(total-3),boundary=fixture();boundary.ctx.write('out',item);
++  assert.equal(boundary.disk.get('out').length,total);assert.deepEqual(plain(boundary.ctx.read('out')),item);boundary.closed();
++ }
++ for(const unicode of ['\u4e2d\u6587','\ud83d\ude42','\ud800','\udfff','\u0000\n"\u2028\u2029\u007f',
++  'x'.repeat(4085)+'\ud83d\ude42\u4e2d']) {
++  const encoded=fixture();encoded.ctx.write('out',{value:unicode});
++  const text=encoded.disk.get('out').toString('ascii');assert.ok(/^[\x00-\x7f]*$/.test(text));
++  assert.deepEqual(JSON.parse(text),{value:unicode});assert.deepEqual(plain(encoded.ctx.read('out')),{value:unicode});encoded.closed();
++ }
++ for(const fault of ['write-short','write-stall','write-throw','truncate-throw','bad-reset','bad-eof']) {
++  const broken=fixture({out:'stale'},fault);
++  assert.throws(()=>broken.ctx.write('out',fullAck),/private-file|synthetic/);broken.closed();
++ }
++ const unavailable=fixture({},'unavailable');assert.throws(()=>unavailable.ctx.write('out',{}),/private-file/);
++}
++if(mode!=='write') {
++ const value={id:125,payload:'x'.repeat(40000),tail:'retained'},input=JSON.stringify(value)+'\n';
++ const f=fixture({input});let got;
++ assert.doesNotThrow(()=>{got=f.ctx.read('input');},'long JSON strings must not acquire readline fragment newlines');
++ assert.deepEqual(plain(got),value);f.closed();
++ const partial=fixture({input},'read-short');assert.deepEqual(plain(partial.ctx.read('input')),value);partial.closed();
++ for(const fault of ['read-stall','read-loss','read-throw','read-eof','read-grow']) {
++  const broken=fixture({input},fault);assert.throws(()=>broken.ctx.read('input'),/private-file|synthetic/);broken.closed();
++ }
++ const invalid=fixture({input:'{"unclosed":'});assert.throws(()=>invalid.ctx.read('input'));invalid.closed();
++ const shifted=fixture({input:'34'},'read-start');assert.throws(()=>shifted.ctx.read('input'),/private-file/);shifted.closed();
++ const unavailable=fixture({},'unavailable');assert.equal(unavailable.ctx.read('absent'),null);
++}
++console.log('transport: complete large ACK, ASCII Unicode/surrogates, boundaries, exact reads, stale truncation and IO-failure closure pass');

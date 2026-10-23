@@ -32,8 +32,8 @@ static std::vector<Record> score(const std::vector<unsigned>& parts){
 int main(){
  CanvasPlan p;auto g=simple();assert(compile_canvas(g,p));assert(p.output[0]==0&&p.output[1]==-1);
  g.edges[g.edge_count++]={7,0,8,1};assert(compile_canvas(g,p));assert(p.output[1]==0);
- g.edges[g.edge_count++]={6,0,8,1};assert(!compile_canvas(g,p));
- g=simple();g.nodes[9]={10,Gain,0,0,90,0,0};g.node_count=10;g.edges[g.edge_count++]={6,0,10,0};assert(!compile_canvas(g,p));
+ g.edges[g.edge_count++]={6,0,8,1};assert(compile_canvas(g,p));
+ g=simple();g.nodes[9]={10,Gain,0,0,90,0,0};g.node_count=10;g.edges[g.edge_count++]={6,0,10,0};assert(compile_canvas(g,p));
  g=simple();g.edges[g.edge_count++]={3,0,1,0};assert(!compile_canvas(g,p));
  g=simple();g.nodes[1].p0=19;assert(!compile_canvas(g,p));g=simple();g.nodes[5].device=2;assert(!compile_canvas(g,p));
  g=simple();g.nodes[9]={10,Voice,0,0,8,28,0};g.node_count=10;assert(!compile_canvas(g,p));
@@ -43,7 +43,7 @@ int main(){
  g=simple();g.edge_count=65;assert(!compile_canvas(g,p));
  g=simple();g.nodes[1].id=1;assert(!compile_canvas(g,p));
  g=simple();g.nodes[0].id=0;assert(!compile_canvas(g,p));
- g=simple();g.nodes[0].kind=25;assert(!compile_canvas(g,p));
+ g=simple();g.nodes[0].kind=26;assert(!compile_canvas(g,p));
  g=simple();g.nodes[0].p0=std::numeric_limits<double>::infinity();assert(!compile_canvas(g,p));
  g=simple();g.nodes[0].p0=std::numeric_limits<double>::quiet_NaN();assert(!compile_canvas(g,p));
  g=simple();g.edges[0].outlet=1;assert(!compile_canvas(g,p));

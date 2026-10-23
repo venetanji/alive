@@ -26,7 +26,7 @@ class QuietHandler(http.server.SimpleHTTPRequestHandler):
 
 
 class GainSliderWebKitTest(unittest.TestCase):
-    def test_fill_grows_up_from_minimum_without_reversing_at_midpoint(self):
+    def test_flat_gain_bar_moves_up_and_spans_the_channel(self):
         ui = Path(__file__).resolve().parents[2] / "ui"
         handler = functools.partial(QuietHandler, directory=str(ui))
         server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
@@ -61,11 +61,11 @@ class GainSliderWebKitTest(unittest.TestCase):
             surface.flush()
             scale = surface.get_width() / geometry["viewportWidth"]
             rect = geometry["rect"]
-            x = round((rect["x"] + rect["width"] / 2) * scale)
             pixels = surface.get_data()
 
-            def pixel_at(fraction):
-                y = round((rect["y"] + rect["height"] * fraction) * scale)
+            def pixel_at(x_fraction, row):
+                x = round((rect["x"] + rect["width"] * x_fraction) * scale)
+                y = round(rect["y"] * scale) + row
                 if not (0 <= x < surface.get_width() and 0 <= y < surface.get_height()):
                     raise AssertionError(f"Gain sample outside the visible snapshot: {(x, y)}")
                 offset = y * surface.get_stride() + x * 4
@@ -73,7 +73,15 @@ class GainSliderWebKitTest(unittest.TestCase):
                 argb = int.from_bytes(pixels[offset:offset + 4], sys.byteorder)
                 return ((argb >> 16) & 255, (argb >> 8) & 255, argb & 255)
 
-            samples[current] = (pixel_at(.3), pixel_at(.7))
+            def is_blue(rgb):
+                red, green, blue = rgb
+                return blue > 150 and blue - red > 30 and blue - green > 5
+
+            height = round(rect["height"] * scale)
+            blue_rows = [[row for row in range(height)
+                          if is_blue(pixel_at(column, row))]
+                         for column in (.25, .5, .75)]
+            samples[current] = {"height": height, "rows": blue_rows}
             GLib.idle_add(next_value)
 
         @guard
@@ -126,14 +134,18 @@ class GainSliderWebKitTest(unittest.TestCase):
         if failures:
             raise failures[0]
 
-        def is_blue(rgb):
-            red, green, blue = rgb
-            return blue > 150 and blue - red > 30 and blue - green > 5
-
-        filled = {value: tuple(map(is_blue, pixels)) for value, pixels in samples.items()}
-        self.assertEqual(filled[0], (False, False), f"minimum must be unfilled: {samples}")
-        self.assertEqual(filled[64], (False, True), f"midpoint must fill below the thumb: {samples}")
-        self.assertEqual(filled[127], (True, True), f"maximum must fill the track: {samples}")
+        centers = {}
+        for value, sample in samples.items():
+            columns = sample["rows"]
+            self.assertTrue(all(columns), f"bar must span the channel: {samples}")
+            self.assertEqual(columns[0], columns[2], f"bar must be flat: {samples}")
+            rows = columns[1]
+            self.assertLess(len(rows), sample["height"] / 4,
+                            f"render a bar, not a native filled track: {samples}")
+            centers[value] = sum(rows) / len(rows) / sample["height"]
+        self.assertGreater(centers[0], .85, f"minimum belongs at the bottom: {samples}")
+        self.assertAlmostEqual(centers[64], .5, delta=.06)
+        self.assertLess(centers[127], .15, f"maximum belongs at the top: {samples}")
 
 
 if __name__ == "__main__":

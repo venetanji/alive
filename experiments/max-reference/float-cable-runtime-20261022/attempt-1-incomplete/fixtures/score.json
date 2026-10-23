@@ -1,0 +1,203 @@
+[
+  {
+    "id": "zero",
+    "target": "zero",
+    "lane": 0,
+    "selector": "int",
+    "atoms": [
+      0
+    ]
+  },
+  {
+    "id": "whole",
+    "target": "whole",
+    "lane": 1,
+    "selector": "float",
+    "atoms": [
+      2
+    ]
+  },
+  {
+    "id": "half",
+    "target": "half",
+    "lane": 2,
+    "selector": "float",
+    "atoms": [
+      2.5
+    ]
+  },
+  {
+    "id": "negative",
+    "target": "negative",
+    "lane": 3,
+    "selector": "float",
+    "atoms": [
+      -2.5
+    ]
+  },
+  {
+    "id": "fraction",
+    "target": "fraction",
+    "lane": 4,
+    "selector": "float",
+    "atoms": [
+      0.123456789
+    ]
+  },
+  {
+    "id": "small",
+    "target": "small",
+    "lane": 5,
+    "selector": "float",
+    "atoms": [
+      1e-06
+    ]
+  },
+  {
+    "id": "tinyneg",
+    "target": "tinyneg",
+    "lane": 6,
+    "selector": "float",
+    "atoms": [
+      -1e-07
+    ]
+  },
+  {
+    "id": "tiny",
+    "target": "tiny",
+    "lane": 7,
+    "selector": "float",
+    "atoms": [
+      1e-08
+    ]
+  },
+  {
+    "id": "entry-initial",
+    "target": "entry",
+    "lane": 12,
+    "selector": "float",
+    "atoms": [
+      1.25
+    ]
+  },
+  {
+    "id": "hot-int-3",
+    "target": "multiply",
+    "lane": 10,
+    "selector": "int",
+    "atoms": [
+      3
+    ]
+  },
+  {
+    "id": "hot-float-4",
+    "target": "multiply",
+    "lane": 10,
+    "selector": "float",
+    "atoms": [
+      4
+    ]
+  },
+  {
+    "id": "hot-int-negative-3",
+    "target": "multiply",
+    "lane": 10,
+    "selector": "int",
+    "atoms": [
+      -3
+    ]
+  },
+  {
+    "id": "recall-half",
+    "target": "multiply",
+    "lane": 10,
+    "selector": "bang",
+    "atoms": []
+  },
+  {
+    "id": "cold-int-2",
+    "target": "multiply",
+    "lane": 11,
+    "selector": "int",
+    "atoms": [
+      2
+    ]
+  },
+  {
+    "id": "recall-cold-int",
+    "target": "multiply",
+    "lane": 10,
+    "selector": "bang",
+    "atoms": []
+  },
+  {
+    "id": "cold-float-half",
+    "target": "multiply",
+    "lane": 11,
+    "selector": "float",
+    "atoms": [
+      0.5
+    ]
+  },
+  {
+    "id": "recall-cold-float",
+    "target": "multiply",
+    "lane": 10,
+    "selector": "bang",
+    "atoms": []
+  },
+  {
+    "id": "cold-float-negative",
+    "target": "multiply",
+    "lane": 11,
+    "selector": "float",
+    "atoms": [
+      -2.5
+    ]
+  },
+  {
+    "id": "hot-int-2",
+    "target": "multiply",
+    "lane": 10,
+    "selector": "int",
+    "atoms": [
+      2
+    ]
+  },
+  {
+    "id": "cold-restore-half",
+    "target": "multiply",
+    "lane": 11,
+    "selector": "float",
+    "atoms": [
+      0.5
+    ]
+  },
+  {
+    "id": "hot-fraction",
+    "target": "multiply",
+    "lane": 10,
+    "selector": "float",
+    "atoms": [
+      0.25
+    ]
+  },
+  {
+    "id": "hot-int-zero",
+    "target": "multiply",
+    "lane": 10,
+    "selector": "int",
+    "atoms": [
+      0
+    ]
+  },
+  {
+    "id": "hot-float-zero",
+    "target": "multiply",
+    "lane": 10,
+    "selector": "float",
+    "atoms": [
+      0
+    ]
+  }
+]

@@ -1,0 +1,75 @@
+--- initial/test_helpers.cjs
++++ current/test_helpers.cjs
+@@ -1574,12 +1574,41 @@
+   f.root.firstobject = linkObjects(f.originals).firstobject;
+   f.basic.firstobject = linkObjects(f.definition.boxes.map(b => f.byAnchor[b.anchor])).firstobject;
+   for (const b of f.definition.full_inventory.filter(b => b.anchor.split('/').length === 2)) f.byAnchor[b.anchor].maxclass = b.runtime_class;
+   for (const b of f.definition.boxes.filter(b => b.v8_numeric_representation_policy)) {
+     const o = f.byAnchor[b.anchor]; o.getvalueof = () => [b.initial_numeric];
+   }
+   const pass = c.createPlusValidationPass(), accepted = pass.validate(f.root, f.definition);
+   assert.ok(accepted); assert.equal(c.anchorDiagnostics.length, 3); assert.equal(c.controllerRepresentationObservations.length, 3);
+   assert.ok(c.controllerRepresentationObservations.every(r => r.cohort_satisfied === true));
+ });
++for (const action of ['install', 'close']) case008('plus008_fix1_final_binding_read_' + action, () => {
++  const collect = action === 'close' ? close008 : read008;
++  for (const revision of [1, 2]) {
++    const baseline = plus008Fixture(revision, action), baselinePath = baseline.root.filepath;
++    let baselineReads = 0;
++    Object.defineProperty(baseline.root, 'filepath', {get() {baselineReads++; return baselinePath;}});
++    const result = collect(baseline);
++    assert.ok(baselineReads > 0, 'successful baseline must observe the host path');
++    assert.equal(result.v8_representation_witnesses.request_id, baseline.request.command_id);
++    assert.equal(baseline.calls.length, 6); assert.equal(baseline.nongated.length, action === 'close' ? 0 : 4);
++
++    const changed = plus008Fixture(revision, action), path = changed.root.filepath, originalId = changed.request.command_id;
++    let pathReads = 0, mutated = false, refusal;
++    Object.defineProperty(changed.root, 'filepath', {get() {
++      if (++pathReads === baselineReads) {mutated = true; changed.request.command_id++;}
++      return path;
++    }});
++    try {collect(changed);} catch (error) {refusal = error;}
++    assert.equal(mutated, true, 'adaptive mutation must reach the final baseline host read');
++    assert.equal(changed.request.command_id, originalId + 1, 'original request mutation must be exercised');
++    assert.equal(changed.calls.length, 6, 'terminal currentness checks must not add gated calls');
++    assert.equal(changed.nongated.length, action === 'close' ? 0 : 4, 'live and close getter counts must be preserved');
++    assert.ok(refusal, action + ': final host read must not change the original request through proof return');
++    const diagnostic = refusal.v8_representation_diagnostics;
++    assert.ok(diagnostic && diagnostic.strict_mismatch === true, 'terminal refusal must preserve raw mismatch diagnostics');
++    assert.equal(diagnostic.request_id, originalId); assert.equal(diagnostic.root_rows.length, 4); assert.equal(diagnostic.numeric_rows.length, 3);
++    assert.ok(diagnostic.numeric_rows.every(row => row.value_observation.status === 'returned'), 'terminal refusal must retain all returned numeric observations');
++  }
++});
+ console.log(JSON.stringify({completed008, failures008}));
+ assert.equal(failures008.length, 0, 'preparation008 behavioral regressions');
+--- initial/v8-readback.js
++++ current/v8-readback.js
+@@ -442,26 +442,27 @@
+     if(!plusV8Metadata(definition,configuration))return null;
+     var captures=[],seen=[],consumed=false,issued=false,live=null,diagnostic=null,witness=null;
+     function capture(value) {
+         if(!value||typeof value!=="object"||seen.includes(value))return;
+         seen.push(value);var keys=Object.keys(value),refs=keys.map(k=>value[k]);
+         captures.push({object:value,keys:keys,refs:refs,length:Array.isArray(value)?value.length:null});
+         for(var ref of refs)capture(ref);
+     }
+     capture(configuration);capture(definition);capture(request);capture(originalRequest);
+     function dataCurrent() {
++        // Host binding reads must finish before the final captured-input comparison.
++        plusV8RequestBinding(root,definition,request,configuration);
+         for(var row of captures) {
+             var keys=Object.keys(row.object);
+             if(keys.length!==row.keys.length||(row.length!==null&&row.object.length!==row.length))throw Error("plus-v8-pass-input-changed");
+             for(var i=0;i<keys.length;i++)if(keys[i]!==row.keys[i]||row.object[keys[i]]!==row.refs[i])throw Error("plus-v8-pass-input-changed");
+         }
+-        plusV8RequestBinding(root,definition,request,configuration);
+     }
+     function bindings() {
+         dataCurrent();var rootInventory=representationObjects(root,8);dataCurrent();
+         if(!rootInventory.complete||rootInventory.objects.length!==8)throw Error("plus-v8-root-inventory-incomplete");
+         var roots=definition.full_inventory.filter(b=>b.anchor.split("/").length===2),rows=[],used=[],basic=null;
+         for(var b of roots) {
+             var policy=observedGeometryPolicy(b,definition,configuration),v8=plusV8Policy(b,definition,configuration,false),matches=[];
+             for(var object of rootInventory.objects) {
+                 var rect=rectangle(object);dataCurrent();
+                 if((object.varname||"")===(b.source_varname||"")&&(v8?sameData(rect,v8.live_rect):

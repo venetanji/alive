@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "cycle",
+      "x": 160,
+      "y": 60,
+      "params": {
+        "frequency": 220,
+        "phase": 0
+      }
+    },
+    {
+      "id": 2,
+      "type": "signal_multiply",
+      "x": 160,
+      "y": 150,
+      "params": {
+        "rhs": 0.02
+      }
+    },
+    {
+      "id": 3,
+      "type": "signal_dac",
+      "x": 160,
+      "y": 260,
+      "params": {
+        "channels": "1 2"
+      }
+    },
+    {
+      "id": 4,
+      "type": "snapshot",
+      "x": 450,
+      "y": 260,
+      "params": {
+        "interval": 100,
+        "offset": 0
+      }
+    },
+    {
+      "id": 5,
+      "type": "print",
+      "x": 450,
+      "y": 350,
+      "params": {
+        "label": "output-sample",
+        "level": 0,
+        "popup": 0
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 2,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 1
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 4,
+      "inlet": 0
+    },
+    {
+      "from": 4,
+      "outlet": 0,
+      "to": 5,
+      "inlet": 0
+    }
+  ]
+}

@@ -1,0 +1,358 @@
+{
+  "schema_version": 1,
+  "stage": "arithmetic-full-root-runtime",
+  "snapshot": "capture006-audited-trace-prefix",
+  "status": "INCOMPLETE",
+  "max_capture_status": "FAILED",
+  "max_completed_operations": 26,
+  "max_readbacks": 24,
+  "max_validated_readbacks": 24,
+  "max_successful_command_acknowledgements": 50,
+  "max_received_command_acknowledgements": 50,
+  "max_command_requests": 51,
+  "native_score_status": "PASS",
+  "required_counts": {
+    "operations": 78,
+    "events": 66,
+    "installs": 6,
+    "closes": 6,
+    "live_checkpoints": 72,
+    "empty_checkpoints": 6,
+    "numeric_states": 504,
+    "original_outlet_emissions": 141,
+    "native_saved_cable_deliveries": 90,
+    "native_typed_receipts": 297
+  },
+  "observed_counts": {
+    "operations": 26,
+    "events": 22,
+    "installs": 2,
+    "closes": 2,
+    "live_checkpoints": 24,
+    "empty_checkpoints": 2,
+    "numeric_states": 168,
+    "original_outlet_emissions": 47
+  },
+  "observations": {
+    "completed_document": "times",
+    "completed_revisions": [
+      1,
+      2
+    ],
+    "matching_original_outlet_messages_against_complete_native_record": 47,
+    "matching_numeric_states_against_complete_native_record": 168,
+    "independent_closes_revalidated": 2,
+    "complete_basic_proofs_revalidated": 2,
+    "retained_close_history_revalidated": true,
+    "failure_document": "plus",
+    "failure_revision": 1,
+    "failure_request_id": 51,
+    "failure_step_id": "install-plus-r1",
+    "plus_geometry_differences": 4,
+    "plus_numeric_class_differences": 3,
+    "plus_numeric_format_observations": 183,
+    "plus_numeric_getter_observations": 183,
+    "plus_arithmetic_events_executed": 0,
+    "minus_operations_executed": 0,
+    "whole_capture_completion_gates": false,
+    "strict_complete_comparison_executed": false,
+    "failure_type": "TimeoutError",
+    "failure_response_received": false,
+    "plus_actual_capability_attempts": "at_least_366_completed_recorded",
+    "plus_unique_numeric_anchors": 3,
+    "plus_validation_refusals_recorded": 61,
+    "plus_successful_validations_recorded": 0,
+    "plus_bind_recorded": false,
+    "plus_observer_coverage": false,
+    "plus_getter_silence_validated": false,
+    "plus_v8_representation_observed": false,
+    "trace_records": 1490,
+    "trace_reconstructed_objects": 7,
+    "trace_terminal_phase_recorded": false,
+    "trace_last_phase": "poll-scheduled",
+    "trace_last_elapsed_ms": 9955,
+    "trace_timing_includes_io": true,
+    "capture005_capability_attempts": "unknown"
+  },
+  "qualification": {
+    "qualified": 0,
+    "total": 2103,
+    "increment": 0
+  },
+  "saved_order_observed": false,
+  "verification": {
+    "python_tests": 66,
+    "python_passed": 65,
+    "python_skipped": 1,
+    "node_helper_suite": "PASS",
+    "corrected_static_review": "PASS",
+    "concrete_review": "PASS",
+    "capture_audit": "OBSERVED_PREFIX_VERIFIED_COMPLETE_CAPTURE_FAILED",
+    "parent_observed_output_state_comparison_repeated": false,
+    "parent_independent_close_and_history_validation_repeated": false,
+    "sealed_inputs_verified": 22,
+    "historical_implementation_files_verified": 16,
+    "rea_public_file_hashes_verified_by_parent": 6,
+    "rea_filesystem_hash_omissions": 0,
+    "reviewer_raw_rea_record_access": false,
+    "cleanup_preserved": true,
+    "independent_observed_output_state_comparison": true,
+    "independent_close_and_history_validation": true,
+    "queued_failure_regressions": 10,
+    "independent_queued_failure_controls": 12,
+    "trace_source_default_results_independently_validated": true,
+    "trace_complete_execution": false
+  },
+  "evidence_id": "ev_a0ed6947bdad1fbe7e7ba19b62634a570fdff7803e7db65363b019dd0db409c8",
+  "public_artifacts": [
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/score.json",
+      "sha256": "95012c9d56bc898d32b055d2f6d7fc925cac19afc4a18af254f7a3c871b67afb",
+      "bytes": 24179
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/native-result.json",
+      "sha256": "ce1976dfaecf4494ff876395a3c5df4add4f393f28235343cfc434120200a836",
+      "bytes": 37931
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/native-refusals.json",
+      "sha256": "49b4904521ca6db43cb486321b5fe7a85a8770a03202d217957c3a5be2eab430",
+      "bytes": 1022
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/admission-revalidation.json",
+      "sha256": "53954324db26d6d81078935e94742a04505f992517c0afec51d040a583f49755",
+      "bytes": 808
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/preparation-manifest-arithmetic006.json",
+      "sha256": "c4fc2bf8badc5cfc98b85d2b1bc8dad9cd7df42f730665521080631ecefad898",
+      "bytes": 5716
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/verification-capture005.json",
+      "sha256": "468a339275a700a6cfb5830ee2fdce84988159442cfb2f52fd14956a3aa724cf",
+      "bytes": 13065
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/capture-005-timeout-investigation.md",
+      "sha256": "ac15007e4ee7f7f2a85cde2205bb748ce816839d7ac2a3a765d182dce46d595d",
+      "bytes": 14402
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/max-preparation-006-brief.md",
+      "sha256": "8a07cf723572aee815a9b549b94213f869bcd343dd667ca4e85844c612b93f42",
+      "bytes": 6336
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/max-preparation-006-report.md",
+      "sha256": "5e0a7e17b1b0322abdd6a0c14d251ee35914de149d389b469dcdf78aa05049eb",
+      "bytes": 9612
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-006-review.diff",
+      "sha256": "e6296e0fcde77e082e3cf59474a74e749d5143cdd60d986921c32b9dc0849c81",
+      "bytes": 36781
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-006-review.json",
+      "sha256": "dd0b3fc4f44410f809655c653775fd445cf446147b6ed5fc9c26e6d6436d8e2c",
+      "bytes": 5158
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-006-scoped-review.md",
+      "sha256": "215231a4388ea6bbfed9f6e6b048a1b7d37f14b6388b3563770351474883cb99",
+      "bytes": 6698
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-006-fix1-brief.md",
+      "sha256": "b2117b44c9e7e63346d5d1bf3c1728e94ba2f5bff969bc87b8f6b8ac296c7f5d",
+      "bytes": 2972
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-006-fix1-report.md",
+      "sha256": "396a5e83a9d1a91ee5e45af90728757022069ef03b883f7720c7244e4e3327dd",
+      "bytes": 5922
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-006-fix1-review.diff",
+      "sha256": "e75d3171158fe554df5b9f7b1fe22db48fde1febfd10ba7dea21e90c95f1f6ca",
+      "bytes": 7722
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-006-fix1-review.json",
+      "sha256": "adb423a3c0644cd8eb8c44bf0a7548932e40ed9c73aaa351331f910fc4017188",
+      "bytes": 5065
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-006-fix1-rereview.md",
+      "sha256": "b3dd99ae5fda4df8b64e438641f3d7cccf62e712e0f7ca9f89c75ab887aad1f0",
+      "bytes": 5701
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-006-concrete-brief.md",
+      "sha256": "3996a27b2c4d3b3f1174589a8b7d01526a82ce674f5497ba6a80bd885bdaa61a",
+      "bytes": 3485
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/preparation-006-concrete-review.md",
+      "sha256": "52f3798ccd9f9cc8c4cbd483c86cdef4bbfd1aec225f81e08f581963cdc80f0a",
+      "bytes": 7939
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/capture-006-audit.md",
+      "sha256": "9ded6e777503d6181120dc92c3f4745ec4eb565e5a6f29e9bd52c38755870e8d",
+      "bytes": 15399
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/capture-006-trace-investigation.md",
+      "sha256": "7b555ff81a58e426185fb9fca93b23216e18cf0205a8a923b3ca70c892e3e54b",
+      "bytes": 14152
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-006/capture-evidence.json",
+      "sha256": "66cd5472ba501e91309ee813a87ac21290eae7100a6749687f861dba1e4af6a9",
+      "bytes": 3217
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-006/cleanup.json",
+      "sha256": "b192d0167e47f7c40eefc58074d418e2a52bc134a9f4a6cbd496fb693627a117",
+      "bytes": 1843
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-006/display-states.json",
+      "sha256": "50d160ea440e467ac3fed2369ce10ad36bac17ffedda9d7ea69422b688c91888",
+      "bytes": 10451
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-006/preferences-after.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "bytes": 205649
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-006/preferences-before.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "bytes": 205649
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-006/receipts.jsonl",
+      "sha256": "627c33a76807cc5823ddff21632c22eb7a533b268186bf832733bc205f70669d",
+      "bytes": 40208
+    },
+    {
+      "path": "experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-006/session.json",
+      "sha256": "fc827c8b6638dffd69d6283b5d08f9cc94874521bdf95377fe0cae466c8bca36",
+      "bytes": 40223
+    }
+  ],
+  "private_bindings": [
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/config.json",
+      "sha256": "4a922bf0b1e2d2c5755eb339d0fa8e73a4139f74c5acc3b92352388e85a167ad",
+      "bytes": 208940
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/seal.json",
+      "sha256": "3e5b31cdcb62618e08444d35c2ec20815cf07a21aad86de4d058ca6a94170935",
+      "bytes": 3486
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/command.json",
+      "sha256": "7a53e382e6d67241fef6ac8e313f76986896991c789971b5f7c2d1b3cdf93261",
+      "bytes": 231
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/ack.json",
+      "sha256": "7d6f07dde2a6bc778e2c7c926a5fddf84eafb5b51e8eb3d79e769b4df146c7ef",
+      "bytes": 102719
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/private-failure.json",
+      "sha256": "b37e2b334c7544519df1c251fc8654aed113bb2571e7e461f5fa66063deb992c",
+      "bytes": 74
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/private-journal.jsonl",
+      "sha256": "5349a1d31b7d28ab875b3c7c0ec1d75a6afcb0f14bc144302e840a38a0e4041d",
+      "bytes": 32000
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/private-display-states.json",
+      "sha256": "71daa9ff21e456e86308039e09547223b45f027459efb0f0bcd0d36cc32cb822",
+      "bytes": 164878
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/private-runtime.log",
+      "sha256": "08c7739ce6f3cdbe446868fac2c8e1ae1a8d108f3ea2b3496555f4944a9eb80e",
+      "bytes": 681
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/lifecycle-report.json",
+      "sha256": "93435ebc8d69aa90636f5b9b3e7b7ced82cd6c93770405154b589fb88db54fab",
+      "bytes": 5298
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/install-plus-r1-trace.jsonl",
+      "sha256": "2b3287e45de1123f8ac7582544aa13da5dbfba6650d2aa33e7a46b5f8be39a63",
+      "bytes": 568562
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/observations/ack-request-43.json",
+      "sha256": "728da4870bdf02a02acc303cdab974fb8d6dc4e762d6cb9fe994eade15145886",
+      "bytes": 102290
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/observations/validated-close-43.json",
+      "sha256": "009f4b30ad44409d83b7bebb1826b9872a216cded97cd57aaad3b5480042af2a",
+      "bytes": 381
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/observations/lifecycle-root-times-r1.json",
+      "sha256": "82ee34e83fe28ab17496b36aa35e366968fde874343922cd750869cf9f621f5f",
+      "bytes": 15576
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/observations/retained-lifecycle-root-times-r1.json",
+      "sha256": "82ee34e83fe28ab17496b36aa35e366968fde874343922cd750869cf9f621f5f",
+      "bytes": 15576
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/observations/ack-request-50.json",
+      "sha256": "7d6f07dde2a6bc778e2c7c926a5fddf84eafb5b51e8eb3d79e769b4df146c7ef",
+      "bytes": 102719
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/observations/validated-close-50.json",
+      "sha256": "24af7c1bf10505dd33a32b17e1839c970350211f401d0f8678db4da0aaec3f44",
+      "bytes": 381
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/observations/lifecycle-root-times-r2.json",
+      "sha256": "d149467531878c2bb086b6c04bbde05deb7aa9f8ee615bfb520c7b65c10871ba",
+      "bytes": 15568
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-006/observations/retained-lifecycle-root-times-r2.json",
+      "sha256": "d149467531878c2bb086b6c04bbde05deb7aa9f8ee615bfb520c7b65c10871ba",
+      "bytes": 15568
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-package-006-historical/binding.json",
+      "sha256": "bce1edf4484c73bf95a5c1c1648ff7e7f8f3ce479fe96c92be6639fa6e466df6",
+      "bytes": 1916
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-package-006-review-base/binding.json",
+      "sha256": "535b41f2e055757a78b301c04e086267f743df84bfd2fdaa39884153c0a46839",
+      "bytes": 1818
+    }
+  ],
+  "pending": [
+    "Implement a separately reviewed plus-only legacy-controller cohort gate bound to the audited006 trace with fresh current capabilities.",
+    "Obtain independent source-bound plus V8 diagnostics before any plus V8 representation admission; getter silence and original scalar tags remain unmeasured.",
+    "Preserve consumed006 and use a fresh reviewed preparation for any later Max capture.",
+    "Complete all78 Max operations and the strict complete-denominator comparison.",
+    "All-help qualification remains0/2103."
+  ]
+}

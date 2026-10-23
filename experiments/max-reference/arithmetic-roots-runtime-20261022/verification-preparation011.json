@@ -1,0 +1,154 @@
+{
+  "schema": "arithmetic-preparation011-source-verification-v1",
+  "status": "INTEGRATED_SOURCE_VERIFICATION_PASSED",
+  "canonical_sixteen_file_map_sha256": "f49624494c8a540b6e470e88766a48546303f99c142d025ce0fc3ca37b0a9248",
+  "design_sha256": "b65608f50bd6e87600e511a97947f611a7b911e62e69bc8aa9cf1a7791f0f80b",
+  "design_review_sha256": "0ce650bae98f298fa0c88de3f84a9912a336ac1cc19aa1ae1a37d86571bf4c21",
+  "implementation_report_sha256": "0954bfa8dc4cb0a0e1d05a105c8bbbe37ef1536e0463f4ebefe8a6d052cada20",
+  "independent_source_review_pending": false,
+  "independent_source_review": "PASS",
+  "source_review_sha256": "b6379530a92f4792ef0b0a3fbd2f62979786ea7a16a75e42ea7256737562197f",
+  "source_review_map_sha256": "d01113c99037c40e72e4739d80f3e56db3d339588dcd8b98864b7cb1b7b56d36",
+  "source_diff_sha256": "4090c8d12df31faa1a99784f94c8013deba0e8786d3d103a5c65b1e37d66bbc9",
+  "package_sha256": "95d68b1c343dcab15950f4406dba6cf2dd86bf799e8ec66b34c4e71334d3c0af",
+  "controller_sha256": "d1f2a675a6a28fc146baa5d9661d6eb96537972784829452fa0d0c6ffcb4edaa",
+  "tests_sha256": "ddabd1f17a0c464e5b6c56d87edbca3735d9f5043476f6b73e843f1048754779",
+  "node": {
+    "command": "node test_helpers.cjs",
+    "exit_code": 0,
+    "groups": {
+      "007": 10,
+      "008": 11,
+      "009": 16,
+      "010": 14,
+      "011": 14
+    },
+    "total_named_groups": 65,
+    "failures": [],
+    "prior_controls_pass": true,
+    "work": [
+      {
+        "work010": "stable",
+        "counts": {
+          "canonical": {
+            "command": 1,
+            "definition": 1,
+            "configuration": 1,
+            "owner": 1
+          },
+          "source": 1,
+          "geometry": 63,
+          "rectangles": 20820,
+          "filepaths": 159,
+          "samples": 89
+        }
+      },
+      {
+        "work010": "ineligible",
+        "counts": {
+          "canonical": {
+            "command": 1,
+            "definition": 1,
+            "configuration": 1,
+            "owner": 1
+          },
+          "source": 1,
+          "geometry": 43,
+          "rectangles": 19040,
+          "filepaths": 70,
+          "samples": 70
+        }
+      },
+      {
+        "readOracle010": {
+          "samples": 89,
+          "readsPerSample": 274,
+          "orderedDigest": "bd9606c23777bcc7bce36c56f688eaea22d3314bf88b55110394d03059fbfea6"
+        }
+      },
+      {
+        "work011": "stable",
+        "work": {
+          "canonical": {
+            "command": 1,
+            "definition": 1,
+            "configuration": 1,
+            "owner": 1
+          },
+          "source": 1,
+          "geometry": 63,
+          "rectangles": 20820,
+          "filepaths": 159,
+          "samples": 89
+        },
+        "progressCounts": {
+          "lookup_attempts": 6,
+          "invocation_attempts": 6,
+          "outcomes_retained": 6,
+          "completed_pairs": 3
+        }
+      }
+    ]
+  },
+  "python": {
+    "command": "python3 -B -m unittest discover -p 'test_*.py'",
+    "tests_run": 89,
+    "tests_passed": 88,
+    "tests_skipped": 1,
+    "seconds": 22.333,
+    "exit_code": 0,
+    "skip_reason": "existing actual-native-evidence test requires explicit external private paths"
+  },
+  "syntax": {
+    "all_pass": true,
+    "bytecode_written": false,
+    "javascript_syntax_files": 5,
+    "python_ast_files": 11
+  },
+  "real_source_reconstruction": {
+    "canonical_ascii_bytes": 18681,
+    "configuration_capture": "010",
+    "cross_language_configuration": true,
+    "cross_language_projection": true,
+    "definitions_reconstructed": 6,
+    "helpers": 4,
+    "historical_code_executed": false,
+    "installed_sources": 3,
+    "live_geometry_pin_evidence_capture": "008",
+    "live_geometry_pins": 4,
+    "private_writes": 0,
+    "production_source_gate": true,
+    "projection_keys": 9,
+    "source_pins": 7,
+    "source_projection_sha256": "c17962fba204a882ce5b0bca6c792e55c0a4181366c7dfe0c39b28152215084e",
+    "synthetic_substitutions": 0
+  },
+  "preservation": {
+    "all_private_inventories_unchanged": true,
+    "private_roots": 32,
+    "private_entries": 1788,
+    "other_mapped_files_unchanged": 14,
+    "controller_outside_two_functions_unchanged": true,
+    "prior_test_source_prefix_unchanged": true,
+    "score_frozen": true,
+    "native_exact_five_preserved": true
+  },
+  "max_runtime_executed": false,
+  "preparation011_created": false,
+  "capability_progress_in_capture010": "UNKNOWN",
+  "qualification_passes_added": 0,
+  "qualified_help_files": 0,
+  "total_help_files": 2103,
+  "obligations": {
+    "operations": 78,
+    "events": 66,
+    "live_checkpoints": 72,
+    "empty_checkpoints": 6,
+    "numeric_states": 504,
+    "original_emissions": 141,
+    "independent_closes": 6,
+    "native_cable_deliveries": 90,
+    "native_typed_receipts": 297,
+    "saved_order_observed": false
+  }
+}

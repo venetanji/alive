@@ -3,7 +3,7 @@ import {test} from 'node:test';
 import {readFileSync} from 'node:fs';
 import {REGISTRY, CanvasDocument, createCanvasController, makeNode, parsePatch, serializePatch, validatePatch} from './canvas-model.mjs';
 
-const patch = (type='number', style) => ({version:1,profile:'ultra-canvas-v1',nodes:[{...makeNode(type,1),...(style===undefined?{}:{style})}],edges:[]});
+const patch = (type='number', style) => ({version:['comment','patcher'].includes(type)?2:1,profile:['comment','patcher'].includes(type)?'ultra-patcher-v2':'ultra-canvas-v1',nodes:[{...makeNode(type,1),...(style===undefined?{}:{style})}],edges:[]});
 
 test('optional display style round-trips without changing the required legacy document fields', () => {
   const source=patch('number',{bgcolor:[0.1,0.2,0.3,0.4],fontsize:18,width:180,height:44,triangle:0});
@@ -15,6 +15,16 @@ test('JS consumes the shared valid and invalid appearance cases used by Rust pre
   const cases=JSON.parse(readFileSync(new URL('./canvas-appearance-cases.json',import.meta.url),'utf8'));
   for(const item of cases.valid)assert.doesNotThrow(()=>validatePatch(patch(item.type,item.style)),item.name);
   for(const item of cases.invalid)assert.throws(()=>validatePatch(patch(item.type,item.style)),undefined,item.name);
+});
+
+test('comment callout appearance survives save and undo without persisting omitted defaults', () => {
+  const document=new CanvasDocument(patch('comment',{bubble:1,bubbleside:3,bubblepoint:0.75,fontsize:13,width:145,height:40}));
+  assert.deepEqual(parsePatch(serializePatch(document.document)).nodes[0].style,{bubble:1,bubbleside:3,bubblepoint:0.75,fontsize:13,width:145,height:40});
+  document.style(1,'bubblepoint',0.11);
+  assert.equal(document.patch.nodes[0].style.bubblepoint,0.11);
+  document.undo();assert.equal(document.patch.nodes[0].style.bubblepoint,0.75);
+  document.redo();assert.equal(document.patch.nodes[0].style.bubblepoint,0.11);
+  assert.deepEqual(validatePatch(patch('comment',{bubble:1})).nodes[0].style,{bubble:1});
 });
 
 test('appearance metadata exposes applicable Max attributes and immutable constraints', async () => {
@@ -41,6 +51,7 @@ test('style validation rejects nonfinite numbers and clones RGBA input rather th
   for(const value of [NaN,Infinity,-Infinity]) {
     assert.throws(()=>validateStyle('number',{width:value}));
     assert.throws(()=>validateStyle('number',{bgcolor:[0,0,value,1]}));
+    assert.throws(()=>validateStyle('comment',{bubblepoint:value}));
   }
   assert.throws(()=>validateStyle('number',{bgcolor:[0,,0,1]}));
   assert.throws(()=>validateStyle('number',{bgcolor:[0,undefined,0,1]}));

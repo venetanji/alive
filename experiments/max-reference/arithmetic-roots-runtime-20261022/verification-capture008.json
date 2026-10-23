@@ -1,0 +1,123 @@
+{
+  "canonical_sixteen_file_map_sha256": "4ea3e2265a3a084841b43ec43687885af9184b7629d6a0d184af6e69a7853410",
+  "capture_projection_sha256": "7fe464885c95cd551631597357f220ef3729085f734a501b712f61fae30780af",
+  "capture_status": "FAILED",
+  "complete": false,
+  "concrete_preparation_review_sha256": "41f054877e3b3e4b5cb67a6aa11f0ec047b99e707cd672bc2356565bafeab520",
+  "full_comparison_complete": false,
+  "historical_archive_binding_sha256": "0e5263ffbf1d4e79fa35529c615e73196377f3c7750229e64da17e0512f64926",
+  "independent_audit": {
+    "private_entries": 1259,
+    "private_inventory_sha256": "7734c426493e4a17189514f748d4e182af4192bdfe0953a6a86dccdcb3bfff75",
+    "report": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/capture-008-audit.md",
+    "sha256": "7dc947d18cefb13a2fd3e32987727c95c4980da778ea48979251b1382bfc252d",
+    "verdict": "PASS",
+    "wrapped_read_only_calls": 204
+  },
+  "independent_audit_pending": false,
+  "limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+    "Process trees are sampled and may omit short-lived descendants.",
+    "Filesystem observations are before/after snapshots, not syscall traces.",
+    "Inherited host environment variables are not recorded and may affect results."
+  ],
+  "minus_investigation": {
+    "capability_observations": 0,
+    "class_only_failures": 3,
+    "geometry_only_failures": 4,
+    "report": ".superpowers/sdd/2026-10-22-arithmetic-root-runtime/capture-008-minus-investigation.md",
+    "sha256": "7b8ddb96a3445d7d8e4718bb6f2fcd27d6ab12704c342fb0e5ce259a09edc68a",
+    "source_projection_canonical_ascii_bytes": 18681,
+    "source_projection_sha256": "c17962fba204a882ce5b0bca6c792e55c0a4181366c7dfe0c39b28152215084e"
+  },
+  "native_result_sha256": "ce1976dfaecf4494ff876395a3c5df4add4f393f28235343cfc434120200a836",
+  "observed": {
+    "closes": 4,
+    "commands": 101,
+    "events": 44,
+    "installs": 4,
+    "live_checkpoints": 48,
+    "numeric_states": 336,
+    "operations": 52,
+    "original_outputs": 94,
+    "received_acks": 101,
+    "successful_acks": 100
+  },
+  "package_sha256": "50fe2a3faa286b89fe96176b2d070be9d619c714441f8e7ab66aa0b60853e4e5",
+  "preservation": {
+    "all28_private_roots_unchanged_after_capture": true,
+    "current16_matches_archive": true,
+    "disposable_prefix_absent": true,
+    "native_exact_five": true,
+    "preferences_current_equal_after_snapshot": true,
+    "source_helpers_preserved": true
+  },
+  "private_roots": 28,
+  "private_roots_changed_during_capture": [
+    "arithmetic-max-runtime-008"
+  ],
+  "private_roots_otherwise_preserved": 27,
+  "qualification_passes": 0,
+  "qualification_passes_added": 0,
+  "qualification_total": 2103,
+  "rea_evidence_id": "ev_5918c4938b343ff302dfbdac274410bd597c3ebb78ef89e33637a72d1bfeb2ee",
+  "rea_exit": {
+    "code": 1,
+    "reason": "exited",
+    "signal": 0
+  },
+  "rea_original_public_files": [
+    {
+      "name": "cleanup.json",
+      "sha256": "a4f239050bc2c48f433aa244c19e39ce10dcc7062b122af2ea47a75c8ab59e66",
+      "size": 1843
+    },
+    {
+      "name": "display-states.json",
+      "sha256": "e76e47bcaf62682b245a74bee87bb30348e7edccb093b7e3a63b23f917481bad",
+      "size": 20837
+    },
+    {
+      "name": "preferences-after.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "size": 205649
+    },
+    {
+      "name": "preferences-before.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "size": 205649
+    },
+    {
+      "name": "receipts.jsonl",
+      "sha256": "93326f7e0b1589c02077c031996ce814754b5d888dce14cdef11d6d266d62c7c",
+      "size": 80493
+    },
+    {
+      "name": "session.json",
+      "sha256": "53df6177d426a1e7b8ad80a812ed2e655bc62c09ebec8916d5b059bbd7b835b6",
+      "size": 72820
+    }
+  ],
+  "rea_original_public_files_verified_directly": 6,
+  "rea_response_retained_complete": true,
+  "rea_truncated": false,
+  "required": {
+    "closes": 6,
+    "empty_checkpoints": 6,
+    "events": 66,
+    "installs": 6,
+    "live_checkpoints": 72,
+    "native_cable_deliveries": 90,
+    "native_typed_receipts": 297,
+    "numeric_states": 504,
+    "operations": 78,
+    "original_outputs": 141
+  },
+  "saved_order_observed": false,
+  "schema": "arithmetic-capture008-parent-verification-v1",
+  "score_sha256": "95012c9d56bc898d32b055d2f6d7fc925cac19afc4a18af254f7a3c871b67afb",
+  "source_implementation_final_review_sha256": "25f7d1cc2f3b3d249e694efdfff4653148af06680e45b6d8f41790682e8ef0b3",
+  "status": "FAILED_CAPTURE_INTEGRITY_AUDITED",
+  "unverified_process_count": 13
+}

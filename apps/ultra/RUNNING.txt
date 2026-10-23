@@ -1,6 +1,6 @@
 EDITABLE CANVAS (primary application page)
 =========================================
-From a checkout containing the Rust audio-settings changes:
+From the repository root:
   bash apps/ultra/build.sh
   bash apps/ultra/run.sh
 
@@ -12,7 +12,16 @@ src-tauri/target/release/ultra and its matching native library.
 After rebuilding, close and reopen Ultra to load the
 new build. Run the installer again if you move the checkout. It installs a
 user desktop entry under $XDG_DATA_HOME/applications (normally
-~/.local/share/applications). Standalone bundles still use their supplied binary.
+~/.local/share/applications), plus MIME descriptions for .ultra, .maxpat and
+.maxhelp. Choose Open With Ultra in the file manager as needed; the installer
+does not force a default application. Standalone bundles still use their supplied
+binary.
+
+Open files from the command line, including multiple paths:
+  bash apps/ultra/run.sh -- apps/ultra/examples/send.ultra apps/ultra/examples/receive.ultra
+Paths are resolved from the invoking directory. A later invocation delivers its
+files to the existing Ultra process. An already-open file focuses its existing
+window; other files open independent native windows.
 
 Open Audio settings in the footer to select an output and buffer/period size.
 Save settings leaves audio off; Save & start audio opens the output. Settings
@@ -22,7 +31,10 @@ The core is still stereo 48 kHz. Requested and observed buffers are separate.
 See AUDIO.md for current setup, platform limits and private software tests.
 PR #1 remains draft; the UI, reference study and audio settings are integrated there.
 
-The app opens the editable canvas. Start audio, then click the starter toggle
+The app opens the editable canvas. Up to 16 root patch, help and example documents
+can be open together. Each owns its graph, undo history, control state, timers
+and voices, with up to 64 native child views. They share one native runtime, output device and audio
+settings. Start audio, then click the starter toggle
 to start its metro/counter/chord/makenote chain. Bang -> message -> makenote
 provides a manual note trigger. Physical MIDI input and external MIDI clock
 are deferred on the CPAL path. Use low listening volume initially.
@@ -37,10 +49,37 @@ Release near a highlighted port to connect. Clicking each port also works;
 focused ports accept Enter or Space. Escape cancels the cord. A locked patch
 must be unlocked with Ctrl/Cmd E before wiring. Invalid drops explain the
 rejection without changing the graph. Select a node/cable and Delete to remove
-it; Undo/Redo restore edits. Every message/bang/number/toggle is a real graph object. Audio cables
-carry mono/stereo bundles, not generic untyped values. Unsupported connections
-are refused. The first supported audio path is voice -> gain -> join -> dac.
-Join input 0 maps to L, input 1 to R; swapping connections changes the audio.
+it; Undo/Redo restore edits. Every message/bang/number/toggle is a real graph
+object. Ports distinguish control, mono signal, mixed control/mono and legacy
+stereo bundles. Mono inputs sum multiple signal sources. Control and signal
+dependency graphs are validated separately; pure cycles are refused but sampled
+feedback through snapshot~ is legal. New dac~ takes mono inputs mapped only to
+physical channels 1 (left) and 2 (right); repeated mappings sum. The older
+voice -> gain -> join~ -> stereo.dac~ path preserves saved kind dac and explicit
+stereo bundles. Join input 0 maps to L, input 1 to R.
+
+The 50-kind registry includes sig~, +~, -~, *~, /~, cycle~, phasor~, noise~,
+clip~, line~, snapshot~ and dac~. Signal examples require Start audio even when
+their only output is a Console observation. Start with examples/cycle.ultra or
+examples/line_signal.ultra; examples/signal_dac.ultra connects a quiet 0.02-scaled
+sine to the speakers. New MSP sources evaluate the current frame at native
+48 kHz; the existing custom Clockwork/Faust Voice pipeline retains its 64-frame
+delay. Engine starts and graph replacements mute the first 64 output samples
+as a guard while signal state already advances.
+Gain evaluates independently per branch rather than controlling a global voice
+level. All windows share one stereo output device.
+
+cycle~ and phasor~ take one positional frequency, line~ one initial value, and
+snapshot~ one interval. Numeric creation/control values are finite -100000 to
+100000 unless a narrower field range applies; DSP calculations can exceed that
+control bound. Only output channel mappings 1 and 2 are admitted. noise~ retains
+one physical control inlet but accepts no methods, including seed; exact Max
+noise sequences are not claimed. snapshot~ bang reads an offset from the latest
+completed 64-frame vector; periodic reports use a bounded native approximation,
+not an exact Max scheduling claim. Waveform buffers, tempo/transport scheduling,
+unsupported execution attributes, ezdac~ and signal delay feedback remain gaps.
+Frozen Max signal observations and production-header replay are recorded in
+experiments/max-reference/signal-runtime-20261021/.
 
 Lock to operate the entire button/toggle face, drag a slider or drag a number
 vertically. Click a numeric box to select and type its value; Enter commits it.
@@ -49,32 +88,97 @@ unlocked gestures select/move objects. Shift gives finer numeric dragging.
 Sliders and ordinary parameters update live. Number/toggle controls send hot
 messages. Voice envelopes still latch for the next note. Changing the graph,
 message literal, voice device or MIDI channel safely clears notes and timers;
-click the toggle to restart. Moving a box changes layout only. This is not yet
-seamless arbitrary hot-patching. Stop patch cancels all scheduled notes/timers.
-Focus loss also stops the patch. Panic requires Stop audio then Start to recover.
+continuous signals resume from reset state with DSP on, but click the toggle to
+restart a metro. Moving a box changes layout only. This is not yet
+seamless arbitrary hot-patching. These structural resets affect only the edited
+document. Stop patch or Escape cancels the current document's scheduled notes
+and timers and freezes/silences its signal graph. An accepted local event,
+parameter change, incoming Receive or explicit global DSP restart resumes its
+continuous signals. Switching focus or hiding a window preserves playback.
+Double-click an embedded p object to open its native window. All child views
+share their owner's tree, Save and Undo/Redo; opening/closing a child preserves
+live runtime values and playback. Closing the root prompts once for unsaved
+changes and closes all of its children. Close waits for pending edits from all
+ready views; Cancel restores editing, and failed admission keeps windows open.
+Other roots continue. Start audio, Stop audio,
+Audio settings and Panic apply to the shared output. Stop audio clears timers
+and notes in every patch; controls can be triggered again with audio off. Start
+audio resumes continuous signals in all documents, including locally stopped
+ones, while stopped metros remain off. Ordinary values and receive bindings
+survive DSP restart; Cycle restarts at reset phase and Phasor keeps its phase.
+Panic requires Stop audio then Start to recover.
 
 The Inspector includes bounded Max-named appearance attributes: dimensions,
 font size, RGBA colors, control colors and slider/gain orientation. Appearance
 edits, reset and undo preserve the running graph. Export keeps these overrides.
+Selected buttons, toggles, sliders and gain controls show a bottom-right resize
+handle. Drag it, or focus it and use arrow keys (Shift: 10 px). Escape or focus
+loss cancels a drag. Each completed resize is one undo entry. The slider inspector
+shows Range Size, Output Minimum, Output Multiplier, Integer/Float Output Mode,
+and the calculated output range; these settings affect native messages.
 
-Save/export and Open accept bounded ultra-canvas-v1 JSON, including positions,
-parameters, appearance and exact connections. Open also inspects .maxpat and
-.maxhelp files up to 8 MiB: choose a named patcher/help tab, review its report,
-and import it. A partial selection requires Allow partial import. Unsupported
-boxes/cables and known behavior differences are listed; graphs are never
+Create `print notes` and connect an outlet to its inlet. Open Console in the
+toolbar (Ctrl/Cmd M), or double-click print while locked. Messages print with
+audio off or on. The inspector offers Message/Warning/Error/Debug levels. Filter
+by text or level, click a source label to select its current object, and Clear
+to empty history. The console keeps the latest 512 rows and reports native queue
+drops. Open apps/ultra/examples/print.ultra for an original runnable example.
+
+Create `send notes` (or `s notes`) and `receive notes` (or `r notes`) in any
+open patches to deliver complete typed control messages under that name. A named
+receive has no inlet; an unnamed `receive` has one inlet accepting `set notes`
+to bind or retarget it without output. That runtime binding does not change the
+saved creation name or ports. Receiver delivery order is unspecified. Names are
+literal ASCII tokens, at most 31 bytes; Max #0/--- patch-local expansion and
+signal-rate send~/receive~ are unsupported. The send.ultra and receive.ultra
+examples share `ultra-help-notes` and work with audio off.
+
+New (Ctrl/Cmd N) opens an empty native patch window. Open (Ctrl/Cmd O), dropping
+a patch file, or opening one from the file manager creates or focuses its own
+window. Save (Ctrl/Cmd S) and Save As (Ctrl/Cmd Shift S) write validated Ultra
+JSON atomically, normally as .ultra; .json is also accepted. The title's asterisk
+tracks saved content, including undo. Closing modified content offers Save,
+Discard or Cancel. There is no autosave. Advanced JSON / Max import retains
+paste-and-replace intake; Export JSON retains Copy, selectable text and Download.
+
+Open accepts bounded ultra-canvas-v1 JSON, including positions, parameters,
+appearance and exact connections. It also inspects .maxpat, .maxhelp and Max JSON
+files up to 8 MiB in a separate window: choose a named patcher/help tab, review
+its report, and import it. A partial selection requires Allow partial import.
+Unsupported boxes/cables and known behavior differences are listed; graphs are never
 truncated to fit. Comments, scripts, dependencies and automation are omitted.
 The selected graph must fit 32 objects, 64 cables and 64 KiB. Lock it after
 import to operate controls. Import does not start timers or audio. This is a
-bounded conversion, not full Max help or message-language compatibility.
+bounded conversion, not full Max help or message-language compatibility. Saving
+an imported Max document always chooses a separate Ultra file, including when
+the source used .json. The original source cannot be overwritten by that save.
 The authored graph is saved, not an executing clock snapshot.
-Legacy patcher and fixed Chord lab links remain for comparison; navigation
-stops audio before changing profiles. See PATCH_PROTOCOL.md for exact limits.
+
+Help & Examples searches 101 original entries: help and an example for each of the
+50 object kinds, plus the starter. F1 with a selected object, Alt/Option-click,
+or Object Help in its context menu opens or focuses that object's help in its
+own native patch window. Help & Examples also lists open windows for switching.
+These patches contain no redistributed Max help content. Original examples and
+partial imports do not establish complete execution of installed Max help.
+
+Browser preview supports independent preview windows and downloads; it does not
+execute control messages or audio. Legacy patcher and fixed Chord lab links
+remain in the browser File menu for comparison; native canvas windows hide
+these engine-wide adapters. See PATCH_PROTOCOL.md for exact limits.
 
 GitHub CI checks the PR: UI/reference/native C++ contracts, sandboxed Chromium
 editing with screenshots, the actual native plus Rust/Tauri build/tests,
 and a private software-only CPAL loopback with saved test evidence.
 Browser screenshots are editing evidence, not native WebKit or hardware audio.
 Local native desktop and real MIDI qualification remain separate.
+After building, the optional private native window/file/message/audio checks run
+with:
+  bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/ultra-canvas-results
+This includes check_documents_desktop.py on private Xvfb/D-Bus/AT-SPI and
+software-only PipeWire, with no input or audio sent to the user's desktop.
+For only the document checks in that same private session:
+  ULTRA_TEST_DOCUMENTS_ONLY=1 bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/ultra-documents-results
+See tests/ci/README.md for prerequisites and what each check establishes.
 
 HISTORICAL JACK INVESTIGATION (the diagnostic still supports this adapter)
 The remaining JACK-specific setup, MIDI and hardware results describe the
@@ -84,7 +188,8 @@ ULTRA RESEARCH PATCHER — LINUX x86_64
 
 This is a Rust + Tauri desktop window, not a remotely hosted web app. Its
 patch canvas controls the native Clockwork/Faust engine through Rust commands.
-Only two prepared note -> Faust -> gain -> output chains are implemented.
+That earlier adapter implemented only two prepared note -> Faust -> gain ->
+output chains.
 This is not a general Max/Pd graph interpreter, plugin host or full DAW.
 
 Run the supplied binary bundle with ./run.sh. No dependencies are installed and
@@ -102,8 +207,8 @@ patchbay if silent. Connect your MIDI controller to ultra:midi_in. MIDI channel
 1 drives A (left output), channel 2 drives B (right output). Other channels
 are ignored. Note on/off, velocity, sustain CC64, and CC120/123 are supported.
 
-The core adds a declared 64 frames (1.333 ms at 48 kHz), independent of host
-partitions. This is NOT measured physical MIDI-to-audio latency. JACK sample
+The custom Voice path adds a declared 64 frames (1.333 ms at 48 kHz), independent
+of host partitions. This is NOT measured physical MIDI-to-audio latency. JACK sample
 offsets are retained; browser/computer-keyboard notes have control-path timing.
 No microphone or audio input is captured by this instrument app.
 

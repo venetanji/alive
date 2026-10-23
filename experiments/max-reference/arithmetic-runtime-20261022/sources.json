@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "executed_artifact": {
+    "sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b",
+    "authority": "runtime-launcher-prelaunch-sample-in-REA-bound-session",
+    "atomic_image_binding": false
+  },
+  "recovered_original_sources": [
+    {
+      "path": "generate.py",
+      "bytes": 7073,
+      "sha256": "998e1af860345e8ab27978062059c2f732f13d4bf422435c348989b9e6afa5c2",
+      "authority": "recovered-source-bytes-at-package-finalization"
+    },
+    {
+      "path": "run-runtime.py",
+      "bytes": 6695,
+      "sha256": "6a1470da8c137f2d8c3b3b9ed417e6fbd2d51af020e08dd0be991c2f52d81c3a",
+      "authority": "recovered-source-bytes-at-package-finalization"
+    },
+    {
+      "path": "fixtures/arithmetic.maxpat",
+      "bytes": 28621,
+      "sha256": "652e7b111eab58a27493895b5f5ccad12a1165d6251fe503d922ad4eaa2226c5",
+      "authority": "recovered-source-bytes-at-package-finalization"
+    },
+    {
+      "path": "fixtures/probe.js",
+      "bytes": 2558,
+      "sha256": "44518990f558308058353508e5b106401de4a31cb51246197f7394e8df06eb63",
+      "authority": "recovered-source-bytes-at-package-finalization"
+    },
+    {
+      "path": "fixtures/score.json",
+      "bytes": 80757,
+      "sha256": "5839b6e7c4463b06e70ec4d6f02787e10cd7fb32c6e08b374ae7e141f303c56d",
+      "authority": "recovered-source-bytes-at-package-finalization"
+    },
+    {
+      "path": "fixtures/targets.json",
+      "bytes": 3247,
+      "sha256": "19e7af29faf3ec3d34b9cdbb6519fb9d8fc094623093a5fd59f7af7af704f77c",
+      "authority": "recovered-source-bytes-at-package-finalization"
+    }
+  ],
+  "documentation": {
+    "authority": "mapping-only-no-preserved-historical-digests",
+    "reference_pages": [
+      "plus",
+      "times",
+      "minus",
+      "div",
+      "modulo",
+      "rminus",
+      "rdiv",
+      "abs"
+    ],
+    "limitation": "Installed reference files were not reread or copied during finalization."
+  }
+}

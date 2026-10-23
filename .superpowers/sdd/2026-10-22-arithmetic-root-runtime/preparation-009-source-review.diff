@@ -1,0 +1,768 @@
+--- arithmetic-package-008-historical/controller.js
++++ current/controller.js
+@@ -266,6 +266,327 @@
+     var output="";for(var index=0;index<8;index++)output+=("00000000"+(h[index]>>>0).toString(16)).slice(-8);
+     return output;
+ }
++function minusAsciiHash(input) {
++    var words=[],length=input.length*8;
++    for(var i=0;i<input.length;i++)words[i>>2]=(words[i>>2]||0)|(input.charCodeAt(i)<<(24-(i%4)*8));
++    words[length>>5]=(words[length>>5]||0)|(0x80<<(24-length%32));
++    words[(((length+64)>>9)<<4)+15]=length;
++    var h=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
++    var k=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
++        0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
++        0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
++        0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
++        0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
++        0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
++        0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
++        0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
++    function rotate(value,count){return (value>>>count)|(value<<(32-count));}
++    for(var offset=0;offset<words.length;offset+=16){
++        var w=[],state=h.slice(0);
++        for(var round=0;round<64;round++){
++            if(round<16)w[round]=words[offset+round]|0;
++            else{var a=w[round-15],b=w[round-2];
++                w[round]=((rotate(a,7)^rotate(a,18)^(a>>>3))+w[round-16]+
++                    (rotate(b,17)^rotate(b,19)^(b>>>10))+w[round-7])|0;}
++            var first=(state[7]+(rotate(state[4],6)^rotate(state[4],11)^rotate(state[4],25))+
++                ((state[4]&state[5])^(~state[4]&state[6]))+k[round]+w[round])|0;
++            var second=((rotate(state[0],2)^rotate(state[0],13)^rotate(state[0],22))+
++                ((state[0]&state[1])^(state[0]&state[2])^(state[1]&state[2])))|0;
++            state=[(first+second)|0,state[0],state[1],state[2],(state[3]+first)|0,state[4],state[5],state[6]];
++        }
++        for(var index=0;index<8;index++)h[index]=(h[index]+state[index])|0;
++    }
++    var output="";for(var index=0;index<8;index++)output+=("00000000"+(h[index]>>>0).toString(16)).slice(-8);
++    return output;
++}
++var MINUS_SOURCE="7968c6cf7d348b39d8fb8044c42977bc2b71fe55c4c7db8542150e79e6a1a0b0";
++var MINUS_SOURCE_PATH="/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/minus.maxhelp";
++var MINUS_PROJECTION_SHA256="c17962fba204a882ce5b0bca6c792e55c0a4181366c7dfe0c39b28152215084e";
++var MINUS_TARGETS=["root/obj-2/obj-1","root/obj-2/obj-24","root/obj-2/obj-23"];
++var MINUS_PINS={
++    "root/obj-1":{source_box_sha256:"47b23e380478f1e93c6b234356c0fa2f472fa399cc583372ce1abbb9616188b0",source_text_sha256:"490326e775bc3adc514c502064cb4b937c4122d2450e8b62c85f583077795a37",saved_rect_sha256:"4f39e57126f4c857cccaa454c4ab0e63ba3242488875a7ce82e28a36a8473599",live_rect_sha256:"2bbedba5a709496a6e1b8b7252ad7551792415160de76c6243e424be2e44fecf",runtime_class:"js",changed_dimension:3},
++    "root/obj-2":{source_box_sha256:"e254f23d85b8ee207253f4dc1029b3edfc6f0c1a812bda01d40c8d2d6439d709",source_text_sha256:"484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393",saved_rect_sha256:"d354caae9baa0021746491027a9c4aa1da57065450298612fc0a7b77682b0ceb",live_rect_sha256:"6dff8399adb73f3c4d2f1e05a7407d37381968cd2b51bdbb9eb2cc5ee9f849d3",runtime_class:"patcher",changed_dimension:3},
++    "root/obj-3":{source_box_sha256:"3622827a44f82021c6fdc23b03d27df271c3c9f9984a27b866204a10f93c49f6",source_text_sha256:"bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a",saved_rect_sha256:"d9aad27455a8969fb33a22e3689241f29c2d83d1eac360baf98c043f897e0e86",live_rect_sha256:"1b3974a5eef49edf4381887e103169ef36e333facb4d2ccab310ef62ea699926",runtime_class:"patcher",changed_dimension:3},
++    "root/obj-2/obj-4":{source_box_sha256:"524b28f0b96fd76c10f82fa9f77f97758537b51d01698a5186e35842d9ba07e7",source_text_sha256:"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",saved_rect_sha256:"340d5343c495ec0ef2df4cf661f7721c884d92e69f786c61876d64cc258789df",live_rect_sha256:"c4bfc3fab3c2e8957c0b09681ee183e78f32d3b524c9b4d8710ac11c17dcfd6a",runtime_class:"jsui",changed_dimension:2},
++    "root/obj-2/obj-1":{source_box_sha256:"28fec7d46992171319a9ec22ab58a29f4bd64b37d0911c1737011b8ec6ada820",source_text_sha256:"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",saved_rect_sha256:"8fcf2982f5c69c778c940dccf3fdaea0019d77ca05f69b6867da71b1f05f8ec5",live_rect_sha256:"8fcf2982f5c69c778c940dccf3fdaea0019d77ca05f69b6867da71b1f05f8ec5",runtime_class:"number",changed_dimension:null},
++    "root/obj-2/obj-24":{source_box_sha256:"d26fc7fade06b3d6932ac9c355de12f1aaa240599fed6461867b5bfcfa81ed19",source_text_sha256:"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",saved_rect_sha256:"0096550e8a7358d46eaf6b7e05238b1df060d90b50bf8a9c65ba87a1f3e7f763",live_rect_sha256:"0096550e8a7358d46eaf6b7e05238b1df060d90b50bf8a9c65ba87a1f3e7f763",runtime_class:"number",changed_dimension:null},
++    "root/obj-2/obj-23":{source_box_sha256:"7d43f313c084a84dea7eac4e09e104439f9b21553a056c9d3858c8122b6e628b",source_text_sha256:"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",saved_rect_sha256:"620809c4f421f0cf433e13bd34bb01d5bf3cb08603635a78463b2694197b2f95",live_rect_sha256:"620809c4f421f0cf433e13bd34bb01d5bf3cb08603635a78463b2694197b2f95",runtime_class:"number",changed_dimension:null}
++};
++var minusIntrinsicApply=null;
++try{minusIntrinsicApply=Function.prototype.call.bind(Function.prototype.apply);}catch(minusBridgeError){}
++function minusCanonical(value) {
++    if(value===null)return "null";
++    if(typeof value==="string")return JSON.stringify(value).replace(/[\u007f-\uffff]/g,function(c){return "\\u"+("000"+c.charCodeAt(0).toString(16)).slice(-4);});
++    if(typeof value==="boolean")return value?"true":"false";
++    if(typeof value==="number") {
++        if(!finite(value))throw Error("minus-canonical-nonfinite");
++        if(value===0)return "0";
++        if(Math.floor(value)===value&&Math.abs(value)>9007199254740991) {
++            var number=Math.abs(value),bits=[],digits=[0];
++            while(number){bits.push(number%2);number=Math.floor(number/2);}
++            for(var bit=bits.length-1;bit>=0;bit--){var carry=bits[bit];
++                for(var d=0;d<digits.length;d++){var next=digits[d]*2+carry;digits[d]=next%10;carry=Math.floor(next/10);}
++                if(carry)digits.push(carry);}
++            return (value<0?"-":"")+digits.reverse().join("");
++        }
++        if(Math.floor(value)!==value&&Math.abs(value)<0.0001)
++            return value.toExponential().replace(/e([+-])(\d)$/, "e$10$2");
++        return JSON.stringify(value);
++    }
++    if(!value||typeof value!=="object")throw Error("minus-canonical-type");
++    var pieces=[],i;
++    if(Array.isArray(value)){for(i=0;i<value.length;i++)pieces.push(minusCanonical(value[i]));return "["+pieces.join(",")+"]";}
++    var keys=Object.keys(value).sort();
++    for(i=0;i<keys.length;i++)pieces.push(minusCanonical(keys[i])+":"+minusCanonical(value[keys[i]]));
++    return "{"+pieces.join(",")+"}";
++}
++function minusCanonicalHash(value){return minusAsciiHash(minusCanonical(value));}
++function minusKeys(value,keys) {
++    return !!value&&typeof value==="object"&&!Array.isArray(value)&&sameData(Object.keys(value).sort(),keys.split(" ").sort());
++}
++function minusInteger(value){return finite(value)&&Math.floor(value)===value&&value>=0&&value<=9007199254740991;}
++function minusCommand(command) {
++    return minusKeys(command,"command_id op action document revision action_revision step_id source_sha256")&&
++        command.command_id===101&&command.op==="operation"&&command.action==="install"&&command.document==="minus"&&
++        command.revision===1&&command.action_revision===1&&command.step_id==="install-minus-r1"&&command.source_sha256===MINUS_SOURCE;
++}
++function minusSourceDefinition(definition,configuration,command) {
++    var d=definition,c=configuration;
++    if(!minusCommand(command)||!minusKeys(d,"document source_sha256 helper_sha256 basic_anchor basic_varname boxes full_inventory saved_edges observer_leaves revision lifecycle_owner_inlet pristine_path source_path working_path working_windows_path")||
++        d.document!=="minus"||d.revision!==1||d.source_sha256!==MINUS_SOURCE||d.lifecycle_owner_inlet!==4||
++        d.basic_anchor!=="root/obj-2"||d.basic_varname!=="basic_tab"||!sameData(d.helper_sha256,GEOMETRY_HELPERS)||
++        !c||typeof c.work!=="string"||!c.work||d.source_path!==MINUS_SOURCE_PATH||
++        d.pristine_path!==c.work+"/pristine/minus-r1.maxhelp"||d.working_path!==c.work+"/working/minus-r1.maxhelp"||
++        d.working_windows_path!=="Z:"+d.working_path||!Array.isArray(c.documents)||
++        c.documents.filter(function(x){return x.document==="minus"&&x.revision===1;}).length!==1||
++        c.documents.indexOf(d)===-1||!Array.isArray(c.helpers)||c.helpers.length!==4)throw Error("minus-source-request-binding");
++    var helpers={};
++    for(var i=0;i<c.helpers.length;i++) {
++        var h=c.helpers[i];
++        if(!minusKeys(h,"name sha256 bytes path")||helpers[h.name]||GEOMETRY_HELPERS[h.name]!==h.sha256||
++            !minusInteger(h.bytes)||h.bytes===0||h.path!=="help/resources/"+h.name)throw Error("minus-helper-binding");
++        helpers[h.name]=h.sha256;
++    }
++    if(!sameData(helpers,GEOMETRY_HELPERS))throw Error("minus-helper-inventory");
++    var owners=c.lifecycle&&c.lifecycle.owners,owner=owners&&owners[4];
++    if(!Array.isArray(owners)||!minusKeys(owner,"inlet document revision source_sha256 working_path channel root_proof_path")||
++        owner.inlet!==4||owner.document!=="minus"||owner.revision!==1||owner.source_sha256!==MINUS_SOURCE||
++        owner.working_path!==d.working_windows_path||typeof owner.channel!=="string"||!owner.channel||
++        typeof owner.root_proof_path!=="string"||!owner.root_proof_path)throw Error("minus-owner-binding");
++    if(!Array.isArray(d.boxes)||d.boxes.length!==16||!Array.isArray(d.full_inventory)||d.full_inventory.length!==20||
++        !Array.isArray(d.saved_edges)||d.saved_edges.length!==8||!Array.isArray(d.observer_leaves)||d.observer_leaves.length!==19)
++        throw Error("minus-source-inventory");
++    var seen={},full={},basic={},fields="anchor authored_empty authored_text inlets maxclass outlets rect runtime_class runtime_classes source_box_sha256 source_text_sha256";
++    for(var view=0;view<2;view++) {
++        var rows=view?d.boxes:d.full_inventory;
++        for(i=0;i<rows.length;i++) {
++            var b=rows[i];
++            if(!minusKeys(b,fields+(view?" id initial_numeric role":" child saved_incoming_routes saved_outgoing_routes source_varname"))||
++                typeof b.anchor!=="string"||typeof b.authored_empty!=="boolean"||typeof b.authored_text!=="string"||
++                b.authored_empty!==(b.authored_text.length===0)||!minusInteger(b.inlets)||!minusInteger(b.outlets)||
++                typeof b.maxclass!=="string"||typeof b.runtime_class!=="string"||!Array.isArray(b.runtime_classes)||!b.runtime_classes.length||
++                b.runtime_classes.some(function(x){return typeof x!=="string";})||
++                typeof b.source_box_sha256!=="string"||typeof b.source_text_sha256!=="string"||
++                !/^[a-f0-9]{64}$/.test(b.source_box_sha256)||!/^[a-f0-9]{64}$/.test(b.source_text_sha256))throw Error("minus-descriptor-schema");
++            geometryVectorHash(b.rect);
++            if(view) {
++                if(typeof b.id!=="string"||b.anchor!==d.basic_anchor+"/"+b.id||basic[b.id]||
++                    b.initial_numeric!==null&&!finite(b.initial_numeric)||b.role!==null&&typeof b.role!=="string")throw Error("minus-basic-schema");
++                basic[b.id]=b;
++                var corresponding=full[b.anchor];if(!corresponding)throw Error("minus-basic-correspondence");
++                var common=fields.split(" ");for(var j=0;j<common.length;j++)if(!sameData(b[common[j]],corresponding[common[j]]))throw Error("minus-basic-copy");
++            }else {
++                if(seen[b.anchor]||typeof b.child!=="boolean"||!minusInteger(b.saved_incoming_routes)||!minusInteger(b.saved_outgoing_routes)||
++                    b.source_varname!==null&&typeof b.source_varname!=="string")throw Error("minus-full-schema");
++                seen[b.anchor]=true;full[b.anchor]=b;
++            }
++        }
++    }
++    for(i=0;i<d.saved_edges.length;i++) {
++        var edge=d.saved_edges[i];if(!minusKeys(edge,"source destination index")||!minusInteger(edge.index)||edge.index!==i)throw Error("minus-edge-schema");
++        for(var side=0;side<2;side++) {
++            var end=edge[side?"destination":"source"],box=end&&basic[end[0]];
++            if(!Array.isArray(end)||end.length!==2||typeof end[0]!=="string"||!box||!minusInteger(end[1])||end[1]>=(side?box.inlets:box.outlets))throw Error("minus-edge-port");
++        }
++    }
++    for(i=0;i<d.observer_leaves.length;i++) {
++        var leaf=d.observer_leaves[i],box=leaf&&full[leaf.anchor];
++        if(!minusKeys(leaf,"anchor port varname")||!box||!minusInteger(leaf.port)||leaf.port>=box.outlets||typeof leaf.varname!=="string")throw Error("minus-leaf-schema");
++    }
++    for(var anchor in MINUS_PINS) {
++        var pin=MINUS_PINS[anchor],box=full[anchor];
++        if(!box||box.source_box_sha256!==pin.source_box_sha256||box.source_text_sha256!==pin.source_text_sha256||
++            geometryVectorHash(box.rect)!==pin.saved_rect_sha256)throw Error("minus-source-pin");
++    }
++    var projection={},keys="document source_sha256 helper_sha256 basic_anchor basic_varname boxes full_inventory saved_edges observer_leaves".split(" ");
++    for(i=0;i<keys.length;i++)projection[keys[i]]=d[keys[i]];
++    if(minusCanonicalHash(projection)!==MINUS_PROJECTION_SHA256)throw Error("minus-source-projection");
++    return owner;
++}
++function createMinusDiagnosticCollector(command,definition) {
++    if(!minusCommand(command))return null;
++    var configuration=config,action=shared,documents=config.documents,helpers=config.helpers,lifecycle=config.lifecycle;
++    var owners=lifecycle&&lifecycle.owners,owner=owners&&owners[4],bridge=minusIntrinsicApply;
++    var initial=null,root=null,retained=null,evidence=null,attempted=false;
++    function inputs() {
++        if(config!==configuration||shared!==action||config.documents!==documents||config.helpers!==helpers||
++            config.lifecycle!==lifecycle||!lifecycle||lifecycle.owners!==owners||owners[4]!==owner||
++            documents.indexOf(definition)===-1||!minusCommand(command)||
++            !sameData(plusInstallIdentity(),{request_id:101,step_id:"install-minus-r1",action:"install",action_document:"minus",action_revision:1}))
++            throw Error("minus-input-identity");
++        return {command:minusCanonical(command),definition:minusCanonical(definition),configuration:minusCanonical(config),owner:minusCanonical(owner)};
++    }
++    try{initial=inputs();}catch(initialError){}
++    function sameInputs(){return initial&&sameData(initial,inputs());}
++    function sample() {
++        if(max.frontpatcher!==root||root.parentpatcher!==null)throw Error("minus-root-ownership");
++        var handles=[],data=[],scopes=[],mapped={};
++        function scope(p,parent,container,count) {
++            if(scopes.indexOf(p)!==-1||parent!=="root"&&(p.parentpatcher!==root||p.box!==container))throw Error("minus-scope-ownership");
++            scopes.push(p);handles.push(p);var objects=[],rows=[];
++            for(var object=p.firstobject;object;object=object.nextobject) {
++                if(objects.length>=count||handles.indexOf(object)!==-1)throw Error("minus-runtime-inventory");
++                objects.push(object);handles.push(object);
++                if(object.patcher!==p)throw Error("minus-object-parent");
++                var cls=object.maxclass,name=object.varname,rawRect=object.getboxattr("patching_rect"),rect=[];
++                if(typeof cls!=="string"||name!==null&&typeof name!=="string")throw Error("minus-runtime-identity");
++                if(!Array.isArray(rawRect)||rawRect.length!==4)throw Error("minus-runtime-rectangle");
++                for(var coordinate=0;coordinate<4;coordinate++) {
++                    var value=rawRect[coordinate];if(!finite(value))throw Error("minus-runtime-coordinate");rect.push(value);
++                }
++                var rectHash=geometryVectorHash(rect);
++                var expected=definition.full_inventory.filter(function(b){
++                    if(b.anchor.slice(0,b.anchor.lastIndexOf("/"))!==parent)return false;
++                    var pin=MINUS_PINS[b.anchor];
++                    return pin?cls===pin.runtime_class&&rectHash===pin.live_rect_sha256:
++                        b.runtime_classes.indexOf(cls)!==-1&&sameNumbers(rect,b.rect);
++                });
++                if(expected.length!==1||mapped[expected[0].anchor])throw Error("minus-runtime-bijection");
++                var b=expected[0],pin=MINUS_PINS[b.anchor];
++                if(b.source_varname!==null?name!==b.source_varname:name!==null&&name!=="")throw Error("minus-runtime-name");
++                if(pin&&pin.changed_dimension!==null)for(var dimension=0;dimension<4;dimension++)
++                    if((dimension===pin.changed_dimension)===(rect[dimension]===b.rect[dimension]))throw Error("minus-runtime-dimension");
++                mapped[b.anchor]=object;rows.push({anchor:b.anchor,maxclass:cls,varname:name,rect:rect});
++                var child=object.subpatcher();
++                if(b.child) {
++                    if(!child||p.getnamed(b.source_varname)!==object)throw Error("minus-named-child");
++                    if(b.anchor!=="root/obj-2"&&b.anchor!=="root/obj-3")throw Error("minus-unexpected-scope");
++                    scope(child,b.anchor,object,b.anchor==="root/obj-2"?16:0);
++                }else if(child)throw Error("minus-unexpected-child");
++            }
++            if(objects.length!==count)throw Error("minus-scope-count");data.push({scope:parent,rows:rows});
++        }
++        scope(root,"root",null,4);
++        if(Object.keys(mapped).length!==20||scopes.length!==3)throw Error("minus-full-count");
++        var filepath=root.filepath;
++        // This is the final host read; only plain input/snapshot checks follow.
++        if(!sameInputs()||!samePath(filepath,definition.working_windows_path))throw Error("minus-final-input-binding");
++        return {handles:handles,data:data,filepath:filepath,mapped:mapped};
++    }
++    function invalidate(pollIndex,stage,code) {
++        if(!evidence||evidence.terminal_context.stale)return;
++        evidence.terminal_context.stale=true;
++        evidence.terminal_context.first_invalidation={poll_index:pollIndex,stage:stage,code:code};
++    }
++    function guard(pollIndex,stage) {
++        var code=null;
++        try{
++            var now=sample();
++            if(now.filepath!==retained.filepath||!sameData(now.data,retained.data)||now.handles.length!==retained.handles.length)code="binding-changed";
++            else for(var i=0;i<now.handles.length;i++)if(now.handles[i]!==retained.handles[i]){code="binding-changed";break;}
++        }catch(guardError){code="guard-threw";}
++        if(code)invalidate(pollIndex,stage,code);return code;
++    }
++    function stop(stage,index,code) {
++        if(!evidence.collection.first_failure)evidence.collection.first_failure={stage:stage,method_index:index,code:code};
++        evidence.collection.status="stopped";
++    }
++    function observation(row,status,representation,value) {
++        var result={method:row.method,status:status,representation:representation,value:value};
++        if(row.attribute!==null)result.attribute=row.attribute;return result;
++    }
++    function classify(raw,row) {
++        var representation="scalar-number",value=raw;
++        if(raw===null)return observation(row,"returned","null",null);
++        if(typeof raw==="undefined")return observation(row,"returned","undefined",null);
++        if(Array.isArray(raw)) {
++            var length=raw.length;if(length!==1)return observation(row,"returned","ambiguous-array",null);
++            value=raw[0];representation="singleton-number-array";
++        }
++        if(typeof value!=="number")return observation(row,"returned","other",null);
++        if(!finite(value))return observation(row,"returned","nonfinite",null);
++        return observation(row,"returned",representation,value);
++    }
++    function collect(pollIndex) {
++        for(var index=0;index<6;index++) {
++            var row=evidence.methods[index],object=retained.mapped[row.anchor],code=guard(pollIndex,"collection-guard"),fn=null;
++            if(code){stop("guard-before-lookup",index,code);break;}
++            attempted=true;evidence.counts.lookups_attempted++;
++            try{fn=object[row.method];row.lookup_status=typeof fn==="function"?"callable":"unavailable";}
++            catch(lookupError){row.lookup_status="threw";}
++            if(row.lookup_status==="unavailable")row.observation=observation(row,"unavailable","unavailable",null);
++            code=guard(pollIndex,"collection-guard");
++            if(code){stop("guard-before-invocation",index,code);break;}
++            if(row.lookup_status==="callable") {
++                if(typeof bridge!=="function"){row.invocation_status="unsupported";stop("invocation",index,"unsupported-intrinsic-bridge");break;}
++                var raw,classificationFailed=false;
++                evidence.counts.invocation_attempts++;
++                try {
++                    raw=bridge(fn,object,row.attribute===null?[]:[row.attribute]);
++                    row.invocation_status="returned";
++                    row.observation=observation(row,"returned","classification-threw",null);
++                }catch(invocationError){row.invocation_status="threw";row.observation=observation(row,"threw","threw",null);}
++                evidence.counts.invocation_outcomes_retained++;
++                if(row.invocation_status==="returned") {
++                    try{row.observation=classify(raw,row);}catch(classificationError){classificationFailed=true;stop("classification",index,"classification-threw");}
++                }
++                raw=null;fn=null;
++                code=guard(pollIndex,"collection-guard");
++                if(code){stop("guard-after-outcome",index,code);break;}
++                if(classificationFailed)break;
++            }else {
++                code=guard(pollIndex,"collection-guard");if(code){stop("guard-after-outcome",index,code);break;}
++            }
++            if(index%2===1)evidence.counts.completed_pairs++;
++        }
++    }
++    return {
++        observe:function(patcher,d,pollIndex,diagnostics) {
++            if(attempted)return;
++            if(!initial||d!==definition)return;
++            try {
++                if(!sameInputs())return;minusSourceDefinition(d,configuration,command);root=patcher;
++                var bindings=sample();
++                if(diagnostics.length!==7||geometryDispositions.length||numericModeObservations.length||controllerRepresentationObservations.length)return;
++                var anchors={};
++                for(var i=0;i<diagnostics.length;i++) {
++                    var row=diagnostics[i],pin=MINUS_PINS[row.expected_anchor];
++                    var expected=d.full_inventory.filter(function(b){return b.anchor===row.expected_anchor;})[0];
++                    if(!pin||anchors[row.expected_anchor]||!expected||row.diagnostic_type||!sameData(row.expected_rect,expected.rect)||
++                        row.expected_maxclass!==expected.maxclass||row.expected_runtime_class!==expected.runtime_class)return;
++                    var parent=expected.anchor.slice(0,expected.anchor.lastIndexOf("/"));
++                    var scope=bindings.data.filter(function(s){return s.scope===parent;})[0];
++                    if(!scope||!sameData(row.candidates,scope.rows.map(function(r){return {maxclass:r.maxclass,rect:r.rect};})))return;
++                    anchors[row.expected_anchor]=true;
++                }
++                retained=bindings;
++                evidence={version:"minus-controller-diagnostic-v1",binding:{command:JSON.parse(initial.command),owner:JSON.parse(initial.owner),
++                    working_path:d.working_windows_path,source_projection_sha256:MINUS_PROJECTION_SHA256,helper_sha256:JSON.parse(minusCanonical(d.helper_sha256)),
++                    command_snapshot_sha256:minusAsciiHash(initial.command),definition_snapshot_sha256:minusAsciiHash(initial.definition),
++                    configuration_snapshot_sha256:minusAsciiHash(initial.configuration),owner_snapshot_sha256:minusAsciiHash(initial.owner)},
++                    collection:{poll_index:pollIndex,diagnostic_sha256:minusCanonicalHash(diagnostics),status:"complete",first_failure:null},methods:[],
++                    counts:{lookups_attempted:0,invocation_attempts:0,invocation_outcomes_retained:0,completed_pairs:0},
++                    terminal_context:{stale:false,first_invalidation:null}};
++                for(i=0;i<6;i++)evidence.methods.push({anchor:MINUS_TARGETS[Math.floor(i/2)],method:i%2?"getvalueof":"getattr",attribute:i%2?null:"format",
++                    lookup_status:"unattempted",invocation_status:"unattempted",observation:null});
++                collect(pollIndex);
++            }catch(eligibilityError){}
++        },
++        later:function(pollIndex){if(attempted)guard(pollIndex,"later-validation");},
++        terminal:function(pollIndex){if(attempted)guard(pollIndex,"terminal-guard");},
++        exportData:function(){return attempted?JSON.parse(JSON.stringify(evidence)):null;}
++    };
++}
+ function observedGeometryPolicy(expected,definition,configuration) {
+     var policy=expected.observed_geometry_policy;if(typeof policy==="undefined")return null;
+     var plus=definition&&definition.document==="plus",name=plus?"plus":"times",source=plus?PLUS_SOURCE:GEOMETRY_SOURCE;
+@@ -487,7 +808,7 @@
+     }
+     return result;
+ }
+-function validateTree(patcher,definition) {
++function validateTree(patcher,definition,minusCollector,pollIndex) {
+     anchorDiagnostics=[];geometryDispositions=[];numericModeObservations=[];controllerRepresentationObservations=[];
+     plusPreflightContext=null;var plusCandidates=[],plusPolicy=false,plusPolicyError=null,bindings=[],scopeHandles={};
+     try{plusPolicy=plusControllerCohortMetadata(definition,config);}catch(error){plusPolicyError=error;}
+@@ -597,6 +918,8 @@
+         }
+     }
+     if(!plusEligibilityReported)installTraceEvent("plus-eligibility",{ready:false,candidates:plusCandidates.length,diagnostics:anchorDiagnostics.length});
++    if(minusCollector)minusCollector.observe(patcher,definition,pollIndex,anchorDiagnostics);
++    if(minusCollector)throw Error("minus-diagnostic-install-refused");
+     if(plusPolicyError||plusPolicy&&!plusSatisfied||anchorDiagnostics.length&&!plusSatisfied)
+         throw Error("aggregate-original-hierarchy-preflight-failed");
+     if(plusSatisfied) {
+@@ -616,12 +939,12 @@
+     return {request_id:shared.request_id,step_id:shared.step_id,action:shared.action,
+         action_document:shared.action_document,action_revision:shared.action_revision};
+ }
+-function createPlusValidationPass() {
++function createPlusValidationPass(minusCollector,pollIndex) {
+     var active=true,validated=false,consumed=false,issued=null,payload=null;
+     return {
+         validate:function(root,definition) {
+             if(!active||validated)throw Error("plus-validation-pass-expired");validated=true;
+-            payload=validateTree(root,definition);
++            payload=validateTree(root,definition,minusCollector,pollIndex);
+             if(!payload)return null;
+             issued={};return issued;
+         },
+@@ -676,7 +999,7 @@
+     var value={command_id:command.command_id,success:true,step_id:command.step_id};
+     for(var k in extra)value[k]=extra[k];write(config.ack_path,value);busy=false;
+ }
+-function fail(command,error) {
++function fail(command,error,minusCollector,pollIndex) {
+     var tracing=installTrace&&installTrace.active;
+     if(tracing&&!error.install_trace_refusal)installTrace.original_error=String(error);
+     function progress(phase) {
+@@ -689,6 +1012,11 @@
+     var value={command_id:command.command_id,success:false,error_code:"arithmetic-controller-refused",
+         anchor_diagnostics:anchorDiagnostics,geometry_dispositions:geometryDispositions,
+         numeric_mode_observations:numericModeObservations,controller_representation_observations:controllerRepresentationObservations};
++    if(minusCollector) {
++        minusCollector.terminal(pollIndex);
++        var minusDiagnostic=minusCollector.exportData();
++        if(minusDiagnostic)value.minus_numeric_preflight_diagnostic=minusDiagnostic;
++    }
+     if(closeDiagnostics&&closeDiagnostics.request_id===command.command_id)value.close_diagnostics=closeDiagnostics;
+     function retainTraceFailure() {
+         if(tracing&&installTrace.failure) {
+@@ -754,13 +1082,14 @@
+     if(Object.keys(roots).length||typeof revision!=="number"||revision!==(revisions[doc]||0)+1)throw Error("invalid-install-revision");
+     var definition=definitionFor(doc,revision),attempts=0,stable=0,terminalFailure=false;
+     if(command.source_sha256!==definition.source_sha256)throw Error("install-source-binding");
++    var minusCollector=createMinusDiagnosticCollector(command,definition);
+     installTraceEvent("openfile-enter");
+     max.message("openfile",config.global_name+"_"+doc+"_r"+revision,definition.working_windows_path);
+     installTraceEvent("openfile-return");
+     function poll() {
+         // A scheduled callback remains owned by this install after the global trace changes.
+         if(terminalFailure)return;
+-        var pass=createPlusValidationPass(),validation=null;
++        var pass=createPlusValidationPass(minusCollector,attempts+1),validation=null;
+         try {
+             if(installTrace&&installTrace.active)installTrace.attempt=attempts+1;
+             installTraceEvent("poll-enter");
+@@ -793,7 +1122,10 @@
+             if(attempts>=80)throw Error("bounded-helper-settling-timeout");
+             pollTask=new Task(poll,this);pollTask.schedule(100);
+             installTraceEvent("poll-scheduled");
+-        }catch(error){terminalFailure=true;fail(command,error);}finally{pass.expire();}
++        }catch(error){terminalFailure=true;fail(command,error,minusCollector,attempts);}finally{
++            if(minusCollector&&!terminalFailure)minusCollector.later(attempts);
++            pass.expire();
++        }
+     }
+     try {
+         pollTask=new Task(poll,this);pollTask.schedule(100);
+--- arithmetic-package-008-historical/test_helpers.cjs
++++ current/test_helpers.cjs
+@@ -1612,3 +1612,353 @@
+ });
+ console.log(JSON.stringify({completed008, failures008}));
+ assert.equal(failures008.length, 0, 'preparation008 behavioral regressions');
++
++// Wholly original source data: only public anchor identities match the request.
++const sorted009 = value => {
++  if (Array.isArray(value)) return value.map(sorted009);
++  if (value && typeof value === 'object') return Object.fromEntries(Object.keys(value).sort().map(k => [k, sorted009(value[k])]));
++  return value;
++};
++const canonical009 = value => JSON.stringify(sorted009(value)).replace(/[\u007f-\uffff]/g, c => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
++const digest009 = value => crypto.createHash('sha256').update(canonical009(value)).digest('hex');
++function minus009Fixture() {
++  const queue = [], memory = new Map(), calls = [], activity = [];
++  const c = helper('controller.js', {Task: function (callback) {this.schedule = () => queue.push(callback);}});
++  const d = {document: 'minus', revision: 1, source_sha256: '7968c6cf7d348b39d8fb8044c42977bc2b71fe55c4c7db8542150e79e6a1a0b0',
++    helper_sha256: plain(c.GEOMETRY_HELPERS), basic_anchor: 'root/obj-2', basic_varname: 'basic_tab',
++    lifecycle_owner_inlet: 4, source_path: '/synthetic/resources/minus.maxhelp',
++    pristine_path: '/synthetic/work/pristine/minus-r1.maxhelp', working_path: '/synthetic/work/working/minus-r1.maxhelp',
++    working_windows_path: 'Z:/synthetic/work/working/minus-r1.maxhelp', boxes: [], full_inventory: [], saved_edges: [], observer_leaves: []};
++  const scopes = {root: {parentpatcher: null}, 'root/obj-2': {}, 'root/obj-3': {}};
++  const byAnchor = {}, pins = {}, scopeObjects = {root: [], 'root/obj-2': [], 'root/obj-3': []};
++  const targets = ['root/obj-2/obj-1', 'root/obj-2/obj-24', 'root/obj-2/obj-23'];
++  function add(anchor, cls, index, child = false) {
++    const numeric = targets.includes(anchor), parent = anchor.slice(0, anchor.lastIndexOf('/'));
++    const rect = [100 + index * 71, 200 + index * 37, 43, 29];
++    const b = {anchor, authored_empty: false, authored_text: 'original synthetic descriptor ' + index, child,
++      inlets: 1, outlets: numeric ? 2 : 1, maxclass: ['patcher', 'js'].includes(cls) ? 'newobj' : cls,
++      rect, runtime_class: cls, runtime_classes: [cls], saved_incoming_routes: 0, saved_outgoing_routes: 0,
++      source_box_sha256: hash('original synthetic box ' + index), source_text_sha256: hash('original synthetic text ' + index),
++      source_varname: child ? (anchor === 'root/obj-2' ? 'basic_tab' : 'q_tab') : null};
++    const o = {maxclass: numeric ? 'number' : cls, varname: b.source_varname, patcher: scopes[parent], live: [...rect], nextobject: null,
++      getboxattr(attribute) {assert.equal(attribute, 'patching_rect'); return [...this.live];}, subpatcher: () => child ? scopes[anchor] : null,
++      message() {assert.fail('minus diagnostic sent input');}, setvalueof() {assert.fail('minus diagnostic set value');}};
++    if (child) Object.assign(scopes[anchor], {parentpatcher: scopes[parent], box: o});
++    if (numeric) {
++      o.getattr = function (attribute) {assert.equal(this, o); assert.equal(attribute, 'format'); calls.push([anchor, 'getattr']); return 9;};
++      o.getvalueof = function () {assert.equal(this, o); assert.equal(arguments.length, 0); calls.push([anchor, 'getvalueof']); return [123.25];};
++    }
++    const dimension = anchor === 'root/obj-2/obj-4' ? 2 : ['root/obj-1', 'root/obj-2', 'root/obj-3'].includes(anchor) ? 3 : null;
++    if (dimension !== null) o.live[dimension] += 5;
++    if (numeric || dimension !== null) pins[anchor] = {source_box_sha256: b.source_box_sha256, source_text_sha256: b.source_text_sha256,
++      saved_rect_sha256: hash(rect), runtime_class: o.maxclass, changed_dimension: dimension,
++      live_rect_sha256: hash(o.live)};
++    d.full_inventory.push(b); byAnchor[anchor] = o; scopeObjects[parent].push(o);
++    if (parent === d.basic_anchor) {
++      const {child: omittedChild, source_varname: omittedName, saved_incoming_routes: omittedIn, saved_outgoing_routes: omittedOut, ...basic} = b;
++      d.boxes.push({...plain(basic), id: anchor.split('/').at(-1), role: null, initial_numeric: numeric ? 123.25 : null});
++    }
++  }
++  add('root/obj-1', 'js', 0); add('root/obj-2', 'patcher', 1, true);
++  add('root/obj-2/obj-4', 'jsui', 2);
++  targets.forEach((anchor, i) => add(anchor, 'flonum', i + 3));
++  for (let i = 0; i < 12; i++) add('root/obj-2/synthetic-' + i, 'comment', i + 6);
++  add('root/obj-3', 'patcher', 18, true); add('root/obj-4', 'jsui', 19);
++  for (const [scope, objects] of Object.entries(scopeObjects)) {
++    objects.forEach((o, i) => {o.nextobject = objects[i + 1] || null;}); scopes[scope].firstobject = objects[0] || null;
++    scopes[scope].getnamed = name => objects.find(o => o.varname === name) || null;
++    scopes[scope].newdefault = () => {activity.push('observer'); assert.fail('minus observer attached');};
++  }
++  for (let index = 0; index < 8; index++) d.saved_edges.push({index, source: [d.boxes[index].id, 0], destination: [d.boxes[index + 1].id, 0]});
++  d.observer_leaves = d.boxes.flatMap(b => Array.from({length: b.outlets}, (_, port) =>
++    ({anchor: b.anchor, port, varname: '__alive_help_leaf_' + b.id.replace(/-/g, '_') + '_' + port})));
++  const projection = Object.fromEntries(['document', 'source_sha256', 'helper_sha256', 'basic_anchor', 'basic_varname', 'boxes',
++    'full_inventory', 'saved_edges', 'observer_leaves'].map(k => [k, d[k]]));
++  c.MINUS_PROJECTION_SHA256 = digest009(projection); c.MINUS_PINS = pins; c.MINUS_SOURCE_PATH = d.source_path;
++  const owner = {inlet: 4, document: 'minus', revision: 1, source_sha256: d.source_sha256, working_path: d.working_windows_path,
++    channel: 'synthetic-owner4', root_proof_path: '/synthetic/work/owner4.json'};
++  const owners = [null, null, null, null, owner];
++  c.config = {work: '/synthetic/work', documents: [d], helpers: Object.entries(c.GEOMETRY_HELPERS).map(([name, sha256]) =>
++    ({name, sha256, bytes: 100, path: 'help/resources/' + name})), lifecycle: {owners},
++    ack_path: 'Z:/synthetic/ack.json', journal_path: 'Z:/synthetic/journal.jsonl', global_name: 'synthetic'};
++  const command = {command_id: 101, op: 'operation', action: 'install', document: 'minus', revision: 1, action_revision: 1,
++    step_id: 'install-minus-r1', source_sha256: d.source_sha256};
++  c.shared = {seq: 0}; c.setAction(command); c.File = memoryFile(memory); memory.set(c.config.journal_path, '');
++  const root = scopes.root; root.filepath = d.working_windows_path;
++  c.max = {frontpatcher: root, message() {activity.push('open');}};
++  let collector;
++  const createCollector = c.createMinusDiagnosticCollector;
++  c.createMinusDiagnosticCollector = (...args) => (collector = createCollector(...args));
++  const run = (count = 1) => {while (count-- && queue.length) queue.shift()();};
++  const finish = () => {let n = 100; while (queue.length && n--) run(); assert.equal(queue.length, 0, 'bounded scheduled polls');};
++  return {c, d, command, owner, root, scopes, scopeObjects, byAnchor, targets, calls, activity, queue, memory,
++    start() {c.install(command);}, run, finish, get collector() {return collector;}, ack: () => JSON.parse(memory.get(c.config.ack_path))};
++}
++const completed009 = [], failures009 = [];
++function case009(name, body) {
++  if (process.env.ARITHMETIC_009_CASE && process.env.ARITHMETIC_009_CASE !== name) return;
++  try {body(); completed009.push(name);} catch (error) {failures009.push({name, error: error.message});}
++}
++function refused009(f) {
++  const ack = f.ack(); assert.equal(ack.success, false); assert.equal(Object.keys(f.c.roots).length, 0);
++  assert.equal(Object.keys(f.c.revisions).length, 0); assert.equal(f.activity.filter(x => x === 'observer').length, 0);
++  assert.deepEqual(ack.geometry_dispositions, []); assert.deepEqual(ack.numeric_mode_observations, []);
++  assert.deepEqual(ack.controller_representation_observations, []); return ack.minus_numeric_preflight_diagnostic;
++}
++case009('minus009_once_only_strict_refusal', () => {
++  const f = minus009Fixture(); f.start(); f.finish(); const e = refused009(f);
++  assert.equal(f.c.anchorDiagnostics.length, 7, 'unchanged terminal pass retains seven strict refusals');
++  assert.equal(f.calls.length, 6, 'complete eligible minus hierarchy must collect six ordered calls once');
++  assert.deepEqual(f.calls, f.targets.flatMap(a => [[a, 'getattr'], [a, 'getvalueof']]));
++  assert.ok(e, 'eligible strict refusal must retain the diagnostic envelope');
++  assert.deepEqual(e.counts, {lookups_attempted: 6, invocation_attempts: 6, invocation_outcomes_retained: 6, completed_pairs: 3});
++  assert.equal(e.collection.status, 'complete'); assert.equal(e.collection.first_failure, null);
++  assert.deepEqual(e.terminal_context, {stale: false, first_invalidation: null});
++  assert.deepEqual(e.binding.command, f.command); assert.deepEqual(e.binding.owner, f.owner);
++  assert.equal(e.binding.source_projection_sha256, f.c.MINUS_PROJECTION_SHA256);
++  assert.equal(e.collection.poll_index, 1); assert.equal(e.collection.diagnostic_sha256, digest009(f.ack().anchor_diagnostics));
++  assert.deepEqual(Object.keys(e).sort(), ['binding', 'collection', 'counts', 'methods', 'terminal_context', 'version']);
++  assert.equal(e.version, 'minus-controller-diagnostic-v1');
++  assert.deepEqual(Object.keys(e.binding).sort(), ['command', 'command_snapshot_sha256', 'configuration_snapshot_sha256',
++    'definition_snapshot_sha256', 'helper_sha256', 'owner', 'owner_snapshot_sha256', 'source_projection_sha256', 'working_path']);
++  assert.deepEqual(Object.keys(e.collection).sort(), ['diagnostic_sha256', 'first_failure', 'poll_index', 'status']);
++  for (const row of e.methods) assert.deepEqual(Object.keys(row).sort(), ['anchor', 'attribute', 'invocation_status', 'lookup_status', 'method', 'observation']);
++  assert.equal(e.binding.command_snapshot_sha256, digest009(f.command)); assert.equal(e.binding.definition_snapshot_sha256, digest009(f.d));
++  assert.equal(e.binding.configuration_snapshot_sha256, digest009(f.c.config)); assert.equal(e.binding.owner_snapshot_sha256, digest009(f.owner));
++});
++case009('minus009_canonical_source_hash', () => {
++  const c = helper('controller.js');
++  const value = {z: 2.0, a: ['\u00e9\ud83d\ude00', true, null, -0, 1e-7, 1e-6, .000012345, 1e23]};
++  const literal = '{"a":["\\u00e9\\ud83d\\ude00",true,null,0,1e-07,1e-06,1.2345e-05,99999999999999991611392],"z":2}';
++  assert.equal(c.minusCanonical(value), literal);
++  assert.equal(c.minusCanonicalHash(value), crypto.createHash('sha256').update(literal).digest('hex'));
++  for (const bad of [NaN, Infinity, -Infinity, undefined, () => 1]) assert.throws(() => c.minusCanonicalHash(bad));
++  for (const bad of [[1, 2, 3], [1, 2, 3, true], [1, 2, 3, Infinity], {0: 1, 1: 2, 2: 3, 3: 4, length: 4}])
++    assert.throws(() => c.geometryVectorHash(bad));
++});
++case009('minus009_source_request_owner_schema_suppression', () => {
++  const mutations = [
++    f => {f.command.command_id = 102;}, f => {f.command.op = 'readback';}, f => {f.command.action = 'close';},
++    f => {f.command.document = 'plus';}, f => {f.command.revision = 2;}, f => {f.command.action_revision = true;},
++    f => {f.command.step_id = 'install-minus-r2';}, f => {f.command.source_sha256 = 'f'.repeat(64);},
++    f => {f.command.extra = 1;}, f => {delete f.command.action_revision;},
++    f => {f.d.document = 'times';}, f => {f.d.revision = true;}, f => {f.d.source_sha256 = 'f'.repeat(64);},
++    f => {f.d.lifecycle_owner_inlet = true;}, f => {f.d.source_path = '/different/minus.maxhelp';},
++    f => {f.d.pristine_path += '.changed';}, f => {f.d.working_path += '.changed';}, f => {f.d.working_windows_path += '.changed';},
++    f => {f.d.extra = 1;}, f => {delete f.d.basic_anchor;}, f => {f.c.config.documents.push(f.d);},
++    f => {f.d.helper_sha256['helpstarter.js'] = 'f'.repeat(64);}, f => {f.c.config.helpers[0].sha256 = 'f'.repeat(64);},
++    f => {f.c.config.helpers.pop();}, f => {f.c.config.helpers[1] = plain(f.c.config.helpers[0]);},
++    f => {f.c.config.helpers[0].bytes = true;}, f => {f.c.config.helpers[0].path += '.changed';},
++    f => {f.owner.inlet = true;}, f => {f.owner.document = 'plus';}, f => {f.owner.revision = 2;},
++    f => {f.owner.source_sha256 = 'f'.repeat(64);}, f => {f.owner.working_path += '.changed';},
++    f => {delete f.owner.channel;}, f => {f.owner.extra = true;}, f => {f.c.shared.request_id = 102;},
++    f => {f.c.shared.action_revision = true;}, f => {f.root.filepath += '.changed';},
++    f => {f.d.boxes[0].observed_geometry_policy = {};}, f => {f.d.full_inventory[0].controller_numeric_representation_policy = {};},
++    f => {f.d.boxes[0].authored_empty = 1;}, f => {f.d.full_inventory[0].child = 1;},
++    f => {f.d.boxes[0].inlets = true;}, f => {f.d.full_inventory[0].outlets = true;},
++    f => {f.d.saved_edges[0].index = true;}, f => {f.d.saved_edges[0].source[1] = true;},
++    f => {f.d.observer_leaves[0].port = true;}, f => {f.d.observer_leaves[0].extra = 1;},
++    f => {f.d.boxes[0].authored_text += ' changed';}, f => {f.d.full_inventory[0].source_text_sha256 = 'f'.repeat(64);},
++    f => {f.d.boxes[1].source_box_sha256 = 'f'.repeat(64);}, f => {f.d.boxes[0].rect[0] += .001;},
++    f => {f.d.saved_edges.reverse();}, f => {f.d.observer_leaves.reverse();},
++    f => {f.d.boxes[0].runtime_classes.push('number');}, f => {f.d.boxes[0].initial_numeric = Infinity;},
++    f => {f.d.full_inventory[0].saved_incoming_routes = true;}, f => {f.d.full_inventory.pop();}
++  ];
++  mutations.forEach((mutate, index) => {
++    const f = minus009Fixture(); mutate(f);
++    try {f.start(); f.finish();} catch (error) {assert.equal(f.calls.length, 0, 'early refusal must not probe'); return;}
++    assert.equal(f.calls.length, 0, 'source/request mutation ' + index + ' reached capability');
++    assert.equal(f.ack().success, false); assert.equal(f.ack().minus_numeric_preflight_diagnostic, undefined);
++    assert.equal(Object.keys(f.c.roots).length, 0); assert.equal(Object.keys(f.c.revisions).length, 0);
++    assert.deepEqual(f.ack().geometry_dispositions, []);
++  });
++});
++case009('minus009_complete_hierarchy_suppression', () => {
++  const mutations = [
++    f => {f.scopeObjects['root/obj-2'].at(-2).nextobject = null;},
++    f => {f.scopeObjects['root/obj-2'].at(-1).nextobject = {...f.byAnchor['root/obj-2/synthetic-0'], nextobject: null};},
++    f => {f.scopeObjects['root/obj-2'].at(-1).nextobject = f.scopeObjects['root/obj-2'][0];},
++    f => {f.scopes['root/obj-3'].firstobject = {...f.byAnchor['root/obj-2/synthetic-0'], nextobject: null};},
++    f => {f.byAnchor['root/obj-2/synthetic-0'].patcher = f.root;},
++    f => {f.scopes['root/obj-2'].parentpatcher = {};}, f => {f.scopes['root/obj-2'].box = {};},
++    f => {f.root.parentpatcher = {};}, f => {delete f.root.parentpatcher;},
++    f => {f.root.getnamed = () => ({});}, f => {f.byAnchor['root/obj-2'].varname = 'other';},
++    f => {f.byAnchor['root/obj-2/synthetic-0'].varname = 'unexpected';},
++    f => {f.byAnchor['root/obj-2/synthetic-0'].maxclass = 'button';},
++    f => {f.byAnchor['root/obj-2/obj-1'].maxclass = 'flonum';},
++    f => {f.byAnchor['root/obj-2/obj-1'].live[0] += .001;},
++    f => {f.byAnchor['root/obj-1'].live[0] += .001;},
++    f => {f.byAnchor['root/obj-2/obj-4'].live[2] += .001;},
++    f => {f.byAnchor['root/obj-4'].live[0] += .001;},
++    f => {f.byAnchor['root/obj-2/synthetic-0'].live = [...f.byAnchor['root/obj-2/obj-1'].live];},
++    f => {f.byAnchor['root/obj-4'].subpatcher = () => {throw {toString() {assert.fail('host exception converted');}};};}
++  ];
++  mutations.forEach((mutate, index) => {
++    const f = minus009Fixture(); mutate(f);
++    // A cycle would also hang the frozen legacy traversal; exercise the independent finite gate directly.
++    if (index === 2) {
++      f.start(); f.c.anchorDiagnostics = [];
++      f.collector.observe(f.root, f.d, 1, []); assert.equal(f.calls.length, 0); return;
++    }
++    f.start(); f.finish(); assert.equal(f.calls.length, 0, 'hierarchy mutation ' + index + ' reached capability');
++    const e = refused009(f); assert.equal(e, undefined);
++  });
++});
++case009('minus009_all_classified_outcomes', () => {
++  const cases = [[0, 'scalar-number', 0], [-4.25, 'scalar-number', -4.25], [[7.5], 'singleton-number-array', 7.5],
++    [null, 'null', null], [undefined, 'undefined', null], [[], 'ambiguous-array', null], [[1, 2], 'ambiguous-array', null],
++    ['7', 'other', null], [true, 'other', null], [[false], 'other', null], [NaN, 'nonfinite', null],
++    [Infinity, 'nonfinite', null], [[-Infinity], 'nonfinite', null],
++    [{toJSON() {assert.fail('returned host object serialized');}, toString() {assert.fail('returned host object converted');}}, 'other', null]];
++  for (const [raw, representation, value] of cases) for (const method of ['getattr', 'getvalueof']) {
++    const f = minus009Fixture(), object = f.byAnchor[f.targets[0]];
++    object[method] = function () {f.calls.push([f.targets[0], method]); return raw;}; f.start(); f.finish();
++    const e = refused009(f), index = method === 'getattr' ? 0 : 1, observation = e.methods[index].observation;
++    assert.equal(observation.status, 'returned'); assert.equal(observation.representation, representation); assert.equal(observation.value, value);
++    assert.equal(e.collection.status, 'complete'); assert.equal(e.counts.completed_pairs, 3); assert.equal(f.calls.length, 6);
++  }
++});
++case009('minus009_stable_lookup_and_invocation_failures_continue', () => {
++  for (const shape of ['unavailable', 'lookup-threw', 'invocation-threw']) {
++    const f = minus009Fixture(), object = f.byAnchor[f.targets[0]];
++    if (shape === 'unavailable') object.getattr = null;
++    if (shape === 'lookup-threw') Object.defineProperty(object, 'getattr', {get() {throw {toString() {assert.fail('lookup exception converted');}};}});
++    if (shape === 'invocation-threw') object.getattr = function () {f.calls.push([f.targets[0], 'getattr']); throw {toString() {assert.fail('invocation exception converted');}};};
++    f.start(); f.finish(); const e = refused009(f), row = e.methods[0];
++    assert.equal(row.lookup_status, shape === 'unavailable' ? 'unavailable' : shape === 'lookup-threw' ? 'threw' : 'callable');
++    assert.equal(row.invocation_status, shape === 'invocation-threw' ? 'threw' : 'unattempted');
++    assert.equal(e.counts.lookups_attempted, 6); assert.equal(e.counts.invocation_attempts, shape === 'invocation-threw' ? 6 : 5);
++    assert.equal(e.counts.invocation_outcomes_retained, e.counts.invocation_attempts); assert.equal(e.counts.completed_pairs, 3);
++    assert.equal(row.observation === null, shape === 'lookup-threw'); assert.equal(e.collection.first_failure, null);
++  }
++});
++case009('minus009_single_lookup_and_trusted_receiver_bridge', () => {
++  const f = minus009Fixture(), reads = [];
++  for (const anchor of f.targets) for (const method of ['getattr', 'getvalueof']) {
++    const object = f.byAnchor[anchor], fn = object[method];
++    for (const property of ['call', 'apply', 'toString']) Object.defineProperty(fn, property, {get() {assert.fail('untrusted function property inspected');}});
++    Object.defineProperty(object, method, {get() {reads.push([anchor, method]); return fn;}});
++  }
++  f.start(); f.finish(); const e = refused009(f);
++  assert.deepEqual(reads, f.targets.flatMap(a => [[a, 'getattr'], [a, 'getvalueof']])); assert.equal(e.counts.invocation_attempts, 6);
++});
++case009('minus009_lookup_mutation_suppresses_invocation', () => {
++  for (const mutate of [f => {f.command.command_id++;}, f => {f.c.shared.action_revision++;},
++    f => {f.owner.channel += '-changed';}, f => {f.d.boxes[0].outlets++;},
++    f => {f.byAnchor[f.targets[0]].patcher = f.root;}]) {
++    const f = minus009Fixture(), object = f.byAnchor[f.targets[0]], fn = object.getattr; let lookups = 0;
++    Object.defineProperty(object, 'getattr', {get() {lookups++; mutate(f); return fn;}});
++    f.start(); f.finish(); const e = refused009(f);
++    assert.equal(lookups, 1); assert.equal(f.calls.length, 0); assert.equal(e.methods[0].lookup_status, 'callable');
++    assert.equal(e.methods[0].invocation_status, 'unattempted'); assert.equal(e.counts.lookups_attempted, 1);
++    assert.equal(e.collection.first_failure.stage, 'guard-before-invocation'); assert.equal(e.terminal_context.stale, true);
++    assert.ok(e.methods.slice(1).every(r => r.lookup_status === 'unattempted' && r.invocation_status === 'unattempted' && r.observation === null));
++  }
++});
++case009('minus009_unsupported_intrinsic_stops_without_fallback', () => {
++  const f = minus009Fixture(); f.c.minusIntrinsicApply = null; f.start(); f.finish(); const e = refused009(f);
++  assert.equal(f.calls.length, 0); assert.equal(e.counts.lookups_attempted, 1); assert.equal(e.counts.invocation_attempts, 0);
++  assert.equal(e.methods[0].lookup_status, 'callable'); assert.equal(e.methods[0].invocation_status, 'unsupported');
++  assert.equal(e.methods[0].observation, null); assert.equal(e.collection.first_failure.code, 'unsupported-intrinsic-bridge');
++  assert.equal(e.collection.first_failure.stage, 'invocation'); assert.equal(e.terminal_context.stale, false);
++  const startup = helper('controller.js', {Function: {prototype: {}}});
++  assert.equal(startup.minusIntrinsicApply, null, 'optional bridge initialization must not break helper startup');
++  assert.equal(startup.capabilityObservation({getvalueof: () => 7}, 'getvalueof').value, 7, 'legacy helper remains isolated');
++});
++case009('minus009_returned_classification_failure_retains_prefix', () => {
++  for (const property of ['length', '0']) {
++    const f = minus009Fixture(), raw = new Proxy([3], {get(target, key) {
++      if (key === property) throw {toString() {assert.fail('classification exception converted');}};
++      return Reflect.get(target, key);
++    }});
++    f.byAnchor[f.targets[0]].getattr = () => {f.calls.push([f.targets[0], 'getattr']); return raw;};
++    f.start(); f.finish(); const e = refused009(f);
++    assert.equal(f.calls.length, 1); assert.equal(e.counts.invocation_attempts, 1); assert.equal(e.counts.invocation_outcomes_retained, 1);
++    assert.equal(e.methods[0].invocation_status, 'returned'); assert.equal(e.methods[0].observation.representation, 'classification-threw');
++    assert.equal(e.collection.first_failure.stage, 'classification'); assert.equal(e.counts.completed_pairs, 0);
++  }
++  const f = minus009Fixture(); let lengths = 0, elements = 0;
++  f.byAnchor[f.targets[0]].getvalueof = () => {f.calls.push([f.targets[0], 'getvalueof']); return new Proxy([3], {get(target, key) {
++    if (key === 'length') lengths++; if (key === '0') elements++; return Reflect.get(target, key);
++  }});};
++  f.start(); f.finish(); assert.equal(refused009(f).methods[1].observation.value, 3); assert.equal(lengths, 1); assert.equal(elements, 1);
++});
++case009('minus009_invocation_mutations_and_partial_pairs', () => {
++  for (let index = 0; index < 6; index++) {
++    const f = minus009Fixture(), anchor = f.targets[Math.floor(index / 2)], method = index % 2 ? 'getvalueof' : 'getattr';
++    const object = f.byAnchor[anchor], fn = object[method];
++    object[method] = function (...args) {const result = Reflect.apply(fn, this, args); f.owner.channel += '-changed'; return result;};
++    f.start(); f.finish(); const e = refused009(f);
++    assert.equal(f.calls.length, index + 1); assert.equal(e.counts.invocation_attempts, index + 1);
++    assert.equal(e.counts.invocation_outcomes_retained, index + 1); assert.equal(e.counts.completed_pairs, Math.floor(index / 2));
++    assert.equal(e.methods[index].invocation_status, 'returned'); assert.equal(e.collection.first_failure.method_index, index);
++    assert.equal(e.collection.first_failure.stage, 'guard-after-outcome'); assert.equal(e.terminal_context.stale, true);
++    assert.ok(e.methods.slice(index + 1).every(r => r.lookup_status === 'unattempted' && r.observation === null));
++  }
++});
++case009('minus009_final_host_read_mutation', () => {
++  for (const callsBeforeMutation of [0, 1, 6]) {
++    const f = minus009Fixture(), filepath = f.root.filepath; let changed = false;
++    Object.defineProperty(f.root, 'filepath', {get() {
++      if (!changed && f.calls.length === callsBeforeMutation) {changed = true; f.command.command_id++;} return filepath;
++    }});
++    f.start(); f.finish(); const e = refused009(f);
++    assert.equal(changed, true); assert.equal(f.calls.length, callsBeforeMutation);
++    if (!callsBeforeMutation) assert.equal(e, undefined);
++    else {assert.equal(e.methods[callsBeforeMutation - 1].invocation_status, 'returned'); assert.equal(e.terminal_context.stale, true);
++      assert.equal(e.collection.first_failure.stage, 'guard-after-outcome'); assert.equal(e.binding.command.command_id, 101);}
++  }
++});
++case009('minus009_later_hierarchy_and_terminal_arrays', () => {
++  for (const change of ['missing', 'all-source-classes']) {
++    const f = minus009Fixture(); f.start(); f.run(); const original = plain(f.collector.exportData());
++    assert.equal(original.collection.status, 'complete'); assert.equal(f.calls.length, 6);
++    if (change === 'missing') f.scopeObjects['root/obj-2'].at(-2).nextobject = null;
++    else for (const b of f.d.full_inventory) {const o = f.byAnchor[b.anchor]; o.maxclass = b.runtime_class; o.live = [...b.rect];}
++    f.finish(); const e = refused009(f);
++    for (const key of ['binding', 'collection', 'methods', 'counts']) assert.deepEqual(e[key], original[key]);
++    assert.equal(e.terminal_context.stale, true); assert.equal(e.terminal_context.first_invalidation.stage, 'later-validation');
++    assert.notEqual(digest009(f.ack().anchor_diagnostics), original.collection.diagnostic_sha256);
++    if (change === 'missing') assert.ok(f.ack().anchor_diagnostics.some(r => r.diagnostic_type === 'scope-count'));
++    else assert.deepEqual(f.ack().anchor_diagnostics, []);
++    assert.equal(f.calls.length, 6);
++  }
++});
++case009('minus009_terminal_throw_and_export_immutability', () => {
++  const f = minus009Fixture(); f.start(); f.run(); const first = f.collector.exportData(), frozenBytes = JSON.stringify(first);
++  const terminalRows = f.c.anchorDiagnostics;
++  Object.defineProperty(f.root, 'filepath', {get() {throw {toString() {assert.fail('host getter exception converted');}};}, configurable: true});
++  // The legacy poll error formatter sees its own error; the collector must never convert a raw host exception.
++  f.c.max.frontpatcher = null; f.collector.terminal(2);
++  assert.equal(f.collector.exportData().terminal_context.first_invalidation.stage, 'terminal-guard');
++  f.c.max.frontpatcher = f.root;
++  Object.defineProperty(f.root, 'filepath', {get() {throw Error('original synthetic terminal path unavailable');}, configurable: true});
++  f.finish(); const e = refused009(f);
++  assert.equal(e.terminal_context.stale, true); assert.deepEqual(f.ack().anchor_diagnostics, plain(terminalRows));
++  assert.equal(JSON.stringify(first), frozenBytes); first.methods[0].observation.value = -999;
++  assert.notEqual(f.collector.exportData().methods[0].observation.value, -999);
++  const ackBytes = f.memory.get(f.c.config.ack_path); f.collector.later(99);
++  assert.equal(f.memory.get(f.c.config.ack_path), ackBytes); assert.equal(f.calls.length, 6);
++});
++case009('minus009_request_and_queued_callback_ownership', () => {
++  const f = minus009Fixture(); f.c.config.command_path = 'Z:/synthetic/command.json';
++  f.memory.set(f.c.config.command_path, JSON.stringify(f.command)); f.c.tick(); const queued = f.queue[0]; f.finish();
++  const original = f.ack(), bytes = f.memory.get(f.c.config.ack_path), calls = f.calls.length;
++  f.c.tick(); queued(); assert.equal(f.calls.length, calls); assert.equal(f.memory.get(f.c.config.ack_path), bytes);
++  const command = {...f.command, command_id: 102}; f.memory.set(f.c.config.command_path, JSON.stringify(command));
++  f.c.tick(); queued(); assert.equal(f.calls.length, calls); f.finish();
++  assert.equal(f.ack().command_id, 102); assert.equal(f.ack().minus_numeric_preflight_diagnostic, undefined);
++  assert.equal(f.ack().success, false); assert.equal(f.calls.length, calls); assert.equal(original.minus_numeric_preflight_diagnostic.counts.invocation_attempts, 6);
++  assert.equal(Object.keys(f.c.roots).length, 0); assert.equal(Object.keys(f.c.revisions).length, 0);
++});
++case009('minus009_stopped_batch_keeps_first_failure', () => {
++  const f = minus009Fixture(); f.c.minusIntrinsicApply = null; f.start(); f.run();
++  const original = plain(f.collector.exportData()); assert.equal(original.collection.first_failure.code, 'unsupported-intrinsic-bridge');
++  f.owner.channel += '-changed'; f.run(); const invalidation = plain(f.collector.exportData().terminal_context);
++  assert.equal(invalidation.stale, true); assert.equal(invalidation.first_invalidation.stage, 'later-validation');
++  f.root.parentpatcher = {}; f.finish(); const e = refused009(f);
++  for (const key of ['binding', 'collection', 'methods', 'counts']) assert.deepEqual(e[key], original[key]);
++  assert.deepEqual(e.terminal_context, invalidation); assert.equal(f.calls.length, 0);
++});
++console.log(JSON.stringify({completed009, failures009}));
++assert.equal(failures009.length, 0, 'preparation009 behavioral regressions');

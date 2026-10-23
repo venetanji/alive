@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "cycle",
+      "x": 160,
+      "y": 60,
+      "params": {
+        "frequency": 1,
+        "phase": 0
+      }
+    },
+    {
+      "id": 2,
+      "type": "message",
+      "x": 420,
+      "y": 60,
+      "params": {
+        "text": "bang"
+      }
+    },
+    {
+      "id": 3,
+      "type": "snapshot",
+      "x": 160,
+      "y": 170,
+      "params": {
+        "interval": 100,
+        "offset": 0
+      }
+    },
+    {
+      "id": 4,
+      "type": "message",
+      "x": 420,
+      "y": 160,
+      "params": {
+        "text": "0"
+      }
+    },
+    {
+      "id": 5,
+      "type": "print",
+      "x": 160,
+      "y": 280,
+      "params": {
+        "label": "sample",
+        "level": 0,
+        "popup": 0
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 4,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 1
+    },
+    {
+      "from": 3,
+      "outlet": 0,
+      "to": 5,
+      "inlet": 0
+    }
+  ]
+}

@@ -169,6 +169,39 @@ void queue_contract() {
  ultra_core_destroy(core);
  std::cout << "PASS C API/UI queue reaches Faust zones; unknown kind rejected\n";
 }
+void document_banks() {
+ {
+  Core core;check(core.init(),"legacy capacity initialize");
+  for(unsigned i=0;i<64;++i)check(core.submit({i/16*64,0,alive::Kind::Level,0,127}),"legacy scheduled capacity");
+  check(!core.submit({256,0,alive::Kind::Level,0,127}),"legacy scheduled capacity remains64");
+ }
+ {
+  Core core;check(core.init(),"document banks initialize");
+  std::array<std::array<float,128>,alive::DocumentDevices> audio{};
+  std::array<float*,alive::DocumentDevices> output{};
+  for(unsigned d=0;d<output.size();++d)output[d]=audio[d].data();
+  work={};measuring=true;
+  for(unsigned d=0;d<alive::DocumentCount;++d){
+   for(unsigned i=0;i<14;++i)check(core.submit_document({0,uint8_t(d*2+i%2),alive::Kind::Level,0,127}),"document block capacity");
+   for(unsigned i=0;i<2;++i)check(core.submit_document({0,uint8_t(d*2+i),alive::Kind::On,69,127}),"document bank note");
+  }
+  core.render_devices({output.data(),unsigned(output.size())},nullptr,128);
+  measuring=false;
+  check(!core.status().fault&&!work.allocations&&!work.frees&&!work.locks,"document bank realtime render");
+  for(const auto& channel:audio)check(channel[64]==.25f/16,"document bank channel placement");
+  check(core.submit_document({0,30,HardClear,0,0}),"document bank clear");
+  core.render_devices({output.data(),unsigned(output.size())},nullptr,128);
+  check(audio[30][127]==0&&audio[31][127]!=0&&audio[0][127]!=0,"document bank clear isolation");
+ }
+ {
+  Core core;check(core.init(),"legacy diagnostic initialize");
+  std::array<float,128> input{},left{},right{},diagnostic{};
+  for(unsigned i=0;i<input.size();++i)input[i]=float(i+1)/128;
+  core.render(left.data(),right.data(),input.data(),input.size(),diagnostic.data());
+  for(unsigned i=0;i<64;++i)check(diagnostic[i]==0&&diagnostic[i+64]==input[i],"legacy diagnostic channel preserved");
+ }
+ std::cout<<"PASS prepared32 document banks, isolated hard clear, callback allocation/lock guard and legacy capacity/diagnostic\n";
+}
 void hard_clear() {
  const std::vector<AppEvent> settings = {
   {0,0,Attack,0,8},{0,0,Release,0,14},{0,0,alive::Kind::Level,0,64}
@@ -229,7 +262,7 @@ int main() {
  try {
   instrumentation_control();
   default_oracle();durations();partitions_and_isolation();latched_controls();
-  early_release_and_stop();reset_and_polyphony();queue_contract();hard_clear();audio_bus<Core>();
+  early_release_and_stop();reset_and_polyphony();queue_contract();document_banks();hard_clear();audio_bus<Core>();
   std::cout << "PASS all app envelope tests through real Clockwork\n";
  } catch(const std::exception& e) {
   measuring=false;std::cerr<<"FAIL "<<e.what()<<'\n';return 1;

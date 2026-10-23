@@ -1,0 +1,847 @@
+# Arithmetic Admission Frozen Review Package
+
+Changes are against the private pre-admission baseline, preserving prior dirty work.
+--- baseline/apps/ultra/ui/canvas-help-shell.mjs
++++ current/apps/ultra/ui/canvas-help-shell.mjs
+@@ -1,31 +1,114 @@
+ const fail=message=>{throw Error(message);};
+-export const HELP_OBJECTS=Object.freeze(['append','prepend','int','float']);
++export const HELP_OBJECTS=Object.freeze(['append','prepend','int','float','times','plus','minus']);
+ export const HELP_ROLES=Object.freeze(['starter','name','details','arguments']);
+ export const HELP_HELPER_SPEC=Object.freeze({label:'Help helper',params:{},inlets:[],outlets:[],help:'Local help-shell annotation. No runtime ports or script execution.'});
+ const sourceHashes=Object.freeze({
+   append:'d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729',
+   prepend:'281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb',
+   int:'bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61',
+   float:'c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c',
+ });
++const arithmeticProfiles=Object.freeze({
++  times:Object.freeze({sourceSha256:'1eea3861a1605453fb3ed4daa4660f71e175fb2cf16ce4c4098cb53c5b94d54b',basic:'obj-4',question:'obj-1',starter:'obj-3',name:'obj-6',details:'obj-2',arguments:'obj-5',identitySha256:'684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1',argumentsSha256:'684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1',starterSha256:'0ca81c69553c5299b7dc137769cb0887e0f1dc26c73bfe08c0e04891d8a99d02'}),
++  plus:Object.freeze({sourceSha256:'d1443c5af7ba8874c7b1d237e3d22bbe518970ad8ae85a09ec8f10494d084895',basic:'obj-2',question:'obj-3',starter:'obj-1',name:'obj-4',details:'obj-2',arguments:'obj-4',identitySha256:'a318c24216defe206feeb73ef5be00033fa9c4a74d0b967f6532a26ca5906d3b',argumentsSha256:'383ef36928344f56ffe8fe23ceed2ad8c0db8ec222c5f56c47163747dc738a0e',starterSha256:'e86f190fbc376badcc5d7b14a552d4e84fad436e0789bb2c7cc221fa38bf9390'}),
++  minus:Object.freeze({sourceSha256:'7968c6cf7d348b39d8fb8044c42977bc2b71fe55c4c7db8542150e79e6a1a0b0',basic:'obj-2',question:'obj-3',starter:'obj-1',name:'obj-4',details:'obj-2',arguments:'obj-4',identitySha256:'3973e022e93220f9212c18d0d0c543ae7c309e46640da93a4a0314de999f5112',argumentsSha256:'129fa7713adba71e12dca1d217e4236dad4fd946a80ea339180c243e1c7888da',starterSha256:'490326e775bc3adc514c502064cb4b937c4122d2450e8b62c85f583077795a37'}),
++});
+ const probedSources=new WeakMap();
++const profileFor=(adapter,object)=>typeof adapter!=='string'||typeof object!=='string'?null:
++  adapter==='max-help-four-v1'&&Object.hasOwn(sourceHashes,object)?{sourceSha256:sourceHashes[object]}:
++  adapter==='max-help-arithmetic-three-v1'&&Object.hasOwn(arithmeticProfiles,object)?arithmeticProfiles[object]:null;
++const boxAt=(scope,id)=>{
++  const matches=Array.isArray(scope?.boxes)?scope.boxes.filter(item=>item?.box?.id===id):[];
++  return matches.length===1?matches[0].box:null;
++};
++
++async function arithmeticHashFacts(source,profile){
++  if(!globalThis.crypto?.subtle)return null;
++  let root;
++  try{root=JSON.parse(source.replace(/^\uFEFF/,''))?.patcher;}catch{return null;}
++  const basic=boxAt(root,profile.basic)?.patcher,starter=boxAt(root,profile.starter),text=starter?.text;
++  const match=typeof text==='string'&&/^js helpstarter\.js (\S+)$/.exec(text);
++  if(!match)return null;
++  const digest=async value=>{
++    if(typeof value!=='string')throw Error('Invalid helper value.');
++    const bytes=new TextEncoder().encode(value);
++    if(bytes.length>4096)throw Error('Helper value exceeds the hash limit.');
++    return Array.from(new Uint8Array(await globalThis.crypto.subtle.digest('SHA-256',bytes)),byte=>byte.toString(16).padStart(2,'0')).join('');
++  };
++  const argumentFact=async box=>{
++    if(!Array.isArray(box?.jsarguments)||box.jsarguments.length!==1)return null;
++    const argument=box.jsarguments[0];return{argument,sha256:await digest(argument)};
++  };
++  try{
++    const [starterSha256,identitySha256,name,details,args]=await Promise.all([
++      digest(text),digest(match[1]),argumentFact(boxAt(root,profile.name)),argumentFact(boxAt(basic,profile.details)),argumentFact(boxAt(basic,profile.arguments)),
++    ]);
++    return{starter:{text,argument:match[1],sha256:starterSha256,argumentSha256:identitySha256},name,details,arguments:args};
++  }catch{return null;}
++}
+ 
+ export async function probeHelpShell(source,invoke){
+   if(typeof source!=='string'||new TextEncoder().encode(source).length>8*1048576)fail('Help source exceeds the 8 MiB text limit.');
+   if(typeof invoke!=='function')return{status:'unavailable',reason:'not-configured'};
+   const result=await invoke('help_shell_probe',{source});
+   if(result?.status==='unrecognized')return{status:'unrecognized'};
+-  if(result?.status!=='recognized'||result.adapter!=='max-help-four-v1'||!HELP_OBJECTS.includes(result.object)||result.sourceSha256!==sourceHashes[result.object]){
++  const adapter=result?.adapter,object=result?.object,sourceSha256=result?.sourceSha256,profile=profileFor(adapter,object);
++  if(result?.status!=='recognized'||!profile||sourceSha256!==profile.sourceSha256){
+     return{status:'unavailable',reason:result?.status==='unavailable'?result.reason:'identity-mismatch'};
+   }
+-  const identity=Object.freeze({status:'recognized',adapter:result.adapter,object:result.object,sourceSha256:result.sourceSha256});
+-  probedSources.set(identity,source);return identity;
++  // Digest facts stay private and bind to the exact source, just like the token.
++  const facts=adapter==='max-help-arithmetic-three-v1'?await arithmeticHashFacts(source,profile):null;
++  if(adapter==='max-help-arithmetic-three-v1'&&!facts)return{status:'unavailable',reason:'helper-integrity-unavailable'};
++  const identity=Object.freeze({status:'recognized',adapter,object,sourceSha256});
++  probedSources.set(identity,{source,facts});return identity;
+ }
+ 
+ export function recognizedHelpShell(source,identity,root){
+-  if(typeof source!=='string'||!identity||probedSources.get(identity)!==source)return null;
++  const admitted=identity&&probedSources.get(identity);
++  if(typeof source!=='string'||!admitted||admitted.source!==source)return null;
++  if(identity.adapter==='max-help-arithmetic-three-v1')return recognizedArithmeticShell(identity,root,admitted.facts);
++  return recognizedLegacyShell(identity,root);
++}
++
++function recognizedArithmeticShell(identity,root,facts){
++  const profile=arithmeticProfiles[identity.object],roles=new Map();
++  if(!Array.isArray(root?.boxes)||root.boxes.length!==4||(root.lines??[]).length)return null;
++  const basic=boxAt(root,profile.basic),question=boxAt(root,profile.question),starter=boxAt(root,profile.starter),name=boxAt(root,profile.name);
++  if(basic?.maxclass!=='newobj'||basic.text!=='p basic'||basic.varname!=='basic_tab'||!Array.isArray(basic.patcher?.boxes)||
++    question?.maxclass!=='newobj'||question.text!=='p ?'||question.varname!=='q_tab'||!Array.isArray(question.patcher?.boxes)||question.patcher.boxes.length||(question.patcher.lines??[]).length)return null;
++  const ports=box=>box.numinlets===1&&box.numoutlets===1&&Array.isArray(box.outlettype)&&box.outlettype.length===1&&box.outlettype[0]==='';
++  if(starter?.maxclass!=='newobj'||Object.hasOwn(starter,'patcher')||!ports(starter)||starter.text!==facts.starter.text||
++    facts.starter.sha256!==profile.starterSha256||facts.starter.argumentSha256!==profile.identitySha256||
++    !starter.saved_object_attributes||Array.isArray(starter.saved_object_attributes)||Object.keys(starter.saved_object_attributes).length!==2||
++    starter.saved_object_attributes.filename!=='helpstarter.js'||starter.saved_object_attributes.parameter_enable!==0)return null;
++  roles.set(starter,'starter');
++  const jsui=(box,file,role,sha256)=>{
++    const fact=facts[role];
++    if(box?.maxclass!=='jsui'||Object.hasOwn(box,'patcher')||box.filename!==file||box.border!==0||box.ignoreclick!==1||box.parameter_enable!==0||!ports(box)||
++      !Array.isArray(box.jsarguments)||box.jsarguments.length!==1||typeof box.jsarguments[0]!=='string'||
++      !fact||box.jsarguments[0]!==fact.argument||fact.sha256!==sha256)return false;
++    roles.set(box,role);return true;
++  };
++  const details=boxAt(basic.patcher,profile.details),args=boxAt(basic.patcher,profile.arguments);
++  if(!jsui(name,'helpname.js','name',profile.identitySha256)||!jsui(details,'helpdetails.js','details',profile.identitySha256)||!jsui(args,'helpargs.js','arguments',profile.argumentsSha256))return null;
++  const helperIds=new Set([details.id,args.id]);
++  if((basic.patcher.lines??[]).some(({patchline})=>helperIds.has(patchline?.source?.[0])||helperIds.has(patchline?.destination?.[0])))return null;
++  const scopes=[root];let boxes=0;
++  for(const scope of scopes){
++    if(scopes.length>256||!Array.isArray(scope?.boxes)||(boxes+=scope.boxes.length)>20000)return null;
++    for(const {box}of scope.boxes){
++      if(box.patcher)scopes.push(box.patcher);
++      if(box.maxclass==='newobj'&&typeof box.text!=='string')return null;
++      const script=['js','jsui','v8','v8ui','node.script'].includes(box.maxclass)||box.maxclass==='newobj'&&/^(?:js|jsui|v8|v8ui|node\.script)(?:\s|$)/.test((box.text??'').trim());
++      if(script&&!roles.has(box))return null;
++    }
++  }
++  return{identity,roles,basic:basic.id,question:question.id};
++}
++
++function recognizedLegacyShell(identity,root){
+   const name=identity.object,roles=new Map();
+   const ports=box=>box.numinlets===1&&box.numoutlets===1&&Array.isArray(box.outlettype)&&box.outlettype.length===1&&box.outlettype[0]==='';
+   const jsui=(box,file,role)=>{
+     if(box?.maxclass!=='jsui'||box.filename!==file||box.border!==0||box.ignoreclick!==1||box.parameter_enable!==0||
+       !Array.isArray(box.jsarguments)||box.jsarguments.length!==1||box.jsarguments[0]!==name||!ports(box))return false;
+@@ -66,11 +149,11 @@
+     return;
+   }
+   const shell=root.helpShell;
+   if(!shell||typeof shell!=='object'||Array.isArray(shell)||Object.keys(shell).length!==4||
+     !Object.keys(shell).every(key=>['adapter','object','basicNode','questionNode'].includes(key))||
+-    shell.adapter!=='max-help-four-v1'||!HELP_OBJECTS.includes(shell.object))fail('Invalid helpShell metadata.');
++    !profileFor(shell.adapter,shell.object))fail('Invalid helpShell metadata.');
+   if(![shell.basicNode,shell.questionNode].every(id=>Number.isInteger(id)&&id>0&&id<=4294967295)||shell.basicNode===shell.questionNode)fail('Help shell child IDs must be distinct positive u32 integers.');
+   const basic=root.nodes.find(node=>node.id===shell.basicNode),question=root.nodes.find(node=>node.id===shell.questionNode);
+   const roles=(scope,expected)=>{
+     const found=scope.nodes.filter(node=>node.type==='help_helper');
+     return found.length===expected.length&&expected.every(role=>found.filter(node=>node.params.role===role).length===1);
+--- baseline/apps/ultra/ui/canvas-max-import.mjs
++++ current/apps/ultra/ui/canvas-max-import.mjs
+@@ -345,11 +345,11 @@
+       tree.edges.push(...group.map(item => item.edge));
+     }
+     return tree;
+   }
+   Object.assign(patch, convertScope(entry));
+-  if(shell)patch.helpShell={adapter:'max-help-four-v1',object:shell.identity.object,basicNode:nodeMap[shell.basic],questionNode:nodeMap[shell.question]};
++  if(shell)patch.helpShell={adapter:shell.identity.adapter,object:shell.identity.object,basicNode:nodeMap[shell.basic],questionNode:nodeMap[shell.question]};
+   let importedBoxes = 0, importedEdges = 0, executable = 0;
+   const trees = [patch];
+   for (const tree of trees) {
+     importedBoxes += tree.nodes.length; importedEdges += tree.edges.length;
+     for (const node of tree.nodes) {
+--- baseline/apps/ultra/src-tauri/src/help_reference.rs
++++ current/apps/ultra/src-tauri/src/help_reference.rs
+@@ -7,21 +7,29 @@
+ const SOURCE_LIMIT:usize=8*1024*1024;
+ const XML_LIMIT:usize=512*1024;
+ const FIELD_LIMIT:usize=16*1024;
+ const RESPONSE_LIMIT:usize=256*1024;
+ const CATALOG:[&str;13]=["append","prepend","int","float","combine","join","pack","pak","zl","message","route","pv","value"];
+-// Identity facts only, from hierarchy-reference-20261021/sources.json.
+-const ROOTS:[(&str,&str);4]=[
++// Identity facts only, from the hierarchy and arithmetic help-root plans.
++const ROOTS:[(&str,&str);7]=[
+     ("append","d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"),
+     ("prepend","281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"),
+     ("int","bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61"),
+-    ("float","c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c")];
++    ("float","c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c"),
++    ("times","1eea3861a1605453fb3ed4daa4660f71e175fb2cf16ce4c4098cb53c5b94d54b"),
++    ("plus","d1443c5af7ba8874c7b1d237e3d22bbe518970ad8ae85a09ec8f10494d084895"),
++    ("minus","7968c6cf7d348b39d8fb8044c42977bc2b71fe55c4c7db8542150e79e6a1a0b0")];
+ const HELPERS:[(&str,&str);4]=[
+     ("help/resources/helpstarter.js","a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"),
+     ("help/resources/helpname.js","49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa"),
+     ("help/resources/helpdetails.js","31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1"),
+     ("help/resources/helpargs.js","04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469")];
++struct ArithmeticReference<'a> {object:&'a str,route:&'a str,xml_name:&'a str,sha256:&'a str}
++const ARITHMETIC_REFERENCES:[ArithmeticReference<'static>;3]=[
++    ArithmeticReference{object:"times",route:"docs/refpages/max-ref/times.maxref.xml",xml_name:"*",sha256:"85baf43d8613f3da7fa70ff326005e0fdd07d049e0b0c2e2a7e0bf7c1623253e"},
++    ArithmeticReference{object:"plus",route:"docs/refpages/max-ref/plus.maxref.xml",xml_name:"+",sha256:"441f02ffe58bbc571e594398a6495430affc45240cdde79feecbadc769f91002"},
++    ArithmeticReference{object:"minus",route:"docs/refpages/max-ref/minus.maxref.xml",xml_name:"-",sha256:"1cace7ba26cec674dec28196c28c0fd8063b4a8e8bdfd712fd12b64ec8675bcc"}];
+ 
+ #[derive(Serialize)]
+ #[serde(tag="status",rename_all="kebab-case")]
+ pub enum Probe {
+     Recognized {adapter:&'static str,object:String,#[serde(rename="sourceSha256")]source_sha256:String},
+@@ -89,28 +97,53 @@
+ pub fn probe(source:&str)->Probe{probe_at(source,local_root(),&ROOTS,&HELPERS)}
+ fn probe_at(source:&str,root:Result<PathBuf,&'static str>,roots:&[(&str,&str)],helpers:&[(&str,&str)])->Probe{
+     if source.len()>SOURCE_LIMIT{return Probe::Unavailable{reason:"source-too-large"};}
+     let source_sha256=digest(source.as_bytes());
+     let Some((object,_))=roots.iter().find(|(_,hash)|*hash==source_sha256)else{return Probe::Unrecognized;};
++    let adapter=match *object {
++        "append"|"prepend"|"int"|"float"=>"max-help-four-v1",
++        "times"|"plus"|"minus"=>"max-help-arithmetic-three-v1",
++        _=>return Probe::Unrecognized,
++    };
+     let root=match root {Ok(root)=>root,Err(reason)=>return Probe::Unavailable{reason}};
+     for (path,expected) in helpers {
+         match read_contained(&root,path,XML_LIMIT){
+             Ok(bytes) if digest(&bytes)==*expected=>{},
+             Ok(_)=>return Probe::Unavailable{reason:"identity-mismatch"},
+             Err(reason)=>return Probe::Unavailable{reason},
+         }
+     }
+-    Probe::Recognized{adapter:"max-help-four-v1",object:(*object).into(),source_sha256}
++    Probe::Recognized{adapter,object:(*object).into(),source_sha256}
+ }
+ pub fn reference(name:&str)->Reference{reference_at(name,local_root())}
++fn arithmetic_reference(name:&str)->Option<&'static ArithmeticReference<'static>>{
++    ARITHMETIC_REFERENCES.iter().find(|identity|identity.object==name)
++}
++fn read_pinned_reference(root:&Path,identity:&ArithmeticReference<'_>)->Result<ReferencePage,&'static str>{
++    let bytes=read_contained(root,identity.route,XML_LIMIT)?;
++    if digest(&bytes)!=identity.sha256{return Err("identity-mismatch");}
++    parse_reference_as(identity.object,identity.xml_name,&bytes)
++}
++fn related_page(name:&str)->Option<&str>{
++    if CATALOG.contains(&name){return Some(name);}
++    ARITHMETIC_REFERENCES.iter().find(|identity|identity.object==name||identity.xml_name==name).map(|identity|identity.object)
++}
++fn related_available(root:&Path,name:&str)->bool{
++    if let Some(identity)=arithmetic_reference(name){return read_pinned_reference(root,identity).is_ok();}
++    CATALOG.contains(&name)&&read_contained(root,&format!("docs/refpages/max-ref/{name}.maxref.xml"),XML_LIMIT).is_ok()
++}
+ fn reference_at(name:&str,root:Result<PathBuf,&'static str>)->Reference{
+     let result=(||{
+-        if !CATALOG.contains(&name){return Err("not-found");}
+-        let root=root?;let bytes=read_contained(&root,&format!("docs/refpages/max-ref/{name}.maxref.xml"),XML_LIMIT)?;
+-        let mut reference=parse_reference(name,&bytes)?;
++        let identity=arithmetic_reference(name);
++        if !CATALOG.contains(&name)&&identity.is_none(){return Err("not-found");}
++        let root=root?;
++        let mut reference=if let Some(identity)=identity {read_pinned_reference(&root,identity)?}else{
++            let bytes=read_contained(&root,&format!("docs/refpages/max-ref/{name}.maxref.xml"),XML_LIMIT)?;
++            parse_reference(name,&bytes)?
++        };
+         for related in &mut reference.related {
+-            if related.available {related.available=read_contained(&root,&format!("docs/refpages/max-ref/{}.maxref.xml",related.name),XML_LIMIT).is_ok();}
++            if related.available {related.available=related_available(&root,&related.name);}
+         }
+         Ok(reference)
+     })();
+     match result {Ok(reference)=>Reference::Available{reference},Err(reason)=>Reference::Unavailable{reason}}
+ }
+@@ -187,19 +220,25 @@
+ fn list<'a>(root:&'a XmlNode,name:&str,item:&str)->Result<Vec<&'a XmlNode>,&'static str>{
+     let nodes=root.child(name)?.map_or_else(Vec::new,|list|list.children().filter(|node|node.name==item).collect::<Vec<_>>());
+     if nodes.len()>64{Err("invalid-reference")}else{Ok(nodes)}
+ }
+ fn parse_reference(name:&str,bytes:&[u8])->Result<ReferencePage,&'static str>{
++    parse_reference_as(name,name,bytes)
++}
++fn parse_reference_as(name:&str,xml_name:&str,bytes:&[u8])->Result<ReferencePage,&'static str>{
+     let root=parse_xml(bytes)?;
+     if root.name!="c74object"{return Err("invalid-reference");}
+-    if root.attribute("name")!=name{return Err("identity-mismatch");}
++    if root.attribute("name")!=xml_name{return Err("identity-mismatch");}
+     let entries=|group,item|->Result<Vec<Entry>,&'static str>{list(&root,group,item)?.into_iter().map(|node|Ok(Entry{
+         name:field(if node.attribute("name").is_empty(){node.attribute("id")}else{node.attribute("name")}.into())?,description:child_text(node,"description")?})).collect()};
+     let arguments=list(&root,"objarglist","objarg")?.into_iter().map(|node|Ok(Argument{
+         name:field(node.attribute("name").into())?,r#type:field(node.attribute("type").into())?,
+         optional:match node.attribute("optional"){""|"0"=>false,"1"=>true,_=>return Err("invalid-reference")},description:child_text(node,"description")?})).collect::<Result<Vec<_>,_>>()?;
+-    let related=list(&root,"seealsolist","seealso")?.into_iter().map(|node|Ok(Related{name:field(node.attribute("name").into())?,available:CATALOG.contains(&node.attribute("name"))})).collect::<Result<Vec<_>,&'static str>>()?;
++    let related=list(&root,"seealsolist","seealso")?.into_iter().map(|node|{
++        let raw=field(node.attribute("name").into())?;let page=related_page(&raw);
++        Ok(Related{name:page.unwrap_or(&raw).into(),available:page.is_some()})
++    }).collect::<Result<Vec<_>,&'static str>>()?;
+     let result=ReferencePage{object:name.into(),source_sha256:digest(bytes),digest:child_text(&root,"digest")?,description:child_text(&root,"description")?,
+         arguments,methods:entries("methodlist","method")?,inlets:entries("inletlist","inlet")?,outlets:entries("outletlist","outlet")?,related};
+     if serde_json::to_vec(&result).map_err(|_|"invalid-reference")?.len()+32>RESPONSE_LIMIT{return Err("invalid-reference");}Ok(result)
+ }
+ 
+@@ -240,10 +279,99 @@
+         tree.write(helpers[0].0,helper);
+         assert!(matches!(probe_at(source,Ok(tree.0.clone()),&roots,&helpers),Probe::Recognized{..}));
+         for changed in [format!("{source}\n"),format!("\u{feff}{source}"),"{}".into()]{assert!(matches!(probe_at(&changed,Ok(tree.0.clone()),&roots,&helpers),Probe::Unrecognized));}
+         tree.write(helpers[0].0,"changed");assert!(matches!(probe_at(source,Ok(tree.0.clone()),&roots,&helpers),Probe::Unavailable{reason:"identity-mismatch"}));
+         assert!(matches!(probe_at(&"x".repeat(8*1024*1024+1),Ok(tree.0.clone()),&roots,&helpers),Probe::Unavailable{..}));
++    }
++    #[test]
++    fn arithmetic_probe_selects_its_policy_only_after_all_four_helpers_match(){
++        let tree=Tree::new();
++        let helper_bodies=["synthetic starter", "synthetic name", "synthetic details", "synthetic arguments"];
++        let helper_hashes=helper_bodies.map(|body|digest(body.as_bytes()));
++        let helpers=[("help/resources/a.js",helper_hashes[0].as_str()),("help/resources/b.js",helper_hashes[1].as_str()),
++            ("help/resources/c.js",helper_hashes[2].as_str()),("help/resources/d.js",helper_hashes[3].as_str())];
++        for ((path,_),body) in helpers.iter().zip(helper_bodies){tree.write(path,body);}
++        for (object,adapter) in [("times","max-help-arithmetic-three-v1"),("plus","max-help-arithmetic-three-v1"),
++            ("minus","max-help-arithmetic-three-v1"),("append","max-help-four-v1"),("prepend","max-help-four-v1"),
++            ("int","max-help-four-v1"),("float","max-help-four-v1")] {
++            let source=format!("synthetic source for {object}");let hash=digest(source.as_bytes());let roots=[(object,hash.as_str())];
++            let actual=serde_json::to_value(probe_at(&source,Ok(tree.0.clone()),&roots,&helpers)).unwrap();
++            assert_eq!(actual,serde_json::json!({"status":"recognized","adapter":adapter,"object":object,"sourceSha256":hash}));
++            for (index,(path,_)) in helpers.iter().enumerate(){
++                tree.write(path,"changed helper");
++                assert!(matches!(probe_at(&source,Ok(tree.0.clone()),&roots,&helpers),Probe::Unavailable{reason:"identity-mismatch"}));
++                std::fs::remove_file(tree.0.join(path)).unwrap();
++                assert!(matches!(probe_at(&source,Ok(tree.0.clone()),&roots,&helpers),Probe::Unavailable{reason:"not-found"}));
++                tree.write(path,helper_bodies[index]);
++            }
++            assert!(matches!(probe_at(&format!("{source}\n"),Ok(tree.0.clone()),&roots,&helpers),Probe::Unrecognized));
++        }
++        let hash=digest(b"synthetic symbolic source");
++        assert!(matches!(probe_at("synthetic symbolic source",Ok(tree.0.clone()),&[("*",hash.as_str())],&helpers),Probe::Unrecognized));
++    }
++    #[test]
++    fn arithmetic_reference_routes_reject_unpinned_xml_and_public_symbol_aliases(){
++        let tree=Tree::new();
++        for (object,symbol) in [("times","*"),("plus","+"),("minus","-")] {
++            let path=format!("docs/refpages/max-ref/{object}.maxref.xml");
++            tree.write(&path,&format!("<c74object name='{symbol}'><digest>Synthetic arithmetic page.</digest></c74object>"));
++            assert!(matches!(reference_at(object,Ok(tree.0.clone())),Reference::Unavailable{reason:"identity-mismatch"}));
++            tree.write(&path,&format!("<c74object name='{object}'/>"));
++            assert!(matches!(reference_at(object,Ok(tree.0.clone())),Reference::Unavailable{reason:"identity-mismatch"}));
++            assert!(matches!(reference_at(symbol,Ok(tree.0.clone())),Reference::Unavailable{reason:"not-found"}));
++        }
++        for name in ["../times","times.maxref.xml","times/../plus","%2b","unknown"] {
++            assert!(matches!(reference_at(name,Ok(tree.0.clone())),Reference::Unavailable{reason:"not-found"}));
++        }
++    }
++    #[test]
++    fn arithmetic_reference_tuples_bind_fixed_route_digest_and_exact_symbolic_identity(){
++        let tree=Tree::new();
++        for (object,symbol,route) in [("times","*","docs/refpages/max-ref/times.maxref.xml"),
++            ("plus","+","docs/refpages/max-ref/plus.maxref.xml"),("minus","-","docs/refpages/max-ref/minus.maxref.xml")] {
++            let xml=format!("<c74object name='{symbol}'><digest>Original synthetic arithmetic summary.</digest></c74object>");
++            let hash=digest(xml.as_bytes());
++            let identity=ArithmeticReference{object,route,xml_name:symbol,sha256:&hash};
++            tree.write(route,&xml);
++            let page=read_pinned_reference(&tree.0,&identity).unwrap();
++            assert_eq!(page.object,object);assert_eq!(page.source_sha256,hash);
++            tree.write(route,&format!("{xml}\n"));
++            assert!(matches!(read_pinned_reference(&tree.0,&identity),Err("identity-mismatch")));
++            for wrong_name in [object,"unknown","symbolic-alias","*","+","-"].into_iter().filter(|name|*name!=symbol) {
++                let wrong=format!("<c74object name='{wrong_name}'/>");let wrong_hash=digest(wrong.as_bytes());
++                let wrong_identity=ArithmeticReference{object,route,xml_name:symbol,sha256:&wrong_hash};
++                tree.write(route,&wrong);
++                assert!(matches!(read_pinned_reference(&tree.0,&wrong_identity),Err("identity-mismatch")));
++            }
++            std::fs::remove_file(tree.0.join(route)).unwrap();
++            tree.write(&format!("docs/refpages/max-ref/{symbol}.maxref.xml"),&xml);
++            assert!(matches!(read_pinned_reference(&tree.0,&identity),Err("not-found")));
++            std::fs::create_dir(tree.0.join(route)).unwrap();
++            assert!(matches!(read_pinned_reference(&tree.0,&identity),Err("invalid-reference")));
++            std::fs::remove_dir(tree.0.join(route)).unwrap();
++            let outside=Tree::new();outside.write("external.xml",&xml);
++            std::os::unix::fs::symlink(outside.0.join("external.xml"),tree.0.join(route)).unwrap();
++            assert!(matches!(read_pinned_reference(&tree.0,&identity),Err("invalid-reference")));
++            std::fs::remove_file(tree.0.join(route)).unwrap();
++            tree.write(route,&"x".repeat(XML_LIMIT+1));
++            assert!(matches!(read_pinned_reference(&tree.0,&identity),Err("invalid-reference")));
++        }
++    }
++    #[test]
++    fn related_symbolic_classes_use_only_the_three_finite_safe_page_ids(){
++        let xml="<c74object name='append'><seealsolist><seealso name='*'/><seealso name='+'/><seealso name='-'/><seealso name='times'/><seealso name='/'/><seealso name='../plus'/></seealsolist></c74object>";
++        let related=serde_json::to_value(parse_reference("append",xml.as_bytes()).unwrap()).unwrap()["related"].clone();
++        assert_eq!(related,serde_json::json!([{"name":"times","available":true},{"name":"plus","available":true},
++            {"name":"minus","available":true},{"name":"times","available":true},{"name":"/","available":false},{"name":"../plus","available":false}]));
++        let tree=Tree::new();tree.write("docs/refpages/max-ref/append.maxref.xml",xml);
++        let unavailable=serde_json::json!([{"name":"times","available":false},{"name":"plus","available":false},
++            {"name":"minus","available":false},{"name":"times","available":false},{"name":"/","available":false},{"name":"../plus","available":false}]);
++        assert_eq!(serde_json::to_value(reference_at("append",Ok(tree.0.clone()))).unwrap()["related"],unavailable);
++        for (object,symbol) in [("times","*"),("plus","+"),("minus","-")] {
++            tree.write(&format!("docs/refpages/max-ref/{object}.maxref.xml"),&format!("<c74object name='{symbol}'/>"));
++        }
++        assert_eq!(serde_json::to_value(reference_at("append",Ok(tree.0.clone()))).unwrap()["related"],unavailable);
+     }
+     #[test]
+     fn files_are_fixed_bounded_and_contained_with_explicit_root_precedence(){
+         let tree=Tree::new();tree.write("docs/refpages/max-ref/append.maxref.xml",XML);
+         assert!(matches!(reference_at("append",Ok(tree.0.clone())),Reference::Available{..}));
+@@ -301,10 +429,38 @@
+         let tree=Tree::new();let path=crate::documents::save_patch(&tree.0.join("shell.ultra"),&edited).unwrap();
+         let restored:serde_json::Value=serde_json::from_slice(&std::fs::read(path).unwrap()).unwrap();
+         assert_eq!(restored,edited);assert_eq!(restored["helpShell"],original["helpShell"]);
+     }
+     #[test]
++    fn arithmetic_shell_owner_admission_history_and_disk_preserve_safe_policy(){
++        let cases:Vec<serde_json::Value>=serde_json::from_str(include_str!("../../tests/fixtures/help-shell-schema.json")).unwrap();
++        let tree=Tree::new();
++        for object in ["times","plus","minus"] {
++            let mut original=cases[0]["patch"].clone();
++            original["helpShell"]["adapter"]=serde_json::json!("max-help-arithmetic-three-v1");
++            original["helpShell"]["object"]=serde_json::json!(object);
++            let mut registry=crate::documents::Registry::default();
++            let owner=registry.add(object.into(),crate::documents::Kind::Patch,Some(original.clone()),None,None).unwrap();
++            let (child,_)=registry.open_view(&owner.label,3).unwrap();
++            assert!(authorize_reference(&registry,&owner.label).is_err());assert!(authorize_reference(&registry,&child.label).is_err());
++            let mut edited=original.clone();edited["nodes"][2]["patcher"]["nodes"][2]["params"]["text"]=serde_json::json!("23");
++            let commit=registry.commit(&child.label,0,edited.clone(),true,|_,_|Ok(1.into())).unwrap();assert!(commit.accepted);
++            assert!(authorize_reference(&registry,&owner.label).is_ok());assert!(authorize_reference(&registry,&child.label).is_ok());
++            let published=serde_json::to_value(registry.descriptor(&child.label).unwrap()).unwrap();
++            assert_eq!(published["patch"]["helpShell"],original["helpShell"]);
++            assert_eq!(registry.history(&owner.label,1,"undo",|_,_|Ok(2.into())).unwrap().document.patch,Some(original.clone()));
++            assert_eq!(registry.history(&child.label,2,"redo",|_,_|Ok(3.into())).unwrap().document.patch,Some(edited.clone()));
++            let mut crossed=edited.clone();crossed["helpShell"]["adapter"]=serde_json::json!("max-help-four-v1");
++            assert!(registry.commit(&child.label,3,crossed,true,|_,_|panic!("crossed policy reached runtime admission")).is_err());
++            assert_eq!(registry.get_open(&owner.label).unwrap().patch,Some(edited.clone()));
++            let path=crate::documents::save_patch(&tree.0.join(format!("{object}.ultra")),&edited).unwrap();
++            let restored:serde_json::Value=serde_json::from_slice(&std::fs::read(path).unwrap()).unwrap();
++            assert_eq!(restored,edited);assert!(crate::canvas::prepare(restored).is_ok());
++            registry.remove(&owner.label);assert!(authorize_reference(&registry,&child.label).is_err());
++        }
++    }
++    #[test]
+     #[ignore = "Reads the user's licensed local installation; emits identity/status facts only"]
+     fn local_identity_and_catalog_are_available(){
+         let root=local_root().expect("local resources root unavailable");
+         for (name,expected) in ROOTS {
+             let source=read_contained(&root,&format!("help/max/{name}.maxhelp"),SOURCE_LIMIT).expect("local help unavailable");
+@@ -313,8 +469,12 @@
+             assert!(matches!(probe_at(source,Ok(root.clone()),&ROOTS,&HELPERS),Probe::Recognized{..}),"local helper verification failed: {name}");
+         }
+         for name in CATALOG {
+             assert!(matches!(reference_at(name,Ok(root.clone())),Reference::Available{..}),"local reference unavailable: {name}");
+         }
+-        println!("Verified 4 exact help sources, 4 exact helper sources, and 13 bounded local references.");
+-    }
+-}
++        for identity in ARITHMETIC_REFERENCES {
++            let result=reference_at(identity.object,Ok(root.clone()));
++            assert!(matches!(result,Reference::Available{reference} if reference.object==identity.object&&reference.source_sha256==identity.sha256),"local arithmetic reference unavailable: {}",identity.object);
++        }
++        println!("Verified 7 exact help sources, 4 exact helper sources, 13 existing local references, and 3 pinned arithmetic references.");
++    }
++}
+--- baseline/apps/ultra/src-tauri/src/canvas_hierarchy.rs
++++ current/apps/ultra/src-tauri/src/canvas_hierarchy.rs
+@@ -146,11 +146,13 @@
+         scope.nodes.iter().map(|node|usize::from(node.r#type=="help_helper")+node.patcher.as_ref().map_or(0,helper_count)).sum()
+     }
+     let Some(shell)=shell else {
+         return if helper_count(root)==0 {Ok(())}else{Err("Help helpers require a root helpShell".into())};
+     };
+-    if shell.adapter!="max-help-four-v1" || !matches!(shell.object.as_str(),"append"|"prepend"|"int"|"float") {
++    if !matches!((shell.adapter.as_str(),shell.object.as_str()),
++        ("max-help-four-v1","append"|"prepend"|"int"|"float")|
++        ("max-help-arithmetic-three-v1","times"|"plus"|"minus")) {
+         return Err("Unknown help shell adapter or object".into());
+     }
+     if shell.basic_node==0||shell.question_node==0||shell.basic_node==shell.question_node||root.nodes.len()!=4||!root.edges.is_empty(){
+         return Err("Help shell requires four root nodes, distinct Basic/question IDs and no root cables".into());
+     }
+--- baseline/apps/ultra/src-tauri/src/canvas_tests.rs
++++ current/apps/ultra/src-tauri/src/canvas_tests.rs
+@@ -1352,10 +1352,33 @@
+     assert_eq!(prepared.native.node_count,2);assert_eq!(prepared.native.edge_count,1);
+     assert_eq!(prepared.native.nodes[0].id,7);assert_eq!(prepared.native.nodes[1].id,8);
+ }
+ 
+ #[test]
++fn arithmetic_help_shell_policy_pairs_retain_topology_and_no_helper_ports() {
++    let cases:Vec<Value>=serde_json::from_str(include_str!("../../tests/fixtures/help-shell-schema.json")).unwrap();
++    for object in ["times","plus","minus"] {
++        let mut valid=cases[0]["patch"].clone();
++        valid["helpShell"]["adapter"]=json!("max-help-arithmetic-three-v1");valid["helpShell"]["object"]=json!(object);
++        let prepared=prepare(valid.clone()).unwrap();assert_eq!(prepared.native.node_count,2);assert_eq!(prepared.native.edge_count,1);
++        assert_eq!(help_shell_object(&valid).unwrap(),Some(object.into()));
++        for adapter in ["max-help-four-v1","unknown"] {
++            let mut crossed=valid.clone();crossed["helpShell"]["adapter"]=json!(adapter);assert!(prepare(crossed).is_err());
++        }
++        let mut port=valid.clone();port["nodes"][2]["patcher"]["edges"][0]["from"]=json!(5);assert!(prepare(port).is_err());
++        let mut duplicate=valid.clone();duplicate["nodes"][2]["patcher"]["nodes"][1]["params"]["role"]=json!("details");assert!(prepare(duplicate).is_err());
++        let mut wrong_tab=valid.clone();wrong_tab["nodes"][2]["params"]["name"]=json!("other");assert!(prepare(wrong_tab).is_err());
++        let mut question=valid.clone();question["nodes"][3]["patcher"]["nodes"]=json!([node(9,"bang",json!({}))]);assert!(prepare(question).is_err());
++        let mut root_edge=valid;root_edge["edges"]=json!([edge(1,0,2,0)]);assert!(prepare(root_edge).is_err());
++    }
++    for object in ["append","prepend","int","float","*","+","-","unknown"] {
++        let mut crossed=cases[0]["patch"].clone();crossed["helpShell"]["adapter"]=json!("max-help-arithmetic-three-v1");
++        crossed["helpShell"]["object"]=json!(object);assert!(prepare(crossed).is_err());
++    }
++}
++
++#[test]
+ fn cable_midpoints_are_bounded_authoring_only_in_flat_and_nested_documents() {
+     let base=patch(vec![node(1,"bang",json!({})),node(2,"bang",json!({}))],vec![edge(1,0,2,0)]);
+     for nested in [false,true] {
+         let document=|mut scope:Value|{
+             if nested {json!({"version":2,"profile":"ultra-patcher-v2","nodes":[{"id":3,"type":"patcher","x":10,"y":10,"params":{"name":"inner"},"patcher":{"nodes":scope["nodes"].take(),"edges":scope["edges"].take()}}],"edges":[]})}else{scope}
+--- /dev/null
++++ current/apps/ultra/ui/canvas-help-arithmetic-import.test.mjs
+@@ -0,0 +1,190 @@
++import assert from 'node:assert/strict';
++import {test} from 'node:test';
++import {webcrypto} from 'node:crypto';
++import {readFileSync} from 'node:fs';
++import {probeHelpShell,recognizedHelpShell} from './canvas-help-shell.mjs';
++import {analyzeMaxPatch,importMaxPatcher} from './canvas-max-import.mjs';
++import {nodeSpec,parsePatch,serializePatch,validatePatch} from './canvas-model.mjs';
++import {lowerHierarchy,treeNodes} from './canvas-hierarchy.mjs';
++
++const adapter='max-help-arithmetic-three-v1';
++const cases=[
++  {object:'times',symbol:'*',source:'1eea3861a1605453fb3ed4daa4660f71e175fb2cf16ce4c4098cb53c5b94d54b',basic:'obj-4',question:'obj-1',starter:'obj-3',name:'obj-6',details:'obj-2',arguments:'obj-5',identity:'684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1',argument:'684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1',creation:'0ca81c69553c5299b7dc137769cb0887e0f1dc26c73bfe08c0e04891d8a99d02'},
++  {object:'plus',symbol:'+',source:'d1443c5af7ba8874c7b1d237e3d22bbe518970ad8ae85a09ec8f10494d084895',basic:'obj-2',question:'obj-3',starter:'obj-1',name:'obj-4',details:'obj-2',arguments:'obj-4',identity:'a318c24216defe206feeb73ef5be00033fa9c4a74d0b967f6532a26ca5906d3b',argument:'383ef36928344f56ffe8fe23ceed2ad8c0db8ec222c5f56c47163747dc738a0e',creation:'e86f190fbc376badcc5d7b14a552d4e84fad436e0789bb2c7cc221fa38bf9390'},
++  {object:'minus',symbol:'-',source:'7968c6cf7d348b39d8fb8044c42977bc2b71fe55c4c7db8542150e79e6a1a0b0',basic:'obj-2',question:'obj-3',starter:'obj-1',name:'obj-4',details:'obj-2',arguments:'obj-4',identity:'3973e022e93220f9212c18d0d0c543ae7c309e46640da93a4a0314de999f5112',argument:'129fa7713adba71e12dca1d217e4236dad4fd946a80ea339180c243e1c7888da',creation:'490326e775bc3adc514c502064cb4b937c4122d2450e8b62c85f583077795a37'},
++];
++const ports={numinlets:1,numoutlets:1,outlettype:['']};
++const box=(id,maxclass,extra={})=>({box:{id,maxclass,patching_rect:[20,30,140,40],...structuredClone(extra)}});
++const identityArgument=entry=>`original-synthetic-${entry.object}-identity-b7e2`;
++const argumentsArgument=entry=>entry.object==='times'?identityArgument(entry):`original-synthetic-${entry.object}-argument-d9a4`;
++const starterText=entry=>`js helpstarter.js ${identityArgument(entry)}`;
++function syntheticSource(entry){
++  const jsui=(id,file,argument)=>box(id,'jsui',{...ports,filename:file,border:0,ignoreclick:1,parameter_enable:0,jsarguments:[argument]});
++  const basic={boxes:[jsui(entry.details,'helpdetails.js',identityArgument(entry)),jsui(entry.arguments,'helpargs.js',argumentsArgument(entry)),
++    box('integer-op','newobj',{text:`${entry.symbol} 7`,numinlets:2,numoutlets:1}),box('float-op','newobj',{text:`${entry.symbol} 0.25`,numinlets:2,numoutlets:1}),
++    ...Array.from({length:4},(_,i)=>box(`number-${i}`,'number',{numinlets:1,numoutlets:2})),
++    ...Array.from({length:3},(_,i)=>box(`flonum-${i}`,'flonum',{numinlets:1,numoutlets:2,format:6})),box('button','button',{numinlets:1,numoutlets:1}),
++    ...Array.from({length:4},(_,i)=>box(`comment-${i}`,'comment',{text:`Original synthetic note ${i}.`})),
++  ],lines:[
++    ['number-0',0,'integer-op',0],['number-1',0,'integer-op',1],['button',0,'integer-op',0],['integer-op',0,'number-2',0],
++    ['flonum-0',0,'float-op',0],['flonum-1',0,'float-op',1],['number-3',0,'float-op',0],['float-op',0,'flonum-2',0],
++  ].map(([from,outlet,to,inlet])=>({patchline:{source:[from,outlet],destination:[to,inlet]}}))};
++  return{patcher:{boxes:[box(entry.starter,'newobj',{...ports,text:starterText(entry),saved_object_attributes:{filename:'helpstarter.js',parameter_enable:0}}),
++    jsui(entry.name,'helpname.js',identityArgument(entry)),box(entry.basic,'newobj',{text:'p basic',varname:'basic_tab',patcher:basic}),
++    box(entry.question,'newobj',{text:'p ?',varname:'q_tab',patcher:{boxes:[],lines:[]}})],lines:[]}};
++}
++const nativeIdentity=entry=>({status:'recognized',adapter,object:entry.object,sourceSha256:entry.source});
++const probe=(text,entry,identity=nativeIdentity(entry),options)=>probeHelpShell(text,async()=>identity,options);
++const get=(scope,id)=>scope.boxes.find(({box})=>box.id===id).box;
++const basic=(source,entry)=>get(source.patcher,entry.basic).patcher;
++const asBytes=hex=>Uint8Array.from(hex.match(/../g),pair=>parseInt(pair,16)).buffer;
++const realDigest=webcrypto.subtle.digest.bind(webcrypto.subtle);
++// These doubles map only original synthetic strings to the published digest pins.
++// Real installed-source/WebCrypto integration is performed privately by the parent.
++function syntheticDigests(t,entry,replace=new Map()){
++  const outcomes=new Map([[identityArgument(entry),entry.identity],[argumentsArgument(entry),entry.argument],[starterText(entry),entry.creation],...replace]);
++  t.mock.method(globalThis.crypto.subtle,'digest',async(algorithm,data)=>{
++    if(algorithm!=='SHA-256')throw Error('Synthetic digest double requires SHA-256.');
++    const value=new TextDecoder().decode(data);
++    return outcomes.has(value)?asBytes(outcomes.get(value)):realDigest(algorithm,data);
++  });
++}
++
++for(const entry of cases)test(`synthetic ${entry.object} admission retains the complete tree and selected adapter`,async t=>{
++  syntheticDigests(t,entry);
++  const source=syntheticSource(entry),text=JSON.stringify(source),identity=await probe(text,entry);
++  assert.equal(identity.status,'recognized');
++  const result=importMaxPatcher(text,{helpShell:identity,allowPartial:true});
++  assert.ok(result.patch);
++  assert.deepEqual(result.patch.helpShell,{adapter,object:entry.object,basicNode:result.nodeMap[entry.basic],questionNode:result.nodeMap[entry.question]});
++  assert.deepEqual(result.stats,{sourceBoxes:20,sourceEdges:8,importedBoxes:20,importedEdges:8,omittedBoxes:0,omittedEdges:0,decorations:0});
++  assert.equal(Object.keys(result.scopedNodeMap).length,20);
++  const helpers=treeNodes(result.patch).filter(node=>node.type==='help_helper');
++  assert.deepEqual(helpers.map(node=>node.params.role).sort(),['arguments','details','name','starter']);
++  for(const helper of helpers){assert.equal(nodeSpec(helper).inlets.length,0);assert.equal(nodeSpec(helper).outlets.length,0);assert.equal(helper.x,20);assert.equal(helper.y,30);assert.equal(helper.style.width,140);assert.equal(helper.style.height,40);}
++  const executable=lowerHierarchy(result.patch);
++  assert.equal(executable.nodes.length,10);assert.equal(executable.edges.length,8);
++  assert.deepEqual(parsePatch(serializePatch(result.patch)).helpShell,result.patch.helpShell);
++  assert.equal(analyzeMaxPatch(text,{helpShell:identity}).patchers[0].helpShell.adapter,adapter);
++  const child=importMaxPatcher(text,{helpShell:identity,patcherId:`root/${entry.basic}`,allowPartial:true});
++  assert.equal(child.patch?.helpShell,undefined);assert.equal(child.stats.omittedBoxes,2);
++  assert.equal(result.complete,false);assert.ok(result.diagnostics.some(d=>d.code==='semantic-gap'&&d.message.includes('bounded -100000 to 100000')));
++  assert.ok(result.diagnostics.some(d=>d.attribute==='format'));
++});
++
++test('arithmetic recognition refuses crossed profiles, unknown objects and wrong source pins',async t=>{
++  const entry=cases[0];syntheticDigests(t,entry);const text=JSON.stringify(syntheticSource(entry));
++  for(const identity of [
++    {...nativeIdentity(entry),adapter:'max-help-four-v1'},
++    {...nativeIdentity(entry),object:'append'},
++    {...nativeIdentity(entry),object:'*'},
++    {...nativeIdentity(entry),adapter:'max-help-arithmetic-three-v2'},
++    {...nativeIdentity(entry),sourceSha256:cases[1].source},
++    {status:'recognized',adapter:'max-help-four-v1',object:'plus',sourceSha256:cases[1].source},
++  ])assert.equal((await probe(text,entry,identity)).status,'unavailable');
++});
++
++test('the probe snapshots its verified native response before asynchronous hashing',async t=>{
++  const entry=cases[0],response=nativeIdentity(entry),text=JSON.stringify(syntheticSource(entry));
++  t.mock.method(globalThis.crypto.subtle,'digest',async(algorithm,data)=>{
++    response.sourceSha256='0'.repeat(64);
++    return realDigest(algorithm,data);
++  });
++  assert.deepEqual(await probe(text,entry,response),nativeIdentity(entry));
++});
++
++test('arithmetic tokens cannot be forged, serialized, reused on changed text or supplied digest facts',async t=>{
++  const entry=cases[1];syntheticDigests(t,entry);const source=syntheticSource(entry),text=JSON.stringify(source),identity=await probe(text,entry);
++  for(const [input,token] of [[text,null],[text,nativeIdentity(entry)],[text,{...identity}],[text,JSON.parse(JSON.stringify(identity))],[text+' ',identity],[source,identity]]){
++    assert.equal(importMaxPatcher(input,{helpShell:token,allowPartial:true}).patch?.helpShell,undefined);
++  }
++  assert.equal(recognizedHelpShell(text,{...identity,facts:{argumentSha256:entry.argument}},source.patcher),null);
++  const changed=syntheticSource(entry);get(basic(changed,entry),entry.arguments).jsarguments=['changed-after-probe'];
++  assert.equal(recognizedHelpShell(text,identity,changed.patcher),null);
++});
++
++test('role-specific argument and whole starter hashes remain mandatory even after a native response',async t=>{
++  const entry=cases[1];syntheticDigests(t,entry);
++  const edits=[source=>{get(source.patcher,entry.starter).text+=' extra';},source=>{get(source.patcher,entry.starter).text='js other.js original-synthetic';},
++    source=>{get(source.patcher,entry.name).jsarguments=['unknown'];},source=>{get(basic(source,entry),entry.details).jsarguments=[argumentsArgument(entry)];},
++    source=>{get(basic(source,entry),entry.arguments).jsarguments=[identityArgument(entry)];},source=>{get(basic(source,entry),entry.arguments).jsarguments=[argumentsArgument(entry),'extra'];},
++    source=>{get(basic(source,entry),entry.arguments).jsarguments=[9];},
++  ];
++  for(const edit of edits){const source=syntheticSource(entry);edit(source);const text=JSON.stringify(source),identity=await probe(text,entry);
++    assert.equal(importMaxPatcher(text,{helpShell:identity,allowPartial:true}).patch?.helpShell,undefined);
++  }
++});
++
++test('wrong digest outcomes and caller-provided profile overrides cannot authorize arithmetic helpers',async t=>{
++  const entry=cases[0];syntheticDigests(t,entry,new Map([[identityArgument(entry),'0'.repeat(64)]]));
++  const text=JSON.stringify(syntheticSource(entry)),identity=await probe(text,entry,undefined,{profile:{identity:entry.identity},facts:{argument:entry.identity}});
++  assert.equal(importMaxPatcher(text,{helpShell:identity,allowPartial:true}).patch?.helpShell,undefined);
++});
++
++test('a wrong whole starter digest refuses otherwise matching arithmetic helper facts',async t=>{
++  const entry=cases[2];syntheticDigests(t,entry,new Map([[starterText(entry),'f'.repeat(64)]]));
++  const text=JSON.stringify(syntheticSource(entry)),identity=await probe(text,entry);
++  assert.equal(importMaxPatcher(text,{helpShell:identity,allowPartial:true}).patch?.helpShell,undefined);
++});
++
++test('unavailable or failing WebCrypto cannot mint an arithmetic admission token',async t=>{
++  const entry=cases[0],text=JSON.stringify(syntheticSource(entry));
++  t.mock.method(globalThis.crypto.subtle,'digest',async()=>{throw Error('Original synthetic digest failure.');});
++  assert.equal((await probe(text,entry)).status,'unavailable');
++  t.mock.getter(globalThis,'crypto',()=>undefined);
++  assert.equal((await probe(text,entry)).status,'unavailable');
++});
++
++test('helper hashing refuses oversized values even when a caller supplies matching digest outcomes',async t=>{
++  const entry=cases[0],oversized='x'.repeat(4097);syntheticDigests(t,entry,new Map([[oversized,entry.identity]]));
++  const source=syntheticSource(entry);get(source.patcher,entry.name).jsarguments=[oversized];
++  const text=JSON.stringify(source),identity=await probe(text,entry);
++  assert.equal(identity.status,'unavailable');
++  assert.equal(importMaxPatcher(text,{helpShell:identity,allowPartial:true}).patch?.helpShell,undefined);
++});
++
++test('arithmetic helpers require exact anchors, filenames, saved attributes, ports and isolated routes',async t=>{
++  const entry=cases[2];syntheticDigests(t,entry);
++  const edits=[
++    source=>{get(source.patcher,entry.starter).id='moved-starter';},source=>{get(source.patcher,entry.name).id='moved-name';},
++    source=>{get(basic(source,entry),entry.details).id='moved-details';},source=>{get(basic(source,entry),entry.arguments).id='moved-arguments';},
++    source=>{get(source.patcher,entry.basic).id='moved-basic';},source=>{get(source.patcher,entry.question).id='moved-question';},
++    source=>{get(source.patcher,entry.basic).varname='other';},source=>{get(source.patcher,entry.question).text='p other';},
++    source=>{get(source.patcher,entry.question).patcher.boxes.push(box('unexpected','comment',{text:'Original synthetic extra.'}));},
++    source=>{get(source.patcher,entry.starter).saved_object_attributes.extra=0;},source=>{get(source.patcher,entry.starter).saved_object_attributes.filename='other.js';},
++    source=>{get(source.patcher,entry.starter).saved_object_attributes.parameter_enable=1;},source=>{get(source.patcher,entry.starter).numoutlets=0;},
++    source=>{get(source.patcher,entry.name).filename='other.js';},source=>{get(source.patcher,entry.name).border=1;},
++    source=>{get(basic(source,entry),entry.details).ignoreclick=0;},source=>{get(basic(source,entry),entry.arguments).parameter_enable=1;},
++    source=>{get(basic(source,entry),entry.arguments).numinlets=2;},source=>{get(basic(source,entry),entry.details).outlettype=['int'];},
++    source=>{source.patcher.lines.push({patchline:{source:[entry.starter,0],destination:[entry.name,0]}});},
++    source=>{basic(source,entry).lines.push({patchline:{source:[entry.details,0],destination:['integer-op',0]}});},
++    source=>{basic(source,entry).lines.push({patchline:{source:['integer-op',0],destination:[entry.arguments,0]}});},
++  ];
++  for(const edit of edits){const source=syntheticSource(entry);edit(source);const text=JSON.stringify(source),identity=await probe(text,entry);
++    assert.equal(importMaxPatcher(text,{helpShell:identity,allowPartial:true}).patch?.helpShell,undefined);
++  }
++});
++
++test('additional script boxes anywhere cannot be admitted as arithmetic shell content',async t=>{
++  const entry=cases[0];syntheticDigests(t,entry);
++  for(const script of [box('extra','jsui',{filename:'other.js'}),box('extra','newobj',{text:'js other.js'}),box('extra','newobj',{text:'  js other.js'}),box('extra','newobj',{text:'js'}),box('extra','newobj',{text:'v8 other.js'}),box('extra','newobj',{text:'node.script other.js'}),box('extra','newobj',{text:17})]){
++    const source=syntheticSource(entry);basic(source,entry).boxes.push(script);const text=JSON.stringify(source),identity=await probe(text,entry);
++    assert.equal(importMaxPatcher(text,{helpShell:identity,allowPartial:true}).patch?.helpShell,undefined);
++  }
++  const source=syntheticSource(entry);basic(source,entry).boxes.push(box('nested','newobj',{text:'p nested',patcher:{boxes:[box('deep-script','newobj',{text:'js other.js'})],lines:[]}}));
++  const text=JSON.stringify(source),identity=await probe(text,entry);
++  assert.equal(importMaxPatcher(text,{helpShell:identity,allowPartial:true}).patch?.helpShell,undefined);
++});
++
++test('serialized help shells accept exact arithmetic policy pairs and refuse crossed or symbolic identities',()=>{
++  const corpus=JSON.parse(readFileSync(new URL('../tests/fixtures/help-shell-schema.json',import.meta.url),'utf8'));
++  const base=corpus.find(entry=>entry.valid).patch;
++  for(const object of ['times','plus','minus']){
++    const patch=structuredClone(base);patch.helpShell={...patch.helpShell,adapter,object};
++    assert.deepEqual(parsePatch(serializePatch(validatePatch(patch))).helpShell,patch.helpShell);
++  }
++  for(const [policy,object]of [[adapter,'append'],[adapter,'*'],[adapter,'+'],[adapter,'-'],[adapter,new String('times')],[adapter,{toString:()=> 'times'}],['max-help-four-v1','times'],['max-help-four-v1','plus'],['max-help-four-v1','minus']]){
++    const patch=structuredClone(base);patch.helpShell={...patch.helpShell,adapter:policy,object};
++    assert.throws(()=>validatePatch(patch));
++  }
++});
+--- /dev/null
++++ current/experiments/max-reference/arithmetic-help-admission-20261022/import.mjs
+@@ -0,0 +1,47 @@
++// Private installed-source intake. Full imported documents stay outside the worktree.
++import {resolve} from 'node:path';
++import {pathToFileURL} from 'node:url';
++import {probeHelpShell} from '../../../apps/ultra/ui/canvas-help-shell.mjs';
++import {verifyResources,importBoundSource,writePrivateBundle} from '../help-roots-native-20261022/import.mjs';
++
++const identities={
++  help:{
++    times:{path:'help/max/times.maxhelp',sha256:'1eea3861a1605453fb3ed4daa4660f71e175fb2cf16ce4c4098cb53c5b94d54b'},
++    plus:{path:'help/max/plus.maxhelp',sha256:'d1443c5af7ba8874c7b1d237e3d22bbe518970ad8ae85a09ec8f10494d084895'},
++    minus:{path:'help/max/minus.maxhelp',sha256:'7968c6cf7d348b39d8fb8044c42977bc2b71fe55c4c7db8542150e79e6a1a0b0'},
++  },
++  scripts:{
++    starter:{path:'help/resources/helpstarter.js',sha256:'a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8'},
++    name:{path:'help/resources/helpname.js',sha256:'49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa'},
++    details:{path:'help/resources/helpdetails.js',sha256:'31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1'},
++    arguments:{path:'help/resources/helpargs.js',sha256:'04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469'},
++  },
++};
++
++export async function importInstalledArithmetic(resources,object){
++  if(!Object.hasOwn(identities.help,object))throw Error('Choose times, plus or minus.');
++  const verified=await verifyResources(resources,object,identities);
++  // The offline bridge supplies IPC only after byte verification; Rust admission is checked separately.
++  const identity=await probeHelpShell(verified.source,async()=>({
++    status:'recognized',adapter:'max-help-arithmetic-three-v1',object,sourceSha256:verified.sourceSha256,
++  }));
++  const bundle=importBoundSource(verified.source,identity);
++  bundle.helpers=verified.helpers;
++  return bundle;
++}
++
++async function main(){
++  const [resources,object,output]=process.argv.slice(2);
++  if(!resources||!object||!output||process.argv.length!==5)
++    throw Error('Usage: node import.mjs RESOURCES OBJECT NEW_PRIVATE_OUTPUT_DIRECTORY');
++  const bundle=await importInstalledArithmetic(resources,object);
++  await writePrivateBundle(bundle,output);
++  console.log(JSON.stringify({object,sourceSha256:bundle.sourceSha256,adapter:bundle.adapter,
++    stats:bundle.stats,scopedNodes:Object.keys(bundle.scopedNodeMap).length,
++    nativeNodes:bundle.flat.nodes.length,nativeEdges:bundle.flat.edges.length,
++    diagnostics:bundle.diagnostics.length,complete:bundle.complete,qualification:'not established'}));
++}
++
++if(process.argv[1]&&pathToFileURL(resolve(process.argv[1])).href===import.meta.url){
++  main().catch(error=>{console.error(error.message);process.exitCode=1;});
++}
+--- /dev/null
++++ current/experiments/max-reference/arithmetic-help-admission-20261022/import.test.mjs
+@@ -0,0 +1,42 @@
++import assert from 'node:assert/strict';
++import {test} from 'node:test';
++import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
++import {tmpdir} from 'node:os';
++import {join} from 'node:path';
++import {spawnSync} from 'node:child_process';
++
++const script=new URL('./import.mjs',import.meta.url);
++const run=(...args)=>spawnSync(process.execPath,[script.pathname,...args],{encoding:'utf8'});
++async function temporary(callback){
++  const directory=await mkdtemp(join(tmpdir(),'ultra-arithmetic-help-'));
++  try{await callback(directory);}finally{await rm(directory,{recursive:true,force:true});}
++}
++
++test('arithmetic intake refuses legacy names, symbols and path input before reading resources',()=>{
++  for(const object of ['append','int','*','+','-','../times','unknown']){
++    const result=run('/missing-resources',object,'/missing-output');
++    assert.equal(result.status,1);
++    assert.match(result.stderr,/Choose times, plus or minus/);
++    assert.equal(result.stdout,'');
++  }
++});
++
++test('safe arithmetic names use only their fixed source routes and reject changed bytes',async()=>temporary(async directory=>{
++  await mkdir(join(directory,'help/max'),{recursive:true});
++  for(const object of ['times','plus','minus']){
++    await writeFile(join(directory,'help/max',object+'.maxhelp'),'original synthetic unrecognized source');
++    const result=run(directory,object,join(directory,'output-'+object));
++    assert.equal(result.status,1);
++    assert.match(result.stderr,new RegExp('Resource identity mismatch: help/max/'+object+'\\.maxhelp'));
++    assert.equal(result.stdout,'');
++  }
++}));
++
++test('CLI refuses missing or extra arguments without any import output',()=>{
++  for(const args of [[],['one'],['one','two'],['one','two','three','four']]){
++    const result=run(...args);
++    assert.equal(result.status,1);
++    assert.match(result.stderr,/Usage: node import\.mjs/);
++    assert.equal(result.stdout,'');
++  }
++});
+
+# Shared schema delta
+All49baseline cases are unchanged.61appended cases;110total.
+{"name": "valid-times", "valid": true, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "valid-plus", "valid": true, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "valid-minus", "valid": true, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "legacy-policy-rejects-times", "valid": false, "shell": {"adapter": "max-help-four-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "legacy-policy-rejects-plus", "valid": false, "shell": {"adapter": "max-help-four-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "legacy-policy-rejects-minus", "valid": false, "shell": {"adapter": "max-help-four-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "arithmetic-policy-rejects-'append'", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "append", "basicNode": 3, "questionNode": 4}}
+{"name": "arithmetic-policy-rejects-'prepend'", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "prepend", "basicNode": 3, "questionNode": 4}}
+{"name": "arithmetic-policy-rejects-'int'", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "int", "basicNode": 3, "questionNode": 4}}
+{"name": "arithmetic-policy-rejects-'float'", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "float", "basicNode": 3, "questionNode": 4}}
+{"name": "arithmetic-policy-rejects-'*'", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "*", "basicNode": 3, "questionNode": 4}}
+{"name": "arithmetic-policy-rejects-'+'", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "+", "basicNode": 3, "questionNode": 4}}
+{"name": "arithmetic-policy-rejects-'-'", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "-", "basicNode": 3, "questionNode": 4}}
+{"name": "arithmetic-policy-rejects-'unknown'", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "unknown", "basicNode": 3, "questionNode": 4}}
+{"name": "arithmetic-policy-rejects-'../times'", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "../times", "basicNode": 3, "questionNode": 4}}
+{"name": "arithmetic-policy-rejects-''", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "", "basicNode": 3, "questionNode": 4}}
+{"name": "unknown-policy-rejects-times", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v2", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "unknown-policy-rejects-plus", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v2", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "unknown-policy-rejects-minus", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v2", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "times-extra-root-node", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "times-missing-root-name", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "times-duplicate-root-role", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "times-helper-extra-param", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "times-wrong-basic-name", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "times-wrong-question-name", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "times-question-content", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "times-missing-details", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "times-duplicate-arguments", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "times-root-helper-cable", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "times-basic-helper-source-cable", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "times-basic-helper-dest-cable", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "times-nested-forged-metadata", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "times-nested-helper-outside-basic", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "times", "basicNode": 3, "questionNode": 4}}
+{"name": "plus-extra-root-node", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "plus-missing-root-name", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "plus-duplicate-root-role", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "plus-helper-extra-param", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "plus-wrong-basic-name", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "plus-wrong-question-name", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "plus-question-content", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "plus-missing-details", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "plus-duplicate-arguments", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "plus-root-helper-cable", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "plus-basic-helper-source-cable", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "plus-basic-helper-dest-cable", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "plus-nested-forged-metadata", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "plus-nested-helper-outside-basic", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "plus", "basicNode": 3, "questionNode": 4}}
+{"name": "minus-extra-root-node", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "minus-missing-root-name", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "minus-duplicate-root-role", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "minus-helper-extra-param", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "minus-wrong-basic-name", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "minus-wrong-question-name", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "minus-question-content", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "minus-missing-details", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "minus-duplicate-arguments", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "minus-root-helper-cable", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "minus-basic-helper-source-cable", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "minus-basic-helper-dest-cable", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "minus-nested-forged-metadata", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+{"name": "minus-nested-helper-outside-basic", "valid": false, "shell": {"adapter": "max-help-arithmetic-three-v1", "object": "minus", "basicNode": 3, "questionNode": 4}}
+
+# Frozen SHA256
+41a128d14bb0479eaab27feb1b88533758934b047f6a1c0bf6da6346b886caa0  apps/ultra/ui/canvas-help-shell.mjs
+bcd8dd1a7a7d2ab229383f15a533b8df080b1c8015370b61ec4a297993217aed  apps/ultra/ui/canvas-max-import.mjs
+8df11627c19471a9f3f535ecd7db09865da6299a274db49c50a83ac6553215b1  apps/ultra/src-tauri/src/help_reference.rs
+19d6ef24e3cdb88c77574f90acb5ce045091c038d70ad7b0baecfddc4f01457b  apps/ultra/src-tauri/src/canvas_hierarchy.rs
+496392b28d6cab5edc03e9ad98347e5ee6bac7aef2b29cbf794f8195b5675814  apps/ultra/src-tauri/src/canvas_tests.rs
+12a5d704215211446d5a94310b42ca5b5fc3b37fe9000b83b9675bdc5736c07e  apps/ultra/ui/canvas-help-arithmetic-import.test.mjs
+abfcfe9407554e0502dcb4dbb03540d3010df14283e2b5adcf4bdb510e3a5099  experiments/max-reference/arithmetic-help-admission-20261022/import.mjs
+7b51682c0da83a7c5051f50bca67315864e495b2b5870f7098a91424ec01bf61  experiments/max-reference/arithmetic-help-admission-20261022/import.test.mjs
+cd3d30cd44e2723a0d8171dc59ac5a1fbebdc001967a6670f537b7c13a47f9b8  apps/ultra/tests/fixtures/help-shell-schema.json
+804be4705742d990b14dbaae421d0cb5813aa370823ecdb643ca9c5ddb24fbc2  apps/ultra/tests/ci/check-contracts.sh

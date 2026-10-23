@@ -1,4 +1,5 @@
 import {test, expect} from '@playwright/test';
+import {readFile} from 'node:fs/promises';
 
 // These tests use the real page and ordinary user controls. They deliberately
 // provide no __TAURI__ or native-IPC replacement and make no audio claim.
@@ -24,6 +25,127 @@ const wiringPatch={version:1,profile:'ultra-canvas-v1',nodes:[
   {id:2,type:'number',x:300,y:240,params:{}},
   {id:3,type:'gain',x:420,y:240,params:{}},
 ],edges:[]};
+
+test('New opens an independent patch and Save downloads its authored state',async({page})=>{
+  await page.goto('/canvas.html');const original=await exportPatch(page);
+  const created=page.waitForEvent('popup');await page.locator('#document-new').click();const child=await created;
+  await expect(child.locator('#empty-patch')).toBeVisible();expect(await exportPatch(page)).toEqual(original);
+  await child.locator('#add-object').click();await child.locator('#object-text').fill('print notes @level 2');await child.locator('#object-text').press('Enter');
+  await expect(child.locator('#document-dirty')).toBeVisible();
+  const saving=child.waitForEvent('download');await child.keyboard.press('Control+s');const download=await saving;
+  expect(download.suggestedFilename()).toMatch(/\.ultra$/);const patch=JSON.parse(await readFile(await download.path(),'utf8'));
+  expect(patch.nodes).toHaveLength(1);expect(patch.nodes[0]).toMatchObject({type:'print',params:{label:'notes',level:2}});
+  await expect(child.locator('#document-dirty')).toBeHidden();await child.close();
+});
+
+test('Help library searches names and aliases and opens runnable help in a separate window',async({page},testInfo)=>{
+  await page.goto('/canvas.html');const original=await exportPatch(page);await page.locator('#open-help-library').click();
+  await page.locator('#help-library-search').fill('button');await expect(page.locator('[data-library-key="help:bang"]')).toBeVisible();
+  await page.locator('#help-library-search').fill('receive');await expect(page.locator('[data-library-key="help:receive"]')).toBeVisible();
+  await page.screenshot({path:testInfo.outputPath('help-library-desktop.png')});
+  const opening=page.waitForEvent('popup');await page.locator('[data-library-key="help:receive"]').click();const help=await opening;
+  await expect(help.locator('#document-title')).toHaveText('receive help');await expect(help.locator('#help-content')).toContainText('named');
+  const patch=await exportPatch(help);expect(patch.nodes.some(node=>node.type==='receive')).toBe(true);expect(patch.nodes.some(node=>node.type==='send')).toBe(true);
+  expect(await exportPatch(page)).toEqual(original);await expect(help.locator('#start-audio')).toBeDisabled();await help.close();
+  await page.locator('#open-help-library').click();await page.locator('#help-library-search').fill('no such object');
+  await expect(page.locator('#help-library-results')).toContainText('No matching help');await page.keyboard.press('Escape');await expect(page.locator('#open-help-library')).toBeFocused();
+});
+
+test('list objects author through standard and legacy names and open original runnable help',async({page})=>{
+  await page.goto('/canvas.html');
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+  const cases=[['iter','iter'],['prepend','prepend'],['append tail','append'],['zl reg violet 2.','zl_reg'],
+    ['zl.join 8.','zl_join'],['zl.len','zl_len'],['zl.iter 2','zl_iter'],['zl.slice 2','zl_slice'],
+    ['zl.rev','zl_rev'],['zl rot -1','zl_rot']];
+  for(const [index,[text,type]]of cases.entries()){
+    await page.locator('#add-object').click();await page.locator('#object-text').fill(text);await page.locator('#object-text').press('Enter');
+    await expect(page.locator('#object-entry')).toBeHidden();
+    const node=page.locator('#objects [data-node]').nth(index),count=type.startsWith('zl_')?2:1;
+    await expect(node.locator('[data-direction="in"]')).toHaveCount(count);
+    await expect(node.locator('[data-direction="out"]')).toHaveCount(count);
+  }
+  const patch=await exportPatch(page);expect(patch.nodes.map(node=>node.type)).toEqual(cases.map(([,type])=>type));
+  expect(patch.nodes[1].params.args).toBe('');expect(patch.nodes[6].params.size).toBe(2);
+  await page.locator('#open-help-library').click();await page.locator('#help-library-search').fill('zl.slice');
+  const opening=page.waitForEvent('popup');await page.locator('[data-library-key="help:zl_slice"]').click();const help=await opening;
+  await expect(help.locator('#document-title')).toHaveText('zl.slice help');
+  const example=await exportPatch(help);expect(example.nodes.some(node=>node.type==='zl_slice')).toBe(true);
+  expect(example.nodes.some(node=>node.type==='print')).toBe(true);expect(await exportPatch(page)).toEqual(patch);await help.close();
+});
+
+test('MSP objects author with Max names and open original signal help',async({page})=>{
+  await page.goto('/canvas.html');
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+  const cases=[['sig~ .25 -.5','sig',1,2],['+~','signal_add',2,1],['-~','signal_subtract',2,1],
+    ['*~ .1','signal_multiply',2,1],['/~','signal_divide',2,1],['cycle~ 440','cycle',2,1],
+    ['phasor~ -1','phasor',2,1],['noise~','noise',1,1],['clip~ -1 1','signal_clip',3,1],
+    ['line~','line_signal',2,2],['snapshot~ 10','snapshot',2,1],['dac~ 2 1','signal_dac',2,0]];
+  for(const [index,[text,type,inputs,outputs]]of cases.entries()){
+    await page.locator('#add-object').click();await page.locator('#object-text').fill(text);await page.locator('#object-text').press('Enter');
+    await expect(page.locator('#object-entry')).toBeHidden();
+    const node=page.locator('#objects [data-node]').nth(index);
+    await expect(node.locator('[data-direction="in"]')).toHaveCount(inputs);
+    await expect(node.locator('[data-direction="out"]')).toHaveCount(outputs);
+  }
+  const patch=await exportPatch(page);expect(patch.nodes.map(node=>node.type)).toEqual(cases.map(([,type])=>type));
+  expect(patch.nodes[4].params.rhs).toBe(0);expect(patch.nodes[11].params.channels).toBe('2 1');
+  await page.locator('#open-help-library').click();await page.locator('#help-library-search').fill('cycle~');
+  const opening=page.waitForEvent('popup');await page.locator('[data-library-key="help:cycle"]').click();const help=await opening;
+  await expect(help.locator('#document-title')).toHaveText('cycle~ help');
+  const example=await exportPatch(help);expect(example.nodes.some(node=>node.type==='cycle')).toBe(true);
+  expect(example.nodes.some(node=>node.type==='snapshot')).toBe(true);
+  expect(example.nodes.some(node=>node.type==='print')).toBe(true);await expect(help.locator('#start-audio')).toBeDisabled();
+  expect(await exportPatch(page)).toEqual(patch);await help.close();
+});
+
+test('mixed MSP inputs accept messages and summed signals, and dac channel edits rebuild the inlet rail',async({page})=>{
+  await page.goto('/canvas.html');
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[
+    {id:1,type:'sig',x:80,y:80,params:{args:'.25 .5'}},
+    {id:2,type:'message',x:80,y:220,params:{text:'2'}},
+    {id:3,type:'signal_add',x:300,y:300,params:{}},
+    {id:4,type:'signal_dac',x:540,y:480,params:{channels:'1 2'}},
+  ],edges:[]});
+  for(const [id,outlet]of [[1,0],[1,1],[2,0]]){
+    await port(page,id,'out',outlet).click();await port(page,3,'in',0).click();
+  }
+  await port(page,3,'out').click();await port(page,4,'in').click();
+  expect((await exportPatch(page)).edges).toHaveLength(4);
+  await page.locator('[data-node="4"] .object-label').click();
+  await page.locator('#show-inspector').click();
+  const channels=page.locator('#inspector [data-parameter="channels"]');
+  await expect(channels).toHaveAttribute('maxlength','127');
+  await channels.fill('1 2 1 2');await channels.press('Tab');
+  await expect(port(page,4,'in',3)).toBeVisible();
+  await page.locator('#undo').click();await expect(page.locator('[data-node="4"] [data-direction="in"]')).toHaveCount(2);
+  await page.locator('#redo').click();await expect(page.locator('[data-node="4"] [data-direction="in"]')).toHaveCount(4);
+  await page.locator('#lock-patch').click();await page.locator('[data-node="4"] .object-label').focus();
+  await page.keyboard.press('Enter');await expect(channels).toBeDisabled();
+});
+
+test('normal Open validates a file into a separate preview window and keeps the original intact',async({page})=>{
+  await page.goto('/canvas.html');const original=await exportPatch(page),opened=page.waitForEvent('popup');
+  await page.locator('#document-file').setInputFiles({name:'Controls.ultra',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(wiringPatch))});
+  const child=await opened;await expect(child.locator('#document-title')).toHaveText('Controls.ultra');expect((await exportPatch(child)).nodes).toHaveLength(3);
+  expect(await exportPatch(page)).toEqual(original);await child.close();
+});
+
+test('normal Open of Max source shows compatibility analysis before any graph is imported',async({page})=>{
+  await page.goto('/canvas.html');const opened=page.waitForEvent('popup');
+  const source={patcher:{boxes:[{box:{id:'button',maxclass:'button',patching_rect:[40,40,24,24]}}],lines:[]}};
+  await page.locator('#document-file').setInputFiles({name:'Control.maxhelp',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(source))});
+  const child=await opened;await expect(child.locator('#patch-dialog')).toBeVisible();await expect(child.locator('#max-import')).toBeVisible();
+  await expect(child.locator('#objects [data-node]')).toHaveCount(0);await child.keyboard.press('Escape');await expect(child.locator('#empty-patch')).toBeVisible();await child.close();
+});
+
+test('library and document tools fit a narrow window',async({page},testInfo)=>{
+  await page.setViewportSize({width:320,height:740});await page.goto('/canvas.html');
+  for(const id of ['document-new','document-open','document-save','open-help-library'])await expect(page.locator('#'+id)).toBeInViewport();
+  await page.locator('#open-help-library').click();await expect(page.locator('#help-library-search')).toBeInViewport();await expect(page.locator('#help-library-close')).toBeInViewport();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(320);
+  expect(await page.locator('#help-library').evaluate(element=>element.scrollWidth<=element.clientWidth)).toBe(true);
+  await page.screenshot({path:testInfo.outputPath('help-library-mobile.png')});
+});
 const port=(page,id,direction,index=0)=>page.locator(`[data-node="${id}"] [data-direction="${direction}"][data-port="${index}"]`);
 async function portPoint(locator){const r=await locator.boundingBox();return{x:r.x+r.width/2,y:r.y+r.height/2};}
 async function dragPort(page,source,target,offset={x:0,y:0}){
@@ -174,7 +296,7 @@ test('honest browser preview renders all inlets above outlets', async ({page}, t
   await expect(page.locator('#preview-banner')).toBeVisible();
   await expect(page.locator('#preview-banner')).toContainText(/native|preview/i);
   await expect(page.locator('#start-audio')).toBeDisabled();
-  await expect(page.locator('#palette [data-add]')).toHaveCount(25);
+  await expect(page.locator('#palette [data-add]')).toHaveCount(62);
   await expect(page.locator('#objects [data-node]').first()).toBeVisible();
 
   const geometry = await page.locator('#objects [data-node]').evaluateAll(nodes =>
@@ -208,9 +330,11 @@ test('honest browser preview renders all inlets above outlets', async ({page}, t
   }
   expect(checkedPorts).toBeGreaterThan(30);
   expect(errors).toEqual([]);
-  const screenshot = testInfo.outputPath('canvas-browser-preview.png');
-  await page.screenshot({path: screenshot, fullPage: true});
-  await testInfo.attach('Canvas browser preview, not native audio', {path: screenshot, contentType: 'image/png'});
+  if(process.env.ULTRA_TEST_NO_CAPTURES!=='1'){
+    const screenshot = testInfo.outputPath('canvas-browser-preview.png');
+    await page.screenshot({path: screenshot, fullPage: true});
+    await testInfo.attach('Canvas browser preview, not native audio', {path: screenshot, contentType: 'image/png'});
+  }
 });
 
 test('new control objects expose dynamic ports, typed text and parameter guidance',async({page},testInfo)=>{
@@ -276,7 +400,7 @@ test('add and wire objects, delete and undo, export, and reject invalid import',
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/canvas.html');
-  await expect(page.locator('#palette [data-add]')).toHaveCount(25);
+  await expect(page.locator('#palette [data-add]')).toHaveCount(62);
   await importPatch(page, {version: 1, profile: 'ultra-canvas-v1', nodes: [], edges: []});
   await expect(page.locator('#patch-dialog')).not.toBeVisible();
   await expect(page.locator('#objects [data-node]')).toHaveCount(0);
@@ -335,18 +459,20 @@ test('add and wire objects, delete and undo, export, and reject invalid import',
   await expect(page.locator('#start-audio')).toBeDisabled();
   expect(errors).toEqual([]);
 
-  const screenshot = testInfo.outputPath('canvas-browser-edited.png');
-  await page.screenshot({path: screenshot, fullPage: true});
-  await testInfo.attach('Canvas editing result, not native audio', {path: screenshot, contentType: 'image/png'});
+  if(process.env.ULTRA_TEST_NO_CAPTURES!=='1'){
+    const screenshot = testInfo.outputPath('canvas-browser-edited.png');
+    await page.screenshot({path: screenshot, fullPage: true});
+    await testInfo.attach('Canvas editing result, not native audio', {path: screenshot, contentType: 'image/png'});
+  }
 });
 
 test('inline creation, rejected classes, connected text edits, lock, help and directional port menus', async ({page}) => {
   await page.goto('/canvas.html');
-  await page.keyboard.press('Control+n');
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
   await expect(page.locator('#file-menu')).not.toHaveAttribute('open');
   await page.keyboard.press('n');
   const text=page.locator('#object-text');
-  await text.fill('cycle~ 440');await text.press('Enter');
+  await text.fill('buffer~ unsupported');await text.press('Enter');
   await expect(page.locator('#object-error')).toContainText('Unknown object');
   await expect(page.locator('#objects [data-node]')).toHaveCount(0);
   await text.fill('+ 12');await expect(text).toHaveAttribute('aria-invalid','false');await text.press('Enter');
@@ -368,9 +494,9 @@ test('inline creation, rejected classes, connected text edits, lock, help and di
   await page.keyboard.press('Escape');
   await page.locator('#objects article').first().locator('[data-direction=out]').click({button:'right'});
   await expect(page.locator('#context-menu')).toContainText('Emits');
-  await page.locator('#context-menu button').last().click();
-  await expect(page.locator('#help-content')).toContainText('Inlets / accepted messages');
-  await expect(page.locator('#help-content')).toContainText('Open runnable example patch');
+  const helpWindow=page.waitForEvent('popup');await page.locator('#context-menu button').last().click();const help=await helpWindow;
+  await expect(help.locator('#help-content')).toContainText('Inlets / accepted messages');
+  await expect(help.locator('#help-content')).toContainText('Open runnable example patch');await help.close();
 });
 
 test('group drag and undo retain selection; zoom keeps patch cord endpoints on ports', async ({page}) => {
@@ -407,8 +533,8 @@ test('small preview keeps chrome reachable and overlays its optional inspector',
   await page.locator('#show-inspector').click();await expect(page.locator('#details-panel')).toBeInViewport();
   await page.locator('#close-panel').click();await page.locator('#fit-patch').click();
   await expect(page.locator('#canvas-zoom')).not.toHaveValue('');
-  await page.keyboard.press('Control+n');await expect(page.locator('#empty-patch')).toBeVisible();
-  await page.locator('#empty-add').click();await expect(page.locator('#object-text')).toBeFocused();
+  const newWindow=page.waitForEvent('popup');await page.keyboard.press('Control+n');const empty=await newWindow;
+  await expect(empty.locator('#empty-patch')).toBeVisible();await empty.locator('#empty-add').click();await expect(empty.locator('#object-text')).toBeFocused();await empty.close();
 });
 
 test('audio settings preview is reachable, fits the panel and explains native-only devices', async ({page}) => {

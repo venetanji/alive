@@ -1,21 +1,38 @@
 # Ultra editable canvas
 
-The native window opens `canvas.html`, the editable graph profile `ultra-canvas-v1`. Its compact interface follows the locally observed Max 9.1.5 patcher. The old research patcher and fixed Chord lab remain in the File menu. All three pages use the native engine, never WebAudio or a JavaScript note clock.
+The native window opens `canvas.html`, supporting flat `ultra-canvas-v1` and embedded `ultra-patcher-v2` documents. Its compact interface follows the locally observed Max 9.1.5 patcher. Up to 16 root patch, help and example documents run independent graphs through one shared native audio engine and output device. Each root owns its tree, history, control state, timers and voices; native child views attach to that same owner. The old research patcher and fixed Chord lab remain available in the browser preview's File menu; native canvas windows hide these engine-wide legacy adapters. Playback uses native code, never WebAudio or a JavaScript note clock.
+
+## Embedded Patchers
+
+Type `p basic` to create an embedded patcher. Double-click its object or press Enter on its focused header to open its native window; reopening focuses the existing child. The path bar focuses a parent window. Browser preview retains inline navigation. Create `inlet` and `outlet` objects inside it to expose parent ports, ordered by horizontal position. These boundaries pass both typed messages and mono signals. Every descendant shares one root native graph, history and saved file. Opening or closing a child preserves playback and live state; Save and export from a child include the complete tree. Edits broadcast across views and Undo/Redo follows the owner's history. Console links open and reveal the source's owning view, and each view receives console records independently. A root permits up to 64 child views without using additional audio slots. Comments are saved annotations. Max initialization and help helpers remain separate work.
+
+V2 authoring allows 512 total objects, 1024 cables, 16 embedded levels and 1 MiB compact JSON. Native execution retains 32 leaves/relays and 64 cables. Over-limit graphs are rejected without truncation. Supported embedded Max graphs can be imported recursively; unsupported dependencies still require explicit partial-import acceptance. This does not establish complete installed-help execution.
 
 ## Editable canvas workflow
 
 - **Ctrl E** locks/unlocks the patch. Edit mode selects and moves controls; locked mode operates them. Control objects work with audio stopped. For sound, start audio, lock, then click the top-left toggle to run `metro → counter → chord → makenote → voice`. Native code owns metro pulses, ramps and note-off scheduling; its background worker clocks controls when DSP is off. The separate bang/message chain triggers a note. The current CPAL desktop path has no physical MIDI ingress; `midiin` routing is exercised only through the legacy JACK adapter/tests. Ctrl/Cmd-click can operate a control while editing.
-- **N** or double-click blank canvas creates an object at the pointer. Type its name and positional arguments, such as `metro 150`, `+ 12`, `line 0 20`, or `pack i f s`. Arrow keys select a suggestion, Tab completes, Enter commits and Escape cancels. B/M/T/I begin bang/message/toggle/number entry. Double-click an object, or select it and press Enter/F2, to edit its text. Unsupported classes and invalid arguments remain visible as errors without replacing the current object. The optional object library lists all 25 supported kinds, including the new `int`, `float`, `flonum`, `slider`, `pack`, `unpack`, `select`, `route`, `trigger` and `line`.
-- Every inlet is on the **top**, every outlet on the **bottom**, indexed left to right. Click an outlet, then a matching inlet. Control, mono audio and stereo bundles have distinct ports and cable styles. Hover or focus a port for help; right-click an inlet for **Accepts**, an outlet for **Emits**. These descriptions follow Ultra's contract. Multiple control sources may enter an inlet; an audio inlet accepts one source. Saved cable array order controls fan-out order.
-- Drag object bodies/headers, Shift-select or marquee a group, and use arrow keys to nudge. Group moves/deletes undo in one step. Wheel or two-finger scrolling moves the view; Shift+wheel scrolls horizontally. Space+drag or middle-button drag also pans, including when starting over an object. **Z** zooms in around the pointer and **Shift Z** zooms out, following Max's key commands. Ctrl/Cmd+wheel (including browser trackpad pinch events) also zooms at the pointer; Ctrl/Cmd +/- zooms and Ctrl/Cmd 0 or Reset view restores 100% at the origin. Navigation works in edit and locked mode; typing and Ctrl/Cmd Z undo keep their usual behavior. Zoom and Fit change only the view, never graph coordinates or audio state. Ctrl I opens the optional inspector for all parameters; F1 or the context menu opens help with literal and runnable examples. Numbers and vertical gain controls operate while locked. Native numeric observations update display without modifying saved parameters or feeding back as UI events.
+- **N** or double-click blank canvas creates an object at the pointer. Type its name and positional arguments, such as `metro 150`, `+ 12`, `line 0 20`, or `pack i f s`. Arrow keys select a suggestion, Tab completes, Enter commits and Escape cancels. B/M/T begin bang/message/toggle entry. I/F/S immediately create a number, float box or vertical slider at the pointer; each creation undoes in one step. Double-click an object, or select it and press Enter/F2, to edit its text. Unsupported classes and invalid arguments remain visible as errors without replacing the current object. The optional object palette lists 54 native kinds and the p/comment authoring constructs, including control/list processors and the twelve signal kinds `sig~`, `+~`, `-~`, `*~`, `/~`, `cycle~`, `phasor~`, `noise~`, `clip~`, `line~`, `snapshot~` and `dac~`.
+- Every inlet is on the **top**, every outlet on the **bottom**, indexed left to right. Click an outlet, then a matching inlet. Control, mono audio and legacy stereo bundles have distinct ports and cable styles; mixed inlets accept control or mono signals. Hover or focus a port for help; right-click an inlet for **Accepts**, an outlet for **Emits**. These descriptions follow Ultra's contract. Multiple control sources may enter an inlet; mono signal sources sum at a signal input. Saved cable array order controls control-message fan-out order. Control and signal dependency graphs are checked separately, allowing sampled feedback through `snapshot~` while refusing a cycle within either graph.
+- Drag object bodies/headers, Shift-select or marquee a group, and use arrow keys to nudge. Group moves/deletes undo in one step. Wheel or two-finger scrolling moves the view; Shift+wheel scrolls horizontally. Space+drag or middle-button drag also pans, including when starting over an object. **Z** zooms in around the pointer and **Shift Z** zooms out, following Max's key commands. Ctrl/Cmd+wheel (including browser trackpad pinch events) also zooms at the pointer; Ctrl/Cmd +/- zooms and Ctrl/Cmd 0 or Reset view restores 100% at the origin. Navigation works in edit and locked mode; typing and Ctrl/Cmd Z undo keep their usual behavior. Zoom and Fit change only the view, never graph coordinates or audio state. Ctrl I opens the optional inspector for all parameters; F1 or the context menu opens help with literal and runnable examples. Numbers, sliders and gain controls operate while locked. Range controls use flat position bars; gain uses a hatched track. Their output stays available in the Inspector and accessible value text. Locked UI controls hide their port markings while cords retain their endpoints. Native numeric observations update display without modifying saved parameters or feeding back as UI events.
 - Select a cable or object and use **Delete selection** or Delete/Backspace. Undo/redo preserves stable IDs, cable order, parameters and positions. Numeric-parameter undo remains live; structural undo resets notes/timers. Layout undo never reapplies the native graph.
-- Numeric parameters use a bounded latest-wins queue while dragging. Message text, MIDI channel, voice device, node and cable changes are structural and disabled while locked, including in the Inspector. Structural edits prepare a replacement graph, stop timers and notes, and require an explicit new toggle/bang to start again. This is **not seamless hot swapping**. Invalid local edits leave the document unchanged; native rejection retains the last valid active graph and blocks new UI events until resolved. Desired document and active native revisions are shown separately.
-- **Stop patch**, focus loss, a hidden page and Esc stop native timers and notes, including when ordinary number/gain/Inspector inputs have focus. Escape inside object entry cancels that edit instead; modal/context menus retain their dismissal behavior. **Panic** latches native silence until Stop audio / Start audio. Event-queue overflow fails closed instead of discarding a possible note-off. Navigation waits for audio cleanup and stays on the page if cleanup fails. Abrupt process termination still cannot guarantee webview IPC completion.
-- **Save / export…** provides selectable JSON, Copy and optional Download. **Open…** accepts pasted JSON or a file picker; file selection validates before the explicit Import step. Import validates the whole profile before replacement. No autosave is implied. `canvas-preset.json` is the supplied starter. Limits: 32 objects, 64 edges, 64 KiB; unknown fields/types, invalid values/ports, cycles and unsupported audio paths are rejected. Omitted known parameters receive protocol defaults.
+- Native shared views serialize authoring edits through owner CAS; the standalone preview controller coalesces numeric updates while dragging. Compatible Message text edits update one box silently without replacing the graph; runtime cold/set messages change its live display without rewriting saved text. Message text editing is disabled while locked. Legacy message text, MIDI channel, voice device, node and cable changes remain structural. Structural edits prepare a replacement graph and reset only that document's timers, notes and signal state. Continuous signals run from reset state while DSP is on; controls and metros require an explicit new operation. This is **not seamless hot swapping**. Invalid local edits leave the document unchanged; native rejection resynchronizes shared views with the authoritative graph and cancels dependent queued events. Desired document and active native revisions are shown separately.
+- **Stop patch** and Esc stop this document's native timers and notes and freeze/silence its signal graph, including when ordinary number/gain/Inspector inputs have focus. An accepted event, parameter change, incoming Receive or explicit global DSP restart resumes its continuous signals. Focus changes and hidden windows preserve playback. Closing a document disposes only its graph. Escape inside object entry cancels that edit instead; modal/context menus retain their dismissal behavior. **Start audio**, **Stop audio**, audio settings and **Panic** apply to the shared output. Stop audio clears timers and notes in every document; controls can be triggered again while audio is off. Starting audio resumes continuous signals in all documents without replacing graphs, ordinary values or runtime receive bindings; stopped metros remain off. Cycle restarts at its reset phase and Phasor retains its phase across DSP off/on. Panic latches native silence until Stop audio / Start audio. Event-queue overflow fails closed instead of discarding a possible note-off. Abrupt process termination still cannot guarantee webview IPC completion.
+- **New** (Ctrl/Cmd N) and **Open** (Ctrl/Cmd O) create separate native patch windows. Open uses the OS file picker; dropping a patch file also opens a window. Reopening an already-open file focuses its window. **Save** (Ctrl/Cmd S) and **Save As** (Ctrl/Cmd Shift S) atomically write validated Ultra JSON through the OS, normally as `.ultra`; `.json` is also accepted. The title's asterisk follows saved content, including undo and edits during a pending save. Closing first flushes pending edits from the affected views and pauses new authoring until the close decision. Failed edit or history admission keeps the window open. Closing a modified patch offers Save, Discard or Cancel. Max source opens an empty document with a compatibility report and always saves to a separate Ultra file after import, including when the source used `.json`. **Advanced JSON / Max import** retains pasted JSON and explicit replacement of the current graph; **Export JSON** retains selectable JSON, Copy and Download. No autosave is implied. `canvas-preset.json` is the supplied starter. Per-document limits: 32 objects, 64 edges, 64 KiB; unknown fields/types, invalid values/ports, cycles within the separate control or signal dependency graphs, and unsupported bundle connections are rejected. Omitted known parameters receive protocol defaults.
+- **Help & Examples** in the document toolbar searches 113 original entries by name, alias, description or topic: help and an example for each supported kind, plus the starter. Each opens a separate window, as do F1, Alt/Option-click and the object's context-menu or Inspector Help action. Opening the same help entry again focuses its existing window. The library also lists open native windows for focusing. The object palette remains a separate authoring tool.
 
-The audio profile is explicit `voice → gain → join → dac`, with at most one voice per logical device and one join/dac. Missing paths are silence. Gain outputs can feed either join inlet or both for explicit dual mono. These are the actual two native prepared sine/ASR voice buses, not arbitrary DSP or Max compatibility. Attack uses raw × 4 ms, release raw × 8 ms, and raw 0 means 16 frames, latched on note-on. A single stereo bundle reaches the selected CPAL stereo output through `dac`.
+The native mono signal graph evaluates sources, arithmetic, clipping and ramps at 48 kHz. Mono cables can fan out, and multiple sources sum at an input. `dac~` accepts 1..8 mono inputs mapped to physical channel 1 (left) or 2 (right); repeated mappings sum. The older custom `voice → gain → join~ → stereo.dac~` path retains two prepared sine/ASR voice buses, at most one voice per logical device and one legacy join/sink per document. Its saved sink type remains `dac`, preserving old files; the new mono-input `dac~` has a separate kind. Gain evaluates independently on each branch. The custom Voice pipeline retains its 64-frame delay; new MSP sources run immediately at the native sample rate. Missing output paths are silent. Voice attack uses raw × 4 ms, release raw × 8 ms, and raw 0 means 16 frames, latched on note-on. Both paths mix into the same selected CPAL stereo device.
 
-Browser preview supports editing and JSON only. Native triggers and audio controls are disabled, and runtime readouts remain absent rather than simulating playback. Per-object values and pulse counts are polled native observations, not an audio timing scope.
+Browser preview supports editing, independent preview windows, normal file input and patch downloads. Native triggers and audio controls are disabled, and runtime readouts remain absent rather than simulating playback. Per-object values and pulse counts are polled native observations, not an audio timing scope.
+
+Engine starts and graph replacements mute the first 64 output samples as a
+guard while signal state already advances. New MSP evaluation has no per-path
+64-frame delay; the legacy custom Voice pipeline remains delayed separately.
+
+From the repository root, `bash apps/ultra/run.sh -- path/to/patch.ultra`
+opens a file at startup or sends it to the existing native instance. Multiple
+paths are accepted. `python3 apps/ultra/install-launcher.py` installs the latest
+build's user desktop entry and MIME descriptions for `.ultra`, `.maxpat` and
+`.maxhelp`, so a file manager can offer Open With Ultra.
 
 ### Canvas checks
 
@@ -27,9 +44,25 @@ node --check apps/ultra/ui/canvas.mjs
 
 `canvas-model.test.mjs` covers the strict registry/document, typed audio/control topology, snapshots, real command payloads, parameter coalescing, revision races, native rejection, stop, Panic, startup failure and cancellation, queue overflow, and numeric undo. `canvas-dom.test.mjs` executes the actual page module against a small DOM adapter for palette, wiring, deletion, message/numeric edits, native triggers, dragging, port orientation, import type changes and navigation. Rendered browser smoke is separate under `../tests/ci`; see that directory's README. DOM/static/browser-preview checks do not establish native audio output, hardware MIDI, latency or callback deadlines.
 
+`canvas-documents.test.mjs` checks saved-content tracking, edits during pending
+saves, cancelled Save As, native new/open isolation and save-before-close.
+`canvas-send-receive.test.mjs` checks aliases, name bounds, creation-dependent
+ports, structural name edits, supported Max intake and document-local disposal.
+`canvas-library.test.mjs` validates all original help/example graphs and their
+checked native manifest. Native window/file/audio execution is checked separately
+by the private desktop runner described below.
+
+`canvas-signal-objects.test.mjs` covers signal creation, mixed ports, summed
+inputs, separate dependency graphs and Max intake boundaries. Frozen signal
+reference observations and production-native replay are in
+`experiments/max-reference/signal-runtime-20261021/`; they do not establish
+complete execution of installed Max help patches.
+
 `canvas-catalog.mjs` is the UI name/argument/port-help contract over the same
-25-kind native registry. It rejects Max classes that lack runtime support;
-`cycle~` remains unsupported. `int` and `flonum` are separate runtime kinds;
+54-kind native registry plus two authoring constructs. It rejects Max classes and execution attributes that
+lack runtime support. `cycle~` is supported for numeric frequency/phase behavior;
+waveform buffers, `ezdac~`, transport scheduling and signal feedback remain
+unsupported. `int` and `flonum` are separate runtime kinds;
 `i`, `f`, `sel` and `t` resolve to int, float, select and trigger when typed as
 object names. `canvas-entry.mjs` owns inline entry
 and `canvas-node.mjs` owns compact object faces. The reference observations and
@@ -45,15 +78,65 @@ Tab or a suggestion click completes the current token while preserving text
 after the caret. Enter commits the typed arguments without substituting defaults.
 These option names describe Ultra's registry, not the complete Max attributes.
 
+`cycle~` and `phasor~` take one positional frequency, `line~` one initial value,
+and `snapshot~` one interval. The editor's `@phase`, `line~ @time` and
+`snapshot~ @offset` options preserve inspector settings; Max intake refuses
+unqualified execution attributes. Signal creation/control values are finite
+-100000..100000 unless a narrower field range applies. DSP calculations can
+exceed that control bound. `noise~` retains a physical control inlet but accepts
+no methods, including `seed`; its exact sequence is not claimed to match Max.
+`snapshot~` bang samples an offset in the latest completed 64-frame vector;
+positive periodic cadence is a bounded native approximation rather than exact
+Max scheduling. Signal examples require shared DSP to run even for console-only
+observations; control `line` continues working with DSP off.
+
 `pack`, `unpack`, `select`, `route` and `trigger` create their port counts from
 up to eight creation atoms. Typed literals and named selectors can be sent from
 message boxes, for example `note 64 100`, `set 12`, and `pause`. `flonum` is a
-floating-point UI box with a Tab bang outlet; `slider` is an independent control
+floating-point UI box with a physical Tab bang outlet. `number` creates the
+integer UI box (saved type `number_int`), with one inlet, two outlets and
+integer minimum/maximum. Incoming floats and direct text entry truncate toward
+zero. Existing saved Ultra `number` objects retain their fractional value and
+two-inlet/one-outlet behavior; their object text is `number.legacy`. Physical
+Tab first commits pending entry, then emits from outlet 1; the input message
+`tab` does not emit. `int` and `float` accept `send name` at their hot inlet to
+send the stored typed value to matching receivers across documents without
+ordinary outlet output. `slider` is an independent control
 slider rather than an audio gain. `line` has target/time/grain inlets and a
 completion outlet. The native clock runs it with audio off. Original runnable
 examples and operation instructions are in `../examples/README.md`; start with
 `../examples/line.ultra`. See `../PATCH_PROTOCOL.md` for bounds and the supported
-subset. Whole Max `.maxpat`/`.maxhelp` files still require a separate importer.
+subset. Max `.maxpat`/`.maxhelp` intake provides named-patcher compatibility
+reports and imports only the supported selection; whole-help execution is not
+supported. `print` is a native console sink with a saved label and severity.
+Open Console in the toolbar or press Ctrl/Cmd M; filtering and Clear are local
+to the visible history. Selected button/toggle/slider/gain controls have direct
+resize handles, and the slider inspector shows its scaled output range and
+Integer/Float output mode. Appearance and resize edits retain native execution.
+
+`send` / `s` requires a name; `receive` / `r` may be unnamed. Matching names
+deliver complete typed messages across open documents, including with audio off.
+Multiple-receiver delivery order is unspecified. An unnamed receiver has a control
+inlet for `set name`; a named receiver has no inlet. Inspector name edits are
+structural and refresh the visible port layout. Original `send.ultra` and
+`receive.ultra` examples use the shared name `ultra-help-notes`. A `set` selector
+received through the bus is emitted as data rather than retargeting the receiver.
+Runtime retargeting does not change its saved creation name. Names are literal
+ASCII tokens of 1..31 bytes; only receive can have an empty creation name. Max
+`#0`/`---` patch-local expansion and signal-rate `send~`/`receive~` are unsupported.
+
+`canvas-shared.mjs` owns native optimistic editing, serialized CAS admission,
+conflict recovery and owner broadcasts. Native Rust owns the saved baseline and
+history, bounded by 100 snapshots and 16 MiB. Geometry, appearance and patcher
+names do not reinstall execution; single live numeric changes and their undo
+use atomic parameter/hot-inlet admission. Other executable edits replace the
+owner graph. `canvas-documents.mjs` owns document metadata and native calls;
+`canvas-documents-view.mjs` owns the file controls, native events/drop intake,
+browser fallback and searchable library. `canvas-library.mjs` creates the
+original runnable fixtures. Native windows embed the checked
+`canvas-library-data.json` manifest; after changing the catalog or library, run
+`node apps/ultra/ui/generate-canvas-library.mjs`. The library test checks that
+the native manifest and browser patches remain identical.
 
 The navigation comparison is recorded in
 `experiments/max-ui-reference/navigation.md`. Max's installed 9.1.5 key-command
@@ -73,6 +156,17 @@ software audio (the optional `--software-audio` flag is retained for compatibili
 It never qualifies the user's physical output. The committed desktop captures were
 made on the local Arch environment; the portable CI gate is the separate
 `check_cpal_audio.sh` real CPAL loopback, not an automated desktop UI test.
+
+The same desktop runner checks file delivery during initialization before invoking
+`check_documents_desktop.py` for real native
+windows, secondary file arguments, same-path focus, native file actions and
+Save/Discard/Cancel. It also checks original help opening, typed send/receive
+with audio off, all ten list objects with audio off/on, all twelve new MSP kinds,
+two-document audio, stopping only one patch, named Receive resuming signals and
+global DSP restart. Set
+`ULTRA_TEST_DOCUMENTS_ONLY=1` before the runner to execute only those document
+checks in its private session. See `../tests/ci/README.md` for the exact commands
+and prerequisites; these checks remain separate from browser bridge fixtures.
 
 ## Legacy research patcher
 
@@ -136,3 +230,25 @@ bash apps/ultra/tests/check_isolated_desktop.sh /tmp/ultra-isolated-results
 Graph checks cover complete/disconnected chains, cross-device and duplicate rejection, invalid coordinates/version, and IPC payload separation. Event checks execute actual controls with paused native IPC to verify key-up/focus releases during edits and reconnect behavior. The isolated runner requires the built native app, Xvfb/D-Bus/AT-SPI and an existing supported JACK server; see `../RUNNING.txt`. It uses a private display with no desktop-wide keyboard/pointer input and refuses another Ultra instance. Native and rendered UI execution must be reported separately. Static checks do not establish desktop usability, audio output, physical MIDI latency, or callback deadlines.
 
 Chord lab tests exercise the actual control model with deterministic command admission: startup order and inherited-engine adoption, edits during startup, explicit Run, parameter-change stop, stale Run cancellation, B note ownership/deduplication, release while note-on is pending, bounded latest commits, native Panic on IPC failures, panic recovery, strict preset round trips, view-only preview, and the page wiring contract. They are not a rendered/native UI qualification.
+
+## Compatible Message Boxes
+
+M, `message` and `msg` create a two-inlet `message_box`, empty by default.
+Its cold inlet replaces the displayed template silently; hot `set` replaces
+it and bare `set` clears it. Empty boxes send nothing. Nonempty templates
+substitute standalone `$1`/`$2` payload atoms under a fixed selector or numeric
+first atom; bang recalls the remembered arguments. The displayed template
+keeps its literal placeholders. A head placeholder, `symbol $1`, other dollar
+syntax, commands with commas/semicolons and quoted/escaped atoms are refused.
+
+Text edits and a single-text Undo/Redo use atomic native admission, retaining
+unrelated values, timers and audio state. Editing back to the already saved
+text also restores a different live template. Shared views read non-consuming,
+serial-matched typed snapshots. Authored text remains limited to 127 ASCII
+bytes; typed runtime displays can reach 287 bytes within the eight-atom and
+31-byte-symbol profile. Saved legacy `message` boxes retain their one-inlet
+literal contract and are authored explicitly as `message.legacy`.
+
+Hot append/prepend/setargs, cold set and zero-atom cold list remain outside
+the qualified profile. Clearing or editing a template resets its remembered
+arguments to zero as a local policy, not a verified Max transition.

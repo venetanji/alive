@@ -1,0 +1,155 @@
+--- initial007/arithmetic.py
++++ fix1/arithmetic.py
+@@ -644,6 +644,18 @@
+         definition.get('working_path') != str(work / 'working/plus-r1.maxhelp') or
+         definition.get('working_windows_path') != windows_path(work / 'working/plus-r1.maxhelp')):
+         raise ValueError('Capture006 plus source, path or owner binding changed')
++    lifecycle = config.get('lifecycle')
++    if type(lifecycle) is not dict or type(lifecycle.get('owners')) is not list or len(lifecycle['owners']) != 6:
++        raise ValueError('Capture006 lifecycle owner map required')
++    owners = lifecycle['owners']
++    if any(type(owner) is not dict or type(owner.get('inlet')) is not int or owner['inlet'] != inlet
++        for inlet, owner in enumerate(owners)):
++        raise ValueError('Capture006 lifecycle owner inlet map changed')
++    owner = owners[definition['lifecycle_owner_inlet']]
++    expected_owner = dict(inlet=definition['lifecycle_owner_inlet'], document=definition['document'],
++        revision=definition['revision'], source_sha256=definition['source_sha256'], working_path=definition['working_windows_path'])
++    if any(type(owner.get(key)) is not type(value) or owner[key] != value for key, value in expected_owner.items()):
++        raise ValueError('Capture006 plus lifecycle owner binding changed')
+     source = read_private(work, definition['pristine_path'])
+     if hashlib.sha256(source).hexdigest() != PLUS_SOURCE: raise ValueError('Capture006 pristine plus source changed')
+     boxes, inventory, edges = source_inventory('plus', parse_json(source)['patcher'], config['helpers'])
+--- initial007/test_helpers.cjs
++++ fix1/test_helpers.cjs
+@@ -1286,7 +1286,7 @@
+   for (const key of ['PLUS_GEOMETRY_PINS', 'PLUS_NUMERIC_PINS', 'PLUS_CONTROLLER_COHORT_PINS',
+     'PLUS_CONTROLLER_COHORT_BINDING', 'PLUS_CONTROLLER_FORMAT_SHA256']) r[key] = plain(c[key]);
+   r.PLUS_ROOT_DIAGNOSTIC_PINS = Object.fromEntries(f.definition.full_inventory.filter(b => b.anchor.split('/').length === 2).map(b =>
+-    [b.anchor, {source_box_sha256: b.source_box_sha256, source_text_sha256: b.source_text_sha256,
++    [b.anchor, {source_class: b.maxclass, source_box_sha256: b.source_box_sha256, source_text_sha256: b.source_text_sha256,
+       runtime_class: b.runtime_class, runtime_classes: b.runtime_classes, saved_rect_sha256: hash(b.rect)}]));
+   f.scopes['root/obj-2'].forEach((o, i) => {o.varname = '__alive_help_' + f.definition.boxes[i].id.replace(/-/g, '_');});
+   const leaves = f.definition.observer_leaves.map(leaf => ({maxclass: 'js', varname: leaf.varname, nextobject: null}));
+@@ -1329,5 +1329,29 @@
+   assert.throws(() => f.reader.collectRepresentationDiagnostics(f.root, f.definition, f.request, f.context.config));
+   assert.equal(f.calls.length, 0);
+ });
++case007('plus007_fix1_v8_root_source_class_binding', () => {
++  const valid = plus007V8Fixture(), authored = ['newobj', 'newobj', 'newobj', 'jsui'];
++  valid.scopes.root[1].maxclass = 'jpatcher';
++  const diag = valid.reader.collectRepresentationDiagnostics(valid.root, valid.definition, valid.request, valid.context.config);
++  assert.deepEqual(plain(diag.root_rows.map(row => row.source_class)), authored);
++  assert.equal(diag.root_rows[1].actual_runtime_class, 'jpatcher');
++  assert.ok(diag.numeric_rows.every(row => row.actual_runtime_class === 'number'));
++  assert.equal(diag.inventory_coverage.root.complete_count, 8);
++  assert.equal(diag.inventory_coverage.numeric.complete_count, 35);
++  assert.equal(valid.calls.length, 6); assert.equal(diag.strict_mismatch, true);
++  valid.calls.length = 0;
++  assert.throws(() => valid.reader.collectReadback(valid.root, valid.definition, valid.request, valid.context.config),
++    /strict-v8-original-representation-refused/);
++  assert.equal(valid.calls.length, 6);
++  for (const anchor of ['root/obj-1', 'root/obj-2', 'root/obj-3', 'root/obj-4']) {
++    const f = plus007V8Fixture();
++    f.definition.full_inventory.find(b => b.anchor === anchor).maxclass = 'synthetic-forged-source-class';
++    assert.throws(() => f.reader.collectRepresentationDiagnostics(f.root, f.definition, f.request, f.context.config),
++      anchor + ': changed authored class must refuse before target calls');
++    assert.equal(f.calls.length, 0, anchor + ': changed authored class reached target calls');
++  }
++  const production = helper('v8-readback.js');
++  assert.deepEqual(plain(Object.values(production.PLUS_ROOT_DIAGNOSTIC_PINS).map(pin => pin.source_class)), authored);
++});
+ console.log(JSON.stringify({completed007, failures007}));
+ assert.deepEqual(failures007, [], 'preparation007 behavioral regressions');
+--- initial007/test_preparation.py
++++ fix1/test_preparation.py
+@@ -215,7 +215,21 @@
+             package_sha256=binding['package_sha256'], score_sha256=n.SCORE_SHA256,
+             fix1_report_sha256='a' * 64, fix1_review_map_sha256='b' * 64)
+         n.write_json(history / 'binding.json', historical)
+-        config = dict(work=str(work), documents=[definition], helpers=helper_rows, package_sha256=package_files)
++        epoch='c'*48; owners=[]
++        for document in ('times','plus','minus'):
++            for revision in (1,2):
++                inlet=len(owners); owners.append(dict(document=document, revision=revision, inlet=inlet,
++                    source_sha256=source_sha if document=='plus' else n.IDENTITIES[document],
++                    working_path=n.windows_path(work/'working'/f'{document}-r{revision}.maxhelp'),
++                    channel='__alive_arithmetic_lifecycle_'+epoch+'_'+str(inlet),
++                    root_proof_path=n.windows_path(work/'observations'/f'lifecycle-root-{document}-r{revision}.json')))
++        driver_inventory=[dict(varname='__alive_arithmetic_controller', maxclass='js', boxtext='js controller.js synthetic', rect=[20,20,350,50]),
++            dict(varname='__alive_arithmetic_lifecycle_observer', maxclass='v8', boxtext='v8 lifecycle-observer.js synthetic', rect=[-2000,-2000,300,50])]
++        driver_inventory.extend(dict(varname='__alive_arithmetic_lifecycle_receive_'+str(o['inlet']), maxclass='receive',
++            boxtext='receive '+o['channel'], rect=[-2000,-2100-30*o['inlet'],300,50]) for o in owners)
++        lifecycle=dict(version='arithmetic-freebang-v1', monitor_epoch=epoch, owners=owners, driver_inventory=driver_inventory,
++            observer_path=n.windows_path(work/'lifecycle-observer.js'), report_path=n.windows_path(work/'lifecycle-report.json'))
++        config = dict(work=str(work), documents=[definition], helpers=helper_rows, package_sha256=package_files, lifecycle=lifecycle)
+         sealed_names = ['config.json', 'controller.js', 'driver.maxpat', 'lifecycle-observer.js', 'observer.js', 'v8-readback.js']
+         sealed_names += ['helpers/' + name for name in helpers]
+         sealed_names += [area + '/' + doc + '-r' + str(rev) + '.maxhelp' for area in ('pristine', 'working') for doc in ('times', 'plus', 'minus') for rev in (1, 2)]
+@@ -307,6 +321,42 @@
+                 path.write_bytes(original)
+             historical=f['history']/'test_runner.py'; historical.write_bytes(b'Corrupt historical file.')
+             with self.assertRaises(ValueError): n.load_plus_controller_cohort_measurements()
++
++    def test_capture006_cohort_loader_binds_lifecycle_owner_map(self):
++        n=module('arithmetic')
++        with capture006_fixture(n) as f:
++            self.assertEqual(len(n.load_plus_controller_cohort_measurements()),3)
++            for mutation in ('missing-map','null-map','map-type','missing-owners','owners-type','missing-row','row-type','duplicate-row',
++                    'missing-inlet','inlet-string','inlet-bool','inlet-float','inlet-mismatch','revision-string','revision-bool',
++                    'revision-float','revision-mismatch','document-type','document-mismatch','source-type','source-mismatch','path-type','path-mismatch'):
++                config=copy.deepcopy(f['config']); lifecycle=config['lifecycle']; owners=lifecycle['owners']; owner=owners[2]
++                if mutation=='missing-map': config.pop('lifecycle')
++                if mutation=='null-map': config['lifecycle']=None
++                if mutation=='map-type': config['lifecycle']=[]
++                if mutation=='missing-owners': lifecycle.pop('owners')
++                if mutation=='owners-type': lifecycle['owners']={}
++                if mutation=='missing-row': owners.pop(2)
++                if mutation=='row-type': owners[2]=[]
++                if mutation=='duplicate-row': owners[3]=copy.deepcopy(owner)
++                if mutation=='missing-inlet': owner.pop('inlet')
++                if mutation=='inlet-string': owner['inlet']='2'
++                if mutation=='inlet-bool': owner['inlet']=True
++                if mutation=='inlet-float': owner['inlet']=2.0
++                if mutation=='inlet-mismatch': owner['inlet']=3
++                if mutation=='revision-string': owner['revision']='1'
++                if mutation=='revision-bool': owner['revision']=True
++                if mutation=='revision-float': owner['revision']=1.0
++                if mutation=='revision-mismatch': owner['revision']=2
++                if mutation=='document-type': owner['document']=None
++                if mutation=='document-mismatch': owner['document']='minus'
++                if mutation=='source-type': owner['source_sha256']=None
++                if mutation=='source-mismatch': owner['source_sha256']='f'*64
++                if mutation=='path-type': owner['working_path']=None
++                if mutation=='path-mismatch': owner['working_path']='Z:/synthetic/unowned.maxhelp'
++                path=f['work']/'config.json'; path.write_bytes(n.canonical(config)); f['evidence']['config_sha256']=n.digest(path)
++                seal=copy.deepcopy(f['seal']); seal['files']['config.json']=n.digest(path)
++                path=f['work']/'seal.json'; path.write_bytes(n.canonical(seal)); f['evidence']['seal_sha256']=n.digest(path)
++                with self.subTest(mutation=mutation),self.assertRaises(ValueError): n.load_plus_controller_cohort_measurements()
+ 
+     def test_capture006_cohort_trace_prefix(self):
+         n=module('arithmetic')
+--- initial007/v8-readback.js
++++ fix1/v8-readback.js
+@@ -287,11 +287,11 @@
+ var PLUS_ROOT_DIAGNOSTIC_PINS={};
+ for(var plusRootAnchor of ["root/obj-1","root/obj-2","root/obj-3"]) {
+     var plusRootPin=PLUS_GEOMETRY_PINS[plusRootAnchor];
+-    PLUS_ROOT_DIAGNOSTIC_PINS[plusRootAnchor]={source_box_sha256:plusRootPin.source_box_sha256,
++    PLUS_ROOT_DIAGNOSTIC_PINS[plusRootAnchor]={source_class:"newobj",source_box_sha256:plusRootPin.source_box_sha256,
+         source_text_sha256:plusRootPin.source_text_sha256,saved_rect_sha256:plusRootPin.saved_rect_sha256,
+         runtime_class:plusRootPin.runtime_class,runtime_classes:plusRootPin.runtime_class==="patcher"?["patcher","p"]:[plusRootPin.runtime_class]};
+ }
+-PLUS_ROOT_DIAGNOSTIC_PINS["root/obj-4"]={source_box_sha256:"bff84f2c0e682d712f384b4d5f73017bcc936392a7d0b981ec4ef8ef7a3deb29",
++PLUS_ROOT_DIAGNOSTIC_PINS["root/obj-4"]={source_class:"jsui",source_box_sha256:"bff84f2c0e682d712f384b4d5f73017bcc936392a7d0b981ec4ef8ef7a3deb29",
+     source_text_sha256:"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     saved_rect_sha256:"54f83aaab9e2c42a561a2ccf3d705fb635c1c363d5ee0f1cac7a33a87d7debb9",runtime_class:"jsui",runtime_classes:["jsui"]};
+ function collectPlusRepresentationDiagnostics(root,definition,request,configuration) {
+@@ -321,7 +321,7 @@
+         root_rows:[],numeric_rows:[],strict_mismatch:false};
+     for(var expected of originals) {
+         var pin=PLUS_ROOT_DIAGNOSTIC_PINS[expected.anchor],policy=observedGeometryPolicy(expected,definition,configuration);
+-        if(!pin||expected.source_box_sha256!==pin.source_box_sha256||expected.source_text_sha256!==pin.source_text_sha256||
++        if(!pin||expected.maxclass!==pin.source_class||expected.source_box_sha256!==pin.source_box_sha256||expected.source_text_sha256!==pin.source_text_sha256||
+             expected.runtime_class!==pin.runtime_class||!sameData(expected.runtime_classes,pin.runtime_classes)||
+             geometryVectorHash(expected.rect)!==pin.saved_rect_sha256)throw Error("plus-v8-source-root-binding");
+         var candidates=[],matches=[];

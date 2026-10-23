@@ -1,0 +1,459 @@
+--- a/experiments/max-reference/int-float-runtime-20261022/controller.js
++++ b/experiments/max-reference/int-float-runtime-20261022/controller.js
+@@ -68,14 +68,79 @@
+     if(!pinned(policy.helper_sha256)||!pinned(definition.helper_sha256)||!pinned(configured))throw Error("int-shell-helper-binding");
+     return policy;
+ }
++function annotationGeometryPolicy(expected,definition) {
++    var policy=expected.annotation_geometry_policy;if(typeof policy==="undefined")return null;
++    var source="bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61";
++    var profiles={
++        "root/obj-2/obj-23":["comment",[11,186.5,143,54],[11,186.5,143,55],
++            "96d3d71a61b0f13d7c759315dc9e49578d5c542d24ac120753d628392a55723d",
++            {inlets:1,outlets:0,fontname:"Arial",fontsize:13,bubble:1,bubbleside:3,
++                bubblepoint:0.75,bubbletextmargin:null,linecount:3}],
++        "root/obj-2/obj-4":["jsui",[291,296,208.315216,39],[291,296,208.19552612304688,39],
++            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
++            {inlets:1,outlets:1,filename:"helpargs.js",ignoreclick:1,
++                jsarguments_sha256:"c511da579364be932435a248bf3f04254e5c257664551ad10ac69cdc4170a098",
++                border:0,parameter_enable:0,outlettype:[""]}]};
++    var helpers={
++        "helpstarter.js":"a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8",
++        "helpname.js":"49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
++        "helpdetails.js":"31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1",
++        "helpargs.js":"04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"};
++    function fields(value,wanted) {
++        if(!value||Object.keys(value).length!==Object.keys(wanted).length)return false;
++        for(var key in wanted)if(JSON.stringify(value[key])!==JSON.stringify(wanted[key]))return false;
++        return true;
++    }
++    var p=profiles[expected.anchor];
++    if(!policy||!p||!definition||definition.document!=="int"||definition.source_sha256!==source||
++        policy.kind!=="source-bound-int-annotation-geometry"||policy.document!=="int"||policy.source_sha256!==source||
++        policy.anchor!==expected.anchor||policy.runtime_class!==p[0]||expected.maxclass!==p[0]||
++        expected.runtime_class!==p[0]||!sameNumbers(expected.rect,p[1])||!sameNumbers(policy.saved_rect,p[1])||
++        !sameNumbers(policy.live_rect,p[2])||policy.source_text_sha256!==p[3]||expected.source_text_sha256!==p[3]||
++        !fields(expected.source_attributes,p[4])||!fields(policy.source_attributes,p[4])||
++        (typeof expected.outlets!=="undefined"&&expected.outlets!==p[4].outlets)||
++        (typeof expected.id!=="undefined"&&expected.id!==expected.anchor.slice(expected.anchor.lastIndexOf("/")+1))||
++        policy.saved_incoming_routes!==0||policy.saved_outgoing_routes!==0||
++        expected.saved_incoming_routes!==0||expected.saved_outgoing_routes!==0)
++        throw Error("invalid-int-annotation-geometry-policy");
++    var configured={};
++    if(!config||!config.helpers||config.helpers.length!==4)throw Error("int-annotation-helper-binding");
++    for(var i=0;i<config.helpers.length;i++)configured[config.helpers[i].name]=config.helpers[i].sha256;
++    if(!fields(policy.helper_sha256,helpers)||!fields(definition.helper_sha256,helpers)||!fields(configured,helpers))
++        throw Error("int-annotation-helper-binding");
++    if(!definition.saved_edges)throw Error("int-annotation-route-binding");
++    var id=expected.anchor.slice(expected.anchor.lastIndexOf("/")+1);
++    for(var i=0;i<definition.saved_edges.length;i++) {
++        var edge=definition.saved_edges[i];
++        if(edge.source[0]===id||edge.destination[0]===id)throw Error("int-annotation-route-binding");
++    }
++    return policy;
++}
++function retainGeometry(dispositions,row) {
++    if(!dispositions)throw Error("geometry-disposition-sink-required");
++    for(var i=0;i<dispositions.length;i++) {
++        var old=dispositions[i];
++        if(old.document===row.document&&old.revision===row.revision&&old.anchor===row.anchor) {
++            if(old.source_sha256!==row.source_sha256||old.runtime_class!==row.runtime_class||
++                !sameNumbers(old.saved_rect,row.saved_rect)||!sameNumbers(old.live_rect,row.live_rect))
++                throw Error("geometry-disposition-changed-during-bind");
++            return;
++        }
++    }
++    dispositions.push(row);
++}
+ function resolve(patcher,expected,definition,dispositions) {
+-    var policy=shellHeightPolicy(expected,definition),found=[],fullCount=0,policyCount=0;
++    var policy=shellHeightPolicy(expected,definition),annotation=annotationGeometryPolicy(expected,definition);
++    if(policy&&annotation)throw Error("multiple-geometry-policies");
++    policy=policy||annotation;
++    var found=[],fullCount=0,policyCount=0;
+     var diagnostic={expected_anchor:expected.anchor,expected_rect:expected.rect,
+         expected_maxclass:expected.maxclass,expected_runtime_class:expected.runtime_class,candidates:[]};
+     for(var o=patcher.firstobject;o;o=o.nextobject) {
+         var rect=null;try{rect=o.getboxattr("patching_rect");}catch(e){}
+         diagnostic.candidates.push({maxclass:o.maxclass,rect:rect});
+-        var full=sameRect(rect,expected.rect),adapted=policy&&rect&&rect[3]===22&&
++        var changed=annotation&&policy.runtime_class==="jsui"?2:3;
++        var full=sameRect(rect,expected.rect),adapted=policy&&rect&&rect[changed]===policy.live_rect[changed]&&
+             o.maxclass===policy.runtime_class&&sameRect(rect,policy.live_rect);
+         if(full)fullCount++;
+         if(adapted)policyCount++;
+@@ -88,8 +153,7 @@
+         anchorDiagnostics.push(diagnostic);
+         throw Error("strict-original-geometry-class-unavailable");
+     }
+-    if(found[0].adapted&&!dispositions)throw Error("shell-height-disposition-sink-required");
+-    if(found[0].adapted)dispositions.push({anchor:expected.anchor,source_sha256:definition.source_sha256,
++    if(found[0].adapted)retainGeometry(dispositions,{anchor:expected.anchor,source_sha256:definition.source_sha256,
+         document:definition.document,revision:definition.revision,runtime_class:found[0].object.maxclass,
+         saved_rect:expected.rect.slice(0),live_rect:found[0].rect.slice(0),policy:policy});
+     return found[0].object;
+@@ -154,6 +218,7 @@
+     throw Error("revision-definition-unavailable");
+ }
+ function setAction(command) {
++    anchorDiagnostics=[];geometryDispositions=[];
+     shared.request_id=command.command_id;shared.step_id=command.step_id;shared.action=command.action;
+     shared.action_document=command.document;shared.action_revision=command.action_revision;
+ }
+@@ -164,7 +229,7 @@
+ function fail(command,error) {
+     record("harness-error",{error:String(error)});
+     write(config.ack_path,{command_id:command.command_id,success:false,error_code:"numeric-controller-refused",
+-        anchor_diagnostics:anchorDiagnostics});busy=false;
++        anchor_diagnostics:anchorDiagnostics,geometry_dispositions:geometryDispositions});busy=false;
+ }
+ function bind(patcher,definition) {
+     validateTree(patcher,definition);
+@@ -173,7 +238,7 @@
+     var basic=box.subpatcher(),objects={};
+     for(var i=0;i<definition.boxes.length;i++) {
+         var before=anchorDiagnostics.length;
+-        try{objects[definition.boxes[i].anchor]=resolve(basic,definition.boxes[i]);}catch(error){
++        try{objects[definition.boxes[i].anchor]=resolve(basic,definition.boxes[i],definition,geometryDispositions);}catch(error){
+             if(anchorDiagnostics.length===before)anchorDiagnostics.push({expected_anchor:definition.boxes[i].anchor,
+                 expected_rect:definition.boxes[i].rect,diagnostic_type:"invalid-basic-binding"});
+         }
+--- a/experiments/max-reference/int-float-runtime-20261022/numeric.py
++++ b/experiments/max-reference/int-float-runtime-20261022/numeric.py
+@@ -1,6 +1,7 @@
+ #!/usr/bin/env python3
+ """Finite numeric reference preparation and strict, private observation validation."""
+ from collections import Counter
++import copy
+ import hashlib
+ import importlib.util
+ import json
+@@ -35,6 +36,16 @@
+     'root/obj-1':('js',[92,94,110,20],'3c299423556feddb0be4ff31bc20e20f1fc305063815420e899f529763daa2e1'),
+     'root/obj-2':('patcher',[10,85,50,20],'484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393'),
+     'root/obj-3':('patcher',[205,205,50,20],'bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a')}
++ANNOTATION_ANCHORS={
++    'root/obj-2/obj-23':('comment',[11,186.5,143,54],[11,186.5,143,55],
++        '96d3d71a61b0f13d7c759315dc9e49578d5c542d24ac120753d628392a55723d',
++        dict(inlets=1,outlets=0,fontname='Arial',fontsize=13.0,bubble=1,bubbleside=3,
++             bubblepoint=0.75,bubbletextmargin=None,linecount=3)),
++    'root/obj-2/obj-4':('jsui',[291,296,208.315216,39],[291,296,208.19552612304688,39],
++        'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
++        dict(inlets=1,outlets=1,filename='helpargs.js',ignoreclick=1,
++             jsarguments_sha256='c511da579364be932435a248bf3f04254e5c257664551ad10ac69cdc4170a098',
++             border=0,parameter_enable=0,outlettype=['']))}
+ 
+ 
+ def finite(value):
+@@ -60,6 +71,54 @@
+     return dict(kind='source-bound-int-shell-height',document='int',source_sha256=source_sha256,anchor=anchor,
+                 runtime_class=cls,saved_rect=rect[:],live_rect=rect[:3]+[22],source_text_sha256=text_sha,
+                 helper_sha256=dict(SHELL_HELPERS),saved_incoming_routes=0,saved_outgoing_routes=0)
++
++
++def annotation_geometry_policy(document,source_sha256,box,helpers):
++    anchor=box['anchor']
++    if document!='int' or anchor not in ANNOTATION_ANCHORS:return None
++    cls,saved,live,text_sha,attributes=ANNOTATION_ANCHORS[anchor]
++    canonical=lambda value:json.dumps(value,sort_keys=True,separators=(',',':'),allow_nan=False)
++    if (source_sha256!=IDENTITIES['int'] or len(helpers)!=4 or
++        {h['name']:h['sha256'] for h in helpers}!=SHELL_HELPERS or
++        box['maxclass']!=cls or box['runtime_class']!=cls or box['rect']!=saved or
++        not all(finite(v) for v in box['rect']) or box.get('source_text_sha256')!=text_sha or
++        canonical(box.get('source_attributes'))!=canonical(attributes) or
++        ('outlets' in box and (type(box['outlets']) is not int or box['outlets']!=attributes['outlets'])) or
++        ('id' in box and box['id']!=anchor.rsplit('/',1)[-1]) or
++        any(type(box.get(k)) is not int or box[k]!=0 for k in ['saved_incoming_routes','saved_outgoing_routes'])):
++        raise ValueError('Invalid measured int annotation binding')
++    return dict(kind='source-bound-int-annotation-geometry',document='int',source_sha256=source_sha256,
++                anchor=anchor,runtime_class=cls,saved_rect=saved[:],live_rect=live[:],source_text_sha256=text_sha,
++                source_attributes=copy.deepcopy(attributes),helper_sha256=dict(SHELL_HELPERS),
++                saved_incoming_routes=0,saved_outgoing_routes=0)
++
++
++def annotation_geometry(document,raw,dispositions):
++    replacements={}
++    for box in document['boxes']:
++        if 'annotation_geometry_policy' not in box:continue
++        helpers=[dict(name=k,sha256=v) for k,v in document.get('helper_sha256',{}).items()]
++        policy=annotation_geometry_policy(document['document'],document['source_sha256'],box,helpers)
++        if policy is None or json.dumps(policy,sort_keys=True,allow_nan=False)!=json.dumps(
++                box['annotation_geometry_policy'],sort_keys=True,allow_nan=False):
++            raise ValueError('Unapproved numeric annotation policy')
++        if any(edge[side][0]==box['id'] for edge in document['saved_edges'] for side in ['source','destination']):
++            raise ValueError('Annotation saved route changed')
++        name=original_varname(box);matches=[b for b in raw.get('boxes',[]) if b.get('varname')==name]
++        if len(matches)!=1 or matches[0].get('maxclass')!=policy['runtime_class']:
++            raise ValueError('Annotation runtime identity changed')
++        live=common.finite_rectangle(matches[0].get('rect'));saved=policy['saved_rect']
++        changed=3 if policy['runtime_class']=='comment' else 2
++        full=all(abs(a-b)<=0.01 for a,b in zip(live,saved))
++        adapted=live[changed]==policy['live_rect'][changed] and all(
++            abs(live[i]-saved[i])<=0.01 for i in range(4) if i!=changed)
++        if not full and not adapted:raise ValueError('Annotation runtime geometry changed')
++        if adapted:
++            replacements[name]=saved[:]
++            dispositions.append(dict(document=document['document'],source_sha256=document['source_sha256'],
++                revision=document['revision'],anchor=box['anchor'],runtime_class=policy['runtime_class'],
++                saved_rect=saved[:],live_rect=live[:],policy=policy))
++    return replacements
+ 
+ 
+ def validate_message(message):
+@@ -135,20 +194,23 @@
+                 preparation_manifest_sha256=digest(ROOT/'preparation-manifest.json'))
+ 
+ 
+-def validate_checkpoint(document,raw,request_id,step_id,action):
++def validate_checkpoint(document,raw,request_id,step_id,action,geometry_dispositions=None):
+     if any(any(key in box for key in ['annotation_width_policy','observer_policy','shell_height_policy'])
+            for box in document['boxes']):
+-        raise ValueError('Numeric roots have no geometry exception')
++        raise ValueError('Unapproved numeric geometry policy')
+     if (type(raw.get('revision')) is not int or raw['revision']!=document['revision'] or
+             raw.get('action')!=action or raw.get('readback_method')!='v8-numeric-getvalueof'):
+         raise ValueError('Numeric checkpoint binding mismatch')
++    dispositions=geometry_dispositions if geometry_dispositions is not None else []
++    replacements=annotation_geometry(document,raw,dispositions)
+     by_name={original_varname(b):b for b in document['boxes']}
+     for actual in raw.get('boxes',[]):
+         expected=by_name.get(actual.get('varname'))
+         if expected and actual.get('maxclass') not in expected.get('runtime_classes',[expected['runtime_class']]):
+             raise ValueError('Exact source runtime class changed')
+     adapter=dict(raw,readback_method='v8-boxtext',messages=[dict(m,text='') for m in raw.get('messages',[])],
+-                 boxes=[dict(b,maxclass=by_name[b['varname']]['runtime_class']) if b.get('varname') in by_name else b
++                 boxes=[dict(b,maxclass=by_name[b['varname']]['runtime_class'],
++                             rect=replacements.get(b['varname'],b.get('rect'))) if b.get('varname') in by_name else b
+                         for b in raw.get('boxes',[])])
+     topology_document=dict(document,boxes=[dict(b,authored_text='',authored_empty=True) for b in document['boxes']])
+     # Reuse the audited duplicate-sensitive original/leaf box and endpoint checks.
+@@ -206,10 +268,19 @@
+     path=Path(path);payload=path.read_bytes();path.chmod(0o600)
+     binding=retain_raw(path.with_name('retained-'+path.name),payload)
+     if request_record is not None:request_record.update(binding)
++    dispositions=[];validated=False
+     try:
+         raw=json.loads(payload)
+-        result=validate_checkpoint(document,raw,request_id,step_id,action)
+-    finally:verify_private(work)
++        result=validate_checkpoint(document,raw,request_id,step_id,action,dispositions);validated=True
++    finally:
++        try:
++            if dispositions:
++                sidecar=dict(schema_version=1,request_id=request_id,step_id=step_id,action=action,
++                    document=document['document'],revision=document['revision'],source_sha256=document['source_sha256'],
++                    checkpoint_validated=validated,geometry_dispositions=dispositions,**binding)
++                retain_raw(path.with_name('geometry-dispositions-'+path.name),
++                    (json.dumps(sidecar,sort_keys=True,allow_nan=False)+'\n').encode())
++        finally:verify_private(work)
+     return dict(result,**binding)
+ 
+ 
+@@ -297,10 +368,25 @@
+                     saved_outgoing_routes=sum(e['source'][0]==b['id'] for e in routes))
+                 policy=shell_height_policy(name,sha,entry,helpers)
+                 if policy is not None:entry['shell_height_policy']=policy
++                if anchor in ANNOTATION_ANCHORS and name=='int':
++                    attributes=dict(inlets=b.get('numinlets'),outlets=b.get('numoutlets'))
++                    fields=(['fontname','fontsize','bubble','bubbleside','bubblepoint','bubbletextmargin','linecount']
++                            if cls=='comment' else ['filename','ignoreclick','border','parameter_enable','outlettype'])
++                    attributes.update({k:b.get(k) for k in fields})
++                    if cls=='jsui':attributes['jsarguments_sha256']=hashlib.sha256(
++                        json.dumps(b.get('jsarguments'),sort_keys=True,separators=(',',':')).encode()).hexdigest()
++                    entry['source_attributes']=attributes
++                    entry['annotation_geometry_policy']=annotation_geometry_policy(name,sha,entry,helpers)
+                 result.append(entry)
+                 if 'patcher' in b:result.extend(tree_inventory(b['patcher'],anchor))
+             return result
+         inventory=tree_inventory(root);edges=[dict(index=i,**e['patchline']) for i,e in enumerate(basic.get('lines',[]))]
++        by_anchor={entry['anchor']:entry for entry in inventory}
++        for box in boxes:
++            entry=by_anchor[box['anchor']]
++            if 'annotation_geometry_policy' in entry:
++                box.update({key:copy.deepcopy(entry[key]) for key in ['source_text_sha256','source_attributes',
++                    'annotation_geometry_policy','saved_incoming_routes','saved_outgoing_routes']})
+         executable=sum(b['maxclass'] not in {'comment','jsui'} for b in boxes)
+         # Native node count excludes source-only annotations; full count includes the entire shell.
+         if len(inventory)!=COUNTS[name][0] or executable!=COUNTS[name][1] or len(edges)!=COUNTS[name][2]:
+--- /dev/null
++++ b/experiments/max-reference/int-float-runtime-20261022/test_annotations.py
+@@ -0,0 +1,113 @@
++"""Exact annotation metadata fixtures; no installed source strings or runtime."""
++import copy
++import hashlib
++import json
++from pathlib import Path
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from test_numeric import fixture, n
++
++
++SOURCE='bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61'
++HELPERS={
++    'helpstarter.js':'a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8',
++    'helpname.js':'49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa',
++    'helpdetails.js':'31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1',
++    'helpargs.js':'04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469'}
++ATTRIBUTES=[
++    dict(inlets=1,outlets=0,fontname='Arial',fontsize=13.0,bubble=1,bubbleside=3,
++         bubblepoint=0.75,bubbletextmargin=None,linecount=3),
++    dict(inlets=1,outlets=1,filename='helpargs.js',ignoreclick=1,
++         jsarguments_sha256='c511da579364be932435a248bf3f04254e5c257664551ad10ac69cdc4170a098',
++         border=0,parameter_enable=0,outlettype=[''])]
++SAVED=[[11,186.5,143,54],[291,296,208.315216,39]]
++LIVE=[[11,186.5,143,55],[291,296,208.19552612304688,39]]
++TEXT_SHA=['96d3d71a61b0f13d7c759315dc9e49578d5c542d24ac120753d628392a55723d',
++          'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855']
++
++
++def annotation_fixture():
++    d,raw=fixture();d.update(source_sha256=SOURCE,helper_sha256=HELPERS)
++    raw['source_sha256']=SOURCE
++    for i,(id,cls) in enumerate([('obj-23','comment'),('obj-4','jsui')]):
++        b=dict(id=id,anchor='root/obj-2/'+id,maxclass=cls,runtime_class=cls,rect=SAVED[i][:],
++               outlets=ATTRIBUTES[i]['outlets'],authored_text='',source_text_sha256=TEXT_SHA[i],
++               source_attributes=copy.deepcopy(ATTRIBUTES[i]),saved_incoming_routes=0,saved_outgoing_routes=0)
++        b['annotation_geometry_policy']=n.annotation_geometry_policy('int',SOURCE,b,
++            [dict(name=k,sha256=v) for k,v in HELPERS.items()])
++        d['boxes'].append(b)
++        raw['boxes'].append(dict(varname=n.original_varname(b),maxclass=cls,rect=LIVE[i][:]))
++    d['observer_leaves']=n.observer_definitions(d)
++    raw['boxes'].append(dict(varname='__alive_help_leaf_obj_4_0',maxclass='js',rect=[-100,0,10,10]))
++    route=dict(source=dict(varname='__alive_help_obj_4',port=0),
++               destination=dict(varname='__alive_help_leaf_obj_4_0',port=0))
++    raw['input_routes'].append(route);raw['output_routes'].append(copy.deepcopy(route))
++    return d,raw
++
++
++class AnnotationTests(unittest.TestCase):
++    def test_exact_annotations_validate_without_mutating_raw_or_omitting_helper_leaf(self):
++        d,raw=annotation_fixture();before=copy.deepcopy(raw);dispositions=[]
++        result=n.validate_checkpoint(d,raw,3,'install-int','install',dispositions)
++        self.assertEqual(raw,before)
++        self.assertEqual([row['live_rect'] for row in dispositions],LIVE)
++        self.assertEqual(result['retention']['observer_leaf_cables_retained'],4)
++        self.assertEqual(set(result['retention']),{'method','original_basic_boxes_retained',
++            'original_basic_cables_retained','observer_leaf_cables_retained','unexpected_basic_cables',
++            'input_endpoint_multiset_verified','output_endpoint_multiset_verified','saved_order_observed'})
++
++    def test_profiles_refuse_changed_source_helpers_attributes_routes_and_executable_anchor(self):
++        d,raw=annotation_fixture()
++        for mutate in [lambda x:x.update(document='float'),lambda x:x.update(source_sha256='0'*64),
++                       lambda x:x['helper_sha256'].update({'helpargs.js':'0'*64}),
++                       lambda x:x['boxes'][-2]['source_attributes'].update(linecount=4),
++                       lambda x:x['boxes'][-2]['source_attributes'].update(fontsize=True),
++                       lambda x:x['boxes'][-2].update(source_text_sha256='0'*64),
++                       lambda x:x['boxes'][-1]['source_attributes'].update(ignoreclick=0),
++                       lambda x:x['boxes'][-1]['source_attributes'].update(jsarguments_sha256='0'*64),
++                       lambda x:x['boxes'][-1].update(saved_outgoing_routes=1),
++                       lambda x:x['boxes'][-1].update(anchor='root/obj-2/obj-16')]:
++            bad=copy.deepcopy(d);mutate(bad)
++            with self.assertRaises(ValueError):n.validate_checkpoint(bad,raw,3,'install-int','install')
++        bad=copy.deepcopy(d);bad['saved_edges'].append(dict(source=['obj-4',0],destination=['obj-1',0]))
++        with self.assertRaises(ValueError):n.validate_checkpoint(bad,raw,3,'install-int','install')
++
++    def test_changed_dimensions_are_exact_and_other_geometry_and_topology_stay_strict(self):
++        d,raw=annotation_fixture()
++        for index,component,value in [(5,3,55.001),(6,2,208.1955),(5,0,12),(6,3,40),(0,3,21)]:
++            bad=copy.deepcopy(raw);bad['boxes'][index]['rect'][component]=value
++            with self.assertRaises(ValueError):n.validate_checkpoint(d,bad,3,'install-int','install')
++
++    def test_policy_metadata_cannot_coerce_zero_routes_or_declared_outlets(self):
++        d,raw=annotation_fixture()
++        for mutate in [lambda x:x['boxes'][-1]['annotation_geometry_policy'].update(saved_incoming_routes=False),
++                       lambda x:x['boxes'][-1].update(outlets=True),
++                       lambda x:x['boxes'][-1].update(id='obj-16')]:
++            bad=copy.deepcopy(d);mutate(bad)
++            with self.assertRaises(ValueError):n.validate_checkpoint(bad,raw,3,'install-int','install')
++        for mutate in [lambda r:r['input_routes'].pop(),lambda r:r['output_routes'].append(r['output_routes'][-1]),
++                       lambda r:r['boxes'][5].update(maxclass='number')]:
++            bad=copy.deepcopy(raw);mutate(bad)
++            with self.assertRaises(ValueError):n.validate_checkpoint(d,bad,3,'install-int','install')
++
++    def test_sidecar_binds_same_raw_bytes_and_retains_actual_geometry_privately(self):
++        d,raw=annotation_fixture()
++        with tempfile.TemporaryDirectory() as tmp:
++            path=Path(tmp)/'read.json';payload=(json.dumps(raw)+'\n').encode();path.write_bytes(payload)
++            with patch.object(n,'verify_private'):
++                result=n.extract_checkpoint(Path(tmp),d,path,3,'install-int','install')
++            side=Path(tmp)/'geometry-dispositions-read.json';record=json.loads(side.read_text())
++            self.assertEqual(record['raw_sha256'],hashlib.sha256(payload).hexdigest())
++            self.assertEqual(record['raw_bytes'],len(payload))
++            self.assertTrue(record['checkpoint_validated'])
++            self.assertEqual(record['request_id'],3)
++            self.assertEqual([row['live_rect'] for row in record['geometry_dispositions']],LIVE)
++            self.assertEqual(side.stat().st_mode & 0o777,0o600)
++            self.assertEqual(path.read_bytes(),payload)
++            self.assertEqual((Path(tmp)/'retained-read.json').read_bytes(),payload)
++            self.assertNotIn('geometry_dispositions',result)
++
++
++if __name__=='__main__':unittest.main()
+--- /dev/null
++++ b/experiments/max-reference/int-float-runtime-20261022/test_annotations.cjs
+@@ -0,0 +1,63 @@
++// Metadata-only fixtures for the two finite int annotations.
++const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
++const ctx=vm.createContext({jsarguments:['controller','private']});
++vm.runInContext(fs.readFileSync(path.join(__dirname,'controller.js'),'utf8'),ctx);
++const source='bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61';
++const helpers={
++ 'helpstarter.js':'a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8',
++ 'helpname.js':'49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa',
++ 'helpdetails.js':'31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1',
++ 'helpargs.js':'04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469'};
++const attrs=[{inlets:1,outlets:0,fontname:'Arial',fontsize:13,bubble:1,bubbleside:3,
++ bubblepoint:.75,bubbletextmargin:null,linecount:3},
++ {inlets:1,outlets:1,filename:'helpargs.js',ignoreclick:1,
++ jsarguments_sha256:'c511da579364be932435a248bf3f04254e5c257664551ad10ac69cdc4170a098',
++ border:0,parameter_enable:0,outlettype:['']}];
++const live=[[11,186.5,143,55],[291,296,208.19552612304688,39]];
++const expected=[['obj-23','comment',[11,186.5,143,54],
++ '96d3d71a61b0f13d7c759315dc9e49578d5c542d24ac120753d628392a55723d'],
++ ['obj-4','jsui',[291,296,208.315216,39],
++ 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855']].map(([id,cls,rect,text],i)=>({
++ id,anchor:'root/obj-2/'+id,maxclass:cls,runtime_class:cls,rect,outlets:attrs[i].outlets,
++ source_text_sha256:text,source_attributes:attrs[i],saved_incoming_routes:0,saved_outgoing_routes:0,
++ annotation_geometry_policy:{kind:'source-bound-int-annotation-geometry',document:'int',source_sha256:source,
++ anchor:'root/obj-2/'+id,runtime_class:cls,saved_rect:rect,live_rect:live[i],source_text_sha256:text,
++ source_attributes:attrs[i],helper_sha256:helpers,saved_incoming_routes:0,saved_outgoing_routes:0}}));
++ctx.config={helpers:Object.entries(helpers).map(([name,sha256])=>({name,sha256})),ack_path:'private'};
++const definition={document:'int',source_sha256:source,revision:1,helper_sha256:helpers,saved_edges:[]};
++function object(i,rect=live[i]){return {maxclass:expected[i].runtime_class,getboxattr:()=>rect.slice(),nextobject:null};}
++for(let i=0;i<2;i++){
++ const e=expected[i],o=object(i),retained=[];
++ assert.equal(ctx.resolve({firstobject:o},e,definition,retained),o);
++ assert.equal(retained.length,1,'accepted annotation discrepancy is retained');
++ assert.throws(()=>ctx.resolve({firstobject:o},e,definition),'disposition sink is required');
++ for(const [component,delta] of [[i===0?3:2,.0001],[0,1],[1,1],[i===0?2:3,1]]){
++  const rect=live[i].slice();rect[component]+=delta;
++  assert.throws(()=>ctx.resolve({firstobject:object(i,rect)},e,definition,[]));
++ }
++ for(const mutate of [d=>d.document='float',d=>d.helper_sha256={...helpers,'helpargs.js':'0'.repeat(64)},
++  d=>d.saved_edges=[{source:[e.id,0],destination:['obj-16',0]}]]){
++  const d=JSON.parse(JSON.stringify(definition));mutate(d);assert.throws(()=>ctx.resolve({firstobject:o},e,d,[]));
++ }
++ for(const mutate of [b=>b.source_text_sha256='0'.repeat(64),b=>b.source_attributes.inlets=2,
++  b=>b.anchor='root/obj-2/obj-16',b=>b.saved_incoming_routes=1]){
++  const b=JSON.parse(JSON.stringify(e));mutate(b);assert.throws(()=>ctx.resolve({firstobject:o},b,definition,[]));
++ }
++ o.nextobject=object(i);assert.throws(()=>ctx.resolve({firstobject:o},e,definition,[]));
++}
++const basic={firstobject:object(0)};basic.firstobject.nextobject=object(1);
++const container={maxclass:'patcher',getboxattr:()=>[0,0,50,22],subpatcher:()=>basic,nextobject:null};
++const root={firstobject:container,getnamed:()=>container};let mutations=0,connections=0;
++basic.newdefault=()=>{mutations++;return {}};basic.connect=()=>{connections++};
++root.newdefault=()=>{mutations++;return {}};
++const full={...definition,basic_varname:'synthetic_basic',boxes:expected,
++ full_inventory:[{anchor:'root/obj-2',runtime_class:'patcher',maxclass:'newobj',rect:[0,0,50,22],child:true},...expected]};
++ctx.bind(root,full);
++assert.equal(ctx.geometryDispositions.length,2,'full-tree and Basic matches deduplicate');
++assert.equal(connections,1,'the helper retains its declared outlet leaf');
++let ack;ctx.write=(p,v)=>{ack=v};ctx.record=()=>{};
++ctx.fail({command_id:1},Error('synthetic failure'));
++assert.equal(ack.geometry_dispositions.length,2,'failed ACK retains accepted discrepancies');
++mutations=0;const bad=JSON.parse(JSON.stringify(full));bad.boxes[1].source_attributes.ignoreclick=0;
++assert.throws(()=>ctx.bind(root,bad));assert.equal(mutations,0,'failed Basic policy mutates nothing');
++console.log('annotations: exact int profiles, strict identities, deduplicated ACKs and retained helper leaf pass');

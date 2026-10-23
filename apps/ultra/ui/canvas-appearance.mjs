@@ -8,15 +8,17 @@ const common=[
   color('bgcolor','Background Color'),color('textcolor','Text Color'),color('color','Object Outline Color'),
 ];
 const specific={
+  comment:[choice('bubble','Bubble',['Off','On']),choice('bubbleside','Bubble Side',['Top','Left','Bottom','Right']),number('bubblepoint','Bubble Point',0,1,0.01)],
   bang:[color('blinkcolor','Blink Color'),color('outlinecolor','Button Outline Color')],
   toggle:[color('bordercolor','Border Color'),color('checkedcolor','Checked Color'),color('uncheckedcolor','Unchecked Color')],
   number:[color('bordercolor','Border Color'),color('tricolor','Triangle Color'),choice('triangle','Draw Triangle',['Off','On'])],
+  number_int:[color('bordercolor','Border Color'),color('tricolor','Triangle Color'),choice('triangle','Draw Triangle',['Off','On'])],
   flonum:[color('bordercolor','Border Color'),color('tricolor','Triangle Color'),choice('triangle','Draw Triangle',['Off','On'])],
   slider:[color('bordercolor','Border Color'),color('knobcolor','Knob Color'),color('elementcolor','Element Color'),choice('orientation','Orientation',['Automatic','Horizontal','Vertical'])],
   gain:[color('bordercolor','Border Color'),color('knobcolor','Knob Color'),choice('orientation','Orientation',['Automatic','Horizontal','Vertical'])],
 };
-const generic=['message','add','multiply','metro','counter','chord','makenote','midiin','voice','join','dac','int','float','pack','unpack','select','route','trigger','line'];
-const fieldsByType=Object.freeze(Object.fromEntries([...generic,...Object.keys(specific)].map(type=>[
+const generic=['message','message_box','add','multiply','subtract','divide','modulo','reverse_subtract','reverse_divide','abs','metro','counter','chord','makenote','midiin','voice','join','dac','int','float','pack','unpack','select','route','trigger','line','print','send','receive','iter','prepend','append','zl_reg','zl_join','zl_len','zl_iter','zl_slice','zl_rev','zl_rot','sig','signal_add','signal_subtract','signal_multiply','signal_divide','cycle','phasor','noise','signal_clip','line_signal','snapshot','signal_dac'];
+const fieldsByType=Object.freeze(Object.fromEntries([...generic,'patcher','help_helper','inlet','outlet',...Object.keys(specific)].map(type=>[
   type,Object.freeze([...common,...(specific[type]??[])].map(field=>Object.freeze({...field,...(field.options?{options:Object.freeze(field.options)}:{})}))),
 ])));
 

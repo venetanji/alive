@@ -1,6 +1,9 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 mod canvas;
+mod help_reference;
 mod audio;
+mod documents;
+mod document_windows;
 use serde::{Deserialize, Serialize};
 use std::{
     ffi::{c_char, CStr},
@@ -8,10 +11,15 @@ use std::{
     time::Duration,
 };
 use tauri::Manager;
-struct Audio(Mutex<canvas::CanvasState>);
+struct AudioControl { graphs: [canvas::CanvasState; documents::MAX_DOCUMENTS] }
+impl Default for AudioControl {
+    fn default() -> Self { Self { graphs: std::array::from_fn(|_| canvas::CanvasState::default()) } }
+}
+struct Audio(Mutex<AudioControl>);
 struct AudioIo(Mutex<audio::Driver>);
 struct CanvasIdleClock(Arc<AtomicBool>);
 extern "C" {
+    #[cfg(test)]
     fn ultra_canvas_install(graph: *const canvas::NativeGraph) -> i32;
     #[cfg(test)]
     fn ultra_canvas_event(
@@ -21,11 +29,29 @@ extern "C" {
         count: u32,
         values: *const f64,
     ) -> i32;
+    #[cfg(test)]
     fn ultra_canvas_message(revision: u64, node: u32, inlet: u32, message: *const canvas::NativeMessage) -> i32;
     fn ultra_canvas_idle_tick();
+    #[cfg(test)]
     fn ultra_canvas_param(revision: u64, node: u32, param: u32, value: f64) -> i32;
+    #[cfg(test)]
     fn ultra_canvas_stop();
+    #[cfg(test)]
     fn ultra_canvas_status(status: *mut canvas::NativeStatus);
+    #[cfg(test)]
+    fn ultra_canvas_console(records: *mut canvas::NativeConsoleRecord, capacity: u32, dropped: *mut u64) -> u32;
+    fn ultra_canvas_install_document(document: u32, graph: *const canvas::NativeGraph) -> i32;
+    fn ultra_canvas_message_document(document: u32, revision: u64, node: u32, inlet: u32, message: *const canvas::NativeMessage) -> i32;
+    fn ultra_canvas_tab_document(document: u32, revision: u64, node: u32) -> i32;
+    fn ultra_canvas_message_text_document(document: u32, revision: u64, node: u32, serial: u64, text: *const c_char, length: u32) -> i32;
+    fn ultra_canvas_message_boxes_document(document: u32, snapshot: *mut canvas::NativeMessageBoxSnapshot) -> i32;
+    fn ultra_canvas_print_popups_document(document: u32, snapshot: *mut canvas::NativePrintPopupSnapshot) -> i32;
+    fn ultra_canvas_param_hot_document(document: u32, revision: u64, node: u32, param: u32, value: f64, hot: u32) -> i32;
+    fn ultra_canvas_stop_document(document: u32) -> i32;
+    fn ultra_canvas_close_document(document: u32) -> i32;
+    fn ultra_canvas_status_document(document: u32, status: *mut canvas::NativeStatus);
+    fn ultra_canvas_console_document(document: u32, records: *mut canvas::NativeConsoleRecord, capacity: u32, dropped: *mut u64) -> u32;
+    fn ultra_canvas_stop_all();
     #[cfg(test)]
     fn ultra_audio_stop();
     fn ultra_audio_event(device: u32, kind: u32, note: u32, value: u32) -> i32;
@@ -121,7 +147,7 @@ fn audio_stop(state: tauri::State<Audio>, io: tauri::State<AudioIo>) -> Result<S
     let _lock = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
     let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
     unsafe {
-        ultra_canvas_stop();
+        ultra_canvas_stop_all();
     }
     io.stop();
     Ok(device_status(&io))
@@ -143,7 +169,7 @@ fn audio_configure(state: tauri::State<Audio>, io: tauri::State<AudioIo>, config
 fn audio_panic(state: tauri::State<Audio>) -> Result<Status, String> {
     let _lock = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
     unsafe {
-        ultra_canvas_stop();
+        ultra_canvas_stop_all();
         ultra_audio_panic();
     }
     Ok(status())
@@ -322,66 +348,140 @@ struct CanvasStatus {
     revision: u64,
     active: bool,
     nodes: Vec<CanvasObservation>,
+    console: Vec<canvas::ConsoleRecord>,
+    console_dropped: u64,
+    message_boxes: Option<canvas::MessageBoxSnapshot>,
+    print_popups: Option<canvas::PrintPopupSnapshot>,
+}
+
+#[derive(Serialize)]
+struct CanvasMessageTextSerial { serial: u64 }
+
+#[tauri::command]
+fn canvas_message_text(window: tauri::WebviewWindow, documents: tauri::State<document_windows::Documents>, state: tauri::State<Audio>,
+    revision: u64, node: u32, text: String) -> Result<CanvasMessageTextSerial,String> {
+    let mut registry=documents.0.lock().map_err(|_| "Document lock poisoned")?;
+    let owner=registry.get_open(window.label())?;
+    if revision!=owner.runtime_revision { return Err("Stale canvas revision".into()); }
+    let base=owner.authoring_revision;let mut patch=owner.patch.clone().unwrap();
+    fn update(scope: &mut serde_json::Value,id: u32,text: &str)->bool {
+        let Some(nodes)=scope.get_mut("nodes").and_then(serde_json::Value::as_array_mut) else { return false; };
+        for node in nodes {
+            if node["id"].as_u64()==Some(u64::from(id)) { if node["type"]!="message_box" { return false; }node["params"]["text"]=serde_json::json!(text);return true; }
+            if let Some(child)=node.get_mut("patcher") { if update(child,id,text) { return true; } }
+        }
+        false
+    }
+    if !update(&mut patch,node,&text) { return Err("Text actions require message_box".into()); }
+    let hint=document_windows::commands::MessageText {node,text};
+    let mut audio=state.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    let result=registry.commit(window.label(),base,patch,true,|owner,patch| {
+        document_windows::commands::admit_message(&mut audio.graphs[owner.id as usize],owner,patch,None,Some(&hint),false)
+    })?;
+    drop(audio);document_windows::commands::broadcast(window.app_handle(),&registry,window.label());
+    Ok(CanvasMessageTextSerial {serial:result.document.message_text_serial})
+}
+
+fn with_canvas<T>(window: &tauri::WebviewWindow, documents: &document_windows::Documents, state: &Audio,
+    operation: impl FnOnce(u32, &mut canvas::CanvasState) -> Result<T, String>) -> Result<T, String> {
+    // Keep identity locked until admission; a closing window cannot address a reused slot.
+    let registry = documents.0.lock().map_err(|_| "Document lock poisoned")?;
+    let document = registry.get_open(window.label())?;
+    let mut audio = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    operation(document.id, &mut audio.graphs[document.id as usize])
 }
 
 #[tauri::command]
 async fn canvas_apply(
+    window: tauri::WebviewWindow,
+    documents: tauri::State<'_, document_windows::Documents>,
     state: tauri::State<'_, Audio>,
     patch: serde_json::Value,
 ) -> Result<CanvasRevision, String> {
-    // Serialize/size-check, parse and compile away from both the UI and audio threads.
-    // Holding the control lock only for admission keeps stop/event operations responsive.
-    let plan = tauri::async_runtime::spawn_blocking(move || canvas::prepare(patch))
-        .await
-        .map_err(|e| format!("Canvas preparation task failed: {e}"))??;
-    let mut control = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
-    let revision = control.install(plan, |graph| unsafe { ultra_canvas_install(graph) != 0 })?;
-    Ok(CanvasRevision { revision })
+    let mut registry = documents.0.lock().map_err(|_| "Document lock poisoned")?;
+    let base = registry.get_open(window.label())?.authoring_revision;
+    let mut audio = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    let result = registry.commit(window.label(), base, patch, true, |owner, patch| {
+        document_windows::commands::admit(&mut audio.graphs[owner.id as usize], owner, patch, None, false)
+    })?;
+    let obsolete = document_windows::commands::changed(window.app_handle(), &mut registry, &result.document.owner_label);
+    drop(audio); drop(registry);
+    document_windows::commands::close_views(window.app_handle(), obsolete);
+    Ok(CanvasRevision { revision: result.document.runtime_revision })
 }
 #[tauri::command]
 fn canvas_event(
+    window: tauri::WebviewWindow,
+    documents: tauri::State<document_windows::Documents>,
     state: tauri::State<Audio>,
     revision: u64,
     node: u32,
     inlet: u32,
     value: serde_json::Value,
+    action: Option<String>,
 ) -> Result<bool, String> {
-    let control = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
-    let event = control.event(revision, node, inlet, value)?;
-    if unsafe { ultra_canvas_message(revision, node, inlet, &event) } == 0
-    {
-        return Err("Canvas event was not admitted; check the active revision and message".into());
-    }
-    Ok(true)
+    with_canvas(&window, &documents, &state, |id, control| {
+        let admitted = if let Some(action) = action.as_deref() {
+            control.ui_action(revision, node, inlet, &value, action)?;
+            unsafe { ultra_canvas_tab_document(id, revision, node) }
+        } else {
+            let event = control.event(revision, node, inlet, value)?;
+            unsafe { ultra_canvas_message_document(id, revision, node, inlet, &event) }
+        };
+        if admitted == 0 {
+            return Err("Canvas event was not admitted; check the active revision and message".into());
+        }
+        Ok(true)
+    })
 }
 #[tauri::command]
 fn canvas_param(
+    window: tauri::WebviewWindow,
+    documents: tauri::State<document_windows::Documents>,
     state: tauri::State<Audio>,
     revision: u64,
     node: u32,
     key: String,
     value: f64,
 ) -> Result<bool, String> {
-    let mut control = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
-    control.parameter(revision, node, &key, value, |param, value| unsafe {
-        ultra_canvas_param(revision, node, param, value) != 0
-    })?;
-    Ok(true)
-}
-#[tauri::command]
-fn canvas_stop(state: tauri::State<Audio>) -> Result<bool, String> {
-    let _control = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
-    unsafe {
-        ultra_canvas_stop();
+    let mut registry = documents.0.lock().map_err(|_| "Document lock poisoned")?;
+    let owner = registry.get_open(window.label())?;
+    if revision != owner.runtime_revision { return Err("Stale canvas revision".into()); }
+    let base = owner.authoring_revision;
+    let mut patch = owner.patch.clone().unwrap();
+    fn update(scope: &mut serde_json::Value, id: u32, key: &str, value: f64) -> bool {
+        let Some(nodes) = scope.get_mut("nodes").and_then(serde_json::Value::as_array_mut) else { return false; };
+        for node in nodes {
+            if node["id"].as_u64() == Some(u64::from(id)) { node["params"][key] = serde_json::json!(value); return true; }
+            if let Some(child) = node.get_mut("patcher") { if update(child, id, key, value) { return true; } }
+        }
+        false
     }
+    if !update(&mut patch, node, &key, value) { return Err("Unknown canvas node".into()); }
+    let parameter = document_windows::commands::Parameter { node, key, value, hot: false };
+    let mut audio = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    registry.commit(window.label(), base, patch, true, |owner, patch| {
+        document_windows::commands::admit(&mut audio.graphs[owner.id as usize], owner, patch, Some(&parameter), false)
+    })?;
+    drop(audio);
+    document_windows::commands::broadcast(window.app_handle(), &registry, window.label());
     Ok(true)
 }
 #[tauri::command]
-fn canvas_status(state: tauri::State<Audio>) -> Result<CanvasStatus, String> {
-    let _control = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
+fn canvas_stop(window: tauri::WebviewWindow, documents: tauri::State<document_windows::Documents>, state: tauri::State<Audio>) -> Result<bool, String> {
+    with_canvas(&window, &documents, &state, |id, _| {
+        if unsafe { ultra_canvas_stop_document(id) } == 0 { return Err("Patch stop was not admitted. Try again.".into()); }
+        Ok(true)
+    })
+}
+#[tauri::command]
+fn canvas_status(window: tauri::WebviewWindow, documents: tauri::State<document_windows::Documents>, state: tauri::State<Audio>) -> Result<CanvasStatus, String> {
+    let mut registry = documents.0.lock().map_err(|_| "Document lock poisoned")?;
+    let id = registry.get_open(window.label())?.id;
+    let _audio = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
     let mut snapshot = canvas::NativeStatus::default();
     unsafe {
-        ultra_canvas_status(&mut snapshot);
+        ultra_canvas_status_document(id, &mut snapshot);
     }
     if snapshot.node_count as usize > canvas::MAX_NODES {
         return Err("Invalid native canvas status".into());
@@ -397,17 +497,81 @@ fn canvas_status(state: tauri::State<Audio>) -> Result<CanvasStatus, String> {
             pulses: node.pulses,
         });
     }
+    let mut records = [canvas::NativeConsoleRecord::default(); 128];
+    let mut console_dropped = 0;
+    let count = unsafe { ultra_canvas_console_document(id,records.as_mut_ptr(),128,&mut console_dropped) } as usize;
+    if count > records.len() { return Err("Invalid native console count".into()); }
+    let console = records[..count].iter().map(canvas::console_record).collect::<Result<Vec<_>,_>>()?;
+    let (console, console_dropped) = registry.console(window.label(), console, console_dropped)?;
+    let mut message_snapshot=canvas::NativeMessageBoxSnapshot::default();
+    let message_boxes=if unsafe { ultra_canvas_message_boxes_document(id,&mut message_snapshot) }!=0 {
+        Some(canvas::message_box_snapshot(&message_snapshot)?)
+    } else { None };
+    let mut print_snapshot=canvas::NativePrintPopupSnapshot::default();
+    let print_popups=if unsafe { ultra_canvas_print_popups_document(id,&mut print_snapshot) }!=0 {
+        Some(canvas::print_popup_snapshot(&print_snapshot)?)
+    } else { None };
     Ok(CanvasStatus {
         revision: snapshot.revision,
         active: snapshot.active != 0,
         nodes,
+        console,
+        console_dropped,
+        message_boxes,
+        print_popups,
     })
 }
 #[cfg(test)]
 mod tests {
     use super::*;
+    // The FFI library retains one workspace and revision history for this process.
+    pub(crate) static NATIVE_FFI_TEST_LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
+
+    #[test]
+    fn native_documents_forward_typed_messages_and_keep_other_graph_state() {
+        let _native_guard = NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        const SOURCE_DOCUMENT: u32 = 1;
+        const RECEIVE_DOCUMENT: u32 = 2;
+        const OTHER_DOCUMENT: u32 = 3;
+        let make = |nodes: serde_json::Value, edges: serde_json::Value| canvas::prepare(serde_json::json!({"version":1,"profile":"ultra-canvas-v1","nodes":nodes,"edges":edges})).unwrap().native;
+        let node = |id,kind,params| serde_json::json!({"id":id,"type":kind,"x":0,"y":0,"params":params});
+        let edge = |from,to| serde_json::json!({"from":from,"outlet":0,"to":to,"inlet":0});
+        let mut source = make(serde_json::json!([node(1,"number",serde_json::json!({"value":42})),node(2,"send",serde_json::json!({"name":"ffi-cross-patch"}))]),serde_json::json!([edge(1,2)]));
+        let mut receiver = make(serde_json::json!([node(1,"receive",serde_json::json!({"name":"ffi-cross-patch"})),node(2,"number",serde_json::json!({})),node(3,"print",serde_json::json!({"label":"other-window"}))]),serde_json::json!([edge(1,2),edge(1,3)]));
+        let mut status = canvas::NativeStatus::default();
+        unsafe { ultra_canvas_status_document(SOURCE_DOCUMENT,&mut status); }
+        source.revision = status.revision + 1;
+        unsafe { ultra_canvas_status_document(RECEIVE_DOCUMENT,&mut status); }
+        receiver.revision = status.revision + 1;
+        assert_eq!(unsafe { ultra_canvas_install_document(SOURCE_DOCUMENT,&source) },1);
+        assert_eq!(unsafe { ultra_canvas_install_document(RECEIVE_DOCUMENT,&receiver) },1);
+        assert_eq!(unsafe { ultra_canvas_message_document(SOURCE_DOCUMENT,source.revision,1,0,&canvas::NativeMessage::default()) },1);
+        unsafe { ultra_canvas_status_document(RECEIVE_DOCUMENT,&mut status); }
+        assert_eq!(status.nodes[..status.node_count as usize].iter().find(|node|node.id==2).unwrap().value,42.);
+        let pulses = status.nodes[..status.node_count as usize].iter().find(|node|node.id==2).unwrap().pulses;
+        let mut unrelated = make(serde_json::json!([]),serde_json::json!([]));
+        unsafe { ultra_canvas_status_document(OTHER_DOCUMENT,&mut status); }
+        unrelated.revision = status.revision + 1;
+        assert_eq!(unsafe { ultra_canvas_install_document(OTHER_DOCUMENT,&unrelated) },1);
+        assert_eq!(unsafe { ultra_canvas_close_document(OTHER_DOCUMENT) },1);
+        unsafe { ultra_canvas_status_document(RECEIVE_DOCUMENT,&mut status); }
+        assert_eq!(status.nodes[..status.node_count as usize].iter().find(|node|node.id==2).unwrap().pulses,pulses,"another window's open/close reset this graph");
+        let mut decoder = canvas::CanvasState::default();
+        let decoding_revision = decoder.install(canvas::Prepared { native: source.clone() }, |_| true).unwrap();
+        let text = decoder.event(decoding_revision,2,0,serde_json::json!("notice hello 2.25")).unwrap();
+        assert_eq!(unsafe { ultra_canvas_message_document(SOURCE_DOCUMENT,source.revision,2,0,&text) },1);
+        let mut records = [canvas::NativeConsoleRecord::default();128]; let mut dropped=0;
+        let count = unsafe { ultra_canvas_console_document(RECEIVE_DOCUMENT,records.as_mut_ptr(),128,&mut dropped) };
+        let rows = records[..count as usize].iter().map(canvas::console_record).collect::<Result<Vec<_>,_>>().unwrap();
+        assert_eq!(rows.last().unwrap().text,"notice hello 2.25");
+        assert_eq!(rows.last().unwrap().label,"other-window");
+        assert_eq!(unsafe { ultra_canvas_close_document(RECEIVE_DOCUMENT) },1);
+        assert_eq!(unsafe { ultra_canvas_message_document(RECEIVE_DOCUMENT,receiver.revision,2,0,&text) },0,"closed documents still accepted events");
+        assert_eq!(unsafe { ultra_canvas_close_document(SOURCE_DOCUMENT) },1);
+    }
     #[test]
     fn native_canvas_ffi_retains_admitted_graph_while_stopped() {
+        let _native_guard = NATIVE_FFI_TEST_LOCK.lock().unwrap();
         // Exercise the actual shared-library ABI, not a mock installer. This test
         // never opens JACK or a desktop and does not enable audio playback.
         let patch = serde_json::from_str(include_str!("../../ui/canvas-preset.json")).unwrap();
@@ -480,6 +644,7 @@ mod tests {
             include_str!("../../examples/route.ultra"),
             include_str!("../../examples/trigger.ultra"),
             include_str!("../../examples/line.ultra"),
+            include_str!("../../examples/print.ultra"),
         ] {
             let prepared = canvas::prepare(serde_json::from_str(example).unwrap()).unwrap();
             control.install(prepared, |graph| unsafe { ultra_canvas_install(graph) != 0 }).unwrap();
@@ -520,6 +685,22 @@ mod tests {
         for id in [17,22] {
             assert_eq!(snapshot.nodes[..snapshot.node_count as usize].iter().find(|n|n.id==id).unwrap().pulses,1,"bang sink {id}");
         }
+        let prepared = canvas::prepare(serde_json::from_str(include_str!("../../examples/print.ultra")).unwrap()).unwrap();
+        let revision = control.install(prepared, |graph| unsafe { ultra_canvas_install(graph) != 0 }).unwrap();
+        for (node,value) in [(1,serde_json::Value::Null),(3,serde_json::json!("75.5")),(2,serde_json::json!("set 4."))] {
+            let message = control.event(revision,node,0,value).unwrap();
+            assert_eq!(unsafe { ultra_canvas_message(revision,node,0,&message) },1);
+        }
+        let mut records = [canvas::NativeConsoleRecord::default();128];
+        let mut dropped = 0;
+        let count = unsafe { ultra_canvas_console(records.as_mut_ptr(),128,&mut dropped) };
+        assert_eq!(count,3);assert_eq!(dropped,0);
+        let rows = records[..count as usize].iter().map(canvas::console_record).collect::<Result<Vec<_>,_>>().unwrap();
+        assert_eq!(rows.iter().map(|r|r.text.as_str()).collect::<Vec<_>>(),vec!["note 60 100","0.51","set 4."]);
+        assert_eq!(rows[0].label,"notes");assert_eq!(rows[1].label,"position");
+        assert_eq!(rows[0].revision,revision);
+        assert_eq!(unsafe { ultra_canvas_console(records.as_mut_ptr(),128,&mut dropped) },0);
+        assert_eq!(unsafe { ultra_audio_flags() } & 1,0,"printing must work with audio off");
         unsafe { ultra_canvas_stop(); }
     }
 
@@ -618,11 +799,22 @@ fn main() {
         std::process::exit(2);
     }
     tauri::Builder::default()
-        .manage(Audio(Mutex::new(canvas::CanvasState::default())))
+        .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {
+            // The single-instance service can receive files before setup has
+            // registered main. Process them only after setup on the event loop.
+            let handle = app.clone();
+            if let Err(error) = app.run_on_main_thread(move || document_windows::open_arguments(&handle, args, &cwd)) {
+                eprintln!("Cannot queue patch file opening: {error}");
+            }
+        }))
+        .plugin(tauri_plugin_dialog::init())
+        .manage(Audio(Mutex::new(AudioControl::default())))
+        .manage(document_windows::Documents::default())
         .manage(CanvasIdleClock(Arc::new(AtomicBool::new(true))))
         .setup(|app| {
             let path = app.path().app_data_dir()?.join("audio-settings.json");
             app.manage(AudioIo(Mutex::new(audio::Driver::load(path))));
+            document_windows::initialize(app.handle())?;
             let handle = app.handle().clone();
             let running = app.state::<CanvasIdleClock>().0.clone();
             std::thread::Builder::new().name("ultra-control-clock".into()).spawn(move || {
@@ -654,21 +846,26 @@ fn main() {
             canvas_apply,
             canvas_event,
             canvas_param,
+            canvas_message_text,
             canvas_stop,
-            canvas_status
+            canvas_status,
+            help_reference::help_shell_probe,
+            help_reference::help_reference,
+            document_windows::document_current,
+            document_windows::commands::document_commit,
+            document_windows::commands::document_history,
+            document_windows::commands::document_open_patcher,
+            document_windows::commands::document_close_flushed,
+            document_windows::document_new,
+            document_windows::document_open,
+            document_windows::document_save,
+            document_windows::document_set_dirty,
+            document_windows::document_list,
+            document_windows::document_focus,
+            document_windows::document_open_help,
+            document_windows::document_close_confirmed
         ])
-        .on_window_event(|window, event| {
-            if matches!(event, tauri::WindowEvent::Focused(false)) {
-                let state = window.state::<Audio>();
-                if let Ok(_lock) = state.0.lock() {
-                    unsafe {
-                        ultra_canvas_stop();
-                        ultra_audio_event(0, 4, 0, 0);
-                        ultra_audio_event(1, 4, 0, 0);
-                    }
-                };
-            }
-        })
+        .on_window_event(document_windows::window_event)
         .build(tauri::generate_context!())
         .expect("Unable to start Ultra window")
         .run(|app, event| {
@@ -677,7 +874,7 @@ fn main() {
                 let state = app.state::<Audio>();
                 if let Ok(_lock) = state.0.lock() {
                     unsafe {
-                        ultra_canvas_stop();
+                        ultra_canvas_stop_all();
                     }
                     if let Ok(mut io) = app.state::<AudioIo>().0.lock() { io.stop(); }
                 };

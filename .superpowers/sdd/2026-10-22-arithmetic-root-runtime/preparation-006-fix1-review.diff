@@ -1,0 +1,129 @@
+--- initial006/controller.js
++++ fix1/controller.js
+@@ -592,12 +592,14 @@
+ function install(command) {
+     var doc=command.document,revision=command.revision;
+     if(Object.keys(roots).length||typeof revision!=="number"||revision!==(revisions[doc]||0)+1)throw Error("invalid-install-revision");
+-    var definition=definitionFor(doc,revision),attempts=0,stable=0;
++    var definition=definitionFor(doc,revision),attempts=0,stable=0,terminalFailure=false;
+     if(command.source_sha256!==definition.source_sha256)throw Error("install-source-binding");
+     installTraceEvent("openfile-enter");
+     max.message("openfile",config.global_name+"_"+doc+"_r"+revision,definition.working_windows_path);
+     installTraceEvent("openfile-return");
+     function poll() {
++        // A scheduled callback remains owned by this install after the global trace changes.
++        if(terminalFailure)return;
+         try {
+             if(installTrace&&installTrace.active)installTrace.attempt=attempts+1;
+             installTraceEvent("poll-enter");
+@@ -630,10 +632,12 @@
+             if(attempts>=80)throw Error("bounded-helper-settling-timeout");
+             pollTask=new Task(poll,this);pollTask.schedule(100);
+             installTraceEvent("poll-scheduled");
+-        }catch(error){fail(command,error);}
+-    }
+-    pollTask=new Task(poll,this);pollTask.schedule(100);
+-    installTraceEvent("poll-scheduled");
++        }catch(error){terminalFailure=true;fail(command,error);}
++    }
++    try {
++        pollTask=new Task(poll,this);pollTask.schedule(100);
++        installTraceEvent("poll-scheduled");
++    }catch(error){terminalFailure=true;throw error;}
+ }
+ function closeValue(value) {
+     var type=value===null?"null":typeof value,result={type:type};
+--- initial006/test_helpers.cjs
++++ fix1/test_helpers.cjs
+@@ -861,7 +861,7 @@
+ function installTraceFixture(options = {}) {
+   const f = plusPreflightFixture(), c = f.context, memory = new Map([['Z:/synthetic/journal.jsonl', '']]);
+   let now = 0, polls = 0, openCalls = 0, propertyReads = 0, geometryReads = 0;
+-  const queue = [], schedules = [], tracePath = 'Z:/synthetic/install-plus-r1-trace.jsonl';
++  const queue = [], schedules = [], fileActivity = [], tracePath = 'Z:/synthetic/install-plus-r1-trace.jsonl';
+   const command = {command_id: 51, op: 'operation', action: 'install', document: 'plus', revision: 1,
+     action_revision: 1, step_id: 'install-plus-r1', source_sha256: c.PLUS_SOURCE, ...options.command};
+   Object.assign(c.config, {ack_path: 'Z:/synthetic/ack.json', journal_path: 'Z:/synthetic/journal.jsonl',
+@@ -869,6 +869,7 @@
+   memory.set(c.config.command_path, JSON.stringify(command));
+   const OriginalFile = memoryFile(memory);
+   c.File = function(file, mode) {
++    fileActivity.push([file, mode]);
+     if (file === tracePath && options.sinkFailure && options.sinkFailure(mode, memory.get(file) || ''))
+       throw Error('synthetic trace sink failure');
+     return new OriginalFile(file, mode);
+@@ -888,6 +889,7 @@
+     object.getboxattr = function(...args) {geometryReads++; return original.apply(this, args);};
+   }
+   f.memory = memory; f.command = command; f.tracePath = tracePath; f.schedules = schedules;
++  f.fileActivity = fileActivity; f.pending = () => queue.length;
+   f.rows = () => (memory.get(tracePath) || '').trim().split('\n').filter(Boolean).map(JSON.parse);
+   f.ack = () => JSON.parse(memory.get(c.config.ack_path));
+   f.start = () => c.tick();
+@@ -1057,3 +1059,66 @@
+   refusalRows: traced.rows().length, longestRows: longest.rows().length,
+   longestBytes: longest.memory.get(longest.tracePath).length, polls: longest.counts().polls,
+   capabilityCalls: longest.calls.length, maxLineBytes: Math.max(...longest.memory.get(longest.tracePath).trimEnd().split('\n').map(line => line.length + 1))}));
++
++// A failed schedule marker must revoke the callback that has already been queued.
++function scheduledFailureFixture(validBind, options) {
++  const f = installTraceFixture(options); f.helperActivity = [];
++  if (validBind) {
++    for (const target of f.targets) target.object.maxclass = 'flonum';
++    f.definition.basic_varname = 'basic_tab'; f.definition.boxes = [];
++    f.root.getnamed = name => {f.helperActivity.push(['getnamed', name]); return f.scopes.root[1];};
++    f.root.newdefault = (...args) => {
++      f.helperActivity.push(['newdefault', ...args]);
++      return {setboxattr(...args) {f.helperActivity.push(['setboxattr', ...args]);}};
++    };
++    f.root.connect = (...args) => {f.helperActivity.push(['connect', args.length]);};
++  }
++  return f;
++}
++function scheduledActivity(f) {
++  const {openCalls, propertyReads, geometryReads} = f.counts();
++  return hash({openCalls, propertyReads, geometryReads, capabilityCalls: f.calls, helpers: f.helperActivity,
++    files: f.fileActivity, schedules: f.schedules,
++    ack: f.memory.get(f.context.config.ack_path), journal: f.memory.get(f.context.config.journal_path),
++    trace: f.memory.get(f.tracePath)});
++}
++const scheduledFailures = [];
++for (const stage of ['initial', 'recurring']) for (const validBind of [false, true]) for (const stale of [false, true]) {
++  const precedingPhase = stage === 'initial' ? 'openfile-return' : validBind ? 'validate-return' : 'validate-refused';
++  const f = scheduledFailureFixture(validBind, {sinkFailure: (mode, body) =>
++    mode !== 'read' && body.includes('"phase":"' + precedingPhase + '"')});
++  f.start(); if (stage === 'recurring') f.next();
++  assert.equal(f.ack().success, false); assert.equal(f.ack().install_trace_failure.code, 'sink');
++  assert.equal(f.pending(), 1, 'the failing marker follows a successful schedule');
++  if (stale) {
++    f.memory.set(f.context.config.command_path, JSON.stringify({...f.command, command_id: 52}));
++    f.start();
++    assert.equal(f.context.installTrace, null, 'a new install changes the mutable global trace identity');
++    assert.equal(f.pending(), 2, 'old callback remains ahead of the new install callback');
++  }
++  const before = scheduledActivity(f), ackBefore = f.memory.get(f.context.config.ack_path);
++  if (stale) f.next(); else f.finish();
++  scheduledFailures.push({stage, validBind, stale, activityUnchanged: scheduledActivity(f) === before,
++    ackUnchanged: f.memory.get(f.context.config.ack_path) === ackBefore,
++    expectedQueue: f.pending() === (stale ? 1 : 0)});
++}
++for (const validBind of [false, true]) {
++  const f = scheduledFailureFixture(validBind, {open(fixture) {
++    for (let i = 0; i < 2044; i++) fixture.context.installTraceEvent('synthetic-reserved-limit');
++  }});
++  f.start();
++  assert.equal(f.ack().success, false); assert.equal(f.ack().install_trace_failure.code, 'limit');
++  assert.equal(f.rows().length, 2048); assert.equal(f.rows().at(-1).phase, 'trace-limit');
++  assert.equal(f.pending(), 1);
++  const before = scheduledActivity(f), ackBefore = f.memory.get(f.context.config.ack_path);
++  f.finish();
++  scheduledFailures.push({stage: 'initial-limit', validBind, stale: false,
++    activityUnchanged: scheduledActivity(f) === before,
++    ackUnchanged: f.memory.get(f.context.config.ack_path) === ackBefore, expectedQueue: f.pending() === 0});
++}
++console.log(JSON.stringify({scheduledFailureCases: scheduledFailures.length,
++  casesWithPostFailureActivity: scheduledFailures.filter(row => !row.activityUnchanged).length,
++  casesWithChangedAck: scheduledFailures.filter(row => !row.ackUnchanged).length,
++  casesWithUnexpectedQueue: scheduledFailures.filter(row => !row.expectedQueue).length}));
++assert.ok(scheduledFailures.every(row => row.activityUnchanged && row.ackUnchanged && row.expectedQueue),
++  'every failed install must leave already queued callbacks inert, including after a new install');

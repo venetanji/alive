@@ -7,11 +7,11 @@ import {readFileSync} from 'node:fs';
 import {OBJECT_EXAMPLES} from './canvas-object-examples.mjs';
 
 const empty=()=>({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
-test('ten appended objects preserve protocol order and typed authoring aliases',()=>{
-  assert.deepEqual(Object.keys(model.REGISTRY).slice(15),['int','float','flonum','slider','pack','unpack','select','route','trigger','line']);
+test('appended control objects preserve protocol order and typed authoring aliases',()=>{
+  assert.deepEqual(Object.keys(model.REGISTRY).slice(15,28),['int','float','flonum','slider','pack','unpack','select','route','trigger','line','print','send','receive']);
   for(const [text,type] of [['i 3','int'],['f 3.5','float'],['flonum','flonum'],['slider','slider'],['sel red','select'],['t b i','trigger'],['line','line']])
     assert.equal(parseObjectText(text).type,type);
-  assert.equal(suggestObjects('').length,25);
+  assert.equal(suggestObjects('').length,62);
   assert.deepEqual(parseObjectText('flonum').params,{value:0,minimum:-100000,maximum:100000,numdecimalplaces:6});
   assert.deepEqual(parseObjectText('slider').params,{value:0,size:128,min:0,mult:1,floatoutput:0});
   assert.deepEqual(parseObjectText('line').params,{value:0,time:0,grain:20,floatoutput:2});
@@ -87,11 +87,11 @@ test('Tab waits for a pending value commit and retains its admission epoch acros
       if(name==='canvas_param')await new Promise(resolve=>release=resolve);
       return true;
     }});
-    await c.prepare();const committed=c.parameter(1,'value',5.25),tab=c.event(1,0,'tab');
+    await c.prepare();const committed=c.parameter(1,'value',5.25),tab=c.tab(1);
     assert.equal(calls.filter(x=>x.name==='canvas_event').length,0);
     const stopping=stopped?c.stop():Promise.resolve();release();
     await Promise.all([committed,tab,stopping]);await c.flush();
-    assert.deepEqual(calls.filter(x=>x.name==='canvas_event').map(x=>x.args.value),stopped?[]:[[5.25],'tab']);
+    assert.deepEqual(calls.filter(x=>x.name==='canvas_event').map(x=>({value:x.args.value,...(x.args.action?{action:x.args.action}:{})})),stopped?[]:[{value:[5.25]},{value:null,action:'tab'}]);
     assert.equal(c.getState().ready,true);
   }
 });

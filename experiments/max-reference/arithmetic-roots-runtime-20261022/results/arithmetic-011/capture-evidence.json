@@ -1,0 +1,119 @@
+{
+  "operation": "capture_process_scenario",
+  "evidence_id": "ev_38ca271f8a1a4a438579f17600edbc49d1d4e5b1ccdcd97d9509105fb7ce80eb",
+  "status": "FAILED",
+  "complete": false,
+  "failure_classification": "command-ack-timeout-with-unaccepted-final-controller-refusal",
+  "failure_type": "TimeoutError",
+  "failure_request_id": 101,
+  "failure_document": "minus",
+  "failure_revision": 1,
+  "failure_response_received_by_runner": false,
+  "last_accepted_step": "close-plus-r2",
+  "last_retained_ack": 100,
+  "command_request_count": 101,
+  "received_command_acknowledgements": 100,
+  "successful_command_acknowledgements": 100,
+  "completed_operations": 52,
+  "readback_request_count": 48,
+  "observed_numeric_states": 336,
+  "observed_original_outlet_receipts": 94,
+  "independently_validated_closes": 4,
+  "journal_rows": 191,
+  "journal_harness_errors": 1,
+  "final_private_ack": {
+    "basis": "final-private-ack-not-accepted-or-retained-by-runner",
+    "request_id": 101,
+    "success": false,
+    "sha256": "87c03688cee90985af8bb4d99bd3d51db773d04f33ddc5ca3080b1f7759f2b9b",
+    "bytes": 5696,
+    "accepted_by_runner": false,
+    "retained_in_observations": false
+  },
+  "terminal_minus_diagnostic_count": 7,
+  "minus_diagnostic_envelope_received": false,
+  "minus_collector_progress": {
+    "collection": null,
+    "collection_entered": false,
+    "counts": {
+      "completed_pairs": 0,
+      "invocation_attempts": 0,
+      "lookup_attempts": 0,
+      "outcomes_retained": 0
+    },
+    "envelope_created": false,
+    "first_eligibility_failure": {
+      "error_code": "minus-root-ownership",
+      "phase": "front-root",
+      "poll_index": 1,
+      "reason": "front-root-mismatch",
+      "stage": "eligibility"
+    },
+    "host_sample_attempts": 70,
+    "initial_snapshot_available": true,
+    "last_eligibility_failure": {
+      "error_code": "minus-root-ownership",
+      "phase": "front-root",
+      "poll_index": 70,
+      "reason": "front-root-mismatch",
+      "stage": "eligibility"
+    },
+    "last_sample_phase": "front-root",
+    "observe_entries": 70,
+    "phase": "terminal-export",
+    "source_validated": true,
+    "source_validation_attempts": 1,
+    "version": "minus-collector-progress-v1"
+  },
+  "minus_progress_identity_matches_prepared_request": true,
+  "intermediate_poll_failures": "NOT_RETAINED",
+  "required_operations": 78,
+  "required_numeric_states": 504,
+  "required_original_outlet_receipts": 141,
+  "required_closes": 6,
+  "full_comparison_complete": false,
+  "qualification_increment": 0,
+  "saved_order_observed": false,
+  "command_ack_wait_seconds": 10,
+  "rea_public_file_hashes_verified_by_parent": 6,
+  "rea_public_file_hashes": [
+    {
+      "name": "cleanup.json",
+      "size": 1845,
+      "sha256": "bd339b96b9617aa2c41a4519ea9e0454d9e001081aac1d166be7a33d588c62ec"
+    },
+    {
+      "name": "display-states.json",
+      "size": 20837,
+      "sha256": "909337fec50dd1c6e1e73e8237dd2fb116124499eba69afb656c6c6aeac50027"
+    },
+    {
+      "name": "preferences-after.json",
+      "size": 205649,
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329"
+    },
+    {
+      "name": "preferences-before.json",
+      "size": 205649,
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329"
+    },
+    {
+      "name": "receipts.jsonl",
+      "size": 80493,
+      "sha256": "c3c1a65546120b1607873830dc13781e370e343dae1439d8fa3561b74e9f0153"
+    },
+    {
+      "name": "session.json",
+      "size": 72723,
+      "sha256": "7117e17749dbd3fb0ccfacaa4d8427671088b47bc08394169291dd039d2f58e3"
+    }
+  ],
+  "rea_filesystem_hash_omissions": [],
+  "session_sha256": "7117e17749dbd3fb0ccfacaa4d8427671088b47bc08394169291dd039d2f58e3",
+  "cleanup_sha256": "bd339b96b9617aa2c41a4519ea9e0454d9e001081aac1d166be7a33d588c62ec",
+  "preferences_equal_by_runner": true,
+  "sources_and_helpers_preserved": true,
+  "exact_observed_owned_cleanup_empty": true,
+  "prefix_removed": true,
+  "xvfb_exited": true
+}

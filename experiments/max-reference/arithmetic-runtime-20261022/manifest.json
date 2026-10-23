@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "original_fixture": true,
+  "evidence": "ORIGINAL_MAX_EXECUTED",
+  "rea_evidence_id": "ev_074aa48ec8f1ce9d52c4e240ffd330aeae2631d933ba683458e54f1de7ccda7e",
+  "runtime_invocations": 1,
+  "input_deliveries": 300,
+  "typed_receipts": 218,
+  "capture_interval": {
+    "started_at": "2026-10-22T00:44:33.521Z",
+    "completed_at": "2026-10-22T00:45:04.876Z"
+  },
+  "original_capture_checkpoints": [
+    {
+      "path": "results/receipts.jsonl",
+      "bytes": 188303,
+      "sha256": "4457509c3489b2c94c22c4c07999e112f37a6a0aaa412bca000d02737770a7d6"
+    },
+    {
+      "path": "results/session.json",
+      "bytes": 446,
+      "sha256": "ab53480e73af3f6382b9dffd8601e230f1e829c7f4bc6478f1b676e41f59aeca"
+    },
+    {
+      "path": "results/cleanup.json",
+      "bytes": 1037,
+      "sha256": "db831d1c9b23040677649e640a4c753bd31959193b68033d87000329566c1f04"
+    }
+  ],
+  "environment": {
+    "platform": "linux",
+    "machine": "x64",
+    "wine": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/bin/wine",
+    "max_sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b",
+    "fixture_declared_appversion": "9.1.5 Windows x64",
+    "screenshot_count": 0,
+    "clipboard_actions": 0,
+    "audio_settings": "not queried; no DSP or audio-device actions in this score"
+  },
+  "native_artifacts": {
+    "paths": [
+      "results/native-build.json",
+      "results/native-comparison.json",
+      "results/native-receipts.jsonl",
+      "results/native-stderr.txt"
+    ],
+    "freshness": "Check source hashes separately with verify.py --check-native-current; reseal after replay."
+  },
+  "artifacts": [
+    {
+      "path": "README.md",
+      "bytes": 7107,
+      "sha256": "7aec4b445e7a78a84ede3d28957d7bfe21887ba2738395623ceb950169600cb4"
+    },
+    {
+      "path": "compare-native.py",
+      "bytes": 6763,
+      "sha256": "f697bc3cfff1e69a1a78f47d7881715ce31945789269fd85b1ce56b67931766c"
+    },
+    {
+      "path": "derive.py",
+      "bytes": 7034,
+      "sha256": "04f83a9a5d4e5316e452f15018e5d071c97ab7969bde2d5a0e8b34b698dc63e4"
+    },
+    {
+      "path": "fixtures/arithmetic.maxpat",
+      "bytes": 28621,
+      "sha256": "652e7b111eab58a27493895b5f5ccad12a1165d6251fe503d922ad4eaa2226c5"
+    },
+    {
+      "path": "fixtures/probe.js",
+      "bytes": 2558,
+      "sha256": "44518990f558308058353508e5b106401de4a31cb51246197f7394e8df06eb63"
+    },
+    {
+      "path": "fixtures/score.json",
+      "bytes": 80757,
+      "sha256": "5839b6e7c4463b06e70ec4d6f02787e10cd7fb32c6e08b374ae7e141f303c56d"
+    },
+    {
+      "path": "fixtures/targets.json",
+      "bytes": 3247,
+      "sha256": "19e7af29faf3ec3d34b9cdbb6519fb9d8fc094623093a5fd59f7af7af704f77c"
+    },
+    {
+      "path": "generate.py",
+      "bytes": 7073,
+      "sha256": "998e1af860345e8ab27978062059c2f732f13d4bf422435c348989b9e6afa5c2"
+    },
+    {
+      "path": "rea-process-evidence.json",
+      "bytes": 29979,
+      "sha256": "2ec7412025d3fb88bb2438409acdb292f390eccbb3f4c1b0b2cf492c5c113c79"
+    },
+    {
+      "path": "results/cleanup.json",
+      "bytes": 1037,
+      "sha256": "db831d1c9b23040677649e640a4c753bd31959193b68033d87000329566c1f04"
+    },
+    {
+      "path": "results/complete.json",
+      "bytes": 48,
+      "sha256": "1706b4c1b0377733cd6f3a8de8147e947159fe5ad53e1ebe20ae08a4fafd0b2c"
+    },
+    {
+      "path": "results/native-build.json",
+      "bytes": 1420,
+      "sha256": "bb7beaa5b4046f9082dedd505aee804430d30c288857c6424d9e4bd8158505b1"
+    },
+    {
+      "path": "results/native-comparison.json",
+      "bytes": 206696,
+      "sha256": "df3656dea9d29640cc63ba1c89b90c8c0a62da280a9a915aca2871b5033f49b9"
+    },
+    {
+      "path": "results/native-receipts.jsonl",
+      "bytes": 35860,
+      "sha256": "4f1e70443e8a9a09404d350a6d08933483008bcb70c6f0b7640be1956135cec4"
+    },
+    {
+      "path": "results/native-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/preferences-after.json",
+      "bytes": 232400,
+      "sha256": "869f31f8e9ea703a78459a323e73750782165a57489deeb1254d1d050fd4d2cd"
+    },
+    {
+      "path": "results/preferences-before.json",
+      "bytes": 232400,
+      "sha256": "869f31f8e9ea703a78459a323e73750782165a57489deeb1254d1d050fd4d2cd"
+    },
+    {
+      "path": "results/receipts.jsonl",
+      "bytes": 188303,
+      "sha256": "4457509c3489b2c94c22c4c07999e112f37a6a0aaa412bca000d02737770a7d6"
+    },
+    {
+      "path": "results/runtime.log",
+      "bytes": 1165,
+      "sha256": "f5fe8f487f7adbe1a2235555b64bd090dd9135fe07c0fde15a4c69c1497d1e68"
+    },
+    {
+      "path": "results/session.json",
+      "bytes": 446,
+      "sha256": "ab53480e73af3f6382b9dffd8601e230f1e829c7f4bc6478f1b676e41f59aeca"
+    },
+    {
+      "path": "run-runtime.py",
+      "bytes": 6695,
+      "sha256": "6a1470da8c137f2d8c3b3b9ed417e6fbd2d51af020e08dd0be991c2f52d81c3a"
+    },
+    {
+      "path": "sources.json",
+      "bytes": 1950,
+      "sha256": "1be077087137e790b1510949c0bba10dcde232f02f7082a7a846e71501bbcd9c"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 178085,
+      "sha256": "f132a9cd9d675d5090622c790563f0b7c9dabeda1cd5c89722fa211fabd0feb2"
+    },
+    {
+      "path": "verify.py",
+      "bytes": 12684,
+      "sha256": "2514da929cb7139e7631314df280811487761c57d82a6fc4c6323b86eb12ddcd"
+    }
+  ],
+  "whole_help_qualification": {
+    "numerator": 0,
+    "denominator": 2103
+  }
+}

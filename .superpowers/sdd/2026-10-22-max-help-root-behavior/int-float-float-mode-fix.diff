@@ -1,0 +1,757 @@
+--- a/experiments/max-reference/int-float-runtime-20261022/controller.js
++++ b/experiments/max-reference/int-float-runtime-20261022/controller.js
+@@ -2,7 +2,7 @@
+ autowatch = 0; inlets = 1; outlets = 0;
+ var configFile=jsarguments[1], config, shared, roots={}, revisions={}, seen=0, busy=false;
+ var ticker, pollTask, startupTask;
+-var anchorDiagnostics=[], geometryDispositions=[];
++var anchorDiagnostics=[], geometryDispositions=[], numericModeObservations=[];
+ function read(path) {
+     var f=new File(path,"read"),text="";
+     if (!f.isopen) return null;
+@@ -43,14 +43,19 @@
+         "root/obj-1":["js",[92,94,110,20],"3c299423556feddb0be4ff31bc20e20f1fc305063815420e899f529763daa2e1"],
+         "root/obj-2":["patcher",[10,85,50,20],"484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393"],
+         "root/obj-3":["patcher",[205,205,50,20],"bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a"]};
++    var document=definition&&definition.document;
++    if(document==="float") {
++        source="c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c";
++        profiles["root/obj-1"]=["js",[374,27.5,120,20],"e9cd2d2ae24129f7ce891e9a5ee418d273b18a0b2641d3f3beb34be09def8ab5"];
++    }
+     var helpers={
+         "helpstarter.js":"a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8",
+         "helpname.js":"49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
+         "helpdetails.js":"31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1",
+         "helpargs.js":"04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"};
+     var profile=profiles[expected.anchor];
+-    if(!policy||!profile||!definition||definition.document!=="int"||definition.source_sha256!==source||
+-        policy.kind!=="source-bound-int-shell-height"||policy.document!=="int"||policy.source_sha256!==source||
++    if(!policy||!profile||!definition||(document!=="int"&&document!=="float")||definition.source_sha256!==source||
++        policy.kind!=="source-bound-"+document+"-shell-height"||policy.document!==document||policy.source_sha256!==source||
+         policy.anchor!==expected.anchor||policy.runtime_class!==profile[0]||expected.runtime_class!==profile[0]||
+         expected.maxclass!=="newobj"||!sameNumbers(expected.rect,profile[1])||!sameNumbers(policy.saved_rect,profile[1])||
+         !sameNumbers(policy.live_rect,profile[1].slice(0,3).concat([22]))||
+@@ -81,6 +86,22 @@
+             {inlets:1,outlets:1,filename:"helpargs.js",ignoreclick:1,
+                 jsarguments_sha256:"c511da579364be932435a248bf3f04254e5c257664551ad10ac69cdc4170a098",
+                 border:0,parameter_enable:0,outlettype:[""]}]};
++    var document=definition&&definition.document;
++    if(document==="float") {
++        source="c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c";
++        profiles={
++            "root/obj-2/obj-3":["comment",[411,156.5,133,54],[411,156.5,133,55],
++                "de8dbc68910ee493e95c0bad7d48cf0b12577baa5955cd7d894aa80cae1fb027",
++                {inlets:1,outlets:0,fontname:"Arial",fontsize:13,bubble:1,bubbleside:null,
++                    bubblepoint:null,bubbletextmargin:null,linecount:3}],
++            "root/obj-2/obj-5":["comment",[14,201.5,143,54],[14,201.5,143,55],
++                profiles["root/obj-2/obj-23"][3],profiles["root/obj-2/obj-23"][4]],
++            "root/obj-2/obj-4":["jsui",[289,274,190.328094,39],[289,274,190.31402587890625,39],
++                profiles["root/obj-2/obj-4"][3],
++                {inlets:1,outlets:1,filename:"helpargs.js",ignoreclick:1,
++                    jsarguments_sha256:"a6c871ff72c57f35934325de26fba3add81b1df8935af30a164fb9a13117949a",
++                    border:0,parameter_enable:0,outlettype:[""]}]};
++    }
+     var helpers={
+         "helpstarter.js":"a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8",
+         "helpname.js":"49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
+@@ -92,8 +113,8 @@
+         return true;
+     }
+     var p=profiles[expected.anchor];
+-    if(!policy||!p||!definition||definition.document!=="int"||definition.source_sha256!==source||
+-        policy.kind!=="source-bound-int-annotation-geometry"||policy.document!=="int"||policy.source_sha256!==source||
++    if(!policy||!p||!definition||(document!=="int"&&document!=="float")||definition.source_sha256!==source||
++        policy.kind!=="source-bound-"+document+"-annotation-geometry"||policy.document!==document||policy.source_sha256!==source||
+         policy.anchor!==expected.anchor||policy.runtime_class!==p[0]||expected.maxclass!==p[0]||
+         expected.runtime_class!==p[0]||!sameNumbers(expected.rect,p[1])||!sameNumbers(policy.saved_rect,p[1])||
+         !sameNumbers(policy.live_rect,p[2])||policy.source_text_sha256!==p[3]||expected.source_text_sha256!==p[3]||
+@@ -116,6 +137,62 @@
+     }
+     return policy;
+ }
++function numericModePolicy(expected,definition) {
++    var policy=expected.numeric_mode_policy;if(typeof policy==="undefined")return null;
++    var source="c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c";
++    var rects={"root/obj-2/obj-16":[194,230.5,54,23],"root/obj-2/obj-17":[265,230.5,54,23],
++        "root/obj-2/obj-21":[220,330.5,54,23],"root/obj-2/obj-33":[117,380.5,54,23]};
++    var attrs={inlets:1,outlets:2,format:6,numdecimalplaces:null,fontname:"Arial",fontsize:13,
++        outlettype:["","bang"],parameter_enable:0};
++    var helpers={
++        "helpstarter.js":"a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8",
++        "helpname.js":"49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
++        "helpdetails.js":"31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1",
++        "helpargs.js":"04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"};
++    var empty="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",rect=rects[expected.anchor];
++    function fields(value,wanted) {
++        if(!value||Object.keys(value).length!==Object.keys(wanted).length)return false;
++        for(var key in wanted)if(JSON.stringify(value[key])!==JSON.stringify(wanted[key]))return false;
++        return true;
++    }
++    function exactRect(value) {
++        if(!value||!rect||value.length!==4)return false;
++        for(var i=0;i<4;i++)if(typeof value[i]!=="number"||!isFinite(value[i])||value[i]!==rect[i])return false;
++        return true;
++    }
++    if(!policy||!rect||!definition||definition.document!=="float"||definition.source_sha256!==source||
++        expected.maxclass!=="flonum"||expected.runtime_class!=="flonum"||!exactRect(expected.rect)||
++        expected.source_text_sha256!==empty||!fields(expected.source_attributes,attrs)||
++        (typeof expected.outlets!=="undefined"&&expected.outlets!==2)||
++        (typeof expected.id!=="undefined"&&expected.id!==expected.anchor.slice(expected.anchor.lastIndexOf("/")+1))||
++        policy.kind!=="source-bound-float-number-mode"||policy.document!=="float"||policy.source_sha256!==source||
++        policy.anchor!==expected.anchor||policy.source_class!=="flonum"||policy.runtime_class!=="number"||
++        !exactRect(policy.saved_rect)||policy.source_text_sha256!==empty||!fields(policy.source_attributes,attrs)||
++        !fields(policy.helper_sha256,helpers)||!fields(definition.helper_sha256,helpers)||
++        policy.getter_method!=="getattr"||policy.attribute!=="format"||
++        policy.getter_representation!=="scalar-number"||policy.required_value!==6)
++        throw Error("invalid-source-bound-float-mode-policy");
++    return policy;
++}
++function numericModeObservation(object,expected,definition) {
++    if(!numericModePolicy(expected,definition))throw Error("float-mode-policy-required");
++    var row={anchor:expected.anchor,source_class:"flonum",runtime_class:object.maxclass,
++        getter_method:"getattr",attribute:"format",getter_representation:"unavailable",getter_value:null};
++    if(typeof object.getattr==="function") {
++        var raw;
++        try{raw=object.getattr("format");}catch(error){row.getter_representation="threw";}
++        if(row.getter_representation!=="threw") {
++            row.getter_representation=typeof raw==="number"?(isFinite(raw)?"scalar-number":"nonfinite-number"):
++                raw===null?"null":Array.isArray(raw)?"array":typeof raw;
++            row.getter_value=typeof raw==="undefined"?null:typeof raw==="number"&&!isFinite(raw)?String(raw):
++                raw!==null&&typeof raw==="object"&&!Array.isArray(raw)?null:raw;
++        }
++    }
++    if(row.runtime_class!=="number"||row.getter_representation!=="scalar-number"||row.getter_value!==6) {
++        var failure=Error("read-only-float-mode-unavailable");failure.numeric_mode_observation=row;throw failure;
++    }
++    return row;
++}
+ function retainGeometry(dispositions,row) {
+     if(!dispositions)throw Error("geometry-disposition-sink-required");
+     for(var i=0;i<dispositions.length;i++) {
+@@ -131,6 +208,7 @@
+ }
+ function resolve(patcher,expected,definition,dispositions) {
+     var policy=shellHeightPolicy(expected,definition),annotation=annotationGeometryPolicy(expected,definition);
++    var mode=numericModePolicy(expected,definition);
+     if(policy&&annotation)throw Error("multiple-geometry-policies");
+     policy=policy||annotation;
+     var found=[],fullCount=0,policyCount=0;
+@@ -146,7 +224,7 @@
+         if(adapted)policyCount++;
+         if(full||adapted)found.push({object:o,rect:rect,adapted:adapted});
+     }
+-    var classes=policy?[policy.runtime_class]:(expected.runtime_classes||[expected.runtime_class]);
++    var classes=mode?[mode.runtime_class]:policy?[policy.runtime_class]:(expected.runtime_classes||[expected.runtime_class]);
+     if(found.length!==1||classes.indexOf(found[0].object.maxclass)===-1) {
+         diagnostic.full_match_count=fullCount;
+         if(policy)diagnostic.policy_match_count=policyCount;
+@@ -156,6 +234,12 @@
+     if(found[0].adapted)retainGeometry(dispositions,{anchor:expected.anchor,source_sha256:definition.source_sha256,
+         document:definition.document,revision:definition.revision,runtime_class:found[0].object.maxclass,
+         saved_rect:expected.rect.slice(0),live_rect:found[0].rect.slice(0),policy:policy});
++    if(mode) {
++        var observed=numericModeObservation(found[0].object,expected,definition);
++        observed.document=definition.document;observed.source_sha256=definition.source_sha256;observed.revision=definition.revision;
++        observed.saved_rect=expected.rect.slice(0);observed.live_rect=found[0].rect.slice(0);observed.policy=mode;
++        retainGeometry(numericModeObservations,observed);
++    }
+     return found[0].object;
+ }
+ function tree(patcher) {
+@@ -167,7 +251,7 @@
+     return result;
+ }
+ function validateTree(patcher,definition) {
+-    anchorDiagnostics=[];geometryDispositions=[];
++    anchorDiagnostics=[];geometryDispositions=[];numericModeObservations=[];
+     var actualTotal=tree(patcher).length;
+     if(actualTotal!==definition.full_inventory.length)anchorDiagnostics.push({scope:"root",diagnostic_type:"tree-count",
+         expected_count:definition.full_inventory.length,actual_count:actualTotal});
+@@ -187,7 +271,8 @@
+             var b=expected[i],object=null,before=anchorDiagnostics.length;
+             try{object=resolve(p,b,definition,geometryDispositions);}catch(error){
+                 if(anchorDiagnostics.length===before)anchorDiagnostics.push({expected_anchor:b.anchor,
+-                    expected_rect:b.rect,expected_runtime_class:b.runtime_class,diagnostic_type:"invalid-anchor-binding"});
++                    expected_rect:b.rect,expected_runtime_class:b.runtime_class,diagnostic_type:"invalid-anchor-binding",
++                    numeric_mode_observation:error.numeric_mode_observation||null});
+             }
+             if(b.child) {
+                 // A saved unique name permits diagnostic traversal only; it never clears an anchor failure.
+@@ -218,7 +303,7 @@
+     throw Error("revision-definition-unavailable");
+ }
+ function setAction(command) {
+-    anchorDiagnostics=[];geometryDispositions=[];
++    anchorDiagnostics=[];geometryDispositions=[];numericModeObservations=[];
+     shared.request_id=command.command_id;shared.step_id=command.step_id;shared.action=command.action;
+     shared.action_document=command.document;shared.action_revision=command.action_revision;
+ }
+@@ -229,7 +314,8 @@
+ function fail(command,error) {
+     record("harness-error",{error:String(error)});
+     write(config.ack_path,{command_id:command.command_id,success:false,error_code:"numeric-controller-refused",
+-        anchor_diagnostics:anchorDiagnostics,geometry_dispositions:geometryDispositions});busy=false;
++        anchor_diagnostics:anchorDiagnostics,geometry_dispositions:geometryDispositions,
++        numeric_mode_observations:numericModeObservations});busy=false;
+ }
+ function bind(patcher,definition) {
+     validateTree(patcher,definition);
+@@ -240,7 +326,8 @@
+         var before=anchorDiagnostics.length;
+         try{objects[definition.boxes[i].anchor]=resolve(basic,definition.boxes[i],definition,geometryDispositions);}catch(error){
+             if(anchorDiagnostics.length===before)anchorDiagnostics.push({expected_anchor:definition.boxes[i].anchor,
+-                expected_rect:definition.boxes[i].rect,diagnostic_type:"invalid-basic-binding"});
++                expected_rect:definition.boxes[i].rect,diagnostic_type:"invalid-basic-binding",
++                numeric_mode_observation:error.numeric_mode_observation||null});
+         }
+     }
+     if(anchorDiagnostics.length)throw Error("aggregate-basic-preflight-failed");
+@@ -274,7 +361,8 @@
+                 if(stable>=5&&attempts>=10) {
+                     roots[doc]=bind(p,definition);revisions[doc]=revision;
+                     record("step-complete",{document:doc,revision:revision,source_sha256:definition.source_sha256});
+-                    ack(command,{working_path:definition.working_windows_path,geometry_dispositions:geometryDispositions});return;
++                    ack(command,{working_path:definition.working_windows_path,geometry_dispositions:geometryDispositions,
++                        numeric_mode_observations:numericModeObservations});return;
+                 }
+             }
+             if(attempts>=80)throw Error("bounded-helper-settling-timeout");
+--- a/experiments/max-reference/int-float-runtime-20261022/numeric.py
++++ b/experiments/max-reference/int-float-runtime-20261022/numeric.py
+@@ -36,6 +36,8 @@
+     'root/obj-1':('js',[92,94,110,20],'3c299423556feddb0be4ff31bc20e20f1fc305063815420e899f529763daa2e1'),
+     'root/obj-2':('patcher',[10,85,50,20],'484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393'),
+     'root/obj-3':('patcher',[205,205,50,20],'bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a')}
++FLOAT_SHELL_ANCHORS=dict(SHELL_ANCHORS,**{
++    'root/obj-1':('js',[374,27.5,120,20],'e9cd2d2ae24129f7ce891e9a5ee418d273b18a0b2641d3f3beb34be09def8ab5')})
+ ANNOTATION_ANCHORS={
+     'root/obj-2/obj-23':('comment',[11,186.5,143,54],[11,186.5,143,55],
+         '96d3d71a61b0f13d7c759315dc9e49578d5c542d24ac120753d628392a55723d',
+@@ -46,6 +48,20 @@
+         dict(inlets=1,outlets=1,filename='helpargs.js',ignoreclick=1,
+              jsarguments_sha256='c511da579364be932435a248bf3f04254e5c257664551ad10ac69cdc4170a098',
+              border=0,parameter_enable=0,outlettype=['']))}
++FLOAT_ANNOTATION_ANCHORS={
++    'root/obj-2/obj-3':('comment',[411,156.5,133,54],[411,156.5,133,55],
++        'de8dbc68910ee493e95c0bad7d48cf0b12577baa5955cd7d894aa80cae1fb027',
++        dict(inlets=1,outlets=0,fontname='Arial',fontsize=13.0,bubble=1,bubbleside=None,
++             bubblepoint=None,bubbletextmargin=None,linecount=3)),
++    'root/obj-2/obj-5':('comment',[14,201.5,143,54],[14,201.5,143,55],
++        ANNOTATION_ANCHORS['root/obj-2/obj-23'][3],copy.deepcopy(ANNOTATION_ANCHORS['root/obj-2/obj-23'][4])),
++    'root/obj-2/obj-4':('jsui',[289,274,190.328094,39],[289,274,190.31402587890625,39],
++        ANNOTATION_ANCHORS['root/obj-2/obj-4'][3],dict(ANNOTATION_ANCHORS['root/obj-2/obj-4'][4],
++            jsarguments_sha256='a6c871ff72c57f35934325de26fba3add81b1df8935af30a164fb9a13117949a'))}
++FLOAT_MODE_RECTS={'root/obj-2/obj-16':[194,230.5,54,23],'root/obj-2/obj-17':[265,230.5,54,23],
++                  'root/obj-2/obj-21':[220,330.5,54,23],'root/obj-2/obj-33':[117,380.5,54,23]}
++FLOAT_MODE_ATTRIBUTES=dict(inlets=1,outlets=2,format=6,numdecimalplaces=None,fontname='Arial',fontsize=13.0,
++                           outlettype=['','bang'],parameter_enable=0)
+ 
+ 
+ def finite(value):
+@@ -60,25 +76,27 @@
+ 
+ def shell_height_policy(document,source_sha256,box,helpers):
+     anchor=box['anchor']
+-    if document!='int' or anchor not in SHELL_ANCHORS:return None
+-    cls,rect,text_sha=SHELL_ANCHORS[anchor]
++    profiles={'int':SHELL_ANCHORS,'float':FLOAT_SHELL_ANCHORS}.get(document,{})
++    if anchor not in profiles:return None
++    cls,rect,text_sha=profiles[anchor]
+     pins={h['name']:h['sha256'] for h in helpers}
+-    if (source_sha256!=IDENTITIES['int'] or len(helpers)!=4 or pins!=SHELL_HELPERS or
++    if (source_sha256!=IDENTITIES[document] or len(helpers)!=4 or pins!=SHELL_HELPERS or
+         box['maxclass']!='newobj' or box['runtime_class']!=cls or box['rect']!=rect or
+         not all(finite(v) for v in box['rect']) or box.get('source_text_sha256')!=text_sha or
+         any(type(box.get(k)) is not int or box[k]!=0 for k in ['saved_incoming_routes','saved_outgoing_routes'])):
+         raise ValueError('Invalid measured int shell height binding')
+-    return dict(kind='source-bound-int-shell-height',document='int',source_sha256=source_sha256,anchor=anchor,
++    return dict(kind='source-bound-'+document+'-shell-height',document=document,source_sha256=source_sha256,anchor=anchor,
+                 runtime_class=cls,saved_rect=rect[:],live_rect=rect[:3]+[22],source_text_sha256=text_sha,
+                 helper_sha256=dict(SHELL_HELPERS),saved_incoming_routes=0,saved_outgoing_routes=0)
+ 
+ 
+ def annotation_geometry_policy(document,source_sha256,box,helpers):
+     anchor=box['anchor']
+-    if document!='int' or anchor not in ANNOTATION_ANCHORS:return None
+-    cls,saved,live,text_sha,attributes=ANNOTATION_ANCHORS[anchor]
++    profiles={'int':ANNOTATION_ANCHORS,'float':FLOAT_ANNOTATION_ANCHORS}.get(document,{})
++    if anchor not in profiles:return None
++    cls,saved,live,text_sha,attributes=profiles[anchor]
+     canonical=lambda value:json.dumps(value,sort_keys=True,separators=(',',':'),allow_nan=False)
+-    if (source_sha256!=IDENTITIES['int'] or len(helpers)!=4 or
++    if (source_sha256!=IDENTITIES[document] or len(helpers)!=4 or
+         {h['name']:h['sha256'] for h in helpers}!=SHELL_HELPERS or
+         box['maxclass']!=cls or box['runtime_class']!=cls or box['rect']!=saved or
+         not all(finite(v) for v in box['rect']) or box.get('source_text_sha256')!=text_sha or
+@@ -87,10 +105,53 @@
+         ('id' in box and box['id']!=anchor.rsplit('/',1)[-1]) or
+         any(type(box.get(k)) is not int or box[k]!=0 for k in ['saved_incoming_routes','saved_outgoing_routes'])):
+         raise ValueError('Invalid measured int annotation binding')
+-    return dict(kind='source-bound-int-annotation-geometry',document='int',source_sha256=source_sha256,
++    return dict(kind='source-bound-'+document+'-annotation-geometry',document=document,source_sha256=source_sha256,
+                 anchor=anchor,runtime_class=cls,saved_rect=saved[:],live_rect=live[:],source_text_sha256=text_sha,
+                 source_attributes=copy.deepcopy(attributes),helper_sha256=dict(SHELL_HELPERS),
+                 saved_incoming_routes=0,saved_outgoing_routes=0)
++
++
++def numeric_mode_policy(document,source_sha256,box,helpers):
++    anchor=box['anchor']
++    if document!='float' or anchor not in FLOAT_MODE_RECTS:return None
++    empty=hashlib.sha256(b'').hexdigest();rect=FLOAT_MODE_RECTS[anchor]
++    canonical=lambda value:json.dumps(value,sort_keys=True,allow_nan=False)
++    if (source_sha256!=IDENTITIES['float'] or len(helpers)!=4 or
++        {h['name']:h['sha256'] for h in helpers}!=SHELL_HELPERS or box['maxclass']!='flonum' or
++        box['runtime_class']!='flonum' or box['rect']!=rect or not all(finite(v) for v in box['rect']) or
++        box.get('source_text_sha256')!=empty or canonical(box.get('source_attributes'))!=canonical(FLOAT_MODE_ATTRIBUTES) or
++        ('outlets' in box and (type(box['outlets']) is not int or box['outlets']!=2)) or
++        ('id' in box and box['id']!=anchor.rsplit('/',1)[-1])):
++        raise ValueError('Invalid source-bound float mode profile')
++    return dict(kind='source-bound-float-number-mode',document='float',source_sha256=source_sha256,anchor=anchor,
++        source_class='flonum',runtime_class='number',saved_rect=rect[:],source_text_sha256=empty,
++        source_attributes=copy.deepcopy(FLOAT_MODE_ATTRIBUTES),helper_sha256=dict(SHELL_HELPERS),
++        getter_method='getattr',attribute='format',getter_representation='scalar-number',required_value=6)
++
++
++def numeric_modes(document,raw,observations):
++    expected={b['anchor']:b for b in document['boxes'] if 'numeric_mode_policy' in b}
++    rows=raw.get('numeric_modes',[])
++    if not isinstance(rows,list) or Counter(v.get('anchor') for v in rows)!=Counter(expected.keys()):
++        raise ValueError('Exact float mode observation inventory required')
++    helpers=[dict(name=k,sha256=v) for k,v in document.get('helper_sha256',{}).items()];classes={}
++    for row in rows:
++        box=expected[row['anchor']];policy=numeric_mode_policy(document['document'],document['source_sha256'],box,helpers)
++        if policy is None or json.dumps(policy,sort_keys=True,allow_nan=False)!=json.dumps(
++                box['numeric_mode_policy'],sort_keys=True,allow_nan=False):
++            raise ValueError('Unapproved float mode profile')
++        if (row.get('runtime_class')!='number' or row.get('source_class')!='flonum' or
++            row.get('getter_method')!='getattr' or row.get('attribute')!='format' or
++            row.get('getter_representation')!='scalar-number' or not finite(row.get('getter_value')) or row['getter_value']!=6):
++            raise ValueError('Read-only float mode capability unavailable')
++        name=original_varname(box);matches=[b for b in raw.get('boxes',[]) if b.get('varname')==name]
++        if len(matches)!=1 or matches[0].get('maxclass')!='number':raise ValueError('Float runtime class changed')
++        live=common.finite_rectangle(matches[0].get('rect'))
++        if any(abs(a-b)>0.01 for a,b in zip(live,policy['saved_rect'])):raise ValueError('Float geometry changed')
++        observations.append(dict(row,document=document['document'],source_sha256=document['source_sha256'],
++            revision=document['revision'],saved_rect=policy['saved_rect'][:],live_rect=live[:],policy=policy))
++        classes[name]='number'
++    return classes
+ 
+ 
+ def annotation_geometry(document,raw,dispositions):
+@@ -194,7 +255,7 @@
+                 preparation_manifest_sha256=digest(ROOT/'preparation-manifest.json'))
+ 
+ 
+-def validate_checkpoint(document,raw,request_id,step_id,action,geometry_dispositions=None):
++def validate_checkpoint(document,raw,request_id,step_id,action,geometry_dispositions=None,numeric_mode_observations=None):
+     if any(any(key in box for key in ['annotation_width_policy','observer_policy','shell_height_policy'])
+            for box in document['boxes']):
+         raise ValueError('Unapproved numeric geometry policy')
+@@ -203,10 +264,13 @@
+         raise ValueError('Numeric checkpoint binding mismatch')
+     dispositions=geometry_dispositions if geometry_dispositions is not None else []
+     replacements=annotation_geometry(document,raw,dispositions)
++    modes=numeric_mode_observations if numeric_mode_observations is not None else []
++    mode_classes=numeric_modes(document,raw,modes)
+     by_name={original_varname(b):b for b in document['boxes']}
+     for actual in raw.get('boxes',[]):
+         expected=by_name.get(actual.get('varname'))
+-        if expected and actual.get('maxclass') not in expected.get('runtime_classes',[expected['runtime_class']]):
++        if expected and actual.get('maxclass') not in ([mode_classes[actual['varname']]] if actual.get('varname') in mode_classes
++                else expected.get('runtime_classes',[expected['runtime_class']])):
+             raise ValueError('Exact source runtime class changed')
+     adapter=dict(raw,readback_method='v8-boxtext',messages=[dict(m,text='') for m in raw.get('messages',[])],
+                  boxes=[dict(b,maxclass=by_name[b['varname']]['runtime_class'],
+@@ -268,16 +332,16 @@
+     path=Path(path);payload=path.read_bytes();path.chmod(0o600)
+     binding=retain_raw(path.with_name('retained-'+path.name),payload)
+     if request_record is not None:request_record.update(binding)
+-    dispositions=[];validated=False
++    dispositions=[];modes=[];validated=False
+     try:
+         raw=json.loads(payload)
+-        result=validate_checkpoint(document,raw,request_id,step_id,action,dispositions);validated=True
++        result=validate_checkpoint(document,raw,request_id,step_id,action,dispositions,modes);validated=True
+     finally:
+         try:
+-            if dispositions:
++            if dispositions or modes:
+                 sidecar=dict(schema_version=1,request_id=request_id,step_id=step_id,action=action,
+                     document=document['document'],revision=document['revision'],source_sha256=document['source_sha256'],
+-                    checkpoint_validated=validated,geometry_dispositions=dispositions,**binding)
++                    checkpoint_validated=validated,geometry_dispositions=dispositions,numeric_mode_observations=modes,**binding)
+                 retain_raw(path.with_name('geometry-dispositions-'+path.name),
+                     (json.dumps(sidecar,sort_keys=True,allow_nan=False)+'\n').encode())
+         finally:verify_private(work)
+@@ -368,7 +432,8 @@
+                     saved_outgoing_routes=sum(e['source'][0]==b['id'] for e in routes))
+                 policy=shell_height_policy(name,sha,entry,helpers)
+                 if policy is not None:entry['shell_height_policy']=policy
+-                if anchor in ANNOTATION_ANCHORS and name=='int':
++                annotation_profiles={'int':ANNOTATION_ANCHORS,'float':FLOAT_ANNOTATION_ANCHORS}[name]
++                if anchor in annotation_profiles:
+                     attributes=dict(inlets=b.get('numinlets'),outlets=b.get('numoutlets'))
+                     fields=(['fontname','fontsize','bubble','bubbleside','bubblepoint','bubbletextmargin','linecount']
+                             if cls=='comment' else ['filename','ignoreclick','border','parameter_enable','outlettype'])
+@@ -377,6 +442,11 @@
+                         json.dumps(b.get('jsarguments'),sort_keys=True,separators=(',',':')).encode()).hexdigest()
+                     entry['source_attributes']=attributes
+                     entry['annotation_geometry_policy']=annotation_geometry_policy(name,sha,entry,helpers)
++                if name=='float' and anchor in FLOAT_MODE_RECTS:
++                    attributes=dict(inlets=b.get('numinlets'),outlets=b.get('numoutlets'))
++                    attributes.update({k:b.get(k) for k in ['format','numdecimalplaces','fontname','fontsize','outlettype','parameter_enable']})
++                    entry['source_attributes']=attributes
++                    entry['numeric_mode_policy']=numeric_mode_policy(name,sha,entry,helpers)
+                 result.append(entry)
+                 if 'patcher' in b:result.extend(tree_inventory(b['patcher'],anchor))
+             return result
+@@ -387,6 +457,8 @@
+             if 'annotation_geometry_policy' in entry:
+                 box.update({key:copy.deepcopy(entry[key]) for key in ['source_text_sha256','source_attributes',
+                     'annotation_geometry_policy','saved_incoming_routes','saved_outgoing_routes']})
++            if 'numeric_mode_policy' in entry:
++                box.update({key:copy.deepcopy(entry[key]) for key in ['source_text_sha256','source_attributes','numeric_mode_policy']})
+         executable=sum(b['maxclass'] not in {'comment','jsui'} for b in boxes)
+         # Native node count excludes source-only annotations; full count includes the entire shell.
+         if len(inventory)!=COUNTS[name][0] or executable!=COUNTS[name][1] or len(edges)!=COUNTS[name][2]:
+--- a/experiments/max-reference/int-float-runtime-20261022/v8-readback.js
++++ b/experiments/max-reference/int-float-runtime-20261022/v8-readback.js
+@@ -26,12 +26,68 @@
+     return Array.from(rect);}
+ function endpoint(object,port){if(!object||typeof object.varname!=="string"||!Number.isInteger(port)||port<0)throw Error("endpoint-unavailable");
+     return {varname:object.varname,port:port};}
++function numericModePolicy(expected,definition) {
++    var policy=expected.numeric_mode_policy;if(typeof policy==="undefined")return null;
++    var source="c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c";
++    var rects={"root/obj-2/obj-16":[194,230.5,54,23],"root/obj-2/obj-17":[265,230.5,54,23],
++        "root/obj-2/obj-21":[220,330.5,54,23],"root/obj-2/obj-33":[117,380.5,54,23]};
++    var attrs={inlets:1,outlets:2,format:6,numdecimalplaces:null,fontname:"Arial",fontsize:13,
++        outlettype:["","bang"],parameter_enable:0};
++    var helpers={
++        "helpstarter.js":"a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8",
++        "helpname.js":"49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
++        "helpdetails.js":"31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1",
++        "helpargs.js":"04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"};
++    var empty="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",rect=rects[expected.anchor];
++    function fields(value,wanted) {
++        if(!value||Object.keys(value).length!==Object.keys(wanted).length)return false;
++        for(var key in wanted)if(JSON.stringify(value[key])!==JSON.stringify(wanted[key]))return false;
++        return true;
++    }
++    function exactRect(value) {
++        if(!value||!rect||value.length!==4)return false;
++        for(var i=0;i<4;i++)if(typeof value[i]!=="number"||!isFinite(value[i])||value[i]!==rect[i])return false;
++        return true;
++    }
++    if(!policy||!rect||!definition||definition.document!=="float"||definition.source_sha256!==source||
++        expected.maxclass!=="flonum"||expected.runtime_class!=="flonum"||!exactRect(expected.rect)||
++        expected.source_text_sha256!==empty||!fields(expected.source_attributes,attrs)||
++        (typeof expected.outlets!=="undefined"&&expected.outlets!==2)||
++        (typeof expected.id!=="undefined"&&expected.id!==expected.anchor.slice(expected.anchor.lastIndexOf("/")+1))||
++        policy.kind!=="source-bound-float-number-mode"||policy.document!=="float"||policy.source_sha256!==source||
++        policy.anchor!==expected.anchor||policy.source_class!=="flonum"||policy.runtime_class!=="number"||
++        !exactRect(policy.saved_rect)||policy.source_text_sha256!==empty||!fields(policy.source_attributes,attrs)||
++        !fields(policy.helper_sha256,helpers)||!fields(definition.helper_sha256,helpers)||
++        policy.getter_method!=="getattr"||policy.attribute!=="format"||
++        policy.getter_representation!=="scalar-number"||policy.required_value!==6)
++        throw Error("invalid-source-bound-float-mode-policy");
++    return policy;
++}
++function numericModeObservation(object,expected,definition) {
++    if(!numericModePolicy(expected,definition))throw Error("float-mode-policy-required");
++    var row={anchor:expected.anchor,source_class:"flonum",runtime_class:object.maxclass,
++        getter_method:"getattr",attribute:"format",getter_representation:"unavailable",getter_value:null};
++    if(typeof object.getattr==="function") {
++        var raw;
++        try{raw=object.getattr("format");}catch(error){row.getter_representation="threw";}
++        if(row.getter_representation!=="threw") {
++            row.getter_representation=typeof raw==="number"?(isFinite(raw)?"scalar-number":"nonfinite-number"):
++                raw===null?"null":Array.isArray(raw)?"array":typeof raw;
++            row.getter_value=typeof raw==="undefined"?null:typeof raw==="number"&&!isFinite(raw)?String(raw):
++                raw!==null&&typeof raw==="object"&&!Array.isArray(raw)?null:raw;
++        }
++    }
++    if(row.runtime_class!=="number"||row.getter_representation!=="scalar-number"||row.getter_value!==6) {
++        var failure=Error("read-only-float-mode-unavailable");failure.numeric_mode_observation=row;throw failure;
++    }
++    return row;
++}
+ function collectReadback(root,definition,request) {
+     if(request.op!=="readback"||request.document!==definition.document||request.revision!==definition.revision||
+         request.source_sha256!==definition.source_sha256||!Number.isInteger(request.command_id)||request.command_id<1||
+         !samePath(root.filepath,definition.working_windows_path)||root.parentpatcher!=null)throw Error("checkpoint-owner-binding");
+     var basicBox=root.getnamed(definition.basic_varname);if(!basicBox)throw Error("basic-unavailable");
+-    var basic=basicBox.subpatcher(),boxes=[],objects={},inputs=[],outputs=[],messages=[],numeric=[];
++    var basic=basicBox.subpatcher(),boxes=[],objects={},inputs=[],outputs=[],messages=[],numeric=[],modes=[];
+     for(var o=basic.firstobject;o;o=o.nextobject) {
+         var name=o.varname;if(typeof name!=="string"||!name||objects[name])throw Error("box-identity-not-unique");
+         objects[name]=o;boxes.push({varname:name,maxclass:o.maxclass,rect:rectangle(o)});
+@@ -43,6 +99,8 @@
+     }
+     for(var b of definition.boxes) {
+         var object=objects["__alive_help_"+b.id.replace(/-/g,"_")];if(!object)throw Error("original-unavailable");
++        if(typeof b.numeric_mode_policy!=="undefined"||(definition.document==="float"&&b.maxclass==="flonum"))
++            modes.push(numericModeObservation(object,b,definition));
+         if(b.maxclass==="message") {
+             var text=object.boxtext;if(typeof text!=="string")throw Error("message-prototype-unavailable");
+             messages.push({anchor:b.anchor,text:text});
+@@ -55,7 +113,7 @@
+         action_document:request.action_document,action_revision:request.action_revision,
+         document:definition.document,revision:definition.revision,source_sha256:definition.source_sha256,
+         working_root_path:root.filepath,root_is_top_level:true,saved_order_observed:false,
+-        boxes:boxes,messages:messages,numeric:numeric,input_routes:inputs,output_routes:outputs};
++        boxes:boxes,messages:messages,numeric:numeric,numeric_modes:modes,input_routes:inputs,output_routes:outputs};
+ }
+ function checkpoint(requestId,stepId) {
+     var config=readPrivate(configFile),request=readPrivate(config.command_path),path=request.output_path;
+@@ -63,5 +121,6 @@
+         var definition=config.documents.find(d=>d.document===documentName&&d.revision===revision);
+         if(!definition||requestId!==request.command_id||stepId!==request.step_id)throw Error("checkpoint-request-binding");
+         writePrivate(path,collectReadback(this.patcher,definition,request));
+-    }catch(error){writePrivate(path,{success:false,request_id:requestId,error_code:"numeric-readback-refused"});}
++    }catch(error){writePrivate(path,{success:false,request_id:requestId,error_code:"numeric-readback-refused",
++        numeric_mode_observation:error.numeric_mode_observation||null});}
+ }
+--- a/experiments/max-reference/int-float-runtime-20261022/test_numeric.py
++++ b/experiments/max-reference/int-float-runtime-20261022/test_numeric.py
+@@ -204,7 +204,7 @@
+             policy=n.shell_height_policy('int',n.IDENTITIES['int'],b,helpers)
+             self.assertEqual(policy['live_rect'],rect[:3]+[22])
+             self.assertEqual(policy['helper_sha256'],n.SHELL_HELPERS)
+-            self.assertIsNone(n.shell_height_policy('float',n.IDENTITIES['float'],b,helpers))
++            with self.assertRaises(ValueError):n.shell_height_policy('float',n.IDENTITIES['int'],b,helpers)
+             self.assertIsNone(n.shell_height_policy('int',n.IDENTITIES['int'],dict(b,anchor='root/obj-2/obj-16'),helpers))
+             for bad in [dict(b,saved_incoming_routes=1),dict(b,rect=rect[:3]+[21]),
+                         dict(b,source_text_sha256='0'*64),dict(b,runtime_class='number')]:
+--- /dev/null
++++ b/experiments/max-reference/int-float-runtime-20261022/test_float_mode.py
+@@ -0,0 +1,126 @@
++"""Finite float source metadata and read-only mode fixtures, no target access."""
++import copy
++import json
++from pathlib import Path
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from test_numeric import fixture, n
++from test_annotations import HELPERS
++
++SOURCE='c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c'
++RECTS={'obj-16':[194,230.5,54,23],'obj-17':[265,230.5,54,23],
++       'obj-21':[220,330.5,54,23],'obj-33':[117,380.5,54,23]}
++ATTRS=dict(inlets=1,outlets=2,format=6,numdecimalplaces=None,fontname='Arial',fontsize=13.0,
++           outlettype=['','bang'],parameter_enable=0)
++EMPTY='e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
++
++
++def float_fixture():
++    d,raw=fixture();d.update(document='float',source_sha256=SOURCE,helper_sha256=HELPERS)
++    raw.update(document='float',source_sha256=SOURCE)
++    helpers=[dict(name=k,sha256=v) for k,v in HELPERS.items()]
++    for id,rect in RECTS.items():
++        b=dict(id=id,anchor='root/obj-2/'+id,maxclass='flonum',runtime_class='flonum',rect=rect[:],
++               outlets=2,authored_text='',source_text_sha256=EMPTY,source_attributes=copy.deepcopy(ATTRS))
++        b['numeric_mode_policy']=n.numeric_mode_policy('float',SOURCE,b,helpers)
++        d['boxes'].append(b)
++        raw['boxes'].append(dict(varname=n.original_varname(b),maxclass='number',rect=rect[:]))
++        raw['numeric'].append(dict(anchor=b['anchor'],class_name='flonum',value=0,
++             getter_representation='scalar-number',getter_method='getvalueof',semantic_tag='float',
++             semantic_tag_basis='flonum-class'))
++    d['observer_leaves']=n.observer_definitions(d)
++    for leaf in d['observer_leaves'][3:]:
++        raw['boxes'].append(dict(varname=leaf['varname'],maxclass='js',rect=[-100,0,10,10]))
++        b=next(b for b in d['boxes'] if b['anchor']==leaf['anchor'])
++        route=dict(source=dict(varname=n.original_varname(b),port=leaf['port']),
++                   destination=dict(varname=leaf['varname'],port=0))
++        raw['input_routes'].append(route);raw['output_routes'].append(copy.deepcopy(route))
++    raw['numeric_modes']=[dict(anchor='root/obj-2/'+id,runtime_class='number',source_class='flonum',
++        getter_method='getattr',attribute='format',getter_representation='scalar-number',getter_value=6)
++        for id in RECTS]
++    return d,raw
++
++
++class FloatModeTests(unittest.TestCase):
++    def test_number_class_requires_exact_source_bound_actual_float_mode(self):
++        d,raw=float_fixture();before=copy.deepcopy(raw);modes=[]
++        result=n.validate_checkpoint(d,raw,3,'install-int','install',None,modes)
++        self.assertEqual(raw,before)
++        self.assertEqual(len(modes),4)
++        self.assertEqual([m['getter_value'] for m in modes],[6,6,6,6])
++        self.assertEqual([v['semantic_tag'] for v in result['numeric_states'][-4:]],['float']*4)
++        self.assertEqual(result['retention']['observer_leaf_cables_retained'],11)
++
++    def test_mode_inventory_and_primitive_exact_six_gate_refuse_coercion(self):
++        d,raw=float_fixture()
++        for value in [None,True,'6',[6],0,6.01,float('nan'),float('inf')]:
++            bad=copy.deepcopy(raw);bad['numeric_modes'][0]['getter_value']=value
++            with self.assertRaises(ValueError):n.validate_checkpoint(d,bad,3,'install-int','install')
++        for mutate in [lambda r:r.pop('numeric_modes'),lambda r:r['numeric_modes'].append(r['numeric_modes'][0]),
++                       lambda r:r['numeric_modes'][0].update(getter_representation='singleton-number-array'),
++                       lambda r:r['numeric_modes'][0].update(runtime_class='flonum'),
++                       lambda r:r['boxes'][5].update(maxclass='flonum')]:
++            bad=copy.deepcopy(raw);mutate(bad)
++            with self.assertRaises(ValueError):n.validate_checkpoint(d,bad,3,'install-int','install')
++
++    def test_mode_profile_cannot_widen_class_anchor_geometry_or_source_format(self):
++        d,raw=float_fixture()
++        for mutate in [lambda x:x.update(document='int'),lambda x:x.update(source_sha256='0'*64),
++                       lambda x:x['boxes'][-1]['source_attributes'].update(format=0),
++                       lambda x:x['boxes'][-1].update(maxclass='number'),
++                       lambda x:x['boxes'][-1].update(anchor='root/obj-2/obj-18'),
++                       lambda x:x['boxes'][-1].pop('numeric_mode_policy')]:
++            bad=copy.deepcopy(d);mutate(bad)
++            with self.assertRaises(ValueError):n.validate_checkpoint(bad,raw,3,'install-int','install')
++        bad=copy.deepcopy(raw);bad['boxes'][5]['rect'][2]=55
++        with self.assertRaises(ValueError):n.validate_checkpoint(d,bad,3,'install-int','install')
++
++    def test_private_sidecar_retains_runtime_mode_without_public_schema_extension(self):
++        d,raw=float_fixture()
++        with tempfile.TemporaryDirectory() as tmp:
++            path=Path(tmp)/'read.json';payload=json.dumps(raw).encode();path.write_bytes(payload)
++            with patch.object(n,'verify_private'):
++                result=n.extract_checkpoint(Path(tmp),d,path,3,'install-int','install')
++            side=json.loads((Path(tmp)/'geometry-dispositions-read.json').read_text())
++            self.assertEqual(len(side['numeric_mode_observations']),4)
++            self.assertEqual(side['raw_bytes'],len(payload));self.assertEqual(path.read_bytes(),payload)
++            self.assertNotIn('numeric_modes',result)
++
++    def test_float_geometry_profiles_remain_distinct_from_int(self):
++        helpers=[dict(name=k,sha256=v) for k,v in HELPERS.items()]
++        roots=[('root/obj-1','js',[374,27.5,120,20],
++                'e9cd2d2ae24129f7ce891e9a5ee418d273b18a0b2641d3f3beb34be09def8ab5'),
++               ('root/obj-2','patcher',[10,85,50,20],
++                '484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393'),
++               ('root/obj-3','patcher',[205,205,50,20],
++                'bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a')]
++        for anchor,cls,rect,text in roots:
++            b=dict(anchor=anchor,maxclass='newobj',runtime_class=cls,rect=rect,
++                   source_text_sha256=text,saved_incoming_routes=0,saved_outgoing_routes=0)
++            p=n.shell_height_policy('float',SOURCE,b,helpers)
++            self.assertIsNotNone(p);self.assertEqual(p['live_rect'],rect[:3]+[22])
++            with self.assertRaises(ValueError):n.shell_height_policy('float',n.IDENTITIES['int'],b,helpers)
++
++    def test_three_exact_float_annotations_require_their_own_source_metadata(self):
++        helpers=[dict(name=k,sha256=v) for k,v in HELPERS.items()]
++        common=dict(inlets=1,outlets=0,fontname='Arial',fontsize=13.0,bubble=1,
++                    bubbleside=None,bubblepoint=None,bubbletextmargin=None,linecount=3)
++        cases=[('obj-3','comment',[411,156.5,133,54],[411,156.5,133,55],
++                'de8dbc68910ee493e95c0bad7d48cf0b12577baa5955cd7d894aa80cae1fb027',common),
++               ('obj-5','comment',[14,201.5,143,54],[14,201.5,143,55],
++                '96d3d71a61b0f13d7c759315dc9e49578d5c542d24ac120753d628392a55723d',
++                dict(common,bubbleside=3,bubblepoint=.75)),
++               ('obj-4','jsui',[289,274,190.328094,39],[289,274,190.31402587890625,39],EMPTY,
++                dict(inlets=1,outlets=1,filename='helpargs.js',ignoreclick=1,border=0,parameter_enable=0,
++                     outlettype=[''],jsarguments_sha256='a6c871ff72c57f35934325de26fba3add81b1df8935af30a164fb9a13117949a'))]
++        for id,cls,saved,live,text,attrs in cases:
++            b=dict(id=id,anchor='root/obj-2/'+id,maxclass=cls,runtime_class=cls,rect=saved,
++                   source_text_sha256=text,source_attributes=attrs,saved_incoming_routes=0,saved_outgoing_routes=0)
++            p=n.annotation_geometry_policy('float',SOURCE,b,helpers)
++            self.assertIsNotNone(p);self.assertEqual(p['live_rect'],live)
++            with self.assertRaises(ValueError):n.annotation_geometry_policy('float',n.IDENTITIES['int'],b,helpers)
++
++
++if __name__=='__main__':unittest.main()
+--- /dev/null
++++ b/experiments/max-reference/int-float-runtime-20261022/test_float_mode.cjs
+@@ -0,0 +1,100 @@
++// Exact source float-mode gate and raw getter representations.
++const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
++function context(file){const c=vm.createContext({jsarguments:[file,'private','float',1]});
++ vm.runInContext(fs.readFileSync(path.join(__dirname,file),'utf8'),c);return c;}
++const ctx=context('controller.js'),reader=context('v8-readback.js');
++const source='c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c';
++const helpers={
++ 'helpstarter.js':'a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8',
++ 'helpname.js':'49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa',
++ 'helpdetails.js':'31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1',
++ 'helpargs.js':'04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469'};
++const attrs={inlets:1,outlets:2,format:6,numdecimalplaces:null,fontname:'Arial',fontsize:13,
++ outlettype:['','bang'],parameter_enable:0};
++const rects={'obj-16':[194,230.5,54,23],'obj-17':[265,230.5,54,23],
++ 'obj-21':[220,330.5,54,23],'obj-33':[117,380.5,54,23]};
++const definition={document:'float',source_sha256:source,revision:1,helper_sha256:helpers,saved_edges:[]};
++ctx.config={helpers:Object.entries(helpers).map(([name,sha256])=>({name,sha256}))};
++const empty='e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
++const modeBoxes=[],modeObjects=[];
++for(const [id,rect] of Object.entries(rects)){
++ const b={id,anchor:'root/obj-2/'+id,maxclass:'flonum',runtime_class:'flonum',rect,outlets:2,
++ source_text_sha256:empty,source_attributes:attrs,numeric_mode_policy:{kind:'source-bound-float-number-mode',
++ document:'float',source_sha256:source,anchor:'root/obj-2/'+id,source_class:'flonum',runtime_class:'number',
++ saved_rect:rect,source_text_sha256:empty,source_attributes:attrs,helper_sha256:helpers,
++ getter_method:'getattr',attribute:'format',getter_representation:'scalar-number',required_value:6}};
++ const o={maxclass:'number',getboxattr:()=>rect.slice(),getattr:a=>{assert.equal(a,'format');return 6},nextobject:null};
++ modeBoxes.push(b);modeObjects.push(o);
++ ctx.numericModeObservations=[];
++ assert.equal(ctx.resolve({firstobject:o},b,definition,[]),o);
++ assert.equal(ctx.numericModeObservations.length,1);
++ const observed=reader.numericModeObservation(o,b,definition);
++ assert.equal(observed.runtime_class,'number');assert.equal(observed.getter_value,6);
++ for(const value of [null,undefined,true,'6',[6],NaN,Infinity,0,6.001]){
++  const bad={...o,getattr:()=>value};
++  assert.throws(()=>ctx.resolve({firstobject:bad},b,definition,[]));
++  assert.throws(()=>reader.numericModeObservation(bad,b,definition));
++ }
++ for(const mutate of [x=>x.source_attributes={...attrs,format:0},x=>x.anchor='root/obj-2/obj-18',
++  x=>x.maxclass='number',x=>delete x.numeric_mode_policy]){
++  const bad=JSON.parse(JSON.stringify(b));mutate(bad);
++  assert.throws(()=>ctx.resolve({firstobject:o},bad,definition,[]));
++ }
++ const moved={...o,getboxattr:()=>[rect[0],rect[1],rect[2]+1,rect[3]]};
++ assert.throws(()=>ctx.resolve({firstobject:moved},b,definition,[]));
++}
++assert.throws(()=>ctx.resolve({firstobject:{maxclass:'number',getboxattr:()=>[1,2,30,20]}},
++ {anchor:'root/obj-2/synthetic',maxclass:'flonum',runtime_class:'flonum',rect:[1,2,30,20]},definition,[]));
++const commentAttrs={inlets:1,outlets:0,fontname:'Arial',fontsize:13,bubble:1,bubbleside:null,
++ bubblepoint:null,bubbletextmargin:null,linecount:3};
++const geometry=[
++ ['root/obj-1','newobj','js',[374,27.5,120,20],[374,27.5,120,22],
++ 'e9cd2d2ae24129f7ce891e9a5ee418d273b18a0b2641d3f3beb34be09def8ab5'],
++ ['root/obj-2','newobj','patcher',[10,85,50,20],[10,85,50,22],
++ '484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393'],
++ ['root/obj-3','newobj','patcher',[205,205,50,20],[205,205,50,22],
++ 'bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a'],
++ ['root/obj-2/obj-3','comment','comment',[411,156.5,133,54],[411,156.5,133,55],
++ 'de8dbc68910ee493e95c0bad7d48cf0b12577baa5955cd7d894aa80cae1fb027',commentAttrs],
++ ['root/obj-2/obj-5','comment','comment',[14,201.5,143,54],[14,201.5,143,55],
++ '96d3d71a61b0f13d7c759315dc9e49578d5c542d24ac120753d628392a55723d',
++ {...commentAttrs,bubbleside:3,bubblepoint:.75}],
++ ['root/obj-2/obj-4','jsui','jsui',[289,274,190.328094,39],[289,274,190.31402587890625,39],empty,
++ {inlets:1,outlets:1,filename:'helpargs.js',ignoreclick:1,border:0,parameter_enable:0,outlettype:[''],
++ jsarguments_sha256:'a6c871ff72c57f35934325de26fba3add81b1df8935af30a164fb9a13117949a'}]];
++for(const [anchor,maxclass,runtime_class,rect,actual,text,source_attributes] of geometry){
++ const annotation=!!source_attributes;
++ const b={anchor,maxclass,runtime_class,rect,source_text_sha256:text,saved_incoming_routes:0,saved_outgoing_routes:0};
++ if(annotation)b.source_attributes=source_attributes;
++ b[annotation?'annotation_geometry_policy':'shell_height_policy']={
++ kind:'source-bound-float-'+(annotation?'annotation-geometry':'shell-height'),document:'float',source_sha256:source,
++ anchor,runtime_class,saved_rect:rect,live_rect:actual,source_text_sha256:text,helper_sha256:helpers,
++ saved_incoming_routes:0,saved_outgoing_routes:0};
++ if(annotation)b.annotation_geometry_policy.source_attributes=source_attributes;
++ const o={maxclass:runtime_class,getboxattr:()=>actual.slice(),nextobject:null},sink=[];
++ assert.equal(ctx.resolve({firstobject:o},b,definition,sink),o);assert.equal(sink.length,1);
++ const altered=actual.slice();altered[runtime_class==='jsui'?2:3]+=.0001;
++ assert.throws(()=>ctx.resolve({firstobject:{...o,getboxattr:()=>altered}},b,definition,[]));
++ assert.throws(()=>ctx.resolve({firstobject:o},b,{...definition,document:'int'},[]));
++}
++for(let i=0;i<modeObjects.length;i++){
++ const o=modeObjects[i];o.nextobject=modeObjects[i+1]||null;
++ o.varname='__alive_help_'+modeBoxes[i].id.replace(/-/g,'_');o.getvalueof=()=>[0];o.patchcords={inputs:[],outputs:[]};
++}
++const basic={firstobject:modeObjects[0]},container={maxclass:'patcher',getboxattr:()=>[0,0,50,22],
++ subpatcher:()=>basic,nextobject:null};
++const root={firstobject:container,getnamed:()=>container,filepath:'Z:/synthetic-float.maxhelp',parentpatcher:null};
++const full={...definition,boxes:modeBoxes,basic_varname:'synthetic_basic',working_windows_path:root.filepath,
++ full_inventory:[{anchor:'root/obj-2',maxclass:'newobj',runtime_class:'patcher',rect:[0,0,50,22],child:true},...modeBoxes]};
++const request={op:'readback',document:'float',revision:1,source_sha256:source,command_id:2};
++const raw=reader.collectReadback(root,full,request);
++assert.equal(raw.numeric_modes.length,4);assert.equal(raw.boxes[0].maxclass,'number');
++let mutations=0,connections=0;basic.newdefault=()=>{mutations++;return {}};
++basic.connect=()=>{connections++};root.newdefault=()=>{mutations++;return {}};
++ctx.bind(root,full);assert.equal(ctx.numericModeObservations.length,4);assert.equal(connections,8);
++mutations=0;modeObjects[0].getattr=()=>'6';
++assert.throws(()=>ctx.bind(root,full));assert.equal(mutations,0);
++try{reader.collectReadback(root,full,request);assert.fail('coerced format must refuse');}
++catch(error){assert.equal(error.numeric_mode_observation.getter_representation,'string');
++ assert.equal(error.numeric_mode_observation.getter_value,'6');}
++console.log('float modes: four exact source anchors require scalar read-only format6 with strict geometry');

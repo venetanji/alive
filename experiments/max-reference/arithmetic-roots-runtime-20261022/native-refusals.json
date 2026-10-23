@@ -1,0 +1,26 @@
+{
+  "schema": "arithmetic-native-refusal-result-v1",
+  "status": "ALL_DECLARED_CORRUPTIONS_REFUSED",
+  "cases": {
+    "missing_operation": 78,
+    "duplicate_operation": 78,
+    "numeric_state_count_preserving": 504,
+    "duplicate_live_owner": 72,
+    "output_count_preserving": 141,
+    "cable_delivery_count_preserving": 90,
+    "scalar_tag_count_preserving": 126,
+    "cold_or_display_only_silence": 21,
+    "nonempty_close_checkpoint": 6,
+    "pristine_store_recall": 6,
+    "operation_order": 5,
+    "numeric_outlet1": 1
+  },
+  "total_cases": 1128,
+  "score_sha256": "95012c9d56bc898d32b055d2f6d7fc925cac19afc4a18af254f7a3c871b67afb",
+  "scorer_sha256": "611e09c0e20f86a6764fe9c89a3a0b6b7946cd333331374e98ca0e86bf52e31c",
+  "tests_sha256": "d52e47bafb2e97ca7aa90208a71cbb38fda64490e52c176b9e5aad11a8914d7e",
+  "native_result_sha256": "ce1976dfaecf4494ff876395a3c5df4add4f393f28235343cfc434120200a836",
+  "private_evidence_permissions_pass": true,
+  "bundle_retention_pass": true,
+  "qualification_passes_added": 0
+}

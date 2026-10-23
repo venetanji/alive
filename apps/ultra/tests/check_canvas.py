@@ -65,7 +65,7 @@ if sys.argv[1:]==['--adapter']:
         stable_revision=status().revision;assert param(4,0,0);l,r=render();assert not any(l+r[128:]) and status().revision==stable_revision
         assert param(4,0,127);l,r=render();assert any(r[128:]) and status().revision==stable_revision
         # Invalid edits retain the valid graph and sound; revision not consumed.
-        invalid=graph(revision+1);invalid.edges[0]=Edge(1,0,5,0)
+        invalid=graph(revision+1);invalid.edges[0]=Edge(3,0,3,0)
         assert not audio.ultra_canvas_install(C.byref(invalid));l,r=render();assert status().revision==revision and any(r)
         assert not param(1,2,1) and not param(7,0,1)
         # MIDI channel16 drives graph voice A only; legacy channel1 no longer routes A.

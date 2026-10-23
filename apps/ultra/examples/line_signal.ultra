@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "message",
+      "x": 160,
+      "y": 60,
+      "params": {
+        "text": "1 1000"
+      }
+    },
+    {
+      "id": 2,
+      "type": "message",
+      "x": 400,
+      "y": 60,
+      "params": {
+        "text": "0 500"
+      }
+    },
+    {
+      "id": 3,
+      "type": "line_signal",
+      "x": 160,
+      "y": 160,
+      "params": {
+        "value": 0,
+        "time": 0
+      }
+    },
+    {
+      "id": 4,
+      "type": "print",
+      "x": 430,
+      "y": 270,
+      "params": {
+        "label": "ramp-complete",
+        "level": 0,
+        "popup": 0
+      }
+    },
+    {
+      "id": 5,
+      "type": "snapshot",
+      "x": 160,
+      "y": 270,
+      "params": {
+        "interval": 100,
+        "offset": 0
+      }
+    },
+    {
+      "id": 6,
+      "type": "print",
+      "x": 160,
+      "y": 360,
+      "params": {
+        "label": "line_signal",
+        "level": 0,
+        "popup": 0
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 3,
+      "outlet": 1,
+      "to": 4,
+      "inlet": 0
+    },
+    {
+      "from": 3,
+      "outlet": 0,
+      "to": 5,
+      "inlet": 0
+    },
+    {
+      "from": 5,
+      "outlet": 0,
+      "to": 6,
+      "inlet": 0
+    }
+  ]
+}

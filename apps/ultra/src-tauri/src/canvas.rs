@@ -1,4 +1,4 @@
-//! Strict, bounded preparation for the native `ultra-canvas-v1` execution profile.
+//! Strict, bounded preparation for flat and hierarchical canvas documents.
 //!
 //! This module never touches the audio thread. The caller admits a fully prepared
 //! plan while holding the same control mutex used by legacy commands.
@@ -14,9 +14,12 @@ pub const MAX_EDGES: usize = 64;
 pub const MAX_JSON_BYTES: usize = 64 * 1024;
 const NUMBER_LIMIT: f64 = 100_000.;
 
+#[path = "canvas_hierarchy.rs"]
+mod hierarchy;
+
 // Keep these C-layout types in sync with native/patch_graph.h. Tests pin sizes.
 #[repr(C)]
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct NativeNode {
     pub id: u32,
     pub kind: u32,
@@ -58,6 +61,162 @@ pub struct NativeMessage {
 }
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default)]
+pub struct NativeConsoleRecord {
+    pub sequence: u64,
+    pub revision: u64,
+    pub frame: u64,
+    pub node: u32,
+    pub level: u32,
+    pub label: [u8; 32],
+    pub message: NativeMessage,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default)]
+pub struct NativeMessageBoxObservation {
+    pub id: u32, pub flags: u32, pub generation: u64,
+    pub prototype: NativeMessage, pub placeholders: [u32; 8],
+}
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default)]
+pub struct NativeMessageBoxSnapshot {
+    pub revision: u64, pub text_edit_serial: u64,
+    pub node_count: u32, pub reserved: u32,
+    pub nodes: [NativeMessageBoxObservation; 32],
+}
+#[derive(serde::Serialize)]
+pub struct MessageBoxObservation {
+    pub id: u32, pub generation: u64, pub empty: bool, pub text: String,
+    pub prototype: Value, pub placeholders: Vec<u32>,
+}
+#[derive(serde::Serialize)]
+pub struct MessageBoxSnapshot {
+    pub revision: u64, pub text_edit_serial: u64, pub nodes: Vec<MessageBoxObservation>,
+}
+pub fn message_box_snapshot(snapshot: &NativeMessageBoxSnapshot) -> Result<MessageBoxSnapshot, String> {
+    if snapshot.node_count > 32 || snapshot.reserved != 0 { return Err("Invalid native message snapshot".into()); }
+    let mut nodes = Vec::new();
+    for row in &snapshot.nodes[..snapshot.node_count as usize] {
+        if row.flags > 1 || row.prototype.count > 8 || row.placeholders.iter().any(|&reference| reference > 2) { return Err("Invalid native message template".into()); }
+        let bytes = |bytes: &[u8]| -> Result<String,String> {
+            let end = bytes.iter().position(|&byte| byte == 0).ok_or("Unterminated message symbol")?;
+            String::from_utf8(bytes[..end].to_vec()).map_err(|_| "Invalid message symbol".into())
+        };
+        let selector = bytes(&row.prototype.selector)?;
+        let mut words = Vec::new();let mut atoms = Vec::new();
+        if !selector.is_empty() { words.push(selector.clone()); }
+        for i in 0..row.prototype.count as usize {
+            let tag = row.prototype.tags[i];
+            let word = match tag {
+                0 | 1 => {
+                    let value=row.prototype.values[i];validate_number(value)?;
+                    let mut word=value.to_string();
+                    if word.len()>31 { word=format!("{value:e}"); }
+                    if tag==1 && !word.contains(['.','e','E']) { word.push_str(".0"); }
+                    word
+                },
+                2 => bytes(&row.prototype.symbols[i])?,
+                _ => return Err("Invalid message atom tag".into()),
+            };
+            atoms.push(if tag==2 { serde_json::json!({"tag":tag,"symbol":word}) } else { serde_json::json!({"tag":tag,"value":row.prototype.values[i]}) });
+            words.push(if row.placeholders[i] != 0 { format!("${}",row.placeholders[i]) } else { word });
+        }
+        if words.is_empty() && row.flags==0 { words.push("bang".into()); }
+        nodes.push(MessageBoxObservation { id:row.id,generation:row.generation,empty:row.flags!=0,text:if row.flags!=0 { String::new() } else { words.join(" ") },
+            prototype:serde_json::json!({"selector":selector,"atoms":atoms}),placeholders:row.placeholders[..row.prototype.count as usize].to_vec() });
+    }
+    Ok(MessageBoxSnapshot { revision:snapshot.revision,text_edit_serial:snapshot.text_edit_serial,nodes })
+}
+#[derive(Clone, serde::Serialize, Debug)]
+pub struct ConsoleRecord {
+    pub sequence: u64,
+    pub revision: u64,
+    pub frame: u64,
+    pub node: u32,
+    pub level: u32,
+    pub label: String,
+    pub text: String,
+}
+fn native_text(bytes: &[u8]) -> Result<String, String> {
+    let end = bytes.iter().position(|&b| b == 0).ok_or("Unterminated console text")?;
+    String::from_utf8(bytes[..end].to_vec()).map_err(|_| "Invalid console text".into())
+}
+fn native_message_text(message: &NativeMessage) -> Result<String, String> {
+    if message.count > 8 { return Err("Invalid native message count".into()); }
+    let mut words = Vec::with_capacity(9);
+    let selector = native_text(&message.selector)?;
+    if !selector.is_empty() { words.push(selector); }
+    for i in 0..message.count as usize {
+        let atom = match message.tags[i] {
+            // Older numeric objects carry untyped fractional doubles with tag 0.
+            0 => { validate_number(message.values[i])?; message.values[i].to_string() },
+            1 => {
+                validate_number(message.values[i])?;
+                let mut value = message.values[i].to_string();
+                if !value.contains(['.','e','E']) { value.push('.'); }
+                value
+            },
+            2 => native_text(&message.symbols[i])?,
+            _ => return Err("Invalid native console atom".into()),
+        };
+        words.push(atom);
+    }
+    if words.is_empty() { words.push("bang".into()); }
+    Ok(words.join(" "))
+}
+pub fn console_record(record: &NativeConsoleRecord) -> Result<ConsoleRecord, String> {
+    if record.message.count > 8 || record.level > 3 { return Err("Invalid native console record".into()); }
+    Ok(ConsoleRecord { sequence: record.sequence, revision: record.revision, frame: record.frame,
+        node: record.node, level: record.level, label: native_text(&record.label)?, text: native_message_text(&record.message)? })
+}
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default)]
+pub struct NativePrintPopupObservation {
+    pub id: u32, pub enabled: u32, pub has_value: u32, pub reserved: u32,
+    pub generation: u64, pub frame: u64, pub message: NativeMessage,
+}
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default)]
+pub struct NativePrintPopupSnapshot {
+    pub revision: u64, pub frame: u64, pub node_count: u32, pub reserved: u32,
+    pub nodes: [NativePrintPopupObservation; 32],
+}
+#[derive(serde::Serialize)]
+pub struct PrintPopupObservation {
+    pub id: u32, pub enabled: bool, pub has_value: bool,
+    pub generation: u64, pub frame: u64, pub text: String,
+}
+#[derive(serde::Serialize)]
+pub struct PrintPopupSnapshot {
+    pub revision: u64, pub frame: u64, pub nodes: Vec<PrintPopupObservation>,
+}
+pub fn print_popup_snapshot(snapshot: &NativePrintPopupSnapshot) -> Result<PrintPopupSnapshot, String> {
+    if snapshot.node_count > 32 || snapshot.reserved != 0 { return Err("Invalid native print snapshot".into()); }
+    let symbol = |bytes: &[u8]| -> Result<(), String> {
+        let text=native_text(bytes)?;
+        if text.bytes().any(|byte| !(33..=126).contains(&byte) || b",;$'\"\\".contains(&byte)) {
+            return Err("Invalid native print symbol".into());
+        }
+        Ok(())
+    };
+    let mut ids=HashSet::new();let mut nodes=Vec::new();
+    for row in &snapshot.nodes[..snapshot.node_count as usize] {
+        if row.id==0 || !ids.insert(row.id) || row.enabled>1 || row.has_value>1 || row.reserved!=0 || row.frame>snapshot.frame
+            || (row.has_value!=0 && (row.enabled==0 || row.generation==0)) || row.message.count>8 {
+            return Err("Invalid native print observation".into());
+        }
+        symbol(&row.message.selector)?;
+        for i in 0..row.message.count as usize {
+            if row.message.tags[i]>2 { return Err("Invalid native print atom".into()); }
+            validate_number(row.message.values[i])?;symbol(&row.message.symbols[i])?;
+        }
+        let text=native_message_text(&row.message)?;
+        nodes.push(PrintPopupObservation {id:row.id,enabled:row.enabled!=0,has_value:row.has_value!=0,
+            generation:row.generation,frame:row.frame,text:if row.enabled!=0&&row.has_value!=0 {text} else {String::new()} });
+    }
+    Ok(PrintPopupSnapshot {revision:snapshot.revision,frame:snapshot.frame,nodes})
+}
+#[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct NativeEdge {
     pub from: u32,
     pub outlet: u32,
@@ -127,6 +286,22 @@ struct Edge {
     outlet: u32,
     to: u32,
     inlet: u32,
+    #[serde(default, rename = "midpoints", deserialize_with = "present_midpoints")]
+    _midpoints: Option<Vec<f64>>,
+}
+
+// Geometry is validated at the authoring boundary and never enters NativeEdge.
+fn present_midpoints<'de, D>(deserializer: D) -> Result<Option<Vec<f64>>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let points = Vec::<f64>::deserialize(deserializer)?;
+    if points.len() > 256 || points.len() % 2 != 0
+        || points.iter().any(|value| !value.is_finite() || !(0.0..=4000.0).contains(value))
+    {
+        return Err(serde::de::Error::custom("Cable midpoints require at most 128 pairs of finite coordinates from 0 to 4000"));
+    }
+    Ok(Some(points))
 }
 #[derive(Clone, Debug)]
 pub struct Prepared {
@@ -134,18 +309,26 @@ pub struct Prepared {
 }
 
 /// Count the serialized input without allocating another unbounded JSON string.
-struct SizeLimit(usize);
+struct SizeLimit {
+    bytes: usize,
+    max: usize,
+    error: &'static str,
+}
 impl Write for SizeLimit {
     fn write(&mut self, bytes: &[u8]) -> io::Result<usize> {
-        if bytes.len() > MAX_JSON_BYTES.saturating_sub(self.0) {
-            return Err(io::Error::other("Canvas patch exceeds 64 KiB JSON"));
+        if bytes.len() > self.max.saturating_sub(self.bytes) {
+            return Err(io::Error::other(self.error));
         }
-        self.0 += bytes.len();
+        self.bytes += bytes.len();
         Ok(bytes.len())
     }
     fn flush(&mut self) -> io::Result<()> {
         Ok(())
     }
+}
+fn validate_json_size(patch: &Value, max: usize, error: &'static str) -> Result<(), String> {
+    serde_json::to_writer(SizeLimit { bytes: 0, max, error }, patch)
+        .map_err(|e| format!("Invalid canvas input: {e}"))
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -153,35 +336,63 @@ enum Port {
     Control,
     Mono,
     Stereo,
+    Mixed,
+}
+impl Port {
+    fn domains(self) -> u8 {
+        match self {
+            Self::Control => 1,
+            Self::Mono => 2,
+            Self::Stereo => 4,
+            Self::Mixed => 3,
+        }
+    }
 }
 fn inlet(node: &NativeNode, port: u32) -> Option<Port> {
     let count = argument_count(node);
     match node.kind {
         0..=1 | 3 if port == 0 => Some(Port::Control),
-        2 | 4..=8 if port <= 1 => Some(Port::Control),
+        2 | 4..=8 | 53..=58 if port <= 1 => Some(Port::Control),
         9 | 11 if port <= 2 => Some(Port::Control),
         12 if port == 0 => Some(Port::Mono),
         12 if port == 1 => Some(Port::Control),
         13 if port <= 1 => Some(Port::Mono),
         14 if port == 0 => Some(Port::Stereo),
         15..=16 if port <= 1 => Some(Port::Control),
-        17..=18 | 20 | 23 if port == 0 => Some(Port::Control),
+        17..=18 | 20 | 23 | 25..=26 | 28..=30 | 52 | 59 if port == 0 => Some(Port::Control),
+        27 if port == 0 && node.text[0] == 0 => Some(Port::Control),
         19 if port < count => Some(Port::Control),
         21 if port < if count == 1 { 2 } else { 1 } => Some(Port::Control),
         22 if port <= count => Some(Port::Control),
         24 if port <= 2 => Some(Port::Control),
+        31..=37 if port <= 1 => Some(Port::Control),
+        38 if port == 0 => Some(Port::Mixed),
+        39..=44 if port <= 1 => Some(Port::Mixed),
+        45 if port == 0 => Some(Port::Control),
+        46 if port <= 2 => Some(Port::Mixed),
+        47 if port <= 1 => Some(Port::Control),
+        48 if port == 0 => Some(Port::Mixed),
+        48 if port == 1 => Some(Port::Control),
+        49 if port < count => Some(Port::Mono),
+        50..=51 if port == 0 => Some(Port::Mixed),
         _ => None,
     }
 }
 fn outlet(node: &NativeNode, port: u32) -> Option<Port> {
     let count = argument_count(node);
     match node.kind {
-        0..=10 | 15..=16 | 18..=19 if port == 0 => Some(Port::Control),
+        0..=10 | 15..=16 | 18..=19 | 27..=30 | 53..=59 if port == 0 => Some(Port::Control),
         11..=12 if port == 0 => Some(Port::Mono),
         13 if port == 0 => Some(Port::Stereo),
-        17 | 24 if port <= 1 => Some(Port::Control),
+        17 | 24 | 52 if port <= 1 => Some(Port::Control),
         20 | 23 if port < count => Some(Port::Control),
         21..=22 if port <= count => Some(Port::Control),
+        31..=37 if port <= 1 => Some(Port::Control),
+        38 if port < count => Some(Port::Mono),
+        39..=47 if port == 0 => Some(Port::Mono),
+        47 if port == 1 => Some(Port::Control),
+        48 if port == 0 => Some(Port::Control),
+        50..=51 if port == 0 => Some(Port::Mixed),
         _ => None,
     }
 }
@@ -200,7 +411,11 @@ fn kind(name: &str) -> Option<u32> {
     [
         "bang", "message", "number", "toggle", "add", "multiply", "metro", "counter", "chord",
         "makenote", "midiin", "voice", "gain", "join", "dac", "int", "float", "flonum", "slider",
-        "pack", "unpack", "select", "route", "trigger", "line",
+        "pack", "unpack", "select", "route", "trigger", "line", "print", "send", "receive",
+        "iter", "prepend", "append", "zl_reg", "zl_join", "zl_len", "zl_iter", "zl_slice", "zl_rev", "zl_rot",
+        "sig", "signal_add", "signal_subtract", "signal_multiply", "signal_divide", "cycle", "phasor", "noise", "signal_clip", "line_signal", "snapshot", "signal_dac",
+        "inlet", "outlet", "number_int", "message_box",
+        "subtract", "divide", "modulo", "reverse_subtract", "reverse_divide", "abs",
     ]
     .iter()
     .position(|candidate| *candidate == name)
@@ -232,10 +447,19 @@ fn parameters(kind: u32) -> &'static [Parameter] {
         };
     }
     match kind {
+        25 => &[p!("level", 0, 0., 0., 3., true, true), p!("popup", 1, 0., 0., 1., true, true)],
         2 => &[p!("value", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true)],
+        52 => &[
+            p!("value", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, true, true),
+            p!("minimum", 1, -NUMBER_LIMIT, -NUMBER_LIMIT, NUMBER_LIMIT, true, true),
+            p!("maximum", 2, NUMBER_LIMIT, -NUMBER_LIMIT, NUMBER_LIMIT, true, true),
+        ],
         3 => &[p!("value", 0, 0., 0., 1., true, true)],
-        4 => &[p!("rhs", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true)],
-        5 => &[p!("rhs", 0, 1., -NUMBER_LIMIT, NUMBER_LIMIT, false, true)],
+        4 => &[p!("rhs", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true), p!("numericmode", 1, 0., 0., 2., true, false)],
+        5 => &[p!("rhs", 0, 1., -NUMBER_LIMIT, NUMBER_LIMIT, false, true), p!("numericmode", 1, 0., 0., 2., true, false)],
+        54 | 57 => &[p!("rhs", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true), p!("numericmode", 1, 1., 1., 2., true, false)],
+        55..=56 | 58 => &[p!("rhs", 0, 1., -NUMBER_LIMIT, NUMBER_LIMIT, false, true), p!("numericmode", 1, 1., 1., 2., true, false)],
+        59 => &[p!("numericmode", 1, 1., 1., 2., true, false)],
         6 => &[p!("interval", 0, 150., 20., 2000., false, true)],
         7 => &[p!("steps", 0, 8., 1., 32., true, true)],
         8 => &[
@@ -289,6 +513,25 @@ fn parameters(kind: u32) -> &'static [Parameter] {
             p!("grain", 2, 20., 1., NUMBER_LIMIT, false, true),
             p!("floatoutput", 3, 2., 0., 2., true, true),
         ],
+        34..=35 => &[p!("size", 0, 0., 0., NUMBER_LIMIT, true, true)],
+        37 => &[p!("rotation", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, true, true)],
+        39..=42 => &[p!("rhs", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true)],
+        43..=44 => &[
+            p!("frequency", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true),
+            p!("phase", 1, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true),
+        ],
+        46 => &[
+            p!("minimum", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true),
+            p!("maximum", 1, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true),
+        ],
+        47 => &[
+            p!("value", 0, 0., -NUMBER_LIMIT, NUMBER_LIMIT, false, true),
+            p!("time", 1, 0., 0., NUMBER_LIMIT, false, true),
+        ],
+        48 => &[
+            p!("interval", 0, 0., 0., NUMBER_LIMIT, false, true),
+            p!("offset", 1, 0., 0., 63., true, true),
+        ],
         _ => &[],
     }
 }
@@ -328,8 +571,11 @@ fn assign_parameter(node: &mut NativeNode, spec: Parameter, value: f64) {
     }
 }
 fn validate_text(text: &str) -> Result<(), String> {
+    validate_text_config(text, false)
+}
+fn validate_text_config(text: &str, allow_empty: bool) -> Result<(), String> {
     if text.len() > 127
-        || text.trim().is_empty()
+        || (!allow_empty && text.trim().is_empty())
         || !text.is_ascii()
         || text.bytes().any(|b| {
             matches!(b, b',' | b';' | b'$' | b'"' | b'\'' | b'\\')
@@ -376,8 +622,8 @@ fn add_atom(message: &mut NativeMessage, token: &str, force_symbol: bool) -> Res
     message.count += 1;
     Ok(())
 }
-fn arguments(text: &str) -> Result<NativeMessage, String> {
-    validate_text(text)?;
+fn arguments_config(text: &str, allow_empty: bool) -> Result<NativeMessage, String> {
+    validate_text_config(text, allow_empty)?;
     let mut result = NativeMessage::default();
     for token in text.split_ascii_whitespace() {
         add_atom(&mut result, token, false)?;
@@ -423,6 +669,29 @@ fn literal(text: &str) -> Result<NativeMessage, String> {
     }
     Ok(result)
 }
+pub fn message_template(text: &str) -> Result<(NativeMessage,[u32;8]),String> {
+    if text.len()>127 || !text.is_ascii() { return Err("Message text requires at most 127 ASCII bytes".into()); }
+    let words:Vec<_>=text.split_ascii_whitespace().collect();
+    if words.is_empty() { validate_text_config(text,true)?;return Ok((NativeMessage::default(),[0;8])); }
+    if words[0].starts_with('$') { return Err("Message placeholders require a fixed literal head".into()); }
+    let mut clean=Vec::new();let mut references=Vec::new();
+    for (index,word) in words.iter().enumerate() {
+        let reference=match *word { "$1"=>1,"$2"=>2,_=>0 };
+        if reference!=0 && (index==0 || matches!(words[0],"symbol"|"bang")) { return Err("Unsupported message placeholder position".into()); }
+        clean.push(if reference!=0 { "0" } else { word });references.push(reference);
+    }
+    let prototype=literal(&clean.join(" "))?;
+    // Validate discarded whitespace as well as tokens without admitting dollar syntax globally.
+    let validation=text.replace("$1","0").replace("$2","0");validate_text_config(&validation,true)?;
+    let selector=usize::from(prototype.selector[0]!=0);let mut placeholders=[0;8];
+    for (index,reference) in references.into_iter().enumerate() { if reference!=0 { placeholders[index-selector]=reference; } }
+    Ok((prototype,placeholders))
+}
+fn message_replacement_literal(text: &str) -> Result<NativeMessage,String> {
+    let (mut result,references)=message_template(text)?;
+    for (index,reference) in references.iter().enumerate() { if *reference!=0 { result.tags[index]=2;result.symbols[index]=[0;32];result.symbols[index][0]=b'$';result.symbols[index][1]=b'0'+*reference as u8; } }
+    Ok(result)
+}
 fn validate_number(value: f64) -> Result<(), String> {
     if !value.is_finite() || value.abs() > NUMBER_LIMIT {
         return Err("Control values must be finite numbers in -100000..100000".into());
@@ -430,8 +699,11 @@ fn validate_number(value: f64) -> Result<(), String> {
     Ok(())
 }
 fn validate_relationships(node: &NativeNode) -> Result<(), String> {
-    if node.kind == 17 && node.p1 > node.p2 {
-        return Err("flonum minimum must not exceed maximum".into());
+    if matches!(node.kind, 4..=5 | 54..=58) && node.p1 == 1. && node.p0.fract() != 0. {
+        return Err("Integer arithmetic requires an integer rhs".into());
+    }
+    if matches!(node.kind, 17 | 52) && node.p1 > node.p2 {
+        return Err("Numeric UI minimum must not exceed maximum".into());
     }
     Ok(())
 }
@@ -447,15 +719,18 @@ fn validate_style(kind: u32, name: &str, style: &Map<String, Value>) -> Result<(
             "width" => bounded(value, 12., 1200., false),
             "height" => bounded(value, 12., 800., false),
             "fontsize" => bounded(value, 8., 48., false),
-            "triangle" if matches!(kind, 2 | 17) => bounded(value, 0., 1., true),
+            "bubble" if name == "comment" => bounded(value, 0., 1., true),
+            "bubbleside" if name == "comment" => bounded(value, 0., 3., true),
+            "bubblepoint" if name == "comment" => bounded(value, 0., 1., false),
+            "triangle" if matches!(kind, 2 | 17 | 52) => bounded(value, 0., 1., true),
             "orientation" if matches!(kind, 12 | 18) => bounded(value, 0., 2., true),
             _ => {
                 let is_color = match key.as_str() {
                     "bgcolor" | "textcolor" | "color" => true,
                     "blinkcolor" | "outlinecolor" => kind == 0,
                     "checkedcolor" | "uncheckedcolor" => kind == 3,
-                    "bordercolor" => matches!(kind, 2 | 3 | 12 | 17 | 18),
-                    "tricolor" => matches!(kind, 2 | 17),
+                    "bordercolor" => matches!(kind, 2 | 3 | 12 | 17 | 18 | 52),
+                    "tricolor" => matches!(kind, 2 | 17 | 52),
                     "knobcolor" => matches!(kind, 12 | 18),
                     "elementcolor" => kind == 18,
                     _ => false,
@@ -479,14 +754,35 @@ fn validate_style(kind: u32, name: &str, style: &Map<String, Value>) -> Result<(
 }
 
 pub fn prepare(patch: Value) -> Result<Prepared, String> {
-    serde_json::to_writer(SizeLimit(0), &patch)
-        .map_err(|e| format!("Invalid canvas input: {e}"))?;
+    if patch.get("version").and_then(Value::as_u64) == Some(2) {
+        return hierarchy::prepare(patch);
+    }
+    validate_json_size(&patch, MAX_JSON_BYTES, "Canvas patch exceeds 64 KiB JSON")?;
     let doc: Document =
         serde_json::from_value(patch).map_err(|e| format!("Invalid canvas schema: {e}"))?;
     if doc.version != 1 || doc.profile != "ultra-canvas-v1" {
         return Err("Expected version 1 and profile ultra-canvas-v1".into());
     }
+    prepare_flat(doc, false)
+}
+
+pub fn help_shell_object(patch:&Value)->Result<Option<String>,String>{
+    prepare(patch.clone())?;
+    Ok(patch.get("helpShell").and_then(|shell|shell.get("object")).and_then(Value::as_str).map(str::to_owned))
+}
+
+fn validate_position(x: f64, y: f64) -> Result<(), String> {
+    if !x.is_finite() || !y.is_finite() || !(0. ..=4000.).contains(&x) || !(0. ..=4000.).contains(&y) {
+        return Err("Node positions must be finite and within 0..4000".into());
+    }
+    Ok(())
+}
+
+fn prepare_flat(doc: Document, allow_relays: bool) -> Result<Prepared, String> {
     if doc.nodes.len() > MAX_NODES || doc.edges.len() > MAX_EDGES {
+        if allow_relays {
+            return Err("Compiled canvas supports at most 32 executable nodes including boundary relays and 64 edges".into());
+        }
         return Err("Canvas supports at most 32 nodes and 64 edges".into());
     }
     let mut graph = NativeGraph {
@@ -501,15 +797,12 @@ pub fn prepare(patch: Value) -> Result<Prepared, String> {
         if node.id == 0 || ids.insert(node.id, index).is_some() {
             return Err("Node IDs must be unique positive u32 integers".into());
         }
-        if !node.x.is_finite()
-            || !node.y.is_finite()
-            || !(0. ..=4000.).contains(&node.x)
-            || !(0. ..=4000.).contains(&node.y)
-        {
-            return Err("Node positions must be finite and within 0..4000".into());
-        }
+        validate_position(node.x, node.y)?;
         let kind =
             kind(&node.r#type).ok_or_else(|| format!("Unknown canvas object: {}", node.r#type))?;
+        if matches!(kind, 50 | 51) && !allow_relays {
+            return Err("Boundary connectors require version 2 and profile ultra-patcher-v2".into());
+        }
         // Display overrides are validated document data and never reach the native graph.
         validate_style(kind, &node.r#type, &node.style)?;
         let mut native = NativeNode {
@@ -517,36 +810,70 @@ pub fn prepare(patch: Value) -> Result<Prepared, String> {
             kind,
             ..NativeNode::default()
         };
-        if kind == 1 {
+        if kind == 1 || kind == 53 {
             if node.params.keys().any(|key| key != "text") {
                 return Err("Unknown message parameter".into());
             }
             let text = match node.params.get("text") {
                 Some(value) => value.as_str().ok_or("Message text must be a string")?,
-                None => "60 100",
+                None => if kind == 53 { "" } else { "60 100" },
             };
-            literal(text)?;
+            if kind == 53 { message_template(text)?; } else { literal(text)?; }
             native.text[..text.len()].copy_from_slice(text.as_bytes());
-        } else if (19..=23).contains(&kind) {
-            if node.params.keys().any(|key| key != "args") {
+        } else if matches!(kind, 26..=27) {
+            if node.params.keys().any(|key| key != "name") {
                 return Err(format!("Unknown parameter for {}", node.r#type));
             }
-            let text = match node.params.get("args") {
+            let name = match node.params.get("name") {
+                Some(value) => value.as_str().ok_or("Send/receive name must be a string")?,
+                None => if kind == 26 { "channel" } else { "" },
+            };
+            if name.is_empty() && kind == 26 || name.len() > 31 || name.bytes().any(|b| !(33..=126).contains(&b) || b",;$'\"\\".contains(&b)) {
+                return Err("Send/receive name must be one ASCII token of 1 to 31 bytes; only receive may be unnamed".into());
+            }
+            native.text[..name.len()].copy_from_slice(name.as_bytes());
+        } else if (19..=23).contains(&kind) || (29..=32).contains(&kind) || matches!(kind, 38 | 49) {
+            let key = if kind == 49 { "channels" } else { "args" };
+            if node.params.keys().any(|candidate| candidate != key) {
+                return Err(format!("Unknown parameter for {}", node.r#type));
+            }
+            let text = match node.params.get(key) {
                 Some(value) => value.as_str().ok_or("Creation args must be a string")?,
                 None => match kind {
                     19..=20 => "0 0",
                     21..=22 => "0",
+                    29..=32 => "",
+                    38 => "0",
+                    49 => "1 2",
                     _ => "i i",
                 },
             };
-            arguments(text)?;
+            let arguments = arguments_config(text, (29..=32).contains(&kind))?;
+            if matches!(kind, 38 | 49) {
+                for index in 0..arguments.count as usize {
+                    if arguments.tags[index] == 2 {
+                        return Err("Signal values and output channels must be numeric".into());
+                    }
+                    if kind == 49 && (!(1. ..=2.).contains(&arguments.values[index])
+                        || arguments.values[index].fract() != 0.) {
+                        return Err("This audio host exposes only physical channels 1 and 2".into());
+                    }
+                }
+            }
             native.text[..text.len()].copy_from_slice(text.as_bytes());
         } else {
+            if kind == 25 {
+                let label = node.params.get("label").map_or(Ok("print"), |v|v.as_str().ok_or("Print label must be a string"))?;
+                if label.is_empty() || label.len() > 31 || label.bytes().any(|b| !(33..=126).contains(&b) || b",;$'\"\\".contains(&b)) {
+                    return Err("Print label must be one ASCII token of 1 to 31 bytes".into());
+                }
+                native.text[..label.len()].copy_from_slice(label.as_bytes());
+            }
             let specs = parameters(kind);
             if node
                 .params
                 .keys()
-                .any(|key| !specs.iter().any(|spec| spec.key == key))
+                .any(|key| !(kind == 25 && key == "label") && !specs.iter().any(|spec| spec.key == key))
             {
                 return Err(format!("Unknown parameter for {}", node.r#type));
             }
@@ -571,9 +898,7 @@ pub fn prepare(patch: Value) -> Result<Prepared, String> {
         graph.nodes[index] = native;
     }
     let mut cords = HashSet::new();
-    let mut audio_inlets = HashSet::new();
-    let mut voice_paths = HashSet::new();
-    let mut controls = vec![Vec::new(); doc.nodes.len()];
+    let mut edge_domains = Vec::with_capacity(doc.edges.len());
     for (index, edge) in doc.edges.iter().enumerate() {
         let from = *ids.get(&edge.from).ok_or("Unknown edge source")?;
         let to = *ids.get(&edge.to).ok_or("Unknown edge destination")?;
@@ -581,31 +906,43 @@ pub fn prepare(patch: Value) -> Result<Prepared, String> {
         let b = graph.nodes[to];
         let out = outlet(&a, edge.outlet).ok_or("Invalid outlet")?;
         let input = inlet(&b, edge.inlet).ok_or("Invalid inlet")?;
-        if out != input {
+        let domains = out.domains() & input.domains();
+        if domains == 0 {
             return Err("Control, mono audio and stereo audio ports cannot be mixed".into());
         }
         if !cords.insert((edge.from, edge.outlet, edge.to, edge.inlet)) {
             return Err("Duplicate canvas edge".into());
         }
-        if out == Port::Control {
-            controls[from].push(to);
-        } else {
-            if !matches!((a.kind, b.kind), (11, 12) | (12, 13) | (13, 14)) {
-                return Err("Supported audio paths are voice -> gain -> join -> dac".into());
-            }
-            if !audio_inlets.insert((edge.to, edge.inlet)) {
-                return Err("An audio inlet accepts exactly one source".into());
-            }
-            if a.kind == 11 && !voice_paths.insert(edge.from) {
-                return Err("A voice may feed only one gain path".into());
-            }
-        }
+        edge_domains.push((from, to, domains, out));
         graph.edges[index] = NativeEdge {
             from: edge.from,
             outlet: edge.outlet,
             to: edge.to,
             inlet: edge.inlet,
         };
+    }
+    // Relays become signal-active only when fed by a real mono output. An
+    // undriven boundary must leave downstream scalar signal fallbacks intact.
+    let mut active_mono = vec![false; doc.nodes.len()];
+    loop {
+        let mut changed = false;
+        for &(from, to, domains, out) in &edge_domains {
+            if domains & 2 != 0 && matches!(graph.nodes[to].kind, 50..=51)
+                && !active_mono[to] && (out == Port::Mono || active_mono[from])
+            {
+                active_mono[to] = true;
+                changed = true;
+            }
+        }
+        if !changed { break; }
+    }
+    let mut controls = vec![Vec::new(); doc.nodes.len()];
+    let mut signals = vec![Vec::new(); doc.nodes.len()];
+    for (from, to, domains, out) in edge_domains {
+        if domains & 1 != 0 { controls[from].push(to); }
+        if domains & 4 != 0 || domains & 2 != 0 && (out == Port::Mono || active_mono[from]) {
+            signals[from].push(to);
+        }
     }
     fn visit(node: usize, graph: &[Vec<usize>], marks: &mut [u8]) -> bool {
         if marks[node] == 1 {
@@ -629,15 +966,73 @@ pub fn prepare(patch: Value) -> Result<Prepared, String> {
             return Err("Control cycles are not supported".into());
         }
     }
+    marks.fill(0);
+    for node in 0..doc.nodes.len() {
+        if !visit(node, &signals, &mut marks) {
+            return Err("Signal cycles require a delay object and are not supported".into());
+        }
+    }
     Ok(Prepared { native: graph })
 }
 
-#[derive(Default)]
+#[derive(Clone, Default)]
 pub struct CanvasState {
     graph: Option<Prepared>,
     revision: u64,
+    message_text_serial: u64,
 }
 impl CanvasState {
+    pub fn revision(&self) -> u64 { self.revision }
+    pub fn message_text_serial(&self) -> u64 { self.message_text_serial }
+
+    pub fn matches(&self, plan: &Prepared) -> bool {
+        self.graph.as_ref().is_some_and(|current| {
+            let a = &current.native; let b = &plan.native;
+            a.node_count == b.node_count && a.edge_count == b.edge_count && a.nodes == b.nodes && a.edges == b.edges
+        })
+    }
+
+    pub fn parameter_matches(&self, plan: &Prepared, node: u32, key: &str, value: f64) -> Result<bool, String> {
+        let mut next = self.clone();
+        next.parameter(self.revision, node, key, value, |_, _| true)?;
+        Ok(next.matches(plan))
+    }
+
+    pub fn single_parameter_change(&self, plan: &Prepared) -> Option<(u32, &'static str, f64, bool)> {
+        if self.matches(plan) { return None; }
+        for node in &plan.native.nodes[..plan.native.node_count as usize] {
+            let values = [node.p0, node.p1, node.p2, node.p3, node.p4, node.p5];
+            for parameter in parameters(node.kind).iter().filter(|parameter| parameter.live) {
+                let value = values[parameter.slot as usize];
+                if self.parameter_matches(plan, node.id, parameter.key, value).unwrap_or(false) {
+                    let hot = parameter.key == "value" && matches!(node.kind, 2 | 3 | 15..=18 | 52);
+                    return Some((node.id, parameter.key, value, hot));
+                }
+            }
+        }
+        None
+    }
+    pub fn message_text_matches(&self, plan: &Prepared, node: u32, text: &str) -> Result<bool,String> {
+        let mut next=self.clone();next.message_text(self.revision,node,text,|_|true)?;Ok(next.matches(plan))
+    }
+    pub fn single_message_text_change(&self, plan: &Prepared) -> Option<(u32,String)> {
+        if self.matches(plan) { return None; }
+        for node in &plan.native.nodes[..plan.native.node_count as usize] {
+            if node.kind!=53 { continue; }
+            let end=node.text.iter().position(|&byte| byte==0)?;let text=std::str::from_utf8(&node.text[..end]).ok()?;
+            if self.message_text_matches(plan,node.id,text).unwrap_or(false) { return Some((node.id,text.into())); }
+        }
+        None
+    }
+    pub fn message_text(&mut self, revision: u64, node: u32, text: &str, send: impl FnOnce(u64)->bool) -> Result<u64,String> {
+        let index=self.node_index(revision,node)?;
+        if self.graph.as_ref().unwrap().native.nodes[index].kind!=53 { return Err("Text actions require message_box".into()); }
+        message_template(text)?;
+        let serial=self.message_text_serial.checked_add(1).filter(|&serial| serial<=9_007_199_254_740_991).ok_or("Message text serial exhausted")?;
+        if !send(serial) { return Err("Native message text was not admitted".into()); }
+        let native=&mut self.graph.as_mut().unwrap().native.nodes[index];native.text=[0;128];native.text[..text.len()].copy_from_slice(text.as_bytes());
+        self.message_text_serial=serial;Ok(serial)
+    }
     /// Commit the generation only after the native bounded plan has been admitted.
     pub fn install(
         &mut self,
@@ -653,6 +1048,7 @@ impl CanvasState {
             return Err("Native canvas admission failed; previous graph retained".into());
         }
         self.revision = revision;
+        self.message_text_serial = 0;
         self.graph = Some(plan);
         Ok(revision)
     }
@@ -677,7 +1073,7 @@ impl CanvasState {
         value: Value,
     ) -> Result<NativeMessage, String> {
         let index = self.node_index(revision, node)?;
-        if inlet(&self.graph.as_ref().unwrap().native.nodes[index], port) != Some(Port::Control) {
+        if !matches!(inlet(&self.graph.as_ref().unwrap().native.nodes[index], port), Some(Port::Control | Port::Mixed)) {
             return Err("Events require a valid control inlet".into());
         }
         let mut event = NativeMessage::default();
@@ -685,6 +1081,9 @@ impl CanvasState {
             return Ok(event);
         }
         if let Some(text) = value.as_str() {
+            if self.graph.as_ref().unwrap().native.nodes[index].kind == 53 && (port == 1 || text.split_ascii_whitespace().next() == Some("set")) {
+                return message_replacement_literal(text);
+            }
             return literal(text);
         }
         let values = value
@@ -699,6 +1098,16 @@ impl CanvasState {
             event.tags[index] = u32::from(value.fract() != 0.);
         }
         Ok(event)
+    }
+    pub fn ui_action(&self, revision: u64, node: u32, port: u32, value: &Value, action: &str) -> Result<(), String> {
+        if action != "tab" || port != 0 || !value.is_null() {
+            return Err("Tab actions require action tab, inlet 0 and null value".into());
+        }
+        let index = self.node_index(revision, node)?;
+        if !matches!(self.graph.as_ref().unwrap().native.nodes[index].kind, 17 | 52) {
+            return Err("Tab actions require a flonum or number_int object".into());
+        }
+        Ok(())
     }
     pub fn parameter(
         &mut self,

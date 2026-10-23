@@ -3,7 +3,7 @@ import {fileURLToPath} from 'node:url';
 
 export default defineConfig({
   testDir: '.',
-  testMatch: ['canvas-browser.spec.mjs', 'canvas-controls.spec.mjs', 'canvas-compat.spec.mjs'],
+  testMatch: ['canvas-browser.spec.mjs', 'canvas-controls.spec.mjs', 'canvas-compat.spec.mjs', 'canvas-console.spec.mjs', 'canvas-documents.spec.mjs','canvas-hierarchy.spec.mjs','canvas-help-shell.spec.mjs','canvas-comment-entry.spec.mjs','canvas-arithmetic.spec.mjs'],
   fullyParallel: false,
   workers: 1,
   retries: 0,
@@ -16,8 +16,8 @@ export default defineConfig({
     viewport: {width: 1600, height: 1400},
     // Never use --no-sandbox, even in CI. A launch failure is a real failure.
     launchOptions: {chromiumSandbox: true},
-    screenshot: 'only-on-failure',
-    trace: 'retain-on-failure',
+    screenshot: process.env.ULTRA_TEST_NO_CAPTURES==='1'?'off':'only-on-failure',
+    trace: process.env.ULTRA_TEST_NO_CAPTURES==='1'?'off':'retain-on-failure',
   },
   webServer: {
     command: 'python3 -m http.server 4173 --bind 127.0.0.1',

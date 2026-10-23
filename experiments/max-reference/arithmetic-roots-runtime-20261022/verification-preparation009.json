@@ -1,0 +1,83 @@
+{
+  "canonical_sixteen_file_map_sha256": "3b47a0970817f4f5dc06958cf895e5903d09e16c8d5e2821a9e00828eb1e26fd",
+  "design_sha256": "3cc992afe3da3a5e8e7431ace0f25ace56d5662ec09ac9cb1e333f450f01b22d",
+  "implementation_report_sha256": "24aca89e55cb50b458e6eebb4b60aa6e62063ddb0da7562a7cc9c7324d13d798",
+  "independent_source_review_pending": true,
+  "max_runtime_executed": false,
+  "native_result_sha256": "ce1976dfaecf4494ff876395a3c5df4add4f393f28235343cfc434120200a836",
+  "node": {
+    "command": "node test_helpers.cjs",
+    "exit_code": 0,
+    "failures": [],
+    "preparation007_groups": 10,
+    "preparation008_groups": 11,
+    "preparation009_groups": 16,
+    "prior_controls_pass": true,
+    "session_id": 6505
+  },
+  "obligations": {
+    "empty_checkpoints": 6,
+    "independent_closes": 6,
+    "live_checkpoints": 72,
+    "native_cable_deliveries": 90,
+    "native_typed_receipts": 297,
+    "numeric_states": 504,
+    "operations": 78,
+    "original_emissions": 141,
+    "saved_order_observed": false
+  },
+  "package_sha256": "3b2ca977ec2286470a7759b13129e5bfce47abed3c003b408e2d3e14bcf3df50",
+  "preparation009_created": false,
+  "preservation": {
+    "all_private_inventories_unchanged": true,
+    "authorized_changed_files": [
+      "controller.js",
+      "test_helpers.cjs"
+    ],
+    "native_exact_five_preserved": true,
+    "other_mapped_files_unchanged": 14,
+    "private_entries": 1259,
+    "private_roots": 28,
+    "score_frozen": true
+  },
+  "python": {
+    "command": "python3 -B -m unittest discover -p 'test_*.py'",
+    "exit_code": 0,
+    "seconds": 22.456,
+    "session_id": 35613,
+    "skip_reason": "existing actual-native-evidence test requires explicit external private paths",
+    "tests_passed": 88,
+    "tests_run": 89,
+    "tests_skipped": 1
+  },
+  "qualification_passes_added": 0,
+  "qualified_help_files": 0,
+  "real_source_reconstruction": {
+    "canonical_ascii_bytes": 18681,
+    "cross_language_configuration": true,
+    "cross_language_projection": true,
+    "definitions_reconstructed": 6,
+    "helpers": 4,
+    "historical_code_executed": false,
+    "installed_sources": 3,
+    "live_geometry_pins": 4,
+    "private_writes": 0,
+    "production_source_gate": true,
+    "projection_keys": 9,
+    "source_pins": 7,
+    "source_projection_sha256": "c17962fba204a882ce5b0bca6c792e55c0a4181366c7dfe0c39b28152215084e",
+    "synthetic_substitutions": 0
+  },
+  "schema": "arithmetic-preparation009-source-verification-v1",
+  "score_sha256": "95012c9d56bc898d32b055d2f6d7fc925cac19afc4a18af254f7a3c871b67afb",
+  "source_diff_sha256": "f4d9e4aa2c9146debf5849e3270f0ae578b4bcc9696e4b9f0cb7e2bdeff1e22c",
+  "source_review_map_sha256": "9bb7224becb85249298210efbbcac79229ea9f878d5a50447382d3bbaa71efdf",
+  "status": "INTEGRATED_SOURCE_VERIFICATION_PASSED",
+  "syntax": {
+    "all_pass": true,
+    "bytecode_written": false,
+    "javascript_syntax_files": 5,
+    "python_ast_files": 11
+  },
+  "total_help_files": 2103
+}

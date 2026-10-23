@@ -7,7 +7,7 @@
 #include <cstring>
 #include <new>
 namespace {
-constexpr int kDevices=2, kVoices=4, kPending=128, kBlockMax=256;
+constexpr int kDevices=alive::DocumentDevices, kVoices=4, kPending=512, kBlockMax=256;
 using Voice=alive::app::Voice;
 using Kind=alive::Kind;
 struct Event {int frame; Kind kind; int note,value;};
@@ -45,11 +45,11 @@ struct Pending {int frame,device,generation,kind,note,value;};
 uint32_t word(const uint8_t*p){return uint32_t(p[0])<<24|uint32_t(p[1])<<16|uint32_t(p[2])<<8|p[3];}
 }
 struct Dsp {
- Instrument instruments[2]; // Fixed AOT instruments; live replacement is deliberately unsupported.
- int generation[2]{};
+ Instrument instruments[kDevices]; // Two independently prepared banks per document.
+ int generation[kDevices]{};
 
  std::array<Pending,kPending> pending{};int count=0,frame=0;
- unsigned messages_this_block=0; bool panic[2]{};
+ unsigned messages_this_block=0; bool panic[kDevices]{};
  std::array<float,kBlockMax> scratch{};Observation obs;
  Instrument& device(int id){return instruments[id];}
  void apply(Pending p){
@@ -76,32 +76,45 @@ void dsp_free(Dsp*d){++lifecycle.destroyed;live=nullptr;d->~Dsp();}
 int dsp_reconfigure(Dsp*,double,uint32_t,uint32_t){return -1;}
 int dsp_asset(Dsp*,const ClockworkAsset*){return -1;}
 void dsp_osc(Dsp*d,const uint8_t*b,uint32_t n,int64_t when,uint32_t,int64_t block_time){
- ++d->obs.messages;++d->messages_this_block;
- if(when==0)++d->obs.immediate0;if(when==1)++d->obs.immediate1;
- // This protocol permits exactly one message per bundle: bounded parsing, no recursion.
- if(n==64&&!std::memcmp(b,"#bundle\0",8)&&word(b+16)==44){b+=20;n=44;}
- // Fixed, small protocol: /ultra/event ,iiiiii device generation kind note value reserved.
- if(n!=44||std::memcmp(b,"/ultra/event\0",12)||std::memcmp(b+12,",iiiiii\0",8)){++d->obs.malformed;return;}
- Pending p{};p.device=int(word(b+20));p.generation=int(word(b+24));p.kind=int(word(b+28));p.note=int(word(b+32));p.value=int(word(b+36));
- if(p.device<0||p.device>=2||p.kind<0||p.kind>8||p.note<0||p.note>127||p.value<0||p.value>127){++d->obs.malformed;return;}
- auto delta=(when==0||when==1)?0:std::llround(double(when-block_time)*(48000.0/4294967296.0));
- if(delta<0){++d->obs.late;delta=0;}p.frame=d->frame+int(std::min<int64_t>(delta,INT32_MAX-d->frame));
- if(d->count==kPending){++d->obs.overflow;d->panic[p.device]=true;return;}
- // Stable insertion: same-time delivery order preserved. Fixed <=128 work/storage.
- int i=d->count++;while(i&&d->pending[i-1].frame>p.frame){d->pending[i]=d->pending[i-1];--i;}d->pending[i]=p;
- d->obs.max_pending=std::max(d->obs.max_pending,unsigned(d->count));
+ auto ingest=[&](const uint8_t* message,int64_t stamp){
+  ++d->obs.messages;++d->messages_this_block;
+  if(stamp==0)++d->obs.immediate0;if(stamp==1)++d->obs.immediate1;
+  // /ultra/event ,iiiiii device generation kind note value reserved.
+  if(std::memcmp(message,"/ultra/event\0",12)||std::memcmp(message+12,",iiiiii\0",8)){++d->obs.malformed;return;}
+  Pending p{};p.device=int(word(message+20));p.generation=int(word(message+24));p.kind=int(word(message+28));p.note=int(word(message+32));p.value=int(word(message+36));
+  if(p.device<0||p.device>=kDevices||p.kind<0||p.kind>8||p.note<0||p.note>127||p.value<0||p.value>127){++d->obs.malformed;return;}
+  auto delta=(stamp==0||stamp==1)?0:std::llround(double(stamp-block_time)*(48000.0/4294967296.0));
+  if(delta<0){++d->obs.late;delta=0;}p.frame=d->frame+int(std::min<int64_t>(delta,INT32_MAX-d->frame));
+  if(d->count==kPending){++d->obs.overflow;d->panic[p.device]=true;return;}
+  // Stable insertion: same-time delivery order preserved, fixed 512 storage.
+  int i=d->count++;while(i&&d->pending[i-1].frame>p.frame){d->pending[i]=d->pending[i-1];--i;}d->pending[i]=p;
+  d->obs.max_pending=std::max(d->obs.max_pending,unsigned(d->count));
+ };
+ if(n==44){ingest(b,when);return;}
+ if(n<16||std::memcmp(b,"#bundle\0",8)){++d->obs.malformed;return;}
+ if(n==64&&word(b+16)==44){ingest(b+20,when);return;}
+ // A document packet contains at most 16 single-event child bundles. Validate
+ // one fixed level, then ingest each child's timestamp; never recurse.
+ if(n<84||n>16+16*68||(n-16)%68){++d->obs.malformed;return;}
+ for(unsigned at=16;at<n;at+=68)
+  if(word(b+at)!=64||std::memcmp(b+at+4,"#bundle\0",8)||word(b+at+20)!=44){++d->obs.malformed;return;}
+ for(unsigned at=16;at<n;at+=68){
+  const auto* child=b+at+4;
+  const int64_t stamp=static_cast<int64_t>(uint64_t(word(child+8))<<32|word(child+12));
+  ingest(child+20,stamp);
+ }
 }
 void dsp_process(Dsp*d,const float*const*in,uint32_t ni,float*const*out,uint32_t no,uint32_t frames,int64_t){
  ++d->obs.calls;d->obs.max_messages_per_block=std::max(d->obs.max_messages_per_block,d->messages_this_block);d->messages_this_block=0;
  for(unsigned c=0;c<no;c++)std::fill(out[c],out[c]+frames,0.f);
- if(no>2&&ni)std::copy(in[0],in[0]+frames,out[2]);
- for(int id=0;id<2;id++)if(d->panic[id]){d->device(id).reset();++d->generation[id];d->panic[id]=false;}
+ if(no>unsigned(kDevices)&&ni)std::copy(in[0],in[0]+frames,out[kDevices]);
+ for(int id=0;id<kDevices;id++)if(d->panic[id]){d->device(id).reset();++d->generation[id];d->panic[id]=false;}
  const int end=d->frame+frames;int used=0;unsigned spans=0;
  while(d->frame<end){
   while(used<d->count&&d->pending[used].frame<=d->frame)d->apply(d->pending[used++]);
   int stop=end;if(used<d->count)stop=std::min(stop,d->pending[used].frame);
   const int n=stop-d->frame,offset=frames-(end-d->frame);++spans;
-  for(int id=0;id<2;id++)for(auto&v:d->device(id).voices)if(v.active(d->frame)){
+  for(int id=0;id<kDevices;id++)for(auto&v:d->device(id).voices)if(v.active(d->frame)){
    float*buf[]={d->scratch.data()};v.dsp.compute(n,nullptr,buf);if(unsigned(id)<no)for(int f=0;f<n;f++)out[id][offset+f]+=d->scratch[f];
   }
   d->frame=stop;

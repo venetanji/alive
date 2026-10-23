@@ -52,10 +52,11 @@ components:
     height: "24px"
     rounded: "{rounded.object}"
   object-entry:
-    backgroundColor: "#232323"
+    backgroundColor: "{colors.object}"
     textColor: "{colors.object-name}"
-    width: "370px"
-    rounded: "{rounded.input}"
+    width: "100px"
+    height: "24px"
+    rounded: "{rounded.object}"
 ---
 
 # Design System: Ultra Patcher
@@ -154,31 +155,99 @@ Controls use small corners, compact padding and a consistent 18px SVG icon
 stroke. Hover darkens the surface; keyboard focus draws a blue two-pixel outline
 with an offset. Disabled buttons reduce opacity and lose the pointer cursor.
 
+### Document windows and file actions
+
+Each native patch, help or example uses the same compact canvas shell. The
+document title carries an asterisk when its saved content differs. New and Open
+create windows; reopening an existing file focuses its window. Native file
+pickers handle Open and Save As, and a modified window offers Save, Discard or
+Cancel before closing. Max intake opens its compatibility report in a separate
+document and preserves the source file when saving the converted patch.
+
+Help & Examples is a searchable dialog with original runnable patches and an
+open-window switcher. F1, Alt/Option-click and Object Help open or focus the
+matching help window. Its list remains scrollable at the native minimum window
+size. Each window retains its selection, view, undo history and optional panels;
+changing focus does not stop playback. The footer's audio controls are shared,
+while Stop patch applies to the current document.
+
 ### Object boxes and controls
 
 Text objects expose their name and arguments in one line. Bang, toggle, message,
 number, flonum, slider and gain have dedicated compact faces. Editing selects and moves them;
 locking enables the whole performance face without port-hit interference.
+Locked controls hide their port rails while connected cords retain their endpoints.
 Ctrl/Cmd-click or drag can operate while editing. Numeric boxes support vertical
 dragging, finer Shift dragging and direct entry. Ranges respect saved dimensions
 and automatic/horizontal/vertical orientation. Interrupted gestures cancel cleanly.
 Runtime numeric observations update the visible value without rewriting saved
 parameters.
 
+Sliders and gain use a flat blue bar across the track, with a hatched gain track.
+Their default faces omit numeric readouts; the accessible range input exposes the
+scaled output and retains keyboard operation. Saved knob colors override the bar
+color; sliders also support a saved track color.
+
+Selected buttons, toggles, sliders and gain controls expose a compact bottom-right
+resize handle. Pointer movement follows canvas zoom and updates attached cords;
+release saves one undoable dimensions change. Escape, lock, blur and lost capture
+cancel the preview. Focused handles accept arrows, with Shift for ten-pixel steps.
+Gain keeps a 30px minimum width for its two ports; preview and saved rendering
+use the same minimum so changing height preserves width.
+The slider inspector names numeric range, output offset/multiplier and Integer or
+Float output, with a calculated range summary. Integer readouts and native output
+both truncate the final scaled value toward zero.
+
 Variadic objects derive their inlet and outlet rails from their creation atoms.
 The native control clock operates while audio is off. Flonum keeps display
 precision separate from stored values; Tab uses its dedicated bang outlet.
 Slider pointer position is raw, while min/mult scale its numeric output.
-Object Help opens the corresponding original runnable patch for the new batch.
+Object Help opens the corresponding original runnable patch in its own window.
+Send and receive retain ordinary compact object faces; named receive has no
+inlet, while unnamed receive exposes its runtime-name inlet. Changing the saved
+name updates the port layout through an ordinary structural edit.
 
 ### Inline entry
 
-Name-and-argument entry appears near the pointer or edited object. Suggestions
-use amber names, positional signatures, a plain explanation and a blue active
-row. A compact argument guide highlights the parameter at the caret with its
+Name-and-argument entry appears near the pointer or edited object as a compact
+object-sized field. Its size and type track canvas zoom; text expands its width.
+Suggestions and argument help occupy a separate unscaled overlay, placed above
+or below the field to fit the viewport. Suggestions use amber names, positional
+signatures, a plain explanation and a blue active row. A compact argument guide
+highlights the parameter at the caret with its
 range and default. Typing @ lists supported named options; enum parameters offer
 their named values. Arrow keys choose, Tab completes the current token, Enter
 commits and Escape cancels. Errors remain visible without changing the patch.
+
+I, F and S create number, float and vertical slider controls immediately at the
+pointer. S creates a 20px by 140px slider as one undoable action.
+
+Comments use a multiline textbox in the same entry surface. Up/Down move the
+caret, Shift+Enter inserts a line, Enter saves and Escape cancels. Literal body
+whitespace and unchanged CRLF/CR text survive editing, within the existing 4096
+character annotation bound. Ordinary object entry retains single-line paste
+and suggestion behavior.
+
+### Comments and callouts
+
+Comment text wraps within its saved rectangle and honors explicit newlines.
+Unsized annotations grow with their content; saved height remains authoritative.
+Comments keep the same focus, selection, drag and edit target as ordinary text.
+They expose no executable ports or runtime state.
+
+The Inspector provides Bubble, Bubble Side and Bubble Point. The arrow remains
+inside the saved rectangle on Top, Left, Bottom or Right; its point runs 0..1
+along that side. A 15px arrow reserve and 5px body inset follow the retained Max
+observation, with rounded corners and a slanted arrow near the ends. Very small
+boxes scale the decoration to stay bounded. The default bubble fill is #3c3c3c,
+and outline/text is #d9d9d9; explicit RGBA overrides and reset update both the
+face and Inspector swatches. The noninteractive outline stays out of the
+accessibility tree while the text retains visible keyboard focus.
+
+Max import retains flat comments as v2 authoring content and can snapshot an
+inherited comment font size from the nearest patcher default. Saved linecount
+still carries a compatibility warning because Max fits loaded width/height
+from it. Named styles and font resources remain unresolved where diagnosed.
 
 ### Port help and menus
 
@@ -197,9 +266,21 @@ outlet menu is an Ultra addition, not an observed Max feature.
 
 ### Panels and JSON dialog
 
-The library and inspector are optional. Help includes literal and runnable
-examples within the bounded profile. JSON uses a focused dialog because import
-can replace the entire document; validation precedes replacement.
+Console opens independently beneath the canvas from the toolbar or Ctrl/Cmd M.
+The shortcut also closes it while a Console filter has focus and returns focus
+to the canvas.
+Its compact rows use source labels and message text, with warning/error color,
+text and severity filters, Clear and a close control. Source labels select only
+objects from the same current native revision. The native queue is bounded and
+reports drops; the view keeps 512 rows and follows the bottom unless scrolled up.
+Browser preview explains that messages come from native execution. A locked
+print object opens Console on double-click. The narrow toolbar keeps Console,
+Inspector and Help reachable down to 320px.
+
+The object palette and inspector are optional. Help includes literal guidance
+and runnable examples within the bounded profile. Advanced JSON / Max import
+uses a focused dialog because it can replace the current document; validation
+precedes replacement. Normal Open creates a separate patch window.
 
 The inspector groups runtime parameters and appearance. Appearance uses supported
 Max attribute names with RGB swatches and separate alpha values; omitted attributes
@@ -211,6 +292,28 @@ compatibility report. Raw source becomes compact while the report is open.
 Unsupported or differing selections require explicit partial-import acceptance.
 The selected graph retains supported dimensions, attributes, saved port indices
 and explicit fan-out order. No scripts or nested patchers execute implicitly.
+
+### Hosted Help Shell
+
+The recognized append, prepend, int and float help shells retain their complete
+authoring tree and initially show Basic. A compact Basic tab stays selected while
+the adjacent question button opens a Reference / Related Objects menu. Details
+and argument annotations use their saved canvas rectangles; the root name helper
+does not overlay Basic. Helpers have no runtime ports or generic palette entry.
+
+Reference text is read from the local licensed installation and rendered as plain
+text in a read-only pane. Missing references have an explicit readable state.
+The pane overlays the Inspector while the question menu remains reachable above
+it. Escape dismisses the menu or pane and returns focus to its trigger or Basic.
+Asynchronous updates preserve the focused menu item. The pane destination and the
+Basic tab's Open Basic in New Window context action are Ultra additions; the
+retained Max observation establishes the Basic/question menu behavior.
+
+Tabs, menus and references are local to each window. Navigation preserves native
+execution, live control values and the canonical patch. A console source inside
+Basic dismisses the reference and selects its object locally. Native child
+windows keep their bound scope and independent overlays. Saves include helper
+roles and geometry, with reference text and navigation state kept out of patches.
 
 ## Do's and Don'ts
 

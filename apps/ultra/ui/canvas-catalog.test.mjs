@@ -4,13 +4,13 @@ import {REGISTRY, CanvasDocument, makeNode, validatePatch} from './canvas-model.
 import {OBJECTS, parseObjectText, objectText, suggestObjects, portHelp} from './canvas-catalog.mjs';
 
 test('typed names and arguments build the supported profile without approximating Max classes',()=>{
-  assert.deepEqual(parseObjectText('+ 2'),{type:'add',params:{rhs:2}});
-  assert.deepEqual(parseObjectText('* 0.5'),{type:'multiply',params:{rhs:0.5}});
+  assert.deepEqual(parseObjectText('+ 2'),{type:'add',params:{rhs:2,numericmode:1}});
+  assert.deepEqual(parseObjectText('* 0.5'),{type:'multiply',params:{rhs:0.5,numericmode:2}});
   assert.deepEqual(parseObjectText('metro 225.5'),{type:'metro',params:{interval:225.5}});
-  assert.deepEqual(parseObjectText('message 60 100'),{type:'message',params:{text:'60 100'}});
+  assert.deepEqual(parseObjectText('message 60 100'),{type:'message_box',params:{text:'60 100'}});
   assert.deepEqual(parseObjectText('voice~ 1 8 28'),{type:'voice',params:{device:1,attack:8,release:28}});
   assert.equal(parseObjectText('button').type,'bang');
-  for(const text of ['cycle~ 440','metro 1','metro NaN','gain~ 128','voice~ 0 8 28 99','message set $1'])
+  for(const text of ['buffer~ wave','metro 1','metro NaN','gain~ 128','voice~ 0 8 28 99','message set $3'])
     assert.throws(()=>parseObjectText(text),undefined,text);
 });
 test('every supported object has round-trippable creation text and directional port help',()=>{
@@ -32,8 +32,17 @@ test('autocomplete ranks exact names before prefixes, and never invents unsuppor
   assert.equal(suggestObjects('metro')[0].type,'metro');
   assert.equal(suggestObjects('+')[0].type,'add');
   assert.equal(suggestObjects('but')[0].type,'bang');
-  assert.deepEqual(suggestObjects('cycle~'),[]);
-  assert.equal(suggestObjects('').length,25);
+  assert.deepEqual(suggestObjects('buffer~'),[]);
+  assert.equal(suggestObjects('').length,62);
+});
+test('comment creation text round-trips multiline whitespace and the full annotation limit',()=>{
+  for(const text of ['', '  First\nSecond\nThird  ', 'Original annotation. '.repeat(150)+'\nFinal', 'a'.repeat(4096)]){
+    const node=makeNode('comment',1,0,0,{text});
+    assert.deepEqual(parseObjectText(objectText(node),node),{type:'comment',params:{text}});
+  }
+  assert.equal(parseObjectText('comment',makeNode('comment',1,0,0,{text:'Erase me'})).params.text,'');
+  assert.throws(()=>parseObjectText('comment '+'a'.repeat(4097)),/4096/);
+  assert.throws(()=>parseObjectText('metro '+' '.repeat(161)),/160/);
 });
 test('named creation parameters share the positional validator and preserve unspecified edit values',()=>{
   assert.deepEqual(parseObjectText('voice~ 1 @release 40 @attack 12'),{type:'voice',params:{device:1,attack:12,release:40}});

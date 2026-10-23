@@ -122,6 +122,12 @@ jobs:
             -Lapps/ultra/build -lultra_native -Wl,-rpath,"$PWD/apps/ultra/build" \
             -o apps/ultra/build/external-audio-test
           apps/ultra/build/external-audio-test
+          for test in document_runtime document_audio signal_audio canvas_numeric_ui_backend canvas_message_ui_backend canvas_print_popup_backend; do
+            c++ -std=c++20 -O2 -Wall -Wextra -Werror "apps/ultra/tests/${test}_test.cpp" \
+              -Lapps/ultra/build -lultra_native -Wl,-rpath,"$PWD/apps/ultra/build" \
+              -o "apps/ultra/build/${test}-test"
+            "apps/ultra/build/${test}-test"
+          done
       - name: Build and test the real Rust/Tauri bridge
         run: |
           DEPS="$GITHUB_WORKSPACE/experiments/clockwork-faust/.deps"

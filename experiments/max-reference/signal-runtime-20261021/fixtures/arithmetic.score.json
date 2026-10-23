@@ -1,0 +1,1501 @@
+{
+  "fixture": "arithmetic",
+  "sample_rate": 48000,
+  "signal_vector": 64,
+  "frames": 512,
+  "buffer": "alive_signal_reference",
+  "labels": [
+    "driver_left",
+    "driver_right",
+    "sr_left",
+    "sr_right",
+    "sigvs_left",
+    "sigvs_right",
+    "iovs_left",
+    "iovs_right",
+    "overdrive_left",
+    "overdrive_right",
+    "takeover_left",
+    "takeover_right",
+    "switch_left",
+    "switch_right"
+  ],
+  "channels": [
+    {
+      "source": "obj-26",
+      "outlet": 0,
+      "label": "+~:none",
+      "operator": "+~",
+      "topology": "none",
+      "creation": "+~"
+    },
+    {
+      "source": "obj-27",
+      "outlet": 0,
+      "label": "+~:left",
+      "operator": "+~",
+      "topology": "left",
+      "creation": "+~"
+    },
+    {
+      "source": "obj-28",
+      "outlet": 0,
+      "label": "+~:right",
+      "operator": "+~",
+      "topology": "right",
+      "creation": "+~"
+    },
+    {
+      "source": "obj-29",
+      "outlet": 0,
+      "label": "+~:both",
+      "operator": "+~",
+      "topology": "both",
+      "creation": "+~"
+    },
+    {
+      "source": "obj-30",
+      "outlet": 0,
+      "label": "+~:summed",
+      "operator": "+~",
+      "topology": "summed",
+      "creation": "+~"
+    },
+    {
+      "source": "obj-31",
+      "outlet": 0,
+      "label": "+~:creation10",
+      "operator": "+~",
+      "topology": "left",
+      "creation": "+~ 10"
+    },
+    {
+      "source": "obj-32",
+      "outlet": 0,
+      "label": "-~:none",
+      "operator": "-~",
+      "topology": "none",
+      "creation": "-~"
+    },
+    {
+      "source": "obj-33",
+      "outlet": 0,
+      "label": "-~:left",
+      "operator": "-~",
+      "topology": "left",
+      "creation": "-~"
+    },
+    {
+      "source": "obj-34",
+      "outlet": 0,
+      "label": "-~:right",
+      "operator": "-~",
+      "topology": "right",
+      "creation": "-~"
+    },
+    {
+      "source": "obj-35",
+      "outlet": 0,
+      "label": "-~:both",
+      "operator": "-~",
+      "topology": "both",
+      "creation": "-~"
+    },
+    {
+      "source": "obj-36",
+      "outlet": 0,
+      "label": "-~:summed",
+      "operator": "-~",
+      "topology": "summed",
+      "creation": "-~"
+    },
+    {
+      "source": "obj-37",
+      "outlet": 0,
+      "label": "-~:creation10",
+      "operator": "-~",
+      "topology": "left",
+      "creation": "-~ 10"
+    },
+    {
+      "source": "obj-38",
+      "outlet": 0,
+      "label": "*~:none",
+      "operator": "*~",
+      "topology": "none",
+      "creation": "*~"
+    },
+    {
+      "source": "obj-39",
+      "outlet": 0,
+      "label": "*~:left",
+      "operator": "*~",
+      "topology": "left",
+      "creation": "*~"
+    },
+    {
+      "source": "obj-40",
+      "outlet": 0,
+      "label": "*~:right",
+      "operator": "*~",
+      "topology": "right",
+      "creation": "*~"
+    },
+    {
+      "source": "obj-41",
+      "outlet": 0,
+      "label": "*~:both",
+      "operator": "*~",
+      "topology": "both",
+      "creation": "*~"
+    },
+    {
+      "source": "obj-42",
+      "outlet": 0,
+      "label": "*~:summed",
+      "operator": "*~",
+      "topology": "summed",
+      "creation": "*~"
+    },
+    {
+      "source": "obj-43",
+      "outlet": 0,
+      "label": "*~:creation10",
+      "operator": "*~",
+      "topology": "left",
+      "creation": "*~ 10"
+    },
+    {
+      "source": "obj-44",
+      "outlet": 0,
+      "label": "/~:none",
+      "operator": "/~",
+      "topology": "none",
+      "creation": "/~"
+    },
+    {
+      "source": "obj-45",
+      "outlet": 0,
+      "label": "/~:left",
+      "operator": "/~",
+      "topology": "left",
+      "creation": "/~"
+    },
+    {
+      "source": "obj-46",
+      "outlet": 0,
+      "label": "/~:right",
+      "operator": "/~",
+      "topology": "right",
+      "creation": "/~"
+    },
+    {
+      "source": "obj-47",
+      "outlet": 0,
+      "label": "/~:both",
+      "operator": "/~",
+      "topology": "both",
+      "creation": "/~"
+    },
+    {
+      "source": "obj-48",
+      "outlet": 0,
+      "label": "/~:summed",
+      "operator": "/~",
+      "topology": "summed",
+      "creation": "/~"
+    },
+    {
+      "source": "obj-49",
+      "outlet": 0,
+      "label": "/~:creation10",
+      "operator": "/~",
+      "topology": "left",
+      "creation": "/~ 10"
+    }
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "override 1",
+      "destination": "obj-1",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_1",
+      "message": "override 1",
+      "destination": "obj-3",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_2",
+      "message": "override 1",
+      "destination": "obj-5",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_3",
+      "message": "override 1",
+      "destination": "obj-7",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_4",
+      "message": "override 1",
+      "destination": "obj-9",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_5",
+      "message": "override 1",
+      "destination": "obj-11",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_6",
+      "message": "override 1",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_7",
+      "message": "0",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_8",
+      "message": "4",
+      "destination": "obj-1",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_9",
+      "message": "48000",
+      "destination": "obj-3",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_10",
+      "message": "64",
+      "destination": "obj-5",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_11",
+      "message": "512",
+      "destination": "obj-7",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_12",
+      "message": "0",
+      "destination": "obj-9",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_13",
+      "message": "0",
+      "destination": "obj-11",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_14",
+      "message": "sizeinsamps 512",
+      "destination": "obj-50",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_15",
+      "message": "clear",
+      "destination": "obj-50",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_16",
+      "message": "1",
+      "destination": "obj-51",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_17",
+      "message": "1",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_18",
+      "message": "0",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 100
+    },
+    {
+      "id": "event_19",
+      "message": "0",
+      "destination": "obj-51",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_20",
+      "message": "capture initial",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_21",
+      "message": "3",
+      "destination": "obj-26",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_22",
+      "message": "3",
+      "destination": "obj-27",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_23",
+      "message": "3",
+      "destination": "obj-28",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_24",
+      "message": "3",
+      "destination": "obj-29",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_25",
+      "message": "3",
+      "destination": "obj-30",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_26",
+      "message": "3",
+      "destination": "obj-31",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_27",
+      "message": "3",
+      "destination": "obj-32",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_28",
+      "message": "3",
+      "destination": "obj-33",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_29",
+      "message": "3",
+      "destination": "obj-34",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_30",
+      "message": "3",
+      "destination": "obj-35",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_31",
+      "message": "3",
+      "destination": "obj-36",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_32",
+      "message": "3",
+      "destination": "obj-37",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_33",
+      "message": "3",
+      "destination": "obj-38",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_34",
+      "message": "3",
+      "destination": "obj-39",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_35",
+      "message": "3",
+      "destination": "obj-40",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_36",
+      "message": "3",
+      "destination": "obj-41",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_37",
+      "message": "3",
+      "destination": "obj-42",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_38",
+      "message": "3",
+      "destination": "obj-43",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_39",
+      "message": "3",
+      "destination": "obj-44",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_40",
+      "message": "3",
+      "destination": "obj-45",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_41",
+      "message": "3",
+      "destination": "obj-46",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_42",
+      "message": "3",
+      "destination": "obj-47",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_43",
+      "message": "3",
+      "destination": "obj-48",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_44",
+      "message": "3",
+      "destination": "obj-49",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_45",
+      "message": "sizeinsamps 512",
+      "destination": "obj-50",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_46",
+      "message": "clear",
+      "destination": "obj-50",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_47",
+      "message": "1",
+      "destination": "obj-51",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_48",
+      "message": "1",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_49",
+      "message": "0",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 100
+    },
+    {
+      "id": "event_50",
+      "message": "0",
+      "destination": "obj-51",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_51",
+      "message": "capture left3",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_52",
+      "message": "5",
+      "destination": "obj-26",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_53",
+      "message": "5",
+      "destination": "obj-27",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_54",
+      "message": "5",
+      "destination": "obj-28",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_55",
+      "message": "5",
+      "destination": "obj-29",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_56",
+      "message": "5",
+      "destination": "obj-30",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_57",
+      "message": "5",
+      "destination": "obj-31",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_58",
+      "message": "5",
+      "destination": "obj-32",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_59",
+      "message": "5",
+      "destination": "obj-33",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_60",
+      "message": "5",
+      "destination": "obj-34",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_61",
+      "message": "5",
+      "destination": "obj-35",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_62",
+      "message": "5",
+      "destination": "obj-36",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_63",
+      "message": "5",
+      "destination": "obj-37",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_64",
+      "message": "5",
+      "destination": "obj-38",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_65",
+      "message": "5",
+      "destination": "obj-39",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_66",
+      "message": "5",
+      "destination": "obj-40",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_67",
+      "message": "5",
+      "destination": "obj-41",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_68",
+      "message": "5",
+      "destination": "obj-42",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_69",
+      "message": "5",
+      "destination": "obj-43",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_70",
+      "message": "5",
+      "destination": "obj-44",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_71",
+      "message": "5",
+      "destination": "obj-45",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_72",
+      "message": "5",
+      "destination": "obj-46",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_73",
+      "message": "5",
+      "destination": "obj-47",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_74",
+      "message": "5",
+      "destination": "obj-48",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_75",
+      "message": "5",
+      "destination": "obj-49",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_76",
+      "message": "sizeinsamps 512",
+      "destination": "obj-50",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_77",
+      "message": "clear",
+      "destination": "obj-50",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_78",
+      "message": "1",
+      "destination": "obj-51",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_79",
+      "message": "1",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_80",
+      "message": "0",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 100
+    },
+    {
+      "id": "event_81",
+      "message": "0",
+      "destination": "obj-51",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_82",
+      "message": "capture right5",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_83",
+      "message": "7",
+      "destination": "obj-26",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_84",
+      "message": "7",
+      "destination": "obj-27",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_85",
+      "message": "7",
+      "destination": "obj-28",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_86",
+      "message": "7",
+      "destination": "obj-29",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_87",
+      "message": "7",
+      "destination": "obj-30",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_88",
+      "message": "7",
+      "destination": "obj-31",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_89",
+      "message": "7",
+      "destination": "obj-32",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_90",
+      "message": "7",
+      "destination": "obj-33",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_91",
+      "message": "7",
+      "destination": "obj-34",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_92",
+      "message": "7",
+      "destination": "obj-35",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_93",
+      "message": "7",
+      "destination": "obj-36",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_94",
+      "message": "7",
+      "destination": "obj-37",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_95",
+      "message": "7",
+      "destination": "obj-38",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_96",
+      "message": "7",
+      "destination": "obj-39",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_97",
+      "message": "7",
+      "destination": "obj-40",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_98",
+      "message": "7",
+      "destination": "obj-41",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_99",
+      "message": "7",
+      "destination": "obj-42",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_100",
+      "message": "7",
+      "destination": "obj-43",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_101",
+      "message": "7",
+      "destination": "obj-44",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_102",
+      "message": "7",
+      "destination": "obj-45",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_103",
+      "message": "7",
+      "destination": "obj-46",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_104",
+      "message": "7",
+      "destination": "obj-47",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_105",
+      "message": "7",
+      "destination": "obj-48",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_106",
+      "message": "7",
+      "destination": "obj-49",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_107",
+      "message": "sizeinsamps 512",
+      "destination": "obj-50",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_108",
+      "message": "clear",
+      "destination": "obj-50",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_109",
+      "message": "1",
+      "destination": "obj-51",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_110",
+      "message": "1",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_111",
+      "message": "0",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 100
+    },
+    {
+      "id": "event_112",
+      "message": "0",
+      "destination": "obj-51",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_113",
+      "message": "capture left7",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_114",
+      "message": "4",
+      "destination": "obj-26",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_115",
+      "message": "4",
+      "destination": "obj-27",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_116",
+      "message": "4",
+      "destination": "obj-28",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_117",
+      "message": "4",
+      "destination": "obj-29",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_118",
+      "message": "4",
+      "destination": "obj-30",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_119",
+      "message": "4",
+      "destination": "obj-31",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_120",
+      "message": "4",
+      "destination": "obj-32",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_121",
+      "message": "4",
+      "destination": "obj-33",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_122",
+      "message": "4",
+      "destination": "obj-34",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_123",
+      "message": "4",
+      "destination": "obj-35",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_124",
+      "message": "4",
+      "destination": "obj-36",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_125",
+      "message": "4",
+      "destination": "obj-37",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_126",
+      "message": "4",
+      "destination": "obj-38",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_127",
+      "message": "4",
+      "destination": "obj-39",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_128",
+      "message": "4",
+      "destination": "obj-40",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_129",
+      "message": "4",
+      "destination": "obj-41",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_130",
+      "message": "4",
+      "destination": "obj-42",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_131",
+      "message": "4",
+      "destination": "obj-43",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_132",
+      "message": "4",
+      "destination": "obj-44",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_133",
+      "message": "4",
+      "destination": "obj-45",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_134",
+      "message": "4",
+      "destination": "obj-46",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_135",
+      "message": "4",
+      "destination": "obj-47",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_136",
+      "message": "4",
+      "destination": "obj-48",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_137",
+      "message": "4",
+      "destination": "obj-49",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_138",
+      "message": "sizeinsamps 512",
+      "destination": "obj-50",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_139",
+      "message": "clear",
+      "destination": "obj-50",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_140",
+      "message": "1",
+      "destination": "obj-51",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_141",
+      "message": "1",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_142",
+      "message": "0",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 100
+    },
+    {
+      "id": "event_143",
+      "message": "0",
+      "destination": "obj-51",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_144",
+      "message": "capture right4",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_145",
+      "message": "0",
+      "destination": "obj-26",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_146",
+      "message": "0",
+      "destination": "obj-27",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_147",
+      "message": "0",
+      "destination": "obj-28",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_148",
+      "message": "0",
+      "destination": "obj-29",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_149",
+      "message": "0",
+      "destination": "obj-30",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_150",
+      "message": "0",
+      "destination": "obj-31",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_151",
+      "message": "0",
+      "destination": "obj-32",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_152",
+      "message": "0",
+      "destination": "obj-33",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_153",
+      "message": "0",
+      "destination": "obj-34",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_154",
+      "message": "0",
+      "destination": "obj-35",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_155",
+      "message": "0",
+      "destination": "obj-36",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_156",
+      "message": "0",
+      "destination": "obj-37",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_157",
+      "message": "0",
+      "destination": "obj-38",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_158",
+      "message": "0",
+      "destination": "obj-39",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_159",
+      "message": "0",
+      "destination": "obj-40",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_160",
+      "message": "0",
+      "destination": "obj-41",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_161",
+      "message": "0",
+      "destination": "obj-42",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_162",
+      "message": "0",
+      "destination": "obj-43",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_163",
+      "message": "0",
+      "destination": "obj-44",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_164",
+      "message": "0",
+      "destination": "obj-45",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_165",
+      "message": "0",
+      "destination": "obj-46",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_166",
+      "message": "0",
+      "destination": "obj-47",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_167",
+      "message": "0",
+      "destination": "obj-48",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_168",
+      "message": "0",
+      "destination": "obj-49",
+      "inlet": 1,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_169",
+      "message": "sizeinsamps 512",
+      "destination": "obj-50",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_170",
+      "message": "clear",
+      "destination": "obj-50",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_171",
+      "message": "1",
+      "destination": "obj-51",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_172",
+      "message": "1",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_173",
+      "message": "0",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 100
+    },
+    {
+      "id": "event_174",
+      "message": "0",
+      "destination": "obj-51",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_175",
+      "message": "capture right0",
+      "destination": "logger",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_176",
+      "message": "bang",
+      "destination": "obj-1",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_177",
+      "message": "bang",
+      "destination": "obj-3",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_178",
+      "message": "bang",
+      "destination": "obj-5",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_179",
+      "message": "bang",
+      "destination": "obj-7",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_180",
+      "message": "bang",
+      "destination": "obj-9",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_181",
+      "message": "bang",
+      "destination": "obj-11",
+      "inlet": 0,
+      "wait_ms": 0
+    },
+    {
+      "id": "event_182",
+      "message": "bang",
+      "destination": "obj-13",
+      "inlet": 0,
+      "wait_ms": 0
+    }
+  ],
+  "drain_ms": 100
+}

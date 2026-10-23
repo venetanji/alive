@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-20T15:38:42.400446+00:00",
+  "generatedAt": "2026-10-21T13:14:14.831059+00:00",
   "title": "Design System: Ultra Patcher",
   "extensions": {
     "colorMeta": {
@@ -217,9 +217,9 @@
       "name": "Object Entry",
       "kind": "input",
       "refersTo": "object-entry",
-      "description": "Inline name and arguments.",
+      "description": "Compact inline name and arguments; assistance opens separately.",
       "html": "<input class=\"ds-entry\" value=\"metro 150\" aria-label=\"Object name and arguments\">",
-      "css": ".ds-entry{font:12px \"Liberation Sans\", \"Helvetica Neue\", sans-serif;color:var(--text);color:var(--object-name);background:#191919;padding:4px 8px;height:31px;width:250px;border:1px solid var(--selection);border-radius:2px}.ds-entry:focus-visible{outline:2px solid var(--selection);outline-offset:2px;}"
+      "css": ".ds-entry{font:12px \"Liberation Sans\", \"Helvetica Neue\", sans-serif;color:var(--object-name);background:var(--object);padding:0 6px;height:24px;width:100px;border:1px solid var(--selection);border-radius:1px;outline:none}.ds-entry:focus-visible{outline:none}"
     },
     {
       "name": "Port Menu",

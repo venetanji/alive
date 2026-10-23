@@ -1,0 +1,76 @@
+{
+  "cleanup_sha256": "0af152519c0b32b6f5feb8ee353e1549b467dc95d80bc77376f1ee04e5aca7d0",
+  "command_ack_wait_seconds": 10,
+  "command_request_count": 101,
+  "complete": false,
+  "completed_operations": 52,
+  "evidence_id": "ev_2b367897874548f570647fd98f6b3ed116589181969d2dcc9f9b342f1a27540f",
+  "exact_owned_cleanup_empty": true,
+  "failure_classification": "bounded-command-ack-timeout",
+  "failure_document": "minus",
+  "failure_request_id": 101,
+  "failure_response_received": false,
+  "failure_revision": 1,
+  "failure_type": "TimeoutError",
+  "full_comparison_complete": false,
+  "independently_validated_closes": 4,
+  "journal_harness_errors": 0,
+  "journal_rows": 190,
+  "last_accepted_step": "close-plus-r2",
+  "last_retained_ack": 100,
+  "minus_collection_attempts_observed": null,
+  "minus_diagnostic_envelope_received": false,
+  "observed_numeric_states": 336,
+  "observed_original_outlet_receipts": 94,
+  "operation": "capture_process_scenario",
+  "preferences_equal_by_runner": true,
+  "prefix_removed": true,
+  "qualification_increment": 0,
+  "rea_filesystem_hash_omissions": [],
+  "rea_public_file_hashes": [
+    {
+      "name": "cleanup.json",
+      "sha256": "0af152519c0b32b6f5feb8ee353e1549b467dc95d80bc77376f1ee04e5aca7d0",
+      "size": 1845
+    },
+    {
+      "name": "display-states.json",
+      "sha256": "87e16b38bab3eacfa1dbfd08f0abcff7e78314b6fdd32d4b050190a598c1777c",
+      "size": 20837
+    },
+    {
+      "name": "preferences-after.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "size": 205649
+    },
+    {
+      "name": "preferences-before.json",
+      "sha256": "1b82ffaec5911d8e7e31bb086cc65d54d82a9a131d3e1b8ccdd9aafde7f65329",
+      "size": 205649
+    },
+    {
+      "name": "receipts.jsonl",
+      "sha256": "754fc5bc1aac4ccd22dc1273b4a78fe23dafc5118b8c49029e12f9d85c22a38c",
+      "size": 80250
+    },
+    {
+      "name": "session.json",
+      "sha256": "f21f2d44c6086ea19055943deb9547e22e24c25037d5ce1345e91e1719a5fe90",
+      "size": 72723
+    }
+  ],
+  "rea_public_file_hashes_verified_by_parent": 6,
+  "readback_request_count": 48,
+  "received_command_acknowledgements": 100,
+  "required_closes": 6,
+  "required_numeric_states": 504,
+  "required_operations": 78,
+  "required_original_outlet_receipts": 141,
+  "saved_order_observed": false,
+  "session_sha256": "f21f2d44c6086ea19055943deb9547e22e24c25037d5ce1345e91e1719a5fe90",
+  "sources_and_helpers_preserved": true,
+  "status": "FAILED",
+  "successful_command_acknowledgements": 100,
+  "terminal_minus_diagnostics_received": false,
+  "xvfb_exited": true
+}

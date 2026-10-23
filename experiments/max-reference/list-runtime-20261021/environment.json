@@ -1,0 +1,17 @@
+{
+  "max_version": "9.1.5 (3db35fa476d), Windows x64; version established in retained local reference bundle",
+  "max_executable_sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b",
+  "max_executable_bytes": 33077248,
+  "wine_version": "wine-11.13",
+  "wine_executable_sha256": "15096d23074c454e6cd3225c7cb7f62c4136f6697fdceeda22aeede6b46c031f",
+  "isolation": "Fresh reflink clone of prior disposable Max reference prefix; copied user home-folder symlinks replaced with empty directories; private dynamic Xvfb per run; software llvmpipe rendering",
+  "settings": {
+    "dsp": null,
+    "samplerate": null,
+    "overdrive": null,
+    "scheduler_in_audio_interrupt": null
+  },
+  "settings_note": "Not queried by these message-only fixtures. No DSP graph/device/start/stop commands were authored.",
+  "execution": "Six original finite patches and original Max JS collector; no copied help patches/scripts/assets, activation or authorization modifications",
+  "cleanup": "Ordinary Ctrl-Q between runs; final private Max needed PID-checked SIGTERM after ordinary Quit and an original max quit patch did not exit; private Xvfb then terminated. Original user desktop/prefix untouched."
+}

@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "sig",
+      "x": 160,
+      "y": 60,
+      "params": {
+        "args": "0.25"
+      }
+    },
+    {
+      "id": 2,
+      "type": "message",
+      "x": 400,
+      "y": 60,
+      "params": {
+        "text": "0.75"
+      }
+    },
+    {
+      "id": 3,
+      "type": "signal_add",
+      "x": 160,
+      "y": 160,
+      "params": {
+        "rhs": 0.5
+      }
+    },
+    {
+      "id": 4,
+      "type": "snapshot",
+      "x": 160,
+      "y": 270,
+      "params": {
+        "interval": 100,
+        "offset": 0
+      }
+    },
+    {
+      "id": 5,
+      "type": "print",
+      "x": 160,
+      "y": 360,
+      "params": {
+        "label": "signal_add",
+        "level": 0,
+        "popup": 0
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 1
+    },
+    {
+      "from": 3,
+      "outlet": 0,
+      "to": 4,
+      "inlet": 0
+    },
+    {
+      "from": 4,
+      "outlet": 0,
+      "to": 5,
+      "inlet": 0
+    }
+  ]
+}

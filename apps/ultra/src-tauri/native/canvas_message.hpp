@@ -9,7 +9,11 @@
 namespace ultra {
 enum CanvasKind : unsigned {
  Bang,Message,Number,Toggle,Add,Multiply,Metro,Counter,Chord,MakeNote,MidiIn,Voice,Gain,Join,Dac,
- Int,Float,Flonum,Slider,Pack,Unpack,Select,Route,Trigger,Line
+ Int,Float,Flonum,Slider,Pack,Unpack,Select,Route,Trigger,Line,Print,Send,Receive,
+ Iter,Prepend,Append,ZlReg,ZlJoin,ZlLen,ZlIter,ZlSlice,ZlRev,ZlRot,
+ Sig,SignalAdd,SignalSubtract,SignalMultiply,SignalDivide,Cycle,Phasor,Noise,SignalClip,LineSignal,Snapshot,SignalDac,
+ Inlet,Outlet,NumberInt,MessageBox,
+ Subtract,Divide,Modulo,ReverseSubtract,ReverseDivide,Abs
 };
 struct CanvasMessage {
  uint32_t count=0;

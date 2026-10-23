@@ -10,9 +10,26 @@ does not read repository secrets or use `pull_request_target`.
 
 1. **UI, protocol, and reference tests:** all UI/controller/component Node tests,
    bounded Max inventory tests, recorded Max evidence/schema integrity, launcher
-   installation regressions, and portable native sequence/graph execution tests.
-   The reference checks validate existing captured evidence; they do not run Max
-   or establish new Max compatibility.
+   installation/file-argument regressions, and portable native sequence, graph
+   and multi-document workspace execution tests. Document tests cover save/dirty
+   races and independent new/open actions; send/receive tests
+   cover typed names, ports and supported import semantics. The original help
+   manifest is checked against the browser library and all 50 object kinds
+   (101 original help/example/starter entries).
+   The list-runtime check compiles the production native headers and compares
+   ordered outlets, selectors and values against recorded Max cases, including
+   scalar integer/float identity. The recordings cannot establish numeric atom
+   tags within lists. Two feedback cases require their own topology tests and
+   are explicitly excluded from the generic replay. Signal-runtime checks
+   validate the frozen capture and compile the production native headers for
+   comparison against 197 recorded Max cases / 114560 samples. These samples
+   passed through Max buffer~ float32 storage; they do not establish its internal
+   DSP precision. Portable signal tests cover mixed ports, summed inputs,
+   separate dependency graphs, ramps, snapshots and native lifecycle behavior.
+   Exact noise sequences and periodic snapshot scheduling remain outside the
+   compatibility claim. The reference checks do not run Max or establish
+   whole-help compatibility. Signal source identities and observations are in
+   `experiments/max-reference/signal-runtime-20261021/`.
 2. **Chromium canvas editing smoke:** the actual HTML/CSS/modules served over
    loopback HTTP in sandboxed Chromium. It checks document editing and visible
    top-inlet/bottom-outlet geometry, keyboard creation, text-edit undo, lock
@@ -21,13 +38,24 @@ does not read repository secrets or use `pull_request_target`.
    history during wiring, full control faces, modifier operation, numeric dragging,
    gesture cancellation, styled range orientation, inspector export/reset/undo,
    Max tab selection and explicit partial imports, and small viewport controls.
-   There is no Tauri/native IPC shim and no
-   fake browser audio. A passing preview test is not native audio qualification.
+   Preview suites use no Tauri/native IPC shim. `canvas-documents.spec.mjs`
+   separately supplies a document bridge fixture to check the native window
+   switcher layout with sixteen entries at 640x480 and keyboard file actions.
+   It does not run native graphs.
+   No suite creates browser audio; passing these checks is not native audio
+   qualification.
 
 3. **Linux native build, Rust bridge, and CPAL loopback:** builds the pinned real Clockwork/Faust
    engine and `libultra_native.so`, runs backend/sequence/canvas integration tests
    against an explicitly identified JACK ABI test double, then builds and tests
-   the real Rust/Tauri bridge using `Cargo.lock`. Finally it explicitly runs the
+   the real Rust/Tauri bridge using `Cargo.lock`. Rust document tests cover
+   atomic saves, source protection, registry limits and close admission.
+   The numeric UI backend regression covers physical Tab admission, hot-edit
+   ordering, stopped execution, queue saturation and stale/closed rejection.
+   Print popup tests preserve the console ABI and cover strict p1 admission,
+   typed receipts, independent objects, clearing, graph reset and non-consuming
+   atomic snapshots with two concurrent readers across1000 rendered updates.
+   Finally it explicitly runs the
    ignored `audio::tests::private_software_output` test in a private software-only
    PipeWire graph and checks recorded stereo PCM for finite, non-silent,
    non-clipping samples. The test must exist (zero matched tests fails the gate).
@@ -38,11 +66,39 @@ does not read repository secrets or use `pull_request_target`.
 The optional desktop `check_canvas_desktop.sh --software-audio` additionally
 drives the built Tauri/WebKit app with real X input: notch-adjacent button/toggle
 clicks, locked and modifier sliders, numeric dragging, and native downstream
-observations. When the licensed local `slider.maxhelp` is available (override
+observations. It also checks integer truncation and authored keyboard entry,
+physical Tab on both number boxes, and silent incoming `tab` messages through
+the actual WebKit/Tauri/native boundary. When the licensed local `slider.maxhelp` is available (override
 with `ULTRA_TEST_MAX_HELP`), it opens the original JSON through the dialog,
 accepts the partial basic tab, and checks the actual imported slider-to-number
 branch. The report records whether that optional source was available; it never
 claims complete Max help execution. The same run checks real CPAL software audio.
+It also exercises the native print console with audio off and during playback,
+including message text through WebKit accessibility, slider output and Clear.
+
+That runner first invokes `check_document_startup.py`, which holds initialization
+on a private FIFO and delivers a second file before the main window is registered.
+The secondary process must return promptly; both documents must then retain
+healthy native graphs. Only the expected non-file alert is dismissed.
+The test compiles a secondary-only preload probe with `cc`, requires 32 further
+canonical-path deliveries to succeed, and verifies that the unused forwarding
+processes skip exit finalizers. This covers the pinned Linux plugin patch in
+`../../src-tauri/vendor/tauri-plugin-single-instance/ULTRA_PATCH.md`; the primary
+keeps its ordinary shutdown path.
+
+It also invokes `check_documents_desktop.py` in the same private session.
+It exercises all ten list-processing objects through the console with shared
+audio stopped and running, and all twelve new MSP kinds through actual CPAL
+output. The signal graph checks summed inputs, independent document Stop,
+named Receive resuming a stopped graph, and global DSP restart without another
+control event.
+It checks startup/secondary file arguments, single-instance delivery, focusing an
+already-open file, native New/Open/Save, Save/Discard/Cancel on close, help opening
+in its own window, typed cross-window send/receive with audio off, and two
+documents playing through the shared stereo output. A local Stop patch must
+leave the other document audible. Its `documents-result.json` and PCM captures
+are separate native evidence; these desktop checks are not part of the three
+cloud jobs.
 
 Reproduce static coverage and native execution of the exact imported slider
 fragment with `experiments/max-reference/help-import-20261021/check-import.mjs`.
@@ -108,6 +164,26 @@ The test runner owns its loopback HTTP server and shuts it down afterward.
 GitHub retains browser reports, screenshots, and failed-test traces for seven
 days. Tests use only the checked-in research patch, never a user's private data.
 
+For native document/file/message and software-audio desktop checks after a full
+build, use Linux GTK/WebKitGTK, Python GI/AT-SPI, Xvfb/xauth, D-Bus, PipeWire,
+WirePlumber, `pw-cat` and `pw-link`:
+
+```sh
+bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/ultra-canvas-results
+```
+
+This runs both canvas and document desktop checks. To run only the document
+checks in the same isolated harness:
+
+```sh
+ULTRA_TEST_DOCUMENTS_ONLY=1 bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/ultra-documents-results
+```
+
+The harness owns its private X display, D-Bus/accessibility session and
+software-only PipeWire output; it does not drive the user's desktop or connect
+to hardware audio. The `--software-audio` spelling remains accepted for
+compatibility; this runner always uses private software audio.
+
 For the optional Linux WebKitGTK gain-slider rendering regression, use system
 Python with GI, Cairo, GTK 3, WebKit2 4.1 introspection, Xvfb, and xauth installed:
 
@@ -149,8 +225,40 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror \
 /tmp/ultra-canvas-idle-test
 ```
 
-This opens no audio device. The portable contract gate separately compiles both
-native graph test files, including typed routing, outlet order, and ramp timing.
+This opens no audio device. The portable contract gate separately compiles the
+native graph and workspace tests, including typed routing, outlet order, ramp
+timing, isolated document state, global named-message fanout, and bounded
+cross-document feedback. `canvas_signal_objects_test.cpp` additionally checks
+the twelve new signal kinds, signal/control admission and dependency graphs,
+arithmetic, oscillator phase, clipping, sample-clock ramps, snapshot offsets and
+deferred signal-to-control notifications.
+
+The native CI job also compiles and runs `document_runtime_test.cpp`,
+`document_audio_test.cpp` and `signal_audio_test.cpp` against the built library.
+The document tests check timer and voice isolation, console retention across
+edits and cleanup at close/reuse, FIFO close
+rejection, receive binding and counter retention across audio restart, and actual
+shared-engine audio. The signal audio test checks mono summing, ramps, local
+Stop/resume, explicit global DSP restart, cross-window next-sample ordering and
+callback partition invariance. Global restart resumes all continuous signal
+graphs, including locally stopped ones, while leaving stopped metros off.
+Cycle resets phase and Phasor retains phase across DSP off/on. These tests also
+keep the current-frame native MSP evaluator distinct from the legacy custom
+Voice 64-frame pipeline. The engine-start/graph-replacement guard mutes the first
+64 output samples while signal state advances; the signal test accounts for
+that separate guard. Run their CI compile commands locally after building:
+
+```sh
+for test in document_runtime document_audio signal_audio; do
+  c++ -std=c++20 -O2 -Wall -Wextra -Werror "apps/ultra/tests/${test}_test.cpp" \
+    -Lapps/ultra/build -lultra_native -Wl,-rpath,"$PWD/apps/ultra/build" \
+    -o "apps/ultra/build/${test}-test"
+  "apps/ultra/build/${test}-test"
+done
+```
+
+These tests use the external host render API and open no audio
+device; the separate CPAL loopback gate verifies device callback integration.
 
 ## Dependency and cache policy
 

@@ -1,0 +1,551 @@
+--- consumed005/controller.js
++++ trace006/controller.js
+@@ -5,6 +5,109 @@
+ var anchorDiagnostics=[], geometryDispositions=[], numericModeObservations=[],controllerRepresentationObservations=[];
+ var closeDiagnostics=null;
+ var plusPreflightContext=null;
++var installTrace=null;
++function traceAscii(value) {
++    return JSON.stringify(value).replace(/[\u007f-\uffff]/g,function(character){
++        return "\\u"+("0000"+character.charCodeAt(0).toString(16)).slice(-4);
++    });
++}
++function installTraceRefusal(code,phase,cause) {
++    var error=Error("private-install-trace-refused:"+code);error.install_trace_refusal=true;
++    if(installTrace&&!installTrace.failure)installTrace.failure={code:code,phase:phase,attempt:installTrace.attempt,
++        original_error:installTrace.original_error,trace_error:cause?String(cause):null};
++    return error;
++}
++function installTraceRow(phase,extra) {
++    var now=(new Date()).getTime();
++    if(!finite(now))throw Error("private-trace-clock-unavailable");
++    var row={seq:installTrace.seq+1,request_id:51,step_id:"install-plus-r1",action:"install",document:"plus",revision:1,
++        source_sha256:PLUS_SOURCE,owner_inlet:2,attempt:installTrace.attempt,phase:phase,clock:"wall-ms",
++        at_ms:now,elapsed_ms:now-installTrace.started};
++    for(var key in extra)row[key]=extra[key];
++    return traceAscii(row)+"\n";
++}
++function appendInstallTrace(text) {
++    var f=new File(installTrace.path,installTrace.seq===0?"write":"readwrite","TEXT");
++    if(!f.isopen)throw Error("private-trace-file-unavailable");
++    try {
++        if(f.eof!==installTrace.bytes)throw Error("private-trace-file-size-changed");
++        f.position=f.eof;f.writestring(text);
++        if(f.position!==installTrace.bytes+text.length||f.eof!==f.position)throw Error("private-trace-write-progress");
++    }finally{f.close();}
++    installTrace.seq++;installTrace.bytes+=text.length;
++}
++function installTraceEvent(phase,extra) {
++    if(!installTrace||!installTrace.active)return;
++    if(installTrace.failure)throw installTraceRefusal(installTrace.failure.code,phase);
++    try {
++        var text=installTraceRow(phase,extra||{}),limit=null;
++        if(text.length>2048)limit="record-bytes";
++        else if(installTrace.seq>=2047)limit="records";
++        else if(installTrace.bytes+text.length>2097152-2048)limit="total-bytes";
++        if(limit) {
++            // The final row and its full byte budget are reserved before every normal append.
++            var marker=installTraceRow("trace-limit",{limit:limit,interrupted_phase:phase});
++            if(marker.length>2048||installTrace.seq>=2048||installTrace.bytes+marker.length>2097152)
++                throw Error("private-trace-limit-marker-unavailable");
++            appendInstallTrace(marker);throw installTraceRefusal("limit",phase);
++        }
++        appendInstallTrace(text);
++    }catch(error){
++        if(error&&error.install_trace_refusal)throw error;
++        throw installTraceRefusal("sink",phase,error);
++    }
++}
++function beginInstallTrace(command) {
++    installTrace=null;
++    if(command.command_id!==51||command.op!=="operation"||command.action!=="install"||command.document!=="plus"||
++        command.revision!==1||command.action_revision!==1||command.step_id!=="install-plus-r1")return;
++    installTrace={active:true,path:null,seq:0,bytes:0,attempt:0,started:(new Date()).getTime(),original_error:null,
++        failure:null,observations:{},observation_id:0,snapshot_attempt:-1,capabilities:[]};
++    try {
++        var definition=definitionFor("plus",1),owner=config.lifecycle&&config.lifecycle.owners&&config.lifecycle.owners[2];
++        var cfg=typeof configFile==="string"?configFile.replace(/\\/g,"/"):"";
++        var ackPath=typeof config.ack_path==="string"?config.ack_path.replace(/\\/g,"/"):"";
++        if(!/\/config\.json$/.test(cfg)||!/\/ack\.json$/.test(ackPath)||
++            cfg.slice(0,-11)!==ackPath.slice(0,-8)||/(^|\/)\.{1,2}(\/|$)/.test(cfg)||
++            definition.source_sha256!==PLUS_SOURCE||command.source_sha256!==PLUS_SOURCE||definition.lifecycle_owner_inlet!==2||
++            !owner||owner.inlet!==2||owner.document!=="plus"||owner.revision!==1||owner.source_sha256!==PLUS_SOURCE||
++            typeof definition.working_windows_path!=="string"||!definition.working_windows_path||
++            owner.working_path!==definition.working_windows_path)throw Error("private-trace-install-binding");
++        installTrace.path=cfg.slice(0,-11)+"install-plus-r1-trace.jsonl";
++        var existing=new File(installTrace.path,"read"),present=existing.isopen;
++        if(present){existing.close();throw Error("private-trace-already-exists");}
++    }catch(error){throw installTraceRefusal("binding","command-consumed",error);}
++    installTraceEvent("command-consumed",{working_path:definition.working_windows_path});
++}
++function installTraceObservation(kind,index,row) {
++    if(!installTrace||!installTrace.active)return;
++    var key=kind+":"+index,text=traceAscii(row);
++    if(installTrace.observations[key]===text)return;
++    var id=++installTrace.observation_id,total=Math.ceil(text.length/512);
++    for(var part=0;part<total;part++)installTraceEvent("observation-chunk",{
++        observation_kind:kind,observation_id:id,part:part,parts:total,data:text.slice(part*512,(part+1)*512)});
++    installTrace.observations[key]=text;
++}
++function retainAnchorDiagnostic(row) {
++    anchorDiagnostics.push(row);installTraceObservation("anchor",anchorDiagnostics.length-1,row);
++}
++function installTraceCollected() {
++    if(!installTrace||!installTrace.active||installTrace.snapshot_attempt===installTrace.attempt)return;
++    for(var i=0;i<anchorDiagnostics.length;i++)installTraceObservation("anchor",i,anchorDiagnostics[i]);
++    for(var i=0;i<geometryDispositions.length;i++)installTraceObservation("geometry",i,geometryDispositions[i]);
++    installTrace.snapshot_attempt=installTrace.attempt;
++}
++function installTraceCapability(result,anchor,pendingTraceFailure) {
++    if(installTrace&&installTrace.active) {
++        var retained={anchor:anchor,method:result.method,observation:result},found=false;
++        for(var i=0;i<installTrace.capabilities.length;i++)if(installTrace.capabilities[i].anchor===anchor&&
++            installTrace.capabilities[i].method===result.method){installTrace.capabilities[i]=retained;found=true;break;}
++        if(!found)installTrace.capabilities.push(retained);
++        if(pendingTraceFailure)throw pendingTraceFailure;
++        installTraceEvent("capability-exit",retained);
++    }
++    return result;
++}
+ function read(path) {
+     var f=new File(path,"read"),text="";
+     if (!f.isopen) return null;
+@@ -147,23 +250,29 @@
+         throw Error("measured-arithmetic-geometry-vector-hash-changed");
+     return policy;
+ }
+-function capabilityObservation(object,method,attribute) {
++function capabilityObservation(object,method,attribute,anchor) {
++    installTraceEvent("capability-enter",{anchor:anchor||null,method:method});
+     var result={method:method,status:"unavailable",representation:"unavailable",value:null};
+     if(attribute)result.attribute=attribute;
+-    var raw;try{if(typeof object[method]!=="function")return result;
+-        raw=attribute?object[method](attribute):object[method]();}catch(error){
+-        result.status="threw";result.representation="threw";return result;}
++    var raw,available=false,pendingTraceFailure=null;try{if(typeof object[method]==="function") {
++        available=true;
++        raw=attribute?object[method](attribute):object[method]();}}catch(error){
++        result.status="threw";result.representation="threw";}
++    if(!available||result.status==="threw")return installTraceCapability(result,anchor);
++    // Keep trace I/O outside the capability catch; retain its result before propagating a sink refusal.
++    try{installTraceEvent("capability-call-return",{anchor:anchor||null,method:method});}
++    catch(traceError){pendingTraceFailure=traceError;}
+     result.status="returned";
+-    if(raw===null){result.representation="null";return result;}
+-    if(typeof raw==="undefined"){result.representation="undefined";return result;}
++    if(raw===null){result.representation="null";return installTraceCapability(result,anchor,pendingTraceFailure);}
++    if(typeof raw==="undefined"){result.representation="undefined";return installTraceCapability(result,anchor,pendingTraceFailure);}
+     var value=raw;
+     if(Array.isArray(raw)) {
+-        if(raw.length!==1){result.representation="ambiguous-array";return result;}
++        if(raw.length!==1){result.representation="ambiguous-array";return installTraceCapability(result,anchor,pendingTraceFailure);}
+         value=raw[0];result.representation="singleton-number-array";
+     }else result.representation="scalar-number";
+-    if(typeof value!=="number"){result.representation="other";return result;}
+-    if(!isFinite(value)){result.representation="nonfinite";return result;}
+-    result.value=value;return result;
++    if(typeof value!=="number"){result.representation="other";return installTraceCapability(result,anchor,pendingTraceFailure);}
++    if(!isFinite(value)){result.representation="nonfinite";return installTraceCapability(result,anchor,pendingTraceFailure);}
++    result.value=value;return installTraceCapability(result,anchor,pendingTraceFailure);
+ }
+ function plusNumericPreflightBinding(object,expected,definition,root) {
+     var pin=PLUS_NUMERIC_PINS[expected.anchor],configured={},revision=definition&&definition.revision;
+@@ -212,8 +321,8 @@
+         source_sha256:definition.source_sha256,source_box_sha256:expected.source_box_sha256,
+         request_id:shared.request_id,step_id:shared.step_id,operation_action:"install",
+         source_class:"flonum",runtime_class:"number",receipt_tag_observed:false,
+-        format_observation:capabilityObservation(object,"getattr","format"),
+-        value_observation:capabilityObservation(object,"getvalueof")};
++        format_observation:capabilityObservation(object,"getattr","format",expected.anchor),
++        value_observation:capabilityObservation(object,"getvalueof",null,expected.anchor)};
+ }
+ function controllerNumericRepresentationPolicy(expected,definition,configuration) {
+     var policy=expected.controller_numeric_representation_policy;if(typeof policy==="undefined")return null;
+@@ -298,14 +407,16 @@
+         if(plusCandidates&&found.length===1&&definition&&definition.document==="plus"&&definition.source_sha256===PLUS_SOURCE&&
+             expected.maxclass==="flonum"&&found[0].maxclass==="number"&&PLUS_NUMERIC_PINS[expected.anchor])
+             plusCandidates.push({object:found[0],expected:expected,diagnostic:diagnostic});
+-        anchorDiagnostics.push(diagnostic);throw Error("strict-original-geometry-class-unavailable");
++        retainAnchorDiagnostic(diagnostic);throw Error("strict-original-geometry-class-unavailable");
+     }
+     if(representation)controllerNumericRepresentationObservation(found[0],expected,definition);
+     if(policy&&sameNumbers(found[0].getboxattr("patching_rect"),policy.live_rect)) {
+         if(!dispositions)throw Error("private-geometry-disposition-sink-required");
+-        if(!dispositions.some(function(row){return row.anchor===expected.anchor&&row.revision===definition.revision;}))
++        if(!dispositions.some(function(row){return row.anchor===expected.anchor&&row.revision===definition.revision;})) {
+             dispositions.push({document:definition.document,revision:definition.revision,source_sha256:definition.source_sha256,
+                 anchor:expected.anchor,policy:policy});
++            if(dispositions===geometryDispositions)installTraceObservation("geometry",dispositions.length-1,dispositions[dispositions.length-1]);
++        }
+     }
+     return found[0];
+ }
+@@ -321,7 +432,7 @@
+     anchorDiagnostics=[];geometryDispositions=[];numericModeObservations=[];controllerRepresentationObservations=[];
+     plusPreflightContext=null;var plusCandidates=[];
+     var actualTotal=tree(patcher).length;
+-    if(actualTotal!==definition.full_inventory.length)anchorDiagnostics.push({scope:"root",diagnostic_type:"tree-count",
++    if(actualTotal!==definition.full_inventory.length)retainAnchorDiagnostic({scope:"root",diagnostic_type:"tree-count",
+         expected_count:definition.full_inventory.length,actual_count:actualTotal});
+     function namedChild(p,b) {
+         if(typeof b.source_varname!=="string"||!b.source_varname)return null;
+@@ -333,12 +444,13 @@
+     function scope(p,parent) {
+         var expected=definition.full_inventory.filter(function(b){return b.anchor.slice(0,b.anchor.lastIndexOf("/"))===parent;});
+         var actual=0;for(var o=p.firstobject;o;o=o.nextobject)actual++;
+-        if(actual!==expected.length)anchorDiagnostics.push({scope:parent,diagnostic_type:"scope-count",
++        if(actual!==expected.length)retainAnchorDiagnostic({scope:parent,diagnostic_type:"scope-count",
+             expected_count:expected.length,actual_count:actual});
+         for(var i=0;i<expected.length;i++) {
+             var b=expected[i],object=null,before=anchorDiagnostics.length;
+             try{object=resolve(p,b,definition,geometryDispositions,plusCandidates);}catch(error){
+-                if(anchorDiagnostics.length===before)anchorDiagnostics.push({expected_anchor:b.anchor,
++                if(error&&error.install_trace_refusal)throw error;
++                if(anchorDiagnostics.length===before)retainAnchorDiagnostic({expected_anchor:b.anchor,
+                     expected_rect:b.rect,expected_runtime_class:b.runtime_class,diagnostic_type:"invalid-anchor-binding",
+                     numeric_mode_observation:error.numeric_mode_observation||null});
+             }
+@@ -347,12 +459,14 @@
+                 var container=object||namedChild(p,b),sub=null;
+                 try{if(container)sub=container.subpatcher();}catch(error){}
+                 if(sub)scope(sub,b.anchor);
+-                else anchorDiagnostics.push({scope:b.anchor,diagnostic_type:"unresolved-child-scope"});
++                else retainAnchorDiagnostic({scope:b.anchor,diagnostic_type:"unresolved-child-scope"});
+             }
+         }
+     }
+     scope(patcher,"root");
++    installTraceCollected();
+     // Defer plus getters until the entire inventory and all three bindings are checked.
++    var plusEligibilityReported=false;
+     if(definition.document==="plus"&&actualTotal===20&&definition.full_inventory.length===20&&
+         anchorDiagnostics.length===3&&plusCandidates.length===3) {
+         var ready=true,anchors={};
+@@ -368,6 +482,8 @@
+                 anchors[row.expected.anchor]=true;plusNumericPreflightBinding(row.object,row.expected,definition,patcher);
+             }
+         }catch(error){ready=false;}
++        plusEligibilityReported=true;
++        installTraceEvent("plus-eligibility",{ready:ready,candidates:plusCandidates.length,diagnostics:anchorDiagnostics.length});
+         if(ready) {
+             plusPreflightContext={definition:definition,candidates:plusCandidates,root:patcher};
+             try{for(var i=0;i<plusCandidates.length;i++) {
+@@ -376,6 +492,7 @@
+             }}finally{plusPreflightContext=null;}
+         }
+     }
++    if(!plusEligibilityReported)installTraceEvent("plus-eligibility",{ready:false,candidates:plusCandidates.length,diagnostics:anchorDiagnostics.length});
+     if(anchorDiagnostics.length)throw Error("aggregate-original-hierarchy-preflight-failed");
+ }
+ function dispatch(object,message) {
+@@ -404,12 +521,32 @@
+     for(var k in extra)value[k]=extra[k];write(config.ack_path,value);busy=false;
+ }
+ function fail(command,error) {
+-    record("harness-error",{error:String(error)});
++    var tracing=installTrace&&installTrace.active;
++    if(tracing&&!error.install_trace_refusal)installTrace.original_error=String(error);
++    function progress(phase) {
++        if(!tracing||installTrace.failure)return;
++        try{installTraceEvent(phase);}catch(traceError){error=traceError;}
++    }
++    progress("failure-enter");progress("failure-journal-enter");
++    record("harness-error",{error:tracing&&installTrace.failure?"Error: private-install-trace-refused:"+installTrace.failure.code:String(error)});
++    progress("failure-journal-return");
+     var value={command_id:command.command_id,success:false,error_code:"arithmetic-controller-refused",
+         anchor_diagnostics:anchorDiagnostics,geometry_dispositions:geometryDispositions,
+         numeric_mode_observations:numericModeObservations,controller_representation_observations:controllerRepresentationObservations};
+     if(closeDiagnostics&&closeDiagnostics.request_id===command.command_id)value.close_diagnostics=closeDiagnostics;
+-    write(config.ack_path,value);busy=false;
++    function retainTraceFailure() {
++        if(tracing&&installTrace.failure) {
++            value.install_trace_failure={};
++            for(var key in installTrace.failure)value.install_trace_failure[key]=installTrace.failure[key];
++            value.install_trace_failure.collected_capabilities=installTrace.capabilities;
++        }
++    }
++    progress("failure-ack-enter");retainTraceFailure();write(config.ack_path,value);
++    var priorFailure=tracing&&installTrace.failure;
++    progress("failure-ack-return");
++    if(tracing&&!priorFailure&&installTrace.failure){retainTraceFailure();write(config.ack_path,value);}
++    if(tracing)installTrace.active=false;
++    busy=false;
+ }
+ function bind(patcher,definition) {
+     validateTree(patcher,definition);
+@@ -419,7 +556,8 @@
+     for(var i=0;i<definition.boxes.length;i++) {
+         var before=anchorDiagnostics.length;
+         try{objects[definition.boxes[i].anchor]=resolve(basic,definition.boxes[i],definition,geometryDispositions);}catch(error){
+-            if(anchorDiagnostics.length===before)anchorDiagnostics.push({expected_anchor:definition.boxes[i].anchor,
++            if(error&&error.install_trace_refusal)throw error;
++            if(anchorDiagnostics.length===before)retainAnchorDiagnostic({expected_anchor:definition.boxes[i].anchor,
+                 expected_rect:definition.boxes[i].rect,diagnostic_type:"invalid-basic-binding",
+                 numeric_mode_observation:error.numeric_mode_observation||null});
+         }
+@@ -456,26 +594,46 @@
+     if(Object.keys(roots).length||typeof revision!=="number"||revision!==(revisions[doc]||0)+1)throw Error("invalid-install-revision");
+     var definition=definitionFor(doc,revision),attempts=0,stable=0;
+     if(command.source_sha256!==definition.source_sha256)throw Error("install-source-binding");
++    installTraceEvent("openfile-enter");
+     max.message("openfile",config.global_name+"_"+doc+"_r"+revision,definition.working_windows_path);
++    installTraceEvent("openfile-return");
+     function poll() {
+         try {
++            if(installTrace&&installTrace.active)installTrace.attempt=attempts+1;
++            installTraceEvent("poll-enter");
+             var p=max.frontpatcher;++attempts;
+-            if(p&&samePath(p.filepath,definition.working_windows_path)) {
+-                try{validateTree(p,definition);stable++;}catch(e){stable=0;if(attempts>=70)throw e;}
++            var matches=p&&samePath(p.filepath,definition.working_windows_path);
++            installTraceEvent("root-decision",{root_present:!!p,path_match:!!matches});
++            if(matches) {
++                installTraceEvent("validate-enter");
++                try{validateTree(p,definition);stable++;installTraceEvent("validate-return");}catch(e){
++                    stable=0;if(e&&e.install_trace_refusal)throw e;
++                    if(installTrace&&installTrace.active)installTrace.original_error=String(e);
++                    installTraceCollected();installTraceEvent("validate-refused",{diagnostics:anchorDiagnostics.length,
++                        geometry_dispositions:geometryDispositions.length});
++                    if(attempts>=70)throw e;
++                }
+                 // The pinned helper's deferred initialization must have settled before binding.
+                 if(stable>=5&&attempts>=10) {
++                    installTraceEvent("bind-enter");
+                     roots[doc]=bind(p,definition);revisions[doc]=revision;
++                    installTraceEvent("bind-return");
+                     record("step-complete",{document:doc,revision:revision,source_sha256:definition.source_sha256});
++                    installTraceEvent("install-ready-for-ack");
+                     ack(command,{working_path:definition.working_windows_path,geometry_dispositions:geometryDispositions,
+                         numeric_mode_observations:numericModeObservations,
+-                        controller_representation_observations:controllerRepresentationObservations});return;
++                        controller_representation_observations:controllerRepresentationObservations});
++                    if(installTrace)installTrace.active=false;
++                    return;
+                 }
+             }
+             if(attempts>=80)throw Error("bounded-helper-settling-timeout");
+             pollTask=new Task(poll,this);pollTask.schedule(100);
++            installTraceEvent("poll-scheduled");
+         }catch(error){fail(command,error);}
+     }
+     pollTask=new Task(poll,this);pollTask.schedule(100);
++    installTraceEvent("poll-scheduled");
+ }
+ function closeValue(value) {
+     var type=value===null?"null":typeof value,result={type:type};
+@@ -636,7 +794,7 @@
+ function handle(command) {
+     if(command.op==="operation") {
+         setAction(command);
+-        if(command.action==="install"){install(command);return;}
++        if(command.action==="install"){beginInstallTrace(command);install(command);return;}
+         if(command.action==="close"){closeOwner(command);return;}
+         if(command.action!=="event")throw Error("unknown-operation-action");
+         if(command.inlet!==0)throw Error("finite-inlet-zero-required");
+--- consumed005/test_helpers.cjs
++++ trace006/test_helpers.cjs
+@@ -856,3 +856,204 @@
+   serializedCasesWithObservations: fix1Invalid.filter(row => row.serializedObservations !== 0).length}));
+ assert.ok(fix1Invalid.every(row => row.calls === 0 && row.directObservations === 0 && row.serializedObservations === 0),
+   'every invalid plus identity/geometry case must suppress calls and numeric observations');
++
++// Catch missing/private trace boundaries without replacing validation or capability logic.
++function installTraceFixture(options = {}) {
++  const f = plusPreflightFixture(), c = f.context, memory = new Map([['Z:/synthetic/journal.jsonl', '']]);
++  let now = 0, polls = 0, openCalls = 0, propertyReads = 0, geometryReads = 0;
++  const queue = [], schedules = [], tracePath = 'Z:/synthetic/install-plus-r1-trace.jsonl';
++  const command = {command_id: 51, op: 'operation', action: 'install', document: 'plus', revision: 1,
++    action_revision: 1, step_id: 'install-plus-r1', source_sha256: c.PLUS_SOURCE, ...options.command};
++  Object.assign(c.config, {ack_path: 'Z:/synthetic/ack.json', journal_path: 'Z:/synthetic/journal.jsonl',
++    command_path: 'Z:/synthetic/command.json', global_name: 'synthetic'});
++  memory.set(c.config.command_path, JSON.stringify(command));
++  const OriginalFile = memoryFile(memory);
++  c.File = function(file, mode) {
++    if (file === tracePath && options.sinkFailure && options.sinkFailure(mode, memory.get(file) || ''))
++      throw Error('synthetic trace sink failure');
++    return new OriginalFile(file, mode);
++  };
++  c.Date = function() {this.getTime = () => now;};
++  c.Task = function(fn, owner) {this.fn = fn; this.owner = owner;};
++  c.Task.prototype.schedule = function(delay) {schedules.push(delay); queue.push({at: now + delay, fn: this.fn, owner: this.owner});};
++  c.max = {message(...args) {
++    openCalls++; assert.equal(args[0], 'openfile'); assert.equal(args[2], f.definition.working_windows_path);
++    if (options.open) options.open(f);
++  }};
++  Object.defineProperty(c.max, 'frontpatcher', {get() {
++    propertyReads++; return options.noMatch && options.noMatch(polls) ? null : f.root;
++  }});
++  for (const objects of Object.values(f.scopes)) for (const object of objects) {
++    const original = object.getboxattr;
++    object.getboxattr = function(...args) {geometryReads++; return original.apply(this, args);};
++  }
++  f.memory = memory; f.command = command; f.tracePath = tracePath; f.schedules = schedules;
++  f.rows = () => (memory.get(tracePath) || '').trim().split('\n').filter(Boolean).map(JSON.parse);
++  f.ack = () => JSON.parse(memory.get(c.config.ack_path));
++  f.start = () => c.tick();
++  f.next = () => {
++    const next = queue.shift(); assert.ok(next, 'expected scheduled callback'); now = next.at; polls++;
++    if (options.callbackCost) now += options.callbackCost;
++    next.fn.call(next.owner);
++  };
++  f.finish = () => {let remaining = 81; while (queue.length && remaining--) f.next(); assert.ok(remaining > 0, 'bounded install');};
++  f.counts = () => ({now, polls, openCalls, propertyReads, geometryReads});
++  return f;
++}
++const traced = installTraceFixture(); traced.start(); traced.next();
++assert.ok(traced.memory.has(traced.tracePath), 'request51 must durably trace before terminal ACK');
++const firstTrace = traced.rows();
++assert.deepEqual(firstTrace.slice(0, 4).map(row => row.phase),
++  ['command-consumed', 'openfile-enter', 'openfile-return', 'poll-scheduled']);
++assert.ok(firstTrace.some(row => row.phase === 'plus-eligibility' && row.ready === true));
++assert.deepEqual(firstTrace.filter(row => row.phase === 'capability-exit').map(row => [row.method, row.observation.status]),
++  [['getattr', 'returned'], ['getvalueof', 'returned'], ['getattr', 'returned'], ['getvalueof', 'returned'], ['getattr', 'returned'], ['getvalueof', 'returned']]);
++assert.equal(firstTrace.filter(row => row.phase === 'capability-call-return').length, 6,
++  'host return must be distinguished from subsequent result normalization');
++assert.ok(firstTrace.some(row => row.phase === 'observation-chunk' && row.observation_kind === 'anchor'));
++assert.ok(firstTrace.some(row => row.phase === 'observation-chunk' && row.observation_kind === 'geometry'));
++assert.equal(traced.memory.has(traced.context.config.ack_path), false, 'partial observations survive before ACK');
++assert.equal(traced.memory.get(traced.context.config.journal_path), '', 'trace is not a runtime journal event');
++const partialGeometry = installTraceFixture(); let geometryDurableDuringTraversal = false;
++const originalGeometry = partialGeometry.scopes.root[0].getboxattr;
++partialGeometry.scopes.root[0].getboxattr = function(...args) {
++  if (partialGeometry.context.geometryDispositions.length && partialGeometry.rows().some(row =>
++    row.phase === 'observation-chunk' && row.observation_kind === 'geometry')) geometryDurableDuringTraversal = true;
++  return originalGeometry.apply(this, args);
++};
++partialGeometry.start(); partialGeometry.next();
++assert.equal(geometryDurableDuringTraversal, true, 'collected geometry must survive a later traversal stall');
++const untraced = installTraceFixture({command: {command_id: 52}}); untraced.start(); untraced.next();
++assert.equal(untraced.memory.has(untraced.tracePath), false);
++assert.deepEqual(traced.calls, untraced.calls, 'tracing must preserve exact six-call order');
++assert.deepEqual(traced.counts(), untraced.counts(), 'trace must not add host property/geometry reads');
++traced.finish(); untraced.finish();
++assert.equal(traced.counts().polls, 70); assert.equal(traced.calls.length, 420);
++assert.equal(traced.counts().now, 7000); assert.ok(traced.schedules.every(delay => delay === 100));
++assert.equal(traced.ack().success, false); assert.equal(traced.ack().anchor_diagnostics.length, 3);
++assert.equal(traced.ack().geometry_dispositions.length, 4);
++assert.equal(traced.ack().install_trace_failure, undefined);
++const untracedAck = untraced.ack(); untracedAck.command_id = 51;
++for (const row of untracedAck.anchor_diagnostics) row.numeric_preflight_observation.request_id = 51;
++assert.deepEqual(traced.ack(), untracedAck, 'healthy trace leaves refusal content unchanged apart from request identity');
++assert.deepEqual(traced.rows().slice(-5).map(row => row.phase),
++  ['failure-enter', 'failure-journal-enter', 'failure-journal-return', 'failure-ack-enter', 'failure-ack-return']);
++assert.equal(traced.memory.get(traced.context.config.journal_path).trim().split('\n').length, 1);
++for (const [index, row] of traced.rows().entries()) {
++  assert.equal(row.seq, index + 1); assert.equal(row.request_id, 51); assert.equal(row.step_id, 'install-plus-r1');
++  assert.equal(row.document, 'plus'); assert.equal(row.revision, 1); assert.equal(row.source_sha256, traced.context.PLUS_SOURCE);
++  assert.equal(row.owner_inlet, 2); assert.equal(row.clock, 'wall-ms'); assert.ok(Number.isFinite(row.at_ms));
++}
++const costly = installTraceFixture({callbackCost: 43}); costly.start(); costly.finish();
++assert.equal(costly.counts().now, 10010, 'finite callback costs must remain visible beyond unchanged ACK deadline');
++assert.equal(costly.rows().at(-1).elapsed_ms, 10010);
++const longest = installTraceFixture({noMatch: poll => poll >= 70 && poll < 80}); longest.start(); longest.finish();
++assert.equal(longest.counts().polls, 80); assert.equal(longest.calls.length, 420);
++assert.ok(longest.rows().length < 2048); assert.ok(longest.memory.get(longest.tracePath).length <= 2 * 1024 * 1024);
++for (const line of longest.memory.get(longest.tracePath).trimEnd().split('\n')) {
++  assert.ok(line.length + 1 <= 2048); assert.match(line, /^[\x00-\x7f]*$/);
++}
++const noRoot = installTraceFixture({noMatch: () => true}); noRoot.start(); noRoot.finish();
++assert.equal(noRoot.counts().polls, 80); assert.equal(noRoot.calls.length, 0);
++assert.ok(noRoot.rows().every(row => row.phase !== 'validate-enter'));
++for (const [unmatchedPolls, expectedPolls] of [[0, 10], [8, 13]]) {
++  const f = installTraceFixture({noMatch: poll => poll <= unmatchedPolls});
++  for (const target of f.targets) target.object.maxclass = 'flonum';
++  f.definition.basic_varname = 'basic_tab'; f.definition.boxes = [];
++  f.root.getnamed = name => {assert.equal(name, 'basic_tab'); return f.scopes.root[1];};
++  let helpersCreated = 0, connections = 0;
++  f.root.newdefault = () => {helpersCreated++; return {setboxattr() {}};};
++  f.root.connect = () => {connections++;};
++  f.start(); f.finish();
++  assert.equal(f.counts().polls, expectedPolls, 'minimum ten attempts and five consecutive stable passes remain required');
++  assert.equal(f.ack().success, true); assert.equal(f.calls.length, 0);
++  assert.equal(helpersCreated, 4); assert.equal(connections, 1);
++  assert.ok(f.rows().some(row => row.phase === 'bind-enter'));
++  assert.deepEqual(f.rows().slice(-3).map(row => row.phase), ['plus-eligibility', 'bind-return', 'install-ready-for-ack'],
++    'binding validation must finish before readiness');
++}
++
++for (const variant of ['unavailable', 'threw', 'ambiguous', 'property-threw']) {
++  const f = installTraceFixture(); let incompletePrefix;
++  for (const target of f.targets) {
++    if (variant === 'unavailable') {delete target.object.getattr; delete target.object.getvalueof;}
++    if (variant === 'threw') target.object.getvalueof = () => {
++      incompletePrefix = f.rows(); throw Error('synthetic capability unavailable');
++    };
++    if (variant === 'ambiguous') target.object.getvalueof = () => [1, 2];
++    if (variant === 'property-threw') Object.defineProperty(target.object, 'getvalueof', {get() {
++      incompletePrefix = f.rows(); throw Error('synthetic capability property unavailable');
++    }});
++  }
++  f.start(); f.next();
++  const exits = f.rows().filter(row => row.phase === 'capability-exit' && row.method === 'getvalueof');
++  assert.equal(exits.length, 3);
++  assert.ok(exits.every(row => row.observation.status === (variant === 'unavailable' ? 'unavailable' :
++    variant === 'ambiguous' ? 'returned' : 'threw')));
++  if (variant === 'ambiguous') assert.ok(exits.every(row => row.observation.representation === 'ambiguous-array'));
++  if (incompletePrefix) assert.equal(incompletePrefix.at(-1).phase, 'capability-enter', 'entry must be durable before host return');
++}
++let openPrefix;
++const interruptedOpen = installTraceFixture({open(f) {openPrefix = f.rows(); throw Error('synthetic interrupted open');}});
++interruptedOpen.start();
++assert.equal(openPrefix.at(-1).phase, 'openfile-enter');
++assert.ok(!interruptedOpen.rows().some(row => row.phase === 'openfile-return'));
++assert.equal(interruptedOpen.ack().success, false);
++
++for (const variant of ['unknown-parent', 'wrong-inlet', 'inexact-geometry']) {
++  const f = installTraceFixture();
++  if (variant === 'unknown-parent') delete f.root.parentpatcher;
++  if (variant === 'wrong-inlet') f.context.config.lifecycle.owners[2].inlet = 99;
++  if (variant === 'inexact-geometry') f.scopes.root[0].live[0] += .005;
++  f.start(); f.finish();
++  assert.equal(f.calls.length, 0, variant + ': existing preflight must still suppress all calls');
++  assert.equal(f.ack().success, false);
++  assert.ok(!f.rows().some(row => row.phase === 'capability-enter'));
++}
++for (const variant of ['ack-basename', 'ack-directory', 'config-basename', 'existing-sidecar', 'source']) {
++  const f = installTraceFixture();
++  if (variant === 'ack-basename') f.context.config.ack_path = 'Z:/synthetic/other.json';
++  if (variant === 'ack-directory') f.context.config.ack_path = 'Z:/other/ack.json';
++  if (variant === 'config-basename') f.context.configFile = 'Z:/synthetic/other.json';
++  if (variant === 'existing-sidecar') f.memory.set(f.tracePath, 'preserved-before-start\n');
++  if (variant === 'source') f.definition.source_sha256 = 'f'.repeat(64);
++  f.start();
++  assert.equal(f.ack().success, false); assert.equal(f.ack().install_trace_failure.code, 'binding');
++  assert.equal(f.calls.length, 0); assert.equal(f.counts().openCalls, 0);
++  if (variant === 'existing-sidecar') assert.equal(f.memory.get(f.tracePath), 'preserved-before-start\n');
++}
++for (const command of [{document: 'times', step_id: 'install-times-r1'}, {document: 'minus', step_id: 'install-minus-r1'},
++  {command_id: 52}, {revision: 2, action_revision: 2, step_id: 'install-plus-r2'}]) {
++  const f = installTraceFixture({command}); f.start();
++  assert.equal(f.memory.has(f.tracePath), false, 'unrelated install must never create a trace');
++}
++const sinkFailure = installTraceFixture({sinkFailure: (mode, body) => mode !== 'read' && body.includes('"method":"getattr"')});
++sinkFailure.start(); sinkFailure.next();
++assert.equal(sinkFailure.ack().success, false);
++assert.equal(sinkFailure.ack().install_trace_failure.code, 'sink');
++assert.equal(sinkFailure.calls.length, 1, 'trace failure must stop before the next capability');
++assert.equal(sinkFailure.ack().install_trace_failure.collected_capabilities[0].observation.status, 'returned',
++  'trace sink failure must not rewrite a returned capability into threw');
++assert.equal(sinkFailure.ack().install_trace_failure.collected_capabilities[0].observation.value, 6);
++const contextFailure = installTraceFixture({sinkFailure: (mode, body) => mode !== 'read' && body.includes('"phase":"validate-refused"')});
++contextFailure.start(); contextFailure.next(); contextFailure.next();
++assert.equal(contextFailure.ack().install_trace_failure.code, 'sink');
++assert.match(contextFailure.ack().install_trace_failure.original_error, /aggregate-original-hierarchy-preflight-failed/);
++assert.equal(contextFailure.ack().anchor_diagnostics.length, 3);
++for (const variant of ['records', 'record-bytes', 'total-bytes']) {
++  const f = installTraceFixture(); f.start();
++  let failure;
++  try {for (let i = 0; i < 2200; i++) f.context.installTraceEvent('synthetic-bound',
++    {payload: 'x'.repeat(variant === 'record-bytes' ? 2048 : variant === 'total-bytes' ? 1400 : 0)});}
++  catch (error) {failure = error;}
++  assert.ok(failure, variant + ': bounds must fail explicitly');
++  f.context.fail(f.command, failure);
++  assert.equal(f.ack().install_trace_failure.code, 'limit');
++  assert.equal(f.rows().at(-1).phase, 'trace-limit');
++  assert.ok(f.rows().length <= 2048); assert.ok(f.memory.get(f.tracePath).length <= 2 * 1024 * 1024);
++  assert.ok(f.memory.get(f.tracePath).trimEnd().split('\n').every(line => line.length + 1 <= 2048));
++}
++console.log(JSON.stringify({trace006: 'ordered private phases and preserved capabilities',
++  refusalRows: traced.rows().length, longestRows: longest.rows().length,
++  longestBytes: longest.memory.get(longest.tracePath).length, polls: longest.counts().polls,
++  capabilityCalls: longest.calls.length, maxLineBytes: Math.max(...longest.memory.get(longest.tracePath).trimEnd().split('\n').map(line => line.length + 1))}));

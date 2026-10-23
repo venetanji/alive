@@ -1,0 +1,101 @@
+{
+  "status": "ACCEPTED_FOR_ONE_BOUNDED_CAPTURE",
+  "concrete_review_sha256": "7e2c57631edde2d1cb0cb126182aee17c860e08c2cced475af8c4e8d53a6c27d",
+  "fresh_prelaunch": {
+    "host_display_accessible": true,
+    "mapped_files": 16,
+    "marker_processes": 0,
+    "marker_unreadable_environments": 310,
+    "observations": 0,
+    "pidfd_available": true,
+    "preference_digests": {
+      "original": "33337899e32d500cf01edf2c6940d7552b5d82b0682945375bd4fb2ff3958618",
+      "reusable": "78230e06e1491569f8081f1466102c460711ab3616ef74f1046c5d2f331f361e"
+    },
+    "prefix_scans": {
+      "capture": {
+        "matches": 0,
+        "unreadable": 310
+      },
+      "original": {
+        "matches": 0,
+        "unreadable": 310
+      },
+      "reusable": {
+        "matches": 0,
+        "unreadable": 310
+      }
+    },
+    "private_directories": 4,
+    "private_display": ":200",
+    "private_display_existing_processes": 0,
+    "private_files": 23,
+    "runtime_invocations": 0,
+    "sealed_inputs": 22,
+    "status": "PRELAUNCH_FRESH"
+  },
+  "actual_source": {
+    "canonical_ascii_bytes": 18681,
+    "configuration_capture": "011",
+    "cross_language_configuration": true,
+    "cross_language_projection": true,
+    "definitions_reconstructed": 6,
+    "helpers": 4,
+    "historical_code_executed": false,
+    "installed_sources": 3,
+    "live_geometry_pin_evidence_capture": "008",
+    "live_geometry_pins": 4,
+    "private_writes": 0,
+    "production_source_gate": true,
+    "projection_keys": 9,
+    "source_pins": 7,
+    "source_projection_sha256": "c17962fba204a882ce5b0bca6c792e55c0a4181366c7dfe0c39b28152215084e",
+    "synthetic_substitutions": 0
+  },
+  "private_preservation": {
+    "roots": 34,
+    "entries": 1834,
+    "unchanged": true
+  },
+  "request": {
+    "executable": "python3",
+    "arguments": [
+      "-B",
+      "/home/venetanji/Work/alive/experiments/max-reference/arithmetic-roots-runtime-20261022/run-runtime.py",
+      "--execute",
+      "--work",
+      "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-max-runtime-011",
+      "--capture-name",
+      "arithmetic-011",
+      "--host-display",
+      ":0",
+      "--timeout-seconds",
+      "150"
+    ],
+    "working_directory": "/home/venetanji/Work/alive",
+    "filesystem_observation_paths": [
+      "/home/venetanji/Work/alive/experiments/max-reference/arithmetic-roots-runtime-20261022/results/arithmetic-011"
+    ],
+    "timeout_ms": 170000,
+    "idle_timeout_ms": 165000,
+    "finalization_ms": 5000,
+    "settle_ms": 1000,
+    "terminal": {
+      "columns": 100,
+      "rows": 30,
+      "scrollback": 100
+    },
+    "limits": {
+      "output_bytes": 8000,
+      "files": 20,
+      "file_bytes": 2000000,
+      "filesystem_depth": 2,
+      "processes": 40
+    }
+  },
+  "qualification": {
+    "qualified": 0,
+    "total": 2103
+  },
+  "capture_started": false
+}

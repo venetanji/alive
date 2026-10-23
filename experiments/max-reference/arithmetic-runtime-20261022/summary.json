@@ -1,0 +1,8730 @@
+{
+  "schema_version": 1,
+  "evidence": "ORIGINAL_MAX_EXECUTED",
+  "rea_evidence_id": "ev_074aa48ec8f1ce9d52c4e240ffd330aeae2631d933ba683458e54f1de7ccda7e",
+  "targets": [
+    {
+      "label": "op0-bare",
+      "operator": "+",
+      "variant": "bare",
+      "creation": "+"
+    },
+    {
+      "label": "op0-integer",
+      "operator": "+",
+      "variant": "integer",
+      "creation": "+ 2"
+    },
+    {
+      "label": "op0-float",
+      "operator": "+",
+      "variant": "float",
+      "creation": "+ 2."
+    },
+    {
+      "label": "op1-bare",
+      "operator": "*",
+      "variant": "bare",
+      "creation": "*"
+    },
+    {
+      "label": "op1-integer",
+      "operator": "*",
+      "variant": "integer",
+      "creation": "* 2"
+    },
+    {
+      "label": "op1-float",
+      "operator": "*",
+      "variant": "float",
+      "creation": "* 2."
+    },
+    {
+      "label": "op2-bare",
+      "operator": "-",
+      "variant": "bare",
+      "creation": "-"
+    },
+    {
+      "label": "op2-integer",
+      "operator": "-",
+      "variant": "integer",
+      "creation": "- 2"
+    },
+    {
+      "label": "op2-float",
+      "operator": "-",
+      "variant": "float",
+      "creation": "- 2."
+    },
+    {
+      "label": "op3-bare",
+      "operator": "/",
+      "variant": "bare",
+      "creation": "/"
+    },
+    {
+      "label": "op3-integer",
+      "operator": "/",
+      "variant": "integer",
+      "creation": "/ 2"
+    },
+    {
+      "label": "op3-float",
+      "operator": "/",
+      "variant": "float",
+      "creation": "/ 2."
+    },
+    {
+      "label": "op4-bare",
+      "operator": "%",
+      "variant": "bare",
+      "creation": "%"
+    },
+    {
+      "label": "op4-integer",
+      "operator": "%",
+      "variant": "integer",
+      "creation": "% 2"
+    },
+    {
+      "label": "op4-float",
+      "operator": "%",
+      "variant": "float",
+      "creation": "% 2."
+    },
+    {
+      "label": "op5-bare",
+      "operator": "!-",
+      "variant": "bare",
+      "creation": "!-"
+    },
+    {
+      "label": "op5-integer",
+      "operator": "!-",
+      "variant": "integer",
+      "creation": "!- 2"
+    },
+    {
+      "label": "op5-float",
+      "operator": "!-",
+      "variant": "float",
+      "creation": "!- 2."
+    },
+    {
+      "label": "op6-bare",
+      "operator": "!/",
+      "variant": "bare",
+      "creation": "!/"
+    },
+    {
+      "label": "op6-integer",
+      "operator": "!/",
+      "variant": "integer",
+      "creation": "!/ 2"
+    },
+    {
+      "label": "op6-float",
+      "operator": "!/",
+      "variant": "float",
+      "creation": "!/ 2."
+    },
+    {
+      "label": "op7-bare",
+      "operator": "abs",
+      "variant": "bare",
+      "creation": "abs"
+    },
+    {
+      "label": "op7-integer",
+      "operator": "abs",
+      "variant": "integer",
+      "creation": "abs 2"
+    },
+    {
+      "label": "op7-float",
+      "operator": "abs",
+      "variant": "float",
+      "creation": "abs 2."
+    },
+    {
+      "label": "op0-extra24",
+      "operator": "+",
+      "variant": "extra24",
+      "creation": "+ 2e0"
+    },
+    {
+      "label": "op1-extra25",
+      "operator": "*",
+      "variant": "extra25",
+      "creation": "* 0.5"
+    },
+    {
+      "label": "op3-extra26",
+      "operator": "/",
+      "variant": "extra26",
+      "creation": "/ 2e0"
+    },
+    {
+      "label": "op4-extra27",
+      "operator": "%",
+      "variant": "extra27",
+      "creation": "% 0.5"
+    },
+    {
+      "label": "op4-extra28",
+      "operator": "%",
+      "variant": "extra28",
+      "creation": "% 2.5"
+    },
+    {
+      "label": "op7-extra29",
+      "operator": "abs",
+      "variant": "extra29",
+      "creation": "abs 2e0"
+    },
+    {
+      "label": "op7-extra30",
+      "operator": "abs",
+      "variant": "extra30",
+      "creation": "abs 0.5"
+    }
+  ],
+  "input_deliveries": 300,
+  "typed_receipts": 218,
+  "raw_rows": 820,
+  "kind_counts": {
+    "ready": 1,
+    "stimulus": 300,
+    "receipt": 218,
+    "step-complete": 300,
+    "complete": 1
+  },
+  "nonfinite_receipts": [
+    {
+      "input_id": "241-op3-float-zero-positive-hot",
+      "seq": 656,
+      "target": "op3-float",
+      "inlet": 11,
+      "selector": "float",
+      "atoms": [
+        null
+      ],
+      "number_repr": [
+        "Infinity"
+      ],
+      "negative_zero": [
+        false
+      ],
+      "finite": [
+        false
+      ]
+    },
+    {
+      "input_id": "243-op3-float-zero-negative-hot",
+      "seq": 661,
+      "target": "op3-float",
+      "inlet": 11,
+      "selector": "float",
+      "atoms": [
+        null
+      ],
+      "number_repr": [
+        "Infinity"
+      ],
+      "negative_zero": [
+        false
+      ],
+      "finite": [
+        false
+      ]
+    },
+    {
+      "input_id": "253-op4-float-zero-positive-hot",
+      "seq": 686,
+      "target": "op4-float",
+      "inlet": 14,
+      "selector": "float",
+      "atoms": [
+        null
+      ],
+      "number_repr": [
+        "NaN"
+      ],
+      "negative_zero": [
+        false
+      ],
+      "finite": [
+        false
+      ]
+    },
+    {
+      "input_id": "255-op4-float-zero-negative-hot",
+      "seq": 691,
+      "target": "op4-float",
+      "inlet": 14,
+      "selector": "float",
+      "atoms": [
+        null
+      ],
+      "number_repr": [
+        "NaN"
+      ],
+      "negative_zero": [
+        false
+      ],
+      "finite": [
+        false
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "000-op0-bare-startup-bang",
+      "target": "op0-bare",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 0,
+      "operator": "+",
+      "creation": "+",
+      "outputs": [
+        {
+          "seq": 3,
+          "target": "op0-bare",
+          "inlet": 0,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "001-op0-integer-startup-bang",
+      "target": "op0-integer",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 6,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            2
+          ],
+          "number_repr": [
+            "2"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "002-op0-float-startup-bang",
+      "target": "op0-float",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 4,
+      "operator": "+",
+      "creation": "+ 2.",
+      "outputs": [
+        {
+          "seq": 9,
+          "target": "op0-float",
+          "inlet": 2,
+          "selector": "float",
+          "atoms": [
+            2
+          ],
+          "number_repr": [
+            "2"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "003-op1-bare-startup-bang",
+      "target": "op1-bare",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 6,
+      "operator": "*",
+      "creation": "*",
+      "outputs": [
+        {
+          "seq": 12,
+          "target": "op1-bare",
+          "inlet": 3,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "004-op1-integer-startup-bang",
+      "target": "op1-integer",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 15,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "005-op1-float-startup-bang",
+      "target": "op1-float",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 10,
+      "operator": "*",
+      "creation": "* 2.",
+      "outputs": [
+        {
+          "seq": 18,
+          "target": "op1-float",
+          "inlet": 5,
+          "selector": "float",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "006-op2-bare-startup-bang",
+      "target": "op2-bare",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 12,
+      "operator": "-",
+      "creation": "-",
+      "outputs": [
+        {
+          "seq": 21,
+          "target": "op2-bare",
+          "inlet": 6,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "007-op2-integer-startup-bang",
+      "target": "op2-integer",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 24,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            -2
+          ],
+          "number_repr": [
+            "-2"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "008-op2-float-startup-bang",
+      "target": "op2-float",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 16,
+      "operator": "-",
+      "creation": "- 2.",
+      "outputs": [
+        {
+          "seq": 27,
+          "target": "op2-float",
+          "inlet": 8,
+          "selector": "float",
+          "atoms": [
+            -2
+          ],
+          "number_repr": [
+            "-2"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "009-op3-bare-startup-bang",
+      "target": "op3-bare",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 18,
+      "operator": "/",
+      "creation": "/",
+      "outputs": [
+        {
+          "seq": 30,
+          "target": "op3-bare",
+          "inlet": 9,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "010-op3-integer-startup-bang",
+      "target": "op3-integer",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 33,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "011-op3-float-startup-bang",
+      "target": "op3-float",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 22,
+      "operator": "/",
+      "creation": "/ 2.",
+      "outputs": [
+        {
+          "seq": 36,
+          "target": "op3-float",
+          "inlet": 11,
+          "selector": "float",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "012-op4-bare-startup-bang",
+      "target": "op4-bare",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 24,
+      "operator": "%",
+      "creation": "%",
+      "outputs": [
+        {
+          "seq": 39,
+          "target": "op4-bare",
+          "inlet": 12,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "013-op4-integer-startup-bang",
+      "target": "op4-integer",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 42,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "014-op4-float-startup-bang",
+      "target": "op4-float",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 28,
+      "operator": "%",
+      "creation": "% 2.",
+      "outputs": [
+        {
+          "seq": 45,
+          "target": "op4-float",
+          "inlet": 14,
+          "selector": "float",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "015-op5-bare-startup-bang",
+      "target": "op5-bare",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 30,
+      "operator": "!-",
+      "creation": "!-",
+      "outputs": [
+        {
+          "seq": 48,
+          "target": "op5-bare",
+          "inlet": 15,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "016-op5-integer-startup-bang",
+      "target": "op5-integer",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 51,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            2
+          ],
+          "number_repr": [
+            "2"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "017-op5-float-startup-bang",
+      "target": "op5-float",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 34,
+      "operator": "!-",
+      "creation": "!- 2.",
+      "outputs": [
+        {
+          "seq": 54,
+          "target": "op5-float",
+          "inlet": 17,
+          "selector": "float",
+          "atoms": [
+            2
+          ],
+          "number_repr": [
+            "2"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "018-op6-bare-startup-bang",
+      "target": "op6-bare",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 36,
+      "operator": "!/",
+      "creation": "!/",
+      "outputs": [
+        {
+          "seq": 57,
+          "target": "op6-bare",
+          "inlet": 18,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "019-op6-integer-startup-bang",
+      "target": "op6-integer",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 60,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "020-op6-float-startup-bang",
+      "target": "op6-float",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 40,
+      "operator": "!/",
+      "creation": "!/ 2.",
+      "outputs": [
+        {
+          "seq": 63,
+          "target": "op6-float",
+          "inlet": 20,
+          "selector": "float",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "021-op7-bare-startup-bang",
+      "target": "op7-bare",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 42,
+      "operator": "abs",
+      "creation": "abs",
+      "outputs": []
+    },
+    {
+      "id": "022-op7-integer-startup-bang",
+      "target": "op7-integer",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": []
+    },
+    {
+      "id": "023-op7-float-startup-bang",
+      "target": "op7-float",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 46,
+      "operator": "abs",
+      "creation": "abs 2.",
+      "outputs": []
+    },
+    {
+      "id": "024-op0-integer-hot-int",
+      "target": "op0-integer",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 72,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            9
+          ],
+          "number_repr": [
+            "9"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "025-op0-integer-hot-positive-fraction",
+      "target": "op0-integer",
+      "case": "hot-positive-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        3.75
+      ],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 75,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            5
+          ],
+          "number_repr": [
+            "5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "026-op0-integer-hot-negative-fraction",
+      "target": "op0-integer",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 78,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            -1
+          ],
+          "number_repr": [
+            "-1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "027-op0-integer-cold-positive-fraction",
+      "target": "op0-integer",
+      "case": "cold-positive-fraction",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 3,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": []
+    },
+    {
+      "id": "028-op0-integer-recall-after-cold-fraction",
+      "target": "op0-integer",
+      "case": "recall-after-cold-fraction",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 83,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            -1
+          ],
+          "number_repr": [
+            "-1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "029-op0-integer-cold-negative-int",
+      "target": "op0-integer",
+      "case": "cold-negative-int",
+      "inlet": 1,
+      "selector": "int",
+      "atoms": [
+        -2
+      ],
+      "negative_zero": false,
+      "lane": 3,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": []
+    },
+    {
+      "id": "030-op0-integer-recall-after-cold-int",
+      "target": "op0-integer",
+      "case": "recall-after-cold-int",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 88,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            -5
+          ],
+          "number_repr": [
+            "-5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "031-op0-integer-set-fraction",
+      "target": "op0-integer",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        9.75
+      ],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": []
+    },
+    {
+      "id": "032-op0-integer-recall-after-set",
+      "target": "op0-integer",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 93,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            7
+          ],
+          "number_repr": [
+            "7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "033-op0-integer-list-two",
+      "target": "op0-integer",
+      "case": "list-two",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        7,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 96,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            9
+          ],
+          "number_repr": [
+            "9"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "034-op0-integer-recall-after-list-two",
+      "target": "op0-integer",
+      "case": "recall-after-list-two",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 99,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            9
+          ],
+          "number_repr": [
+            "9"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "035-op0-integer-list-one",
+      "target": "op0-integer",
+      "case": "list-one",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        5
+      ],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 102,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            7
+          ],
+          "number_repr": [
+            "7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "036-op0-integer-list-three",
+      "target": "op0-integer",
+      "case": "list-three",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        9,
+        4,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 105,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            13
+          ],
+          "number_repr": [
+            "13"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "037-op0-integer-list-symbol-mixed",
+      "target": "op0-integer",
+      "case": "list-symbol-mixed",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        11,
+        "probe-symbol"
+      ],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 108,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            15
+          ],
+          "number_repr": [
+            "15"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "038-op0-integer-recall-after-symbol-list",
+      "target": "op0-integer",
+      "case": "recall-after-symbol-list",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 111,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            15
+          ],
+          "number_repr": [
+            "15"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "039-op0-integer-cold-list-two",
+      "target": "op0-integer",
+      "case": "cold-list-two",
+      "inlet": 1,
+      "selector": "list",
+      "atoms": [
+        8,
+        3
+      ],
+      "negative_zero": false,
+      "lane": 3,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": []
+    },
+    {
+      "id": "040-op0-integer-recall-after-cold-list",
+      "target": "op0-integer",
+      "case": "recall-after-cold-list",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 116,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            15
+          ],
+          "number_repr": [
+            "15"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "041-op0-integer-direct-in1",
+      "target": "op0-integer",
+      "case": "direct-in1",
+      "inlet": 0,
+      "selector": "in1",
+      "atoms": [
+        5.75
+      ],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": []
+    },
+    {
+      "id": "042-op0-integer-recall-after-in1",
+      "target": "op0-integer",
+      "case": "recall-after-in1",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 121,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            16
+          ],
+          "number_repr": [
+            "16"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "043-op0-integer-direct-ft1",
+      "target": "op0-integer",
+      "case": "direct-ft1",
+      "inlet": 0,
+      "selector": "ft1",
+      "atoms": [
+        -2.25
+      ],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": []
+    },
+    {
+      "id": "044-op0-integer-recall-after-ft1",
+      "target": "op0-integer",
+      "case": "recall-after-ft1",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 2,
+      "operator": "+",
+      "creation": "+ 2",
+      "outputs": [
+        {
+          "seq": 126,
+          "target": "op0-integer",
+          "inlet": 1,
+          "selector": "int",
+          "atoms": [
+            16
+          ],
+          "number_repr": [
+            "16"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "045-op1-integer-hot-int",
+      "target": "op1-integer",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 129,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            14
+          ],
+          "number_repr": [
+            "14"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "046-op1-integer-hot-positive-fraction",
+      "target": "op1-integer",
+      "case": "hot-positive-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        3.75
+      ],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 132,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            6
+          ],
+          "number_repr": [
+            "6"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "047-op1-integer-hot-negative-fraction",
+      "target": "op1-integer",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 135,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            -6
+          ],
+          "number_repr": [
+            "-6"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "048-op1-integer-cold-positive-fraction",
+      "target": "op1-integer",
+      "case": "cold-positive-fraction",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 9,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": []
+    },
+    {
+      "id": "049-op1-integer-recall-after-cold-fraction",
+      "target": "op1-integer",
+      "case": "recall-after-cold-fraction",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 140,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            -6
+          ],
+          "number_repr": [
+            "-6"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "050-op1-integer-cold-negative-int",
+      "target": "op1-integer",
+      "case": "cold-negative-int",
+      "inlet": 1,
+      "selector": "int",
+      "atoms": [
+        -2
+      ],
+      "negative_zero": false,
+      "lane": 9,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": []
+    },
+    {
+      "id": "051-op1-integer-recall-after-cold-int",
+      "target": "op1-integer",
+      "case": "recall-after-cold-int",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 145,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            6
+          ],
+          "number_repr": [
+            "6"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "052-op1-integer-set-fraction",
+      "target": "op1-integer",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        9.75
+      ],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": []
+    },
+    {
+      "id": "053-op1-integer-recall-after-set",
+      "target": "op1-integer",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 150,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            -18
+          ],
+          "number_repr": [
+            "-18"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "054-op1-integer-list-two",
+      "target": "op1-integer",
+      "case": "list-two",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        7,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 153,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            14
+          ],
+          "number_repr": [
+            "14"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "055-op1-integer-recall-after-list-two",
+      "target": "op1-integer",
+      "case": "recall-after-list-two",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 156,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            14
+          ],
+          "number_repr": [
+            "14"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "056-op1-integer-list-one",
+      "target": "op1-integer",
+      "case": "list-one",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        5
+      ],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 159,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            10
+          ],
+          "number_repr": [
+            "10"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "057-op1-integer-list-three",
+      "target": "op1-integer",
+      "case": "list-three",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        9,
+        4,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 162,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            36
+          ],
+          "number_repr": [
+            "36"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "058-op1-integer-list-symbol-mixed",
+      "target": "op1-integer",
+      "case": "list-symbol-mixed",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        11,
+        "probe-symbol"
+      ],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 165,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            44
+          ],
+          "number_repr": [
+            "44"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "059-op1-integer-recall-after-symbol-list",
+      "target": "op1-integer",
+      "case": "recall-after-symbol-list",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 168,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            44
+          ],
+          "number_repr": [
+            "44"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "060-op1-integer-cold-list-two",
+      "target": "op1-integer",
+      "case": "cold-list-two",
+      "inlet": 1,
+      "selector": "list",
+      "atoms": [
+        8,
+        3
+      ],
+      "negative_zero": false,
+      "lane": 9,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": []
+    },
+    {
+      "id": "061-op1-integer-recall-after-cold-list",
+      "target": "op1-integer",
+      "case": "recall-after-cold-list",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 173,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            44
+          ],
+          "number_repr": [
+            "44"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "062-op1-integer-direct-in1",
+      "target": "op1-integer",
+      "case": "direct-in1",
+      "inlet": 0,
+      "selector": "in1",
+      "atoms": [
+        5.75
+      ],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": []
+    },
+    {
+      "id": "063-op1-integer-recall-after-in1",
+      "target": "op1-integer",
+      "case": "recall-after-in1",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 178,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            55
+          ],
+          "number_repr": [
+            "55"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "064-op1-integer-direct-ft1",
+      "target": "op1-integer",
+      "case": "direct-ft1",
+      "inlet": 0,
+      "selector": "ft1",
+      "atoms": [
+        -2.25
+      ],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": []
+    },
+    {
+      "id": "065-op1-integer-recall-after-ft1",
+      "target": "op1-integer",
+      "case": "recall-after-ft1",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 8,
+      "operator": "*",
+      "creation": "* 2",
+      "outputs": [
+        {
+          "seq": 183,
+          "target": "op1-integer",
+          "inlet": 4,
+          "selector": "int",
+          "atoms": [
+            55
+          ],
+          "number_repr": [
+            "55"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "066-op2-integer-hot-int",
+      "target": "op2-integer",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 186,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            5
+          ],
+          "number_repr": [
+            "5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "067-op2-integer-hot-positive-fraction",
+      "target": "op2-integer",
+      "case": "hot-positive-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        3.75
+      ],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 189,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "068-op2-integer-hot-negative-fraction",
+      "target": "op2-integer",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 192,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            -5
+          ],
+          "number_repr": [
+            "-5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "069-op2-integer-cold-positive-fraction",
+      "target": "op2-integer",
+      "case": "cold-positive-fraction",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 15,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": []
+    },
+    {
+      "id": "070-op2-integer-recall-after-cold-fraction",
+      "target": "op2-integer",
+      "case": "recall-after-cold-fraction",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 197,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            -5
+          ],
+          "number_repr": [
+            "-5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "071-op2-integer-cold-negative-int",
+      "target": "op2-integer",
+      "case": "cold-negative-int",
+      "inlet": 1,
+      "selector": "int",
+      "atoms": [
+        -2
+      ],
+      "negative_zero": false,
+      "lane": 15,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": []
+    },
+    {
+      "id": "072-op2-integer-recall-after-cold-int",
+      "target": "op2-integer",
+      "case": "recall-after-cold-int",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 202,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            -1
+          ],
+          "number_repr": [
+            "-1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "073-op2-integer-set-fraction",
+      "target": "op2-integer",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        9.75
+      ],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": []
+    },
+    {
+      "id": "074-op2-integer-recall-after-set",
+      "target": "op2-integer",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 207,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            11
+          ],
+          "number_repr": [
+            "11"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "075-op2-integer-list-two",
+      "target": "op2-integer",
+      "case": "list-two",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        7,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 210,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            5
+          ],
+          "number_repr": [
+            "5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "076-op2-integer-recall-after-list-two",
+      "target": "op2-integer",
+      "case": "recall-after-list-two",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 213,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            5
+          ],
+          "number_repr": [
+            "5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "077-op2-integer-list-one",
+      "target": "op2-integer",
+      "case": "list-one",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        5
+      ],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 216,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            3
+          ],
+          "number_repr": [
+            "3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "078-op2-integer-list-three",
+      "target": "op2-integer",
+      "case": "list-three",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        9,
+        4,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 219,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            5
+          ],
+          "number_repr": [
+            "5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "079-op2-integer-list-symbol-mixed",
+      "target": "op2-integer",
+      "case": "list-symbol-mixed",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        11,
+        "probe-symbol"
+      ],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 222,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            7
+          ],
+          "number_repr": [
+            "7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "080-op2-integer-recall-after-symbol-list",
+      "target": "op2-integer",
+      "case": "recall-after-symbol-list",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 225,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            7
+          ],
+          "number_repr": [
+            "7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "081-op2-integer-cold-list-two",
+      "target": "op2-integer",
+      "case": "cold-list-two",
+      "inlet": 1,
+      "selector": "list",
+      "atoms": [
+        8,
+        3
+      ],
+      "negative_zero": false,
+      "lane": 15,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": []
+    },
+    {
+      "id": "082-op2-integer-recall-after-cold-list",
+      "target": "op2-integer",
+      "case": "recall-after-cold-list",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 230,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            7
+          ],
+          "number_repr": [
+            "7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "083-op2-integer-direct-in1",
+      "target": "op2-integer",
+      "case": "direct-in1",
+      "inlet": 0,
+      "selector": "in1",
+      "atoms": [
+        5.75
+      ],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": []
+    },
+    {
+      "id": "084-op2-integer-recall-after-in1",
+      "target": "op2-integer",
+      "case": "recall-after-in1",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 235,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            6
+          ],
+          "number_repr": [
+            "6"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "085-op2-integer-direct-ft1",
+      "target": "op2-integer",
+      "case": "direct-ft1",
+      "inlet": 0,
+      "selector": "ft1",
+      "atoms": [
+        -2.25
+      ],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": []
+    },
+    {
+      "id": "086-op2-integer-recall-after-ft1",
+      "target": "op2-integer",
+      "case": "recall-after-ft1",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 14,
+      "operator": "-",
+      "creation": "- 2",
+      "outputs": [
+        {
+          "seq": 240,
+          "target": "op2-integer",
+          "inlet": 7,
+          "selector": "int",
+          "atoms": [
+            6
+          ],
+          "number_repr": [
+            "6"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "087-op3-integer-hot-int",
+      "target": "op3-integer",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 243,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            3
+          ],
+          "number_repr": [
+            "3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "088-op3-integer-hot-positive-fraction",
+      "target": "op3-integer",
+      "case": "hot-positive-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        3.75
+      ],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 246,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "089-op3-integer-hot-negative-fraction",
+      "target": "op3-integer",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 249,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            -1
+          ],
+          "number_repr": [
+            "-1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "090-op3-integer-cold-positive-fraction",
+      "target": "op3-integer",
+      "case": "cold-positive-fraction",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 21,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": []
+    },
+    {
+      "id": "091-op3-integer-recall-after-cold-fraction",
+      "target": "op3-integer",
+      "case": "recall-after-cold-fraction",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 254,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            -1
+          ],
+          "number_repr": [
+            "-1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "092-op3-integer-cold-negative-int",
+      "target": "op3-integer",
+      "case": "cold-negative-int",
+      "inlet": 1,
+      "selector": "int",
+      "atoms": [
+        -2
+      ],
+      "negative_zero": false,
+      "lane": 21,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": []
+    },
+    {
+      "id": "093-op3-integer-recall-after-cold-int",
+      "target": "op3-integer",
+      "case": "recall-after-cold-int",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 259,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "094-op3-integer-set-fraction",
+      "target": "op3-integer",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        9.75
+      ],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": []
+    },
+    {
+      "id": "095-op3-integer-recall-after-set",
+      "target": "op3-integer",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 264,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            -4
+          ],
+          "number_repr": [
+            "-4"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "096-op3-integer-list-two",
+      "target": "op3-integer",
+      "case": "list-two",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        7,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 267,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            3
+          ],
+          "number_repr": [
+            "3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "097-op3-integer-recall-after-list-two",
+      "target": "op3-integer",
+      "case": "recall-after-list-two",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 270,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            3
+          ],
+          "number_repr": [
+            "3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "098-op3-integer-list-one",
+      "target": "op3-integer",
+      "case": "list-one",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        5
+      ],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 273,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            2
+          ],
+          "number_repr": [
+            "2"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "099-op3-integer-list-three",
+      "target": "op3-integer",
+      "case": "list-three",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        9,
+        4,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 276,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            2
+          ],
+          "number_repr": [
+            "2"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "100-op3-integer-list-symbol-mixed",
+      "target": "op3-integer",
+      "case": "list-symbol-mixed",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        11,
+        "probe-symbol"
+      ],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 279,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            2
+          ],
+          "number_repr": [
+            "2"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "101-op3-integer-recall-after-symbol-list",
+      "target": "op3-integer",
+      "case": "recall-after-symbol-list",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 282,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            2
+          ],
+          "number_repr": [
+            "2"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "102-op3-integer-cold-list-two",
+      "target": "op3-integer",
+      "case": "cold-list-two",
+      "inlet": 1,
+      "selector": "list",
+      "atoms": [
+        8,
+        3
+      ],
+      "negative_zero": false,
+      "lane": 21,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": []
+    },
+    {
+      "id": "103-op3-integer-recall-after-cold-list",
+      "target": "op3-integer",
+      "case": "recall-after-cold-list",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 287,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            2
+          ],
+          "number_repr": [
+            "2"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "104-op3-integer-direct-in1",
+      "target": "op3-integer",
+      "case": "direct-in1",
+      "inlet": 0,
+      "selector": "in1",
+      "atoms": [
+        5.75
+      ],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": []
+    },
+    {
+      "id": "105-op3-integer-recall-after-in1",
+      "target": "op3-integer",
+      "case": "recall-after-in1",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 292,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            2
+          ],
+          "number_repr": [
+            "2"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "106-op3-integer-direct-ft1",
+      "target": "op3-integer",
+      "case": "direct-ft1",
+      "inlet": 0,
+      "selector": "ft1",
+      "atoms": [
+        -2.25
+      ],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": []
+    },
+    {
+      "id": "107-op3-integer-recall-after-ft1",
+      "target": "op3-integer",
+      "case": "recall-after-ft1",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 297,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            2
+          ],
+          "number_repr": [
+            "2"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "108-op4-integer-hot-int",
+      "target": "op4-integer",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 300,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "109-op4-integer-hot-positive-fraction",
+      "target": "op4-integer",
+      "case": "hot-positive-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        3.75
+      ],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 303,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "110-op4-integer-hot-negative-fraction",
+      "target": "op4-integer",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 306,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            -1
+          ],
+          "number_repr": [
+            "-1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "111-op4-integer-cold-positive-fraction",
+      "target": "op4-integer",
+      "case": "cold-positive-fraction",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 27,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": []
+    },
+    {
+      "id": "112-op4-integer-recall-after-cold-fraction",
+      "target": "op4-integer",
+      "case": "recall-after-cold-fraction",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 311,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            -1
+          ],
+          "number_repr": [
+            "-1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "113-op4-integer-cold-negative-int",
+      "target": "op4-integer",
+      "case": "cold-negative-int",
+      "inlet": 1,
+      "selector": "int",
+      "atoms": [
+        -2
+      ],
+      "negative_zero": false,
+      "lane": 27,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": []
+    },
+    {
+      "id": "114-op4-integer-recall-after-cold-int",
+      "target": "op4-integer",
+      "case": "recall-after-cold-int",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 316,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            -1
+          ],
+          "number_repr": [
+            "-1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "115-op4-integer-set-fraction",
+      "target": "op4-integer",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        9.75
+      ],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": []
+    },
+    {
+      "id": "116-op4-integer-recall-after-set",
+      "target": "op4-integer",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 321,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "117-op4-integer-list-two",
+      "target": "op4-integer",
+      "case": "list-two",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        7,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 324,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "118-op4-integer-recall-after-list-two",
+      "target": "op4-integer",
+      "case": "recall-after-list-two",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 327,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "119-op4-integer-list-one",
+      "target": "op4-integer",
+      "case": "list-one",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        5
+      ],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 330,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "120-op4-integer-list-three",
+      "target": "op4-integer",
+      "case": "list-three",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        9,
+        4,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 333,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "121-op4-integer-list-symbol-mixed",
+      "target": "op4-integer",
+      "case": "list-symbol-mixed",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        11,
+        "probe-symbol"
+      ],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 336,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            3
+          ],
+          "number_repr": [
+            "3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "122-op4-integer-recall-after-symbol-list",
+      "target": "op4-integer",
+      "case": "recall-after-symbol-list",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 339,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            3
+          ],
+          "number_repr": [
+            "3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "123-op4-integer-cold-list-two",
+      "target": "op4-integer",
+      "case": "cold-list-two",
+      "inlet": 1,
+      "selector": "list",
+      "atoms": [
+        8,
+        3
+      ],
+      "negative_zero": false,
+      "lane": 27,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": []
+    },
+    {
+      "id": "124-op4-integer-recall-after-cold-list",
+      "target": "op4-integer",
+      "case": "recall-after-cold-list",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 344,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            3
+          ],
+          "number_repr": [
+            "3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "125-op4-integer-direct-in1",
+      "target": "op4-integer",
+      "case": "direct-in1",
+      "inlet": 0,
+      "selector": "in1",
+      "atoms": [
+        5.75
+      ],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": []
+    },
+    {
+      "id": "126-op4-integer-recall-after-in1",
+      "target": "op4-integer",
+      "case": "recall-after-in1",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 349,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "127-op4-integer-direct-ft1",
+      "target": "op4-integer",
+      "case": "direct-ft1",
+      "inlet": 0,
+      "selector": "ft1",
+      "atoms": [
+        -2.25
+      ],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": []
+    },
+    {
+      "id": "128-op4-integer-recall-after-ft1",
+      "target": "op4-integer",
+      "case": "recall-after-ft1",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 354,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "129-op5-integer-hot-int",
+      "target": "op5-integer",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 357,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            -5
+          ],
+          "number_repr": [
+            "-5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "130-op5-integer-hot-positive-fraction",
+      "target": "op5-integer",
+      "case": "hot-positive-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        3.75
+      ],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 360,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            -1
+          ],
+          "number_repr": [
+            "-1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "131-op5-integer-hot-negative-fraction",
+      "target": "op5-integer",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 363,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            5
+          ],
+          "number_repr": [
+            "5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "132-op5-integer-cold-positive-fraction",
+      "target": "op5-integer",
+      "case": "cold-positive-fraction",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 33,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": []
+    },
+    {
+      "id": "133-op5-integer-recall-after-cold-fraction",
+      "target": "op5-integer",
+      "case": "recall-after-cold-fraction",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 368,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            5
+          ],
+          "number_repr": [
+            "5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "134-op5-integer-cold-negative-int",
+      "target": "op5-integer",
+      "case": "cold-negative-int",
+      "inlet": 1,
+      "selector": "int",
+      "atoms": [
+        -2
+      ],
+      "negative_zero": false,
+      "lane": 33,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": []
+    },
+    {
+      "id": "135-op5-integer-recall-after-cold-int",
+      "target": "op5-integer",
+      "case": "recall-after-cold-int",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 373,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "136-op5-integer-set-fraction",
+      "target": "op5-integer",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        9.75
+      ],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": []
+    },
+    {
+      "id": "137-op5-integer-recall-after-set",
+      "target": "op5-integer",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 378,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "138-op5-integer-list-two",
+      "target": "op5-integer",
+      "case": "list-two",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        7,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 381,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            -5
+          ],
+          "number_repr": [
+            "-5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "139-op5-integer-recall-after-list-two",
+      "target": "op5-integer",
+      "case": "recall-after-list-two",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 384,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            -5
+          ],
+          "number_repr": [
+            "-5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "140-op5-integer-list-one",
+      "target": "op5-integer",
+      "case": "list-one",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        5
+      ],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 387,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            -3
+          ],
+          "number_repr": [
+            "-3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "141-op5-integer-list-three",
+      "target": "op5-integer",
+      "case": "list-three",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        9,
+        4,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 390,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            -5
+          ],
+          "number_repr": [
+            "-5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "142-op5-integer-list-symbol-mixed",
+      "target": "op5-integer",
+      "case": "list-symbol-mixed",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        11,
+        "probe-symbol"
+      ],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 393,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            -7
+          ],
+          "number_repr": [
+            "-7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "143-op5-integer-recall-after-symbol-list",
+      "target": "op5-integer",
+      "case": "recall-after-symbol-list",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 396,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            -7
+          ],
+          "number_repr": [
+            "-7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "144-op5-integer-cold-list-two",
+      "target": "op5-integer",
+      "case": "cold-list-two",
+      "inlet": 1,
+      "selector": "list",
+      "atoms": [
+        8,
+        3
+      ],
+      "negative_zero": false,
+      "lane": 33,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": []
+    },
+    {
+      "id": "145-op5-integer-recall-after-cold-list",
+      "target": "op5-integer",
+      "case": "recall-after-cold-list",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 401,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            -7
+          ],
+          "number_repr": [
+            "-7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "146-op5-integer-direct-in1",
+      "target": "op5-integer",
+      "case": "direct-in1",
+      "inlet": 0,
+      "selector": "in1",
+      "atoms": [
+        5.75
+      ],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": []
+    },
+    {
+      "id": "147-op5-integer-recall-after-in1",
+      "target": "op5-integer",
+      "case": "recall-after-in1",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 406,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            -6
+          ],
+          "number_repr": [
+            "-6"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "148-op5-integer-direct-ft1",
+      "target": "op5-integer",
+      "case": "direct-ft1",
+      "inlet": 0,
+      "selector": "ft1",
+      "atoms": [
+        -2.25
+      ],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": []
+    },
+    {
+      "id": "149-op5-integer-recall-after-ft1",
+      "target": "op5-integer",
+      "case": "recall-after-ft1",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 32,
+      "operator": "!-",
+      "creation": "!- 2",
+      "outputs": [
+        {
+          "seq": 411,
+          "target": "op5-integer",
+          "inlet": 16,
+          "selector": "int",
+          "atoms": [
+            -13
+          ],
+          "number_repr": [
+            "-13"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "150-op6-integer-hot-int",
+      "target": "op6-integer",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 414,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "151-op6-integer-hot-positive-fraction",
+      "target": "op6-integer",
+      "case": "hot-positive-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        3.75
+      ],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 417,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "152-op6-integer-hot-negative-fraction",
+      "target": "op6-integer",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 420,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "153-op6-integer-cold-positive-fraction",
+      "target": "op6-integer",
+      "case": "cold-positive-fraction",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 39,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": []
+    },
+    {
+      "id": "154-op6-integer-recall-after-cold-fraction",
+      "target": "op6-integer",
+      "case": "recall-after-cold-fraction",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 425,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "155-op6-integer-cold-negative-int",
+      "target": "op6-integer",
+      "case": "cold-negative-int",
+      "inlet": 1,
+      "selector": "int",
+      "atoms": [
+        -2
+      ],
+      "negative_zero": false,
+      "lane": 39,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": []
+    },
+    {
+      "id": "156-op6-integer-recall-after-cold-int",
+      "target": "op6-integer",
+      "case": "recall-after-cold-int",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 430,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "157-op6-integer-set-fraction",
+      "target": "op6-integer",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        9.75
+      ],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": []
+    },
+    {
+      "id": "158-op6-integer-recall-after-set",
+      "target": "op6-integer",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 435,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "159-op6-integer-list-two",
+      "target": "op6-integer",
+      "case": "list-two",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        7,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 438,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "160-op6-integer-recall-after-list-two",
+      "target": "op6-integer",
+      "case": "recall-after-list-two",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 441,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "161-op6-integer-list-one",
+      "target": "op6-integer",
+      "case": "list-one",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        5
+      ],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 444,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "162-op6-integer-list-three",
+      "target": "op6-integer",
+      "case": "list-three",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        9,
+        4,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 447,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "163-op6-integer-list-symbol-mixed",
+      "target": "op6-integer",
+      "case": "list-symbol-mixed",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        11,
+        "probe-symbol"
+      ],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 450,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "164-op6-integer-recall-after-symbol-list",
+      "target": "op6-integer",
+      "case": "recall-after-symbol-list",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 453,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "165-op6-integer-cold-list-two",
+      "target": "op6-integer",
+      "case": "cold-list-two",
+      "inlet": 1,
+      "selector": "list",
+      "atoms": [
+        8,
+        3
+      ],
+      "negative_zero": false,
+      "lane": 39,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": []
+    },
+    {
+      "id": "166-op6-integer-recall-after-cold-list",
+      "target": "op6-integer",
+      "case": "recall-after-cold-list",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 458,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "167-op6-integer-direct-in1",
+      "target": "op6-integer",
+      "case": "direct-in1",
+      "inlet": 0,
+      "selector": "in1",
+      "atoms": [
+        5.75
+      ],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": []
+    },
+    {
+      "id": "168-op6-integer-recall-after-in1",
+      "target": "op6-integer",
+      "case": "recall-after-in1",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 463,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "169-op6-integer-direct-ft1",
+      "target": "op6-integer",
+      "case": "direct-ft1",
+      "inlet": 0,
+      "selector": "ft1",
+      "atoms": [
+        -2.25
+      ],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": []
+    },
+    {
+      "id": "170-op6-integer-recall-after-ft1",
+      "target": "op6-integer",
+      "case": "recall-after-ft1",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 468,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "171-op7-integer-hot-int",
+      "target": "op7-integer",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        -7
+      ],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": [
+        {
+          "seq": 471,
+          "target": "op7-integer",
+          "inlet": 22,
+          "selector": "int",
+          "atoms": [
+            7
+          ],
+          "number_repr": [
+            "7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "172-op7-integer-hot-negative-fraction",
+      "target": "op7-integer",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": [
+        {
+          "seq": 474,
+          "target": "op7-integer",
+          "inlet": 22,
+          "selector": "int",
+          "atoms": [
+            3
+          ],
+          "number_repr": [
+            "3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "173-op7-integer-hot-positive-fraction",
+      "target": "op7-integer",
+      "case": "hot-positive-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        3.75
+      ],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": [
+        {
+          "seq": 477,
+          "target": "op7-integer",
+          "inlet": 22,
+          "selector": "int",
+          "atoms": [
+            3
+          ],
+          "number_repr": [
+            "3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "174-op7-integer-recall",
+      "target": "op7-integer",
+      "case": "recall",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": []
+    },
+    {
+      "id": "175-op7-integer-set-fraction",
+      "target": "op7-integer",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        -8.5
+      ],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": []
+    },
+    {
+      "id": "176-op7-integer-recall-after-set",
+      "target": "op7-integer",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": []
+    },
+    {
+      "id": "177-op7-integer-list-one",
+      "target": "op7-integer",
+      "case": "list-one",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        -9
+      ],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": [
+        {
+          "seq": 486,
+          "target": "op7-integer",
+          "inlet": 22,
+          "selector": "int",
+          "atoms": [
+            9
+          ],
+          "number_repr": [
+            "9"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "178-op7-integer-list-two",
+      "target": "op7-integer",
+      "case": "list-two",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        -7,
+        2
+      ],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": [
+        {
+          "seq": 489,
+          "target": "op7-integer",
+          "inlet": 22,
+          "selector": "int",
+          "atoms": [
+            7
+          ],
+          "number_repr": [
+            "7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "179-op7-integer-list-three",
+      "target": "op7-integer",
+      "case": "list-three",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        -3,
+        2,
+        4
+      ],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": [
+        {
+          "seq": 492,
+          "target": "op7-integer",
+          "inlet": 22,
+          "selector": "int",
+          "atoms": [
+            3
+          ],
+          "number_repr": [
+            "3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "180-op7-integer-list-symbol-mixed",
+      "target": "op7-integer",
+      "case": "list-symbol-mixed",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        -3,
+        "probe-symbol"
+      ],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": [
+        {
+          "seq": 495,
+          "target": "op7-integer",
+          "inlet": 22,
+          "selector": "int",
+          "atoms": [
+            3
+          ],
+          "number_repr": [
+            "3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "181-op7-integer-symbol",
+      "target": "op7-integer",
+      "case": "symbol",
+      "inlet": 0,
+      "selector": "symbol",
+      "atoms": [
+        "probe-symbol"
+      ],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": []
+    },
+    {
+      "id": "182-op7-integer-direct-in1",
+      "target": "op7-integer",
+      "case": "direct-in1",
+      "inlet": 0,
+      "selector": "in1",
+      "atoms": [
+        -2.75
+      ],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": []
+    },
+    {
+      "id": "183-op7-integer-direct-ft1",
+      "target": "op7-integer",
+      "case": "direct-ft1",
+      "inlet": 0,
+      "selector": "ft1",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": []
+    },
+    {
+      "id": "184-op7-integer-recall-final",
+      "target": "op7-integer",
+      "case": "recall-final",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 44,
+      "operator": "abs",
+      "creation": "abs 2",
+      "outputs": []
+    },
+    {
+      "id": "185-op0-float-hot-int",
+      "target": "op0-float",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 4,
+      "operator": "+",
+      "creation": "+ 2.",
+      "outputs": [
+        {
+          "seq": 506,
+          "target": "op0-float",
+          "inlet": 2,
+          "selector": "float",
+          "atoms": [
+            9
+          ],
+          "number_repr": [
+            "9"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "186-op0-float-hot-negative-fraction",
+      "target": "op0-float",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 4,
+      "operator": "+",
+      "creation": "+ 2.",
+      "outputs": [
+        {
+          "seq": 509,
+          "target": "op0-float",
+          "inlet": 2,
+          "selector": "float",
+          "atoms": [
+            -1.75
+          ],
+          "number_repr": [
+            "-1.75"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "187-op0-float-cold-positive-fraction",
+      "target": "op0-float",
+      "case": "cold-positive-fraction",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 5,
+      "operator": "+",
+      "creation": "+ 2.",
+      "outputs": []
+    },
+    {
+      "id": "188-op0-float-recall-after-cold-fraction",
+      "target": "op0-float",
+      "case": "recall-after-cold-fraction",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 4,
+      "operator": "+",
+      "creation": "+ 2.",
+      "outputs": [
+        {
+          "seq": 514,
+          "target": "op0-float",
+          "inlet": 2,
+          "selector": "float",
+          "atoms": [
+            -1
+          ],
+          "number_repr": [
+            "-1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "189-op0-float-list-two-fractions",
+      "target": "op0-float",
+      "case": "list-two-fractions",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        -7.5,
+        2.5
+      ],
+      "negative_zero": false,
+      "lane": 4,
+      "operator": "+",
+      "creation": "+ 2.",
+      "outputs": [
+        {
+          "seq": 517,
+          "target": "op0-float",
+          "inlet": 2,
+          "selector": "float",
+          "atoms": [
+            -5
+          ],
+          "number_repr": [
+            "-5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "190-op0-float-set-fraction",
+      "target": "op0-float",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        8.5
+      ],
+      "negative_zero": false,
+      "lane": 4,
+      "operator": "+",
+      "creation": "+ 2.",
+      "outputs": []
+    },
+    {
+      "id": "191-op0-float-recall-after-set",
+      "target": "op0-float",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 4,
+      "operator": "+",
+      "creation": "+ 2.",
+      "outputs": [
+        {
+          "seq": 522,
+          "target": "op0-float",
+          "inlet": 2,
+          "selector": "float",
+          "atoms": [
+            11
+          ],
+          "number_repr": [
+            "11"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "192-op1-float-hot-int",
+      "target": "op1-float",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 10,
+      "operator": "*",
+      "creation": "* 2.",
+      "outputs": [
+        {
+          "seq": 525,
+          "target": "op1-float",
+          "inlet": 5,
+          "selector": "float",
+          "atoms": [
+            14
+          ],
+          "number_repr": [
+            "14"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "193-op1-float-hot-negative-fraction",
+      "target": "op1-float",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 10,
+      "operator": "*",
+      "creation": "* 2.",
+      "outputs": [
+        {
+          "seq": 528,
+          "target": "op1-float",
+          "inlet": 5,
+          "selector": "float",
+          "atoms": [
+            -7.5
+          ],
+          "number_repr": [
+            "-7.5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "194-op1-float-cold-positive-fraction",
+      "target": "op1-float",
+      "case": "cold-positive-fraction",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 11,
+      "operator": "*",
+      "creation": "* 2.",
+      "outputs": []
+    },
+    {
+      "id": "195-op1-float-recall-after-cold-fraction",
+      "target": "op1-float",
+      "case": "recall-after-cold-fraction",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 10,
+      "operator": "*",
+      "creation": "* 2.",
+      "outputs": [
+        {
+          "seq": 533,
+          "target": "op1-float",
+          "inlet": 5,
+          "selector": "float",
+          "atoms": [
+            -10.3125
+          ],
+          "number_repr": [
+            "-10.3125"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "196-op1-float-list-two-fractions",
+      "target": "op1-float",
+      "case": "list-two-fractions",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        -7.5,
+        2.5
+      ],
+      "negative_zero": false,
+      "lane": 10,
+      "operator": "*",
+      "creation": "* 2.",
+      "outputs": [
+        {
+          "seq": 536,
+          "target": "op1-float",
+          "inlet": 5,
+          "selector": "float",
+          "atoms": [
+            -18.75
+          ],
+          "number_repr": [
+            "-18.75"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "197-op1-float-set-fraction",
+      "target": "op1-float",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        8.5
+      ],
+      "negative_zero": false,
+      "lane": 10,
+      "operator": "*",
+      "creation": "* 2.",
+      "outputs": []
+    },
+    {
+      "id": "198-op1-float-recall-after-set",
+      "target": "op1-float",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 10,
+      "operator": "*",
+      "creation": "* 2.",
+      "outputs": [
+        {
+          "seq": 541,
+          "target": "op1-float",
+          "inlet": 5,
+          "selector": "float",
+          "atoms": [
+            21.25
+          ],
+          "number_repr": [
+            "21.25"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "199-op2-float-hot-int",
+      "target": "op2-float",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 16,
+      "operator": "-",
+      "creation": "- 2.",
+      "outputs": [
+        {
+          "seq": 544,
+          "target": "op2-float",
+          "inlet": 8,
+          "selector": "float",
+          "atoms": [
+            5
+          ],
+          "number_repr": [
+            "5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "200-op2-float-hot-negative-fraction",
+      "target": "op2-float",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 16,
+      "operator": "-",
+      "creation": "- 2.",
+      "outputs": [
+        {
+          "seq": 547,
+          "target": "op2-float",
+          "inlet": 8,
+          "selector": "float",
+          "atoms": [
+            -5.75
+          ],
+          "number_repr": [
+            "-5.75"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "201-op2-float-cold-positive-fraction",
+      "target": "op2-float",
+      "case": "cold-positive-fraction",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 17,
+      "operator": "-",
+      "creation": "- 2.",
+      "outputs": []
+    },
+    {
+      "id": "202-op2-float-recall-after-cold-fraction",
+      "target": "op2-float",
+      "case": "recall-after-cold-fraction",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 16,
+      "operator": "-",
+      "creation": "- 2.",
+      "outputs": [
+        {
+          "seq": 552,
+          "target": "op2-float",
+          "inlet": 8,
+          "selector": "float",
+          "atoms": [
+            -6.5
+          ],
+          "number_repr": [
+            "-6.5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "203-op2-float-list-two-fractions",
+      "target": "op2-float",
+      "case": "list-two-fractions",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        -7.5,
+        2.5
+      ],
+      "negative_zero": false,
+      "lane": 16,
+      "operator": "-",
+      "creation": "- 2.",
+      "outputs": [
+        {
+          "seq": 555,
+          "target": "op2-float",
+          "inlet": 8,
+          "selector": "float",
+          "atoms": [
+            -10
+          ],
+          "number_repr": [
+            "-10"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "204-op2-float-set-fraction",
+      "target": "op2-float",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        8.5
+      ],
+      "negative_zero": false,
+      "lane": 16,
+      "operator": "-",
+      "creation": "- 2.",
+      "outputs": []
+    },
+    {
+      "id": "205-op2-float-recall-after-set",
+      "target": "op2-float",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 16,
+      "operator": "-",
+      "creation": "- 2.",
+      "outputs": [
+        {
+          "seq": 560,
+          "target": "op2-float",
+          "inlet": 8,
+          "selector": "float",
+          "atoms": [
+            6
+          ],
+          "number_repr": [
+            "6"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "206-op3-float-hot-int",
+      "target": "op3-float",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 22,
+      "operator": "/",
+      "creation": "/ 2.",
+      "outputs": [
+        {
+          "seq": 563,
+          "target": "op3-float",
+          "inlet": 11,
+          "selector": "float",
+          "atoms": [
+            3.5
+          ],
+          "number_repr": [
+            "3.5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "207-op3-float-hot-negative-fraction",
+      "target": "op3-float",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 22,
+      "operator": "/",
+      "creation": "/ 2.",
+      "outputs": [
+        {
+          "seq": 566,
+          "target": "op3-float",
+          "inlet": 11,
+          "selector": "float",
+          "atoms": [
+            -1.875
+          ],
+          "number_repr": [
+            "-1.875"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "208-op3-float-cold-positive-fraction",
+      "target": "op3-float",
+      "case": "cold-positive-fraction",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 23,
+      "operator": "/",
+      "creation": "/ 2.",
+      "outputs": []
+    },
+    {
+      "id": "209-op3-float-recall-after-cold-fraction",
+      "target": "op3-float",
+      "case": "recall-after-cold-fraction",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 22,
+      "operator": "/",
+      "creation": "/ 2.",
+      "outputs": [
+        {
+          "seq": 571,
+          "target": "op3-float",
+          "inlet": 11,
+          "selector": "float",
+          "atoms": [
+            -1.3636363636363638
+          ],
+          "number_repr": [
+            "-1.3636363636363638"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "210-op3-float-list-two-fractions",
+      "target": "op3-float",
+      "case": "list-two-fractions",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        -7.5,
+        2.5
+      ],
+      "negative_zero": false,
+      "lane": 22,
+      "operator": "/",
+      "creation": "/ 2.",
+      "outputs": [
+        {
+          "seq": 574,
+          "target": "op3-float",
+          "inlet": 11,
+          "selector": "float",
+          "atoms": [
+            -3
+          ],
+          "number_repr": [
+            "-3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "211-op3-float-set-fraction",
+      "target": "op3-float",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        8.5
+      ],
+      "negative_zero": false,
+      "lane": 22,
+      "operator": "/",
+      "creation": "/ 2.",
+      "outputs": []
+    },
+    {
+      "id": "212-op3-float-recall-after-set",
+      "target": "op3-float",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 22,
+      "operator": "/",
+      "creation": "/ 2.",
+      "outputs": [
+        {
+          "seq": 579,
+          "target": "op3-float",
+          "inlet": 11,
+          "selector": "float",
+          "atoms": [
+            3.4000000000000004
+          ],
+          "number_repr": [
+            "3.4000000000000004"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "213-op4-float-hot-int",
+      "target": "op4-float",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 28,
+      "operator": "%",
+      "creation": "% 2.",
+      "outputs": [
+        {
+          "seq": 582,
+          "target": "op4-float",
+          "inlet": 14,
+          "selector": "float",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "214-op4-float-hot-negative-fraction",
+      "target": "op4-float",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 28,
+      "operator": "%",
+      "creation": "% 2.",
+      "outputs": [
+        {
+          "seq": 585,
+          "target": "op4-float",
+          "inlet": 14,
+          "selector": "float",
+          "atoms": [
+            -1.75
+          ],
+          "number_repr": [
+            "-1.75"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "215-op4-float-cold-positive-fraction",
+      "target": "op4-float",
+      "case": "cold-positive-fraction",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 29,
+      "operator": "%",
+      "creation": "% 2.",
+      "outputs": []
+    },
+    {
+      "id": "216-op4-float-recall-after-cold-fraction",
+      "target": "op4-float",
+      "case": "recall-after-cold-fraction",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 28,
+      "operator": "%",
+      "creation": "% 2.",
+      "outputs": [
+        {
+          "seq": 590,
+          "target": "op4-float",
+          "inlet": 14,
+          "selector": "float",
+          "atoms": [
+            -1
+          ],
+          "number_repr": [
+            "-1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "217-op4-float-list-two-fractions",
+      "target": "op4-float",
+      "case": "list-two-fractions",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        -7.5,
+        2.5
+      ],
+      "negative_zero": false,
+      "lane": 28,
+      "operator": "%",
+      "creation": "% 2.",
+      "outputs": [
+        {
+          "seq": 593,
+          "target": "op4-float",
+          "inlet": 14,
+          "selector": "float",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            true
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "218-op4-float-set-fraction",
+      "target": "op4-float",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        8.5
+      ],
+      "negative_zero": false,
+      "lane": 28,
+      "operator": "%",
+      "creation": "% 2.",
+      "outputs": []
+    },
+    {
+      "id": "219-op4-float-recall-after-set",
+      "target": "op4-float",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 28,
+      "operator": "%",
+      "creation": "% 2.",
+      "outputs": [
+        {
+          "seq": 598,
+          "target": "op4-float",
+          "inlet": 14,
+          "selector": "float",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "220-op5-float-hot-int",
+      "target": "op5-float",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 34,
+      "operator": "!-",
+      "creation": "!- 2.",
+      "outputs": [
+        {
+          "seq": 601,
+          "target": "op5-float",
+          "inlet": 17,
+          "selector": "float",
+          "atoms": [
+            -5
+          ],
+          "number_repr": [
+            "-5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "221-op5-float-hot-negative-fraction",
+      "target": "op5-float",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 34,
+      "operator": "!-",
+      "creation": "!- 2.",
+      "outputs": [
+        {
+          "seq": 604,
+          "target": "op5-float",
+          "inlet": 17,
+          "selector": "float",
+          "atoms": [
+            5.75
+          ],
+          "number_repr": [
+            "5.75"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "222-op5-float-cold-positive-fraction",
+      "target": "op5-float",
+      "case": "cold-positive-fraction",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 35,
+      "operator": "!-",
+      "creation": "!- 2.",
+      "outputs": []
+    },
+    {
+      "id": "223-op5-float-recall-after-cold-fraction",
+      "target": "op5-float",
+      "case": "recall-after-cold-fraction",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 34,
+      "operator": "!-",
+      "creation": "!- 2.",
+      "outputs": [
+        {
+          "seq": 609,
+          "target": "op5-float",
+          "inlet": 17,
+          "selector": "float",
+          "atoms": [
+            6.5
+          ],
+          "number_repr": [
+            "6.5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "224-op5-float-list-two-fractions",
+      "target": "op5-float",
+      "case": "list-two-fractions",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        -7.5,
+        2.5
+      ],
+      "negative_zero": false,
+      "lane": 34,
+      "operator": "!-",
+      "creation": "!- 2.",
+      "outputs": [
+        {
+          "seq": 612,
+          "target": "op5-float",
+          "inlet": 17,
+          "selector": "float",
+          "atoms": [
+            10
+          ],
+          "number_repr": [
+            "10"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "225-op5-float-set-fraction",
+      "target": "op5-float",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        8.5
+      ],
+      "negative_zero": false,
+      "lane": 34,
+      "operator": "!-",
+      "creation": "!- 2.",
+      "outputs": []
+    },
+    {
+      "id": "226-op5-float-recall-after-set",
+      "target": "op5-float",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 34,
+      "operator": "!-",
+      "creation": "!- 2.",
+      "outputs": [
+        {
+          "seq": 617,
+          "target": "op5-float",
+          "inlet": 17,
+          "selector": "float",
+          "atoms": [
+            10
+          ],
+          "number_repr": [
+            "10"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "227-op6-float-hot-int",
+      "target": "op6-float",
+      "case": "hot-int",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 40,
+      "operator": "!/",
+      "creation": "!/ 2.",
+      "outputs": [
+        {
+          "seq": 620,
+          "target": "op6-float",
+          "inlet": 20,
+          "selector": "float",
+          "atoms": [
+            0.2857142857142857
+          ],
+          "number_repr": [
+            "0.2857142857142857"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "228-op6-float-hot-negative-fraction",
+      "target": "op6-float",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 40,
+      "operator": "!/",
+      "creation": "!/ 2.",
+      "outputs": [
+        {
+          "seq": 623,
+          "target": "op6-float",
+          "inlet": 20,
+          "selector": "float",
+          "atoms": [
+            -0.5333333333333333
+          ],
+          "number_repr": [
+            "-0.5333333333333333"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "229-op6-float-cold-positive-fraction",
+      "target": "op6-float",
+      "case": "cold-positive-fraction",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        2.75
+      ],
+      "negative_zero": false,
+      "lane": 41,
+      "operator": "!/",
+      "creation": "!/ 2.",
+      "outputs": []
+    },
+    {
+      "id": "230-op6-float-recall-after-cold-fraction",
+      "target": "op6-float",
+      "case": "recall-after-cold-fraction",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 40,
+      "operator": "!/",
+      "creation": "!/ 2.",
+      "outputs": [
+        {
+          "seq": 628,
+          "target": "op6-float",
+          "inlet": 20,
+          "selector": "float",
+          "atoms": [
+            -0.7333333333333333
+          ],
+          "number_repr": [
+            "-0.7333333333333333"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "231-op6-float-list-two-fractions",
+      "target": "op6-float",
+      "case": "list-two-fractions",
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        -7.5,
+        2.5
+      ],
+      "negative_zero": false,
+      "lane": 40,
+      "operator": "!/",
+      "creation": "!/ 2.",
+      "outputs": [
+        {
+          "seq": 631,
+          "target": "op6-float",
+          "inlet": 20,
+          "selector": "float",
+          "atoms": [
+            -0.3333333333333333
+          ],
+          "number_repr": [
+            "-0.3333333333333333"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "232-op6-float-set-fraction",
+      "target": "op6-float",
+      "case": "set-fraction",
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        8.5
+      ],
+      "negative_zero": false,
+      "lane": 40,
+      "operator": "!/",
+      "creation": "!/ 2.",
+      "outputs": []
+    },
+    {
+      "id": "233-op6-float-recall-after-set",
+      "target": "op6-float",
+      "case": "recall-after-set",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 40,
+      "operator": "!/",
+      "creation": "!/ 2.",
+      "outputs": [
+        {
+          "seq": 636,
+          "target": "op6-float",
+          "inlet": 20,
+          "selector": "float",
+          "atoms": [
+            -0.3333333333333333
+          ],
+          "number_repr": [
+            "-0.3333333333333333"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "234-op3-integer-zero-coerced-cold",
+      "target": "op3-integer",
+      "case": "zero-coerced-cold",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        0.5
+      ],
+      "negative_zero": false,
+      "lane": 21,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": []
+    },
+    {
+      "id": "235-op3-integer-zero-coerced-bang",
+      "target": "op3-integer",
+      "case": "zero-coerced-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 641,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            11
+          ],
+          "number_repr": [
+            "11"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "236-op3-integer-zero-negative-cold",
+      "target": "op3-integer",
+      "case": "zero-negative-cold",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        0
+      ],
+      "negative_zero": true,
+      "lane": 21,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": []
+    },
+    {
+      "id": "237-op3-integer-zero-negative-bang",
+      "target": "op3-integer",
+      "case": "zero-negative-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 646,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            11
+          ],
+          "number_repr": [
+            "11"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "238-op3-integer-zero-recovery-cold",
+      "target": "op3-integer",
+      "case": "zero-recovery-cold",
+      "inlet": 1,
+      "selector": "int",
+      "atoms": [
+        2
+      ],
+      "negative_zero": false,
+      "lane": 21,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": []
+    },
+    {
+      "id": "239-op3-integer-zero-recovery-bang",
+      "target": "op3-integer",
+      "case": "zero-recovery-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 20,
+      "operator": "/",
+      "creation": "/ 2",
+      "outputs": [
+        {
+          "seq": 651,
+          "target": "op3-integer",
+          "inlet": 10,
+          "selector": "int",
+          "atoms": [
+            5
+          ],
+          "number_repr": [
+            "5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "240-op3-float-zero-positive-cold",
+      "target": "op3-float",
+      "case": "zero-positive-cold",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        0
+      ],
+      "negative_zero": false,
+      "lane": 23,
+      "operator": "/",
+      "creation": "/ 2.",
+      "outputs": []
+    },
+    {
+      "id": "241-op3-float-zero-positive-hot",
+      "target": "op3-float",
+      "case": "zero-positive-hot",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        7.5
+      ],
+      "negative_zero": false,
+      "lane": 22,
+      "operator": "/",
+      "creation": "/ 2.",
+      "outputs": [
+        {
+          "seq": 656,
+          "target": "op3-float",
+          "inlet": 11,
+          "selector": "float",
+          "atoms": [
+            null
+          ],
+          "number_repr": [
+            "Infinity"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "id": "242-op3-float-zero-negative-cold",
+      "target": "op3-float",
+      "case": "zero-negative-cold",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        0
+      ],
+      "negative_zero": true,
+      "lane": 23,
+      "operator": "/",
+      "creation": "/ 2.",
+      "outputs": []
+    },
+    {
+      "id": "243-op3-float-zero-negative-hot",
+      "target": "op3-float",
+      "case": "zero-negative-hot",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -7.5
+      ],
+      "negative_zero": false,
+      "lane": 22,
+      "operator": "/",
+      "creation": "/ 2.",
+      "outputs": [
+        {
+          "seq": 661,
+          "target": "op3-float",
+          "inlet": 11,
+          "selector": "float",
+          "atoms": [
+            null
+          ],
+          "number_repr": [
+            "Infinity"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "id": "244-op3-float-zero-recovery-cold",
+      "target": "op3-float",
+      "case": "zero-recovery-cold",
+      "inlet": 1,
+      "selector": "int",
+      "atoms": [
+        -2
+      ],
+      "negative_zero": false,
+      "lane": 23,
+      "operator": "/",
+      "creation": "/ 2.",
+      "outputs": []
+    },
+    {
+      "id": "245-op3-float-zero-recovery-bang",
+      "target": "op3-float",
+      "case": "zero-recovery-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 22,
+      "operator": "/",
+      "creation": "/ 2.",
+      "outputs": [
+        {
+          "seq": 666,
+          "target": "op3-float",
+          "inlet": 11,
+          "selector": "float",
+          "atoms": [
+            3.75
+          ],
+          "number_repr": [
+            "3.75"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "246-op4-integer-zero-coerced-cold",
+      "target": "op4-integer",
+      "case": "zero-coerced-cold",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        0.5
+      ],
+      "negative_zero": false,
+      "lane": 27,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": []
+    },
+    {
+      "id": "247-op4-integer-zero-coerced-bang",
+      "target": "op4-integer",
+      "case": "zero-coerced-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 671,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "248-op4-integer-zero-negative-cold",
+      "target": "op4-integer",
+      "case": "zero-negative-cold",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        0
+      ],
+      "negative_zero": true,
+      "lane": 27,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": []
+    },
+    {
+      "id": "249-op4-integer-zero-negative-bang",
+      "target": "op4-integer",
+      "case": "zero-negative-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 676,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "250-op4-integer-zero-recovery-cold",
+      "target": "op4-integer",
+      "case": "zero-recovery-cold",
+      "inlet": 1,
+      "selector": "int",
+      "atoms": [
+        2
+      ],
+      "negative_zero": false,
+      "lane": 27,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": []
+    },
+    {
+      "id": "251-op4-integer-zero-recovery-bang",
+      "target": "op4-integer",
+      "case": "zero-recovery-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 26,
+      "operator": "%",
+      "creation": "% 2",
+      "outputs": [
+        {
+          "seq": 681,
+          "target": "op4-integer",
+          "inlet": 13,
+          "selector": "int",
+          "atoms": [
+            1
+          ],
+          "number_repr": [
+            "1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "252-op4-float-zero-positive-cold",
+      "target": "op4-float",
+      "case": "zero-positive-cold",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        0
+      ],
+      "negative_zero": false,
+      "lane": 29,
+      "operator": "%",
+      "creation": "% 2.",
+      "outputs": []
+    },
+    {
+      "id": "253-op4-float-zero-positive-hot",
+      "target": "op4-float",
+      "case": "zero-positive-hot",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        7.5
+      ],
+      "negative_zero": false,
+      "lane": 28,
+      "operator": "%",
+      "creation": "% 2.",
+      "outputs": [
+        {
+          "seq": 686,
+          "target": "op4-float",
+          "inlet": 14,
+          "selector": "float",
+          "atoms": [
+            null
+          ],
+          "number_repr": [
+            "NaN"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "id": "254-op4-float-zero-negative-cold",
+      "target": "op4-float",
+      "case": "zero-negative-cold",
+      "inlet": 1,
+      "selector": "float",
+      "atoms": [
+        0
+      ],
+      "negative_zero": true,
+      "lane": 29,
+      "operator": "%",
+      "creation": "% 2.",
+      "outputs": []
+    },
+    {
+      "id": "255-op4-float-zero-negative-hot",
+      "target": "op4-float",
+      "case": "zero-negative-hot",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -7.5
+      ],
+      "negative_zero": false,
+      "lane": 28,
+      "operator": "%",
+      "creation": "% 2.",
+      "outputs": [
+        {
+          "seq": 691,
+          "target": "op4-float",
+          "inlet": 14,
+          "selector": "float",
+          "atoms": [
+            null
+          ],
+          "number_repr": [
+            "NaN"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "id": "256-op4-float-zero-recovery-cold",
+      "target": "op4-float",
+      "case": "zero-recovery-cold",
+      "inlet": 1,
+      "selector": "int",
+      "atoms": [
+        -2
+      ],
+      "negative_zero": false,
+      "lane": 29,
+      "operator": "%",
+      "creation": "% 2.",
+      "outputs": []
+    },
+    {
+      "id": "257-op4-float-zero-recovery-bang",
+      "target": "op4-float",
+      "case": "zero-recovery-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 28,
+      "operator": "%",
+      "creation": "% 2.",
+      "outputs": [
+        {
+          "seq": 696,
+          "target": "op4-float",
+          "inlet": 14,
+          "selector": "float",
+          "atoms": [
+            -1.5
+          ],
+          "number_repr": [
+            "-1.5"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "258-op6-integer-zero-coerced-hot",
+      "target": "op6-integer",
+      "case": "zero-coerced-hot",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        0.5
+      ],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 699,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "259-op6-integer-zero-first-bang",
+      "target": "op6-integer",
+      "case": "zero-first-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 702,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "260-op6-integer-zero-negative-hot",
+      "target": "op6-integer",
+      "case": "zero-negative-hot",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        0
+      ],
+      "negative_zero": true,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 705,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "261-op6-integer-zero-negative-bang",
+      "target": "op6-integer",
+      "case": "zero-negative-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 708,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "262-op6-integer-zero-recovery-hot",
+      "target": "op6-integer",
+      "case": "zero-recovery-hot",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        2
+      ],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 711,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            -1
+          ],
+          "number_repr": [
+            "-1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "263-op6-integer-zero-recovery-bang",
+      "target": "op6-integer",
+      "case": "zero-recovery-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 38,
+      "operator": "!/",
+      "creation": "!/ 2",
+      "outputs": [
+        {
+          "seq": 714,
+          "target": "op6-integer",
+          "inlet": 19,
+          "selector": "int",
+          "atoms": [
+            -1
+          ],
+          "number_repr": [
+            "-1"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "264-op6-float-zero-positive-hot",
+      "target": "op6-float",
+      "case": "zero-positive-hot",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        0
+      ],
+      "negative_zero": false,
+      "lane": 40,
+      "operator": "!/",
+      "creation": "!/ 2.",
+      "outputs": [
+        {
+          "seq": 717,
+          "target": "op6-float",
+          "inlet": 20,
+          "selector": "float",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "265-op6-float-zero-first-bang",
+      "target": "op6-float",
+      "case": "zero-first-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 40,
+      "operator": "!/",
+      "creation": "!/ 2.",
+      "outputs": [
+        {
+          "seq": 720,
+          "target": "op6-float",
+          "inlet": 20,
+          "selector": "float",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "266-op6-float-zero-negative-hot",
+      "target": "op6-float",
+      "case": "zero-negative-hot",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        0
+      ],
+      "negative_zero": true,
+      "lane": 40,
+      "operator": "!/",
+      "creation": "!/ 2.",
+      "outputs": [
+        {
+          "seq": 723,
+          "target": "op6-float",
+          "inlet": 20,
+          "selector": "float",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "267-op6-float-zero-negative-bang",
+      "target": "op6-float",
+      "case": "zero-negative-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 40,
+      "operator": "!/",
+      "creation": "!/ 2.",
+      "outputs": [
+        {
+          "seq": 726,
+          "target": "op6-float",
+          "inlet": 20,
+          "selector": "float",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "268-op6-float-zero-recovery-hot",
+      "target": "op6-float",
+      "case": "zero-recovery-hot",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        2
+      ],
+      "negative_zero": false,
+      "lane": 40,
+      "operator": "!/",
+      "creation": "!/ 2.",
+      "outputs": [
+        {
+          "seq": 729,
+          "target": "op6-float",
+          "inlet": 20,
+          "selector": "float",
+          "atoms": [
+            1.25
+          ],
+          "number_repr": [
+            "1.25"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "269-op6-float-zero-recovery-bang",
+      "target": "op6-float",
+      "case": "zero-recovery-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 40,
+      "operator": "!/",
+      "creation": "!/ 2.",
+      "outputs": [
+        {
+          "seq": 732,
+          "target": "op6-float",
+          "inlet": 20,
+          "selector": "float",
+          "atoms": [
+            1.25
+          ],
+          "number_repr": [
+            "1.25"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "270-op0-extra24-startup-bang",
+      "target": "op0-extra24",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 48,
+      "operator": "+",
+      "creation": "+ 2e0",
+      "outputs": [
+        {
+          "seq": 735,
+          "target": "op0-extra24",
+          "inlet": 24,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "271-op0-extra24-hot-negative-fraction",
+      "target": "op0-extra24",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 48,
+      "operator": "+",
+      "creation": "+ 2e0",
+      "outputs": [
+        {
+          "seq": 738,
+          "target": "op0-extra24",
+          "inlet": 24,
+          "selector": "int",
+          "atoms": [
+            -3
+          ],
+          "number_repr": [
+            "-3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "272-op0-extra24-recall",
+      "target": "op0-extra24",
+      "case": "recall",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 48,
+      "operator": "+",
+      "creation": "+ 2e0",
+      "outputs": [
+        {
+          "seq": 741,
+          "target": "op0-extra24",
+          "inlet": 24,
+          "selector": "int",
+          "atoms": [
+            -3
+          ],
+          "number_repr": [
+            "-3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "273-op1-extra25-startup-bang",
+      "target": "op1-extra25",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 50,
+      "operator": "*",
+      "creation": "* 0.5",
+      "outputs": [
+        {
+          "seq": 744,
+          "target": "op1-extra25",
+          "inlet": 25,
+          "selector": "float",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "274-op1-extra25-hot-negative-fraction",
+      "target": "op1-extra25",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 50,
+      "operator": "*",
+      "creation": "* 0.5",
+      "outputs": [
+        {
+          "seq": 747,
+          "target": "op1-extra25",
+          "inlet": 25,
+          "selector": "float",
+          "atoms": [
+            -1.875
+          ],
+          "number_repr": [
+            "-1.875"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "275-op1-extra25-recall",
+      "target": "op1-extra25",
+      "case": "recall",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 50,
+      "operator": "*",
+      "creation": "* 0.5",
+      "outputs": [
+        {
+          "seq": 750,
+          "target": "op1-extra25",
+          "inlet": 25,
+          "selector": "float",
+          "atoms": [
+            -1.875
+          ],
+          "number_repr": [
+            "-1.875"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "276-op3-extra26-startup-bang",
+      "target": "op3-extra26",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 52,
+      "operator": "/",
+      "creation": "/ 2e0",
+      "outputs": [
+        {
+          "seq": 753,
+          "target": "op3-extra26",
+          "inlet": 26,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "277-op3-extra26-hot-negative-fraction",
+      "target": "op3-extra26",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 52,
+      "operator": "/",
+      "creation": "/ 2e0",
+      "outputs": [
+        {
+          "seq": 756,
+          "target": "op3-extra26",
+          "inlet": 26,
+          "selector": "int",
+          "atoms": [
+            -3
+          ],
+          "number_repr": [
+            "-3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "278-op3-extra26-recall",
+      "target": "op3-extra26",
+      "case": "recall",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 52,
+      "operator": "/",
+      "creation": "/ 2e0",
+      "outputs": [
+        {
+          "seq": 759,
+          "target": "op3-extra26",
+          "inlet": 26,
+          "selector": "int",
+          "atoms": [
+            -3
+          ],
+          "number_repr": [
+            "-3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "279-op4-extra27-startup-bang",
+      "target": "op4-extra27",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 54,
+      "operator": "%",
+      "creation": "% 0.5",
+      "outputs": [
+        {
+          "seq": 762,
+          "target": "op4-extra27",
+          "inlet": 27,
+          "selector": "float",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "280-op4-extra27-hot-negative-fraction",
+      "target": "op4-extra27",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 54,
+      "operator": "%",
+      "creation": "% 0.5",
+      "outputs": [
+        {
+          "seq": 765,
+          "target": "op4-extra27",
+          "inlet": 27,
+          "selector": "float",
+          "atoms": [
+            -0.25
+          ],
+          "number_repr": [
+            "-0.25"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "281-op4-extra27-recall",
+      "target": "op4-extra27",
+      "case": "recall",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 54,
+      "operator": "%",
+      "creation": "% 0.5",
+      "outputs": [
+        {
+          "seq": 768,
+          "target": "op4-extra27",
+          "inlet": 27,
+          "selector": "float",
+          "atoms": [
+            -0.25
+          ],
+          "number_repr": [
+            "-0.25"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "282-op4-extra28-startup-bang",
+      "target": "op4-extra28",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 56,
+      "operator": "%",
+      "creation": "% 2.5",
+      "outputs": [
+        {
+          "seq": 771,
+          "target": "op4-extra28",
+          "inlet": 28,
+          "selector": "float",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "283-op4-extra28-hot-negative-fraction",
+      "target": "op4-extra28",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 56,
+      "operator": "%",
+      "creation": "% 2.5",
+      "outputs": [
+        {
+          "seq": 774,
+          "target": "op4-extra28",
+          "inlet": 28,
+          "selector": "float",
+          "atoms": [
+            -1.25
+          ],
+          "number_repr": [
+            "-1.25"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "284-op4-extra28-recall",
+      "target": "op4-extra28",
+      "case": "recall",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 56,
+      "operator": "%",
+      "creation": "% 2.5",
+      "outputs": [
+        {
+          "seq": 777,
+          "target": "op4-extra28",
+          "inlet": 28,
+          "selector": "float",
+          "atoms": [
+            -1.25
+          ],
+          "number_repr": [
+            "-1.25"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "285-op7-extra29-startup-bang",
+      "target": "op7-extra29",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 58,
+      "operator": "abs",
+      "creation": "abs 2e0",
+      "outputs": []
+    },
+    {
+      "id": "286-op7-extra29-hot-negative-fraction",
+      "target": "op7-extra29",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 58,
+      "operator": "abs",
+      "creation": "abs 2e0",
+      "outputs": [
+        {
+          "seq": 782,
+          "target": "op7-extra29",
+          "inlet": 29,
+          "selector": "int",
+          "atoms": [
+            3
+          ],
+          "number_repr": [
+            "3"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "287-op7-extra29-recall",
+      "target": "op7-extra29",
+      "case": "recall",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 58,
+      "operator": "abs",
+      "creation": "abs 2e0",
+      "outputs": []
+    },
+    {
+      "id": "288-op7-extra30-startup-bang",
+      "target": "op7-extra30",
+      "case": "startup-bang",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 60,
+      "operator": "abs",
+      "creation": "abs 0.5",
+      "outputs": []
+    },
+    {
+      "id": "289-op7-extra30-hot-negative-fraction",
+      "target": "op7-extra30",
+      "case": "hot-negative-fraction",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 60,
+      "operator": "abs",
+      "creation": "abs 0.5",
+      "outputs": [
+        {
+          "seq": 789,
+          "target": "op7-extra30",
+          "inlet": 30,
+          "selector": "float",
+          "atoms": [
+            3.75
+          ],
+          "number_repr": [
+            "3.75"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "290-op7-extra30-recall",
+      "target": "op7-extra30",
+      "case": "recall",
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "negative_zero": false,
+      "lane": 60,
+      "operator": "abs",
+      "creation": "abs 0.5",
+      "outputs": []
+    },
+    {
+      "id": "291-op0-bare-hot-default",
+      "target": "op0-bare",
+      "case": "hot-default",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 0,
+      "operator": "+",
+      "creation": "+",
+      "outputs": [
+        {
+          "seq": 794,
+          "target": "op0-bare",
+          "inlet": 0,
+          "selector": "int",
+          "atoms": [
+            7
+          ],
+          "number_repr": [
+            "7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "292-op1-bare-hot-default",
+      "target": "op1-bare",
+      "case": "hot-default",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 6,
+      "operator": "*",
+      "creation": "*",
+      "outputs": [
+        {
+          "seq": 797,
+          "target": "op1-bare",
+          "inlet": 3,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "293-op2-bare-hot-default",
+      "target": "op2-bare",
+      "case": "hot-default",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 12,
+      "operator": "-",
+      "creation": "-",
+      "outputs": [
+        {
+          "seq": 800,
+          "target": "op2-bare",
+          "inlet": 6,
+          "selector": "int",
+          "atoms": [
+            7
+          ],
+          "number_repr": [
+            "7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "294-op3-bare-hot-default",
+      "target": "op3-bare",
+      "case": "hot-default",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 18,
+      "operator": "/",
+      "creation": "/",
+      "outputs": [
+        {
+          "seq": 803,
+          "target": "op3-bare",
+          "inlet": 9,
+          "selector": "int",
+          "atoms": [
+            7
+          ],
+          "number_repr": [
+            "7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "295-op4-bare-hot-default",
+      "target": "op4-bare",
+      "case": "hot-default",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 24,
+      "operator": "%",
+      "creation": "%",
+      "outputs": [
+        {
+          "seq": 806,
+          "target": "op4-bare",
+          "inlet": 12,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "296-op5-bare-hot-default",
+      "target": "op5-bare",
+      "case": "hot-default",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 30,
+      "operator": "!-",
+      "creation": "!-",
+      "outputs": [
+        {
+          "seq": 809,
+          "target": "op5-bare",
+          "inlet": 15,
+          "selector": "int",
+          "atoms": [
+            -7
+          ],
+          "number_repr": [
+            "-7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "297-op6-bare-hot-default",
+      "target": "op6-bare",
+      "case": "hot-default",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 36,
+      "operator": "!/",
+      "creation": "!/",
+      "outputs": [
+        {
+          "seq": 812,
+          "target": "op6-bare",
+          "inlet": 18,
+          "selector": "int",
+          "atoms": [
+            0
+          ],
+          "number_repr": [
+            "0"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "298-op7-bare-hot-default",
+      "target": "op7-bare",
+      "case": "hot-default",
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "negative_zero": false,
+      "lane": 42,
+      "operator": "abs",
+      "creation": "abs",
+      "outputs": [
+        {
+          "seq": 815,
+          "target": "op7-bare",
+          "inlet": 21,
+          "selector": "int",
+          "atoms": [
+            7
+          ],
+          "number_repr": [
+            "7"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "id": "299-op7-float-hot-float-format",
+      "target": "op7-float",
+      "case": "hot-float-format",
+      "inlet": 0,
+      "selector": "float",
+      "atoms": [
+        -3.75
+      ],
+      "negative_zero": false,
+      "lane": 46,
+      "operator": "abs",
+      "creation": "abs 2.",
+      "outputs": [
+        {
+          "seq": 818,
+          "target": "op7-float",
+          "inlet": 23,
+          "selector": "float",
+          "atoms": [
+            3.75
+          ],
+          "number_repr": [
+            "3.75"
+          ],
+          "negative_zero": [
+            false
+          ],
+          "finite": [
+            true
+          ]
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Finite original fixture; no installed help root executed or qualified.",
+    "Numeric atom tags inside list stimuli/receipts are not independently measured by JS.",
+    "Bare reverse-divide right default 0 versus 1 is not distinguished by the chosen integer hot input 7.",
+    "Float-mode direct in1/ft1 and int input into float-configured abs are not tested.",
+    "Max console error text and scheduler/audio settings were not collected.",
+    "Exponent creation 2e0 was observed only for +, / and abs; other exponent spellings are unknown.",
+    "Infinity and NaN are observed; -Infinity is representable by the carrier but not observed in this score."
+  ]
+}

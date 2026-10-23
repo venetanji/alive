@@ -23,21 +23,47 @@ to configure every object through permanent side panels.
 
 ## Capabilities and Constraints
 
-- The existing `ultra-canvas-v1` profile supports 25 object kinds, 32 nodes and
-  64 edges. Control, mono audio and stereo bundles have distinct port types.
+- Up to 16 native patch, help and example windows each run an independent
+  `ultra-canvas-v1` graph with 50 object kinds, 32 nodes and 64 edges. Ports
+  distinguish control, mono audio, mixed control/mono and legacy stereo bundles.
 - Native control objects and ramps operate with audio off. Typed messages and
-  variadic object ports are bounded. Max files expose named help tabs/patchers
-  and compatibility reports; partial selections require explicit acceptance.
-  Whole Max help files and arbitrary Max objects are not executable.
+  variadic object ports are bounded. Plain-name `send`/`receive` connects typed
+  messages across open windows, including while audio is off. Max patch-local
+  name expansion and signal-rate `send~`/`receive~` are unsupported.
+- Native New/Open/Save/Save As, file drops and command-line file opening use
+  separate patch windows. Saves are atomic; closing a modified patch offers
+  Save, Discard or Cancel. Imported Max source always saves to a separate Ultra
+  file. Max files expose named help tabs/patchers and compatibility reports;
+  partial selections require explicit acceptance. Whole Max help files and
+  arbitrary Max objects are not executable.
+- Help & Examples searches 101 original entries: help and an example for each
+  supported kind, plus the starter. Object help opens or focuses its own patch
+  window; the library also switches between open native windows.
 - Existing controls operate across their face when locked or with Ctrl/Cmd while
   editing. Optional Max-named appearance overrides save with the document and
   do not reset execution when edited.
-- The native Clockwork/Faust engine supports two prepared voice banks at 48 kHz.
-  UI editing must retain the existing Rust/native validation and safety rules.
+- One native audio device and Clockwork/Faust runtime serve all windows at
+  48 kHz. Each document owns its control state, timers, native signal graph and
+  two prepared voice paths. Mono sources sum at signal inputs; control and signal
+  dependencies are validated separately. New MSP sources run at the native sample
+  rate; the legacy custom Voice path retains its 64-frame pipeline. Engine
+  starts and graph replacements mute the first 64 output samples as a guard
+  while signal state advances. Stop patch freezes and silences only its document;
+  an accepted event, parameter change,
+  incoming receive or global DSP restart resumes its continuous signals.
+  Start/Stop audio and Panic are shared. Focus changes preserve playback. UI
+  editing must retain the existing Rust/native validation and safety rules.
+- Signal primitives include `sig~`, arithmetic, `cycle~`, `phasor~`, `noise~`,
+  `clip~`, `line~`, `snapshot~` and mono-input `dac~`. The legacy stereo-bundle
+  sink is authored as `stereo.dac~`. Output maps to physical channels 1 and 2
+  only. Numeric creation/control values are bounded to -100000..100000; signal
+  samples are not subject to that control bound. Exact Max noise sequences and
+  periodic snapshot scheduling are not established.
 - Supported object names and arguments must be explicit. Unsupported objects
   must be rejected visibly. Familiar appearance does not imply Max compatibility.
-- Linux desktop is the shipped target. A smaller browser preview remains useful
-  for document editing and UI verification, without synthesizing sound.
+- Linux desktop is the shipped target. A smaller browser preview supports
+  document editing, separate preview windows and downloads, without native
+  execution or synthesizing sound.
 - Preserve user projects, original Wine preferences, local work and the draft PR.
   Study installed Max/Live in disposable copies on a private display.
 
@@ -53,6 +79,9 @@ code, fonts, proprietary help patches, icons, or application assets.
 UI investigation. `experiments/max-reference/` records prior local Max semantics.
 New UI observations belong in `experiments/max-ui-reference/` with execution and
 coverage limits kept explicit.
+Frozen signal observations and production-header replay live in
+`experiments/max-reference/signal-runtime-20261021/`. Original runnable examples
+and partial imports do not establish complete execution of installed Max help.
 
 ## Product Principles
 

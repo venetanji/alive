@@ -1,0 +1,273 @@
+{
+  "max_version": "9.1.5 (3db35fa476d), Windows x64; retained baseline environment identifies version",
+  "max_version_source": "../docs/environment.json",
+  "max_executable": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/Max.exe",
+  "max_executable_sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b",
+  "wine_executable": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/bin/wine",
+  "wine_executable_sha256": "15096d23074c454e6cd3225c7cb7f62c4136f6697fdceeda22aeede6b46c031f",
+  "wine_version": "wine-11.13",
+  "host": {
+    "system": "Linux",
+    "release": "7.2.8-9-omarchy",
+    "architecture": "x86_64"
+  },
+  "isolation": {
+    "disposable_prefix": "/home/venetanji/.cache/alive-max-signal-20261021/wine-disposable",
+    "original_prefix_launched": false,
+    "private_xvfb": true,
+    "software_rendering": true,
+    "hardware_audio": false,
+    "clone_method": "cp -a --reflink=always from prior clean disposable list prefix",
+    "profile_home_symlinks_replaced_with_empty_directories": true,
+    "disposable_prefix_removed": true,
+    "exact_prefix_processes_after_cleanup": []
+  },
+  "sample_representation": "buffer~ float32; internal signal computation precision not retained",
+  "runs": [
+    {
+      "fixture": "arithmetic",
+      "evidence": "ORIGINAL_MAX_EXECUTED",
+      "first_message_utc": "2026-10-21T14:08:48.356000+00:00",
+      "last_message_utc": "2026-10-21T14:08:51.267000+00:00",
+      "raw_rows": 694,
+      "stimuli": 183,
+      "complete": true,
+      "settings_after_capture": {
+        "sr": 48000,
+        "sigvs": 64,
+        "iovs": 512,
+        "overdrive": 0,
+        "takeover": 0,
+        "switch": 0
+      },
+      "driver_index": 4,
+      "driver_menu": [
+        [
+          "None"
+        ],
+        [
+          "ad_asio",
+          "PipeASIO Driver"
+        ],
+        [
+          "ad_directsound",
+          ""
+        ],
+        [
+          "ad_mme",
+          ""
+        ],
+        [
+          "NonRealTime"
+        ],
+        [
+          "ad_portaudio",
+          "MME"
+        ],
+        [
+          "ad_portaudio",
+          "Windows DirectSound"
+        ],
+        [
+          "ad_portaudio",
+          "Windows WASAPI"
+        ],
+        [
+          "ad_portaudio",
+          "Windows WDM-KS"
+        ]
+      ],
+      "session": {
+        "display": ":0",
+        "xvfb_pid": 1401788,
+        "launcher_pid": 1401803,
+        "prefix": "/home/venetanji/.cache/alive-max-signal-20261021/wine-disposable",
+        "wine": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/bin/wine",
+        "fixture": "arithmetic"
+      },
+      "external_runtime_log": {
+        "path": "/home/venetanji/.cache/alive-max-signal-20261021/arithmetic/runtime.log",
+        "sha256": "0b91d0af7d5d9b98589096db460599263131596e66158f5d86c7d4033077633b"
+      }
+    },
+    {
+      "fixture": "waves",
+      "evidence": "ORIGINAL_MAX_EXECUTED",
+      "first_message_utc": "2026-10-21T14:10:01.665000+00:00",
+      "last_message_utc": "2026-10-21T14:10:03.487000+00:00",
+      "raw_rows": 363,
+      "stimuli": 44,
+      "complete": true,
+      "settings_after_capture": {
+        "sr": 48000,
+        "sigvs": 64,
+        "iovs": 512,
+        "overdrive": 0,
+        "takeover": 0,
+        "switch": 0
+      },
+      "driver_index": 4,
+      "driver_menu": [
+        [
+          "None"
+        ],
+        [
+          "ad_asio",
+          "PipeASIO Driver"
+        ],
+        [
+          "ad_directsound",
+          ""
+        ],
+        [
+          "ad_mme",
+          ""
+        ],
+        [
+          "NonRealTime"
+        ],
+        [
+          "ad_portaudio",
+          "MME"
+        ],
+        [
+          "ad_portaudio",
+          "Windows DirectSound"
+        ],
+        [
+          "ad_portaudio",
+          "Windows WASAPI"
+        ],
+        [
+          "ad_portaudio",
+          "Windows WDM-KS"
+        ]
+      ],
+      "session": {
+        "display": ":0",
+        "xvfb_pid": 1409233,
+        "launcher_pid": 1409252,
+        "prefix": "/home/venetanji/.cache/alive-max-signal-20261021/wine-disposable",
+        "wine": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/bin/wine",
+        "fixture": "waves"
+      },
+      "external_runtime_log": {
+        "path": "/home/venetanji/.cache/alive-max-signal-20261021/waves/runtime.log",
+        "sha256": "784f39e8b0e988d1186b7ceb14f7bad8904292c120a83dcf7bf3b28c5f24944b"
+      }
+    },
+    {
+      "fixture": "precision",
+      "evidence": "ORIGINAL_MAX_EXECUTED",
+      "first_message_utc": "2026-10-21T14:18:07.732000+00:00",
+      "last_message_utc": "2026-10-21T14:18:09.748000+00:00",
+      "raw_rows": 547,
+      "stimuli": 82,
+      "complete": true,
+      "settings_after_capture": {
+        "sr": 48000,
+        "sigvs": 64,
+        "iovs": 512,
+        "overdrive": 0,
+        "takeover": 0,
+        "switch": 0
+      },
+      "driver_index": 4,
+      "driver_menu": [
+        [
+          "None"
+        ],
+        [
+          "ad_asio",
+          "PipeASIO Driver"
+        ],
+        [
+          "ad_directsound",
+          ""
+        ],
+        [
+          "ad_mme",
+          ""
+        ],
+        [
+          "NonRealTime"
+        ],
+        [
+          "ad_portaudio",
+          "MME"
+        ],
+        [
+          "ad_portaudio",
+          "Windows DirectSound"
+        ],
+        [
+          "ad_portaudio",
+          "Windows WASAPI"
+        ],
+        [
+          "ad_portaudio",
+          "Windows WDM-KS"
+        ]
+      ],
+      "session": {
+        "display": ":0",
+        "xvfb_pid": 1457818,
+        "launcher_pid": 1457833,
+        "prefix": "/home/venetanji/.cache/alive-max-signal-20261021/wine-disposable",
+        "wine": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/bin/wine",
+        "fixture": "precision"
+      },
+      "external_runtime_log": {
+        "path": "/home/venetanji/.cache/alive-max-signal-20261021/precision/runtime.log",
+        "sha256": "b216b97005efa84c4e4edaa095c1347a9a7d9cb40fc7ea0c87efe6dce2e56a86"
+      }
+    }
+  ],
+  "native_replay": {
+    "executable": "/tmp/ultra-canvas-signal-test",
+    "executable_sha256": "83bbf6ebb07229b0ad1c9dd24f1f05495ea624d247f313cb0992c104874e52ce",
+    "compiler": "c++ (GCC) 16.2.1 20260810",
+    "compile_command": "c++ -std=c++17 -O2 -Wall -Wextra -Werror apps/ultra/tests/canvas_signal_objects_test.cpp -o /tmp/ultra-canvas-signal-test",
+    "capture_command": "/tmp/ultra-canvas-signal-test --capture",
+    "raw_capture": "results/native-capture.jsonl",
+    "raw_capture_sha256": "726b83956d2634363f7e84bfbaf4938c99583647e35e57bb96a2d86d9c9abbe6",
+    "sources": [
+      {
+        "path": "apps/ultra/core/engine.hpp",
+        "sha256": "b4690e8317b44a2ded3844c97ca614da9c9a9ea3dbf67fa90ed7ae115e8d0b1d"
+      },
+      {
+        "path": "apps/ultra/src-tauri/native/canvas_list_objects.hpp",
+        "sha256": "c83e71885c5ad41663663479500d545c114603eb3ecc47aa9eb60278665dd834"
+      },
+      {
+        "path": "apps/ultra/src-tauri/native/canvas_message.hpp",
+        "sha256": "edf4243bde7394136c7a4980f1996bb616a16e1aa4cfd6f7ab5aa173d1c83480"
+      },
+      {
+        "path": "apps/ultra/src-tauri/native/canvas_objects.hpp",
+        "sha256": "235f8b19fd162e0851d38627d0774f97da69411fbaf5ce4af91cca4a849830c0"
+      },
+      {
+        "path": "apps/ultra/src-tauri/native/canvas_signal_objects.hpp",
+        "sha256": "54cbeb461ccd9b7ff83b75a45b9ead58b6e343c5b6ba2e47fd721ce9a7c334cc"
+      },
+      {
+        "path": "apps/ultra/src-tauri/native/canvas_workspace.hpp",
+        "sha256": "1e34bae49fed060a0622fd5ff24aba941a6f3af19390113393325c81d842c57b"
+      },
+      {
+        "path": "apps/ultra/src-tauri/native/patch_graph.h",
+        "sha256": "cc1d168c0880c468f694c698f804d2f522a91adbfe49ad18a846a83f3c502b66"
+      },
+      {
+        "path": "apps/ultra/src-tauri/native/patch_graph.hpp",
+        "sha256": "40a310f62f378c49a9e89dcbcfb60e680610be47cbb2daa0b32f17a3e09e7f3a"
+      },
+      {
+        "path": "apps/ultra/tests/canvas_signal_objects_test.cpp",
+        "sha256": "6b117bf26f50849a06c27e6adcb9ddb226910d276e4650ba260dba30ab0f1ea3"
+      }
+    ]
+  }
+}

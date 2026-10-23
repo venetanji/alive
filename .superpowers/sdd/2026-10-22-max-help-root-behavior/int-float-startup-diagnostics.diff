@@ -1,0 +1,322 @@
+--- package007/controller.js
++++ package008/controller.js
+@@ -460,11 +460,23 @@
+ function lifecycleControl(kind,index,command) {
+     var observer=this.patcher.getnamed("__alive_numeric_lifecycle_observer");
+     if(!observer||(observer.valid!==true&&observer.valid!==1))throw Error("lifecycle-driver-unavailable");
+-    observer.message("lifecyclecontrol",kind,index,command.command_id,command.step_id);
+-    var report=read(config.lifecycle.report_path);
+-    if(!report||report.version!=="freebang-v1"||report.monitor_epoch!==config.lifecycle.monitor_epoch||
++    try{observer.message("lifecyclecontrol",kind,index,command.command_id,command.step_id);}catch(error){
++        var failure=Error("lifecycle-control-dispatch-threw");
++        failure.lifecycle_failure={stage:"dispatch",error:closeRead(function(){throw error;})};throw failure;
++    }
++    var report;
++    try{report=read(config.lifecycle.report_path);}catch(error){
++        var failure=Error("lifecycle-report-unreadable");
++        failure.lifecycle_failure={stage:"report-read",error:closeRead(function(){throw error;})};throw failure;
++    }
++    if(!report)throw Error("lifecycle-report-absent");
++    if(report.success===false||report.failure_diagnostics){
++        var failure=Error("lifecycle-observer-failure-report");failure.lifecycle_failure=report;throw failure;
++    }
++    if(report.version!=="freebang-v1"||report.monitor_epoch!==config.lifecycle.monitor_epoch||
+         report.request_id!==command.command_id||report.step_id!==command.step_id||report.control!==kind||
+-        !report.observer_report||!report.observer_report.failures)throw Error("lifecycle-observer-refused");
++        typeof report!=="object")throw Error("lifecycle-report-stale");
++    if(!report.observer_report||!report.observer_report.failures)throw Error("lifecycle-observer-refused");
+     return report;
+ }
+ function requestLifecycleProof(state,command,done) {
+@@ -594,14 +606,32 @@
+     }catch(error){shared.dispatch_active=0;fail(command||{command_id:seen},error);}
+ }
+ function start() {
+-    config=read(configFile);shared=new Global(config.global_name);shared.seq=0;shared.dispatch_active=0;
+-    for(var i=0;i<config.lifecycle.driver_inventory.length;i++){
+-        var expected=config.lifecycle.driver_inventory[i],object=this.patcher.getnamed(expected.varname);
+-        if(!object)throw Error("lifecycle-driver-startup");object.setboxattr("patching_rect",expected.rect);
+-    }
+-    var report=lifecycleControl("attest",-1,{command_id:0,step_id:"startup"});
+-    if(report.observer_report.failures.length)throw Error("lifecycle-driver-startup-refused");
+-    shared.step_id="startup";write(config.ready_path,{ready:true,live_owners:{},source_roots_opened:0});
+-    ticker=new Task(tick,this);ticker.interval=25;ticker.repeat();
++    var stage="config",startingTicker;
++    try{
++        config=read(configFile);
++        if(!config||typeof config.ready_path!=="string"||!config.lifecycle)throw Error("startup-config-unavailable");
++        stage="startup";shared=new Global(config.global_name);shared.seq=0;shared.dispatch_active=0;
++        stage="geometry";
++        for(var i=0;i<config.lifecycle.driver_inventory.length;i++){
++            var expected=config.lifecycle.driver_inventory[i],object=this.patcher.getnamed(expected.varname);
++            if(!object)throw Error("lifecycle-driver-startup");object.setboxattr("patching_rect",expected.rect);
++        }
++        stage="observer";
++        var report=lifecycleControl("attest",-1,{command_id:0,step_id:"startup"});
++        if(report.observer_report.failures.length)throw Error("lifecycle-driver-startup-refused");
++        stage="startup";shared.step_id="startup";
++        write(config.ready_path,{ready:true,live_owners:{},source_roots_opened:0});
++        startingTicker=new Task(tick,this);startingTicker.interval=25;startingTicker.repeat();ticker=startingTicker;
++    }catch(error){
++        if(startingTicker&&typeof startingTicker.cancel==="function")try{startingTicker.cancel();}catch(ignored){}
++        var readyPath=config&&typeof config.ready_path==="string"?config.ready_path:null;
++        if(!readyPath){
++            if(typeof configFile!=="string"||!/(^|[\\/])config\.json$/.test(configFile))throw Error("startup-diagnostic-path");
++            readyPath=configFile.slice(0,-"config.json".length)+"ready.json";
++        }
++        var diagnostic={stage:stage,error:closeRead(function(){throw error;})};
++        if(error&&error.lifecycle_failure)diagnostic.lifecycle_failure=error.lifecycle_failure;
++        write(readyPath,{ready:false,live_owners:{},source_roots_opened:0,startup_diagnostics:diagnostic});
++    }
+ }
+ function loadbang(){startupTask=new Task(start,this);startupTask.schedule(1000);}
+--- package007/lifecycle-fixture.cjs
++++ package008/lifecycle-fixture.cjs
+@@ -1,6 +1,6 @@
+ // In-memory Max APIs for lifecycle fixtures; no runtime or private-file access.
+ const fs=require('fs'),vm=require('vm'),path=require('path');
+-module.exports=function create(){
++module.exports=function create(options={}){
+  const owners=Array.from({length:4},(_,inlet)=>({inlet,document:inlet<2?'int':'float',revision:inlet%2+1,
+   channel:'private_'+inlet,working_path:'Z:/private/'+inlet,source_sha256:'a'.repeat(64)}));
+  const inventory=[{varname:'__alive_numeric_controller',maxclass:'js',boxtext:'js synthetic',rect:[0,0,100,22]},
+@@ -24,7 +24,9 @@
+  boxes.forEach((b,i)=>b.nextobject=boxes[i+1]||null);
+  owners.forEach((o,i)=>{const cord={srcobject:boxes[i+2],srcoutlet:0,dstobject:boxes[1],dstinlet:i+1};
+   boxes[i+2].patchcords.outputs.push(cord);boxes[1].patchcords.inputs.push(cord);});
+- const ctx=vm.createContext({File,jsarguments:['v8','synthetic-config'],inlet:0,patcher:{firstobject:boxes[0]}});
++ const ctx=vm.createContext({File,inlet:0,patcher:{firstobject:boxes[0]}});
++ if(options.lexicalArguments)vm.runInContext('let jsarguments=["v8","synthetic-config"];',ctx);
++ else ctx.jsarguments=['v8','synthetic-config'];
+  vm.runInContext(fs.readFileSync(path.join(__dirname,'lifecycle-observer.js'),'utf8'),ctx);
+  function report(){return JSON.parse(files['synthetic-report']);}
+  function control(kind,inlet=2,request=125,step='close-float'){
+--- package007/lifecycle-observer.js
++++ package008/lifecycle-observer.js
+@@ -1,7 +1,12 @@
+ // Private driver-owned lifecycle evidence. Never writes the score journal.
+ autowatch=0;inlets=5;outlets=0;
+ var lifecycleCallbacks=(function(runtime){
+-var configFile=runtime.jsarguments[1],config,monitor=null,lastRequest=0,lastStep="",lastControl="monitoring";
++var configFile,bootstrapError=null,config,monitor=null,lastRequest=0,lastStep="",lastControl="monitoring",failureDiagnostic=null;
++try{configFile=runtime.jsarguments[1];}catch(error){
++    bootstrapError=error;
++    // The documented global supplies a failure destination only; it cannot repair bootstrap.
++    try{if(typeof jsarguments!=="undefined")configFile=jsarguments[1];}catch(ignored){}
++}
+ function readPrivate(path){var f=new File(path,"read"),s="";if(!f.isopen)throw Error("lifecycle-file-unavailable");
+     try{while(f.position<f.eof){var before=f.position,chunk=f.readstring(Math.min(4096,f.eof-before));
+         if(!chunk||f.position!==before+chunk.length)throw Error("lifecycle-read-progress");s+=chunk;}
+@@ -63,41 +68,99 @@
+ function msg_float(physical){observe("float",physical);}
+ function list(physical){observe("list",physical);}
+ function anything(physical){observe("anything",physical);}
++function diagnosticValue(value){
++    var type=value===null?"null":Array.isArray(value)?"array":typeof value,result={type:type};
++    if(type==="boolean"||type==="string")result.value=value;
++    else if(type==="number"){
++        if(Number.isFinite(value))result.value=value;
++        else result.representation=Number.isNaN(value)?"nan":value>0?"positive-infinity":"negative-infinity";
++    }else if(type==="array")result.items=value.slice(0,16).map(v=>{
++        if(Array.isArray(v))return {type:"array"};return diagnosticValue(v);});
++    return result;
++}
++function diagnosticRead(read){
++    try{return Object.assign({status:"returned"},diagnosticValue(read()));}catch(error){
++        var result={status:"threw",exception:diagnosticValue(error)};
++        try{if(typeof error.name==="string")result.name=error.name;}catch(ignored){}
++        try{if(typeof error.message==="string")result.message=error.message;}catch(ignored){}
++        return result;
++    }
++}
++function diagnosticDriver(){
++    var objects=[],scan;
++    scan=diagnosticRead(()=>{
++        var object=runtime.patcher.firstobject,count=0;
++        while(object&&count++<32){var current=object;
++            objects.push({varname:diagnosticRead(()=>current.varname),maxclass:diagnosticRead(()=>current.maxclass),
++                boxtext:diagnosticRead(()=>current.boxtext),valid:diagnosticRead(()=>current.valid),
++                patching_rect:diagnosticRead(()=>current.getboxattr("patching_rect"))});
++            object=object.nextobject;
++        }
++        return !object;
++    });
++    return {objects:objects,scan:scan};
++}
++function proofError(stage,code){var error=Error(code);error.lifecycle_stage=stage;return error;}
++function persistFailure(stage,error){
++    if(!failureDiagnostic){
++        var driver=diagnosticDriver();
++        failureDiagnostic={stage:stage,error:diagnosticRead(()=>{throw error;}),
++            driver_objects:driver.objects,driver_scan:driver.scan};
++        if(monitor)reject("lifecycle-capability-refused");
++    }
++    if(!config)try{config=readPrivate(configFile);}catch(ignored){}
++    var lifecycle=config&&config.lifecycle,path=lifecycle&&lifecycle.report_path;
++    if(typeof path!=="string"){
++        if(typeof configFile!=="string"||!/(^|[\\/])config\.json$/.test(configFile))throw Error("lifecycle-diagnostic-path");
++        path=configFile.slice(0,-"config.json".length)+"lifecycle-report.json";
++    }
++    writePrivate(path,{version:"freebang-v1",monitor_epoch:lifecycle?lifecycle.monitor_epoch:null,
++        request_id:lastRequest,step_id:lastStep,control:lastControl,success:false,failure_diagnostics:failureDiagnostic});
++}
+ function driverProof(root){
+     var boxes=[],inputs=[],outputs=[],objects={},expected=config.lifecycle.driver_inventory;
+     for(var o=root.firstobject;o;o=o.nextobject){
+         var matches=expected.filter(e=>e.varname===o.varname);
+-        if(matches.length!==1||objects[o.varname])throw Error("lifecycle-driver-inventory");
++        if(matches.length!==1||objects[o.varname])throw proofError("driver-inventory","lifecycle-driver-inventory");
+         var wanted=matches[0],rect=Array.from(o.getboxattr("patching_rect"));
+         if(o.maxclass!==wanted.maxclass||o.boxtext!==wanted.boxtext||JSON.stringify(rect)!==JSON.stringify(wanted.rect)||
+-            (o.valid!==true&&o.valid!==1))throw Error("lifecycle-driver-object");
++            (o.valid!==true&&o.valid!==1))throw proofError("driver-object","lifecycle-driver-object");
+         objects[o.varname]=wanted;
+         boxes.push({varname:o.varname,maxclass:o.maxclass,boxtext:o.boxtext,rect:rect,valid:o.valid});
+     }
+-    if(boxes.length!==expected.length)throw Error("lifecycle-driver-count");
++    if(boxes.length!==expected.length)throw proofError("driver-count","lifecycle-driver-count");
+     function endpoint(o,p){var e=objects[o.varname];if(!e||o.maxclass!==e.maxclass||
+         JSON.stringify(Array.from(o.getboxattr("patching_rect")))!==JSON.stringify(e.rect)||!Number.isInteger(p)||p<0)
+-        throw Error("lifecycle-driver-endpoint");return {identity:o.varname,port:p};}
++        throw proofError("driver-endpoint","lifecycle-driver-endpoint");return {identity:o.varname,port:p};}
+     for(var o=root.firstobject;o;o=o.nextobject){var cords=o.patchcords;
+-        if(!cords||!Array.isArray(cords.inputs)||!Array.isArray(cords.outputs))throw Error("lifecycle-driver-cords");
++        if(!cords||!Array.isArray(cords.inputs)||!Array.isArray(cords.outputs))throw proofError("driver-cords","lifecycle-driver-cords");
+         for(var direction of ["inputs","outputs"])for(var c of cords[direction])
+             (direction==="inputs"?inputs:outputs).push({source:endpoint(c.srcobject,c.srcoutlet),destination:endpoint(c.dstobject,c.dstinlet)});
+     }
+     var routes=config.lifecycle.owners.map(owner=>({source:{identity:"__alive_numeric_lifecycle_receive_"+owner.inlet,port:0},
+         destination:{identity:"__alive_numeric_lifecycle_observer",port:owner.inlet+1}}));
+     function sorted(v){return v.map(x=>JSON.stringify(x)).sort().join("\n");}
+-    if(sorted(inputs)!==sorted(routes)||sorted(outputs)!==sorted(routes))throw Error("lifecycle-driver-routes");
++    if(sorted(inputs)!==sorted(routes)||sorted(outputs)!==sorted(routes))throw proofError("driver-routes","lifecycle-driver-routes");
+     return {boxes:boxes,input_routes:inputs,output_routes:outputs,declared_inlets:inlets,declared_outlets:outlets};
+ }
+ function persist(){
+-    ensureMonitor();writePrivate(config.lifecycle.report_path,{version:"freebang-v1",monitor_epoch:config.lifecycle.monitor_epoch,
+-        request_id:lastRequest,step_id:lastStep,control:lastControl,
+-        driver_route_proof:driverProof(runtime.patcher),observer_report:monitor});
++    if(bootstrapError){persistFailure("bootstrap",bootstrapError);return;}
++    if(failureDiagnostic){persistFailure();return;}
++    var stage="config";
++    try{
++        ensureMonitor();stage="driver-proof";var proof=driverProof(runtime.patcher);stage="persist";
++        writePrivate(config.lifecycle.report_path,{version:"freebang-v1",monitor_epoch:config.lifecycle.monitor_epoch,
++            request_id:lastRequest,step_id:lastStep,control:lastControl,
++            driver_route_proof:proof,observer_report:monitor});
++    }catch(error){persistFailure(error&&error.lifecycle_stage||stage,error);}
+ }
+ function lifecyclecontrol(physical,kind,index,request,step,count){
+-    ensureMonitor();if(physical!==0||count!==4){observe("control-selector",physical);return;}
++    if(physical!==0||count!==4){observe("control-selector",physical);return;}
+     lastRequest=request;lastStep=step;lastControl=kind;
+-    if(kind!=="attest")transition(kind,index,request,step);
++    if(bootstrapError){persistFailure("bootstrap",bootstrapError);return;}
++    var stage="config";
++    try{ensureMonitor();stage="control";if(kind!=="attest")transition(kind,index,request,step);}
++    catch(error){persistFailure(stage,error);return;}
+     persist();
+ }
+ 
+--- package007/test_controller.cjs
++++ package008/test_controller.cjs
+@@ -70,4 +70,52 @@
+ assert.throws(()=>ctx.handle({op:'operation',action:'close',document:'float',source_sha256:'wrong',action_revision:2}));
+ assert.throws(()=>ctx.handle({op:'operation',action:'unknown',document:'int',action_revision:1,anchor:'root/obj-2/obj-1',
+  source_sha256:'a'.repeat(64),message:{selector:'bang',atoms:[]}}));
++function startupScenario(scenario){
++ const startup=vm.createContext({jsarguments:['js','Z:/synthetic/config.json']});
++ vm.runInContext(fs.readFileSync(file,'utf8'),startup);
++ const writes=[],opened=[],repeated=[];
++ const definition={varname:'observer',rect:[-2000,-2000,300,22]};
++ const config={global_name:'synthetic',ready_path:'Z:/synthetic/ready.json',lifecycle:{
++  monitor_epoch:'e'.repeat(48),report_path:'Z:/synthetic/lifecycle-report.json',driver_inventory:[definition]}};
++ const success={version:'freebang-v1',monitor_epoch:'e'.repeat(48),request_id:0,step_id:'startup',
++  control:'attest',observer_report:{failures:[]}};
++ startup.Global=function(){return {};};
++ startup.Task=function(){if(scenario==='startup')throw Error('synthetic-task-refused');
++  this.repeat=()=>repeated.push(true);};
++ startup.max={message:()=>opened.push(true)};
++ startup.patcher={getnamed:()=>({valid:true,setboxattr(){if(scenario==='geometry')throw Error('synthetic-geometry-refused');},
++  message(){if(scenario==='dispatch')throw Error('synthetic-dispatch-refused');}})};
++ startup.read=path=>{if(path==='Z:/synthetic/config.json'){
++  if(scenario==='config')throw Error('synthetic-config-refused');return config;}
++  if(scenario==='absent')return null;
++  if(scenario==='unreadable')throw Error('synthetic-report-json-refused');
++  if(scenario==='stale')return {...success,request_id:9};
++  if(scenario==='failure'||scenario==='failure-unbound')return {...success,
++   monitor_epoch:scenario==='failure-unbound'?null:success.monitor_epoch,success:false,failure_diagnostics:{stage:'driver-object',
++   error:{status:'threw',exception:{type:'object'},message:'synthetic-driver-refused'},driver_objects:[]}};
++  return success;};
++ startup.write=(path,value)=>writes.push({path,value:JSON.parse(JSON.stringify(value))});
++ assert.doesNotThrow(()=>startup.start(),'startup refusals must leave a private ready result');
++ const ready=writes.at(-1);assert.equal(ready.path,'Z:/synthetic/ready.json');
++ assert.deepEqual(Object.keys(startup.roots),[]);assert.deepEqual(opened,[]);
++ if(scenario==='success'){assert.equal(ready.value.ready,true);assert.equal(repeated.length,1);return;}
++ assert.equal(ready.value.ready,false);assert.deepEqual(repeated,[]);assert.equal(startup.ticker,undefined);
++ assert.equal(ready.value.source_roots_opened,0);assert.deepEqual(ready.value.live_owners,{});
++ const diagnostic=ready.value.startup_diagnostics;
++ assert.equal(diagnostic.stage,['config','geometry','startup'].includes(scenario)?scenario:'observer');
++ assert.equal(diagnostic.error.status,'threw');assert.equal(diagnostic.error.exception.type,'object');
++ if(['absent','stale','unreadable'].includes(scenario))
++  assert.equal(diagnostic.error.message,'lifecycle-report-'+scenario);
++ if(scenario==='failure'||scenario==='failure-unbound')
++  assert.equal(diagnostic.lifecycle_failure&&diagnostic.lifecycle_failure.failure_diagnostics.stage,'driver-object');
++ return {startup,writes,ready};
++}
++for(const scenario of ['config','geometry','absent','stale','unreadable','failure','failure-unbound','dispatch','startup','success'])
++ startupScenario(scenario);
++const invalidConfig=vm.createContext({jsarguments:['js','Z:/synthetic/other.json']});
++vm.runInContext(fs.readFileSync(file,'utf8'),invalidConfig);
++let fallbackWrites=0;invalidConfig.read=()=>{throw Error('config-unavailable');};
++invalidConfig.write=()=>{++fallbackWrites;};
++assert.throws(()=>invalidConfig.start(),/startup-diagnostic-path/);
++assert.equal(fallbackWrites,0,'fallback must require the exact config.json path component');
+ console.log('controller: dispatch/geometry/startup/ticker and fresh-path reinstall pass; supported close has separate fixtures');
+--- package007/test_lifecycle.cjs
++++ package008/test_lifecycle.cjs
+@@ -34,9 +34,42 @@
+ }
+ fixture=create();control('arm');control('dispatch-start');fixture.ctx.inlet=3;fixture.ctx.bang(7);
+ assert.ok(monitor().failures.length,'bang with atoms is never an automatic witness');
+-fixture=create();fixture.boxes[2].boxtext='receive wrong';assert.throws(()=>control('attest'),/driver-object/);
++fixture=create();fixture.boxes[2].boxtext='receive wrong';
++let failure;assert.doesNotThrow(()=>{failure=control('attest');},'proof refusal must be retained privately');
++assert.equal(failure.success,false);
++assert.equal(failure.failure_diagnostics.stage,'driver-object');
++assert.equal(failure.failure_diagnostics.error.status,'threw');
++assert.equal(failure.failure_diagnostics.error.message,'lifecycle-driver-object');
++assert.equal(failure.monitor_epoch,fixture.config.lifecycle.monitor_epoch);
++assert.equal(failure.request_id,125);assert.equal(failure.step_id,'close-float');assert.equal(failure.control,'attest');
++assert.equal(Object.hasOwn(failure,'driver_route_proof'),false);
++assert.equal(Object.hasOwn(failure,'observer_report'),false);
++assert.equal(failure.failure_diagnostics.driver_objects.length,6);
++const actual=failure.failure_diagnostics.driver_objects[2];
++assert.equal(actual.maxclass.value,'receive');assert.equal(actual.boxtext.value,'receive wrong');
++assert.equal(actual.valid.value,true);assert.equal(actual.patching_rect.type,'array');
++fixture.boxes[2].boxtext=fixture.config.lifecycle.driver_inventory[2].boxtext;
++assert.equal(control('attest').success,false,'capability failure cannot be cleared by another control');
+ fixture=create();fixture.boxes[2].patchcords.inputs.push(fixture.boxes[2].patchcords.outputs[0]);
+-assert.throws(()=>control('attest'),/driver-routes/);
++failure=control('attest');assert.equal(failure.success,false);assert.equal(failure.failure_diagnostics.stage,'driver-routes');
++fixture=create();fixture.boxes[2].getboxattr=()=>{throw Error('synthetic-geometry-unavailable');};
++failure=control('attest');assert.equal(failure.success,false);assert.equal(failure.failure_diagnostics.stage,'driver-proof');
++assert.equal(failure.failure_diagnostics.driver_objects[2].patching_rect.status,'threw');
++fixture=create();fixture.boxes[2].getboxattr=()=>{throw null;};
++assert.doesNotThrow(()=>{failure=control('attest');},'primitive exceptions must retain typed refusal');
++assert.equal(failure.success,false);assert.equal(failure.failure_diagnostics.error.exception.type,'null');
++fixture=create();fixture.ctx.File.prototype.writestring=function(){throw Error('synthetic-write-refused');};
++assert.throws(()=>control('attest'),/synthetic-write-refused/,'an unwritable diagnostic path still refuses');
++fixture=create();let writeAttempts=0;const originalWrite=fixture.ctx.File.prototype.writestring;
++fixture.ctx.File.prototype.writestring=function(value){if(++writeAttempts===1)throw Error('synthetic-first-write-refused');
++ return originalWrite.call(this,value);};
++failure=control('attest');assert.equal(failure.success,false);assert.equal(failure.failure_diagnostics.stage,'persist');
++assert.equal(failure.failure_diagnostics.error.message,'synthetic-first-write-refused');
++assert.doesNotThrow(()=>{fixture=create({lexicalArguments:true});},'bootstrap property failure must leave guarded callbacks');
++failure=control('attest');assert.equal(failure.success,false);
++assert.equal(failure.failure_diagnostics.stage,'bootstrap');assert.equal(failure.failure_diagnostics.error.status,'threw');
++assert.equal(failure.monitor_epoch,fixture.config.lifecycle.monitor_epoch);
++assert.equal(Object.hasOwn(failure,'driver_route_proof'),false);
+ const reader=vm.createContext({jsarguments:['v8','private','float',1]});
+ vm.runInContext(fs.readFileSync(path.join(__dirname,'v8-readback.js'),'utf8'),reader);
+ function box(varname,maxclass,rect,boxtext='') {return {varname,maxclass,boxtext,valid:true,

@@ -83,9 +83,28 @@ export AT_SPI_BUS_ADDRESS
 /usr/lib/at-spi2-registryd >"$ULTRA_TEST_OUTPUT_DIR/registry.log" 2>&1 &
 ultra_registry_pid=$!
 cd "$ROOT"
+python3 "$ROOT/apps/ultra/tests/check_document_startup.py"
+if [[ ${ULTRA_TEST_STARTUP_ONLY:-0} == 1 ]]; then exit; fi
 # Test the same build checked above, not run.sh's preferred packaged copy.
+ultra_initial_patch="$ULTRA_TEST_OUTPUT_DIR/initial.ultra"
+printf '%s\n' '{"version":1,"profile":"ultra-canvas-v1","nodes":[],"edges":[]}' > "$ultra_initial_patch"
 LD_LIBRARY_PATH="$ROOT/apps/ultra/src-tauri/target/release${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
-  "$ROOT/apps/ultra/src-tauri/target/release/ultra" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
+  "$ROOT/apps/ultra/src-tauri/target/release/ultra" "$ultra_initial_patch" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
 ultra_test_pid=$!
 export ULTRA_TEST_PID="$ultra_test_pid"
-python3 "$ROOT/apps/ultra/tests/check_canvas_desktop.py"
+if [[ ${ULTRA_TEST_COMMENTS_ONLY:-0} == 1 ]]; then
+  python3 "$ROOT/apps/ultra/tests/check_comments_desktop.py"
+  exit
+fi
+if [[ ${ULTRA_TEST_CABLES_ONLY:-0} == 1 ]]; then
+  python3 "$ROOT/apps/ultra/tests/check_cables_desktop.py"
+  exit
+fi
+if [[ ${ULTRA_TEST_ARITHMETIC_ONLY:-0} == 1 ]]; then
+  python3 "$ROOT/apps/ultra/tests/check_arithmetic_desktop.py"
+  exit
+fi
+if [[ ${ULTRA_TEST_DOCUMENTS_ONLY:-0} != 1 && ${ULTRA_TEST_HELP_SHELL_ONLY:-0} != 1 ]]; then
+  python3 "$ROOT/apps/ultra/tests/check_canvas_desktop.py"
+fi
+python3 "$ROOT/apps/ultra/tests/check_documents_desktop.py"

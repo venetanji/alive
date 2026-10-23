@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "message",
+      "x": 65,
+      "y": 65,
+      "params": {
+        "text": "1 2.5 red 4 5.5 blue 7"
+      }
+    },
+    {
+      "id": 2,
+      "type": "message",
+      "x": 65,
+      "y": 115,
+      "params": {
+        "text": "bang"
+      }
+    },
+    {
+      "id": 3,
+      "type": "zl_slice",
+      "x": 65,
+      "y": 220,
+      "params": {
+        "size": 2
+      }
+    },
+    {
+      "id": 4,
+      "type": "print",
+      "x": 65,
+      "y": 345,
+      "params": {
+        "label": "zl_slice",
+        "level": 0,
+        "popup": 0
+      }
+    },
+    {
+      "id": 5,
+      "type": "message",
+      "x": 340,
+      "y": 115,
+      "params": {
+        "text": "2"
+      }
+    },
+    {
+      "id": 6,
+      "type": "print",
+      "x": 340,
+      "y": 345,
+      "params": {
+        "label": "slice-tail",
+        "level": 0,
+        "popup": 0
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 3,
+      "outlet": 0,
+      "to": 4,
+      "inlet": 0
+    },
+    {
+      "from": 5,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 1
+    },
+    {
+      "from": 3,
+      "outlet": 1,
+      "to": 6,
+      "inlet": 0
+    }
+  ]
+}

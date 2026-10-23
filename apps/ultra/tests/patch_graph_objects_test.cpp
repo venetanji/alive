@@ -6,6 +6,7 @@
 #include <vector>
 #include <tuple>
 #include <cstddef>
+#include <thread>
 
 using namespace ultra;
 static UltraCanvasNode node(unsigned id,unsigned kind,double p0=0,double p1=0,double p2=0,double p3=0,double p4=0) {
@@ -55,7 +56,8 @@ static void scalars() {
  assert(r.event(1,1,0,literal("9.5"),0,discard)&&r.value(1)==2);
  const auto outputs=r.pulses(1);assert(r.event(1,1,0,literal("list 1.75 kiwi"),0,discard)&&r.value(1)==1.75&&r.pulses(1)==outputs+2);
  g.edges[0].outlet=1;assert(compile_canvas(g,p));r.reset(p);
- assert(r.event(1,1,0,literal("tab"),0,discard)&&r.pulses(1)==1);
+ assert(r.event(1,1,0,literal("tab"),0,discard)&&r.pulses(1)==0);
+ assert(r.tab(1,1,0,discard)&&r.pulses(1)==1);
  g=pair(Slider,0,128,1,0.5,1);assert(compile_canvas(g,p));r.reset(p);
  assert(r.event(1,1,0,literal("4"),0,discard)&&r.value(1)==3);
  assert(r.event(1,1,0,literal("set 8"),0,discard)&&r.pulses(1)==1);
@@ -64,6 +66,8 @@ static void scalars() {
  assert(r.event(1,1,0,literal("5"),0,discard)&&r.value(0)==5&&r.value(1)==20);
  assert(change_canvas_param(p,1,3,-2)&&r.param(p,1,3,-2,0,discard));
  assert(r.event(1,1,0,literal("7"),0,discard)&&r.value(0)==7&&r.value(1)==-4);
+ g=pair(Slider,0,11,0.1,0.5,0);assert(compile_canvas(g,p));r.reset(p);
+ assert(r.event(1,1,0,literal("3"),0,discard)&&r.value(1)==1&&r.last_message(1).tags[0]==0);
 }
 static void lists_and_order() {
  CanvasPlan p;CanvasRuntime r;auto g=pair(Pack);std::strcpy(g.nodes[0].text,"0 0. amber");
@@ -157,6 +161,51 @@ static std::vector<std::tuple<unsigned,double,uint64_t>> line_score(const std::v
  assert(r.value(1)==0&&outputs.size()>8);return outputs;
 }
 
+static void console_sink() {
+ UltraCanvasGraph g{};g.revision=9;g.node_count=2;g.edge_count=1;
+ g.nodes[0]=node(1,Message);std::strcpy(g.nodes[0].text,"list 2 3. violet");
+ g.nodes[1]=node(2,25,2);std::strcpy(g.nodes[1].text,"notes");g.edges[0]={1,0,2,0};
+ CanvasPlan p;assert(compile_canvas(g,p)&&"print must compile as a sink");
+ CanvasRuntime r;r.reset(p);assert(r.event(9,1,0,{},0,discard));
+ UltraCanvasConsoleRecord record{};
+ assert(r.pop_console(record)&&record.revision==9&&record.node==2&&record.level==2);
+ assert(!std::strcmp(record.label,"notes")&&record.message.count==3&&record.message.tags[1]==1);
+ assert(!r.pop_console(record));
+ g.edges[0]={2,0,1,0};assert(!compile_canvas(g,p)&&"print has no outlet");
+ for(unsigned i=0;i<140;i++){r.begin_callback();assert(r.event(9,2,0,literal("bang"),0,discard));}
+ assert(r.console_dropped()==12&&!r.failed());
+ unsigned count=0;uint64_t sequence=0;
+ while(r.pop_console(record)){assert(record.sequence>sequence);sequence=record.sequence;++count;}
+ assert(count==128);
+ r.reset(r.plan());assert(r.event(9,2,0,literal("set 4"),0,discard));
+ assert(r.pop_console(record)&&!std::strcmp(record.message.selector,"set"));
+}
+static void concurrent_console() {
+ UltraCanvasGraph g{};g.revision=1;g.node_count=1;g.nodes[0]=node(1,Print);std::strcpy(g.nodes[0].text,"concurrent");
+ CanvasPlan p;assert(compile_canvas(g,p));CanvasRuntime r;r.reset(p);
+ std::atomic<bool> done{false};constexpr unsigned attempts=10000;unsigned received=0;uint64_t last=0;
+ std::thread producer([&]{
+  for(unsigned i=0;i<attempts;i++){
+   if(i&&i%1000==0){assert(r.stop(0,discard));++g.revision;assert(compile_canvas(g,p));r.reset(p);}
+   r.begin_callback();assert(r.event(g.revision,1,0,canvas_scalar(i),0,discard));
+  }
+  done.store(true,std::memory_order_release);
+ });
+ for(;;){
+  UltraCanvasConsoleRecord record{};
+  if(r.pop_console(record)){
+   assert(record.sequence>last&&record.message.values[0]==double(record.sequence-1));
+   assert(record.revision==uint64_t(record.message.values[0])/1000+1);
+   last=record.sequence;++received;
+  }else if(done.load(std::memory_order_acquire))break;
+  else std::this_thread::yield();
+ }
+ producer.join();
+ UltraCanvasConsoleRecord record{};
+ while(r.pop_console(record)){assert(record.sequence>last);last=record.sequence;++received;}
+ assert(received+r.console_dropped()==attempts&&received>0);
+}
+
 int main() {
  ultra::CanvasPlan plan;
  UltraCanvasGraph graph{};
@@ -164,7 +213,7 @@ int main() {
  graph.node_count=1;
  graph.nodes[0]={1,15,0,0,7,0,0};
  assert(ultra::compile_canvas(graph,plan)&&"the mapped integer kind must compile");
- parsers();scalars();lists_and_order();routing();typed_pack_oracle();live_parameter_regressions();ramps();
+ parsers();scalars();lists_and_order();routing();typed_pack_oracle();live_parameter_regressions();ramps();console_sink();concurrent_console();
  assert(line_score({64})==line_score({1,7,31,511}));
  std::puts("PASS: native mapped object parsing, scalar state, dynamic ports, list coercion, outlet order, routing and ramps");
 }

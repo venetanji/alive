@@ -1,0 +1,1039 @@
+--- initial004/v8-readback.js
++++ experiments/max-reference/arithmetic-roots-runtime-20261022/v8-readback.js
+@@ -74,17 +74,25 @@
+     if(left.length!==right.length)return false;
+     for(var i=0;i<left.length;i++)if(left[i]!==right[i]||!sameData(a[left[i]],b[right[i]]))return false;
+     return true;
+ }
+ // SHA-256 of an ASCII JSON rectangle; this independently pins private vectors.
+ function geometryVectorHash(rect) {
+     if(!Array.isArray(rect)||rect.length!==4)throw Error("geometry-hash-shape");
+     for(var check=0;check<4;check++)if(typeof rect[check]!=="number"||!isFinite(rect[check]))throw Error("geometry-hash-value");
+-    var input=JSON.stringify(rect),words=[],length=input.length*8;
++    return byteStringHash(JSON.stringify(rect));
++}
++function sourceTextHash(text) {
++    if(typeof text!=="string")throw Error("source-text-unavailable");
++    return byteStringHash(encodeURIComponent(text).replace(/%([0-9A-F]{2})/g,
++        function(_,hex){return String.fromCharCode(parseInt(hex,16));}));
++}
++function byteStringHash(input) {
++    var words=[],length=input.length*8;
+     for(var i=0;i<input.length;i++)words[i>>2]=(words[i>>2]||0)|(input.charCodeAt(i)<<(24-(i%4)*8));
+     words[length>>5]=(words[length>>5]||0)|(0x80<<(24-length%32));
+     words[(((length+64)>>9)<<4)+15]=length;
+     var h=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+     var k=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+         0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+         0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+         0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+@@ -407,33 +415,118 @@
+     try {
+         var definition=config.documents.find(d=>d.document===documentName&&d.revision===revision);
+         if(!definition||requestId!==request.command_id||stepId!==request.step_id)throw Error("checkpoint-request-binding");
+         writePrivate(path,collectReadback(this.patcher,definition,request,config));
+     }catch(error){writePrivate(path,{success:false,request_id:requestId,error_code:"numeric-readback-refused",
+         numeric_mode_observation:error.numeric_mode_observation||null,
+         v8_representation_diagnostics:error.v8_representation_diagnostics||null});}
+ }
++function collectBasicRetention(root,definition,request,configuration,witnesses) {
++    if(!Array.isArray(definition.boxes)||!Array.isArray(definition.full_inventory)||
++        !Array.isArray(definition.observer_leaves)||!Array.isArray(definition.saved_edges))throw Error("basic-source-inventory-unavailable");
++    var rootInventory=representationObjects(root,definition.full_inventory.filter(b=>b.anchor.split("/").length===2).length+4),
++        containers=rootInventory.objects.filter(o=>o.varname===definition.basic_varname),basicBox=containers[0];
++    if(!rootInventory.complete||containers.length!==1||!basicBox||typeof basicBox.subpatcher!=="function")
++        throw Error("basic-container-binding");
++    var inventory=representationObjects(basicBox.subpatcher(),definition.boxes.length+definition.observer_leaves.length);
++    if(!inventory.complete||inventory.objects.length!==inventory.limit)throw Error("basic-complete-inventory-unavailable");
++    var byName=Object.create(null),byId=Object.create(null),byAnchor=Object.create(null),expectedNames=[],leaves=[],boxes=[],inputs=[],outputs=[];
++    for(var b of definition.boxes) {
++        var name="__alive_help_"+b.id.replace(/-/g,"_");
++        if(typeof b.id!=="string"||!b.id||typeof b.anchor!=="string"||byId[b.id]||byAnchor[b.anchor]||expectedNames.includes(name)||
++            !Number.isInteger(b.inlets)||b.inlets<0||!Number.isInteger(b.outlets)||b.outlets<0||
++            typeof b.authored_text!=="string"||typeof b.authored_empty!=="boolean"||b.authored_empty!==!b.authored_text||
++            sourceTextHash(b.authored_text)!==b.source_text_sha256)throw Error("basic-source-text-or-port-inventory");
++        for(var key of ["annotation_width_policy","observer_policy","shell_height_policy","annotation_geometry_policy","numeric_mode_policy"])
++            if(typeof b[key]!=="undefined")throw Error("arithmetic-policy-not-admitted");
++        var saved=definition.full_inventory.filter(e=>e.anchor===b.anchor),keys=["maxclass","runtime_class","runtime_classes",
++            "source_box_sha256","source_text_sha256","inlets","outlets","authored_text","authored_empty","rect"];
++        if(saved.length!==1||keys.some(key=>!sameData(saved[0][key],b[key])))throw Error("basic-source-descriptor-inventory");
++        byId[b.id]=b;byAnchor[b.anchor]=b;expectedNames.push(name);
++        for(var port=0;port<b.outlets;port++)leaves.push({varname:"__alive_help_leaf_"+b.id.replace(/-/g,"_")+"_"+port,
++            anchor:b.anchor,port:port});
++    }
++    if(!sameData(leaves,definition.observer_leaves))throw Error("basic-observer-definition-changed");
++    for(var leaf of leaves)expectedNames.push(leaf.varname);
++    if(new Set(expectedNames).size!==expectedNames.length)throw Error("basic-source-name-not-unique");
++    for(var object of inventory.objects) {
++        var name=object.varname;
++        if(typeof name!=="string"||!name||byName[name]||!expectedNames.includes(name))throw Error("basic-object-identity-changed");
++        byName[name]=object;boxes.push({varname:name,maxclass:object.maxclass,rect:rectangle(object)});
++    }
++    if(Object.keys(byName).length!==expectedNames.length)throw Error("basic-object-inventory-changed");
++    for(var b of definition.boxes) {
++        var object=byName["__alive_help_"+b.id.replace(/-/g,"_")],policy=observedGeometryPolicy(b,definition,configuration),
++            numericPolicy=v8RepresentationPolicy(b,definition,configuration,true),rect=rectangle(object);
++        controllerNumericRepresentationPolicy(b,definition,configuration);
++        if(object.maxclass!==(numericPolicy?"number":b.runtime_class)||
++            !(sameData(rect,b.rect)||(policy&&sameData(rect,policy.live_rect))))throw Error("basic-original-class-or-geometry");
++        if(numericPolicy) {
++            var rows=witnesses&&witnesses.numeric.filter(r=>r.anchor===b.anchor);
++            if(!rows||rows.length!==1||rows[0].actual_runtime_class!==object.maxclass||!sameData(rows[0].live_rect,rect))
++                throw Error("basic-live-numeric-witness-binding");
++        }
++    }
++    for(var leaf of leaves)if(byName[leaf.varname].maxclass!=="js")throw Error("basic-observer-class-changed");
++    var portInventory=Object.create(null);
++    for(var b of definition.boxes)portInventory["__alive_help_"+b.id.replace(/-/g,"_")]={inlets:b.inlets,outlets:b.outlets};
++    for(var leaf of leaves)portInventory[leaf.varname]={inlets:1,outlets:0};
++    function routeEndpoint(object,port,side) {
++        var name=object&&object.varname;
++        if(typeof name!=="string"||!byName[name]||!Number.isInteger(port)||port<0||
++            port>=portInventory[name][side==="source"?"outlets":"inlets"])throw Error("basic-runtime-endpoint-changed");
++        return {varname:name,port:port};
++    }
++    var expectedRoutes=[];
++    for(var edge of definition.saved_edges) {
++        var s=edge.source,d=edge.destination;
++        if(!Array.isArray(s)||s.length!==2||!Array.isArray(d)||d.length!==2||!byId[s[0]]||!byId[d[0]])
++            throw Error("basic-saved-endpoint-unavailable");
++        expectedRoutes.push({source:routeEndpoint(byName["__alive_help_"+s[0].replace(/-/g,"_")],s[1],"source"),
++            destination:routeEndpoint(byName["__alive_help_"+d[0].replace(/-/g,"_")],d[1],"destination")});
++    }
++    for(var leaf of leaves)expectedRoutes.push({source:{varname:"__alive_help_"+byAnchor[leaf.anchor].id.replace(/-/g,"_"),port:leaf.port},
++        destination:{varname:leaf.varname,port:0}});
++    for(var object of inventory.objects) {
++        var cords=object.patchcords;
++        if(!cords||!Array.isArray(cords.inputs)||!Array.isArray(cords.outputs))throw Error("basic-endpoint-inventory-unavailable");
++        for(var direction of ["inputs","outputs"])for(var cord of cords[direction]) {
++            var routes=direction==="inputs"?inputs:outputs;
++            if(routes.length>=expectedRoutes.length)throw Error("basic-endpoint-inventory-overflow");
++            routes.push({source:routeEndpoint(cord.srcobject,cord.srcoutlet,"source"),
++                destination:routeEndpoint(cord.dstobject,cord.dstinlet,"destination")});
++        }
++    }
++    function routeKeys(routes){return routes.map(r=>JSON.stringify([r.source.varname,r.source.port,r.destination.varname,r.destination.port])).sort();}
++    var expectedKeys=routeKeys(expectedRoutes);
++    if(!sameData(routeKeys(inputs),expectedKeys)||!sameData(routeKeys(outputs),expectedKeys))throw Error("basic-endpoint-multiset-changed");
++    return {version:"arithmetic-basic-retention-v1",request_id:request.command_id,operation_request_id:request.command_id,
++        step_id:request.step_id,action:"close",document:definition.document,revision:definition.revision,
++        source_sha256:definition.source_sha256,working_path:definition.working_windows_path,basic_varname:definition.basic_varname,
++        boxes:boxes,input_routes:inputs,output_routes:outputs};
++}
+ function collectLifecycleProof(root,definition,request,config,progress) {
+     if(progress)progress.stage="root-binding";
+     if(request.op!=="operation"||request.action!=="close"||request.document!==definition.document||
+         request.action_revision!==definition.revision||request.source_sha256!==definition.source_sha256||
+         !Number.isInteger(request.command_id)||request.command_id<1||root.parentpatcher!=null||
+         !samePath(root.filepath,definition.working_windows_path))throw Error("lifecycle-root-binding");
+     var owner=config.lifecycle.owners[definition.lifecycle_owner_inlet];
+     if(progress)progress.stage="owner-map";
+     if(!owner||owner.document!==definition.document||owner.revision!==definition.revision||
+         owner.source_sha256!==definition.source_sha256||owner.working_path!==definition.working_windows_path)
+         throw Error("lifecycle-owner-map");
+     var witnessRequest=Object.assign({},request,{operation_request_id:request.command_id,revision:definition.revision,
+         action_document:definition.document}),representation=collectRepresentationDiagnostics(root,definition,witnessRequest,config),witnesses;
+     try {
+         if(representation&&representation.strict_mismatch)throw Error("strict-v8-preclose-representation-refused");
+         witnesses=collectRepresentationWitnesses(root,definition,witnessRequest,config,representation);
+-    }catch(error){if(representation)error.v8_representation_diagnostics=representation;throw error;}
++    if(progress)progress.stage="basic-retention";
++    var basicRetention=collectBasicRetention(root,definition,request,config,witnesses);
+     var expected=[{varname:"__alive_arithmetic_reader",maxclass:"v8",rect:[-3000,-3000,160,133]},
+         {varname:"__alive_arithmetic_disposer",maxclass:"thispatcher",rect:[-3100,-3000,100,22]},
+         {varname:"__alive_arithmetic_freebang",maxclass:"freebang",rect:[-3200,-3000,100,22],boxtext:"freebang"},
+         {varname:"__alive_arithmetic_lifecycle_send",maxclass:"send",rect:[-3400,-3000,200,64],boxtext:"send "+owner.channel}];
+     var originals=[],harness=[],inputs=[],outputs=[],identities={},originalDefinitions=
+         definition.full_inventory.filter(e=>e.anchor.split("/").length===2);
+     function identify(o){
+         if(progress)progress.stage="geometry";
+@@ -473,18 +566,19 @@
+             (direction==="inputs"?inputs:outputs).push({source:endpoint(c.srcobject,c.srcoutlet),destination:endpoint(c.dstobject,c.dstinlet)});
+     }
+     var edge={source:{identity:"__alive_arithmetic_freebang",port:0},destination:{identity:"__alive_arithmetic_lifecycle_send",port:0}};
+     if(progress)progress.stage="routes";
+     if(inputs.length!==1||outputs.length!==1||JSON.stringify(inputs[0])!==JSON.stringify(edge)||
+         JSON.stringify(outputs[0])!==JSON.stringify(edge))throw Error("lifecycle-root-routes");
+     return {version:"arithmetic-freebang-v1",request_id:request.command_id,step_id:request.step_id,document:definition.document,
+         revision:definition.revision,source_sha256:definition.source_sha256,working_path:root.filepath,
+-        root_is_top_level:true,originals:originals,harness:harness,input_routes:inputs,output_routes:outputs,
++        root_is_top_level:true,originals:originals,harness:harness,input_routes:inputs,output_routes:outputs,basic_retention:basicRetention,
+         ...(witnesses?{v8_representation_witnesses:witnesses}:{})};
++    }catch(error){if(representation)error.v8_representation_diagnostics=representation;throw error;}
+ }
+ function rootDiagnosticValue(value,depth){
+     var type=value===null?"null":Array.isArray(value)?"array":typeof value,result={type:type};
+     if(type==="string"){
+         result.value=value.slice(0,256);
+         if(value.length>256){result.truncated=true;result.length=value.length;}
+     }else if(type==="boolean")result.value=value;
+     else if(type==="number"){
+--- initial004/lifecycle.py
++++ experiments/max-reference/arithmetic-roots-runtime-20261022/lifecycle.py
+@@ -441,19 +441,129 @@
+                     value_observation=dict(method='getvalueof', status='returned', representation='scalar-number', value=observation['value']))
+             else:
+                 expected_row['varname'] = box['source_varname']
+             _require(_same_geometry_fields(row, expected_row, ('live_rect',)), 'exact V8 live witness')
+             result[box['anchor']] = row
+     return result
+ 
+ 
++def _basic_retention(proof, owner, definition, request, step, witnesses):
++    _keys(proof, ('version', 'request_id', 'operation_request_id', 'step_id', 'action', 'document', 'revision',
++                  'source_sha256', 'working_path', 'basic_varname', 'boxes', 'input_routes', 'output_routes'))
++    _require(definition.get('document') == owner['document'] and
++             _int(definition.get('revision'), 1, 2) == owner['revision'] and
++             definition.get('source_sha256') == owner['source_sha256'] == ROOT_SOURCES[owner['document']] and
++             definition.get('working_windows_path') == owner['working_path'] and
++             _same(definition.get('helper_sha256'), ROOT_HELPERS), 'Basic source owner binding')
++    basic_name = _text(definition.get('basic_varname'))
++    basic_anchor = _text(definition.get('basic_anchor'))
++    expected = dict(version='arithmetic-basic-retention-v1', request_id=request, operation_request_id=request,
++        step_id=step, action='close', document=owner['document'], revision=owner['revision'],
++        source_sha256=owner['source_sha256'], working_path=owner['working_path'], basic_varname=basic_name,
++        boxes=proof['boxes'], input_routes=proof['input_routes'], output_routes=proof['output_routes'])
++    _require(_same(proof, expected), 'Basic request owner path or name binding')
++    inventory = _list(definition.get('full_inventory'))
++    containers = [box for box in inventory if box.get('anchor') == basic_anchor]
++    _require(basic_anchor.count('/') == 1 and len(containers) == 1 and
++             containers[0].get('source_varname') == basic_name and containers[0].get('runtime_class') == 'patcher',
++             'Basic outer container binding')
++    source_boxes = _list(definition.get('boxes'))
++    _require(source_boxes and all(type(box) is dict for box in source_boxes), 'Basic source inventory')
++    originals, by_name, by_anchor, leaves = {}, {}, {}, []
++    for box in source_boxes:
++        identity = _text(box.get('id')); anchor = _text(box.get('anchor'))
++        name = '__alive_help_' + identity.replace('-', '_')
++        _require(identity not in originals and name not in by_name and anchor not in by_anchor and
++                 anchor == basic_anchor + '/' + identity, 'Basic source identity')
++        _text(box.get('maxclass')); _text(box.get('runtime_class'))
++        classes = _list(box.get('runtime_classes'))
++        _require(classes and classes[0] == box['runtime_class'] and all(type(value) is str and value for value in classes),
++                 'Basic source class descriptor')
++        _require(box['maxclass'] != 'message' and not any(key in box for key in
++            ('shell_height_policy', 'annotation_geometry_policy', 'numeric_mode_policy', 'annotation_width_policy', 'observer_policy')),
++            'unadmitted Basic capability or policy')
++        text = _text(box.get('authored_text'), empty=True)
++        _require(type(box.get('authored_empty')) is bool and box['authored_empty'] is (not bool(text)) and
++                 _sha(box.get('source_text_sha256')) == _digest(text.encode('utf-8')), 'Basic source text or empty binding')
++        _sha(box.get('source_box_sha256'))
++        _int(box.get('inlets')); outlets = _int(box.get('outlets'))
++        for field in ('saved_incoming_routes', 'saved_outgoing_routes'):
++            if field in box: _int(box[field])
++        _rect(box.get('rect'))
++        entries = [entry for entry in inventory if entry.get('anchor') == anchor]
++        keys = ('maxclass', 'runtime_class', 'runtime_classes', 'source_box_sha256', 'source_text_sha256',
++                'inlets', 'outlets', 'authored_text', 'authored_empty')
++        _require(len(entries) == 1, 'Basic source descriptor inventory')
++        _rect(entries[0].get('rect'))
++        _require(entries[0]['rect'] == box['rect'] and
++                 all(_same(entries[0].get(key), box.get(key)) for key in keys), 'Basic source descriptor integrity')
++        originals[identity] = box; by_name[name] = box; by_anchor[anchor] = box
++        leaves.extend(dict(varname='__alive_help_leaf_' + identity.replace('-', '_') + '_' + str(port), anchor=anchor, port=port)
++            for port in range(outlets))
++    direct = [entry for entry in inventory if type(entry.get('anchor')) is str and
++        entry['anchor'].startswith(basic_anchor + '/') and entry['anchor'].count('/') == basic_anchor.count('/') + 1]
++    _require(len(direct) == len(source_boxes) and Counter(entry['anchor'] for entry in direct) == Counter(by_anchor.keys()),
++             'complete Basic source descriptors')
++    _require(_same(definition.get('observer_leaves'), leaves), 'Basic observer source definition')
++    expected_names = set(by_name) | {leaf['varname'] for leaf in leaves}
++    _require(len(expected_names) == len(source_boxes) + len(leaves), 'Basic original observer identity collision')
++    actual = {}
++    for box in _list(proof['boxes']):
++        _keys(box, ('varname', 'maxclass', 'rect'))
++        name = _text(box['varname']); _text(box['maxclass']); _rect(box['rect'])
++        _require(name not in actual and name in expected_names, 'Basic actual identity')
++        actual[name] = box
++    _require(set(actual) == expected_names, 'complete Basic original observer inventory')
++    for name, source in by_name.items():
++        live = actual[name]; witness = witnesses.get(source['anchor'])
++        _require(live['maxclass'] == (witness['actual_runtime_class'] if witness else source['runtime_class']),
++                 'exact Basic original class')
++        policy = _observed_geometry(owner, definition, source)
++        _require(live['rect'] == source['rect'] or policy is not None and live['rect'] == policy['live_rect'],
++                 'exact Basic original geometry')
++    for leaf in leaves:
++        _require(actual[leaf['varname']]['maxclass'] == 'js', 'Basic observer leaf class')
++    expected_routes = Counter()
++    for route in _list(definition.get('saved_edges')):
++        _require(type(route) is dict, 'Basic source route')
++        source, destination = route.get('source'), route.get('destination')
++        _require(type(source) is list and len(source) == 2 and type(destination) is list and len(destination) == 2,
++                 'Basic source endpoint')
++        source_id, destination_id = _text(source[0]), _text(destination[0])
++        _require(source_id in originals and destination_id in originals, 'Basic source endpoint identity')
++        source_port, destination_port = _int(source[1]), _int(destination[1])
++        _require(source_port < originals[source_id]['outlets'] and destination_port < originals[destination_id]['inlets'],
++                 'Basic source port bounds')
++        source_name = '__alive_help_' + source_id.replace('-', '_')
++        destination_name = '__alive_help_' + destination_id.replace('-', '_')
++        expected_routes[source_name, source_port, destination_name, destination_port] += 1
++    for leaf in leaves:
++        source = by_anchor[leaf['anchor']]
++        expected_routes['__alive_help_' + source['id'].replace('-', '_'), leaf['port'], leaf['varname'], 0] += 1
++    for field in ('input_routes', 'output_routes'):
++        observed = Counter()
++        for route in _list(proof[field]):
++            _keys(route, ('source', 'destination'))
++            key = []
++            for side in ('source', 'destination'):
++                endpoint = route[side]; _keys(endpoint, ('varname', 'port'))
++                name, port = _text(endpoint['varname']), _int(endpoint['port'])
++                _require(name in expected_names, 'Basic runtime endpoint identity')
++                if name in by_name:
++                    bound = by_name[name]['outlets' if side == 'source' else 'inlets']
++                    _require(port < bound, 'Basic runtime source port bounds')
++                key.extend((name, port))
++            observed[tuple(key)] += 1
++        _require(observed == expected_routes, 'Basic duplicate-sensitive endpoint multiset')
++
++
+ def _root(proof, owner, definition, request, step):
+     _keys(proof, ('version', 'request_id', 'step_id', 'document', 'revision', 'source_sha256',
+-                  'working_path', 'root_is_top_level', 'originals', 'harness', 'input_routes', 'output_routes'),
++                  'working_path', 'root_is_top_level', 'originals', 'harness', 'input_routes', 'output_routes', 'basic_retention'),
+           ('v8_representation_witnesses',))
+     _require(proof['version'] == VERSION and _int(proof['request_id'], 1) == request and
+              proof['step_id'] == step and proof['document'] == owner['document'] and
+              _int(proof['revision'], 1, 2) == owner['revision'] and proof['source_sha256'] == owner['source_sha256']
+              and proof['working_path'] == owner['working_path'] and proof['root_is_top_level'] is True, 'root binding')
+     witnesses = _v8_representation_witnesses(proof, owner, definition, request, step)
+     expected = {box['anchor']: box for box in definition['full_inventory'] if box['anchor'].count('/') == 1}
+     originals = _list(proof['originals'])
+@@ -488,16 +598,17 @@
+         _rect(box['rect'])
+         _require((box['maxclass'], box['rect']) == HARNESS[name], 'root harness class or geometry')
+         _text(box['boxtext'])
+         _positive(box['valid'])
+         if name in (FREEBANG, SEND):
+             _require(box['boxtext'] == ('freebang' if name == FREEBANG else 'send ' + owner['channel']),
+                      'owner channel text')
+     _routes(proof, [_edge(FREEBANG, SEND)])
++    _basic_retention(proof['basic_retention'], owner, definition, request, step, witnesses)
+ 
+ 
+ def _value(value):
+     _require(type(value) is dict and type(value.get('type')) is str, 'typed diagnostic value')
+     kind = value['type']
+     if kind in ('undefined', 'null', 'object', 'function'):
+         _keys(value, ('type',))
+     elif kind in ('boolean', 'string'):
+--- initial004/test_helpers.cjs
++++ experiments/max-reference/arithmetic-roots-runtime-20261022/test_helpers.cjs
+@@ -215,58 +215,69 @@
+ try {reader.collectReadback(diagRoot, diagDefinition, diagRequest, diagConfig);} catch (error) {refused = error;}
+ assert.ok(refused, 'V8 number and jpatcher representations must remain refused');
+ assert.equal(refused.v8_representation_diagnostics.numeric_rows.length, 3);
+ assert.equal(refused.v8_representation_diagnostics.root_rows.length, 4);
+ assert.equal(typeof reader.collectRepresentationWitnesses, 'function', 'Fresh capture003 V8 witnesses missing');
+ const liveConfig = plain(diagConfig), liveDefinition = liveConfig.documents[0];
+ const liveNumeric = diagNumericObjects.map(o => ({...o, patchcords: {inputs: [], outputs: []}, getvalueof: () => gateInitial}));
+ const liveRoots = diagRootObjects.map(o => ({...o, patchcords: {inputs: [], outputs: []}}));
++liveDefinition.saved_edges = [];
+ reader.V8_ROOT_REPRESENTATION_PINS = {};
+ for (const box of liveDefinition.boxes) {
+   box.outlets = 2;
++  box.inlets = 1; box.authored_text = ''; box.authored_empty = true;
++  box.source_text_sha256 = require('node:crypto').createHash('sha256').update('').digest('hex');
++  reader.NUMERIC_REPRESENTATION_PINS[box.anchor].source_text_sha256 = box.source_text_sha256;
++  box.controller_numeric_representation_policy.source_text_sha256 = box.source_text_sha256;
+   box.v8_numeric_representation_policy = {kind: 'times-v8-numeric-representation-v1', engine: 'v8', document: 'times',
+     source_sha256: reader.GEOMETRY_SOURCE, anchor: box.anchor, source_class: 'flonum', runtime_class: 'number',
+     ...plain(reader.NUMERIC_REPRESENTATION_PINS[box.anchor]), helper_sha256: plain(reader.GEOMETRY_HELPERS),
+     evidence: plain(reader.V8_REPRESENTATION_EVIDENCE), format_method: 'getattr', format_attribute: 'format',
+     format_representation: 'scalar-number', format_value: 6, getter_method: 'getvalueof',
+     getter_representation: 'scalar-number', finite_required: true, initial_equality_action: 'install'};
+ }
+ for (const [index, cls] of [...Array(4).fill('number'), 'button', '*', '*', ...Array(4).fill('comment'), 'jsui', 'jsui'].entries()) {
+   const id = 'synthetic-live-' + index, maxclass = cls === '*' ? 'newobj' : cls;
+   const box = {id, anchor: 'root/obj-4/' + id, maxclass, runtime_class: cls, runtime_classes: [cls],
+-    rect: [index * 80, 400, 60, 20], outlets: cls === 'number' ? 2 : cls === 'comment' ? 0 : 1};
++    rect: [index * 80, 400, 60, 20], outlets: cls === 'number' ? 2 : cls === 'comment' ? 0 : 1,
++    inlets: cls === 'comment' ? 0 : cls === '*' ? 2 : 1, authored_text: cls === '*' ? '* synthetic' : '', authored_empty: cls !== '*'};
++  box.source_text_sha256 = require('node:crypto').createHash('sha256').update(box.authored_text).digest('hex');
+   liveDefinition.boxes.push(box);
+   liveNumeric.push({varname: '__alive_help_' + id.replace(/-/g, '_'), maxclass: cls, getboxattr: () => box.rect,
+     getvalueof: () => 13, patchcords: {inputs: [], outputs: []}});
+ }
+ liveDefinition.observer_leaves = [];
+ for (const [index, box] of liveDefinition.boxes.entries()) for (let port = 0; port < box.outlets; port++) {
+-  const leaf = {varname: '__synthetic_leaf_' + liveDefinition.observer_leaves.length, anchor: box.anchor, port};
++  const leaf = {varname: '__alive_help_leaf_' + box.id.replace(/-/g, '_') + '_' + port, anchor: box.anchor, port};
+   liveDefinition.observer_leaves.push(leaf);
+   const object = {varname: leaf.varname, maxclass: 'js', getboxattr: () => [-4000, 40 * liveDefinition.observer_leaves.length, 40, 20],
+     patchcords: {inputs: [], outputs: []}};
+   const cord = {srcobject: liveNumeric[index], srcoutlet: port, dstobject: object, dstinlet: 0};
+   liveNumeric[index].patchcords.outputs.push(cord); object.patchcords.inputs.push(cord); liveNumeric.push(object);
+ }
++liveDefinition.saved_edges = [{index: 0, source: [liveDefinition.boxes[3].id, 0], destination: [liveDefinition.boxes[4].id, 0]}];
++const originalCord = {srcobject: liveNumeric[3], srcoutlet: 0, dstobject: liveNumeric[4], dstinlet: 0};
++liveNumeric[3].patchcords.outputs.push(originalCord); liveNumeric[4].patchcords.inputs.push(originalCord);
+ for (const [index, box] of liveDefinition.full_inventory.entries()) if (index > 1) {
+   box.runtime_classes = ['patcher', 'p'];
+   reader.TIMES_ROOT_REPRESENTATION_PINS[box.anchor].runtime_classes = ['patcher', 'p'];
+   const liveRect = box.rect.map((v, i) => i === 3 ? v + 2 : v);
+   const pin = {...plain(reader.TIMES_ROOT_REPRESENTATION_PINS[box.anchor]), live_rect_sha256: hash(liveRect)};
+   delete pin.runtime_class; delete pin.runtime_classes;
+   reader.V8_ROOT_REPRESENTATION_PINS[box.anchor] = pin;
+   box.v8_root_representation_policy = {kind: 'times-v8-root-representation-v1', engine: 'v8', document: 'times',
+     source_sha256: reader.GEOMETRY_SOURCE, anchor: box.anchor, source_class: 'newobj', source_runtime_class: 'patcher',
+     runtime_class: 'jpatcher', ...pin, saved_rect: box.rect, live_rect: liveRect, source_varname: box.source_varname,
+     helper_sha256: plain(reader.GEOMETRY_HELPERS), evidence: plain(reader.V8_REPRESENTATION_EVIDENCE),
+     saved_incoming_routes: 0, saved_outgoing_routes: 0};
+   box.saved_incoming_routes = box.saved_outgoing_routes = 0;
+   liveRoots[index].getboxattr = () => liveRect;
+ }
++liveDefinition.full_inventory.push(...plain(liveDefinition.boxes));
+ const liveBasic = linkObjects(liveNumeric); liveRoots[2].subpatcher = () => liveBasic;
+ const harnessSpecs = [['__alive_arithmetic_reader', 'v8', [-3000, -3000, 160, 133]],
+   ['__alive_arithmetic_disposer', 'thispatcher', [-3100, -3000, 100, 22]],
+   ['__alive_arithmetic_freebang', 'freebang', [-3200, -3000, 100, 22]],
+   ['__alive_arithmetic_lifecycle_send', 'send', [-3400, -3000, 200, 64]]];
+ liveConfig.lifecycle.owners[0].channel = 'synthetic_channel';
+ for (const [varname, maxclass, rect] of harnessSpecs) liveRoots.push({varname, maxclass, valid: true,
+   boxtext: maxclass === 'send' ? 'send synthetic_channel' : maxclass, getboxattr: () => rect, patchcords: {inputs: [], outputs: []}});
+@@ -304,16 +315,80 @@
+ liveNumeric[0].getvalueof = () => gateInitial + .25;
+ const eventRequest = {...diagRequest, command_id: 3, operation_request_id: 2, action: 'event', step_id: 'times-A01'};
+ assert.equal(reader.collectReadback(liveRoot, liveDefinition, eventRequest, liveConfig).numeric[0].value, gateInitial + .25);
+ const closeRequest = {op: 'operation', command_id: 4, document: 'times', action_revision: 1,
+   source_sha256: reader.GEOMETRY_SOURCE, action: 'close', step_id: 'close-times-r1'};
+ const closeProof = reader.collectLifecycleProof(liveRoot, liveDefinition, closeRequest, liveConfig);
+ assert.equal(closeProof.v8_representation_witnesses.action, 'close');
+ assert.equal(closeProof.originals.filter(o => o.maxclass === 'jpatcher').length, 2);
++const acceptedBasicCorruptions = [];
++const droppedCloseDiagnostics = [];
++const originalLeafCord = liveNumeric[3].patchcords.outputs[0], leafObject = liveNumeric[16];
++const basicCorruptions = [
++  ['nongated-class', liveNumeric[3], 'maxclass', 'toggle'],
++  ['nongated-geometry', liveNumeric[3], 'getboxattr', () => [991, 992, 60, 20]],
++  ['duplicate-original', liveNumeric[3], 'varname', liveNumeric[4].varname],
++  ['unexpected-original', liveNumeric[3], 'varname', '__unexpected_original'],
++  ['missing-original', liveNumeric[2], 'nextobject', liveNumeric[4]],
++  ['missing-leaf', liveNumeric[15], 'nextobject', liveNumeric[17]],
++  ['unexpected-leaf', leafObject, 'varname', '__unexpected_leaf'],
++  ['leaf-class', leafObject, 'maxclass', 'toggle'],
++  ['duplicate-leaf', liveNumeric[17], 'varname', leafObject.varname],
++  ['input-duplicate', leafObject.patchcords, 'inputs', [...leafObject.patchcords.inputs, leafObject.patchcords.inputs[0]]],
++  ['output-duplicate', liveNumeric[3].patchcords, 'outputs', [...liveNumeric[3].patchcords.outputs, originalLeafCord]],
++  ['input-missing', leafObject.patchcords, 'inputs', []],
++  ['output-missing', liveNumeric[3].patchcords, 'outputs', []],
++  ['observer-inlet', originalLeafCord, 'dstinlet', 1],
++  ['original-inlet', originalCord, 'dstinlet', 1],
++  ['boolean-port', originalCord, 'srcoutlet', true],
++  ['unknown-endpoint', originalCord, 'dstobject', {varname: '__unobserved_endpoint'}],
++  ['source-port-bound', liveDefinition.saved_edges[0].source, '1', liveDefinition.boxes[3].outlets],
++  ['source-text', liveDefinition.boxes[3], 'authored_text', 'changed'],
++  ['source-empty', liveDefinition.boxes[3], 'authored_empty', false],
++  ['source-inlet', liveDefinition.boxes[3], 'inlets', true],
++  ['source-outlet', liveDefinition.boxes[3], 'outlets', true],
++];
++for (const [label, target, key, value] of basicCorruptions) {
++  const saved = target[key]; target[key] = value;
++  let accepted = false; try {reader.collectLifecycleProof(liveRoot, liveDefinition, closeRequest, liveConfig); accepted = true;} catch (error) {
++    if (!error.v8_representation_diagnostics || error.v8_representation_diagnostics.numeric_rows.length !== 3 ||
++      error.v8_representation_diagnostics.root_rows.length !== 4) droppedCloseDiagnostics.push(label);
++  }
++  target[key] = saved; if (accepted) acceptedBasicCorruptions.push(label);
++}
++assert.deepEqual(acceptedBasicCorruptions, [], 'fresh preclose must refuse every Basic retention corruption');
++const nativeEndpoint = originalCord.dstobject; originalCord.dstobject = {varname: nativeEndpoint.varname};
++assert.equal(reader.collectLifecycleProof(liveRoot, liveDefinition, closeRequest, liveConfig).basic_retention.boxes.length, 35,
++  'patchcord endpoint binding uses the captured name without assuming JS wrapper identity');
++originalCord.dstobject = nativeEndpoint;
++const laterRootCorruptions = [
++  ['root-harness-class', liveRoots[4], 'maxclass', 'toggle'],
++  ['root-harness-geometry', liveRoots[4], 'getboxattr', () => [-3000, -3000, 161, 133]],
++  ['root-route-inlet', closeCord, 'dstinlet', 1],
++  ['root-input-multiplicity', liveRoots[7].patchcords, 'inputs', [closeCord, closeCord]],
++  ['root-output-multiplicity', liveRoots[6].patchcords, 'outputs', [closeCord, closeCord]],
++];
++for (const [label, target, key, value] of laterRootCorruptions) {
++  const saved = target[key]; target[key] = value;
++  let refusal; try {reader.collectLifecycleProof(liveRoot, liveDefinition, closeRequest, liveConfig);} catch (error) {refusal = error;}
++  target[key] = saved; assert.ok(refusal, label);
++  if (!refusal.v8_representation_diagnostics || refusal.v8_representation_diagnostics.numeric_rows.length !== 3 ||
++    refusal.v8_representation_diagnostics.root_rows.length !== 4) droppedCloseDiagnostics.push(label);
++}
++assert.deepEqual(droppedCloseDiagnostics, [], 'all later preclose failures must retain seven diagnostic rows');
++assert.equal(closeProof.basic_retention.version, 'arithmetic-basic-retention-v1');
++assert.equal(closeProof.basic_retention.boxes.length, 35);
++assert.equal(closeProof.basic_retention.input_routes.length, 20);
++assert.equal(closeProof.basic_retention.output_routes.length, 20);
++assert.deepEqual(Object.keys(plain(closeProof.basic_retention)).sort(), ['version', 'request_id', 'operation_request_id',
++  'step_id', 'action', 'document', 'revision', 'source_sha256', 'working_path', 'basic_varname', 'boxes', 'input_routes', 'output_routes'].sort());
++for (const text of ['', 'synthetic ASCII', '\u03bb synthetic \ud83c\udf31']) {
++  assert.equal(reader.sourceTextHash(text), require('node:crypto').createHash('sha256').update(text).digest('hex'));
++}
+ liveNumeric[0].getattr = () => 5;
+ assert.throws(() => reader.collectLifecycleProof(liveRoot, liveDefinition, closeRequest, liveConfig));
+ liveNumeric[0].getattr = () => 6;
+ const freshCalls = [];
+ for (const [index, object] of liveNumeric.slice(0, 3).entries()) {
+   object.getattr = () => {freshCalls.push('format-' + index); return 6;};
+   object.getvalueof = () => {freshCalls.push('value-' + index); return gateInitial;};
+   object.message = object.setvalueof = () => {throw Error('gate must never send an input or setter');};
+@@ -329,33 +404,73 @@
+ secondDefinition.working_windows_path = 'Z:/synthetic/times-r2.maxhelp';
+ secondConfig.lifecycle.owners = [plain(liveConfig.lifecycle.owners[0]), {...plain(liveConfig.lifecycle.owners[0]),
+   revision: 2, working_path: secondDefinition.working_windows_path}];
+ const secondRoot = {...liveRoot, filepath: secondDefinition.working_windows_path};
+ const secondInstall = {...diagRequest, command_id: 21, operation_request_id: 20, revision: 2, action_revision: 2, step_id: 'install-times-r2'};
+ assert.equal(reader.collectReadback(secondRoot, secondDefinition, secondInstall, secondConfig).v8_representation_witnesses.revision, 2);
+ const secondClose = {...closeRequest, command_id: 23, action_revision: 2, step_id: 'close-times-r2'};
+ assert.equal(reader.collectLifecycleProof(secondRoot, secondDefinition, secondClose, secondConfig).v8_representation_witnesses.revision, 2);
++const secondBasic = reader.collectLifecycleProof(secondRoot, secondDefinition, secondClose, secondConfig).basic_retention;
++assert.equal(secondBasic.request_id, 23); assert.equal(secondBasic.operation_request_id, 23);
++assert.equal(secondBasic.revision, 2); assert.equal(secondBasic.working_path, secondDefinition.working_windows_path);
+ liveNumeric[1].getvalueof = () => [gateInitial];
+ assert.throws(() => reader.collectReadback(secondRoot, secondDefinition, {...secondInstall, action: 'event', step_id: 'times-A21'}, secondConfig));
+ assert.throws(() => reader.collectLifecycleProof(secondRoot, secondDefinition, secondClose, secondConfig));
+ liveNumeric[1].getvalueof = () => gateInitial;
+ for (const scope of ['root', 'numeric']) {
+   freshCalls.length = 0;
+   const overflow = {maxclass: 'comment', varname: '__overflow', getboxattr: () => [999, 999, 20, 20]};
+   const tail = scope === 'root' ? liveRoots.at(-1) : liveNumeric.at(-1);
+   tail.nextobject = overflow;
+   let failure; try {reader.collectReadback(liveRoot, liveDefinition, eventRequest, liveConfig);} catch (error) {failure = error;}
+   assert.ok(failure); assert.deepEqual(freshCalls, []);
+   assert.equal(failure.v8_representation_diagnostics.root_rows.length, 4);
+   assert.equal(failure.v8_representation_diagnostics.numeric_rows.length, 3);
+   tail.nextobject = null;
+ }
++const savedNongatedGetters = liveNumeric.slice(3).map(o => o.getvalueof);
++for (const object of liveNumeric.slice(3)) object.getvalueof = () => {throw Error('preclose must not add nongated numeric getters');};
++for (const [docIndex, document] of ['plus', 'minus'].entries()) for (const revision of [1, 2]) {
++  const otherConfig = plain(liveConfig), otherDefinition = otherConfig.documents[0], inlet = 2 + docIndex * 2 + revision - 1;
++  otherDefinition.document = document; otherDefinition.revision = revision; otherDefinition.lifecycle_owner_inlet = inlet;
++  otherDefinition.source_sha256 = document === 'plus' ? 'd1443c5af7ba8874c7b1d237e3d22bbe518970ad8ae85a09ec8f10494d084895' :
++    '7968c6cf7d348b39d8fb8044c42977bc2b71fe55c4c7db8542150e79e6a1a0b0';
++  otherDefinition.working_windows_path = 'Z:/synthetic/' + document + '-r' + revision + '.maxhelp';
++  for (const b of [...otherDefinition.boxes, ...otherDefinition.full_inventory]) {
++    delete b.v8_numeric_representation_policy; delete b.v8_root_representation_policy; delete b.controller_numeric_representation_policy;
++  }
++  otherConfig.lifecycle.owners = Array.from({length: 6}, () => ({}));
++  otherConfig.lifecycle.owners[inlet] = {document, revision, source_sha256: otherDefinition.source_sha256,
++    working_path: otherDefinition.working_windows_path, channel: 'synthetic_channel'};
++  const otherRoot = {...liveRoot, filepath: otherDefinition.working_windows_path};
++  const otherRequest = {op: 'operation', action: 'close', document, action_revision: revision, command_id: 40 + inlet,
++    source_sha256: otherDefinition.source_sha256, step_id: 'close-' + document + '-r' + revision};
++  for (const object of liveNumeric.slice(0, 3)) object.maxclass = 'flonum';
++  liveRoots[2].maxclass = liveRoots[3].maxclass = 'patcher';
++  for (const b of otherDefinition.full_inventory.filter(b => b.runtime_class === 'patcher')) b.rect =
++    liveRoots[b.source_varname === 'basic_tab' ? 2 : 3].getboxattr();
++  freshCalls.length = 0;
++  const otherProof = reader.collectLifecycleProof(otherRoot, otherDefinition, otherRequest, otherConfig);
++  assert.equal(otherProof.basic_retention.document, document); assert.equal(otherProof.basic_retention.revision, revision);
++  assert.equal(otherProof.basic_retention.boxes.length, 35); assert.equal(otherProof.v8_representation_witnesses, undefined);
++  assert.deepEqual(freshCalls, [], 'plus/minus preclose must not acquire numeric getters');
++  const oldClass = liveNumeric[3].maxclass; liveNumeric[3].maxclass = 'toggle';
++  assert.throws(() => reader.collectLifecycleProof(otherRoot, otherDefinition, otherRequest, otherConfig));
++  liveNumeric[3].maxclass = oldClass;
++  const oldInlet = originalCord.dstinlet; originalCord.dstinlet = 1;
++  assert.throws(() => reader.collectLifecycleProof(otherRoot, otherDefinition, otherRequest, otherConfig));
++  originalCord.dstinlet = oldInlet;
++  for (const object of liveNumeric.slice(0, 3)) object.maxclass = 'number';
++  liveRoots[2].maxclass = liveRoots[3].maxclass = 'jpatcher';
++}
++liveNumeric.slice(3).forEach((object, index) => {object.getvalueof = savedNongatedGetters[index];});
+ // Restore the legacy diagnostic fixture's source-class pins.
+ for (const box of diagDefinition.full_inventory) reader.TIMES_ROOT_REPRESENTATION_PINS[box.anchor].runtime_classes = box.runtime_classes;
++for (const box of diagDefinition.boxes) reader.NUMERIC_REPRESENTATION_PINS[box.anchor].source_text_sha256 = box.source_text_sha256;
+ for (const scenario of ['root-overflow', 'numeric-overflow', 'root-unavailable', 'numeric-unavailable', 'numeric-traversal-throw']) {
+   const calls = [];
+   const numericObjects = diagNumericObjects.map(object => ({...object,
+     getattr() {calls.push('format'); return 6;}, getvalueof() {calls.push('value'); return [gateInitial];},
+     message() {calls.push('input');}, setvalueof() {calls.push('setter');}}));
+   const rootObjects = diagRootObjects.map(object => ({...object}));
+   const extra = index => ({maxclass: 'comment', varname: '__synthetic_extra_' + index,
+     getboxattr: () => [1000 + 80 * index, 400, 60, 20], nextobject: null});
+@@ -422,28 +537,44 @@
+ diagnosticMemory.set('Z:/synthetic/command.json', JSON.stringify(diagnosticCommand));
+ reader.File = memoryFile(diagnosticMemory); reader.documentName = 'times'; reader.revision = 1;
+ reader.checkpoint.call({patcher: diagRoot}, 2, 'install-times-r1');
+ const failedReadback = JSON.parse(diagnosticMemory.get(diagnosticCommand.output_path));
+ assert.equal(failedReadback.success, false);
+ assert.equal(failedReadback.v8_representation_diagnostics.numeric_rows.length, 3);
+ assert.equal(failedReadback.v8_representation_diagnostics.root_rows.length, 4);
+ const closeMemory = new Map(), closePath = 'Z:/synthetic/failed-close-proof.json';
+-for (const box of liveDefinition.full_inventory) reader.TIMES_ROOT_REPRESENTATION_PINS[box.anchor].runtime_classes = box.runtime_classes;
++for (const box of liveDefinition.full_inventory.filter(b => b.anchor.split('/').length === 2)) reader.TIMES_ROOT_REPRESENTATION_PINS[box.anchor].runtime_classes = box.runtime_classes;
++for (const box of liveDefinition.boxes.filter(b => b.maxclass === 'flonum')) reader.NUMERIC_REPRESENTATION_PINS[box.anchor].source_text_sha256 = box.source_text_sha256;
+ liveConfig.lifecycle.owners[0].root_proof_path = closePath;
+ closeMemory.set('Z:/synthetic/config.json', JSON.stringify({...liveConfig, command_path: 'Z:/synthetic/command.json'}));
+ closeMemory.set('Z:/synthetic/command.json', JSON.stringify(closeRequest));
+ reader.File = memoryFile(closeMemory); liveNumeric[0].getattr = () => 5;
+ reader.lifecycleproof.call({patcher: liveRoot}, 4, 'close-times-r1');
+ const failedClose = JSON.parse(closeMemory.get(closePath));
+ assert.equal(failedClose.success, false);
+ assert.equal(failedClose.v8_representation_diagnostics.numeric_rows.length, 3);
+ assert.equal(failedClose.v8_representation_diagnostics.root_rows.length, 4);
+ liveNumeric[0].getattr = () => 6;
++for (const [label, target, key, value] of [...basicCorruptions.slice(0, 17), ...laterRootCorruptions]) {
++  const saved = target[key]; target[key] = value;
++  reader.lifecycleproof.call({patcher: liveRoot}, 4, 'close-times-r1');
++  const serializedFailure = JSON.parse(closeMemory.get(closePath)); target[key] = saved;
++  assert.equal(serializedFailure.success, false, label);
++  assert.equal(serializedFailure.v8_representation_diagnostics.numeric_rows.length, 3, label);
++  assert.equal(serializedFailure.v8_representation_diagnostics.root_rows.length, 4, label);
++}
++reader.lifecycleproof.call({patcher: liveRoot}, 4, 'close-times-r1');
++const serializedSuccess = JSON.parse(closeMemory.get(closePath));
++assert.equal(serializedSuccess.basic_retention.version, 'arithmetic-basic-retention-v1');
++assert.equal(serializedSuccess.basic_retention.boxes.length, 35);
++assert.equal(serializedSuccess.basic_retention.input_routes.length, 20);
++assert.equal(serializedSuccess.basic_retention.output_routes.length, 20);
+ for (const box of diagDefinition.full_inventory) reader.TIMES_ROOT_REPRESENTATION_PINS[box.anchor].runtime_classes = box.runtime_classes;
++for (const box of diagDefinition.boxes) reader.NUMERIC_REPRESENTATION_PINS[box.anchor].source_text_sha256 = box.source_text_sha256;
+ const transportMemory = new Map();
+ reader.File = memoryFile(transportMemory);
+ const large = {synthetic: 'original synthetic fixture '.repeat(4000)};
+ reader.writePrivate('Z:/synthetic/raw.json', large);
+ assert.deepEqual(plain(reader.readPrivate('Z:/synthetic/raw.json')), large);
+ assert.throws(() => reader.readPrivate('Z:/synthetic/missing.json'));
+ const observerMemory = new Map();
+ observerMemory.set('Z:/synthetic/config.json', JSON.stringify({global_name: 'synthetic',
+--- initial004/test_lifecycle.py
++++ experiments/max-reference/arithmetic-roots-runtime-20261022/test_lifecycle.py
+@@ -29,16 +29,43 @@
+ V8_EVIDENCE = dict(
+     raw_sha256='b3c8518d4d2930f2d18c3066e9ace27038f7893d4ae3644a6d002d99b56a71d6',
+     ack_sha256='ae28ae272f4fe7743c121f5f8aacdc28026e29256bf9b4cdef31c0fa10ad08be',
+     config_sha256='a406709cab7224f3d297baa14de204565407e4572eadd6c7c0c3d6166ef46fe5',
+     seal_sha256='3ab64f6487e0a5f182acd9623728df66664e355472216fdad98545d9753cf5fa',
+     manifest_sha256='357e4296de98f953faae2a17bded5a4df66fe5438ee3b4a23ea5ada00f41260c',
+     rea_evidence_id='ev_de849ca377d9aa0cada5598c4443c3f57f501c23b073fa1430f610873112f8cd',
+     audit_sha256='0102fdaea0e0ee5bcd2e77217b25aef4c467b53124d27bca3426759f5c9fe1b1')
++
++
++def original_name(box):
++    return '__alive_help_' + box['id'].replace('-', '_')
++
++
++def complete_basic_definition(definition):
++    definition.setdefault('basic_anchor', 'root/synthetic')
++    definition['basic_varname'] = 'basic_tab'
++    for box in definition['boxes']:
++        box.setdefault('id', box['anchor'].rsplit('/', 1)[1])
++        box.setdefault('maxclass', 'number'); box.setdefault('runtime_class', 'number')
++        box.setdefault('runtime_classes', [box['runtime_class']]); box.setdefault('rect', [10, 20, 30, 15])
++        box.setdefault('inlets', 1); box.setdefault('outlets', 1)
++        box.setdefault('authored_text', ''); box.setdefault('authored_empty', not bool(box['authored_text']))
++        box.setdefault('source_text_sha256', sha(box['authored_text'].encode()))
++        box.setdefault('source_box_sha256', sha(('original synthetic ' + box['id']).encode()))
++    definition['full_inventory'] = [box for box in definition['full_inventory']
++        if not box['anchor'].startswith(definition['basic_anchor'] + '/')] + copy.deepcopy(definition['boxes'])
++    definition['observer_leaves'] = [dict(varname='__alive_help_leaf_' + box['id'].replace('-', '_') + '_' + str(port),
++        anchor=box['anchor'], port=port) for box in definition['boxes'] for port in range(box['outlets'])]
++    if 'saved_edges' not in definition:
++        boxes = definition['boxes']
++        definition['saved_edges'] = ([dict(source=[boxes[0]['id'], 0], destination=[boxes[1]['id'], 0])] * 2
++            if len(boxes) > 1 else [])
++        if len(boxes) > 4:
++            definition['saved_edges'].append(dict(source=[boxes[3]['id'], 0], destination=[boxes[4]['id'], 0]))
+ 
+ 
+ class Evidence:
+     def __init__(self, lifecycle, work):
+         self.l = lifecycle; self.work = work; work.chmod(0o700)
+         (work / 'observations').mkdir(mode=0o700)
+         helper = b'// Original synthetic lifecycle observer.\n'
+         self.write(work / 'lifecycle-observer.js', helper); self.helper_sha = sha(helper)
+@@ -46,19 +73,21 @@
+         for name in ('times', 'plus', 'minus'):
+             for revision in (1, 2):
+                 inlet = len(owners); working = windows(work / f'{name}-r{revision}.maxhelp')
+                 owners.append(dict(document=name, revision=revision, source_sha256=lifecycle.ROOT_SOURCES[name],
+                     working_path=working, channel='synthetic_channel_' + str(inlet), inlet=inlet,
+                     root_proof_path=windows(work / 'observations' / f'lifecycle-root-{name}-r{revision}.json')))
+                 definitions.append(dict(document=name, revision=revision, source_sha256=lifecycle.ROOT_SOURCES[name],
+                     working_windows_path=working, lifecycle_owner_inlet=inlet, helper_sha256=dict(lifecycle.ROOT_HELPERS),
+-                    boxes=[dict(anchor='root/synthetic/value')],
++                    basic_anchor='root/synthetic', boxes=[dict(anchor='root/synthetic/' + name) for name in
++                        ('synthetic-value', 'synthetic-button', 'synthetic-operator')],
+                     full_inventory=[dict(anchor='root/synthetic', maxclass='newobj', runtime_class='patcher',
+                         runtime_classes=['patcher', 'p'], rect=[80, 40, 60, 20], source_varname='basic_tab')]))
++                complete_basic_definition(definitions[-1])
+         inventory = [dict(varname='__alive_arithmetic_controller', maxclass='js', boxtext='js synthetic.js', rect=[0, 0, 80, 20]),
+             dict(varname=lifecycle.OBSERVER, maxclass='v8', boxtext='v8 synthetic.js', rect=[0, 30, 80, 20])]
+         inventory += [dict(varname='__alive_arithmetic_lifecycle_receive_' + str(o['inlet']), maxclass='receive',
+             boxtext='receive ' + o['channel'], rect=[0, 60 + 30 * o['inlet'], 80, 20]) for o in owners]
+         self.config = dict(work=str(work), documents=definitions,
+             helpers=[dict(name=name, sha256=value) for name, value in lifecycle.ROOT_HELPERS.items()],
+             package_sha256={'lifecycle-observer.js': self.helper_sha},
+             lifecycle=dict(version='arithmetic-freebang-v1', monitor_epoch='e' * 48,
+@@ -68,16 +97,35 @@
+         self.json(work / 'seal.json', dict(files={'config.json': sha((work / 'config.json').read_bytes()),
+             'lifecycle-observer.js': self.helper_sha}))
+ 
+     def write(self, path, payload): path.write_bytes(payload); path.chmod(0o600)
+     def json(self, path, value): self.write(path, (json.dumps(value, sort_keys=True) + '\n').encode())
+     def owner(self, index): return self.config['lifecycle']['owners'][index]
+     def step(self, index):
+         owner = self.owner(index); return f"close-{owner['document']}-r{owner['revision']}"
++
++    def basic(self, index, request, step):
++        owner, definition = self.owner(index), self.config['documents'][index]
++        originals = {box['id']: box for box in definition['boxes']}
++        boxes = [dict(varname=original_name(box), maxclass='number' if 'v8_numeric_representation_policy' in box
++            else box['runtime_class'], rect=copy.deepcopy(box['rect'])) for box in originals.values()]
++        boxes.extend(dict(varname=leaf['varname'], maxclass='js', rect=[-100, -100, 40, 20])
++            for leaf in definition['observer_leaves'])
++        routes = [dict(source=dict(varname=original_name(originals[e['source'][0]]), port=e['source'][1]),
++            destination=dict(varname=original_name(originals[e['destination'][0]]), port=e['destination'][1]))
++            for e in definition['saved_edges']]
++        for leaf in definition['observer_leaves']:
++            box = next(b for b in originals.values() if b['anchor'] == leaf['anchor'])
++            routes.append(dict(source=dict(varname=original_name(box), port=leaf['port']),
++                destination=dict(varname=leaf['varname'], port=0)))
++        return dict(version='arithmetic-basic-retention-v1', request_id=request, operation_request_id=request,
++            step_id=step, action='close', document=owner['document'], revision=owner['revision'],
++            source_sha256=owner['source_sha256'], working_path=owner['working_path'],
++            basic_varname=definition['basic_varname'], boxes=boxes, input_routes=routes, output_routes=copy.deepcopy(routes))
+ 
+     def report(self, count, barrier=False):
+         transitions, events, states = [], [], []
+         for inlet in range(6):
+             state = dict(inlet=inlet, state='monitoring', request_id=0, step_id='', witness_count=0)
+             if inlet < count:
+                 step = self.step(inlet); request = 100 + inlet; start = inlet * 5
+                 transitions.extend(dict(seq=start + offset, inlet=inlet, kind=kind, request_id=request, step_id=step)
+@@ -100,22 +148,22 @@
+             action_revision=owner['revision'], source_sha256=owner['source_sha256'])
+         harness = [dict(varname=name, maxclass=cls, rect=rect, valid=True,
+             boxtext='freebang' if name == self.l.FREEBANG else 'send ' + owner['channel'] if name == self.l.SEND else 'synthetic harness')
+             for name, (cls, rect) in self.l.HARNESS.items()]
+         routes = [edge(self.l.FREEBANG, self.l.SEND)]
+         root = dict(version='arithmetic-freebang-v1', request_id=request, step_id=step, document=owner['document'],
+             revision=owner['revision'], source_sha256=owner['source_sha256'], working_path=owner['working_path'],
+             root_is_top_level=True, originals=[dict(anchor='root/synthetic', varname='basic_tab', maxclass='patcher', rect=[80, 40, 60, 20])],
+-            harness=harness, input_routes=routes, output_routes=copy.deepcopy(routes))
++            harness=harness, input_routes=routes, output_routes=copy.deepcopy(routes), basic_retention=self.basic(index, request, step))
+         samples = [dict(phase='before-dispose' if attempt == 0 else 'poll', attempt=attempt,
+             root_valid=dict(status='returned', type='undefined'), reader_valid=valid(attempt == 0),
+             disposer_valid=valid(attempt == 0), retained_firstobject_valid=valid(attempt == 0),
+             root_filepath=dict(status='returned', type='string', value=owner['working_path']),
+-            objects=[dict(anchor='root/synthetic/value', valid=valid(attempt == 0))],
++            objects=[dict(anchor=b['anchor'], valid=valid(attempt == 0)) for b in self.config['documents'][index]['boxes']],
+             harness_objects=[dict(anchor=name, valid=valid(attempt == 0)) for name in (self.l.FREEBANG, self.l.SEND)],
+             firstobject=dict(status='returned', type='object'), firstobject_valid=valid(attempt == 0),
+             wind=dict(status='returned', type='undefined'), wind_visible=None, wind_assocclass=None,
+             wind_assoc=None, wind_assoc_filepath=None) for attempt in range(31)]
+         evidence = dict(version='arithmetic-freebang-v1', binding=dict(monitor_epoch='e' * 48, request_id=request,
+             step_id=step, action='close', document=owner['document'], revision=owner['revision'], source_sha256=owner['source_sha256'],
+             working_path=owner['working_path'], observer_helper_sha256=self.helper_sha),
+             root_route_path=owner['root_proof_path'], root_route_proof=root, driver_route_proof=self.driver(),
+@@ -131,16 +179,29 @@
+         self.json(Path(self.owner(index)['root_proof_path'][2:]), ack['close_diagnostics']['lifecycle_evidence']['root_route_proof'])
+         self.json(self.work / 'observations' / f'ack-request-{100 + index}.json', ack)
+ 
+     def accept(self, index):
+         command, ack = self.close(index)
+         metadata = self.l.validate_close(self.work, self.config, command, ack)
+         self.json(self.work / 'observations' / f'validated-close-{100 + index}.json', metadata)
+         return command, ack
++
++    def forge_root(self, index, change):
++        owner = self.owner(index)
++        ack_path = self.work / 'observations' / f'ack-request-{100 + index}.json'
++        ack = json.loads(ack_path.read_bytes()); root = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']
++        change(root); self.persist_close(index, ack)
++        retained = self.work / 'observations' / f"retained-lifecycle-root-{owner['document']}-r{owner['revision']}.json"
++        self.json(retained, root)
++        metadata_path = self.work / 'observations' / f'validated-close-{100 + index}.json'
++        metadata = json.loads(metadata_path.read_bytes())
++        metadata.update(root_sha256=sha(retained.read_bytes()), root_bytes=retained.stat().st_size,
++            ack_sha256=sha(ack_path.read_bytes()), ack_bytes=ack_path.stat().st_size)
++        self.json(metadata_path, metadata)
+ 
+     def barrier(self):
+         evidence = dict(command_id=900, success=True, step_id='capture-complete',
+             lifecycle_evidence=dict(version='arithmetic-freebang-v1', binding=dict(monitor_epoch='e' * 48,
+                 request_id=900, step_id='capture-complete', action='lifecycle-barrier', observer_helper_sha256=self.helper_sha),
+                 driver_route_proof=self.driver(), observer_report=self.report(6, barrier=True)))
+         self.json(self.work / 'observations/ack-request-900.json', evidence)
+         return evidence
+@@ -183,18 +244,19 @@
+                     source_varname=name, helper_sha256=dict(lifecycle.ROOT_HELPERS), evidence=dict(V8_EVIDENCE),
+                     saved_incoming_routes=0, saved_outgoing_routes=0)
+                 roots.append(dict(anchor=anchor, maxclass='newobj', runtime_class='patcher', runtime_classes=['patcher', 'p'],
+                     rect=saved, source_varname=name, source_box_sha256=pin['source_box_sha256'],
+                     source_text_sha256=pin['source_text_sha256'], saved_incoming_routes=0, saved_outgoing_routes=0,
+                     v8_root_representation_policy=policy))
+             roots.extend(dict(anchor='root/synthetic-' + str(index), maxclass='newobj', runtime_class='js',
+                 runtime_classes=['js'], rect=[index * 40, 100, 30, 20], source_varname='') for index in range(2))
+-            definition.update(boxes=boxes, observer_leaves=[dict(varname='synthetic_leaf_' + str(i)) for i in range(3)],
+-                full_inventory=roots + copy.deepcopy(boxes))
++            definition.update(boxes=boxes, basic_anchor='root/obj-4', full_inventory=roots + copy.deepcopy(boxes))
++            definition.pop('saved_edges')
++            complete_basic_definition(definition)
+         self.json(work / 'config.json', self.config)
+         self.json(work / 'seal.json', dict(files={'config.json': sha((work / 'config.json').read_bytes()),
+             'lifecycle-observer.js': self.helper_sha}))
+ 
+     def gates(self):
+         return patch.multiple(self.l, NUMERIC_REPRESENTATION_PINS=self.numeric_pins,
+             V8_ROOT_REPRESENTATION_PINS=self.root_pins, create=True)
+ 
+@@ -220,39 +282,198 @@
+             live_rect=copy.deepcopy(b['v8_root_representation_policy']['live_rect']), candidate_count=1, candidate_count_complete=True)
+             for b in roots[:2]]
+         coverage = lambda count: dict(complete=True, status='complete', observed_count=count, complete_count=count, limit=count)
+         root['v8_representation_witnesses'] = dict(version='times-v8-representation-witnesses-v1', engine='v8',
+             request_id=command['command_id'], operation_request_id=command['command_id'], step_id=command['step_id'],
+             action='close', action_document='times', action_revision=owner['revision'], document='times', revision=owner['revision'],
+             source_sha256=owner['source_sha256'], helper_sha256=dict(self.l.ROOT_HELPERS), working_path=owner['working_path'],
+             root_is_top_level=True, receipt_tag_observed=False, evidence=dict(V8_EVIDENCE),
+-            inventory_coverage=dict(root=coverage(8), numeric=coverage(10)), numeric=numeric_rows, roots=root_rows)
++            inventory_coverage=dict(root=coverage(8), numeric=coverage(len(definition['boxes']) + len(definition['observer_leaves']))),
++            numeric=numeric_rows, roots=root_rows)
+         for sample in ack['close_diagnostics']['samples']:
+             sample['objects'] = [dict(anchor=b['anchor'], valid=valid(sample['attempt'] == 0)) for b in definition['boxes']]
+         self.persist_close(index, ack)
+         return command, ack
+ 
+     def forge_retained(self, index, change):
+-        owner = self.owner(index)
+-        ack_path = self.work / 'observations' / f'ack-request-{100 + index}.json'
+-        ack = json.loads(ack_path.read_bytes())
+-        root = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']
+-        change(root['v8_representation_witnesses'])
+-        self.persist_close(index, ack)
+-        retained = self.work / 'observations' / f"retained-lifecycle-root-times-r{owner['revision']}.json"
+-        self.json(retained, root)
+-        metadata_path = self.work / 'observations' / f'validated-close-{100 + index}.json'
+-        metadata = json.loads(metadata_path.read_bytes())
+-        metadata.update(root_sha256=sha(retained.read_bytes()), root_bytes=retained.stat().st_size,
+-            ack_sha256=sha(ack_path.read_bytes()), ack_bytes=ack_path.stat().st_size)
+-        self.json(metadata_path, metadata)
++        self.forge_root(index, lambda root: change(root['v8_representation_witnesses']))
+ 
+ 
+ class LifecycleTests(unittest.TestCase):
++    def test_basic_retention_accepts_all_six_owners_with_duplicate_cables(self):
++        lifecycle = load()
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = V8Evidence(lifecycle, Path(temporary))
++            with fixture.gates():
++                for index in range(6):
++                    try:
++                        _, ack = fixture.accept(index)
++                    except ValueError as error:
++                        self.fail('Complete Basic retention was refused: ' + str(error))
++                    basic = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']['basic_retention']
++                    self.assertEqual(basic['input_routes'][:2], [basic['input_routes'][0]] * 2)
++                    self.assertEqual(basic['document'], fixture.owner(index)['document'])
++                lifecycle.validate_barrier(fixture.work, fixture.config, fixture.barrier(), {})
++
++    def test_basic_retention_is_mandatory_for_every_owner(self):
++        lifecycle = load()
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = V8Evidence(lifecycle, Path(temporary))
++            with fixture.gates():
++                for index in range(6):
++                    command, ack = fixture.close(index)
++                    root = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']; del root['basic_retention']
++                    with self.subTest(owner=index), self.assertRaises(ValueError):
++                        lifecycle._root(root, fixture.owner(index), fixture.config['documents'][index], 100 + index, command['step_id'])
++
++    def test_basic_retention_refuses_inventory_geometry_envelope_and_endpoint_corruption(self):
++        lifecycle = load()
++        mutations = ('nongated-class', 'gated-class', 'duplicate-original', 'missing-original', 'extra-original',
++            'duplicate-leaf', 'missing-leaf', 'extra-leaf', 'leaf-class', 'geometry', 'geometry-bool', 'geometry-infinity',
++            'request', 'operation', 'revision', 'document', 'source', 'step', 'action', 'path', 'basic-name', 'extra-field',
++            'request-bool', 'revision-bool', 'input-duplicate', 'input-missing', 'output-duplicate', 'output-missing',
++            'source-name', 'destination-name', 'source-port', 'destination-port', 'port-bool', 'port-float', 'port-negative')
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = V8Evidence(lifecycle, Path(temporary)); command, ack = fixture.close(0)
++            root = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']
++            with fixture.gates():
++                for mutation in mutations:
++                    changed = copy.deepcopy(root); basic = changed['basic_retention']; boxes = basic['boxes']
++                    if mutation == 'nongated-class': boxes[3]['maxclass'] = 'toggle'
++                    elif mutation == 'gated-class': boxes[0]['maxclass'] = 'flonum'
++                    elif mutation == 'duplicate-original': boxes[4]['varname'] = boxes[3]['varname']
++                    elif mutation == 'missing-original': boxes.pop(3)
++                    elif mutation == 'extra-original': boxes.append(dict(varname='unexpected-original', maxclass='number', rect=[0, 0, 10, 10]))
++                    elif mutation == 'duplicate-leaf': boxes[-1]['varname'] = boxes[-2]['varname']
++                    elif mutation == 'missing-leaf': boxes.pop()
++                    elif mutation == 'extra-leaf': boxes.append(dict(varname='unexpected-leaf', maxclass='js', rect=[0, 0, 10, 10]))
++                    elif mutation == 'leaf-class': boxes[-1]['maxclass'] = 'toggle'
++                    elif mutation == 'geometry': boxes[3]['rect'][0] += 1e-12
++                    elif mutation == 'geometry-bool': boxes[3]['rect'][0] = False
++                    elif mutation == 'geometry-infinity': boxes[3]['rect'][0] = float('inf')
++                    elif mutation == 'request': basic['request_id'] += 1
++                    elif mutation == 'operation': basic['operation_request_id'] += 1
++                    elif mutation == 'revision': basic['revision'] = 2
++                    elif mutation == 'document': basic['document'] = 'plus'
++                    elif mutation == 'source': basic['source_sha256'] = 'f' * 64
++                    elif mutation == 'step': basic['step_id'] = 'close-times-r2'
++                    elif mutation == 'action': basic['action'] = 'install'
++                    elif mutation == 'path': basic['working_path'] += '.other'
++                    elif mutation == 'basic-name': basic['basic_varname'] = 'other_tab'
++                    elif mutation == 'extra-field': basic['diagnostic_only'] = True
++                    elif mutation == 'request-bool': basic['request_id'] = True
++                    elif mutation == 'revision-bool': basic['revision'] = True
++                    elif mutation == 'input-duplicate': basic['input_routes'].append(copy.deepcopy(basic['input_routes'][0]))
++                    elif mutation == 'input-missing': basic['input_routes'].pop(0)
++                    elif mutation == 'output-duplicate': basic['output_routes'].append(copy.deepcopy(basic['output_routes'][0]))
++                    elif mutation == 'output-missing': basic['output_routes'].pop(0)
++                    elif mutation == 'source-name': basic['input_routes'][0]['source']['varname'] = 'unknown'
++                    elif mutation == 'destination-name': basic['output_routes'][0]['destination']['varname'] = 'unknown'
++                    elif mutation == 'source-port': basic['input_routes'][0]['source']['port'] = 1
++                    elif mutation == 'destination-port': basic['output_routes'][0]['destination']['port'] = 1
++                    elif mutation == 'port-bool': basic['input_routes'][0]['source']['port'] = False
++                    elif mutation == 'port-float': basic['output_routes'][0]['destination']['port'] = 0.0
++                    elif mutation == 'port-negative': basic['input_routes'][0]['source']['port'] = -1
++                    with self.subTest(mutation=mutation), self.assertRaises(ValueError):
++                        lifecycle._root(changed, fixture.owner(0), fixture.config['documents'][0], 100, command['step_id'])
++
++    def test_basic_retention_refuses_corrupt_sealed_source_descriptors(self):
++        lifecycle = load()
++        mutations = ('source-port-bound', 'destination-port-bound', 'source-port-bool', 'inlets-bool', 'outlets-bool',
++            'text', 'empty', 'message', 'full-inventory', 'full-class', 'full-port', 'observer-definition',
++            'observer-port-bool', 'duplicate-source', 'source-name-collision', 'container-name', 'container-anchor')
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = Evidence(lifecycle, Path(temporary)); command, ack = fixture.close(0)
++            root = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']
++            for mutation in mutations:
++                definition = copy.deepcopy(fixture.config['documents'][0]); box = definition['boxes'][0]
++                full = next(b for b in definition['full_inventory'] if b['anchor'] == box['anchor'])
++                if mutation == 'source-port-bound': definition['saved_edges'][0]['source'][1] = box['outlets']
++                elif mutation == 'destination-port-bound': definition['saved_edges'][0]['destination'][1] = 1
++                elif mutation == 'source-port-bool': definition['saved_edges'][0]['source'][1] = False
++                elif mutation == 'inlets-bool': box['inlets'] = full['inlets'] = True
++                elif mutation == 'outlets-bool': box['outlets'] = full['outlets'] = True
++                elif mutation == 'text': box['authored_text'] = full['authored_text'] = 'changed synthetic text'
++                elif mutation == 'empty': box['authored_empty'] = full['authored_empty'] = False
++                elif mutation == 'message': box['maxclass'] = full['maxclass'] = 'message'
++                elif mutation == 'full-inventory': definition['full_inventory'].remove(full)
++                elif mutation == 'full-class': full['runtime_class'] = 'toggle'
++                elif mutation == 'full-port': full['outlets'] += 1
++                elif mutation == 'observer-definition': definition['observer_leaves'].pop()
++                elif mutation == 'observer-port-bool': definition['observer_leaves'][0]['port'] = False
++                elif mutation == 'duplicate-source': definition['boxes'].append(copy.deepcopy(box))
++                elif mutation == 'source-name-collision': definition['boxes'][1]['id'] = box['id'].replace('-', '_')
++                elif mutation == 'container-name': definition['basic_varname'] = 'other_tab'
++                elif mutation == 'container-anchor': definition['basic_anchor'] = 'root/missing'
++                with self.subTest(mutation=mutation), self.assertRaises(ValueError):
++                    lifecycle._root(root, fixture.owner(0), definition, 100, command['step_id'])
++
++    def test_basic_retention_accepts_finite_equal_geometry_spelling(self):
++        lifecycle = load()
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = Evidence(lifecycle, Path(temporary)); command, ack = fixture.close(0)
++            root = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']
++            for box in root['basic_retention']['boxes']:
++                box['rect'] = [float(value) for value in box['rect']]
++            try:
++                lifecycle._root(root, fixture.owner(0), fixture.config['documents'][0], 100, command['step_id'])
++            except ValueError as error:
++                self.fail('Equivalent Basic geometry spelling was refused: ' + str(error))
++
++    def test_basic_retention_accepts_only_source_bound_measured_geometry(self):
++        lifecycle = load()
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = Evidence(lifecycle, Path(temporary)); definition = fixture.config['documents'][0]
++            saved, live = [7, 11, 33, 19], [7, 11, 35, 19]
++            anchor = 'root/synthetic/synthetic-measured'
++            pin = dict(runtime_class='jsui', changed_dimension=2, source_box_sha256='a' * 64,
++                source_text_sha256=sha(b''), saved_rect_sha256=sha(lifecycle._canonical(saved)),
++                live_rect_sha256=sha(lifecycle._canonical(live)))
++            policy = dict(kind='times-observed-geometry-v1', document='times', source_sha256=lifecycle.GEOMETRY_SOURCE,
++                anchor=anchor, runtime_class='jsui', changed_dimension=2, source_box_sha256=pin['source_box_sha256'],
++                source_text_sha256=pin['source_text_sha256'], saved_rect=saved, live_rect=live,
++                saved_rect_sha256=pin['saved_rect_sha256'], live_rect_sha256=pin['live_rect_sha256'],
++                helper_sha256=dict(lifecycle.ROOT_HELPERS), evidence=dict(lifecycle.GEOMETRY_EVIDENCE),
++                saved_incoming_routes=0, saved_outgoing_routes=0)
++            definition['boxes'].append(dict(id='synthetic-measured', anchor=anchor, maxclass='jsui', runtime_class='jsui',
++                runtime_classes=['jsui'], rect=saved, outlets=0, source_box_sha256=pin['source_box_sha256'],
++                source_text_sha256=pin['source_text_sha256'], saved_incoming_routes=0, saved_outgoing_routes=0,
++                observed_geometry_policy=policy))
++            complete_basic_definition(definition)
++            command, ack = fixture.close(0); root = ack['close_diagnostics']['lifecycle_evidence']['root_route_proof']
++            measured = next(box for box in root['basic_retention']['boxes'] if box['varname'] == '__alive_help_synthetic_measured')
++            measured['rect'] = [float(value) for value in live]
++            with patch.object(lifecycle, 'TIMES_GEOMETRY_PINS', {anchor: pin}):
++                lifecycle._root(root, fixture.owner(0), definition, 100, command['step_id'])
++                measured['rect'][0] += 1e-12
++                with self.assertRaises(ValueError):
++                    lifecycle._root(root, fixture.owner(0), definition, 100, command['step_id'])
++
++    def test_basic_retention_revalidates_all_six_forged_histories_after_digest_rebinding(self):
++        lifecycle = load()
++        for index in range(6):
++            with self.subTest(owner=index), tempfile.TemporaryDirectory() as temporary:
++                fixture = V8Evidence(lifecycle, Path(temporary))
++                with fixture.gates():
++                    for current in range(6): fixture.accept(current)
++                    barrier = fixture.barrier()
++                    lifecycle.validate_barrier(fixture.work, fixture.config, barrier, {})
++                    fixture.forge_root(index, lambda root: root['basic_retention']['boxes'][-1].update(maxclass='toggle'))
++                    with self.assertRaises(ValueError): lifecycle.validate_barrier(fixture.work, fixture.config, barrier, {})
++
++    def test_basic_retention_revalidates_prior_graph_at_the_next_close(self):
++        lifecycle = load()
++        with tempfile.TemporaryDirectory() as temporary:
++            fixture = V8Evidence(lifecycle, Path(temporary))
++            with fixture.gates():
++                fixture.accept(0); command, ack = fixture.close(1)
++                fixture.forge_root(0, lambda root: root['basic_retention']['output_routes'].pop(0))
++                with self.assertRaises(ValueError): lifecycle.validate_close(fixture.work, fixture.config, command, ack)
++
+     def test_v8_close_accepts_actual_classes_and_evolved_values_for_both_times_owners(self):
+         lifecycle = load()
+         with tempfile.TemporaryDirectory() as temporary:
+             fixture = V8Evidence(lifecycle, Path(temporary))
+             with fixture.gates():
+                 for index in range(2):
+                     try:
+                         _, ack = fixture.accept(index)
+@@ -386,18 +607,20 @@
+                     if mutation == 'proof-request': changed['request_id'] = True
+                     elif mutation == 'request': witness['request_id'] = True
+                     elif mutation == 'operation': witness['operation_request_id'] = True
+                     elif mutation == 'revision': witness['revision'] = True
+                     elif mutation == 'action-revision': witness['action_revision'] = True
+                     elif mutation == 'definition-owner': definition['lifecycle_owner_inlet'] = False
+                     elif mutation == 'definition-revision': definition['revision'] = True
+                     elif mutation == 'root-count': witness['inventory_coverage']['root']['observed_count'] = 8.0
+-                    elif mutation == 'numeric-count': witness['inventory_coverage']['numeric']['complete_count'] = 10.0
+-                    elif mutation == 'numeric-limit': witness['inventory_coverage']['numeric']['limit'] = 10.0
++                    elif mutation == 'numeric-count': witness['inventory_coverage']['numeric']['complete_count'] = float(
++                        len(definition['boxes']) + len(definition['observer_leaves']))
++                    elif mutation == 'numeric-limit': witness['inventory_coverage']['numeric']['limit'] = float(
++                        len(definition['boxes']) + len(definition['observer_leaves']))
+                     elif mutation == 'candidate-count': witness['numeric'][0]['candidate_count'] = True
+                     elif mutation == 'root-candidate-count': witness['roots'][0]['candidate_count'] = 1.0
+                     with self.subTest(mutation=mutation), self.assertRaises(ValueError):
+                         lifecycle._root(changed, fixture.owner(0), definition, 1, command['step_id'])
+ 
+     def test_v8_second_close_rejects_witnesses_reused_from_the_first_owner(self):
+         lifecycle = load()
+         with tempfile.TemporaryDirectory() as temporary:
+@@ -445,21 +668,21 @@
+                 source_text_sha256='b' * 64, saved_rect_sha256=sha(lifecycle._canonical(saved)),
+                 live_rect_sha256=sha(lifecycle._canonical(live)))
+             policy = dict(kind='times-observed-geometry-v1', document='times', source_sha256=lifecycle.GEOMETRY_SOURCE,
+                 anchor='root/obj-3', runtime_class='js', changed_dimension=3, source_box_sha256='a' * 64,
+                 source_text_sha256='b' * 64, saved_rect=saved, live_rect=live,
+                 saved_rect_sha256=pin['saved_rect_sha256'], live_rect_sha256=pin['live_rect_sha256'],
+                 helper_sha256=dict(lifecycle.ROOT_HELPERS), evidence=dict(lifecycle.GEOMETRY_EVIDENCE),
+                 saved_incoming_routes=0, saved_outgoing_routes=0)
+-            definition['full_inventory'] = [dict(anchor='root/obj-3', maxclass='newobj', runtime_class='js',
++            definition['full_inventory'].insert(0, dict(anchor='root/obj-3', maxclass='newobj', runtime_class='js',
+                 runtime_classes=['js'], rect=saved, source_varname=None, source_box_sha256='a' * 64,
+                 source_text_sha256='b' * 64, saved_incoming_routes=0, saved_outgoing_routes=0,
+-                observed_geometry_policy=policy)]
+-            root['originals'] = [dict(anchor='root/obj-3', varname='', maxclass='js', rect=live)]
++                observed_geometry_policy=policy))
++            root['originals'].insert(0, dict(anchor='root/obj-3', varname='', maxclass='js', rect=live))
+             with patch.object(lifecycle, 'TIMES_GEOMETRY_PINS', {'root/obj-3': pin}):
+                 lifecycle._root(root, owner, definition, 100, command['step_id'])
+                 equivalent = copy.deepcopy(definition)
+                 equivalent['full_inventory'][0]['rect'] = [float(value) for value in saved]
+                 try:
+                     lifecycle._root(root, owner, equivalent, 100, command['step_id'])
+                 except ValueError as error:
+                     self.fail('Equal observed geometry spelling was refused: ' + str(error))

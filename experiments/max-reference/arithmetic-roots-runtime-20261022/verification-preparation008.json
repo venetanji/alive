@@ -1,0 +1,124 @@
+{
+  "canonical_sixteen_file_map_sha256": "4ea3e2265a3a084841b43ec43687885af9184b7629d6a0d184af6e69a7853410",
+  "design_sha256": "79e6d3bd2db09eb87a6d62f02752989c1d571411a2d4afcb8de019866c11943a",
+  "integrated_diff_sha256": "48f400f6eecc30d61b93d3677a21384115d2568f647987a4f219b1077392a299",
+  "integrated_map_sha256": "a6cf92d8bdddfe3f38abcbb8dc5cd227e79ac33dac0164327c07f66f63e7a560",
+  "max_runtime_executed": false,
+  "native_result_sha256": "ce1976dfaecf4494ff876395a3c5df4add4f393f28235343cfc434120200a836",
+  "node": {
+    "command": "node test_helpers.cjs",
+    "exit_code": 0,
+    "failures": [],
+    "preparation007_groups": 10,
+    "preparation008_groups": 11,
+    "prior_controls_pass": true,
+    "session_id": 30690
+  },
+  "obligations": {
+    "empty_checkpoints": 6,
+    "independent_closes": 6,
+    "live_checkpoints": 72,
+    "native_cable_deliveries": 90,
+    "native_typed_receipts": 297,
+    "numeric_states": 504,
+    "operations": 78,
+    "original_emissions": 141,
+    "saved_order_observed": false
+  },
+  "package_sha256": "50fe2a3faa286b89fe96176b2d070be9d619c714441f8e7ab66aa0b60853e4e5",
+  "preparation008_created": false,
+  "preservation": {
+    "all_private_inventories_unchanged": true,
+    "authorized_changed_files": [
+      "arithmetic.py",
+      "lifecycle.py",
+      "test_helpers.cjs",
+      "test_lifecycle.py",
+      "test_preparation.py",
+      "v8-readback.js"
+    ],
+    "controller_frozen": true,
+    "native_exact_five_preserved": true,
+    "other_mapped_files_unchanged": 10,
+    "private_roots": 26,
+    "score_frozen": true
+  },
+  "python": {
+    "command": "python3 -B -m unittest discover -p 'test_*.py'",
+    "exit_code": 0,
+    "seconds": 22.749,
+    "session_id": 45763,
+    "skip_reason": "existing actual-native-evidence test requires explicit external private paths",
+    "tests_passed": 88,
+    "tests_run": 89,
+    "tests_skipped": 1
+  },
+  "qualification_passes_added": 0,
+  "qualified_help_files": 0,
+  "real_source_reconstruction": {
+    "counts": {
+      "boxes": 16,
+      "full_inventory": 20,
+      "observer_leaves": 19,
+      "saved_edges": 8
+    },
+    "helpers": 4,
+    "installed_sources": 3,
+    "policy_counts": {
+      "boxes": {
+        "controller_cohort": 3,
+        "geometry": 1,
+        "v8_numeric": 3,
+        "v8_root": 0
+      },
+      "full_inventory": {
+        "controller_cohort": 3,
+        "geometry": 4,
+        "v8_numeric": 3,
+        "v8_root": 2
+      }
+    },
+    "private_writes": 0,
+    "projection_sha256": "ba8d3d1ec23265bd75f16641fa95668466888d4033811fda95bcdef757da600f",
+    "revisions": [
+      {
+        "arithmetic_pass": true,
+        "independent_lifecycle_pass": true,
+        "owner_inlet": 2,
+        "revision": 1
+      },
+      {
+        "arithmetic_pass": true,
+        "independent_lifecycle_pass": true,
+        "owner_inlet": 3,
+        "revision": 2
+      }
+    ]
+  },
+  "schema": "arithmetic-preparation008-source-verification-v1",
+  "score_sha256": "95012c9d56bc898d32b055d2f6d7fc925cac19afc4a18af254f7a3c871b67afb",
+  "status": "INTEGRATED_SOURCE_VERIFICATION_PASSED",
+  "syntax": {
+    "all_pass": true,
+    "bytecode_written": false,
+    "python_files": [
+      "arithmetic.py",
+      "compare.py",
+      "lifecycle.py",
+      "native_score.py",
+      "prepare-runtime.py",
+      "run-runtime.py",
+      "test_comparison.py",
+      "test_lifecycle.py",
+      "test_native_score.py",
+      "test_preparation.py",
+      "test_runner.py"
+    ],
+    "runtime_javascript_files": [
+      "v8-readback.js",
+      "controller.js",
+      "lifecycle-observer.js"
+    ]
+  },
+  "total_help_files": 2103
+}

@@ -1,0 +1,552 @@
+{
+  "fixture": "list-cold",
+  "labels": [
+    "zl.iter:0",
+    "zl.iter:1",
+    "zl.slice:0",
+    "zl.slice:1",
+    "zl.rot:0",
+    "zl.rot:1",
+    "list3:0",
+    "list5:0",
+    "scalar-first:0",
+    "list1-first:0",
+    "list-empty:0",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$unused",
+    "$feedback",
+    "$delivery"
+  ],
+  "targets": [
+    {
+      "id": "obj-1",
+      "key": "zl.iter",
+      "creation": "zl.iter 1",
+      "outlets": 2
+    },
+    {
+      "id": "obj-17",
+      "key": "zl.slice",
+      "creation": "zl.slice 1",
+      "outlets": 2
+    },
+    {
+      "id": "obj-33",
+      "key": "zl.rot",
+      "creation": "zl.rot 1",
+      "outlets": 2
+    },
+    {
+      "id": "obj-49",
+      "key": "list3",
+      "creation": "iter",
+      "outlets": 1
+    },
+    {
+      "id": "obj-53",
+      "key": "list5",
+      "creation": "iter",
+      "outlets": 1
+    },
+    {
+      "id": "obj-57",
+      "key": "scalar-first",
+      "creation": "iter",
+      "outlets": 1
+    },
+    {
+      "id": "obj-61",
+      "key": "list1-first",
+      "creation": "iter",
+      "outlets": 1
+    },
+    {
+      "id": "obj-65",
+      "key": "list-empty",
+      "creation": "iter",
+      "outlets": 1
+    }
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_1",
+      "message": "list 2 apple",
+      "destination": "obj-1",
+      "inlet": 1,
+      "case": "list 2 apple"
+    },
+    {
+      "id": "event_2",
+      "message": "bang",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_3",
+      "message": "list 2.9 8",
+      "destination": "obj-1",
+      "inlet": 1,
+      "case": "list 2.9 8"
+    },
+    {
+      "id": "event_4",
+      "message": "bang",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_5",
+      "message": "2.9",
+      "destination": "obj-1",
+      "inlet": 1,
+      "case": "2.9"
+    },
+    {
+      "id": "event_6",
+      "message": "bang",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_7",
+      "message": "-2.9",
+      "destination": "obj-1",
+      "inlet": 1,
+      "case": "-2.9"
+    },
+    {
+      "id": "event_8",
+      "message": "bang",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_9",
+      "message": "symbol 3",
+      "destination": "obj-1",
+      "inlet": 1,
+      "case": "symbol 3"
+    },
+    {
+      "id": "event_10",
+      "message": "bang",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_11",
+      "message": "apple 2",
+      "destination": "obj-1",
+      "inlet": 1,
+      "case": "apple 2"
+    },
+    {
+      "id": "event_12",
+      "message": "bang",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_13",
+      "message": "list apple 2",
+      "destination": "obj-1",
+      "inlet": 1,
+      "case": "list apple 2"
+    },
+    {
+      "id": "event_14",
+      "message": "bang",
+      "destination": "obj-1",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_15",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_16",
+      "message": "list 2 apple",
+      "destination": "obj-17",
+      "inlet": 1,
+      "case": "list 2 apple"
+    },
+    {
+      "id": "event_17",
+      "message": "bang",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_18",
+      "message": "list 2.9 8",
+      "destination": "obj-17",
+      "inlet": 1,
+      "case": "list 2.9 8"
+    },
+    {
+      "id": "event_19",
+      "message": "bang",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_20",
+      "message": "2.9",
+      "destination": "obj-17",
+      "inlet": 1,
+      "case": "2.9"
+    },
+    {
+      "id": "event_21",
+      "message": "bang",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_22",
+      "message": "-2.9",
+      "destination": "obj-17",
+      "inlet": 1,
+      "case": "-2.9"
+    },
+    {
+      "id": "event_23",
+      "message": "bang",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_24",
+      "message": "symbol 3",
+      "destination": "obj-17",
+      "inlet": 1,
+      "case": "symbol 3"
+    },
+    {
+      "id": "event_25",
+      "message": "bang",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_26",
+      "message": "apple 2",
+      "destination": "obj-17",
+      "inlet": 1,
+      "case": "apple 2"
+    },
+    {
+      "id": "event_27",
+      "message": "bang",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_28",
+      "message": "list apple 2",
+      "destination": "obj-17",
+      "inlet": 1,
+      "case": "list apple 2"
+    },
+    {
+      "id": "event_29",
+      "message": "bang",
+      "destination": "obj-17",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_30",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-33",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_31",
+      "message": "list 2 apple",
+      "destination": "obj-33",
+      "inlet": 1,
+      "case": "list 2 apple"
+    },
+    {
+      "id": "event_32",
+      "message": "bang",
+      "destination": "obj-33",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_33",
+      "message": "list 2.9 8",
+      "destination": "obj-33",
+      "inlet": 1,
+      "case": "list 2.9 8"
+    },
+    {
+      "id": "event_34",
+      "message": "bang",
+      "destination": "obj-33",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_35",
+      "message": "2.9",
+      "destination": "obj-33",
+      "inlet": 1,
+      "case": "2.9"
+    },
+    {
+      "id": "event_36",
+      "message": "bang",
+      "destination": "obj-33",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_37",
+      "message": "-2.9",
+      "destination": "obj-33",
+      "inlet": 1,
+      "case": "-2.9"
+    },
+    {
+      "id": "event_38",
+      "message": "bang",
+      "destination": "obj-33",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_39",
+      "message": "symbol 3",
+      "destination": "obj-33",
+      "inlet": 1,
+      "case": "symbol 3"
+    },
+    {
+      "id": "event_40",
+      "message": "bang",
+      "destination": "obj-33",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_41",
+      "message": "apple 2",
+      "destination": "obj-33",
+      "inlet": 1,
+      "case": "apple 2"
+    },
+    {
+      "id": "event_42",
+      "message": "bang",
+      "destination": "obj-33",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_43",
+      "message": "list apple 2",
+      "destination": "obj-33",
+      "inlet": 1,
+      "case": "list apple 2"
+    },
+    {
+      "id": "event_44",
+      "message": "bang",
+      "destination": "obj-33",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_45",
+      "message": "list 1 2 3",
+      "destination": "obj-49",
+      "inlet": 0,
+      "case": "list 1 2 3"
+    },
+    {
+      "id": "event_46",
+      "message": "foo 1 2 3",
+      "destination": "obj-49",
+      "inlet": 0,
+      "case": "foo 1 2 3"
+    },
+    {
+      "id": "event_47",
+      "message": "bang",
+      "destination": "obj-49",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_48",
+      "message": "list 1 2 3 4 5",
+      "destination": "obj-53",
+      "inlet": 0,
+      "case": "list 1 2 3 4 5"
+    },
+    {
+      "id": "event_49",
+      "message": "foo 1 2 3 4 5",
+      "destination": "obj-53",
+      "inlet": 0,
+      "case": "foo 1 2 3 4 5"
+    },
+    {
+      "id": "event_50",
+      "message": "bang",
+      "destination": "obj-53",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_51",
+      "message": "8",
+      "destination": "obj-57",
+      "inlet": 0,
+      "case": "8"
+    },
+    {
+      "id": "event_52",
+      "message": "foo 1",
+      "destination": "obj-57",
+      "inlet": 0,
+      "case": "foo 1"
+    },
+    {
+      "id": "event_53",
+      "message": "bang",
+      "destination": "obj-57",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_54",
+      "message": "list 8",
+      "destination": "obj-61",
+      "inlet": 0,
+      "case": "list 8"
+    },
+    {
+      "id": "event_55",
+      "message": "foo 1",
+      "destination": "obj-61",
+      "inlet": 0,
+      "case": "foo 1"
+    },
+    {
+      "id": "event_56",
+      "message": "bang",
+      "destination": "obj-61",
+      "inlet": 0,
+      "case": "bang"
+    },
+    {
+      "id": "event_57",
+      "message": "list 1 2 3",
+      "destination": "obj-65",
+      "inlet": 0,
+      "case": "list 1 2 3"
+    },
+    {
+      "id": "event_58",
+      "message": "list",
+      "selector": "list",
+      "atoms": [],
+      "destination": "obj-65",
+      "inlet": 0,
+      "direct": true,
+      "case": "direct list"
+    },
+    {
+      "id": "event_59",
+      "message": "foo 1 2 3 4",
+      "destination": "obj-65",
+      "inlet": 0,
+      "case": "foo 1 2 3 4"
+    },
+    {
+      "id": "event_60",
+      "message": "bang",
+      "destination": "obj-65",
+      "inlet": 0,
+      "case": "bang"
+    }
+  ],
+  "drain_ms": 100
+}
