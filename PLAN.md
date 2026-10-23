@@ -96,7 +96,7 @@ lifecycle/packaging/CI `7b5e76c`. The actual native journey created a session,
 loaded the source device twice, edited note duration/velocity and both lanes,
 played, changed bases/mixer, closed/reopened the real hosted graph editor,
 saved/reopened/played, preserved playback on missing-device Open, and removed a
-stopped device. A 25.045-second software capture is finite, nonzero and exactly
+stopped device. A 25.461-second software capture is finite, nonzero and exactly
 equal across the authored duplicated-mono stereo channels. Scoped backend and
 frontend reviews have no remaining Critical/Important implementation findings.
 Graph structure is read-only while hosted; stopped source editing and Replace
@@ -106,12 +106,12 @@ are explicit. New defaults to the packaged usable example, with one/two tracks.
 
 - [x] Reconcile refs; preserve UI/native/Rust/package regression gates and add
   headless session tests to CI.
-- [ ] At least 600 seconds of native playback with repeated transport/edit
+- [x] At least 600 seconds of native playback with repeated transport/edit
   operations; record errors, resource growth and only observable underruns,
   hardware/backend/rate/buffer and software-versus-physical qualification.
-- [ ] Review branch; push only the new branch; open/update a draft PR with
-  commands, screenshots, evidence and limitations; inspect final-commit CI.
-- [ ] Audit every goal requirement against current evidence. A reproducible
+- [x] Review branch; push only the new branch; open/update draft PR #6 with
+  commands, screenshots, evidence and limitations; wire all required CI gates.
+- [x] Audit every goal requirement against current evidence. A reproducible
   architectural blocker gets a working slice and narrow decision.
 
 Current local gates: full native adapter/callback guards, 150 Rust tests (two
@@ -120,9 +120,20 @@ full recorded-reference/contracts gate and 14 package/notice tests pass. The
 fresh headless CLI includes actual saved-device boundary observations and all
 transport/isolation/round-trip checks. Pending-history admission, application
 Quit generations and scoped Stop regressions remain passing. A final native
-600-playing-second run retains stream metrics before every I/O reset and
-samples process-tree resources; completion evidence and final pushed CI remain
-pending. Prior standalone instrument evidence below is not session acceptance.
+600-playing-second run completed 602.551 playing seconds and 47 edit/transport
+cycles. All 64 observations show zero stream errors/failures/rejections; the
+840.576-second software capture is finite and nonzero. Process-tree PSS changed
+489751 to 540315 KiB (+49.4 MiB), descriptors 202 to 164, threads 128 to 105;
+after initial retirement, all subsequent samples have three processes.
+The first run exposed retained WebKit workers; a reviewed Linux teardown hook
+breaks pinned Wry's IPC reference cycle. The eight-reopen regression now retains
+one worker, versus nine before the fix, and runs in CI. Source, capture hashes,
+screenshots, resource ranges and the requirement audit are retained in
+`experiments/alive-session-20261024/`. Raw PCM stays local; a four-second WAV
+excerpt is retained. No physical audio or CPAL underrun count is claimed.
+Final pushed-commit remote CI is maintained in draft PR #6 and must be green
+before handoff; this ledger does not substitute an earlier revision's results.
+Prior standalone instrument evidence below is not session acceptance.
 
 ## Reusable Subtractive Instrument: Completed Foundation
 
@@ -145,8 +156,9 @@ stable identifier, MIDI entry node, exact stereo output layout, seven parameter
 bindings and bounded presets. A compact Perform panel operates those bindings;
 its on-screen keyboard sends MIDI note pairs through the same entry. A new
 instance creates an independent native root. A headless host harness loads the
-same example to prove processing without an editor. Alive session hosting remains
-unimplemented and will be labeled explicitly.
+same example to prove processing without an editor. That foundation did not
+implement Alive session hosting; the native host and acceptance evidence are
+tracked in the active implementation plan above.
 
 Alternatives considered: extending the old fixed sine/ASR bank would leave the
 synth unauthorable; unrestricted Faust/JIT patch compilation adds unnecessary

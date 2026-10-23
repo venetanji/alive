@@ -19,6 +19,10 @@ cannot rearm voices. Intervals are half-open and events at the right endpoint
 belong to the next interval. At a shared frame, termination precedes automation,
 which precedes note-on. Preparation converts beat positions to integer frames
 using round-to-nearest; native events carry exact frame offsets thereafter.
+Panel/editor, mixer and transport commands enter a bounded control queue and
+take effect at the next callback boundary. They do not claim a UI wall-clock
+timestamp or sample-accurate physical controller ingress. Clip/automation
+events within that callback retain their exact scheduled sample positions.
 
 Ultra's AOT Faust kernels execute in its native signal evaluator, alongside the
 existing Clockwork guest, not inside it. The guest's causal adapter adds 64
@@ -59,6 +63,8 @@ speaker layouts. Four discrete voice lanes are internal instrument data, not
 speakers. Any mono-to-stereo route is explicit, never inferred from device IDs.
 The PR #4 manifest declares a stereo output; authored mono primitives and their
 explicit join remain real graph edges. Wider layouts are rejected.
+This first device profile requires a declared stereo output; it does not
+implicitly duplicate an arbitrary mono device at the track boundary.
 
 Device loading/removal and graph structure changes require stopped transport
 and stopped callback ownership during preparation/application. A supported live

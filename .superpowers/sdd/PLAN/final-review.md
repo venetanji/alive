@@ -113,3 +113,35 @@ end-to-end MIDI/analog latency and Windows runtime remain untested. The known
 JACK diagnostic's legacy +64 latency declaration is documented separately from
 Alive's CPAL/native profile. Pending documentation, PR delivery and remote CI
 are already tracked by the parent and are not new implementation findings.
+
+## Final Receipt Addendum
+
+Independently inspected the retained post-fix receipts in
+`experiments/alive-session-20261024/` for runtime `e841f6f`. Local software
+endurance acceptance is now supported: 602.551206 playing seconds across 47
+edit/transport cycles, with all 47 consecutively numbered pre-Stop/possible-Apply
+observations present. Those snapshots show playing transport and increasing
+absolute frames; all 64 observations show zero reported CPAL stream errors,
+failure flags and rejected commands. Quit Cancel preserves the session and Quit
+Discard exits. This closes the earlier counter-reset observation requirement.
+
+The 840.576-second capture contains 40,347,648 stereo frames with nonzero peak
+0.3550373316. Independently hashed `/tmp/alive-native-accepted/endurance.f32`
+and verified its byte count against the receipt; both match. Silent bins occur
+in this journey with deliberate Stops/Apply and are not described as continuous
+uninterrupted sound. `verify.py` passes for all 15 retained assets/source
+identities and acceptance assertions; it does not replay native execution.
+
+Recomputed all resource-summary start/end/min/max/delta fields from the 17 raw
+samples: RSS +28,824 KiB, PSS +50,564 KiB, descriptors 202 to 164 and threads
+128 to 105. Every sample after initial child retirement has three processes.
+The separate eight-reopening evidence retains one WebKit worker throughout
+after the teardown fix, compared with nine before it. Positive memory growth
+and concurrent-process/sharing effects are explicitly recorded; no zero-growth
+or general no-leak conclusion is warranted.
+
+No substantive local acceptance evidence gap remains in this reviewed scope.
+Qualification remains private Xvfb/software PipeWire on Linux, Ryzen 9 5900HS,
+48 kHz and observed 512-frame buffers; physical audio/deadlines/latency and
+Windows remain unmeasured. Final remote CI is still pending and is not approved
+or claimed passing by this receipt review. Only this addendum was edited.

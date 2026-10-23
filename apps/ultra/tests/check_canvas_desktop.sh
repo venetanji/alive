@@ -53,10 +53,15 @@ if [[ ${ULTRA_TEST_PRIVATE_SESSION:-} != 1 ]]; then
     done
     test -S "$ultra_runtime_dir/ultra-audio-test"
     ln -s ultra-audio-test "$ultra_runtime_dir/pipewire-0"
+    case "$(wireplumber --version)" in
+      *"0.4."*) ultra_policy_args=(-c policy.conf) ;;
+      *) ultra_policy_args=(-p policy) ;;
+    esac
     WIREPLUMBER_CONFIG_DIR=/usr/share/wireplumber dbus-run-session -- \
-      wireplumber -p policy >"$ULTRA_TEST_OUTPUT_DIR/policy.log" 2>&1 &
+      wireplumber "${ultra_policy_args[@]}" >"$ULTRA_TEST_OUTPUT_DIR/policy.log" 2>&1 &
     ultra_policy_pid=$!
     sleep .3
+    kill -0 "$ultra_policy_pid"
   env -u WAYLAND_DISPLAY dbus-run-session -- xvfb-run -a \
     -s '-screen 0 1280x840x24 -nolisten tcp' bash "$0"
   exit

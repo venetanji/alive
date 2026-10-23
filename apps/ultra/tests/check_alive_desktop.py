@@ -121,10 +121,13 @@ def choose_file(button, title, path):
 
 def start_capture(name):
     path = ui.output / (name + '.f32')
-    process = subprocess.Popen([
-        'pw-cat', '--record', '--raw', '--rate=48000', '--format=f32', '--channels=2',
-        '--target=0', '--properties={ node.name = Alive-Session-Capture }', str(path)],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    # Older pw-cat writes raw PCM to stdout without accepting --raw.
+    raw = ['--raw'] if '--raw' in subprocess.check_output(['pw-cat', '--help'], text=True) else []
+    with path.open('wb') as output:
+        process = subprocess.Popen([
+            'pw-cat', '--record', *raw, '--rate=48000', '--format=f32', '--channels=2',
+            '--target=0', '--properties={ node.name = Alive-Session-Capture }', '-'],
+            stdout=output, stderr=subprocess.PIPE, text=True)
     for _ in range(50):
         if 'Alive-Session-Capture:input_FL' in subprocess.check_output(['pw-link', '-i'], text=True):
             break
@@ -139,7 +142,7 @@ def finish_capture(capture):
     process, path = capture
     process.terminate()
     stdout, stderr = process.communicate(timeout=8)
-    assert not stderr, stdout + stderr
+    assert not stderr, (stdout or '') + stderr
     peaks, digest, frames, unequal = [], hashlib.sha256(), 0, 0
     with path.open('rb') as stream:
         while block := stream.read(48000 * 2 * 4):

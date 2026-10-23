@@ -49,14 +49,21 @@ does not expose an additional audio-settings panel.
 
 ```sh
 bash apps/ultra/tests/ci/check-native.sh
-# With the pinned Rust/Cargo environment used by build.sh:
-cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
+env PATH="$PWD/experiments/clockwork-faust/.deps/rust/bin:$PATH" \
+  CARGO_HOME="$PWD/experiments/clockwork-faust/.deps/cargo" \
+  ULTRA_NATIVE_LIB_DIR="$PWD/apps/ultra/build" \
+  LD_LIBRARY_PATH="$PWD/apps/ultra/build" \
+  cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
 env -u DISPLAY -u WAYLAND_DISPLAY \
   apps/ultra/src-tauri/target/release/ultra --session-probe \
   apps/alive/examples/two-instruments.alive /tmp/alive-session-render
 ULTRA_TEST_ALIVE=1 ALIVE_ENDURANCE_SECONDS=600 \
   ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_desktop.py" \
   bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-session-desktop
+ULTRA_TEST_ALIVE=1 \
+  ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_editor_resources.py" \
+  bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-editor-resources
+python3 experiments/alive-session-20261024/verify.py
 ```
 
 The desktop harness creates its own display, bus, runtime directory and software
@@ -65,11 +72,15 @@ Without `ALIVE_ENDURANCE_SECONDS`, CI runs the same native journey without the
 ten-minute sustained phase. Reports preserve actual stream errors, backend,
 rate/buffer, captured audio and process-tree resource samples. CPAL does not
 expose an underrun counter; a zero stream-error count is not an xrun claim.
+The separate editor regression checks eight close/reopen cycles against the
+real webview process tree. Linux editors disconnect the pinned Wry IPC handler
+on GTK destruction to release its strong view/message-manager reference cycle.
 
 ## Supported Profile
 
 One or two devices, four voices per device, 48 kHz, explicit mono/stereo channel
-bundles, one shared clip length, up to 128 notes and 256 automation points per
+bundles, declared stereo device/master output, one shared clip length, up to
+128 notes and 256 automation points per
 track. Session length is at most 256 beats and 512 seconds. Scheduled events,
 command queues and per-callback work are bounded. Structural changes require
 stopped transport and preparation outside the callback.

@@ -12,14 +12,14 @@
   "physical_audio": false,
   "underruns": "not exposed by CPAL; no count claimed",
   "walkthrough": {
-    "frames": 1226752,
-    "seconds": 25.557333333333332,
+    "frames": 1222144,
+    "seconds": 25.461333333333332,
     "peak": 0.3726453483104706,
     "one_second_peaks": [
       0.27629685401916504,
       0.3726453483104706,
       0.22786815464496613,
-      0.1961727887392044,
+      0.1840459555387497,
       0.24701698124408722,
       0.3282965123653412,
       0.35288915038108826,
@@ -44,7 +44,7 @@
       0.35288915038108826
     ],
     "unequal_stereo_samples_after_setup": 0,
-    "sha256": "10e250d0e1634549ccf554ff804fd98b11b342bde18c068718bdc5c4b09499e2",
+    "sha256": "270fa6039ecaff966e400111740c61a319f874fc5ce0051a9b8c2c9e3a30c524",
     "path": "native-walkthrough.f32",
     "physical_audio": false
   },
@@ -57,32 +57,32 @@
     "Audio device": "default_output",
     "Audio sample rate": "48000",
     "Audio buffer frames": "512",
-    "Audio callbacks": "810",
+    "Audio callbacks": "809",
     "Audio stream errors": "0",
     "Audio failed": "false",
     "Audio status": "Audio output is running.",
     "Transport playing": "true",
-    "Absolute frame": "1325568",
+    "Absolute frame": "1324544",
     "Rejected commands": "0",
     "Native generation": "33",
     "Track 1 active voices": "3",
-    "Track 2 active voices": "4"
+    "Track 2 active voices": "3"
   },
   "operations": [
     {
       "action": "two loaded devices, notes/automation prepared, live base/mixer, editor closed/reopened",
-      "monotonic": 24388.275571482,
+      "monotonic": 27113.383290871,
       "audio": {
         "Audio backend": "PipeWire",
         "Audio device": "default_output",
         "Audio sample rate": "48000",
         "Audio buffer frames": "512",
-        "Audio callbacks": "953",
+        "Audio callbacks": "948",
         "Audio stream errors": "0",
         "Audio failed": "false",
         "Audio status": "Audio output is running.",
         "Transport playing": "true",
-        "Absolute frame": "535040",
+        "Absolute frame": "537088",
         "Rejected commands": "0",
         "Native generation": "23",
         "Track 1 active voices": "3",
@@ -91,22 +91,22 @@
     },
     {
       "action": "saved/reopened/playing; missing device rejected preserving session",
-      "monotonic": 24402.169717364,
+      "monotonic": 27127.178638956,
       "audio": {
         "Audio backend": "PipeWire",
         "Audio device": "default_output",
         "Audio sample rate": "48000",
         "Audio buffer frames": "512",
-        "Audio callbacks": "519",
+        "Audio callbacks": "526",
         "Audio stream errors": "0",
         "Audio failed": "false",
         "Audio status": "Audio output is running.",
         "Transport playing": "true",
-        "Absolute frame": "1181184",
+        "Absolute frame": "1176064",
         "Rejected commands": "0",
         "Native generation": "32",
         "Track 1 active voices": "3",
-        "Track 2 active voices": "3"
+        "Track 2 active voices": "4"
       }
     }
   ],
