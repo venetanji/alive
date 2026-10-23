@@ -43,3 +43,11 @@ The lockfile also fixes tauri-runtime 2.8.0 and tauri-runtime-wry 2.8.1 to the
 Tauri 2.8.5 release's compatible API pair. An initial unconstrained transitive
 resolution selected mismatched runtime versions and failed compilation; the
 checked-in lockfile is the tested build, not arbitrary latest minor versions.
+
+
+fast_float 8.0.2, revision 50a80a73ab2ab256ba1c3bf86923ddd8b4202bc7:
+https://github.com/fastfloat/fast_float/tree/50a80a73ab2ab256ba1c3bf86923ddd8b4202bc7
+Vendored unmodified include/fast_float headers under src-tauri/native/vendor/fast_float.
+Used under the MIT option; upstream Apache-2.0 and Boost alternatives are retained.
+Locale-independent, allocation-free numeric parsing avoids libc++ availability gaps.
+See that directory's upstream LICENSE-* texts and PROVENANCE.md.

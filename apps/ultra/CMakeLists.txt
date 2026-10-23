@@ -27,3 +27,13 @@ add_executable(ultra-diagnostic src-tauri/native/diagnostic.cpp)
 target_link_libraries(ultra-diagnostic PRIVATE ultra_native)
 set_target_properties(ultra-diagnostic PROPERTIES BUILD_RPATH "$ORIGIN" INSTALL_RPATH "$ORIGIN")
 
+
+# A real executable test on each native runner, including libc++/MSVC parsing.
+add_executable(ultra-parser-test tests/portable_parser_test.cpp)
+set_target_properties(ultra-parser-test PROPERTIES
+ RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<0:>")
+if(MSVC)
+ target_compile_options(ultra-parser-test PRIVATE /UNDEBUG)
+else()
+ target_compile_options(ultra-parser-test PRIVATE -UNDEBUG)
+endif()

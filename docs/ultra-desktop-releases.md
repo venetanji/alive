@@ -43,7 +43,9 @@ Tauri CLI 2.8.4, pinned Cargo.lock, SHA256-verified Clockwork revision
 The macOS toolchain must support C++20 jthread/stop_token; Clockwork checks this
 at configure time. Native runners avoid mismatching the Clockwork Rust archive
 architecture with the C++/Tauri target. No ARM Linux/Windows or universal Mac
-binary is claimed.
+binary is claimed. Vendored fast_float 8.0.2 supplies allocation-free, locale-
+independent decimal parsing without Apple libc++ floating-point availability
+constraints. Its exact upstream revision and license texts are retained.
 
 Local packaging on an equivalent host, after installing the platform's Tauri
 prerequisites and pinned build tools:

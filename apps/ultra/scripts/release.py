@@ -53,7 +53,7 @@ def version(tag=None):
 
 def bundle_config(target):
     system, _, library, _ = TARGETS[target]
-    bundle = {'active': True, 'resources': {'../../../LICENSE': 'licenses/Alive-LICENSE', '../THIRD-PARTY.txt': 'licenses/THIRD-PARTY.txt', '../THIRD-PARTY-CRATES.json': 'licenses/THIRD-PARTY-CRATES.json'}, 'icon': ['icons/release/icon.ico', 'icons/release/icon.icns', 'icons/release/128x128.png']}
+    bundle = {'active': True, 'resources': {'../../../LICENSE': 'licenses/Alive-LICENSE', '../THIRD-PARTY.txt': 'licenses/THIRD-PARTY.txt', '../THIRD-PARTY-CRATES.json': 'licenses/THIRD-PARTY-CRATES.json', 'native/vendor/fast_float/LICENSE-MIT': 'licenses/fast_float-MIT'}, 'icon': ['icons/release/icon.ico', 'icons/release/icon.icns', 'icons/release/128x128.png']}
     if system == 'Darwin':
         # Tauri copies/signs this nested library in Contents/Frameworks.
         bundle['macOS'] = {'frameworks': ['../build/' + library], 'minimumSystemVersion': '14.0'}
@@ -182,7 +182,8 @@ def main():
     if system == 'Darwin':
         configure += ['-DCMAKE_OSX_DEPLOYMENT_TARGET=14.0']
     run(*configure)
-    run('cmake', '--build', build, '--config', 'Release', '--target', 'ultra_native', '--parallel', os.environ.get('JOBS', '2'))
+    run('cmake', '--build', build, '--config', 'Release', '--target', 'ultra_native', 'ultra-parser-test', '--parallel', os.environ.get('JOBS', '2'))
+    run(build/('ultra-parser-test.exe' if system == 'Windows' else 'ultra-parser-test'))
     env = os.environ.copy()
     env['ULTRA_NATIVE_LIB_DIR'] = str(build)
     env['PATH'] = str(build) + os.pathsep + env['PATH']
@@ -194,10 +195,13 @@ def main():
     run('python', APP/'scripts/smoke_native.py', build/library, env=env)
     out.mkdir(parents=True, exist_ok=True)
     shutil.copy2(build/library, out/library)
-    run('cargo', 'test', '--manifest-path', APP/'src-tauri/Cargo.toml', '--release', '--locked', '--target', args.target, env=env)
     # Reuse the existing original icon, not any Max/Ableton assets.
     cli = ['node', APP/'scripts/tooling/node_modules/@tauri-apps/cli/tauri.js']
     run(*cli, 'icon', 'src-tauri/icons/icon.png', '--output', 'src-tauri/icons/release', cwd=APP, env=env)
+    # tauri-build embeds the default ICO even when running cargo test before bundling.
+    if system == 'Windows':
+        shutil.copy2(APP/'src-tauri/icons/release/icon.ico', APP/'src-tauri/icons/icon.ico')
+    run('cargo', 'test', '--manifest-path', APP/'src-tauri/Cargo.toml', '--release', '--locked', '--target', args.target, env=env)
     config = APP/'src-tauri/tauri.release.generated.json'
     config.write_text(json.dumps(bundle_config(args.target), indent=2) + '\n')
     bundles = {'Linux': 'deb,appimage', 'Darwin': 'app,dmg', 'Windows': 'nsis'}[system]
