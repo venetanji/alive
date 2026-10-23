@@ -2,7 +2,87 @@
 
 Updated: 2026-10-24. Combined release integration includes packaging/audit PR #2, reusable-instrument PR #4 at `ab8b0e2`, and preserved validation PR #5 at `8da5fd2`. The 0.1.0-rc.1 candidate fixes the remaining native Quit and pending-history admission findings before final combined CI. Earlier evidence below retains its original source revisions and hardware limits.
 
-## Reusable Subtractive Instrument: Active Work
+## Alive Session: Active Implementation Plan
+
+**Goal:** A saved, reopenable Alive session with two independent Ultra devices,
+editable repeating note clips, cutoff/level automation, mixer, and optional Ultra
+editors whose lifetimes do not own DSP.
+
+**Foundation:** Isolated `feat/alive-session-host` starts at combined integration
+`bf4301e570068241fc33b442dd50018aacb60945`, fetched from
+`origin/integration/ultra-rc1-review` (also merged PR #5 on the release branch).
+It contains PR #4 at `ab8b0e250044ad2d2abe23490969337ee52d2e45` and the
+guarded Quit/history fixes. PR #2 and PR #4 remain open against main. Do not edit
+or merge those branches; reconcile refs again before final testing.
+
+**Architecture:** Reuse the version-1 Ultra manifest, saved graph and native
+Faust evaluator. Rust validates/persists sessions and prepares fixed schedules;
+the existing single CPAL callback owns transport, device execution and mixing.
+A compact Alive view shares the Rust/Tauri executable and opens Ultra editors
+on demand. There is no mandatory per-track webview or process.
+
+**Spec:** The user's complete goal and `apps/alive/SESSION_CONTRACT.md`.
+This remains the sole curated plan, executed in complete vertical slices.
+
+Global constraints: 48 kHz; at most two tracks and four voices per device;
+buffers 1..1024 frames; explicit mono/stereo bundles only; no callback allocation,
+free, blocking mutex, compilation or UI dependence. Preserve existing regressions
+and notices. No merges, tags, releases, deployments, credentials or environment
+setting changes. Existing integration remains a dependency until main contains it.
+
+### Task 1: Headless Timing And Device Host
+
+- [x] Read local instructions/product/manifest/probe; fetch refs; isolate branch.
+- [ ] Add bounded session API/runtime in
+  `apps/ultra/src-tauri/native/alive_session.h` and `.hpp`; integrate with
+  `backend.cpp`. Consume prepared Ultra roots; provide transport, schedule,
+  mixer and meters on the same audio clock.
+- [ ] First failing `alive_session_test.cpp`: events at `0,1,31,63,64,127`,
+  comparing `render({1}) == render({32,64,127,1024})` without forcing callback
+  splits at event boundaries. Cover isolation, stop/seek/loop/removal, overload,
+  parameter ownership and mute/solo; guard callback allocation/free/locks.
+- [ ] Measure native-signal versus legacy Clockwork event placement; distinguish
+  intrinsic latency from deliberate buffering. Reject unsupported mixed paths.
+- [ ] Run native regression gates and commit the working slice before UI work.
+
+### Task 2: Session Persistence And Device Admission
+
+- [ ] Add Rust model/loader/FFI in `apps/ultra/src-tauri/src/session/`. Schema
+  stores path/id/version, base parameters, notes/durations/velocity, automation,
+  tempo/loop and mixer. Prepare all dependencies before replacing active state.
+- [ ] Add `apps/alive/examples/two-instruments.alive`, referencing the saved
+  `apps/ultra/examples/subtractive.ultra` twice without copying patch or DSP.
+- [ ] Test `decode(encode(session)) == session`, missing/incompatible dependency
+  rollback, bounds and invalid bindings. Add display-free `--session-probe`
+  rendering this saved example to WAV and a machine-readable report.
+- [ ] Run Rust/headless checks and commit the complete persistence slice.
+
+### Task 3: Minimal Native Interface And Editor Lifetime
+
+- [ ] Add transport/two tracks, editable notes and automation, manifest-driven
+  controls, gain/mute/solo/meters in the existing compact visual language.
+- [ ] Open Ultra editor for a hosted device; bound parameter edits are live;
+  close/reopen preserves DSP and playback. Structure uses stopped prepare/apply.
+- [ ] Atomic Save/Open and unsaved-state handling; full real Tauri walkthrough
+  with playback capture and screenshots, including save/reopen/play again.
+
+### Task 4: Acceptance And Draft PR
+
+- [ ] Reconcile refs; preserve UI/native/Rust/package regression gates and add
+  headless session tests to CI.
+- [ ] At least 600 seconds of native playback with repeated transport/edit
+  operations; record errors, resource growth and only observable underruns,
+  hardware/backend/rate/buffer and software-versus-physical qualification.
+- [ ] Review branch; push only the new branch; open/update a draft PR with
+  commands, screenshots, evidence and limitations; inspect final-commit CI.
+- [ ] Audit every goal requirement against current evidence. A reproducible
+  architectural blocker gets a working slice and narrow decision.
+
+Current evidence: clean combined-integration baseline; native build passes
+(`/tmp/alive-host-baseline-build.log`); native regression gate running.
+Prior instrument evidence below is not session acceptance evidence.
+
+## Reusable Subtractive Instrument: Completed Foundation
 
 Goal: author, play, save/reopen and instantiate a complete four-voice subtractive
 instrument through the existing canvas. Deliver a tested draft PR with an original
