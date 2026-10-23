@@ -17,7 +17,7 @@ const NUMBER_LIMIT: f64 = 100_000.;
 #[path = "canvas_hierarchy.rs"]
 mod hierarchy;
 #[path = "canvas_device.rs"]
-mod device;
+pub(crate) mod device;
 
 // Keep these C-layout types in sync with native/patch_graph.h. Tests pin sizes.
 #[repr(C)]

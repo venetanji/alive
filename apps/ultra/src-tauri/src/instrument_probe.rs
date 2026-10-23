@@ -96,7 +96,7 @@ fn remove_input(scope: &mut Value, id: u32) -> bool {
     let Some(nodes)=scope.get_mut("nodes").and_then(Value::as_array_mut) else { return false; };
     nodes.iter_mut().filter_map(|node|node.get_mut("patcher")).any(|child|remove_input(child,id))
 }
-fn write_wav(path: &Path, samples: &[f32]) -> std::io::Result<()> {
+pub(crate) fn write_wav(path: &Path, samples: &[f32]) -> std::io::Result<()> {
     let bytes=(samples.len()*4) as u32;let mut file=fs::File::create(path)?;
     file.write_all(b"RIFF")?;file.write_all(&(36+bytes).to_le_bytes())?;file.write_all(b"WAVEfmt ")?;
     file.write_all(&16u32.to_le_bytes())?;file.write_all(&3u16.to_le_bytes())?;file.write_all(&2u16.to_le_bytes())?;

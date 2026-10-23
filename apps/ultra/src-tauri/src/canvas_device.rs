@@ -3,6 +3,46 @@ use super::{parameters, NativeGraph};
 use serde::{Deserialize, Deserializer};
 use std::collections::{HashMap, HashSet};
 
+/// The validated device interface consumed by hosts; no DSP or UI ownership.
+#[derive(Clone, Debug, serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct HostManifest {
+    pub version: u32,
+    pub id: String,
+    pub name: String,
+    pub note_node: u32,
+    pub output: ChannelBundle,
+    pub parameters: Vec<HostParameter>,
+}
+#[derive(Clone, Debug, serde::Serialize)]
+pub(crate) struct ChannelBundle { pub channels: u32, pub layout: String }
+#[derive(Clone, Debug, serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct HostParameter {
+    pub key: String, pub label: String, pub node: u32, pub param: String,
+    pub slot: u32, pub min: f64, pub max: f64, pub base: f64,
+    pub integral: bool, pub unit: Option<String>,
+}
+
+pub(crate) fn host_manifest(patch: &serde_json::Value, graph: &NativeGraph) -> Result<HostManifest, String> {
+    let device: Device = serde_json::from_value(patch.get("device").cloned()
+        .ok_or("This Ultra patch has no reusable device manifest")?).map_err(|e| e.to_string())?;
+    validate(Some(&device), graph)?;
+    let nodes = &graph.nodes[..graph.node_count as usize];
+    let bindings = device.parameters.into_iter().map(|binding| {
+        let node = nodes.iter().find(|node| node.id == binding.node).unwrap();
+        let spec = parameters(node.kind).iter().find(|spec| spec.key == binding.param).unwrap();
+        HostParameter { key: binding.key, label: binding.label, node: binding.node,
+            param: binding.param, slot: spec.slot, min: binding.min, max: binding.max,
+            base: [node.p0,node.p1,node.p2,node.p3,node.p4,node.p5][spec.slot as usize],
+            integral: spec.integral, unit: binding.unit }
+    }).collect();
+    Ok(HostManifest { version: device.version, id: device.id, name: device.name,
+        note_node: device.midi.node,
+        output: ChannelBundle { channels: device.audio.outputs, layout: device.audio.layout },
+        parameters: bindings })
+}
+
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 pub(super) struct Device {

@@ -7,6 +7,7 @@ mod audio;
 mod documents;
 mod document_windows;
 mod instrument_probe;
+mod session;
 use serde::{Deserialize, Serialize};
 use std::{
     ffi::{c_char, CStr},
@@ -797,6 +798,13 @@ mod tests {
 }
 fn main() {
     let arguments:Vec<_>=std::env::args_os().collect();
+    if arguments.get(1).is_some_and(|argument|argument=="--session-probe") {
+        if arguments.len()!=4 {eprintln!("Usage: ultra --session-probe <session.alive> <output-directory>");std::process::exit(2);}
+        match session::probe::run(std::path::Path::new(&arguments[2]),std::path::Path::new(&arguments[3])) {
+            Ok(report)=>{println!("{}",serde_json::to_string_pretty(&report).unwrap());return;},
+            Err(error)=>{eprintln!("Alive session probe failed: {error}");std::process::exit(1);},
+        }
+    }
     if arguments.get(1).is_some_and(|argument|argument=="--instrument-probe") {
         if arguments.len()!=4 {eprintln!("Usage: ultra --instrument-probe <patch.ultra> <output-directory>");std::process::exit(2);}
         match instrument_probe::run(std::path::Path::new(&arguments[2]),std::path::Path::new(&arguments[3])) {

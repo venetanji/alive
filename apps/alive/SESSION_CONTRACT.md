@@ -31,6 +31,9 @@ any chosen host alignment delay; never label startup muting as latency.
 At most two devices, four voices each, 128 notes and 256 automation points per
 track, 16 manifest parameters and 1024 compiled events total. Host callbacks
 accept 1..1024 frames. Admission checks event density as well as total storage.
+At most 32 events may share a frame and at most 64 may fall in any 1024-frame
+window, counting repeated loop seams. One serialized control producer submits
+at most 64 queued commands; the callback consumes a bounded snapshot.
 Stop has out-of-band capacity; overload rejects edits without replacing the
 working schedule. DSP compilation, allocation, initialization and destruction
 are outside the callback. Callback command work has a fixed capacity/budget.
@@ -45,7 +48,8 @@ identically to device-panel and Ultra-editor bound parameter edits.
 Stop, seek, loop wrap and removal hard-clear voices, sustain, pending old
 events and delay state. Mixer mute/solo suppress output but keep the timeline
 advancing; mute takes precedence over solo. Track gain is separate from the
-device level binding. Meters describe post-mixer signal and stereo master.
+device level binding (Alive UI range 0..2; native ABI admits 0..4). Meters are
+per-callback peaks of post-mixer signal and stereo master, not RMS or loudness.
 
 ## Channels And Lifecycle
 
@@ -61,6 +65,11 @@ bound-parameter edit preserves DSP state. An Ultra editor is optional and opens
 only on request. Closing it releases UI resources while the hosted device lives
 until track removal/session replacement. Saving records base parameters, never
 an accidental automation sample or raw runtime memory.
+After device I/O stops, `alive_session_reset` releases hosted graph ownership;
+only then may the host close or replace document slots. Revisions increase per
+slot even across removal and rollback. Prospective native admission runs before
+replacement. An unexpected apply failure attempts restoration of the prior
+prepared state with fresh revisions and reports any restoration failure.
 
 ## Persistence And Errors
 
