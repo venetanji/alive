@@ -51,7 +51,7 @@ def version(tag=None):
     tauri = json.loads((APP/'src-tauri/tauri.conf.json').read_text())['version']
     return validate_version(cargo, tauri, tag)
 
-def bundle_config(target):
+def bundle_config(target, runtime_names=()):
     system, _, library, _ = TARGETS[target]
     bundle = {'active': True, 'resources': {'../../../LICENSE': 'licenses/Alive-LICENSE', '../THIRD-PARTY.txt': 'licenses/THIRD-PARTY.txt', '../THIRD-PARTY-CRATES.json': 'licenses/THIRD-PARTY-CRATES.json', 'native/vendor/fast_float/LICENSE-MIT': 'licenses/fast_float-MIT'}, 'icon': ['icons/release/icon.ico', 'icons/release/icon.icns', 'icons/release/128x128.png']}
     if system == 'Darwin':
@@ -59,6 +59,10 @@ def bundle_config(target):
         bundle['macOS'] = {'frameworks': ['../build/' + library], 'minimumSystemVersion': '14.0'}
     else:
         bundle['resources']['../build/' + library] = library
+        for name in runtime_names:
+            if Path(name).name != name or not name.lower().endswith('.dll'):
+                raise ValueError('Invalid runtime library name')
+            bundle['resources']['../build/' + name] = name
         if system == 'Linux':
             bundle['linux'] = {'deb': {'depends': ['libwebkit2gtk-4.1-0', 'libgtk-3-0', 'libasound2t64', 'libpipewire-0.3-0']}}
     return {'bundle': bundle}
@@ -153,6 +157,15 @@ def verify_packages(bundle, target):
             dlls = list(dest.rglob(library))
             if len(dlls) != 1 or not (dlls[0].parent/'ultra.exe').is_file():
                 raise ValueError('NSIS payload must place native DLL beside ultra.exe')
+            runtime_names = (APP/'build/windows-runtime-libraries.txt').read_text().splitlines()
+            if not runtime_names or not all((dlls[0].parent/name).is_file() for name in runtime_names):
+                raise ValueError('NSIS payload lacks matching MSVC runtime libraries')
+            dumpbin = (APP/'build/dumpbin-path.txt').read_text()
+            imports = subprocess.check_output([dumpbin, '/DEPENDENTS', str(dlls[0])], text=True)
+            for name in re.findall(r'(?im)^\s*((?:msvcp|vcruntime|concrt)[a-z0-9_]*\.dll)\s*$', imports):
+                if not (dlls[0].parent/name).is_file():
+                    raise ValueError('Unbundled native runtime import: ' + name)
+            print(imports)
             run('python', APP/'scripts/smoke_native.py', dlls[0], env=env)
 
 def main():
@@ -203,7 +216,12 @@ def main():
         shutil.copy2(APP/'src-tauri/icons/release/icon.ico', APP/'src-tauri/icons/icon.ico')
     run('cargo', 'test', '--manifest-path', APP/'src-tauri/Cargo.toml', '--release', '--locked', '--target', args.target, env=env)
     config = APP/'src-tauri/tauri.release.generated.json'
-    config.write_text(json.dumps(bundle_config(args.target), indent=2) + '\n')
+    runtime_names = []
+    if system == 'Windows':
+        runtime_names = (build/'windows-runtime-libraries.txt').read_text().splitlines()
+        if not runtime_names or not all((build/name).is_file() for name in runtime_names):
+            raise ValueError('Matching MSVC runtime libraries must be staged')
+    config.write_text(json.dumps(bundle_config(args.target, runtime_names), indent=2) + '\n')
     bundles = {'Linux': 'deb,appimage', 'Darwin': 'app,dmg', 'Windows': 'nsis'}[system]
     run(*cli, 'build', '--target', args.target, '--bundles', bundles, '--config', config, '--', '--locked', cwd=APP, env=env)
     verify_packages(out/'bundle', args.target)

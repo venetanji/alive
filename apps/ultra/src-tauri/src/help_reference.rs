@@ -89,6 +89,10 @@ fn local_root()->Result<PathBuf,&'static str>{resources_root(std::env::var_os("U
 fn read_contained(root:&Path,relative:&str,limit:usize)->Result<Vec<u8>,&'static str>{
     let path=root.join(relative).canonicalize().map_err(|_|"not-found")?;
     if !path.starts_with(root){return Err("invalid-reference");}
+    // Windows refuses File::open on directories before handle metadata can
+    // classify them. Reject non-files consistently, and still recheck the
+    // opened handle below rather than trusting this preflight for size safety.
+    if !std::fs::metadata(&path).map_err(|_|"not-found")?.is_file(){return Err("invalid-reference");}
     let file=File::open(path).map_err(|_|"not-found")?;let metadata=file.metadata().map_err(|_|"not-found")?;
     if !metadata.is_file()||metadata.len()>limit as u64{return Err("invalid-reference");}
     let mut bytes=Vec::new();file.take(limit as u64+1).read_to_end(&mut bytes).map_err(|_|"not-found")?;

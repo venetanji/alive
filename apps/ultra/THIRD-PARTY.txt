@@ -51,3 +51,9 @@ Vendored unmodified include/fast_float headers under src-tauri/native/vendor/fas
 Used under the MIT option; upstream Apache-2.0 and Boost alternatives are retained.
 Locale-independent, allocation-free numeric parsing avoids libc++ availability gaps.
 See that directory's upstream LICENSE-* texts and PROVENANCE.md.
+
+Windows packages include app-local Microsoft Visual C++ release runtime DLLs
+selected by CMake InstallRequiredSystemLibraries from the build toolset's redist
+directory. These Microsoft components retain their vendor redistribution terms,
+not AGPL. No debug/non-redistributable CRT is selected.
+https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files

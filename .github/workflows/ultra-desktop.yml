@@ -16,7 +16,8 @@ permissions:
 
 concurrency:
   group: ultra-desktop-${{ github.ref }}
-  cancel-in-progress: false
+  # Superseded PR builds can stop; tag releases are never interrupted.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 defaults:
   run:

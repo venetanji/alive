@@ -25,7 +25,10 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(linux['bundle']['resources']['../build/libultra_native.so'], 'libultra_native.so')
         mac = release.bundle_config('aarch64-apple-darwin')
         self.assertIn('../build/libultra_native.dylib', mac['bundle']['macOS']['frameworks'])
-        win = release.bundle_config('x86_64-pc-windows-msvc')
+        win = release.bundle_config('x86_64-pc-windows-msvc', ['msvcp140.dll'])
+        self.assertEqual(win['bundle']['resources']['../build/msvcp140.dll'], 'msvcp140.dll')
+        with self.assertRaises(ValueError):
+            release.bundle_config('x86_64-pc-windows-msvc', ['../escape.dll'])
         self.assertEqual(win['bundle']['resources']['../build/ultra_native.dll'], 'ultra_native.dll')
     def test_loader_matches_product_directory(self):
         root = Path(__file__).resolve().parents[1]

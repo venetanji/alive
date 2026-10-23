@@ -27,7 +27,13 @@ and manual dispatches. All four native targets must pass:
 
 AppImage is not a promise of compatibility with older glibc/WebKit distributions;
 the Linux baseline is Ubuntu 24.04. Windows installers are currently unsigned
-and can display SmartScreen warnings. macOS PR/manual builds are ad-hoc signed,
+and can display SmartScreen warnings. Matching MSVC release runtime DLLs are
+packaged app-locally from CMake’s selected Visual Studio toolset; extracted
+installer checks also inspect the native DLL’s actual runtime imports. App-local
+CRT servicing requires rebuilding packages when Microsoft ships runtime security
+fixes; it does not receive central redistributable servicing automatically.
+Maintainers must verify the applicable Visual Studio redistribution terms before
+public distribution. macOS PR/manual builds are ad-hoc signed,
 not notarized release downloads. Actual device/MIDI/latency and interactive UI
 acceptance still require platform hardware testing.
 
