@@ -43,3 +43,54 @@ The raw resource receipt and two actual native screenshots are retained beside
 the journey report. Host: Ryzen 9 5900HS, Linux x86_64; private Xvfb/software
 PipeWire `default_output`, 48 kHz stereo, requested/observed 512-frame buffer.
 No physical audio/MIDI, independent underrun or endurance result is claimed.
+
+## Task 9 Chain Interface
+
+`efbeeb8` adds the selected-track chain, independent device selection,
+metadata-generated parameters and automation targets, stopped structural
+controls, live effect bypass and optional per-instance Ultra editors. The
+implementation report is `.superpowers/sdd/PLAN/task-9-report.md`; independent
+spec/quality review approved with no Critical/Important findings. These local
+results still require this checkpoint's own CI/packages after push.
+
+```sh
+ULTRA_TEST_ALIVE=1 \
+  ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_desktop.py" \
+  bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-task9-native-final
+ULTRA_TEST_ALIVE=1 \
+  ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_editor_resources.py" \
+  bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-task9-editor-resources
+```
+
+Both commands exit zero on the actual separate release Alive app. The retained
+`task9-native/native-session-report.json` and `operations.json` cover Pulse's
+instrument -> Utility -> Lowpass chain, Harmony's independent same-source
+Utility, reorder preserving instance IDs/lanes, distinct bases, live bypass,
+original/effect cutoff ownership, pending versus prepared automation, actual
+effect-editor destruction/reopen, Save/reopen/play and prospective source errors.
+Existing separate-app/audio-settings, stopped removal, WM Close, pending-edit
+Quit Cancel and Quit Discard regressions remain in the same complete journey.
+
+Software capture is finite/nonzero: 1,830,912 frames / 38.144 seconds, peak
+0.3533542454, SHA-256
+`0422d9d4d02a890cbf3a1e11de5a65c9318118393540e79f92f3d5a2ee02c280`.
+The capture includes intentional stopped intervals and equal left/right output;
+it does not establish channel separation. Final observation is PipeWire
+`default_output`, 48 kHz, observed 512 frames, zero reported errors/failures/
+rejections and playing true. Hardware is the Ryzen 9 5900HS/Linux host above.
+
+The resource receipt records eight instrument-editor cycles plus 25 seconds
+idle: the same three PIDs, one WebKit worker, first-close -> final-idle PSS
+450586 -> 486392 KiB and descriptors 154 -> 153. This short bounded evidence
+does not establish leak freedom. Exact DSP sample/order/warm-state guarantees
+come from the separately tested native/headless chain gates, not these pixels.
+There is no new endurance, physical-audio/MIDI or independent underrun claim.
+
+Focused tests pass 18/18; the two actual Chromium chain/minimum-desktop cases
+pass; shared Rust is 171 passed/two existing ignored, Alive context one passed,
+and the full pinned contracts gate passes with 454 primary Node tests. Existing
+unused-helper/Node warnings remain disclosed. Earlier unsuccessful GTK chooser
+driver attempts and the corrected loop-generation assumption are explicitly
+listed in the implementation report; none is counted as a passing journey.
+The parent inspected the retained chain, automation and effect-editor captures
+without another screenshot or visual-polish pass.

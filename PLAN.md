@@ -68,14 +68,14 @@ their own CI/package qualification.
 
 - [x] Versioned instrument/effect contract with explicit input/output bundles,
   MIDI declaration, stable parameter IDs and tested version-1 compatibility.
-- [ ] Instrument followed by an ordered, bounded Ultra effect chain; add,
+- [x] Instrument followed by an ordered, bounded Ultra effect chain; add,
   remove, reorder, bypass and parameters use stopped structural preparation.
 - [x] Reusable Ultra utility and Faust filter/delay patches load through the
   same validator/runtime. No privileged host DSP or copied instrument patch.
-- [ ] Deterministic order/bypass/isolation/state tests; timing and tail/reset
+- [x] Deterministic order/bypass/isolation/state tests; timing and tail/reset
   policy documented. Keep the existing 16-root pool; admit total devices before
   replacement rather than increasing runtime limits without measurement.
-- [ ] Test, commit, push and update draft PR before expanding the interface.
+- [x] Test, commit, push and update draft PR before expanding the interface.
 
 ### Task 6: Versioned Effect Devices And Shared Signal Objects
 
@@ -228,6 +228,21 @@ Tauri, focused UI/browser tests and the complete native two-track chain/editor/
 save/reopen/play journey. Only then check off M2 and push its evidence. Never
 infer DSP lifetime or sample timing from Live/Max editor observations.
 
+Implemented at `efbeeb8`, independently approved with no Critical/Important
+findings. Selected-track chains, stable instance selection, metadata parameters/
+automation and live effect bypass pass 18 focused and two Chromium tests;
+full pinned contracts pass with 454 primary Node tests. Shared Rust remains
+171 passed/two existing ignored plus one Alive-context test. The actual release
+app completes the instrument->Utility->Lowpass/independent-Utility/editor/
+Save/reopen/play/source-error/Quit journey with 38.144 seconds finite software
+stereo and zero reported errors/rejections. Eight editor cycles retain one
+WebKit worker/three PIDs; first-close to final-idle PSS grows 450586->486392 KiB
+and descriptors fall 154->153. Evidence/screenshots:
+`experiments/alive-chains-m2-20261024/`. M2 and the present M4 panels/editor slice
+are complete locally; this checkpoint needs its own CI/packages. New piano-roll/
+clip/eight-track and final 30-minute acceptance remain outstanding. Existing
+unused-helper warning remains ledgered; no physical/xrun/leak-free claim.
+
 ### Milestone 3: Musical Workflow
 
 - [ ] Complete one track/clip/device-chain workflow: piano-roll add/select/move/
@@ -252,8 +267,10 @@ Rust owns focused pending-musical-edit history, bounded to 64 entries and 8 MiB
 combined payload. `alive_edit` and `alive_history` authenticate generation and
 draft revision; stale requests preserve state. Route existing musical fields
 through this gate. Undo merges accepted live bases/bypass/mixer by instance ID.
-Successful Apply/Discard/New/Open/structural change clears the scope; failure
-preserves it. Keep Ultra undo unchanged. Test gestures, cancellation, off-grid
+Successful Apply/Discard/New/Open/structural change clears the scope; direct
+failure preserves it. An explicitly accepted Apply/Discard remains a scope
+boundary if a later enclosing file/Quit action is canceled or fails. Keep Ultra
+undo unchanged. Test gestures, cancellation, off-grid
 rounding, ownership and failed Apply, then actual native edit/play/save/reopen.
 Detailed recommendations: `.superpowers/sdd/PLAN/task-10-workflow-design.md`
 and `task-10-reconciliation.md`; this task has no clip-bank or capacity increase.
@@ -335,11 +352,11 @@ device ownership, persistence and the complete native workflow; no arrangement.
 
 ### Milestone 4: Hosted Device Usability
 
-- [ ] Compact metadata-driven chain panels and optional Edit in Ultra; editor
+- [x] Compact metadata-driven chain panels and optional Edit in Ultra; editor
   open/close/reopen retains independent DSP and selected-instance isolation.
-- [ ] Explicit structural source replacement and actionable missing, changed
+- [x] Explicit structural source replacement and actionable missing, changed
   or incompatible dependency errors preserve the active session.
-- [ ] Native interface audit using Impeccable: inspect the complete desktop
+- [x] Native interface audit using Impeccable: inspect the complete desktop
   surface in one batch, fix together, at most one confirmation pass.
 
 ### Milestone 5: Acceptance And Handoff
