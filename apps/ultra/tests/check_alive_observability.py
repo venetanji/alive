@@ -9,7 +9,7 @@ import time
 import check_alive_clips as clips
 import check_alive_desktop as alive
 from stream_measurement import EpochCollector, JsonLines, PlayingIntervals, ProcessSampler, MAX_WALL, histogram_summary
-from gi.repository import Atspi
+from gi.repository import Atspi, GLib
 
 ui, windows = alive.ui, alive.windows
 stop = threading.Event()
@@ -26,13 +26,22 @@ server_sampler = ProcessSampler(int(os.environ['ULTRA_TEST_AUDIO_PID'])) if os.e
 boundary = 0
 last_diagnostics = None
 start = time.monotonic()
+references = {}
 
 
 def accessible(name):
+    item = references.get(name)
+    if item is not None:
+        try: return Atspi.Text.get_text(item, 0, -1)
+        except GLib.Error: references.pop(name, None)
     for frame in windows.app_frames():
-        for item in ui.walk(frame):
-            if item.get_name() == name and 'Text' in item.get_interfaces():
-                return Atspi.Text.get_text(item, 0, -1)
+        try:
+            for item in ui.walk(frame):
+                if item.get_name() == name and 'Text' in item.get_interfaces():
+                    references[name] = item
+                    return Atspi.Text.get_text(item, 0, -1)
+        except GLib.Error:
+            continue  # A closing editor is an observation gap, not a zero value.
     return None
 
 
@@ -44,9 +53,16 @@ def collect():
         if 'error' not in record:
             epochs.accept(record)
             last_diagnostics = record
+        else:
+            epoch_log.write({'kind': 'observation_gap', 'monotonic': time.monotonic(), 'reason': str(record['error'])[:256]})
+    else:
+        epoch_log.write({'kind': 'observation_gap', 'monotonic': time.monotonic(), 'reason': 'diagnostics_unavailable'})
     running, frame = accessible('Transport playing'), accessible('Absolute frame')
     if running is not None and frame is not None:
         playing.observe(time.monotonic(), running == 'true', int(frame), boundary)
+    else:
+        playing.last = None
+        epoch_log.write({'kind': 'observation_gap', 'monotonic': time.monotonic(), 'reason': 'transport_unavailable'})
 
 
 def sample():
@@ -64,6 +80,7 @@ def sample():
                 resource_log.write(row)
         except Exception as error:
             errors.append(str(error))
+            (ui.output/"observability-errors.json").write_text(json.dumps(errors))
             stop.set()
             return
         deadline += 1
@@ -87,6 +104,7 @@ def settings():
 
 def clicked(name, *args, **kwargs):
     global boundary
+    if errors: raise RuntimeError('Measurement stopped: ' + '; '.join(errors))
     with lock:
         boundary += 1
         actions.write({'monotonic': time.monotonic(), 'action': boundary, 'control': name})
@@ -106,7 +124,12 @@ def qualify_and_finish():
         original_click('Prepare / Apply')
         time.sleep(1.1)
         original_click('Select Pulse Subtractive instrument')
-        alive.editor_edit(900+cycle*50)
+        original_click('Open Pulse editor')
+        windows.focus('Pulse - Ultra Hosted Editor')
+        alive.numeric('Hosted Cutoff base', 900+cycle*50)
+        alive.wait_value('Hosted Cutoff effective ownership', lambda text: 'Base:' in text)
+        original_click('Close hosted editor')
+        windows.focus(alive.MAIN)
         original_click('Audio details')
         original_click('Alive audio settings')
         original_click('Save Alive audio settings')
@@ -146,5 +169,6 @@ ui.click = clicked
 try:
     clips.run()
 finally:
+    (ui.output/"observability-errors.json").write_text(json.dumps(errors))
     stop.set()
     if worker is not None: worker.join(timeout=5)
