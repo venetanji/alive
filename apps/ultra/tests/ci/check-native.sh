@@ -36,6 +36,13 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRA
   -ldl -lrt -o "$TEST_DIR/alive-session-test"
 "$TEST_DIR/alive-session-test"
 
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
+  apps/ultra/tests/alive_session_v2_test.cpp apps/ultra/src-tauri/native/backend.cpp \
+  "$NATIVE_BUILD/core/libultra_core_bundle.a" \
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+  -ldl -lrt -o "$TEST_DIR/alive-session-v2-test"
+"$TEST_DIR/alive-session-v2-test"
+
 # Preserve the original queued-edit Stop regression against the actual library.
 python3 experiments/ultra-astra-validation-20261024/native/run.py "$NATIVE_BUILD" \
   --repo "$ROOT" --output "$TEST_DIR/stop-stress"

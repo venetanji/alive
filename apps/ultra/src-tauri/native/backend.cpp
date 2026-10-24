@@ -417,11 +417,11 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
    engine.render_devices({voice_buses.data(),unsigned(voice_buses.size())},nullptr,1);
    // Signal observations can emit controls for the next engine input sample.
    engine_frame=frame+1;
-   double left=0,right=0;
-   for(unsigned d=0;d<MaxDocuments;++d)if(canvas.live(d)){
+   const auto hosted=session.render_sample(canvas,voice_frame,frame+1,emit);
+   double left=hosted[0],right=hosted[1];
+   for(unsigned d=0;d<MaxDocuments;++d)if(canvas.live(d)&&!session.hosted(d)){
     const auto signal=canvas.runtime(d).signal_sample(voice_frame[d*2],voice_frame[d*2+1],frame+1,emit,true);
-    const auto sample=session.mix(d,signal);
-    if(session.hosted(d)||!document_silence[d]){left+=sample[0];right+=sample[1];}
+    if(!document_silence[d]){left+=signal[0];right+=signal[1];}
     else --document_silence[d];
    }
    // Finish every document's signal frame before delivering sampled controls.
@@ -462,6 +462,16 @@ void put16(FILE*f,uint16_t n){unsigned char b[]={static_cast<unsigned char>(n),s
 void put32(FILE*f,uint32_t n){put16(f,n);put16(f,n>>16);}
 }
 extern "C" {
+int alive_session_validate_v2(const AliveSessionConfigV2* config){return config&&session.validate_v2(*config);}
+int alive_session_validate_device_v2(const AliveSessionDeviceV2* device,const UltraCanvasGraph* graph){return device&&graph&&session.validate_device_v2(*device,*graph);}
+int alive_session_validate_prepared_v2(const AliveSessionConfigV2* config,const UltraCanvasGraph* graphs,uint32_t count){return config&&session.validate_prepared_v2(*config,graphs,count);}
+int alive_session_configure_v2(const AliveSessionConfigV2* config){
+ if(running.load()||engine.status().ready||!config)return 0;
+ const int result=session.configure_v2(*config,canvas);publish_canvas();return result;
+}
+int alive_session_base_v2(uint32_t document,uint64_t revision,uint32_t parameter,double value){const int result=session.base_v2(document,revision,parameter,value);if(result&&!running.load()&&!engine.status().ready){session.begin(canvas);session.publish(canvas);publish_canvas();}return result;}
+int alive_session_bypass_v2(uint32_t document,uint64_t revision,uint32_t bypassed){const int result=session.bypass_v2(document,revision,bypassed);if(result&&!running.load()&&!engine.status().ready){session.begin(canvas);session.publish(canvas);}return result;}
+int alive_session_state_v2(AliveSessionStateV2* state){return state&&session.snapshot_v2(*state);}
 int alive_session_validate(const AliveSessionConfig* config){return config&&session.validate(*config);}
 int alive_session_validate_graph(const AliveSessionTrack* track,const UltraCanvasGraph* graph){return track&&graph&&session.validate_graph(*track,*graph);}
 int alive_session_validate_prepared(const AliveSessionConfig* config,const UltraCanvasGraph* graphs,uint32_t count){return config&&session.validate_prepared(*config,graphs,count);}
