@@ -93,14 +93,48 @@ std::vector<float> partitioned(unsigned action_track, unsigned action, const std
   unsigned block = 0;
   request(f, 2, 0);
   render(1024);
-  if (action) request(f, 3, 0, action_track, action == 2 ? UINT32_MAX : 1, action);
+  const auto before = state();
+  assert(before.playing && before.tracks[action_track].mixer.active_voices == 4);
+  AliveSessionReceiptV3 issued{};
+  if (action) issued = request(f, 3, 0, action_track, action == 2 ? UINT32_MAX : 1, action);
+  const auto target = before.absolute_frame + f.config.length_frames - before.position;
+  bool witnessed_action = false;
   for (unsigned frame = 0; frame < 50000;) {
     const auto n = std::min(parts[block++ % parts.size()], 50000 - frame);
     render(n);
     samples.insert(samples.end(), left.begin(), left.begin() + n);
     frame += n;
+    if (action && !witnessed_action) {
+      const auto observed = state();
+      for (const auto &receipt : observed.receipts) {
+        if (receipt.request_serial != issued.request_serial) continue;
+        assert(receipt.error == ALIVE_SESSION_V3_OK && receipt.target_frame == target);
+        if (observed.absolute_frame <= target) {
+          assert(receipt.status == ALIVE_SESSION_V3_PENDING);
+          assert(observed.tracks[action_track].mixer.active_voices == 4);
+          continue;
+        }
+        const auto &track = observed.tracks[action_track];
+        assert(receipt.status == ALIVE_SESSION_V3_APPLIED && receipt.applied_mask == (1u << action_track));
+        assert(!receipt.pending_mask && !receipt.rejected_mask && !receipt.canceled_mask && !receipt.superseded_mask);
+        assert(observed.playing && !observed.fault && !track.pending_action && !track.pending_serial);
+        assert(track.active_clip == (action == 2 ? ALIVE_SESSION_V3_NONE : action_track * 4 + 1));
+        assert(track.phase == (action == 2 ? 0 : observed.absolute_frame - target));
+        assert(!track.mixer.active_voices);
+        witnessed_action = true;
+        std::printf("TARGET,track=%u,action=%u,serial=%llu,target=%llu,observed=%llu,phase=%llu,voices_before=4,voices_after=0,receipt=applied\n",
+                    action_track, action, (unsigned long long)issued.request_serial, (unsigned long long)target,
+                    (unsigned long long)observed.absolute_frame, (unsigned long long)track.phase);
+      }
+    }
   }
-  assert(!state().fault);
+  const auto final = state();
+  assert(final.playing && !final.fault);
+  if (action) {
+    assert(witnessed_action && !final.tracks[action_track].mixer.active_voices);
+    assert(final.tracks[action_track].active_clip == (action == 2 ? ALIVE_SESSION_V3_NONE : action_track * 4 + 1));
+    assert(final.tracks[action_track].phase == (action == 2 ? 0 : final.absolute_frame - target));
+  }
   return samples;
 }
 void deterministic_local() {
@@ -114,40 +148,24 @@ void deterministic_local() {
 void concurrent_publication() {
   Fixture f(8, 16, Music::Sustain);
   begin(f);
-  std::atomic<bool> go{false}, done{false};
-  std::atomic<unsigned> snapshots{0}, callbacks{0}, receipt_snapshots{0};
-  auto reader = [&] {
-    while (!go.load()) std::this_thread::yield();
-    uint64_t previous = 0;
-    do {
-      AliveSessionStateV3 s{}; s.version = 3; s.struct_bytes = sizeof s;
-      if (!alive_session_state_v3(&s)) continue;
-      assert(!s.fault && s.absolute_frame >= previous && s.track_count == 8 && s.device_count == 16);
-      previous = s.absolute_frame;
-      for (const auto &r : s.receipts) {
-        if (r.status < ALIVE_SESSION_V3_PENDING) continue;
-        assert((r.pending_mask | r.applied_mask | r.superseded_mask | r.canceled_mask | r.rejected_mask) == r.track_mask);
-        assert(r.pending_mask + r.applied_mask + r.superseded_mask + r.canceled_mask + r.rejected_mask == r.track_mask);
+  const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(30);
+  auto wait_for = [&](const char *phase, auto ready) {
+    while (!ready()) {
+      if (std::chrono::steady_clock::now() >= deadline) {
+        std::fprintf(stderr, "concurrent verification timed out: %s\n", phase);
+        std::abort();
       }
-      if (s.last_consumed_request) ++receipt_snapshots;
-      ++snapshots;
-    } while (!done.load());
-  };
-  std::thread read_thread(reader);
-  std::thread callback([&] {
-    while (!go.load()) std::this_thread::yield();
-    for (unsigned i = 0; i < 2048; ++i) {
-      // Allocation wrappers are a separate single-thread diagnostic, not timings.
-      assert(ultra_external_render(31, left.data(), right.data()));
-      ++callbacks;
-      if (!(i % 16)) std::this_thread::yield();
+      std::this_thread::yield();
     }
-    done = true;
-  });
-  go = true;
-  while (!callbacks.load()) std::this_thread::yield();
+  };
+  std::atomic<bool> go{false}, done{false}, reader_ready{false}, callback_ready{false};
+  std::atomic<bool> rendering{false}, producer_active{false};
+  std::atomic<unsigned> snapshots{0}, callbacks{0}, receipt_snapshots{0}, overlaps{0};
+  std::atomic<unsigned> producer_progress{0}, reader_progress{0};
+  unsigned first_overlap_callback = 0, last_overlap_callback = 0;
+  uint64_t first_overlap_frame = 0, last_overlap_frame = 0;
   unsigned accepted = 0, refused = 0;
-  for (unsigned i = 0; i < 4096 && !done.load(); ++i) {
+  auto submit = [&](unsigned i) {
     AliveSessionRequestV3 r{}; r.version = 3; r.struct_bytes = sizeof r;
     r.preparation_revision = f.config.preparation_revision; r.request_serial = ++serial;
     r.kind = 3; r.track_mask = 1u << (i % 8); r.tracks[i % 8] = {1, (i / 8) % 4};
@@ -155,16 +173,83 @@ void concurrent_publication() {
     if (alive_session_request_v3(&r, &receipt)) ++accepted;
     else { ++refused; assert(receipt.error == ALIVE_SESSION_V3_QUEUE_FULL || receipt.error == ALIVE_SESSION_V3_RECEIPT_BUSY); }
     if (!(i % 64)) alive_session_stop_v3();
-    if (!(i % 8)) std::this_thread::yield();
+    producer_progress = i + 1;
+  };
+  // Establish queue saturation before release, then require consumed requests
+  // newer than this prefix in the simultaneous reader/render witnesses.
+  for (unsigned i = 0; i < 128; ++i) submit(i);
+  const auto first_live_serial = serial;
+  auto reader = [&] {
+    reader_ready = true;
+    wait_for("reader start", [&] { return go.load(); });
+    uint64_t previous = 0;
+    while (!done.load()) {
+      assert(std::chrono::steady_clock::now() < deadline);
+      const auto before_callback = callbacks.load();
+      const bool during_render = rendering.load();
+      AliveSessionStateV3 s{}; s.version = 3; s.struct_bytes = sizeof s;
+      if (!alive_session_state_v3(&s)) continue;
+      const bool still_rendering = rendering.load();
+      const auto after_callback = callbacks.load();
+      assert(!s.fault && s.absolute_frame >= previous && s.track_count == 8 && s.device_count == 16);
+      previous = s.absolute_frame;
+      for (const auto &r : s.receipts) {
+        if (r.status < ALIVE_SESSION_V3_PENDING) continue;
+        assert((r.pending_mask | r.applied_mask | r.superseded_mask | r.canceled_mask | r.rejected_mask) == r.track_mask);
+        assert(r.pending_mask + r.applied_mask + r.superseded_mask + r.canceled_mask + r.rejected_mask == r.track_mask);
+      }
+      if (s.last_consumed_request > first_live_serial) ++receipt_snapshots;
+      if (during_render && still_rendering && producer_active.load() && !done.load() &&
+          s.last_consumed_request > first_live_serial) {
+        if (!overlaps.fetch_add(1)) {
+          first_overlap_callback = before_callback;
+          first_overlap_frame = s.absolute_frame;
+        }
+        last_overlap_callback = after_callback;
+        last_overlap_frame = s.absolute_frame;
+      }
+      ++snapshots;
+      reader_progress = after_callback;
+    }
+  };
+  std::thread read_thread(reader);
+  std::thread callback([&] {
+    callback_ready = true;
+    wait_for("callback start", [&] { return go.load(); });
+    for (unsigned i = 0; i < 2048; ++i) {
+      if (!(i % 64)) wait_for("producer progress", [&] { return producer_progress.load() > i * 2; });
+      // Allocation wrappers are a separate single-thread diagnostic, not timings.
+      rendering = true;
+      assert(ultra_external_render(31, left.data(), right.data()));
+      rendering = false;
+      ++callbacks;
+      // Test-only progress coordination remains outside the real render call.
+      if (!((i + 1) % 64)) {
+        wait_for("producer batch", [&] { return producer_progress.load() >= (i + 1) * 2; });
+        wait_for("reader progress", [&] { return reader_progress.load() >= i + 1; });
+      }
+    }
+    done = true;
+  });
+  wait_for("worker readiness", [&] { return reader_ready.load() && callback_ready.load(); });
+  producer_active = true;
+  go = true;
+  for (unsigned i = 128; i < 4096; ++i) {
+    if (!(i % 128)) wait_for("callback progress", [&] { return callbacks.load() >= i / 2; });
+    submit(i);
   }
-  const unsigned overlapping_callbacks = callbacks.load();
+  producer_active = false;
+  const auto producer_last_callback = callbacks.load();
   callback.join(); read_thread.join();
   alive_session_stop_v3(); render(31);
   auto s = state();
-  assert(accepted > 64 && refused && snapshots && receipt_snapshots && overlapping_callbacks > 1 && !s.playing && !s.fault);
+  assert(accepted > 64 && refused && snapshots && receipt_snapshots && callbacks == 2048 && !s.playing && !s.fault);
+  assert(overlaps > 1 && first_overlap_callback < last_overlap_callback && last_overlap_callback <= producer_last_callback);
+  assert(first_overlap_frame < last_overlap_frame && producer_last_callback >= 1984);
   for (unsigned t = 0; t < 8; ++t) assert(!s.tracks[t].mixer.active_voices);
-  std::printf("PASS: concurrent callback/control/read accepted=%u refused=%u coherent_snapshots=%u receipt_snapshots=%u overlapping_callbacks=%u callbacks=2048\n",
-              accepted, refused, snapshots.load(), receipt_snapshots.load(), overlapping_callbacks);
+  std::printf("PASS: concurrent callback/control/read accepted=%u refused=%u coherent_snapshots=%u new_receipt_snapshots=%u render_overlap_snapshots=%u first_overlap_callback=%u last_overlap_callback=%u first_overlap_frame=%llu last_overlap_frame=%llu producer_last_callback=%u callbacks=2048\n",
+              accepted, refused, snapshots.load(), receipt_snapshots.load(), overlaps.load(), first_overlap_callback,
+              last_overlap_callback, (unsigned long long)first_overlap_frame, (unsigned long long)last_overlap_frame, producer_last_callback);
 }
 template<class Before> void measure(const char *name, const Fixture &f, unsigned frames, unsigned count, Before before,
                                    const std::function<void()> &after = {}) {

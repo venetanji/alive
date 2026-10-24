@@ -1,8 +1,9 @@
 # Task 13b: measured eight-track admission
 
-Status: source checkpoint ready for independent review; final same-source timing
-qualification is IN PROGRESS. The actual standalone eight-track release journey
-passes. This provisional report is not task acceptance. Parent owns PLAN/ledger,
+Status: production checkpoint and local measurement qualification complete;
+independent review found two verification gaps, addressed in fix round 1 below.
+Scoped independent re-review remains pending. The actual standalone eight-track
+release journey passes. This report is not parent task acceptance. Parent owns PLAN/ledger,
 retained experiments and independent review. Raw evidence root:
 `/tmp/alive-task13b-evidence/`. No intermediate run is overwritten.
 
@@ -17,6 +18,13 @@ four slots/track, two effects/track, per-track note/lane/point bounds, 1024 stor
 events, 32 events/frame, 64 events/1024 frames, 64 commands and 128 receipts remain.
 Atomic multi-track actions stay disabled. No scene/schema/engine/MIDI work,
 soak, cloud session, credentials, persistent settings or release publication.
+
+Frozen implementation checkpoint: `a04f259` (27 owned files). Final report
+updates follow separately. `checkpoint-source-manifest.json` hashes the exact
+native/core/Rust/UI/configuration sources; `telemetry-binaries/manifest.json`
+hashes the two diagnostic executables and their shared native library. Both
+diagnostic builds pass compilation; the original full Rust gate preceded only
+the later test-only raw clock/publication-array retention.
 
 Native profile admission is carried through Rust preparation, validation, host
 configuration, projection, structural controls and UI capabilities. The host's
@@ -58,6 +66,9 @@ extensions, 1024 events, short loops, aligned switches, seek/reset/chase, full
 command bursts, refusals and emergency cleanup. The synthetic combined case
 adds 336 clears, 10304 parameter writes, 19456 scalar scans and 64 dispatches to
 a real eight-track callback, deliberately overcounting actual work.
+The added scan loop is a scalar scan-count surrogate, not every branch of the
+runtime chase loop; this combined case is not a proved execution-time upper
+bound. Actual dense/seek/refusal cases measure those native paths separately.
 
 Host: AMD Ryzen 9 5900HS, Linux 7.2.8-10-omarchy, glibc 2.44, GCC 16.2.1,
 native C++17 `-O2`, 48 kHz. Internal release matrix has 1200 raw samples/case:
@@ -107,11 +118,14 @@ plus two automation events per track explicitly reject observed 40, limit 32.
 The initial full native gate stopped at an obsolete assertion that profile 2 had
 no features (`full-native-1.log`). Only that expectation now asserts exact
 ADMITTED plus policy 2; all original v1/v2 tests and event timings are retained.
-Full native final concurrent regression used real callback/control/read threads,
-one serialized producer and live roots: 2048 callbacks, 1387 accepted and 2709
-queue/receipt refusals, 61159 coherent/receipt snapshots, 38 overlapping callbacks.
-All tracks terminate after full-queue emergency Stop. The earlier exact-source
-guard run records its own counts, not these later counts.
+The checkpoint concurrent regression used callback/control/read threads, one
+serialized producer and live roots: 2048 callbacks, 1387 accepted and 2709
+queue/receipt refusals, 61159 coherent/receipt snapshots. Its reported
+`overlapping_callbacks=38` was only the cumulative callback count at producer
+completion; review correctly identified that it did not require reader overlap.
+All tracks terminated after full-queue emergency Stop. Fix round 1 below replaces
+that insufficient concurrency assertion. These historical counts retain their
+original source identity and are not evidence for the stronger check.
 
 `rust-capacity-green-1.log` failed because Cargo's adjacent non-target library
 was stale despite LD_LIBRARY_PATH; `native-atomic-install-1.json` records fresh
@@ -156,6 +170,15 @@ cursor-collected `capacity-epochs.jsonl`; resources/worker identities/PSS are in
 peak .1314936131, finite, SHA-256
 `28d90ca694c2472cbb2cbd5d114e5820e7039688d1920c6b82935a73d324cc92`.
 
+The journey has 109 resource samples. Observed application process PSS spans
+453185-615699 KiB and threads 98-135; observed one-core CPU median is 104.31%,
+maximum 143.970%. First/last observed application PSS is 485858/495939 KiB
+(+10081 KiB); the larger intermediate maximum remains visible. This includes UI/test interaction and stopped intervals, not
+playback-only utilization. Eight application samples have identity coverage gaps
+and two have unavailable observations. Sampler/capture CPU median is 27.96%,
+maximum 61.25%; these costs are separate from app CPU. `resource-summary.json`
+retains the bounds and limitations; transient/exited workers are not invented.
+
 Two harness failures precede the passing run. `native-eight-1/failed-value.png`
 shows a mouse target under the sticky transport bar: Track 4 never received a
 launch request, while the other tracks switched. Focus+Return qualifies the
@@ -190,12 +213,234 @@ sets CARGO_HOME to `.deps/cargo`, ULTRA_NATIVE_LIB_DIR and LD_LIBRARY_PATH to
   ULTRA_TEST_SCRIPT=$PWD/apps/ultra/tests/check_alive_capacity.py
   bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-task13b-evidence/native-eight-3`
 
-Pending: same-source telemetry-enabled/disabled raw distributions at 2/6,4/8,
-8/16; same-source clock/publication-tail distributions; final shipping native
-release matrix; same-binary UI/sampler/diagnostic/capture controls; final source
-hash association and report. Diagnostic raw files use exclusive create and retain
+All planned measurement stages are now complete: same-source telemetry-enabled/
+disabled at 2/6,4/8,8/16; clock/publication-tail controls; final shipping native
+release matrix; same-binary UI/sampler/diagnostic/capture controls; exact source/
+build hash association. Diagnostic raw files use exclusive create and retain
 64 warmups separately from the reported 1200-sample native distributions.
 Existing Task 13a boundaries remain: the final clock/publication tail is excluded
 from the in-callback duration and measured separately; CPAL owned Error
 construction/destruction can allocate/free and is excluded from the borrowed
 typed-action guard. No physical audio, deadline guarantee or endurance claim.
+
+## Same-source telemetry qualification
+
+`telemetry-final-1/complete.json` records all seven ignored-probe executions
+passing. `commands.json` retains exact executable, environment and fixture
+arguments; `results.json` retains summary rows and `raw/` all 60 distributions.
+Native raw files contain 64 warmups plus 1200 reported callbacks each, three
+repetitions/buffer/mode at 2/6, 4/8 and 8/16 (36 files). Clock/fill/publication
+controls retain 20000 samples/distribution (24 files). No source or build runs
+occurred during the sequential probes. Fixtures use actual saved graphs; each
+is hashed in the release manifest. Order is enabled then disabled per size.
+
+| Tracks/devices | Frames | Enabled p99.9 range ns | Disabled p99.9 range ns |
+|---|---:|---:|---:|
+|2/6|256|453311-552114|456797-604290|
+|2/6|512|861458-906491|862159-1379017|
+|4/8|256|639086-676334|661558-682216|
+|4/8|512|1240701-1416938|1230563-1274424|
+|8/16|256|1269886-1379088|1253727-1451404|
+|8/16|512|2360170-2888489|2361633-2459294|
+
+These synchronous native measurements include the whole external fill call,
+including its tail, and have no CPAL scheduling. They establish separate
+distributions, not a causal percentile subtraction or a universal telemetry
+cost bound. Eight-track/512 medians are 2177420-2179554 ns enabled and
+2179344-2180828 ns disabled. All native render failure counters are zero.
+
+Clock pair median is 60 ns, p99.9 range 61-81 ns, maximum 43872 ns. Fixed fake
+render fill medians are 140-260 ns without timing and 310-441 ns with timing
+(the range spans 256/512 buffers). Histogram/publication tail median is 110 ns,
+p99.9 121-131 ns, maximum 6001 ns. These test executable controls preserve the
+accepted excluded-tail boundary and do not replace native/render or real-app
+costs. The full raw outliers remain evidence.
+
+## Final native matrix
+
+`python3 apps/ultra/tests/run_alive_capacity.py
+/tmp/alive-task13b-evidence/final-release-matrix-1 --samples 1200` passes on exact
+copied checkpoint sources. Its `manifest.json` binds commit a04f259, every copied
+native/core/fixture source, the executable and core archive; `commands.json`
+retains compile/run arguments. `probe.log` contains all 174000 raw samples across
+145 distributions. Twenty-four cases observe refused controls. Four unchanged
+populated-short cases reject at their exact authored 188-frame length, for the
+saved/extended variants at 4/8 and 8/16.
+
+`nearest-rank-summary.json` recomputes quantiles as `ceil(n*p)-1` from the raw
+durations and retains every per-case budget-exceedance count. The probe's
+historical RESULT estimator uses the lower order statistic `floor((n-1)*p)`;
+`reported-summary.json` preserves those values separately. Neither histogram
+intervals nor estimates from a different source are relabeled as these values.
+
+| Frames | Final 8/16 combined nearest-rank p99.9 ns | Exact maximum ns | Samples over buffer budget |
+|---:|---:|---:|---:|
+|64|3525106|4007907|1200/1200|
+|128|4174016|4613947|1200/1200|
+|256|5049000|5225159|0/1200|
+|512|7162854|7843956|0/1200|
+|1024|11153695|11203075|0/1200|
+
+The largest 8/16 maximum at 1024 across all cases is 12641795 ns in the heavy
+voice-edge case (p99.9 11555810 ns). At 256 the combined maximum nearly reaches
+the 5333333 ns buffer budget; it does not justify relaxing larger-profile
+guidance. At 512 the final combined maximum is below its 10666667 ns budget,
+but the earlier proposal's 10150420 ns maximum remains evidence of little
+headroom. Keep >=512 and prefer 1024 near the bounds. The 50% p99.9 target is
+advisory and is not achieved by every maximum-work case. These software budget
+observations remain distinct from physical underruns.
+
+The final matrix is uninstrumented release timing: its zero-valued COUNTERS
+fields mean trace counters unavailable, not zero work. Separate diagnostic
+counter/guard evidence remains in `internal-matrix-guard-1` at its own exact
+proposal source hashes, and the final source bounded guards/partition/concurrent
+regression remains `final-native-verify-1` plus `full-native-2.log`.
+
+## App overhead controls and self-review
+
+The exact same standalone executable/library passes
+`overhead-controls-eight-1`, using the retained Task 13a explicit-disclosure
+control script copied to `overhead-controls-keyboard.py` (SHA-256
+`dc43edaf54300e32d9881e4b3b1699db783f40227abe6824443e12d8749c8210`).
+The invocation is the native journey command above with ULTRA_TEST_SCRIPT set
+to that copied file and a new output directory. `build-manifest.json` confirms
+the unchanged app/library hashes. Two repetitions of eight seconds each cover
+baseline, sampler at 1 Hz, sampler plus diagnostics, and sampler/diagnostics/
+capture. Its helper reports 7.43-8.00 live-checked seconds of advancing playing
+transport per stage, 63.133925 seconds total. The report retains these computed
+totals but not the helper's underlying frame/monotonic observations, so the
+interval arithmetic cannot be independently replayed from the retained raw
+files. This limitation is accepted only for this short overhead comparison;
+Task 15 must retain the raw running intervals/frames for its 1800-second gate.
+
+| Mode | Observed app one-core CPU range | Sampler/capture CPU range |
+|---|---:|---:|
+|Baseline|65.74-71.30%|0.99-2.48%|
+|Sampler 1 Hz|66.21-67.40%|7.67-7.80%|
+|Sampler plus diagnostics|67.56-79.24%|7.67-8.79%|
+|Sampler/diagnostics/capture|67.71-67.87%|9.39-9.64%|
+
+Regular UI polling remains 80 ms and constant accessibility transport reads
+1 Hz. This is short observed-identity evidence, not a complete-tree CPU claim
+or causal subtraction of noisy stages. Raw resource samples, identity coverage,
+two finite capture records, disclosures and stage boundaries are retained.
+First/last observed application PSS is 490745/528018 KiB (+37273 KiB), maximum
+observed app CPU is 114.079%, and one resource row has an identity coverage gap.
+These short traces do not establish a memory-growth rate or leak-free endurance.
+Final two epochs are witnessed retired, complete=true, coverage_gap=false,
+8792 callbacks, observed 512 frames, maximum duration 7277322 ns, zero typed
+CPAL/native errors and zero observed processing-budget exceedances. No physical
+device or physical xrun count is claimed.
+
+Self-review confirms fixed roots/events/queues, strict v3 and legacy fallback,
+all eight projected tracks, pre-dependency root refusal, unchanged original
+policy/tests/timings, stable ownership and editor separation. The release
+ordering bug is covered by a meaningful red/green regression. First failures,
+startup observations, raw outliers, empty/short fixture refusals and missing
+physical/worker coverage remain visible. Independent review found zero Critical,
+two Important verification gaps (I1/I2), and one Minor warning-attribution item.
+Fix round 1 addresses I1/I2 without changing production source. The unused
+`reserve_native` warning, Xvfb/DRI3 warnings and portal startup failures remain
+visible in retained logs and are deferred to parent's whole-branch triage;
+the successful runs are not warning-free. Task 15 owns pointer polish and the
+full endurance/audit work.
+
+## Fix round 1: target outcomes and concurrent observations
+
+Review package: `task-13b-review.md`; contract: `task-13b-fix-1-brief.md`.
+I1 identified that an inaudible target's ignored launch/Stop could pass the
+other-track audio comparison. The revised `partitioned()` retains every
+original partition and all 50000 compared frames, and first proves four active
+voices on the target. For each issued serial it then requires the exact applied
+receipt/mask, no pending/rejected/canceled/superseded bits, the expected active
+clip, phase at the unchanged authored boundary, zero target voices and no fault.
+Final target state must remain correct. All eight tracks pass both empty-clip
+launch and local Stop: sixteen `TARGET` witnesses, launch phase 410 at its first
+observation and Stop phase zero. Existing other-track sample equality still passes.
+
+I2 identified that a reader scheduled only after rendering could satisfy the
+old assertions. The test now has bounded startup and batch-progress coordination,
+with one absolute 30-second deadline. Every wait stays outside the actual native
+render call. The single producer first saturates the 64-command queue, then
+submits 4096 total requests while callbacks and the reader advance together.
+Successful overlap observations require rendering before and after the coherent
+state read, an active producer, unfinished callbacks, and consumed requests newer
+than the startup prefix. It requires callback/frame advancement across those
+observations. Roots stay live until both joins, and final emergency Stop still
+leaves every track's voices at zero. This is verification-only coordination;
+production callbacks acquire no new lock, wait or allocation.
+
+Exact-current-source command:
+`python3 apps/ultra/tests/run_alive_capacity.py
+/tmp/alive-task13b-evidence/fix-1-final-verify --verify --guards`.
+It passes all allocation/free/lock guarded capacity, exact event/root refusal,
+all-eight partition/action and concurrent publication checks. Complete output is
+`fix-1-final-verify/probe.log`, compiler output is `build.log`, exact arguments
+are in `commands.json`, and source/archive/executable hashes are in `manifest.json`.
+The outer log is `fix-1-final-verify-runner.log`. Observed concurrency:
+
+- 1488 accepted and 2608 queue/receipt refusals, 2048 callbacks.
+- 58331 coherent snapshots; 56278 snapshots with consumed live-phase requests.
+- 54295 render-overlap snapshots, callback endpoints 64 and 1984.
+- Overlap frame endpoints 1262431 and 1321920; producer endpoint callback 1984.
+
+The compiled test source matches the worktree exactly, SHA-256
+`1ff32e1136f738f7def9fafc665468b7a5f29ee78cb32936188f42527bf5e6f7`.
+Guard probe SHA-256:
+`f66ad90853ceb4210b84d405bf3865d88200809637e8154e85c4d6f9921aeee5`.
+Fixture SHA-256 remains
+`484e1d59a91db0bc5be429e9e52ba166ebfbb824917b740c0a6766891d6d0c25`.
+Earlier focused steps remain in `fix-1-local-verify/` and
+`fix-1-complete-verify/` with their own copied sources/logs; the final run includes
+the producer-active/endpoint observation ordering correction.
+
+The allocation/free/lock wrappers cover the single-thread render checks.
+As at the checkpoint, the concurrent test calls the real renderer directly;
+its process-global allocation-wrapper flags are not used for the threaded
+regression. This separates the guard fact from the concurrent publication fact.
+
+Two bounded negative probes run against copied source only via
+`python3 /tmp/alive-task13b-evidence/run-fix-1-mutations.py`:
+
+- `fix-1-mutations-1/discarded-action/` drops the local action while preserving
+  a unique requested serial. It aborts on the `witnessed_action`/target-voice
+  assertion with SIGABRT after 0.364 seconds, as required.
+- `fix-1-mutations-1/late-reader/` waits for callback completion before allowing
+  any reader observation. It aborts on the 30-second progress deadline after
+  30.160 seconds, with explicit reader/callback-progress timeout diagnostics.
+
+Both copies use a diagnostic-only entry selecting the affected existing test
+function, preserving the actual production renderer/fixture. Each retains its
+exact mutation, copied-source hashes, compiled binary and `probe.log`;
+`commands.json` records compile/run argv and time limits, `results.json` records
+return codes/durations, and `complete.json` records both intended rejections.
+Core dumps are disabled and each execution has a separate 45-second outer
+limit; neither reaches that outer limit. The runner hash is
+`e55c5146a79ca2c7ea7bb1c26a0514f3b0bfc75ae192b55fbea4d3a697767faf`.
+These intentional failures demonstrate the stronger checks, not production bugs.
+
+Impact assessment: this fix changes only `partitioned()` and
+`concurrent_publication()` in the capacity verification executable, plus this
+report. Fixtures, authored timings, production native/Rust/UI code, shared
+library and standalone app are unchanged. The `measure()`/`timing()`/`main()`
+source suffix is byte-identical to a04f259, SHA-256
+`42229acc3427efcc38fcdad79f32edaf65eec6f29a5802ad0e1cf4d7f243dd07`.
+Recompiling the probe can still change executable layout, so the new diagnostic
+binary is not substituted for any historical timing artifact. Final native
+timing, enabled/disabled telemetry and actual app distributions retain their
+original a04f259 source/artifact associations; no runtime rebuild or new timing
+claim follows from this test-only checkpoint. Unchanged full Rust/contracts/GUI
+suites are not repeated for these verification-only edits.
+
+Parent independently checked the retained measurement artifacts via
+`experiments/alive-capacity-m3-20261024/verify.py`, with receipt in
+`parent-native-verification.json`: 692 retained files, 224 historical source
+hashes, 145 native distributions/174000 raw samples, 60 paired raw distributions,
+complete epoch sums/histograms/errors, eight CPU-stage endpoints recomputed from
+PID/start-time ticks, all three software captures stream-verified and artifact
+hashes matched. The control helper's playing-duration totals remain subject to
+the explicit missing raw interval/frame retention limitation above; the receipt's
+historical `proven_control_playing_seconds` field does not strengthen that fact.
+Source review acceptance, final supported CI/packages and Task 15 endurance stay
+with parent. Scoped re-review should assess I1/I2 and any new verification
+breakage; no self-dispatched reviewer or broader production change is included.
