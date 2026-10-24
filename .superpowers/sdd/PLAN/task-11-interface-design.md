@@ -322,6 +322,9 @@ lock. Unobserved enqueue keeps the producer reservation, so an old terminal
 publication cannot incorrectly free it. A terminal receipt may disappear on
 reuse; Rust compares both serial and preparation, never assumes a different
 slot occupant describes its request. Pending receipts are never evicted.
+Failure to obtain a coherent snapshot leaves the producer reservation busy.
+Nested receipt headers in a returned state are populated by native; callers
+initialize the outer state header only.
 
 Immediate QUEUED remains authoritative until the callback consumes the request.
 `last_consumed_request` and matching receipts distinguish that interval. Rust
@@ -339,6 +342,9 @@ Stop while already cleared is idempotent DSP work. Preserve the acquired queue
 head **before** Stop-epoch snapshot ordering from the existing race fix. Fresh
 post-Stop START/SEEK/actions remain valid; older epoch commands never rearm notes.
 Existing `alive_session_stop()` continues to use this mailbox in all modes.
+A Stop acknowledgment may precede cancellation publication for an old-epoch
+command outside the acquired queue-head snapshot. That command cannot execute;
+its terminal cancellation is published when the bounded queue drain reaches it.
 
 Existing start/seek entry points remain unchanged in legacy mode. In v3, reject
 those identity-free entry points explicitly and direct new callers to request_v3;
@@ -485,6 +491,12 @@ past(j) + future(j) <= total admitted window allowance
 
 For j=0 future is empty; for j>=1 it includes the candidate first frame.
 Windows end at f+j and include future frames f through f+j-1.
+This candidate check applies to effective unscheduled discontinuities, including
+effective START and manual SEEK. A quantized-only action uses the scheduled
+admission proof and its identity/queue/receipt checks. START while already
+playing is an applied no-op. Neither causes an unnecessary arbitrary-phase
+horizon check that could reject ordinary admitted playback. If a batch includes
+an effective unscheduled discontinuity, check its combined candidate once.
 Build past(j) suffix totals in one backward ledger pass, O(W), not W scans.
 Use A_event(j) and component work envelopes for any playing candidate future;
 zero for a stopped candidate. Add optional charge once at f, and preserve the
@@ -492,6 +504,11 @@ scheduled/optional sub-budget separation. Event allowance is always 64; normal
 work allowance is scheduled_window + optional_window componentwise, with the
 optional component also checked against its own ceiling. Emergency work is
 accounted separately as the unconditional per-callback reserve described below.
+Also enforce each work sub-budget at every relevant horizon and candidate
+frame: scheduled history plus scheduled future fits scheduled allowance, and
+optional history plus candidate charge fits optional allowance. The combined
+inequality cannot substitute for either separate check. Do not relabel work
+between ledgers to admit a request that would predictably fault later playback.
 Test the first candidate frame's
 complete batch against the remaining 32/frame allowance as well. No old/new
 batch can both be dispatched at a coalesced transition.
@@ -512,6 +529,11 @@ partition/driver buffer combinations. No polling loop retries in the callback.
 Charge guard_steps for optional checks according to the implementation's fixed
 loop count and reserve its rejection-path maximum in measurement; a depleted
 optional budget may reject before the expensive horizon check.
+The fixed command allowance also includes propagation for up to 64 accepted
+base/bypass/mixer commands, including when optional admission rejects. Measure
+those edits with the other unavoidable callback overhead. Already-accepted live
+edits cannot depend on optional credits; any alternative ledger accounting must
+reserve their execution capacity before enqueue success commits persistence.
 
 Before every actual batch, verify dispatch and scheduled work invariants. On a
 violation, hard-stop before partial note-on/automation dispatch and clear sound;

@@ -239,17 +239,22 @@ stereo and zero reported errors/rejections. Eight editor cycles retain one
 WebKit worker/three PIDs; first-close to final-idle PSS grows 450586->486392 KiB
 and descriptors fall 154->153. Evidence/screenshots:
 `experiments/alive-chains-m2-20261024/`. M2 and the present M4 panels/editor slice
-are complete locally; this checkpoint needs its own CI/packages. New piano-roll/
-clip/eight-track and final 30-minute acceptance remain outstanding. Existing
+are qualified at pushed `7d6410f`: all three CI jobs and all four both-app
+package targets pass; publishing is skipped. Receipts are retained beside the
+native evidence. Shared-source recovery guidance is tracked in Task 12.
+Later piano-roll/clip/eight-track and final 30-minute acceptance require their
+own verification. Existing
 unused-helper warning remains ledgered; no physical/xrun/leak-free claim.
 
 ### Milestone 3: Musical Workflow
 
-- [ ] Complete one track/clip/device-chain workflow: piano-roll add/select/move/
-  resize/delete, velocity, fixed grid, duplication and loop length.
+- [x] Single-clip piano-roll add/select/move/resize/delete, velocity, fixed
+  grid and focused undo; prepare/apply/play/save/reopen with an effect editor.
+- [ ] Extend the track/clip/device-chain workflow with clip duplication and
+  individual clip loop length.
 - [ ] Quantized individual clip launch/stop with reliable termination; only
   then expand to measured bounded eight tracks and multiple clip slots.
-- [ ] Automation binds stable device-instance/parameter IDs across chain edits
+- [x] Automation binds stable device-instance/parameter IDs across chain edits
   and persistence; focused editing undo preserves existing Ultra behavior.
 - [ ] Add scene launching only after individual launch tests pass. Test and
   checkpoint each complete slice; no arrangement, recording or engine rewrite.
@@ -274,6 +279,22 @@ undo unchanged. Test gestures, cancellation, off-grid
 rounding, ownership and failed Apply, then actual native edit/play/save/reopen.
 Detailed recommendations: `.superpowers/sdd/PLAN/task-10-workflow-design.md`
 and `task-10-reconciliation.md`; this task has no clip-bank or capacity increase.
+
+Implemented at `8bab95a`, with independently reproduced queued-intent ownership
+fixed at `3a25df8`; scoped spec/quality review and round-one re-review approve.
+Every musical intent retains its originating scope and stable track identity;
+ordinary queued edits use their predecessor's accepted revision. Rust history
+is bounded and preserves accepted live controls. Full contracts, 177 Rust tests
+(two existing ignored), focused extensions/Alive context, 482 Node and four
+Chromium tests pass. Actual release edit/undo/failed-Apply/Stop/Apply/editor/
+Save/reopen/Quit acceptance passes on the fixed source with 58.048 seconds
+finite software audio at 48 kHz/512 frames. Evidence and source/binary hashes:
+`experiments/alive-piano-m3-20261024/`. The earlier unchanged-editor resource
+gate observes one worker/three PIDs but PSS grows 37693 KiB; it does not establish
+leak freedom. Existing runtime/build warnings remain disclosed for final triage.
+This remains session/native-v2 with one clip per track, two tracks and six
+devices. Clip banks/quantized launch, capacity/scenes and final endurance are
+the next gates; no physical audio/xrun claim follows from this checkpoint.
 
 ### Task 11: Native Clip Bank And Quantized Actions
 
@@ -324,6 +345,16 @@ and failed-operation safety. Test round-trip, Save As, source/reference errors,
 individual switching/stopping, independent score copies and editor continuity;
 complete the actual release app journey before expanding track admission.
 
+Resolve the confirmed shared-source guidance gap from
+`.superpowers/sdd/PLAN/shared-source-recovery-analysis.md`: selected Replace
+cannot install while another reference to the externally changed file retains
+its old hash. Identify that condition without claiming Replace always recovers
+it. Document the verified recovery: preserve the changed file at a new path,
+restore the matching original at the shared path, then explicitly replace each
+intended instance. Explain the original-backup requirement. Keep normal hashes
+strict and selected Replace isolated; do not silently refingerprint siblings.
+Cover the error and recovery with focused regressions.
+
 ### Task 13: Measure And Admit Eight Tracks
 
 Add bounded callback timing/error observability and retain per-stream epochs
@@ -354,8 +385,10 @@ device ownership, persistence and the complete native workflow; no arrangement.
 
 - [x] Compact metadata-driven chain panels and optional Edit in Ultra; editor
   open/close/reopen retains independent DSP and selected-instance isolation.
-- [x] Explicit structural source replacement and actionable missing, changed
-  or incompatible dependency errors preserve the active session.
+- [ ] Complete actionable device-reference recovery guidance. Explicit
+  structural replacement and rejected missing/changed/incompatible dependencies
+  preserve the active session; shared-source errors still need the focused
+  guidance and recovery regression in Task 12.
 - [x] Native interface audit using Impeccable: inspect the complete desktop
   surface in one batch, fix together, at most one confirmation pass.
 
