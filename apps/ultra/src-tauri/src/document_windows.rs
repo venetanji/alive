@@ -13,6 +13,14 @@ pub mod commands;
 #[derive(Default)]
 pub struct Documents(pub Mutex<Registry>, Mutex<QuitSession>);
 
+fn reject_retiring_native(app: &AppHandle) -> Result<(), String> {
+    let audio = app.state::<Audio>();
+    let _audio = audio.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    let io = app.state::<crate::AudioIo>();
+    let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
+    io.reject_retiring()
+}
+
 #[derive(Default)]
 struct QuitSession {
     owners: Vec<String>,
@@ -181,6 +189,7 @@ pub fn open_path(app: &AppHandle, path: &Path) -> Result<Document, String> {
     let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
     admit_new_owner(&state)?;
     if let Some(document) = registry.for_path(&loaded.path).cloned() { drop(registry); return focus(app, document); }
+    reject_retiring_native(app)?;
     let source_name = loaded.path.file_name().unwrap_or_default().to_string_lossy().into_owned();
     let document = registry.add(source_name.clone(), Kind::Patch, loaded.patch, Some(loaded.path), None)?;
     let stored = registry.get_mut(&document.label)?;
@@ -192,11 +201,12 @@ pub fn open_path(app: &AppHandle, path: &Path) -> Result<Document, String> {
 }
 
 #[tauri::command]
-pub fn document_current(window: WebviewWindow, state: tauri::State<Documents>, audio: tauri::State<Audio>) -> Result<Document, String> {
+pub fn document_current(window: WebviewWindow, state: tauri::State<Documents>, audio: tauri::State<Audio>, io: tauri::State<crate::AudioIo>) -> Result<Document, String> {
     let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
     let document = registry.prepare_runtime(window.label(), |owner| {
         let mut audio = audio.0.lock().map_err(|_| "Audio control lock poisoned")?;
-        commands::admit(&mut audio.graphs[owner.id as usize], owner, owner.patch.as_ref().unwrap(), None, true)
+        let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
+        commands::admit_owned(&mut io, &mut audio.graphs[owner.id as usize], owner, owner.patch.as_ref().unwrap(), None, None, true)
     })?;
     registry.set_reveal(window.label(), None, None)?;
     let flushes = registry.mark_ready(window.label())?;
@@ -210,6 +220,7 @@ pub fn document_new(app: AppHandle) -> Result<Document, String> {
     let state = app.state::<Documents>();
     let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
     admit_new_owner(&state)?;
+    reject_retiring_native(&app)?;
     let document = registry.add("Untitled".into(), Kind::Patch, Some(documents::empty_patch()), None, None)?;
     drop(registry);
     create_window(&app, document)
@@ -219,6 +230,7 @@ pub fn document_new(app: AppHandle) -> Result<Document, String> {
 pub fn document_instantiate(window: WebviewWindow, state: tauri::State<Documents>) -> Result<Document, String> {
     let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
     admit_new_owner(&state)?;
+    reject_retiring_native(window.app_handle())?;
     let document = registry.instantiate(window.label())?;
     drop(registry);
     create_window(window.app_handle(),document)
@@ -517,6 +529,15 @@ pub fn window_event(window: &tauri::Window, event: &tauri::WindowEvent) {
         if current.as_deref() == Some(window.label()) { prepare_quit_owner(app, window.label(), token); }
         return;
     }
+    // Authorized application Quit follows its approval path above and retains
+    // every native root until Driver's final exit witness/contingency.
+    if document.label == window.label() {
+        if let Err(error) = reject_retiring_native(app) {
+            api.prevent_close();
+            let _ = window.emit_to(tauri::EventTarget::webview_window(window.label()), "document-error", error);
+            return;
+        }
+    }
     if document.close_approved { return; }
     if document.label == window.label() && document.close_pending { api.prevent_close(); return; }
     match registry.begin_close(window.label()) {
@@ -544,11 +565,14 @@ pub fn window_event(window: &tauri::Window, event: &tauri::WindowEvent) {
             commands::close_cancelled(app, notice);
             return;
         };
-        if unsafe { crate::ultra_canvas_close_document(document.id) } == 0 {
+        let io = app.state::<crate::AudioIo>();
+        let closed = io.0.lock().map_err(|_| "Audio device lock poisoned".to_string())
+            .and_then(|mut io| commands::close_owned(&mut io, document.id));
+        if let Err(error) = closed {
             api.prevent_close();
             let notice = registry.release_close(window.label()); drop(registry);
             commands::close_cancelled(app, notice);
-            let _ = window.emit_to(tauri::EventTarget::webview_window(window.label()), "document-error", "Patch is busy. Try closing the window again.");
+            let _ = window.emit_to(tauri::EventTarget::webview_window(window.label()), "document-error", error);
         } else {
             document.close_approved = true;
             let children = registry.owner_views(window.label()).unwrap_or_default().into_iter().filter(|label| label != window.label()).collect();
@@ -596,6 +620,13 @@ fn show_dirty_dialog(window: &tauri::Window, quit_token: Option<u64>) {
                     drop(registry);
                     approve_quit(target.app_handle(), target.label(), quit_token.unwrap());
                 } else {
+                    if let Err(error) = reject_retiring_native(target.app_handle()) {
+                        let notice = registry.release_close(target.label());
+                        drop(registry);
+                        commands::close_cancelled(target.app_handle(), notice);
+                        let _ = target.emit_to(tauri::EventTarget::webview_window(target.label()), "document-error", error);
+                        return;
+                    }
                     document.dirty = false;
                     let _ = registry.allow_close_once(target.label());
                     drop(registry);
@@ -766,6 +797,36 @@ mod lifecycle_tests {
         assert!(quit.can_exit(&registry));
         registry.add("B".into(), Kind::Patch, Some(documents::empty_patch()), None, None).unwrap();
         assert!(!quit.can_exit(&registry), "a new unapproved owner must block termination");
+    }
+
+    #[test]
+    fn approved_ultra_quit_retains_pending_roots_until_terminal_exit() {
+        if let Ok(marker) = std::env::var("ULTRA_PENDING_QUIT_CHILD") {
+            struct Marker(String);
+            impl Drop for Marker { fn drop(&mut self) { std::fs::write(&self.0, b"destructor ran").unwrap(); } }
+            let _marker = Marker(marker);
+            let mut io = crate::audio::Driver::load(PathBuf::from("/nonexistent/ultra-quit-test.json"));
+            let data_closure = crate::audio::tests::hold_retiring(&mut io);
+            let _error_closure = data_closure.clone();
+            let mut registry = Registry::default();
+            let root = registry.add("Approved".into(), Kind::Patch, Some(documents::empty_patch()), None, None).unwrap();
+            let mut quit = QuitSession::default();
+            quit.start(owner_labels(&registry));
+            assert_eq!(quit.approve(&root.label), QuitStep::Commit);
+            assert!(quit.can_exit(&registry));
+            assert_eq!(registry.list().len(), 1, "approval must retain native roots for final exit");
+            assert!(commands::close_owned(&mut io, root.id).is_err());
+            io.authorized_exit();
+            panic!("terminal exit returned");
+        }
+        let marker = std::env::temp_dir().join(format!("ultra-quit-marker-{}", std::process::id()));
+        let output = std::process::Command::new(std::env::current_exe().unwrap())
+            .args(["--exact", "document_windows::lifecycle_tests::approved_ultra_quit_retains_pending_roots_until_terminal_exit", "--nocapture"])
+            .env("ULTRA_PENDING_QUIT_CHILD", &marker).output().unwrap();
+        assert!(output.status.success(), "{}", String::from_utf8_lossy(&output.stderr));
+        assert!(!marker.exists());
+        #[cfg(unix)]
+        assert!(String::from_utf8_lossy(&output.stderr).contains("incomplete_audio_retirement"));
     }
 
     #[test]

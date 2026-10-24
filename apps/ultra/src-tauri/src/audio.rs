@@ -573,11 +573,16 @@ fn stream_error(metrics: &Metrics, error: &cpal::Error) {
 #[cfg(test)]
 pub(crate) mod tests {
     use super::*;
-    pub(crate) fn hold_retiring(driver: &mut Driver) -> impl Drop {
+    pub(crate) fn hold_retiring(driver: &mut Driver) -> impl Drop + Clone {
         driver.epochs.begin(test_identity()).unwrap();
         let witness = driver.epochs.callback_owner();
         driver.epochs.retire("build_failed", true);
         witness
+    }
+    pub(crate) fn hold_running(driver: &mut Driver) -> impl Drop {
+        driver.epochs.begin(test_identity()).unwrap();
+        driver.epochs.running();
+        driver.epochs.callback_owner()
     }
     fn test_identity() -> Identity {
         Identity {

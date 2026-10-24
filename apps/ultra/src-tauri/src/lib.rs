@@ -372,7 +372,7 @@ struct CanvasMessageTextSerial { serial: u64 }
 
 #[tauri::command]
 fn canvas_message_text(window: tauri::WebviewWindow, documents: tauri::State<document_windows::Documents>, state: tauri::State<Audio>,
-    revision: u64, node: u32, text: String) -> Result<CanvasMessageTextSerial,String> {
+    io: tauri::State<AudioIo>, revision: u64, node: u32, text: String) -> Result<CanvasMessageTextSerial,String> {
     let mut registry=documents.0.lock().map_err(|_| "Document lock poisoned")?;
     let owner=registry.get_open(window.label())?;
     if revision!=owner.runtime_revision { return Err("Stale canvas revision".into()); }
@@ -388,10 +388,11 @@ fn canvas_message_text(window: tauri::WebviewWindow, documents: tauri::State<doc
     if !update(&mut patch,node,&text) { return Err("Text actions require message_box".into()); }
     let hint=document_windows::commands::MessageText {node,text};
     let mut audio=state.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    let mut io=io.0.lock().map_err(|_| "Audio device lock poisoned")?;
     let result=registry.commit(window.label(),base,patch,true,|owner,patch| {
-        document_windows::commands::admit_message(&mut audio.graphs[owner.id as usize],owner,patch,None,Some(&hint),false)
+        document_windows::commands::admit_owned(&mut io,&mut audio.graphs[owner.id as usize],owner,patch,None,Some(&hint),false)
     })?;
-    drop(audio);document_windows::commands::broadcast(window.app_handle(),&registry,window.label());
+    drop(io);drop(audio);document_windows::commands::broadcast(window.app_handle(),&registry,window.label());
     Ok(CanvasMessageTextSerial {serial:result.document.message_text_serial})
 }
 
@@ -409,16 +410,18 @@ async fn canvas_apply(
     window: tauri::WebviewWindow,
     documents: tauri::State<'_, document_windows::Documents>,
     state: tauri::State<'_, Audio>,
+    io: tauri::State<'_, AudioIo>,
     patch: serde_json::Value,
 ) -> Result<CanvasRevision, String> {
     let mut registry = documents.0.lock().map_err(|_| "Document lock poisoned")?;
     let base = registry.get_open(window.label())?.authoring_revision;
     let mut audio = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
     let result = registry.commit(window.label(), base, patch, true, |owner, patch| {
-        document_windows::commands::admit(&mut audio.graphs[owner.id as usize], owner, patch, None, false)
+        document_windows::commands::admit_owned(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, None, None, false)
     })?;
     let obsolete = document_windows::commands::changed(window.app_handle(), &mut registry, &result.document.owner_label);
-    drop(audio); drop(registry);
+    drop(io); drop(audio); drop(registry);
     document_windows::commands::close_views(window.app_handle(), obsolete);
     Ok(CanvasRevision { revision: result.document.runtime_revision })
 }

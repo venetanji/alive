@@ -127,6 +127,21 @@ class PlayingIntervals:
         return self.seconds
 
 
+class ProcessGroups:
+    def __init__(self, **groups):
+        self.groups = groups
+        self.identities = set()
+
+    def sample(self):
+        observations = {name: sampler.sample() if sampler else None for name, sampler in self.groups.items()}
+        current = {(p['pid'], p['starttime']) for sample in observations.values() if sample for p in sample['processes']}
+        if len(current) > MAX_PROCESSES: raise RuntimeError('simultaneous_process_limit')
+        identities = self.identities | current
+        if len(identities) > MAX_IDENTITIES: raise RuntimeError('process_identity_limit')
+        self.identities = identities
+        return observations
+
+
 class JsonLines:
     def __init__(self, path, limit=MAX_METADATA):
         self.path, self.limit = Path(path), limit
@@ -147,10 +162,16 @@ class JsonLines:
 class EpochCollector:
     def __init__(self, writer=None): self.cursor, self.run, self.writer, self.active = 0, None, writer, None
     def accept(self, observation):
-        if observation['coverage_gap']: raise RuntimeError('epoch_coverage_gap')
+        # The UI requests the retained view from zero; our incremental cursor
+        # may already cover its evicted prefix. A genuinely missing prefix fails.
+        oldest = observation.get('oldest_retained_epoch')
+        if observation['coverage_gap'] and (oldest is None or int(oldest) > self.cursor+1):
+            raise RuntimeError('epoch_coverage_gap')
         if self.run is not None and self.run != observation['run_id']: raise RuntimeError('epoch_run_changed')
         self.run = observation['run_id']
         for epoch in observation['completed']:
+            if epoch.get('final') is not True: raise RuntimeError('epoch_not_final')
+            if int(epoch.get('metrics', {}).get('counter_overflow', 0)): raise RuntimeError('epoch_counter_overflow')
             identity = int(epoch['epoch_id'])
             if identity <= self.cursor: continue
             if identity != self.cursor + 1: raise RuntimeError('epoch_coverage_gap')
@@ -159,6 +180,7 @@ class EpochCollector:
             self.cursor = identity
         self.active = observation['active']
         if self.active and int(self.active['epoch_id']) > 256: raise RuntimeError('epoch_limit')
+        if self.active and int(self.active.get('metrics', {}).get('counter_overflow', 0)): raise RuntimeError('epoch_counter_overflow')
         if self.writer: self.writer.write({'kind': 'observation', 'monotonic': time.monotonic(), 'cursor': str(self.cursor), 'active': self.active})
         return observation['complete']
 
@@ -169,7 +191,7 @@ class Recorder:
         if shutil.disk_usage(self.path.parent).free < reserve + max_audio: raise RuntimeError('insufficient_capture_space')
         self.result = self.path.with_suffix('.capture.json')
         self.process = subprocess.Popen([sys.executable, str(Path(__file__).resolve()), '--record', str(self.path),
-                                       str(max_audio), str(max_stderr), str(max_wall), str(reserve), *command])
+                                       str(max_audio), str(max_stderr), str(max_wall), str(reserve), *command], start_new_session=True)
         self.finished = None
         atexit.register(self.finish)
     def finish(self):
@@ -177,11 +199,48 @@ class Recorder:
         if self.process.poll() is None: self.process.terminate()
         try: self.process.wait(timeout=5)
         except subprocess.TimeoutExpired:
-            self.process.kill(); self.process.wait()
+            # The group is known before the supervisor can launch a recorder.
+            # Freeze it so even a stalled supervisor cannot race cleanup by forking.
+            try: os.killpg(self.process.pid, signal.SIGSTOP)
+            except ProcessLookupError: pass
+            kill_group_members(self.process.pid, self.process.pid, signal.SIGKILL)
+            try: os.killpg(self.process.pid, signal.SIGKILL)
+            except ProcessLookupError: pass
+            self.process.wait()
+            self.finished = {'complete': False, 'reason': 'recorder_supervisor_stalled', 'group_id': self.process.pid}
+            self.result.write_text(json.dumps(self.finished))
             raise RuntimeError('recorder_supervisor_stalled')
         if not self.result.exists(): raise RuntimeError('recorder_manifest_missing')
         self.finished = json.loads(self.result.read_text())
         return self.finished
+
+
+def group_members(group, exclude):
+    result = []
+    for path in Path('/proc').iterdir():
+        if not path.name.isdigit() or int(path.name) == exclude: continue
+        try:
+            value = (path/'stat').read_text()
+            fields = value[value.rindex(')')+1:].split()
+            if int(fields[2]) == group and fields[0] != 'Z': result.append(int(path.name))
+        except (OSError, ValueError, IndexError): continue
+    return result
+
+
+def kill_group_members(group, exclude, signum):
+    for pid in group_members(group, exclude):
+        try:
+            if os.getpgid(pid) == group: os.kill(pid, signum)
+        except ProcessLookupError: pass
+
+
+def reap_group(group, child):
+    while True:
+        try:
+            pid, status = os.waitpid(-group, os.WNOHANG)
+            if pid == 0: return
+            if pid == child.pid: child.returncode = os.waitstatus_to_exitcode(status)
+        except ChildProcessError: return
 
 
 def supervise(path, audio_limit, stderr_limit, wall_limit, reserve, command):
@@ -195,11 +254,17 @@ def supervise(path, audio_limit, stderr_limit, wall_limit, reserve, command):
     def limits(): resource.setrlimit(resource.RLIMIT_FSIZE, (audio_limit, audio_limit))
     start = time.monotonic()
     owner_pid = os.getppid()
+    group = os.getpgrp()
+    # Adopt recorder grandchildren so a promptly exiting leader cannot orphan
+    # an uncooperative helper or leave zombies after bounded group cleanup.
+    import ctypes
+    if ctypes.CDLL(None, use_errno=True).prctl(36, 1, 0, 0, 0) != 0:
+        raise OSError(ctypes.get_errno(), 'PR_SET_CHILD_SUBREAPER')
     child = None
     stderr_bytes = 0
     try:
         with path.open('wb') as output, path.with_suffix('.stderr').open('wb') as errors:
-            child = subprocess.Popen(command, stdout=output, stderr=subprocess.PIPE, preexec_fn=limits, start_new_session=True)
+            child = subprocess.Popen(command, stdout=output, stderr=subprocess.PIPE, preexec_fn=limits)
             os.set_blocking(child.stderr.fileno(), False)
             selector = selectors.DefaultSelector(); selector.register(child.stderr, selectors.EVENT_READ)
             while not stopped:
@@ -221,14 +286,22 @@ def supervise(path, audio_limit, stderr_limit, wall_limit, reserve, command):
         raise
     finally:
         if child is not None:
-            # Own the whole recorder group, including helpers, and always reap it.
-            try: os.killpg(child.pid, signal.SIGTERM)
-            except ProcessLookupError: pass
-            try: child.wait(timeout=1)
-            except subprocess.TimeoutExpired:
-                os.killpg(child.pid, signal.SIGKILL); child.wait()
+            kill_group_members(group, os.getpid(), signal.SIGTERM)
+            deadline = time.monotonic()+1
+            while group_members(group, os.getpid()) and time.monotonic()<deadline:
+                child.poll(); reap_group(group, child); time.sleep(.02)
+            kill_group_members(group, os.getpid(), signal.SIGKILL)
+            child.wait(timeout=1)
+            deadline = time.monotonic()+1
+            while time.monotonic()<deadline:
+                reap_group(group, child)
+                if not group_members(group, os.getpid()): break
+                time.sleep(.02)
+            reap_group(group, child)
+            if group_members(group, os.getpid()): reason = 'recorder_cleanup_incomplete'
             child.stderr.close()
         path.with_suffix('.capture.json').write_text(json.dumps({'complete': reason == 'requested_stop', 'reason': reason,
+            'group_id': group,
             'recorder_pid': child.pid if child else None, 'returncode': child.returncode if child else None,
             'wall_seconds': time.monotonic()-start, 'audio_bytes': path.stat().st_size if path.exists() else 0,
             'stderr_bytes': stderr_bytes, 'limits': {'wall_seconds': wall_limit, 'audio_bytes': audio_limit,

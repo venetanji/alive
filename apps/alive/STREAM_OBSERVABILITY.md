@@ -107,9 +107,15 @@ Raw samples/epochs append to bounded JSONL files, with final SHA-256 manifests.
 A separate recorder supervisor independently enforces 2700 seconds, 1 GiB PCM,
 64 MiB metadata/logs, 1 MiB stderr and disk reserve, including when sampling
 stalls. RLIMIT_FSIZE enforces the PCM file limit. The supervisor drains bounded
-stderr, terminates the owned recorder process group and waits on every exit.
+stderr, terminates every live member of the owned recorder process group and
+reaps adopted helpers even if the leader exits first. The parent knows the
+group before recorder launch and kills its members if the supervisor stalls.
 CPU sampling admits at most 64 simultaneous processes and 256 distinct
-identities; epoch collection admits at most 256 attempts. PCM analysis streams
+identities across the union of app, observer/capture and private-server groups;
+group CPU reports remain separate. Epoch collection admits at most 256 attempts
+and checks its own incremental cursor against an evicted retained-view prefix.
+An already-collected prefix is valid; a genuinely missed epoch, provisional
+completed record or counter overflow makes collection incomplete. PCM analysis streams
 chunks rather than loading an endurance recording into memory.
 
 Playing time includes only adjacent observed running snapshots with advancing

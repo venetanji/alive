@@ -15,7 +15,7 @@ from pathlib import Path
 import platform
 import subprocess
 import time
-from stream_measurement import Recorder, ProcessSampler, JsonLines, PlayingIntervals
+from stream_measurement import Recorder, ProcessSampler, ProcessGroups, JsonLines, PlayingIntervals
 
 import check_canvas_desktop as ui
 import check_documents_desktop as windows
@@ -26,6 +26,7 @@ DEVICE = Path('apps/ultra/examples/subtractive.ultra').resolve()
 operations = []
 native_inputs = []
 resource_sampler = None
+resource_groups = None
 resource_writer = None
 playing = PlayingIntervals()
 control_action = 0
@@ -375,11 +376,15 @@ def finish_capture(capture):
 
 
 def process_sample():
-    global resource_sampler, resource_writer
+    global resource_sampler, resource_writer, resource_groups
     if resource_sampler is None:
         resource_sampler = ProcessSampler(ui.pid)
+        resource_groups = ProcessGroups(app=resource_sampler, sampler_capture_overhead=ProcessSampler(os.getpid()),
+            private_audio_server=ProcessSampler(int(os.environ['ULTRA_TEST_AUDIO_PID'])) if os.environ.get('ULTRA_TEST_AUDIO_PID') else None)
         resource_writer = JsonLines(ui.output/'resource-samples.jsonl')
-    result = resource_sampler.sample()
+    groups = resource_groups.sample()
+    result = {**groups['app'], 'sampler_capture_overhead': groups['sampler_capture_overhead'],
+              'private_audio_server': groups['private_audio_server']}
     resource_writer.write(result)
     return result
 

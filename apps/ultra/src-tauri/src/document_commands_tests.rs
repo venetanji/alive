@@ -1,5 +1,64 @@
 use super::*;
 
+#[test]
+fn retiring_ultra_owner_refuses_admission_history_and_root_close() {
+    let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut registry = Registry::default();
+    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[],"edges":[]});
+    let root = registry.add("Retained".into(), Kind::Patch, Some(patch.clone()), None, None).unwrap();
+    registry.get_mut(&root.label).unwrap().id = 9;
+    let mut control = canvas::CanvasState::default();
+    let mut io = crate::audio::Driver::load(PathBuf::from("/nonexistent/ultra-retirement-test.json"));
+    let root = registry.prepare_runtime(&root.label, |owner| admit_owned(&mut io, &mut control, owner, &patch, None, None, true)).unwrap();
+    let mut edited = patch.clone();
+    edited["nodes"] = serde_json::json!([{"id":1,"type":"number","x":0,"y":0,"params":{"value":3}}]);
+    registry.commit(&root.label, 0, edited.clone(), true, |owner, patch| admit_owned(&mut io, &mut control, owner, patch, None, None, false)).unwrap();
+    let before = serde_json::to_value(registry.get(&root.label).unwrap()).unwrap();
+    let revision = control.revision();
+    let closure = crate::audio::tests::hold_retiring(&mut io);
+    let error_closure = closure.clone();
+    let result = registry.commit(&root.label, 1, patch.clone(), true, |owner, patch| admit_owned(&mut io, &mut control, owner, patch, None, None, false));
+    assert!(result.is_err(), "native replacement passed unresolved retirement");
+    assert!(registry.history(&root.label, 1, "undo", |owner, patch| admit_owned(&mut io, &mut control, owner, patch, None, None, false)).is_err());
+    assert!(close_owned(&mut io, root.id).is_err(), "native root close passed unresolved retirement");
+    assert_eq!(serde_json::to_value(registry.get(&root.label).unwrap()).unwrap(), before);
+    assert_eq!(control.revision(), revision);
+    drop(closure);
+    assert!(close_owned(&mut io, root.id).is_err(), "the remaining error closure still owns the epoch");
+    drop(error_closure);
+    close_owned(&mut io, root.id).unwrap();
+}
+
+#[test]
+fn retiring_ultra_owner_refuses_root_close_independently() {
+    let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut io = crate::audio::Driver::load(PathBuf::from("/nonexistent/ultra-close-retirement-test.json"));
+    let closure = crate::audio::tests::hold_retiring(&mut io);
+    let error_closure = closure.clone();
+    drop(error_closure);
+    let result = close_owned(&mut io, 14);
+    drop(closure);
+    assert!(result.is_err(), "root close must consult the closure witness even for an empty slot");
+}
+
+#[test]
+fn running_ultra_owner_keeps_live_authoring_available() {
+    let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut registry = Registry::default();
+    let patch = documents::empty_patch();
+    let root = registry.add("Live".into(), Kind::Patch, Some(patch.clone()), None, None).unwrap();
+    registry.get_mut(&root.label).unwrap().id = 10;
+    let mut control = canvas::CanvasState::default();
+    let mut io = crate::audio::Driver::load(PathBuf::from("/nonexistent/ultra-live-test.json"));
+    let closure = crate::audio::tests::hold_running(&mut io);
+    assert_eq!(unsafe { crate::session::native::ultra_external_start() }, 1);
+    let accepted = registry.prepare_runtime(&root.label, |owner| admit_owned(&mut io, &mut control, owner, &patch, None, None, true));
+    let accepted = accepted.unwrap();
+    assert!(close_owned(&mut io, accepted.id).is_ok());
+    drop(closure);
+    io.stop().unwrap();
+}
+
 fn snapshot(id: u32) -> canvas::NativeStatus {
     let mut status = canvas::NativeStatus::default();
     unsafe { crate::ultra_canvas_status_document(id, &mut status); }

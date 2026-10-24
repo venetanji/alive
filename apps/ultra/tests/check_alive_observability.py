@@ -8,7 +8,7 @@ import time
 
 import check_alive_clips as clips
 import check_alive_desktop as alive
-from stream_measurement import EpochCollector, JsonLines, PlayingIntervals, ProcessSampler, MAX_WALL, histogram_summary
+from stream_measurement import EpochCollector, JsonLines, PlayingIntervals, ProcessSampler, ProcessGroups, MAX_WALL, histogram_summary
 from gi.repository import Atspi, GLib
 
 ui, windows = alive.ui, alive.windows
@@ -23,6 +23,7 @@ playing = PlayingIntervals()
 app_sampler = ProcessSampler(ui.pid)
 overhead_sampler = ProcessSampler(os.getpid())
 server_sampler = ProcessSampler(int(os.environ['ULTRA_TEST_AUDIO_PID'])) if os.environ.get('ULTRA_TEST_AUDIO_PID') else None
+process_groups = ProcessGroups(app=app_sampler, sampler_capture_overhead=overhead_sampler, private_audio_server=server_sampler)
 boundary = 0
 last_diagnostics = None
 start = time.monotonic()
@@ -70,9 +71,7 @@ def sample():
     while not stop.is_set():
         try:
             if time.monotonic()-start > MAX_WALL: raise RuntimeError('wall_limit')
-            row = {'monotonic': time.monotonic(), 'action': boundary, 'app': app_sampler.sample(),
-                   'sampler_capture_overhead': overhead_sampler.sample(),
-                   'private_audio_server': server_sampler.sample() if server_sampler else None}
+            row = {'monotonic': time.monotonic(), 'action': boundary, **process_groups.sample()}
             with lock:
                 row['playing_seconds_proven'] = playing.seconds
                 row['missed_cadences'] = max(0, int(time.monotonic()-deadline))
