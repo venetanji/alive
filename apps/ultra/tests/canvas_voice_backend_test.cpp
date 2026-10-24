@@ -80,5 +80,21 @@ std::array<std::vector<float>,2> score(const std::vector<unsigned>& partitions){
  assert(ultra_canvas_close_document(2));ultra_audio_stop();return result;
 }
 void partitions(){const auto expected=score({1});for(const auto& partition:std::vector<std::vector<unsigned>>{{32},{64},{128},{256},{1,31,63,64,127,3,17},{1024}})assert(score(partition)==expected);}
+void stereo_effect_callback(){
+ ultra_audio_stop();UltraCanvasGraph g{};g.revision=++revision;g.node_count=4;
+ g.nodes[0]=node(1,38);std::strcpy(g.nodes[0].text,"0 0");
+ g.nodes[1]=node(2,ULTRA_CANVAS_FILTER_STEREO,2400,.7);
+ g.nodes[2]=node(3,49);std::strcpy(g.nodes[2].text,"1 2");g.nodes[3]=node(4,ULTRA_CANVAS_AUDIO_IN);
+ for(unsigned channel=0;channel<2;channel++){
+  g.edges[g.edge_count++]={1,channel,2,channel};g.edges[g.edge_count++]={4,channel,2,channel};g.edges[g.edge_count++]={2,channel,3,channel};
+ }
+ assert(ultra_canvas_install_document(0,&g));assert(ultra_external_start());render();assert(!audible(left)&&!audible(right));
+ const double impulse[]={1,0},zero[]={0,0};assert(ultra_canvas_event_document(0,g.revision,1,0,2,impulse));render(1);assert(left[0]>0&&right[0]==0);
+ assert(ultra_canvas_event_document(0,g.revision,1,0,2,zero));render(1);assert(left[0]!=0&&right[0]==0);
+ assert(ultra_canvas_stop_document(0));render(1);assert(left[0]==0&&right[0]==0);
+ assert(ultra_canvas_param_document(0,g.revision,2,0,800));assert(ultra_canvas_param_document(0,g.revision,2,1,2));
+ assert(!ultra_canvas_param_document(0,g.revision,2,0,19));render();assert(!audible(left)&&!audible(right));
+ assert(ultra_canvas_close_document(0));ultra_audio_stop();
 }
-int main(){overload_and_restart();transformed_release_overflow();partitions();std::puts("PASS: authored backend overload noteoff/transformed release/sustain/panic, stale FIFO invalidation, Stop/restart, independent roots and seven callback partitions");}
+}
+int main(){overload_and_restart();transformed_release_overflow();partitions();stereo_effect_callback();std::puts("PASS: authored backend overload noteoff/transformed release/sustain/panic, stale FIFO invalidation, Stop/restart, independent roots, seven callback partitions and stereo filter/reset without callback allocation/free/locks");}

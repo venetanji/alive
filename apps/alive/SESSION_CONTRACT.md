@@ -65,6 +65,13 @@ The PR #4 manifest declares a stereo output; authored mono primitives and their
 explicit join remain real graph edges. Wider layouts are rejected.
 This first device profile requires a declared stereo output; it does not
 implicitly duplicate an arbitrary mono device at the track boundary.
+Reusable manifests version 1 and 2 normalize to the same host descriptor.
+Version 2 declares `kind`, nullable MIDI input, nullable bound audio input and
+explicit input/output bundles. The current `alive-session-v1` profile accepts
+only instruments and explicitly rejects `audioEffect` until chain hosting lands.
+An absent note entry is represented as `noteNode:null`, never an invented node.
+The shared `audio.in~` and `lowpass.stereo~` primitives and saved stereo effects
+are reusable authoring foundations; they add no session chain routing or limits.
 
 Device loading/removal and graph structure changes require stopped transport
 and stopped callback ownership during preparation/application. A supported live

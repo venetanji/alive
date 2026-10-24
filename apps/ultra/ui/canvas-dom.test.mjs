@@ -40,6 +40,30 @@ async function mount(native=false,{documentCurrent=null,tauri,observeInvoke=()=>
   const {mountCanvas}=await import('./canvas.mjs');const page=mountCanvas({document,window,invoke});await page.ready;await page.controller.flush();await settle();
   return{...page,ids,calls,timeouts,navigations,previews,observed,consoleRecords,popupSnapshots,windowEvents,documentEvents,document,all:id=>descendants(ids.get(id))};
 }
+test('effect panel exposes live parameters and presets without a keyboard claim',async()=>{
+  const p=await mount(true);
+  const patch={version:1,profile:'ultra-canvas-v1',nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
+    device:{version:2,kind:'audioEffect',id:'org.alive.test.utility',name:'Utility',midi:{input:null,output:null},
+      audio:{input:{node:1,bundle:{channels:2,layout:'stereo'}},output:{channels:2,layout:'stereo'}},
+      parameters:[{key:'gain',label:'Gain',node:2,param:'value',min:0,max:2}],presets:[{name:'Quiet',values:{gain:.25}}]}};
+  p.controller.load(patch);await p.controller.flush();await p.ids.get('show-instrument').fire('click');
+  assert.equal(p.ids.get('instrument-title').textContent,'Utility');
+  assert.equal(p.ids.get('instrument-keyboard').hidden,true);
+  assert.equal(p.ids.get('instrument-release').hidden,true);
+  assert.match(p.ids.get('instrument-keyboard-note').textContent,/host.*audio/i);
+  const control=p.all('instrument-controls').find(e=>e.tagName==='INPUT'&&e.type==='number');
+  control.value='0.5';await control.fire('change');await p.controller.flush();
+  assert.equal(p.controller.getState().document.nodes.find(n=>n.id===2).params.value,.5);
+  p.ids.get('instrument-preset').value='Quiet';await p.ids.get('instrument-recall').fire('click');
+  assert.equal(p.controller.getState().document.nodes.find(n=>n.id===2).params.value,.25);
+  const instrument=structuredClone(patch);instrument.nodes[0]=makeNode('poly_note',1);
+  instrument.device.kind='instrument';instrument.device.midi.input={node:1,inlet:0};instrument.device.audio.input=null;
+  p.controller.load(instrument);await p.controller.flush();await p.controller.startAudio();
+  assert.equal(p.ids.get('instrument-keyboard').hidden,false);
+  const key=p.all('instrument-keyboard').find(e=>e.dataset.note==='60');await key.fire('pointerdown',{pointerId:1});
+  assert.ok(p.calls.some(c=>c.name==='canvas_event'&&c.args.node===1&&c.args.inlet===0));
+  await p.dispose();
+});
 test('help shell hosts Basic while question/reference navigation preserves the native runtime',async()=>{
   const patch=helpPatch(),descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Help.ultra',kind:'patch',patch,dirty:false,viewPath:[],authoringRevision:1,runtimeRevision:9};
   const p=await mount(true,{documentCurrent:descriptor,helpReference:async name=>reference(name)});

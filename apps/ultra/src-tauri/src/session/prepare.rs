@@ -105,12 +105,16 @@ pub fn binding_value(binding: &canvas::device::HostParameter, value: f64) -> Res
 
 fn prepare_device(reference: &DeviceReference, session_path: &Path) -> Result<PreparedTrack, String> {
     text(&reference.path, 4096, "Device path")?;
-    if reference.version != 1 { return Err(format!("Unsupported device manifest version {} (host supports 1)", reference.version)); }
+    if !matches!(reference.version, 1 | 2) { return Err(format!("Unsupported device manifest version {} (host supports 1 and 2)", reference.version)); }
     let path = session_path.parent().unwrap_or(Path::new(".")).join(&reference.path);
     let loaded = documents::read_patch(&path)?;
     let mut patch = loaded.patch.ok_or("Expected a saved Ultra instrument, not a Max import")?;
     let initial = canvas::prepare(patch.clone())?;
     let manifest = canvas::device::host_manifest(&patch, &initial.native)?;
+    if manifest.version != reference.version { return Err(format!("Device manifest version mismatch: expected {}, found {}", reference.version, manifest.version)); }
+    if manifest.kind != canvas::device::DeviceKind::Instrument {
+        return Err("alive-session-v1 supports instruments only; audio effects require the chain runtime".into());
+    }
     if manifest.id != reference.id { return Err(format!("Device identity mismatch: expected {}, found {}", reference.id, manifest.id)); }
     if reference.parameters.len() > manifest.parameters.len() { return Err("Unknown stored device parameter".into()); }
     for (key, &value) in &reference.parameters {

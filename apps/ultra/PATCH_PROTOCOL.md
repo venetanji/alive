@@ -63,14 +63,14 @@ protected from overwrite. Advanced JSON / Max import is the explicit workflow
 for replacing the current graph. Browser preview uses separate preview windows,
 file input and downloads, without native execution.
 
-Help & Examples contains 138 original entries: help and an example for each of
-the 66 native kinds and two authoring constructs, plus the starter and subtractive instrument. Object Help opens or focuses a native help patch
+Help & Examples contains 144 original entries: help and an example for each of
+the 68 native kinds and two authoring constructs, plus the starter, subtractive instrument and two reusable effects. Object Help opens or focuses a native help patch
 window. The library also lists open native documents for focusing; proprietary
 Max help content is not bundled.
 
 ## Document and IPC
 
-### Reusable instrument interface
+### Reusable device interface
 
 Either document version may add root-only `device` metadata. It is part of saved
 authoring state and history, excluded from native executable graph equality.
@@ -102,14 +102,69 @@ labels and preset names are 1..64 printable ASCII bytes; optional units allow
 and contain its saved value. Presets contain exactly the binding keys and valid
 numeric values. Duplicate keys, target pairs, names and unknown fields reject.
 
+Version 1 remains the strict instrument format above. Version 2 requires an
+explicit `kind` (`instrument` or `audioEffect`) and replaces its MIDI/audio
+fields with the following stereo effect interface:
+
+```json
+{
+  "version": 2,
+  "kind": "audioEffect",
+  "id": "org.alive.utility",
+  "name": "Stereo Utility",
+  "midi": {"input": null, "output": null},
+  "audio": {
+    "input": {"node": 1, "bundle": {"channels": 2, "layout": "stereo"}},
+    "output": {"channels": 2, "layout": "stereo"}
+  },
+  "parameters": [{"key": "gain", "label": "Gain", "node": 2, "param": "value", "min": 0, "max": 2}],
+  "presets": [{"name": "Unity", "values": {"gain": 1}}]
+}
+```
+
+All I/O fields are required, including explicit nulls. Version 2 instruments
+require `midi.input:{node,inlet:0}` targeting an authored `poly_note`,
+`midi.output:null`, and `audio.input:null`. Effects require both MIDI entries
+null and an audio input bound to an authored `audio_in`. Both versions require
+two stereo output channels; effects also require two stereo input channels.
+Mono, wider layouts, mismatched descriptors and unknown fields reject visibly.
+The parameter/preset rules are identical for instruments and effects. Hosts
+receive one normalized descriptor with `kind`, nullable `noteNode`, nullable
+`input:{node,bundle}`, `output:{channels,layout}` and resolved parameter slots.
+Manifest version retains the source version; it is independent of the document
+version. `alive-session-v1` accepts instruments of either manifest version and
+explicitly rejects effects pending the chain runtime.
+
 `document_instantiate` clones the current canonical root into an untitled,
 independent native owner with no shared path, source, history or runtime state.
 The editor's device commands address the root tree while retaining the current
-view. This is a standalone interface suitable for a future Alive adapter;
-Alive session/device hosting and automation are not implemented. The
+view. Alive session hosting and automation use this same validated interface;
+see `apps/alive/SESSION_CONTRACT.md`. The
 `--instrument-probe <patch> <directory>` CLI is the current host harness: it
 loads and validates the saved document, binds its named parameters, schedules
 bounded notes and renders two instances without a display or editor.
+The probe accepts version 1/2 instruments and rejects effects before rendering.
+
+### Shared Stereo Effect Signals
+
+`audio_in` / `audio.in~` is native kind 66: no inlets or creation parameters,
+and two mono outlets (left/right). The evaluator caller supplies its explicit
+stereo sample pair through the final `external_input` argument to
+`CanvasRuntime::signal_sample`; the default is `{0,0}`. Ordinary Ultra roots
+therefore receive silence. This object opens no physical input and performs no
+cross-document routing.
+
+`filter_stereo` / `lowpass.stereo~` is kind 67: two pure mono signal inputs,
+then cutoff and resonance control inlets, with two independent mono outputs.
+Cutoff is 20..20000 Hz (default 2400); resonance is Q 0.1..20 (default 0.7).
+Both are live numeric parameters in p0/p1; all unused descriptor fields are zero.
+Each sample uses lanes 0/1 of the existing preallocated `UltraFilterKernel`
+storage. No DSP implementation or engine is copied. Hard Stop/reset clears its
+bounded filter state; a live parameter edit preserves the current tail.
+`utility.ultra` authors `audio.in~` through two multiplies with one shared
+manifest-bound `line~` gain into `dac~ 1 2`. `stereo-lowpass.ultra` authors the
+input/filter/sink routes. Perform exposes effect parameters/presets and explains
+host audio input without offering a MIDI keyboard.
 
 ### Authored polyphonic DSP
 
@@ -460,6 +515,8 @@ and `stereo.dac~` path carries an explicit stereo bundle.
 |57|reverse_subtract (`!-`)|rhs=0; numericmode=1|0 hot value/list/bang;1 cold rhs|0 typed right minus hot|
 |58|reverse_divide (`!/`)|rhs=1; numericmode=1; omitted Max numerator remains unqualified|0 hot value/list/bang;1 cold rhs|0 typed right divided by hot|
 |59|abs|numericmode=1|0 numeric value/list; bang/set silent|0 typed absolute value|
+|66|audio_in (`audio.in~`)|empty params; explicit host input, default silence|none|0 left mono;1 right mono|
+|67|filter_stereo (`lowpass.stereo~`)|cutoff=2400 (20..20000 Hz);resonance=0.7 (0.1..20 Q)|0 left mono;1 right mono;2 cutoff;3 resonance|0 left mono;1 right mono|
 
 ### Typed Scalar Arithmetic
 

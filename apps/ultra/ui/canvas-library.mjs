@@ -2,14 +2,18 @@ import {OBJECTS} from './canvas-catalog.mjs';
 import {makeNode,starterPatch,validatePatch} from './canvas-model.mjs';
 import {OBJECT_EXAMPLES} from './canvas-object-examples.mjs';
 import {subtractivePatch} from './canvas-instrument.mjs';
+import {utilityPatch,stereoLowpassPatch} from './canvas-effects.mjs';
 
 const copy=value=>JSON.parse(JSON.stringify(value));
 const groups={bang:'UI Controls',toggle:'UI Controls',number:'UI Controls',flonum:'UI Controls',slider:'UI Controls',message:'Messages & Numbers',int:'Messages & Numbers',float:'Messages & Numbers',add:'Messages & Numbers',multiply:'Messages & Numbers',pack:'Routing',unpack:'Routing',select:'Routing',route:'Routing',trigger:'Routing',send:'Routing',receive:'Routing',print:'Routing',metro:'Timing',counter:'Timing',line:'Timing',chord:'Notes & MIDI',makenote:'Notes & MIDI',midiin:'Notes & MIDI',voice:'Audio',gain:'Audio',join:'Audio',dac:'Audio',sig:'Audio',signal_add:'Audio',signal_subtract:'Audio',signal_multiply:'Audio',signal_divide:'Audio',cycle:'Audio',phasor:'Audio',noise:'Audio',signal_clip:'Audio',line_signal:'Audio',snapshot:'Audio',signal_dac:'Audio'};
 const summaries={dac:'Send a stereo bundle to the shared native audio output.',midiin:'Inspect MIDI channel routing. Physical MIDI input is unavailable in the desktop audio path.'};
 groups.number_int='UI Controls';
 groups.message_box='Messages & Numbers';
+groups.audio_in=groups.filter_stereo='Audio';
 
 function demo(type){
+  if(type==='audio_in')return utilityPatch();
+  if(type==='filter_stereo')return stereoLowpassPatch();
   if(['poly_note','saw_voice','filter_voice','adsr_voice','multiply_voice','mix_voice'].includes(type))return subtractivePatch();
   if(['patcher','comment','inlet','outlet'].includes(type)){
     const wire=(from,to)=>({from,outlet:0,to,inlet:0});
@@ -38,6 +42,8 @@ function demo(type){
 }
 
 export const LIBRARY_ENTRIES=Object.freeze([
+  {key:'example:utility',kind:'example',title:'Stereo Utility',group:'Effects',summary:'A reusable stereo effect with one line~ gain shared by two authored multiplies. Host audio input is silent when opened alone.',patch:utilityPatch()},
+  {key:'example:stereo-lowpass',kind:'example',title:'Stereo Lowpass',group:'Effects',summary:'A reusable stereo Faust lowpass effect with live cutoff, resonance and presets. Host audio input is silent when opened alone.',patch:stereoLowpassPatch()},
   {key:'example:subtractive',kind:'example',title:'Subtractive instrument',group:'Instruments',summary:'An editable four-voice saw, resonant filter and ADSR device. Perform opens its keyboard, controls and presets.',patch:subtractivePatch()},
   {key:'example:starter',kind:'example',title:'Chord sequencer',group:'Getting Started',summary:'A complete two-voice patch. Lock it, start audio, then switch on the clock.',patch:demo('voice')},
   ...Object.entries(OBJECTS).flatMap(([type,spec])=>['help','example'].map(kind=>({key:`${kind}:${type}`,kind,title:kind==='help'?`${spec.name} help`:`${spec.name} example`,group:groups[type]||'Messages & Numbers',summary:summaries[type]||spec.summary,objectType:type,patch:demo(type)}))),

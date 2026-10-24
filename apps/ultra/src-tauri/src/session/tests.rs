@@ -21,6 +21,33 @@ fn saved_session_resolves_two_real_independent_device_references() {
 }
 
 #[test]
+fn session_v1_rejects_effects_with_an_explicit_chain_runtime_error() {
+    let mut session=example();
+    let reference=&mut session.tracks[0].device;
+    reference.path="../../ultra/examples/utility.ultra".into();reference.id="org.alive.utility".into();reference.version=2;
+    reference.parameters.clear();
+    let error=prepare(&session,&example_path()).unwrap_err();
+    assert!(error.contains("instruments only")&&error.contains("chain runtime")&&error.contains("Pulse"),"{error}");
+}
+
+#[test]
+fn session_v1_accepts_version_two_instruments_and_checks_declared_version() {
+    let mut session=example();
+    let original=prepare(&session,&example_path()).unwrap();
+    let mut patch=original.tracks[0].patch.clone();
+    let device=&mut patch["device"];device["version"]=serde_json::json!(2);device["kind"]=serde_json::json!("instrument");
+    device["midi"]=serde_json::json!({"input":device["midi"].clone(),"output":null});
+    device["audio"]=serde_json::json!({"input":null,"output":{"channels":2,"layout":"stereo"}});
+    let path=std::env::temp_dir().join(format!("alive-v2-instrument-{}.ultra",std::process::id()));
+    std::fs::write(&path,serde_json::to_vec(&patch).unwrap()).unwrap();
+    session.tracks[0].device.path=path.to_string_lossy().into_owned();session.tracks[0].device.version=2;
+    assert!(prepare(&session,&example_path()).is_ok());
+    session.tracks[0].device.version=1;
+    assert!(prepare(&session,&example_path()).unwrap_err().contains("version mismatch"));
+    std::fs::remove_file(path).unwrap();
+}
+
+#[test]
 fn frame_conversion_orders_off_automation_on_and_preserves_required_offsets() {
     let mut session = example();
     session.tempo = 120.;

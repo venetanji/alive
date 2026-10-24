@@ -9,6 +9,8 @@ const definitions = {
   adsr_voice:{name:'adsr.voice~',aliases:[],args:['attack','decay','sustain','release'],ui:'object',summary:'Faust ADSR envelopes with live controls for four voice lanes.',example:'adsr.voice~ 10 150 0.65 300'},
   multiply_voice:{name:'*.voice~',aliases:[],args:[],ui:'object',summary:'Multiply matching voice lanes for envelope or velocity scaling.',example:'*.voice~'},
   mix_voice:{name:'mix.voice~',aliases:[],args:[],ui:'object',summary:'Mix four voice lanes to one mono channel, with headroom.',example:'mix.voice~'},
+  audio_in:{name:'audio.in~',aliases:[],args:[],ui:'object',summary:'Read stereo audio supplied by the device host; ordinary roots are silent.',example:'audio.in~'},
+  filter_stereo:{name:'lowpass.stereo~',aliases:[],args:['cutoff','resonance'],ui:'object',summary:'Filter two independent mono channels with live Faust cutoff and resonance.',example:'lowpass.stereo~ 2400 0.7'},
   patcher:{name:'p',aliases:['patcher'],args:['name'],ui:'object',summary:'Edit an embedded patcher in the same document and runtime.',example:'p basic'},
   comment:{name:'comment',aliases:[],args:['text'],ui:'comment',summary:'Add a saved patch annotation.',example:'comment A shared patcher'},
   inlet:{name:'inlet',aliases:[],args:[],ui:'object',summary:'Receive parent messages and mono signals inside a patcher.',example:'inlet'},

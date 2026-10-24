@@ -33,7 +33,7 @@ impl Host {
             let mut graph = track.graph.clone();
             graph.revision = self.revisions[index] + 1;
             let output = &track.manifest.output;
-            let mut native = native::Track { document: index as u32, note_node: track.manifest.note_node,
+            let mut native = native::Track { document: index as u32, note_node: track.manifest.note_node.unwrap_or(0),
                 output_channels: output.channels, output_layout: match output.layout.as_str() { "stereo" => 2, "mono" => 1, _ => 0 },
                 parameter_count: track.manifest.parameters.len() as u32, revision: graph.revision,
                 gain: model.gain, mute: model.mute as u32, solo: model.solo as u32, ..Default::default() };

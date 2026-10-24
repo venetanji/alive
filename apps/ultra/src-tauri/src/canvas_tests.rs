@@ -79,6 +79,55 @@ fn reusable_device_patch() -> Value {
     source
 }
 #[test]
+fn version_two_instrument_manifest_normalizes_and_keeps_version_one_compatible() {
+    let mut source=reusable_device_patch();
+    source["device"]["version"]=json!(2);source["device"]["kind"]=json!("instrument");
+    source["device"]["midi"]=json!({"input":{"node":1,"inlet":0},"output":null});
+    source["device"]["audio"]=json!({"input":null,"output":{"channels":2,"layout":"stereo"}});
+    let prepared=prepare(source.clone()).expect("version two instrument");
+    let manifest=device::host_manifest(&source,&prepared.native).unwrap();
+    let view=serde_json::to_value(manifest).unwrap();
+    assert_eq!(view["kind"],"instrument");assert_eq!(view["noteNode"],1);assert!(view["input"].is_null());
+    let legacy=reusable_device_patch();let prepared=prepare(legacy.clone()).unwrap();
+    let view=serde_json::to_value(device::host_manifest(&legacy,&prepared.native).unwrap()).unwrap();
+    assert_eq!(view["version"],1);assert_eq!(view["kind"],"instrument");assert_eq!(view["noteNode"],1);
+}
+#[test]
+fn version_two_effect_manifest_requires_bound_stereo_input_without_midi() {
+    let mut source=patch(vec![node(1,"audio_in",json!({})),node(2,"filter_stereo",json!({})),node(3,"signal_dac",json!({"channels":"1 2"}))],
+        vec![edge(1,0,2,0),edge(1,1,2,1),edge(2,0,3,0),edge(2,1,3,1)]);
+    source["device"]=json!({"version":2,"kind":"audioEffect","id":"org.alive.test-effect","name":"Stereo lowpass",
+        "midi":{"input":null,"output":null},"audio":{"input":{"node":1,"bundle":{"channels":2,"layout":"stereo"}},"output":{"channels":2,"layout":"stereo"}},
+        "parameters":[{"key":"cutoff","label":"Cutoff","node":2,"param":"cutoff","min":20,"max":20000}],"presets":[{"name":"Soft","values":{"cutoff":350}}]});
+    let prepared=prepare(source.clone()).expect("version two effect");
+    let view=serde_json::to_value(device::host_manifest(&source,&prepared.native).unwrap()).unwrap();
+    assert_eq!(view["kind"],"audioEffect");assert!(view["noteNode"].is_null());assert_eq!(view["input"]["node"],1);
+    assert_eq!(view["input"]["bundle"]["layout"],"stereo");assert_eq!(view["parameters"][0]["slot"],0);
+    for (path,value) in [("/device/midi/input",json!({"node":1,"inlet":0})),("/device/midi/output",json!({})),
+        ("/device/audio/input",Value::Null),("/device/audio/input/node",json!(2)),("/device/audio/input/bundle/channels",json!(1)),
+        ("/device/audio/input/bundle/layout",json!("mono")),("/device/audio/output/channels",json!(4)),("/device/kind",json!("effect"))] {
+        let mut invalid=source.clone();*invalid.pointer_mut(path).unwrap()=value;assert!(prepare(invalid).is_err(),"accepted {path}");
+    }
+    for (object,key) in [("midi","input"),("midi","output"),("audio","input"),("audio","output")] {
+        let mut invalid=source.clone();invalid["device"][object].as_object_mut().unwrap().remove(key);assert!(prepare(invalid).is_err(),"missing {object}.{key}");
+    }
+}
+#[test]
+fn saved_effect_examples_share_native_admission_and_normalized_live_bindings() {
+    for (text,id,keys) in [(include_str!("../../examples/utility.ultra"),"org.alive.utility",vec!["gain"]),
+        (include_str!("../../examples/stereo-lowpass.ultra"),"org.alive.stereo-lowpass",vec!["cutoff","resonance"])] {
+        let source: Value=serde_json::from_str(text).unwrap();let prepared=prepare(source.clone()).unwrap();
+        let manifest=device::host_manifest(&source,&prepared.native).unwrap();
+        assert_eq!(manifest.id,id);assert_eq!(manifest.kind,device::DeviceKind::AudioEffect);assert_eq!(manifest.note_node,None);
+        assert_eq!(manifest.input.as_ref().unwrap().node,1);
+        assert_eq!(manifest.parameters.iter().map(|p|p.key.as_str()).collect::<Vec<_>>(),keys);
+        for parameter in &manifest.parameters {
+            let mut state=CanvasState::default();let revision=state.install(prepared.clone(),|_|true).unwrap();
+            assert!(state.parameter(revision,parameter.node,&parameter.param,parameter.min,|slot,value|slot==parameter.slot&&value==parameter.min).is_ok());
+        }
+    }
+}
+#[test]
 fn reusable_device_manifest_binds_live_saved_parameters_without_changing_runtime() {
     let source=reusable_device_patch();let prepared=prepare(source.clone()).unwrap();
     let mut ordinary=source.clone();ordinary.as_object_mut().unwrap().remove("device");

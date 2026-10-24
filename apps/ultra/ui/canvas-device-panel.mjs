@@ -24,7 +24,7 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{}}){
     update(controller.getState());
   }
   function build(device){
-    bindings=device?.parameters??[];midi=device?.midi??null;inputs.clear();
+    bindings=device?.parameters??[];midi=device?.version===2?device.midi.input:device?.midi??null;inputs.clear();
     $('instrument-controls').replaceChildren();
     for(const binding of bindings){
       const row=make('div','instrument-control'),label=make('label','',binding.label),range=make('input'),numeric=make('input'),unit=make('span','instrument-unit',binding.unit??'');
@@ -55,6 +55,8 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{}}){
     $('instrument-instance').disabled=!device||!invoke||state.closing||state.applying;
     $('instrument-package').disabled=state.closing||state.applying;
     if(!device)return;
+    $('instrument-keyboard').hidden=!midi;$('instrument-release').hidden=!midi;
+    $('instrument-package').disabled=state.closing||state.applying||device.kind==='audioEffect';
     const values=deviceValues(patch);
     for(const binding of bindings){
       const {range,numeric}=inputs.get(binding.key),value=values[binding.key];
@@ -69,9 +71,9 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{}}){
       if(device.presets.some(preset=>preset.name===previous))$('instrument-preset').value=previous;
       presetsKey=newPresets;
     }
-    const playable=state.native&&state.status.running&&!state.faulted&&!state.closing;
+    const playable=!!midi&&state.native&&state.status.running&&!state.faulted&&!state.closing;
     for(const key of keys.values())key.disabled=!playable;
-    $('instrument-keyboard-note').textContent=state.native?(state.status.running?'Play with the keys below, or focus the keyboard and use A W S E D F T G Y H U J K.':'Start audio to play this instrument.'):'Open this patch in native Ultra to play.';
+    $('instrument-keyboard-note').textContent=!midi?'This effect receives audio from its host. Opened on its own, its audio input is silent.':state.native?(state.status.running?'Play with the keys below, or focus the keyboard and use A W S E D F T G Y H U J K.':'Start audio to play this instrument.'):'Open this patch in native Ultra to play.';
   }
   for(let semitone=0;semitone<=12;semitone++){
     const note=60+semitone,name=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][semitone%12],black=name.includes('#');
@@ -84,7 +86,7 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{}}){
   }
   const keyMap=new Map([...('awsedftgyhujk')].map((key,index)=>[key,60+index]));
   const keydown=e=>{
-    const key=e.key.toLowerCase();if(!opened||e.ctrlKey||e.metaKey||e.altKey||!keyMap.has(key)||e.target.closest?.('input,select,textarea'))return;
+    const key=e.key.toLowerCase();if(!opened||!midi||e.ctrlKey||e.metaKey||e.altKey||!keyMap.has(key)||e.target.closest?.('input,select,textarea'))return;
     if(!panel.contains(e.target))return;
     e.preventDefault();e.stopPropagation();
     if(!e.repeat&&controller.getState().status.running)guard(()=>player.press(keyMap.get(key),`key:${key}`))();

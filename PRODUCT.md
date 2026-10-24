@@ -38,7 +38,7 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   structure. See `apps/alive/README.md` and `apps/alive/SESSION_CONTRACT.md`.
 
 - Up to 16 native patch, help and example windows each run an independent
-  `ultra-canvas-v1` graph with 66 native object kinds, 32 nodes and 64 edges. Ports
+  `ultra-canvas-v1` graph with 68 native object kinds, 32 nodes and 64 edges. Ports
   distinguish control, mono audio, mixed control/mono, stereo and explicit
   four-lane discrete voice bundles.
 - Native control objects and ramps operate with audio off. Typed messages and
@@ -51,8 +51,8 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   file. Max files expose named help tabs/patchers and compatibility reports;
   partial selections require explicit acceptance. Whole Max help files and
   arbitrary Max objects are not executable.
-- Help & Examples searches 138 original entries: help and an example for each
-  supported kind, plus the starter and subtractive instrument. Object help opens or focuses its own patch
+- Help & Examples searches 144 original entries: help and an example for each
+  supported kind, plus the starter, subtractive instrument and two stereo effects. Object help opens or focuses its own patch
   window; the library also switches between open native windows.
 - Existing controls operate across their face when locked or with Ctrl/Cmd while
   editing. Optional Max-named appearance overrides save with the document and
@@ -74,6 +74,12 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   only. Numeric creation/control values are bounded to -100000..100000; signal
   samples are not subject to that control bound. Exact Max noise sequences and
   periodic snapshot scheduling are not established.
+- Version 2 reusable manifests describe instruments or stereo audio effects;
+  version 1 instrument files remain valid. Stereo Utility and Stereo Lowpass
+  are authored saved graphs with live controls and presets. `audio.in~` reads
+  explicit host audio (silence in ordinary Ultra roots); `lowpass.stereo~` reuses
+  the existing Faust filter kernel. Alive session-v1 still admits instruments
+  only while chain hosting remains pending.
 - Supported object names and arguments must be explicit. Unsupported objects
   must be rejected visibly. Familiar appearance does not imply Max compatibility.
 - Linux desktop is the shipped target. A smaller browser preview supports
