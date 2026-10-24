@@ -20,6 +20,15 @@ Execute and test these milestones in order, retaining a usable example and
 coherent pushed checkpoints. Read-only reference/design work may proceed in
 parallel. Preserve existing native/UI/history/Quit/scoped-Stop/notice gates.
 
+**Checkpoint pause:** User requested a pause for hands-on testing after Task 14.
+The reviewed atomic scenes and retained evidence are complete locally
+(`2b1eab1`, `3d4beb0`). The existing standalone release binary matches that
+scene source and is ready through `bash apps/alive/run.sh`. Task 15 was
+dispatched but interrupted before implementation; the final example/audit,
+1800 proven-playing seconds, whole-branch review and final exact-head CI/package
+qualification remain open. Finish only this checkpoint's push/PR handoff, then
+wait for the user to resume.
+
 ### Milestone 1: Standalone Application
 
 - [x] Separate `alive` executable/identity and separately launchable `ultra`,
