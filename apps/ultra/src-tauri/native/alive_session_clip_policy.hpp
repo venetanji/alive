@@ -41,6 +41,16 @@ inline AliveSessionLimitsV3 policy(unsigned profile) noexcept {
     out.optional_frame = {6, 1024, 192, HorizonSteps};
     out.optional_window = out.optional_frame;
     out.emergency = {12, 0, 192, 0};
+  } else if (profile == ALIVE_SESSION_V3_PROFILE_8X4) {
+    // Policy 2 retains policy 1's event/scan/guard bounds and scales only
+    // the root/parameter work. See the retained capacity measurements.
+    out.work_policy = ALIVE_SESSION_V3_WORK_POLICY_2;
+    out.features = ALIVE_SESSION_V3_FEATURE_ADMITTED;
+    out.scheduled_frame = {48, 3072, 1568, 0};
+    out.scheduled_window = {288, 18432, 9280, 0};
+    out.optional_frame = {16, 1024, 512, HorizonSteps};
+    out.optional_window = out.optional_frame;
+    out.emergency = {32, 0, 512, 0};
   }
   return out;
 }

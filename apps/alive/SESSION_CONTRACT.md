@@ -3,7 +3,7 @@
 Implementation target, session version 3 with explicit legacy v2 compatibility.
 Acceptance evidence is tracked in `PLAN.md`.
 
-Alive owns one session, up to two instrument tracks, four nullable clip slots per track, one
+Alive owns one session, up to eight instrument tracks, four nullable clip slots per track, one
 shared transport and a stereo master. Each track loads a saved `.ultra` instrument followed by zero, one or two
 ordered saved effects through Ultra's versioned manifest and graph validator. Track identity and DSP
 state are independent even when their device paths are identical. No DSP source
@@ -36,12 +36,14 @@ any chosen host alignment delay; never label startup muting as latency.
 
 ## Bounds And Ownership
 
-At most six devices across two tracks, four voices per instrument, 128 notes,
+The original policy admits two tracks and six devices; the separate larger
+policy admits eight tracks and sixteen devices. Both retain four voices per instrument, 128 notes,
 16 automation lanes and 256 automation points per track across all stored clips
 and its entire chain, including disabled lanes,
 16 manifest parameters per device and 1024 compiled events total. The native
-root pool remains sixteen. Only the admitted native 2x4 profile is enabled;
-structural 8x4 storage does not enable eight tracks or scenes. Host callbacks
+root pool remains sixteen. Admission requires the native profile's explicit
+ADMITTED feature and matching policy; wider ABI storage alone enables nothing.
+Atomic multi-track actions remain disabled. Host callbacks
 accept 1..1024 frames. Admission checks event density as well as total storage.
 At most 32 events may share a frame and at most 64 may fall in any 1024-frame
 window, counting repeated loop seams. One serialized control producer submits
@@ -127,17 +129,22 @@ preferences. Host, output and requested buffer are explicit; rate is fixed at
 selected device advertises support. Driver callbacks larger than 1024 frames
 are partitioned into bounded native calls without losing scheduled offsets;
 the observed driver buffer is reported separately from the request.
-An observed buffer of at least 256 frames is practical guidance for clip-bank
-work, not an automatic settings change or a guarantee against physical underruns.
-Smaller buffers are diagnostic choices. Current driver counters reset on Stop;
-polled zero errors are not complete per-epoch or cumulative error totals.
+An observed buffer of at least 256 frames remains practical guidance for the
+original 2/6 policy. The larger 8/16 policy uses at least 512 observed frames,
+preferring 1024 near its work bounds. These are guidance, not automatic settings
+changes or guarantees against physical underruns. Smaller buffers are diagnostic
+choices. Stream epochs survive Stop and merge exactly once after witnessed
+callback retirement; see `STREAM_OBSERVABILITY.md` for the bounded retention,
+typed-error and timing boundaries. Polled zero errors do not prove zero physical
+underruns.
 Audio configuration requires both stopped musical transport and stopped device
 I/O. Stop audio terminates transport and notes before reclaiming callback
 ownership; starting audio does not start transport. Failed configuration leaves
 the saved configuration/session unchanged. Unavailable saved outputs retain
 their identifiers and require an explicit recovery selection after refresh.
-New opens the packaged two-track template. The current profile permits one or
-two tracks and rejects removal of the last track explicitly. Musical changes
+New opens the packaged two-track template using the unchanged smaller policy.
+Strict v3 permits one to eight tracks within the admitted profile; legacy v2
+retains its two-track bound. Removing the last track is explicitly rejected. Musical changes
 are retained separately from the prepared schedule until stopped Apply; latest
 accepted live bases, bypass and mixer values are merged by stable instance ID
 before preparation. Generic musical drafts cannot alter chain identity, source
@@ -146,7 +153,8 @@ Quit actions resolve draft Apply/Discard/Cancel before Save/Discard/Cancel.
 Editor commands authenticate the actual native window binding to generation and
 instance ID; stale editors cannot edit a replacement or another chain member.
 Snapshots expose all manifests and native state indices by instance ID, plus
-an instrument compatibility view for the existing two-track UI. UI polling never blocks the
+an instrument compatibility view. Capacity, add/remove controls, selection,
+clip controls and per-track diagnostics use the admitted bounds. UI polling never blocks the
 main thread behind a native file/message dialog. Neither editor lifetime nor
 polling owns the callback. The JACK diagnostic retains its legacy 64-frame
 latency declaration; Alive desktop uses CPAL and the tested native host profile.

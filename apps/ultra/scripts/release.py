@@ -332,6 +332,12 @@ def main():
     # tauri-build embeds the default ICO even when running cargo test before bundling.
     if system == 'Windows':
         shutil.copy2(APP/'src-tauri/icons/release/icon.ico', APP/'src-tauri/icons/icon.ico')
+    # Cargo prepends its output directory to the loader path. Refresh both
+    # tested hosts before tests can resolve an older adjacent native library.
+    for product in dict.fromkeys(['ultra', *products]):
+        out = ROOT/'apps'/product/'src-tauri/target'/args.target/'release'
+        out.mkdir(parents=True, exist_ok=True)
+        install_native_library(build/library, out/library)
     run('cargo', 'test', '--manifest-path', APP/'src-tauri/Cargo.toml', '--release', '--locked', '--target', args.target, env=env)
     if 'alive' in products:
         run('cargo', 'test', '--manifest-path', ROOT/'apps/alive/src-tauri/Cargo.toml', '--release', '--locked', '--target', args.target, env=env)

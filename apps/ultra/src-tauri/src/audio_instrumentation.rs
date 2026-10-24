@@ -66,6 +66,7 @@ fn warmed_fill_clock_histogram_publication_allocate_and_free_nothing() {
 #[test]
 #[ignore = "explicit release measurement; no timing acceptance threshold"]
 fn paired_release_overhead() {
+    let raw_output = std::env::var_os("ALIVE_MEASUREMENT_OUTPUT").map(PathBuf::from);
     let clock = Instant::now();
     let metrics = Metrics::default();
     let mut n = Numeric::default();
@@ -111,6 +112,13 @@ fn paired_release_overhead() {
                     }
                     durations.push((clock.elapsed().as_nanos() - start) as u64);
                 }
+                if let Some(directory) = &raw_output {
+                    use std::io::Write;
+                    std::fs::create_dir_all(directory).unwrap();
+                    let path = directory.join(format!("overhead-{frames}-{repetition}-{mode}.json"));
+                    let mut file = std::fs::OpenOptions::new().write(true).create_new(true).open(path).unwrap();
+                    file.write_all(serde_json::to_vec(&serde_json::json!({"source_id":source_id(),"frames":frames,"repetition":repetition,"mode":mode,"duration_ns":durations})).unwrap().as_slice()).unwrap();
+                }
                 durations.sort_unstable();
                 println!(
                     "OVERHEAD={}",
@@ -149,6 +157,9 @@ fn native_saved_clip_release_overhead() {
     let mut host = Host::default();
     let prepared = host.enable_clips(read(&fixture).unwrap()).unwrap();
     assert!(prepared.document.is_clips() && prepared.document.loop_enabled);
+    let count:usize=std::env::var("ALIVE_MEASUREMENT_SAMPLES").map(|value|value.parse().unwrap()).unwrap_or(5000);
+    assert!((1000..=20000).contains(&count));
+    let raw_output=std::env::var_os("ALIVE_MEASUREMENT_OUTPUT").map(PathBuf::from);
     let mut request_serial = 0;
     for frames in [256, 512] {
         for repetition in 0..3 {
@@ -173,8 +184,9 @@ fn native_saved_clip_release_overhead() {
             let mut r = [0.; BLOCK];
             let mut data = vec![0f32; frames * 2];
             let clock = Instant::now();
-            let mut durations = Vec::with_capacity(5000);
-            for index in 0..5064 {
+            let mut durations = Vec::with_capacity(count);
+            let mut raw_durations = Vec::with_capacity(count + 64);
+            for index in 0..count + 64 {
                 let begin = clock.elapsed().as_nanos();
                 if cfg!(feature = "telemetry-disabled") {
                     fill(
@@ -198,6 +210,7 @@ fn native_saved_clip_release_overhead() {
                     );
                 }
                 let elapsed = (clock.elapsed().as_nanos() - begin) as u64;
+                raw_durations.push(elapsed);
                 if index >= 64 {
                     durations.push(elapsed);
                 }
@@ -206,10 +219,17 @@ fn native_saved_clip_release_overhead() {
             assert_eq!(unsafe { native::alive_session_state_v3(&mut state) }, 1);
             assert_eq!(state.playing, 1);
             assert_eq!(n.v[RENDER_FAILURE], 0);
+            if let Some(directory)=&raw_output {
+                use std::io::Write;
+                std::fs::create_dir_all(directory).unwrap();
+                let path=directory.join(format!("native-{}-{}-{frames}-{repetition}.json",prepared.tracks.len(),if cfg!(feature="telemetry-disabled"){ "disabled" }else{ "enabled" }));
+                let mut file=std::fs::OpenOptions::new().write(true).create_new(true).open(path).unwrap();
+                file.write_all(serde_json::to_vec(&serde_json::json!({"source_id":source_id(),"fixture_sha256":fixture_sha,"frames":frames,"repetition":repetition,"telemetry_enabled":!cfg!(feature="telemetry-disabled"),"warmup_callbacks":64,"duration_ns":raw_durations})).unwrap().as_slice()).unwrap();
+            }
             durations.sort_unstable();
             println!(
                 "NATIVE_OVERHEAD={}",
-                serde_json::json!({"telemetry_enabled":!cfg!(feature="telemetry-disabled"),"frames":frames,"repetition":repetition,"samples":durations.len(),"p50_ns":durations[2500],"p95_ns":durations[4750],"p99_ns":durations[4950],"p999_ns":durations[4995],"max_ns":durations[4999],"source_id":source_id(),"fixture_sha256":fixture_sha,"devices":prepared.devices.len(),"tracks":prepared.tracks.len(),"backend":"synchronous native external render; no CPAL scheduling","warmup_callbacks":64,"startup_retained_in_metrics":true,"duration_samples":n.v[SAMPLES].to_string(),"native_render_failures":n.v[RENDER_FAILURE].to_string(),"observed_frames_min":n.v[MIN],"observed_frames_max":n.v[MAX]})
+                serde_json::json!({"telemetry_enabled":!cfg!(feature="telemetry-disabled"),"frames":frames,"repetition":repetition,"samples":durations.len(),"p50_ns":durations[count/2],"p95_ns":durations[count*95/100],"p99_ns":durations[count*99/100],"p999_ns":durations[count*999/1000],"max_ns":durations[count-1],"source_id":source_id(),"fixture_sha256":fixture_sha,"devices":prepared.devices.len(),"tracks":prepared.tracks.len(),"backend":"synchronous native external render; no CPAL scheduling","warmup_callbacks":64,"startup_retained_in_metrics":true,"duration_samples":n.v[SAMPLES].to_string(),"native_render_failures":n.v[RENDER_FAILURE].to_string(),"observed_frames_min":n.v[MIN],"observed_frames_max":n.v[MAX]})
             );
             unsafe {
                 ultra_audio_stop();

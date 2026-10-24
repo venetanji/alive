@@ -142,6 +142,7 @@ pub const V3_RECEIPTS: u32 = 128;
 pub const V3_PROFILE_2X4: u32 = 1;
 pub const V3_PROFILE_8X4: u32 = 2;
 pub const V3_WORK_POLICY_1: u32 = 1;
+pub const V3_WORK_POLICY_2: u32 = 2;
 pub const V3_START: u32 = 1;
 pub const V3_SEEK: u32 = 2;
 pub const V3_TRACK_ACTIONS: u32 = 3;
@@ -420,6 +421,22 @@ impl Default for LimitsV3 {
         value.struct_bytes = std::mem::size_of::<Self>() as u32;
         value
     }
+}
+pub fn clip_limits(profile: u32) -> Result<LimitsV3, String> {
+    let mut limits = LimitsV3::default();
+    let expected = match profile {
+        V3_PROFILE_2X4 => (V3_WORK_POLICY_1, 2, 6, 8),
+        V3_PROFILE_8X4 => (V3_WORK_POLICY_2, 8, 16, 32),
+        _ => return Err("Unknown native clip profile".into()),
+    };
+    if unsafe { alive_session_limits_v3(profile, &mut limits) } == 0
+        || limits.features & V3_FEATURE_ADMITTED == 0 || limits.profile != profile
+        || (limits.work_policy, limits.max_tracks, limits.max_devices, limits.max_clips) != expected
+    { return Err("The requested native clip profile is not admitted".into()); }
+    Ok(limits)
+}
+pub fn clip_capacity() -> Result<LimitsV3, String> {
+    clip_limits(V3_PROFILE_8X4).or_else(|_| clip_limits(V3_PROFILE_2X4))
 }
 impl Default for DiagnosticV3 {
     fn default() -> Self {

@@ -19,15 +19,15 @@ pub struct View<'a> {
 }
 impl Host {
     fn configuration_v3(&self,prepared:&PreparedSession)->Result<(Box<native::ConfigV3>,Vec<crate::canvas::NativeGraph>),String> {
-        let mut limits=native::LimitsV3::default();
-        if unsafe{native::alive_session_limits_v3(native::V3_PROFILE_2X4,&mut limits)}==0||limits.features&native::V3_FEATURE_ADMITTED==0||limits.profile!=native::V3_PROFILE_2X4||limits.work_policy!=native::V3_WORK_POLICY_1||limits.max_tracks!=2||limits.max_devices!=6||limits.max_clips!=8{return Err("The native 2-track / 4-slot profile is unavailable".into());}
-        let (legacy,graphs)=self.configuration(prepared);let mut config=Box::<native::ConfigV3>::default();
+        let profile=if prepared.tracks.len()<=2&&prepared.devices.len()<=6{native::V3_PROFILE_2X4}else{native::V3_PROFILE_8X4};
+        let limits=native::clip_limits(profile)?;
+        if prepared.tracks.len()>limits.max_tracks as usize||prepared.devices.len()>limits.max_devices as usize{return Err("Prepared session exceeds its admitted native clip profile".into());}
+        let (mut config,graphs)=self.configuration_common(prepared);
         config.profile=limits.profile;config.work_policy=limits.work_policy;config.preparation_revision=self.preparation_revision.checked_add(1).ok_or("Native preparation revision exhausted")?;
-        config.track_count=legacy.track_count;config.device_count=legacy.device_count;config.event_count=legacy.event_count;config.loop_enabled=legacy.loop_enabled;config.length_frames=prepared.length_frames;config.tempo_bpm=prepared.document.tempo;
-        config.devices[..prepared.devices.len()].copy_from_slice(&legacy.devices[..prepared.devices.len()]);config.events=legacy.events;
+        config.tempo_bpm=prepared.document.tempo;
         let Schedule::Clips(clips)=&prepared.schedule else{return Err("Not a clip bank".into())};config.clip_count=clips.len() as u32;
         for (i,track) in prepared.document.tracks.iter().enumerate(){
-            config.tracks[i]=native::TrackV3{chain:legacy.tracks[i],slots:[native::V3_NONE;4],initial_clip:native::V3_NONE,reserved:0};
+            config.tracks[i].slots=[native::V3_NONE;4];config.tracks[i].initial_clip=native::V3_NONE;
             let default=&prepared.document.bank(&track.id).unwrap().default_clip_id;
             for (index,clip) in clips.iter().enumerate().filter(|(_,c)|c.track==i){config.tracks[i].slots[clip.slot]=index as u32;if default.as_ref()==Some(&clip.id){config.tracks[i].initial_clip=index as u32;}}
         }
@@ -46,13 +46,21 @@ impl Host {
         Ok(View { document: &p.document, path: &p.origin, devices: p.tracks.iter().map(|t| &p.devices[t.instrument].manifest).collect() })
     }
     fn configuration(&self, prepared: &PreparedSession) -> (Box<native::ConfigV2>, Vec<crate::canvas::NativeGraph>) {
+        let (common,graphs)=self.configuration_common(prepared);
         let mut config = Box::<native::ConfigV2>::default();
+        config.track_count=common.track_count;config.device_count=common.device_count;config.event_count=common.event_count;
+        config.loop_enabled=common.loop_enabled;config.length_frames=common.length_frames;config.loop_end=common.length_frames;
+        config.devices.copy_from_slice(&common.devices[..6]);config.events=common.events;
+        for (index,track) in config.tracks.iter_mut().enumerate(){*track=common.tracks[index].chain;}
+        (config,graphs)
+    }
+    fn configuration_common(&self, prepared: &PreparedSession) -> (Box<native::ConfigV3>, Vec<crate::canvas::NativeGraph>) {
+        let mut config = Box::<native::ConfigV3>::default();
         config.track_count = prepared.tracks.len() as u32;
         config.device_count = prepared.devices.len() as u32;
         config.event_count = prepared.events.len() as u32;
         config.loop_enabled = prepared.document.loop_enabled as u32;
         config.length_frames = prepared.length_frames;
-        config.loop_end = prepared.length_frames;
         let mut graphs = Vec::with_capacity(prepared.devices.len());
         for (index, device) in prepared.devices.iter().enumerate() {
             let model = &prepared.document.tracks[device.track];
@@ -79,7 +87,7 @@ impl Host {
             let mut native = native::TrackV2 { instrument: track.instrument as u32, effect_count: track.effects.len() as u32,
                 gain: model.gain, mute: model.mute as u32, solo: model.solo as u32, ..Default::default() };
             for (slot, &device) in track.effects.iter().enumerate() { native.effects[slot] = device as u32; }
-            config.tracks[index] = native;
+            config.tracks[index].chain = native;
         }
         for (index, event) in prepared.events.iter().enumerate() {
             config.events[index] = native::EventV2 { frame: event.frame, track: event.track, kind: event.kind,
@@ -130,8 +138,7 @@ impl Host {
     }
     fn apply(&mut self, prepared: &PreparedSession) -> Result<(), String> {
         if self.revisions.iter().any(|r|*r==u64::MAX)||self.preparation_revision==u64::MAX{return Err("Native revision exhausted".into());}
-        let (config, graphs) = self.configuration(prepared);
-        let clips=if prepared.document.is_clips(){Some(self.configuration_v3(prepared)?.0)}else{None};
+        let (legacy,clips,graphs)=if prepared.document.is_clips(){let (config,graphs)=self.configuration_v3(prepared)?;(None,Some(config),graphs)}else{let (config,graphs)=self.configuration(prepared);(Some(config),None,graphs)};
         self.preparation_revision=self.preparation_revision.checked_add(1).ok_or("Native preparation revision exhausted")?;
         unsafe {
             if native::alive_session_reset() == 0 { return Err("Stop device I/O before applying a session".into()); }
@@ -146,7 +153,7 @@ impl Host {
                 if crate::ultra_canvas_install_document(slot as u32, graph) == 0 { return Err(format!("Native device {} installation failed", slot + 1)); }
                 self.owned_roots[slot] = true;
             }
-            let accepted=match clips {Some(config)=>native::alive_session_configure_v3(&*config),None=>native::alive_session_configure_v2(&*config)};
+            let accepted=match clips {Some(config)=>native::alive_session_configure_v3(&*config),None=>native::alive_session_configure_v2(&**legacy.as_ref().unwrap())};
             if accepted == 0 { return Err(native::error()); }
         }
         Ok(())

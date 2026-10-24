@@ -47,21 +47,25 @@ pub fn prepare(session: &Session, path: &Path) -> Result<PreparedSession, String
     if session.is_clips() {
         session.validate_clips()?;
         let mut common=(**session).clone();common.format="alive-session-v2".into();
-        let mut prepared=prepare(&Document::LegacyV2(common),path)?;
+        let limits=native::clip_capacity()?;
+        let mut prepared=prepare_common(&Document::LegacyV2(common),path,limits.max_tracks as usize,limits.max_devices as usize)?;
         let mut document=session.clone();
         for (target,source) in document.tracks.iter_mut().zip(&prepared.document.tracks) {
             for (a,b) in target.devices_mut().zip(source.devices()) {a.parameters=b.parameters.clone();}
         }
         prepared.document=document;compile_clips(session,&mut prepared)?;return Ok(prepared);
     }
+    prepare_common(session,path,2,6)
+}
+fn prepare_common(session:&Session,path:&Path,max_tracks:usize,max_devices:usize)->Result<PreparedSession,String> {
     if session.format != "alive-session-v2" { return Err("Unsupported Alive session format; expected alive-session-v2".into()); }
     text(&session.title, 128, "Session title")?;
     bounded(session.tempo, 30., 240., "Tempo")?;
     bounded(session.length_beats, 1. / 64., 256., "Clip length")?;
     let count: usize = session.tracks.iter().map(|t| 1 + t.effects.len()).sum();
     if count > 16 { return Err("Session exceeds sixteen native roots".into()); }
-    if session.tracks.is_empty() || session.tracks.len() > 2 { return Err("Alive supports one or two instrument tracks".into()); }
-    if count > 6 || session.tracks.iter().any(|t| t.effects.len() > 2) { return Err("At most two effects per track and six devices".into()); }
+    if session.tracks.is_empty() || session.tracks.len() > max_tracks { return Err(format!("This admitted profile supports one to {max_tracks} instrument tracks")); }
+    if count > max_devices || session.tracks.iter().any(|t| t.effects.len() > 2) { return Err(format!("At most two effects per track and {max_devices} devices in this admitted profile")); }
     let mut instance_ids = HashSet::new();
     let mut track_ids = HashSet::new();
     for track in &session.tracks {

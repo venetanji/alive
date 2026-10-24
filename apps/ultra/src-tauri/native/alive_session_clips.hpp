@@ -78,9 +78,11 @@ static void finish(AliveSessionReceiptV3 &receipt, unsigned status, unsigned err
 bool bounds_v3(const AliveSessionConfigV3 &c) noexcept {
   if (!output_header(c.version, c.struct_bytes, sizeof c))
     return reject_v3(ALIVE_SESSION_V3_BAD_HEADER, "Invalid v3 configuration header.");
-  if (c.profile != 1 || c.work_policy != 1 || !(clip_admission::policy(c.profile).features & 1))
+  const auto limits = clip_admission::policy(c.profile);
+  if ((c.profile != 1 && c.profile != 2) || c.work_policy != limits.work_policy ||
+      !(limits.features & ALIVE_SESSION_V3_FEATURE_ADMITTED))
     return reject_v3(ALIVE_SESSION_V3_BAD_PROFILE, "Clip profile has no registered measured policy.");
-  if (!c.track_count || c.track_count > 2 || c.device_count < c.track_count || c.device_count > 6 ||
+  if (!c.track_count || c.track_count > limits.max_tracks || c.device_count < c.track_count || c.device_count > limits.max_devices ||
       c.clip_count > c.track_count * 4 || c.event_count > 1024 || !flag(c.loop_enabled) || c.reserved ||
       !c.preparation_revision || !std::isfinite(c.tempo_bpm) || c.tempo_bpm < 30 || c.tempo_bpm > 240)
     return reject_v3(ALIVE_SESSION_V3_BAD_FIELD, "Invalid v3 counts, fields or tempo.");

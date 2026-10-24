@@ -31,6 +31,14 @@ function clipState(){const s=state();s.mode='clipsV3';s.preparationRevision='1';
   for(const t of s.document.tracks){const clip={id:`clip-${t.id}`,name:'Clip 1',lengthBeats:s.document.lengthBeats,notes:t.notes.map((n,i)=>({...n,id:`note-${t.id}-${i}`})),automation:t.automation};t.slots=[clip,null,null,null];t.defaultClipId=clip.id;delete t.notes;delete t.automation;s.preparedClips.push({trackId:t.id,clipId:clip.id,name:clip.name,slot:0,lengthFrames:'411429'});}
   s.runtime={tracks:s.document.tracks.map(t=>({trackId:t.id,activeClipId:t.slots[0].id,phase:'0',epoch:'1',pendingAction:null,pendingClipId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'};return s;}
 
+test('track addition follows explicitly advertised capacity and retains the legacy fallback',async()=>{
+  const initial=clipState();initial.state.playing=0;initial.capabilities={maxTracks:8,maxDevices:16};
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  assert.equal(page.ids.get('add-track').disabled,false);
+  native.snapshot.capabilities={maxTracks:2,maxDevices:6};native.snapshot.snapshotSequence='2';await view.refresh();
+  assert.equal(page.ids.get('add-track').disabled,true);view.dispose();
+});
+
 test('four slots separate selection, draft-only launch and prepared runtime identity',async()=>{
   const initial=clipState(),page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
   assert.ok(page.find('Select Pulse slot 4'));await page.find('Select Pulse slot 2').fire('click');

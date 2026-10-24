@@ -152,17 +152,21 @@ impl Control {
         let (native_state,runtime)=self.runtime.poll(&self.host)?;
         self.snapshot_sequence=sequence;
         let prepared = self.host.prepared.as_ref().ok_or("Open an Alive session")?;
+        let (max_tracks,max_devices,max_clips)=document_capacity(&prepared.document)?;
         let device_index = instance_id.as_ref().map(|id| prepared.devices.iter().position(|d| &d.instance_id == id).ok_or("Unknown editor instance")).transpose()?;
         let track = device_index.map(|i| prepared.devices[i].track);
         Ok(Snapshot { document: prepared.document.clone(), path: self.saved_path.clone(),
-            capabilities: Capabilities { clip_bank: prepared.document.is_clips(), max_tracks: 2, max_devices: 6, slots_per_track: if prepared.document.is_clips(){4}else{1}, max_clips: if prepared.document.is_clips(){8}else{2}, atomic_track_actions: false },
+            capabilities: Capabilities { clip_bank: prepared.document.is_clips(), max_tracks, max_devices, slots_per_track: if prepared.document.is_clips(){4}else{1}, max_clips, atomic_track_actions: false },
             devices: prepared.tracks.iter().map(|t| prepared.devices[t.instrument].manifest.clone()).collect(), generation: self.generation,
             device_instances: prepared.devices.iter().enumerate().map(|(index, device)| (device.instance_id.clone(), DeviceView { index, track: device.track, manifest: device.manifest.clone() })).collect(),
             dirty: self.dirty || self.draft.is_some(), draft: self.draft.clone(), draft_revision:self.draft_revision,history:self.history.view(), state: native_state,mode:if prepared.document.is_clips(){"clipsV3"}else{"legacyV2"}.into(),notice:prepared.notice.clone(),preparation_revision:self.host.preparation_revision.to_string(),snapshot_sequence:sequence.to_string(),prepared_clips:runtime::prepared(&self.host),runtime,
             audio: self.driver.snapshot(), patch: device_index.map(|i| prepared.devices[i].patch.clone()), track, instance_id, device_index })
     }
     fn stopped(&self) -> Result<(), String> {
-        if native::state()?.playing != 0 { Err("Stop transport before preparing a schedule or changing devices. Your edits are retained.".into()) } else { Ok(()) }
+        let playing=if self.host.prepared.as_ref().is_some_and(|p|p.document.is_clips()){
+            let mut state=native::StateV3::default();if unsafe{native::alive_session_state_v3(&mut state)}==0{return Err("Session state is temporarily unavailable".into());}state.playing
+        }else{native::state()?.playing};
+        if playing != 0 { Err("Stop transport before preparing a schedule or changing devices. Your edits are retained.".into()) } else { Ok(()) }
     }
     fn install(&mut self, prepared: PreparedSession) -> Result<(), String> {
         ensure_counter(self.generation)?;ensure_counter(self.draft_revision)?;
@@ -459,10 +463,25 @@ fn capture_device(path: &Path, document: &Session) -> Result<DeviceInstance, Str
     Ok(DeviceInstance { instance_id, source_sha256: prepare::fingerprint(&patch)?, bypassed: false,
         path: loaded.path.to_str().ok_or("Device path must be UTF-8")?.into(), id: manifest.id, version: manifest.version, parameters: Default::default() })
 }
+fn document_capacity(document:&Session)->Result<(usize,usize,usize),String>{
+    if !document.is_clips(){return Ok((2,6,2));}
+    let limits=native::clip_capacity()?;Ok((limits.max_tracks as usize,limits.max_devices as usize,limits.max_clips as usize))
+}
+fn addition_capacity(document:&Session,track_id:&str,action:&str)->Result<(),String>{
+    let (tracks,devices,_)=document_capacity(document)?;
+    let track=document.tracks.iter().find(|t|t.id==track_id);
+    let adding_track=action=="load"&&track.is_none();
+    if adding_track&&document.tracks.len()>=tracks{return Err(format!("The admitted {tracks}-track capacity is reached"));}
+    if action=="add"&&track.is_some_and(|t|t.effects.len()>=2){return Err("At most two effects per track".into());}
+    if (adding_track||action=="add")&&document.tracks.iter().map(|t|1+t.effects.len()).sum::<usize>()>=devices{
+        return Err(format!("The admitted {devices}-device capacity is reached; no dependency was opened"));
+    }Ok(())
+}
 fn change_device(document: &mut Session, track_id: &str, action: &str, instance_id: Option<&str>, before: Option<&str>, reference: Option<DeviceInstance>) -> Result<(), String> {
+    addition_capacity(document,track_id,action)?;
     let track = document.tracks.iter().position(|t| t.id == track_id);
     if track.is_none() {
-        if action != "load" || document.tracks.len() >= 2 { return Err("Unknown track or two-track capacity reached".into()); }
+        if action != "load" { return Err("Unknown track".into()); }
         let name = format!("Track {}", document.tracks.len() + 1);
         document.tracks.push(Track { id: track_id.into(), name, device: reference.ok_or("Choose a device")?, effects: vec![], notes: vec![], automation: vec![], gain: 0.7, mute: false, solo: false });
         if let Document::ClipsV3(s)=document{s.banks.push(ClipBank{track_id:track_id.into(),slots:[None,None,None,None],default_clip_id:None});}
@@ -517,6 +536,7 @@ pub async fn alive_device(window: WebviewWindow, track_id: String, action: Strin
         if control.draft.is_some() { return Err("Apply or discard pending schedule edits before changing devices".into()); }
         let current = control.host.prepared.as_ref().ok_or("No session")?;
         let mut document = current.document.clone();
+        addition_capacity(&document,&track_id,&action)?;
         let reference = if matches!(action.as_str(), "load" | "replace" | "add") {
             let path = match path { Some(path) => path, None => {
                 let Some(path) = window.dialog().file().set_parent(&window).set_title("Load Ultra Device").add_filter("Ultra device", &["ultra"]).blocking_pick_file() else { return control.snapshot(window.label()); };

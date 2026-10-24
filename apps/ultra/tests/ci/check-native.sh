@@ -52,8 +52,8 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror \
 c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
   -c apps/ultra/src-tauri/native/backend.cpp -o "$TEST_DIR/alive-v3-backend.o"
 python3 apps/ultra/tests/alive_session_v3_fixtures.py "$TEST_DIR/saved_graphs.hpp"
-for test in alive_session_v3_test alive_session_v3_measure; do
-  c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
+for test in alive_session_v3_test alive_session_v3_measure alive_session_capacity; do
+  c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DCAPACITY_GUARDS \
     -I"$TEST_DIR" "apps/ultra/tests/${test}.cpp" "$TEST_DIR/alive-v3-backend.o" \
     "$NATIVE_BUILD/core/libultra_core_bundle.a" \
     -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \

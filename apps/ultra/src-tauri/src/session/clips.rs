@@ -73,7 +73,10 @@ impl Document {
         super::prepare::text(&self.title,128,"Session title")?;
         super::prepare::bounded(self.tempo,30.,240.,"Tempo")?;
         super::prepare::bounded(self.length_beats,1./64.,256.,"Transport length")?;
-        if self.tracks.is_empty()||self.tracks.len()>2{return Err("Alive supports one or two instrument tracks".into());}
+        let count:usize=self.tracks.iter().map(|t|1+t.effects.len()).sum();
+        if count>16{return Err("Session exceeds sixteen native roots".into());}
+        let limits=super::native::clip_capacity()?;
+        if self.tracks.is_empty()||self.tracks.len()>limits.max_tracks as usize{return Err(format!("This admitted clip profile supports one to {} instrument tracks",limits.max_tracks));}
         let mut ids=HashSet::new();let mut notes=HashSet::new();let mut tracks=HashSet::new();let mut devices=HashSet::new();
         for t in &self.tracks {
             super::prepare::token(&t.id,"Track ID")?;super::prepare::text(&t.name,64,"Track name")?;
@@ -101,7 +104,7 @@ impl Document {
             }
             if counts.0>128||counts.1>16||counts.2>256{return Err(format!("Track '{}' stored clips exceed aggregate limits: 128 notes, 16 lanes, 256 points (including disabled lanes)",t.name));}
         }
-        if devices.len()>6{return Err("At most six devices".into());}Ok(())
+        if devices.len()>limits.max_devices as usize{return Err(format!("At most {} devices in this admitted clip profile",limits.max_devices));}Ok(())
     }
 }
 fn identity(prefix:&str,parts:&[&str])->String {

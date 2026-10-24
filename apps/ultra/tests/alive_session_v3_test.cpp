@@ -205,7 +205,9 @@ void admission() {
   AliveSessionLimitsV3 l{};
   l.version = 3;
   l.struct_bytes = sizeof l;
-  assert(alive_session_limits_v3(2, &l) && !l.features);
+  assert(alive_session_limits_v3(2, &l) &&
+         l.features == ALIVE_SESSION_V3_FEATURE_ADMITTED &&
+         l.work_policy == ALIVE_SESSION_V3_WORK_POLICY_2);
   assert(alive_session_limits_v3(1, &l) && (l.features & 1));
   assert(!alive_session_start());
   assert(!alive_session_seek(0));

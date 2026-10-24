@@ -1,8 +1,11 @@
 # Stream epochs and finite-run measurements
 
-The accepted 2-track / 6-device / 8-clip native profile is unchanged. Stream
-telemetry is host evidence, not a larger-profile admission or a hardware deadline
-claim. `alive_audio_diagnostics` (main window only) and Ultra's
+The accepted 2-track / 6-device / 8-clip native policy is unchanged. A separately
+measured policy admits 8 tracks / 16 devices / 32 clips; its limits, practical
+buffer scope and source-specific distributions are in
+`../ultra/src-tauri/native/alive_session_v3_policy.md`. Stream telemetry alone
+does not admit a profile or establish a hardware deadline.
+`alive_audio_diagnostics` (main window only) and Ultra's
 `audio_diagnostics` accept a canonical decimal `after` cursor. Alive's optional
 Stream measurements disclosure fetches the bounded records once per second only
 while both disclosures are open. Routine snapshots contain scalar summaries.

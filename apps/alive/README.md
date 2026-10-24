@@ -55,8 +55,8 @@ the Windows or macOS artifacts.
 The default First Light session contains Pulse and Harmony instrument tracks,
 an eight-beat C / Am / F / G progression, and cutoff/level automation. New
 creates a fresh copy of this template. Replace loads a saved `.ultra` device
-on a stopped track; Remove track and Add instrument allow a one-track session to
-return to two tracks. Select a track to see its instrument followed by up to two
+on a stopped track; Remove track and Add instrument support one to eight tracks
+in clip-bank sessions, with sixteen devices total. Select a track to see its instrument followed by up to two
 stereo effects. Add effect loads a saved `.ultra` effect such as the bundled
 Stereo Utility or Stereo Lowpass. Earlier / Later changes the effect order.
 Selection changes the visible controls without starting playback. The first
@@ -69,7 +69,14 @@ notes. Save & start audio opens the output while leaving musical transport
 stopped. The panel reports the observed callback size separately from the
 requested buffer. Refresh retains disconnected selections so you can explicitly
 choose a replacement; rejected settings preserve the previous saved values.
-Use an observed buffer of at least 256 frames for practical clip-bank work.
+The unchanged 2-track / 6-device policy uses observed buffers of at least 256
+frames as practical guidance. Larger clip-bank sessions use the separate
+8-track / 16-device policy: use at least 512 observed frames and prefer 1024
+near its admitted graph/work bounds. Eight instruments leave room for eight
+effects total, distributed with at most two on any track. Event limits still
+apply across tracks: eight simultaneous triads plus two automation events each
+are 40 events and exceed the 32/frame cap. Very short loops can also exceed the
+64-events/1024-frame envelope, including possible clip switches.
 Smaller buffers remain diagnostic choices; admission is not a physical audio
 underrun guarantee. This guidance does not change saved audio settings.
 
@@ -185,13 +192,13 @@ on GTK destruction to release its strong view/message-manager reference cycle.
 
 ## Supported Profile
 
-One or two instrument tracks, up to two stereo effects per track and six hosted
+One to eight instrument tracks, up to two stereo effects per track and sixteen hosted
 instances total; four voices per instrument, 48 kHz, explicit mono/stereo channel
-bundles, declared stereo device/master output, four slots per track and eight
+bundles, declared stereo device/master output, four slots per track and thirty-two
 stored clips total. Across all stored clips on each track, at most 128 notes,
 16 automation lanes and 256 points are retained, including disabled lanes.
 Transport and clip lengths are independently at most 256 beats / 512 seconds.
-The native 2x4 profile applies conservative density/work and graph-family limits;
+Both admitted native profiles apply conservative density/work and graph-family limits;
 refusals identify contributors and recovery choices without trimming the score.
 Scheduled events,
 command queues and per-callback work are bounded. Structural changes require
@@ -201,7 +208,7 @@ The authored AOT Faust kernels run in Ultra's native evaluator, alongside
 Clockwork. The legacy Clockwork Voice path adds 64 samples and is rejected by
 this hosted profile; native hosted alignment delay is zero. Wider speaker
 layouts, arbitrary Faust/JIT devices, external MIDI, unrestricted live graph
-editing, scenes, eight-track admission and a full DAW arrangement remain outside
+editing, scenes and a full DAW arrangement remain outside
 this profile.
 
 See `SESSION_CONTRACT.md` for timing, ownership, admission and persistence rules,

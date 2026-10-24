@@ -35,6 +35,86 @@ fn example() -> Session {
     read(&example_path()).unwrap().document
 }
 
+fn capacity_document() -> Session {
+    let mut value = serde_json::to_value(example().to_clips().unwrap()).unwrap();
+    let original = value["tracks"][0].clone();
+    let mut tracks = Vec::new();
+    for index in 0..8 {
+        let mut track = original.clone();
+        track["id"] = format!("capacity-track-{index}").into();
+        track["name"] = format!("Capacity {}", index + 1).into();
+        track["device"]["instanceId"] = format!("capacity-instrument-{index}").into();
+        track["gain"] = serde_json::json!(0.125);
+        track["defaultClipId"] = format!("capacity-clip-{index}").into();
+        track["slots"][0]["id"] = format!("capacity-clip-{index}").into();
+        track["slots"][0]["notes"] = serde_json::json!((0..4).map(|voice| serde_json::json!({
+            "id": format!("capacity-note-{index}-{voice}"), "beat": 0., "duration": 8.,
+            "pitch": 60 + voice, "velocity": 90
+        })).collect::<Vec<_>>());
+        track["slots"][0]["automation"] = serde_json::json!([]);
+        let effects = if index < 4 { vec!["utility", "stereo-lowpass"] } else { vec![] };
+        track["effects"] = serde_json::Value::Array(effects.into_iter().enumerate().map(|(position, name)| {
+            let path = Path::new(env!("CARGO_MANIFEST_DIR")).join(format!("../examples/{name}.ultra"));
+            let patch = crate::documents::read_patch(&path).unwrap().patch.unwrap();
+            serde_json::json!({"instanceId": format!("capacity-effect-{index}-{position}"),
+                "path": path, "id": patch["device"]["id"], "version": patch["device"]["version"],
+                "sourceSha256": prepare::fingerprint(&patch).unwrap(), "bypassed": false, "parameters": {}})
+        }).collect());
+        tracks.push(track);
+    }
+    value["tracks"] = tracks.into();
+    serde_json::from_value(value).unwrap()
+}
+
+#[test]
+fn v3_eight_track_host_roundtrip_and_mixer() {
+    const NAME: &str = "session::tests::v3_eight_track_host_roundtrip_and_mixer";
+    if std::env::var("ALIVE_CAPACITY_HOST_CHILD").as_deref() != Ok("1") {
+        let child = std::process::Command::new(std::env::current_exe().unwrap())
+            .args(["--exact", NAME, "--nocapture"]).env("ALIVE_CAPACITY_HOST_CHILD", "1")
+            .env_remove("DISPLAY").env_remove("WAYLAND_DISPLAY").output().unwrap();
+        assert!(child.status.success(), "{}\n{}", String::from_utf8_lossy(&child.stdout), String::from_utf8_lossy(&child.stderr));
+        return;
+    }
+    let document = capacity_document();
+    let prepared = prepare(&document, &example_path()).unwrap();
+    assert_eq!((prepared.tracks.len(), prepared.devices.len(), prepared.events.len()), (8, 16, 32));
+    let mut host = host::Host::default();
+    host.install(prepared).unwrap();
+    let mut runtime = runtime::Runtime::default();
+    assert_eq!(unsafe { native::ultra_external_start() }, 1);
+    runtime.request(&host, native::RequestV3 { kind: native::V3_START, ..Default::default() }, None, None).unwrap();
+    let mut left = [0f32; 1024]; let mut right = left;
+    assert_eq!(unsafe { native::ultra_external_render(1024, left.as_mut_ptr(), right.as_mut_ptr()) }, 1);
+    let (state, _) = runtime.poll(&host).unwrap();
+    assert_eq!(state["tracks"].as_array().unwrap().len(), 8);
+    assert_eq!(state["devices"].as_array().unwrap().len(), 16);
+    for index in 0..8 {
+        assert_eq!(state["tracks"][index]["activeVoices"], 4);
+        host.mixer(index, 0.1 + index as f64 * 0.01, index == 3, index == 7).unwrap();
+    }
+    assert_eq!(unsafe { native::ultra_external_render(31, left.as_mut_ptr(), right.as_mut_ptr()) }, 1);
+    let (state, _) = runtime.poll(&host).unwrap();
+    assert_eq!(state["tracks"][3]["mute"], 1);
+    assert_eq!(state["tracks"][7]["solo"], 1);
+    assert!(left[..31].iter().all(|sample| sample.is_finite()));
+    let folder = std::env::temp_dir().join(format!("alive-capacity-host-{}", std::process::id()));
+    std::fs::create_dir_all(&folder).unwrap();
+    let saved = save(&folder.join("eight.alive"), &host.prepared.as_ref().unwrap().document, &example_path()).unwrap();
+    let reopened = read(&saved).unwrap();
+    assert_eq!(reopened.document.tracks[7].id, "capacity-track-7");
+    assert!(reopened.document.tracks[3].mute && reopened.document.tracks[7].solo);
+    assert_eq!(reopened.document.banks(), host.prepared.as_ref().unwrap().document.banks());
+    let mut excess = document.clone();
+    let mut extra = excess.tracks[0].effects[0].clone(); extra.instance_id = "seventeenth-root".into();
+    excess.tracks[4].effects.push(extra);
+    for track in &mut excess.tracks { for device in track.devices_mut() { device.path = "/missing-capacity-dependency.ultra".into(); } }
+    assert!(prepare(&excess, &example_path()).unwrap_err().contains("sixteen native roots"));
+    unsafe { native::alive_session_stop_v3(); native::ultra_audio_stop(); native::alive_session_reset();
+             for slot in 0..16 { crate::ultra_canvas_close_document(slot); } }
+    std::fs::remove_dir_all(folder).unwrap();
+}
+
 #[test]
 fn v3_strict_wire_migration_and_roundtrip_preserve_score_identity() {
     let legacy = example();

@@ -109,6 +109,35 @@ class ReleaseTests(unittest.TestCase):
                 'SHA256SUMS-alive-x86_64-unknown-linux-gnu.txt',
             })
 
+    def test_release_stages_current_libraries_before_cargo_tests(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            app = root/'apps/ultra'
+            built = app/'build/libultra_native.so'
+            built.parent.mkdir(parents=True)
+            built.write_bytes(b'current native ABI')
+            installed = [root/'apps'/product/'src-tauri/target/x86_64-unknown-linux-gnu/release/libultra_native.so'
+                         for product in ('ultra', 'alive')]
+            for path in installed:
+                path.parent.mkdir(parents=True)
+                path.write_bytes(b'stale native ABI')
+            cargo_tests = []
+            def run(*args, **kwargs):
+                if args[:2] == ('cargo', 'test'):
+                    for path in installed:
+                        self.assertEqual(path.read_bytes(), built.read_bytes())
+                    cargo_tests.append(args)
+            with mock.patch.multiple(release, ROOT=root, APP=app, run=run,
+                                     version=mock.Mock(return_value='0.1.0'),
+                                     prepare_dependencies=mock.Mock(), validate_notices=mock.Mock(),
+                                     verify_packages=mock.Mock(),
+                                     bundle_config=mock.Mock(return_value={'bundle': {'resources': {}}})), \
+                 mock.patch('sys.argv', ['release.py', 'build', '--target', 'x86_64-unknown-linux-gnu', '--product', 'alive']), \
+                 mock.patch.object(release.platform, 'system', return_value='Linux'), \
+                 mock.patch.object(release.platform, 'machine', return_value='x86_64'):
+                release.main()
+            self.assertEqual(len(cargo_tests), 2)
+
     @unittest.skipUnless(os.name == 'posix', 'Unix allows replacement of a mapped shared library')
     def test_native_replacement_preserves_a_running_apps_mapping(self):
         with tempfile.TemporaryDirectory() as d:
