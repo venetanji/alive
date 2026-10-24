@@ -260,6 +260,132 @@ void transitions() {
   render(1);
   assert(left[0] == float(64. / 127. * .25));
 }
+void receipt_is(const AliveSessionStateV3 &s, const AliveSessionReceiptV3 &request, unsigned status,
+                unsigned error = ALIVE_SESSION_V3_OK) {
+  const auto &r = s.receipts[request.request_serial % 128];
+  assert(r.request_serial == request.request_serial && r.track_mask == request.track_mask);
+  assert(r.status == status && r.error == error);
+  assert(r.pending_mask == (status == ALIVE_SESSION_V3_PENDING ? r.track_mask : 0));
+  assert(r.applied_mask == (status == ALIVE_SESSION_V3_APPLIED ? r.track_mask : 0));
+  assert(r.superseded_mask == (status == ALIVE_SESSION_V3_SUPERSEDED ? r.track_mask : 0));
+  assert(r.canceled_mask == (status == ALIVE_SESSION_V3_CANCELED ? r.track_mask : 0));
+  assert(r.rejected_mask == (status == ALIVE_SESSION_V3_REJECTED ? r.track_mask : 0));
+}
+void configure_stopped(AliveSessionConfigV3 &c) {
+  finalize(c);
+  assert(alive_session_configure_v3(&c));
+  assert(ultra_external_start());
+}
+void stopped_action_supersession() {
+  const unsigned pairs[][2] = {{ALIVE_SESSION_V3_LAUNCH, ALIVE_SESSION_V3_LAUNCH},
+                               {ALIVE_SESSION_V3_LAUNCH, ALIVE_SESSION_V3_TRACK_STOP},
+                               {ALIVE_SESSION_V3_TRACK_STOP, ALIVE_SESSION_V3_LAUNCH}};
+  for (bool seek_between : {false, true})
+    for (const auto &pair : pairs) {
+      auto c = prepare();
+      configure_stopped(c);
+      const auto first = request(3, 0, 0, pair[0] == ALIVE_SESSION_V3_LAUNCH ? 1 : UINT32_MAX, pair[0]);
+      const auto other = request(3, 0, 1, 1);
+      AliveSessionReceiptV3 seek{};
+      if (seek_between)
+        seek = request(2, 137);
+      const auto last = request(3, 0, 0, pair[1] == ALIVE_SESSION_V3_LAUNCH ? 0 : UINT32_MAX, pair[1]);
+      render(1);
+      const auto s = state();
+      receipt_is(s, first, ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
+      receipt_is(s, other, ALIVE_SESSION_V3_APPLIED);
+      receipt_is(s, last, ALIVE_SESSION_V3_APPLIED);
+      if (seek_between)
+        receipt_is(s, seek, ALIVE_SESSION_V3_APPLIED);
+      assert(!s.playing && s.position == (seek_between ? 137u : 0u));
+      assert(s.tracks[0].active_clip == (pair[1] == ALIVE_SESSION_V3_LAUNCH ? 0 : UINT32_MAX));
+      assert(s.tracks[0].phase == 0 && !s.tracks[0].pending_action);
+      assert(s.tracks[1].active_clip == 3 && s.tracks[1].phase == (seek_between ? 137u : 0u));
+    }
+
+  auto saturated = prepare();
+  configure_stopped(saturated);
+  std::array<AliveSessionReceiptV3, 64> actions{};
+  for (unsigned i = 0; i < actions.size(); ++i)
+    actions[i] = request(3, 0, 0, i % 2);
+  render(1);
+  const auto drained = state();
+  for (unsigned i = 0; i + 1 < actions.size(); ++i)
+    receipt_is(drained, actions[i], ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
+  receipt_is(drained, actions.back(), ALIVE_SESSION_V3_APPLIED);
+  assert(!drained.playing && drained.tracks[0].active_clip == 1 && drained.tracks[1].active_clip == 2);
+
+  // A stopped cue remains the active selection when START is followed by a
+  // future quantized action. SEEK preserves that selection and reanchors it.
+  auto c = prepare();
+  configure_stopped(c);
+  const auto cue = request(3, 0, 0, 1), seek = request(2, 137), play = request(1);
+  const auto future = request(3, 0, 0, 0);
+  render(1);
+  auto s = state();
+  receipt_is(s, cue, ALIVE_SESSION_V3_APPLIED);
+  receipt_is(s, seek, ALIVE_SESSION_V3_APPLIED);
+  receipt_is(s, play, ALIVE_SESSION_V3_APPLIED);
+  receipt_is(s, future, ALIVE_SESSION_V3_PENDING);
+  assert(s.playing && s.position == 138 && s.tracks[0].active_clip == 1 && s.tracks[0].phase == 138);
+  assert(s.tracks[0].pending_serial == future.request_serial && s.tracks[0].pending_frame > s.absolute_frame);
+  assert(s.tracks[1].active_clip == 2 && s.tracks[1].phase == 138);
+
+  // A running action canceled by SEEK must not become SUPERSEDED later.
+  c = prepare();
+  configure_stopped(c);
+  request(1);
+  const auto canceled = request(3, 0, 0, 1);
+  request(2, 137);
+  const auto replacement = request(3, 0, 0, 0);
+  render(1);
+  s = state();
+  receipt_is(s, canceled, ALIVE_SESSION_V3_CANCELED, ALIVE_SESSION_V3_REPLACED_REQUEST);
+  receipt_is(s, replacement, ALIVE_SESSION_V3_PENDING);
+  assert(s.playing && s.position == 138 && s.tracks[0].active_clip == 0 && s.tracks[0].phase == 138);
+}
+void stopped_action_work_refusal() {
+  auto c = prepare();
+  configure_stopped(c);
+  request(2, 17);
+  render(1); // Spend the optional guard allowance while remaining stopped.
+  const auto first = request(3, 0, 0, 1), other = request(3, 0, 1, 1);
+  const auto last = request(3, 0, 0, UINT32_MAX, ALIVE_SESSION_V3_TRACK_STOP);
+  const auto seek = request(2, 77);
+  assert(alive_session_base_v2(c.devices[0].document, c.devices[0].revision, 0, 32));
+  assert(alive_session_mixer(1, .5, 0, 0));
+  render(1);
+  auto s = state();
+  receipt_is(s, first, ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
+  receipt_is(s, last, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
+  receipt_is(s, other, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
+  receipt_is(s, seek, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
+  assert(!s.playing && s.position == 17 && s.tracks[0].active_clip == 0 && s.tracks[0].phase == 17);
+  assert(s.tracks[1].active_clip == 2 && s.tracks[1].phase == 17 && s.tracks[1].mixer.gain == .5);
+  assert(s.devices[0].base[0] == 32 && s.devices[0].effective[0] == 32);
+
+  c = prepare();
+  configure_stopped(c);
+  const auto cue = request(3, 0, 0, 1);
+  render(1);
+  request(1);
+  render(1);
+  const auto pending = request(3, 0, 0, 0);
+  render(1);
+  const auto before = state();
+  const auto blocked_seek = request(2, 77), superseded = request(3, 0, 0, 1);
+  const auto blocked_action = request(3, 0, 0, UINT32_MAX, ALIVE_SESSION_V3_TRACK_STOP);
+  render(1);
+  s = state();
+  receipt_is(s, cue, ALIVE_SESSION_V3_APPLIED);
+  receipt_is(s, pending, ALIVE_SESSION_V3_PENDING);
+  receipt_is(s, superseded, ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
+  receipt_is(s, blocked_seek, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
+  receipt_is(s, blocked_action, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
+  assert(s.playing && s.position == before.position + 1 && s.tracks[0].active_clip == 1);
+  assert(s.tracks[0].pending_serial == pending.request_serial &&
+         s.tracks[0].pending_frame == before.tracks[0].pending_frame);
+}
 void queue_stop() {
   auto c = prepare();
   start(c);
@@ -561,6 +687,26 @@ std::vector<float> action_partitions(const std::vector<unsigned> &parts, bool la
   return out;
 }
 #ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+void nonloop_end_fault_resource() {
+  auto c = prepare(1);
+  c.loop_enabled = 0;
+  c.length_frames = c.clips[0].length_frames = 400;
+  add(c, 0, 0, ALIVE_SESSION_NOTE_ON, 60, 100);
+  start(c);
+  render(399);
+  ultra::alive_session_test_charge = [](unsigned family, const ultra::clip_admission::Cost &) noexcept {
+    if (family == 0) {
+      ultra::alive_session_test_fault_resource = ALIVE_SESSION_V3_RESOURCE_PARAMETER_WRITES;
+      ultra::alive_session_test_charge = nullptr;
+    }
+  };
+  render(1); // Arm the fault after the final sample check, before end cleanup.
+  ultra::alive_session_test_fault_resource = 0;
+  const auto s = state();
+  assert(s.position == 400 && !s.playing && !s.tracks[0].mixer.active_voices);
+  assert(s.fault == ALIVE_SESSION_V3_RUNTIME_INVARIANT && s.event_faults == 1);
+  assert(s.fault_resource == ALIVE_SESSION_V3_RESOURCE_PARAMETER_WRITES);
+}
 uint64_t charged_scans = 0;
 void observe_scans(unsigned family, const ultra::clip_admission::Cost &cost) noexcept {
   if (family < 3)
@@ -666,10 +812,27 @@ void epoch_race() {
 }
 #endif
 } // namespace
-int main() {
+int main(int argc, char **argv) {
+  if (argc == 2 && std::strcmp(argv[1], "--stopped-reducer") == 0) {
+    stopped_action_supersession();
+    stopped_action_work_refusal();
+    cleanup();
+    std::puts("PASS: stopped action supersession, ordering, masks and work refusal");
+    return 0;
+  }
+#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+  if (argc == 2 && std::strcmp(argv[1], "--nonloop-resource") == 0) {
+    nonloop_end_fault_resource();
+    cleanup();
+    std::puts("PASS: nonloop cleanup preserves the failed work resource");
+    return 0;
+  }
+#endif
   admission();
   assert(playback({1}) == playback({31, 63, 64, 127, 1024, 1}));
   transitions();
+  stopped_action_supersession();
+  stopped_action_work_refusal();
   queue_stop();
   end_and_strict_chase();
   receipts_and_identity();
@@ -681,6 +844,7 @@ int main() {
   abi_cleanup_and_failure();
   assert(action_partitions({1}, true) == action_partitions({1024, 127, 63, 1, 31}, true));
 #ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+  nonloop_end_fault_resource();
   shared_chase_scan();
   invariant_fault_cancels_due_launch();
   epoch_race();

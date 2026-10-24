@@ -248,3 +248,130 @@ finite kernel/node/edge profile and conservative synthetic stress supply the
 initial measured gate. No hardware JACK/xrun/loopback claim, GUI claim, Task 12
 saved-format integration, eight-track admission, atomic scene or final 30-minute
 app soak is included. Independent code review remains the parent's next gate.
+
+## Task 11 Fix Round 1
+
+Baseline: `79aec9d45b94e51ac76b95c5b3d5a514119b1483`, after the separate
+Task 10 harness correction released the source lane. This round addresses I1
+and M1 from `task-11-review.md`; it changes only the native reducer/diagnostic,
+the focused v3 runtime tests and this report.
+
+I1: the reducer now remembers each track's latest stopped-selection receipt
+using eight callback-local unsigned indices. A later stopped action directly
+finishes the earlier receipt as SUPERSEDED/REPLACED_REQUEST with the exact
+terminal mask. This bookkeeping deliberately remains separate from pending
+running actions: a stopped cue followed by SEEK/START can remain the active
+selection while a later launch waits for a future quantization boundary.
+Running actions canceled by SEEK retain their CANCELED result. Candidate
+publication/refusal, previously pending actions, accepted live controls and
+the emergency Stop path retain their existing behavior.
+
+M1: nonloop cleanup now forwards the actual resource returned by
+`scheduled_fits(charge)` to `fault_v3`. A regression uses the existing
+test-only charge/fault hooks to force PARAMETER_WRITES failure specifically
+at nonloop cleanup after the final sample's normal scheduled check. It checks
+the stopped/cleared result, single invariant fault and exact failed resource.
+No production fault control was added.
+
+The stopped-action regressions cover launch/launch, launch/stop and stop/launch,
+both with and without intervening SEEK; an interleaved other-track action;
+final clip/phase/playing/position; exact identity and terminal masks; and a
+full 64-command snapshot whose first 63 actions are superseded. Ordering cases
+cover a preserved stopped cue followed by SEEK/START/future launch and a
+running action canceled by SEEK before its replacement. Work refusal checks
+the superseded receipt, rejected surviving actions and SEEK, unchanged
+selection/position, accepted base/mixer edits, and preservation of an earlier
+cue plus an older pending request/target.
+
+### Red/Green And Compatibility Evidence
+
+All commands ran from the checkout root. Artifacts are under
+`/tmp/alive-task11-fix1/`. Before editing the runtime, the baseline backend was
+compiled as `backend-red.o` and linked with the new focused regressions:
+
+```sh
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
+  -c apps/ultra/src-tauri/native/backend.cpp -o /tmp/alive-task11-fix1/backend-red.o
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
+  apps/ultra/tests/alive_session_v3_test.cpp /tmp/alive-task11-fix1/backend-red.o \
+  apps/ultra/build/core/libultra_core_bundle.a \
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+  -ldl -lrt -o /tmp/alive-task11-fix1/v3-red
+/tmp/alive-task11-fix1/v3-red --stopped-reducer > /tmp/alive-task11-fix1/stopped-red.log 2>&1
+/tmp/alive-task11-fix1/v3-red --nonloop-resource > /tmp/alive-task11-fix1/nonloop-red.log 2>&1
+```
+
+Both focused runs exited 134 on the expected assertions: the earlier stopped
+action's status/error did not match SUPERSEDED/REPLACED_REQUEST, and the
+nonloop fault resource did not match PARAMETER_WRITES. These were behavioral
+assertion failures, not compile failures.
+
+After the correction, the backend and test were compiled with the same flags:
+
+```sh
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
+  -c apps/ultra/src-tauri/native/backend.cpp -o /tmp/alive-task11-fix1/backend.o
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
+  apps/ultra/tests/alive_session_v3_test.cpp /tmp/alive-task11-fix1/backend.o \
+  apps/ultra/build/core/libultra_core_bundle.a \
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+  -ldl -lrt -o /tmp/alive-task11-fix1/v3
+/tmp/alive-task11-fix1/v3 --stopped-reducer > /tmp/alive-task11-fix1/stopped-green.log 2>&1
+/tmp/alive-task11-fix1/v3 --nonloop-resource > /tmp/alive-task11-fix1/nonloop-green.log 2>&1
+```
+
+Both exited 0, reporting respectively `PASS: stopped action supersession,
+ordering, masks and work refusal` and `PASS: nonloop cleanup preserves the
+failed work resource`. The 64-command regression was then added, the same v3
+compile/link command was repeated, and the complete suite ran:
+
+```sh
+/tmp/alive-task11-fix1/v3 > /tmp/alive-task11-fix1/v3-green.log 2>&1
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
+  apps/ultra/tests/alive_session_test.cpp /tmp/alive-task11-fix1/backend.o \
+  apps/ultra/build/core/libultra_core_bundle.a \
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+  -ldl -lrt -o /tmp/alive-task11-fix1/v1
+/tmp/alive-task11-fix1/v1 > /tmp/alive-task11-fix1/v1-green.log 2>&1
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
+  apps/ultra/tests/alive_session_v2_test.cpp /tmp/alive-task11-fix1/backend.o \
+  apps/ultra/build/core/libultra_core_bundle.a \
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+  -ldl -lrt -o /tmp/alive-task11-fix1/v2
+/tmp/alive-task11-fix1/v2 > /tmp/alive-task11-fix1/v2-green.log 2>&1
+bash apps/ultra/build.sh --native-only > /tmp/alive-task11-fix1/native-build.log 2>&1
+git diff --check
+```
+
+All exited 0. Full v3 passed admission, prime clips, partitions, quantization,
+receipts, Stop and callback guards, including the new regressions. Legacy v1
+passed exact frames, partitions, ownership, overload Stop, seek, loop,
+isolation, mono join, mixer and callback guard. Legacy v2 passed ordered chains,
+exact bypass/warm state, partitions, ownership, resets, admission, overload
+and callback guard. Its routine wall-clock mean output is compatibility-suite
+output, not a refreshed policy measurement. All three suites use the same
+final traced backend and malloc/calloc/realloc/free/mutex wrappers.
+
+The native-only build completed the native library and diagnostic targets.
+The resulting `apps/ultra/build/libultra_native.so` SHA-256 is
+`278df089a83934c65f3e3ca881951b922076a20650a5ccab75071d2bdeee8bbd`.
+No application deployment or GUI run was performed.
+
+### Work Bound And Remaining Scope
+
+The added reducer state is eight unsigned indices (32 bytes), zero-initialized
+once per callback. At most 64 commands are observed, so a saturated same-track
+stopped batch adds at most 63 direct receipt finalizations. Each is an O(1)
+lookup and the existing bounded `finish` stores. The existing running-action
+replacement path already performs the same finalization after a bounded
+receipt search; the new stopped path adds no search, DSP/reset/event/parameter
+work, horizon pass or additional command. The existing fixed 64-command
+reducer allowance remains conservative. The saturated regression runs under
+the callback guards. M1 only forwards an already-computed resource value.
+Neither correction changes the work-policy limits or needs a new timing matrix.
+
+The unchanged 1200-sample timing matrix, full contracts, broad Rust/UI suites
+and GUI journey were not repeated. Earlier timing evidence and its disclosed
+64-frame outlier/provenance limit remain unchanged. Review M2's existing Rust
+unused-method warning remains outside this correction. Independent scoped
+re-review and parent-owned public evidence/PLAN/PR updates remain later gates.

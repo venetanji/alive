@@ -815,6 +815,7 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
   candidate_.position = state_.position;
   unsigned tail = tail_.load(std::memory_order_relaxed);
   uint64_t last_seek = 0;
+  std::array<unsigned, 8> stopped_actions{};
   for (unsigned budget = 0; tail != end && budget < 64; ++budget) {
     const auto &c = commands_[tail];
     tail = (tail + 1) % 65;
@@ -915,6 +916,12 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
         receipt.target_frame = target;
         finish(receipt, ALIVE_SESSION_V3_PENDING);
       } else {
+        // Stopped cues have no pending serial. After START, their active
+        // selection may coexist with a later future-pending action.
+        if (stopped_actions[t])
+          finish(candidate_.receipts[stopped_actions[t] - 1], ALIVE_SESSION_V3_SUPERSEDED,
+                 ALIVE_SESSION_V3_REPLACED_REQUEST);
+        stopped_actions[t] = index + 1;
         ts.active_clip = clip;
         ts.phase = 0;
         ++ts.track_epoch;
@@ -975,8 +982,8 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
       for (unsigned t = 0; t < config_.track_count; ++t)
         if (!clear_[t])
           charge = add(charge, prepared_.reset[t]);
-      if (scheduled_fits(charge)) {
-        fault_v3(workspace, ALIVE_SESSION_V3_RESOURCE_ROOT_CLEARS);
+      if (const auto failure = scheduled_fits(charge)) {
+        fault_v3(workspace, failure);
         return;
       }
       scheduled_.charge(state_.absolute_frame, charge);
