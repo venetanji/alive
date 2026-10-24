@@ -2,7 +2,105 @@
 
 Updated: 2026-10-24. Combined release integration includes packaging/audit PR #2, reusable-instrument PR #4 at `ab8b0e2`, and preserved validation PR #5 at `8da5fd2`. The 0.1.0-rc.1 candidate fixes the remaining native Quit and pending-history admission findings before final combined CI. Earlier evidence below retains its original source revisions and hardware limits.
 
-## Alive Session: Active Implementation Plan
+## Alive Application: Active Implementation Plan
+
+**Goal:** Continue draft PR #6 into a usable standalone music-making application
+hosting reusable Ultra instruments and effects. The two-track session below is
+the completed foundation, not acceptance of this expanded goal.
+
+**Foundation:** Continue isolated `feat/alive-session-host`, based on
+`31033483eb3baf15edab1734b966cc6d55c4b8c7` on
+`build/ultra-desktop-releases`. PR #6 remains draft/open; HEAD at the start of
+this expansion was `0c615b1e9aa4003dd7f09ea11d45988476bf0434`. Current refs were
+fetched before work. Do not change release branches or PRs #2/#5. Recheck the
+foundation before final testing. No merges, tags, publishing, deployment,
+credential or environment-setting changes.
+
+Execute and test these milestones in order, retaining a usable example and
+coherent pushed checkpoints. Read-only reference/design work may proceed in
+parallel. Preserve existing native/UI/history/Quit/scoped-Stop/notice gates.
+
+### Milestone 1: Standalone Application
+
+- [x] Separate `alive` executable/identity and separately launchable `ultra`,
+  sharing one Rust/native runtime implementation and optional hosted editors.
+- [x] Alive output-host/device and buffer controls reuse the CPAL driver;
+  stopped reconfiguration, saved preferences, actionable disconnected-device
+  errors and recovery are verified in the native app.
+- [x] Preserve reliable New/Open/Save/Save As and pending/dirty-state resolution.
+- [x] Distinct Alive and Ultra packages can coexist; each staged app finds its
+  bundled examples outside the repository. Verify resources/notices and CI.
+- [ ] Test, commit, push and update draft PR with this milestone's evidence.
+
+Local M1 evidence: `experiments/alive-application-m1-20261024/`. The separate
+package's initially missing Tauri capabilities reproduced an editor-Close bug;
+scoped grants, actual generated-context tests, editor-destruction assertions and
+native window-manager Close/Cancel now pass. Final native walkthrough captures
+25.355 seconds of finite software stereo audio with zero reported errors,
+failures or rejected commands. Eight editor cycles retain one WebKit worker.
+Actual Alive/Ultra DEBs have no file-ownership collisions; the extracted Alive
+proves default and New use its own bundled template, then plays both devices.
+151 shared Rust tests (+ one Alive context test), 443 UI tests, 103 Chromium,
+full contracts/reference/native/callback/scoped-Stop gates and 20 package/notice
+tests pass. Local AppImage generation is blocked by the legacy bundler's Arch
+RELR/glycin incompatibility; Ubuntu and other-platform CI remain required.
+No new endurance claim: the expanded 30-minute gate remains outstanding.
+
+### Milestone 2: Reusable Effect Chains
+
+- [ ] Versioned instrument/effect contract with explicit input/output bundles,
+  MIDI declaration, stable parameter IDs and tested version-1 compatibility.
+- [ ] Instrument followed by an ordered, bounded Ultra effect chain; add,
+  remove, reorder, bypass and parameters use stopped structural preparation.
+- [ ] Reusable Ultra utility and Faust filter/delay patches load through the
+  same validator/runtime. No privileged host DSP or copied instrument patch.
+- [ ] Deterministic order/bypass/isolation/state tests; timing and tail/reset
+  policy documented. Keep the existing 16-root pool; admit total devices before
+  replacement rather than increasing runtime limits without measurement.
+- [ ] Test, commit, push and update draft PR before expanding the interface.
+
+### Milestone 3: Musical Workflow
+
+- [ ] Complete one track/clip/device-chain workflow: piano-roll add/select/move/
+  resize/delete, velocity, fixed grid, duplication and loop length.
+- [ ] Quantized individual clip launch/stop with reliable termination; only
+  then expand to measured bounded eight tracks and multiple clip slots.
+- [ ] Automation binds stable device-instance/parameter IDs across chain edits
+  and persistence; focused editing undo preserves existing Ultra behavior.
+- [ ] Add scene launching only after individual launch tests pass. Test and
+  checkpoint each complete slice; no arrangement, recording or engine rewrite.
+
+### Milestone 4: Hosted Device Usability
+
+- [ ] Compact metadata-driven chain panels and optional Edit in Ultra; editor
+  open/close/reopen retains independent DSP and selected-instance isolation.
+- [ ] Explicit structural source replacement and actionable missing, changed
+  or incompatible dependency errors preserve the active session.
+- [ ] Native interface audit using Impeccable: inspect the complete desktop
+  surface in one batch, fix together, at most one confirmation pass.
+
+### Milestone 5: Acceptance And Handoff
+
+- [ ] Contrasting saved example with multiple instances, instrument/effect/
+  effect chain, clips, automation and mixer. Full native create/edit/launch/
+  parameter/editor/save/Quit/reopen/play walkthrough and screenshots.
+- [ ] Deterministic headless timing/partition/queue/termination/chain/persistence
+  regressions and callback allocation/lock guards on the final source.
+- [ ] New 30-minute native playback/edit/editor soak: CPU, PSS, process/workers,
+  callback timing and actually observable audio counters. Record backend,
+  hardware, rate/buffer and software versus physical qualification. The earlier
+  602.551-playing-second run below does not meet this new gate.
+- [ ] Final pushed-commit CI exercises both applications and supported platform
+  packages; provide accessible Linux artifact, exact commands, limitations and
+  a short manual acceptance checklist. No release publishing.
+
+Physical MIDI remains stretch work after all five milestones pass. Timing stays
+on one authoritative native frame clock; AOT Faust remains alongside Clockwork,
+not inside its guest. Bound scheduling, voices, devices and callback work;
+prepare/load/destroy outside the callback with no allocation, locks or UI waits.
+Mono/stereo descriptors remain explicit; wider layouts are out of scope.
+
+## Alive Session: Completed Foundation
 
 **Goal:** A saved, reopenable Alive session with two independent Ultra devices,
 editable repeating note clips, cutoff/level automation, mixer, and optional Ultra

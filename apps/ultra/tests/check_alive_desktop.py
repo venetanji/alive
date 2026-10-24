@@ -200,8 +200,48 @@ def editor_edit(number=950):
     wait_value('Hosted Cutoff effective ownership', lambda s: 'Automation' in s)
     screenshot('hosted-editor.png')
     ui.click('Close hosted editor')
+    deadline = time.monotonic() + 4
+    while time.monotonic() < deadline:
+        if not any(frame.get_name() == 'Pulse - Ultra Hosted Editor' and
+                   frame.get_state_set().contains(Atspi.StateType.SHOWING)
+                   for frame in windows.app_frames()):
+            break
+        time.sleep(.1)
+    else:
+        screenshot('editor-close-refused.png')
+        raise AssertionError('Hosted Close did not destroy the editor window')
     windows.focus(MAIN)
     wait_value('Transport playing', lambda s: s == 'true')
+
+
+def request_native_close():
+    # Send the same X11 protocol message as a window manager's Close action.
+    class Data(C.Union):
+        _fields_ = [('bytes', C.c_char * 20), ('longs', C.c_long * 5)]
+
+    class Client(C.Structure):
+        _fields_ = [('type', C.c_int), ('serial', C.c_ulong), ('send_event', C.c_int),
+                    ('display', C.c_void_p), ('window', C.c_ulong),
+                    ('message_type', C.c_ulong), ('format', C.c_int), ('data', Data)]
+
+    class Event(C.Union):
+        _fields_ = [('client', Client), ('padding', C.c_long * 24)]
+
+    windows.focus(MAIN)
+    focused, revert = C.c_ulong(), C.c_int()
+    ui.x.XGetInputFocus(ui.display, C.byref(focused), C.byref(revert))
+    ui.x.XInternAtom.argtypes = [C.c_void_p, C.c_char_p, C.c_int]
+    ui.x.XInternAtom.restype = C.c_ulong
+    ui.x.XSendEvent.argtypes = [C.c_void_p, C.c_ulong, C.c_int, C.c_long, C.POINTER(Event)]
+    event = Event()
+    event.client.type = 33
+    event.client.display = ui.display
+    event.client.window = focused.value
+    event.client.message_type = ui.x.XInternAtom(ui.display, b'WM_PROTOCOLS', 0)
+    event.client.format = 32
+    event.client.data.longs[0] = ui.x.XInternAtom(ui.display, b'WM_DELETE_WINDOW', 0)
+    assert ui.x.XSendEvent(ui.display, focused.value, 0, 0, C.byref(event))
+    ui.x.XFlush(ui.display)
 
 
 def check_separate_apps():
@@ -229,13 +269,61 @@ def check_separate_apps():
             other.wait(timeout=8)
 
 
+def check_audio_settings():
+    ui.click('Alive audio settings')
+    ui.click('Audio details')
+
+    def buffer(index):
+        Atspi.Component.grab_focus(ui.wait_for('Alive buffer frames'))
+        ui.keys('Home')
+        for _ in range(index):
+            ui.keys('Down')
+        ui.keys('Return')
+        ui.keys('Escape')
+
+    buffer(5)  # Automatic, 32, 64, 128, 256, 512.
+    ui.click('Save Alive audio settings')
+    settings = Path(os.environ['XDG_DATA_HOME']) / 'org.alive.session/audio-settings.json'
+    deadline = time.monotonic() + 5
+    while not settings.exists() and time.monotonic() < deadline:
+        time.sleep(.1)
+    saved = settings.read_bytes()
+    assert json.loads(saved)['buffer_frames'] == 512
+    buffer(3)  # The private sink rejects 128-frame requests.
+    ui.click('Save Alive audio settings')
+    wait_value('Alive audio settings status', lambda s: 'does not advertise' in s)
+    assert settings.read_bytes() == saved, 'Rejected settings replaced the saved output'
+    buffer(5)
+    ui.click('Save and start Alive audio')
+    wait_value('Audio callbacks', lambda s: int(s) > 0)
+    assert value('Transport playing') == 'false'
+    assert not ui.wait_for('Save Alive audio settings').get_state_set().contains(Atspi.StateType.ENABLED)
+    screenshot('alive-audio-settings.png')
+    ui.click('Close audio settings')
+    transport('start')
+    ui.click('Audio details')  # Close diagnostics so the settings button is reachable.
+    ui.click('Alive audio settings')
+    ui.click('Audio details')
+    wait_value('Track 1 active voices', lambda s: int(s) > 0)
+    ui.click('Stop Alive audio to edit settings')
+    wait_value('Transport playing', lambda s: s == 'false')
+    wait_value('Track 1 active voices', lambda s: s == '0')
+    wait_value('Track 2 active voices', lambda s: s == '0')
+    ui.click('Save and start Alive audio')
+    wait_value('Audio callbacks', lambda s: int(s) > 0)
+    assert value('Transport playing') == 'false'
+    ui.click('Close audio settings')
+    return {'saved': json.loads(saved), 'unsupported_buffer_preserved_settings': True,
+            'stop_audio_terminated_notes': True, 'restart_kept_transport_stopped': True}
+
+
 def run():
     windows.focus(MAIN)
     ui.wait_for('Start transport')
-    ui.click('Audio details')
+    entrypoints = check_separate_apps()
+    audio_settings = check_audio_settings()
     screenshot('session-ready.png')
     assert value('Transport playing') == 'false'
-    entrypoints = check_separate_apps()
     if os.environ.get('ALIVE_SMOKE_ONLY') == '1':
         transport('start'); time.sleep(1)
         report = detail(); screenshot('session-playing.png')
@@ -354,6 +442,7 @@ def run():
     assert value('Track 2 active voices') == '0'
     report = {'kind': 'actual native Tauri application; private Xvfb + software PipeWire loopback',
               'entrypoints': entrypoints,
+              'audio_settings': audio_settings,
               'hardware': platform.uname()._asdict(), 'cpu': subprocess.check_output(['lscpu'], text=True),
               'physical_audio': False, 'underruns': 'not exposed by CPAL; no count claimed',
               'walkthrough': walkthrough, 'endurance': sustained,
@@ -361,12 +450,13 @@ def run():
               'process_tree_samples': samples, 'final_audio': final, 'operations': operations}
     (ui.output / 'native-session-report.json').write_text(json.dumps(report, indent=2))
     screenshot('session-device-removed.png')
-    ui.click('Quit Alive')
+    request_native_close()
     windows.focus('Unsaved Alive Session')
     ui.click('Cancel')
     windows.focus(MAIN)
     transport('start')
     report['quit_cancel_preserved_session'] = True
+    report['native_window_close_reached_dirty_guard'] = True
     ui.click('Quit Alive')
     windows.focus('Unsaved Alive Session')
     ui.click('Discard')

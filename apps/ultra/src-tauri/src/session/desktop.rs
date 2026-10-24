@@ -149,6 +149,31 @@ pub fn alive_transport(window: WebviewWindow, state: tauri::State<Desktop>, acti
     Ok(())
 }
 #[tauri::command]
+pub fn alive_audio_devices(window: WebviewWindow, state: tauri::State<Desktop>, host: Option<String>) -> Result<crate::audio::Catalog, String> {
+    main_only(window.label())?;
+    let control = ui_lock(&state.0)?;
+    control.driver.catalog(host.as_deref().unwrap_or(&control.driver.snapshot().config.host))
+}
+#[tauri::command]
+pub fn alive_audio_configure(window: WebviewWindow, state: tauri::State<Desktop>, config: crate::audio::Config, generation: u64) -> Result<(), String> {
+    main_only(window.label())?;
+    let mut control = ui_lock(&state.0)?;
+    check_generation(control.generation, generation)?;
+    control.stopped()?;
+    control.driver.configure(config)
+}
+#[tauri::command]
+pub fn alive_audio(window: WebviewWindow, state: tauri::State<Desktop>, action: String, generation: u64) -> Result<(), String> {
+    main_only(window.label())?;
+    let mut control = ui_lock(&state.0)?;
+    check_generation(control.generation, generation)?;
+    match action.as_str() {
+        "start" => control.driver.start(),
+        "stop" => { unsafe { native::alive_session_stop(); } control.driver.stop(); Ok(()) },
+        _ => Err("Unknown audio action".into()),
+    }
+}
+#[tauri::command]
 pub async fn alive_editor(window: WebviewWindow, state: tauri::State<'_, Desktop>, track: usize, generation: u64) -> Result<(), String> {
     main_only(window.label())?;
     let control = ui_lock(&state.0)?;
@@ -343,7 +368,7 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
                 .title("Alive").inner_size(1200., 800.).min_inner_size(900., 660.).build()?;
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![alive_current, alive_draft, alive_apply, alive_base, alive_mixer, alive_transport, alive_editor, alive_file, alive_device])
+        .invoke_handler(tauri::generate_handler![alive_current, alive_draft, alive_apply, alive_base, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio, alive_editor, alive_file, alive_device])
         .on_window_event(|window,event| { if window.label() == "main" { if let tauri::WindowEvent::CloseRequested { api, .. } = event { api.prevent_close(); request_close(window.app_handle()); } } })
         .build(context).expect("Unable to start Alive")
         .run(|app,event| match event {

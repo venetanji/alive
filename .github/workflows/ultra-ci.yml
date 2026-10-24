@@ -125,7 +125,9 @@ jobs:
           export LD_LIBRARY_PATH="$ULTRA_NATIVE_LIB_DIR"
           rustc --version
           cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
+          cargo test --manifest-path apps/alive/src-tauri/Cargo.toml --target-dir "$GITHUB_WORKSPACE/apps/ultra/src-tauri/target" --release --locked
           cargo build --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
+          cargo build --manifest-path apps/alive/src-tauri/Cargo.toml --target-dir "$GITHUB_WORKSPACE/apps/ultra/src-tauri/target" --release --locked
           cp apps/ultra/build/libultra_native.so apps/ultra/src-tauri/target/release/
           python3 apps/ultra/tests/check_app_entrypoints.py
 

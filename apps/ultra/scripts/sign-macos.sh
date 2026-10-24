@@ -34,25 +34,28 @@ export APPLE_API_ISSUER="$ASC_API_ISSUER_ID"
 export APPLE_API_KEY_PATH="$TEMP/AuthKey.p8"
 unset APPLE_ID APPLE_PASSWORD APPLE_TEAM_ID APPLE_CERTIFICATE APPLE_CERTIFICATE_PASSWORD
 python3 apps/ultra/scripts/release.py build --target "$1" --tag "$GITHUB_REF_NAME"
-BUNDLE="apps/ultra/src-tauri/target/$1/release/bundle"
-APP="$BUNDLE/macos/Ultra Research.app"
-codesign --verify --deep --strict --verbose=2 "$APP"
-xcrun stapler validate "$APP"
-spctl --assess --type execute --verbose=2 "$APP"
-# Tauri notarizes the app. Also sign/notarize/staple the distributed DMG.
-shopt -s nullglob
-dmgs=("$BUNDLE"/dmg/*.dmg)
-[[ ${#dmgs[@]} == 1 ]] || { echo 'Expected exactly one DMG' >&2; exit 1; }
-DMG=${dmgs[0]}
-codesign --force --timestamp --sign "$MACOS_SIGNING_IDENTITY" "$DMG"
-xcrun notarytool submit "$DMG" --key "$APPLE_API_KEY_PATH" --key-id "$APPLE_API_KEY" --issuer "$APPLE_API_ISSUER" --wait --timeout 30m --output-format json > "$TEMP/notary.json"
-python3 - "$TEMP/notary.json" <<'PY'
+for PRODUCT in ultra alive; do
+  BUNDLE="apps/$PRODUCT/src-tauri/target/$1/release/bundle"
+  if [[ $PRODUCT == ultra ]]; then PRODUCT_NAME='Ultra Research'; else PRODUCT_NAME='Alive'; fi
+  APP="$BUNDLE/macos/$PRODUCT_NAME.app"
+  codesign --verify --deep --strict --verbose=2 "$APP"
+  xcrun stapler validate "$APP"
+  spctl --assess --type execute --verbose=2 "$APP"
+  # Tauri notarizes the app. Also sign/notarize/staple the distributed DMG.
+  shopt -s nullglob
+  dmgs=("$BUNDLE"/dmg/*.dmg)
+  [[ ${#dmgs[@]} == 1 ]] || { echo 'Expected exactly one DMG' >&2; exit 1; }
+  DMG=${dmgs[0]}
+  codesign --force --timestamp --sign "$MACOS_SIGNING_IDENTITY" "$DMG"
+  xcrun notarytool submit "$DMG" --key "$APPLE_API_KEY_PATH" --key-id "$APPLE_API_KEY" --issuer "$APPLE_API_ISSUER" --wait --timeout 30m --output-format json > "$TEMP/notary.json"
+  python3 - "$TEMP/notary.json" <<'PY'
 import json, sys
 result = json.load(open(sys.argv[1]))
 if result.get('status') != 'Accepted':
     raise SystemExit('DMG notarization was not accepted')
 PY
-xcrun stapler staple "$DMG"
-xcrun stapler validate "$DMG"
-codesign --verify --strict --verbose=2 "$DMG"
-spctl --assess --type open --context context:primary-signature --verbose=2 "$DMG"
+  xcrun stapler staple "$DMG"
+  xcrun stapler validate "$DMG"
+  codesign --verify --strict --verbose=2 "$DMG"
+  spctl --assess --type open --context context:primary-signature --verbose=2 "$DMG"
+done

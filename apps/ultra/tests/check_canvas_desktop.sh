@@ -137,10 +137,15 @@ for track in session['tracks']:
 target.write_text(json.dumps(session, indent=2) + '\n')
 PY
   ultra_launch_arguments=("$ultra_initial_session")
-  ultra_launch_binary="$ROOT/apps/ultra/src-tauri/target/release/alive"
+  ultra_launch_binary="${ULTRA_TEST_ALIVE_BINARY:-$ROOT/apps/ultra/src-tauri/target/release/alive}"
+  if [[ ${ULTRA_TEST_ALIVE_DEFAULT:-0} == 1 ]]; then ultra_launch_arguments=(); fi
 fi
-LD_LIBRARY_PATH="$ROOT/apps/ultra/src-tauri/target/release${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
-  "$ultra_launch_binary" "${ultra_launch_arguments[@]}" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
+if [[ -n ${ULTRA_TEST_ALIVE_BINARY:-} ]]; then
+  env -u LD_LIBRARY_PATH "$ultra_launch_binary" "${ultra_launch_arguments[@]}" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
+else
+  LD_LIBRARY_PATH="$ROOT/apps/ultra/src-tauri/target/release${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    "$ultra_launch_binary" "${ultra_launch_arguments[@]}" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
+fi
 ultra_test_pid=$!
 export ULTRA_TEST_PID="$ultra_test_pid"
 if [[ -n ${ULTRA_TEST_SCRIPT:-} ]]; then

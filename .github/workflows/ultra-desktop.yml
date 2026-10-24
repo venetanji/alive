@@ -1,4 +1,4 @@
-name: Ultra desktop packages
+name: Alive and Ultra desktop packages
 
 on:
   pull_request:
@@ -107,11 +107,14 @@ jobs:
           ASC_API_ISSUER_ID: ${{ secrets.ASC_API_ISSUER_ID }}
         run: bash apps/ultra/scripts/sign-macos.sh '${{ matrix.target }}'
       - name: Collect exact target artifacts and checksums
-        run: python apps/ultra/scripts/release.py collect --target '${{ matrix.target }}'
+        run: |
+          python apps/ultra/scripts/release.py collect --target '${{ matrix.target }}'
+          mkdir -p dist/desktop
+          cp dist/ultra/* dist/alive/* dist/desktop/
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: ultra-${{ matrix.target }}
-          path: dist/ultra/*
+          name: desktop-${{ matrix.target }}
+          path: dist/desktop/*
           if-no-files-found: error
           retention-days: 14
 
@@ -125,14 +128,15 @@ jobs:
     steps:
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          pattern: ultra-*
+          pattern: desktop-*
           path: dist
           merge-multiple: true
       - name: Verify artifact inventory and checksums
         working-directory: dist
         run: |
-          test "$(find . -maxdepth 1 -name 'SHA256SUMS-*.txt' | wc -l)" -eq 4
+          test "$(find . -maxdepth 1 -name 'SHA256SUMS-*.txt' | wc -l)" -eq 8
           test "$(find . -maxdepth 1 -name 'Ultra-*' | wc -l)" -eq 5
+          test "$(find . -maxdepth 1 -name 'Alive-*' | wc -l)" -eq 5
           cat SHA256SUMS-*.txt > SHA256SUMS.txt
           sha256sum --check SHA256SUMS.txt
       - name: Create release only after all platforms succeed
@@ -148,6 +152,6 @@ jobs:
           fi
           args=()
           [[ "$RELEASE_TAG" == *-* ]] && args+=(--prerelease)
-          gh release create "$RELEASE_TAG" dist/Ultra-* dist/SHA256SUMS.txt \
-            --verify-tag --draft --title "Ultra $RELEASE_TAG" --generate-notes "${args[@]}"
+          gh release create "$RELEASE_TAG" dist/Ultra-* dist/Alive-* dist/SHA256SUMS.txt \
+            --verify-tag --draft --title "Alive and Ultra $RELEASE_TAG" --generate-notes "${args[@]}"
           gh release edit "$RELEASE_TAG" --draft=false

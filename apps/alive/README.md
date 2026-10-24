@@ -17,13 +17,33 @@ bash apps/alive/run.sh
 bash apps/alive/run.sh apps/alive/examples/two-instruments.alive
 ```
 
-The actual binary is `apps/ultra/src-tauri/target/release/alive` (`alive.exe`
-on Windows). It shares a Cargo build directory and adjacent native library with
-`ultra`; the launcher runs that executable directly. Both apps can open at once.
+The developer binary is `apps/ultra/src-tauri/target/release/alive` (`alive.exe`
+on Windows). Alive has its own Cargo/Tauri package under `apps/alive/src-tauri`;
+the developer build shares Ultra's target directory and adjacent native library.
+The launcher runs the Alive executable directly. Both apps can open at once.
 Alive uses application identifier `org.alive.session`, separate from Ultra's
 `org.alive.ultra.research`. The old `ultra --alive` entry remains compatible.
-The existing desktop installers retain their Ultra product name and carry both
-binaries; a separately branded Alive installer/desktop shortcut is not provided.
+
+The existing release pipeline builds separate Alive and Ultra desktop packages:
+DEB and AppImage on Linux, NSIS on Windows, and application bundles/DMG on macOS.
+Each package owns its executable and desktop identity, includes the shared native
+runtime, notices and example devices, and can be installed alongside the other.
+No Ultra editor installation is required to run Alive. From a native Linux build
+environment with the prerequisites in `apps/ultra/RUNNING.txt`:
+
+```sh
+npm --prefix apps/ultra/scripts/tooling ci --ignore-scripts --no-audit --no-fund
+python3 apps/ultra/scripts/release.py build --target x86_64-unknown-linux-gnu
+python3 apps/ultra/scripts/release.py collect --target x86_64-unknown-linux-gnu
+# Add --product alive to build or collect only Alive.
+```
+
+Artifacts and per-product checksums appear in `dist/alive` and `dist/ultra`,
+named `Alive-<version>-<target>` and `Ultra-<version>-<target>`. Package verification
+checks the extracted application against its own native library and renders the
+bundled session from outside the repository, using the bundled Ultra device.
+Platform builds still require their native runners; Linux results do not qualify
+the Windows or macOS artifacts.
 
 The default First Light session contains Pulse and Harmony instrument tracks,
 an eight-beat C / Am / F / G progression, and cutoff/level automation. New
@@ -31,8 +51,13 @@ creates a fresh copy of this template. Replace loads a saved `.ultra` device
 on a stopped track; Remove and Add instrument allow a one-track session to
 return to two tracks. The first profile requires at least one instrument track.
 Audio uses the shared CPAL driver at 48 kHz, with its own application settings
-directory and system-default output on first launch. Alive currently does not
-expose an additional audio-settings panel.
+directory and system-default output on first launch. Open Audio settings in the
+footer to choose the output host/device and Automatic or a requested buffer.
+Stop audio before changing settings; this also stops transport and releases all
+notes. Save & start audio opens the output while leaving musical transport
+stopped. The panel reports the observed callback size separately from the
+requested buffer. Refresh retains disconnected selections so you can explicitly
+choose a replacement; rejected settings preserve the previous saved values.
 
 ## Perform And Edit
 

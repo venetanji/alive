@@ -13,6 +13,7 @@ cmake --build build --target ultra-diagnostic -j "${JOBS:-4}"
 if [ "${1:-}" = --native-only ]; then exit 0; fi
 export ULTRA_NATIVE_LIB_DIR="$PWD/build"
 cargo build --manifest-path src-tauri/Cargo.toml --release --locked
+cargo build --manifest-path ../alive/src-tauri/Cargo.toml --target-dir "$PWD/src-tauri/target" --release --locked
 # Keep the old inode intact while a running app still maps it.
 NATIVE_INSTALL=$(mktemp src-tauri/target/release/libultra_native.so.XXXXXX)
 trap 'rm -f "$NATIVE_INSTALL"' EXIT

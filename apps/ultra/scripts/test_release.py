@@ -1,8 +1,13 @@
 import importlib.util
 import json
+import mmap
+import os
 import shutil
+import subprocess
+import tarfile
 from pathlib import Path
 import tempfile
+import tomllib
 import unittest
 
 SPEC = importlib.util.spec_from_file_location('release', Path(__file__).with_name('release.py'))
@@ -56,6 +61,95 @@ class ReleaseTests(unittest.TestCase):
                     device = json.loads(device_path.read_text())['device']
                     self.assertEqual((device['id'], device['version']),
                                      (track['device']['id'], track['device']['version']))
+
+    def test_alive_package_reuses_source_devices_and_notices(self):
+        for target in release.TARGETS:
+            with self.subTest(target=target), tempfile.TemporaryDirectory() as d:
+                package = Path(d).resolve()
+                resources = release.bundle_config(target, product='alive')['bundle']['resources']
+                for source, destination in resources.items():
+                    source = release.ROOT/'apps/alive/src-tauri'/source
+                    if destination.startswith(('alive-session/', 'licenses/')):
+                        dest = package/destination
+                        dest.parent.mkdir(parents=True, exist_ok=True)
+                        shutil.copy2(source, dest)
+                release.verify_notice_resources(package)
+                session_path = package/'alive-session/alive/examples/two-instruments.alive'
+                session = json.loads(session_path.read_text())
+                for track in session['tracks']:
+                    device_path = (session_path.parent/track['device']['path']).resolve(strict=True)
+                    self.assertTrue(device_path.is_relative_to(package))
+                    self.assertEqual(device_path.read_bytes(),
+                                     (release.APP/'examples/subtractive.ultra').read_bytes())
+
+    def test_shared_notice_inventory_covers_alive_dependencies(self):
+        def external_packages(product):
+            lock = tomllib.loads((release.ROOT/'apps'/product/'src-tauri/Cargo.lock').read_text())
+            return [p for p in lock['package'] if p['name'] not in ('ultra', 'alive')]
+        self.assertEqual(external_packages('alive'), external_packages('ultra'))
+
+    def test_separate_artifacts_keep_both_apps_when_collected_together(self):
+        with tempfile.TemporaryDirectory() as d:
+            package = Path(d)/'bundle'
+            (package/'deb').mkdir(parents=True)
+            (package/'appimage').mkdir()
+            (package/'deb/app.deb').write_bytes(b'deb')
+            (package/'appimage/app.AppImage').write_bytes(b'appimage')
+            output = Path(d)/'out'
+            release.collect_artifacts(package, output, 'x86_64-unknown-linux-gnu', '0.1.0')
+            release.collect_artifacts(package, output, 'x86_64-unknown-linux-gnu', '0.1.0', product='alive')
+            self.assertEqual({p.name for p in output.iterdir()}, {
+                'Ultra-0.1.0-x86_64-unknown-linux-gnu.deb',
+                'Ultra-0.1.0-x86_64-unknown-linux-gnu.AppImage',
+                'Alive-0.1.0-x86_64-unknown-linux-gnu.deb',
+                'Alive-0.1.0-x86_64-unknown-linux-gnu.AppImage',
+                'SHA256SUMS-ultra-x86_64-unknown-linux-gnu.txt',
+                'SHA256SUMS-alive-x86_64-unknown-linux-gnu.txt',
+            })
+
+    @unittest.skipUnless(os.name == 'posix', 'Unix allows replacement of a mapped shared library')
+    def test_native_replacement_preserves_a_running_apps_mapping(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            source, installed = root/'new.so', root/'installed.so'
+            source.write_bytes(b'new native library')
+            installed.write_bytes(b'old native library')
+            with installed.open('rb') as active, mmap.mmap(active.fileno(), 0, access=mmap.ACCESS_READ) as mapping:
+                release.install_native_library(source, installed)
+                self.assertEqual(mapping[:], b'old native library')
+            self.assertEqual(installed.read_bytes(), b'new native library')
+
+    @unittest.skipUnless(shutil.which('ar'), 'DEB extraction requires binutils ar')
+    def test_deb_extracts_real_payload_without_installing_it(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            executable = root/'alive'
+            executable.write_bytes(b'packaged app')
+            archive = root/'data.tar.gz'
+            with tarfile.open(archive, 'w:gz') as payload:
+                payload.add(executable, arcname='usr/bin/alive')
+            (root/'debian-binary').write_bytes(b'2.0\n')
+            with tarfile.open(root/'control.tar.gz', 'w:gz'):
+                pass
+            package = root/'alive.deb'
+            subprocess.run(['ar', 'rc', str(package), str(root/'debian-binary'),
+                            str(root/'control.tar.gz'), str(archive)], check=True)
+            release.extract_deb(package, root/'staged')
+            self.assertEqual((root/'staged/usr/bin/alive').read_bytes(), b'packaged app')
+
+    def test_linux_loader_accepts_package_resources_and_appimage_relocation(self):
+        with tempfile.TemporaryDirectory() as d:
+            package = Path(d).resolve()
+            for relative in ['usr/lib/Alive/libultra_native.so', 'usr/lib/libultra_native.so']:
+                native = package/relative
+                native.parent.mkdir(parents=True, exist_ok=True)
+                native.write_bytes(b'native library')
+                loaded = f'libultra_native.so => {native} (0x000000001000)\n'
+                self.assertEqual(release.linux_native_path(loaded, package, 'alive', 'libultra_native.so'), native)
+            for loaded in ['libultra_native.so => /usr/lib/libultra_native.so (0x000000001000)\n',
+                           'libultra_native.so => not found\n']:
+                with self.assertRaisesRegex(ValueError, 'own native library'):
+                    release.linux_native_path(loaded, package, 'alive', 'libultra_native.so')
 
     def test_packaged_faust_notice_must_match_source_bytes(self):
         with tempfile.TemporaryDirectory() as d:
@@ -111,6 +205,6 @@ class ReleaseTests(unittest.TestCase):
             output = release.collect_artifacts(p, p/'out', 'x86_64-unknown-linux-gnu', '0.1.0')
             self.assertEqual(len(output), 2)
             self.assertTrue(all('x86_64-unknown-linux-gnu' in x.name for x in output))
-            self.assertTrue((p/'out'/'SHA256SUMS-x86_64-unknown-linux-gnu.txt').exists())
+            self.assertTrue((p/'out'/'SHA256SUMS-ultra-x86_64-unknown-linux-gnu.txt').exists())
 
 if __name__ == '__main__': unittest.main()

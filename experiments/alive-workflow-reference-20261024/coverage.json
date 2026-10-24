@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "runtime_evidence_id": "ev_38caa376a1ada0fb3b85fd4abb39d1449b48d9425ffbb1fb95e75ace861f43f1",
+  "questions": [
+    {
+      "question": "piano-roll add",
+      "status": "answered",
+      "evidence_kind": "runtime-observed",
+      "evidence_ids": [
+        "LOCAL-WF-R1"
+      ],
+      "files": [
+        "09-add-note.png"
+      ],
+      "limitations": ""
+    },
+    {
+      "question": "piano-roll select",
+      "status": "answered",
+      "evidence_kind": "runtime-observed",
+      "evidence_ids": [
+        "LOCAL-WF-R1"
+      ],
+      "files": [
+        "16-selected-note.png"
+      ],
+      "limitations": ""
+    },
+    {
+      "question": "piano-roll move",
+      "status": "answered",
+      "evidence_kind": "runtime-observed",
+      "evidence_ids": [
+        "LOCAL-WF-R1"
+      ],
+      "files": [
+        "10-move-note.png"
+      ],
+      "limitations": ""
+    },
+    {
+      "question": "piano-roll resize",
+      "status": "answered",
+      "evidence_kind": "runtime-observed",
+      "evidence_ids": [
+        "LOCAL-WF-R1"
+      ],
+      "files": [
+        "11-resize-note.png"
+      ],
+      "limitations": ""
+    },
+    {
+      "question": "piano-roll delete and focused undo",
+      "status": "answered",
+      "evidence_kind": "runtime-observed",
+      "evidence_ids": [
+        "LOCAL-WF-R1"
+      ],
+      "files": [
+        "13-delete-note.png",
+        "16-selected-note.png"
+      ],
+      "limitations": ""
+    },
+    {
+      "question": "velocity editing",
+      "status": "answered",
+      "evidence_kind": "runtime-observed",
+      "evidence_ids": [
+        "LOCAL-WF-R1"
+      ],
+      "files": [
+        "12-velocity.png"
+      ],
+      "limitations": "Sensitivity not measured."
+    },
+    {
+      "question": "fixed musical grid",
+      "status": "answered",
+      "evidence_kind": "runtime-observed",
+      "evidence_ids": [
+        "LOCAL-WF-R1"
+      ],
+      "files": [
+        "15-grid-menu.png"
+      ],
+      "limitations": ""
+    },
+    {
+      "question": "clip creation, duplicate and independent loop length",
+      "status": "answered",
+      "evidence_kind": "runtime-observed",
+      "evidence_ids": [
+        "LOCAL-WF-R1"
+      ],
+      "files": [
+        "08-clip-created.png",
+        "19-duplicate-clip.png",
+        "20-duplicate-two-bars.png",
+        "21-original-one-bar.png"
+      ],
+      "limitations": ""
+    },
+    {
+      "question": "quantized clip launch and track stop",
+      "status": "partially-answered",
+      "evidence_kind": "runtime-observed",
+      "evidence_ids": [
+        "LOCAL-WF-R1"
+      ],
+      "files": [
+        "18-launch-panel.png",
+        "35-a-running.png",
+        "36-b-queued-phase1.png",
+        "37-b-queued-phase2.png",
+        "38-b-running.png",
+        "39-stop-queued-phase1.png",
+        "40-stop-queued-phase2.png",
+        "41-track-stopped-transport-running.png"
+      ],
+      "limitations": "Queued and applied UI states observed under Global=1Bar. No sample-accurate or audible boundary measurement."
+    },
+    {
+      "question": "selected-track instrument and effect chains",
+      "status": "answered",
+      "evidence_kind": "prior-runtime-observed",
+      "evidence_ids": [
+        "LOCAL-R1"
+      ],
+      "files": [
+        "../alive-live-reference-20261024/13-utility-device.png",
+        "../alive-live-reference-20261024/15-filter-device.png",
+        "../alive-live-reference-20261024/17-delay-device.png"
+      ],
+      "limitations": "UI only; signal routing/DSP was not measured."
+    },
+    {
+      "question": "pane persistence and independent instance parameters",
+      "status": "answered",
+      "evidence_kind": "prior-runtime-observed",
+      "evidence_ids": [
+        "LOCAL-R1"
+      ],
+      "files": [
+        "../alive-live-reference-20261024/19-detail-hidden.png",
+        "../alive-live-reference-20261024/21-detail-restored-end.png",
+        "../alive-live-reference-20261024/25-second-track-75.png",
+        "../alive-live-reference-20261024/26-first-track-still-25.png"
+      ],
+      "limitations": "UI/model independence only."
+    },
+    {
+      "question": "Max effect audio in/out",
+      "status": "partially-answered",
+      "evidence_kind": "runtime-observed",
+      "evidence_ids": [
+        "LOCAL-WF-R1"
+      ],
+      "files": [
+        "44-device-context.png"
+      ],
+      "limitations": "Visible stereo plugin~/plugout~. Modern multichannel limits unresolved."
+    },
+    {
+      "question": "Max parameter metadata",
+      "status": "partially-answered",
+      "evidence_kind": "installed-documentation",
+      "evidence_ids": [
+        "LOCAL-WF-S1"
+      ],
+      "files": [
+        "max-documentation-inventory.json"
+      ],
+      "limitations": "Field inventory documented; generated-host-panel behavior and parameter synchronization not executed."
+    },
+    {
+      "question": "Max editor open, close, reopen",
+      "status": "partially-answered",
+      "evidence_kind": "runtime-observed",
+      "evidence_ids": [
+        "LOCAL-WF-R1"
+      ],
+      "files": [
+        "49-host-running-editor-closed.png",
+        "50-editor-reopened-transport-running.png",
+        "51-editor-cycle-host-running.png"
+      ],
+      "limitations": "Host device retention and visible transport continuity observed. No audio continuity or DSP lifetime measurements."
+    },
+    {
+      "question": "Max preview copy and parameter-transfer model",
+      "status": "partially-answered",
+      "evidence_kind": "installed-documentation",
+      "evidence_ids": [
+        "LOCAL-WF-S1"
+      ],
+      "files": [
+        "max-documentation-inventory.json"
+      ],
+      "limitations": "Installed docs describe two copies, preview latency and parameter synchronization. Not measured; do not infer Alive single-owner architecture from it."
+    },
+    {
+      "question": "audio processing, source replacement, saved round trips, exact scheduling",
+      "status": "unresolved",
+      "evidence_kind": "runtime-observed",
+      "evidence_ids": [
+        "LOCAL-WF-R1"
+      ],
+      "files": [],
+      "limitations": "Outside bounded UI observation; no sound or saved Live/Max device result collected."
+    }
+  ]
+}

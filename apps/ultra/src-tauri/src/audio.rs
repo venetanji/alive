@@ -58,6 +58,7 @@ struct Metrics {
 }
 #[derive(Serialize)]
 pub struct Snapshot {
+    pub running: bool,
     pub config: Config,
     pub host: String,
     pub device: String,
@@ -208,7 +209,7 @@ impl Driver {
     }
     pub fn snapshot(&self) -> Snapshot {
         let failed = self.metrics.failed.load(Ordering::Acquire);
-        Snapshot { config: self.config.clone(), host: self.host.clone(), device: self.device.clone(),
+        Snapshot { running: self.stream.is_some() && !failed, config: self.config.clone(), host: self.host.clone(), device: self.device.clone(),
             observed_buffer_frames: self.metrics.frames.load(Ordering::Relaxed),
             callbacks: self.metrics.callbacks.load(Ordering::Relaxed),
             stream_errors: self.metrics.errors.load(Ordering::Relaxed), failed,

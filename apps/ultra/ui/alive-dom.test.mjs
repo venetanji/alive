@@ -26,7 +26,7 @@ const descendants=element=>element.children.flatMap(child=>[child,...descendants
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
 function dom(file){
   const ids=new Map(),doc={activeElement:null,addEventListener(){},removeEventListener(){}};doc.createElement=tag=>new Element(tag,doc);doc.createElementNS=(_,tag)=>new Element(tag,doc);doc.createTextNode=text=>{const e=new Element('text',doc);e.textContent=text;return e;};doc.getElementById=id=>ids.get(id);
-  for(const[,tag,id]of readFileSync(new URL(file,import.meta.url),'utf8').matchAll(/<([\w-]+)\b[^>]*\bid="([^"]+)"/g)){const element=new Element(tag,doc);element.id=id;ids.set(id,element);}
+  for(const[markup,tag,id]of readFileSync(new URL(file,import.meta.url),'utf8').matchAll(/<([\w-]+)\b[^>]*\bid="([^"]+)"[^>]*>/g)){const element=new Element(tag,doc);element.id=id;element.hidden=/\bhidden\b/.test(markup);ids.set(id,element);}
   if(ids.has('master-meter'))ids.get('master-meter').append(doc.createElement('i'),doc.createElement('i'));
   const timeouts=[],win={setTimeout:fn=>timeouts.push(fn),addEventListener(){},removeEventListener(){}};
   return{doc,win,ids,find:label=>[...ids.values()].flatMap(e=>[e,...descendants(e)]).find(e=>e.attrs['aria-label']===label)};
@@ -47,6 +47,9 @@ function backend(initial){
       if(snapshot.patch)snapshot.patch.nodes.find(n=>n.id===binding.node).params[binding.param]=args.value;return;
     }
     if(name==='alive_file')return structuredClone(snapshot);
+    if(name==='alive_audio_devices')return {config:snapshot.audio.config,hosts:['PipeWire'],effective_host:'PipeWire',devices:[{id:'default',name:'Default',compatible:true},{id:'speakers',name:'Speakers',compatible:true}],notice:''};
+    if(name==='alive_audio_configure'){snapshot.audio.config=args.config;return;}
+    if(name==='alive_audio'){snapshot.audio.running=args.action==='start';if(args.action==='stop')snapshot.state.playing=0;return;}
     if(name==='alive_apply'){if(snapshot.state.playing)throw Error('Stop transport before preparing');snapshot.document=args.document;snapshot.draft=null;snapshot.generation++;return structuredClone(snapshot);}
   }};
 }
@@ -60,6 +63,25 @@ test('real musical fields retain drafts across polls and rejected Apply',async()
   await page.ids.get('apply').fire('click');await settle();assert.equal(view.model.pending(),true);assert.match(page.ids.get('notice').textContent,/Stop transport/);
   native.snapshot.state.playing=0;await page.ids.get('apply').fire('click');await settle();assert.equal(view.model.pending(),false);assert.equal(native.snapshot.document.tracks[0].notes[0].pitch,62);
   view.dispose();
+});
+
+test('Alive audio settings preserve drafts and route configuration through the session owner',async()=>{
+  const page=dom('./alive.html'),initial=state();initial.audio.running=true;initial.audio.config.buffer_frames=null;
+  const native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const pitch=page.find('Note 1 pitch');pitch.value='65';await pitch.fire('change');
+  await page.ids.get('show-audio').fire('click');await settle();
+  assert.equal(page.ids.get('alive-audio-settings').hidden,false);
+  assert.equal(page.ids.get('audio-save').disabled,true);
+  await page.ids.get('audio-stop-configured').fire('click');await settle();
+  assert.equal(native.snapshot.state.playing,0);assert.equal(view.model.document().tracks[0].notes[0].pitch,65);
+  page.ids.get('audio-device').value='speakers';await page.ids.get('audio-device').fire('change');page.ids.get('audio-buffer').value='512';
+  await page.ids.get('audio-save').fire('click');await settle();
+  assert.deepEqual(native.calls.find(c=>c.name==='alive_audio_configure').args,{generation:1,config:{host:'default',device:'speakers',sample_rate:48000,buffer_frames:512}});
+  assert.equal(view.model.pending(),true);assert.equal(native.snapshot.audio.running,false);
+  await page.ids.get('audio-start-configured').fire('click');await settle();
+  assert.equal(native.snapshot.audio.running,true);assert.equal(native.snapshot.state.playing,0);
+  await page.ids.get('audio-settings-close').fire('click');assert.equal(page.ids.get('alive-audio-settings').hidden,true);
+  assert.equal(page.doc.activeElement,page.ids.get('show-audio'));view.dispose();
 });
 
 test('draft writes precede file actions and actual native metrics remain visible',async()=>{

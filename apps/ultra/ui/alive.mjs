@@ -1,9 +1,10 @@
 import {createAliveModel,parameterReading} from './alive-model.mjs';
+import {mountAudioSettings} from './audio-settings.mjs';
 
 export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke=win?.__TAURI__?.core?.invoke}={}){
   const $=id=>doc.getElementById(id),make=(tag,cls,text)=>{const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
   const model=createAliveModel();let selected=0,queue=Promise.resolve(),disposed=false,trackKey='',musicKey='',parameterKey='',laneKey='';
-  const trackViews=[],parameterViews=new Map(),diagnostics=new Map();
+  const trackViews=[],parameterViews=new Map(),diagnostics=new Map();let audioSettings;
   function notice(text,error=false){$('notice').textContent=String(text);$('notice').classList.toggle('error',error);}
   function enqueue(work){const result=queue.then(work);queue=result.catch(error=>notice(error,true));return result;}
   function generation(){return model.snapshot()?.generation;}
@@ -148,7 +149,19 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     meter($('master-meter'),snapshot.state.peakLeft,snapshot.state.peakRight);$('master-peak').textContent=peak(snapshot.state.peakLeft,snapshot.state.peakRight);
     const a=snapshot.audio,s=snapshot.state,values=[a.host||a.config.host,a.device||a.config.device,a.config.sample_rate,a.observed_buffer_frames,a.callbacks,a.stream_errors,String(a.failed),a.message,String(!!s.playing),s.absoluteFrame,s.rejected,s.generation,s.tracks[0]?.activeVoices??0,s.tracks[1]?.activeVoices??0];
     diagnosticNames.forEach((name,index)=>{diagnostics.get(name).textContent=String(values[index]);});
+    audioSettings?.update();
   }
+  const audioController={
+    getState:()=>{const audio=model.snapshot()?.audio;return {status:{running:!!audio?.running,output:audio},faulted:!!audio?.failed,busy:false};},
+    poll:()=>enqueue(refresh),
+    startAudio:()=>enqueue(async()=>{await command('alive_audio',{action:'start'});await refresh();}),
+    stopAudio:()=>enqueue(async()=>{await command('alive_audio',{action:'stop'});await refresh();}),
+  };
+  audioSettings=mountAudioSettings({document:{querySelector:selector=>$(selector.slice(1)),createElement:tag=>doc.createElement(tag)},controller:audioController,
+    invoke:invoke?(name,args={})=>enqueue(()=>command(name==='audio_devices'?'alive_audio_devices':'alive_audio_configure',args)):null});
+  function closeAudioSettings(){$('alive-audio-settings').hidden=true;$('show-audio').setAttribute('aria-expanded','false');$('show-audio').focus();}
+  bind('show-audio','Alive audio settings',()=>{const panel=$('alive-audio-settings');if(!panel.hidden){closeAudioSettings();return;}panel.hidden=false;$('show-audio').setAttribute('aria-expanded','true');$('audio-settings-close').focus();return audioSettings.open();});
+  bind('audio-settings-close','Close audio settings',closeAudioSettings);
   for(const[id,action,label]of [['new','new','New session'],['open','open','Open session'],['save','save','Save session'],['save-as','saveAs','Save session as'],['quit','quit','Quit Alive']])bind(id,label,()=>file(action));
   bind('start','Start transport',()=>transport('start'));bind('stop','Stop transport',()=>transport('stop'));bind('seek-go','Seek transport',()=>transport('seek'));
   $('tempo').addEventListener('change',guard(()=>edit(doc=>{doc.tempo=Number($('tempo').value);},false)));$('length').addEventListener('change',guard(()=>edit(doc=>{doc.lengthBeats=Number($('length').value);},false)));$('loop').addEventListener('change',()=>edit(doc=>{doc.loopEnabled=$('loop').checked;},false));
@@ -156,11 +169,11 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   bind('discard','Discard edits',()=>enqueue(async()=>{await command('alive_draft',{document:null});model.discard();await refresh();notice('Pending schedule edits discarded.');}));
   bind('add-note','Add note',()=>edit(doc=>{if(doc.tracks[selected].notes.length>=128)throw Error('A clip supports up to 128 notes.');doc.tracks[selected].notes.push({beat:0,pitch:60,duration:Math.min(.5,doc.lengthBeats),velocity:90});}));
   bind('add-track','Add instrument track',()=>enqueue(async()=>{const snapshot=await command('alive_device',{track:model.document().tracks.length,action:'load'});model.applied(snapshot);trackKey=musicKey=parameterKey='';render();}));
-  const keydown=guard(event=>{if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();return file(event.shiftKey?'saveAs':'save');}if(event.code==='Space'&&!event.target.matches('input,button,summary')){event.preventDefault();return transport(model.snapshot()?.state.playing?'stop':'start');}});doc.addEventListener('keydown',keydown);
+  const keydown=guard(event=>{if(event.key==='Escape'&&!$('alive-audio-settings').hidden){event.preventDefault();closeAudioSettings();return;}if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();return file(event.shiftKey?'saveAs':'save');}if(event.code==='Space'&&!event.target.matches('input,select,button,summary')){event.preventDefault();return transport(model.snapshot()?.state.playing?'stop':'start');}});doc.addEventListener('keydown',keydown);
   let unlisten=null;
   if(win?.__TAURI__?.event?.listen)win.__TAURI__.event.listen('alive-close-requested',()=>{guard(()=>file('quit'))();}).then(fn=>{unlisten=fn;});
   async function poll(){if(disposed)return;try{await enqueue(refresh);}catch{}if(!disposed)win.setTimeout(poll,80);}
-  if(invoke){enqueue(refresh).then(()=>notice('Ready. Select a clip to edit notes or automation.')).catch(()=>{});win.setTimeout(poll,80);}else notice('Open Alive in the native app with ultra --alive. This page does not synthesize audio.',true);
+  if(invoke){enqueue(refresh).then(()=>notice('Ready. Select a clip to edit notes or automation.')).catch(()=>{});win.setTimeout(poll,80);}else notice('Open the native app with bash apps/alive/run.sh. This page does not synthesize audio.',true);
   return{model,refresh,dispose(){disposed=true;unlisten?.();doc.removeEventListener('keydown',keydown);}};
 }
 if(globalThis.document)mountAlive();

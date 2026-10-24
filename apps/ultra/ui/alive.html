@@ -15,5 +15,21 @@
 <section class="automation-section" aria-label="Selected clip automation"><header class="section-heading"><h2>Automation</h2><span class="muted">Step / hold. Enabled lanes own effective values while playing.</span></header><div id="lanes"></div></section>
 <section class="device-section" aria-labelledby="device-title"><header class="section-heading"><h2 id="device-title">Device</h2><span id="device-path" class="muted"></span><span class="muted">Saved base / effective</span></header><div id="parameters"></div></section>
 </main>
-<footer><p id="notice" role="status" aria-label="Session status">Opening the prepared session...</p><details id="audio-details"><summary>Audio details</summary><div id="diagnostics"></div><p class="muted">Peaks are post-mixer callback peaks. The driver reports stream errors; an underrun count is unavailable. Audio uses your existing output configuration.</p></details></footer>
+<aside id="alive-audio-settings" aria-labelledby="audio-settings-title" hidden>
+<header class="section-heading"><h2 id="audio-settings-title">Audio settings</h2><button id="audio-settings-close" aria-label="Close audio settings">Close</button></header>
+<div class="audio-settings-body">
+<p>Choose where Alive plays. These settings are saved separately from Ultra and your session.</p>
+<label class="audio-field" for="audio-host">Audio system<select id="audio-host" aria-label="Alive audio system"></select></label><p id="audio-host-detail" class="muted"></p>
+<label class="audio-field" for="audio-device">Output device<select id="audio-device" aria-label="Alive output device"></select></label>
+<div class="audio-format-fields"><label class="audio-field" for="audio-rate">Sample rate<select id="audio-rate" disabled><option value="48000">48,000 Hz</option></select></label>
+<label class="audio-field" for="audio-buffer">Buffer<select id="audio-buffer" aria-label="Alive buffer frames"><option value="auto">Automatic</option><option value="32">32 frames</option><option value="64">64 frames</option><option value="128">128 frames</option><option value="256">256 frames</option><option value="512">512 frames</option><option value="1024">1024 frames</option><option value="2048">2048 frames</option><option value="4096">4096 frames</option><option value="8192">8192 frames</option></select></label></div>
+<p id="audio-buffer-duration" class="muted"></p><p class="muted">Stop audio to change settings. Stop audio also stops transport and releases all notes. Starting audio keeps transport stopped until you press Start.</p>
+<div class="audio-settings-actions"><button id="audio-save" aria-label="Save Alive audio settings">Save settings</button><button id="audio-start-configured" class="primary" aria-label="Save and start Alive audio">Save &amp; start audio</button></div>
+<button id="audio-stop-configured" aria-label="Stop Alive audio to edit settings">Stop audio to edit settings</button>
+<p id="audio-settings-notice" role="status" aria-label="Alive audio settings status"></p>
+<div class="audio-live-heading"><h3>Live output</h3><button id="audio-refresh" aria-label="Refresh Alive audio devices">Refresh devices</button></div>
+<dl class="audio-live"><dt>Status</dt><dd id="audio-live-state">Audio off</dd><dt>Output</dt><dd id="audio-live-device">Not started</dd><dt>Observed buffer</dt><dd id="audio-live-buffer">Waiting for audio</dd><dt>Stream errors</dt><dd id="audio-live-errors">0</dd></dl>
+<p class="muted">Observed buffer may differ from your request. Buffer duration is not total speaker latency. Hosted native devices add no alignment delay.</p>
+</div></aside>
+<footer><p id="notice" role="status" aria-label="Session status">Opening the prepared session...</p><button id="show-audio" aria-label="Alive audio settings" aria-expanded="false" aria-controls="alive-audio-settings">Audio settings</button><details id="audio-details"><summary>Audio details</summary><div id="diagnostics"></div><p class="muted">Peaks are post-mixer callback peaks. The driver reports stream errors; an underrun count is unavailable.</p></details></footer>
 <script type="module" src="alive.mjs"></script></body></html>

@@ -84,6 +84,18 @@ the `ultra` patch editor; the optional hosted editors remain in Alive's process.
 Each binary generates exactly one Tauri context/embedded macOS plist. The legacy
 `ultra --alive [session.alive]` entry remains compatible. Both applications can
 run at once, with separate native runtime state and application data directories.
+Alive's audio settings use the same Rust/CPAL driver and save to its own
+`org.alive.session/audio-settings.json`, independently of session files and Ultra
+preferences. Host, output and requested buffer are explicit; rate is fixed at
+48 kHz/stereo. Automatic and 32..8192-frame requests are admitted only when the
+selected device advertises support. Driver callbacks larger than 1024 frames
+are partitioned into bounded native calls without losing scheduled offsets;
+the observed driver buffer is reported separately from the request.
+Audio configuration requires both stopped musical transport and stopped device
+I/O. Stop audio terminates transport and notes before reclaiming callback
+ownership; starting audio does not start transport. Failed configuration leaves
+the saved configuration/session unchanged. Unavailable saved outputs retain
+their identifiers and require an explicit recovery selection after refresh.
 New opens the packaged two-track template. The current profile permits one or
 two tracks and rejects removal of the last track explicitly. Musical changes
 are retained separately from the prepared schedule until stopped Apply; latest
