@@ -1,13 +1,17 @@
-# Alive Clip-Bank Native Checkpoint
+# Alive Clip Bank And Desktop Integration
 
 Task 11 source: `db96180772e59099cc96e0bab189ba2dc8825522`, with reviewed fix
 `1bc37b91a9a269ddc9b5450d7a8dc803dda141fd`.
 Independent review and the focused correction/re-review are complete. This
-checkpoint adds the native v3
-clip bank and quantized individual actions; the desktop remains on its usable
-single-clip v2 session until the separate persistence/interface integration.
+checkpoint adds the native v3 clip bank and quantized individual actions.
+The subsequent Task 12 desktop integration at `ecfed29`, corrected at `93879f5`
+and rebuilt/qualified at `813ba76`, adds strict session-v3 persistence, four-slot
+controls, focused clip history, playable legacy fallback and shared-source
+recovery. [Task 12 evidence](task12-native/README.md) retains the actual release
+journeys, source/build association, screenshots, red/green logs and both reviews.
 Eight-track admission, atomic scenes, the complete native workflow and the new
-1800-playing-second soak remain later acceptance gates.
+1800-playing-second soak remain later acceptance gates. Earlier native-only
+results below keep their original source attribution.
 
 The admitted native profile has two tracks, six devices and four slots per
 track. It uses the saved subtractive instrument, Stereo Utility and Stereo

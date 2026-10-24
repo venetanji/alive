@@ -1,0 +1,36 @@
+{
+  "commit": "fdcdd1b353f7560fdd3d448377168ec51a9cc2bf",
+  "review_status": "accepted_scoped_portability",
+  "scope": "Portable C++17 replacement; guarded Linux native compatibility only, Windows package qualification pending",
+  "sources": {
+    "apps/ultra/src-tauri/native/alive_session_bits.hpp": "a260614bc600dc8fcd294c24e3fad35f7e9be2452aa007fa54b49b150d3411b4",
+    "apps/ultra/src-tauri/native/alive_session.hpp": "98697bfdd67602140f4795a5231bc28144abdb58ba01c2b66a452ee51ad77e38",
+    "apps/ultra/src-tauri/native/alive_session_clips.hpp": "ef937eb460e2bd7f5ec8027c2c76f9abc7288fa2bc2242bb80d7bbf58e717436"
+  },
+  "files": {
+    "alive_session_test.log": {
+      "bytes": 460,
+      "sha256": "7ca9634fb90ee414cfbbb6cf418b8a5e26486414d58f234a5120d82a0cb51efc"
+    },
+    "alive_session_v2_test.log": {
+      "bytes": 248,
+      "sha256": "2ea92bb678439e28385269d0ff0c28011b35748b470f232ef8eb7cdd85b8960b"
+    },
+    "alive_session_v3_test.log": {
+      "bytes": 94,
+      "sha256": "a0d82534c1e56d2d6eb0edaef878f4b637f6481c837609253980a94aa9fd6490"
+    },
+    "build.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "task-11-msvc-fix-report.md": {
+      "bytes": 2243,
+      "sha256": "eac26ce791ed0a75dddfc45d0f65c2da8ccaf20ce2b4b201fd377921f986072e"
+    },
+    "review.md": {
+      "bytes": 3446,
+      "sha256": "eeed7375af5b7b8a3f534b174d31307388ac6abfb08d8df19cc18081d9aa73aa"
+    }
+  }
+}

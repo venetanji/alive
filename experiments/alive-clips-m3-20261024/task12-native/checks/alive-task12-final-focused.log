@@ -1,0 +1,54 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.94s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/debug/deps/ultra_desktop-6951be0eecdd253e)
+
+running 46 tests
+test session::desktop::tests::actual_registered_window_binding_authenticates_instance_and_generation ... ok
+test session::desktop::tests::polling_or_close_during_native_dialog_never_blocks_the_ui ... ok
+test session::desktop::tests::stale_generation_and_unrelated_main_actions_reject ... ok
+test session::desktop::tests::draft_rejects_device_substitution_and_overload_before_retention ... ok
+test session::desktop::tests::removing_an_instrument_removes_its_whole_track_and_preserves_the_other_chain ... ok
+test session::desktop::tests::structural_reorder_and_removal_keep_unrelated_instance_automation ... ok
+test session::runtime::tests::receipts_match_both_identities_and_keep_queued_until_consumed ... ok
+test session::desktop::tests::alive_companion_loads_the_installed_shared_example_without_source_tree ... ok
+test session::desktop::tests::canonical_musical_drafts_cannot_change_format_identity_fingerprint_or_effect_order ... ok
+test session::desktop::tests::pending_schedule_merges_latest_live_bases_and_mixer ... ok
+test session::history::tests::projection_restores_music_onto_current_chain_without_live_fields ... ok
+test session::tests::native_v3_layout_matches_fixed_c_interface ... ok
+test session::tests::native_wire_layouts_have_matching_sizes_headers_and_offsets ... ok
+test session::desktop::tests::pending_history_versions_noops_baseline_redo_and_live_merge ... ok
+test session::desktop::tests::edit_admission_rejects_ranges_targets_rounded_overlap_and_truncation_atomically ... ok
+test session::desktop::tests::explicit_load_captures_fresh_identity_and_original_source_before_bases ... ok
+test session::desktop::tests::failed_apply_source_and_native_density_preserve_retained_history ... ok
+test session::desktop::tests::focused_clips_duplicate_scores_and_history_retains_ids_without_changing_devices ... ok
+test session::desktop::tests::undo_redo_merge_same_source_effect_bases_bypass_and_mixer_by_identity ... ok
+test session::tests::frame_conversion_orders_off_automation_on_and_preserves_required_offsets ... ok
+test session::tests::global_root_and_chain_bounds_reject_before_dependency_reads ... ok
+test session::tests::legacy_read_returns_canonical_v2_with_stable_instance_targets ... ok
+test session::tests::missing_and_incompatible_devices_identify_track_and_preserve_input ... ok
+test session::desktop::tests::shared_changed_source_blocks_either_selected_replace_until_original_is_restored ... ok
+test session::tests::saved_session_resolves_two_real_independent_device_references ... ok
+test session::tests::v1_dispatch_is_strict_and_v2_never_infers_missing_instance_data ... ok
+test session::tests::save_cannot_replace_source_device_or_accept_oversized_file ... ok
+test session::tests::session_v1_rejects_effects_with_an_explicit_chain_runtime_error ... ok
+test session::tests::save_as_rebases_references_and_failed_save_retains_file ... ok
+test session::tests::session_roundtrip_preserves_notes_automation_and_mixer ... ok
+test session::tests::saved_effect_order_and_automation_resolve_by_instance_not_chain_index ... ok
+test session::tests::v3_compiles_independent_clip_ranges_and_empty_lane_ownership ... ok
+test session::tests::hashes_cover_original_json_before_instance_bases_and_formatting_is_irrelevant ... ok
+test session::tests::frame_collision_voice_release_ambiguity_and_loop_seam_overload_are_rejected ... ok
+test session::tests::stable_parameter_keys_survive_explicit_source_manifest_reordering ... ok
+test session::tests::saving_through_a_session_symlink_keeps_dependency_paths_relative_to_target ... ok
+test session::tests::v3_strict_wire_migration_and_roundtrip_preserve_score_identity ... ok
+test session::tests::v3_strict_ids_disabled_aggregate_and_source_free_range_rejections ... ok
+test session::tests::v3_save_as_preserves_bank_ids_beats_defaults_and_source_hashes ... ok
+test session::tests::session_v1_accepts_version_two_instruments_and_checks_declared_version ... ok
+test session::tests::save_as_relocates_every_effect_and_cannot_overwrite_any_dependency ... ok
+test session::tests::rejects_invalid_schedule_and_parameter_binding_before_admission ... ok
+test session::tests::v3_native_host_defaults_requests_and_graph_fallback_are_real ... ok
+test session::history::tests::musical_history_is_bounded_and_redo_is_transactional ... ok
+test session::history::tests::byte_eviction_and_strict_directions_are_bounded ... ok
+test session::tests::rust_host_installs_the_saved_session_without_editor_windows ... ok
+
+test result: ok. 46 passed; 0 failed; 0 ignored; 0 measured; 143 filtered out; finished in 2.16s
+

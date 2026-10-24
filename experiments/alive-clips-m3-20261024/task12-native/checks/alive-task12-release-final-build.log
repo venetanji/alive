@@ -1,0 +1,46 @@
+-- Clockwork 94b67500c96e105491682ec68741b5018560eab7
+-- Ableton Link disabled — ClockworkClock uses its local-state backing
+-- DSP: ultra_hardened_guest
+-- Configuring done (0.0s)
+-- Generating done (0.1s)
+-- Build files have been written to: /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build
+[  2%] Building Rust subsystems (cargo: clockwork-native)
+    Finished `release` profile [optimized] target(s) in 0.12s
+[  2%] Built target clockwork_rust
+[ 77%] Built target clockwork
+[ 82%] Built target ultra_hardened_guest
+[ 88%] Built target ultra_core
+[ 94%] Built target ultra_native
+[100%] Built target ultra-diagnostic
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: method `reserve_native` is never used
+  --> src/document_windows.rs:39:8
+   |
+28 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+39 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `ultra` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 37.68s
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: method `reserve_native` is never used
+  --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/document_windows.rs:39:8
+   |
+28 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+39 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `ultra` (lib) generated 1 warning
+   Compiling alive v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri)
+    Finished `release` profile [optimized] target(s) in 27.31s
+
+Run /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/ultra
+Run /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive

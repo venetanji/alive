@@ -250,10 +250,11 @@ unused-helper warning remains ledgered; no physical/xrun/leak-free claim.
 
 - [x] Single-clip piano-roll add/select/move/resize/delete, velocity, fixed
   grid and focused undo; prepare/apply/play/save/reopen with an effect editor.
-- [ ] Extend the track/clip/device-chain workflow with clip duplication and
+- [x] Extend the track/clip/device-chain workflow with clip duplication and
   individual clip loop length.
-- [ ] Quantized individual clip launch/stop with reliable termination; only
-  then expand to measured bounded eight tracks and multiple clip slots.
+- [x] Four clip slots per track and quantized individual launch/stop with
+  reliable termination, separate selection/default/prepared/runtime state.
+- [ ] Expand to measured bounded eight tracks before adding scene launch.
 - [x] Automation binds stable device-instance/parameter IDs across chain edits
   and persistence; focused editing undo preserves existing Ultra behavior.
 - [ ] Add scene launching only after individual launch tests pass. Test and
@@ -366,6 +367,26 @@ remains disclosed; its complete intermediate log/source snapshot was not saved.
 No desktop clip-bank, eight-track, scene, physical-audio or endurance acceptance
 is inferred from this checkpoint.
 
+Pushed checkpoint `dc76fa9` passes UI/reference and Chromium CI. Native Linux
+qualification was canceled by the following source before completion. Its
+Windows package job fails MSVC compilation
+on the new GNU-only popcount/ctz operations; the exact failure is retained in
+`experiments/alive-clips-m3-20261024/windows-build-dc76fa9/`. A narrow C++17
+portability correction `fdcdd1b` passes local guarded v3/legacy tests and
+independent spec/quality review, and is pushed separately. All three CI jobs
+at that exact commit pass (`40069422716`), including the real desktop journey,
+editor-resource regression and CPAL loopback. Package matrix `40069422711`
+passes Linux, Windows/MSVC and Apple Silicon but fails Intel macOS at Tauri's
+DMG wrapper after successful compilation/app signing. The underlying cause is
+not exposed by the emitted generic error. Read-only diagnosis verifies that
+pinned Tauri CLI verbosity exposes the hidden child diagnostics; the separately
+reviewed one-argument diagnostic at `813ba76` awaits the next actual Intel job.
+It is not a claimed functional fix, and no environment setting changes.
+The exact Windows package log/source receipt qualifies the portable correction;
+the failed overall matrix does not qualify all packages.
+The preceding package matrix was canceled after its Windows failure; no
+canceled platform is counted as a success.
+
 ### Task 12: Saved Clips And Individual Launch Interface
 
 Integrate reviewed native v3 into Rust and strict `alive-session-v3` storage.
@@ -395,7 +416,36 @@ intended instance. Explain the original-backup requirement. Keep normal hashes
 strict and selected Replace isolated; do not silently refingerprint siblings.
 Cover the error and recovery with focused regressions.
 
+Implemented at `ecfed29`, with request-feedback correction `93879f5` and
+independent spec/quality review plus scoped re-review accepted. Strict v3,
+deterministic migration/playable v2 fallback, Rust-owned IDs/focused history,
+four-slot UI, prepared identity maps and bounded native receipts are integrated.
+Shared-source failure and preserved-copy/original-backup/sequential Replace
+recovery pass in the actual app, including editor continuity on failure.
+The profile remains two tracks, six devices and eight clips; this does not
+enable eight tracks or scenes.
+
+Retained evidence: `experiments/alive-clips-m3-20261024/task12-native/`.
+The original shared Rust gate has 187 passes and two existing ignores. The
+corrected UI has 491 passes, Chromium five, release-wrapper tests seventeen.
+Separate Alive/Ultra release builds and the final `813ba76` native clip journey
+pass; parent verifies 302 committed/current source hashes and eight artifacts.
+Its software stereo capture is 318976 finite frames (6.645333 seconds).
+The retained `ecfed29` full native journey preserves all six file/Quit/history
+flags and 59.445333 seconds of finite capture; eight editor cycles retain one
+worker but show PSS growth. These are short software Xvfb/PipeWire checks on
+Ryzen 9 5900HS at 48 kHz, requested/observed 512 frames, not endurance, physical
+audio, leak freedom or cumulative error totals. Raw PCM stays temporary;
+hashes/independent streamed checks and non-PCM artifacts are retained. Task 12
+is locally complete; exact newly pushed-head CI/packages remain outstanding.
+
 ### Task 13: Measure And Admit Eight Tracks
+
+Execute two reviewed checkpoints: first stream-lifetime/telemetry and bounded
+resource/capture sampling at the accepted two-track profile, then native
+capacity measurements and desktop eight-track admission. The first checkpoint
+does not enable a larger profile. This isolates lifecycle and measurement
+correctness from the capacity decision while keeping the current app usable.
 
 Add bounded callback timing/error observability and retain per-stream epochs
 through reconfiguration. Record CPU ticks, PSS, process/worker counts, callback
@@ -425,10 +475,10 @@ device ownership, persistence and the complete native workflow; no arrangement.
 
 - [x] Compact metadata-driven chain panels and optional Edit in Ultra; editor
   open/close/reopen retains independent DSP and selected-instance isolation.
-- [ ] Complete actionable device-reference recovery guidance. Explicit
+- [x] Complete actionable device-reference recovery guidance. Explicit
   structural replacement and rejected missing/changed/incompatible dependencies
-  preserve the active session; shared-source errors still need the focused
-  guidance and recovery regression in Task 12.
+  preserve the active session; shared-source guidance and recovery regressions
+  are verified in Task 12. A matching original backup remains required.
 - [x] Native interface audit using Impeccable: inspect the complete desktop
   surface in one batch, fix together, at most one confirmation pass.
 

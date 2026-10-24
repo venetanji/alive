@@ -1,0 +1,501 @@
+{
+  "format": "alive-session-v3",
+  "title": "First Light",
+  "tempo": 112.0,
+  "lengthBeats": 8.0,
+  "loopEnabled": true,
+  "tracks": [
+    {
+      "id": "track-1",
+      "name": "Pulse",
+      "device": {
+        "instanceId": "legacy-90953515094fab847573782b7d46a84c",
+        "sourceSha256": "723822d4ca7b721b5495b76644ca4a06e9c4ebdf7074086542fd35ed2aa004d7",
+        "bypassed": false,
+        "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive-session/ultra/examples/subtractive.ultra",
+        "id": "org.alive.subtractive",
+        "version": 1,
+        "parameters": {
+          "attack": 10.0,
+          "cutoff": 2400.0,
+          "decay": 150.0,
+          "level": 55.0,
+          "release": 300.0,
+          "resonance": 0.7,
+          "sustain": 0.65
+        }
+      },
+      "effects": [
+        {
+          "instanceId": "d3217962-5725-4371-aa0d-634da1c47d62",
+          "sourceSha256": "a1d4a9c5e3c474979108ca42e53bc5fe1c58c28c8c18ad3681f5652dc1de30f8",
+          "bypassed": true,
+          "path": "../shared-utility.ultra",
+          "id": "org.alive.utility",
+          "version": 2,
+          "parameters": {
+            "gain": 0.55
+          }
+        }
+      ],
+      "slots": [
+        {
+          "id": "clip-8254b7a92a82cb008365518183971131",
+          "name": "Clip 1",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "note-b81cb31228756f6d8c9d9d538eceec38",
+              "beat": 0.0,
+              "duration": 1.75,
+              "pitch": 60,
+              "velocity": 90
+            },
+            {
+              "id": "note-47673d12b251c87a97897ac52a9b4018",
+              "beat": 0.0,
+              "duration": 1.75,
+              "pitch": 64,
+              "velocity": 90
+            },
+            {
+              "id": "note-09ebafbfe0f12a9b7b4443663b201aef",
+              "beat": 0.0,
+              "duration": 1.75,
+              "pitch": 67,
+              "velocity": 90
+            },
+            {
+              "id": "note-55343a41fa821dc5a7a9b7969755141f",
+              "beat": 2.0,
+              "duration": 1.75,
+              "pitch": 57,
+              "velocity": 90
+            },
+            {
+              "id": "note-5160b0b0aa121071571035dbf6617718",
+              "beat": 2.0,
+              "duration": 1.75,
+              "pitch": 60,
+              "velocity": 90
+            },
+            {
+              "id": "note-35eb18044fb0b8a8a652437ebe16b797",
+              "beat": 2.0,
+              "duration": 1.75,
+              "pitch": 64,
+              "velocity": 90
+            },
+            {
+              "id": "note-81739570f6f029f60ed4a3e4af2451e3",
+              "beat": 4.0,
+              "duration": 1.75,
+              "pitch": 53,
+              "velocity": 90
+            },
+            {
+              "id": "note-4f43dc88821a4733f36d0c1e40c2916d",
+              "beat": 4.0,
+              "duration": 1.75,
+              "pitch": 57,
+              "velocity": 90
+            },
+            {
+              "id": "note-eaa289e2653f089b8a224a81e62d4ab9",
+              "beat": 4.0,
+              "duration": 1.75,
+              "pitch": 60,
+              "velocity": 90
+            },
+            {
+              "id": "note-f2209a51d09a8bb1d857cc1964a9b65f",
+              "beat": 6.0,
+              "duration": 1.75,
+              "pitch": 55,
+              "velocity": 90
+            },
+            {
+              "id": "note-712bd82d257bc9f1f7ee1635ea0e619a",
+              "beat": 6.0,
+              "duration": 1.75,
+              "pitch": 59,
+              "velocity": 90
+            },
+            {
+              "id": "note-3e9c8b5009ed75019b695e92b0c75a08",
+              "beat": 6.0,
+              "duration": 1.75,
+              "pitch": 62,
+              "velocity": 90
+            }
+          ],
+          "automation": [
+            {
+              "instanceId": "legacy-90953515094fab847573782b7d46a84c",
+              "key": "cutoff",
+              "enabled": true,
+              "points": [
+                {
+                  "beat": 0.0,
+                  "value": 900.0
+                },
+                {
+                  "beat": 2.0,
+                  "value": 2200.0
+                },
+                {
+                  "beat": 4.0,
+                  "value": 700.0
+                },
+                {
+                  "beat": 6.0,
+                  "value": 3600.0
+                }
+              ]
+            },
+            {
+              "instanceId": "legacy-90953515094fab847573782b7d46a84c",
+              "key": "level",
+              "enabled": true,
+              "points": [
+                {
+                  "beat": 0.0,
+                  "value": 55.0
+                },
+                {
+                  "beat": 4.0,
+                  "value": 48.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "clip-e6f87c07b46781cdb8ea121032c05493",
+          "name": "Clip 1 copy",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "note-9b895dc1f928dba687e9aaead97f04d3",
+              "beat": 0.0,
+              "duration": 1.75,
+              "pitch": 61,
+              "velocity": 90
+            },
+            {
+              "id": "note-49d24a0bd728cbdb1fdef6de5b0f4adc",
+              "beat": 0.0,
+              "duration": 1.75,
+              "pitch": 64,
+              "velocity": 90
+            },
+            {
+              "id": "note-3c9fa2bb83d35e6efeacffb9acd35ae2",
+              "beat": 0.0,
+              "duration": 1.75,
+              "pitch": 67,
+              "velocity": 90
+            },
+            {
+              "id": "note-2cf5d17cc38d9e071b0d8402d44525a1",
+              "beat": 2.0,
+              "duration": 1.75,
+              "pitch": 57,
+              "velocity": 90
+            },
+            {
+              "id": "note-01e380602ea8a832ee480da0275f9201",
+              "beat": 2.0,
+              "duration": 1.75,
+              "pitch": 60,
+              "velocity": 90
+            },
+            {
+              "id": "note-274f1ba67ec8dc257d408339a93001db",
+              "beat": 2.0,
+              "duration": 1.75,
+              "pitch": 64,
+              "velocity": 90
+            },
+            {
+              "id": "note-48931817cca4f43b9ad238e1066b530f",
+              "beat": 4.0,
+              "duration": 1.75,
+              "pitch": 53,
+              "velocity": 90
+            },
+            {
+              "id": "note-2d01e459e45f2a99822982c9c4e0edfd",
+              "beat": 4.0,
+              "duration": 1.75,
+              "pitch": 57,
+              "velocity": 90
+            },
+            {
+              "id": "note-eb3a303f7d9de746b4888c85f947f071",
+              "beat": 4.0,
+              "duration": 1.75,
+              "pitch": 60,
+              "velocity": 90
+            },
+            {
+              "id": "note-45328940285a9c17d62caaf5b5fdd765",
+              "beat": 6.0,
+              "duration": 1.75,
+              "pitch": 55,
+              "velocity": 90
+            },
+            {
+              "id": "note-0704a1c60d6bf7c4f08513279c0218f5",
+              "beat": 6.0,
+              "duration": 1.75,
+              "pitch": 59,
+              "velocity": 90
+            },
+            {
+              "id": "note-76b1533d3aaf2590c4d30e77b66b20c7",
+              "beat": 6.0,
+              "duration": 1.75,
+              "pitch": 62,
+              "velocity": 90
+            }
+          ],
+          "automation": [
+            {
+              "instanceId": "legacy-90953515094fab847573782b7d46a84c",
+              "key": "cutoff",
+              "enabled": true,
+              "points": [
+                {
+                  "beat": 0.0,
+                  "value": 900.0
+                },
+                {
+                  "beat": 2.0,
+                  "value": 2200.0
+                },
+                {
+                  "beat": 4.0,
+                  "value": 700.0
+                },
+                {
+                  "beat": 6.0,
+                  "value": 3600.0
+                }
+              ]
+            },
+            {
+              "instanceId": "legacy-90953515094fab847573782b7d46a84c",
+              "key": "level",
+              "enabled": true,
+              "points": [
+                {
+                  "beat": 0.0,
+                  "value": 55.0
+                },
+                {
+                  "beat": 4.0,
+                  "value": 48.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "clip-f306952c5ca60713597ab35a23b1b1e0",
+          "name": "Clip 3",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "note-9dea141b38fe2818a48a66db75108159",
+              "beat": 0.0,
+              "duration": 0.25,
+              "pitch": 60,
+              "velocity": 100
+            }
+          ],
+          "automation": []
+        },
+        null
+      ],
+      "defaultClipId": "clip-e6f87c07b46781cdb8ea121032c05493",
+      "gain": 0.7,
+      "mute": false,
+      "solo": false
+    },
+    {
+      "id": "track-2",
+      "name": "Harmony",
+      "device": {
+        "instanceId": "legacy-ee709dea523cc99d8c7dbbb3bbb7c80d",
+        "sourceSha256": "723822d4ca7b721b5495b76644ca4a06e9c4ebdf7074086542fd35ed2aa004d7",
+        "bypassed": false,
+        "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive-session/ultra/examples/subtractive.ultra",
+        "id": "org.alive.subtractive",
+        "version": 1,
+        "parameters": {
+          "attack": 10.0,
+          "cutoff": 2400.0,
+          "decay": 150.0,
+          "level": 43.0,
+          "release": 300.0,
+          "resonance": 0.7,
+          "sustain": 0.65
+        }
+      },
+      "effects": [
+        {
+          "instanceId": "8f49c073-d8ff-4f40-a8e5-0b92a32d4819",
+          "sourceSha256": "a1d4a9c5e3c474979108ca42e53bc5fe1c58c28c8c18ad3681f5652dc1de30f8",
+          "bypassed": false,
+          "path": "../shared-utility.ultra",
+          "id": "org.alive.utility",
+          "version": 2,
+          "parameters": {
+            "gain": 1.0
+          }
+        }
+      ],
+      "slots": [
+        {
+          "id": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+          "name": "Clip 1",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "note-abb29a0ac2369905dcf231525a7e6ab3",
+              "beat": 0.0,
+              "duration": 1.75,
+              "pitch": 72,
+              "velocity": 65
+            },
+            {
+              "id": "note-a09e579ffd95933419f75bae2358f4dc",
+              "beat": 0.0,
+              "duration": 1.75,
+              "pitch": 76,
+              "velocity": 65
+            },
+            {
+              "id": "note-c431948b907b45e6e598846ad29c4dbf",
+              "beat": 0.0,
+              "duration": 1.75,
+              "pitch": 79,
+              "velocity": 65
+            },
+            {
+              "id": "note-e2b7d2f6a1bf889da8e0d17724f46b39",
+              "beat": 2.0,
+              "duration": 1.75,
+              "pitch": 69,
+              "velocity": 65
+            },
+            {
+              "id": "note-e5c54157b95efb22cd6476215ae3b8c9",
+              "beat": 2.0,
+              "duration": 1.75,
+              "pitch": 72,
+              "velocity": 65
+            },
+            {
+              "id": "note-acca82d53b09931b36117322215ff1c6",
+              "beat": 2.0,
+              "duration": 1.75,
+              "pitch": 76,
+              "velocity": 65
+            },
+            {
+              "id": "note-4dfe9914fd30da275419283448bbf62d",
+              "beat": 4.0,
+              "duration": 1.75,
+              "pitch": 65,
+              "velocity": 65
+            },
+            {
+              "id": "note-8a08e4175f5fac49b2cfa14280ce5653",
+              "beat": 4.0,
+              "duration": 1.75,
+              "pitch": 69,
+              "velocity": 65
+            },
+            {
+              "id": "note-129d19e546d191d7f472cae3371de38f",
+              "beat": 4.0,
+              "duration": 1.75,
+              "pitch": 72,
+              "velocity": 65
+            },
+            {
+              "id": "note-ebbe11bb9c1ff0c8ff5ce7522786c159",
+              "beat": 6.0,
+              "duration": 1.75,
+              "pitch": 67,
+              "velocity": 65
+            },
+            {
+              "id": "note-dc519f81f54754b34c2a777c3edf5e61",
+              "beat": 6.0,
+              "duration": 1.75,
+              "pitch": 71,
+              "velocity": 65
+            },
+            {
+              "id": "note-9f7eb8bc621028d16706a2f4d7a4eb81",
+              "beat": 6.0,
+              "duration": 1.75,
+              "pitch": 74,
+              "velocity": 65
+            }
+          ],
+          "automation": [
+            {
+              "instanceId": "legacy-ee709dea523cc99d8c7dbbb3bbb7c80d",
+              "key": "cutoff",
+              "enabled": true,
+              "points": [
+                {
+                  "beat": 0.0,
+                  "value": 1300.0
+                },
+                {
+                  "beat": 2.0,
+                  "value": 2200.0
+                },
+                {
+                  "beat": 4.0,
+                  "value": 700.0
+                },
+                {
+                  "beat": 6.0,
+                  "value": 3600.0
+                }
+              ]
+            },
+            {
+              "instanceId": "legacy-ee709dea523cc99d8c7dbbb3bbb7c80d",
+              "key": "level",
+              "enabled": true,
+              "points": [
+                {
+                  "beat": 0.0,
+                  "value": 45.0
+                },
+                {
+                  "beat": 4.0,
+                  "value": 38.0
+                }
+              ]
+            }
+          ]
+        },
+        null,
+        null,
+        null
+      ],
+      "defaultClipId": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+      "gain": 0.7,
+      "mute": false,
+      "solo": false
+    }
+  ]
+}

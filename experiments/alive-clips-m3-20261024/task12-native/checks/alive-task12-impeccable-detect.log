@@ -1,0 +1,42 @@
+
+/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive.html
+  [design-system-font] strong "Alive" uses sans; not declared in DESIGN.md typography
+    → A font is used that is not declared in DESIGN.md typography. Use the documented type system or update DESIGN.md if this is an intentional brand addition.
+  [flat-type-hierarchy] Role sizes: body 12px, h1 12px, h2 12px (largest adjacent step 1.00:1; target 1.25:1)
+    → Dominant heading and body roles are separated by less than 1.25× at every step, leaving the size hierarchy flat. Add at least one stronger size step.
+
+2 anti-patterns found.
+
+── Advisory (not counted as failures) ──
+
+/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive.html
+  [design-system-color] border-bottom rgb(80, 80, 80) on header "AliveOpening session...NewOpen...SaveSav" is outside DESIGN.md colors
+    → A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.
+  [design-system-color] border-top rgb(133, 113, 76) on button "Start" is outside DESIGN.md colors
+    → A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.
+  [design-system-color] border-top rgb(104, 104, 104) on input is outside DESIGN.md colors
+    → A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.
+  [design-system-color] background rgb(23, 23, 23) on div is outside DESIGN.md colors
+    → A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.
+  [design-system-color] border-bottom rgb(75, 75, 75) on header "Selected track chainInstrument → effects" is outside DESIGN.md colors
+    → A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.
+
+/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive.css
+  line 1: [design-system-color] Undocumented color #505050 is outside DESIGN.md colors
+    → A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.
+  line 2: [design-system-color] Undocumented color #777 is outside DESIGN.md colors
+    → A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.
+  line 3: [design-system-color] Undocumented color #686868 is outside DESIGN.md colors
+    → A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.
+  line 5: [design-system-color] Undocumented color #777 is outside DESIGN.md colors
+    → A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.
+  line 8: [design-system-color] Undocumented color #303c4b is outside DESIGN.md colors
+    → A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.
+
+/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive.mjs
+  line 90: [design-system-color] Undocumented color #535353 is outside DESIGN.md colors
+    → A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.
+  line 93: [design-system-color] Undocumented color #c8ae74 is outside DESIGN.md colors
+    → A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.
+
+12 advisory notes. Suppress with --no-advisory.
