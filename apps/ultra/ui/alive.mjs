@@ -5,7 +5,7 @@ import {mountAudioSettings} from './audio-settings.mjs';
 export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke=win?.__TAURI__?.core?.invoke}={}){
   const $=id=>doc.getElementById(id),make=(tag,cls,text)=>{const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
   const model=createAliveModel();let selected=0,selectedInstance=null,chainKey='',queue=Promise.resolve(),disposed=false,trackKey='',musicKey='',parameterKey='',laneKey='';
-  let selectedSlots=new Map(),selectionToken=0,activeEditClip=null,selectedNote=null,gesture=null,preview=null,pianoGeometry=null,velocityCanceled=false,listRevision=0,scopeRevision=0;
+  let selectedSlots=new Map(),selectionToken=0,activeEditClip=null,selectedNote=null,gesture=null,preview=null,pianoGeometry=null,velocityCanceled=false,listRevision=0,scopeRevision=0,transportRequestKey='';
   const trackViews=[],chainViews=[],parameterViews=new Map(),diagnostics=new Map();let audioSettings;
   function notice(text,error=false){$('notice').textContent=String(text);$('notice').classList.toggle('error',error);}
   function enqueue(work){const result=queue.then(work);queue=result.catch(error=>notice(error,true));return result;}
@@ -72,7 +72,11 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     finally{applySnapshot(await invoke('alive_current'));trackKey=musicKey=parameterKey='';selectedNote=null;render();}
     if(result)notice(action.startsWith('save')?'Session saved.':'Session ready.');
   });}
-  function transport(action){return enqueue(async()=>{await command('alive_transport',{action,beat:Number($('seek').value)});await refresh();notice(action==='start'?(model.pending()?'Playing the prepared schedule. Pending edits remain unapplied.':'Transport playing.'):action==='stop'?'Transport stopped.':'Transport seek queued.');});}
+  function transport(action){return enqueue(async()=>{
+    const result=await command('alive_transport',{action,beat:Number($('seek').value)});await refresh();
+    if(result?.requestSerial){const observed=observedRequest(result);notice(`Transport ${requestText(observed,model.snapshot())}`,observed.status==='rejected');}
+    else notice(action==='start'?(model.pending()?'Playing the prepared schedule. Pending edits remain unapplied.':'Transport playing.'):action==='stop'?'Transport stop requested.':'Transport seek queued.');
+  });}
   function paintPiano(svg,notes,length,detailed=false){
     const width=640,height=detailed?218:52,pad=detailed?32:0,top=detailed?21:3;
     const g=detailed?(gesture?.geometry??geometry(notes,length)):null;
@@ -106,7 +110,19 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       musicKey=clipControlsKey=trackKey='';render();
     });
   }
-  function clipAction(action){return enqueue(async()=>{const result=await command('alive_clip_action',{action});await refresh();if(result)notice(`Request ${result.requestSerial}: ${result.status}${result.reason?` (${({7:'command queue full',8:'receipt table busy',12:'optional work limit',5:'stale preparation',9:'empty slot',15:'feature disabled'})[result.reason]??`native reason ${result.reason}`}); prior playback or pending action is retained. Let audio advance before an explicit retry.`:''}`);});}
+  function requestText(result,snapshot){
+    const clip=snapshot.preparedClips?.find(c=>c.clipId===result.clipId)?.name;
+    const reason=({7:'command queue full',8:'receipt table busy',12:'optional work limit',5:'stale preparation',9:'empty slot',15:'feature disabled'})[result.reason]??`native reason ${result.reason}`;
+    return `request ${result.requestSerial} ${result.status}${clip?` for ${clip}`:''}${result.reason?` (${reason}); prior playback or pending action is retained. Let audio advance before an explicit retry.`:''}`;
+  }
+  function observedRequest(result){return model.snapshot().runtime?.requests.find(r=>r.preparationRevision===result.preparationRevision&&r.requestSerial===result.requestSerial)??result;}
+  function renderTransportRequest(snapshot){
+    const request=snapshot.runtime?.requests.filter(r=>r.trackId===null).at(-1);
+    if(!request){transportRequestKey='';return;}
+    const key=JSON.stringify(request);if(key===transportRequestKey)return;transportRequestKey=key;
+    notice(`Transport ${requestText(request,snapshot)}`,request.status==='rejected');
+  }
+  function clipAction(action){return enqueue(async()=>{const result=await command('alive_clip_action',{action});await refresh();if(result){const observed=observedRequest(result);notice(requestText(observed,model.snapshot()),observed.status==='rejected');}});}
   function buildSlots(bank,track,index){
     for(let slot=0;slot<4;slot++){
       const c=track.slots[slot],cell=make('div','clip-slot'),choose=make('button','clip-select',c?.name??`Empty ${slot+1}`),launch=make('button','clip-launch','Launch'),status=make('small');
@@ -122,7 +138,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     $('clip-bank-notice').textContent=snapshot.notice??'';
     $('add-note').disabled=enabled&&!clip;$('add-lane').disabled=enabled&&!clip;
     for(const v of slotViews){
-      if(v.state){const r=snapshot.runtime?.tracks.find(t=>t.trackId===v.trackId),name=snapshot.preparedClips?.find(c=>c.clipId===r?.activeClipId)?.name,requests=snapshot.runtime?.requests.filter(q=>q.trackId===v.trackId),last=requests?.at(-1);v.state.textContent=`${r?.activeClipId?`${snapshot.state.playing?'Playing':'Cued'} ${name}`:'Stopped'}${last?` / request ${last.requestSerial} ${last.status}${last.reason?` reason ${last.reason}`:''}`:''}${r?.pendingAction?` / pending ${r.pendingAction} at frame ${r.pendingFrame}`:''}`;continue;}
+      if(v.state){const r=snapshot.runtime?.tracks.find(t=>t.trackId===v.trackId),name=snapshot.preparedClips?.find(c=>c.clipId===r?.activeClipId)?.name,requests=snapshot.runtime?.requests.filter(q=>q.trackId===v.trackId),last=requests?.at(-1);v.state.textContent=`${r?.activeClipId?`${snapshot.state.playing?'Playing':'Cued'} ${name}`:'Stopped'}${last?` / ${requestText(last,snapshot)}`:''}${r?.pendingAction?` / pending ${r.pendingAction} at frame ${r.pendingFrame}`:''}`;continue;}
       const t=document.tracks.find(t=>t.id===v.trackId),c=t?.slots[v.slot],runtime=snapshot.runtime?.tracks.find(t=>t.trackId===v.trackId),prepared=snapshot.preparedClips?.find(c=>c.clipId===v.clipId),active=runtime?.activeClipId===v.clipId&&!!v.clipId,pending=runtime?.pendingClipId===v.clipId&&!!v.clipId;
       v.choose.setAttribute('aria-pressed',String(t?.id===track.id&&v.slot===slotOf(track)));v.cell.classList.toggle('selected',t?.id===track.id&&v.slot===slotOf(track));v.launch.disabled=!prepared;v.launch.textContent=prepared&&model.pending()?'Launch prepared':'Launch';v.launch.title=prepared?(model.pending()?'Launch prepared version':'Launch at the next native bar boundary'):'Apply while stopped to launch';
       const activeName=snapshot.preparedClips?.find(c=>c.clipId===runtime?.activeClipId)?.name;
@@ -293,6 +309,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   for(const name of diagnosticNames){const label=make('label','',name),output=make('output','','-');output.setAttribute('aria-label',name);label.append(output);$('diagnostics').append(label);diagnostics.set(name,output);}
   function render(){
     const snapshot=model.snapshot(),document=editorDocument();if(!snapshot||!document)return;
+    renderTransportRequest(snapshot);
     selected=Math.min(selected,document.tracks.length-1);
     if(!chainDevices().some(d=>d.instanceId===selectedInstance))selectedInstance=document.tracks[selected].device.instanceId;
     $('session-title').textContent=document.title;$('dirty').textContent=snapshot.dirty||model.pending()?'Modified':'';doc.title=`${snapshot.dirty||model.pending()?'* ':''}${document.title} - Alive`;

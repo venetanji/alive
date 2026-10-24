@@ -40,6 +40,48 @@ test('four slots separate selection, draft-only launch and prepared runtime iden
   const action=native.calls.find(c=>c.name==='alive_clip_action');assert.deepEqual(action.args.action,{kind:'launch',trackId:initial.document.tracks[0].id,clipId:initial.document.tracks[0].slots[0].id});assert.equal(action.args.preparationRevision,'1');view.dispose();
 });
 
+test('asynchronous work refusal names the requested clip and preserves actionable runtime context',async()=>{
+  const initial=clipState();initial.preparedClips.push({trackId:'track-1',clipId:'second',name:'Second',slot:1,lengthFrames:'411429'});
+  Object.assign(initial.runtime.tracks[0],{pendingAction:'launch',pendingClipId:'clip-track-1',pendingSerial:'8',pendingFrame:'4096'});
+  initial.runtime.requests=[{preparationRevision:'1',requestSerial:'9',status:'queued',reason:0,trackId:'track-1',clipId:'second',targetFrame:null}];
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  assert.match(page.find('Pulse clip runtime').textContent,/request 9 queued/);
+  Object.assign(native.snapshot.runtime.requests[0],{status:'rejected',reason:12});
+  native.snapshot.snapshotSequence='2';await view.refresh();
+  const output=page.find('Pulse clip runtime').textContent;
+  assert.match(output,/Playing Clip 1/);assert.match(output,/request 9 rejected.*Second.*optional work limit/);
+  assert.match(output,/pending launch at frame 4096/);
+  assert.match(output,/prior playback or pending action is retained/i);assert.match(output,/Let audio advance before an explicit retry/);
+  assert.equal(native.calls.filter(c=>c.name==='alive_clip_action').length,0);view.dispose();
+});
+
+for(const[action,button]of [['start','start'],['seek','seek-go']])test(`v3 ${action} reports native refusal instead of transport success`,async()=>{
+  const initial=clipState();initial.state.playing=0;const page=dom('./alive.html'),native=backend(initial);
+  const result={preparationRevision:'1',requestSerial:'9',status:'rejected',reason:7,trackId:null,clipId:null,targetFrame:null};
+  const invoke=async(name,args)=>{if(name==='alive_transport'){native.snapshot.runtime.requests=[result];return result;}return native.invoke(name,args);};
+  const view=mountAlive({...page,invoke});await settle();await page.ids.get(button).fire('click');
+  assert.match(page.ids.get('notice').textContent,/Transport request 9 rejected.*command queue full/);
+  assert.doesNotMatch(page.ids.get('notice').textContent,/Transport playing|seek queued/);assert.equal(view.model.snapshot().state.playing,0);view.dispose();
+});
+
+test('trackless transport receipts progress from queued to asynchronous refusal without automatic retry',async()=>{
+  const initial=clipState();initial.state.playing=0;const page=dom('./alive.html'),native=backend(initial);let requests=0;
+  const result={preparationRevision:'1',requestSerial:'9',status:'queued',reason:0,trackId:null,clipId:null,targetFrame:null};
+  const invoke=async(name,args)=>{if(name==='alive_transport'){requests++;native.snapshot.runtime.requests=[structuredClone(result)];return result;}return native.invoke(name,args);};
+  const view=mountAlive({...page,invoke});await settle();await page.ids.get('start').fire('click');
+  assert.match(page.ids.get('notice').textContent,/Transport request 9 queued/);assert.doesNotMatch(page.ids.get('notice').textContent,/Transport playing/);
+  Object.assign(native.snapshot.runtime.requests[0],{status:'rejected',reason:12});native.snapshot.snapshotSequence='2';await view.refresh();
+  assert.match(page.ids.get('notice').textContent,/Transport request 9 rejected.*optional work limit/);assert.match(page.ids.get('notice').textContent,/explicit retry/);assert.equal(requests,1);view.dispose();
+});
+
+test('immediate queued transport response cannot overwrite a matching applied publication',async()=>{
+  const initial=clipState(),page=dom('./alive.html'),native=backend(initial);
+  const result={preparationRevision:'1',requestSerial:'9',status:'queued',reason:0,trackId:null,clipId:null,targetFrame:null};
+  const invoke=async(name,args)=>{if(name==='alive_transport'){native.snapshot.runtime.requests=[{...result,status:'applied'}];return result;}return native.invoke(name,args);};
+  const view=mountAlive({...page,invoke});await settle();await page.ids.get('start').fire('click');
+  assert.match(page.ids.get('notice').textContent,/Transport request 9 applied/);assert.doesNotMatch(page.ids.get('notice').textContent,/queued/);view.dispose();
+});
+
 test('queued v3 note values keep originating clip and note IDs after selection changes',async()=>{
   const initial=clipState(),first=initial.document.tracks[0].slots[0],second=structuredClone(first);second.id='second';second.name='Second';second.notes.forEach(n=>n.id+='-second');initial.document.tracks[0].slots[1]=second;
   const page=dom('./alive.html'),native=backend(initial),boundary=delayedBoundary(native,'alive_base',()=>{}),view=mountAlive({...page,invoke:boundary.invoke});await settle();
