@@ -1,0 +1,2186 @@
+diff --git c/.superpowers/sdd/PLAN/task-14-report.md i/.superpowers/sdd/PLAN/task-14-report.md
+new file mode 100644
+index 0000000..2d105c8
+--- /dev/null
++++ i/.superpowers/sdd/PLAN/task-14-report.md
+@@ -0,0 +1,331 @@
++# Task 14: Atomic Scene Launching
++
++Implementation based on `7b76c7e72d228ce7bc9a4ef8475013e09c85df54`, preserving
++the accepted Task 13a/13b ownership, stopped-winner and publication changes.
++Raw evidence is under `/tmp/alive-task14-evidence/`; parent owns durable
++retention, independent review, acceptance and the separate Task 15 soak.
++
++## Implemented Contract
++
++- Native TRACK_ACTIONS accepts a valid multi-member mask only when the actual
++  configured policy advertises ADMITTED and ATOMIC_TRACK_ACTIONS. Validation,
++  one queue entry, reservation and one serial remain one ingress transaction.
++  ABI sizes, strict v3 saved schema and every capacity/work ceiling are unchanged.
++- One native target is computed in queue order. Fixed candidate scratch reduces
++  each masked member; partial supersession, due completion, Stop, end and fault
++  update only unresolved member bits. The accepted unpublished stopped-cue
++  winner semantics remain per track. Previously published applied bits are final.
++- Pending masks dominate scalar status; terminal combinations become MIXED.
++  The ratified request-summary priority is RuntimeInvariant > StopCanceled >
++  WorkLimit > EndCanceled > ReplacedRequest. No per-member reason is invented.
++- Optional refusal preserves published pending choices and terminal candidate
++  dispositions, rejecting only surviving provisional applied/pending members.
++  Due work uses the existing whole-frame aggregate guard and emergency cleanup.
++- The main-window-only `alive_launch_scene` command authenticates generation,
++  canonical preparation revision, capability, slot and audio state. It reads
++  immutable prepared slots once and submits one request; empty slots map to
++  TRACK_STOP. Audio-off refusal is `Start Audio to launch a scene`.
++- Four scene buttons retain incumbent bank/chain/editor styling, display
++  prepared names and empty-member Stops, and capture preparation identity at the
++  gesture. Common target and per-track outcomes are textual. Scene requests do
++  not become transport notices or persistent active-scene state. Local selection,
++  history, dirty state, saved defaults and device/editor ownership are preserved.
++
++## Regression Evidence
++
++The retained red phase precedes implementation: `red-1` fails at the old native
++multi-bit refusal; `rust-red-2.log` fails the absent member-mask projection;
++`ui-red-1.log` fails the three missing scene-control/receipt tests. The earlier
++`rust-red-1.log` accidentally filters all tests and is not red evidence.
++`rust-mapper-red.log` additionally records the expected disabled-profile mapper
++failure before the feature bits were enabled. `green-1`, `expanded-1`,
++`native-final-focused`, `rust-green-1.log` and `ui-green-1.log` retain subsequent
++passes. `disabled-capability` independently disables both copied policy bits
++and proves the native FEATURE_DISABLED refusal.
++
++Native scenes cover two/eight-track member permutations; overlapping masks and
++cumulative old-receipt updates; 64 stopped scenes; optional cheap/expensive
++refusal and prior pending preservation; invalid final/unmasked members; full
++queue and busy/+128 reuse; Start/Seek/end ordering; rounded-bar/short-seam sample
++equivalence; whole-scene aggregate fault including already superseded members;
++acquired-head Stop race and fresh post-Stop scenes. Saved-chain stereo equality
++includes retrigger, empty clip/Stop, warm bypass and mute at partitions
++1/31/64/256/1024. Rust additionally proves one remaining native queue slot
++accepts the whole prepared scene and retains member identities. DOM regressions
++cover draft/prepared labels, all-empty rows, partial masks, delayed identity,
++focus and selection. Existing v1/v2, history, scoped Stop and Quit tests remain.
++
++Completed full gates, all exit 0:
++
++```sh
++ULTRA_NATIVE_LIB_DIR="$PWD/apps/ultra/build" cargo test \
++  --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked --lib
++bash apps/ultra/tests/ci/check-native.sh
++uv run --no-project --with jsonschema bash apps/ultra/tests/ci/check-contracts.sh
++```
++
++Logs: `full-rust.log` (211 passed, 4 explicitly ignored measurement/private-audio
++tests), `full-native.log`, `full-contracts.log` (including all 49 Alive DOM tests).
++The native gate retains the exact 40-event and populated 188-frame 96 > 64 refusals,
++guarded maximal six-root scene burst and prior concurrency regression.
++The contract script regenerated an unrelated historical arithmetic manifest;
++its generated receipt was retained in `full-gates/` and that file alone restored
++to prior HEAD bytes with parent authorization.
++
++## Bounds And Pre-Admission Measurement
++
++The existing envelope proof already maximizes selectable clips per track and
++sums simultaneous reset/chase work. Scenes introduce no new event or boundary.
++No event, queue, receipt, graph, root or work ceiling changed. A 128-entry fixed
++candidate receipt index adds 512 scratch bytes. Each callback drains <=64
++commands and visits <=512 scene members; candidate lookup is O(1), checked
++against the full serial. Old-pending fallback scans <=8 tracks, with <=8 old
++pending dispositions. Aggregation tests four terminal masks; refusal visits
++<=64 receipts; due/Stop/end visit <=8 pending tracks. Coherent publication remains
++16,592 bytes. No callback allocation/free/lock is introduced.
++
++Before production feature activation:
++
++```sh
++python3 apps/ultra/tests/run_alive_capacity.py \
++  /tmp/alive-task14-evidence/proposed-verify-1 --verify --guards --scenes --proposed-scenes
++python3 apps/ultra/tests/run_alive_capacity.py \
++  /tmp/alive-task14-evidence/proposed-release-1 --scenes --proposed-scenes --samples 1200
++```
++
++Both pass. The runner modifies only the isolated copied policy source.
++After enabling production bits, `enabled-native-source-equality.json` confirms
++all 28 measured C/C++ files match production byte-for-byte; later policy Markdown
++changes are documentation only. The guarded run reports 1,696,675 scene-receipt
++observations and 49,785 MIXED observations under the accepted same-callback
++render-overlap predicate. Trace maxima: two-track preview 14 accepted / 18 dense
++against 56; eight-track 56 against 128; dense reconstruction 1024; cheap refusal
++preview/chase 0. Scene-only quantized work performs no optional preview.
++
++Release matrix host: AMD Ryzen 9 5900HS, Linux 7.2.8-10-omarchy x86_64,
++GCC 16.2.1, C++17 `-O2`, logical 48kHz. There are 56 distributions of 1200 raw samples
++(67,200 total), with copied source hashes, build commands and logs. Printed
++quantiles use sorted index `floor((n-1)*p)`, including p=0.999. Combined cases:
++
++| Tracks/roots | Frames | p99.9 ns | Maximum ns | Buffer ns |
++| --- | ---: | ---: | ---: | ---: |
++| 2/6 | 256 | 1,822,026 | 1,838,708 | 5,333,333 |
++| 2/6 | 512 | 3,282,398 | 3,628,122 | 10,666,667 |
++| 2/6 | 1024 | 4,687,786 | 4,989,236 | 21,333,333 |
++| 8/16 | 64 | 3,639,671 | 4,310,186 | 1,333,333 |
++| 8/16 | 128 | 4,003,287 | 4,540,039 | 2,666,667 |
++| 8/16 | 256 | 5,606,953 | 5,912,639 | 5,333,333 |
++| 8/16 | 512 | 8,477,349 | 9,065,259 | 10,666,667 |
++| 8/16 | 1024 | 14,591,876 | 16,742,724 | 21,333,333 |
++
++The combined diagnostic adds full scheduled-window, optional and two-clear
++emergency reserves, 64 direct parameter writes, 64 dispatches and the retained
++scalar scan surrogate to an actual 63-scenes-plus-seek callback. It deliberately
++overcounts and is not a universal execution-time upper bound. Other measured
++paths include 64 running scenes, 64 stopped scenes, accepted seek, repeated cheap
++refusal, full-queue Stop and 1024-event reconstruction. Retain practical observed
++buffer guidance >=256 at 2/6, >=512 at 8/16, preferring 1024 near its bounds. The
++8/16 combined 256 case exceeds its buffer, and the larger combined cases miss
++the advisory 50% p99.9 target. Partitions 1/31 are semantic tests, not driver claims.
++
++Parent independently verified all 60 manifest files and 56x1200 raw distributions
++in `/tmp/alive-task14-parent-raw-release-verification.json`. Its separate
++nearest-rank p99.9 results for combined 8/16 at 256/512/1024 are 5,697,854 /
++8,804,767 / 15,514,588 ns; these use a different quantile convention, not a rerun.
++
++## Release Artifact And Actual Desktop Evidence
++
++Fresh native build: CMake Release in `/tmp/alive-task14-evidence/native-build`,
++then atomic fresh-inode installation recorded in `native-atomic-install.json`.
++Ultra and standalone Alive are separately built with locked Cargo release
++profiles into `apps/ultra/src-tauri/target`; the historical standalone target
++tree remains untouched. `release-build-manifest.json` retains source, artifact,
++inode and command identities; configure/build logs are alongside it.
++`host-environment.json` records CPU/OS/compiler/tool versions and release linkage.
++
++| Artifact | SHA256 |
++| --- | --- |
++| standalone Alive | `a5e8f4504e4a80a173619a82a0015c2c66b52ca63a3852b62487380e9024ffed` |
++| Ultra | `ea63dad5520173b85941520794ffd52a3c56f1ecdaf7484fd4dde6f501d3f205` |
++| native release library | `074f64ddc0b1668bfd2479099cb89ff8c90eb9354cfeb001bb94e095ab477324` |
++| timing-probe core archive | `23bc0108d83e4b6d6300651a2945621ed25ece9ca49bc913313b306f1f153402` |
++| fresh release core archive | `396ee93d6b12b45c25f6ca76f8996aa2c2dff45aaf46654692aa36f4fce58f83` |
++
++The native release backend uses CMake `-O3 -DNDEBUG -fPIC`; both core archives
++use `-O3 -DNDEBUG -std=c++20 -fPIC -g` with identical source/defines/includes.
++Build directories and CMake versions differ (historical 3.31 versus fresh 4.4),
++and the archives have different bytes. The `-O2` probe is a separate artifact;
++its timing is not relabeled as this actual driver binary.
++
++Actual release commands use the same explicit pair and private Xvfb/DBus/
++PipeWire harness, with temporary XDG directories:
++
++```sh
++python3 apps/ultra/tests/alive_capacity_session.py /tmp/alive-task14-evidence/eight.alive
++ULTRA_TEST_ALIVE=1 \
++ULTRA_TEST_ALIVE_BINARY="$PWD/apps/ultra/src-tauri/target/release/alive" \
++ULTRA_TEST_ALIVE_SESSION=/tmp/alive-task14-evidence/eight.alive \
++ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_scenes.py" \
++bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-task14-evidence/native-scenes-1
++ULTRA_TEST_ALIVE=1 \
++ULTRA_TEST_ALIVE_BINARY="$PWD/apps/ultra/src-tauri/target/release/alive" \
++ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_clips.py" \
++bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-task14-evidence/native-clips-1
++```
++
++`native-scenes-1` exits 0. It observes an all-empty scene while stopped, then
++an occupied stopped cue; running scene 2 followed by Pulse Clip 1 produces serial 6
++MIXED at common target 1723300 with Pulse superseded and seven applied. Serial 8
++applies scene 2 to all eight at target 2011300. The actual text is retained in
++`scenes-observations.json`; these are native receipt projections, not inferred
++from current active clips. Local Stop leaves Pulse at zero voices and seven
++tracks at three voices. Hosted editor close/reopen retains base 0.65 while
++transport advances; bypass, history Undo, automated-base ownership, mixer, Save
++As/reopen stopped defaults and remove/add/create/Apply all pass. The screenshot
++`scenes-initial.png` was inspected: prepared member labels wrap within four
++columns, distinct scene buttons/help remain above the incumbent bank, and cue
++labels remain distinct from playback.
++
++The first scene run records four witnessed finalized epochs, native quiescence,
++no epoch coverage gap or eviction, PipeWire default_output stereo f32 at 48 kHz,
++requested/observed 512 frames throughout. Each epoch has zero typed CPAL errors,
++native-render failures, invalid callback shape, clock anomaly, counter overflow
++and over-buffer-budget counts. Per-epoch histogram intervals are retained;
++durations are processing observations, not exact percentiles from raw samples.
++
++| Epoch | Callbacks | p99.9 interval ns (lower exclusive, upper inclusive) | Maximum ns |
++| --- | ---: | ---: | ---: |
++| 1 | 328 | (6,888,623, 7,193,609] | 7,179,906 |
++| 2 | 6488 | (4,466,720, 4,664,478] | 5,477,679 |
++| 3 | 1532 | (4,466,720, 4,664,478] | 4,606,818 |
++| 4 | 1592 | (4,277,345, 4,466,720] | 4,390,991 |
++
++The finite capture contains 2,482,176 frames / 51.712s, all finite, both channel
++peaks 0.131493613, and SHA256
++`94da8ae34b0f0244846b5f24acb13fc953fdc704b37a2b36ae23e840de7d181f`.
++The fixture produces matching channels (zero unequal samples after setup), so
++this is a finite two-channel capture, not a claim of nonidentical stereo content.
++The bounded recorder ends through requested_stop; its supervised pw-cat return 1
++is the intentional termination outcome, with zero stderr bytes.
++
++`verify-scenes.py` independently rereads the raw audio, JSONL hashes, histogram
++totals, per-epoch configuration/counters and final retirement into
++`native-scenes-1/scenes-verified.json`. Both resource/epoch manifests match the
++final raw files. The executed harness is retained alongside the run; self-review
++then made sampler shutdown precede manifest hashing to eliminate a prospective
++race (the first run's hashes already match).
++
++Resource observations span 124s / 125 samples. CPU percentages are relative to
++one core and include the discovered process subtree; initial/transient/
++reparented-before-discovery workers may be absent. The moving workflow has
++different windows and stopped/playing phases, so first/last PSS is not a leak
++or steady-state claim. App CPU p50/p95/max 106.75/125.91/142.05%; PSS first/last/
++max 487224/496167/620939 KiB (+8943 KiB), maximum 130 threads/225 FDs. Sampler/capture
++CPU 28.16/33.86/57.81%; private server 0/1.01/2.00%. App/sampler/server identity
++coverage-gap sample counts 7/7/1 include discovery and lifecycle changes. No
++unavailable fields, process records or enumeration gaps are observed. Maximum
++app cadence 1.012s, sampler/server 1.678s; maximum collection duration 0.708s;
++reported missed cadences 0. PID/start-time/worker identities and all values remain
++in raw JSONL and the verifier output. No long-run growth conclusion follows.
++
++The original clip journey's first run stops at its unchanged line 79 assertion:
++after the pointer launch, native text remains `Cued Clip 1 copy` and shows no
++individual request. `native-clips-diagnostic-1` preserves click/assertion cadence
++and reproduces that failure with identical used/after rectangle 223,241,59,28.
++`native-clips-diagnostic-2` adds synchronous native owner/hit-path observations;
++its launch succeeds, with the owned window in both paths, then its later editor
++pointer action fails to open the editor. These observations do not establish
++the exact cause of the original launch or the separate remote `7b76c7e` Undo
++failure. No product change is attributed to either.
++
++The copied keyboard isolation run (`native-clips-keyboard-1`) passes all original
++assertions, and records a focused editor target at 1109,638,79,24 inside the
++expanded Audio details rectangle 0,594,1200,206. This proves the lower editor
++control's spatial occlusion. Keyboard isolation is not substituted for the
++pointer acceptance gate. With parent authorization, the canonical clip harness
++now closes/restores the disclosure explicitly around that pointer action and
++uses the existing bounded motion-flush/stable-owned-target pointer dispatcher
++for the initial launch. It sends one press/release, never retries an action,
++and preserves every original native receipt/state/editor/history assertion.
++
++The copied corrected pointer harness (`check_alive_clips_pointer.py`) passes the
++complete journey in `native-clips-pointer-1`, exit 0, and is installed byte-for-
++byte as `apps/ultra/tests/check_alive_clips.py`. Its retained native input record
++has owner 4194307 in path [927,4194307], one press and one release. New/Open,
++duplicate/note Undo/Redo/Apply, individual quantized launch/Stop, hosted editor
++continuity, base/bypass, relocated Save As/default reopen, stale shared-source
++refusals and the original preserved-copy/restore/sequential-replacement recovery
++all pass. The final native view is stopped, audio off, zero typed stream errors,
++zero rejected commands and zero voices. Its finite software capture has 529,408
++frames / 11.029333s, peak 0.222594455 and SHA256
++`534ac1092516502cac73263662dd1ee009ecd178799932d53487b96180b5d3ca`.
++The input prerequisite and failed/query-sensitive runs remain review evidence;
++Task 15 retains the end-user native pointer audit and the remote CI diagnosis.
++
++Final `native-scenes-2` repeats the identical production pair with the final
++sampler-shutdown harness, exits 0, and passes the independent raw verifier.
++Its `/proc` executable/library mapping hashes match the artifact table. Both
++JSONL manifests match after the worker has stopped; all original scene/editor/
++persistence assertions pass. Serial 6 is MIXED at 1737636 with one superseded
++and seven applied members; serial 8 applies all eight at 2025636. Four finalized
++epochs retain 48 kHz / 512 requested and observed frames, zero typed errors,
++native failures, shape/clock/overflow faults and over-budget callbacks, with no
++epoch gaps or evictions and witnessed native quiescence:
++
++| Epoch | Callbacks | p99.9 interval ns (lower exclusive, upper inclusive) | Maximum ns |
++| --- | ---: | ---: | ---: |
++| 1 | 334 | (3,922,343, 4,096,000] | 3,968,024 |
++| 2 | 6503 | (4,466,720, 4,664,478] | 5,013,437 |
++| 3 | 1536 | (4,664,478, 4,870,992] | 4,719,337 |
++| 4 | 1601 | (4,277,345, 4,466,720] | 4,426,820 |
++
++The final finite capture is 2,482,688 frames / 51.722667s, both channel peaks
++0.131493613 and SHA256
++`ff88b82a146ad4b9f4180cf9be29fed2a2e0deb0fb092a4957afcb874e92b843`.
++Raw verification confirms every sample finite. Final resource observations are
++125 samples / 124.003s. App CPU p50/p95/max is 105.85/127.10/145.02% of one core;
++PSS first/last/max 486910/492992/615643 KiB (+6082 KiB), maximum 129 threads/226
++FDs. Sampler/capture CPU is 28.01/33.01/81.90%; server 0/1.01/2.02%. Identity-gap
++sample counts are 7/9/1; each group has one process-enumeration gap. One observed
++zombie pw-cat has unavailable RSS/PSS, retained as two unavailable fields; no
++unavailable process records are reported. Maximum app/sampler/server cadences
++are 1.012/1.016/1.019s, collection durations 0.047/0.034/0.030s, missed cadences 0.
++These explicitly incomplete process-discovery observations do not establish
++steady-state resource growth. The final report, raw epochs/resources, executed
++harness and `scenes-verified.json` remain under `native-scenes-2`.
++
++## Self-Review And Handoff
++
++Self-review checks the design's one-transaction ingress, member masks, stopped
++winner provenance, optional rollback, identity/reuse and whole-frame fault
++behavior against the final source and retained regressions. Production native
++sources remain identical to the measured proposal. Scene IPC/UI use only the
++prepared row, capability and authenticated identities. No history, schema,
++work ceiling or driver policy changed. The narrow pointer-harness prerequisite
++is included for independent review; it does not claim to fix the unidentified
++launch or remote Undo causes. Final Python syntax checks and `git diff --check`
++pass. The full tests are not rerun solely for subsequent report or harness-only
++changes; the final actual harness paths have their own passing evidence.
++
++The final source manifest, copied harness equality and release artifact hashes
++are retained in `final-source-manifest.json`. Parent owns acceptance, retained
++experiment publication, the independent review and Task 15 qualification.
++
++## Warnings And Limits
++
++Existing compiler warnings: Rust's typed `write` declaration at `audio.rs:420`
++uses `*const u8` versus the standard symbol's `*const c_void`; release builds
++also report unused `QuitSession::reserve_native` at `document_windows.rs:47`.
++These are not introduced by scenes.
++The Impeccable detector ran once (`ui-detector.json`) and reported incumbent
++literal palette/font/compact heading findings; no scene palette/font redesign
++was performed. The actual scene screenshot review is recorded above. Private
++Xvfb logs include expected unavailable Wayland portal/DRI3 warnings; these do not
++establish physical-device behavior.
++
++Typed app-owned callback guards do not cover pinned CPAL owned error-payload
++allocation/free. Measured callback processing excludes the separately documented
++final clock/publication tail. Finite software captures cannot establish physical
++underruns, scheduling lateness, universal backend realtime behavior or long-run
++resource stability. No 1800-second soak, persistent audio/settings change,
++publishing or cloud session is part of this task.
+diff --git c/apps/alive/README.md i/apps/alive/README.md
+index 3bbd8f6..e25d4a0 100644
+--- c/apps/alive/README.md
++++ i/apps/alive/README.md
+@@ -91,6 +91,13 @@ underrun guarantee. This guidance does not change saved audio settings.
+   clears pending actions and silences every track. Runtime text distinguishes
+   queued/pending, applied, rejected and unavailable observations. A queued
+   request is not proof that it played.
++- Launch scene 1 through 4 launches that prepared slot across every track in one
++  atomic request. Empty slots stop their tracks, including an entirely empty
++  row. With transport stopped, the row is cued without starting playback; audio
++  must already be running. Each row displays its prepared members and native
++  per-track outcomes. A later individual launch can supersede one member while
++  the rest apply at the original target. Selection, pending edits, editors and
++  saved defaults remain independent. Save/reopen restores saved defaults.
+ - Create, Duplicate, Delete, Name, Clip length and Set Saved Default affect the
+   selected clip through pending history. Duplicate copies notes and automation
+   with new score IDs but shares the track's existing device chain. Clip length
+@@ -208,7 +215,7 @@ The authored AOT Faust kernels run in Ultra's native evaluator, alongside
+ Clockwork. The legacy Clockwork Voice path adds 64 samples and is rejected by
+ this hosted profile; native hosted alignment delay is zero. Wider speaker
+ layouts, arbitrary Faust/JIT devices, external MIDI, unrestricted live graph
+-editing, scenes and a full DAW arrangement remain outside
++editing and a full DAW arrangement remain outside
+ this profile.
+ 
+ See `SESSION_CONTRACT.md` for timing, ownership, admission and persistence rules,
+diff --git c/apps/alive/SESSION_CONTRACT.md i/apps/alive/SESSION_CONTRACT.md
+index 4af3724..2b919a3 100644
+--- c/apps/alive/SESSION_CONTRACT.md
++++ i/apps/alive/SESSION_CONTRACT.md
+@@ -81,7 +81,42 @@ targets the next strict four-beat bar; single-track Stop silences only that trac
+ Global Stop has reserved capacity, invalidates pending actions and remains usable
+ with stale view identities. Global transport wrap resets active phases. Reopen
+ and Apply install saved defaults stopped at phase zero; Start resumes the current
+-cues rather than reselecting defaults. No multi-track atomic action is enabled.
++cues rather than reselecting defaults.
++
++Atomic scene launching uses one of the four prepared slot positions across all
++configured tracks. Occupied members launch; empty members issue quantized track
++Stop. An all-empty row is valid and preserves global transport. One scene has
++one native request, queue entry, serial, receipt and target. Both the configured
++profile's ADMITTED and ATOMIC_TRACK_ACTIONS capabilities must be enabled. Native
++callers may address a nonempty subset; the desktop always includes every prepared
++track. Invalid members, a busy receipt cell or a full queue reject the whole new
++request before changing musical state. Global Stop retains its reserved mailbox.
++
++`alive_launch_scene` accepts only generation, canonical decimal-string
++preparationRevision and slot (0..3), from the main session window with audio
++running. It maps the immutable prepared bank, independent of draft edits and
++local selection. Scene gestures retain their preparation identity through the
++UI command queue. Audio-off refusal is `Start Audio to launch a scene`.
++Scene actions change neither saved defaults nor document, history, dirty state,
++device/editor ownership or settings. No scene object is added to the saved schema.
++
++After callback observation, the pending/applied/superseded/canceled/rejected
++masks partition a track-action receipt's track mask. Status remains PENDING
++while any member is pending, then becomes its sole terminal kind or MIXED.
++Later actions supersede only overlapping unresolved members; the others retain
++the common target. Candidate admission is all-or-none: old pending choices
++survive optional refusal, while new surviving members become rejected and
++already reduced superseded/canceled members retain their outcomes. Published
++applied members are immutable. Stopped cues remain distinct from playback.
++
++The scalar error is a request summary with priority RuntimeInvariant >
++StopCanceled > WorkLimit > EndCanceled > ReplacedRequest. It does not assign that
++reason to every member. Desktop projection retains all masks and each member's
++track/clip identity, action and observed outcome. Missing terminal observations
++remain unavailable; known terminal members remain known. Serial and preparation
++must both match. A partially pending scene keeps its one receipt reservation;
++a coherently observed terminal MIXED receipt permits reuse. No timer estimates
++native targets and no automatic retry is performed.
+ 
+ ## Channels And Lifecycle
+ 
+diff --git c/apps/ultra/src-tauri/native/alive_session_clip_policy.hpp i/apps/ultra/src-tauri/native/alive_session_clip_policy.hpp
+index f2ce395..9ed4107 100644
+--- c/apps/ultra/src-tauri/native/alive_session_clip_policy.hpp
++++ i/apps/ultra/src-tauri/native/alive_session_clip_policy.hpp
+@@ -35,7 +35,7 @@ inline AliveSessionLimitsV3 policy(unsigned profile) noexcept {
+   if (profile == 1) {
+     // Measured policy 1: see alive_session_v3_policy.md for graph bounds,
+     // derivation, actual-kernel distributions and practical buffer scope.
+-    out.features = ALIVE_SESSION_V3_FEATURE_ADMITTED;
++    out.features = ALIVE_SESSION_V3_FEATURE_ADMITTED | ALIVE_SESSION_V3_FEATURE_ATOMIC_TRACK_ACTIONS;
+     out.scheduled_frame = {18, 3072, 608, 0};
+     out.scheduled_window = {108, 18432, 3520, 0};
+     out.optional_frame = {6, 1024, 192, HorizonSteps};
+@@ -45,7 +45,7 @@ inline AliveSessionLimitsV3 policy(unsigned profile) noexcept {
+     // Policy 2 retains policy 1's event/scan/guard bounds and scales only
+     // the root/parameter work. See the retained capacity measurements.
+     out.work_policy = ALIVE_SESSION_V3_WORK_POLICY_2;
+-    out.features = ALIVE_SESSION_V3_FEATURE_ADMITTED;
++    out.features = ALIVE_SESSION_V3_FEATURE_ADMITTED | ALIVE_SESSION_V3_FEATURE_ATOMIC_TRACK_ACTIONS;
+     out.scheduled_frame = {48, 3072, 1568, 0};
+     out.scheduled_window = {288, 18432, 9280, 0};
+     out.optional_frame = {16, 1024, 512, HorizonSteps};
+diff --git c/apps/ultra/src-tauri/native/alive_session_clips.hpp i/apps/ultra/src-tauri/native/alive_session_clips.hpp
+index e9c98c7..7e2d0bf 100644
+--- c/apps/ultra/src-tauri/native/alive_session_clips.hpp
++++ i/apps/ultra/src-tauri/native/alive_session_clips.hpp
+@@ -38,6 +38,7 @@ struct Candidate {
+   AliveSessionTrackStateV3 tracks[8]{};
+   AliveSessionReceiptV3 receipts[64]{};
+   unsigned count = 0, old_status[8]{}, old_error[8]{}, clear_mask = 0;
++  unsigned receipt_index[128]{};
+   bool group[64]{};
+   uint64_t position = 0;
+   unsigned playing = 0;
+@@ -75,6 +76,42 @@ static void finish(AliveSessionReceiptV3 &receipt, unsigned status, unsigned err
+   if (status == ALIVE_SESSION_V3_REJECTED)
+     receipt.rejected_mask = receipt.track_mask;
+ }
++static unsigned reason_priority(unsigned error) noexcept {
++  switch (error) {
++  case ALIVE_SESSION_V3_RUNTIME_INVARIANT: return 5;
++  case ALIVE_SESSION_V3_STOP_CANCELED: return 4;
++  case ALIVE_SESSION_V3_WORK_LIMIT: return 3;
++  case ALIVE_SESSION_V3_END_CANCELED: return 2;
++  case ALIVE_SESSION_V3_REPLACED_REQUEST: return 1;
++  default: return 0;
++  }
++}
++static void finish_members(AliveSessionReceiptV3 &r, unsigned mask, unsigned status,
++                           unsigned error = 0, bool provisional = false) noexcept {
++  // Only candidate scratch may replace a stopped cue's unpublished APPLIED bit.
++  mask &= r.pending_mask | (provisional ? r.applied_mask : 0);
++  if (!mask)
++    return;
++  r.pending_mask &= ~mask;
++  r.applied_mask &= ~mask;
++  if (status == ALIVE_SESSION_V3_APPLIED) r.applied_mask |= mask;
++  if (status == ALIVE_SESSION_V3_SUPERSEDED) r.superseded_mask |= mask;
++  if (status == ALIVE_SESSION_V3_CANCELED) r.canceled_mask |= mask;
++  if (status == ALIVE_SESSION_V3_REJECTED) r.rejected_mask |= mask;
++  if (reason_priority(error) > reason_priority(r.error)) r.error = error;
++  if (r.pending_mask) {
++    r.status = ALIVE_SESSION_V3_PENDING;
++    return;
++  }
++  r.status = 0;
++  for (const auto kind : {ALIVE_SESSION_V3_APPLIED, ALIVE_SESSION_V3_SUPERSEDED,
++                          ALIVE_SESSION_V3_CANCELED, ALIVE_SESSION_V3_REJECTED}) {
++    const unsigned members = kind == ALIVE_SESSION_V3_APPLIED ? r.applied_mask :
++        kind == ALIVE_SESSION_V3_SUPERSEDED ? r.superseded_mask :
++        kind == ALIVE_SESSION_V3_CANCELED ? r.canceled_mask : r.rejected_mask;
++    if (members) r.status = r.status ? ALIVE_SESSION_V3_MIXED : kind;
++  }
++}
+ bool bounds_v3(const AliveSessionConfigV3 &c) noexcept {
+   if (!output_header(c.version, c.struct_bytes, sizeof c))
+     return reject_v3(ALIVE_SESSION_V3_BAD_HEADER, "Invalid v3 configuration header.");
+@@ -481,8 +518,9 @@ void cancel_pending(unsigned t, unsigned error) noexcept {
+   auto &ts = state_.tracks[t];
+   if (ts.pending_action) {
+     auto &receipt = state_.receipts[ts.pending_serial % 128];
+-    if (receipt.request_serial == ts.pending_serial)
+-      finish(receipt, ALIVE_SESSION_V3_CANCELED, error);
++    if (receipt.request_serial == ts.pending_serial &&
++        receipt.preparation_revision == config_.preparation_revision)
++      finish_members(receipt, 1u << t, ALIVE_SESSION_V3_CANCELED, error);
+   }
+   ts.pending_action = 0;
+   ts.pending_clip = None;
+@@ -644,7 +682,9 @@ bool request_v3(const AliveSessionRequestV3 &r, AliveSessionReceiptV3 &immediate
+   if (r.kind == 3) {
+     if (!r.track_mask || r.position)
+       return refused(ALIVE_SESSION_V3_BAD_FIELD, "Track action requires a mask and zero position.");
+-    if (r.track_mask & (r.track_mask - 1))
++    const auto features = clip_admission::policy(config_.profile).features;
++    const unsigned atomic = ALIVE_SESSION_V3_FEATURE_ADMITTED | ALIVE_SESSION_V3_FEATURE_ATOMIC_TRACK_ACTIONS;
++    if ((r.track_mask & (r.track_mask - 1)) && (features & atomic) != atomic)
+       return refused(ALIVE_SESSION_V3_FEATURE_DISABLED, "Atomic track actions are not admitted yet.");
+   } else if (r.track_mask || (r.kind == 1 ? r.position != 0 : r.position >= config_.length_frames))
+     return refused(ALIVE_SESSION_V3_BAD_FIELD, "Invalid transport request position or mask.");
+@@ -682,23 +722,26 @@ bool request_v3(const AliveSessionRequestV3 &r, AliveSessionReceiptV3 &immediate
+ }
+ 
+ private:
+-void candidate_finish(uint64_t serial, unsigned status, unsigned error) noexcept {
+-  for (unsigned i = 0; i < candidate_.count; ++i)
+-    if (candidate_.receipts[i].request_serial == serial) {
+-      finish(candidate_.receipts[i], status, error);
+-      return;
+-    }
++void candidate_finish(uint64_t serial, unsigned mask, unsigned status, unsigned error) noexcept {
++  // Reservations exclude simultaneous serial%128 collisions. Verify identity
++  // before using the fixed candidate index; old pending deltas remain per track.
++  const unsigned index = candidate_.receipt_index[serial % 128];
++  if (index && candidate_.receipts[index - 1].request_serial == serial) {
++    auto &receipt = candidate_.receipts[index - 1];
++    if (mask) finish_members(receipt, mask, status, error, true);
++    else finish(receipt, status, error);
++    return;
++  }
+   for (unsigned t = 0; t < config_.track_count; ++t)
+-    if (state_.tracks[t].pending_serial == serial) {
++    if ((mask & (1u << t)) && state_.tracks[t].pending_serial == serial) {
+       candidate_.old_status[t] = status;
+       candidate_.old_error[t] = error;
+-      return;
+     }
+ }
+ void candidate_cancel(unsigned t, unsigned status, unsigned error) noexcept {
+   auto &ts = candidate_.tracks[t];
+   if (ts.pending_action)
+-    candidate_finish(ts.pending_serial, status, error);
++    candidate_finish(ts.pending_serial, 1u << t, status, error);
+   ts.pending_action = 0;
+   ts.pending_clip = None;
+   ts.pending_serial = 0;
+@@ -845,6 +888,7 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept
+       continue;
+     const auto &r = c.request;
+     const unsigned index = candidate_.count++;
++    candidate_.receipt_index[r.request_serial % 128] = index + 1;
+     auto &receipt = candidate_.receipts[index];
+     receipt.version = 3;
+     receipt.struct_bytes = sizeof receipt;
+@@ -883,7 +927,7 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept
+           candidate_.clear_mask |= 1u << t;
+     } else if (r.kind == 2) {
+       if (last_seek)
+-        candidate_finish(last_seek, ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
++        candidate_finish(last_seek, 0, ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
+       last_seek = r.request_serial;
+       candidate_.group[index] = true;
+       candidate_.unscheduled = true;
+@@ -898,38 +942,42 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept
+       }
+     } else {
+       candidate_.group[index] = true;
+-      const unsigned t = session_bits::first(r.track_mask);
+-      const auto &action = r.tracks[t];
+-      auto &ts = candidate_.tracks[t];
+       const uint64_t target = candidate_.playing ? target_frame(candidate_.position) : state_.absolute_frame;
+       if (target == NoFrame) {
+         finish(receipt, ALIVE_SESSION_V3_CANCELED, ALIVE_SESSION_V3_END_CANCELED);
+         receipt.target_frame = NoFrame;
+         continue;
+       }
+-      candidate_cancel(t, ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
+-      const unsigned clip =
+-          action.action == ALIVE_SESSION_V3_LAUNCH ? config_.bank[t].slots[action.slot] : None;
+-      if (candidate_.playing) {
+-        ts.pending_action = action.action;
+-        ts.pending_clip = clip;
+-        ts.pending_serial = r.request_serial;
+-        ts.pending_frame = target;
+-        receipt.target_frame = target;
++      receipt.target_frame = target;
++      if (candidate_.playing)
+         finish(receipt, ALIVE_SESSION_V3_PENDING);
+-      } else {
+-        // Stopped cues have no pending serial. After START, their active
+-        // selection may coexist with a later future-pending action.
+-        if (stopped_actions[t])
+-          finish(candidate_.receipts[stopped_actions[t] - 1], ALIVE_SESSION_V3_SUPERSEDED,
+-                 ALIVE_SESSION_V3_REPLACED_REQUEST);
+-        stopped_actions[t] = index + 1;
+-        ts.active_clip = clip;
+-        ts.phase = 0;
+-        ++ts.track_epoch;
+-        if (!clear_[t]) {
+-          candidate_.clear_mask |= 1u << t;
+-          candidate_.unscheduled = true;
++      for (unsigned t = 0; t < config_.track_count; ++t) {
++        if (!(r.track_mask & (1u << t)))
++          continue;
++        const auto &action = r.tracks[t];
++        auto &ts = candidate_.tracks[t];
++        candidate_cancel(t, ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
++        const unsigned clip =
++            action.action == ALIVE_SESSION_V3_LAUNCH ? config_.bank[t].slots[action.slot] : None;
++        if (candidate_.playing) {
++          ts.pending_action = action.action;
++          ts.pending_clip = clip;
++          ts.pending_serial = r.request_serial;
++          ts.pending_frame = target;
++        } else {
++          // Stopped cues have no pending serial. After START, their active
++          // selection may coexist with a later future-pending action.
++          if (stopped_actions[t])
++            finish_members(candidate_.receipts[stopped_actions[t] - 1], 1u << t,
++                           ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST, true);
++          stopped_actions[t] = index + 1;
++          ts.active_clip = clip;
++          ts.phase = 0;
++          ++ts.track_epoch;
++          if (!clear_[t]) {
++            candidate_.clear_mask |= 1u << t;
++            candidate_.unscheduled = true;
++          }
+         }
+       }
+     }
+@@ -940,7 +988,9 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept
+     for (unsigned t = 0; t < config_.track_count; ++t)
+       if (candidate_.old_status[t]) {
+         auto &receipt = state_.receipts[state_.tracks[t].pending_serial % 128];
+-        finish(receipt, candidate_.old_status[t], candidate_.old_error[t]);
++        if (receipt.request_serial == state_.tracks[t].pending_serial &&
++            receipt.preparation_revision == config_.preparation_revision)
++          finish_members(receipt, 1u << t, candidate_.old_status[t], candidate_.old_error[t]);
+       }
+     std::copy_n(candidate_.tracks, 8, state_.tracks);
+     state_.position = candidate_.position;
+@@ -949,9 +999,13 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept
+   } else {
+     ++state_.work_rejected;
+     for (unsigned i = 0; i < candidate_.count; ++i)
+-      if (candidate_.group[i] && (candidate_.receipts[i].status == ALIVE_SESSION_V3_APPLIED ||
+-                                  candidate_.receipts[i].status == ALIVE_SESSION_V3_PENDING))
+-        finish(candidate_.receipts[i], ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
++      if (candidate_.group[i]) {
++        auto &r = candidate_.receipts[i];
++        if (r.track_mask)
++          finish_members(r, r.track_mask, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT, true);
++        else if (r.status == ALIVE_SESSION_V3_APPLIED || r.status == ALIVE_SESSION_V3_PENDING)
++          finish(r, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
++      }
+   }
+   for (unsigned i = 0; i < candidate_.count; ++i)
+     state_.receipts[candidate_.receipts[i].request_serial % 128] = candidate_.receipts[i];
+@@ -1060,7 +1114,10 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
+   for (unsigned t = 0; t < config_.track_count; ++t) {
+     auto &ts = state_.tracks[t];
+     if (ts.pending_action && ts.pending_frame <= state_.absolute_frame) {
+-      finish(state_.receipts[ts.pending_serial % 128], ALIVE_SESSION_V3_APPLIED);
++      auto &receipt = state_.receipts[ts.pending_serial % 128];
++      if (receipt.request_serial == ts.pending_serial &&
++          receipt.preparation_revision == config_.preparation_revision)
++        finish_members(receipt, 1u << t, ALIVE_SESSION_V3_APPLIED);
+       ts.pending_action = 0;
+       ts.pending_clip = None;
+       ts.pending_serial = 0;
+diff --git c/apps/ultra/src-tauri/native/alive_session_v3_policy.md i/apps/ultra/src-tauri/native/alive_session_v3_policy.md
+index 788bc04..f9e87c7 100644
+--- c/apps/ultra/src-tauri/native/alive_session_v3_policy.md
++++ i/apps/ultra/src-tauri/native/alive_session_v3_policy.md
+@@ -221,6 +221,70 @@ exact copied sources, commands, hashes and every release timing sample. Add
+ regression, or `--guards --samples 20` for work counters and guard checks. Output
+ directories must be new so failed or earlier evidence cannot be overwritten.
+ 
++## Atomic Scenes: Policies 1 And 2
++
++Both admitted profiles now advertise ATOMIC_TRACK_ACTIONS. Their work-policy
++values, graph family and all event/root/queue/receipt ceilings remain unchanged.
++Scenes choose simultaneous members from the already summed per-track envelopes;
++they add no event or scheduling boundary. Empty prepared members use track Stop.
++One request has one receipt and target; member masks retain partial supersession,
++cancellation and refusal without partially admitting a new candidate batch.
++
++The candidate owns a fixed 128-entry index (512 added scratch bytes), checked
++against the full serial before use. A callback drains at most 64 commands and
++visits at most 512 scene members. Each candidate receipt lookup is constant
++time; it no longer scans 64 candidate receipts per member. Fallback staging of
++old pending receipts scans at most eight tracks, for at most eight old pending
++dispositions per callback. Each member aggregation tests four terminal masks.
++The stopped-winner index stays per track. Refusal visits at most 64 candidate
++receipts and changes only surviving provisional applied/pending bits. Due/Stop/
++end transitions visit at most eight pending tracks with serial and preparation
++checks. Final publication remains 16,592 bytes; no callback allocation or lock
++is added. First-frame preview retains bounds 56 reads at two tracks and 128 at
++eight, with at most one combined optional check. Cheap refusal performs no new
++preview or chase; scene-only quantized work needs no optional check.
++
++Task 14's isolated proposed-feature copy was measured before enabling either
++shipping bit. The enabled native code then matched all 28 measured C/C++ source
++files byte-for-byte. `proposed-release-1` under `/tmp/alive-task14-evidence` retains
++56 distributions with 1200 raw samples each, exact copied source/build hashes
++and commands. On the same Ryzen 9 5900HS, Linux 7.2.8, GCC 16.2.1 `-O2`, 48 kHz
++host, the combined scene/policy-work cases measured:
++
++Quantiles use the probe's sorted-sample index `floor((n - 1) * p)`, including
++`p = 0.999`; the 1200-sample distributions are finite observations.
++
++| Profile | Frames | p99.9 us | Maximum us | Buffer us |
++| --- | ---: | ---: | ---: | ---: |
++| 2 tracks / 6 roots | 256 | 1822.026 | 1838.708 | 5333.333 |
++| 2 tracks / 6 roots | 512 | 3282.398 | 3628.122 | 10666.667 |
++| 8 tracks / 16 roots | 256 | 5606.953 | 5912.639 | 5333.333 |
++| 8 tracks / 16 roots | 512 | 8477.349 | 9065.259 | 10666.667 |
++| 8 tracks / 16 roots | 1024 | 14591.876 | 16742.724 | 21333.333 |
++
++This combined diagnostic adds the full scheduled-window, optional and two-clear
++emergency reserves to a real 63-scene-plus-seek callback, plus 64 extra direct
++parameter writes, 64 dispatches and the retained scalar scan surrogate. It
++deliberately overcounts work and is not an execution-time upper bound for every
++branch/topology. Separate actual paths cover 64 running scenes, 64 stopped cues,
++accepted seek/scene reduction, repeated optional refusal, full-queue Stop and
++1024-event reconstruction. Guarded tests cover saved chains, all five requested
++logical partitions and genuinely overlapping coherent scene observations.
++
++Keep observed buffers >=256 for policy 1 and >=512 for policy 2, preferring 1024
++near its graph/work bounds. The larger 256-frame combined case exceeds its
++buffer. The advisory 50% p99.9 target is not achieved by the larger combined
++case; these observations do not establish universal deadlines, scheduling
++lateness or physical underrun behavior. Actual release driver size, finite
++software capture, per-epoch diagnostics and resource limits are recorded in
++`.superpowers/sdd/PLAN/task-14-report.md`. The Task 15 soak remains separate.
++
++Use `run_alive_capacity.py OUTPUT --scenes` for retained scene timing or add
++`--verify --guards` for the bounded scene/saved-chain/concurrency verification.
++`--proposed-scenes` explicitly modifies only copied policy source for a
++pre-admission experiment; it never edits the working tree. Earlier tables keep
++their original source and artifact attribution.
++
+ ## Reproduction
+ 
+ Run from the repository root after `bash apps/ultra/build.sh --native-only`:
+diff --git c/apps/ultra/src-tauri/src/session/desktop.rs i/apps/ultra/src-tauri/src/session/desktop.rs
+index 6eb2484..05df90d 100644
+--- c/apps/ultra/src-tauri/src/session/desktop.rs
++++ i/apps/ultra/src-tauri/src/session/desktop.rs
+@@ -98,6 +98,15 @@ fn musical_draft(mut draft: Session, live: &Session) -> Result<Session, String>
+     Ok(draft)
+ }
+ impl Control {
++    fn launch_scene(&mut self,label:&str,generation:u64,preparation_revision:&str,slot:usize)->Result<runtime::RequestResult,String>{
++        main_only(label)?;check_generation(self.generation,generation)?;
++        if runtime::decimal(preparation_revision)?!=self.host.preparation_revision{return Err("Prepared bank changed. Refresh before launching".into());}
++        let p=self.host.prepared.as_ref().ok_or("No session")?;
++        if !runtime::scenes_available(p)?{return Err("Atomic scene launching is unavailable for this prepared profile".into());}
++        if slot>=4{return Err("Scene slot must be 0 through 3".into());}
++        if !self.driver.snapshot().running{return Err("Start Audio to launch a scene".into());}
++        self.runtime.scene(&self.host,slot)
++    }
+     fn version(&self,generation:u64,revision:u64)->Result<(),String> {
+         ensure_counter(self.generation)?;ensure_counter(self.draft_revision)?;
+         check_generation(self.generation,generation)?;
+@@ -156,7 +165,7 @@ impl Control {
+         let device_index = instance_id.as_ref().map(|id| prepared.devices.iter().position(|d| &d.instance_id == id).ok_or("Unknown editor instance")).transpose()?;
+         let track = device_index.map(|i| prepared.devices[i].track);
+         Ok(Snapshot { document: prepared.document.clone(), path: self.saved_path.clone(),
+-            capabilities: Capabilities { clip_bank: prepared.document.is_clips(), max_tracks, max_devices, slots_per_track: if prepared.document.is_clips(){4}else{1}, max_clips, atomic_track_actions: false },
++            capabilities: Capabilities { clip_bank: prepared.document.is_clips(), max_tracks, max_devices, slots_per_track: if prepared.document.is_clips(){4}else{1}, max_clips, atomic_track_actions: runtime::scenes_available(prepared)? },
+             devices: prepared.tracks.iter().map(|t| prepared.devices[t.instrument].manifest.clone()).collect(), generation: self.generation,
+             device_instances: prepared.devices.iter().enumerate().map(|(index, device)| (device.instance_id.clone(), DeviceView { index, track: device.track, manifest: device.manifest.clone() })).collect(),
+             dirty: self.dirty || self.draft.is_some(), draft: self.draft.clone(), draft_revision:self.draft_revision,history:self.history.view(), state: native_state,mode:if prepared.document.is_clips(){"clipsV3"}else{"legacyV2"}.into(),notice:prepared.notice.clone(),preparation_revision:self.host.preparation_revision.to_string(),snapshot_sequence:sequence.to_string(),prepared_clips:runtime::prepared(&self.host),runtime,
+@@ -205,6 +214,10 @@ pub fn alive_enable_clips(window:WebviewWindow,state:tauri::State<Desktop>,gener
+     c.snapshot(window.label())
+ }
+ #[tauri::command]
++pub fn alive_launch_scene(window:WebviewWindow,state:tauri::State<Desktop>,generation:u64,preparation_revision:String,slot:usize)->Result<runtime::RequestResult,String>{
++    ui_lock(&state.0)?.launch_scene(window.label(),generation,&preparation_revision,slot)
++}
++#[tauri::command]
+ pub fn alive_clip_action(window:WebviewWindow,state:tauri::State<Desktop>,action:runtime::Action,generation:u64,preparation_revision:String)->Result<runtime::RequestResult,String>{
+     main_only(window.label())?;let mut c=ui_lock(&state.0)?;check_generation(c.generation,generation)?;
+     if runtime::decimal(&preparation_revision)?!=c.host.preparation_revision{return Err("Prepared bank changed. Refresh before launching".into());}
+@@ -575,7 +588,7 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
+                 .title("Alive").inner_size(1200., 800.).min_inner_size(900., 660.).build()?;
+             Ok(())
+         })
+-        .invoke_handler(tauri::generate_handler![alive_current, alive_clip_edit, alive_clip_action, alive_enable_clips, alive_edit, alive_history, alive_discard, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio_diagnostics, alive_audio, alive_editor, alive_file, alive_device])
++        .invoke_handler(tauri::generate_handler![alive_current, alive_clip_edit, alive_clip_action, alive_launch_scene, alive_enable_clips, alive_edit, alive_history, alive_discard, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio_diagnostics, alive_audio, alive_editor, alive_file, alive_device])
+         .on_window_event(|window,event| { if window.label() == "main" { if let tauri::WindowEvent::CloseRequested { api, .. } = event { api.prevent_close(); request_close(window.app_handle()); } } })
+         .build(context).expect("Unable to start Alive")
+         .run(|app,event| match event {
+@@ -726,6 +739,19 @@ mod tests {
+             dirty:false,saved_path:None,draft:None,draft_revision:0,history:History::default(),closing:false,allow_exit:false,editors:BTreeMap::new()}
+     }
+     #[test]
++    fn scenes_authenticate_origin_generation_preparation_and_audio_before_mutation(){
++        let mut c=musical_control();let p=c.host.prepared.as_ref().unwrap();c.host.prepared=Some(prepare(&p.document.to_clips().unwrap(),&p.origin).unwrap());
++        let before=c.host.prepared.as_ref().unwrap().document.clone();
++        assert!(c.launch_scene("alive-editor-7-0",7,"0",0).err().unwrap().contains("session window"));
++        assert!(c.launch_scene("main",6,"0",0).err().unwrap().contains("stale"));
++        assert!(c.launch_scene("main",7,"1",0).err().unwrap().contains("Prepared bank changed"));
++        assert!(c.launch_scene("main",7,"00",0).err().unwrap().contains("canonical"));
++        assert_eq!(c.launch_scene("main",7,"0",0).err().unwrap(),"Start Audio to launch a scene");
++        assert!(c.launch_scene("main",7,"0",4).is_err());
++        assert_eq!(c.host.prepared.as_ref().unwrap().document,before);
++        assert!(c.draft.is_none()&&!c.dirty&&c.draft_revision==0&&c.generation==7);
++    }
++    #[test]
+     fn focused_clips_duplicate_scores_and_history_retains_ids_without_changing_devices() {
+         let mut c=musical_control();let p=c.host.prepared.as_ref().unwrap();c.host.prepared=Some(prepare(&p.document.to_clips().unwrap(),&p.origin).unwrap());
+         let track=c.host.prepared.as_ref().unwrap().document.tracks[0].id.clone();
+diff --git c/apps/ultra/src-tauri/src/session/runtime.rs i/apps/ultra/src-tauri/src/session/runtime.rs
+index 1ba8adf..044a8eb 100644
+--- c/apps/ultra/src-tauri/src/session/runtime.rs
++++ i/apps/ultra/src-tauri/src/session/runtime.rs
+@@ -9,9 +9,31 @@ pub fn decimal(value:&str)->Result<u64,String>{
+ #[derive(Deserialize)]
+ #[serde(tag="kind",rename_all="camelCase",rename_all_fields="camelCase",deny_unknown_fields)]
+ pub enum Action { Launch{track_id:String,clip_id:String}, Stop{track_id:String} }
++#[derive(Clone,Default,Serialize)]
++#[serde(rename_all="camelCase")]
++pub struct RequestResult {
++    pub preparation_revision:String,pub request_serial:String,pub status:String,pub reason:u32,
++    pub track_id:Option<String>,pub clip_id:Option<String>,pub target_frame:Option<String>,
++    pub scene_slot:Option<usize>,pub track_mask:u32,pub pending_mask:u32,pub applied_mask:u32,
++    pub superseded_mask:u32,pub canceled_mask:u32,pub rejected_mask:u32,pub members:Vec<Member>,
++}
+ #[derive(Clone,Serialize)]
+ #[serde(rename_all="camelCase")]
+-pub struct RequestResult {pub preparation_revision:String,pub request_serial:String,pub status:String,pub reason:u32,pub track_id:Option<String>,pub clip_id:Option<String>,pub target_frame:Option<String>}
++pub struct Member {pub track_index:usize,pub track_id:String,pub clip_id:Option<String>,pub action:String,pub status:String}
++impl RequestResult {
++    fn observe(&mut self, receipt:&n::ReceiptV3) {
++        self.status=status(receipt.status).into();self.reason=receipt.error;self.target_frame=frame(receipt.target_frame);
++        self.track_mask=receipt.track_mask;self.pending_mask=receipt.pending_mask;self.applied_mask=receipt.applied_mask;
++        self.superseded_mask=receipt.superseded_mask;self.canceled_mask=receipt.canceled_mask;self.rejected_mask=receipt.rejected_mask;
++        for member in &mut self.members {
++            let bit=1<<member.track_index;
++            member.status=if receipt.status==n::V3_QUEUED {"queued"}
++                else if receipt.pending_mask&bit!=0 {"pending"} else if receipt.applied_mask&bit!=0 {"applied"}
++                else if receipt.superseded_mask&bit!=0 {"superseded"} else if receipt.canceled_mask&bit!=0 {"canceled"}
++                else if receipt.rejected_mask&bit!=0 {"rejected"} else {"unavailable"}.into();
++        }
++    }
++}
+ #[derive(Serialize)]
+ #[serde(rename_all="camelCase")]
+ pub struct Track {track_id:String,active_clip_id:Option<String>,phase:String,epoch:String,pending_action:Option<String>,pending_clip_id:Option<String>,pending_serial:Option<String>,pending_frame:Option<String>}
+@@ -43,28 +65,103 @@ impl Runtime {
+     fn reconcile(&mut self,raw:&n::StateV3){
+         for request in &mut self.requests {
+             let serial=decimal(&request.request_serial).unwrap();let revision=decimal(&request.preparation_revision).unwrap();
+-            if let Some(receipt)=raw.receipts.iter().find(|r|r.preparation_revision==revision&&r.request_serial==serial&&r.status!=n::V3_RESULT_EMPTY){request.status=status(receipt.status).into();request.reason=receipt.error;request.target_frame=frame(receipt.target_frame);}
+-            else if matches!(request.status.as_str(),"queued"|"pending")&&raw.last_consumed_request>=serial{request.status="unavailable".into();}
++            if let Some(receipt)=raw.receipts.iter().find(|r|r.preparation_revision==revision&&r.request_serial==serial&&r.status!=n::V3_RESULT_EMPTY){request.observe(receipt);}
++            else if matches!(request.status.as_str(),"queued"|"pending")&&raw.last_consumed_request>=serial{
++                request.status="unavailable".into();
++                for member in &mut request.members {if matches!(member.status.as_str(),"queued"|"pending"){member.status="unavailable".into();}}
++            }
+         }
+     }
+-    pub fn request(&mut self,host:&Host,mut request:n::RequestV3,track:Option<String>,clip:Option<String>)->Result<RequestResult,String>{
++    pub fn request(&mut self,host:&Host,request:n::RequestV3,track:Option<String>,clip:Option<String>)->Result<RequestResult,String>{
++        self.submit(host,request,track,clip,None)
++    }
++    pub fn scene(&mut self,host:&Host,slot:usize)->Result<RequestResult,String>{
++        let p=host.prepared.as_ref().ok_or("No session")?;
++        let request=scene_request(p,slot)?;
++        self.submit(host,request,None,None,Some(slot))
++    }
++    fn submit(&mut self,host:&Host,mut request:n::RequestV3,track:Option<String>,clip:Option<String>,scene_slot:Option<usize>)->Result<RequestResult,String>{
+         self.poll(host)?;
++        let p=host.prepared.as_ref().ok_or("No session")?;
++        let Schedule::Clips(clips)=&p.schedule else{return Err("Enable the clip bank first".into())};
++        let members=p.document.tracks.iter().enumerate().filter(|(i,_)|request.track_mask&(1<<i)!=0).map(|(i,t)|{
++            let action=request.tracks[i];
++            Member{track_index:i,track_id:t.id.clone(),clip_id:if action.action==n::V3_LAUNCH{clips.iter().find(|c|c.track==i&&c.slot==action.slot as usize).map(|c|c.id.clone())}else{None},
++                action:if action.action==n::V3_LAUNCH{"launch"}else{"stop"}.into(),status:"queued".into()}
++        }).collect();
+         // Terminal observations can be summarized; native alone owns receipt reservation.
+         while self.requests.len()>=128 {if let Some(i)=self.requests.iter().position(|r|!matches!(r.status.as_str(),"queued"|"pending")){self.requests.remove(i);}else{return Err("128 requests remain outstanding. Let audio advance before retrying.".into());}}
+         self.serial=self.serial.checked_add(1).ok_or("Request identity exhausted")?;request.request_serial=self.serial;request.preparation_revision=host.preparation_revision;
+         let mut receipt=n::ReceiptV3::default();unsafe{n::alive_session_request_v3(&request,&mut receipt);}
+-        let result=RequestResult{preparation_revision:host.preparation_revision.to_string(),request_serial:self.serial.to_string(),status:status(receipt.status).into(),reason:receipt.error,track_id:track,clip_id:clip,target_frame:frame(receipt.target_frame)};
++        let mut result=RequestResult{preparation_revision:host.preparation_revision.to_string(),request_serial:self.serial.to_string(),track_id:track,clip_id:clip,scene_slot,members,..Default::default()};
++        result.observe(&receipt);
+         self.requests.push(result.clone());Ok(result)
+     }
+ }
++pub fn scenes_available(p:&super::PreparedSession)->Result<bool,String>{
++    if !matches!(p.schedule,Schedule::Clips(_)){return Ok(false);}
++    let profile=if p.tracks.len()<=2&&p.devices.len()<=6{n::V3_PROFILE_2X4}else{n::V3_PROFILE_8X4};
++    let required=n::V3_FEATURE_ADMITTED|n::V3_FEATURE_ATOMIC_TRACK_ACTIONS;
++    Ok(n::clip_limits(profile)?.features&required==required)
++}
++fn scene_request(p:&super::PreparedSession,slot:usize)->Result<n::RequestV3,String>{
++    if slot>=4{return Err("Scene slot must be 0 through 3".into());}
++    if !scenes_available(p)?{return Err("Atomic scene launching is unavailable for this prepared profile".into());}
++    let Schedule::Clips(clips)=&p.schedule else{return Err("Enable the clip bank first".into())};
++    let mut request=n::RequestV3{kind:n::V3_TRACK_ACTIONS,track_mask:(1<<p.tracks.len())-1,..Default::default()};
++    for t in 0..p.tracks.len(){request.tracks[t]=if clips.iter().any(|c|c.track==t&&c.slot==slot){n::TrackActionV3{action:n::V3_LAUNCH,slot:slot as u32}}else{n::TrackActionV3{action:n::V3_TRACK_STOP,slot:n::V3_NONE}};}
++    Ok(request)
++}
+ pub fn prepared(host:&Host)->Vec<PreparedClip>{let Some(p)=&host.prepared else{return vec![]};match &p.schedule{Schedule::Legacy=>vec![],Schedule::Clips(clips)=>clips.iter().map(|c|PreparedClip{track_id:p.document.tracks[c.track].id.clone(),clip_id:c.id.clone(),name:c.name.clone(),slot:c.slot,length_frames:c.length_frames.to_string()}).collect()}}
+ 
+ #[cfg(test)]
+ mod tests {
+     use super::*;
+     #[test]
++    fn scene_projection_retains_authoritative_member_masks() {
++        let mut runtime = Runtime::default();
++        runtime.requests.push(RequestResult { preparation_revision:"2".into(),request_serial:"9".into(),status:"queued".into(),..Default::default() });
++        let mut raw = n::StateV3::default();
++        let receipt = &mut raw.receipts[9];
++        receipt.preparation_revision=2;receipt.request_serial=9;receipt.track_mask=7;
++        receipt.status=n::V3_PENDING;receipt.pending_mask=5;receipt.superseded_mask=2;receipt.error=18;receipt.target_frame=96000;
++        runtime.reconcile(&raw);
++        let value=serde_json::to_value(&runtime.requests[0]).unwrap();
++        assert_eq!(value["pendingMask"],5);
++        assert_eq!(value["supersededMask"],2);
++        assert_eq!(value["targetFrame"],"96000");
++    }
++    #[test]
++    fn scene_members_keep_terminal_outcomes_when_remaining_observation_is_unavailable(){
++        let members=(0..3).map(|i|Member{track_index:i,track_id:format!("track-{i}"),clip_id:Some(format!("clip-{i}")),action:"launch".into(),status:"queued".into()}).collect();
++        let mut runtime=Runtime::default();runtime.requests.push(RequestResult{preparation_revision:"2".into(),request_serial:"9".into(),status:"queued".into(),members,..Default::default()});
++        let mut raw=n::StateV3::default();
++        raw.receipts[9]=n::ReceiptV3{preparation_revision:2,request_serial:9,track_mask:7,pending_mask:5,superseded_mask:2,status:n::V3_PENDING,error:18,..Default::default()};
++        runtime.reconcile(&raw);
++        assert_eq!(runtime.requests[0].members.iter().map(|m|m.status.as_str()).collect::<Vec<_>>(),vec!["pending","superseded","pending"]);
++        raw.receipts[9].preparation_revision=3;raw.last_consumed_request=9;runtime.reconcile(&raw);
++        assert_eq!(runtime.requests[0].status,"unavailable");
++        assert_eq!(runtime.requests[0].members.iter().map(|m|m.status.as_str()).collect::<Vec<_>>(),vec!["unavailable","superseded","unavailable"]);
++        raw.receipts[9].preparation_revision=2;raw.receipts[9].pending_mask=0;raw.receipts[9].applied_mask=5;raw.receipts[9].status=n::V3_MIXED;runtime.reconcile(&raw);
++        assert_eq!(runtime.requests[0].status,"mixed");assert_eq!(runtime.requests[0].members[0].status,"applied");
++    }
++    #[test]
++    fn scene_mapper_uses_immutable_prepared_slots_and_empty_members_stop(){
++        let path=std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive");
++        let old=super::super::read(&path).unwrap();let mut doc=old.document.to_clips().unwrap();
++        let track=doc.tracks[1].id.clone();let bank=doc.bank_mut(&track).unwrap();bank.slots[0]=None;bank.default_clip_id=None;
++        let prepared=super::super::prepare(&doc,&path).unwrap();
++        let r=scene_request(&prepared,0).unwrap();assert_eq!(r.track_mask,3);assert_eq!(r.kind,n::V3_TRACK_ACTIONS);
++        assert_eq!((r.tracks[0].action,r.tracks[0].slot),(n::V3_LAUNCH,0));
++        assert_eq!((r.tracks[1].action,r.tracks[1].slot),(n::V3_TRACK_STOP,n::V3_NONE));
++        for a in &r.tracks[2..]{assert_eq!((a.action,a.slot),(0,0));}
++        let empty=scene_request(&prepared,3).unwrap();assert_eq!(empty.track_mask,3);
++        assert!(empty.tracks[..2].iter().all(|a|a.action==n::V3_TRACK_STOP&&a.slot==n::V3_NONE));
++        assert!(scene_request(&prepared,4).is_err());assert!(scene_request(&old,0).is_err());
++    }
++    #[test]
+     fn receipts_match_both_identities_and_keep_queued_until_consumed(){
+-        let mut r=Runtime::default();r.requests.push(RequestResult{preparation_revision:"2".into(),request_serial:"9".into(),status:"queued".into(),reason:0,track_id:None,clip_id:None,target_frame:None});
++        let mut r=Runtime::default();r.requests.push(RequestResult{preparation_revision:"2".into(),request_serial:"9".into(),status:"queued".into(),..Default::default()});
+         let mut raw=n::StateV3::default();raw.receipts[0].preparation_revision=1;raw.receipts[0].request_serial=9;raw.receipts[0].status=n::V3_APPLIED;
+         r.reconcile(&raw);assert_eq!(r.requests[0].status,"queued");raw.receipts[0].preparation_revision=2;raw.receipts[0].status=n::V3_SUPERSEDED;r.reconcile(&raw);assert_eq!(r.requests[0].status,"superseded");
+         assert_eq!(decimal("18446744073709551615").unwrap(),u64::MAX);for bad in ["01","-1","1.0","18446744073709551616",""]{assert!(decimal(bad).is_err());}
+diff --git c/apps/ultra/src-tauri/src/session/tests.rs i/apps/ultra/src-tauri/src/session/tests.rs
+index 42c47f4..430c77e 100644
+--- c/apps/ultra/src-tauri/src/session/tests.rs
++++ i/apps/ultra/src-tauri/src/session/tests.rs
+@@ -398,6 +398,36 @@ fn rust_host_installs_the_saved_session_without_editor_windows() {
+     std::fs::remove_dir_all(output).unwrap();
+ }
+ 
++#[test]
++fn v3_scene_is_one_native_queue_entry_with_prepared_member_identities() {
++    const NAME:&str="session::tests::v3_scene_is_one_native_queue_entry_with_prepared_member_identities";
++    if std::env::var("ALIVE_SCENE_HOST_CHILD").as_deref()!=Ok("1") {
++        let child=std::process::Command::new(std::env::current_exe().unwrap()).args(["--exact",NAME,"--nocapture"])
++            .env("ALIVE_SCENE_HOST_CHILD","1").env_remove("DISPLAY").env_remove("WAYLAND_DISPLAY").output().unwrap();
++        assert!(child.status.success(),"{}\n{}",String::from_utf8_lossy(&child.stdout),String::from_utf8_lossy(&child.stderr));return;
++    }
++    let mut host=host::Host::default();let p=host.enable_clips(read(&example_path()).unwrap()).unwrap();host.install(p).unwrap();
++    let before=serde_json::to_value(&host.prepared.as_ref().unwrap().document).unwrap();
++    let mut runtime=runtime::Runtime::default();assert_eq!(unsafe{native::ultra_external_start()},1);
++    for _ in 0..63 {assert_eq!(unsafe{native::alive_session_mixer(0,1.,0,0)},1);}
++    let scene=runtime.scene(&host,0).unwrap();assert_eq!(scene.status,"queued");assert_eq!(scene.request_serial,"1");
++    assert_eq!(scene.track_mask,3);assert_eq!(scene.scene_slot,Some(0));assert_eq!(scene.members.len(),2);
++    for (index,member) in scene.members.iter().enumerate(){
++        let track=&host.prepared.as_ref().unwrap().document.tracks[index];
++        assert_eq!(member.track_id,track.id);assert_eq!(member.clip_id,host.prepared.as_ref().unwrap().document.bank(&track.id).unwrap().default_clip_id);
++        assert_eq!(member.action,"launch");assert_eq!(member.status,"queued");
++    }
++    let refused=runtime.scene(&host,3).unwrap();assert_eq!(refused.status,"rejected");assert_eq!(refused.reason,7);assert_eq!(refused.rejected_mask,3);
++    let mut left=[0f32;64];let mut right=[0f32;64];assert_eq!(unsafe{native::ultra_external_render(64,left.as_mut_ptr(),right.as_mut_ptr())},1);
++    let mut raw=native::StateV3::default();assert_eq!(unsafe{native::alive_session_state_v3(&mut raw)},1);
++    assert_eq!(raw.last_consumed_request,1);assert_eq!(raw.receipts[1].applied_mask,3);assert_eq!(raw.playing,0);
++    let empty=runtime.scene(&host,3).unwrap();assert_eq!(empty.members.iter().map(|m|m.action.as_str()).collect::<Vec<_>>(),vec!["stop","stop"]);
++    assert_eq!(unsafe{native::ultra_external_render(64,left.as_mut_ptr(),right.as_mut_ptr())},1);
++    let (_,view)=runtime.poll(&host).unwrap();let requests=view.unwrap().requests;assert_eq!(requests.last().unwrap().applied_mask,3);
++    assert_eq!(serde_json::to_value(&host.prepared.as_ref().unwrap().document).unwrap(),before);
++    unsafe{native::ultra_audio_stop();native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
++}
++
+ #[test]
+ fn v3_native_host_defaults_requests_and_graph_fallback_are_real() {
+     const NAME:&str="session::tests::v3_native_host_defaults_requests_and_graph_fallback_are_real";
+diff --git c/apps/ultra/tests/alive_session_capacity.cpp i/apps/ultra/tests/alive_session_capacity.cpp
+index 764c6cc..e4b890d 100644
+--- c/apps/ultra/tests/alive_session_capacity.cpp
++++ i/apps/ultra/tests/alive_session_capacity.cpp
+@@ -45,7 +45,7 @@ void limits() {
+   auto p = ultra::clip_admission::policy(1), q = ultra::clip_admission::policy(2);
+   assert(p.work_policy == 1 && p.max_tracks == 2 && p.max_devices == 6);
+   assert(p.scheduled_frame.root_clears == 18 && p.scheduled_window.parameter_writes == 3520);
+-  assert(q.features == ALIVE_SESSION_V3_FEATURE_ADMITTED && q.work_policy == 2);
++  assert((q.features & ALIVE_SESSION_V3_FEATURE_ADMITTED) && q.work_policy == 2);
+   assert(q.max_tracks == 8 && q.max_devices == 16 && q.max_clips == 32);
+   assert(q.scheduled_frame.root_clears == 48 && q.scheduled_frame.event_scans == 3072 &&
+          q.scheduled_frame.parameter_writes == 1568);
+@@ -145,7 +145,7 @@ void deterministic_local() {
+   }
+   std::puts("PASS: eight local launch/Stop paths preserve other saved chains across exact partitions");
+ }
+-void concurrent_publication() {
++void concurrent_publication(bool scenes = false) {
+   Fixture f(8, 16, Music::Sustain);
+   begin(f);
+   const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(30);
+@@ -161,6 +161,7 @@ void concurrent_publication() {
+   std::atomic<bool> go{false}, done{false}, reader_ready{false}, callback_ready{false};
+   std::atomic<bool> rendering{false}, producer_active{false};
+   std::atomic<unsigned> snapshots{0}, callbacks{0}, receipt_snapshots{0}, overlaps{0};
++  std::atomic<unsigned> scene_snapshots{0}, mixed_snapshots{0};
+   std::atomic<unsigned> producer_progress{0}, reader_progress{0};
+   unsigned first_overlap_callback = 0, last_overlap_callback = 0;
+   uint64_t first_overlap_frame = 0, last_overlap_frame = 0;
+@@ -169,6 +170,11 @@ void concurrent_publication() {
+     AliveSessionRequestV3 r{}; r.version = 3; r.struct_bytes = sizeof r;
+     r.preparation_revision = f.config.preparation_revision; r.request_serial = ++serial;
+     r.kind = 3; r.track_mask = 1u << (i % 8); r.tracks[i % 8] = {1, (i / 8) % 4};
++    if (scenes) {
++      r.track_mask = i % 4 ? 127 : 255;
++      for (unsigned t = 0; t < 8; ++t) r.tracks[t] = r.track_mask & (1u << t) ? AliveSessionTrackActionV3{1, (i / 8) % 4} : AliveSessionTrackActionV3{};
++      if (i % 64 == 1) { r.kind = 1; r.track_mask = 0; std::fill_n(r.tracks, 8, AliveSessionTrackActionV3{}); }
++    }
+     AliveSessionReceiptV3 receipt{}; receipt.version = 3; receipt.struct_bytes = sizeof receipt;
+     if (alive_session_request_v3(&r, &receipt)) ++accepted;
+     else { ++refused; assert(receipt.error == ALIVE_SESSION_V3_QUEUE_FULL || receipt.error == ALIVE_SESSION_V3_RECEIPT_BUSY); }
+@@ -197,6 +203,10 @@ void concurrent_publication() {
+         if (r.status < ALIVE_SESSION_V3_PENDING) continue;
+         assert((r.pending_mask | r.applied_mask | r.superseded_mask | r.canceled_mask | r.rejected_mask) == r.track_mask);
+         assert(r.pending_mask + r.applied_mask + r.superseded_mask + r.canceled_mask + r.rejected_mask == r.track_mask);
++        if (scenes && r.request_serial > first_live_serial && r.track_mask == 255) {
++          ++scene_snapshots;
++          if (r.status == ALIVE_SESSION_V3_MIXED) ++mixed_snapshots;
++        }
+       }
+       if (s.last_consumed_request > first_live_serial) ++receipt_snapshots;
+       // A Boolean true/false/true cycle may enclose a read between callbacks.
+@@ -248,6 +258,10 @@ void concurrent_publication() {
+   assert(overlaps > 1 && first_overlap_callback < last_overlap_callback && last_overlap_callback <= producer_last_callback);
+   assert(first_overlap_frame < last_overlap_frame && producer_last_callback >= 1984);
+   for (unsigned t = 0; t < 8; ++t) assert(!s.tracks[t].mixer.active_voices);
++  if (scenes) {
++    assert(scene_snapshots && mixed_snapshots);
++    std::printf("SCENE_PUBLICATION,scene_receipt_observations=%u,mixed_receipt_observations=%u\n", scene_snapshots.load(), mixed_snapshots.load());
++  }
+   std::printf("PASS: concurrent callback/control/read accepted=%u refused=%u coherent_snapshots=%u new_receipt_snapshots=%u same_callback_render_overlap_snapshots=%u first_overlap_callback=%u last_overlap_callback=%u first_overlap_frame=%llu last_overlap_frame=%llu producer_last_callback=%u callbacks=2048\n",
+               accepted, refused, snapshots.load(), receipt_snapshots.load(), overlaps.load(), first_overlap_callback,
+               last_overlap_callback, (unsigned long long)first_overlap_frame, (unsigned long long)last_overlap_frame, producer_last_callback);
+@@ -258,15 +272,25 @@ template<class Before> void measure(const char *name, const Fixture &f, unsigned
+   times.reserve(count);
+   std::array<ultra::clip_admission::Cost, 4> maxima{};
+   const auto rejected_before = state().work_rejected;
++  uint64_t max_preview = 0, max_reads = 0;
+   for (unsigned i = 0; i < count; ++i) {
+     before(i);
+     counters = {};
++#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
++    ultra::alive_session_test_preview_reads = ultra::alive_session_test_reconstruction_reads = 0;
++#endif
+     const auto begin_time = std::chrono::steady_clock::now();
+     render(frames);
+     if (after) after();
+     const auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - begin_time).count();
+     times.push_back(elapsed);
+     assert(!state().fault);
++#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
++    max_preview = std::max(max_preview, ultra::alive_session_test_preview_reads);
++    max_reads = std::max(max_reads, ultra::alive_session_test_reconstruction_reads);
++    assert(ultra::alive_session_test_preview_reads <= 12 * f.config.track_count + 32);
++    assert(ultra::alive_session_test_reconstruction_reads <= counters[0][2] + counters[1][2] + counters[2][2]);
++#endif
+     std::printf("SAMPLE,%s,%u,%u,%u,%u,%lld\n", name, f.config.track_count, f.config.device_count, frames, i, (long long)elapsed);
+     for (unsigned family = 0; family < 4; ++family)
+       for (unsigned m = 0; m < 5; ++m) maxima[family][m] = std::max(maxima[family][m], counters[family][m]);
+@@ -277,14 +301,100 @@ template<class Before> void measure(const char *name, const Fixture &f, unsigned
+               (unsigned long long)times[count/2], (unsigned long long)times[(count-1)*99/100],
+               (unsigned long long)times[(count-1)*999/1000], (unsigned long long)times.back(),
+               (unsigned long long)(state().work_rejected-rejected_before));
++  std::printf("READS,%s,tracks=%u,frames=%u,preview=%llu,reconstruction=%llu,preview_bound=%u,diagnostic=%u\n",
++              name, f.config.track_count, frames, (unsigned long long)max_preview,
++              (unsigned long long)max_reads, 12 * f.config.track_count + 32,
++#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
++              1u
++#else
++              0u
++#endif
++  );
+   for (unsigned family = 0; family < 4; ++family)
+     std::printf("COUNTERS,%s,tracks=%u,frames=%u,family=%u,events=%llu,clears=%llu,scans=%llu,writes=%llu,guards=%llu\n",
+                 name, f.config.track_count, frames, family, (unsigned long long)maxima[family][0],
+                 (unsigned long long)maxima[family][1], (unsigned long long)maxima[family][2],
+                 (unsigned long long)maxima[family][3], (unsigned long long)maxima[family][4]);
+ }
+-void timing(unsigned tracks, unsigned devices, unsigned count) {
+-  for (bool extended : {false, true}) {
++std::vector<float> scene_chain_audio(unsigned tracks, bool atomic, unsigned partition) {
++  Fixture f(tracks, tracks == 2 ? 6 : 16, Music::Sustain);
++  f.config.length_frames = 4096;
++  for (unsigned i = 0; i < f.config.clip_count; ++i) f.config.clips[i].length_frames = 4096;
++  f.config.devices[1].bypassed = 1;
++  f.config.tracks[1].chain.mute = 1;
++  begin(f);
++  std::vector<float> samples;
++  for (unsigned section = 0; section < 3; ++section) {
++    const unsigned stops = section == 1 ? 0x55u : 0;
++    const unsigned slot = section == 1 ? 1 : 0;
++    if (atomic) scene(f, slot, stops);
++    else for (unsigned t = 0; t < tracks; ++t)
++      request(f, 3, 0, t, stops & (1u << t) ? UINT32_MAX : slot,
++              stops & (1u << t) ? ALIVE_SESSION_V3_TRACK_STOP : ALIVE_SESSION_V3_LAUNCH);
++    for (unsigned frame = 0; frame < 4096;) {
++      const unsigned n = std::min(partition, 4096 - frame);
++      render(n);
++      for (unsigned i = 0; i < n; ++i) { samples.push_back(left[i]); samples.push_back(right[i]); }
++      frame += n;
++    }
++    const auto s = state();
++    assert(s.playing && !s.fault);
++    for (unsigned t = 0; t < tracks; ++t) {
++      const bool stopped = stops & (1u << t);
++      assert(s.tracks[t].active_clip == (stopped ? UINT32_MAX : t * 4 + slot));
++      assert(s.tracks[t].phase == (stopped ? 0 : 1024));
++      assert(!s.tracks[t].pending_action);
++      assert(s.tracks[t].mixer.active_voices == (!stopped && slot == 0 ? 4u : 0u));
++    }
++  }
++  return samples;
++}
++void scene_chains() {
++  for (unsigned tracks : {2u, 8u}) {
++    const auto individual = scene_chain_audio(tracks, false, 1024);
++    assert(std::any_of(individual.begin(), individual.end(), [](float x) { return x != 0; }));
++    for (unsigned partition : {1u, 31u, 64u, 256u, 1024u})
++      assert(scene_chain_audio(tracks, true, partition) == individual);
++  }
++  std::puts("PASS: scene/individual saved-chain stereo equivalence, same-clip retrigger, empty clip/Stop, warm bypass, mute and partitions 1/31/64/256/1024");
++}
++void scene_timing(unsigned tracks, unsigned devices, unsigned count) {
++  Fixture f(tracks, devices, Music::Sustain, true);
++  begin(f);
++  for (unsigned frames : {64u, 256u, 512u, 1024u}) {
++    measure("scene_running_64", f, frames, count, [&](unsigned) {
++      for (unsigned i = 0; i < 64; ++i) scene(f);
++    });
++    alive_session_stop_v3(); render(1024);
++    measure("scene_stopped_64", f, frames, count, [&](unsigned) {
++      for (unsigned i = 0; i < 64; ++i) scene(f, i % 4);
++    });
++    request(f, 1); render(1024);
++    measure("scene_seek_accepted", f, frames, count, [&](unsigned) {
++      render(1024); request(f, 2, 0);
++      for (unsigned i = 0; i < 63; ++i) scene(f);
++    });
++    measure("scene_cheap_refusal", f, frames, count, [&](unsigned) {
++      render(1024); request(f, 2, 0); render(1); request(f, 2, 137);
++      for (unsigned i = 0; i < 63; ++i) scene(f, i % 4);
++    });
++    measure("scene_stop_full_queue", f, frames, count, [&](unsigned) {
++      render(1024); request(f, 1); render(1024);
++      for (unsigned i = 0; i < 64; ++i) scene(f);
++      alive_session_stop_v3();
++    });
++    request(f, 1); render(1024);
++  }
++  Fixture dense(tracks, devices, Music::Dense, true);
++  begin(dense);
++  for (unsigned frames : {256u, 512u, 1024u})
++    measure("scene_dense_seek", dense, frames, count, [&](unsigned) {
++      render(1024); request(dense, 2, 32767);
++      for (unsigned i = 0; i < 63; ++i) scene(dense);
++    });
++}
++void timing(unsigned tracks, unsigned devices, unsigned count, bool scenes = false) {
++  if (!scenes) for (bool extended : {false, true}) {
+     for (auto music : {Music::Sustain, Music::EmptyShort, Music::PopulatedShort, Music::Dense}) {
+       Fixture f(tracks, devices, music, extended);
+       if (density_refusal(f)) continue;
+@@ -320,12 +430,14 @@ void timing(unsigned tracks, unsigned devices, unsigned count) {
+       }
+     }
+   }
++  if (!scenes) {
+   Fixture f(tracks, devices, Music::Sustain, true, true);
+   begin(f);
+   for (unsigned frames : {64u, 256u, 512u, 1024u}) measure("heavy_voice_edges", f, frames, count, [](unsigned) {});
++  }
+   Fixture control(tracks, devices, Music::Sustain, true);
+   begin(control);
+-  for (unsigned frames : {64u, 256u, 512u, 1024u})
++  if (!scenes) for (unsigned frames : {64u, 256u, 512u, 1024u})
+     measure("aligned_switch_burst", control, frames, count, [&](unsigned i) {
+       for (unsigned c = 0; c < 64; ++c) request(control, 3, 0, c % tracks, (i / 2) % 4);
+     });
+@@ -341,9 +453,10 @@ void timing(unsigned tracks, unsigned devices, unsigned count) {
+   const unsigned writes = policy.scheduled_window.parameter_writes + policy.optional_window.parameter_writes + policy.emergency.parameter_writes;
+   volatile uint64_t scan_result = 0;
+   for (unsigned frames : {64u, 128u, 256u, 512u, 1024u}) {
+-    measure("combined_policy_upper_bound", control, frames, count, [&](unsigned) {
++    measure(scenes ? "scene_combined_policy_work" : "combined_policy_upper_bound", control, frames, count, [&](unsigned) {
+       render(1024);
+       for (unsigned c = 0; c < 63; ++c) {
++        if (scenes) { scene(control); continue; }
+         const unsigned d = c % devices, p = c % 16;
+         assert(alive_session_base_v2(d, control.config.devices[d].revision, p, control.config.devices[d].parameters[p].base));
+       }
+@@ -356,7 +469,7 @@ void timing(unsigned tracks, unsigned devices, unsigned count) {
+       for (unsigned clear = 0; clear < roots; ++clear) {
+         auto &runtime = workspace->runtime(clear % devices); runtime.reset(runtime.plan());
+       }
+-      for (unsigned write = 0; write < writes; ++write) {
++      for (unsigned write = 0; write < writes + (scenes ? 64 : 0); ++write) {
+         const unsigned d = write % devices, p = write % 16;
+         auto &runtime = workspace->runtime(d); const auto &b = control.config.devices[d].parameters[p];
+         assert(runtime.param(runtime.plan(), b.node, b.param, b.base, 0, discard));
+@@ -386,7 +499,13 @@ int main(int argc, char **argv) {
+ #endif
+   limits();
+   rejected_density_and_roots();
+-  if (argc > 1 && std::strcmp(argv[1], "--verify") == 0) {
++  if (argc > 1 && std::strcmp(argv[1], "--scene-verify") == 0) {
++    scene_chains(); concurrent_publication(true);
++    for (unsigned tracks : {2u, 8u}) { scene_timing(tracks, tracks == 2 ? 6 : 16, 4); timing(tracks, tracks == 2 ? 6 : 16, 4, true); }
++  } else if (argc > 1 && std::strcmp(argv[1], "--scenes") == 0) {
++    const unsigned count = argc > 2 ? unsigned(std::stoul(argv[2])) : 1200;
++    for (unsigned tracks : {2u, 8u}) { scene_timing(tracks, tracks == 2 ? 6 : 16, count); timing(tracks, tracks == 2 ? 6 : 16, count, true); }
++  } else if (argc > 1 && std::strcmp(argv[1], "--verify") == 0) {
+     for (unsigned tracks : {2u, 4u, 8u}) for (auto music : {Music::Sustain, Music::EmptyShort, Music::PopulatedShort, Music::Dense}) {
+       Fixture f(tracks, tracks == 2 ? 6 : tracks * 2, music, true);
+       if (!density_refusal(f)) begin(f);
+diff --git c/apps/ultra/tests/alive_session_capacity_fixture.hpp i/apps/ultra/tests/alive_session_capacity_fixture.hpp
+index a31c1b2..549cd68 100644
+--- c/apps/ultra/tests/alive_session_capacity_fixture.hpp
++++ i/apps/ultra/tests/alive_session_capacity_fixture.hpp
+@@ -139,4 +139,18 @@ inline AliveSessionReceiptV3 request(const Fixture &fixture, unsigned kind, uint
+   assert(alive_session_request_v3(&r, &receipt));
+   return receipt;
+ }
++inline AliveSessionReceiptV3 scene(const Fixture &f, unsigned slot = 0, unsigned stops = 0,
++                                   unsigned mask = 0) {
++  AliveSessionRequestV3 r{};
++  r.version = 3; r.struct_bytes = sizeof r; r.kind = ALIVE_SESSION_V3_TRACK_ACTIONS;
++  r.preparation_revision = f.config.preparation_revision; r.request_serial = ++serial;
++  r.track_mask = mask ? mask : (1u << f.config.track_count) - 1;
++  for (unsigned t = 0; t < f.config.track_count; ++t)
++    if (r.track_mask & (1u << t))
++      r.tracks[t] = {stops & (1u << t) ? ALIVE_SESSION_V3_TRACK_STOP : ALIVE_SESSION_V3_LAUNCH,
++                     stops & (1u << t) ? UINT32_MAX : slot};
++  AliveSessionReceiptV3 out{}; out.version = 3; out.struct_bytes = sizeof out;
++  assert(alive_session_request_v3(&r, &out));
++  return out;
++}
+ } // namespace capacity_fixture
+diff --git c/apps/ultra/tests/alive_session_v3_measure.cpp i/apps/ultra/tests/alive_session_v3_measure.cpp
+index 84cc25a..afe8f0b 100644
+--- c/apps/ultra/tests/alive_session_v3_measure.cpp
++++ i/apps/ultra/tests/alive_session_v3_measure.cpp
+@@ -265,6 +265,28 @@ void local_effect_isolation() {
+   std::puts("PASS: other saved instrument/effect chain stays sample-identical across local launch/stop and "
+             "mixed partitions, including warm bypass");
+ }
++void scene_fixed_reduction() {
++  fixture(true, 48000, true);
++  alive_session_stop_v3(); render(1024);
++  std::array<uint64_t, 64> requests{};
++  for (unsigned i = 0; i < requests.size(); ++i) {
++    AliveSessionRequestV3 r{};
++    r.version = 3; r.struct_bytes = sizeof r; r.kind = ALIVE_SESSION_V3_TRACK_ACTIONS;
++    r.preparation_revision = preparation; r.request_serial = ++serial; r.track_mask = 3;
++    r.tracks[0] = r.tracks[1] = {ALIVE_SESSION_V3_LAUNCH, 0};
++    AliveSessionReceiptV3 receipt{}; receipt.version = 3; receipt.struct_bytes = sizeof receipt;
++    assert(alive_session_request_v3(&r, &receipt)); requests[i] = r.request_serial;
++  }
++  render(1);
++  const auto s = state();
++  assert(!s.playing && !s.fault && !s.tracks[0].mixer.active_voices && !s.tracks[1].mixer.active_voices);
++  for (unsigned i = 0; i < requests.size(); ++i) {
++    const auto &r = s.receipts[requests[i] % 128];
++    assert(r.request_serial == requests[i]);
++    assert(i + 1 == requests.size() ? r.applied_mask == 3 : r.superseded_mask == 3);
++  }
++  std::puts("PASS: saved maximal six-root scene burst reduces 128 members with callback guards; final cue alone applies");
++}
+ template <class Before> void measure(const char *name, unsigned frames, unsigned count, Before before) {
+   std::vector<double> times;
+   times.reserve(count);
+@@ -384,6 +406,7 @@ int main(int argc, char **argv) {
+   profile_control_isolation();
+   preparation_bound();
+   local_effect_isolation();
++  scene_fixed_reduction();
+   if (argc == 2 && std::strcmp(argv[1], "--verify") == 0) {
+     for (bool maximal : {false, true}) {
+       fixture(maximal, 188, false);
+diff --git c/apps/ultra/tests/alive_session_v3_test.cpp i/apps/ultra/tests/alive_session_v3_test.cpp
+index 468daf1..c671030 100644
+--- c/apps/ultra/tests/alive_session_v3_test.cpp
++++ i/apps/ultra/tests/alive_session_v3_test.cpp
+@@ -30,8 +30,8 @@ AliveSessionConfigV3 prepare(unsigned tracks = 2) {
+   AliveSessionConfigV3 c{};
+   c.version = 3;
+   c.struct_bytes = sizeof c;
+-  c.profile = 1;
+-  c.work_policy = 1;
++  c.profile = tracks > 2 ? 2 : 1;
++  c.work_policy = tracks > 2 ? 2 : 1;
+   c.track_count = tracks;
+   c.device_count = tracks;
+   c.clip_count = tracks * 2;
+@@ -206,7 +206,7 @@ void admission() {
+   l.version = 3;
+   l.struct_bytes = sizeof l;
+   assert(alive_session_limits_v3(2, &l) &&
+-         l.features == ALIVE_SESSION_V3_FEATURE_ADMITTED &&
++         l.features == (ALIVE_SESSION_V3_FEATURE_ADMITTED | ALIVE_SESSION_V3_FEATURE_ATOMIC_TRACK_ACTIONS) &&
+          l.work_policy == ALIVE_SESSION_V3_WORK_POLICY_2);
+   assert(alive_session_limits_v3(1, &l) && (l.features & 1));
+   assert(!alive_session_start());
+@@ -286,6 +286,313 @@ void configure_stopped(AliveSessionConfigV3 &c) {
+   assert(alive_session_configure_v3(&c));
+   assert(ultra_external_start());
+ }
++AliveSessionReceiptV3 scene(unsigned mask, unsigned slot = 1, unsigned stops = 0,
++                             bool accepted = true) {
++  AliveSessionRequestV3 r{};
++  r.version = 3;
++  r.struct_bytes = sizeof r;
++  r.kind = ALIVE_SESSION_V3_TRACK_ACTIONS;
++  r.preparation_revision = preparation;
++  r.request_serial = ++serial;
++  r.track_mask = mask;
++  for (unsigned t = 0; t < 8; ++t)
++    if (mask & (1u << t))
++      r.tracks[t] = {stops & (1u << t) ? ALIVE_SESSION_V3_TRACK_STOP : ALIVE_SESSION_V3_LAUNCH,
++                     stops & (1u << t) ? UINT32_MAX : slot};
++  AliveSessionReceiptV3 result{};
++  result.version = 3;
++  result.struct_bytes = sizeof result;
++  assert(bool(alive_session_request_v3(&r, &result)) == accepted);
++  assert(result.status == (accepted ? ALIVE_SESSION_V3_QUEUED : ALIVE_SESSION_V3_REJECTED));
++  return result;
++}
++void scene_member_receipts() {
++  for (unsigned tracks : {2u, 8u}) {
++    const unsigned all = (1u << tracks) - 1;
++    for (unsigned t = 0; t < tracks; ++t) {
++      auto c = prepare(tracks);
++      c.length_frames = 1900;
++      start(c);
++      render(1);
++      const auto first = scene(all);
++      render(1);
++      auto s = state();
++      const auto target = s.tracks[0].pending_frame;
++      for (unsigned i = 0; i < tracks; ++i)
++        assert(s.tracks[i].pending_serial == first.request_serial && s.tracks[i].pending_frame == target);
++      request(3, 0, t, 0);
++      render(1);
++      s = state();
++      auto r = s.receipts[first.request_serial % 128];
++      assert(r.status == ALIVE_SESSION_V3_PENDING && r.pending_mask == (all & ~(1u << t)) &&
++             r.superseded_mask == (1u << t) && r.error == ALIVE_SESSION_V3_REPLACED_REQUEST);
++      while (state().absolute_frame <= target)
++        render(unsigned(std::min<uint64_t>(1024, target + 1 - state().absolute_frame)));
++      r = state().receipts[first.request_serial % 128];
++      assert(r.status == ALIVE_SESSION_V3_MIXED && r.applied_mask == (all & ~(1u << t)) &&
++             r.superseded_mask == (1u << t) && !r.pending_mask && r.target_frame == target);
++    }
++    auto c = prepare(tracks);
++    start(c);
++    render(1);
++    const auto old = scene(all);
++    render(1);
++    const auto newer = scene(all, 0);
++    render(1);
++    receipt_is(state(), old, ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
++    receipt_is(state(), newer, ALIVE_SESSION_V3_PENDING);
++    request(3, 0, 0, 1);
++    render(1);
++    const auto epoch = alive_session_stop_v3();
++    render(1);
++    auto s = state();
++    const auto &r = s.receipts[newer.request_serial % 128];
++    assert(s.applied_stop_epoch == epoch && !s.playing && r.status == ALIVE_SESSION_V3_MIXED &&
++           r.superseded_mask == 1 && r.canceled_mask == (all & ~1u) && r.error == ALIVE_SESSION_V3_STOP_CANCELED);
++  }
++}
++void scene_stopped_and_refusal() {
++  for (unsigned tracks : {2u, 8u}) {
++    const unsigned all = (1u << tracks) - 1;
++    auto c = prepare(tracks);
++    configure_stopped(c);
++    const auto cue = scene(all);
++    const auto stop = request(3, 0, 0, UINT32_MAX, ALIVE_SESSION_V3_TRACK_STOP);
++    render(1);
++    auto s = state();
++    const auto &r = s.receipts[cue.request_serial % 128];
++    assert(!s.playing && r.status == ALIVE_SESSION_V3_MIXED && r.superseded_mask == 1 && r.applied_mask == (all & ~1u));
++    receipt_is(s, stop, ALIVE_SESSION_V3_APPLIED);
++    assert(s.tracks[0].active_clip == UINT32_MAX);
++    const auto empty = scene(all, 0, all);
++    render(1);
++    receipt_is(state(), empty, ALIVE_SESSION_V3_APPLIED);
++    for (unsigned t = 0; t < tracks; ++t)
++      assert(state().tracks[t].active_clip == UINT32_MAX);
++
++    c = prepare(tracks);
++    configure_stopped(c);
++    request(2, 17);
++    render(1);
++    const auto refused = scene(all);
++    request(3, 0, 0, 0);
++    const auto seek = request(2, 77);
++    render(1);
++    s = state();
++    const auto &mixed = s.receipts[refused.request_serial % 128];
++    assert(!s.playing && s.position == 17 && mixed.status == ALIVE_SESSION_V3_MIXED &&
++           mixed.superseded_mask == 1 && mixed.rejected_mask == (all & ~1u) &&
++           !mixed.applied_mask && mixed.error == ALIVE_SESSION_V3_WORK_LIMIT);
++    receipt_is(s, seek, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
++    for (unsigned t = 0; t < tracks; ++t)
++      assert(s.tracks[t].active_clip == t * 2 && s.tracks[t].phase == 17);
++    c = prepare(tracks);
++    configure_stopped(c);
++    std::array<AliveSessionReceiptV3, 64> burst{};
++    for (unsigned i = 0; i < burst.size(); ++i) burst[i] = scene(all, i % 2);
++    render(1);
++    s = state();
++    for (unsigned i = 0; i + 1 < burst.size(); ++i)
++      receipt_is(s, burst[i], ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
++    receipt_is(s, burst.back(), ALIVE_SESSION_V3_APPLIED);
++  }
++}
++void scene_ingress_and_reuse() {
++  auto c = prepare(8);
++  start(c);
++  render(1);
++  const auto pending = scene(255);
++  render(1);
++  const auto before = state();
++  AliveSessionRequestV3 invalid{};
++  invalid.version = 3;
++  invalid.struct_bytes = sizeof invalid;
++  invalid.kind = ALIVE_SESSION_V3_TRACK_ACTIONS;
++  invalid.preparation_revision = preparation;
++  invalid.track_mask = 255;
++  for (auto &a : invalid.tracks) a = {ALIVE_SESSION_V3_LAUNCH, 0};
++  for (unsigned mode = 0; mode < 4; ++mode) {
++    auto r = invalid;
++    r.request_serial = ++serial;
++    if (mode == 0) r.tracks[7].slot = 3;
++    if (mode == 1) r.tracks[7] = {ALIVE_SESSION_V3_TRACK_STOP, 0};
++    if (mode == 2) r.track_mask = 127; // Last action is unmasked data.
++    if (mode == 3) r.track_mask = 511;
++    AliveSessionReceiptV3 out{};
++    out.version = 3; out.struct_bytes = sizeof out;
++    assert(!alive_session_request_v3(&r, &out));
++    assert(out.error == (mode == 0 ? ALIVE_SESSION_V3_EMPTY_SLOT : ALIVE_SESSION_V3_BAD_FIELD));
++    assert(out.rejected_mask == r.track_mask);
++    const auto after = state();
++    assert(std::memcmp(before.tracks, after.tracks, sizeof before.tracks) == 0);
++    assert(std::memcmp(before.receipts, after.receipts, sizeof before.receipts) == 0);
++  }
++  for (unsigned i = 0; i < 64; ++i) assert(alive_session_mixer(0, 1, 0, 0));
++  assert(scene(255, 0, 0, false).error == ALIVE_SESSION_V3_QUEUE_FULL);
++  render(1);
++  for (unsigned i = 0; i < 63; ++i) assert(alive_session_mixer(0, 1, 0, 0));
++  const auto replacement = scene(255, 0);
++  render(1);
++  receipt_is(state(), pending, ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
++  request(3, 0, 0, 1);
++  render(1);
++  serial = replacement.request_serial + 127;
++  assert(scene(255, 0, 0, false).error == ALIVE_SESSION_V3_RECEIPT_BUSY);
++  const auto epoch = alive_session_stop_v3();
++  render(1);
++  assert(state().applied_stop_epoch == epoch);
++  serial = replacement.request_serial + 255;
++  const auto reuse = scene(255);
++  serial += 127;
++  assert(scene(255, 0, 0, false).error == ALIVE_SESSION_V3_RECEIPT_BUSY);
++  render(1);
++  receipt_is(state(), reuse, ALIVE_SESSION_V3_APPLIED);
++  c = prepare(8); start(c); render(1024);
++  std::array<AliveSessionReceiptV3, 64> queued{};
++  for (auto &r : queued) r = scene(255);
++  assert(scene(255, 0, 0, false).error == ALIVE_SESSION_V3_QUEUE_FULL);
++  const auto full_stop = alive_session_stop_v3(); render(1);
++  const auto stopped = state();
++  assert(!stopped.playing && stopped.applied_stop_epoch == full_stop);
++  for (const auto &r : queued) receipt_is(stopped, r, ALIVE_SESSION_V3_CANCELED, ALIVE_SESSION_V3_STOP_CANCELED);
++}
++void scene_transport_order_and_old_refusal() {
++  auto c = prepare(8);
++  configure_stopped(c);
++  const auto cue = scene(255), seek = request(2, 137), play = request(1), future = scene(255, 0);
++  render(1);
++  auto s = state();
++  receipt_is(s, cue, ALIVE_SESSION_V3_APPLIED);
++  receipt_is(s, seek, ALIVE_SESSION_V3_APPLIED);
++  receipt_is(s, play, ALIVE_SESSION_V3_APPLIED);
++  receipt_is(s, future, ALIVE_SESSION_V3_PENDING);
++  for (unsigned t = 0; t < 8; ++t)
++    assert(s.tracks[t].active_clip == t * 2 + 1 && s.tracks[t].phase == 138);
++  const auto blocked_seek = request(2, 77), blocked_scene = scene(255);
++  request(3, 0, 0, 0);
++  assert(alive_session_base_v2(c.devices[0].document, c.devices[0].revision, 0, 32));
++  assert(alive_session_mixer(7, .5, 0, 0));
++  render(1);
++  s = state();
++  receipt_is(s, future, ALIVE_SESSION_V3_PENDING);
++  receipt_is(s, blocked_seek, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
++  const auto &mixed = s.receipts[blocked_scene.request_serial % 128];
++  assert(mixed.superseded_mask == 1 && mixed.rejected_mask == 254 && !mixed.applied_mask);
++  assert(s.devices[0].base[0] == 32 && s.tracks[7].mixer.gain == .5);
++  render(1024);
++  const auto first = scene(127), overlap = scene(254, 0);
++  request(2, 777);
++  render(1);
++  s = state();
++  const auto &a = s.receipts[first.request_serial % 128];
++  assert(a.status == ALIVE_SESSION_V3_MIXED && a.superseded_mask == 126 && a.canceled_mask == 1);
++  receipt_is(s, overlap, ALIVE_SESSION_V3_CANCELED, ALIVE_SESSION_V3_REPLACED_REQUEST);
++  for (unsigned t = 0; t < 8; ++t) assert(!s.tracks[t].pending_action && s.tracks[t].phase == 778);
++
++  c = prepare(8);
++  c.loop_enabled = 0;
++  c.length_frames = 1900;
++  start(c);
++  render(1);
++  const auto ended = scene(255);
++  render(1);
++  receipt_is(state(), ended, ALIVE_SESSION_V3_CANCELED, ALIVE_SESSION_V3_END_CANCELED);
++  for (unsigned t = 0; t < 8; ++t) assert(!state().tracks[t].pending_action);
++}
++void scene_expensive_refusal() {
++  auto c = prepare(8);
++  for (unsigned t = 0; t < 8; ++t)
++    for (unsigned pitch = 0; pitch < 4; ++pitch)
++      add(c, t * 2, 5000, ALIVE_SESSION_NOTE_ON, pitch, 100);
++  start(c);
++  for (unsigned i = 0; i < 4; ++i) render(1024);
++  render(905);
++  const auto old = scene(255);
++  render(1);
++  const auto before = state();
++#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
++  ultra::alive_session_test_preview_reads = ultra::alive_session_test_reconstruction_reads = 0;
++#endif
++  const auto seek = request(2, 4500), refused = scene(255);
++  render(1);
++  auto s = state();
++  receipt_is(s, seek, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
++  receipt_is(s, refused, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
++  receipt_is(s, old, ALIVE_SESSION_V3_PENDING);
++  for (unsigned t = 0; t < 8; ++t)
++    assert(s.tracks[t].pending_serial == old.request_serial && s.tracks[t].pending_frame == before.tracks[t].pending_frame);
++#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
++  assert(ultra::alive_session_test_preview_reads > 0 && ultra::alive_session_test_preview_reads <= 128);
++  assert(!ultra::alive_session_test_reconstruction_reads);
++  ultra::alive_session_test_preview_reads = 0;
++  request(2, 4500); scene(255); render(1);
++  assert(!ultra::alive_session_test_preview_reads && !ultra::alive_session_test_reconstruction_reads);
++#endif
++}
++struct SceneAudio {
++  std::vector<float> samples;
++  std::array<uint64_t, 8> phases{}, epochs{};
++  std::array<unsigned, 8> clips{}, owned{}, voices{};
++  std::array<double, 8> effective{};
++  bool operator==(const SceneAudio &b) const {
++    return samples == b.samples && phases == b.phases && epochs == b.epochs && clips == b.clips &&
++           owned == b.owned && voices == b.voices && effective == b.effective;
++  }
++};
++SceneAudio scene_audio(bool atomic, unsigned partition, unsigned tracks, bool short_loop) {
++  auto c = prepare(tracks);
++  c.tempo_bpm = 137;
++  const unsigned boundary = short_loop ? 1900 : unsigned(std::round(4. * 48000 * 60 / 137));
++  c.length_frames = boundary + (short_loop ? 0 : 32);
++  for (unsigned t = 0; t < tracks; ++t) {
++    c.devices[t].parameters[0].automated = 1;
++    for (unsigned slot = 0; slot < 2; ++slot) {
++      const unsigned clip = 2 * t + slot;
++      c.clips[clip].length_frames = 12000 + t * 103 + slot * 31;
++      c.clips[clip].owned_masks[t] = 1;
++      c.clips[clip].lane_count = 1;
++      if (t == tracks - 1 && slot) continue; // Empty-event clip retains lane ownership.
++      add(c, clip, 0, ALIVE_SESSION_AUTOMATION, 0, 50 + t + slot * 10);
++      add(c, clip, 0, ALIVE_SESSION_NOTE_ON, 60 + t, 60 + slot * 20);
++      add(c, clip, 1031, ALIVE_SESSION_NOTE_OFF, 60 + t, 0);
++    }
++  }
++  start(c);
++  SceneAudio out;
++  for (unsigned section = 0; section < 4; ++section) {
++    const unsigned ends[] = {31, boundary + 1, unsigned(c.length_frames + 1), unsigned(c.length_frames + 2200)};
++    if (section == 1 || section == 2) {
++      const unsigned stops = section == 1 ? 1 : 0, slot = section == 1 ? 1 : 0;
++      if (atomic) scene((1u << tracks) - 1, slot, stops);
++      else for (unsigned t = 0; t < tracks; ++t)
++        request(3, 0, t, stops & (1u << t) ? UINT32_MAX : slot,
++                stops & (1u << t) ? ALIVE_SESSION_V3_TRACK_STOP : ALIVE_SESSION_V3_LAUNCH);
++    }
++    unsigned f = section ? ends[section - 1] : 0;
++    while (f < ends[section]) {
++      const unsigned n = std::min(partition, ends[section] - f);
++      render(n);
++      for (unsigned i = 0; i < n; ++i) { out.samples.push_back(left[i]); out.samples.push_back(right[i]); }
++      f += n;
++    }
++  }
++  const auto s = state();
++  assert(!s.fault);
++  for (unsigned t = 0; t < tracks; ++t) {
++    out.phases[t] = s.tracks[t].phase; out.epochs[t] = s.tracks[t].track_epoch;
++    out.clips[t] = s.tracks[t].active_clip; out.voices[t] = s.tracks[t].mixer.active_voices;
++    out.owned[t] = s.devices[t].owned[0]; out.effective[t] = s.devices[t].effective[0];
++  }
++  return out;
++}
++void scene_sample_equivalence() {
++  for (unsigned tracks : {2u, 8u})
++    for (bool short_loop : {false, true}) {
++      const auto individual = scene_audio(false, 1024, tracks, short_loop);
++      for (unsigned partition : {1u, 31u, 64u, 256u, 1024u})
++        assert(scene_audio(true, partition, tracks, short_loop) == individual);
++    }
++}
+ void stopped_action_supersession() {
+   const unsigned pairs[][2] = {{ALIVE_SESSION_V3_LAUNCH, ALIVE_SESSION_V3_LAUNCH},
+                                {ALIVE_SESSION_V3_LAUNCH, ALIVE_SESSION_V3_TRACK_STOP},
+@@ -800,7 +1107,59 @@ void invariant_fault_cancels_due_launch() {
+   const auto &receipt = s.receipts[action.request_serial % 128];
+   assert(receipt.status == ALIVE_SESSION_V3_CANCELED && receipt.error == ALIVE_SESSION_V3_RUNTIME_INVARIANT);
+ }
++void scene_fault_and_stop_race() {
++  for (bool supersede : {false, true}) {
++  auto c = prepare(8);
++  c.length_frames = 1900;
++  for (unsigned t = 0; t < 8; ++t) {
++    add(c, 2 * t, 0, ALIVE_SESSION_NOTE_ON, 60, 100);
++    add(c, 2 * t + 1, 0, ALIVE_SESSION_NOTE_ON, 61, 100);
++  }
++  start(c);
++  render(1024); render(876);
++  const auto due = scene(255);
++  if (supersede) request(3, 0, 0, 0);
++  ultra::alive_session_test_fault_resource = ALIVE_SESSION_V3_RESOURCE_EVENTS;
++  render(64);
++  ultra::alive_session_test_fault_resource = 0;
++  const auto s = state();
++  assert(!s.playing && s.fault == ALIVE_SESSION_V3_RUNTIME_INVARIANT && s.event_faults == 1);
++  if (!supersede) receipt_is(s, due, ALIVE_SESSION_V3_CANCELED, ALIVE_SESSION_V3_RUNTIME_INVARIANT);
++  else {
++    const auto &r = s.receipts[due.request_serial % 128];
++    assert(r.status == ALIVE_SESSION_V3_MIXED && r.superseded_mask == 1 && r.canceled_mask == 254 &&
++           !r.applied_mask && r.error == ALIVE_SESSION_V3_RUNTIME_INVARIANT);
++  }
++  for (unsigned t = 0; t < 8; ++t) assert(!s.tracks[t].mixer.active_voices);
++  assert(std::all_of(left.begin(), left.begin() + 64, [](float x) { return x == 0; }));
++  }
++}
+ uint64_t race_stop = 0, race_start = 0;
++uint64_t outside_scene = 0, fresh_scene = 0;
++void scene_stop_boundary() noexcept {
++  ultra::alive_session_test_boundary = nullptr;
++  outside_scene = scene(255).request_serial;
++  race_stop = alive_session_stop_v3();
++  race_start = request(1).request_serial;
++  fresh_scene = scene(255, 0).request_serial;
++}
++void scene_epoch_race() {
++  auto c = prepare(8);
++  start(c); render(1024);
++  const auto old = scene(255);
++  ultra::alive_session_test_boundary = scene_stop_boundary;
++  render(1);
++  auto s = state();
++  receipt_is(s, old, ALIVE_SESSION_V3_CANCELED, ALIVE_SESSION_V3_STOP_CANCELED);
++  assert(s.applied_stop_epoch == race_stop && !s.playing && s.last_consumed_request < outside_scene);
++  render(1);
++  s = state();
++  const auto &outside = s.receipts[outside_scene % 128];
++  assert(outside.request_serial == outside_scene && outside.canceled_mask == 255 && outside.error == ALIVE_SESSION_V3_STOP_CANCELED);
++  assert(s.playing && s.receipts[race_start % 128].status == ALIVE_SESSION_V3_APPLIED);
++  assert(s.receipts[fresh_scene % 128].pending_mask == 255);
++  for (unsigned t = 0; t < 8; ++t) assert(s.tracks[t].pending_serial == fresh_scene);
++}
+ void stop_race() noexcept {
+   ultra::alive_session_test_boundary = nullptr;
+   race_stop = alive_session_stop_v3();
+@@ -823,6 +1182,27 @@ void epoch_race() {
+ #endif
+ } // namespace
+ int main(int argc, char **argv) {
++  if (argc == 2 && std::strcmp(argv[1], "--scene-disabled") == 0) {
++    auto c = prepare(8); configure_stopped(c);
++    assert(scene(255, 0, 0, false).error == ALIVE_SESSION_V3_FEATURE_DISABLED);
++    assert(!state().last_consumed_request); cleanup();
++    std::puts("PASS: unqualified scene feature refuses without queue mutation"); return 0;
++  }
++  if (argc == 2 && std::strcmp(argv[1], "--scenes") == 0) {
++    scene_member_receipts();
++    scene_stopped_and_refusal();
++    scene_ingress_and_reuse();
++    scene_transport_order_and_old_refusal();
++    scene_expensive_refusal();
++    scene_sample_equivalence();
++#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
++    scene_fault_and_stop_race();
++    scene_epoch_race();
++#endif
++    cleanup();
++    std::puts("PASS: scene member masks, common targets, stopped winners and all-or-none refusal");
++    return 0;
++  }
+   if (argc == 2 && std::strcmp(argv[1], "--stopped-reducer") == 0) {
+     stopped_action_supersession();
+     stopped_action_work_refusal();
+@@ -841,6 +1221,12 @@ int main(int argc, char **argv) {
+   admission();
+   assert(playback({1}) == playback({31, 63, 64, 127, 1024, 1}));
+   transitions();
++  scene_member_receipts();
++  scene_stopped_and_refusal();
++  scene_ingress_and_reuse();
++  scene_transport_order_and_old_refusal();
++  scene_expensive_refusal();
++  scene_sample_equivalence();
+   stopped_action_supersession();
+   stopped_action_work_refusal();
+   queue_stop();
+@@ -857,6 +1243,8 @@ int main(int argc, char **argv) {
+   nonloop_end_fault_resource();
+   shared_chase_scan();
+   invariant_fault_cancels_due_launch();
++  scene_fault_and_stop_race();
++  scene_epoch_race();
+   epoch_race();
+ #endif
+   cleanup();
+diff --git c/apps/ultra/tests/check_alive_clips.py i/apps/ultra/tests/check_alive_clips.py
+index bfed53b..a3172db 100644
+--- c/apps/ultra/tests/check_alive_clips.py
++++ i/apps/ultra/tests/check_alive_clips.py
+@@ -10,6 +10,30 @@ ui, windows = alive.ui, alive.windows
+ events = []
+ 
+ 
++
++def set_audio_details(expanded):
++    control = ui.wait_for('Audio details')
++    if control.get_state_set().contains(Atspi.StateType.EXPANDED) != expanded:
++        ui.click('Audio details')
++    deadline = time.monotonic() + 3
++    while time.monotonic() < deadline:
++        if ui.wait_for('Audio details').get_state_set().contains(Atspi.StateType.EXPANDED) == expanded:
++            return
++        time.sleep(.01)
++    raise AssertionError('Audio details did not reach the requested disclosure state')
++
++
++def edit_selected():
++    # The diagnostics overlay covers the selected-device Editor button.
++    restore = ui.wait_for('Audio details').get_state_set().contains(Atspi.StateType.EXPANDED)
++    if restore:
++        set_audio_details(False)
++    ui.click('Edit selected device in Ultra')
++    if restore:
++        windows.focus('Pulse - Ultra Hosted Editor')
++        windows.focus(alive.MAIN)
++        set_audio_details(True)
++
+ def observed(label):
+     value = alive.value(label)
+     events.append({'label': label, 'value': value, 'monotonic': time.monotonic()})
+@@ -45,7 +69,7 @@ def run():
+         alive.choose_file('Add effect', 'Load Ultra Device', shared)
+     ui.click('Select Pulse slot 1')
+     ui.click('Select Pulse Stereo Utility effect 1')
+-    ui.click('Edit selected device in Ultra')
++    edit_selected()
+     windows.focus('Pulse - Ultra Hosted Editor'); alive.numeric('Hosted Gain base', .65)
+     windows.focus(alive.MAIN)
+     ui.click('Duplicate clip')
+@@ -75,7 +99,7 @@ def run():
+     settings = alive.check_audio_settings()
+     assert alive.value('Audio buffer frames') == '512'
+     # Stopped transport + live audio accepts a cue without starting transport.
+-    ui.click('Launch Pulse Clip 1')
++    alive.reorder_click('Launch Pulse Clip 1')
+     alive.wait_value('Pulse clip runtime', lambda s: 'Cued Clip 1 /' in s and 'applied' in s)
+     observed('Pulse clip runtime'); assert alive.value('Transport playing') == 'false'
+     alive.transport('start')
+@@ -85,7 +109,7 @@ def run():
+     observed('Pulse clip runtime')
+     alive.wait_value('Pulse clip runtime', lambda s: 'Playing Clip 1 copy' in s and 'applied' in s)
+     observed('Pulse clip runtime'); observed('Harmony clip runtime')
+-    ui.click('Select Pulse Stereo Utility effect 1'); ui.click('Edit selected device in Ultra')
++    ui.click('Select Pulse Stereo Utility effect 1'); edit_selected()
+     windows.focus('Pulse - Ultra Hosted Editor'); alive.numeric('Hosted Gain base', .55); windows.focus(alive.MAIN)
+     ui.click('Bypass Pulse Stereo Utility effect 1')
+     ui.click('Select Pulse slot 1'); alive.numeric('Note 1 velocity', 82); ui.click('Undo pending edit')
+@@ -106,7 +130,7 @@ def run():
+     assert alive.value('Transport playing') == 'false'
+     assert 'Cued Clip 1 copy' in observed('Pulse clip runtime')
+     ui.click('Select Pulse slot 1'); ui.click('Select Pulse Stereo Utility effect 1')
+-    ui.click('Edit selected device in Ultra')
++    edit_selected()
+     windows.focus('Pulse - Ultra Hosted Editor'); ui.wait_for('Hosted Gain base'); windows.focus(alive.MAIN)
+     # An external shared-source edit blocks either selected replacement atomically.
+     changed = json.loads(original); changed['nodes'][0]['x'] += 1
+diff --git c/apps/ultra/tests/check_alive_scenes.py i/apps/ultra/tests/check_alive_scenes.py
+new file mode 100644
+index 0000000..9ec1920
+--- /dev/null
++++ i/apps/ultra/tests/check_alive_scenes.py
+@@ -0,0 +1,183 @@
++#!/usr/bin/env python3
++"""Actual standalone atomic-scene journey with finite epoch/resource/audio evidence."""
++import json
++import hashlib
++import os
++import threading
++import time
++from pathlib import Path
++import check_alive_desktop as alive
++from stream_measurement import EpochCollector, JsonLines, ProcessGroups, ProcessSampler, histogram_summary
++from gi.repository import Atspi
++
++ui, windows = alive.ui, alive.windows
++stop = threading.Event()
++errors = []
++resources = JsonLines(ui.output / 'scenes-resources.jsonl')
++epoch_log = JsonLines(ui.output / 'scenes-epochs.jsonl')
++epochs = EpochCollector(epoch_log)
++groups = ProcessGroups(app=ProcessSampler(ui.pid), sampler_capture=ProcessSampler(os.getpid()),
++                       server=ProcessSampler(int(os.environ['ULTRA_TEST_AUDIO_PID'])))
++observations = []
++capture = None
++
++def activate(name):
++    item = ui.wait_for(name)
++    assert item.get_state_set().contains(Atspi.StateType.ENABLED), name
++    assert Atspi.Component.grab_focus(item), name
++    ui.keys('Return')
++    time.sleep(.15)
++
++def sample():
++    deadline = time.monotonic()
++    while not stop.is_set():
++        try:
++            resources.write({'monotonic': time.monotonic(), **groups.sample()})
++        except Exception as error:
++            errors.append(str(error)); stop.set(); return
++        deadline += 1
++        stop.wait(max(0, deadline - time.monotonic()))
++
++def disclosure(name, expanded):
++    item = ui.wait_for(name)
++    if item.get_state_set().contains(Atspi.StateType.EXPANDED) != expanded:
++        Atspi.Component.grab_focus(item); ui.keys('Return')
++    deadline = time.monotonic() + 3
++    while time.monotonic() < deadline:
++        if ui.wait_for(name).get_state_set().contains(Atspi.StateType.EXPANDED) == expanded: return
++        time.sleep(.1)
++    raise AssertionError('Disclosure did not reach its requested state: ' + name)
++
++def collect(label):
++    disclosure('Audio details', True)
++    disclosure('Stream measurements', True)
++    time.sleep(.15)
++    raw = json.loads(alive.value('Stream diagnostics'))
++    assert 'error' not in raw, raw
++    epochs.accept(raw)
++    observations.append({'label': label, 'monotonic': time.monotonic(),
++                         'playing': alive.value('Transport playing'), 'frame': alive.value('Absolute frame'),
++                         'voices': [alive.value(f'Track {index} active voices') for index in range(1, 9)]})
++    (ui.output / 'scenes-observations.json').write_text(json.dumps(observations, indent=2))
++    return raw
++
++def pause(seconds):
++    for index in range(seconds):
++        time.sleep(1); collect(f'playing-{index}')
++
++worker = threading.Thread(target=sample)
++try:
++    windows.focus(alive.MAIN)
++    ui.wait_for('Select Track 8 slot 4')
++    artifacts = {Path(os.readlink(f'/proc/{ui.pid}/exe'))}
++    artifacts.update(Path(line.split()[-1]) for line in Path(f'/proc/{ui.pid}/maps').read_text().splitlines()
++                     if 'libultra_native.so' in line)
++    assert len(artifacts) == 2, artifacts
++    (ui.output / 'scenes-artifacts.json').write_text(json.dumps({
++        'pid': ui.pid, 'files': {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in artifacts}}, indent=2))
++    alive.screenshot('scenes-initial.png')
++    assert not ui.wait_for('Add instrument track').get_state_set().contains(Atspi.StateType.ENABLED)
++    settings = alive.check_audio_settings()
++    worker.start()
++    collect('prepared-eight')
++    activate('Launch scene 4')
++    alive.wait_value('Scene 4 request', lambda value: 'applied' in value)
++    assert all(alive.value(f'{name} clip runtime').startswith('Stopped') for name in ['Pulse', 'Harmony', *[f'Track {i}' for i in range(3, 9)]])
++    assert alive.value('Transport playing') == 'false'
++    activate('Launch scene 1')
++    alive.wait_value('Pulse clip runtime', lambda value: value.startswith('Cued Clip 1'))
++    collect('stopped-empty-row-and-cued-row')
++    alive.transport('start')
++    capture = alive.start_capture('scenes-playback')
++    pause(3)
++    assert all(int(alive.value(f'Track {i} active voices')) == 3 for i in range(1, 9))
++    names = ['Pulse', 'Harmony', *[f'Track {i}' for i in range(3, 9)]]
++    alive.numeric('Seek beat', .125); activate('Seek transport')
++    activate('Launch scene 2')
++    activate('Launch Pulse Clip 1')
++    mixed = alive.wait_value('Scene 2 request', lambda value: 'mixed' in value and 'Pulse: superseded' in value and 'Track 8: applied' in value)
++    for name in names[1:]:
++        alive.wait_value(f'{name} clip runtime', lambda value: value.startswith('Playing Clip 2'))
++    assert alive.value('Pulse clip runtime').startswith('Playing Clip 1')
++    collect('scene-partial-individual-override')
++    observations.append({'label': 'scene-mixed-native-receipt', 'monotonic': time.monotonic(), 'receipt': mixed})
++    activate('Launch scene 2')
++    alive.wait_value('Pulse clip runtime', lambda value: value.startswith('Playing Clip 2'))
++    applied = alive.wait_value('Scene 2 request', lambda value: 'Pulse: applied' in value and 'Track 8: applied' in value)
++    observations.append({'label': 'scene-all-applied-native-receipt', 'monotonic': time.monotonic(), 'receipt': applied})
++    collect('quantized-eight-scene')
++    activate('Select Pulse slot 1'); activate('Select Pulse Stereo Utility effect 1')
++    activate('Edit selected device in Ultra')
++    windows.focus('Pulse - Ultra Hosted Editor'); alive.numeric('Hosted Gain base', .65)
++    activate('Close hosted editor'); windows.focus(alive.MAIN)
++    before = int(alive.value('Absolute frame'))
++    activate('Edit selected device in Ultra'); windows.focus('Pulse - Ultra Hosted Editor')
++    assert float(alive.value('Hosted Gain base')) == .65
++    activate('Close hosted editor'); windows.focus(alive.MAIN)
++    assert int(alive.value('Absolute frame')) > before
++    activate('Bypass Pulse Stereo Utility effect 1')
++    activate('Select Pulse slot 1')
++    alive.numeric('Note 1 velocity', 81); activate('Undo pending edit')
++    assert alive.value('Note 1 velocity') == '80'
++    activate('Select Pulse Subtractive instrument')
++    alive.numeric('Cutoff base', 1777)
++    alive.wait_value('Cutoff effective ownership', lambda value: 'Automation:' in value and '1777' not in value)
++    alive.numeric('Pulse gain', .2)
++    for name in ('Track 8 mute', 'Track 8 solo', 'Track 8 solo', 'Track 8 mute'): activate(name)
++    activate('Stop Pulse track')
++    alive.wait_value('Track 1 active voices', lambda value: value == '0')
++    assert all(int(alive.value(f'Track {i} active voices')) == 3 for i in range(2, 9))
++    collect('local-stop-keeps-seven-tracks')
++    alive.screenshot('scenes-playing.png')
++    alive.transport('stop')
++    audio = alive.finish_capture(capture); capture = None
++    assert audio['peak'] > .0001
++    saved = ui.output / 'scenes-saved.alive'
++    disclosure('Audio details', False)
++    alive.choose_file('Save session as', 'Save Alive Session', saved)
++    record = json.loads(saved.read_text())
++    assert len(record['tracks']) == 8 and sum(1 + len(t['effects']) for t in record['tracks']) == 16
++    assert record['tracks'][0]['effects'][0]['parameters']['gain'] == .65
++    assert record['tracks'][0]['device']['parameters']['cutoff'] == 1777
++    assert all(t['defaultClipId'] == t['slots'][0]['id'] for t in record['tracks'])
++    assert record['tracks'][0]['effects'][0]['bypassed'] is True
++    alive.choose_file('Open session', 'Open Alive Session', saved)
++    collect('opened-stopped')
++    assert alive.value('Transport playing') == 'false'
++    assert all(alive.value(f'{name} clip runtime').startswith('Cued Clip 1') for name in names)
++    alive.transport('start'); pause(2); alive.transport('stop')
++    collect('saved-opened-eight')
++    disclosure('Audio details', False)
++    activate('Remove Track 8 track')
++    alive.choose_file('Add instrument track', 'Load Ultra Device', Path('apps/ultra/examples/subtractive.ultra').resolve())
++    activate('Select Track 8 slot 1'); activate('Create clip'); activate('Add note')
++    activate('Prepare / Apply')
++    collect('rebuilt-prepared')
++    alive.transport('start'); pause(2); alive.transport('stop')
++    collect('remove-add-create-apply')
++    disclosure('Audio details', False)
++    alive.choose_file('Save session as', 'Save Alive Session', ui.output / 'scenes-rebuilt.alive')
++    activate('Alive audio settings'); activate('Stop Alive audio to edit settings'); activate('Close audio settings')
++    time.sleep(1.2)
++    final = collect('witnessed-final-retirement')
++    assert final['complete'] and not errors, (final, errors)
++    assert all(int(alive.value(f'Track {i} active voices')) == 0 for i in range(1, 9))
++    stop.set(); worker.join(timeout=5)
++    assert not worker.is_alive(), 'Resource sampler did not stop before manifest hashing'
++    (ui.output / 'scenes-final-epochs.json').write_text(json.dumps(final, indent=2))
++    report = {'complete': True, 'atomic_scene_partial_override': True, 'all_empty_scene': True, 'saved_defaults_restored': True, 'physical_audio': False, 'physical_xruns': None,
++              'settings': settings, 'audio': audio, 'completed_epochs': epochs.cursor,
++              'resources': resources.manifest(), 'epoch_log': epoch_log.manifest(),
++              'observations': observations, 'sampling_errors': errors,
++              'duration_intervals': {e['epoch_id']: histogram_summary(e['metrics']['duration_hist'], final['duration_upper_edges_ns'], e['metrics']['duration_max_ns']) for e in final['completed']}}
++    (ui.output / 'scenes-report.json').write_text(json.dumps(report, indent=2))
++    alive.screenshot('scenes-final.png')
++    activate('Quit Alive')
++except Exception:
++    alive.screenshot('scenes-failure.png')
++    raise
++finally:
++    stop.set()
++    if worker.is_alive(): worker.join(timeout=5)
++    if capture: capture[0].finish()
++    (ui.output / 'scenes-errors.json').write_text(json.dumps(errors))
+diff --git c/apps/ultra/tests/run_alive_capacity.py i/apps/ultra/tests/run_alive_capacity.py
+index 5883d0b..764577f 100644
+--- c/apps/ultra/tests/run_alive_capacity.py
++++ i/apps/ultra/tests/run_alive_capacity.py
+@@ -13,6 +13,8 @@ parser.add_argument("output", type=Path)
+ parser.add_argument("--verify", action="store_true")
+ parser.add_argument("--guards", action="store_true")
+ parser.add_argument("--samples", type=int, default=1200)
++parser.add_argument("--scenes", action="store_true")
++parser.add_argument("--proposed-scenes", action="store_true", help="Enable scene bits only in the retained measurement copy")
+ args = parser.parse_args()
+ output = args.output.resolve()
+ output.mkdir(parents=True, exist_ok=False)
+@@ -20,6 +22,11 @@ shutil.copy2(__file__, output / "runner.py")
+ source = output / "source"
+ shutil.copytree(ROOT / "apps/ultra/src-tauri/native", source / "src-tauri/native")
+ shutil.copytree(ROOT / "apps/ultra/core", source / "core")
++if args.proposed_scenes:
++    policy = source / "src-tauri/native/alive_session_clip_policy.hpp"
++    policy.write_text(policy.read_text().replace(
++        "out.features = ALIVE_SESSION_V3_FEATURE_ADMITTED;",
++        "out.features = ALIVE_SESSION_V3_FEATURE_ADMITTED | ALIVE_SESSION_V3_FEATURE_ATOMIC_TRACK_ACTIONS;"))
+ (source / "tests").mkdir()
+ for name in ("alive_session_capacity.cpp", "alive_session_capacity_fixture.hpp", "canvas_callback_guard.hpp"):
+     shutil.copy2(ROOT / "apps/ultra/tests" / name, source / "tests" / name)
+@@ -44,11 +51,13 @@ if args.guards:
+     command += ["-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock"]
+ run(command, "build.log")
+ manifest = {"base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+-            "sources_modified_by_runner": False, "diagnostic_guards": args.guards, "files": {}}
++            "sources_modified_by_runner": args.proposed_scenes, "proposed_scene_bits": args.proposed_scenes,
++            "diagnostic_guards": args.guards, "files": {}}
+ for path in sorted(source.rglob("*")):
+     if path.is_file(): manifest["files"][str(path.relative_to(output))] = hashlib.sha256(path.read_bytes()).hexdigest()
+ for path in (output / "probe", ROOT / "apps/ultra/build/core/libultra_core_bundle.a"):
+     manifest["files"][str(path)] = hashlib.sha256(path.read_bytes()).hexdigest()
+ (output / "manifest.json").write_text(json.dumps(manifest, indent=2))
+-run([str(output / "probe"), *( ["--verify"] if args.verify else [str(args.samples)] )], "probe.log")
++arguments = (["--scene-verify"] if args.verify else ["--scenes", str(args.samples)]) if args.scenes else (["--verify"] if args.verify else [str(args.samples)])
++run([str(output / "probe"), *arguments], "probe.log")
+ print(output)
+diff --git c/apps/ultra/ui/alive-dom.test.mjs i/apps/ultra/ui/alive-dom.test.mjs
+index 249ed86..783ec9f 100644
+--- c/apps/ultra/ui/alive-dom.test.mjs
++++ i/apps/ultra/ui/alive-dom.test.mjs
+@@ -31,6 +31,38 @@ function clipState(){const s=state();s.mode='clipsV3';s.preparationRevision='1';
+   for(const t of s.document.tracks){const clip={id:`clip-${t.id}`,name:'Clip 1',lengthBeats:s.document.lengthBeats,notes:t.notes.map((n,i)=>({...n,id:`note-${t.id}-${i}`})),automation:t.automation};t.slots=[clip,null,null,null];t.defaultClipId=clip.id;delete t.notes;delete t.automation;s.preparedClips.push({trackId:t.id,clipId:clip.id,name:clip.name,slot:0,lengthFrames:'411429'});}
+   s.runtime={tracks:s.document.tracks.map(t=>({trackId:t.id,activeClipId:t.slots[0].id,phase:'0',epoch:'1',pendingAction:null,pendingClipId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'};return s;}
+ 
++test('scene controls launch a prepared row once without selection or document edits',async()=>{
++  const initial=clipState();initial.capabilities={atomicTrackActions:true};initial.state.playing=0;initial.audio.running=true;
++  initial.draft=structuredClone(initial.document);initial.draft.tracks[0].slots[0].name='Draft name';
++  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
++  const button=page.find('Launch scene 1');assert.ok(button,'scene row has an explicit launch button');
++  assert.match(page.find('Prepared scene 1').textContent,/Pulse: Clip 1/);assert.doesNotMatch(page.find('Prepared scene 1').textContent,/Draft name/);
++  assert.match(page.find('Prepared scene 4').textContent,/Pulse: Stop.*Harmony: Stop/);
++  await page.find('Select Harmony slot 2').fire('click');button.focus();await button.fire('click');
++  const calls=native.calls.filter(c=>c.name!=='alive_current');assert.deepEqual(calls,[{name:'alive_launch_scene',args:{generation:1,preparationRevision:'1',slot:0}}]);
++  assert.equal(page.find('Select Harmony slot 2').attrs['aria-pressed'],'true');assert.equal(page.doc.activeElement,button);
++  assert.equal(view.model.document().tracks[0].slots[0].name,'Draft name');view.dispose();
++});
++test('scene receipt shows separate member outcomes and never presents it as transport success',async()=>{
++  const initial=clipState();initial.capabilities={atomicTrackActions:true};initial.audio.running=true;
++  initial.runtime.requests=[{preparationRevision:'1',requestSerial:'9007199254740993',sceneSlot:0,trackId:null,status:'pending',reason:18,targetFrame:'96000',members:[{trackId:'track-1',clipId:'clip-track-1',action:'launch',status:'pending'},{trackId:'track-2',clipId:'clip-track-2',action:'launch',status:'superseded'}]}];
++  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
++  const result=page.find('Scene 1 request');assert.ok(result);assert.match(result.textContent,/9007199254740993.*pending.*96000/);
++  assert.match(result.textContent,/Pulse: pending.*Harmony: superseded/);assert.doesNotMatch(page.ids.get('notice').textContent,/Transport/);
++  native.snapshot.snapshotSequence='2';native.snapshot.runtime.requests[0].status='mixed';native.snapshot.runtime.requests[0].members[0].status='applied';await view.refresh();
++  assert.match(result.textContent,/Pulse: applied.*Harmony: superseded/);assert.doesNotMatch(result.textContent,/prior playback or pending action is retained/);view.dispose();
++});
++test('queued scene captures preparation at gesture and late result preserves newer selection and focus',async()=>{
++  const initial=clipState();initial.capabilities={atomicTrackActions:true};initial.audio.running=true;
++  const page=dom('./alive.html'),native=backend(initial),boundary=delayedBoundary(native,'alive_base',()=>{}),view=mountAlive({...page,invoke:boundary.invoke});await settle();
++  const input=page.find('Cutoff base');input.value='1800';await input.fire('change');
++  const launch=page.find('Launch scene 4');assert.ok(launch);await launch.fire('click');
++  await page.find('Select Harmony slot 3').fire('click');const selected=page.find('Select Harmony slot 3');selected.focus();
++  native.snapshot.preparationRevision='2';native.snapshot.snapshotSequence='2';await view.refresh();boundary.release();await settle();await settle();
++  assert.deepEqual(native.calls.find(c=>c.name==='alive_launch_scene').args,{generation:1,preparationRevision:'1',slot:3});
++  assert.equal(page.find('Select Harmony slot 3').attrs['aria-pressed'],'true');assert.equal(page.doc.activeElement,selected);view.dispose();
++});
++
+ test('track addition follows explicitly advertised capacity and retains the legacy fallback',async()=>{
+   const initial=clipState();initial.state.playing=0;initial.capabilities={maxTracks:8,maxDevices:16};
+   const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+diff --git c/apps/ultra/ui/alive.css i/apps/ultra/ui/alive.css
+index a16a161..abbe26d 100644
+--- c/apps/ultra/ui/alive.css
++++ i/apps/ultra/ui/alive.css
+@@ -7,3 +7,4 @@
+ .clip-editors{height:340px}.piano-area{overflow:auto}#piano-roll{height:218px;flex:none}#piano-help,.note-velocity{padding:0 8px}#piano-help{font-size:12px;line-height:1.35}.note-velocity{font-size:12px}
+ .clip-bank{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(100px,1fr)) auto;gap:6px;padding-top:6px;border-top:1px solid var(--line,#484848)}.clip-slot{display:grid;grid-template-columns:1fr auto;gap:4px;min-width:0}.clip-slot small{grid-column:1/-1;min-height:16px;color:var(--muted,#b4b4b0);white-space:normal}.clip-slot.selected .clip-select{border-color:#91b9ed;background:#303c4b}.clip-select{overflow:hidden;text-overflow:ellipsis;text-align:left}.track-stop{align-self:start}.clip-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0}.clip-controls input[aria-label="Clip name"]{width:140px}.clip-controls label{display:flex;align-items:center;gap:5px}.clip-controls .muted{flex-basis:100%}#clip-bank-notice{white-space:normal;overflow-wrap:anywhere}#notice{white-space:normal;overflow-wrap:anywhere}@media(max-width:1000px){.clip-bank{grid-template-columns:repeat(2,minmax(100px,1fr))}.track-stop{grid-column:1/-1}}
+ .track.clips-track{grid-template-columns:minmax(110px,1fr) 100px 30px 30px 100px auto}.clip-runtime{grid-column:1/-1;color:var(--text,#eeeeec)}
++#scene-help{margin:8px 12px 4px}#scene-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:4px 12px 10px;border-bottom:1px solid var(--line)}.scene-row{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0}.scene-row small,.scene-result{font-size:11px;line-height:1.4;overflow-wrap:anywhere}.scene-launch{color:var(--amber)}@media(max-width:1000px){#scene-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}
+diff --git c/apps/ultra/ui/alive.html i/apps/ultra/ui/alive.html
+index 1746d90..b419b15 100644
+--- c/apps/ultra/ui/alive.html
++++ i/apps/ultra/ui/alive.html
+@@ -9,6 +9,8 @@
+ <div class="master"><span>Master</span><div id="master-meter" class="stereo-meter" aria-label="Master stereo peak"><i></i><i></i></div><output id="master-peak" aria-label="Master peak">0 / 0</output></div>
+ </section>
+ <main>
++<p id="scene-help" class="muted" hidden>Launches this prepared row. Empty slots stop their tracks.</p>
++<section id="scene-controls" aria-label="Prepared scene rows" hidden></section>
+ <section id="tracks" aria-label="Instrument tracks"></section>
+ <div class="schedule-bar"><span id="draft-status">Prepared schedule</span><span class="muted">Prepare / Apply requires stopped transport.</span><button id="undo" aria-label="Undo pending edit">Undo pending edit</button><button id="redo" aria-label="Redo pending edit">Redo pending edit</button><button id="apply" class="primary" aria-label="Prepare / Apply">Prepare / Apply</button><button id="discard" aria-label="Discard edits">Discard edits</button><button id="add-track" aria-label="Add instrument track">Add instrument...</button></div>
+ <section class="chain-section" aria-labelledby="chain-title"><header class="section-heading"><h2 id="chain-title">Selected track chain</h2><span class="muted">Instrument &rarr; effects &rarr; mixer. Selection does not start playback.</span><button id="add-effect" aria-label="Add effect">Add effect...</button></header><div id="chain"></div><p id="chain-status" class="muted"></p></section>
+diff --git c/apps/ultra/ui/alive.mjs i/apps/ultra/ui/alive.mjs
+index c65e357..2ab07aa 100644
+--- c/apps/ultra/ui/alive.mjs
++++ i/apps/ultra/ui/alive.mjs
+@@ -100,7 +100,36 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
+     });
+     svg.append(svgElement('line',{class:'playhead',x1:pad,x2:pad,y1:0,y2:height,stroke:'#eeeeec','stroke-width':1}));
+   }
+-  let clipControlsKey='',slotViews=[];
++  let clipControlsKey='',slotViews=[],sceneViews=[];
++  function sceneText(result,snapshot){
++    const reason=({7:'command queue full',8:'receipt table busy',12:'optional work limit',13:'Stop canceled',14:'end canceled',15:'feature disabled',16:'runtime invariant',18:'replaced request'})[result.reason]??`native reason ${result.reason}`;
++    const members=(result.members??[]).map(member=>`${snapshot.document.tracks.find(t=>t.id===member.trackId)?.name??member.trackId}: ${member.status}${member.action==='stop'?' (track Stop)':''}`).join(' / ');
++    return `Scene ${result.sceneSlot+1} request ${result.requestSerial} ${result.status}${result.targetFrame?` at frame ${result.targetFrame}`:''}. ${members}${result.reason?`. Request summary: ${reason}.`:''}${[7,8,12].includes(result.reason)?' Let audio advance before an explicit retry.':''}`;
++  }
++  function launchScene(slot){
++    const intent={generation:generation(),preparationRevision:model.snapshot().preparationRevision,slot};
++    return enqueue(async()=>{
++      const result=await invoke('alive_launch_scene',intent);await refresh();
++      if(result){const observed=observedRequest(result);notice(sceneText(observed,model.snapshot()),observed.status==='rejected');}
++    });
++  }
++  function renderScenes(snapshot){
++    const enabled=snapshot.mode==='clipsV3';$('scene-controls').hidden=$('scene-help').hidden=!enabled;
++    if(!enabled)return;
++    if(!sceneViews.length)for(let slot=0;slot<4;slot++){
++      const row=make('div','scene-row'),launch=make('button','scene-launch',`Launch scene ${slot+1}`),prepared=make('small','muted'),result=make('output','scene-result');
++      launch.setAttribute('aria-label',`Launch scene ${slot+1}`);launch.setAttribute('aria-describedby','scene-help');launch.addEventListener('click',guard(()=>launchScene(slot)));
++      prepared.setAttribute('aria-label',`Prepared scene ${slot+1}`);result.setAttribute('aria-label',`Scene ${slot+1} request`);
++      row.append(launch,prepared,result);$('scene-controls').append(row);sceneViews.push({slot,launch,prepared,result});
++    }
++    for(const v of sceneViews){
++      v.launch.disabled=!snapshot.capabilities?.atomicTrackActions;
++      v.launch.title=v.launch.disabled?'Atomic scenes are unavailable for this prepared profile':snapshot.audio.running?'Launch this prepared row':'Start Audio to launch a scene';
++      v.prepared.textContent=snapshot.document.tracks.map(t=>`${t.name}: ${snapshot.preparedClips?.find(c=>c.trackId===t.id&&c.slot===v.slot)?.name??'Stop'}`).join(' / ');
++      const request=snapshot.runtime?.requests.filter(r=>r.sceneSlot===v.slot).at(-1);
++      v.result.textContent=request?sceneText(request,snapshot):'';
++    }
++  }
+   function clipEdit(operation){
+     const scope=scopeRevision,token=selectionToken;
+     return enqueue(async()=>{
+@@ -117,7 +146,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
+   }
+   function observedRequest(result){return model.snapshot().runtime?.requests.find(r=>r.preparationRevision===result.preparationRevision&&r.requestSerial===result.requestSerial)??result;}
+   function renderTransportRequest(snapshot){
+-    const request=snapshot.runtime?.requests.filter(r=>r.trackId===null).at(-1);
++    const request=snapshot.runtime?.requests.filter(r=>r.trackId===null&&r.sceneSlot==null).at(-1);
+     if(!request){transportRequestKey='';return;}
+     const key=JSON.stringify(request);if(key===transportRequestKey)return;transportRequestKey=key;
+     notice(`Transport ${requestText(request,snapshot)}`,request.status==='rejected');
+@@ -135,6 +164,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
+   }
+   function renderClipControls(){
+     const snapshot=model.snapshot(),document=model.document(),track=document.tracks[selected],clip=selectedClip(track),enabled=document.format==='alive-session-v3',container=$('clip-controls');
++    renderScenes(snapshot);
+     $('clip-bank-notice').textContent=snapshot.notice??'';
+     $('add-note').disabled=enabled&&!clip;$('add-lane').disabled=enabled&&!clip;
+     for(const v of slotViews){

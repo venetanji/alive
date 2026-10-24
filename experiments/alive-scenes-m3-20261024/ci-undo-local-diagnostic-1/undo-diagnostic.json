@@ -1,0 +1,76 @@
+[
+  {
+    "kind": "begin",
+    "monotonic": 80675.675579385,
+    "binary": "/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/alive",
+    "source": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py"
+  },
+  {
+    "kind": "piano_begin",
+    "monotonic": 80743.598077832
+  },
+  {
+    "kind": "click",
+    "monotonic": 80747.325156566,
+    "name": "Undo pending edit",
+    "before_focus_rect": [
+      614,
+      -140,
+      119,
+      28
+    ],
+    "used_rect": [
+      614,
+      370,
+      119,
+      28
+    ],
+    "after_rect": [
+      614,
+      370,
+      119,
+      28
+    ],
+    "sent_monotonic": 80746.455415442,
+    "observed": {
+      "pitch": "80",
+      "beat": "2.25",
+      "redo_enabled": true,
+      "status": "Pending schedule edits discarded."
+    }
+  },
+  {
+    "kind": "click",
+    "monotonic": 80748.463636225,
+    "name": "Redo pending edit",
+    "before_focus_rect": [
+      742,
+      370,
+      119,
+      28
+    ],
+    "used_rect": [
+      742,
+      370,
+      119,
+      28
+    ],
+    "after_rect": [
+      742,
+      370,
+      119,
+      28
+    ],
+    "sent_monotonic": 80747.598132683,
+    "observed": {
+      "pitch": "81",
+      "beat": "2.25",
+      "redo_enabled": false,
+      "status": "Pending schedule edits discarded."
+    }
+  },
+  {
+    "kind": "piano_pass",
+    "monotonic": 80757.526654836
+  }
+]

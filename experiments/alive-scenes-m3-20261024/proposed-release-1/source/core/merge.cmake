@@ -1,0 +1,5 @@
+file(WRITE "${OUTPUT}.mri" "CREATE ${OUTPUT}\nADDLIB ${CORE}\nADDLIB ${BUNDLE}\nADDLIB ${GUEST}\nADDLIB ${RUST}\nSAVE\nEND\n")
+execute_process(COMMAND "${AR}" -M INPUT_FILE "${OUTPUT}.mri" RESULT_VARIABLE result)
+if(NOT result EQUAL 0)
+ message(FATAL_ERROR "Could not merge Ultra native archive")
+endif()

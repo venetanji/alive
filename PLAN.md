@@ -574,6 +574,30 @@ tracks. Prove sample equivalence to simultaneous individual requests, all-or-non
 queue failure, supersession and Stop races. Preserve selection independence,
 device ownership, persistence and the complete native workflow; no arrangement.
 
+Implemented at `2b1eab1`; independent spec/quality review finds no blocking
+defect. One missing solo-enabled scene/sample comparison is carried into Task 15.
+Both measured profiles now support one atomic prepared row request with common
+target and per-track outcomes, including empty-slot Stops and partial individual
+supersession. ABI/schema/root/event/queue/work ceilings remain unchanged.
+Retained evidence: `experiments/alive-scenes-m3-20261024/`. Parent replay checks
+691 retained files, all 20 committed task files, 28 measured native sources,
+56 release distributions / 67,200 raw samples and separate guarded bounds.
+Combined 8-track/16-device nearest-rank p99.9 is 5.697854/8.804767/15.514588 ms
+at 256/512/1024 frames; the surrogate is not a proved execution-time upper bound
+and larger cases miss the advisory target. Buffer guidance remains conservative.
+The final actual Alive scene workflow proves mixed/all-eight/empty rows,
+scoped Stop, independent editor state, history, save/reopen and stopped rebuild.
+Four finalized PipeWire epochs at 48 kHz stereo f32 / observed 512 frames sum to
+9974 callbacks / 5,106,688 frames, maximum measured processing 5.013437 ms and
+zero reported typed errors or software over-budget callbacks. Finite software
+capture is 51.722667 seconds; resource coverage gaps and +6082 KiB short-workflow
+PSS growth are retained, with no physical-underrun or endurance claim.
+The original clip pointer failures and unknown earlier `7b76c7e` CI Undo failure
+remain failures. The narrowly corrected pointer harness passes original
+postconditions; its disclosure occlusion is proved, initial launch cause is
+unknown. Historical `7b76c7e` packages pass all four both-app platform targets
+with publishing skipped; final-source CI/package qualification remains pending.
+
 ### Milestone 4: Hosted Device Usability
 
 - [x] Compact metadata-driven chain panels and optional Edit in Ultra; editor

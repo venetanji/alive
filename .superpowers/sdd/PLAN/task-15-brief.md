@@ -1,8 +1,10 @@
 # Task 15: Final Musical Workflow And Native Acceptance
 
-Prepared while Task 13a is implementing. Dispatch only after Tasks 13a, 13b and
-14 pass independent review and actual-release gates. Parent must supply their
-exact commits/reports and reconcile this brief with their accepted contracts.
+Reconciled after Tasks 13a/13b and 14 passed independent review and their local
+actual-release gates. Task 13a accepted through `e1f09e5`; Task 13b through
+`1768324`, retained at `7b76c7e`; Task 14 source is `2b1eab1`. Read the accepted
+Task 14 report/review in `experiments/alive-scenes-m3-20261024/contracts/` and
+that experiment's README for the current member semantics and measured limits.
 The expanded user specification is
 `/home/venetanji/.codex/attachments/b3b823b7-f117-4aa1-a4da-36fc87ffdfaf/pasted-text-1.txt`.
 Read it and the current PLAN/README/SESSION_CONTRACT before editing.
@@ -35,6 +37,11 @@ scoped Stop, file dialogs/input readiness and package notices. Browser fixtures
 alone cannot qualify this workflow.
 
 ## One Interface Audit
+
+Reconcile PRODUCT.md's stale two-track/scenes-excluded description with the
+accepted profile before applying its design context. Describe the current
+bounded product and ownership accurately; retain the compact existing language
+and explicit exclusions rather than adding a new design direction.
 
 Use the invoked Impeccable skill for one bounded full-surface native-app audit:
 inspect transport, tracks/slots/scenes, piano roll, selected chain/parameters,
@@ -71,6 +78,16 @@ every interval, together with credited and excluded duration/reason, so the
 parent can independently replay the full 1800-second count. Task 13b's short
 overhead control driver retains only helper-computed stage totals; that is not
 sufficient evidence for this final gate and must not be inherited as such.
+Include run/stream identity, sample rate, observation validity/gaps and prepared
+track playback state. Do not credit a running transport with all tracks locally
+stopped. Each action has a monotonic log entry and a token boundary that prevents
+credit across an unobserved stop/restart/seek/reconfiguration. Keep raw frame
+values as exact integers or canonical decimal strings. Retain both endpoints
+and the derivation for each credited/excluded interval, not only cumulative
+helper totals. Record capture byte/frame offsets at observations where available
+so the parent can stream-check each running interval for signal and silence
+without inferring alignment to physical audio. Natural musical rests remain
+valid, explicitly described intervals rather than hidden missing evidence.
 
 Retain per-epoch final errors including failed attempts, callback timing and
 actual buffer-budget distributions/maxima/overflow, requested versus observed
@@ -100,6 +117,12 @@ session migration/round-trip, callback allocation/free/mutex and authorized
 terminal-Quit regressions. Preserve original assertions rather than weakening
 them to accommodate the new workflow. Guard builds and release timing remain
 separate facts; include same-source telemetry overhead qualification.
+
+Close Task 14's one deferred Minor coverage finding in this final batch: add a
+solo-enabled variant to the existing native scene-versus-individual sample
+equivalence matrix, including a muted solo track to observe mute precedence.
+The unchanged mixer has no identified associated defect; this is explicit
+missing coverage from the binding scene design, not authorization to redesign it.
 
 Parent owns PLAN, ledger, PR, retained experiments, final foundation ref fetch,
 whole-branch independent review, authorized feature push, exact pushed-commit
