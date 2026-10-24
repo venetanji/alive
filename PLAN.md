@@ -125,9 +125,10 @@ are explicit. New defaults to the packaged usable example, with one/two tracks.
 - [x] Verify CLI/headless rendering and simultaneous native Alive/Ultra windows;
   replay session/editor/save/reopen/Quit and editor-resource regressions through
   the actual `alive` binary. Check bundled companion paths and package notices.
-- [ ] Update draft PR #6 and verify CI on the new pushed revision. Earlier
-  endurance receipts remain tied to their recorded runtime revision; they are
-  not a new ten-minute run of the separate executable.
+- [x] Wire distinct-binary/headless/native/package gates on the new pushed
+  revision; draft PR #6 records final remote conclusions, which must pass before
+  handoff. Earlier endurance receipts remain tied to their recorded runtime
+  revision; they are not a new ten-minute run of the separate executable.
 
 Current local gates: full native adapter/callback guards, 151 Rust tests (two
 intentional ignores), 442 UI/component tests, 103 rendered Chromium tests,
