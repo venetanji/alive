@@ -137,3 +137,89 @@ fn cpal_owned_error_destruction_is_separate_from_the_typed_action() {
     assert_eq!(FREES.with(Cell::get), 1);
     println!("CPAL_ERROR_BOUNDARY=typed_action_allocations:0,frees:0; owned_error_drop_frees:1");
 }
+
+#[test]
+#[ignore = "exact saved-fixture release measurement; requires ALIVE_MEASUREMENT_SESSION"]
+fn native_saved_clip_release_overhead() {
+    use crate::session::{host::Host, native, read};
+    use sha2::{Digest, Sha256};
+    let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let fixture = PathBuf::from(std::env::var("ALIVE_MEASUREMENT_SESSION").unwrap());
+    let fixture_sha = format!("{:x}", Sha256::digest(std::fs::read(&fixture).unwrap()));
+    let mut host = Host::default();
+    let prepared = host.enable_clips(read(&fixture).unwrap()).unwrap();
+    assert!(prepared.document.is_clips() && prepared.document.loop_enabled);
+    let mut request_serial = 0;
+    for frames in [256, 512] {
+        for repetition in 0..3 {
+            host.install(prepared.clone()).unwrap();
+            assert_eq!(unsafe { ultra_external_start() }, 1);
+            request_serial += 1;
+            let request = native::RequestV3 {
+                kind: native::V3_START,
+                preparation_revision: host.preparation_revision,
+                request_serial,
+                ..Default::default()
+            };
+            let mut receipt = native::ReceiptV3::default();
+            assert_eq!(
+                unsafe { native::alive_session_request_v3(&request, &mut receipt) },
+                1,
+                "request error {}: {}", receipt.error, native::error()
+            );
+            let metrics = Metrics::default();
+            let mut n = Numeric::default();
+            let mut l = [0.; BLOCK];
+            let mut r = [0.; BLOCK];
+            let mut data = vec![0f32; frames * 2];
+            let clock = Instant::now();
+            let mut durations = Vec::with_capacity(5000);
+            for index in 0..5064 {
+                let begin = clock.elapsed().as_nanos();
+                if cfg!(feature = "telemetry-disabled") {
+                    fill(
+                        &mut data,
+                        &metrics,
+                        &mut n,
+                        &mut l,
+                        &mut r,
+                        |n, l, r| unsafe { ultra_external_render(n, l, r) },
+                    );
+                    metrics.publish(&n, 0, None);
+                } else {
+                    measured_fill(
+                        &mut data,
+                        &metrics,
+                        &mut n,
+                        &mut l,
+                        &mut r,
+                        |n, l, r| unsafe { ultra_external_render(n, l, r) },
+                        || clock.elapsed().as_nanos() as u64,
+                    );
+                }
+                let elapsed = (clock.elapsed().as_nanos() - begin) as u64;
+                if index >= 64 {
+                    durations.push(elapsed);
+                }
+            }
+            let mut state = native::StateV3::default();
+            assert_eq!(unsafe { native::alive_session_state_v3(&mut state) }, 1);
+            assert_eq!(state.playing, 1);
+            assert_eq!(n.v[RENDER_FAILURE], 0);
+            durations.sort_unstable();
+            println!(
+                "NATIVE_OVERHEAD={}",
+                serde_json::json!({"telemetry_enabled":!cfg!(feature="telemetry-disabled"),"frames":frames,"repetition":repetition,"samples":durations.len(),"p50_ns":durations[2500],"p95_ns":durations[4750],"p99_ns":durations[4950],"p999_ns":durations[4995],"max_ns":durations[4999],"source_id":source_id(),"fixture_sha256":fixture_sha,"devices":prepared.devices.len(),"tracks":prepared.tracks.len(),"backend":"synchronous native external render; no CPAL scheduling","warmup_callbacks":64,"startup_retained_in_metrics":true,"duration_samples":n.v[SAMPLES].to_string(),"native_render_failures":n.v[RENDER_FAILURE].to_string(),"observed_frames_min":n.v[MIN],"observed_frames_max":n.v[MAX]})
+            );
+            unsafe {
+                ultra_audio_stop();
+            }
+        }
+    }
+    unsafe {
+        native::alive_session_reset();
+        for slot in 0..16 {
+            crate::ultra_canvas_close_document(slot);
+        }
+    }
+}

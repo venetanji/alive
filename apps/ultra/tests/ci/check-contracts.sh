@@ -6,6 +6,7 @@ cd "$ROOT"
 # Node executes the existing tests, including the controller's asynchronous IPC
 # boundary tests. No JavaScript timer is accepted as native audio evidence.
 node --test apps/ultra/ui/*.test.mjs apps/ultra/ui/components/*.test.mjs
+python3 -m unittest discover -s apps/ultra/tests -p test_stream_measurement.py
 # Preserve the original validation probes as a regression gate on current code.
 node --test experiments/ultra-astra-validation-20261024/frontend/probes.test.mjs
 node --test experiments/max-reference/help-roots-native-20261022/import.test.mjs

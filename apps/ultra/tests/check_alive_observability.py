@@ -58,7 +58,7 @@ def collect():
     else:
         epoch_log.write({'kind': 'observation_gap', 'monotonic': time.monotonic(), 'reason': 'diagnostics_unavailable'})
     running, frame = accessible('Transport playing'), accessible('Absolute frame')
-    if running is not None and frame is not None:
+    if running in ('true', 'false') and frame and frame.isascii() and frame.isdecimal():
         playing.observe(time.monotonic(), running == 'true', int(frame), boundary)
     else:
         playing.last = None
@@ -74,7 +74,6 @@ def sample():
                    'sampler_capture_overhead': overhead_sampler.sample(),
                    'private_audio_server': server_sampler.sample() if server_sampler else None}
             with lock:
-                collect()
                 row['playing_seconds_proven'] = playing.seconds
                 row['missed_cadences'] = max(0, int(time.monotonic()-deadline))
                 resource_log.write(row)
@@ -88,6 +87,25 @@ def sample():
 
 
 original_click = ui.click
+original_sleep = time.sleep
+last_observation = 0.
+collecting = False
+
+
+def observed_sleep(seconds):
+    # AT-SPI remains on the UI-driving thread; only /proc sampling is concurrent.
+    global last_observation, collecting
+    deadline = time.monotonic() + seconds
+    while True:
+        original_sleep(min(1, max(0, deadline-time.monotonic())))
+        if worker is not None and not collecting and not stop.is_set() and time.monotonic()-last_observation >= 1:
+            collecting = True
+            try:
+                with lock: collect()
+                last_observation = time.monotonic()
+            finally: collecting = False
+        if time.monotonic() >= deadline: break
+
 original_settings = alive.check_audio_settings
 worker = None
 
@@ -99,6 +117,7 @@ def settings():
     time.sleep(1.2)
     worker = threading.Thread(target=sample, daemon=True)
     worker.start()
+    with lock: collect()
     return result
 
 
@@ -166,9 +185,11 @@ def qualify_and_finish():
 
 alive.check_audio_settings = settings
 ui.click = clicked
+time.sleep = observed_sleep
 try:
     clips.run()
 finally:
+    time.sleep = original_sleep
     (ui.output/"observability-errors.json").write_text(json.dumps(errors))
     stop.set()
     if worker is not None: worker.join(timeout=5)
