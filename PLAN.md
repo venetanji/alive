@@ -202,6 +202,18 @@ Save As and reopen/play. Extend the display-free probe with actual saved chains.
 Keep existing two-track UI functional via a small compatibility view until Task
 9. No track-count expansion. Run Rust/native/contracts gates and checkpoint.
 
+Implemented at `edd7165`, independently approved with no Critical/Important
+findings. Canonical session-v2, deterministic v1 migration, original-source
+hashes, stable instance-targeted lanes, stopped chain operations and native
+window bindings are integrated. Both deferred Task 7 coverage items are tested.
+171 Rust tests (two existing ignored), Alive capability test, 449 primary Node
+tests, full native/pinned contracts and actual/staged saved-chain probes pass.
+The existing real desktop journey and eight editor cycles also pass on the
+unchanged rebuilt release app; receipts/screenshots are retained under
+`experiments/alive-chains-m2-20261024/`. Minor existing warning and partial-install
+rollback test coverage remain ledgered for final triage. Desktop chain controls
+and full M2 acceptance remain Task 9; there is no new endurance/physical claim.
+
 ### Task 9: Minimal Chain Interface
 
 Expose selected-track instrument/effect chain, metadata-driven parameters and
@@ -227,6 +239,100 @@ infer DSP lifetime or sample timing from Live/Max editor observations.
 - [ ] Add scene launching only after individual launch tests pass. Test and
   checkpoint each complete slice; no arrangement, recording or engine rewrite.
 
+### Task 10: Piano Roll And Pending-Edit History
+
+After M2 acceptance, make the existing single-clip SVG interactive without a
+new audio ABI. Add/select/move/resize/delete notes, velocity and keyboard edits
+on a fixed 1/16-note grid (0.25 quarter-note beat). Preserve imported off-grid
+offsets; validate rounded-frame overlaps and reject truncating length changes.
+Use pointer capture, stable gesture geometry and cancellation; one gesture is
+one transaction. Keep precise numeric fields and keyboard access.
+
+Rust owns focused pending-musical-edit history, bounded to 64 entries and 8 MiB
+combined payload. `alive_edit` and `alive_history` authenticate generation and
+draft revision; stale requests preserve state. Route existing musical fields
+through this gate. Undo merges accepted live bases/bypass/mixer by instance ID.
+Successful Apply/Discard/New/Open/structural change clears the scope; failure
+preserves it. Keep Ultra undo unchanged. Test gestures, cancellation, off-grid
+rounding, ownership and failed Apply, then actual native edit/play/save/reopen.
+Detailed recommendations: `.superpowers/sdd/PLAN/task-10-workflow-design.md`
+and `task-10-reconciliation.md`; this task has no clip-bank or capacity increase.
+
+### Task 11: Native Clip Bank And Quantized Actions
+
+Append one fixed v3 C ABI with storage for eight tracks, sixteen devices and
+32 clips (four slots per track), initially admitting only two tracks/six
+devices. Preserve v1/v2 layouts, semantics and tests through common helpers;
+old state getters reject without writing if a larger state is unrepresentable.
+Keep 1024 stored events, 32/frame, 64/1024 frames, sixteen roots, two effects per
+track and the 64-command snapshot. Structural array size is not admitted audio
+capacity. No new DSP engine or per-clip device instance.
+
+Use native per-track cursors and one-bar quantization, separate from UI
+selection. Switch/stop clears only its track; coalesce same-frame seam/launch/
+seek transitions, chase ownership once, and dispatch incoming phase-zero events
+once. Launch never compiles, replaces graphs or invalidates editors. Explicit
+request serials/preparation revision and queued/applied/rejected/superseded
+outcomes distinguish queue admission from execution. Stop retains its reserved
+capacity and epoch guarantees.
+
+Prospective native admission covers every selectable clip combination and
+outgoing/incoming splice, including global seams, partial bars and short empty
+loops. Bound reset/chase/parameter/control work separately from stored events.
+Repeated seeks/restarts cannot bypass absolute-frame rolling dispatch/work
+guards; reject optional overload while reserving unconditional termination.
+Use the reconciliation's cyclic/segment envelope and independently test it
+against small brute-force cases. Select/document work ceilings using actual
+Faust-kernel measurements at the initial profile, not guessed deadlines.
+Prove exact samples across arbitrary 1..1024 partitions, all transitions/races,
+ownership, queue saturation, callback guards and original v1/v2 regressions.
+Keep the desktop's existing v2 example usable until Task 12 integrates v3.
+
+### Task 12: Saved Clips And Individual Launch Interface
+
+Integrate reviewed native v3 into Rust and strict `alive-session-v3` storage.
+Deterministic v1->v2->v3 migration preserves beat values, source hashes, device
+IDs, bases, automation and mixer. Four nullable slots/track contain stable clip
+and note IDs; saved defaults start stopped on reopen. Selection, queued action
+and running clip/phase remain distinct. If stricter admission rejects conversion,
+preserve the runnable v2 document and explain the limit.
+
+Create/duplicate/delete clips and edit loop length through focused history;
+duplication creates score IDs while retaining the track's device instances.
+Draft-only clips cannot launch. Aggregate per-track bounds span stored clips:
+128 notes, sixteen lane records and 256 points; global compiled events stay
+1024. Expose actionable density/work errors, including contributing tracks/
+clips and conservative-envelope rejection. Preserve Apply/file/editor ownership
+and failed-operation safety. Test round-trip, Save As, source/reference errors,
+individual switching/stopping, independent score copies and editor continuity;
+complete the actual release app journey before expanding track admission.
+
+### Task 13: Measure And Admit Eight Tracks
+
+Add bounded callback timing/error observability and retain per-stream epochs
+through reconfiguration. Record CPU ticks, PSS, process/worker counts, callback
+duration/actual buffer budgets and available audio errors. Distinguish callback
+processing cost from scheduling lateness, software loopback and physical xruns.
+
+Measure initial 2/6, then internal 4/8 and 8/16 actual-kernel fixtures before
+enabling the eight-track profile in the same v3 ABI. Include uneven two-effect
+chains, full admitted voices/events/parameters, short loops, aligned switches,
+seek/reset/chase and publication. Preserve sixteen roots; eight instruments
+plus nine effects rejects before dependency access. Keep event limits explicit:
+eight simultaneous triads plus two automation points each is 40 events and must
+reject the 32/frame cap. Never shift authored timing or raise limits to pass.
+Report distributions/maxima and practical negotiated desktop buffers; proposed
+50% p99.9 headroom is advisory, not an invented user gate. Test an actual native
+eight-track clip/chain workflow. The final 30-minute soak belongs to Task 15.
+
+### Task 14: Scene Launching
+
+After individual clips and eight-track admission pass, add one atomic scene-row
+command using the existing quantized track actions. Empty slots stop their
+tracks. Prove sample equivalence to simultaneous individual requests, all-or-none
+queue failure, supersession and Stop races. Preserve selection independence,
+device ownership, persistence and the complete native workflow; no arrangement.
+
 ### Milestone 4: Hosted Device Usability
 
 - [ ] Compact metadata-driven chain panels and optional Edit in Ultra; editor
@@ -250,6 +356,24 @@ infer DSP lifetime or sample timing from Live/Max editor observations.
 - [ ] Final pushed-commit CI exercises both applications and supported platform
   packages; provide accessible Linux artifact, exact commands, limitations and
   a short manual acceptance checklist. No release publishing.
+
+### Task 15: Final Native Acceptance And Draft Handoff
+
+Create the contrasting saved example with several independent instances,
+multiple clips, automation/mixer settings and an instrument->effect->effect
+chain. Complete native create/edit/duplicate/launch/stop/parameter/editor/
+Save/Quit/reopen/play acceptance. Run one bounded full-surface Impeccable audit,
+fix together and perform at most one confirmation pass. Retain screenshots.
+
+Run a new 1800-playing-second release-app soak with repeated clip/transport/
+edit/editor operations, CPU/PSS/process/worker and callback timing samples,
+every stream epoch's errors, hardware/backend/rate/requested/observed buffers
+and finite stereo capture. Do not substitute historical ten-minute evidence or
+claim physical audio/MIDI/underruns from software counters. Finish native/Rust/
+UI/browser/contracts/notices and independent whole-branch review; reconcile
+foundation refs, push the reviewed feature head and qualify CI/both-app packages
+on that exact commit. Update draft PR with observed evidence, accessible Linux
+artifact, exact run commands, limitations and manual checklist. No publishing.
 
 Physical MIDI remains stretch work after all five milestones pass. Timing stays
 on one authoritative native frame clock; AOT Faust remains alongside Clockwork,
