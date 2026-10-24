@@ -60,7 +60,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       const actions=make('div','track-actions');for(const[action,label]of [['editor','Editor'],['load','Replace'],['remove','Remove']]){
         const button=make('button','',label);button.setAttribute('aria-label',action==='editor'?`Open ${track.name} editor`:`${label} ${track.name} device`);
         button.addEventListener('click',guard(()=>enqueue(async()=>{
-          if(action==='editor')await command('alive_editor',{track:index});else{const snapshot=await command('alive_device',{track:index,action});model.applied(snapshot);trackKey=musicKey=parameterKey='';render();notice('Device updated.');}
+          if(action==='editor')await command('alive_editor',{instanceId:model.document().tracks[index].device.instanceId});else{const snapshot=await command('alive_device',{trackId:model.document().tracks[index].id,instanceId:model.document().tracks[index].device.instanceId,action});model.applied(snapshot);trackKey=musicKey=parameterKey='';render();notice('Device updated.');}
         })));actions.append(button);
       }
       row.append(name,clip,gainLabel,mute,solo,meters,actions);$('tracks').append(row);trackViews.push({row,detail,svg,gain,mute,solo,bar,readout,actions});
@@ -79,9 +79,9 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     $('lanes').replaceChildren();
     for(const key of ['cutoff','level']){
       const binding=model.snapshot().devices[selected]?.parameters.find(p=>p.key===key);if(!binding)continue;
-      const lane=track.automation.find(l=>l.key===key),section=make('div','lane'),heading=make('div','lane-heading'),label=make('label'),enable=make('input'),add=make('button','',`Add ${binding.label} point`);
+      const lane=track.automation.find(l=>l.instanceId===track.device.instanceId&&l.key===key),section=make('div','lane'),heading=make('div','lane-heading'),label=make('label'),enable=make('input'),add=make('button','',`Add ${binding.label} point`);
       section.dataset.lane=key;enable.type='checkbox';enable.checked=!!lane?.enabled;enable.setAttribute('aria-label',`${binding.label} automation enabled`);label.append(enable,doc.createTextNode(binding.label));heading.append(label,add);add.setAttribute('aria-label',`Add ${binding.label} point`);
-      const ensure=doc=>{const track=doc.tracks[selected];let lane=track.automation.find(l=>l.key===key);if(!lane){lane={key,enabled:false,points:[]};track.automation.push(lane);}return lane;};
+      const ensure=doc=>{const track=doc.tracks[selected];let lane=track.automation.find(l=>l.instanceId===track.device.instanceId&&l.key===key);if(!lane){lane={instanceId:track.device.instanceId,key,enabled:false,points:[]};track.automation.push(lane);}return lane;};
       enable.addEventListener('change',()=>edit(doc=>{ensure(doc).enabled=enable.checked;},false));
       add.addEventListener('click',guard(()=>edit(doc=>{const points=ensure(doc).points,last=points.at(-1)?.beat??-1;const beat=last<0?0:Math.min(doc.lengthBeats-.015625,last+1);if(beat<=last)throw Error('Move or remove the final point to make room before the clip end.');points.push({beat,value:binding.base});})));
       const graph=svgElement('svg',{class:'lane-graph','aria-label':`${binding.label} step automation`,role:'img'}),points=make('div','lane-points');
@@ -100,7 +100,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     const nextKey=JSON.stringify([selected,document.lengthBeats,track.automation,bindings.map(p=>[p.key,p.min,p.max,p.base])]);
     if(nextKey===laneKey)return;laneKey=nextKey;
     for(const section of $('lanes').children){
-      const key=section.dataset.lane,binding=model.snapshot().devices[selected].parameters.find(p=>p.key===key),lane=track.automation.find(l=>l.key===key),svg=section.querySelector('svg'),x=beat=>beat/document.lengthBeats*600,y=value=>36-(value-binding.min)/(binding.max-binding.min)*31;
+      const key=section.dataset.lane,binding=model.snapshot().devices[selected].parameters.find(p=>p.key===key),lane=track.automation.find(l=>l.instanceId===track.device.instanceId&&l.key===key),svg=section.querySelector('svg'),x=beat=>beat/document.lengthBeats*600,y=value=>36-(value-binding.min)/(binding.max-binding.min)*31;
       svg.setAttribute('viewBox','0 0 600 40');svg.setAttribute('preserveAspectRatio','none');svg.replaceChildren();
       let d=`M 0 ${y(binding.base)}`;for(const point of lane?.points??[])d+=` H ${x(point.beat)} V ${y(point.value)}`;d+=' H 600';
       svg.append(svgElement('path',{d,stroke:lane?.enabled?'#88c5c7':'#b4b4b0','stroke-width':1.5,fill:'none'}));
@@ -117,7 +117,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       output.setAttribute('aria-label',`${binding.label} effective ownership`);base.append(number,unit);section.append(label,range,base,output);$('parameters').append(section);parameterViews.set(binding.key,{section,number,range,output});
     }
   }
-  function setBase(key,value){const track=selected;return enqueue(async()=>{await command('alive_base',{track,key,value});await refresh();});}
+  function setBase(key,value){const instanceId=model.document().tracks[selected].device.instanceId;return enqueue(async()=>{await command('alive_base',{instanceId,key,value});await refresh();});}
   const diagnosticNames=['Audio backend','Audio device','Audio sample rate','Audio buffer frames','Audio callbacks','Audio stream errors','Audio failed','Audio status','Transport playing','Absolute frame','Rejected commands','Native generation','Track 1 active voices','Track 2 active voices'];
   for(const name of diagnosticNames){const label=make('label','',name),output=make('output','','-');output.setAttribute('aria-label',name);label.append(output);$('diagnostics').append(label);diagnostics.set(name,output);}
   function render(){
@@ -140,7 +140,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       for(const button of [...view.actions.children].slice(1))button.disabled=!!snapshot.state.playing||model.pending();
     });
     for(const[bindingIndex,binding]of (snapshot.devices[selected]?.parameters??[]).entries()){
-      const view=parameterViews.get(binding.key),reading=parameterReading(binding,snapshot.state.tracks[selected],bindingIndex);if(!view)continue;
+      const view=parameterViews.get(binding.key),reading=parameterReading(binding,snapshot.state.devices[snapshot.deviceInstances[document.tracks[selected].device.instanceId].index],bindingIndex);if(!view)continue;
       if(doc.activeElement!==view.number)view.number.value=reading.base;if(doc.activeElement!==view.range)view.range.value=reading.base;
       view.output.textContent=`${reading.owner}: ${Number(reading.effective.toFixed(3))}${binding.unit?' '+binding.unit:''}`;view.section.classList.toggle('automated',reading.owner==='Automation');
     }
@@ -168,7 +168,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   bind('apply','Prepare / Apply',()=>{commitFocused();return enqueue(async()=>{const snapshot=await command('alive_apply',{document:model.document()});model.applied(snapshot);trackKey=musicKey=parameterKey='';render();notice('Schedule prepared and applied. Start transport when ready.');});});
   bind('discard','Discard edits',()=>enqueue(async()=>{await command('alive_draft',{document:null});model.discard();await refresh();notice('Pending schedule edits discarded.');}));
   bind('add-note','Add note',()=>edit(doc=>{if(doc.tracks[selected].notes.length>=128)throw Error('A clip supports up to 128 notes.');doc.tracks[selected].notes.push({beat:0,pitch:60,duration:Math.min(.5,doc.lengthBeats),velocity:90});}));
-  bind('add-track','Add instrument track',()=>enqueue(async()=>{const snapshot=await command('alive_device',{track:model.document().tracks.length,action:'load'});model.applied(snapshot);trackKey=musicKey=parameterKey='';render();}));
+  bind('add-track','Add instrument track',()=>enqueue(async()=>{const snapshot=await command('alive_device',{trackId:`track-${Date.now()}`,action:'load'});model.applied(snapshot);trackKey=musicKey=parameterKey='';render();}));
   const keydown=guard(event=>{if(event.key==='Escape'&&!$('alive-audio-settings').hidden){event.preventDefault();closeAudioSettings();return;}if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();return file(event.shiftKey?'saveAs':'save');}if(event.code==='Space'&&!event.target.matches('input,select,button,summary')){event.preventDefault();return transport(model.snapshot()?.state.playing?'stop':'start');}});doc.addEventListener('keydown',keydown);
   let unlisten=null;
   if(win?.__TAURI__?.event?.listen)win.__TAURI__.event.listen('alive-close-requested',()=>{guard(()=>file('quit'))();}).then(fn=>{unlisten=fn;});

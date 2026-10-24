@@ -25,7 +25,8 @@ pub struct Session {
 pub struct Track {
     pub id: String,
     pub name: String,
-    pub device: DeviceReference,
+    pub device: DeviceInstance,
+    pub effects: Vec<DeviceInstance>,
     pub notes: Vec<Note>,
     pub automation: Vec<Lane>,
     pub gain: f64,
@@ -34,7 +35,10 @@ pub struct Track {
 }
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-pub struct DeviceReference {
+pub struct DeviceInstance {
+    pub instance_id: String,
+    pub source_sha256: String,
+    pub bypassed: bool,
     pub path: String,
     pub id: String,
     pub version: u32,
@@ -44,11 +48,16 @@ pub struct DeviceReference {
 #[serde(deny_unknown_fields)]
 pub struct Note { pub beat: f64, pub duration: f64, pub pitch: u32, pub velocity: u32 }
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct Lane { pub key: String, pub enabled: bool, pub points: Vec<Point> }
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct Lane { pub instance_id: String, pub key: String, pub enabled: bool, pub points: Vec<Point> }
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Point { pub beat: f64, pub value: f64 }
 
 #[cfg(test)]
 mod tests;
+
+impl Track {
+    pub fn devices(&self) -> impl Iterator<Item = &DeviceInstance> { std::iter::once(&self.device).chain(&self.effects) }
+    pub fn devices_mut(&mut self) -> impl Iterator<Item = &mut DeviceInstance> { std::iter::once(&mut self.device).chain(&mut self.effects) }
+}

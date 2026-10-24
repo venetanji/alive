@@ -7,10 +7,21 @@
 #include <chrono>
 #include <cstdio>
 #include <cstring>
+#include <cstddef>
 #include <vector>
 
 namespace {
 #if INTPTR_MAX == INT64_MAX
+static_assert(sizeof(AliveSessionTrack)==688);
+static_assert(sizeof(AliveSessionEvent)==32);
+static_assert(sizeof(AliveSessionConfig)==34184);
+static_assert(sizeof(AliveSessionTrackState)==360);
+static_assert(sizeof(AliveSessionState)==784);
+static_assert(offsetof(AliveSessionTrack,revision)==24);
+static_assert(offsetof(AliveSessionTrack,parameters)==48);
+static_assert(offsetof(AliveSessionConfig,tracks)==40);
+static_assert(offsetof(AliveSessionConfig,events)==1416);
+static_assert(offsetof(AliveSessionState,tracks)==64);
 static_assert(sizeof(AliveSessionParameter)==40);
 static_assert(sizeof(AliveSessionDeviceV2)==696);
 static_assert(sizeof(AliveSessionTrackV2)==32);
@@ -75,6 +86,10 @@ void bypass_and_warm_state(){
  auto c=prepare();impulse(c);start(c);render(128);const auto wet=left;
  c=prepare();impulse(c);c.devices[1].bypassed=1;start(c);render(1);assert(left[0]==.25f);render(30);for(unsigned i=0;i<30;++i)assert(left[i]==0);
  assert(alive_session_bypass_v2(c.devices[1].document,c.devices[1].revision,0));render(97);for(unsigned i=0;i<97;++i)assert(left[i]==wet[i+31]);
+ // A live wet-to-dry toggle selects the matching dry sample at this boundary.
+ c=prepare();impulse(c);start(c);render(31);for(unsigned i=0;i<31;++i)assert(left[i]==wet[i]);
+ assert(alive_session_bypass_v2(c.devices[1].document,c.devices[1].revision,1));render(33);for(unsigned i=0;i<33;++i)assert(left[i]==0&&right[i]==0);
+ assert(alive_session_bypass_v2(c.devices[1].document,c.devices[1].revision,0));render(64);for(unsigned i=0;i<64;++i)assert(left[i]==wet[i+64]);
  auto s=state();assert(!s.devices[1].bypassed);
  // Muting a chain only suppresses its endpoint; its filter still advances.
  c=prepare();impulse(c);start(c);render(1);assert(alive_session_mixer(0,1,1,0));render(30);for(unsigned i=0;i<30;++i)assert(left[i]==0);

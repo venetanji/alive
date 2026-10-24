@@ -1,10 +1,10 @@
 # Alive Session And Ultra Device Contract
 
-Implementation target, version 1. Acceptance evidence is tracked in `PLAN.md`.
+Implementation target, session version 2. Acceptance evidence is tracked in `PLAN.md`.
 
 Alive owns one session, up to two instrument tracks, one clip per track, one
-shared transport and a stereo master. Each track loads a saved `.ultra` file
-through Ultra's versioned manifest and graph validator. Track identity and DSP
+shared transport and a stereo master. Each track loads a saved `.ultra` instrument followed by zero, one or two
+ordered saved effects through Ultra's versioned manifest and graph validator. Track identity and DSP
 state are independent even when their device paths are identical. No DSP source
 or patch copy is embedded in the Alive example or host.
 Sessions span at most 256 beats and 512 seconds (30..240 BPM).
@@ -33,8 +33,10 @@ any chosen host alignment delay; never label startup muting as latency.
 
 ## Bounds And Ownership
 
-At most two devices, four voices each, 128 notes and 256 automation points per
-track, 16 manifest parameters and 1024 compiled events total. Host callbacks
+At most six devices across two tracks, four voices per instrument, 128 notes,
+16 automation lanes and 256 automation points per track across its entire chain,
+16 manifest parameters per device and 1024 compiled events total. The native
+root pool remains sixteen; larger track/device profiles require a new ABI. Host callbacks
 accept 1..1024 frames. Admission checks event density as well as total storage.
 At most 32 events may share a frame and at most 64 may fall in any 1024-frame
 window, counting repeated loop seams. One serialized control producer submits
@@ -50,8 +52,8 @@ Disabling a lane or stopping restores base. Restart/seek chase the most recent
 point at/before position; before the first point use base. This policy applies
 identically to device-panel and Ultra-editor bound parameter edits.
 
-Stop, seek, loop wrap and removal hard-clear voices, sustain, pending old
-events and delay state. Mixer mute/solo suppress output but keep the timeline
+Stop, seek, loop wrap, transport end, removal and replacement hard-clear voices,
+sustain, pending old events and every effect kernel, including bypassed effects. Mixer mute/solo suppress output but keep the timeline
 advancing; mute takes precedence over solo. Track gain is separate from the
 device level binding (Alive UI range 0..2; native ABI admits 0..4). Meters are
 per-callback peaks of post-mixer signal and stereo master, not RMS or loudness.
@@ -67,11 +69,15 @@ This first device profile requires a declared stereo output; it does not
 implicitly duplicate an arbitrary mono device at the track boundary.
 Reusable manifests version 1 and 2 normalize to the same host descriptor.
 Version 2 declares `kind`, nullable MIDI input, nullable bound audio input and
-explicit input/output bundles. The current `alive-session-v1` profile accepts
-only instruments and explicitly rejects `audioEffect` until chain hosting lands.
+explicit input/output bundles. The current `alive-session-v2` profile accepts
+instruments and declared stereo `audioEffect` devices. Old session-v1 files
+strictly migrate into instrument-only v2 chains.
 An absent note entry is represented as `noteNode:null`, never an invented node.
 The shared `audio.in~` and `lowpass.stereo~` primitives and saved stereo effects
-are reusable authoring foundations; they add no session chain routing or limits.
+feed the ordered session evaluator. Each hosted root runs once per sample; only
+track endpoints enter the master after gain/mute/solo. Live bypass selects the
+exact dry sample while wet processing continues, so unbypass resumes warm state
+without adding a frame or block delay. Bypass has no automation lane or crossfade.
 
 Device loading/removal and graph structure changes require stopped transport
 and stopped callback ownership during preparation/application. A supported live
@@ -106,21 +112,49 @@ their identifiers and require an explicit recovery selection after refresh.
 New opens the packaged two-track template. The current profile permits one or
 two tracks and rejects removal of the last track explicitly. Musical changes
 are retained separately from the prepared schedule until stopped Apply; latest
-accepted live bases and mixer values are merged before preparation. File and
+accepted live bases, bypass and mixer values are merged by stable instance ID
+before preparation. Generic musical drafts cannot alter chain identity, source
+hashes, bindings, order or reusable references. File and
 Quit actions resolve draft Apply/Discard/Cancel before Save/Discard/Cancel.
-Editor commands authenticate the actual native window label and generation;
-stale editors cannot edit a replacement instance. UI polling never blocks the
+Editor commands authenticate the actual native window binding to generation and
+instance ID; stale editors cannot edit a replacement or another chain member.
+Snapshots expose all manifests and native state indices by instance ID, plus
+an instrument compatibility view for the existing two-track UI. UI polling never blocks the
 main thread behind a native file/message dialog. Neither editor lifetime nor
 polling owns the callback. The JACK diagnostic retains its legacy 64-frame
 latency declaration; Alive desktop uses CPAL and the tested native host profile.
 
 ## Persistence And Errors
 
-An `alive-session-v1` JSON file records tempo, looping/range, tracks with stable
-IDs, device path/stable ID/manifest version, parameter base values, clips,
-automation lanes and mixer values. Device paths resolve relative to the session
-file. Load validates all references and ranges before replacing active state;
-missing/incompatible devices identify track, path and cause. Failed load/save
-must preserve the current session and existing file. Save uses a same-directory
-temporary file and atomic rename. No implicit overwrite of the source Ultra
-instrument occurs when editing an instance's base parameters.
+New saves use strict camelCase `alive-session-v2` JSON. `Track.device` is the
+instrument and `Track.effects` is its ordered effect list. Each instance has a
+persisted UUID-shaped `instanceId`, independent of reusable manifest `id`, source
+path, chain position and transient root handle. Automation addresses that
+instance ID and a stable parameter key. Reordering retains IDs, bases, bypass
+and lanes; effect removal/replacement removes only the affected instance lanes.
+The compatibility instrument Remove action removes its entire track, chain and
+lanes, preserving every other track; an instrument-less track is never retained.
+
+The original session-v1 shape remains a separate strict migration input. Each
+instrument gets `legacy-` plus the first 32 hexadecimal SHA-256 characters of
+its track ID, with empty effects, bypass false and retargeted lanes. Migration
+validates unique IDs and fingerprints dependencies before returning v2. Missing
+v2 fields are errors and never trigger legacy inference.
+
+Every reference requires `sourceSha256`, 64 lowercase hexadecimal bytes over
+recursively key-sorted canonical JSON of the complete original source, before
+saved instance bases are applied. Arrays and numeric values are preserved;
+formatting and paths do not affect the hash. Graph, manifest, preset or appearance
+changes require explicit Load/Replace to capture a new fingerprint. Ordinary
+Open/prepare/Save compare it and identify track, instance, path and Replace
+recovery on missing, changed or incompatible dependencies.
+
+Paths resolve relative to the session file. Save As relocates every instrument
+and effect dependency and preserves IDs, hashes and saved values. A session
+cannot overwrite any dependency. Session files remain bounded to 1 MiB and saves
+use a same-directory temporary file with atomic rename. Only bases are saved,
+never an automation sample or raw runtime memory. All candidate graphs, values
+and aggregate density receive prospective native validation before device I/O
+stops. Failed admission leaves the working model and playback intact. Root
+revisions increase per slot even through failed application and rollback; live
+base/bypass update the saved model only after native queue admission.

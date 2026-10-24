@@ -8,7 +8,7 @@ impl Drop for Shutdown {
     fn drop(&mut self) { unsafe {
         native::ultra_audio_stop();
         native::alive_session_reset();
-        for slot in 0..2 { crate::ultra_canvas_close_document(slot); }
+        for slot in 0..16 { crate::ultra_canvas_close_document(slot); }
     } }
 }
 fn require(condition: bool, error: &str) -> Result<(), String> {
@@ -51,7 +51,7 @@ fn saved_device_boundaries(host: &mut Host, source: &super::PreparedSession, out
             pitch: 60 + index as u32 + track as u32 * 12, velocity: 80 + index as u32 * 5,
         }).collect();
         model.automation = ["cutoff", "level"].iter().map(|&key| super::Lane {
-            key: key.into(), enabled: true,
+            instance_id: model.device.instance_id.clone(), key: key.into(), enabled: true,
             points: offsets.iter().enumerate().map(|(index, &frame)| super::Point {
                 beat: frame as f64 / 24000., value: if key == "cutoff" { 700. + index as f64 * 1000. + track as f64 * 100. }
                     else { 30. + index as f64 * 10. + track as f64 * 5. },
@@ -69,13 +69,13 @@ fn saved_device_boundaries(host: &mut Host, source: &super::PreparedSession, out
             let state = native::state()?;
             require(state.position == frame + 1, "Saved-device boundary event used the wrong frame")?;
             for track in 0..2 {
-                let manifest = &prepared.tracks[track].manifest;
+                let manifest = &prepared.devices[prepared.tracks[track].instrument].manifest;
                 let cutoff = manifest.parameters.iter().position(|p| p.key == "cutoff").unwrap();
                 let level = manifest.parameters.iter().position(|p| p.key == "level").unwrap();
                 let expected_cutoff = 700. + index as f64 * 1000. + track as f64 * 100.;
                 let expected_level = 30. + index as f64 * 10. + track as f64 * 5.;
-                require(state.tracks[track].effective[cutoff] == expected_cutoff
-                    && state.tracks[track].effective[level] == expected_level,
+                require(state.devices[prepared.tracks[track].instrument].effective[cutoff] == expected_cutoff
+                    && state.devices[prepared.tracks[track].instrument].effective[level] == expected_level,
                     "Saved-device automation did not take effect on its timestamped sample")?;
                 observations.push(json!({"frame":frame,"track":track,"effectiveCutoff":expected_cutoff,"effectiveLevel":expected_level}));
             }
@@ -89,6 +89,123 @@ fn saved_device_boundaries(host: &mut Host, source: &super::PreparedSession, out
     crate::instrument_probe::write_wav(&output.join("boundary-events.wav"), &baseline).map_err(|e|e.to_string())?;
     Ok(json!({"offsets":offsets,"observations":observations,"partitionsIdentical":true,"audioSha256":digest(&baseline),"energy":energy(&baseline)}))
 }
+fn saved_chain_proof(host: &mut Host, source: &super::PreparedSession, output: &Path) -> Result<Value, String> {
+    use super::{DeviceInstance, Lane, Note, Point, Session, Track};
+    let patch = json!({"version":1,"profile":"ultra-canvas-v1",
+        "nodes":[{"id":1,"type":"poly_note","x":0,"y":0,"params":{"voices":4}},
+            {"id":2,"type":"mix_voice","x":0,"y":80,"params":{}},
+            {"id":3,"type":"gain","x":0,"y":160,"params":{"value":127}},
+            {"id":4,"type":"join","x":0,"y":240,"params":{}},
+            {"id":5,"type":"dac","x":0,"y":320,"params":{}}],
+        "edges":[{"from":1,"outlet":1,"to":2,"inlet":0},{"from":2,"outlet":0,"to":3,"inlet":0},
+            {"from":3,"outlet":0,"to":4,"inlet":0},{"from":3,"outlet":0,"to":4,"inlet":1},{"from":4,"outlet":0,"to":5,"inlet":0}],
+        "device":{"version":1,"id":"org.alive.probe-impulse","name":"Probe Impulse","midi":{"node":1,"inlet":0},
+            "audio":{"inputs":0,"outputs":2,"layout":"stereo"},"parameters":[{"key":"level","label":"Level","node":3,"param":"value","min":0,"max":127}],"presets":[]}});
+    let impulse = output.join("impulse.ultra");
+    std::fs::write(&impulse, serde_json::to_vec_pretty(&patch).unwrap()).map_err(|e| e.to_string())?;
+    let reference = |path: &Path, instance: &str| -> Result<DeviceInstance, String> {
+        let loaded = crate::documents::read_patch(path)?;
+        let patch = loaded.patch.ok_or("Expected saved probe device")?;
+        let graph = crate::canvas::prepare(patch.clone())?.native;
+        let manifest = crate::canvas::device::host_manifest(&patch, &graph)?;
+        Ok(DeviceInstance { instance_id: instance.into(), path: loaded.path.to_str().ok_or("Probe source path must be UTF-8")?.into(), id: manifest.id,
+            version: manifest.version, source_sha256: super::prepare::fingerprint(&patch)?, parameters: Default::default(), bypassed: false })
+    };
+    let folder = source.devices[source.tracks[0].instrument].path.parent().ok_or("Missing device folder")?;
+    let instrument = reference(&impulse,"probe-instrument")?;
+    let utility = reference(&folder.join("utility.ultra"),"probe-utility")?;
+    let filter = reference(&folder.join("stereo-lowpass.ultra"),"probe-filter")?;
+    let document = Session { format:"alive-session-v2".into(), title:"Saved chain proof".into(), tempo:120., length_beats:1., loop_enabled:false,
+        tracks:vec![Track { id:"probe-track".into(), name:"Saved impulse chain".into(), device:instrument, effects:vec![utility,filter],
+            notes:vec![Note { beat:0., duration:1. / 24000., pitch:60, velocity:127 }], automation:vec![], gain:1., mute:false, solo:false }] };
+    let origin = output.join("chain.alive");
+    let saved = save(&origin,&document,&origin)?;
+    let prepared = read(&saved)?;
+    unsafe { native::ultra_audio_stop(); }
+    host.install(prepared.clone())?; start()?;
+    let wet = render(256,&[1])?;
+    require(wet[2] > 0., "Saved lowpass did not ring after the impulse")?;
+    let mut dry_document = prepared.document.clone(); dry_document.tracks[0].effects[1].bypassed = true;
+    unsafe { native::ultra_audio_stop(); }
+    host.install(prepare(&dry_document,&saved)?)?; start()?;
+    let dry = render(256,&[31,1,63,127])?;
+    require(dry[0] > 0. && dry[2..].iter().all(|&s| s == 0.),"Saved bypass did not emit the exact dry impulse")?;
+    unsafe { native::ultra_audio_stop(); }
+    host.install(prepared.clone())?; start()?;
+    let mut switched = render(31,&[17,1,13])?;
+    host.bypass("probe-filter",true)?;
+    switched.extend(render(33,&[1,31,1])?);
+    require(switched[..62] == wet[..62] && switched[62..] == dry[62..128],"Live wet-to-dry samples did not change exactly at the callback boundary")?;
+    host.bypass("probe-filter",false)?;
+    let warm = render(192,&[63,1,127,1])?;
+    require(warm == wet[128..],"Unbypassed saved filter did not retain continuously processed wet state")?;
+
+    let mut ordered = document.clone();
+    ordered.tracks[0].automation.push(Lane { instance_id:"probe-utility".into(),key:"gain".into(),enabled:true,points:vec![Point { beat:1. / 24000.,value:0. }] });
+    let forward = prepare(&ordered,&saved)?;
+    unsafe { native::ultra_audio_stop(); } host.install(forward.clone())?; start()?;
+    let ringing = render(128,&[31,63,1])?;
+    ordered.tracks[0].effects.reverse();
+    let reverse = prepare(&ordered,&saved)?;
+    let target = |p: &super::PreparedSession| p.events.iter().find(|e| e.kind == 1).map(|e| p.devices[e.device as usize].instance_id.clone());
+    require(target(&forward) == target(&reverse) && target(&reverse).as_deref() == Some("probe-utility"),"Reorder changed automation ownership")?;
+    unsafe { native::ultra_audio_stop(); } host.install(reverse)?; start()?;
+    let suppressed = render(128,&[1,64,31])?;
+    require(ringing[2] > 0. && suppressed[2..].iter().all(|&s| s == 0.),"Saved effect execution order did not preserve the noncommuting impulse tail")?;
+
+    unsafe { native::ultra_audio_stop(); } host.install(prepared.clone())?; start()?;
+    render(1,&[1])?;
+    let before = native::state()?;
+    let previous = host.prepared.as_ref().unwrap().document.clone();
+    let mut invalid = prepared.clone(); invalid.devices[0].graph.node_count = 0;
+    require(host.install(invalid).is_err(),"Invalid prospective graph unexpectedly installed")?;
+    require(host.prepared.as_ref().unwrap().document == previous,"Rejected candidate changed saved model")?;
+    let continued = render(1,&[1])?;
+    require(continued == wet[2..4] && native::state()?.position == before.position+1,"Rejected candidate interrupted the active native session")?;
+    let stale = native::state()?.devices[0];
+    // Every admitted command updates the saved base, while queue rejection leaves it intact.
+    for _ in 0..64 { host.base("probe-utility","gain",0.4)?; }
+    require(host.base("probe-utility","gain",0.3).is_err(),"Saturated base queue did not reject")?;
+    require(host.bypass("probe-filter",true).is_err(),"Saturated bypass queue did not reject")?;
+    let model = &host.prepared.as_ref().unwrap().document;
+    require(model.tracks[0].effects[0].parameters["gain"] == 0.4 && !model.tracks[0].effects[1].bypassed,"Rejected live value leaked into saved state")?;
+    unsafe { native::alive_session_stop(); }
+    require(render(64,&[31,1,32])?.iter().all(|&s| s==0.) && native::state()?.playing==0,"Stop failed under saturated chain command queue")?;
+    unsafe { native::ultra_audio_stop(); } host.install(prepared.clone())?;
+    require(unsafe { native::alive_session_bypass_v2(stale.document,stale.revision,1) } == 0,"Reinstallation accepted a stale root handle")?;
+    let saved = save(&output.join("chain-reopened.alive"),&host.prepared.as_ref().unwrap().document,&saved)?;
+    let reopened = read(&saved)?;
+    require(reopened.document.tracks[0].effects.len()==2,"Reopen lost saved effects")?;
+    host.install(reopened)?; start()?;
+    require(render(256,&[127,1,64])? == wet,"Reopened saved chain changed audio")?;
+    let mut two = document.clone();
+    let mut other = two.tracks[0].clone(); other.id = "other-track".into(); other.name = "Independent identical sources".into();
+    for device in other.devices_mut() { device.instance_id.push_str("-other"); }
+    other.effects[0].parameters.insert("gain".into(),0.5);
+    other.effects[1].parameters.insert("cutoff".into(),700.);
+    two.tracks.push(other);
+    let six = prepare(&two,&saved)?;
+    unsafe { native::ultra_audio_stop(); } host.install(six.clone())?; start()?;
+    let combined = render(128,&[31,1,64])?;
+    let state = native::state()?;
+    let first_filter = six.devices.iter().position(|d| d.instance_id=="probe-filter").unwrap();
+    let other_filter = six.devices.iter().position(|d| d.instance_id=="probe-filter-other").unwrap();
+    require(state.devices[first_filter].base[0]==2400. && state.devices[other_filter].base[0]==700.,"Identical source effects shared base state")?;
+    let mut only_other = two.clone(); only_other.tracks[0].mute = true;
+    unsafe { native::ultra_audio_stop(); } host.install(prepare(&only_other,&saved)?)?; start()?;
+    let independent = render(128,&[1,127])?;
+    require(combined.iter().zip(wet.iter().zip(&independent)).all(|(sum,(a,b))| (sum-a-b).abs()<1e-7),"Identical source effects shared filter tails or mixed a root twice")?;
+    require(independent[2..].iter().zip(&wet[2..]).any(|(a,b)| a != b),"Distinct filter instances unexpectedly shared their tail")?;
+    host.bypass("probe-filter-other",true)?; host.base("probe-filter","cutoff",1234.)?; render(1,&[1])?;
+    let isolated = native::state()?;
+    require(isolated.devices[first_filter].bypassed==0 && isolated.devices[other_filter].bypassed==1
+        && isolated.devices[first_filter].base[0]==1234. && isolated.devices[other_filter].base[0]==700.,"Instance-specific bypass/base affected the other effect")?;
+    Ok(json!({"savedDevices":3,"exactLiveDryAndWarmWet":true,"wetToDryFrame":31,"warmWetFrame":64,
+        "reorderedAutomationIdentity":true,"noncommutingOrderTail":true,"independentSameSourceEffects":true,"fullProfileDevices":6,"rejectedCandidatePreservedPlayback":true,
+        "queueRejectedModelPreserved":true,"stopSurvivedFullQueue":true,"staleRootRejected":true,"reopenSamplesIdentical":true,
+        "wetSha256":digest(&wet),"drySha256":digest(&dry)}))
+}
+
 pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
     std::fs::create_dir_all(output).map_err(|e| e.to_string())?;
     let _shutdown = Shutdown;
@@ -121,17 +238,17 @@ pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
     host.install(prepared.clone())?;
     start()?;
     render(128, &[128])?;
-    let cutoff = prepared.tracks[0].manifest.parameters.iter().position(|p| p.key == "cutoff").ok_or("Proof requires cutoff binding")?;
-    let level = prepared.tracks[0].manifest.parameters.iter().position(|p| p.key == "level").ok_or("Proof requires level binding")?;
+    let cutoff = prepared.devices[prepared.tracks[0].instrument].manifest.parameters.iter().position(|p| p.key == "cutoff").ok_or("Proof requires cutoff binding")?;
+    let level = prepared.devices[prepared.tracks[0].instrument].manifest.parameters.iter().position(|p| p.key == "level").ok_or("Proof requires level binding")?;
     let before = native::state()?;
-    host.base(0, "cutoff", 1711.)?;
-    host.base(0, "level", 72.)?;
+    host.base(&prepared.document.tracks[0].device.instance_id, "cutoff", 1711.)?;
+    host.base(&prepared.document.tracks[0].device.instance_id, "level", 72.)?;
     render(1, &[1])?;
     let owned = native::state()?;
-    require(owned.tracks[0].base[cutoff] == 1711. && owned.tracks[0].effective[cutoff] == before.tracks[0].effective[cutoff]
-        && owned.tracks[0].owned[cutoff] == 1 && owned.tracks[0].base[level] == 72.
-        && owned.tracks[0].effective[level] == before.tracks[0].effective[level], "Automation failed to retain ownership over a panel base edit")?;
-    require(owned.tracks[1].base == before.tracks[1].base, "Editing the first device changed the second instance")?;
+    require(owned.devices[prepared.tracks[0].instrument].base[cutoff] == 1711. && owned.devices[prepared.tracks[0].instrument].effective[cutoff] == before.devices[prepared.tracks[0].instrument].effective[cutoff]
+        && owned.devices[prepared.tracks[0].instrument].owned[cutoff] == 1 && owned.devices[prepared.tracks[0].instrument].base[level] == 72.
+        && owned.devices[prepared.tracks[0].instrument].effective[level] == before.devices[prepared.tracks[0].instrument].effective[level], "Automation failed to retain ownership over a panel base edit")?;
+    require(owned.devices[prepared.tracks[1].instrument].base == before.devices[prepared.tracks[1].instrument].base, "Editing the first device changed the second instance")?;
     host.mixer(0, 0.7, true, false)?;
     host.mixer(1, 0.7, false, true)?;
     let second_only = energy(&render(1024, &[127, 64])?);
@@ -142,8 +259,8 @@ pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
     require(energy(&render(1024, &[63, 1, 127])?) == 0., "Stop left sounding notes")?;
     let stopped = native::state()?;
     require(stopped.tracks.iter().all(|t| t.active_voices == 0)
-        && stopped.tracks[0].effective[cutoff] == 1711. && stopped.tracks[0].effective[level] == 72.
-        && stopped.tracks[0].owned[cutoff] == 0, "Stop did not clear voices and restore saved bases")?;
+        && stopped.devices[prepared.tracks[0].instrument].effective[cutoff] == 1711. && stopped.devices[prepared.tracks[0].instrument].effective[level] == 72.
+        && stopped.devices[prepared.tracks[0].instrument].owned[cutoff] == 0, "Stop did not clear voices and restore saved bases")?;
     host.mixer(0, 0.7, false, false)?;
     host.mixer(1, 0.7, false, false)?;
     require(unsafe { native::alive_session_start() } != 0, &native::error())?;
@@ -178,14 +295,15 @@ pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
     require(energy(&render(1024, &[1024])?) == 0., "Device removal/Stop retained notes")?;
     let boundary_proof = saved_device_boundaries(&mut host, &prepared, output)?;
 
+    let chain_proof = saved_chain_proof(&mut host, &prepared, output)?;
     let report = json!({"passed":true,"scope":"real saved Alive session, native offline DSP; no physical audio or desktop claim",
-        "source":path.canonicalize().map_err(|e|e.to_string())?,"devices":prepared.tracks.iter().map(|t|json!({"path":t.path,"id":t.manifest.id,"output":t.manifest.output})).collect::<Vec<_>>(),
+        "source":path.canonicalize().map_err(|e|e.to_string())?,"devices":prepared.devices.iter().map(|t|json!({"path":t.path,"id":t.manifest.id,"output":t.manifest.output})).collect::<Vec<_>>(),
         "editorWindowsCreated":0,"sampleRate":48000,"masterChannels":2,"renderedFramesPerComparison":count,
         "partitions":partitions,"partitionSamplesIdentical":true,"audioSha256":digest(&baseline),
         "energy":{"twoDevices":energy(&baseline),"secondOnly":second_only,"reopened":reopened_energy},
         "loopProof":{"secondCycleEnergy":second_cycle,"wrapGenerations":wraps,"position":loop_end.position},
         "seekProof":{"generationAdvanced":sought.generation > before_seek.generation,"position":sought.position},
-        "savedDeviceBoundaryProof":boundary_proof,
+        "savedDeviceBoundaryProof":boundary_proof,"savedChainProof":chain_proof,
         "checked":["real-device-dependencies","loop","arbitrary-partitions","automation-ownership","device-isolation","mute-solo","stop","seek","session-save-reopen","device-removal"],
         "timingBoundaryOffsets":[0,1,31,63,64,127],"timingEvidence":"alive_session_test.cpp measures native sample at offset and legacy Clockwork sample at offset+64; the session profile rejects legacy Voice"});
     std::fs::write(output.join("report.json"), serde_json::to_vec_pretty(&report).unwrap()).map_err(|e|e.to_string())?;

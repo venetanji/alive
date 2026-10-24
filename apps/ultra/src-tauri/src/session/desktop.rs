@@ -1,7 +1,7 @@
 //! Alive's single serialized control owner. Editor windows never own native slots.
 use super::{host::Host, native, *};
 use serde::Serialize;
-use std::{path::{Path, PathBuf}, sync::{Mutex, MutexGuard}};
+use std::{path::{Path, PathBuf}, sync::{Mutex, MutexGuard}, collections::BTreeMap};
 use tauri::{Emitter, Manager, WebviewWindow};
 use tauri_plugin_dialog::{DialogExt, MessageDialogButtons, MessageDialogResult};
 
@@ -14,7 +14,13 @@ struct Control {
     draft: Option<Session>,
     closing: bool,
     allow_exit: bool,
+    editors: BTreeMap<String, EditorBinding>,
 }
+#[derive(Clone)]
+struct EditorBinding { generation: u64, instance_id: String }
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct DeviceView { index: usize, track: usize, manifest: crate::canvas::device::HostManifest }
 pub struct Desktop(Mutex<Control>);
 fn ui_lock<T>(mutex: &Mutex<T>) -> Result<MutexGuard<'_, T>, String> {
     mutex.try_lock().map_err(|_| "Finish the current session dialog before using this control".into())
@@ -28,7 +34,10 @@ pub struct Snapshot {
     generation: u64,
     dirty: bool,
     draft: Option<Session>,
-    state: native::State,
+    state: native::StateV2,
+    device_instances: BTreeMap<String, DeviceView>,
+    instance_id: Option<String>,
+    device_index: Option<usize>,
     audio: crate::audio::Snapshot,
     patch: Option<serde_json::Value>,
     track: Option<usize>,
@@ -36,20 +45,31 @@ pub struct Snapshot {
 fn main_only(label: &str) -> Result<(), String> {
     if label == "main" { Ok(()) } else { Err("This action belongs to the Alive session window".into()) }
 }
-fn editor_label(generation: u64, track: usize) -> String { format!("alive-editor-{generation}-{track}") }
+fn editor_label(generation: u64, instance_id: &str) -> String {
+    let token: String = instance_id.bytes().map(|b| format!("{b:02x}")).collect();
+    format!("alive-editor-{generation}-{token}")
+}
 fn check_generation(actual: u64, expected: u64) -> Result<(), String> {
     if actual == expected { Ok(()) } else { Err("This device view is stale. Reopen the editor from the current session.".into()) }
 }
 fn merge_live(draft: &mut Session, live: &Session) {
     for track in &mut draft.tracks {
-        if let Some(current) = live.tracks.iter().find(|t| t.id == track.id && t.device.id == track.device.id && t.device.path == track.device.path) {
-            track.device.parameters = current.device.parameters.clone();
+        if let Some(current) = live.tracks.iter().find(|t| t.id == track.id) {
+            for reference in track.devices_mut() {
+                if let Some(device) = current.devices().find(|d| d.instance_id == reference.instance_id) {
+                    reference.parameters = device.parameters.clone(); reference.bypassed = device.bypassed;
+                }
+            }
             track.gain = current.gain; track.mute = current.mute; track.solo = current.solo;
         }
     }
 }
+fn same_chain(a: &Track, b: &Track) -> bool {
+    a.devices().count() == b.devices().count() && a.devices().zip(b.devices()).all(|(a,b)|
+        a.instance_id == b.instance_id && a.id == b.id && a.path == b.path && a.version == b.version && a.source_sha256 == b.source_sha256)
+}
 fn musical_draft(mut draft: Session, live: &Session) -> Result<Session, String> {
-    if draft.tracks.len() != live.tracks.len() || draft.tracks.iter().zip(&live.tracks).any(|(a,b)| a.id != b.id || a.device.id != b.device.id || a.device.path != b.device.path || a.device.version != b.device.version) {
+    if draft.format != live.format || draft.tracks.len() != live.tracks.len() || draft.tracks.iter().zip(&live.tracks).any(|(a,b)| a.id != b.id || !same_chain(a,b)) {
         return Err("Load or remove devices with the stopped device controls".into());
     }
     if draft.title.len() > 128 || draft.tracks.iter().any(|track| track.name.len() > 64 || track.notes.len() > 128 || track.automation.len() > 16 || track.automation.iter().any(|lane| lane.key.len() > 64) || track.automation.iter().map(|lane| lane.points.len()).sum::<usize>() > 256) {
@@ -64,19 +84,26 @@ impl Control {
         self.draft = document.map(|draft| musical_draft(draft, &self.host.prepared.as_ref().ok_or("No session")?.document)).transpose()?;
         Ok(())
     }
-    fn editor_track(&self, label: &str) -> Result<Option<usize>, String> {
+    fn editor_instance(&self, label: &str) -> Result<Option<&str>, String> {
         if label == "main" { return Ok(None); }
-        let count = self.host.prepared.as_ref().map_or(0, |p| p.tracks.len());
-        (0..count).find(|&track| label == editor_label(self.generation, track)).map(Some)
-            .ok_or_else(|| "This hosted editor is stale or unrelated to the current session".into())
+        let binding = self.editors.get(label).ok_or("This hosted editor is stale or unrelated to the current session")?;
+        check_generation(self.generation, binding.generation)?;
+        Ok(Some(&binding.instance_id))
+    }
+    fn authorize_instance(&self, label: &str, instance_id: &str) -> Result<(), String> {
+        if self.editor_instance(label)?.is_some_and(|own| own != instance_id) { return Err("A hosted editor can edit only its own device".into()); }
+        Ok(())
     }
     fn snapshot(&self, label: &str) -> Result<Snapshot, String> {
-        let track = self.editor_track(label)?;
+        let instance_id = self.editor_instance(label)?.map(str::to_owned);
         let prepared = self.host.prepared.as_ref().ok_or("Open an Alive session")?;
+        let device_index = instance_id.as_ref().map(|id| prepared.devices.iter().position(|d| &d.instance_id == id).ok_or("Unknown editor instance")).transpose()?;
+        let track = device_index.map(|i| prepared.devices[i].track);
         Ok(Snapshot { document: prepared.document.clone(), path: self.saved_path.clone(),
-            devices: prepared.tracks.iter().map(|t| t.manifest.clone()).collect(), generation: self.generation,
+            devices: prepared.tracks.iter().map(|t| prepared.devices[t.instrument].manifest.clone()).collect(), generation: self.generation,
+            device_instances: prepared.devices.iter().enumerate().map(|(index, device)| (device.instance_id.clone(), DeviceView { index, track: device.track, manifest: device.manifest.clone() })).collect(),
             dirty: self.dirty || self.draft.is_some(), draft: self.draft.clone(), state: native::state()?,
-            audio: self.driver.snapshot(), patch: track.map(|i| prepared.tracks[i].patch.clone()), track })
+            audio: self.driver.snapshot(), patch: device_index.map(|i| prepared.devices[i].patch.clone()), track, instance_id, device_index })
     }
     fn stopped(&self) -> Result<(), String> {
         if native::state()?.playing != 0 { Err("Stop transport before preparing a schedule or changing devices. Your edits are retained.".into()) } else { Ok(()) }
@@ -86,7 +113,7 @@ impl Control {
         self.host.validate(&prepared)?;
         self.driver.stop();
         self.host.install(prepared)?;
-        self.generation += 1; self.dirty = true; self.draft = None;
+        self.generation += 1; self.editors.clear(); self.dirty = true; self.draft = None;
         Ok(())
     }
     fn apply_draft(&mut self) -> Result<(), String> {
@@ -117,11 +144,18 @@ pub fn alive_apply(window: WebviewWindow, state: tauri::State<Desktop>, document
     control.snapshot(window.label())
 }
 #[tauri::command]
-pub fn alive_base(window: WebviewWindow, state: tauri::State<Desktop>, track: usize, key: String, value: f64, generation: u64) -> Result<(), String> {
+pub fn alive_base(window: WebviewWindow, state: tauri::State<Desktop>, instance_id: String, key: String, value: f64, generation: u64) -> Result<(), String> {
     let mut control = ui_lock(&state.0)?;
     check_generation(control.generation, generation)?;
-    if control.editor_track(window.label())?.is_some_and(|own| own != track) { return Err("A hosted editor can edit only its own device".into()); }
-    control.host.base(track, &key, value)?; control.dirty = true; Ok(())
+    control.authorize_instance(window.label(), &instance_id)?;
+    control.host.base(&instance_id, &key, value)?; control.dirty = true; Ok(())
+}
+#[tauri::command]
+pub fn alive_bypass(window: WebviewWindow, state: tauri::State<Desktop>, instance_id: String, bypassed: bool, generation: u64) -> Result<(), String> {
+    let mut control = ui_lock(&state.0)?;
+    check_generation(control.generation, generation)?;
+    control.authorize_instance(window.label(), &instance_id)?;
+    control.host.bypass(&instance_id, bypassed)?; control.dirty = true; Ok(())
 }
 #[tauri::command]
 pub fn alive_mixer(window: WebviewWindow, state: tauri::State<Desktop>, track: usize, gain: f64, mute: bool, solo: bool, generation: u64) -> Result<(), String> {
@@ -174,15 +208,16 @@ pub fn alive_audio(window: WebviewWindow, state: tauri::State<Desktop>, action: 
     }
 }
 #[tauri::command]
-pub async fn alive_editor(window: WebviewWindow, state: tauri::State<'_, Desktop>, track: usize, generation: u64) -> Result<(), String> {
+pub async fn alive_editor(window: WebviewWindow, state: tauri::State<'_, Desktop>, instance_id: String, generation: u64) -> Result<(), String> {
     main_only(window.label())?;
-    let control = ui_lock(&state.0)?;
+    let mut control = ui_lock(&state.0)?;
     check_generation(control.generation, generation)?;
     let prepared = control.host.prepared.as_ref().ok_or("No session")?;
-    let name = &prepared.document.tracks.get(track).ok_or("Unknown track")?.name;
-    let label = editor_label(generation, track);
+    let device = prepared.devices.iter().find(|d| d.instance_id == instance_id).ok_or("Unknown instance")?;
+    let name = &prepared.document.tracks[device.track].name;
+    let label = editor_label(generation, &instance_id);
     if let Some(editor) = window.app_handle().get_webview_window(&label) { editor.set_focus().map_err(|e| e.to_string())?; }
-    else { let editor = tauri::WebviewWindowBuilder::new(window.app_handle(), label, tauri::WebviewUrl::App("alive-editor.html".into()))
+    else { let editor = tauri::WebviewWindowBuilder::new(window.app_handle(), label.clone(), tauri::WebviewUrl::App("alive-editor.html".into()))
         .title(format!("{name} - Ultra Hosted Editor")).inner_size(1100., 760.).min_inner_size(720., 500.)
         .build().map_err(|e| e.to_string())?;
         #[cfg(target_os = "linux")]
@@ -190,6 +225,7 @@ pub async fn alive_editor(window: WebviewWindow, state: tauri::State<'_, Desktop
         #[cfg(not(target_os = "linux"))]
         let _ = editor;
     }
+    control.editors.insert(label, EditorBinding { generation, instance_id });
     Ok(())
 }
 #[cfg(target_os = "linux")]
@@ -210,7 +246,7 @@ fn install_editor_teardown(editor: &WebviewWindow) -> tauri::Result<()> {
 }
 fn close_stale_editors(app: &tauri::AppHandle, generation: u64) {
     for (label, window) in app.webview_windows() {
-        if label.starts_with("alive-editor-") && !(0..2).any(|i| label == editor_label(generation, i)) { let _ = window.close(); }
+        if label.starts_with("alive-editor-") && !label.starts_with(&format!("alive-editor-{generation}-")) { let _ = window.close(); }
     }
 }
 fn chosen(result: MessageDialogResult, name: &str, yes: bool) -> bool {
@@ -274,7 +310,7 @@ pub async fn alive_file(window: WebviewWindow, action: String, path: Option<Path
         control.closing = false;
         // Resolve prospective dependencies before any dirty-state decision or native replacement.
         let prospective = match action.as_str() {
-            "new" => Some(example(window.app_handle())?),
+            "new" => { let prepared = example(window.app_handle())?; control.host.validate(&prepared)?; Some(prepared) },
             "open" => {
                 let path = match path.clone() { Some(path) => path, None => {
                     let Some(path) = window.dialog().file().set_parent(&window).set_title("Open Alive Session").add_filter("Alive session", &["alive", "json"]).blocking_pick_file() else { return Ok(None); };
@@ -307,8 +343,66 @@ pub async fn alive_file(window: WebviewWindow, action: String, path: Option<Path
         control.snapshot(window.label()).map(Some)
     }).await.map_err(|e| e.to_string())?
 }
+fn capture_device(path: &Path, document: &Session) -> Result<DeviceInstance, String> {
+    use sha2::{Digest, Sha256};
+    use std::sync::atomic::{AtomicU64, Ordering};
+    static NEXT: AtomicU64 = AtomicU64::new(1);
+    let loaded = crate::documents::read_patch(path)?;
+    let patch = loaded.patch.ok_or("Choose a saved Ultra device")?;
+    let graph = crate::canvas::prepare(patch.clone())?.native;
+    let manifest = crate::canvas::device::host_manifest(&patch, &graph)?;
+    let instance_id = loop {
+        let seed = format!("{}-{:?}-{}", std::process::id(), std::time::SystemTime::now(), NEXT.fetch_add(1, Ordering::Relaxed));
+        let hex = format!("{:x}", Sha256::digest(seed.as_bytes()));
+        let id = format!("{}-{}-4{}-a{}-{}", &hex[..8], &hex[8..12], &hex[13..16], &hex[17..20], &hex[20..32]);
+        if !document.tracks.iter().flat_map(Track::devices).any(|d| d.instance_id == id) { break id; }
+    };
+    Ok(DeviceInstance { instance_id, source_sha256: prepare::fingerprint(&patch)?, bypassed: false,
+        path: loaded.path.to_str().ok_or("Device path must be UTF-8")?.into(), id: manifest.id, version: manifest.version, parameters: Default::default() })
+}
+fn change_device(document: &mut Session, track_id: &str, action: &str, instance_id: Option<&str>, before: Option<&str>, reference: Option<DeviceInstance>) -> Result<(), String> {
+    let track = document.tracks.iter().position(|t| t.id == track_id);
+    if track.is_none() {
+        if action != "load" || document.tracks.len() >= 2 { return Err("Unknown track or two-track capacity reached".into()); }
+        document.tracks.push(Track { id: track_id.into(), name: format!("Track {}", document.tracks.len() + 1), device: reference.ok_or("Choose a device")?, effects: vec![], notes: vec![], automation: vec![], gain: 0.7, mute: false, solo: false });
+        return Ok(());
+    }
+    let index = track.unwrap();
+    let track = &mut document.tracks[index];
+    let id = instance_id.unwrap_or(&track.device.instance_id).to_owned();
+    let effect = track.effects.iter().position(|d| d.instance_id == id);
+    match action {
+        "remove" if id == track.device.instance_id => {
+            if document.tracks.len() == 1 { return Err("Keep at least one instrument track; replace its device or create a new session".into()); }
+            document.tracks.remove(index);
+        }
+        "remove" => {
+            track.effects.remove(effect.ok_or("Unknown instance")?);
+            track.automation.retain(|lane| lane.instance_id != id);
+        }
+        "reorder" => {
+            if before == Some(id.as_str()) && effect.is_some() { return Ok(()); }
+            let effect = track.effects.remove(effect.ok_or("Only effects can be reordered")?);
+            let position = match before { Some(id) => track.effects.iter().position(|d| d.instance_id == id).ok_or("Unknown destination instance")?, None => track.effects.len() };
+            track.effects.insert(position, effect);
+        }
+        "add" => {
+            if track.effects.len() >= 2 { return Err("At most two effects per track".into()); }
+            let position = match before { Some(id) => track.effects.iter().position(|d| d.instance_id == id).ok_or("Unknown destination instance")?, None => track.effects.len() };
+            track.effects.insert(position, reference.ok_or("Choose an effect")?);
+        }
+        "load" | "replace" => {
+            let reference = reference.ok_or("Choose a device")?;
+            if id == track.device.instance_id { track.device = reference; }
+            else { track.effects[effect.ok_or("Unknown instance")?] = reference; }
+            track.automation.retain(|lane| lane.instance_id != id);
+        }
+        _ => return Err("Unknown device action".into()),
+    }
+    Ok(())
+}
 #[tauri::command]
-pub async fn alive_device(window: WebviewWindow, track: usize, action: String, generation: u64, path: Option<PathBuf>) -> Result<Snapshot, String> {
+pub async fn alive_device(window: WebviewWindow, track_id: String, action: String, generation: u64, instance_id: Option<String>, before_instance_id: Option<String>, path: Option<PathBuf>) -> Result<Snapshot, String> {
     main_only(window.label())?;
     tauri::async_runtime::spawn_blocking(move || {
         let state = window.state::<Desktop>();
@@ -317,28 +411,14 @@ pub async fn alive_device(window: WebviewWindow, track: usize, action: String, g
         if control.draft.is_some() { return Err("Apply or discard pending schedule edits before changing devices".into()); }
         let current = control.host.prepared.as_ref().ok_or("No session")?;
         let mut document = current.document.clone();
-        if action == "remove" {
-            if document.tracks.len() == 1 { return Err("Keep at least one instrument track; replace its device or create a new session".into()); }
-            if track >= document.tracks.len() { return Err("Unknown track".into()); } document.tracks.remove(track);
-        } else if action == "load" {
-            if track > document.tracks.len() || track >= 2 { return Err("Alive supports up to two tracks".into()); }
+        let reference = if matches!(action.as_str(), "load" | "replace" | "add") {
             let path = match path { Some(path) => path, None => {
                 let Some(path) = window.dialog().file().set_parent(&window).set_title("Load Ultra Device").add_filter("Ultra device", &["ultra"]).blocking_pick_file() else { return control.snapshot(window.label()); };
                 path.into_path().map_err(|e| e.to_string())?
             }};
-            let loaded = crate::documents::read_patch(&path)?;
-            let patch = loaded.patch.ok_or("Choose a saved Ultra device")?;
-            let graph = crate::canvas::prepare(patch.clone())?.native;
-            let manifest = crate::canvas::device::host_manifest(&patch, &graph)?;
-            let reference = DeviceReference { path: loaded.path.to_str().ok_or("Device path must be UTF-8")?.into(), id: manifest.id, version: manifest.version, parameters: Default::default() };
-            if track < document.tracks.len() {
-                document.tracks[track].device = reference;
-                document.tracks[track].automation.clear();
-            } else {
-                let id = format!("track-{}-{}", control.generation, track);
-                document.tracks.push(Track { id, name: format!("Track {}", track + 1), device: reference, notes: vec![], automation: vec![], gain: 0.7, mute: false, solo: false });
-            }
-        } else { return Err("Unknown device action".into()); }
+            Some(capture_device(&path, &document)?)
+        } else { None };
+        change_device(&mut document, &track_id, &action, instance_id.as_deref(), before_instance_id.as_deref(), reference)?;
         let prepared = prepare(&document, &current.origin)?; control.install(prepared)?;
         close_stale_editors(window.app_handle(), control.generation);
         control.snapshot(window.label())
@@ -363,12 +443,12 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
             let saved_path = path.as_ref().map(|_| prepared.origin.clone());
             let mut host = Host::default(); host.install(prepared).map_err(std::io::Error::other)?;
             app.manage(Desktop(Mutex::new(Control { host, driver: crate::audio::Driver::load(app.path().app_data_dir()?.join("audio-settings.json")), generation: 1,
-                dirty: false, saved_path, draft: None, closing: false, allow_exit: false })));
+                dirty: false, saved_path, draft: None, closing: false, allow_exit: false, editors: BTreeMap::new() })));
             tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::App("alive.html".into()))
                 .title("Alive").inner_size(1200., 800.).min_inner_size(900., 660.).build()?;
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![alive_current, alive_draft, alive_apply, alive_base, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio, alive_editor, alive_file, alive_device])
+        .invoke_handler(tauri::generate_handler![alive_current, alive_draft, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio, alive_editor, alive_file, alive_device])
         .on_window_event(|window,event| { if window.label() == "main" { if let tauri::WindowEvent::CloseRequested { api, .. } = event { api.prevent_close(); request_close(window.app_handle()); } } })
         .build(context).expect("Unable to start Alive")
         .run(|app,event| match event {
@@ -379,7 +459,7 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
             tauri::RunEvent::Exit => {
                 if let Ok(mut control) = app.state::<Desktop>().0.lock() {
                     control.driver.stop();
-                    unsafe { native::alive_session_stop(); native::alive_session_reset(); for slot in 0..2 { crate::ultra_canvas_close_document(slot); } }
+                    unsafe { native::alive_session_stop(); native::alive_session_reset(); for slot in 0..16 { crate::ultra_canvas_close_document(slot); } }
                 }
             }
             _ => {},
@@ -418,7 +498,7 @@ mod tests {
     }
     #[test]
     fn draft_rejects_device_substitution_and_overload_before_retention() {
-        let live: Session = serde_json::from_str(include_str!("../../../../alive/examples/two-instruments.alive")).unwrap();
+        let live = read(&Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive")).unwrap().document;
         let mut draft = live.clone();
         draft.tracks[0].device.path = "other.ultra".into();
         assert!(musical_draft(draft, &live).unwrap_err().contains("stopped"));
@@ -433,10 +513,83 @@ mod tests {
     }
     #[test]
     fn pending_schedule_merges_latest_live_bases_and_mixer() {
-        let mut live: Session = serde_json::from_str(include_str!("../../../../alive/examples/two-instruments.alive")).unwrap();
+        let mut live = read(&Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive")).unwrap().document;
         let mut draft = live.clone(); draft.tracks[0].notes[0].pitch = 61;
         live.tracks[0].device.parameters.insert("cutoff".into(), 1234.); live.tracks[0].gain = 0.4;
         merge_live(&mut draft, &live);
         assert_eq!(draft.tracks[0].notes[0].pitch, 61); assert_eq!(draft.tracks[0].device.parameters["cutoff"], 1234.); assert_eq!(draft.tracks[0].gain, 0.4);
     }
+    fn chain() -> Session {
+        let mut session = read(&Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive")).unwrap().document;
+        for id in ["effect-a", "effect-b"] {
+            let mut d = session.tracks[0].device.clone(); d.instance_id = id.into();
+            session.tracks[0].effects.push(d);
+            session.tracks[0].automation.push(Lane { instance_id: id.into(), key:"cutoff".into(), enabled:true, points:vec![] });
+        }
+        session
+    }
+    #[test]
+    fn canonical_musical_drafts_cannot_change_format_identity_fingerprint_or_effect_order() {
+        let live = chain();
+        for mutate in [
+            |s: &mut Session| s.format = "alive-session-v1".into(),
+            |s: &mut Session| s.tracks[0].effects.reverse(),
+            |s: &mut Session| s.tracks[0].effects[0].instance_id = "substitute".into(),
+            |s: &mut Session| s.tracks[0].effects[0].source_sha256 = "0".repeat(64),
+            |s: &mut Session| s.tracks[0].effects[0].version = 2,
+        ] {
+            let mut draft=live.clone(); mutate(&mut draft);
+            assert!(musical_draft(draft,&live).is_err());
+        }
+    }
+    #[test]
+    fn structural_reorder_and_removal_keep_unrelated_instance_automation() {
+        let mut session=chain();let track_id=session.tracks[0].id.clone();
+        let lanes=session.tracks[0].automation.clone();
+        change_device(&mut session,&track_id,"reorder",Some("effect-a"),Some("effect-a"),None).unwrap();
+        change_device(&mut session,&track_id,"reorder",Some("effect-b"),Some("effect-a"),None).unwrap();
+        assert_eq!(session.tracks[0].effects[0].instance_id,"effect-b");
+        assert_eq!(session.tracks[0].automation,lanes);
+        change_device(&mut session,&track_id,"remove",Some("effect-a"),None,None).unwrap();
+        assert_eq!(session.tracks[0].effects.len(),1);
+        assert_eq!(session.tracks[0].automation,lanes.into_iter().filter(|l| l.instance_id!="effect-a").collect::<Vec<_>>());
+    }
+    #[test]
+    fn actual_registered_window_binding_authenticates_instance_and_generation() {
+        let mut control=Control { host:Host::default(), driver:crate::audio::Driver::load(PathBuf::from("/nonexistent/alive-test.json")), generation:7,
+            dirty:false,saved_path:None,draft:None,closing:false,allow_exit:false,editors:BTreeMap::new() };
+        let label=editor_label(7,"effect-a");
+        assert!(control.authorize_instance(&label,"effect-a").is_err());
+        control.editors.insert(label.clone(),EditorBinding {generation:7,instance_id:"effect-a".into()});
+        assert!(control.authorize_instance(&label,"effect-a").is_ok());
+        assert!(control.authorize_instance(&label,"effect-b").is_err());
+        assert!(control.authorize_instance("alive-editor-7-0","effect-a").is_err());
+        control.generation=8;
+        assert!(control.authorize_instance(&label,"effect-a").is_err());
+        assert!(control.authorize_instance("main","effect-b").is_ok());
+    }
+
+    #[test]
+    fn removing_an_instrument_removes_its_whole_track_and_preserves_the_other_chain() {
+        let mut document=chain();
+        let track=document.tracks[0].id.clone();
+        let instance=document.tracks[0].device.instance_id.clone();
+        let other=document.tracks[1].clone();
+        change_device(&mut document,&track,"remove",Some(&instance),None,None).unwrap();
+        assert_eq!(document.tracks,vec![other]);
+    }
+    #[test]
+    fn explicit_load_captures_fresh_identity_and_original_source_before_bases() {
+        let document=chain();
+        let path=Path::new(env!("CARGO_MANIFEST_DIR")).join("../examples/utility.ultra");
+        let first=capture_device(&path,&document).unwrap();
+        let second=capture_device(&path,&document).unwrap();
+        assert_ne!(first.instance_id,second.instance_id);
+        assert_eq!(first.instance_id.len(),36);
+        assert_eq!(first.source_sha256,second.source_sha256);
+        assert_eq!(first.id,second.id);
+        assert!(first.parameters.is_empty());
+        assert!(!first.bypassed);
+    }
+
 }

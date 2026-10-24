@@ -4,8 +4,8 @@ export function createAliveModel(){
   function merge(){
     if(!draft||!current)return;
     for(const track of draft.tracks){
-      const live=current.document.tracks.find(item=>item.id===track.id&&item.device.id===track.device.id&&item.device.path===track.device.path);
-      if(live){track.device.parameters=clone(live.device.parameters);for(const key of ['gain','mute','solo'])track[key]=live[key];}
+      const live=current.document.tracks.find(item=>item.id===track.id);
+      if(live){for(const device of [track.device,...track.effects]){const current=[live.device,...live.effects].find(d=>d.instanceId===device.instanceId);if(current){device.parameters=clone(current.parameters);device.bypassed=current.bypassed;}}for(const key of ['gain','mute','solo'])track[key]=live[key];}
     }
   }
   return{

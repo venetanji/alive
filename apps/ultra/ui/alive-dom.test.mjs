@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
 import {mountAlive} from './alive.mjs';
 import {mountHostedEditor} from './alive-editor.mjs';
 
@@ -33,8 +34,12 @@ function dom(file){
 }
 function state(editor=false){
   const document=JSON.parse(readFileSync(new URL('../../alive/examples/two-instruments.alive',import.meta.url),'utf8')),patch=JSON.parse(readFileSync(new URL('../examples/subtractive.ultra',import.meta.url),'utf8'));
+  document.format='alive-session-v2';
+  for(const track of document.tracks){track.effects=[];track.device.instanceId='legacy-'+createHash('sha256').update(track.id).digest('hex').slice(0,32);track.device.sourceSha256=createHash('sha256').update(JSON.stringify(patch)).digest('hex');track.device.bypassed=false;for(const lane of track.automation)lane.instanceId=track.device.instanceId;}
   const devices=document.tracks.map(track=>({...patch.device,parameters:patch.device.parameters.map(binding=>({...binding,base:track.device.parameters[binding.key],integral:false}))}));
-  return{generation:1,document,devices,dirty:false,draft:null,state:{position:0,absoluteFrame:1024,generation:1,rejected:0,playing:1,peakLeft:.1,peakRight:.2,tracks:devices.map(device=>({peakLeft:.1,peakRight:.2,activeVoices:3,effective:device.parameters.map(p=>p.key==='cutoff'?700:p.base),owned:device.parameters.map(p=>p.key==='cutoff'?1:0)}))},audio:{config:{host:'default',device:'default',sample_rate:48000},host:'PipeWire',device:'Private output',observed_buffer_frames:256,callbacks:4,stream_errors:0,failed:false,message:'Audio output is running.'},track:editor?0:null,patch:editor?patch:null};
+  const deviceInstances=Object.fromEntries(document.tracks.map((t,index)=>[t.device.instanceId,{index,track:index,manifest:devices[index]}]));
+  const result={generation:1,document,devices,deviceInstances,instanceId:editor?document.tracks[0].device.instanceId:null,deviceIndex:editor?0:null,dirty:false,draft:null,state:{position:0,absoluteFrame:1024,generation:1,rejected:0,playing:1,peakLeft:.1,peakRight:.2,tracks:devices.map(device=>({peakLeft:.1,peakRight:.2,activeVoices:3,effective:device.parameters.map(p=>p.key==='cutoff'?700:p.base),owned:device.parameters.map(p=>p.key==='cutoff'?1:0)}))},audio:{config:{host:'default',device:'default',sample_rate:48000},host:'PipeWire',device:'Private output',observed_buffer_frames:256,callbacks:4,stream_errors:0,failed:false,message:'Audio output is running.'},track:editor?0:null,patch:editor?patch:null};
+  result.state.devices=result.state.tracks;return result;
 }
 function backend(initial){
   const calls=[];let snapshot=initial;
@@ -43,7 +48,7 @@ function backend(initial){
     if(name==='alive_current')return structuredClone(snapshot);
     if(name==='alive_draft'){snapshot.draft=args.document;return;}
     if(name==='alive_base'){
-      const binding=snapshot.devices[args.track].parameters.find(p=>p.key===args.key);binding.base=args.value;snapshot.document.tracks[args.track].device.parameters[args.key]=args.value;
+      const binding=snapshot.devices[snapshot.deviceInstances[args.instanceId].index].parameters.find(p=>p.key===args.key);binding.base=args.value;snapshot.document.tracks[snapshot.deviceInstances[args.instanceId].track].device.parameters[args.key]=args.value;
       if(snapshot.patch)snapshot.patch.nodes.find(n=>n.id===binding.node).params[binding.param]=args.value;return;
     }
     if(name==='alive_file')return structuredClone(snapshot);
@@ -126,7 +131,7 @@ test('hosted editor uses real patch objects and shared base command; close only 
   const view=mountHostedEditor({...page,invoke:native.invoke});await view.ready;
   assert.equal(page.ids.get('objects').children.length,native.snapshot.patch.nodes.length);assert.equal(page.ids.get('cables').children.length,native.snapshot.patch.edges.length);
   const cutoff=page.find('Hosted Cutoff base');cutoff.value='3200';await cutoff.fire('change');await settle();
-  assert.deepEqual(native.calls.find(c=>c.name==='alive_base').args,{track:0,key:'cutoff',value:3200,generation:1});
+  assert.deepEqual(native.calls.find(c=>c.name==='alive_base').args,{instanceId:native.snapshot.document.tracks[0].device.instanceId,key:'cutoff',value:3200,generation:1});
   assert.equal(page.find('Hosted Cutoff effective ownership').textContent,'Automation: 700 Hz');
   const level=page.find('Hosted Level graph base');assert.ok(level);level.value='61';await level.fire('input');await settle();
   assert.equal(native.calls.filter(c=>c.name==='alive_base').at(-1).args.key,'level');
@@ -141,5 +146,23 @@ test('hosted zoom selection follows fitted and manually selected graph scale',as
   zoom.value='0.75';await zoom.fire('change');assert.equal(actualScale(),.75);
   await page.ids.get('hosted-fit').fire('click');assert.equal(Number(zoom.value),actualScale());
   assert.match(page.ids.get('hosted-summary').textContent,new RegExp(`${Math.round(actualScale()*100)}%$`));
+  view.dispose();
+});
+
+test('an effect editor owns its own manifest patch state and instance command',async()=>{
+  const initial=state(true),patch=JSON.parse(readFileSync(new URL('../examples/utility.ultra',import.meta.url),'utf8'));
+  const instanceId='effect-editor-instance',manifest={...patch.device,parameters:patch.device.parameters.map(p=>({...p,base:1,integral:false}))};
+  initial.document.tracks[0].effects.push({instanceId,path:'utility.ultra',id:manifest.id,version:2,sourceSha256:'0'.repeat(64),parameters:{gain:1},bypassed:false});
+  initial.deviceInstances[instanceId]={index:2,track:0,manifest};initial.state.devices.push({base:[1],effective:[.5],owned:[1]});
+  initial.instanceId=instanceId;initial.deviceIndex=2;initial.patch=patch;
+  const page=dom('./alive-editor.html'),calls=[];
+  const invoke=async(name,args)=>{calls.push({name,args});if(name==='alive_current')return structuredClone(initial);};
+  const view=mountHostedEditor({...page,invoke});await view.ready;
+  assert.equal(page.ids.get('hosted-source').textContent,'utility.ultra');
+  assert.match(page.ids.get('hosted-title').textContent,/Utility/);
+  assert.equal(page.find('Hosted Cutoff base'),undefined);
+  assert.match(page.find('Hosted Gain effective ownership').textContent,/Automation: 0.5/);
+  const input=page.find('Hosted Gain base');assert.ok(input);input.value='.7';await input.fire('change');await settle();
+  assert.deepEqual(calls.find(c=>c.name==='alive_base').args,{instanceId,key:'gain',value:.7,generation:1});
   view.dispose();
 });

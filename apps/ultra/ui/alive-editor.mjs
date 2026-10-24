@@ -15,17 +15,17 @@ export function mountHostedEditor({doc=globalThis.document,win=globalThis.window
   const structural=()=>notice('For graph changes, stop Alive, edit the saved .ultra source in Ultra, then use Replace in Alive.');
   function scope(){let current=patch;for(const id of path){const node=current.nodes.find(n=>n.id===id);if(!node?.patcher){path=[];return patch;}current=node.patcher;}return current;}
   async function setBase(key,value){
-    const generation=snapshot.generation,track=snapshot.track;
-    return enqueue(async()=>{await invoke('alive_base',{track,key,value,generation});await refresh();notice('Session base updated. Automation ownership is preserved.');});
+    const generation=snapshot.generation,instanceId=snapshot.instanceId;
+    return enqueue(async()=>{await invoke('alive_base',{instanceId,key,value,generation});await refresh();notice('Session base updated. Automation ownership is preserved.');});
   }
   function parameter(node,key,value){
-    const binding=snapshot.devices[snapshot.track].parameters.find(p=>p.node===node&&p.param===key);
+    const binding=snapshot.deviceInstances[snapshot.instanceId].manifest.parameters.find(p=>p.node===node&&p.param===key);
     if(!binding){structural();return false;}guard(()=>setBase(binding.key,value))();return true;
   }
   function navigate(id){if(id===null)path=[];else path.push(id);autoFit=true;render();}
   function buildControls(){
     $('hosted-parameters').replaceChildren();controls.clear();
-    for(const binding of snapshot.devices[snapshot.track].parameters){
+    for(const binding of snapshot.deviceInstances[snapshot.instanceId].manifest.parameters){
       const group=make('div','hosted-parameter'),label=make('label','',binding.label),input=make('input'),output=make('output');
       input.type='number';input.min=binding.min;input.max=binding.max;input.step=binding.integral?'1':binding.max<=1?'.01':binding.max<=20?'.1':'1';input.value=binding.base;input.id=`hosted-${binding.key}`;label.htmlFor=input.id;input.setAttribute('aria-label',`Hosted ${binding.label} base`);output.setAttribute('aria-label',`Hosted ${binding.label} effective ownership`);
       input.addEventListener('change',guard(()=>{if(input.value==='')throw Error(`${binding.label} requires a number.`);return setBase(binding.key,Number(input.value));}));
@@ -43,9 +43,9 @@ export function mountHostedEditor({doc=globalThis.document,win=globalThis.window
   }
   function render(){
     if(!snapshot||!patch)return;
-    const device=snapshot.devices[snapshot.track],track=snapshot.document.tracks[snapshot.track],runtime=snapshot.state.tracks[snapshot.track];
-    $('hosted-title').textContent=`${track.name} / ${device.name}`;$('hosted-source').textContent=track.device.path;doc.title=`${track.name} - Ultra Hosted Editor`;
-    const nextIdentity=JSON.stringify([snapshot.generation,snapshot.track]);if(nextIdentity!==identity){identity=nextIdentity;path=[];buildControls();autoFit=true;}
+    const device=snapshot.deviceInstances[snapshot.instanceId].manifest,track=snapshot.document.tracks[snapshot.track],runtime=snapshot.state.devices[snapshot.deviceIndex];
+    $('hosted-title').textContent=`${track.name} / ${device.name}`;$('hosted-source').textContent=[track.device,...track.effects].find(d=>d.instanceId===snapshot.instanceId).path;doc.title=`${track.name} - Ultra Hosted Editor`;
+    const nextIdentity=JSON.stringify([snapshot.generation,snapshot.instanceId]);if(nextIdentity!==identity){identity=nextIdentity;path=[];buildControls();autoFit=true;}
     device.parameters.forEach((binding,index)=>{const view=controls.get(binding.key),reading=parameterReading(binding,runtime,index);if(doc.activeElement!==view.input)view.input.value=reading.base;view.output.textContent=`${reading.owner}: ${Number(reading.effective.toFixed(3))}${binding.unit?' '+binding.unit:''}`;view.group.classList.toggle('automated',reading.owner==='Automation');});
     const current=scope(),ids=new Set(current.nodes.map(n=>n.id));for(const[id,view]of views)if(!ids.has(id)){view.dispose();views.delete(id);}
     const rendered=[],state={native:true,ready:true,busy:false,observations:{},messageBoxes:{}};

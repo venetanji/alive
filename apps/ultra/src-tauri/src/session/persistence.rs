@@ -10,7 +10,7 @@ pub fn read(path: &Path) -> Result<PreparedSession, String> {
     let mut text = String::new();
     file.take(MAX_BYTES + 1).read_to_string(&mut text).map_err(|e| format!("Cannot read session as UTF-8: {e}"))?;
     if text.len() as u64 > MAX_BYTES { return Err("Session exceeds the 1 MiB limit".into()); }
-    let session = serde_json::from_str(&text).map_err(|e| format!("Invalid Alive session JSON: {e}"))?;
+    let session = decode(&text, &path)?;
     prepare(&session, &path)
 }
 pub fn save(path: &Path, session: &Session, origin: &Path) -> Result<PathBuf, String> {
@@ -26,12 +26,14 @@ pub fn save(path: &Path, session: &Session, origin: &Path) -> Result<PathBuf, St
         else { parent.join(path.file_name().ok_or("Choose a session file name")?) };
     // A session symlink may resolve to a different folder than the chosen name.
     let parent = path.parent().ok_or("Choose a session file name")?;
-    if prepared.tracks.iter().any(|track| track.path == path) { return Err("A session cannot replace its Ultra device file".into()); }
+    if prepared.devices.iter().any(|device| device.path == path) { return Err("A session cannot replace its Ultra device file".into()); }
     let mut document = prepared.document;
     // Preserve resolved identities when Save As moves a session to another folder.
-    for (track, device) in document.tracks.iter_mut().zip(&prepared.tracks) {
-        track.device.path = relative_path(parent, &device.path).to_str()
-            .ok_or("Device path cannot be represented as UTF-8")?.to_owned();
+    for track in &mut document.tracks {
+        for reference in track.devices_mut() {
+            let device = prepared.devices.iter().find(|d| d.instance_id == reference.instance_id).unwrap();
+            reference.path = relative_path(parent, &device.path).to_str().ok_or("Device path cannot be represented as UTF-8")?.to_owned();
+        }
     }
     let mut bytes = serde_json::to_vec_pretty(&document).map_err(|e| e.to_string())?;
     bytes.push(b'\n');
@@ -60,4 +62,47 @@ fn relative_path(base: &Path, target: &Path) -> PathBuf {
     for _ in common..left.len() { relative.push(".."); }
     for part in &right[common..] { relative.push(part.as_os_str()); }
     relative
+}
+
+#[derive(serde::Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct SessionV1 { format: String, title: String, tempo: f64, length_beats: f64, loop_enabled: bool, tracks: Vec<TrackV1> }
+#[derive(serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+struct TrackV1 { id: String, name: String, device: ReferenceV1, notes: Vec<Note>, automation: Vec<LaneV1>, gain: f64, mute: bool, solo: bool }
+#[derive(serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ReferenceV1 { path: String, id: String, version: u32, parameters: std::collections::BTreeMap<String, f64> }
+#[derive(serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+struct LaneV1 { key: String, enabled: bool, points: Vec<Point> }
+pub(super) fn decode(text: &str, origin: &Path) -> Result<Session, String> {
+    use sha2::{Digest, Sha256};
+    let value: serde_json::Value = serde_json::from_str(text).map_err(|e| format!("Invalid Alive session JSON: {e}"))?;
+    match value["format"].as_str() {
+        Some("alive-session-v2") => serde_json::from_str(text).map_err(|e| format!("Invalid Alive session JSON: {e}")),
+        Some("alive-session-v1") => {
+            let old: SessionV1 = serde_json::from_str(text).map_err(|e| format!("Invalid Alive v1 session JSON: {e}"))?;
+            let _ = old.format;
+            if old.tracks.len() > 16 { return Err("Session exceeds sixteen native roots".into()); }
+            if old.tracks.is_empty() || old.tracks.len() > 2 { return Err("Alive supports one or two instrument tracks".into()); }
+            let mut ids = std::collections::HashSet::new();
+            for track in &old.tracks {
+                if !ids.insert(&track.id) { return Err("Duplicate track ID in legacy session".into()); }
+            }
+            let mut tracks = Vec::new();
+            for track in old.tracks {
+                let instance_id = format!("legacy-{}", &format!("{:x}", Sha256::digest(track.id.as_bytes()))[..32]);
+                let source = crate::documents::read_patch(&origin.parent().unwrap_or(Path::new(".")).join(&track.device.path))
+                    .map_err(|e| format!("Track '{}' instance '{}' ({}): {e}. Use Replace to recover", track.name, instance_id, track.device.path))?;
+                let patch = source.patch.ok_or("Expected a saved Ultra device")?;
+                let source_sha256 = super::prepare::fingerprint(&patch)?;
+                tracks.push(Track { id: track.id, name: track.name, device: DeviceInstance { instance_id: instance_id.clone(), source_sha256, bypassed: false,
+                    path: track.device.path, id: track.device.id, version: track.device.version, parameters: track.device.parameters }, effects: vec![], notes: track.notes,
+                    automation: track.automation.into_iter().map(|l| Lane { instance_id: instance_id.clone(), key: l.key, enabled: l.enabled, points: l.points }).collect(), gain: track.gain, mute: track.mute, solo: track.solo });
+            }
+            Ok(Session { format: "alive-session-v2".into(), title: old.title, tempo: old.tempo, length_beats: old.length_beats, loop_enabled: old.loop_enabled, tracks })
+        }
+        _ => Err("Unsupported Alive session format".into()),
+    }
 }
