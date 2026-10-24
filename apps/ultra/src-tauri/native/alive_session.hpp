@@ -2,6 +2,7 @@
 #include "alive_session.h"
 #include "canvas_workspace.hpp"
 #include "alive_session_clip_policy.hpp"
+#include "alive_session_bits.hpp"
 #include <memory>
 #include <atomic>
 #include <cstring>

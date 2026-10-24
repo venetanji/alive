@@ -7,6 +7,14 @@
 #include <cstring>
 #include <vector>
 
+static_assert(ultra::session_bits::count(0) == 0);
+static_assert(ultra::session_bits::count(0xffffffffu) == 32);
+static_assert(ultra::session_bits::count(0x80008001u) == 3);
+static_assert(ultra::session_bits::first(0) == 32);
+static_assert(ultra::session_bits::first(1) == 0);
+static_assert(ultra::session_bits::first(0x80000000u) == 31);
+static_assert(ultra::session_bits::first(0x80000080u) == 7);
+
 namespace {
 uint64_t revision = 40000, preparation = 0, serial = 0;
 std::array<float, 1024> left{}, right{};

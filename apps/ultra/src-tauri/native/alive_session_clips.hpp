@@ -143,7 +143,7 @@ bool bounds_v3(const AliveSessionConfigV3 &c) noexcept {
       if (mask &&
           (d >= c.device_count || owners[d] != int(clip.track) || (mask >> c.devices[d].parameter_count)))
         return reject_v3(ALIVE_SESSION_V3_BAD_OWNERSHIP, "Invalid clip parameter ownership mask.");
-      enabled += unsigned(__builtin_popcount(mask));
+      enabled += session_bits::count(mask);
       unions[d] |= mask;
     }
     if (enabled > clip.lane_count || (lanes[clip.track] += clip.lane_count) > 16)
@@ -896,7 +896,7 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
       }
     } else {
       candidate_.group[index] = true;
-      const unsigned t = unsigned(__builtin_ctz(r.track_mask));
+      const unsigned t = session_bits::first(r.track_mask);
       const auto &action = r.tracks[t];
       auto &ts = candidate_.tracks[t];
       const uint64_t target = candidate_.playing ? target_frame(candidate_.position) : state_.absolute_frame;
