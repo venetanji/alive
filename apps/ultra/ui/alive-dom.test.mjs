@@ -64,6 +64,84 @@ function backend(initial){
   }};
 }
 
+function delayedBoundary(native,name,change,outcome='snapshot'){
+  let release;const gate=new Promise(resolve=>{release=resolve;});
+  return{release,async invoke(command,args){
+    const result=await native.invoke(command,args);if(command!==name)return result;
+    await gate;change(native.snapshot);
+    if(outcome==='error')throw Error('Outer file action failed');
+    return outcome==='none'?null:structuredClone(native.snapshot);
+  }};
+}
+
+test('queued Add note cannot cross successful removal into a reused track index',async()=>{
+  const initial=state();initial.state.playing=0;
+  const page=dom('./alive.html'),native=backend(initial),boundary=delayedBoundary(native,'alive_device',snapshot=>{
+    snapshot.document.tracks.shift();snapshot.devices.shift();snapshot.state.tracks.shift();snapshot.state.devices=snapshot.state.tracks;
+    snapshot.deviceInstances=Object.fromEntries(Object.entries(snapshot.deviceInstances).filter(([,owner])=>owner.track!==0).map(([id,owner])=>[id,{...owner,track:0,index:0}]));
+    snapshot.generation++;snapshot.draftRevision++;
+  }),view=mountAlive({...page,invoke:boundary.invoke});await settle();
+  const survivor=structuredClone(initial.document.tracks[1]);
+  await page.find('Remove Pulse track').fire('click');await page.ids.get('add-note').fire('click');boundary.release();await settle();
+  assert.equal(native.snapshot.document.tracks[0].id,survivor.id);
+  assert.deepEqual(view.model.document().tracks[0].notes,survivor.notes);
+  assert.equal(native.calls.filter(c=>c.name==='alive_edit').length,0);
+  assert.match(page.ids.get('notice').textContent,/score.*changed/i);view.dispose();
+});
+
+for(const[action,field,key,value]of [['new','tempo','tempo','137'],['open','length','lengthBeats','16'],['open','loop','loopEnabled',false]]){
+  test(`queued ${key} cannot cross successful ${action}`,async()=>{
+    const page=dom('./alive.html'),native=backend(state()),boundary=delayedBoundary(native,'alive_file',snapshot=>{
+      snapshot.document.title='Replacement session';snapshot.generation++;snapshot.draftRevision++;
+    }),view=mountAlive({...page,invoke:boundary.invoke});await settle();
+    const original=native.snapshot.document[key];
+    await page.ids.get(action).fire('click');const input=page.ids.get(field);if(field==='loop')input.checked=value;else input.value=value;await input.fire('change');
+    boundary.release();await settle();
+    assert.equal(view.model.document().title,'Replacement session');assert.equal(view.model.document()[key],original);
+    assert.equal(native.calls.filter(c=>c.name==='alive_edit').length,0);view.dispose();
+  });
+}
+
+for(const[resolution,outcome]of [['apply','none'],['apply','error'],['discard','none'],['discard','error'],['relocate','snapshot']]){
+  test(`queued global edits cancel after ${resolution} with file outcome ${outcome}`,async()=>{
+    const page=dom('./alive.html'),native=backend(state()),boundary=delayedBoundary(native,'alive_file',snapshot=>{
+      if(resolution==='apply'){snapshot.document=snapshot.draft;snapshot.draft=null;snapshot.generation++;}
+      if(resolution==='discard')snapshot.draft=null;
+      if(resolution==='relocate'){snapshot.document.tracks[0].device.path='../relocated/subtractive.ultra';snapshot.history={canUndo:false,canRedo:true,redoLabel:'Move note'};}
+      else snapshot.history={canUndo:false,canRedo:false};
+      snapshot.draftRevision++;
+    },outcome),view=mountAlive({...page,invoke:boundary.invoke});await settle();
+    if(resolution!=='relocate'){const pitch=page.find('Note 1 pitch');pitch.value='63';await pitch.fire('change');}
+    const edits=native.calls.filter(c=>c.name==='alive_edit').length,originalTempo=native.snapshot.document.tempo;
+    await page.ids.get('save-as').fire('click');const tempo=page.ids.get('tempo');tempo.value='137';await tempo.fire('change');boundary.release();await settle();
+    assert.equal(view.model.document().tempo,originalTempo);assert.equal(view.model.pending(),false);
+    assert.equal(native.calls.filter(c=>c.name==='alive_edit').length,edits);
+    assert.equal(view.model.snapshot().history.canRedo,resolution==='relocate');view.dispose();
+  });
+}
+
+for(const outcome of ['none','error']){
+  test(`file ${outcome} without an accepted boundary preserves queued same-scope edits`,async()=>{
+    const page=dom('./alive.html'),native=backend(state()),boundary=delayedBoundary(native,'alive_file',()=>{},outcome),view=mountAlive({...page,invoke:boundary.invoke});await settle();
+    await page.ids.get('open').fire('click');const tempo=page.ids.get('tempo');tempo.value='137';await tempo.fire('change');
+    const pitch=page.find('Note 1 pitch');pitch.value='64';await pitch.fire('change');boundary.release();await settle();
+    assert.equal(view.model.document().tempo,137);assert.equal(view.model.document().tracks[0].notes[0].pitch,64);
+    assert.deepEqual(native.calls.filter(c=>c.name==='alive_edit').map(c=>c.args.draftRevision),[0,1]);view.dispose();
+  });
+}
+
+for(const action of ['apply','discard','undo']){
+  test(`queued global edits cancel after accepted ${action}`,async()=>{
+    const initial=state();initial.state.playing=0;
+    const page=dom('./alive.html'),native=backend(initial),boundary=delayedBoundary(native,action==='undo'?'alive_history':`alive_${action}`,snapshot=>{
+      snapshot.draft=null;snapshot.draftRevision++;snapshot.history={canUndo:false,canRedo:action==='undo'};
+    }),view=mountAlive({...page,invoke:boundary.invoke});await settle();
+    const pitch=page.find('Note 1 pitch');pitch.value='63';await pitch.fire('change');
+    await page.ids.get(action).fire('click');const tempo=page.ids.get('tempo');tempo.value='137';await tempo.fire('change');boundary.release();await settle();
+    assert.equal(view.model.document().tempo,112);assert.equal(native.calls.filter(c=>c.name==='alive_edit').length,1);view.dispose();
+  });
+}
+
 test('real musical fields retain drafts across polls and rejected Apply',async()=>{
   const page=dom('./alive.html'),native=backend(state()),view=mountAlive({...page,invoke:native.invoke});await settle();
   const pitch=page.find('Note 1 pitch');assert.ok(pitch);pitch.value='62';await pitch.fire('change');await settle();
@@ -296,7 +374,8 @@ test('queued numeric edits retain their originating track after a selection chan
   const invoke=async(name,args)=>{if(name==='alive_edit'&&blocked){blocked=false;await new Promise(resolve=>{release=resolve;});}return native.invoke(name,args);};
   const view=mountAlive({...page,invoke});await settle();const tempo=page.ids.get('tempo');tempo.value='130';const first=tempo.fire('change');await settle();
   const pitch=page.find('Note 1 pitch');pitch.value='61';const second=pitch.fire('change');await settle();await page.find('Select Harmony track').fire('click');release();await first;await second;await settle();
-  assert.equal(native.snapshot.draft.tempo,130);assert.equal(native.snapshot.draft.tracks[0].notes[0].pitch,61);assert.equal(native.snapshot.draft.tracks[1].notes[0].pitch,native.snapshot.document.tracks[1].notes[0].pitch);view.dispose();
+    assert.equal(native.snapshot.draft.tempo,130);assert.equal(native.snapshot.draft.tracks[0].notes[0].pitch,61);assert.equal(native.snapshot.draft.tracks[1].notes[0].pitch,native.snapshot.document.tracks[1].notes[0].pitch);
+    assert.deepEqual(native.calls.filter(c=>c.name==='alive_edit').map(c=>c.args.draftRevision),[0,1]);view.dispose();
 });
 test('Escape cancels a velocity drag including late input and change events',async()=>{
   const page=dom('./alive.html'),native=backend(state()),view=mountAlive({...page,invoke:native.invoke});await settle();const svg=page.ids.get('piano-roll'),note=descendants(svg).find(e=>e.attrs['data-note']==='0'&&e.attrs['data-part']==='body');

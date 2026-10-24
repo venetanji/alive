@@ -20,10 +20,27 @@ async function openSession(page,longNames=false){
   }
   const snapshot={generation:1,draftRevision:0,history:{canUndo:false,canRedo:false},document,deviceInstances,dirty:false,draft:null,state:{playing:0,position:0,absoluteFrame:0,rejected:0,generation:1,peakLeft:0,peakRight:0,devices:runtime,tracks:document.tracks.map(()=>({peakLeft:0,peakRight:0,activeVoices:0}))},audio:{config:{host:'default',device:'default',sample_rate:48000},observed_buffer_frames:0,callbacks:0,stream_errors:0,failed:false,message:'Browser fixture'}};
   await page.addInitScript(snapshot=>{
+    window.removeTrack=async trackId=>{
+      await new Promise(resolve=>{window.finishRemoval=resolve;});
+      const index=snapshot.document.tracks.findIndex(track=>track.id===trackId);
+      snapshot.document.tracks.splice(index,1);snapshot.state.tracks.splice(index,1);
+      snapshot.generation++;snapshot.draftRevision++;return structuredClone(snapshot);
+    };
     window.calls=[];const undo=[],redo=[];window.__TAURI__={core:{invoke:async(name,args)=>{window.calls.push({name,args});if(name==='alive_current')return structuredClone(snapshot);if(name==='alive_edit'){undo.push(structuredClone(snapshot.draft??snapshot.document));redo.length=0;snapshot.draft=args.document;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return structuredClone(snapshot);}if(name==='alive_history'){const from=args.direction==='undo'?undo:redo,to=args.direction==='undo'?redo:undo;to.push(structuredClone(snapshot.draft??snapshot.document));snapshot.draft=from.pop();snapshot.draftRevision++;snapshot.history={canUndo:!!undo.length,canRedo:!!redo.length};return structuredClone(snapshot);}}}};
+    const invoke=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=(name,args)=>name==='alive_device'&&args.action==='remove'?window.removeTrack(args.trackId):invoke(name,args);
   },snapshot);
   await page.goto('/alive.html');await expect(page.locator('#chain-title')).toHaveText('Pulse chain');
 }
+
+test('Add note queued behind track removal never edits the surviving track',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:1100,height:800});await openSession(page);
+  await page.getByRole('button',{name:'Remove Pulse track',exact:true}).click();
+  await expect.poll(()=>page.evaluate(()=>typeof window.finishRemoval)).toBe('function');
+  await page.getByRole('button',{name:'Add note',exact:true}).click();await page.evaluate(()=>window.finishRemoval());
+  await expect(page.locator('#clip-title')).toHaveText('Harmony clip');await expect(page.locator('#notice')).toContainText('score scope changed');
+  await expect(page.locator('#notes tr')).toHaveCount(12);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_edit'))).toEqual([]);expect(errors).toEqual([]);
+});
 
 test('selected instance controls, keyboard automation target, draft guard and desktop bounds',async({page},testInfo)=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:900,height:660});await openSession(page);

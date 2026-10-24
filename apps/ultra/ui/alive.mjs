@@ -5,7 +5,7 @@ import {mountAudioSettings} from './audio-settings.mjs';
 export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke=win?.__TAURI__?.core?.invoke}={}){
   const $=id=>doc.getElementById(id),make=(tag,cls,text)=>{const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
   const model=createAliveModel();let selected=0,selectedInstance=null,chainKey='',queue=Promise.resolve(),disposed=false,trackKey='',musicKey='',parameterKey='',laneKey='';
-  let selectedNote=null,gesture=null,preview=null,pianoGeometry=null,velocityCanceled=false,listRevision=0;
+  let selectedNote=null,gesture=null,preview=null,pianoGeometry=null,velocityCanceled=false,listRevision=0,scopeRevision=0;
   const trackViews=[],chainViews=[],parameterViews=new Map(),diagnostics=new Map();let audioSettings;
   function notice(text,error=false){$('notice').textContent=String(text);$('notice').classList.toggle('error',error);}
   function enqueue(work){const result=queue.then(work);queue=result.catch(error=>notice(error,true));return result;}
@@ -29,9 +29,19 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     musicKey='';render();
   }
   function listShape(document){return JSON.stringify(document.tracks.map(t=>[t.id,t.notes.length,t.automation.map(l=>[l.instanceId,l.key,l.points.length])]))}
+  function trackById(document,id){const track=document.tracks.find(track=>track.id===id);if(!track)throw Error('The originating track changed. Select it and try again.');return track;}
+  // Accepted boundaries invalidate queued intent; ordinary edits keep their queue's scope.
+  function invalidateScope(before){
+    const current=model.snapshot();
+    if(before&&(before.generation!==current.generation||before.draftRevision!==current.draftRevision)){
+      scopeRevision++;listRevision++;selectedNote=null;cancelGesture();
+    }
+  }
+  function applySnapshot(snapshot){const before=model.snapshot();model.applied(snapshot);invalidateScope(before);}
   function edit(change,rebuild=true,label='Edit schedule',context=null,indexed=false){
-    const epoch=listRevision;
+    const epoch=listRevision,scope=context?.scope??scopeRevision;
     return enqueue(async()=>{
+      if(scope!==scopeRevision){musicKey='';render();throw Error('The score scope changed. Select it and try again.');}
       if(indexed&&epoch!==listRevision){musicKey='';render();throw Error('The note or automation list changed. Select it and try again.');}
       if(context&&(generation()!==context.generation||(model.snapshot()?.draftRevision??0)!==context.revision))throw Error('The score changed during this gesture. Try again.');
       const previous=model.document(),document=structuredClone(previous);change(document);
@@ -44,13 +54,13 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     const snapshot=await invoke('alive_current');
     if(gesture&&(snapshot.generation!==gesture.generation||(snapshot.draftRevision??0)!==gesture.revision)){if(gesture.kind==='velocity')velocityCanceled=true;gesture=null;preview=null;selectedNote=null;musicKey='';}
     const before=model.snapshot();model.accept(snapshot);
-    if(before&&(before.generation!==model.snapshot().generation||before.draftRevision!==model.snapshot().draftRevision)){selectedNote=null;listRevision++;}
+    invalidateScope(before);
     render();return snapshot;
   }
   function file(action){commitFocused();cancelGesture();return enqueue(async()=>{
     let result;
     try{result=await command('alive_file',{action});}
-    finally{model.applied(await invoke('alive_current'));listRevision++;trackKey=musicKey=parameterKey='';selectedNote=null;render();}
+    finally{applySnapshot(await invoke('alive_current'));trackKey=musicKey=parameterKey='';selectedNote=null;render();}
     if(result)notice(action.startsWith('save')?'Session saved.':'Session ready.');
   });}
   function transport(action){return enqueue(async()=>{await command('alive_transport',{action,beat:Number($('seek').value)});await refresh();notice(action==='start'?(model.pending()?'Playing the prepared schedule. Pending edits remain unapplied.':'Transport playing.'):action==='stop'?'Transport stopped.':'Transport seek queued.');});}
@@ -91,7 +101,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
         const button=make('button','',label);button.setAttribute('aria-label',action==='editor'?`Open ${track.name} editor`:action==='remove'?`Remove ${track.name} track`:`${label} ${track.name} device`);
         button.addEventListener('click',guard(()=>enqueue(async()=>{
           if(action!=='editor'){commitFocused();cancelGesture();selectedNote=null;}
-          if(action==='editor')await command('alive_editor',{instanceId:model.document().tracks[index].device.instanceId});else{const snapshot=await command('alive_device',{trackId:model.document().tracks[index].id,instanceId:model.document().tracks[index].device.instanceId,action});model.applied(snapshot);listRevision++;trackKey=musicKey=parameterKey='';render();notice('Device updated. Start transport when ready.');}
+          if(action==='editor')await command('alive_editor',{instanceId:track.device.instanceId});else{const snapshot=await command('alive_device',{trackId:track.id,instanceId:track.device.instanceId,action});applySnapshot(snapshot);trackKey=musicKey=parameterKey='';render();notice('Device updated. Start transport when ready.');}
         })));actions.append(button);
       }
       row.append(name,clip,gainLabel,mute,solo,meters,actions);$('tracks').append(row);trackViews.push({row,detail,svg,gain,mute,solo,bar,readout,actions});
@@ -103,7 +113,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   function structural(reference,action,beforeInstanceId){
     commitFocused();cancelGesture();selectedNote=null;
     const trackId=model.document().tracks[selected].id,instanceId=reference?.instanceId;
-    return enqueue(async()=>{const snapshot=await command('alive_device',{trackId,instanceId,action,...(action==='reorder'?{beforeInstanceId}: {})});model.applied(snapshot);listRevision++;trackKey=musicKey=parameterKey=chainKey='';render();notice('Chain prepared. Start transport when ready.');});
+    return enqueue(async()=>{const snapshot=await command('alive_device',{trackId,instanceId,action,...(action==='reorder'?{beforeInstanceId}: {})});applySnapshot(snapshot);trackKey=musicKey=parameterKey=chainKey='';render();notice('Chain prepared. Start transport when ready.');});
   }
   function buildChain(){
     const track=model.document().tracks[selected],devices=chainDevices(track);
@@ -129,13 +139,13 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   }
   function mix(track,changes){return enqueue(async()=>{const current=model.snapshot().document.tracks[track];await command('alive_mixer',{track,gain:changes.gain??current.gain,mute:changes.mute??current.mute,solo:changes.solo??current.solo});await refresh();});}
   function buildMusic(document){
-    const trackIndex=selected,track=document.tracks[trackIndex];$('clip-title').textContent=`${track.name} clip`;
+    const track=document.tracks[selected],trackId=track.id;$('clip-title').textContent=`${track.name} clip`;
     paintPiano($('piano-roll'),preview??track.notes,document.lengthBeats,true);$('notes').replaceChildren();
     track.notes.forEach((note,index)=>{
       const row=make('tr');for(const[key,bounds]of [['beat',{min:0,max:document.lengthBeats,step:.25}],['pitch',{min:0,max:127,step:1}],['duration',{min:1/64,max:document.lengthBeats,step:.25}],['velocity',{min:1,max:127,step:1}]]){
-        const cell=make('td'),input=numeric(`Note ${index+1} ${key}`,note[key],bounds,value=>edit(doc=>{doc.tracks[trackIndex].notes[index][key]=value;},false,'Edit note',null,true));cell.append(input);row.append(cell);
+        const cell=make('td'),input=numeric(`Note ${index+1} ${key}`,note[key],bounds,value=>edit(doc=>{trackById(doc,trackId).notes[index][key]=value;},false,'Edit note',null,true));cell.append(input);row.append(cell);
       }
-      const remove=make('button','','Remove'),cell=make('td');remove.setAttribute('aria-label',`Remove note ${index+1}`);remove.addEventListener('click',guard(()=>{if(selected===trackIndex)selectedNote=null;return edit(doc=>doc.tracks[trackIndex].notes.splice(index,1),true,'Delete note',null,true);}));cell.append(remove);row.append(cell);$('notes').append(row);
+      const remove=make('button','','Remove'),cell=make('td');remove.setAttribute('aria-label',`Remove note ${index+1}`);remove.addEventListener('click',guard(()=>{if(model.document().tracks[selected].id===trackId)selectedNote=null;return edit(doc=>trackById(doc,trackId).notes.splice(index,1),true,'Delete note',null,true);}));cell.append(remove);row.append(cell);$('notes').append(row);
     });
     const targets=automationTargets(),targetSelect=$('automation-target'),priorTarget=targetSelect.value;
     targetSelect.replaceChildren();
@@ -147,7 +157,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       if(!lane&&!(instanceId===track.device.instanceId&&['cutoff','level'].includes(key)))continue;
       const section=make('div','lane'),heading=make('div','lane-heading'),label=make('label'),enable=make('input'),add=make('button','',`Add ${laneLabel} point`);
       section.dataset.lane=key;section.dataset.instance=instanceId;enable.type='checkbox';enable.checked=!!lane?.enabled;enable.setAttribute('aria-label',`${laneLabel} automation enabled`);label.append(enable,doc.createTextNode(laneLabel));heading.append(label,add);add.setAttribute('aria-label',`Add ${laneLabel} point`);
-      const ensure=doc=>{const track=doc.tracks[trackIndex];let lane=track.automation.find(l=>l.instanceId===instanceId&&l.key===key);if(!lane){lane={instanceId,key,enabled:false,points:[]};track.automation.push(lane);}return lane;};
+      const ensure=doc=>{const track=trackById(doc,trackId);let lane=track.automation.find(l=>l.instanceId===instanceId&&l.key===key);if(!lane){lane={instanceId,key,enabled:false,points:[]};track.automation.push(lane);}return lane;};
       enable.addEventListener('change',guard(()=>{const checked=enable.checked;return edit(doc=>{ensure(doc).enabled=checked;},false,'Toggle automation');}));
       add.addEventListener('click',guard(()=>edit(doc=>{const points=ensure(doc).points,last=points.at(-1)?.beat??-1;const beat=last<0?0:Math.min(doc.lengthBeats-.015625,last+1);if(beat<=last)throw Error('Move or remove the final point to make room before the clip end.');points.push({beat,value:instanceView(instanceId).manifest.parameters.find(p=>p.key===key).base});})));
       const graph=svgElement('svg',{class:'lane-graph','aria-label':`${laneLabel} step automation`,role:'img'}),points=make('div','lane-points');
@@ -185,7 +195,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   }
   function setBase(instanceId,key,value){return enqueue(async()=>{await command('alive_base',{instanceId,key,value});await refresh();});}
   const piano=$('piano-roll'),velocity=$('note-velocity');
-  function context(){return {track:selected,generation:generation(),revision:model.snapshot()?.draftRevision??0};}
+  function context(){return {trackId:model.document().tracks[selected].id,scope:scopeRevision,generation:generation(),revision:model.snapshot()?.draftRevision??0};}
   function paintSelection(){paintPiano(piano,preview??model.document().tracks[selected].notes,model.document().lengthBeats,true);render();}
   piano.addEventListener('pointerdown',guard(event=>{
     if(event.button!==0||gesture)return;
@@ -203,7 +213,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   piano.addEventListener('pointerup',guard(event=>{
     if(!gesture||gesture.pointerId!==event.pointerId)return;const g=gesture,notes=preview;gesture=null;preview=null;
     if(piano.hasPointerCapture?.(event.pointerId))piano.releasePointerCapture(event.pointerId);
-    if(notes&&JSON.stringify(notes)!==JSON.stringify(g.notes))return edit(document=>{document.tracks[g.track].notes=notes;},true,g.kind==='resize'?'Resize note':'Move note',g);
+    if(notes&&JSON.stringify(notes)!==JSON.stringify(g.notes))return edit(document=>{trackById(document,g.trackId).notes=notes;},true,g.kind==='resize'?'Resize note':'Move note',g);
     paintSelection();
   }));
   piano.addEventListener('pointercancel',cancelGesture);piano.addEventListener('lostpointercapture',()=>{if(gesture)cancelGesture();});
@@ -211,20 +221,20 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     if(event.target.closest?.('[data-note]'))return;
     cancelGesture();const p=point(event,piano.getBoundingClientRect(),pianoGeometry);
     if(p.x<pianoGeometry.pad||p.y<pianoGeometry.top)return;
-    const trackIndex=selected,note=addNote(beatAt(p,pianoGeometry),pitchAt(p,pianoGeometry),model.document().lengthBeats);if(!note)throw Error('The new note must fit within the clip.');
-    return edit(document=>{const notes=document.tracks[trackIndex].notes;notes.push(note);if(selected===trackIndex)selectedNote=notes.length-1;},true,'Add note');
+    const trackId=model.document().tracks[selected].id,note=addNote(beatAt(p,pianoGeometry),pitchAt(p,pianoGeometry),model.document().lengthBeats);if(!note)throw Error('The new note must fit within the clip.');
+    return edit(document=>{const notes=trackById(document,trackId).notes;notes.push(note);if(model.document().tracks[selected].id===trackId)selectedNote=notes.length-1;},true,'Add note');
   }));
   piano.addEventListener('keydown',guard(event=>{
     if(event.key==='Escape'){event.preventDefault();cancelGesture();return;}
     if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='z'){event.preventDefault();return history(event.shiftKey?'redo':'undo');}
     if(selectedNote===null)return;
-    const trackIndex=selected,index=selectedNote,note=model.document().tracks[trackIndex].notes[index];
-    if(['Delete','Backspace'].includes(event.key)){event.preventDefault();cancelGesture();selectedNote=null;return edit(document=>document.tracks[trackIndex].notes.splice(index,1),true,'Delete note',null,true);}
-    const changed=keyEdit(note,event.key,event.shiftKey);if(changed){event.preventDefault();cancelGesture();return edit(document=>{document.tracks[trackIndex].notes[index]=keyEdit(document.tracks[trackIndex].notes[index],event.key,event.shiftKey);},true,event.shiftKey?'Resize note':'Move note',null,true);}
+    const trackId=model.document().tracks[selected].id,index=selectedNote,note=trackById(model.document(),trackId).notes[index];
+    if(['Delete','Backspace'].includes(event.key)){event.preventDefault();cancelGesture();selectedNote=null;return edit(document=>trackById(document,trackId).notes.splice(index,1),true,'Delete note',null,true);}
+    const changed=keyEdit(note,event.key,event.shiftKey);if(changed){event.preventDefault();cancelGesture();return edit(document=>{const notes=trackById(document,trackId).notes;notes[index]=keyEdit(notes[index],event.key,event.shiftKey);},true,event.shiftKey?'Resize note':'Move note',null,true);}
   }));
   velocity.addEventListener('pointerdown',event=>{velocityCanceled=false;velocity.setPointerCapture?.(event.pointerId);if(selectedNote!==null){gesture={...context(),kind:'velocity',index:selectedNote,notes:structuredClone(model.document().tracks[selected].notes)};}});
   velocity.addEventListener('input',()=>{if(velocityCanceled){render();return;}if(selectedNote===null)return;preview=structuredClone(gesture?.notes??model.document().tracks[selected].notes);preview[selectedNote].velocity=Number(velocity.value);paintSelection();});
-  velocity.addEventListener('change',guard(()=>{if(velocityCanceled){render();return;}if(selectedNote===null)return;const g=gesture,trackIndex=g?.track??selected,index=selectedNote,value=Number(velocity.value);gesture=null;preview=null;return edit(document=>{document.tracks[trackIndex].notes[index].velocity=value;},true,'Change velocity',g,true);}));
+  velocity.addEventListener('change',guard(()=>{if(velocityCanceled){render();return;}if(selectedNote===null)return;const g=gesture,trackId=g?.trackId??model.document().tracks[selected].id,index=selectedNote,value=Number(velocity.value);gesture=null;preview=null;return edit(document=>{trackById(document,trackId).notes[index].velocity=value;},true,'Change velocity',g,true);}));
   velocity.addEventListener('pointercancel',cancelGesture);velocity.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();cancelGesture();}else velocityCanceled=false;});
   const diagnosticNames=['Audio backend','Audio device','Audio sample rate','Audio buffer frames','Audio callbacks','Audio stream errors','Audio failed','Audio status','Transport playing','Absolute frame','Rejected commands','Native generation','Track 1 active voices','Track 2 active voices'];
   for(const name of diagnosticNames){const label=make('label','',name),output=make('output','','-');output.setAttribute('aria-label',name);label.append(output);$('diagnostics').append(label);diagnostics.set(name,output);}
@@ -282,15 +292,15 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   for(const[id,action,label]of [['new','new','New session'],['open','open','Open session'],['save','save','Save session'],['save-as','saveAs','Save session as'],['quit','quit','Quit Alive']])bind(id,label,()=>file(action));
   bind('start','Start transport',()=>transport('start'));bind('stop','Stop transport',()=>transport('stop'));bind('seek-go','Seek transport',()=>transport('seek'));
   for(const[id,key,label]of [['tempo','tempo','Change tempo'],['length','lengthBeats','Change length']])$(id).addEventListener('change',guard(()=>{const value=Number($(id).value);if($(id).value===''||!Number.isFinite(value))throw Error('Enter a valid number.');return edit(doc=>{doc[key]=value;},false,label);}));$('loop').addEventListener('change',guard(()=>{const value=$('loop').checked;return edit(doc=>{doc.loopEnabled=value;},false,'Change looping');}));
-  bind('apply','Prepare / Apply',()=>{commitFocused();cancelGesture();return enqueue(async()=>{try{model.applied(await command('alive_apply'));}finally{await refresh();}selectedNote=null;trackKey=musicKey=parameterKey='';render();notice('Schedule prepared and applied. Start transport when ready.');});});
-  bind('discard','Discard edits',()=>{cancelGesture();return enqueue(async()=>{model.applied(await command('alive_discard'));listRevision++;selectedNote=null;musicKey='';render();notice('Pending schedule edits discarded.');});});
-  function history(direction){cancelGesture();return enqueue(async()=>{try{model.applied(await command('alive_history',{direction}));listRevision++;}finally{await refresh();}selectedNote=null;musicKey='';render();});}
+  bind('apply','Prepare / Apply',()=>{commitFocused();cancelGesture();return enqueue(async()=>{try{applySnapshot(await command('alive_apply'));}finally{await refresh();}selectedNote=null;trackKey=musicKey=parameterKey='';render();notice('Schedule prepared and applied. Start transport when ready.');});});
+  bind('discard','Discard edits',()=>{cancelGesture();return enqueue(async()=>{applySnapshot(await command('alive_discard'));selectedNote=null;musicKey='';render();notice('Pending schedule edits discarded.');});});
+  function history(direction){cancelGesture();return enqueue(async()=>{try{applySnapshot(await command('alive_history',{direction}));}finally{await refresh();}selectedNote=null;musicKey='';render();});}
   bind('undo','Undo pending edit',()=>history('undo'));bind('redo','Redo pending edit',()=>history('redo'));
-  bind('add-note','Add note',()=>{const trackIndex=selected;return edit(document=>{const notes=document.tracks[trackIndex].notes;let note=null;for(let beat=0;beat+.25<=document.lengthBeats&&!note;beat+=.25)for(let pitch=60;pitch<=127;pitch++)if(!notes.some(n=>n.pitch===pitch&&n.beat<beat+.25&&n.beat+n.duration>beat)){note={beat,pitch,duration:.25,velocity:100};break;}if(!note)throw Error('No room for a note. Move or delete an existing note.');notes.push(note);if(selected===trackIndex)selectedNote=notes.length-1;},true,'Add note');});
+  bind('add-note','Add note',()=>{const trackId=model.document().tracks[selected].id;return edit(document=>{const notes=trackById(document,trackId).notes;let note=null;for(let beat=0;beat+.25<=document.lengthBeats&&!note;beat+=.25)for(let pitch=60;pitch<=127;pitch++)if(!notes.some(n=>n.pitch===pitch&&n.beat<beat+.25&&n.beat+n.duration>beat)){note={beat,pitch,duration:.25,velocity:100};break;}if(!note)throw Error('No room for a note. Move or delete an existing note.');notes.push(note);if(model.document().tracks[selected].id===trackId)selectedNote=notes.length-1;},true,'Add note');});
   bind('add-effect','Add effect',()=>structural(null,'add'));
   bind('edit-device','Edit selected device in Ultra',()=>{const instanceId=selectedInstance;return enqueue(()=>command('alive_editor',{instanceId}));});
-  bind('add-lane','Add automation lane',()=>{const trackIndex=selected,[instanceId,key]=JSON.parse($('automation-target').value);return edit(document=>{const track=document.tracks[trackIndex];if(!track.automation.some(l=>l.instanceId===instanceId&&l.key===key))track.automation.push({instanceId,key,enabled:false,points:[]});});});
-  bind('add-track','Add instrument track',()=>{cancelGesture();return enqueue(async()=>{const snapshot=await command('alive_device',{trackId:`track-${Date.now()}`,action:'load'});model.applied(snapshot);listRevision++;trackKey=musicKey=parameterKey='';render();});});
+  bind('add-lane','Add automation lane',()=>{const trackId=model.document().tracks[selected].id,[instanceId,key]=JSON.parse($('automation-target').value);return edit(document=>{const track=trackById(document,trackId);if(!track.automation.some(l=>l.instanceId===instanceId&&l.key===key))track.automation.push({instanceId,key,enabled:false,points:[]});});});
+  bind('add-track','Add instrument track',()=>{cancelGesture();return enqueue(async()=>{const snapshot=await command('alive_device',{trackId:`track-${Date.now()}`,action:'load'});applySnapshot(snapshot);trackKey=musicKey=parameterKey='';render();});});
   const keydown=guard(event=>{if(event.defaultPrevented)return;if(event.key==='Escape'&&!$('alive-audio-settings').hidden){event.preventDefault();closeAudioSettings();return;}if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();return file(event.shiftKey?'saveAs':'save');}if(event.code==='Space'&&!event.target.matches('input,select,button,summary')){event.preventDefault();return transport(model.snapshot()?.state.playing?'stop':'start');}});doc.addEventListener('keydown',keydown);
   let unlisten=null;
   if(win?.__TAURI__?.event?.listen)win.__TAURI__.event.listen('alive-close-requested',()=>{guard(()=>file('quit'))();}).then(fn=>{unlisten=fn;});

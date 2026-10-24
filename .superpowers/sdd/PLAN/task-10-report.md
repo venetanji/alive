@@ -230,9 +230,101 @@ initialization/secondary-window and resource assertions successfully.
 Self-review is complete, including the stale-index and rejected audio-request
 regressions described above. Final `git diff --check` and Python compilation of
 `check_alive_desktop.py` and `check_alive_editor_resources.py` both exit zero.
-No production code changed after the successful final native journey. Parent
+No production code changed between that native journey and the initial Task 10
+commit; the separately qualified review fix follows below. Parent
 owns independent review and retained evidence; parent-owned PLAN/progress,
 Task 11 design and experiment receipt changes are excluded from this commit.
+
+## Review Fix Round 1
+
+Independent review reproduced Add note queued behind a successful track removal
+adding to the survivor at the reused numeric index. This was a renderer intent
+ownership bug: the queue obtained new generation/revision credentials for old
+input. The backend's version gate correctly authenticated those new credentials,
+so it could not determine the original user intent.
+
+Every musical intent now captures a renderer scope token when queued. Accepted
+non-musical snapshots with changed generation or draftRevision invalidate that
+token, including structural installs, New/Open, explicit Apply/Discard/history,
+inner Apply/Discard followed by file None/Err, and Save As relocation. A stale
+intent reports an error before changing a document or invoking `alive_edit`.
+Ordinary successful edits preserve the token so their queued successors use
+the predecessor's returned revision. File cancellation/failure without an
+accepted boundary preserves both indexed and global queued edits. Track-owned
+music (table, piano, velocity and automation) now resolves originating stable
+track IDs. Successful relocation still preserves native history/redo.
+
+`/tmp/task10-scope-red.log`: nine behavioral failures before the fix reproduce
+wrong-track Add note, New/Open tempo/length/loop, accepted inner Apply/Discard
+with None/Err, and relocation. Existing no-boundary cancellations pass in RED.
+`/tmp/task10-scope-green.log`: all 34 then-current DOM cases pass after the fix.
+Additional direct Apply/Discard/history and predecessor-revision assertions pass:
+
+```sh
+node --test apps/ultra/ui/alive-dom.test.mjs \
+  apps/ultra/ui/alive-model.test.mjs apps/ultra/ui/alive-piano.test.mjs
+node --test apps/ultra/ui/*.test.mjs apps/ultra/ui/components/*.test.mjs
+npm --prefix apps/ultra/tests/ci run test:browser -- \
+  --config playwright.config.mjs alive-chain.spec.mjs
+bash apps/alive/build.sh
+```
+
+`/tmp/task10-scope-focused.log`: 46 passed, zero failed, including unchanged
+model/piano cases. `/tmp/task10-scope-node.log`: 482 passed, zero failed.
+`/tmp/task10-scope-browser.log`: four Chromium tests pass. The added actual
+pointer/click journey delays Remove Pulse, queues Add note, then completes the
+removal; Harmony retains 12 notes and no `alive_edit` is sent. Existing
+chain/minimum-desktop and piano gesture/history coverage also passes.
+Browser test output retains existing color-environment and Node loader
+deprecation warnings. `/tmp/task10-scope-build.log` exits zero, rebuilding both
+embedded release applications with only the existing unused `reserve_native`
+warning. No Rust/native/DSP/resource code changed; their earlier gates are not
+repeated for this renderer correction.
+
+Final production source SHA-256 (`apps/ultra/ui/alive.mjs`):
+`73245aa81535e4f3eb1b6b1511d0f55daf0e6af1f79dd0f5d1928f6fb1ad1d4a`.
+Rebuilt release Alive SHA-256:
+`0e0576124a45460c266f49f309bf140d02bda4cd8d223f1a1455abaf56846fdc`.
+Rebuilt release Ultra SHA-256:
+`e9f5f1e6fa14c1a3411158ad9f4542cffb9f99d5db46b24a72615ff23e19cc27`.
+
+```sh
+ULTRA_TEST_ALIVE=1 \
+ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_desktop.py" \
+  bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-task10-scope-native
+```
+
+`/tmp/task10-scope-native.log` exits zero. This single native qualification on
+the frozen fix source supersedes the initial native receipt for final-source
+provenance. Receipt: `/tmp/alive-task10-scope-native/native-session-report.json`.
+Piano add/keyboard/undo/redo, rejected playing Apply retaining the draft,
+independent effect editor, Stop/Apply/play, saved/reopened note, Save As retaining
+redo, failed prospective Open retaining edits/playback, actual WM-close/Quit
+guards and accepted inner Apply/Discard followed by outer cancellation all pass.
+The delayed wrong-track race itself is reproduced in DOM and actual Chromium;
+the native harness qualifies the complete existing release desktop journey.
+
+Software capture: 2,786,304 frames / 58.048 seconds, finite, peak
+`0.35335424542427063`, SHA-256
+`16b23898f1fe1450b0be70941401387f81d9f0a0b1c47065c071acf185f4bf8a`.
+Final PipeWire `default_output`: 48 kHz, observed 512 frames, 1,607 callbacks,
+absolute frame 3,081,216, playing true, stream errors 0, failed false, rejected
+commands 0, native generation 79. Matching fixture channels and deliberate
+Stop/Apply/reopen silence remain; no physical, separation, xrun or endurance
+claim is made. Native output includes existing portal/display warnings and
+`gtk_widget_event` realization assertions (also present in the prior final
+native app log). They do not abort the harness or explain the renderer race;
+the run is successful, not warning-free.
+
+Self-review traces every musical input through the scope check and stable track
+lookup, every accepted non-musical command snapshot through `applySnapshot`,
+and external accepted version updates through `invalidateScope`. Ordinary
+musical acceptance remains the one deliberate direct `model.applied` call, so
+same-scope successors use returned revisions. Existing note/automation list
+guards, gesture cancellation and rejected audio-request recovery stay green.
+Final `git diff --check`, Python compile and source/binary SHA-256 confirmation
+pass. Only the renderer, DOM/browser tests and this report belong to the fix
+commit. Independent re-review and evidence/PLAN bookkeeping remain parent-owned.
 
 
 ## Limits
