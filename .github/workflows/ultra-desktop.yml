@@ -3,6 +3,7 @@ name: Ultra desktop packages
 on:
   pull_request:
     paths:
+      - 'apps/alive/**'
       - 'apps/ultra/**'
       - 'experiments/clockwork-faust/**'
       - 'experiments/faust-reference/**'

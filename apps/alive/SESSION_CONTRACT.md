@@ -78,7 +78,12 @@ slot even across removal and rollback. Prospective native admission runs before
 replacement. An unexpected apply failure attempts restoration of the prior
 prepared state with fresh revisions and reports any restoration failure.
 
-The desktop exposes `ultra --alive [session.alive]` in the existing executable.
+The desktop exposes `alive [session.alive]` as a separate executable and app
+identity (`org.alive.session`). Its shared Rust library/native engine also serve
+the `ultra` patch editor; the optional hosted editors remain in Alive's process.
+Each binary generates exactly one Tauri context/embedded macOS plist. The legacy
+`ultra --alive [session.alive]` entry remains compatible. Both applications can
+run at once, with separate native runtime state and application data directories.
 New opens the packaged two-track template. The current profile permits one or
 two tracks and rejects removal of the last track explicitly. Musical changes
 are retained separately from the prepared schedule until stopped Apply; latest

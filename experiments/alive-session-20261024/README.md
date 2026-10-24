@@ -92,7 +92,7 @@ hardware deadlines and MIDI/analog latency remain unmeasured.
 and runtime revision `e841f6f`. The long run uses that revision's harness; the
 short journey also validates the subsequent WirePlumber 0.4/pw-cat compatibility
 changes, without changing runtime code. `evidence-manifest.json` binds retained
-receipts/assets and current runtime source identities. Verify with:
+receipts/assets and the recorded runtime source identities. Verify with:
 
 ```sh
 python3 experiments/alive-session-20261024/verify.py
@@ -109,8 +109,12 @@ on the local private server. The shared software fixture now publishes typed
 default route, while the existing CPAL gate exercises explicit sink selection.
 This correction changes test-server setup, not application or DSP runtime code.
 
-The verifier checks retained receipt integrity and acceptance assertions; it
-does not replay the desktop or recover the uncommitted raw captures.
+The verifier checks retained receipt integrity and acceptance assertions against
+the recorded `e841f6f` source tree and lists differences in the current checkout.
+It does not replay the desktop or recover the uncommitted raw captures. The later
+separate `alive` binary changes application entry points/identity and is covered
+by fresh CLI/headless/native journey/CI checks; this ten-minute receipt does not
+claim to be a run of that later executable.
 
 Local gates already pass: native callback/allocation/free/mutex guards and
 scoped Stop stress;150Rust tests with two intentional ignores;442UI/component

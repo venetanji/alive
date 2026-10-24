@@ -136,14 +136,17 @@ def verify_packages(bundle, target):
                 raise ValueError('Expected one DEB to verify')
             run('dpkg-deb', '--extract', debs[0], dest)
             verify_notice_resources(dest)
-            exe = dest/'usr/bin/ultra'
             native = dest/'usr/lib/Ultra Research'/library
-            if not exe.is_file() or not native.is_file():
+            if not native.is_file():
                 raise ValueError('DEB is missing its executable or native library')
-            loaded = subprocess.check_output(['ldd', str(exe)], env=env, text=True)
-            match = re.search(r'libultra_native\.so\s+=>\s+(.+?)\s+\(', loaded)
-            if 'not found' in loaded or not match or Path(match.group(1)).resolve() != native.resolve():
-                raise ValueError('Installed DEB cannot resolve its own native library: ' + loaded)
+            for name in ('ultra', 'alive'):
+                exe = dest/'usr/bin'/name
+                if not exe.is_file():
+                    raise ValueError('DEB is missing executable: ' + name)
+                loaded = subprocess.check_output(['ldd', str(exe)], env=env, text=True)
+                match = re.search(r'libultra_native\.so\s+=>\s+(.+?)\s+\(', loaded)
+                if 'not found' in loaded or not match or Path(match.group(1)).resolve() != native.resolve():
+                    raise ValueError('Installed DEB cannot resolve its own native library: ' + loaded)
             run('python', APP/'scripts/smoke_native.py', native, env=env)
             images = list(bundle.glob('appimage/*.AppImage'))
             if len(images) != 1:
@@ -154,6 +157,9 @@ def verify_packages(bundle, target):
             packaged = dest/'squashfs-root/usr/lib/Ultra Research'/library
             if not packaged.is_file():
                 raise ValueError('AppImage lacks its native library')
+            for name in ('ultra', 'alive'):
+                if not (dest/'squashfs-root/usr/bin'/name).is_file():
+                    raise ValueError('AppImage lacks executable: ' + name)
             run('python', APP/'scripts/smoke_native.py', packaged, env=env)
     elif system == 'Darwin':
         app = bundle/'macos/Ultra Research.app'
@@ -161,9 +167,10 @@ def verify_packages(bundle, target):
         native = app/'Contents/Frameworks'/library
         if not native.is_file():
             raise ValueError('App bundle lacks native framework library')
-        linked = subprocess.check_output(['otool', '-L', str(app/'Contents/MacOS/ultra')], text=True)
-        if '@rpath/' + library not in linked:
-            raise ValueError('App must link its bundled @rpath native library')
+        for name in ('ultra', 'alive'):
+            linked = subprocess.check_output(['otool', '-L', str(app/'Contents/MacOS'/name)], text=True)
+            if '@rpath/' + library not in linked:
+                raise ValueError('App must link its bundled @rpath native library: ' + name)
         run('python', APP/'scripts/smoke_native.py', native, env=env)
     else:
         # Inspect the actual NSIS payload, not the adjacent development DLL.
@@ -175,8 +182,8 @@ def verify_packages(bundle, target):
             run('7z', 'x', '-y', '-o' + str(dest), installers[0])
             verify_notice_resources(dest)
             dlls = list(dest.rglob(library))
-            if len(dlls) != 1 or not (dlls[0].parent/'ultra.exe').is_file():
-                raise ValueError('NSIS payload must place native DLL beside ultra.exe')
+            if len(dlls) != 1 or not all((dlls[0].parent/name).is_file() for name in ('ultra.exe', 'alive.exe')):
+                raise ValueError('NSIS payload must place native DLL beside ultra.exe and alive.exe')
             runtime_names = (APP/'build/windows-runtime-libraries.txt').read_text().splitlines()
             if not runtime_names or not all((dlls[0].parent/name).is_file() for name in runtime_names):
                 raise ValueError('NSIS payload lacks matching MSVC runtime libraries')

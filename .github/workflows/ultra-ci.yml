@@ -127,6 +127,7 @@ jobs:
           cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
           cargo build --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
           cp apps/ultra/build/libultra_native.so apps/ultra/src-tauri/target/release/
+          python3 apps/ultra/tests/check_app_entrypoints.py
 
       - name: Render the saved instrument without a desktop or editor
         run: |
@@ -146,7 +147,7 @@ jobs:
         run: |
           env -u DISPLAY -u WAYLAND_DISPLAY \
             LD_LIBRARY_PATH="$GITHUB_WORKSPACE/apps/ultra/build" \
-            apps/ultra/src-tauri/target/release/ultra --session-probe \
+            apps/ultra/src-tauri/target/release/alive --session-probe \
             apps/alive/examples/two-instruments.alive "$GITHUB_WORKSPACE/apps/ultra/build/session-evidence"
       - name: Save Alive session render and round-trip evidence
         if: always()

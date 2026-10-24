@@ -19,3 +19,4 @@ trap 'rm -f "$NATIVE_INSTALL"' EXIT
 cp -p build/libultra_native.so "$NATIVE_INSTALL"
 mv -f "$NATIVE_INSTALL" src-tauri/target/release/libultra_native.so
 printf '\nRun %s\n' "$PWD/src-tauri/target/release/ultra"
+printf 'Run %s\n' "$PWD/src-tauri/target/release/alive"

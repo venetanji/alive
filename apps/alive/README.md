@@ -1,7 +1,8 @@
 # Alive: First Hosted Session
 
-Alive is a compact session view in the existing Ultra Rust/Tauri executable.
-It hosts saved Ultra instruments through the version-1 device manifest and
+Alive is a separate `alive` executable with a compact Rust/Tauri session UI.
+Ultra remains the `ultra` patch-editor executable. Both share the native engine
+and Rust library; Alive hosts saved Ultra instruments through the version-1 device manifest and
 native Faust evaluator. The example references the original subtractive device
 twice; it does not contain a copied patch or a fixed synthesizer implementation.
 
@@ -10,19 +11,28 @@ twice; it does not contain a copied patch or a fixed synthesizer implementation.
 From the repository root:
 
 ```sh
-bash apps/ultra/build.sh
-apps/ultra/src-tauri/target/release/ultra --alive
+bash apps/alive/build.sh
+bash apps/alive/run.sh
 # Or open an existing session:
-apps/ultra/src-tauri/target/release/ultra --alive apps/alive/examples/two-instruments.alive
+bash apps/alive/run.sh apps/alive/examples/two-instruments.alive
 ```
+
+The actual binary is `apps/ultra/src-tauri/target/release/alive` (`alive.exe`
+on Windows). It shares a Cargo build directory and adjacent native library with
+`ultra`; the launcher runs that executable directly. Both apps can open at once.
+Alive uses application identifier `org.alive.session`, separate from Ultra's
+`org.alive.ultra.research`. The old `ultra --alive` entry remains compatible.
+The existing desktop installers retain their Ultra product name and carry both
+binaries; a separately branded Alive installer/desktop shortcut is not provided.
 
 The default First Light session contains Pulse and Harmony instrument tracks,
 an eight-beat C / Am / F / G progression, and cutoff/level automation. New
 creates a fresh copy of this template. Replace loads a saved `.ultra` device
 on a stopped track; Remove and Add instrument allow a one-track session to
 return to two tracks. The first profile requires at least one instrument track.
-Audio uses Ultra's existing output configuration at 48 kHz. Alive currently
-does not expose an additional audio-settings panel.
+Audio uses the shared CPAL driver at 48 kHz, with its own application settings
+directory and system-default output on first launch. Alive currently does not
+expose an additional audio-settings panel.
 
 ## Perform And Edit
 
@@ -55,7 +65,7 @@ env PATH="$PWD/experiments/clockwork-faust/.deps/rust/bin:$PATH" \
   LD_LIBRARY_PATH="$PWD/apps/ultra/build" \
   cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
 env -u DISPLAY -u WAYLAND_DISPLAY \
-  apps/ultra/src-tauri/target/release/ultra --session-probe \
+  apps/ultra/src-tauri/target/release/alive --session-probe \
   apps/alive/examples/two-instruments.alive /tmp/alive-session-render
 ULTRA_TEST_ALIVE=1 ALIVE_ENDURANCE_SECONDS=600 \
   ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_desktop.py" \

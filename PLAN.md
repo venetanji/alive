@@ -21,8 +21,9 @@ or merge those branches; reconcile refs again before final testing.
 **Architecture:** Reuse the version-1 Ultra manifest, saved graph and native
 Faust evaluator. Rust validates/persists sessions and prepares fixed schedules;
 the existing single CPAL callback owns transport, device execution and mixing.
-A compact Alive view shares the Rust/Tauri executable and opens Ultra editors
-on demand. There is no mandatory per-track webview or process.
+A compact Alive application has its own `alive` executable/identity and shares
+the Rust library/native engine with `ultra`. It opens Ultra editors on demand.
+There is no mandatory per-track webview or process.
 
 **Spec:** The user's complete goal and `apps/alive/SESSION_CONTRACT.md`.
 This remains the sole curated plan, executed in complete vertical slices.
@@ -114,7 +115,21 @@ are explicit. New defaults to the packaged usable example, with one/two tracks.
 - [x] Audit every goal requirement against current evidence. A reproducible
   architectural blocker gets a working slice and narrow decision.
 
-Current local gates: full native adapter/callback guards, 150 Rust tests (two
+### Task 5: Separate Alive Entry Point
+
+- [x] Build distinct `alive`/`ultra` executables from one shared Rust library;
+  generate one app-specific Tauri context per executable, preserving macOS
+  embedded-plist uniqueness. Give Alive its own identity/data directory.
+- [x] Add `apps/alive/build.sh` and `run.sh`; keep relative session paths and
+  CLI flags intact. Preserve the legacy `ultra --alive` launch.
+- [x] Verify CLI/headless rendering and simultaneous native Alive/Ultra windows;
+  replay session/editor/save/reopen/Quit and editor-resource regressions through
+  the actual `alive` binary. Check bundled companion paths and package notices.
+- [ ] Update draft PR #6 and verify CI on the new pushed revision. Earlier
+  endurance receipts remain tied to their recorded runtime revision; they are
+  not a new ten-minute run of the separate executable.
+
+Current local gates: full native adapter/callback guards, 151 Rust tests (two
 intentional ignores), 442 UI/component tests, 103 rendered Chromium tests,
 full recorded-reference/contracts gate and 14 package/notice tests pass. The
 fresh headless CLI includes actual saved-device boundary observations and all

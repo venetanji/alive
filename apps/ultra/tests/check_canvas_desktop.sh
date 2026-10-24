@@ -20,7 +20,7 @@ if [[ ${ULTRA_TEST_PRIVATE_SESSION:-} != 1 ]]; then
     exit 2
   fi
   export ULTRA_TEST_REGISTRY_BIN="$ultra_registry_bin"
-  if [[ ! -x "$ROOT/apps/ultra/src-tauri/target/release/ultra" ]]; then
+  if [[ ! -x "$ROOT/apps/ultra/src-tauri/target/release/ultra" || ( ${ULTRA_TEST_ALIVE:-0} == 1 && ! -x "$ROOT/apps/ultra/src-tauri/target/release/alive" ) ]]; then
     echo 'Build the native app with bash apps/ultra/build.sh first.' >&2
     exit 2
   fi
@@ -124,6 +124,7 @@ if [[ ${ULTRA_TEST_WM:-0} == 1 ]]; then
   kill -0 "$ultra_wm_pid"
 fi
 ultra_launch_arguments=("$ultra_initial_patch")
+ultra_launch_binary="$ROOT/apps/ultra/src-tauri/target/release/ultra"
 if [[ ${ULTRA_TEST_ALIVE:-0} == 1 ]]; then
   ultra_initial_session="$ULTRA_TEST_OUTPUT_DIR/initial.alive"
   python3 - "${ULTRA_TEST_ALIVE_SESSION:-$ROOT/apps/alive/examples/two-instruments.alive}" "$ultra_initial_session" <<'PY'
@@ -135,10 +136,11 @@ for track in session['tracks']:
     track['device']['path'] = str((source.parent / track['device']['path']).resolve(strict=True))
 target.write_text(json.dumps(session, indent=2) + '\n')
 PY
-  ultra_launch_arguments=(--alive "$ultra_initial_session")
+  ultra_launch_arguments=("$ultra_initial_session")
+  ultra_launch_binary="$ROOT/apps/ultra/src-tauri/target/release/alive"
 fi
 LD_LIBRARY_PATH="$ROOT/apps/ultra/src-tauri/target/release${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
-  "$ROOT/apps/ultra/src-tauri/target/release/ultra" "${ultra_launch_arguments[@]}" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
+  "$ultra_launch_binary" "${ultra_launch_arguments[@]}" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
 ultra_test_pid=$!
 export ULTRA_TEST_PID="$ultra_test_pid"
 if [[ -n ${ULTRA_TEST_SCRIPT:-} ]]; then

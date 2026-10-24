@@ -204,12 +204,38 @@ def editor_edit(number=950):
     wait_value('Transport playing', lambda s: s == 'true')
 
 
+def check_separate_apps():
+    binary = Path(f'/proc/{ui.pid}/exe').resolve(strict=True)
+    assert binary.name == 'alive', f'Alive journey launched {binary}'
+    patch = ui.output / 'alongside.ultra'
+    patch.write_text('{"version":1,"profile":"ultra-canvas-v1","nodes":[],"edges":[]}\n')
+    with (ui.output / 'alongside-ultra.log').open('w') as log:
+        other = subprocess.Popen([str(binary.with_name('ultra')), str(patch)], stdout=log, stderr=log)
+        try:
+            deadline = time.monotonic() + 15
+            while time.monotonic() < deadline:
+                assert other.poll() is None, 'Ultra did not remain a separate application'
+                for root in ui.desktop_apps():
+                    if root.get_process_id() == other.pid:
+                        if any(a.get_name() == 'alongside.ultra - Ultra' for a in ui.walk(root)):
+                            assert Path(f'/proc/{other.pid}/exe').resolve().name == 'ultra'
+                            windows.focus(MAIN)
+                            return {'alive_binary': str(binary), 'ultra_binary': str(binary.with_name('ultra')),
+                                    'simultaneous_native_windows': True}
+                time.sleep(.1)
+            raise AssertionError('Ultra did not open its independent patch window alongside Alive')
+        finally:
+            other.terminate()
+            other.wait(timeout=8)
+
+
 def run():
     windows.focus(MAIN)
     ui.wait_for('Start transport')
     ui.click('Audio details')
     screenshot('session-ready.png')
     assert value('Transport playing') == 'false'
+    entrypoints = check_separate_apps()
     if os.environ.get('ALIVE_SMOKE_ONLY') == '1':
         transport('start'); time.sleep(1)
         report = detail(); screenshot('session-playing.png')
@@ -327,6 +353,7 @@ def run():
     ui.click('Remove Harmony device'); time.sleep(.4)
     assert value('Track 2 active voices') == '0'
     report = {'kind': 'actual native Tauri application; private Xvfb + software PipeWire loopback',
+              'entrypoints': entrypoints,
               'hardware': platform.uname()._asdict(), 'cpu': subprocess.check_output(['lscpu'], text=True),
               'physical_audio': False, 'underruns': 'not exposed by CPAL; no count claimed',
               'walkthrough': walkthrough, 'endurance': sustained,

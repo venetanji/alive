@@ -225,9 +225,19 @@ fn resolve_dirty(window: &WebviewWindow, control: &mut Control) -> Result<bool, 
     if chosen(result.clone(), "Save", true) { save_current(window, control, false, None) }
     else { Ok(chosen(result, "Discard", false)) }
 }
+fn example_path(resources: &Path, executable_dir: &Path, source: &Path) -> PathBuf {
+    let relative = "alive-session/alive/examples/two-instruments.alive";
+    let bundled = resources.join(relative);
+    if bundled.is_file() { return bundled; }
+    // Linux's combined Ultra installer places both binaries beside shared resources.
+    let companion = executable_dir.join("../lib/Ultra Research").join(relative);
+    if companion.is_file() { return companion; }
+    source.join("../../alive/examples/two-instruments.alive")
+}
 fn example(app: &tauri::AppHandle) -> Result<PreparedSession, String> {
-    let bundled = app.path().resource_dir().map_err(|e| e.to_string())?.join("alive-session/alive/examples/two-instruments.alive");
-    let path = if bundled.is_file() { bundled } else { Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive") };
+    let resources = app.path().resource_dir().map_err(|e| e.to_string())?;
+    let executable = std::env::current_exe().map_err(|e| e.to_string())?;
+    let path = example_path(&resources, executable.parent().ok_or("Missing executable directory")?, Path::new(env!("CARGO_MANIFEST_DIR")));
     read(&path)
 }
 #[tauri::command]
@@ -316,8 +326,10 @@ fn request_close(app: &tauri::AppHandle) {
     control.closing = true;
     let _ = app.emit_to("main", "alive-close-requested", ());
 }
-pub fn run(path: Option<PathBuf>) {
-    let mut context = crate::desktop_context();
+pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
+    // Also give the legacy `ultra --alive` launch its own data directory/identity.
+    context.config_mut().identifier = "org.alive.session".into();
+    context.config_mut().product_name = Some("Alive".into());
     context.config_mut().app.windows.clear();
     tauri::Builder::default().plugin(tauri_plugin_dialog::init())
         .setup(move |app| {
@@ -352,6 +364,24 @@ pub fn run(path: Option<PathBuf>) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn alive_companion_loads_the_installed_shared_example_without_source_tree() {
+        let unique = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos();
+        let root = std::env::temp_dir().join(format!("alive-companion-{}-{unique}", std::process::id()));
+        let resource = root.join("usr/lib/Ultra Research/alive-session");
+        let session = resource.join("alive/examples/two-instruments.alive");
+        let device = resource.join("ultra/examples/subtractive.ultra");
+        std::fs::create_dir_all(root.join("usr/bin")).unwrap();
+        std::fs::create_dir_all(session.parent().unwrap()).unwrap();
+        std::fs::create_dir_all(device.parent().unwrap()).unwrap();
+        std::fs::copy(Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive"), &session).unwrap();
+        std::fs::copy(Path::new(env!("CARGO_MANIFEST_DIR")).join("../examples/subtractive.ultra"), &device).unwrap();
+        let path = example_path(&root.join("usr/lib/Alive"), &root.join("usr/bin"), &root.join("missing-source"));
+        let result = read(&path);
+        std::fs::remove_dir_all(&root).unwrap();
+        let prepared = result.expect("Installed Alive must load the shared bundled session, without repository paths");
+        assert_eq!(prepared.tracks.len(), 2);
+    }
     #[test]
     fn polling_or_close_during_native_dialog_never_blocks_the_ui() {
         let owner = Mutex::new(false);

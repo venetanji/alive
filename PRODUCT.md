@@ -85,7 +85,8 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
 ## Brand Commitments
 
 Ultra is the patch editor and device authoring environment; Alive is its compact
-session host. The user confirmed a close Max visual and workflow match
+session host. They have separate `ultra` and `alive` executables/app identities
+and share the native engine and reusable device contracts. The user confirmed a close Max visual and workflow match
 on 2026-10-20. Build original controls and help content; do not redistribute Max
 code, fonts, proprietary help patches, icons, or application assets.
 
