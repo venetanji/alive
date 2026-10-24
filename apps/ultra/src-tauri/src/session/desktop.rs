@@ -98,6 +98,15 @@ fn musical_draft(mut draft: Session, live: &Session) -> Result<Session, String> 
     Ok(draft)
 }
 impl Control {
+    fn launch_scene(&mut self,label:&str,generation:u64,preparation_revision:&str,slot:usize)->Result<runtime::RequestResult,String>{
+        main_only(label)?;check_generation(self.generation,generation)?;
+        if runtime::decimal(preparation_revision)?!=self.host.preparation_revision{return Err("Prepared bank changed. Refresh before launching".into());}
+        let p=self.host.prepared.as_ref().ok_or("No session")?;
+        if !runtime::scenes_available(p)?{return Err("Atomic scene launching is unavailable for this prepared profile".into());}
+        if slot>=4{return Err("Scene slot must be 0 through 3".into());}
+        if !self.driver.snapshot().running{return Err("Start Audio to launch a scene".into());}
+        self.runtime.scene(&self.host,slot)
+    }
     fn version(&self,generation:u64,revision:u64)->Result<(),String> {
         ensure_counter(self.generation)?;ensure_counter(self.draft_revision)?;
         check_generation(self.generation,generation)?;
@@ -156,7 +165,7 @@ impl Control {
         let device_index = instance_id.as_ref().map(|id| prepared.devices.iter().position(|d| &d.instance_id == id).ok_or("Unknown editor instance")).transpose()?;
         let track = device_index.map(|i| prepared.devices[i].track);
         Ok(Snapshot { document: prepared.document.clone(), path: self.saved_path.clone(),
-            capabilities: Capabilities { clip_bank: prepared.document.is_clips(), max_tracks, max_devices, slots_per_track: if prepared.document.is_clips(){4}else{1}, max_clips, atomic_track_actions: false },
+            capabilities: Capabilities { clip_bank: prepared.document.is_clips(), max_tracks, max_devices, slots_per_track: if prepared.document.is_clips(){4}else{1}, max_clips, atomic_track_actions: runtime::scenes_available(prepared)? },
             devices: prepared.tracks.iter().map(|t| prepared.devices[t.instrument].manifest.clone()).collect(), generation: self.generation,
             device_instances: prepared.devices.iter().enumerate().map(|(index, device)| (device.instance_id.clone(), DeviceView { index, track: device.track, manifest: device.manifest.clone() })).collect(),
             dirty: self.dirty || self.draft.is_some(), draft: self.draft.clone(), draft_revision:self.draft_revision,history:self.history.view(), state: native_state,mode:if prepared.document.is_clips(){"clipsV3"}else{"legacyV2"}.into(),notice:prepared.notice.clone(),preparation_revision:self.host.preparation_revision.to_string(),snapshot_sequence:sequence.to_string(),prepared_clips:runtime::prepared(&self.host),runtime,
@@ -203,6 +212,10 @@ pub fn alive_enable_clips(window:WebviewWindow,state:tauri::State<Desktop>,gener
     let prepared=c.host.enable_clips(c.host.prepared.clone().ok_or("No session")?)?;
     if prepared.document.is_clips(){c.install(prepared)?;close_stale_editors(window.app_handle(),c.generation);}else{c.host.prepared=Some(prepared);}
     c.snapshot(window.label())
+}
+#[tauri::command]
+pub fn alive_launch_scene(window:WebviewWindow,state:tauri::State<Desktop>,generation:u64,preparation_revision:String,slot:usize)->Result<runtime::RequestResult,String>{
+    ui_lock(&state.0)?.launch_scene(window.label(),generation,&preparation_revision,slot)
 }
 #[tauri::command]
 pub fn alive_clip_action(window:WebviewWindow,state:tauri::State<Desktop>,action:runtime::Action,generation:u64,preparation_revision:String)->Result<runtime::RequestResult,String>{
@@ -575,7 +588,7 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
                 .title("Alive").inner_size(1200., 800.).min_inner_size(900., 660.).build()?;
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![alive_current, alive_clip_edit, alive_clip_action, alive_enable_clips, alive_edit, alive_history, alive_discard, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio_diagnostics, alive_audio, alive_editor, alive_file, alive_device])
+        .invoke_handler(tauri::generate_handler![alive_current, alive_clip_edit, alive_clip_action, alive_launch_scene, alive_enable_clips, alive_edit, alive_history, alive_discard, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio_diagnostics, alive_audio, alive_editor, alive_file, alive_device])
         .on_window_event(|window,event| { if window.label() == "main" { if let tauri::WindowEvent::CloseRequested { api, .. } = event { api.prevent_close(); request_close(window.app_handle()); } } })
         .build(context).expect("Unable to start Alive")
         .run(|app,event| match event {
@@ -724,6 +737,19 @@ mod tests {
         let mut host=Host::default();host.prepared=Some(prepared);
         Control {host,runtime:runtime::Runtime::default(),snapshot_sequence:0,driver:crate::audio::Driver::load(PathBuf::from("/nonexistent/alive-test.json")),generation:7,
             dirty:false,saved_path:None,draft:None,draft_revision:0,history:History::default(),closing:false,allow_exit:false,editors:BTreeMap::new()}
+    }
+    #[test]
+    fn scenes_authenticate_origin_generation_preparation_and_audio_before_mutation(){
+        let mut c=musical_control();let p=c.host.prepared.as_ref().unwrap();c.host.prepared=Some(prepare(&p.document.to_clips().unwrap(),&p.origin).unwrap());
+        let before=c.host.prepared.as_ref().unwrap().document.clone();
+        assert!(c.launch_scene("alive-editor-7-0",7,"0",0).err().unwrap().contains("session window"));
+        assert!(c.launch_scene("main",6,"0",0).err().unwrap().contains("stale"));
+        assert!(c.launch_scene("main",7,"1",0).err().unwrap().contains("Prepared bank changed"));
+        assert!(c.launch_scene("main",7,"00",0).err().unwrap().contains("canonical"));
+        assert_eq!(c.launch_scene("main",7,"0",0).err().unwrap(),"Start Audio to launch a scene");
+        assert!(c.launch_scene("main",7,"0",4).is_err());
+        assert_eq!(c.host.prepared.as_ref().unwrap().document,before);
+        assert!(c.draft.is_none()&&!c.dirty&&c.draft_revision==0&&c.generation==7);
     }
     #[test]
     fn focused_clips_duplicate_scores_and_history_retains_ids_without_changing_devices() {

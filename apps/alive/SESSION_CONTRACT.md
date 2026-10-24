@@ -81,7 +81,42 @@ targets the next strict four-beat bar; single-track Stop silences only that trac
 Global Stop has reserved capacity, invalidates pending actions and remains usable
 with stale view identities. Global transport wrap resets active phases. Reopen
 and Apply install saved defaults stopped at phase zero; Start resumes the current
-cues rather than reselecting defaults. No multi-track atomic action is enabled.
+cues rather than reselecting defaults.
+
+Atomic scene launching uses one of the four prepared slot positions across all
+configured tracks. Occupied members launch; empty members issue quantized track
+Stop. An all-empty row is valid and preserves global transport. One scene has
+one native request, queue entry, serial, receipt and target. Both the configured
+profile's ADMITTED and ATOMIC_TRACK_ACTIONS capabilities must be enabled. Native
+callers may address a nonempty subset; the desktop always includes every prepared
+track. Invalid members, a busy receipt cell or a full queue reject the whole new
+request before changing musical state. Global Stop retains its reserved mailbox.
+
+`alive_launch_scene` accepts only generation, canonical decimal-string
+preparationRevision and slot (0..3), from the main session window with audio
+running. It maps the immutable prepared bank, independent of draft edits and
+local selection. Scene gestures retain their preparation identity through the
+UI command queue. Audio-off refusal is `Start Audio to launch a scene`.
+Scene actions change neither saved defaults nor document, history, dirty state,
+device/editor ownership or settings. No scene object is added to the saved schema.
+
+After callback observation, the pending/applied/superseded/canceled/rejected
+masks partition a track-action receipt's track mask. Status remains PENDING
+while any member is pending, then becomes its sole terminal kind or MIXED.
+Later actions supersede only overlapping unresolved members; the others retain
+the common target. Candidate admission is all-or-none: old pending choices
+survive optional refusal, while new surviving members become rejected and
+already reduced superseded/canceled members retain their outcomes. Published
+applied members are immutable. Stopped cues remain distinct from playback.
+
+The scalar error is a request summary with priority RuntimeInvariant >
+StopCanceled > WorkLimit > EndCanceled > ReplacedRequest. It does not assign that
+reason to every member. Desktop projection retains all masks and each member's
+track/clip identity, action and observed outcome. Missing terminal observations
+remain unavailable; known terminal members remain known. Serial and preparation
+must both match. A partially pending scene keeps its one receipt reservation;
+a coherently observed terminal MIXED receipt permits reuse. No timer estimates
+native targets and no automatic retry is performed.
 
 ## Channels And Lifecycle
 

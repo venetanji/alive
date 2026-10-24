@@ -31,6 +31,38 @@ function clipState(){const s=state();s.mode='clipsV3';s.preparationRevision='1';
   for(const t of s.document.tracks){const clip={id:`clip-${t.id}`,name:'Clip 1',lengthBeats:s.document.lengthBeats,notes:t.notes.map((n,i)=>({...n,id:`note-${t.id}-${i}`})),automation:t.automation};t.slots=[clip,null,null,null];t.defaultClipId=clip.id;delete t.notes;delete t.automation;s.preparedClips.push({trackId:t.id,clipId:clip.id,name:clip.name,slot:0,lengthFrames:'411429'});}
   s.runtime={tracks:s.document.tracks.map(t=>({trackId:t.id,activeClipId:t.slots[0].id,phase:'0',epoch:'1',pendingAction:null,pendingClipId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'};return s;}
 
+test('scene controls launch a prepared row once without selection or document edits',async()=>{
+  const initial=clipState();initial.capabilities={atomicTrackActions:true};initial.state.playing=0;initial.audio.running=true;
+  initial.draft=structuredClone(initial.document);initial.draft.tracks[0].slots[0].name='Draft name';
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const button=page.find('Launch scene 1');assert.ok(button,'scene row has an explicit launch button');
+  assert.match(page.find('Prepared scene 1').textContent,/Pulse: Clip 1/);assert.doesNotMatch(page.find('Prepared scene 1').textContent,/Draft name/);
+  assert.match(page.find('Prepared scene 4').textContent,/Pulse: Stop.*Harmony: Stop/);
+  await page.find('Select Harmony slot 2').fire('click');button.focus();await button.fire('click');
+  const calls=native.calls.filter(c=>c.name!=='alive_current');assert.deepEqual(calls,[{name:'alive_launch_scene',args:{generation:1,preparationRevision:'1',slot:0}}]);
+  assert.equal(page.find('Select Harmony slot 2').attrs['aria-pressed'],'true');assert.equal(page.doc.activeElement,button);
+  assert.equal(view.model.document().tracks[0].slots[0].name,'Draft name');view.dispose();
+});
+test('scene receipt shows separate member outcomes and never presents it as transport success',async()=>{
+  const initial=clipState();initial.capabilities={atomicTrackActions:true};initial.audio.running=true;
+  initial.runtime.requests=[{preparationRevision:'1',requestSerial:'9007199254740993',sceneSlot:0,trackId:null,status:'pending',reason:18,targetFrame:'96000',members:[{trackId:'track-1',clipId:'clip-track-1',action:'launch',status:'pending'},{trackId:'track-2',clipId:'clip-track-2',action:'launch',status:'superseded'}]}];
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const result=page.find('Scene 1 request');assert.ok(result);assert.match(result.textContent,/9007199254740993.*pending.*96000/);
+  assert.match(result.textContent,/Pulse: pending.*Harmony: superseded/);assert.doesNotMatch(page.ids.get('notice').textContent,/Transport/);
+  native.snapshot.snapshotSequence='2';native.snapshot.runtime.requests[0].status='mixed';native.snapshot.runtime.requests[0].members[0].status='applied';await view.refresh();
+  assert.match(result.textContent,/Pulse: applied.*Harmony: superseded/);assert.doesNotMatch(result.textContent,/prior playback or pending action is retained/);view.dispose();
+});
+test('queued scene captures preparation at gesture and late result preserves newer selection and focus',async()=>{
+  const initial=clipState();initial.capabilities={atomicTrackActions:true};initial.audio.running=true;
+  const page=dom('./alive.html'),native=backend(initial),boundary=delayedBoundary(native,'alive_base',()=>{}),view=mountAlive({...page,invoke:boundary.invoke});await settle();
+  const input=page.find('Cutoff base');input.value='1800';await input.fire('change');
+  const launch=page.find('Launch scene 4');assert.ok(launch);await launch.fire('click');
+  await page.find('Select Harmony slot 3').fire('click');const selected=page.find('Select Harmony slot 3');selected.focus();
+  native.snapshot.preparationRevision='2';native.snapshot.snapshotSequence='2';await view.refresh();boundary.release();await settle();await settle();
+  assert.deepEqual(native.calls.find(c=>c.name==='alive_launch_scene').args,{generation:1,preparationRevision:'1',slot:3});
+  assert.equal(page.find('Select Harmony slot 3').attrs['aria-pressed'],'true');assert.equal(page.doc.activeElement,selected);view.dispose();
+});
+
 test('track addition follows explicitly advertised capacity and retains the legacy fallback',async()=>{
   const initial=clipState();initial.state.playing=0;initial.capabilities={maxTracks:8,maxDevices:16};
   const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();

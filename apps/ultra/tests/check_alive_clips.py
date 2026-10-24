@@ -10,6 +10,30 @@ ui, windows = alive.ui, alive.windows
 events = []
 
 
+
+def set_audio_details(expanded):
+    control = ui.wait_for('Audio details')
+    if control.get_state_set().contains(Atspi.StateType.EXPANDED) != expanded:
+        ui.click('Audio details')
+    deadline = time.monotonic() + 3
+    while time.monotonic() < deadline:
+        if ui.wait_for('Audio details').get_state_set().contains(Atspi.StateType.EXPANDED) == expanded:
+            return
+        time.sleep(.01)
+    raise AssertionError('Audio details did not reach the requested disclosure state')
+
+
+def edit_selected():
+    # The diagnostics overlay covers the selected-device Editor button.
+    restore = ui.wait_for('Audio details').get_state_set().contains(Atspi.StateType.EXPANDED)
+    if restore:
+        set_audio_details(False)
+    ui.click('Edit selected device in Ultra')
+    if restore:
+        windows.focus('Pulse - Ultra Hosted Editor')
+        windows.focus(alive.MAIN)
+        set_audio_details(True)
+
 def observed(label):
     value = alive.value(label)
     events.append({'label': label, 'value': value, 'monotonic': time.monotonic()})
@@ -45,7 +69,7 @@ def run():
         alive.choose_file('Add effect', 'Load Ultra Device', shared)
     ui.click('Select Pulse slot 1')
     ui.click('Select Pulse Stereo Utility effect 1')
-    ui.click('Edit selected device in Ultra')
+    edit_selected()
     windows.focus('Pulse - Ultra Hosted Editor'); alive.numeric('Hosted Gain base', .65)
     windows.focus(alive.MAIN)
     ui.click('Duplicate clip')
@@ -75,7 +99,7 @@ def run():
     settings = alive.check_audio_settings()
     assert alive.value('Audio buffer frames') == '512'
     # Stopped transport + live audio accepts a cue without starting transport.
-    ui.click('Launch Pulse Clip 1')
+    alive.reorder_click('Launch Pulse Clip 1')
     alive.wait_value('Pulse clip runtime', lambda s: 'Cued Clip 1 /' in s and 'applied' in s)
     observed('Pulse clip runtime'); assert alive.value('Transport playing') == 'false'
     alive.transport('start')
@@ -85,7 +109,7 @@ def run():
     observed('Pulse clip runtime')
     alive.wait_value('Pulse clip runtime', lambda s: 'Playing Clip 1 copy' in s and 'applied' in s)
     observed('Pulse clip runtime'); observed('Harmony clip runtime')
-    ui.click('Select Pulse Stereo Utility effect 1'); ui.click('Edit selected device in Ultra')
+    ui.click('Select Pulse Stereo Utility effect 1'); edit_selected()
     windows.focus('Pulse - Ultra Hosted Editor'); alive.numeric('Hosted Gain base', .55); windows.focus(alive.MAIN)
     ui.click('Bypass Pulse Stereo Utility effect 1')
     ui.click('Select Pulse slot 1'); alive.numeric('Note 1 velocity', 82); ui.click('Undo pending edit')
@@ -106,7 +130,7 @@ def run():
     assert alive.value('Transport playing') == 'false'
     assert 'Cued Clip 1 copy' in observed('Pulse clip runtime')
     ui.click('Select Pulse slot 1'); ui.click('Select Pulse Stereo Utility effect 1')
-    ui.click('Edit selected device in Ultra')
+    edit_selected()
     windows.focus('Pulse - Ultra Hosted Editor'); ui.wait_for('Hosted Gain base'); windows.focus(alive.MAIN)
     # An external shared-source edit blocks either selected replacement atomically.
     changed = json.loads(original); changed['nodes'][0]['x'] += 1

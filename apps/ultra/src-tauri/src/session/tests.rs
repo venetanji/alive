@@ -399,6 +399,36 @@ fn rust_host_installs_the_saved_session_without_editor_windows() {
 }
 
 #[test]
+fn v3_scene_is_one_native_queue_entry_with_prepared_member_identities() {
+    const NAME:&str="session::tests::v3_scene_is_one_native_queue_entry_with_prepared_member_identities";
+    if std::env::var("ALIVE_SCENE_HOST_CHILD").as_deref()!=Ok("1") {
+        let child=std::process::Command::new(std::env::current_exe().unwrap()).args(["--exact",NAME,"--nocapture"])
+            .env("ALIVE_SCENE_HOST_CHILD","1").env_remove("DISPLAY").env_remove("WAYLAND_DISPLAY").output().unwrap();
+        assert!(child.status.success(),"{}\n{}",String::from_utf8_lossy(&child.stdout),String::from_utf8_lossy(&child.stderr));return;
+    }
+    let mut host=host::Host::default();let p=host.enable_clips(read(&example_path()).unwrap()).unwrap();host.install(p).unwrap();
+    let before=serde_json::to_value(&host.prepared.as_ref().unwrap().document).unwrap();
+    let mut runtime=runtime::Runtime::default();assert_eq!(unsafe{native::ultra_external_start()},1);
+    for _ in 0..63 {assert_eq!(unsafe{native::alive_session_mixer(0,1.,0,0)},1);}
+    let scene=runtime.scene(&host,0).unwrap();assert_eq!(scene.status,"queued");assert_eq!(scene.request_serial,"1");
+    assert_eq!(scene.track_mask,3);assert_eq!(scene.scene_slot,Some(0));assert_eq!(scene.members.len(),2);
+    for (index,member) in scene.members.iter().enumerate(){
+        let track=&host.prepared.as_ref().unwrap().document.tracks[index];
+        assert_eq!(member.track_id,track.id);assert_eq!(member.clip_id,host.prepared.as_ref().unwrap().document.bank(&track.id).unwrap().default_clip_id);
+        assert_eq!(member.action,"launch");assert_eq!(member.status,"queued");
+    }
+    let refused=runtime.scene(&host,3).unwrap();assert_eq!(refused.status,"rejected");assert_eq!(refused.reason,7);assert_eq!(refused.rejected_mask,3);
+    let mut left=[0f32;64];let mut right=[0f32;64];assert_eq!(unsafe{native::ultra_external_render(64,left.as_mut_ptr(),right.as_mut_ptr())},1);
+    let mut raw=native::StateV3::default();assert_eq!(unsafe{native::alive_session_state_v3(&mut raw)},1);
+    assert_eq!(raw.last_consumed_request,1);assert_eq!(raw.receipts[1].applied_mask,3);assert_eq!(raw.playing,0);
+    let empty=runtime.scene(&host,3).unwrap();assert_eq!(empty.members.iter().map(|m|m.action.as_str()).collect::<Vec<_>>(),vec!["stop","stop"]);
+    assert_eq!(unsafe{native::ultra_external_render(64,left.as_mut_ptr(),right.as_mut_ptr())},1);
+    let (_,view)=runtime.poll(&host).unwrap();let requests=view.unwrap().requests;assert_eq!(requests.last().unwrap().applied_mask,3);
+    assert_eq!(serde_json::to_value(&host.prepared.as_ref().unwrap().document).unwrap(),before);
+    unsafe{native::ultra_audio_stop();native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
+}
+
+#[test]
 fn v3_native_host_defaults_requests_and_graph_fallback_are_real() {
     const NAME:&str="session::tests::v3_native_host_defaults_requests_and_graph_fallback_are_real";
     if std::env::var("ALIVE_V3_HOST_CHILD").as_deref()!=Ok("1"){

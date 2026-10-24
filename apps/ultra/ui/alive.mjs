@@ -100,7 +100,36 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     });
     svg.append(svgElement('line',{class:'playhead',x1:pad,x2:pad,y1:0,y2:height,stroke:'#eeeeec','stroke-width':1}));
   }
-  let clipControlsKey='',slotViews=[];
+  let clipControlsKey='',slotViews=[],sceneViews=[];
+  function sceneText(result,snapshot){
+    const reason=({7:'command queue full',8:'receipt table busy',12:'optional work limit',13:'Stop canceled',14:'end canceled',15:'feature disabled',16:'runtime invariant',18:'replaced request'})[result.reason]??`native reason ${result.reason}`;
+    const members=(result.members??[]).map(member=>`${snapshot.document.tracks.find(t=>t.id===member.trackId)?.name??member.trackId}: ${member.status}${member.action==='stop'?' (track Stop)':''}`).join(' / ');
+    return `Scene ${result.sceneSlot+1} request ${result.requestSerial} ${result.status}${result.targetFrame?` at frame ${result.targetFrame}`:''}. ${members}${result.reason?`. Request summary: ${reason}.`:''}${[7,8,12].includes(result.reason)?' Let audio advance before an explicit retry.':''}`;
+  }
+  function launchScene(slot){
+    const intent={generation:generation(),preparationRevision:model.snapshot().preparationRevision,slot};
+    return enqueue(async()=>{
+      const result=await invoke('alive_launch_scene',intent);await refresh();
+      if(result){const observed=observedRequest(result);notice(sceneText(observed,model.snapshot()),observed.status==='rejected');}
+    });
+  }
+  function renderScenes(snapshot){
+    const enabled=snapshot.mode==='clipsV3';$('scene-controls').hidden=$('scene-help').hidden=!enabled;
+    if(!enabled)return;
+    if(!sceneViews.length)for(let slot=0;slot<4;slot++){
+      const row=make('div','scene-row'),launch=make('button','scene-launch',`Launch scene ${slot+1}`),prepared=make('small','muted'),result=make('output','scene-result');
+      launch.setAttribute('aria-label',`Launch scene ${slot+1}`);launch.setAttribute('aria-describedby','scene-help');launch.addEventListener('click',guard(()=>launchScene(slot)));
+      prepared.setAttribute('aria-label',`Prepared scene ${slot+1}`);result.setAttribute('aria-label',`Scene ${slot+1} request`);
+      row.append(launch,prepared,result);$('scene-controls').append(row);sceneViews.push({slot,launch,prepared,result});
+    }
+    for(const v of sceneViews){
+      v.launch.disabled=!snapshot.capabilities?.atomicTrackActions;
+      v.launch.title=v.launch.disabled?'Atomic scenes are unavailable for this prepared profile':snapshot.audio.running?'Launch this prepared row':'Start Audio to launch a scene';
+      v.prepared.textContent=snapshot.document.tracks.map(t=>`${t.name}: ${snapshot.preparedClips?.find(c=>c.trackId===t.id&&c.slot===v.slot)?.name??'Stop'}`).join(' / ');
+      const request=snapshot.runtime?.requests.filter(r=>r.sceneSlot===v.slot).at(-1);
+      v.result.textContent=request?sceneText(request,snapshot):'';
+    }
+  }
   function clipEdit(operation){
     const scope=scopeRevision,token=selectionToken;
     return enqueue(async()=>{
@@ -117,7 +146,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   }
   function observedRequest(result){return model.snapshot().runtime?.requests.find(r=>r.preparationRevision===result.preparationRevision&&r.requestSerial===result.requestSerial)??result;}
   function renderTransportRequest(snapshot){
-    const request=snapshot.runtime?.requests.filter(r=>r.trackId===null).at(-1);
+    const request=snapshot.runtime?.requests.filter(r=>r.trackId===null&&r.sceneSlot==null).at(-1);
     if(!request){transportRequestKey='';return;}
     const key=JSON.stringify(request);if(key===transportRequestKey)return;transportRequestKey=key;
     notice(`Transport ${requestText(request,snapshot)}`,request.status==='rejected');
@@ -135,6 +164,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   }
   function renderClipControls(){
     const snapshot=model.snapshot(),document=model.document(),track=document.tracks[selected],clip=selectedClip(track),enabled=document.format==='alive-session-v3',container=$('clip-controls');
+    renderScenes(snapshot);
     $('clip-bank-notice').textContent=snapshot.notice??'';
     $('add-note').disabled=enabled&&!clip;$('add-lane').disabled=enabled&&!clip;
     for(const v of slotViews){

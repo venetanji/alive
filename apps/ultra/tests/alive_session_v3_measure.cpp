@@ -265,6 +265,28 @@ void local_effect_isolation() {
   std::puts("PASS: other saved instrument/effect chain stays sample-identical across local launch/stop and "
             "mixed partitions, including warm bypass");
 }
+void scene_fixed_reduction() {
+  fixture(true, 48000, true);
+  alive_session_stop_v3(); render(1024);
+  std::array<uint64_t, 64> requests{};
+  for (unsigned i = 0; i < requests.size(); ++i) {
+    AliveSessionRequestV3 r{};
+    r.version = 3; r.struct_bytes = sizeof r; r.kind = ALIVE_SESSION_V3_TRACK_ACTIONS;
+    r.preparation_revision = preparation; r.request_serial = ++serial; r.track_mask = 3;
+    r.tracks[0] = r.tracks[1] = {ALIVE_SESSION_V3_LAUNCH, 0};
+    AliveSessionReceiptV3 receipt{}; receipt.version = 3; receipt.struct_bytes = sizeof receipt;
+    assert(alive_session_request_v3(&r, &receipt)); requests[i] = r.request_serial;
+  }
+  render(1);
+  const auto s = state();
+  assert(!s.playing && !s.fault && !s.tracks[0].mixer.active_voices && !s.tracks[1].mixer.active_voices);
+  for (unsigned i = 0; i < requests.size(); ++i) {
+    const auto &r = s.receipts[requests[i] % 128];
+    assert(r.request_serial == requests[i]);
+    assert(i + 1 == requests.size() ? r.applied_mask == 3 : r.superseded_mask == 3);
+  }
+  std::puts("PASS: saved maximal six-root scene burst reduces 128 members with callback guards; final cue alone applies");
+}
 template <class Before> void measure(const char *name, unsigned frames, unsigned count, Before before) {
   std::vector<double> times;
   times.reserve(count);
@@ -384,6 +406,7 @@ int main(int argc, char **argv) {
   profile_control_isolation();
   preparation_bound();
   local_effect_isolation();
+  scene_fixed_reduction();
   if (argc == 2 && std::strcmp(argv[1], "--verify") == 0) {
     for (bool maximal : {false, true}) {
       fixture(maximal, 188, false);

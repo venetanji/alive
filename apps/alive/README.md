@@ -91,6 +91,13 @@ underrun guarantee. This guidance does not change saved audio settings.
   clears pending actions and silences every track. Runtime text distinguishes
   queued/pending, applied, rejected and unavailable observations. A queued
   request is not proof that it played.
+- Launch scene 1 through 4 launches that prepared slot across every track in one
+  atomic request. Empty slots stop their tracks, including an entirely empty
+  row. With transport stopped, the row is cued without starting playback; audio
+  must already be running. Each row displays its prepared members and native
+  per-track outcomes. A later individual launch can supersede one member while
+  the rest apply at the original target. Selection, pending edits, editors and
+  saved defaults remain independent. Save/reopen restores saved defaults.
 - Create, Duplicate, Delete, Name, Clip length and Set Saved Default affect the
   selected clip through pending history. Duplicate copies notes and automation
   with new score IDs but shares the track's existing device chain. Clip length
@@ -208,7 +215,7 @@ The authored AOT Faust kernels run in Ultra's native evaluator, alongside
 Clockwork. The legacy Clockwork Voice path adds 64 samples and is rejected by
 this hosted profile; native hosted alignment delay is zero. Wider speaker
 layouts, arbitrary Faust/JIT devices, external MIDI, unrestricted live graph
-editing, scenes and a full DAW arrangement remain outside
+editing and a full DAW arrangement remain outside
 this profile.
 
 See `SESSION_CONTRACT.md` for timing, ownership, admission and persistence rules,

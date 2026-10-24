@@ -45,7 +45,7 @@ void limits() {
   auto p = ultra::clip_admission::policy(1), q = ultra::clip_admission::policy(2);
   assert(p.work_policy == 1 && p.max_tracks == 2 && p.max_devices == 6);
   assert(p.scheduled_frame.root_clears == 18 && p.scheduled_window.parameter_writes == 3520);
-  assert(q.features == ALIVE_SESSION_V3_FEATURE_ADMITTED && q.work_policy == 2);
+  assert((q.features & ALIVE_SESSION_V3_FEATURE_ADMITTED) && q.work_policy == 2);
   assert(q.max_tracks == 8 && q.max_devices == 16 && q.max_clips == 32);
   assert(q.scheduled_frame.root_clears == 48 && q.scheduled_frame.event_scans == 3072 &&
          q.scheduled_frame.parameter_writes == 1568);
@@ -145,7 +145,7 @@ void deterministic_local() {
   }
   std::puts("PASS: eight local launch/Stop paths preserve other saved chains across exact partitions");
 }
-void concurrent_publication() {
+void concurrent_publication(bool scenes = false) {
   Fixture f(8, 16, Music::Sustain);
   begin(f);
   const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(30);
@@ -161,6 +161,7 @@ void concurrent_publication() {
   std::atomic<bool> go{false}, done{false}, reader_ready{false}, callback_ready{false};
   std::atomic<bool> rendering{false}, producer_active{false};
   std::atomic<unsigned> snapshots{0}, callbacks{0}, receipt_snapshots{0}, overlaps{0};
+  std::atomic<unsigned> scene_snapshots{0}, mixed_snapshots{0};
   std::atomic<unsigned> producer_progress{0}, reader_progress{0};
   unsigned first_overlap_callback = 0, last_overlap_callback = 0;
   uint64_t first_overlap_frame = 0, last_overlap_frame = 0;
@@ -169,6 +170,11 @@ void concurrent_publication() {
     AliveSessionRequestV3 r{}; r.version = 3; r.struct_bytes = sizeof r;
     r.preparation_revision = f.config.preparation_revision; r.request_serial = ++serial;
     r.kind = 3; r.track_mask = 1u << (i % 8); r.tracks[i % 8] = {1, (i / 8) % 4};
+    if (scenes) {
+      r.track_mask = i % 4 ? 127 : 255;
+      for (unsigned t = 0; t < 8; ++t) r.tracks[t] = r.track_mask & (1u << t) ? AliveSessionTrackActionV3{1, (i / 8) % 4} : AliveSessionTrackActionV3{};
+      if (i % 64 == 1) { r.kind = 1; r.track_mask = 0; std::fill_n(r.tracks, 8, AliveSessionTrackActionV3{}); }
+    }
     AliveSessionReceiptV3 receipt{}; receipt.version = 3; receipt.struct_bytes = sizeof receipt;
     if (alive_session_request_v3(&r, &receipt)) ++accepted;
     else { ++refused; assert(receipt.error == ALIVE_SESSION_V3_QUEUE_FULL || receipt.error == ALIVE_SESSION_V3_RECEIPT_BUSY); }
@@ -197,6 +203,10 @@ void concurrent_publication() {
         if (r.status < ALIVE_SESSION_V3_PENDING) continue;
         assert((r.pending_mask | r.applied_mask | r.superseded_mask | r.canceled_mask | r.rejected_mask) == r.track_mask);
         assert(r.pending_mask + r.applied_mask + r.superseded_mask + r.canceled_mask + r.rejected_mask == r.track_mask);
+        if (scenes && r.request_serial > first_live_serial && r.track_mask == 255) {
+          ++scene_snapshots;
+          if (r.status == ALIVE_SESSION_V3_MIXED) ++mixed_snapshots;
+        }
       }
       if (s.last_consumed_request > first_live_serial) ++receipt_snapshots;
       // A Boolean true/false/true cycle may enclose a read between callbacks.
@@ -248,6 +258,10 @@ void concurrent_publication() {
   assert(overlaps > 1 && first_overlap_callback < last_overlap_callback && last_overlap_callback <= producer_last_callback);
   assert(first_overlap_frame < last_overlap_frame && producer_last_callback >= 1984);
   for (unsigned t = 0; t < 8; ++t) assert(!s.tracks[t].mixer.active_voices);
+  if (scenes) {
+    assert(scene_snapshots && mixed_snapshots);
+    std::printf("SCENE_PUBLICATION,scene_receipt_observations=%u,mixed_receipt_observations=%u\n", scene_snapshots.load(), mixed_snapshots.load());
+  }
   std::printf("PASS: concurrent callback/control/read accepted=%u refused=%u coherent_snapshots=%u new_receipt_snapshots=%u same_callback_render_overlap_snapshots=%u first_overlap_callback=%u last_overlap_callback=%u first_overlap_frame=%llu last_overlap_frame=%llu producer_last_callback=%u callbacks=2048\n",
               accepted, refused, snapshots.load(), receipt_snapshots.load(), overlaps.load(), first_overlap_callback,
               last_overlap_callback, (unsigned long long)first_overlap_frame, (unsigned long long)last_overlap_frame, producer_last_callback);
@@ -258,15 +272,25 @@ template<class Before> void measure(const char *name, const Fixture &f, unsigned
   times.reserve(count);
   std::array<ultra::clip_admission::Cost, 4> maxima{};
   const auto rejected_before = state().work_rejected;
+  uint64_t max_preview = 0, max_reads = 0;
   for (unsigned i = 0; i < count; ++i) {
     before(i);
     counters = {};
+#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+    ultra::alive_session_test_preview_reads = ultra::alive_session_test_reconstruction_reads = 0;
+#endif
     const auto begin_time = std::chrono::steady_clock::now();
     render(frames);
     if (after) after();
     const auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - begin_time).count();
     times.push_back(elapsed);
     assert(!state().fault);
+#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+    max_preview = std::max(max_preview, ultra::alive_session_test_preview_reads);
+    max_reads = std::max(max_reads, ultra::alive_session_test_reconstruction_reads);
+    assert(ultra::alive_session_test_preview_reads <= 12 * f.config.track_count + 32);
+    assert(ultra::alive_session_test_reconstruction_reads <= counters[0][2] + counters[1][2] + counters[2][2]);
+#endif
     std::printf("SAMPLE,%s,%u,%u,%u,%u,%lld\n", name, f.config.track_count, f.config.device_count, frames, i, (long long)elapsed);
     for (unsigned family = 0; family < 4; ++family)
       for (unsigned m = 0; m < 5; ++m) maxima[family][m] = std::max(maxima[family][m], counters[family][m]);
@@ -277,14 +301,100 @@ template<class Before> void measure(const char *name, const Fixture &f, unsigned
               (unsigned long long)times[count/2], (unsigned long long)times[(count-1)*99/100],
               (unsigned long long)times[(count-1)*999/1000], (unsigned long long)times.back(),
               (unsigned long long)(state().work_rejected-rejected_before));
+  std::printf("READS,%s,tracks=%u,frames=%u,preview=%llu,reconstruction=%llu,preview_bound=%u,diagnostic=%u\n",
+              name, f.config.track_count, frames, (unsigned long long)max_preview,
+              (unsigned long long)max_reads, 12 * f.config.track_count + 32,
+#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+              1u
+#else
+              0u
+#endif
+  );
   for (unsigned family = 0; family < 4; ++family)
     std::printf("COUNTERS,%s,tracks=%u,frames=%u,family=%u,events=%llu,clears=%llu,scans=%llu,writes=%llu,guards=%llu\n",
                 name, f.config.track_count, frames, family, (unsigned long long)maxima[family][0],
                 (unsigned long long)maxima[family][1], (unsigned long long)maxima[family][2],
                 (unsigned long long)maxima[family][3], (unsigned long long)maxima[family][4]);
 }
-void timing(unsigned tracks, unsigned devices, unsigned count) {
-  for (bool extended : {false, true}) {
+std::vector<float> scene_chain_audio(unsigned tracks, bool atomic, unsigned partition) {
+  Fixture f(tracks, tracks == 2 ? 6 : 16, Music::Sustain);
+  f.config.length_frames = 4096;
+  for (unsigned i = 0; i < f.config.clip_count; ++i) f.config.clips[i].length_frames = 4096;
+  f.config.devices[1].bypassed = 1;
+  f.config.tracks[1].chain.mute = 1;
+  begin(f);
+  std::vector<float> samples;
+  for (unsigned section = 0; section < 3; ++section) {
+    const unsigned stops = section == 1 ? 0x55u : 0;
+    const unsigned slot = section == 1 ? 1 : 0;
+    if (atomic) scene(f, slot, stops);
+    else for (unsigned t = 0; t < tracks; ++t)
+      request(f, 3, 0, t, stops & (1u << t) ? UINT32_MAX : slot,
+              stops & (1u << t) ? ALIVE_SESSION_V3_TRACK_STOP : ALIVE_SESSION_V3_LAUNCH);
+    for (unsigned frame = 0; frame < 4096;) {
+      const unsigned n = std::min(partition, 4096 - frame);
+      render(n);
+      for (unsigned i = 0; i < n; ++i) { samples.push_back(left[i]); samples.push_back(right[i]); }
+      frame += n;
+    }
+    const auto s = state();
+    assert(s.playing && !s.fault);
+    for (unsigned t = 0; t < tracks; ++t) {
+      const bool stopped = stops & (1u << t);
+      assert(s.tracks[t].active_clip == (stopped ? UINT32_MAX : t * 4 + slot));
+      assert(s.tracks[t].phase == (stopped ? 0 : 1024));
+      assert(!s.tracks[t].pending_action);
+      assert(s.tracks[t].mixer.active_voices == (!stopped && slot == 0 ? 4u : 0u));
+    }
+  }
+  return samples;
+}
+void scene_chains() {
+  for (unsigned tracks : {2u, 8u}) {
+    const auto individual = scene_chain_audio(tracks, false, 1024);
+    assert(std::any_of(individual.begin(), individual.end(), [](float x) { return x != 0; }));
+    for (unsigned partition : {1u, 31u, 64u, 256u, 1024u})
+      assert(scene_chain_audio(tracks, true, partition) == individual);
+  }
+  std::puts("PASS: scene/individual saved-chain stereo equivalence, same-clip retrigger, empty clip/Stop, warm bypass, mute and partitions 1/31/64/256/1024");
+}
+void scene_timing(unsigned tracks, unsigned devices, unsigned count) {
+  Fixture f(tracks, devices, Music::Sustain, true);
+  begin(f);
+  for (unsigned frames : {64u, 256u, 512u, 1024u}) {
+    measure("scene_running_64", f, frames, count, [&](unsigned) {
+      for (unsigned i = 0; i < 64; ++i) scene(f);
+    });
+    alive_session_stop_v3(); render(1024);
+    measure("scene_stopped_64", f, frames, count, [&](unsigned) {
+      for (unsigned i = 0; i < 64; ++i) scene(f, i % 4);
+    });
+    request(f, 1); render(1024);
+    measure("scene_seek_accepted", f, frames, count, [&](unsigned) {
+      render(1024); request(f, 2, 0);
+      for (unsigned i = 0; i < 63; ++i) scene(f);
+    });
+    measure("scene_cheap_refusal", f, frames, count, [&](unsigned) {
+      render(1024); request(f, 2, 0); render(1); request(f, 2, 137);
+      for (unsigned i = 0; i < 63; ++i) scene(f, i % 4);
+    });
+    measure("scene_stop_full_queue", f, frames, count, [&](unsigned) {
+      render(1024); request(f, 1); render(1024);
+      for (unsigned i = 0; i < 64; ++i) scene(f);
+      alive_session_stop_v3();
+    });
+    request(f, 1); render(1024);
+  }
+  Fixture dense(tracks, devices, Music::Dense, true);
+  begin(dense);
+  for (unsigned frames : {256u, 512u, 1024u})
+    measure("scene_dense_seek", dense, frames, count, [&](unsigned) {
+      render(1024); request(dense, 2, 32767);
+      for (unsigned i = 0; i < 63; ++i) scene(dense);
+    });
+}
+void timing(unsigned tracks, unsigned devices, unsigned count, bool scenes = false) {
+  if (!scenes) for (bool extended : {false, true}) {
     for (auto music : {Music::Sustain, Music::EmptyShort, Music::PopulatedShort, Music::Dense}) {
       Fixture f(tracks, devices, music, extended);
       if (density_refusal(f)) continue;
@@ -320,12 +430,14 @@ void timing(unsigned tracks, unsigned devices, unsigned count) {
       }
     }
   }
+  if (!scenes) {
   Fixture f(tracks, devices, Music::Sustain, true, true);
   begin(f);
   for (unsigned frames : {64u, 256u, 512u, 1024u}) measure("heavy_voice_edges", f, frames, count, [](unsigned) {});
+  }
   Fixture control(tracks, devices, Music::Sustain, true);
   begin(control);
-  for (unsigned frames : {64u, 256u, 512u, 1024u})
+  if (!scenes) for (unsigned frames : {64u, 256u, 512u, 1024u})
     measure("aligned_switch_burst", control, frames, count, [&](unsigned i) {
       for (unsigned c = 0; c < 64; ++c) request(control, 3, 0, c % tracks, (i / 2) % 4);
     });
@@ -341,9 +453,10 @@ void timing(unsigned tracks, unsigned devices, unsigned count) {
   const unsigned writes = policy.scheduled_window.parameter_writes + policy.optional_window.parameter_writes + policy.emergency.parameter_writes;
   volatile uint64_t scan_result = 0;
   for (unsigned frames : {64u, 128u, 256u, 512u, 1024u}) {
-    measure("combined_policy_upper_bound", control, frames, count, [&](unsigned) {
+    measure(scenes ? "scene_combined_policy_work" : "combined_policy_upper_bound", control, frames, count, [&](unsigned) {
       render(1024);
       for (unsigned c = 0; c < 63; ++c) {
+        if (scenes) { scene(control); continue; }
         const unsigned d = c % devices, p = c % 16;
         assert(alive_session_base_v2(d, control.config.devices[d].revision, p, control.config.devices[d].parameters[p].base));
       }
@@ -356,7 +469,7 @@ void timing(unsigned tracks, unsigned devices, unsigned count) {
       for (unsigned clear = 0; clear < roots; ++clear) {
         auto &runtime = workspace->runtime(clear % devices); runtime.reset(runtime.plan());
       }
-      for (unsigned write = 0; write < writes; ++write) {
+      for (unsigned write = 0; write < writes + (scenes ? 64 : 0); ++write) {
         const unsigned d = write % devices, p = write % 16;
         auto &runtime = workspace->runtime(d); const auto &b = control.config.devices[d].parameters[p];
         assert(runtime.param(runtime.plan(), b.node, b.param, b.base, 0, discard));
@@ -386,7 +499,13 @@ int main(int argc, char **argv) {
 #endif
   limits();
   rejected_density_and_roots();
-  if (argc > 1 && std::strcmp(argv[1], "--verify") == 0) {
+  if (argc > 1 && std::strcmp(argv[1], "--scene-verify") == 0) {
+    scene_chains(); concurrent_publication(true);
+    for (unsigned tracks : {2u, 8u}) { scene_timing(tracks, tracks == 2 ? 6 : 16, 4); timing(tracks, tracks == 2 ? 6 : 16, 4, true); }
+  } else if (argc > 1 && std::strcmp(argv[1], "--scenes") == 0) {
+    const unsigned count = argc > 2 ? unsigned(std::stoul(argv[2])) : 1200;
+    for (unsigned tracks : {2u, 8u}) { scene_timing(tracks, tracks == 2 ? 6 : 16, count); timing(tracks, tracks == 2 ? 6 : 16, count, true); }
+  } else if (argc > 1 && std::strcmp(argv[1], "--verify") == 0) {
     for (unsigned tracks : {2u, 4u, 8u}) for (auto music : {Music::Sustain, Music::EmptyShort, Music::PopulatedShort, Music::Dense}) {
       Fixture f(tracks, tracks == 2 ? 6 : tracks * 2, music, true);
       if (!density_refusal(f)) begin(f);

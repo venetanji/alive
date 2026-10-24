@@ -221,6 +221,70 @@ exact copied sources, commands, hashes and every release timing sample. Add
 regression, or `--guards --samples 20` for work counters and guard checks. Output
 directories must be new so failed or earlier evidence cannot be overwritten.
 
+## Atomic Scenes: Policies 1 And 2
+
+Both admitted profiles now advertise ATOMIC_TRACK_ACTIONS. Their work-policy
+values, graph family and all event/root/queue/receipt ceilings remain unchanged.
+Scenes choose simultaneous members from the already summed per-track envelopes;
+they add no event or scheduling boundary. Empty prepared members use track Stop.
+One request has one receipt and target; member masks retain partial supersession,
+cancellation and refusal without partially admitting a new candidate batch.
+
+The candidate owns a fixed 128-entry index (512 added scratch bytes), checked
+against the full serial before use. A callback drains at most 64 commands and
+visits at most 512 scene members. Each candidate receipt lookup is constant
+time; it no longer scans 64 candidate receipts per member. Fallback staging of
+old pending receipts scans at most eight tracks, for at most eight old pending
+dispositions per callback. Each member aggregation tests four terminal masks.
+The stopped-winner index stays per track. Refusal visits at most 64 candidate
+receipts and changes only surviving provisional applied/pending bits. Due/Stop/
+end transitions visit at most eight pending tracks with serial and preparation
+checks. Final publication remains 16,592 bytes; no callback allocation or lock
+is added. First-frame preview retains bounds 56 reads at two tracks and 128 at
+eight, with at most one combined optional check. Cheap refusal performs no new
+preview or chase; scene-only quantized work needs no optional check.
+
+Task 14's isolated proposed-feature copy was measured before enabling either
+shipping bit. The enabled native code then matched all 28 measured C/C++ source
+files byte-for-byte. `proposed-release-1` under `/tmp/alive-task14-evidence` retains
+56 distributions with 1200 raw samples each, exact copied source/build hashes
+and commands. On the same Ryzen 9 5900HS, Linux 7.2.8, GCC 16.2.1 `-O2`, 48 kHz
+host, the combined scene/policy-work cases measured:
+
+Quantiles use the probe's sorted-sample index `floor((n - 1) * p)`, including
+`p = 0.999`; the 1200-sample distributions are finite observations.
+
+| Profile | Frames | p99.9 us | Maximum us | Buffer us |
+| --- | ---: | ---: | ---: | ---: |
+| 2 tracks / 6 roots | 256 | 1822.026 | 1838.708 | 5333.333 |
+| 2 tracks / 6 roots | 512 | 3282.398 | 3628.122 | 10666.667 |
+| 8 tracks / 16 roots | 256 | 5606.953 | 5912.639 | 5333.333 |
+| 8 tracks / 16 roots | 512 | 8477.349 | 9065.259 | 10666.667 |
+| 8 tracks / 16 roots | 1024 | 14591.876 | 16742.724 | 21333.333 |
+
+This combined diagnostic adds the full scheduled-window, optional and two-clear
+emergency reserves to a real 63-scene-plus-seek callback, plus 64 extra direct
+parameter writes, 64 dispatches and the retained scalar scan surrogate. It
+deliberately overcounts work and is not an execution-time upper bound for every
+branch/topology. Separate actual paths cover 64 running scenes, 64 stopped cues,
+accepted seek/scene reduction, repeated optional refusal, full-queue Stop and
+1024-event reconstruction. Guarded tests cover saved chains, all five requested
+logical partitions and genuinely overlapping coherent scene observations.
+
+Keep observed buffers >=256 for policy 1 and >=512 for policy 2, preferring 1024
+near its graph/work bounds. The larger 256-frame combined case exceeds its
+buffer. The advisory 50% p99.9 target is not achieved by the larger combined
+case; these observations do not establish universal deadlines, scheduling
+lateness or physical underrun behavior. Actual release driver size, finite
+software capture, per-epoch diagnostics and resource limits are recorded in
+`.superpowers/sdd/PLAN/task-14-report.md`. The Task 15 soak remains separate.
+
+Use `run_alive_capacity.py OUTPUT --scenes` for retained scene timing or add
+`--verify --guards` for the bounded scene/saved-chain/concurrency verification.
+`--proposed-scenes` explicitly modifies only copied policy source for a
+pre-admission experiment; it never edits the working tree. Earlier tables keep
+their original source and artifact attribution.
+
 ## Reproduction
 
 Run from the repository root after `bash apps/ultra/build.sh --native-only`:

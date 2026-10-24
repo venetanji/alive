@@ -13,6 +13,8 @@ parser.add_argument("output", type=Path)
 parser.add_argument("--verify", action="store_true")
 parser.add_argument("--guards", action="store_true")
 parser.add_argument("--samples", type=int, default=1200)
+parser.add_argument("--scenes", action="store_true")
+parser.add_argument("--proposed-scenes", action="store_true", help="Enable scene bits only in the retained measurement copy")
 args = parser.parse_args()
 output = args.output.resolve()
 output.mkdir(parents=True, exist_ok=False)
@@ -20,6 +22,11 @@ shutil.copy2(__file__, output / "runner.py")
 source = output / "source"
 shutil.copytree(ROOT / "apps/ultra/src-tauri/native", source / "src-tauri/native")
 shutil.copytree(ROOT / "apps/ultra/core", source / "core")
+if args.proposed_scenes:
+    policy = source / "src-tauri/native/alive_session_clip_policy.hpp"
+    policy.write_text(policy.read_text().replace(
+        "out.features = ALIVE_SESSION_V3_FEATURE_ADMITTED;",
+        "out.features = ALIVE_SESSION_V3_FEATURE_ADMITTED | ALIVE_SESSION_V3_FEATURE_ATOMIC_TRACK_ACTIONS;"))
 (source / "tests").mkdir()
 for name in ("alive_session_capacity.cpp", "alive_session_capacity_fixture.hpp", "canvas_callback_guard.hpp"):
     shutil.copy2(ROOT / "apps/ultra/tests" / name, source / "tests" / name)
@@ -44,11 +51,13 @@ if args.guards:
     command += ["-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock"]
 run(command, "build.log")
 manifest = {"base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
-            "sources_modified_by_runner": False, "diagnostic_guards": args.guards, "files": {}}
+            "sources_modified_by_runner": args.proposed_scenes, "proposed_scene_bits": args.proposed_scenes,
+            "diagnostic_guards": args.guards, "files": {}}
 for path in sorted(source.rglob("*")):
     if path.is_file(): manifest["files"][str(path.relative_to(output))] = hashlib.sha256(path.read_bytes()).hexdigest()
 for path in (output / "probe", ROOT / "apps/ultra/build/core/libultra_core_bundle.a"):
     manifest["files"][str(path)] = hashlib.sha256(path.read_bytes()).hexdigest()
 (output / "manifest.json").write_text(json.dumps(manifest, indent=2))
-run([str(output / "probe"), *( ["--verify"] if args.verify else [str(args.samples)] )], "probe.log")
+arguments = (["--scene-verify"] if args.verify else ["--scenes", str(args.samples)]) if args.scenes else (["--verify"] if args.verify else [str(args.samples)])
+run([str(output / "probe"), *arguments], "probe.log")
 print(output)

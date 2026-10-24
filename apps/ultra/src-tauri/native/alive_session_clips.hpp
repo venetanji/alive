@@ -38,6 +38,7 @@ struct Candidate {
   AliveSessionTrackStateV3 tracks[8]{};
   AliveSessionReceiptV3 receipts[64]{};
   unsigned count = 0, old_status[8]{}, old_error[8]{}, clear_mask = 0;
+  unsigned receipt_index[128]{};
   bool group[64]{};
   uint64_t position = 0;
   unsigned playing = 0;
@@ -74,6 +75,42 @@ static void finish(AliveSessionReceiptV3 &receipt, unsigned status, unsigned err
     receipt.canceled_mask = receipt.track_mask;
   if (status == ALIVE_SESSION_V3_REJECTED)
     receipt.rejected_mask = receipt.track_mask;
+}
+static unsigned reason_priority(unsigned error) noexcept {
+  switch (error) {
+  case ALIVE_SESSION_V3_RUNTIME_INVARIANT: return 5;
+  case ALIVE_SESSION_V3_STOP_CANCELED: return 4;
+  case ALIVE_SESSION_V3_WORK_LIMIT: return 3;
+  case ALIVE_SESSION_V3_END_CANCELED: return 2;
+  case ALIVE_SESSION_V3_REPLACED_REQUEST: return 1;
+  default: return 0;
+  }
+}
+static void finish_members(AliveSessionReceiptV3 &r, unsigned mask, unsigned status,
+                           unsigned error = 0, bool provisional = false) noexcept {
+  // Only candidate scratch may replace a stopped cue's unpublished APPLIED bit.
+  mask &= r.pending_mask | (provisional ? r.applied_mask : 0);
+  if (!mask)
+    return;
+  r.pending_mask &= ~mask;
+  r.applied_mask &= ~mask;
+  if (status == ALIVE_SESSION_V3_APPLIED) r.applied_mask |= mask;
+  if (status == ALIVE_SESSION_V3_SUPERSEDED) r.superseded_mask |= mask;
+  if (status == ALIVE_SESSION_V3_CANCELED) r.canceled_mask |= mask;
+  if (status == ALIVE_SESSION_V3_REJECTED) r.rejected_mask |= mask;
+  if (reason_priority(error) > reason_priority(r.error)) r.error = error;
+  if (r.pending_mask) {
+    r.status = ALIVE_SESSION_V3_PENDING;
+    return;
+  }
+  r.status = 0;
+  for (const auto kind : {ALIVE_SESSION_V3_APPLIED, ALIVE_SESSION_V3_SUPERSEDED,
+                          ALIVE_SESSION_V3_CANCELED, ALIVE_SESSION_V3_REJECTED}) {
+    const unsigned members = kind == ALIVE_SESSION_V3_APPLIED ? r.applied_mask :
+        kind == ALIVE_SESSION_V3_SUPERSEDED ? r.superseded_mask :
+        kind == ALIVE_SESSION_V3_CANCELED ? r.canceled_mask : r.rejected_mask;
+    if (members) r.status = r.status ? ALIVE_SESSION_V3_MIXED : kind;
+  }
 }
 bool bounds_v3(const AliveSessionConfigV3 &c) noexcept {
   if (!output_header(c.version, c.struct_bytes, sizeof c))
@@ -481,8 +518,9 @@ void cancel_pending(unsigned t, unsigned error) noexcept {
   auto &ts = state_.tracks[t];
   if (ts.pending_action) {
     auto &receipt = state_.receipts[ts.pending_serial % 128];
-    if (receipt.request_serial == ts.pending_serial)
-      finish(receipt, ALIVE_SESSION_V3_CANCELED, error);
+    if (receipt.request_serial == ts.pending_serial &&
+        receipt.preparation_revision == config_.preparation_revision)
+      finish_members(receipt, 1u << t, ALIVE_SESSION_V3_CANCELED, error);
   }
   ts.pending_action = 0;
   ts.pending_clip = None;
@@ -644,7 +682,9 @@ bool request_v3(const AliveSessionRequestV3 &r, AliveSessionReceiptV3 &immediate
   if (r.kind == 3) {
     if (!r.track_mask || r.position)
       return refused(ALIVE_SESSION_V3_BAD_FIELD, "Track action requires a mask and zero position.");
-    if (r.track_mask & (r.track_mask - 1))
+    const auto features = clip_admission::policy(config_.profile).features;
+    const unsigned atomic = ALIVE_SESSION_V3_FEATURE_ADMITTED | ALIVE_SESSION_V3_FEATURE_ATOMIC_TRACK_ACTIONS;
+    if ((r.track_mask & (r.track_mask - 1)) && (features & atomic) != atomic)
       return refused(ALIVE_SESSION_V3_FEATURE_DISABLED, "Atomic track actions are not admitted yet.");
   } else if (r.track_mask || (r.kind == 1 ? r.position != 0 : r.position >= config_.length_frames))
     return refused(ALIVE_SESSION_V3_BAD_FIELD, "Invalid transport request position or mask.");
@@ -682,23 +722,26 @@ bool request_v3(const AliveSessionRequestV3 &r, AliveSessionReceiptV3 &immediate
 }
 
 private:
-void candidate_finish(uint64_t serial, unsigned status, unsigned error) noexcept {
-  for (unsigned i = 0; i < candidate_.count; ++i)
-    if (candidate_.receipts[i].request_serial == serial) {
-      finish(candidate_.receipts[i], status, error);
-      return;
-    }
+void candidate_finish(uint64_t serial, unsigned mask, unsigned status, unsigned error) noexcept {
+  // Reservations exclude simultaneous serial%128 collisions. Verify identity
+  // before using the fixed candidate index; old pending deltas remain per track.
+  const unsigned index = candidate_.receipt_index[serial % 128];
+  if (index && candidate_.receipts[index - 1].request_serial == serial) {
+    auto &receipt = candidate_.receipts[index - 1];
+    if (mask) finish_members(receipt, mask, status, error, true);
+    else finish(receipt, status, error);
+    return;
+  }
   for (unsigned t = 0; t < config_.track_count; ++t)
-    if (state_.tracks[t].pending_serial == serial) {
+    if ((mask & (1u << t)) && state_.tracks[t].pending_serial == serial) {
       candidate_.old_status[t] = status;
       candidate_.old_error[t] = error;
-      return;
     }
 }
 void candidate_cancel(unsigned t, unsigned status, unsigned error) noexcept {
   auto &ts = candidate_.tracks[t];
   if (ts.pending_action)
-    candidate_finish(ts.pending_serial, status, error);
+    candidate_finish(ts.pending_serial, 1u << t, status, error);
   ts.pending_action = 0;
   ts.pending_clip = None;
   ts.pending_serial = 0;
@@ -845,6 +888,7 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
       continue;
     const auto &r = c.request;
     const unsigned index = candidate_.count++;
+    candidate_.receipt_index[r.request_serial % 128] = index + 1;
     auto &receipt = candidate_.receipts[index];
     receipt.version = 3;
     receipt.struct_bytes = sizeof receipt;
@@ -883,7 +927,7 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
           candidate_.clear_mask |= 1u << t;
     } else if (r.kind == 2) {
       if (last_seek)
-        candidate_finish(last_seek, ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
+        candidate_finish(last_seek, 0, ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
       last_seek = r.request_serial;
       candidate_.group[index] = true;
       candidate_.unscheduled = true;
@@ -898,38 +942,42 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
       }
     } else {
       candidate_.group[index] = true;
-      const unsigned t = session_bits::first(r.track_mask);
-      const auto &action = r.tracks[t];
-      auto &ts = candidate_.tracks[t];
       const uint64_t target = candidate_.playing ? target_frame(candidate_.position) : state_.absolute_frame;
       if (target == NoFrame) {
         finish(receipt, ALIVE_SESSION_V3_CANCELED, ALIVE_SESSION_V3_END_CANCELED);
         receipt.target_frame = NoFrame;
         continue;
       }
-      candidate_cancel(t, ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
-      const unsigned clip =
-          action.action == ALIVE_SESSION_V3_LAUNCH ? config_.bank[t].slots[action.slot] : None;
-      if (candidate_.playing) {
-        ts.pending_action = action.action;
-        ts.pending_clip = clip;
-        ts.pending_serial = r.request_serial;
-        ts.pending_frame = target;
-        receipt.target_frame = target;
+      receipt.target_frame = target;
+      if (candidate_.playing)
         finish(receipt, ALIVE_SESSION_V3_PENDING);
-      } else {
-        // Stopped cues have no pending serial. After START, their active
-        // selection may coexist with a later future-pending action.
-        if (stopped_actions[t])
-          finish(candidate_.receipts[stopped_actions[t] - 1], ALIVE_SESSION_V3_SUPERSEDED,
-                 ALIVE_SESSION_V3_REPLACED_REQUEST);
-        stopped_actions[t] = index + 1;
-        ts.active_clip = clip;
-        ts.phase = 0;
-        ++ts.track_epoch;
-        if (!clear_[t]) {
-          candidate_.clear_mask |= 1u << t;
-          candidate_.unscheduled = true;
+      for (unsigned t = 0; t < config_.track_count; ++t) {
+        if (!(r.track_mask & (1u << t)))
+          continue;
+        const auto &action = r.tracks[t];
+        auto &ts = candidate_.tracks[t];
+        candidate_cancel(t, ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
+        const unsigned clip =
+            action.action == ALIVE_SESSION_V3_LAUNCH ? config_.bank[t].slots[action.slot] : None;
+        if (candidate_.playing) {
+          ts.pending_action = action.action;
+          ts.pending_clip = clip;
+          ts.pending_serial = r.request_serial;
+          ts.pending_frame = target;
+        } else {
+          // Stopped cues have no pending serial. After START, their active
+          // selection may coexist with a later future-pending action.
+          if (stopped_actions[t])
+            finish_members(candidate_.receipts[stopped_actions[t] - 1], 1u << t,
+                           ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST, true);
+          stopped_actions[t] = index + 1;
+          ts.active_clip = clip;
+          ts.phase = 0;
+          ++ts.track_epoch;
+          if (!clear_[t]) {
+            candidate_.clear_mask |= 1u << t;
+            candidate_.unscheduled = true;
+          }
         }
       }
     }
@@ -940,7 +988,9 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
     for (unsigned t = 0; t < config_.track_count; ++t)
       if (candidate_.old_status[t]) {
         auto &receipt = state_.receipts[state_.tracks[t].pending_serial % 128];
-        finish(receipt, candidate_.old_status[t], candidate_.old_error[t]);
+        if (receipt.request_serial == state_.tracks[t].pending_serial &&
+            receipt.preparation_revision == config_.preparation_revision)
+          finish_members(receipt, 1u << t, candidate_.old_status[t], candidate_.old_error[t]);
       }
     std::copy_n(candidate_.tracks, 8, state_.tracks);
     state_.position = candidate_.position;
@@ -949,9 +999,13 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
   } else {
     ++state_.work_rejected;
     for (unsigned i = 0; i < candidate_.count; ++i)
-      if (candidate_.group[i] && (candidate_.receipts[i].status == ALIVE_SESSION_V3_APPLIED ||
-                                  candidate_.receipts[i].status == ALIVE_SESSION_V3_PENDING))
-        finish(candidate_.receipts[i], ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
+      if (candidate_.group[i]) {
+        auto &r = candidate_.receipts[i];
+        if (r.track_mask)
+          finish_members(r, r.track_mask, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT, true);
+        else if (r.status == ALIVE_SESSION_V3_APPLIED || r.status == ALIVE_SESSION_V3_PENDING)
+          finish(r, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
+      }
   }
   for (unsigned i = 0; i < candidate_.count; ++i)
     state_.receipts[candidate_.receipts[i].request_serial % 128] = candidate_.receipts[i];
@@ -1060,7 +1114,10 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
   for (unsigned t = 0; t < config_.track_count; ++t) {
     auto &ts = state_.tracks[t];
     if (ts.pending_action && ts.pending_frame <= state_.absolute_frame) {
-      finish(state_.receipts[ts.pending_serial % 128], ALIVE_SESSION_V3_APPLIED);
+      auto &receipt = state_.receipts[ts.pending_serial % 128];
+      if (receipt.request_serial == ts.pending_serial &&
+          receipt.preparation_revision == config_.preparation_revision)
+        finish_members(receipt, 1u << t, ALIVE_SESSION_V3_APPLIED);
       ts.pending_action = 0;
       ts.pending_clip = None;
       ts.pending_serial = 0;

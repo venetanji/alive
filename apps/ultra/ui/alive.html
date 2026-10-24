@@ -9,6 +9,8 @@
 <div class="master"><span>Master</span><div id="master-meter" class="stereo-meter" aria-label="Master stereo peak"><i></i><i></i></div><output id="master-peak" aria-label="Master peak">0 / 0</output></div>
 </section>
 <main>
+<p id="scene-help" class="muted" hidden>Launches this prepared row. Empty slots stop their tracks.</p>
+<section id="scene-controls" aria-label="Prepared scene rows" hidden></section>
 <section id="tracks" aria-label="Instrument tracks"></section>
 <div class="schedule-bar"><span id="draft-status">Prepared schedule</span><span class="muted">Prepare / Apply requires stopped transport.</span><button id="undo" aria-label="Undo pending edit">Undo pending edit</button><button id="redo" aria-label="Redo pending edit">Redo pending edit</button><button id="apply" class="primary" aria-label="Prepare / Apply">Prepare / Apply</button><button id="discard" aria-label="Discard edits">Discard edits</button><button id="add-track" aria-label="Add instrument track">Add instrument...</button></div>
 <section class="chain-section" aria-labelledby="chain-title"><header class="section-heading"><h2 id="chain-title">Selected track chain</h2><span class="muted">Instrument &rarr; effects &rarr; mixer. Selection does not start playback.</span><button id="add-effect" aria-label="Add effect">Add effect...</button></header><div id="chain"></div><p id="chain-status" class="muted"></p></section>

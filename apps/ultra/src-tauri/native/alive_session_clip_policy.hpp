@@ -35,7 +35,7 @@ inline AliveSessionLimitsV3 policy(unsigned profile) noexcept {
   if (profile == 1) {
     // Measured policy 1: see alive_session_v3_policy.md for graph bounds,
     // derivation, actual-kernel distributions and practical buffer scope.
-    out.features = ALIVE_SESSION_V3_FEATURE_ADMITTED;
+    out.features = ALIVE_SESSION_V3_FEATURE_ADMITTED | ALIVE_SESSION_V3_FEATURE_ATOMIC_TRACK_ACTIONS;
     out.scheduled_frame = {18, 3072, 608, 0};
     out.scheduled_window = {108, 18432, 3520, 0};
     out.optional_frame = {6, 1024, 192, HorizonSteps};
@@ -45,7 +45,7 @@ inline AliveSessionLimitsV3 policy(unsigned profile) noexcept {
     // Policy 2 retains policy 1's event/scan/guard bounds and scales only
     // the root/parameter work. See the retained capacity measurements.
     out.work_policy = ALIVE_SESSION_V3_WORK_POLICY_2;
-    out.features = ALIVE_SESSION_V3_FEATURE_ADMITTED;
+    out.features = ALIVE_SESSION_V3_FEATURE_ADMITTED | ALIVE_SESSION_V3_FEATURE_ATOMIC_TRACK_ACTIONS;
     out.scheduled_frame = {48, 3072, 1568, 0};
     out.scheduled_window = {288, 18432, 9280, 0};
     out.optional_frame = {16, 1024, 512, HorizonSteps};

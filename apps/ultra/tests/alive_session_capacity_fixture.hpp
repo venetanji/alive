@@ -139,4 +139,18 @@ inline AliveSessionReceiptV3 request(const Fixture &fixture, unsigned kind, uint
   assert(alive_session_request_v3(&r, &receipt));
   return receipt;
 }
+inline AliveSessionReceiptV3 scene(const Fixture &f, unsigned slot = 0, unsigned stops = 0,
+                                   unsigned mask = 0) {
+  AliveSessionRequestV3 r{};
+  r.version = 3; r.struct_bytes = sizeof r; r.kind = ALIVE_SESSION_V3_TRACK_ACTIONS;
+  r.preparation_revision = f.config.preparation_revision; r.request_serial = ++serial;
+  r.track_mask = mask ? mask : (1u << f.config.track_count) - 1;
+  for (unsigned t = 0; t < f.config.track_count; ++t)
+    if (r.track_mask & (1u << t))
+      r.tracks[t] = {stops & (1u << t) ? ALIVE_SESSION_V3_TRACK_STOP : ALIVE_SESSION_V3_LAUNCH,
+                     stops & (1u << t) ? UINT32_MAX : slot};
+  AliveSessionReceiptV3 out{}; out.version = 3; out.struct_bytes = sizeof out;
+  assert(alive_session_request_v3(&r, &out));
+  return out;
+}
 } // namespace capacity_fixture
