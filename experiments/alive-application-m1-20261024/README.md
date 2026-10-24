@@ -47,6 +47,18 @@ termination/callback allocation-free-lock guards and the 43,008-sample scoped
 Stop stress pass. Sixteen release tests and four notice tests pass. Current-head
 CI/package results must be checked after pushing; earlier green CI is historical.
 
+Follow-up package CI on `548b1a1` reproduced macOS `ar` name-dialect and Windows
+binary-output translation failures in the DEB extraction regression, before app
+compilation. DEB inspection now reads the bounded SysV members directly and the
+fixture writes portable exact bytes. The expected red failure with `ar` absent
+is recorded locally in `/tmp/alive-m1-portable-deb-red.log`. All 17 release and
+four notice tests pass, including binary byte preservation, truncated headers/
+members and duplicate payload rejection before extraction. Independent scoped
+review finds no issues. Both actual Tauri DEBs above are freshly extracted with
+this reader and pass notices, native linkage and the bundled offline session
+probe outside the repository. This changes package inspection, not the recorded
+developer runtime or DEB bytes. Platform CI must qualify the correction.
+
 ## Commands
 
 ```sh

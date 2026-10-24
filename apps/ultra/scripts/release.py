@@ -156,15 +156,45 @@ def verify_bundled_session(executable, resources, env):
         run(executable, '--session-probe', session, Path(temporary)/'render', cwd=temporary, env=env)
 
 def extract_deb(package, destination):
-    members = subprocess.check_output(['ar', 't', str(package)], text=True).splitlines()
-    data = [name for name in members if re.fullmatch(r'data\.tar(?:\.(?:gz|xz|bz2))?', name)]
-    if len(data) != 1:
-        raise ValueError('DEB must contain exactly one supported data archive')
-    with tempfile.TemporaryFile() as payload:
-        subprocess.run(['ar', 'p', str(package), data[0]], stdout=payload, check=True)
-        payload.seek(0)
-        with tarfile.open(fileobj=payload, mode='r:*') as archive:
-            archive.extractall(destination, filter='data')
+    # DEB uses short SysV ar member names. Host ar dialects and Windows text
+    # stdout translation must not change the package's compressed bytes.
+    with package.open('rb') as container:
+        length = package.stat().st_size
+        if container.read(8) != b'!<arch>\n':
+            raise ValueError('Invalid DEB archive signature')
+        data = []
+        while container.tell() < length:
+            header = container.read(60)
+            if len(header) != 60 or header[58:] != b'`\n':
+                raise ValueError('Invalid DEB member header')
+            try:
+                name = header[:16].decode('ascii').rstrip().removesuffix('/')
+                size_text = header[48:58].decode('ascii').strip()
+                if not size_text.isdecimal():
+                    raise ValueError('Invalid DEB member size')
+                size = int(size_text)
+            except (UnicodeDecodeError, ValueError) as error:
+                raise ValueError('Invalid DEB member metadata') from error
+            offset = container.tell()
+            if offset + size + size % 2 > length:
+                raise ValueError('Truncated DEB member')
+            if re.fullmatch(r'data\.tar(?:\.(?:gz|xz|bz2))?', name):
+                data.append((offset, size))
+            container.seek(offset + size + size % 2)
+        if len(data) != 1:
+            raise ValueError('DEB must contain exactly one supported data archive')
+        offset, remaining = data[0]
+        container.seek(offset)
+        with tempfile.TemporaryFile() as payload:
+            while remaining:
+                block = container.read(min(remaining, 1024 * 1024))
+                if not block:
+                    raise ValueError('Truncated DEB data archive')
+                payload.write(block)
+                remaining -= len(block)
+            payload.seek(0)
+            with tarfile.open(fileobj=payload, mode='r:*') as archive:
+                archive.extractall(destination, filter='data')
 
 def linux_native_path(loaded, package, product, library):
     match = re.search(r'libultra_native\.so\s+=>\s+(.+?)\s+\(', loaded)

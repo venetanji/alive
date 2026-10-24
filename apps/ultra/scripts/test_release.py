@@ -1,4 +1,5 @@
 import importlib.util
+import io
 import json
 import mmap
 import os
@@ -9,6 +10,7 @@ from pathlib import Path
 import tempfile
 import tomllib
 import unittest
+from unittest import mock
 
 SPEC = importlib.util.spec_from_file_location('release', Path(__file__).with_name('release.py'))
 release = importlib.util.module_from_spec(SPEC)
@@ -119,23 +121,44 @@ class ReleaseTests(unittest.TestCase):
                 self.assertEqual(mapping[:], b'old native library')
             self.assertEqual(installed.read_bytes(), b'new native library')
 
-    @unittest.skipUnless(shutil.which('ar'), 'DEB extraction requires binutils ar')
     def test_deb_extracts_real_payload_without_installing_it(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
-            executable = root/'alive'
-            executable.write_bytes(b'packaged app')
-            archive = root/'data.tar.gz'
-            with tarfile.open(archive, 'w:gz') as payload:
-                payload.add(executable, arcname='usr/bin/alive')
-            (root/'debian-binary').write_bytes(b'2.0\n')
-            with tarfile.open(root/'control.tar.gz', 'w:gz'):
-                pass
+            data = io.BytesIO()
+            contents = b'packaged app\r\n\x00\x1a\xff\n'
+            with tarfile.open(fileobj=data, mode='w:gz') as payload:
+                entry = tarfile.TarInfo('usr/bin/alive')
+                entry.size = len(contents)
+                payload.addfile(entry, io.BytesIO(contents))
             package = root/'alive.deb'
-            subprocess.run(['ar', 'rc', str(package), str(root/'debian-binary'),
-                            str(root/'control.tar.gz'), str(archive)], check=True)
-            release.extract_deb(package, root/'staged')
-            self.assertEqual((root/'staged/usr/bin/alive').read_bytes(), b'packaged app')
+            # DEB uses SysV ar, independently of the build machine's ar dialect.
+            with package.open('wb') as archive:
+                archive.write(b'!<arch>\n')
+                for name, body in [('debian-binary', b'2.0\n'), ('control.tar.gz', b''), ('data.tar.gz', data.getvalue())]:
+                    header = f'{name + "/":<16}{0:<12}{0:<6}{0:<6}{"100644":<8}{len(body):<10}`\n'
+                    archive.write(header.encode('ascii'))
+                    archive.write(body)
+                    if len(body) % 2:
+                        archive.write(b'\n')
+            with mock.patch.dict(os.environ, {'PATH': ''}):
+                release.extract_deb(package, root/'staged')
+            self.assertEqual((root/'staged/usr/bin/alive').read_bytes(), contents)
+
+    def test_deb_rejects_malformed_and_duplicate_data_before_extraction(self):
+        member = f'{"data.tar.gz/":<16}{0:<12}{0:<6}{0:<6}{"100644":<8}{2:<10}`\n'.encode() + b'xx'
+        self.assertEqual(len(member), 62)
+        cases = [b'not an archive', b'!<arch>\nshort header', b'!<arch>\n' + member[:-1],
+                 b'!<arch>\n' + member + member, b'!<arch>\n']
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            for index, contents in enumerate(cases):
+                with self.subTest(case=index):
+                    package = root/'invalid.deb'
+                    package.write_bytes(contents)
+                    destination = root/'unmodified'
+                    with self.assertRaises(ValueError):
+                        release.extract_deb(package, destination)
+                    self.assertFalse(destination.exists())
 
     def test_linux_loader_accepts_package_resources_and_appimage_relocation(self):
         with tempfile.TemporaryDirectory() as d:

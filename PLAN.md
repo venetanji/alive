@@ -49,6 +49,12 @@ No new endurance claim: the expanded 30-minute gate remains outstanding.
 Draft PR #6 now describes all five milestones and the independent packages;
 the earlier `0c615b1` CI results remain historical. A fresh display-free saved
 session render and all 20 packaging/notice tests pass at the M1 checkpoint.
+Follow-up CI exposed platform `ar` dialect/text-output differences in the DEB
+test fixture on macOS/Windows. The portable SysV reader and exact-byte fixture
+pass 21 package/notice tests, independent malformed/valid archive probes and
+both actual Tauri DEBs' extraction/linkage/notices/bundled render. Scoped review
+is clean; platform CI must rerun this correction. UI/reference and Chromium on
+`548b1a1` pass; full native/package checks are still being reconciled.
 
 ### Milestone 2: Reusable Effect Chains
 
@@ -111,8 +117,9 @@ IDs distinguish reusable file identity from automation/editor targets; migrate
 session-v1 deterministically. Save As relocates every dependency. Fingerprint
 sources before applying saved bases and report changed references explicitly.
 
-Stopped preparation admits add/remove/reorder/bypass and preserves the active
-session on failure. Bypass returns the dry sample at the same frame while the
+Stopped preparation admits add/remove/reorder and preserves the active
+session on failure. A bounded live command changes bypass without reinstalling
+or clearing state. Bypass returns the dry sample at the same frame while the
 effect processes warm. Stop/seek/loop/removal/replacement hard-clear all tails.
 Test a noncommuting chain: impulse at frame 0 and Utility gain zero at frame 1;
 Utility then Lowpass retains a tail, reverse order suppresses it. Prove arbitrary
