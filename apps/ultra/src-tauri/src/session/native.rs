@@ -131,3 +131,332 @@ extern "C" {
     pub fn alive_session_bypass_v2(document: u32, revision: u64, bypassed: u32) -> i32;
     pub fn alive_session_state_v2(state: *mut StateV2) -> i32;
 }
+
+// Fixed v3 ABI. Desktop activation and saved-format migration are separate.
+pub const V3_VERSION: u32 = 3;
+pub const V3_TRACKS: u32 = 8;
+pub const V3_DEVICES: u32 = 16;
+pub const V3_CLIPS: u32 = 32;
+pub const V3_SLOTS: u32 = 4;
+pub const V3_RECEIPTS: u32 = 128;
+pub const V3_PROFILE_2X4: u32 = 1;
+pub const V3_PROFILE_8X4: u32 = 2;
+pub const V3_WORK_POLICY_1: u32 = 1;
+pub const V3_START: u32 = 1;
+pub const V3_SEEK: u32 = 2;
+pub const V3_TRACK_ACTIONS: u32 = 3;
+pub const V3_NO_ACTION: u32 = 0;
+pub const V3_LAUNCH: u32 = 1;
+pub const V3_TRACK_STOP: u32 = 2;
+pub const V3_RESULT_EMPTY: u32 = 0;
+pub const V3_QUEUED: u32 = 1;
+pub const V3_PENDING: u32 = 2;
+pub const V3_APPLIED: u32 = 3;
+pub const V3_REJECTED: u32 = 4;
+pub const V3_SUPERSEDED: u32 = 5;
+pub const V3_CANCELED: u32 = 6;
+pub const V3_MIXED: u32 = 7;
+pub const V3_OK: u32 = 0;
+pub const V3_BAD_HEADER: u32 = 1;
+pub const V3_BAD_PROFILE: u32 = 2;
+pub const V3_BAD_FIELD: u32 = 3;
+pub const V3_BAD_OWNERSHIP: u32 = 4;
+pub const V3_STALE_PREPARATION: u32 = 5;
+pub const V3_STALE_REQUEST: u32 = 6;
+pub const V3_QUEUE_FULL: u32 = 7;
+pub const V3_RECEIPT_BUSY: u32 = 8;
+pub const V3_EMPTY_SLOT: u32 = 9;
+pub const V3_EVENT_FRAME_LIMIT: u32 = 10;
+pub const V3_EVENT_WINDOW_LIMIT: u32 = 11;
+pub const V3_WORK_LIMIT: u32 = 12;
+pub const V3_STOP_CANCELED: u32 = 13;
+pub const V3_END_CANCELED: u32 = 14;
+pub const V3_FEATURE_DISABLED: u32 = 15;
+pub const V3_RUNTIME_INVARIANT: u32 = 16;
+pub const V3_GRAPH_REJECTED: u32 = 17;
+pub const V3_REPLACED_REQUEST: u32 = 18;
+pub const V3_RESOURCE_NONE: u32 = 0;
+pub const V3_RESOURCE_EVENTS: u32 = 1;
+pub const V3_RESOURCE_ROOT_CLEARS: u32 = 2;
+pub const V3_RESOURCE_EVENT_SCANS: u32 = 3;
+pub const V3_RESOURCE_PARAMETER_WRITES: u32 = 4;
+pub const V3_RESOURCE_GUARD_STEPS: u32 = 5;
+pub const V3_FEATURE_ADMITTED: u32 = 1;
+pub const V3_FEATURE_ATOMIC_TRACK_ACTIONS: u32 = 2;
+pub const V3_NONE: u32 = u32::MAX;
+pub const V3_NO_FRAME: u64 = u64::MAX;
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct TrackV3 {
+    pub chain: TrackV2,
+    pub slots: [u32; 4],
+    pub initial_clip: u32,
+    pub reserved: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ClipV3 {
+    pub track: u32,
+    pub event_begin: u32,
+    pub event_count: u32,
+    pub lane_count: u32,
+    pub length_frames: u64,
+    pub owned_masks: [u32; 16],
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ConfigV3 {
+    pub version: u32,
+    pub struct_bytes: u32,
+    pub profile: u32,
+    pub work_policy: u32,
+    pub track_count: u32,
+    pub device_count: u32,
+    pub clip_count: u32,
+    pub event_count: u32,
+    pub loop_enabled: u32,
+    pub reserved: u32,
+    pub preparation_revision: u64,
+    pub length_frames: u64,
+    pub tempo_bpm: f64,
+    pub tracks: [TrackV3; 8],
+    pub devices: [DeviceV2; 16],
+    pub clips: [ClipV3; 32],
+    pub events: [EventV2; 1024],
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct TrackActionV3 {
+    pub action: u32,
+    pub slot: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct RequestV3 {
+    pub version: u32,
+    pub struct_bytes: u32,
+    pub kind: u32,
+    pub track_mask: u32,
+    pub preparation_revision: u64,
+    pub request_serial: u64,
+    pub position: u64,
+    pub reserved: u64,
+    pub tracks: [TrackActionV3; 8],
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct ReceiptV3 {
+    pub version: u32,
+    pub struct_bytes: u32,
+    pub status: u32,
+    pub error: u32,
+    pub preparation_revision: u64,
+    pub request_serial: u64,
+    pub observed_frame: u64,
+    pub target_frame: u64,
+    pub kind: u32,
+    pub track_mask: u32,
+    pub pending_mask: u32,
+    pub applied_mask: u32,
+    pub superseded_mask: u32,
+    pub canceled_mask: u32,
+    pub rejected_mask: u32,
+    pub reserved: u32,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct WorkV3 {
+    pub root_clears: u64,
+    pub event_scans: u64,
+    pub parameter_writes: u64,
+    pub guard_steps: u64,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct LimitsV3 {
+    pub version: u32,
+    pub struct_bytes: u32,
+    pub profile: u32,
+    pub work_policy: u32,
+    pub features: u32,
+    pub max_tracks: u32,
+    pub max_devices: u32,
+    pub max_clips: u32,
+    pub max_events: u32,
+    pub max_frame_events: u32,
+    pub max_window_events: u32,
+    pub window_frames: u32,
+    pub max_commands: u32,
+    pub max_receipts: u32,
+    pub reserved0: u32,
+    pub reserved1: u32,
+    pub scheduled_frame: WorkV3,
+    pub scheduled_window: WorkV3,
+    pub optional_frame: WorkV3,
+    pub optional_window: WorkV3,
+    pub emergency: WorkV3,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct DiagnosticV3 {
+    pub version: u32,
+    pub struct_bytes: u32,
+    pub error: u32,
+    pub resource: u32,
+    pub track_mask: u32,
+    pub conservative: u32,
+    pub window_frames: u32,
+    pub reserved: u32,
+    pub frame: u64,
+    pub observed: u64,
+    pub limit: u64,
+    pub clip: [u32; 8],
+    pub contribution: [u32; 8],
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct TrackStateV3 {
+    pub mixer: TrackStateV2,
+    pub active_clip: u32,
+    pub pending_action: u32,
+    pub pending_clip: u32,
+    pub reserved: u32,
+    pub phase: u64,
+    pub track_epoch: u64,
+    pub pending_serial: u64,
+    pub pending_frame: u64,
+}
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct StateV3 {
+    pub version: u32,
+    pub struct_bytes: u32,
+    pub configured: u32,
+    pub playing: u32,
+    pub profile: u32,
+    pub work_policy: u32,
+    pub track_count: u32,
+    pub device_count: u32,
+    pub clip_count: u32,
+    pub fault: u32,
+    pub fault_resource: u32,
+    pub reserved: u32,
+    pub absolute_frame: u64,
+    pub position: u64,
+    pub generation: u64,
+    pub rejected: u64,
+    pub preparation_revision: u64,
+    pub last_consumed_request: u64,
+    pub requested_stop_epoch: u64,
+    pub applied_stop_epoch: u64,
+    pub work_rejected: u64,
+    pub event_faults: u64,
+    pub peak_left: f64,
+    pub peak_right: f64,
+    pub tracks: [TrackStateV3; 8],
+    pub devices: [DeviceStateV2; 16],
+    pub receipts: [ReceiptV3; 128],
+}
+impl Default for TrackV3 {
+    fn default() -> Self {
+        // Every field is numeric POD; all-zero is a valid Rust representation.
+        let value: Self = unsafe { std::mem::zeroed() };
+        value
+    }
+}
+impl Default for ClipV3 {
+    fn default() -> Self {
+        // Every field is numeric POD; all-zero is a valid Rust representation.
+        let value: Self = unsafe { std::mem::zeroed() };
+        value
+    }
+}
+impl Default for ConfigV3 {
+    fn default() -> Self {
+        // Every field is numeric POD; all-zero is a valid Rust representation.
+        let mut value: Self = unsafe { std::mem::zeroed() };
+        value.version = 3;
+        value.struct_bytes = std::mem::size_of::<Self>() as u32;
+        value
+    }
+}
+impl Default for TrackActionV3 {
+    fn default() -> Self {
+        // Every field is numeric POD; all-zero is a valid Rust representation.
+        let value: Self = unsafe { std::mem::zeroed() };
+        value
+    }
+}
+impl Default for RequestV3 {
+    fn default() -> Self {
+        // Every field is numeric POD; all-zero is a valid Rust representation.
+        let mut value: Self = unsafe { std::mem::zeroed() };
+        value.version = 3;
+        value.struct_bytes = std::mem::size_of::<Self>() as u32;
+        value
+    }
+}
+impl Default for ReceiptV3 {
+    fn default() -> Self {
+        // Every field is numeric POD; all-zero is a valid Rust representation.
+        let mut value: Self = unsafe { std::mem::zeroed() };
+        value.version = 3;
+        value.struct_bytes = std::mem::size_of::<Self>() as u32;
+        value
+    }
+}
+impl Default for WorkV3 {
+    fn default() -> Self {
+        // Every field is numeric POD; all-zero is a valid Rust representation.
+        let value: Self = unsafe { std::mem::zeroed() };
+        value
+    }
+}
+impl Default for LimitsV3 {
+    fn default() -> Self {
+        // Every field is numeric POD; all-zero is a valid Rust representation.
+        let mut value: Self = unsafe { std::mem::zeroed() };
+        value.version = 3;
+        value.struct_bytes = std::mem::size_of::<Self>() as u32;
+        value
+    }
+}
+impl Default for DiagnosticV3 {
+    fn default() -> Self {
+        // Every field is numeric POD; all-zero is a valid Rust representation.
+        let mut value: Self = unsafe { std::mem::zeroed() };
+        value.version = 3;
+        value.struct_bytes = std::mem::size_of::<Self>() as u32;
+        value
+    }
+}
+impl Default for TrackStateV3 {
+    fn default() -> Self {
+        // Every field is numeric POD; all-zero is a valid Rust representation.
+        let value: Self = unsafe { std::mem::zeroed() };
+        value
+    }
+}
+impl Default for StateV3 {
+    fn default() -> Self {
+        // Every field is numeric POD; all-zero is a valid Rust representation.
+        let mut value: Self = unsafe { std::mem::zeroed() };
+        value.version = 3;
+        value.struct_bytes = std::mem::size_of::<Self>() as u32;
+        value
+    }
+}
+extern "C" {
+    pub fn alive_session_limits_v3(profile: u32, limits: *mut LimitsV3) -> i32;
+    pub fn alive_session_validate_v3(config: *const ConfigV3) -> i32;
+    pub fn alive_session_validate_prepared_v3(
+        config: *const ConfigV3,
+        graphs: *const NativeGraph,
+        count: u32,
+    ) -> i32;
+    pub fn alive_session_configure_v3(config: *const ConfigV3) -> i32;
+    pub fn alive_session_request_v3(request: *const RequestV3, immediate: *mut ReceiptV3) -> i32;
+    pub fn alive_session_stop_v3() -> u64;
+    pub fn alive_session_state_v3(state: *mut StateV3) -> i32;
+    pub fn alive_session_diagnostic_v3(diagnostic: *mut DiagnosticV3) -> i32;
+}

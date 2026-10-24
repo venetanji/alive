@@ -1,6 +1,8 @@
 #pragma once
 #include "alive_session.h"
 #include "canvas_workspace.hpp"
+#include "alive_session_clip_policy.hpp"
+#include <memory>
 #include <atomic>
 #include <cstring>
 #include <limits>
@@ -8,20 +10,35 @@
 namespace ultra {
 #ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
 inline void (*alive_session_test_boundary)()noexcept=nullptr;
+inline void (*alive_session_test_charge)(unsigned,const clip_admission::Cost&)noexcept=nullptr;
+inline unsigned alive_session_test_fault_resource=0;
+inline uint64_t alive_session_test_reconstruction_reads=0,alive_session_test_preview_reads=0;
 #endif
 class AliveSession {
- struct Command {unsigned kind=0,track=0,param=0,mute=0,solo=0;double value=0;uint64_t frame=0,epoch=0;};
- AliveSessionConfigV2 config_{};
- AliveSessionStateV2 state_{};
+ struct Command {unsigned kind=0,track=0,param=0,mute=0,solo=0;double value=0;uint64_t frame=0,epoch=0;AliveSessionRequestV3 request{};};
+ struct Config {
+  uint32_t track_count=0,device_count=0,event_count=0,loop_enabled=0;
+  uint64_t length_frames=0,loop_start=0,loop_end=0,preparation_revision=0;
+  uint32_t profile=0,work_policy=0,clip_count=0;double tempo_bpm=0;
+  AliveSessionTrackV2 tracks[8]{};AliveSessionDeviceV2 devices[16]{};AliveSessionEventV2 events[1024]{};
+  AliveSessionTrackV3 bank[8]{};AliveSessionClipV3 clips[32]{};
+  void legacy(const AliveSessionConfigV2& c)noexcept{
+   *this={};track_count=c.track_count;device_count=c.device_count;event_count=c.event_count;loop_enabled=c.loop_enabled;
+   length_frames=c.length_frames;loop_start=c.loop_start;loop_end=c.loop_end;
+   std::copy_n(c.tracks,2,tracks);std::copy_n(c.devices,6,devices);std::copy_n(c.events,1024,events);
+  }
+ } config_{};
+ AliveSessionStateV3 state_{};
+ bool clips_mode_=false;
  std::array<Command,65> commands_{};
  std::atomic<unsigned> head_{0},tail_{0};
  std::atomic<uint64_t> stop_epoch_{0},rejected_{0};uint64_t applied_stop_=0;
- static constexpr unsigned Words=(sizeof(AliveSessionStateV2)+7)/8;
+ static constexpr unsigned Words=(sizeof(AliveSessionStateV3)+7)/8;
  std::array<std::atomic<uint64_t>,Words> published_{};
  std::atomic<uint64_t> publication_{0};
  unsigned next_event_=0;
  // Control-thread snapshots retain structural constraints for queued base edits.
- std::array<CanvasPlan,6> parameter_plans_{};
+ std::array<CanvasPlan,16> parameter_plans_{};
  // Serialized control ingress resolves handles before enqueue; callback never searches.
  std::array<int,CanvasWorkspace::MaxDocuments> document_devices_{};
  const char* error_="No Alive session configured.";
@@ -29,10 +46,12 @@ class AliveSession {
  static bool gain(double value)noexcept{return std::isfinite(value)&&value>=0&&value<=4;}
  static unsigned priority(unsigned kind)noexcept{return kind==ALIVE_SESSION_SUSTAIN?0:kind;}
  bool reject(const char* error)noexcept{error_=error;rejected_.fetch_add(1);return false;}
- bool enqueue(Command command)noexcept{
+ bool enqueue(Command command,bool report_full=true)noexcept{
   const unsigned head=head_.load(std::memory_order_relaxed),next=(head+1)%65;
-  if(next==tail_.load(std::memory_order_acquire))return reject("Alive command queue is full; edit rejected.");
-  command.epoch=stop_epoch_.load(std::memory_order_acquire);commands_[head]=command;
+  if(next==tail_.load(std::memory_order_acquire))return report_full?reject("Alive command queue is full; edit rejected."):false;
+  command.epoch=stop_epoch_.load(std::memory_order_acquire);
+  if(command.epoch==UINT64_MAX&&(command.kind<=2||command.kind==6))return reject("Stop identity exhausted; restart the host.");
+  commands_[head]=command;
   head_.store(next,std::memory_order_release);return true;
  }
  bool normalize_v1(const AliveSessionConfig& c,AliveSessionConfigV2& out)noexcept{
@@ -67,7 +86,7 @@ class AliveSession {
   state_.devices[device].effective[param]=value;
  }
  void chase(CanvasWorkspace& workspace)noexcept{
-  std::array<std::array<double,16>,6> values{};
+  std::array<std::array<double,16>,16> values{};
   for(unsigned d=0;d<config_.device_count;++d)for(unsigned p=0;p<config_.devices[d].parameter_count;++p){
    auto& ds=state_.devices[d];values[d][p]=ds.base[p];ds.owned[p]=state_.playing&&config_.devices[d].parameters[p].automated;
   }
@@ -95,7 +114,7 @@ class AliveSession {
  }
  public:
  AliveSession()noexcept{
-  document_devices_.fill(-1);state_.version=2;state_.struct_bytes=sizeof state_;
+  document_devices_.fill(-1);state_.version=3;state_.struct_bytes=sizeof state_;
   std::array<uint64_t,Words> words{};std::memcpy(words.data(),&state_,sizeof state_);
   for(unsigned i=0;i<Words;++i)published_[i].store(words[i],std::memory_order_relaxed);
  }
@@ -207,7 +226,7 @@ class AliveSession {
  private:
  bool configure_common(const AliveSessionConfigV2& c,CanvasWorkspace& workspace,const AliveSessionConfig* legacy)noexcept{
   if(!validate_config(c,legacy!=nullptr))return false;
-  std::array<CanvasPlan,6> parameter_plans{};std::array<int,CanvasWorkspace::MaxDocuments> documents{};documents.fill(-1);
+  std::array<CanvasPlan,16> parameter_plans{};std::array<int,CanvasWorkspace::MaxDocuments> documents{};documents.fill(-1);
   for(unsigned d=0;d<c.device_count;++d){const auto& device=c.devices[d];if(!workspace.live(device.document))return reject("Alive document graph is missing.");
    const auto& graph=workspace.runtime(device.document).plan().graph;
    if(!(legacy?validate_graph(legacy->tracks[d],graph):validate_device_v2(device,graph))||!validate_values_v2(c,d,graph))return false;
@@ -215,10 +234,10 @@ class AliveSession {
    for(unsigned p=0;p<device.parameter_count;++p){const auto& b=device.parameters[p];if(!change_canvas_param(parameter_plans[d],b.node,b.param,b.base))return reject("Alive base parameter cannot be prepared.");}
   }
   for(unsigned d=0;d<CanvasWorkspace::MaxDocuments;++d)if(workspace.live(d)&&documents[d]<0)return reject("Alive session cannot mix unrelated document roots.");
-  parameter_plans_=parameter_plans;document_devices_=documents;config_=c;
-  const uint64_t absolute=state_.absolute_frame,generation=state_.generation;state_={};state_.version=2;state_.struct_bytes=sizeof state_;state_.absolute_frame=absolute;state_.generation=generation;
+  parameter_plans_=parameter_plans;document_devices_=documents;config_.legacy(c);clips_mode_=false;
+  const uint64_t absolute=state_.absolute_frame,generation=state_.generation;state_={};state_.version=3;state_.struct_bytes=sizeof state_;state_.absolute_frame=absolute;state_.generation=generation;
   state_.configured=1;state_.track_count=c.track_count;state_.device_count=c.device_count;head_=0;tail_=0;applied_stop_=stop_epoch_.load();
-  for(unsigned t=0;t<c.track_count;++t){auto& ts=state_.tracks[t];ts.gain=c.tracks[t].gain;ts.mute=c.tracks[t].mute;ts.solo=c.tracks[t].solo;}
+  for(unsigned t=0;t<c.track_count;++t){auto& ts=state_.tracks[t].mixer;ts.gain=c.tracks[t].gain;ts.mute=c.tracks[t].mute;ts.solo=c.tracks[t].solo;}
   for(unsigned d=0;d<c.device_count;++d){auto& ds=state_.devices[d];const auto& device=c.devices[d];ds.document=device.document;ds.revision=device.revision;ds.bypassed=device.bypassed;ds.parameter_count=device.parameter_count;
    for(unsigned p=0;p<device.parameter_count;++p)ds.base[p]=device.parameters[p].base;
   }discontinuity(workspace);publish(workspace);return true;
@@ -227,11 +246,17 @@ class AliveSession {
  bool configure(const AliveSessionConfig& c,CanvasWorkspace& workspace)noexcept{AliveSessionConfigV2 normalized{};return normalize_v1(c,normalized)&&configure_common(normalized,workspace,&c);}
  bool configure_v2(const AliveSessionConfigV2& c,CanvasWorkspace& workspace)noexcept{return configure_common(c,workspace,nullptr);}
  void reset(CanvasWorkspace& workspace)noexcept{
-  state_.playing=0;discontinuity(workspace);config_={};state_.configured=0;state_.track_count=0;state_.device_count=0;head_=0;tail_=0;document_devices_.fill(-1);publish(workspace);
+  if(clips_mode_){terminate_v3(workspace,ALIVE_SESSION_V3_STOP_CANCELED);const auto absolute=state_.absolute_frame,generation=state_.generation;state_={};state_.absolute_frame=absolute;state_.generation=generation;}
+  else {state_.playing=0;discontinuity(workspace);}
+  clips_mode_=false;state_.profile=0;config_={};state_.configured=0;state_.track_count=0;state_.device_count=0;head_=0;tail_=0;document_devices_.fill(-1);publish(workspace);
  }
- bool start()noexcept{if(!configured())return reject("No Alive session configured.");Command c{};c.kind=1;return enqueue(c);}
- void stop()noexcept{stop_epoch_.fetch_add(1,std::memory_order_release);}
- bool seek(uint64_t frame)noexcept{if(!configured()||frame>=config_.length_frames)return reject("Alive seek is outside the session.");Command c{};c.kind=2;c.frame=frame;return enqueue(c);}
+ bool start()noexcept{if(clips_mode_)return reject("Use identity-bearing v3 requests.");if(!configured())return reject("No Alive session configured.");Command c{};c.kind=1;return enqueue(c);}
+ uint64_t stop()noexcept{
+  auto epoch=stop_epoch_.load(std::memory_order_relaxed);
+  while(epoch!=UINT64_MAX&&!stop_epoch_.compare_exchange_weak(epoch,epoch+1,std::memory_order_release,std::memory_order_relaxed)){}
+  return epoch==UINT64_MAX?epoch:epoch+1;
+ }
+ bool seek(uint64_t frame)noexcept{if(clips_mode_)return reject("Use identity-bearing v3 requests.");if(!configured()||frame>=config_.length_frames)return reject("Alive seek is outside the session.");Command c{};c.kind=2;c.frame=frame;return enqueue(c);}
  bool base(unsigned track,unsigned param,double value)noexcept{
   if(track>=config_.track_count)return reject("Alive parameter track does not exist.");
   const auto& d=config_.devices[config_.tracks[track].instrument];return base_v2(d.document,d.revision,param,value);
@@ -256,31 +281,36 @@ class AliveSession {
   if(alive_session_test_boundary)alive_session_test_boundary();
 #endif
   const uint64_t stop=stop_epoch_.load(std::memory_order_acquire);
+  if(clips_mode_){begin_v3(workspace,end,stop);return;}
   if(stop!=applied_stop_){state_.playing=0;discontinuity(workspace);applied_stop_=stop;}
   unsigned tail=tail_.load(std::memory_order_relaxed);
   for(unsigned budget=0;tail!=end&&budget<64;++budget){const auto& c=commands_[tail];tail=(tail+1)%65;if(c.kind<=2&&c.epoch!=stop)continue;
    if(c.kind==1){if(!state_.playing){if(state_.position>=config_.length_frames)state_.position=0;state_.playing=1;discontinuity(workspace);}}
    else if(c.kind==2){state_.position=c.frame;discontinuity(workspace);}
    else if(c.kind==3){auto& ds=state_.devices[c.track];ds.base[c.param]=c.value;if(!ds.owned[c.param])parameter(workspace,c.track,c.param,c.value);}
-   else if(c.kind==4){auto& ts=state_.tracks[c.track];ts.gain=c.value;ts.mute=c.mute;ts.solo=c.solo;}
+   else if(c.kind==4){auto& ts=state_.tracks[c.track].mixer;ts.gain=c.value;ts.mute=c.mute;ts.solo=c.solo;}
    else if(c.kind==5)state_.devices[c.track].bypassed=c.mute;
-  }tail_.store(tail,std::memory_order_release);state_.peak_left=state_.peak_right=0;for(auto& ts:state_.tracks)ts.peak_left=ts.peak_right=0;
+  }tail_.store(tail,std::memory_order_release);state_.peak_left=state_.peak_right=0;for(auto& ts:state_.tracks)ts.mixer.peak_left=ts.mixer.peak_right=0;
  }
  void device_stopped(CanvasWorkspace& workspace)noexcept{stop();begin(workspace);publish(workspace);}
- void sample(CanvasWorkspace& workspace)noexcept{
-  if(!state_.playing)return;
-  while(next_event_<config_.event_count&&config_.events[next_event_].frame==state_.position){const auto& event=config_.events[next_event_++];
+ void dispatch_event(CanvasWorkspace& workspace,const AliveSessionEventV2& event)noexcept{
    if(event.kind==ALIVE_SESSION_AUTOMATION)parameter(workspace,event.device,event.target,event.value);
    else{const auto& device=config_.devices[event.device];CanvasMessage message{};unsigned inlet=0;
     if(event.kind==ALIVE_SESSION_SUSTAIN){inlet=1;message.count=1;message.values[0]=event.value;}else{message.count=2;message.values[0]=event.target;message.values[1]=event.value;}
     auto discard=[](alive::Event){return true;};workspace.event(device.document,device.revision,device.note_node,inlet,message,0,discard);
    }
+ }
+ void sample(CanvasWorkspace& workspace)noexcept{
+  if(clips_mode_){sample_v3(workspace);return;}
+  if(!state_.playing)return;
+  while(next_event_<config_.event_count&&config_.events[next_event_].frame==state_.position){const auto& event=config_.events[next_event_++];
+   dispatch_event(workspace,event);
   }
  }
  std::array<double,2> mix(unsigned document,const std::array<double,2>& signal)noexcept{
-  bool solo=false;for(unsigned t=0;t<config_.track_count;++t)solo|=state_.tracks[t].solo;
-  for(unsigned t=0;t<config_.track_count;++t)if(config_.devices[config_.tracks[t].instrument].document==document){auto& ts=state_.tracks[t];
-   if(!state_.playing||ts.mute||(solo&&!ts.solo))return {};
+  bool solo=false;for(unsigned t=0;t<config_.track_count;++t)solo|=state_.tracks[t].mixer.solo;
+  for(unsigned t=0;t<config_.track_count;++t)if(config_.devices[config_.tracks[t].instrument].document==document){auto& ts=state_.tracks[t].mixer;
+   if(!state_.playing||(clips_mode_&&state_.tracks[t].active_clip==ALIVE_SESSION_V3_NONE)||ts.mute||(solo&&!ts.solo))return {};
    const std::array<double,2> output{signal[0]*ts.gain,signal[1]*ts.gain};ts.peak_left=std::max(ts.peak_left,std::abs(output[0]));ts.peak_right=std::max(ts.peak_right,std::abs(output[1]));return output;
   }return signal;
  }
@@ -297,19 +327,31 @@ class AliveSession {
   }return sum;
  }
  void advance(CanvasWorkspace& workspace,double left,double right)noexcept{
-  ++state_.absolute_frame;state_.peak_left=std::max(state_.peak_left,std::abs(left));state_.peak_right=std::max(state_.peak_right,std::abs(right));if(!state_.playing)return;
+  ++state_.absolute_frame;state_.peak_left=std::max(state_.peak_left,std::abs(left));state_.peak_right=std::max(state_.peak_right,std::abs(right));if(clips_mode_){advance_v3(workspace);return;}if(!state_.playing)return;
   ++state_.position;if(config_.loop_enabled&&state_.position>=config_.loop_end){state_.position=config_.loop_start;discontinuity(workspace);}
   else if(state_.position>=config_.length_frames){state_.playing=0;discontinuity(workspace);}
  }
  void publish(const CanvasWorkspace& workspace)noexcept{
-  state_.version=2;state_.struct_bytes=sizeof state_;state_.rejected=rejected_.load();for(unsigned t=0;t<config_.track_count;++t)state_.tracks[t].active_voices=workspace.runtime(config_.devices[config_.tracks[t].instrument].document).active_voice_count();
-  std::array<uint64_t,Words> words{};std::memcpy(words.data(),&state_,sizeof state_);publication_.fetch_add(1);for(unsigned i=0;i<Words;++i)published_[i].store(words[i]);publication_.fetch_add(1);
+  state_.version=3;state_.struct_bytes=sizeof state_;state_.rejected=rejected_.load();if(clips_mode_){state_.requested_stop_epoch=stop_epoch_.load();state_.applied_stop_epoch=applied_stop_;}for(unsigned t=0;t<config_.track_count;++t)state_.tracks[t].mixer.active_voices=workspace.runtime(config_.devices[config_.tracks[t].instrument].document).active_voice_count();
+  publication_.fetch_add(1);for(unsigned i=0;i<Words;++i){uint64_t word=0;std::memcpy(&word,reinterpret_cast<const char*>(&state_)+i*8,std::min<size_t>(8,sizeof state_-i*8));published_[i].store(word);}publication_.fetch_add(1);
  }
- bool snapshot_v2(AliveSessionStateV2& result)const noexcept{
-  if(result.version!=2||result.struct_bytes!=sizeof result)return false;
+ bool coherent(AliveSessionStateV3& result)const noexcept{
   for(unsigned attempt=0;attempt<4;++attempt){const auto before=publication_.load();if(before&1)continue;std::array<uint64_t,Words> words{};for(unsigned i=0;i<Words;++i)words[i]=published_[i].load();
    if(before==publication_.load()){std::memcpy(&result,words.data(),sizeof result);result.rejected=rejected_.load();return true;}
   }return false;
+ }
+ static bool project_v2(const AliveSessionStateV3& value,AliveSessionStateV2& result)noexcept{
+  if(result.version!=2||result.struct_bytes!=sizeof result||value.track_count>2||value.device_count>6)return false;
+  AliveSessionStateV2 projected{};projected.version=2;projected.struct_bytes=sizeof projected;
+  projected.absolute_frame=value.absolute_frame;projected.position=value.position;projected.generation=value.generation;projected.rejected=value.rejected;
+  projected.configured=value.configured;projected.playing=value.playing;projected.track_count=value.track_count;projected.device_count=value.device_count;
+  projected.peak_left=value.peak_left;projected.peak_right=value.peak_right;
+  for(unsigned t=0;t<value.track_count;++t)projected.tracks[t]=value.tracks[t].mixer;
+  std::copy_n(value.devices,value.device_count,projected.devices);result=projected;return true;
+ }
+ bool snapshot_v2(AliveSessionStateV2& result)const noexcept{
+  if(result.version!=2||result.struct_bytes!=sizeof result)return false;
+  AliveSessionStateV3 value{};return coherent(value)&&project_v2(value,result);
  }
  bool snapshot(AliveSessionState& result)const noexcept{
   AliveSessionStateV2 coherent{};coherent.version=2;coherent.struct_bytes=sizeof coherent;if(!snapshot_v2(coherent))return false;
@@ -320,5 +362,6 @@ class AliveSession {
    std::memcpy(tr.base,ds.base,sizeof tr.base);std::memcpy(tr.effective,ds.effective,sizeof tr.effective);std::memcpy(tr.owned,ds.owned,sizeof tr.owned);
   }return true;
  }
+#include "alive_session_clips.hpp"
 };
 }

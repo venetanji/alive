@@ -1,4 +1,31 @@
 use super::*;
+
+#[test]
+fn native_v3_layout_matches_fixed_c_interface() {
+    use std::mem::{align_of, offset_of, size_of};
+    assert_eq!(size_of::<native::TrackV3>(), 56);
+    assert_eq!(size_of::<native::ClipV3>(), 88);
+    assert_eq!(size_of::<native::ConfigV3>(), 47232);
+    assert_eq!(size_of::<native::TrackActionV3>(), 8);
+    assert_eq!(size_of::<native::RequestV3>(), 112);
+    assert_eq!(size_of::<native::ReceiptV3>(), 80);
+    assert_eq!(size_of::<native::WorkV3>(), 32);
+    assert_eq!(size_of::<native::LimitsV3>(), 224);
+    assert_eq!(size_of::<native::DiagnosticV3>(), 120);
+    assert_eq!(size_of::<native::TrackStateV3>(), 88);
+    assert_eq!(size_of::<native::StateV3>(), 16592);
+    assert_eq!(align_of::<native::ConfigV3>(), 8);
+    assert_eq!(align_of::<native::StateV3>(), 8);
+    assert_eq!(offset_of!(native::ConfigV3, preparation_revision), 40);
+    assert_eq!(offset_of!(native::ConfigV3, tracks), 64);
+    assert_eq!(offset_of!(native::ConfigV3, devices), 512);
+    assert_eq!(offset_of!(native::ConfigV3, clips), 11648);
+    assert_eq!(offset_of!(native::ConfigV3, events), 14464);
+    assert_eq!(offset_of!(native::RequestV3, tracks), 48);
+    assert_eq!(offset_of!(native::StateV3, tracks), 144);
+    assert_eq!(offset_of!(native::StateV3, devices), 848);
+    assert_eq!(offset_of!(native::StateV3, receipts), 6352);
+}
 use std::path::Path;
 
 fn example_path() -> std::path::PathBuf {

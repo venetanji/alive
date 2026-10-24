@@ -472,6 +472,17 @@ int alive_session_configure_v2(const AliveSessionConfigV2* config){
 int alive_session_base_v2(uint32_t document,uint64_t revision,uint32_t parameter,double value){const int result=session.base_v2(document,revision,parameter,value);if(result&&!running.load()&&!engine.status().ready){session.begin(canvas);session.publish(canvas);publish_canvas();}return result;}
 int alive_session_bypass_v2(uint32_t document,uint64_t revision,uint32_t bypassed){const int result=session.bypass_v2(document,revision,bypassed);if(result&&!running.load()&&!engine.status().ready){session.begin(canvas);session.publish(canvas);}return result;}
 int alive_session_state_v2(AliveSessionStateV2* state){return state&&session.snapshot_v2(*state);}
+int alive_session_limits_v3(uint32_t profile,AliveSessionLimitsV3* limits){return limits&&session.limits_v3(profile,*limits);}
+int alive_session_validate_v3(const AliveSessionConfigV3* config){return config&&session.validate_v3(*config);}
+int alive_session_validate_prepared_v3(const AliveSessionConfigV3* config,const UltraCanvasGraph* graphs,uint32_t count){return config&&session.validate_prepared_v3(*config,graphs,count);}
+int alive_session_configure_v3(const AliveSessionConfigV3* config){
+ if(!config||running.load()||engine.status().ready)return 0;
+ const int result=session.configure_v3(*config,canvas);publish_canvas();return result;
+}
+int alive_session_request_v3(const AliveSessionRequestV3* request,AliveSessionReceiptV3* immediate){const AliveSessionRequestV3 invalid{};return immediate&&session.request_v3(request?*request:invalid,*immediate);}
+uint64_t alive_session_stop_v3(){const auto epoch=session.stop();if(!running.load()&&!engine.status().ready){session.begin(canvas);session.publish(canvas);publish_canvas();}return epoch;}
+int alive_session_state_v3(AliveSessionStateV3* state){return state&&session.snapshot_v3(*state);}
+int alive_session_diagnostic_v3(AliveSessionDiagnosticV3* diagnostic){return diagnostic&&session.diagnostic_v3(*diagnostic);}
 int alive_session_validate(const AliveSessionConfig* config){return config&&session.validate(*config);}
 int alive_session_validate_graph(const AliveSessionTrack* track,const UltraCanvasGraph* graph){return track&&graph&&session.validate_graph(*track,*graph);}
 int alive_session_validate_prepared(const AliveSessionConfig* config,const UltraCanvasGraph* graphs,uint32_t count){return config&&session.validate_prepared(*config,graphs,count);}
