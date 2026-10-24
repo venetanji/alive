@@ -30,7 +30,8 @@ parallel. Preserve existing native/UI/history/Quit/scoped-Stop/notice gates.
 - [x] Preserve reliable New/Open/Save/Save As and pending/dirty-state resolution.
 - [x] Distinct Alive and Ultra packages can coexist; each staged app finds its
   bundled examples outside the repository. Verify resources/notices and CI.
-- [ ] Test, commit, push and update draft PR with this milestone's evidence.
+- [x] Test, commit, push and update draft PR with this milestone's evidence
+  (`2e13410`; current-head CI remains pending).
 
 Local M1 evidence: `experiments/alive-application-m1-20261024/`. The separate
 package's initially missing Tauri capabilities reproduced an editor-Close bug;
@@ -45,6 +46,9 @@ full contracts/reference/native/callback/scoped-Stop gates and 20 package/notice
 tests pass. Local AppImage generation is blocked by the legacy bundler's Arch
 RELR/glycin incompatibility; Ubuntu and other-platform CI remain required.
 No new endurance claim: the expanded 30-minute gate remains outstanding.
+Draft PR #6 now describes all five milestones and the independent packages;
+the earlier `0c615b1` CI results remain historical. A fresh display-free saved
+session render and all 20 packaging/notice tests pass at the M1 checkpoint.
 
 ### Milestone 2: Reusable Effect Chains
 
@@ -58,6 +62,64 @@ No new endurance claim: the expanded 30-minute gate remains outstanding.
   policy documented. Keep the existing 16-root pool; admit total devices before
   replacement rather than increasing runtime limits without measurement.
 - [ ] Test, commit, push and update draft PR before expanding the interface.
+
+### Task 6: Versioned Effect Devices And Shared Signal Objects
+
+Implement the headless reusable-device foundation for M2 before chain hosting.
+Preserve version-1 instrument files and their strict validation. Add a strict
+version-2 manifest with kind `instrument` or `audioEffect`, MIDI
+`{input: {node, inlet} | null, output: null}`, and audio
+`{input: {node, bundle} | null, output: {channels, layout}}`. Input bundle uses
+the same explicit `{channels, layout}` descriptor. Instruments require authored
+`poly.note~` MIDI input and no audio input. Effects require no MIDI and a bound
+`audio.in~` input. Support declared stereo I/O first; reject mismatched/unsupported
+layouts visibly. Normalize both versions to one Rust host descriptor; represent
+the absent note entry explicitly. Existing session-v1 must still accept only
+instruments until the chain runtime lands.
+
+Add `audio.in~` (native kind 66, two mono outlets, no physical input) and
+`lowpass.stereo~` (67, two mono inputs/outputs, live cutoff/resonance). The input
+object reads an explicit external sample pair supplied by the evaluator caller;
+default input is silence for ordinary Ultra roots. The stereo filter reuses the
+existing generated Faust `UltraFilterKernel` on lanes 0/1 of already allocated
+kernel storage. Do not copy/reimplement DSP or add an engine. Add explicit bounded
+reset of filter state on hard termination. Update matching C/C++/Rust/JS enums,
+registries, ports, numeric admission, contracts and original help/examples.
+
+Ship two saved reusable effects under `apps/ultra/examples/`: stereo Utility
+(`audio.in~` into two existing signal multiplies, shared manifest-bound `line~`
+gain, then `dac~ 1 2`) and Stereo Lowpass (authored input/filter/sink). Use stable
+IDs and parameter keys, original content and the same validator as instruments.
+Adapt Ultra's device panel so effect parameters/presets work without a keyboard
+claim. Keep Alive's existing example and headless probe passing.
+
+Start with failing Rust/JS manifest and native signal tests. Prove stereo input
+separation, silence without supplied input, impulse filter tail/reset, parameter
+bindings and version-1 compatibility. Run native, Rust and contracts/UI gates;
+retain red/green evidence. No session-chain routing, UI chain editor, pool/track
+limit increase or packaging changes in this task. Commit a coherent checkpoint.
+
+### Task 7: Ordered Native Chains And Session Persistence
+
+After Task 6 review, extend the bounded session ABI and Rust preparation together.
+Each track owns an instrument then at most two effects; keep the existing 16-root
+pool and initially two tracks (six total roots). Run each root once per sample,
+in chain order, mix only the final endpoint, and defer control notifications until
+all sample roots finish. Preserve ordinary Ultra execution and legacy v1 ABI tests
+through an adapter or an explicit separate versioned ABI. Stable saved instance
+IDs distinguish reusable file identity from automation/editor targets; migrate
+session-v1 deterministically. Save As relocates every dependency. Fingerprint
+sources before applying saved bases and report changed references explicitly.
+
+Stopped preparation admits add/remove/reorder/bypass and preserves the active
+session on failure. Bypass returns the dry sample at the same frame while the
+effect processes warm. Stop/seek/loop/removal/replacement hard-clear all tails.
+Test a noncommuting chain: impulse at frame 0 and Utility gain zero at frame 1;
+Utility then Lowpass retains a tail, reverse order suppresses it. Prove arbitrary
+partitions, exact bypass timing/warm resumption, isolation, automation ownership,
+round-trip, overload and every discontinuity with callback allocation/lock guards.
+Then expose the smallest stopped chain interface and run the real native journey
+before checking off M2. Never infer audio lifetime from Live/Max editor behavior.
 
 ### Milestone 3: Musical Workflow
 
