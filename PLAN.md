@@ -162,6 +162,20 @@ and stale handle rejection. Retain callback allocation/free/lock guards and all
 v1 tests. Measure six-device discontinuity and dense-callback cost. No Rust
 session migration or chain UI in this task; existing Alive remains usable.
 
+Implemented at `edd7678`, independently reviewed and corrected at `920bdc6`.
+One private graph validator now serves both ABI adapters while preserving v1
+admission/error ordering. Scoped fix review found no new Critical/Important
+issues; native v1 ABI assertions and live wet-to-dry sample coverage carry into
+Task 8. The unchanged v1 suite,
+new v2 chain suite, full native/contracts gates and callback guards pass. The
+six-device fixture measures mean 1052.424 microseconds for a dense 1024-frame
+callback and 32.308 microseconds for full-schedule seek plus one frame; these are
+instrumented wall-clock fixtures, not physical deadlines or eight-track proof.
+Extra `audio.in~` readers share an effect's declared instance input; incidental
+instrument readers remain silent. Evidence and exact C ABI are retained in
+`.superpowers/sdd/PLAN/task-7-report.md`. Rust/desktop session-v1 remains usable
+and instrument-only until Tasks 8/9 integrate the chain runtime.
+
 ### Task 8: Chain Persistence And Desktop Ownership
 
 Integrate the native v2 ABI in Rust with size/layout checks. Give every saved
