@@ -356,7 +356,7 @@ def main():
             resources[str(out/library)] = library
             generated['bundle']['resources'] = resources
         config.write_text(json.dumps(generated, indent=2) + '\n')
-        run(*cli, 'build', '--target', args.target, '--bundles', bundles, '--config', config, '--', '--locked', cwd=app, env=env)
+        run(*cli, '-v', 'build', '--target', args.target, '--bundles', bundles, '--config', config, '--', '--locked', cwd=app, env=env)
         verify_packages(out/'bundle', args.target, product)
 
 if __name__ == '__main__':
