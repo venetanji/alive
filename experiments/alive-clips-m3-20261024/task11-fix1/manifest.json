@@ -1,0 +1,48 @@
+{
+  "commit": "1bc37b91a9a269ddc9b5450d7a8dc803dda141fd",
+  "scope": "Focused native fix1 red/green, full v3 guarded runtime, v1/v2 compatibility and native-only build; no refreshed timing/GUI/CI claim",
+  "review_status": "accepted_scoped_fix1",
+  "sources": {
+    "apps/ultra/src-tauri/native/alive_session_clips.hpp": "23fc5e5d51c49c7670e23b80bbc216f6fff5d6eb85b1ed5fe70915d6565ff7ab",
+    "apps/ultra/tests/alive_session_v3_test.cpp": "322bc13bfb675156c2d8cd41e2278b4e9abc3d7197d503fa72f200021cdf4c30"
+  },
+  "native_build_sha256": "278df089a83934c65f3e3ca881951b922076a20650a5ccab75071d2bdeee8bbd",
+  "files": {
+    "native-build.log": {
+      "bytes": 820,
+      "sha256": "a62d61fd3db3df86b550abd9ae1c06bb4656d8b5ffdfbad605950a064087e033"
+    },
+    "nonloop-green.log": {
+      "bytes": 57,
+      "sha256": "65fc910530513f32a96a326f4d4bcc7cdf7f5d437958f0e94905d8b627198ce7"
+    },
+    "nonloop-red.log": {
+      "bytes": 187,
+      "sha256": "d3cd88e913d3630fe2555cf04b1bfe12d9364307ce90a5dc97692a573925c3b6"
+    },
+    "stopped-green.log": {
+      "bytes": 68,
+      "sha256": "c05ca9d10caedd3dfaa92057600c834fad6cea78b02cb54c1232ba38cb967046"
+    },
+    "stopped-red.log": {
+      "bytes": 231,
+      "sha256": "0d69f5e769446693627caa07960dd16ef9d73105345a41b69ec4a3f182fbc1f5"
+    },
+    "v1-green.log": {
+      "bytes": 460,
+      "sha256": "7ca9634fb90ee414cfbbb6cf418b8a5e26486414d58f234a5120d82a0cb51efc"
+    },
+    "v2-green.log": {
+      "bytes": 248,
+      "sha256": "dc14a4a33159978a42a1cdee80224c22b23a0e00fb1400bdaa2aacc20bac9728"
+    },
+    "v3-green.log": {
+      "bytes": 94,
+      "sha256": "a0d82534c1e56d2d6eb0edaef878f4b637f6481c837609253980a94aa9fd6490"
+    },
+    "review.md": {
+      "bytes": 5410,
+      "sha256": "1697105b301a9ce228831836199ec9730ad5f09ce1e386251e48744f39ee51f6"
+    }
+  }
+}

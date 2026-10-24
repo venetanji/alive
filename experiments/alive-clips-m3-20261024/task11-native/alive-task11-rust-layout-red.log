@@ -1,0 +1,289 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+error[E0425]: cannot find type `TrackV3` in module `native`
+  --> src/session/tests.rs:6:34
+   |
+ 6 |     assert_eq!(size_of::<native::TrackV3>(),56);
+   |                                  ^^^^^^^
+   |
+  ::: src/session/native.rs:89:1
+   |
+89 | pub struct TrackV2 { pub instrument: u32, pub effect_count: u32, pub effects: [u32; 2], pub gain: f64, pub mute: u32, pub solo: u32 }
+   | ------------------ similarly named struct `TrackV2` defined here
+   |
+help: a struct with a similar name exists
+   |
+ 6 -     assert_eq!(size_of::<native::TrackV3>(),56);
+ 6 +     assert_eq!(size_of::<native::TrackV2>(),56);
+   |
+
+error[E0425]: cannot find type `ClipV3` in module `native`
+ --> src/session/tests.rs:7:34
+  |
+7 |     assert_eq!(size_of::<native::ClipV3>(),88);
+  |                                  ^^^^^^ not found in `native`
+
+error[E0425]: cannot find type `ConfigV3` in module `native`
+  --> src/session/tests.rs:8:34
+   |
+ 8 |     assert_eq!(size_of::<native::ConfigV3>(),47232);
+   |                                  ^^^^^^^^
+   |
+  ::: src/session/native.rs:94:1
+   |
+94 | pub struct ConfigV2 {
+   | ------------------- similarly named struct `ConfigV2` defined here
+   |
+help: a struct with a similar name exists
+   |
+ 8 -     assert_eq!(size_of::<native::ConfigV3>(),47232);
+ 8 +     assert_eq!(size_of::<native::ConfigV2>(),47232);
+   |
+
+error[E0425]: cannot find type `TrackActionV3` in module `native`
+ --> src/session/tests.rs:9:34
+  |
+9 |     assert_eq!(size_of::<native::TrackActionV3>(),8);
+  |                                  ^^^^^^^^^^^^^ not found in `native`
+
+error[E0425]: cannot find type `RequestV3` in module `native`
+  --> src/session/tests.rs:10:34
+   |
+10 |     assert_eq!(size_of::<native::RequestV3>(),112);
+   |                                  ^^^^^^^^^ not found in `native`
+
+error[E0425]: cannot find type `ReceiptV3` in module `native`
+  --> src/session/tests.rs:11:34
+   |
+11 |     assert_eq!(size_of::<native::ReceiptV3>(),80);
+   |                                  ^^^^^^^^^ not found in `native`
+
+error[E0425]: cannot find type `WorkV3` in module `native`
+  --> src/session/tests.rs:12:34
+   |
+12 |     assert_eq!(size_of::<native::WorkV3>(),32);
+   |                                  ^^^^^^ not found in `native`
+
+error[E0425]: cannot find type `LimitsV3` in module `native`
+  --> src/session/tests.rs:13:34
+   |
+13 |     assert_eq!(size_of::<native::LimitsV3>(),224);
+   |                                  ^^^^^^^^ not found in `native`
+
+error[E0425]: cannot find type `DiagnosticV3` in module `native`
+  --> src/session/tests.rs:14:34
+   |
+14 |     assert_eq!(size_of::<native::DiagnosticV3>(),120);
+   |                                  ^^^^^^^^^^^^ not found in `native`
+
+error[E0425]: cannot find type `TrackStateV3` in module `native`
+   --> src/session/tests.rs:15:34
+    |
+ 15 |     assert_eq!(size_of::<native::TrackStateV3>(),88);
+    |                                  ^^^^^^^^^^^^
+    |
+   ::: src/session/native.rs:107:1
+    |
+107 | pub struct TrackStateV2 { pub peak_left: f64, pub peak_right: f64, pub gain: f64, pub mute: u32, pub solo: u32, pub active_voices: ...
+    | ----------------------- similarly named struct `TrackStateV2` defined here
+    |
+help: a struct with a similar name exists
+    |
+ 15 -     assert_eq!(size_of::<native::TrackStateV3>(),88);
+ 15 +     assert_eq!(size_of::<native::TrackStateV2>(),88);
+    |
+
+error[E0425]: cannot find type `StateV3` in module `native`
+   --> src/session/tests.rs:16:34
+    |
+ 16 |     assert_eq!(size_of::<native::StateV3>(),16592);
+    |                                  ^^^^^^^
+    |
+   ::: src/session/native.rs:116:1
+    |
+116 | pub struct StateV2 {
+    | ------------------ similarly named struct `StateV2` defined here
+    |
+help: a struct with a similar name exists
+    |
+ 16 -     assert_eq!(size_of::<native::StateV3>(),16592);
+ 16 +     assert_eq!(size_of::<native::StateV2>(),16592);
+    |
+
+error[E0425]: cannot find type `ConfigV3` in module `native`
+  --> src/session/tests.rs:17:35
+   |
+17 |     assert_eq!(align_of::<native::ConfigV3>(),8);
+   |                                   ^^^^^^^^
+   |
+  ::: src/session/native.rs:94:1
+   |
+94 | pub struct ConfigV2 {
+   | ------------------- similarly named struct `ConfigV2` defined here
+   |
+help: a struct with a similar name exists
+   |
+17 -     assert_eq!(align_of::<native::ConfigV3>(),8);
+17 +     assert_eq!(align_of::<native::ConfigV2>(),8);
+   |
+
+error[E0425]: cannot find type `StateV3` in module `native`
+   --> src/session/tests.rs:18:35
+    |
+ 18 |     assert_eq!(align_of::<native::StateV3>(),8);
+    |                                   ^^^^^^^
+    |
+   ::: src/session/native.rs:116:1
+    |
+116 | pub struct StateV2 {
+    | ------------------ similarly named struct `StateV2` defined here
+    |
+help: a struct with a similar name exists
+    |
+ 18 -     assert_eq!(align_of::<native::StateV3>(),8);
+ 18 +     assert_eq!(align_of::<native::StateV2>(),8);
+    |
+
+error[E0425]: cannot find type `ConfigV3` in module `native`
+  --> src/session/tests.rs:19:35
+   |
+19 |     assert_eq!(offset_of!(native::ConfigV3,preparation_revision),40);
+   |                                   ^^^^^^^^
+   |
+  ::: src/session/native.rs:94:1
+   |
+94 | pub struct ConfigV2 {
+   | ------------------- similarly named struct `ConfigV2` defined here
+   |
+help: a struct with a similar name exists
+   |
+19 -     assert_eq!(offset_of!(native::ConfigV3,preparation_revision),40);
+19 +     assert_eq!(offset_of!(native::ConfigV2,preparation_revision),40);
+   |
+
+error[E0425]: cannot find type `ConfigV3` in module `native`
+  --> src/session/tests.rs:20:35
+   |
+20 |     assert_eq!(offset_of!(native::ConfigV3,tracks),64);
+   |                                   ^^^^^^^^
+   |
+  ::: src/session/native.rs:94:1
+   |
+94 | pub struct ConfigV2 {
+   | ------------------- similarly named struct `ConfigV2` defined here
+   |
+help: a struct with a similar name exists
+   |
+20 -     assert_eq!(offset_of!(native::ConfigV3,tracks),64);
+20 +     assert_eq!(offset_of!(native::ConfigV2,tracks),64);
+   |
+
+error[E0425]: cannot find type `ConfigV3` in module `native`
+  --> src/session/tests.rs:21:35
+   |
+21 |     assert_eq!(offset_of!(native::ConfigV3,devices),512);
+   |                                   ^^^^^^^^
+   |
+  ::: src/session/native.rs:94:1
+   |
+94 | pub struct ConfigV2 {
+   | ------------------- similarly named struct `ConfigV2` defined here
+   |
+help: a struct with a similar name exists
+   |
+21 -     assert_eq!(offset_of!(native::ConfigV3,devices),512);
+21 +     assert_eq!(offset_of!(native::ConfigV2,devices),512);
+   |
+
+error[E0425]: cannot find type `ConfigV3` in module `native`
+  --> src/session/tests.rs:22:35
+   |
+22 |     assert_eq!(offset_of!(native::ConfigV3,clips),11648);
+   |                                   ^^^^^^^^
+   |
+  ::: src/session/native.rs:94:1
+   |
+94 | pub struct ConfigV2 {
+   | ------------------- similarly named struct `ConfigV2` defined here
+   |
+help: a struct with a similar name exists
+   |
+22 -     assert_eq!(offset_of!(native::ConfigV3,clips),11648);
+22 +     assert_eq!(offset_of!(native::ConfigV2,clips),11648);
+   |
+
+error[E0425]: cannot find type `ConfigV3` in module `native`
+  --> src/session/tests.rs:23:35
+   |
+23 |     assert_eq!(offset_of!(native::ConfigV3,events),14464);
+   |                                   ^^^^^^^^
+   |
+  ::: src/session/native.rs:94:1
+   |
+94 | pub struct ConfigV2 {
+   | ------------------- similarly named struct `ConfigV2` defined here
+   |
+help: a struct with a similar name exists
+   |
+23 -     assert_eq!(offset_of!(native::ConfigV3,events),14464);
+23 +     assert_eq!(offset_of!(native::ConfigV2,events),14464);
+   |
+
+error[E0425]: cannot find type `RequestV3` in module `native`
+  --> src/session/tests.rs:24:35
+   |
+24 |     assert_eq!(offset_of!(native::RequestV3,tracks),48);
+   |                                   ^^^^^^^^^ not found in `native`
+
+error[E0425]: cannot find type `StateV3` in module `native`
+   --> src/session/tests.rs:25:35
+    |
+ 25 |     assert_eq!(offset_of!(native::StateV3,tracks),144);
+    |                                   ^^^^^^^
+    |
+   ::: src/session/native.rs:116:1
+    |
+116 | pub struct StateV2 {
+    | ------------------ similarly named struct `StateV2` defined here
+    |
+help: a struct with a similar name exists
+    |
+ 25 -     assert_eq!(offset_of!(native::StateV3,tracks),144);
+ 25 +     assert_eq!(offset_of!(native::StateV2,tracks),144);
+    |
+
+error[E0425]: cannot find type `StateV3` in module `native`
+   --> src/session/tests.rs:26:35
+    |
+ 26 |     assert_eq!(offset_of!(native::StateV3,devices),848);
+    |                                   ^^^^^^^
+    |
+   ::: src/session/native.rs:116:1
+    |
+116 | pub struct StateV2 {
+    | ------------------ similarly named struct `StateV2` defined here
+    |
+help: a struct with a similar name exists
+    |
+ 26 -     assert_eq!(offset_of!(native::StateV3,devices),848);
+ 26 +     assert_eq!(offset_of!(native::StateV2,devices),848);
+    |
+
+error[E0425]: cannot find type `StateV3` in module `native`
+   --> src/session/tests.rs:27:35
+    |
+ 27 |     assert_eq!(offset_of!(native::StateV3,receipts),6352);
+    |                                   ^^^^^^^
+    |
+   ::: src/session/native.rs:116:1
+    |
+116 | pub struct StateV2 {
+    | ------------------ similarly named struct `StateV2` defined here
+    |
+help: a struct with a similar name exists
+    |
+ 27 -     assert_eq!(offset_of!(native::StateV3,receipts),6352);
+ 27 +     assert_eq!(offset_of!(native::StateV2,receipts),6352);
+    |
+
+For more information about this error, try `rustc --explain E0425`.
+error: could not compile `ultra` (lib test) due to 22 previous errors

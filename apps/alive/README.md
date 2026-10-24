@@ -140,8 +140,10 @@ The desktop harness creates its own display, bus, runtime directory and software
 PipeWire server. It does not qualify physical audio or change desktop services.
 Without `ALIVE_ENDURANCE_SECONDS`, CI runs the same native journey without the
 ten-minute sustained phase. Reports preserve actual stream errors, backend,
-rate/buffer, captured audio and process-tree resource samples. CPAL does not
-expose an underrun counter; a zero stream-error count is not an xrun claim.
+rate/buffer, captured audio and process-tree resource samples. The current
+interface reports aggregate stream errors; CPAL's typed backend xrun reports
+are not separated by these counters. A zero stream-error count does not
+establish zero physical underruns.
 The separate editor regression checks eight close/reopen cycles against the
 real webview process tree. Linux editors disconnect the pinned Wry IPC handler
 on GTK destruction to release its strong view/message-manager reference cycle.

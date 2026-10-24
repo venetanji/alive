@@ -296,6 +296,32 @@ This remains session/native-v2 with one clip per track, two tracks and six
 devices. Clip banks/quantized launch, capacity/scenes and final endurance are
 the next gates; no physical audio/xrun claim follows from this checkpoint.
 
+At pushed checkpoint `d1f8a66`, both UI CI jobs pass, but native CI
+`40062078651` fails in the actual chain-reorder walkthrough after the second
+synthetic reorder click. Its build/Rust/headless steps pass; the failed native
+job is not qualified. Retained artifacts are in
+`experiments/alive-piano-m3-20261024/ci-d1f8a66-failure/`.
+The frozen-app diagnosis reproduces a native tooltip covering the next reorder
+target; motion followed by a bounded native-window ownership check allows one
+click to pass all six focused comparisons. Attribution to the historical CI
+failure remains an inference because that run lacks a pre-click event trace.
+The original reorder assertion stays required. The serialized harness correction
+at `79aec9d` passes a focused native covering-tooltip regression under
+process-local fatal GTK criticals and the complete native journey. It waits for
+actual window ownership before one click and for the new chooser entry before
+slash release; shared Ultra input is unchanged. Independent scoped spec/quality
+review approves with no findings; new exact-source CI qualification is pending.
+Retained logs, screenshots,
+source/build hashes and the 56.661-second finite software-capture receipt are in
+`experiments/alive-piano-m3-20261024/ci-input-correction/`.
+The separate GTK chooser warning
+is traced to a synthetic slash release on an unrealized location entry by the
+bounded frozen-app comparison in `gtk-diagnostic/`, without a general
+warning-free claim. Both-app packages pass on all four platform runners at
+`40062078658`, with publishing skipped; the retained receipt is
+`experiments/alive-piano-m3-20261024/packages-d1f8a66.json`.
+Final exact-source CI/package acceptance remains open.
+
 ### Task 11: Native Clip Bank And Quantized Actions
 
 Append one fixed v3 C ABI with storage for eight tracks, sixteen devices and
@@ -325,6 +351,20 @@ Faust-kernel measurements at the initial profile, not guessed deadlines.
 Prove exact samples across arbitrary 1..1024 partitions, all transitions/races,
 ownership, queue saturation, callback guards and original v1/v2 regressions.
 Keep the desktop's existing v2 example usable until Task 12 integrates v3.
+
+Native checkpoint `db96180` implements the fixed ABI and initial 2/6/8 profile;
+the desktop remains v2. Full native/legacy/callback guards, 179 Rust tests
+(two existing ignored), Alive context and isolated contracts pass. Retained
+evidence: `experiments/alive-clips-m3-20261024/`. Independent review reproduced
+one stopped-action receipt supersession defect and one local invariant-resource
+diagnostic issue. Fix `1bc37b9` passes focused red/green, full v3 callback guards
+and v1/v2 compatibility; scoped re-review confirms both addressed with no new
+breakage. The initial native 2/6/8 slice is accepted for Task 12 integration.
+The guarded offline timing matrix supports practical buffers of 256 frames or
+more on the recorded Ryzen host only. The earlier 64-frame 3.017-ms outlier
+remains disclosed; its complete intermediate log/source snapshot was not saved.
+No desktop clip-bank, eight-track, scene, physical-audio or endurance acceptance
+is inferred from this checkpoint.
 
 ### Task 12: Saved Clips And Individual Launch Interface
 

@@ -1,0 +1,81 @@
+apps/ultra/tests/alive_session_v3_layout_test.cpp:5:22: error: ‘AliveSessionTrackV3’ was not declared in this scope; did you mean ‘AliveSessionTrackV2’?
+    5 | static_assert(sizeof(AliveSessionTrackV3)==56);
+      |                      ^~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionTrackV2
+apps/ultra/tests/alive_session_v3_layout_test.cpp:6:22: error: ‘AliveSessionClipV3’ was not declared in this scope; did you mean ‘AliveSessionConfigV2’?
+    6 | static_assert(sizeof(AliveSessionClipV3)==88);
+      |                      ^~~~~~~~~~~~~~~~~~
+      |                      AliveSessionConfigV2
+apps/ultra/tests/alive_session_v3_layout_test.cpp:7:22: error: ‘AliveSessionConfigV3’ was not declared in this scope; did you mean ‘AliveSessionConfigV2’?
+    7 | static_assert(sizeof(AliveSessionConfigV3)==47232);
+      |                      ^~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionConfigV2
+apps/ultra/tests/alive_session_v3_layout_test.cpp:8:22: error: ‘AliveSessionTrackActionV3’ was not declared in this scope; did you mean ‘AliveSessionTrackStateV2’?
+    8 | static_assert(sizeof(AliveSessionTrackActionV3)==8);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionTrackStateV2
+apps/ultra/tests/alive_session_v3_layout_test.cpp:9:22: error: ‘AliveSessionRequestV3’ was not declared in this scope; did you mean ‘AliveSessionEventV2’?
+    9 | static_assert(sizeof(AliveSessionRequestV3)==112);
+      |                      ^~~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionEventV2
+apps/ultra/tests/alive_session_v3_layout_test.cpp:10:22: error: ‘AliveSessionReceiptV3’ was not declared in this scope; did you mean ‘AliveSessionEventV2’?
+   10 | static_assert(sizeof(AliveSessionReceiptV3)==80);
+      |                      ^~~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionEventV2
+apps/ultra/tests/alive_session_v3_layout_test.cpp:11:22: error: ‘AliveSessionWorkV3’ was not declared in this scope; did you mean ‘AliveSessionTrackV2’?
+   11 | static_assert(sizeof(AliveSessionWorkV3)==32);
+      |                      ^~~~~~~~~~~~~~~~~~
+      |                      AliveSessionTrackV2
+apps/ultra/tests/alive_session_v3_layout_test.cpp:12:22: error: ‘AliveSessionLimitsV3’ was not declared in this scope; did you mean ‘AliveSessionStateV2’?
+   12 | static_assert(sizeof(AliveSessionLimitsV3)==224);
+      |                      ^~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionStateV2
+apps/ultra/tests/alive_session_v3_layout_test.cpp:13:22: error: ‘AliveSessionDiagnosticV3’ was not declared in this scope
+   13 | static_assert(sizeof(AliveSessionDiagnosticV3)==120);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v3_layout_test.cpp:14:22: error: ‘AliveSessionTrackStateV3’ was not declared in this scope; did you mean ‘AliveSessionTrackStateV2’?
+   14 | static_assert(sizeof(AliveSessionTrackStateV3)==88);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionTrackStateV2
+apps/ultra/tests/alive_session_v3_layout_test.cpp:15:22: error: ‘AliveSessionStateV3’ was not declared in this scope; did you mean ‘AliveSessionStateV2’?
+   15 | static_assert(sizeof(AliveSessionStateV3)==16592);
+      |                      ^~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionStateV2
+apps/ultra/tests/alive_session_v3_layout_test.cpp:16:23: error: ‘AliveSessionConfigV3’ was not declared in this scope; did you mean ‘AliveSessionConfigV2’?
+   16 | static_assert(alignof(AliveSessionConfigV3)==8);
+      |                       ^~~~~~~~~~~~~~~~~~~~
+      |                       AliveSessionConfigV2
+apps/ultra/tests/alive_session_v3_layout_test.cpp:17:23: error: ‘AliveSessionStateV3’ was not declared in this scope; did you mean ‘AliveSessionStateV2’?
+   17 | static_assert(alignof(AliveSessionStateV3)==8);
+      |                       ^~~~~~~~~~~~~~~~~~~
+      |                       AliveSessionStateV2
+In file included from /usr/include/stdio.h:38,
+                 from /usr/include/c++/16/cstdio:47,
+                 from apps/ultra/tests/alive_session_v3_layout_test.cpp:3:
+apps/ultra/tests/alive_session_v3_layout_test.cpp:18:24: error: ‘AliveSessionConfigV3’ does not name a type; did you mean ‘AliveSessionConfigV2’?
+   18 | static_assert(offsetof(AliveSessionConfigV3,preparation_revision)==40);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v3_layout_test.cpp:19:24: error: ‘AliveSessionConfigV3’ does not name a type; did you mean ‘AliveSessionConfigV2’?
+   19 | static_assert(offsetof(AliveSessionConfigV3,tracks)==64);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v3_layout_test.cpp:20:24: error: ‘AliveSessionConfigV3’ does not name a type; did you mean ‘AliveSessionConfigV2’?
+   20 | static_assert(offsetof(AliveSessionConfigV3,devices)==512);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v3_layout_test.cpp:21:24: error: ‘AliveSessionConfigV3’ does not name a type; did you mean ‘AliveSessionConfigV2’?
+   21 | static_assert(offsetof(AliveSessionConfigV3,clips)==11648);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v3_layout_test.cpp:22:24: error: ‘AliveSessionConfigV3’ does not name a type; did you mean ‘AliveSessionConfigV2’?
+   22 | static_assert(offsetof(AliveSessionConfigV3,events)==14464);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v3_layout_test.cpp:23:24: error: ‘AliveSessionRequestV3’ does not name a type; did you mean ‘AliveSessionEventV2’?
+   23 | static_assert(offsetof(AliveSessionRequestV3,tracks)==48);
+      |                        ^~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v3_layout_test.cpp:24:24: error: ‘AliveSessionStateV3’ does not name a type; did you mean ‘AliveSessionStateV2’?
+   24 | static_assert(offsetof(AliveSessionStateV3,tracks)==144);
+      |                        ^~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v3_layout_test.cpp:25:24: error: ‘AliveSessionStateV3’ does not name a type; did you mean ‘AliveSessionStateV2’?
+   25 | static_assert(offsetof(AliveSessionStateV3,devices)==848);
+      |                        ^~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v3_layout_test.cpp:26:24: error: ‘AliveSessionStateV3’ does not name a type; did you mean ‘AliveSessionStateV2’?
+   26 | static_assert(offsetof(AliveSessionStateV3,receipts)==6352);
+      |                        ^~~~~~~~~~~~~~~~~~~
