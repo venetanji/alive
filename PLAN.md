@@ -57,7 +57,12 @@ is clean; platform CI must rerun this correction. UI/reference and Chromium on
 `548b1a1` pass; full native/package checks are still being reconciled.
 The portable correction at `848f53e` passes all three CI jobs, including the
 actual Alive desktop/editor and CPAL-loopback gates. Both application packages
-pass on macOS ARM; the other three package runners are still building.
+pass on all four platform runners; publishing is skipped. Evidence is retained
+in `experiments/alive-application-m1-20261024/ci-848f53e.json`. The downloaded
+Ubuntu Alive AppImage also passes hashes/notices/linkage/native ABI and bundled
+offline rendering on this Arch machine, without a development library override.
+Accessible local files: `dist/alive/ci-848f53e/`; later chain changes still need
+their own CI/package qualification.
 
 ### Milestone 2: Reusable Effect Chains
 

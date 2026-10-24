@@ -59,6 +59,30 @@ this reader and pass notices, native linkage and the bundled offline session
 probe outside the repository. This changes package inspection, not the recorded
 developer runtime or DEB bytes. Platform CI must qualify the correction.
 
+At correction `848f53e`, all three CI jobs pass, including the native Alive
+desktop, editor-resource and CPAL-loopback checks. All four both-application
+package jobs pass: Linux, Windows, macOS ARM and macOS Intel. Publishing is
+skipped. Runs: `40050492761` (CI) and `40050492765` (packages); observed
+source identities and results are retained in `ci-848f53e.json`.
+
+The Linux CI artifact was downloaded and all four package hashes checked. Its
+Alive AppImage was extracted on this Arch machine, then independently passed
+notice hashes, its own binary/native-library resolution, native ABI smoke and
+the bundled two-device session offline render outside the repository. The local
+verification log is `/tmp/alive-m1-ci-appimage-848f53e.log`. This qualifies the
+downloaded M1 artifact; it does not qualify later local effect/chain source or
+claim a physical-audio or graphical AppImage walkthrough.
+
+The downloaded Alive files are staged locally in `dist/alive/ci-848f53e/`:
+
+- AppImage SHA256: `c0992683cc89911311147174b4001998b2670a690ed808fec7e28fc061662a62`
+- DEB SHA256: `f974af09ed337dce4f66dd876f586c400eb6d1412f3327818973f3c6e0ee7e78`
+
+The Actions artifact is `desktop-x86_64-unknown-linux-gnu`, ID `12543338489`, on
+package run `40050492765`. These bytes differ from the earlier local Arch DEB
+because they are built on Ubuntu; earlier runtime/package receipts retain their
+original identities.
+
 ## Commands
 
 ```sh
@@ -79,5 +103,5 @@ The exact source/binary hashes for the observed developer runtime are in
 `dist/ultra`, deliberately excluded from Git. Local AppImage generation fails
 because the pinned bundler's strip/GTK plugin does not support this Arch
 installation's RELR/glycin loader layout. No system packages or settings were
-changed to work around it. Ubuntu, Windows and macOS package CI must qualify
-those artifacts; Linux observations do not establish other-platform behavior.
+changed to work around it. The Ubuntu CI AppImage above provides an accessible
+alternative. Linux observations do not establish other-platform GUI behavior.
