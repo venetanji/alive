@@ -455,31 +455,18 @@ fn canvas_param(
     window: tauri::WebviewWindow,
     documents: tauri::State<document_windows::Documents>,
     state: tauri::State<Audio>,
+    io: tauri::State<AudioIo>,
     revision: u64,
     node: u32,
     key: String,
     value: f64,
 ) -> Result<bool, String> {
     let mut registry = documents.0.lock().map_err(|_| "Document lock poisoned")?;
-    let owner = registry.get_open(window.label())?;
-    if revision != owner.runtime_revision { return Err("Stale canvas revision".into()); }
-    let base = owner.authoring_revision;
-    let mut patch = owner.patch.clone().unwrap();
-    fn update(scope: &mut serde_json::Value, id: u32, key: &str, value: f64) -> bool {
-        let Some(nodes) = scope.get_mut("nodes").and_then(serde_json::Value::as_array_mut) else { return false; };
-        for node in nodes {
-            if node["id"].as_u64() == Some(u64::from(id)) { node["params"][key] = serde_json::json!(value); return true; }
-            if let Some(child) = node.get_mut("patcher") { if update(child, id, key, value) { return true; } }
-        }
-        false
-    }
-    if !update(&mut patch, node, &key, value) { return Err("Unknown canvas node".into()); }
     let parameter = document_windows::commands::Parameter { node, key, value, hot: false };
     let mut audio = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
-    registry.commit(window.label(), base, patch, true, |owner, patch| {
-        document_windows::commands::admit(&mut audio.graphs[owner.id as usize], owner, patch, Some(&parameter), false)
-    })?;
-    drop(audio);
+    let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
+    document_windows::commands::canvas_parameter(&mut registry, &mut audio, &mut io, window.label(), revision, parameter)?;
+    drop(io); drop(audio);
     document_windows::commands::broadcast(window.app_handle(), &registry, window.label());
     Ok(true)
 }

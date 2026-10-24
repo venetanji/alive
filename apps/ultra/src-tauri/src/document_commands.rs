@@ -14,6 +14,26 @@ pub struct Parameter { pub node: u32, pub key: String, pub value: f64, #[serde(d
 #[serde(deny_unknown_fields)]
 pub struct MessageText { pub node: u32, pub text: String }
 
+pub(crate) fn canvas_parameter(registry: &mut Registry, audio: &mut crate::AudioControl,
+    io: &mut crate::audio::Driver, label: &str, revision: u64, parameter: Parameter) -> Result<CommitResult, String> {
+    let owner = registry.get_open(label)?;
+    if revision != owner.runtime_revision { return Err("Stale canvas revision".into()); }
+    let base = owner.authoring_revision;
+    let mut patch = owner.patch.clone().unwrap();
+    fn update(scope: &mut Value, id: u32, key: &str, value: f64) -> bool {
+        let Some(nodes) = scope.get_mut("nodes").and_then(Value::as_array_mut) else { return false; };
+        for node in nodes {
+            if node["id"].as_u64() == Some(u64::from(id)) { node["params"][key] = serde_json::json!(value); return true; }
+            if let Some(child) = node.get_mut("patcher") { if update(child, id, key, value) { return true; } }
+        }
+        false
+    }
+    if !update(&mut patch, parameter.node, &parameter.key, parameter.value) { return Err("Unknown canvas node".into()); }
+    registry.commit(label, base, patch, true, |owner, patch| {
+        admit_owned(io, &mut audio.graphs[owner.id as usize], owner, patch, Some(&parameter), None, false)
+    })
+}
+
 pub fn admit_owned(io: &mut crate::audio::Driver, control: &mut canvas::CanvasState, owner: &Document, patch: &Value,
     parameter: Option<&Parameter>, message_text: Option<&MessageText>, force: bool) -> Result<documents::Admission, String> {
     io.reject_retiring()?;
