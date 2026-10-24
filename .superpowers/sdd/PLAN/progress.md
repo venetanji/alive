@@ -42,3 +42,38 @@ Task 4: macOS CI duplicate Info.plist fixed by one shared generated context; Ats
 Task 4: final native runtime e841f6f completes602.551 playing seconds/47cycles,840.576s finite loopback,64zero-error observations. PSS+50564KiB;FD202->164; after first sample3processes throughout. Exact receipt/resource summary/screenshots retained in experiments/alive-session-20261024.
 Task 4: fresh portable quick native journey passes25.461s capture and Quit Cancel/Discard; harness now reuses existing WirePlumber0.4 policy selection and old/new pw-cat raw-stdout compatibility. Final pushed-commit CI and PR receipts are the remaining delivery check.
 Task 4: remote9b43211 headless/Rust/UI/browser gates pass; desktop exposes absent default-node metadata in WirePlumber0.4 policy-only fixture. Reproduced default route0frames/StreamInvalidated versus pinned143872frames; typed default sink metadata makes both143872frames/error-free. Full native journey with isolated Ubuntu0.4.17 policy then passes25.163s capture and Quit Cancel/Discard. Application/DSP code remains unchanged; final CI reruns after this test-server correction.
+
+Expanded spec: /home/venetanji/.codex/attachments/b3b823b7-f117-4aa1-a4da-36fc87ffdfaf/pasted-text-1.txt
+Foundation reconfirmed 2026-10-24: main8217458, release3103348. Existing linked worktree retained; no release branch mutation.
+M1: complete locally (commit2e13410; independently reviewed, all local gates and native/package journey passed). Pushed to feature branch and PR6 rewritten. New-head CI remains pending.
+
+| Expanded tasks | Interface / consistency check | Result |
+| --- | --- | --- |
+| M1 / M2 | App shared library/resource lookup consumes device runtime | Keep both separate binaries; add objects once in shared implementation |
+| 6 / 7 | Versioned manifest, external input/filter nodes consumed by chain preparation | Freeze Task6 descriptor before native/Rust chain integration |
+| M2 / M3 | Chain instance IDs and automation consumed by per-track clips | Stable IDs independent of chain index; expand tracks only after launch measurement |
+| M2 / M4 | Device metadata/editor auth consumes instance identity | Editor ownership must move from track-only identity |
+| M3 / M4 | Selected clip/track/device consumed by panels | Keep selection distinct from launch |
+| M1 / M5 | Packages/app context consumed by native acceptance/CI | Test actual Alive package, not Ultra fallback |
+| M2 / M5 | New chains consume bounded native roots | Preserve16-root capacity until measured |
+| M3 / M5 | Eight-track scheduler consumed by soak/example | Admit event density and measure reset/callback costs first |
+| M4 / M5 | Optional editor consumes native lifetime | Native destruction assertions retained |
+| M1 | Independent application vs existing target path | Separate package/app IDs; sharing target directory is intentional |
+| 6 | New effect manifest/nodes vs v1 instruments | Strict v1 compatibility; current session rejects effects until Task7 |
+| 7 | Ordered roots vs backend parallel master sum | Hosted path evaluates chain once, sums endpoint; ordinary Ultra unchanged |
+| M3 | Multiple clips/quantized launch vs current global discontinuity | Introduce per-track cursors and termination before eight-track expansion |
+| M4 | Live parameter edit vs structural replacement | Bound edits live; stopped prepare for structure |
+| M5 | Prior600second soak vs new1800second requirement | Prior evidence remains historical; new30minute run required |
+
+Ruling: Task6 supports declared stereo effects only, retaining explicit bundle descriptors and existing mono primitive proofs. This bounds the first chain profile; accepting mono effect files later needs a tested adapter.
+Ruling: Task6 keeps two tracks and existing16-root pool. Task7 initially uses at most6 roots; eight-track expansion waits for scheduler/capacity measurements. Cost if wrong is lower initial capacity, not unbounded callback work.
+Task6: ready; baseline2e13410 (plan checkpoint follows), brief task-6-brief.md.
+Task6: implementer effect_devices; actualbase548b1a1. Normalized manifest confirmed kind:DeviceKind,note_node:Option<u32>,input:Option<HostAudioInput{node,bundle}>,output:ChannelBundle.
+M1 fix: Mac/Windows CI early DEB fixture failure traced to host ar dialect/binary stdout conversion. Portable SysV inspection + fixture passed21tests, actual both-DEB linkage/notices/render and scoped packaging review; push follows. No app/DSP/package bytes changed.
+Ruling: Bypass is a bounded live command retaining warm state; add/remove/reorder remain stopped preparation. Reinstalling on bypass would invalidate the specified warm-resumption behavior. Cost if wrong is an audible unsmoothed bypass change; zero timing shift is tested.
+M1 fix: committed/pushed848f53e; actual DEB output bytes unchanged. Platform CI40050492761/40050492765 now running the correction.
+Task7 interface design complete (effect_contract_design, no implementation). Parent read full recommendation; C++ declarations/sizes independently compile on this host. PLAN now separates7native,8Rust/persistence and9interface to retain a usable app at each checkpoint. V2 shapes/adapters in task-7-interface-design.md are the native task interface; no8track expansion until measured.
+Task 6: complete (cbe310a; independent scoped spec/quality review approved, no functional findings). 158Rust passes/two existing ignored,447Node,103Chromium,full native/contracts pass. Existing Node loader/color warnings recorded Minor and deferred.
+Task 7: in progress (native_chain_runtime; brief task-7-brief.md, frozen design task-7-interface-design.md). Native only; parent owns plan/ledger/PR. Existing v1 app stays usable throughout.
+Foundation refetch after Task6: main8217458,release3103348,remote feature848f53e; no change to dependency or protected branches. At848f53e UI/reference and Chromium CI pass; native and four package jobs pending.
+M1 CI reconciliation: all3CI jobs at848f53e now pass, including actual desktop/editor/resource and CPAL. MacARM both-app package job passes; other3 still build. Task6 actual separate developer build and saved-session probe pass412452frames/comparison; build retains existing reserve_native warning. Native author notified builds are clear.

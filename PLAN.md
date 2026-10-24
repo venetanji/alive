@@ -55,14 +55,17 @@ pass 21 package/notice tests, independent malformed/valid archive probes and
 both actual Tauri DEBs' extraction/linkage/notices/bundled render. Scoped review
 is clean; platform CI must rerun this correction. UI/reference and Chromium on
 `548b1a1` pass; full native/package checks are still being reconciled.
+The portable correction at `848f53e` passes all three CI jobs, including the
+actual Alive desktop/editor and CPAL-loopback gates. Both application packages
+pass on macOS ARM; the other three package runners are still building.
 
 ### Milestone 2: Reusable Effect Chains
 
-- [ ] Versioned instrument/effect contract with explicit input/output bundles,
+- [x] Versioned instrument/effect contract with explicit input/output bundles,
   MIDI declaration, stable parameter IDs and tested version-1 compatibility.
 - [ ] Instrument followed by an ordered, bounded Ultra effect chain; add,
   remove, reorder, bypass and parameters use stopped structural preparation.
-- [ ] Reusable Ultra utility and Faust filter/delay patches load through the
+- [x] Reusable Ultra utility and Faust filter/delay patches load through the
   same validator/runtime. No privileged host DSP or copied instrument patch.
 - [ ] Deterministic order/bypass/isolation/state tests; timing and tail/reset
   policy documented. Keep the existing 16-root pool; admit total devices before
@@ -105,28 +108,94 @@ bindings and version-1 compatibility. Run native, Rust and contracts/UI gates;
 retain red/green evidence. No session-chain routing, UI chain editor, pool/track
 limit increase or packaging changes in this task. Commit a coherent checkpoint.
 
-### Task 7: Ordered Native Chains And Session Persistence
+Implemented at `cbe310a`, independent spec/quality review approved: strict normalized
+v1/v2 manifests, shared external-input/stereo-filter objects and both saved
+effects. The existing two-track instrument example remains usable; effects are
+explicitly rejected by session-v1 until chain integration. Native/callback and
+contracts gates pass, with 158 Rust tests (two existing ignored), 447 Node/UI
+tests and 103 Chromium tests. Evidence: `.superpowers/sdd/PLAN/task-6-report.md`
+and `/tmp/alive-task6-*.log`; no new native GUI or hardware claim.
+Review found no functional defect. Existing Node loader/color warnings remain
+validation noise, not a passing-output or audio-performance claim. Ordered
+native chain hosting is now Task 7; the complete M2 gate is still outstanding.
+The separate `alive`/`ultra` developer build succeeds at this checkpoint. A fresh
+display-free `alive --session-probe` passes 412452 frames per comparison with
+identical arbitrary partitions and saved-device boundary events; receipt:
+`/tmp/alive-task6-app-render/report.json`. The build retains the existing
+`reserve_native` dead-code warning. This is offline regression evidence.
 
-After Task 6 review, extend the bounded session ABI and Rust preparation together.
-Each track owns an instrument then at most two effects; keep the existing 16-root
-pool and initially two tracks (six total roots). Run each root once per sample,
-in chain order, mix only the final endpoint, and defer control notifications until
-all sample roots finish. Preserve ordinary Ultra execution and legacy v1 ABI tests
-through an adapter or an explicit separate versioned ABI. Stable saved instance
-IDs distinguish reusable file identity from automation/editor targets; migrate
-session-v1 deterministically. Save As relocates every dependency. Fingerprint
-sources before applying saved bases and report changed references explicitly.
+### Task 7: Ordered Native Chains
 
-Stopped preparation admits add/remove/reorder and preserves the active
-session on failure. A bounded live command changes bypass without reinstalling
-or clearing state. Bypass returns the dry sample at the same frame while the
-effect processes warm. Stop/seek/loop/removal/replacement hard-clear all tails.
-Test a noncommuting chain: impulse at frame 0 and Utility gain zero at frame 1;
-Utility then Lowpass retains a tail, reverse order suppresses it. Prove arbitrary
-partitions, exact bypass timing/warm resumption, isolation, automation ownership,
-round-trip, overload and every discontinuity with callback allocation/lock guards.
-Then expose the smallest stopped chain interface and run the real native journey
-before checking off M2. Never infer audio lifetime from Live/Max editor behavior.
+After Task 6 review, implement a separate native v2 ABI, preserving every v1
+layout/symbol and all existing tests through adapters into one internal runtime.
+Use the concrete ABI in the reviewed Task 7 interface design. Two tracks each
+own one instrument and at most two effects (six devices total); the existing
+16-root pool is unchanged. Device-table indices are distinct from chain order
+and document/revision handles. Automation names a device plus parameter slot;
+notes target the track's instrument. Prospective validation rejects duplicate,
+cross-track, unowned, incompatible or overloaded resources before application.
+
+Run each hosted root once per sample in chain order, mix only the endpoint and
+defer control notifications until every sample root finishes. Preserve ordinary
+Ultra root execution. Bound all callback work; prepare/load/destroy off callback.
+Keep 16 parameters/device, 1024 events, 32/frame, 64/1024 frames, 64 queued
+commands and independent Stop. Improve chase to one schedule scan plus bounded
+device-parameter work. One authoritative frame clock; no new buffering/engine.
+
+A bounded live bypass command returns the dry sample at the same frame while
+the wet kernel continues processing. Base and bypass commands authenticate a
+document/revision handle before enqueue. Stop/seek/loop/end/removal/replacement
+hard-clear active and bypassed tails. Note-off permits normal release/ringing.
+Mute/solo act once at the endpoint and do not suspend state advancement.
+
+Write failing v2 native tests first. Test a noncommuting chain: impulse at
+frame 0 and Utility gain zero at frame 1; Utility then Lowpass retains a tail,
+reverse order suppresses it. Prove exact dry bypass and warm resumption against
+a continuously wet reference, independent instances, automation/base ownership,
+arbitrary 1/31/63/64/127/1024 partitions, density/queue overload, every termination
+and stale handle rejection. Retain callback allocation/free/lock guards and all
+v1 tests. Measure six-device discontinuity and dense-callback cost. No Rust
+session migration or chain UI in this task; existing Alive remains usable.
+
+### Task 8: Chain Persistence And Desktop Ownership
+
+Integrate the native v2 ABI in Rust with size/layout checks. Give every saved
+device a stable instance ID distinct from reusable file ID. Instrument plus up
+to two effect references form each track's ordered chain. Automation binds
+instance ID and stable parameter key, never chain index. Strictly migrate old
+session-v1 files deterministically; save canonical session-v2. Source hashes
+cover canonical source JSON before applying instance bases. Changed/missing/
+incompatible dependencies identify track, instance, path and Replace recovery.
+Save As relocates every dependency; failed load/save/prepare preserves state.
+
+Prepare all candidate graphs/values/density before stopping CPAL or replacing
+active state. Use monotonically increasing per-root revisions even on rollback.
+Live base/bypass update the saved model only after native queue admission.
+Merge draft bases/mixer/bypass by instance ID. Musical drafts cannot substitute
+or reorder chains. Add/remove/reorder/replacement use stopped preparation;
+removal explicitly removes only that instance's automation. Hosted editor
+authentication binds generation and instance, not track index or caller label.
+Open/close/reopen retains the existing independent DSP lifetime and teardown.
+
+Test old-session migration, native ABI sizes, real saved-effect loading, order/
+bypass/isolation/ownership, reorder-safe automation, source changes, overload,
+Save As and reopen/play. Extend the display-free probe with actual saved chains.
+Keep existing two-track UI functional via a small compatibility view until Task
+9. No track-count expansion. Run Rust/native/contracts gates and checkpoint.
+
+### Task 9: Minimal Chain Interface
+
+Expose selected-track instrument/effect chain, metadata-driven parameters and
+optional editor per instance. Add/remove/reorder/replacement explain their
+stopped-transport requirement. Live bypass preserves warm state. Keep base and
+effective ownership visible. Generalize automation target selection from fixed
+cutoff/level to instance/parameter metadata while preserving the original lanes.
+Selection does not imply launching. Preserve compact charcoal/amber/Liberation
+Sans presentation, audio sidebar, draft/file/Quit behavior and native editor
+capabilities/teardown. Run bounded full-surface Impeccable verification with real
+Tauri, focused UI/browser tests and the complete native two-track chain/editor/
+save/reopen/play journey. Only then check off M2 and push its evidence. Never
+infer DSP lifetime or sample timing from Live/Max editor observations.
 
 ### Milestone 3: Musical Workflow
 
