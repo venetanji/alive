@@ -38,8 +38,10 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   session-v1 examples migrate on Open. Original cutoff/level lanes remain;
   prepared automation owns effective values while musical edits remain drafts.
   Optional hosted Ultra graph editors make supported bound parameter edits
-  without owning DSP lifetime. Clip/automation and device structure changes
-  require stopped preparation; the first hosted graph view is read-only for
+  without owning DSP lifetime. Clip/automation drafts support a fixed-grid piano
+  roll and Rust-owned focused
+  pending-edit history. Prepare / Apply and device structure changes require
+  stopped transport; the first hosted graph view is read-only for
   structure. See `apps/alive/README.md` and `apps/alive/SESSION_CONTRACT.md`.
 
 - Up to 16 native patch, help and example windows each run an independent
@@ -86,8 +88,11 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   the existing Faust filter kernel. Alive hosts their saved graphs in its
   current two-track, six-instance profile. Add/remove/reorder/replacement require
   stopped preparation; live bypass preserves warm state without restarting I/O.
-  Selection does not launch playback. This slice adds no piano-roll gestures,
-  clip banks, additional tracks or alternate DSP path.
+  Selection does not launch playback. The single-clip piano roll supports
+  add/select/move/resize/delete, velocity and
+  precise numeric/keyboard edits. Pending musical history is bounded to 64
+  entries / 8 MiB and preserves accepted live controls. Clip banks, additional
+  tracks and alternate DSP paths remain outside this profile.
 - Supported object names and arguments must be explicit. Unsupported objects
   must be rejected visibly. Familiar appearance does not imply Max compatibility.
 - Linux desktop is the shipped target. A smaller browser preview supports

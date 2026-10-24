@@ -9,7 +9,7 @@ export function createAliveModel(){
     }
   }
   return{
-    accept(snapshot){if(current&&snapshot.generation!==current.generation)draft=null;current=snapshot;if(snapshot.draft&&!draft)draft=clone(snapshot.draft);merge();},
+    accept(snapshot){if(current&&(snapshot.generation<current.generation||(snapshot.generation===current.generation&&(snapshot.draftRevision??0)<(current.draftRevision??0))))return;if(current&&(snapshot.generation!==current.generation||snapshot.draftRevision!==current.draftRevision))draft=null;current=snapshot;if(snapshot.draft&&!draft)draft=clone(snapshot.draft);merge();},
     edit(change){if(!current)throw Error('Open a session first.');draft??=clone(current.document);change(draft);merge();return clone(draft);},
     document(){return draft??current?.document;},snapshot(){return current;},pending(){return !!draft;},
     discard(){draft=null;},applied(snapshot){current=snapshot;draft=snapshot.draft?clone(snapshot.draft):null;merge();},

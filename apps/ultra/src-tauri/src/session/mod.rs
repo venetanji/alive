@@ -4,6 +4,7 @@ use std::collections::BTreeMap;
 mod prepare;
 pub use prepare::{prepare, PreparedSession};
 mod persistence;
+mod history;
 pub use persistence::{read, save};
 pub mod native;
 pub mod host;

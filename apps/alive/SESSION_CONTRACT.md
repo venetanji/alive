@@ -158,3 +158,49 @@ and aggregate density receive prospective native validation before device I/O
 stops. Failed admission leaves the working model and playback intact. Root
 revisions increase per slot even through failed application and rollback; live
 base/bypass update the saved model only after native queue admission.
+
+## Pending Musical Edits And Piano Roll
+
+The single-clip editor retains session-v2 and native-v2. Its fixed 1/16-note grid
+is 0.25 quarter-note beat. Double-click adds a selected note with duration 0.25
+and velocity 100; body movement snaps displacement and pitch in semitones,
+right-edge resizing snaps duration displacement. Imported fractional offsets and
+durations remain exact. Numeric fields retain precise editing. Note pitch is
+0..127, velocity 1..127, duration at least one rounded audio frame. Same-pitch
+half-open frame intervals cannot overlap. Length changes cannot truncate notes
+or automation, including disabled lanes. Gesture geometry is captured on pointer
+down; cancellation, Escape or version changes discard an unfinished gesture.
+Selection alone changes no score, history or transport. One completed pointer or
+velocity gesture is one transaction. Keyboard editing/undo is scoped to the roll.
+
+Rust Control owns focused musical projections (title, tempo, length, looping,
+track IDs/names, notes and automation), bounded to 64 entries and 8 MiB combined
+serialized before/after payload plus labels across undo/redo. Oldest entries are
+evicted; an individually oversized entry rejects atomically. Live parameter
+bases, bypass and mixer, device identity/graphs, paths, runtime and UI selection
+are excluded. Restoring a projection uses current chain structure and accepted
+live fields by instance ID, with mixer fields by track ID. Undo to prepared music
+removes the draft and retains redo; accepted live-control dirty state survives.
+
+Main-window `alive_edit(document, label, generation, draftRevision)` and
+`alive_history(direction, generation, draftRevision)` authenticate both versions
+under the desktop mutex. Labels are plain text, 1..64 UTF-8 bytes without control
+characters. Direction is strictly `undo` or `redo`. Musical ranges, targets and
+rounded frames validate before retention using current manifests; final source,
+graph and native-density admission remains at Apply. An identical projection is
+a no-op. Rejected or stale requests preserve the draft, history and revision.
+There is no writable `alive_draft` bypass. Snapshot exposes monotonic
+`draftRevision` and `history` availability/labels. Renderer edits serialize and
+use returned revisions, and failed/ambiguous outcomes require authoritative
+refresh. File and structural requests also authenticate the current revision.
+
+Apply takes only generation/revision and prepares the retained authoritative
+draft. Successful Apply/Discard/New/Open/structural installation clears history;
+failed direct Apply or prospective Open preserves it. A successful explicitly
+accepted Apply/Discard is an immediate scope boundary even if a later file/Quit
+prompt cancels or fails. Canceled dialogs before a boundary preserve history.
+Save/Save As without a boundary preserves history; reference/path relocation
+advances revision to reject pre-relocation documents while retaining redo and
+editor bindings. Live controls, transport, audio and editor lifecycle do not
+advance musical revision or history. Undo/redo do not reinstall DSP, stop audio,
+advance desktop generation or close editors. Ultra patch undo remains separate.

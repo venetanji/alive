@@ -13,10 +13,12 @@ class Element{
   append(...children){for(const child of children){child.parentElement=this;this.children.push(child);}}
   replaceChildren(...children){this.children=[];this.append(...children);}
   setAttribute(key,value){this.attrs[key]=String(value);if(key==='class')this.className=String(value);}
+  getAttribute(key){return this.attrs[key]??null;}
+  setPointerCapture(id){this.capture=id;}hasPointerCapture(id){return this.capture===id;}releasePointerCapture(){this.capture=null;}
   removeAttribute(key){delete this.attrs[key];}
   addEventListener(key,fn){(this.listeners[key]??=[]).push(fn);}
   removeEventListener(){}
-  matches(selector){return selector.split(',').some(s=>s.trim().startsWith('.')?this.classList.contains(s.trim().slice(1)):s.trim().startsWith('#')?this.id===s.trim().slice(1):this.tagName===s.trim().toUpperCase());}
+  matches(selector){return selector.split(',').some(s=>s.trim().startsWith('[')?this.attrs[s.trim().slice(1,-1)]!==undefined:s.trim().startsWith('.')?this.classList.contains(s.trim().slice(1)):s.trim().startsWith('#')?this.id===s.trim().slice(1):this.tagName===s.trim().toUpperCase());}
   querySelector(selector){return descendants(this).find(e=>e.matches(selector))??null;}
   closest(selector){return this.matches(selector)?this:this.parentElement?.closest(selector);}
   getBoundingClientRect(){return{left:0,top:0,width:100,height:30};}
@@ -38,7 +40,7 @@ function state(editor=false){
   for(const track of document.tracks){track.effects=[];track.device.instanceId='legacy-'+createHash('sha256').update(track.id).digest('hex').slice(0,32);track.device.sourceSha256=createHash('sha256').update(JSON.stringify(patch)).digest('hex');track.device.bypassed=false;for(const lane of track.automation)lane.instanceId=track.device.instanceId;}
   const devices=document.tracks.map(track=>({...patch.device,parameters:patch.device.parameters.map(binding=>({...binding,base:track.device.parameters[binding.key],integral:false}))}));
   const deviceInstances=Object.fromEntries(document.tracks.map((t,index)=>[t.device.instanceId,{index,track:index,manifest:devices[index]}]));
-  const result={generation:1,document,devices,deviceInstances,instanceId:editor?document.tracks[0].device.instanceId:null,deviceIndex:editor?0:null,dirty:false,draft:null,state:{position:0,absoluteFrame:1024,generation:1,rejected:0,playing:1,peakLeft:.1,peakRight:.2,tracks:devices.map(device=>({peakLeft:.1,peakRight:.2,activeVoices:3,effective:device.parameters.map(p=>p.key==='cutoff'?700:p.base),owned:device.parameters.map(p=>p.key==='cutoff'?1:0)}))},audio:{config:{host:'default',device:'default',sample_rate:48000},host:'PipeWire',device:'Private output',observed_buffer_frames:256,callbacks:4,stream_errors:0,failed:false,message:'Audio output is running.'},track:editor?0:null,patch:editor?patch:null};
+  const result={generation:1,draftRevision:0,history:{canUndo:false,canRedo:false},document,devices,deviceInstances,instanceId:editor?document.tracks[0].device.instanceId:null,deviceIndex:editor?0:null,dirty:false,draft:null,state:{position:0,absoluteFrame:1024,generation:1,rejected:0,playing:1,peakLeft:.1,peakRight:.2,tracks:devices.map(device=>({peakLeft:.1,peakRight:.2,activeVoices:3,effective:device.parameters.map(p=>p.key==='cutoff'?700:p.base),owned:device.parameters.map(p=>p.key==='cutoff'?1:0)}))},audio:{config:{host:'default',device:'default',sample_rate:48000},host:'PipeWire',device:'Private output',observed_buffer_frames:256,callbacks:4,stream_errors:0,failed:false,message:'Audio output is running.'},track:editor?0:null,patch:editor?patch:null};
   result.state.devices=result.state.tracks;return result;
 }
 function backend(initial){
@@ -46,7 +48,8 @@ function backend(initial){
   return{calls,get snapshot(){return snapshot;},async invoke(name,args={}){
     calls.push({name,args:structuredClone(args)});
     if(name==='alive_current')return structuredClone(snapshot);
-    if(name==='alive_draft'){snapshot.draft=args.document;return;}
+    if(name==='alive_edit'){assert.equal(args.draftRevision,snapshot.draftRevision);snapshot.draft=args.document;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false,undoLabel:args.label};return structuredClone(snapshot);}
+    if(name==='alive_discard'){snapshot.draft=null;snapshot.draftRevision++;snapshot.history={canUndo:false,canRedo:false};return structuredClone(snapshot);}
     if(name==='alive_base'){
       const owner=snapshot.deviceInstances[args.instanceId],binding=owner.manifest.parameters.find(p=>p.key===args.key),track=snapshot.document.tracks[owner.track];binding.base=args.value;[track.device,...track.effects].find(d=>d.instanceId===args.instanceId).parameters[args.key]=args.value;
       if(snapshot.patch)snapshot.patch.nodes.find(n=>n.id===binding.node).params[binding.param]=args.value;return;
@@ -57,14 +60,14 @@ function backend(initial){
     if(name==='alive_audio_devices')return {config:snapshot.audio.config,hosts:['PipeWire'],effective_host:'PipeWire',devices:[{id:'default',name:'Default',compatible:true},{id:'speakers',name:'Speakers',compatible:true}],notice:''};
     if(name==='alive_audio_configure'){snapshot.audio.config=args.config;return;}
     if(name==='alive_audio'){snapshot.audio.running=args.action==='start';if(args.action==='stop')snapshot.state.playing=0;return;}
-    if(name==='alive_apply'){if(snapshot.state.playing)throw Error('Stop transport before preparing');snapshot.document=args.document;snapshot.draft=null;snapshot.generation++;return structuredClone(snapshot);}
+    if(name==='alive_apply'){if(snapshot.state.playing)throw Error('Stop transport before preparing');snapshot.document=snapshot.draft;snapshot.draft=null;snapshot.generation++;return structuredClone(snapshot);}
   }};
 }
 
 test('real musical fields retain drafts across polls and rejected Apply',async()=>{
   const page=dom('./alive.html'),native=backend(state()),view=mountAlive({...page,invoke:native.invoke});await settle();
   const pitch=page.find('Note 1 pitch');assert.ok(pitch);pitch.value='62';await pitch.fire('change');await settle();
-  assert.equal(native.calls.find(c=>c.name==='alive_draft').args.document.tracks[0].notes[0].pitch,62);
+  assert.equal(native.calls.find(c=>c.name==='alive_edit').args.document.tracks[0].notes[0].pitch,62);
   native.snapshot.document.tracks[0].device.parameters.cutoff=1500;native.snapshot.devices[0].parameters.find(p=>p.key==='cutoff').base=1500;
   await view.refresh();assert.equal(view.model.document().tracks[0].notes[0].pitch,62);assert.equal(view.model.document().tracks[0].device.parameters.cutoff,1500);
   await page.ids.get('apply').fire('click');await settle();assert.equal(view.model.pending(),true);assert.match(page.ids.get('notice').textContent,/Stop transport/);
@@ -94,7 +97,7 @@ test('Alive audio settings preserve drafts and route configuration through the s
 test('draft writes precede file actions and actual native metrics remain visible',async()=>{
   const page=dom('./alive.html'),native=backend(state()),view=mountAlive({...page,invoke:native.invoke});await settle();
   const value=page.find('Cutoff point 1 value');value.value='1100';await value.fire('change');await page.ids.get('save').fire('click');await settle();
-  assert.ok(native.calls.findIndex(c=>c.name==='alive_draft')<native.calls.findIndex(c=>c.name==='alive_file'));
+  assert.ok(native.calls.findIndex(c=>c.name==='alive_edit')<native.calls.findIndex(c=>c.name==='alive_file'));
   assert.equal(page.find('Audio callbacks').textContent,'4');assert.equal(page.find('Audio backend').textContent,'PipeWire');assert.equal(page.find('Absolute frame').textContent,'1024');
   assert.equal(page.find('Cutoff effective ownership').textContent,'Automation: 700 Hz');
   view.dispose();
@@ -119,12 +122,12 @@ test('automation base segments follow live controls without rebuilding unchanged
   view.dispose();
 });
 
-test('a rejected draft sync blocks save and keeps local musical edits',async()=>{
+test('a rejected edit restores the authoritative score before a later save',async()=>{
   const page=dom('./alive.html'),native=backend(state()),calls=[];
-  const invoke=async(name,args)=>{calls.push(name);if(name==='alive_draft')throw Error('Draft admission failed');return native.invoke(name,args);};
+  const invoke=async(name,args)=>{calls.push(name);if(name==='alive_edit')throw Error('Draft admission failed');return native.invoke(name,args);};
   const view=mountAlive({...page,invoke});await settle();
-  const pitch=page.find('Note 1 pitch');pitch.value='63';await pitch.fire('change');await page.ids.get('save').fire('click');await settle();
-  assert.equal(calls.includes('alive_file'),false);assert.equal(view.model.pending(),true);assert.equal(view.model.document().tracks[0].notes[0].pitch,63);
+  const pitch=page.find('Note 1 pitch');pitch.value='63';await pitch.fire('change');assert.match(page.ids.get('notice').textContent,/Draft admission failed/);await page.ids.get('save').fire('click');await settle();
+  assert.equal(calls.includes('alive_file'),true);assert.equal(view.model.pending(),false);assert.equal(view.model.document().tracks[0].notes[0].pitch,60);
   view.dispose();
 });
 
@@ -216,7 +219,7 @@ test('stopped reorder and editor commands retain instance identity and instrumen
   const initial=withChain();initial.state.playing=0;
   const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
   await page.find('Move Pulse Stereo Utility effect 1 later').fire('click');
-  assert.deepEqual(native.calls.find(c=>c.name==='alive_device').args,{trackId:'track-1',instanceId:'effect-0',action:'reorder',beforeInstanceId:null,generation:1});
+  assert.deepEqual(native.calls.find(c=>c.name==='alive_device').args,{trackId:'track-1',instanceId:'effect-0',action:'reorder',beforeInstanceId:null,generation:1,draftRevision:0});
   await page.find('Select Pulse Stereo Lowpass effect 2').fire('click');await page.ids.get('edit-device').fire('click');
   assert.deepEqual(native.calls.find(c=>c.name==='alive_editor').args,{instanceId:'effect-1',generation:1});
   assert.ok(page.find('Remove Pulse track'));view.dispose();
@@ -240,4 +243,95 @@ test('new automation points use the current live instance base after polling',as
   await page.find('Add Cutoff point').fire('click');
   assert.equal(view.model.document().tracks[0].automation.find(l=>l.key==='cutoff'&&l.instanceId===initial.document.tracks[0].device.instanceId).points.at(-1).value,3456);
   view.dispose();
+});
+
+test('piano selection is clean and keyboard edits use one authenticated transaction',async()=>{
+  const page=dom('./alive.html'),native=backend(state()),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const svg=page.ids.get('piano-roll'),note=descendants(svg).find(e=>e.attrs['data-note']==='0'&&e.attrs['data-part']==='body');
+  assert.ok(note);await svg.fire('pointerdown',{target:note,pointerId:1,clientX:10,clientY:10});await svg.fire('pointerup',{pointerId:1,clientX:10,clientY:10});
+  assert.equal(native.calls.filter(c=>c.name==='alive_edit').length,0);
+  await svg.fire('keydown',{key:'ArrowRight'});await settle();
+  const edits=native.calls.filter(c=>c.name==='alive_edit');assert.equal(edits.length,1);assert.equal(edits[0].args.document.tracks[0].notes[0].beat,.25);assert.equal(edits[0].args.draftRevision,0);
+  await svg.fire('keydown',{key:'ArrowUp'});await settle();assert.equal(native.calls.filter(c=>c.name==='alive_edit')[1].args.draftRevision,1);
+  view.dispose();
+});
+
+test('pointer previews commit once; cancel, Escape, scope actions and new revisions commit none',async()=>{
+  const page=dom('./alive.html'),native=backend(state()),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const svg=page.ids.get('piano-roll'),body=()=>descendants(svg).find(e=>e.attrs['data-note']==='0'&&e.attrs['data-part']==='body');
+  const down=()=>svg.fire('pointerdown',{target:body(),pointerId:4,clientX:10,clientY:15});
+  await down();await svg.fire('pointermove',{pointerId:4,clientX:12,clientY:15});await svg.fire('pointermove',{pointerId:4,clientX:14,clientY:15});
+  assert.equal(native.calls.filter(c=>c.name==='alive_edit').length,0);await svg.fire('pointerup',{pointerId:4});
+  assert.equal(native.calls.filter(c=>c.name==='alive_edit').length,1);
+  for(const cancel of ['pointercancel','lostpointercapture','Escape','discard','revision']){
+    await down();await svg.fire('pointermove',{pointerId:4,clientX:18,clientY:15});
+    if(cancel==='Escape')await svg.fire('keydown',{key:'Escape'});
+    else if(cancel==='discard')await page.ids.get('discard').fire('click');
+    else if(cancel==='revision'){native.snapshot.draftRevision++;await view.refresh();}
+    else await svg.fire(cancel,{pointerId:4});
+    await svg.fire('pointerup',{pointerId:4});
+    assert.equal(native.calls.filter(c=>c.name==='alive_edit').length,1,cancel);
+  }
+  view.dispose();
+});
+test('velocity preview is one transaction and external live polls do not replace a drag',async()=>{
+  const page=dom('./alive.html'),native=backend(state()),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const svg=page.ids.get('piano-roll'),note=descendants(svg).find(e=>e.attrs['data-note']==='0'&&e.attrs['data-part']==='body');
+  await svg.fire('pointerdown',{target:note,pointerId:4,clientX:10,clientY:15});await svg.fire('pointerup',{pointerId:4});
+  const velocity=page.ids.get('note-velocity');await velocity.fire('pointerdown',{pointerId:6});velocity.value='70';await velocity.fire('input');
+  await view.refresh();assert.equal(velocity.value,70);velocity.value='83';await velocity.fire('input');assert.equal(native.calls.filter(c=>c.name==='alive_edit').length,0);
+  await velocity.fire('change');assert.equal(native.calls.filter(c=>c.name==='alive_edit').length,1);assert.equal(view.model.document().tracks[0].notes[0].velocity,83);
+  view.dispose();
+});
+
+test('file cancellation after an accepted boundary refreshes authoritative revision and history',async()=>{
+  const page=dom('./alive.html'),native=backend(state());let boundary=false;
+  const invoke=async(name,args)=>{if(name==='alive_file'){native.snapshot.document=native.snapshot.draft;native.snapshot.draft=null;native.snapshot.generation++;native.snapshot.draftRevision++;native.snapshot.history={canUndo:false,canRedo:false};boundary=true;return null;}return native.invoke(name,args);};
+  const view=mountAlive({...page,invoke});await settle();const pitch=page.find('Note 1 pitch');pitch.value='63';await pitch.fire('change');await page.ids.get('quit').fire('click');
+  assert.equal(boundary,true);assert.equal(view.model.pending(),false);assert.equal(view.model.document().tracks[0].notes[0].pitch,63);assert.equal(view.model.snapshot().draftRevision,2);assert.equal(page.ids.get('undo').disabled,true);view.dispose();
+});
+
+test('queued numeric edits retain their originating track after a selection change',async()=>{
+  const page=dom('./alive.html'),native=backend(state());let release,blocked=true;
+  const invoke=async(name,args)=>{if(name==='alive_edit'&&blocked){blocked=false;await new Promise(resolve=>{release=resolve;});}return native.invoke(name,args);};
+  const view=mountAlive({...page,invoke});await settle();const tempo=page.ids.get('tempo');tempo.value='130';const first=tempo.fire('change');await settle();
+  const pitch=page.find('Note 1 pitch');pitch.value='61';const second=pitch.fire('change');await settle();await page.find('Select Harmony track').fire('click');release();await first;await second;await settle();
+  assert.equal(native.snapshot.draft.tempo,130);assert.equal(native.snapshot.draft.tracks[0].notes[0].pitch,61);assert.equal(native.snapshot.draft.tracks[1].notes[0].pitch,native.snapshot.document.tracks[1].notes[0].pitch);view.dispose();
+});
+test('Escape cancels a velocity drag including late input and change events',async()=>{
+  const page=dom('./alive.html'),native=backend(state()),view=mountAlive({...page,invoke:native.invoke});await settle();const svg=page.ids.get('piano-roll'),note=descendants(svg).find(e=>e.attrs['data-note']==='0'&&e.attrs['data-part']==='body');
+  await svg.fire('pointerdown',{target:note,pointerId:4,clientX:10,clientY:15});await svg.fire('pointerup',{pointerId:4});const velocity=page.ids.get('note-velocity');
+  await velocity.fire('pointerdown',{pointerId:6});velocity.value='70';await velocity.fire('input');await velocity.fire('keydown',{key:'Escape'});velocity.value='60';await velocity.fire('input');await velocity.fire('change');
+  assert.equal(native.calls.filter(c=>c.name==='alive_edit').length,0);assert.equal(view.model.pending(),false);view.dispose();
+});
+
+test('rejected audio configuration reaches the audio panel error handler',async()=>{
+  const page=dom('./alive.html'),initial=state();initial.audio.running=false;initial.state.playing=0;
+  const native=backend(initial),invoke=async(name,args)=>{if(name==='alive_audio_configure')throw Error('Output does not advertise this buffer');return native.invoke(name,args);};
+  const view=mountAlive({...page,invoke});await settle();await page.ids.get('show-audio').fire('click');await page.ids.get('audio-save').fire('click');
+  assert.match(page.ids.get('audio-settings-notice').textContent,/does not advertise/);view.dispose();
+});
+
+test('automation event rejection restores accepted score and the next edit recovers',async()=>{
+  const page=dom('./alive.html'),native=backend(state());let reject=true;
+  const invoke=async(name,args)=>{if(name==='alive_edit'&&reject){reject=false;throw Error('Automation admission failed');}return native.invoke(name,args);};
+  const view=mountAlive({...page,invoke});await settle();let enable=page.find('Cutoff automation enabled');const original=enable.checked;enable.checked=!original;await enable.fire('change');
+  assert.equal(view.model.pending(),false);assert.match(page.ids.get('notice').textContent,/Automation admission failed/);
+  enable=page.find('Cutoff automation enabled');enable.checked=!original;await enable.fire('change');assert.equal(view.model.pending(),true);assert.equal(native.snapshot.draftRevision,1);view.dispose();
+});
+
+test('a queued note index cannot target another note after a preceding deletion',async()=>{
+  const page=dom('./alive.html'),native=backend(state());let release,blocked=true;
+  const invoke=async(name,args)=>{if(name==='alive_edit'&&blocked){blocked=false;await new Promise(resolve=>{release=resolve;});}return native.invoke(name,args);};
+  const view=mountAlive({...page,invoke});await settle();const remove=page.find('Remove note 1'),pitch=page.find('Note 2 pitch');const original=native.snapshot.document.tracks[0].notes[1].pitch;
+  const first=remove.fire('click');await settle();pitch.value='65';const second=pitch.fire('change');release();await first;await second;await settle();
+  assert.equal(native.snapshot.draft.tracks[0].notes[0].pitch,original);assert.equal(native.snapshot.draft.tracks[0].notes[1].pitch,native.snapshot.document.tracks[0].notes[2].pitch);assert.equal(native.calls.filter(c=>c.name==='alive_edit').length,1);view.dispose();
+});
+
+test('automation point indices also invalidate after a queued deletion',async()=>{
+  const page=dom('./alive.html'),native=backend(state());let release,blocked=true;
+  const invoke=async(name,args)=>{if(name==='alive_edit'&&blocked){blocked=false;await new Promise(resolve=>{release=resolve;});}return native.invoke(name,args);};
+  const view=mountAlive({...page,invoke});await settle();const remove=page.find('Remove Cutoff point 1'),value=page.find('Cutoff point 2 value');
+  const first=remove.fire('click');await settle();value.value='2300';const second=value.fire('change');release();await first;await second;await settle();
+  assert.equal(native.calls.filter(c=>c.name==='alive_edit').length,1);view.dispose();
 });

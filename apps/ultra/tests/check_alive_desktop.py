@@ -316,6 +316,54 @@ def close_effect_editor():
     raise AssertionError('Effect editor Close did not destroy its native window')
 
 
+def piano_history_with_effect_editor():
+    # The effect editor stays alive while the main window edits pending music.
+    windows.focus(MAIN)
+    ui.click('Audio details')  # Close the overlay before focusing the roll.
+    ui.click('Selected clip piano roll')
+    px, py = ui.control_point('Selected clip piano roll', (32 + 2 / 8 * 608) / 640,
+                              (21 + 5.5 * 191 / 39) / 218)
+    for _ in range(2):
+        ui.t.XTestFakeMotionEvent(ui.display, 0, px, py, 0)
+        ui.t.XTestFakeButtonEvent(ui.display, 1, 1, 0)
+        ui.t.XTestFakeButtonEvent(ui.display, 1, 0, 0)
+        ui.x.XFlush(ui.display)
+        time.sleep(.07)
+    time.sleep(.3)
+    assert value('Note 13 pitch') == '80'
+    ui.keys('Right'); time.sleep(.2)
+    ui.keys('Up'); time.sleep(.2)
+    assert value('Note 13 beat') == '2.25' and value('Note 13 pitch') == '81'
+    ui.click('Undo pending edit'); assert value('Note 13 pitch') == '80'
+    ui.click('Redo pending edit'); assert value('Note 13 pitch') == '81'
+    ui.click('Prepare / Apply')
+    wait_value('Session status', lambda s: 'Stop transport' in s)
+    assert value('Note 13 pitch') == '81'
+    assert ui.wait_for('Undo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
+    # Same-generation pending edits/undo do not destroy or borrow the editor's DSP.
+    windows.focus('Pulse - Ultra Hosted Editor')
+    wait_value('Hosted Cutoff base', lambda s: float(s) == 2000)
+    windows.focus(MAIN)
+    ui.click('Audio details')  # Expose transport diagnostics before asserting Stop.
+    transport('stop')
+    ui.click('Prepare / Apply'); time.sleep(.4)
+    assert not any(frame.get_name() == 'Pulse - Ultra Hosted Editor' and
+                   frame.get_state_set().contains(Atspi.StateType.SHOWING)
+                   for frame in windows.app_frames()), 'Apply must close the old editor generation'
+    assert not ui.wait_for('Undo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
+    assert value('Note 13 pitch') == '81'
+    ui.click('Edit selected device in Ultra')
+    windows.focus('Pulse - Ultra Hosted Editor')
+    wait_value('Hosted Cutoff base', lambda s: float(s) == 2000)
+    close_effect_editor()
+    transport('start')
+    ui.click('Audio details')
+    ui.click('Selected clip piano roll')
+    screenshot('piano-history-playing.png')
+    ui.click('Audio details')
+    log('piano add/keyboard/undo/redo with independent effect editor; Stop/Apply/play')
+
+
 def live_chain():
     before = int(value('Audio callbacks'))
     # Native generation counts musical discontinuities, including each loop.
@@ -342,7 +390,7 @@ def live_chain():
     ui.click('Edit selected device in Ultra')
     windows.focus('Pulse - Ultra Hosted Editor')
     wait_value('Hosted Cutoff base', lambda s: float(s) == 2000)
-    close_effect_editor()
+    piano_history_with_effect_editor()
     wait_value('Transport playing', lambda s: s == 'true')
     assert int(value('Audio callbacks')) > before
     ui.click('Harmony clip')
@@ -512,8 +560,15 @@ def run():
     wait_value('Cutoff base', lambda s: float(s) == 1333)
     screenshot('session-playing.png')
     log('two loaded devices, notes/automation prepared, live base/mixer, editor closed/reopened')
+    ui.click('Audio details')
+    numeric('Note 1 pitch', 61)
+    ui.click('Undo pending edit')
+    assert value('Note 1 pitch') == '60'
+    assert ui.wait_for('Redo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
+    ui.click('Audio details')
     source = ui.output / 'journey.alive'
     choose_file('Save session as', 'Save Alive Session', source)
+    assert ui.wait_for('Redo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
     deadline = time.monotonic() + 5
     while time.monotonic() < deadline:
         saved = json.loads(source.read_text())
@@ -531,10 +586,13 @@ def run():
     assert chain['saved_instances'] == chain['prepared_instances']
     assert saved['tracks'][0]['notes'][0]['duration'] == .75
     assert saved['tracks'][0]['notes'][0]['velocity'] == 83
+    assert saved['tracks'][0]['notes'][12] == {'beat': 2.25, 'pitch': 81, 'duration': .25, 'velocity': 100}
     transport('stop')
     wait_value('Track 1 active voices', lambda s: s == '0')
     wait_value('Track 2 active voices', lambda s: s == '0')
     choose_file('Open session', 'Open Alive Session', source)
+    assert value('Note 13 pitch') == '81' and value('Note 13 beat') == '2.25'
+    assert not ui.wait_for('Redo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
     transport('start')
     assert float(value('Cutoff base')) == 1333
     assert float(value('Pulse gain')) == .55
@@ -548,12 +606,18 @@ def run():
     broken['tracks'][0]['device']['path'] = 'missing-device.ultra'
     bad.write_text(json.dumps(broken))
     before = int(value('Absolute frame'))
+    ui.click('Audio details')
+    numeric('Note 1 pitch', 61)
+    ui.click('Audio details')
     choose_file('Open session', 'Open Alive Session', bad)
     time.sleep(.4)
     assert value('Transport playing') == 'true'
     assert int(value('Absolute frame')) > before
     assert float(value('Cutoff base')) == 1333
     wait_value('Session status', lambda s: 'missing-device' in s)
+    assert value('Note 1 pitch') == '61'
+    assert ui.wait_for('Undo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
+    ui.click('Discard edits')
     changed = json.loads(Path(chain['utility_source']).read_text())
     changed['nodes'][0]['x'] += 1
     Path(chain['utility_source']).write_text(json.dumps(changed))
@@ -627,6 +691,25 @@ def run():
               'process_tree_samples': samples, 'final_audio': final, 'operations': operations}
     (ui.output / 'native-session-report.json').write_text(json.dumps(report, indent=2))
     screenshot('session-device-removed.png')
+    # An explicitly accepted musical boundary survives cancellation of a later dialog.
+    ui.click('Audio details')
+    numeric('Note 1 velocity', 82)
+    ui.click('Quit Alive')
+    windows.focus('Pending Schedule Edits'); ui.click('Apply edits')
+    windows.focus('Unsaved Alive Session'); ui.click('Cancel')
+    windows.focus(MAIN)
+    assert value('Note 1 velocity') == '82'
+    assert not ui.wait_for('Undo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
+    numeric('Note 1 velocity', 81)
+    ui.click('Save session as')
+    windows.focus('Pending Schedule Edits'); ui.click('Discard edits')
+    focus_chooser('Save Alive Session'); ui.click('Cancel')
+    windows.focus(MAIN)
+    assert value('Note 1 velocity') == '82'
+    assert not ui.wait_for('Undo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
+    report['accepted_apply_outer_quit_cancel_cleared_history'] = True
+    report['accepted_discard_canceled_save_picker_cleared_history'] = True
+    ui.click('Audio details')
     request_native_close()
     windows.focus('Unsaved Alive Session')
     ui.click('Cancel')

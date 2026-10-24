@@ -1,4 +1,4 @@
-# Alive: Instruments And Effect Chains
+# Alive: Piano Roll, Instruments And Effect Chains
 
 Alive is a separate `alive` executable with a compact Rust/Tauri session UI.
 Ultra remains the `ultra` patch-editor executable. Both share the native engine
@@ -72,9 +72,22 @@ choose a replacement; rejected settings preserve the previous saved values.
 - Start/Stop share one native audio frame clock. Seek uses beats within the
   prepared clip, and Loop repeats the session length. Space works outside
   focused controls. Meters show post-mixer callback peaks, including the master.
-- Select a clip to edit note beat, pitch, duration and velocity. Tempo, length,
-  looping and step-automation changes are retained as a draft. Stop, then choose
-  Prepare / Apply. Rejected preparation leaves the current session intact.
+- Select a clip for its interactive piano roll and precise numeric note fields.
+  Double-click empty grid to add a velocity-100, quarter-beat note. Select a note,
+  drag its body to move or its right edge to resize, or use arrows (Shift plus
+  Left/Right resizes). Delete/Backspace removes the selected note while the roll
+  has focus. The selected velocity slider commits once per gesture. Escape or
+  pointer cancellation restores the committed score. The fixed 1/16-note grid is
+  0.25 quarter-note beat; movement preserves imported off-grid offsets.
+- Tempo, length, looping, notes and step automation share Rust-owned pending-edit
+  history. Undo pending edit / Redo pending edit, or Ctrl/Cmd+Z while the roll has
+  focus, affect this musical scope only. History retains at most 64 entries and
+  8 MiB of combined musical payload; it excludes live bases, bypass and mixer.
+  Drafting works during playback. Stop, then choose Prepare / Apply; this begins
+  a new history scope. Discard, successful New/Open and structural changes also
+  clear the scope. Failed preparation retains the accepted draft and history.
+  Length reductions that truncate notes/automation and rounded-frame same-pitch
+  overlaps reject with a recovery message. Existing Ultra editor undo is separate.
 - Gain, mute, solo, device base values and effect bypass operate live. Bypass
   preserves warm device state and leaves audio I/O running. Parameter controls
   come from each selected instance's manifest; identical reusable devices retain

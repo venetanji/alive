@@ -49,3 +49,9 @@ test('independent same-source effects merge by instance identity while retaining
   assert.equal(model.document().tracks[0].effects[1].bypassed,true);
   assert.deepEqual(model.document().tracks[0].effects.map(e=>e.instanceId),['a','b']);
 });
+
+test('older polling responses cannot replace a newer authoritative musical revision',()=>{
+  const model=createAliveModel(),a={...snapshot(),draftRevision:4,draft:null};model.accept(a);
+  const b=structuredClone(a);b.draftRevision=5;b.draft=structuredClone(b.document);b.draft.tempo=140;model.accept(b);model.accept(a);
+  assert.equal(model.document().tempo,140);assert.equal(model.snapshot().draftRevision,5);
+});

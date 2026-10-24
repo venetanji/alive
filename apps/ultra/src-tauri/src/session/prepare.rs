@@ -71,6 +71,33 @@ pub fn prepare(session: &Session, path: &Path) -> Result<PreparedSession, String
         if position == 0 && reference.bypassed { return Err(context("Instrument bypass is unsupported".into())); }
         result.devices.push(device);
     }
+    compile_music(session, &mut result)?;
+    for track in &mut result.document.tracks {
+        for reference in track.devices_mut() {
+            let device = result.devices.iter().find(|d| d.instance_id == reference.instance_id).unwrap();
+            reference.parameters = device.manifest.parameters.iter().map(|p| (p.key.clone(), p.base)).collect();
+        }
+    }
+    result.events.sort_by_key(|e| (e.frame, e.kind, e.track, e.device, e.target));
+    if result.events.len() > 1024 { return Err("Session exceeds 1024 scheduled events".into()); }
+    validate_density(&result.events, length_frames, session.loop_enabled)?;
+    Ok(result)
+}
+
+// Admission uses the current manifests only; dependency/hash and density checks stay at Apply.
+pub(super) fn validate_musical(session: &Session, prepared: &PreparedSession) -> Result<(), String> {
+    text(&session.title,128,"Session title")?;
+    bounded(session.tempo,30.,240.,"Tempo")?;
+    bounded(session.length_beats,1./64.,256.,"Clip length")?;
+    for track in &session.tracks { text(&track.name,64,"Track name")?; }
+    let mut score=prepared.clone();score.events.clear();score.tracks.clear();
+    score.length_frames=(session.length_beats*48_000.*60./session.tempo).round() as u64;
+    compile_music(session,&mut score)
+}
+fn compile_music(session: &Session, result: &mut PreparedSession) -> Result<(), String> {
+    let frames_per_beat=48_000.*60./session.tempo;
+    let frame=|beat:f64|(beat*frames_per_beat).round() as u64;
+    let length_frames=result.length_frames;
     for (index, track) in session.tracks.iter().enumerate() {
         let context = |error: String| format!("Track '{}' ({}): {error}", track.name, track.device.path);
         bounded(track.gain, 0., 2., "Track gain").map_err(context)?;
@@ -118,16 +145,7 @@ pub fn prepare(session: &Session, path: &Path) -> Result<PreparedSession, String
         }
         result.tracks.push(PreparedTrack { instrument, effects });
     }
-    for track in &mut result.document.tracks {
-        for reference in track.devices_mut() {
-            let device = result.devices.iter().find(|d| d.instance_id == reference.instance_id).unwrap();
-            reference.parameters = device.manifest.parameters.iter().map(|p| (p.key.clone(), p.base)).collect();
-        }
-    }
-    result.events.sort_by_key(|e| (e.frame, e.kind, e.track, e.device, e.target));
-    if result.events.len() > 1024 { return Err("Session exceeds 1024 scheduled events".into()); }
-    validate_density(&result.events, length_frames, session.loop_enabled)?;
-    Ok(result)
+    Ok(())
 }
 
 pub fn binding_value(binding: &canvas::device::HostParameter, value: f64) -> Result<(), String> {
