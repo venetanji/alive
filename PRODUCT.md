@@ -30,8 +30,13 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   host harness form the reusable-device slice. Alive now loads that same saved
   device independently on up to two tracks through its versioned interface.
   A native shared transport plays editable chord clips with note velocity and
-  duration, cutoff/level automation, gain/mute/solo and stereo peak meters.
-  Session files preserve references/bases, musical data and mixer values.
+  duration, metadata-selected instance/parameter automation, gain/mute/solo and
+  stereo peak meters. Each selected-track chain exposes an instrument and up to
+  two ordered stereo effects, live bases/effect bypass and optional instance editors.
+  Canonical session-v2 files preserve independent instance IDs, original-source
+  fingerprints, order, bases, bypass, musical data and mixer values. Existing
+  session-v1 examples migrate on Open. Original cutoff/level lanes remain;
+  prepared automation owns effective values while musical edits remain drafts.
   Optional hosted Ultra graph editors make supported bound parameter edits
   without owning DSP lifetime. Clip/automation and device structure changes
   require stopped preparation; the first hosted graph view is read-only for
@@ -78,8 +83,11 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   version 1 instrument files remain valid. Stereo Utility and Stereo Lowpass
   are authored saved graphs with live controls and presets. `audio.in~` reads
   explicit host audio (silence in ordinary Ultra roots); `lowpass.stereo~` reuses
-  the existing Faust filter kernel. Alive session-v1 still admits instruments
-  only while chain hosting remains pending.
+  the existing Faust filter kernel. Alive hosts their saved graphs in its
+  current two-track, six-instance profile. Add/remove/reorder/replacement require
+  stopped preparation; live bypass preserves warm state without restarting I/O.
+  Selection does not launch playback. This slice adds no piano-roll gestures,
+  clip banks, additional tracks or alternate DSP path.
 - Supported object names and arguments must be explicit. Unsupported objects
   must be rejected visibly. Familiar appearance does not imply Max compatibility.
 - Linux desktop is the shipped target. A smaller browser preview supports

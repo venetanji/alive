@@ -48,9 +48,11 @@ function backend(initial){
     if(name==='alive_current')return structuredClone(snapshot);
     if(name==='alive_draft'){snapshot.draft=args.document;return;}
     if(name==='alive_base'){
-      const binding=snapshot.devices[snapshot.deviceInstances[args.instanceId].index].parameters.find(p=>p.key===args.key);binding.base=args.value;snapshot.document.tracks[snapshot.deviceInstances[args.instanceId].track].device.parameters[args.key]=args.value;
+      const owner=snapshot.deviceInstances[args.instanceId],binding=owner.manifest.parameters.find(p=>p.key===args.key),track=snapshot.document.tracks[owner.track];binding.base=args.value;[track.device,...track.effects].find(d=>d.instanceId===args.instanceId).parameters[args.key]=args.value;
       if(snapshot.patch)snapshot.patch.nodes.find(n=>n.id===binding.node).params[binding.param]=args.value;return;
     }
+    if(name==='alive_device')return structuredClone(snapshot);
+    if(name==='alive_bypass'){const owner=snapshot.deviceInstances[args.instanceId],track=snapshot.document.tracks[owner.track];[track.device,...track.effects].find(d=>d.instanceId===args.instanceId).bypassed=args.bypassed;return;}
     if(name==='alive_file')return structuredClone(snapshot);
     if(name==='alive_audio_devices')return {config:snapshot.audio.config,hosts:['PipeWire'],effective_host:'PipeWire',devices:[{id:'default',name:'Default',compatible:true},{id:'speakers',name:'Speakers',compatible:true}],notice:''};
     if(name==='alive_audio_configure'){snapshot.audio.config=args.config;return;}
@@ -164,5 +166,78 @@ test('an effect editor owns its own manifest patch state and instance command',a
   assert.match(page.find('Hosted Gain effective ownership').textContent,/Automation: 0.5/);
   const input=page.find('Hosted Gain base');assert.ok(input);input.value='.7';await input.fire('change');await settle();
   assert.deepEqual(calls.find(c=>c.name==='alive_base').args,{instanceId,key:'gain',value:.7,generation:1});
+  view.dispose();
+});
+
+function withChain(){
+  const initial=state();
+  for(const [index,file] of ['utility','stereo-lowpass'].entries()){
+    const patch=JSON.parse(readFileSync(new URL(`../examples/${file}.ultra`,import.meta.url),'utf8'));
+    const instanceId=`effect-${index}`,manifest={...patch.device,parameters:patch.device.parameters.map(p=>({...p,base:p.key==='gain'?1:p.key==='resonance'?.7:2400,integral:false}))};
+    initial.document.tracks[0].effects.push({instanceId,id:manifest.id,path:`${file}.ultra`,version:2,sourceSha256:'0'.repeat(64),parameters:Object.fromEntries(manifest.parameters.map(p=>[p.key,p.base])),bypassed:false});
+    initial.deviceInstances[instanceId]={index:index+2,track:0,manifest};initial.state.devices.push({effective:manifest.parameters.map(()=>.5),owned:manifest.parameters.map(()=>1)});
+  }
+  return initial;
+}
+
+test('chain selection uses stable instance metadata without launching and live bypass retains transport',async()=>{
+  const initial=withChain(),page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  assert.ok(page.find('Select Pulse Stereo Utility effect 1'));
+  assert.equal(page.find('Bypass Pulse Subtractive instrument').disabled,true);
+  await page.find('Select Pulse Stereo Lowpass effect 2').fire('click');
+  assert.equal(page.ids.get('device-title').textContent,'Stereo Lowpass');
+  assert.equal(page.find('Cutoff effective ownership').textContent,'Automation: 0.5 Hz');
+  assert.equal(native.calls.some(c=>c.name==='alive_editor'||c.name==='alive_transport'),false);
+  const cutoff=page.find('Cutoff base');cutoff.value='1400';await cutoff.fire('change');
+  assert.deepEqual(native.calls.find(c=>c.name==='alive_base').args,{instanceId:'effect-1',key:'cutoff',value:1400,generation:1});
+  await page.find('Bypass Pulse Stereo Lowpass effect 2').fire('click');
+  assert.deepEqual(native.calls.find(c=>c.name==='alive_bypass').args,{instanceId:'effect-1',bypassed:true,generation:1});
+  assert.equal(native.calls.some(c=>c.name==='alive_audio'||c.name==='alive_transport'),false);
+  assert.equal(page.find('Move Pulse Stereo Utility effect 1 later').disabled,true);
+  assert.match(page.ids.get('chain-status').textContent,/Stop transport/);
+  view.dispose();
+});
+
+test('metadata automation targets distinguish matching keys across instances and preserve original lanes',async()=>{
+  const initial=withChain(),page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const target=page.ids.get('automation-target');
+  assert.equal(target.children.length,10);
+  target.value=JSON.stringify(['effect-1','cutoff']);await target.fire('change');await page.ids.get('add-lane').fire('click');
+  const original=view.model.document().tracks[0].automation.find(l=>l.instanceId===initial.document.tracks[0].device.instanceId&&l.key==='cutoff');
+  assert.ok(original.points.length);
+  await page.find('Add Stereo Lowpass effect 2 / Cutoff point').fire('click');
+  assert.deepEqual(view.model.document().tracks[0].automation.find(l=>l.instanceId==='effect-1'&&l.key==='cutoff'),{instanceId:'effect-1',key:'cutoff',enabled:false,points:[{beat:0,value:2400}]});
+  assert.equal(page.find('Move Pulse Stereo Utility effect 1 later').disabled,true);
+  assert.match(page.ids.get('chain-status').textContent,/Apply or discard/);
+  view.dispose();
+});
+
+test('stopped reorder and editor commands retain instance identity and instrument removal names its track scope',async()=>{
+  const initial=withChain();initial.state.playing=0;
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  await page.find('Move Pulse Stereo Utility effect 1 later').fire('click');
+  assert.deepEqual(native.calls.find(c=>c.name==='alive_device').args,{trackId:'track-1',instanceId:'effect-0',action:'reorder',beforeInstanceId:null,generation:1});
+  await page.find('Select Pulse Stereo Lowpass effect 2').fire('click');await page.ids.get('edit-device').fire('click');
+  assert.deepEqual(native.calls.find(c=>c.name==='alive_editor').args,{instanceId:'effect-1',generation:1});
+  assert.ok(page.find('Remove Pulse track'));view.dispose();
+});
+
+test('selecting the current clip retains its separate device selection and rejected mutations preserve the chain',async()=>{
+  const initial=withChain();initial.state.playing=0;
+  const page=dom('./alive.html'),native=backend(initial),invoke=async(name,args)=>{if(name==='alive_device')throw Error('Changed source: use Replace to load utility.ultra');return native.invoke(name,args);};
+  const view=mountAlive({...page,invoke});await settle();
+  await page.find('Select Pulse Stereo Utility effect 1').fire('click');await page.find('Pulse clip').fire('click');
+  assert.equal(page.ids.get('device-title').textContent,'Stereo Utility');
+  await page.find('Remove Pulse Stereo Utility effect 1').fire('click');await settle();
+  assert.equal(view.model.document().tracks[0].effects.length,2);
+  assert.equal(page.ids.get('device-title').textContent,'Stereo Utility');assert.match(page.ids.get('notice').textContent,/Replace.*utility/);
+  view.dispose();
+});
+
+test('new automation points use the current live instance base after polling',async()=>{
+  const initial=withChain(),page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const input=page.find('Cutoff base');input.value='3456';await input.fire('change');
+  await page.find('Add Cutoff point').fire('click');
+  assert.equal(view.model.document().tracks[0].automation.find(l=>l.key==='cutoff'&&l.instanceId===initial.document.tracks[0].device.instanceId).points.at(-1).value,3456);
   view.dispose();
 });

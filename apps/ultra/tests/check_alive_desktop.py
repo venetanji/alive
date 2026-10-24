@@ -77,35 +77,79 @@ def transport(action):
     wait_value('Transport playing', lambda s: s == str(action == 'start').lower())
 
 
+class WindowAttributes(C.Structure):
+    _fields_ = [('x', C.c_int), ('y', C.c_int), ('width', C.c_int), ('height', C.c_int),
+                ('border_width', C.c_int), ('depth', C.c_int), ('visual', C.c_void_p),
+                ('root', C.c_ulong), ('window_class', C.c_int), ('bit_gravity', C.c_int),
+                ('win_gravity', C.c_int), ('backing_store', C.c_int), ('backing_planes', C.c_ulong),
+                ('backing_pixel', C.c_ulong), ('save_under', C.c_int), ('colormap', C.c_ulong),
+                ('map_installed', C.c_int), ('map_state', C.c_int), ('all_event_masks', C.c_long),
+                ('your_event_mask', C.c_long), ('do_not_propagate_mask', C.c_long),
+                ('override_redirect', C.c_int), ('screen', C.c_void_p)]
+
+
+def focus_chooser(title):
+    ui.x.XGetWindowAttributes.argtypes = [C.c_void_p, C.c_ulong, C.POINTER(WindowAttributes)]
+    windows.scope = title
+    candidates = []
+    for _ in range(80):
+        root = C.c_ulong(); parent = C.c_ulong(); children = C.POINTER(C.c_ulong)(); count = C.c_uint()
+        ui.x.XQueryTree(ui.display, ui.x.XDefaultRootWindow(ui.display), C.byref(root), C.byref(parent), C.byref(children), C.byref(count))
+        matched = None
+        try:
+            for index in range(count.value):
+                name = C.c_char_p()
+                if ui.x.XFetchName(ui.display, children[index], C.byref(name)) and name.value:
+                    text = name.value.decode('utf-8', errors='replace')
+                    ui.x.XFree(name)
+                    if text == title:
+                        attributes = WindowAttributes()
+                        assert ui.x.XGetWindowAttributes(ui.display, children[index], C.byref(attributes))
+                        candidates.append({'title': title, 'window': int(children[index]), 'map_state': attributes.map_state})
+                        if attributes.map_state == 2:  # IsViewable; GTK may retain an unmapped chooser with the same title.
+                            matched = children[index]
+                            break
+        finally:
+            if children: ui.x.XFree(children)
+        if matched:
+            ui.x.XResizeWindow(ui.display, matched, 1000, 740)
+            ui.x.XMoveWindow(ui.display, matched, 0, 0)
+            ui.x.XRaiseWindow(ui.display, matched)
+            ui.x.XSetInputFocus(ui.display, matched, 2, 0)
+            ui.x.XFlush(ui.display)
+            with (ui.output / 'chooser-focus.jsonl').open('a') as stream:
+                stream.write(json.dumps(candidates) + '\n')
+            time.sleep(.2)
+            return
+        time.sleep(.1)
+    raise AssertionError('Native chooser did not become viewable: ' + title)
+
+
 def choose_file(button, title, path):
     ui.click(button)
-    windows.focus(title)
-    root = C.c_ulong(); parent = C.c_ulong(); children = C.POINTER(C.c_ulong)(); count = C.c_uint()
-    ui.x.XQueryTree(ui.display, ui.x.XDefaultRootWindow(ui.display), C.byref(root), C.byref(parent), C.byref(children), C.byref(count))
-    try:
-        for index in range(count.value):
-            name = C.c_char_p()
-            if ui.x.XFetchName(ui.display, children[index], C.byref(name)) and name.value:
-                text = name.value.decode('utf-8', errors='replace')
-                ui.x.XFree(name)
-                if text == title:
-                    ui.x.XResizeWindow(ui.display, children[index], 1000, 740)
-                    ui.x.XMoveWindow(ui.display, children[index], 0, 0)
-                    ui.x.XFlush(ui.display)
-    finally:
-        if children: ui.x.XFree(children)
-    # GTK can finish its initial focus transition after the X window maps.
     time.sleep(.6)
-    windows.focus(title)
-    for _ in range(3):
-        ui.keys('Control_L', 'l')
-        time.sleep(.3)
-        try:
-            ui.find('Native filename entry')
-            break
-        except StopIteration:
-            continue
-    ui.text('Native filename entry', str(path))
+    focus_chooser(title)
+    if title == 'Save Alive Session':
+        frame = next(frame for frame in windows.app_frames() if frame.get_name() == title)
+        entry = next(node for node in ui.walk(frame) if 'EditableText' in node.get_interfaces()
+                     and node.get_state_set().contains(Atspi.StateType.SHOWING))
+        assert Atspi.EditableText.set_text_contents(entry, str(path))
+    else:
+        for _ in range(3):
+            focus_chooser(title)
+            # Give the GTK file pane focus before its location shortcut.
+            ui.t.XTestFakeMotionEvent(ui.display, 0, 450, 250, 0)
+            ui.t.XTestFakeButtonEvent(ui.display, 1, 1, 0)
+            ui.t.XTestFakeButtonEvent(ui.display, 1, 0, 0)
+            ui.x.XFlush(ui.display)
+            ui.keys('slash')
+            time.sleep(.3)
+            try:
+                ui.find('Native filename entry')
+                break
+            except StopIteration:
+                continue
+        ui.text('Native filename entry', str(path))
     ui.click('Save' if title == 'Save Alive Session' else 'Open')
     deadline = time.monotonic() + 8
     while time.monotonic() < deadline:
@@ -212,6 +256,104 @@ def editor_edit(number=950):
         raise AssertionError('Hosted Close did not destroy the editor window')
     windows.focus(MAIN)
     wait_value('Transport playing', lambda s: s == 'true')
+
+
+def automation_target(index):
+    Atspi.Component.grab_focus(ui.wait_for('Automation target'))
+    ui.keys('Home')
+    for _ in range(index):
+        ui.keys('Down')
+    ui.keys('Return')
+    ui.keys('Escape')
+    ui.click('Add automation lane')
+
+
+def prepare_chain():
+    utility = ui.output / 'journey-utility.ultra'
+    lowpass = ui.output / 'journey-lowpass.ultra'
+    utility.write_bytes(Path('apps/ultra/examples/utility.ultra').read_bytes())
+    lowpass.write_bytes(Path('apps/ultra/examples/stereo-lowpass.ultra').read_bytes())
+    ui.click('Pulse clip')
+    choose_file('Add effect', 'Load Ultra Device', utility)
+    choose_file('Add effect', 'Load Ultra Device', lowpass)
+    # Reordering twice must preserve identities and restore the saved signal order.
+    ui.click('Move Pulse Stereo Utility effect 1 later')
+    ui.wait_for('Select Pulse Stereo Utility effect 2')
+    ui.click('Move Pulse Stereo Utility effect 2 earlier')
+    ui.wait_for('Select Pulse Stereo Lowpass effect 2')
+    # Another Utility with the same reusable ID/key belongs to Harmony alone.
+    ui.click('Harmony clip')
+    choose_file('Add effect', 'Load Ultra Device', utility)
+    ui.click('Select Harmony Stereo Utility effect 1')
+    numeric('Gain base', .85)
+    ui.click('Pulse clip')
+    ui.click('Select Pulse Stereo Utility effect 1')
+    numeric('Gain base', .6)
+    ui.click('Select Pulse Stereo Lowpass effect 2')
+    numeric('Cutoff base', 1800)
+    numeric('Resonance base', .9)
+    screenshot('chain-prepared-audit.png')
+    ui.click('Select Pulse Subtractive instrument')
+    # Both original instrument cutoff and effect cutoff remain independently editable.
+    automation_target(8)
+    ui.click('Stereo Lowpass effect 2 / Cutoff automation enabled')
+    ui.click('Add Stereo Lowpass effect 2 / Cutoff point')
+    numeric('Stereo Lowpass effect 2 / Cutoff point 1 value', 1200)
+    screenshot('automation-audit.png')
+    return {'utility_source': str(utility), 'lowpass_source': str(lowpass)}
+
+
+def close_effect_editor():
+    ui.click('Close hosted editor')
+    deadline = time.monotonic() + 5
+    while time.monotonic() < deadline:
+        if not any(frame.get_name() == 'Pulse - Ultra Hosted Editor' and
+                   frame.get_state_set().contains(Atspi.StateType.SHOWING)
+                   for frame in windows.app_frames()):
+            windows.focus(MAIN)
+            return
+        time.sleep(.1)
+    raise AssertionError('Effect editor Close did not destroy its native window')
+
+
+def live_chain():
+    before = int(value('Audio callbacks'))
+    # Native generation counts musical discontinuities, including each loop.
+    ui.click('Select Pulse Stereo Utility effect 1')
+    numeric('Gain base', .65)
+    ui.click('Bypass Pulse Stereo Utility effect 1')
+    ui.click('Bypass Pulse Stereo Utility effect 1')
+    ui.click('Select Pulse Stereo Lowpass effect 2')
+    numeric('Cutoff base', 1900)
+    wait_value('Cutoff effective ownership', lambda s: 'Automation: 1200' in s)
+    ui.click('Audio details')
+    numeric('Stereo Lowpass effect 2 / Cutoff point 1 value', 1500)
+    wait_value('Cutoff effective ownership', lambda s: 'Automation: 1200' in s)
+    assert value('Stereo Lowpass effect 2 / Cutoff point 1 value') == '1500'
+    screenshot('automation-draft-audit.png')
+    ui.click('Discard edits')
+    ui.click('Audio details')
+    ui.click('Edit selected device in Ultra')
+    windows.focus('Pulse - Ultra Hosted Editor')
+    numeric('Hosted Cutoff base', 2000)
+    wait_value('Hosted Cutoff effective ownership', lambda s: 'Automation: 1200' in s)
+    screenshot('effect-editor-audit.png')
+    close_effect_editor()
+    ui.click('Edit selected device in Ultra')
+    windows.focus('Pulse - Ultra Hosted Editor')
+    wait_value('Hosted Cutoff base', lambda s: float(s) == 2000)
+    close_effect_editor()
+    wait_value('Transport playing', lambda s: s == 'true')
+    assert int(value('Audio callbacks')) > before
+    ui.click('Harmony clip')
+    ui.click('Select Harmony Stereo Utility effect 1')
+    assert float(value('Gain base')) == .85
+    ui.click('Pulse clip')
+    ui.click('Select Pulse Stereo Utility effect 1')
+    assert float(value('Gain base')) == .65
+    ui.click('Bypass Pulse Stereo Utility effect 1')
+    ui.click('Select Pulse Subtractive instrument')
+    screenshot('chain-playing-audit.png')
 
 
 def request_native_close():
@@ -335,6 +477,8 @@ def run():
     # Exercise native device loading twice; each track keeps an independent root.
     choose_file('Replace Pulse device', 'Load Ultra Device', DEVICE)
     choose_file('Replace Harmony device', 'Load Ultra Device', DEVICE)
+    ui.click('Audio details')  # Keep the lower automation controls unobscured.
+    chain = prepare_chain()
     # Replacement intentionally clears lanes, so explicitly author both enabled lanes.
     ui.click('Pulse clip')
     numeric('Tempo', 116)
@@ -349,8 +493,15 @@ def run():
         numeric(f'{label} point 2 value', second)
     ui.click('Prepare / Apply')
     time.sleep(.5)
+    before_reorder = ui.output / 'before-reorder.alive'
+    choose_file('Save session as', 'Save Alive Session', before_reorder)
+    chain['prepared_instances'] = [d['instanceId'] for d in json.loads(before_reorder.read_text())['tracks'][0]['effects']]
+    ui.click('Move Pulse Stereo Utility effect 1 later')
+    ui.click('Move Pulse Stereo Utility effect 2 earlier')
+    ui.click('Audio details')
     transport('start')
     capture = start_capture('native-walkthrough')
+    live_chain()
     numeric('Cutoff base', 1777)
     wait_value('Cutoff effective ownership', lambda s: 'Automation' in s and '1777' not in s)
     numeric('Pulse gain', .55)
@@ -370,6 +521,14 @@ def run():
             break
         time.sleep(.1)
     assert saved['tempo'] == 116 and saved['tracks'][0]['gain'] == .55
+    effects = saved['tracks'][0]['effects']
+    assert [d['id'] for d in effects] == ['org.alive.utility', 'org.alive.stereo-lowpass']
+    assert effects[0]['parameters']['gain'] == .65 and effects[1]['parameters']['cutoff'] == 2000
+    assert effects[0]['bypassed'] is True and effects[1]['bypassed'] is False
+    assert saved['tracks'][1]['effects'][0]['parameters']['gain'] == .85
+    assert any(l['instanceId'] == effects[1]['instanceId'] and l['key'] == 'cutoff' and l['points'][0]['value'] == 1200 for l in saved['tracks'][0]['automation'])
+    chain['saved_instances'] = [d['instanceId'] for d in effects]
+    assert chain['saved_instances'] == chain['prepared_instances']
     assert saved['tracks'][0]['notes'][0]['duration'] == .75
     assert saved['tracks'][0]['notes'][0]['velocity'] == 83
     transport('stop')
@@ -379,6 +538,10 @@ def run():
     transport('start')
     assert float(value('Cutoff base')) == 1333
     assert float(value('Pulse gain')) == .55
+    ui.click('Select Pulse Stereo Lowpass effect 2')
+    assert float(value('Cutoff base')) == 2000
+    wait_value('Cutoff effective ownership', lambda s: 'Automation: 1200' in s)
+    ui.click('Select Pulse Subtractive instrument')
     # Prospective dependency failure must keep the active session and clock running.
     bad = ui.output / 'missing-device.alive'
     broken = json.loads(source.read_text())
@@ -390,7 +553,17 @@ def run():
     assert value('Transport playing') == 'true'
     assert int(value('Absolute frame')) > before
     assert float(value('Cutoff base')) == 1333
-    log('saved/reopened/playing; missing device rejected preserving session')
+    wait_value('Session status', lambda s: 'missing-device' in s)
+    changed = json.loads(Path(chain['utility_source']).read_text())
+    changed['nodes'][0]['x'] += 1
+    Path(chain['utility_source']).write_text(json.dumps(changed))
+    choose_file('Open session', 'Open Alive Session', source)
+    wait_value('Session status', lambda s: 'Replace' in s and 'journey-utility' in s)
+    assert value('Transport playing') == 'true'
+    assert int(value('Absolute frame')) > before
+    # Restore the admitted source so later Save can validate its fingerprint.
+    Path(chain['utility_source']).write_bytes(Path('apps/ultra/examples/utility.ultra').read_bytes())
+    log('saved/reopened/playing; missing and changed effect source rejected preserving session')
     walkthrough = finish_capture(capture)
     assert walkthrough['peak'] > 1e-4
     # Keep a bounded, repeating native workload alive for at least the requested
@@ -438,11 +611,15 @@ def run():
     transport('stop')
     ui.click('Save session')
     # Device removal runs while stopped, after every voice has terminated.
-    ui.click('Remove Harmony device'); time.sleep(.4)
+    ui.click('Harmony clip')
+    ui.click('Remove Harmony Stereo Utility effect 1'); time.sleep(.3)
+    assert value('Track 1 active voices') == '0'
+    choose_file('Replace Harmony device', 'Load Ultra Device', DEVICE)
+    ui.click('Remove Harmony track'); time.sleep(.4)
     assert value('Track 2 active voices') == '0'
     report = {'kind': 'actual native Tauri application; private Xvfb + software PipeWire loopback',
               'entrypoints': entrypoints,
-              'audio_settings': audio_settings,
+              'audio_settings': audio_settings, 'chain': chain,
               'hardware': platform.uname()._asdict(), 'cpu': subprocess.check_output(['lscpu'], text=True),
               'physical_audio': False, 'underruns': 'not exposed by CPAL; no count claimed',
               'walkthrough': walkthrough, 'endurance': sustained,
@@ -457,6 +634,17 @@ def run():
     transport('start')
     report['quit_cancel_preserved_session'] = True
     report['native_window_close_reached_dirty_guard'] = True
+    ui.click('Audio details')
+    numeric('Note 1 pitch', 63)
+    ui.click('Quit Alive')
+    windows.focus('Pending Schedule Edits')
+    ui.click('Cancel')
+    windows.focus(MAIN)
+    assert value('Note 1 pitch') == '63'
+    ui.click('Discard edits')
+    ui.click('Audio details')
+    wait_value('Transport playing', lambda s: s == 'true')
+    report['pending_draft_quit_cancel_retained_edits_and_playback'] = True
     ui.click('Quit Alive')
     windows.focus('Unsaved Alive Session')
     ui.click('Discard')

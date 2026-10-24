@@ -1,9 +1,13 @@
-# Alive: First Hosted Session
+# Alive: Instruments And Effect Chains
 
 Alive is a separate `alive` executable with a compact Rust/Tauri session UI.
 Ultra remains the `ultra` patch-editor executable. Both share the native engine
-and Rust library; Alive hosts saved Ultra instruments through the version-1 device manifest and
-native Faust evaluator. The example references the original subtractive device
+and Rust library; Alive hosts saved Ultra instruments and ordered stereo effect
+chains through versioned device manifests and the native Faust evaluator. Canonical
+`alive-session-v2` files preserve instance IDs, original-source fingerprints,
+ordered effects, parameter bases, bypass and automation targets. Existing
+session-v1 examples migrate on Open; version-1 instrument manifests remain valid.
+The example references the original subtractive device
 twice; it does not contain a copied patch or a fixed synthesizer implementation.
 
 ## Run
@@ -48,8 +52,12 @@ the Windows or macOS artifacts.
 The default First Light session contains Pulse and Harmony instrument tracks,
 an eight-beat C / Am / F / G progression, and cutoff/level automation. New
 creates a fresh copy of this template. Replace loads a saved `.ultra` device
-on a stopped track; Remove and Add instrument allow a one-track session to
-return to two tracks. The first profile requires at least one instrument track.
+on a stopped track; Remove track and Add instrument allow a one-track session to
+return to two tracks. Select a track to see its instrument followed by up to two
+stereo effects. Add effect loads a saved `.ultra` effect such as the bundled
+Stereo Utility or Stereo Lowpass. Earlier / Later changes the effect order.
+Selection changes the visible controls without starting playback. The first
+profile requires at least one instrument track.
 Audio uses the shared CPAL driver at 48 kHz, with its own application settings
 directory and system-default output on first launch. Open Audio settings in the
 footer to choose the output host/device and Automatic or a requested buffer.
@@ -67,16 +75,30 @@ choose a replacement; rejected settings preserve the previous saved values.
 - Select a clip to edit note beat, pitch, duration and velocity. Tempo, length,
   looping and step-automation changes are retained as a draft. Stop, then choose
   Prepare / Apply. Rejected preparation leaves the current session intact.
-- Gain, mute, solo and device base values operate live. Enabled automation owns
+- Gain, mute, solo, device base values and effect bypass operate live. Bypass
+  preserves warm device state and leaves audio I/O running. Parameter controls
+  come from each selected instance's manifest; identical reusable devices retain
+  independent bases and state. Enabled automation owns
   effective values during playback. Changing a base stores it for Stop or for
   playback without that lane; it does not override automation. Both are shown.
-- Editor opens an optional Ultra graph view of the actual hosted device.
+  The automation Target selector names an instance and its declared parameter.
+  Add lane exposes a step lane alongside the original instrument cutoff/level
+  lanes. Schedule edits remain drafts until stopped Prepare / Apply; playing
+  continues to use the prepared schedule, including its ownership state.
+- Edit in Ultra opens an optional graph view of the selected hosted instance.
+  The track-row Editor shortcut opens that track's instrument.
   Manifest-bound controls and graph fields edit the same instance bases.
   Closing or reopening this view preserves DSP and playback. Unbound graph
   structure is read-only: stop Alive, edit and save the source in Ultra, then
-  Replace to validate and load it. Apply/replacement invalidates stale editors.
-- Save/Save As persist tracks, device references and bases, notes, automation
-  and mixer values. File actions explicitly resolve pending schedule edits,
+  Replace to validate and load it. Add, remove, reorder and replacement require
+  stopped transport and resolved schedule drafts. Remove deletes only its
+  effect and lanes; replacing an instance clears only its lanes. Reordering
+  retains instance identity, lanes, bases and bypass. Remove track explicitly
+  deletes its whole instrument/effect chain, keeping at least one track.
+  Apply/structural preparation invalidates stale editors. Source-change errors
+  identify the reference and explain Replace recovery.
+- Save/Save As persist tracks, instrument/effect references, fingerprints, bases,
+  order, bypass, notes, automation and mixer values. File actions explicitly resolve pending schedule edits,
   then unsaved changes. Missing/incompatible device errors identify the track
   and reference; failed Open preserves the working session.
 
@@ -113,7 +135,8 @@ on GTK destruction to release its strong view/message-manager reference cycle.
 
 ## Supported Profile
 
-One or two devices, four voices per device, 48 kHz, explicit mono/stereo channel
+One or two instrument tracks, up to two stereo effects per track and six hosted
+instances total; four voices per instrument, 48 kHz, explicit mono/stereo channel
 bundles, declared stereo device/master output, one shared clip length, up to
 128 notes and 256 automation points per
 track. Session length is at most 256 beats and 512 seconds. Scheduled events,
