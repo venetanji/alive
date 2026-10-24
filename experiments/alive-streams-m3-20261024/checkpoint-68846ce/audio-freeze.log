@@ -1,0 +1,46 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: method `reserve_native` is never used
+  --> src/document_windows.rs:39:8
+   |
+28 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+39 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `ultra` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 25.32s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/release/deps/ultra_desktop-9e1feeb9c9029f98)
+
+running 19 tests
+test audio::instrumentation::paired_release_overhead ... ignored, explicit release measurement; no timing acceptance threshold
+test audio::tests::callback_partitions_stereo_and_converts_without_losing_frames ... ok
+test audio::instrumentation::warmed_fill_clock_histogram_publication_allocate_and_free_nothing ... ok
+test audio::epoch::tests::duration_edges_and_exact_per_buffer_budgets ... ok
+test audio::tests::configuration_rejects_unsupported_rates_buffers_and_fields ... ok
+CPAL_ERROR_BOUNDARY=typed_action_allocations:0,frees:0; owned_error_drop_frees:1
+test audio::epoch::tests::reader_contention_returns_cached_payload_after_three_attempts ... ok
+test audio::tests::private_software_output ... ignored, requires the private software-only PipeWire graph from check_cpal_audio.sh
+test audio::tests::native_failure_silences_the_whole_device_callback ... ok
+test audio::tests::disconnected_or_stale_device_is_not_silently_replaced ... ok
+test audio::instrumentation::cpal_owned_error_destruction_is_separate_from_the_typed_action ... ok
+test audio::tests::invalid_saved_settings_use_defaults_without_rewriting_user_data ... ok
+test audio::tests::unavailable_saved_host_catalog_keeps_preferences_and_lists_recovery_hosts ... ok
+test audio::epoch::tests::independent_closures_keep_late_errors_and_native_state_until_both_drop ... ok
+test audio::epoch::tests::concurrent_publication_reads_are_coherent_or_stale ... ok
+test audio::tests::pending_start_configure_and_stop_refuse_without_consuming_an_epoch ... ok
+test audio::tests::stop_retains_observed_callbacks ... ok
+test audio::tests::measured_fill_counts_all_returns_shapes_and_later_partition_failure ... ok
+test audio::epoch::tests::retention_eviction_merges_each_attempt_once_and_reports_cursor_gap ... ok
+test audio::tests::authorized_pending_exit_skips_destructors_in_child ... ok
+
+test result: ok. 17 passed; 0 failed; 2 ignored; 0 measured; 183 filtered out; finished in 0.08s
+
+     Running unittests src/main.rs (apps/ultra/src-tauri/target/release/deps/ultra-8ac820d0ea8bc89b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

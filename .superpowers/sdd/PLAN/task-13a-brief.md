@@ -48,8 +48,21 @@ One implementer owns the source lane; no parent index/commit work overlaps it.
   render/shape/failure counters, lock-free publication and bounded stale reads.
   Timing excludes the final clock read/publication tail; expose this honestly.
 - Keep callback allocation/free/locks/retries/logging/device queries/UI waits
-  absent. Construct storage/edges outside callback. Numeric epoch timing storage
-  stays at most 8 KiB; completed ring stays below 1 MiB plus bounded metadata.
+  absent. Construct storage/edges outside callback. Each retained
+  fixed numeric epoch payload stays at most 8 KiB; the completed ring stays below
+  1 MiB plus bounded metadata. The one active epoch's fixed ordinary accumulator,
+  atomic publication and single coherent-reader cache may total about 12 KiB;
+  measure/report each copy and full active storage. This does not permit extra
+  observers, dynamic copies, narrower wrapping counters or fewer histogram bins.
+  Decimal-string JSON size is a separate bounded wire representation, not the
+  fixed numeric-memory payload.
+- Qualify that guard at the actual ownership boundary: complete app-owned data
+  fill/clock/publication and typed error counter/native action work must pass.
+  Pinned CPAL's by-value Error may own a Cow string, whose destruction frees
+  backend-owned memory; backend error creation may also allocate. Retain a
+  reproducible owned-payload probe, document this material limitation and do not
+  claim universal no-free/RT safety for the complete CPAL error path. No message
+  copying/formatting/logging/retention/leak workaround or dependency redesign.
 - Add a bounded diagnostics command; keep routine UI snapshots compact.
   Surface useful retirement/error states without adding a large diagnostics UI.
 - Implement truthful CPU/resource sampling by (PID,starttime), SC_CLK_TCK,
@@ -89,6 +102,12 @@ measured host. Include a short repeated Stop/Apply/configure/editor sequence
 with complete epoch/resource evidence. Preserve pending-history, scoped Stop,
 file/Quit, input readiness and package notice regressions. Run full unchanged
 gates once where required; no repeated unrelated suites without a new concern.
+
+Wire the new lightweight sampler unit suite into the existing Linux contracts
+CI gate. Once the short native wrapper passes, use it in the existing saved-clip
+CI step so all retained clip assertions plus epoch/control cycles run once;
+preserve/extend artifact retention. Do not duplicate the full unchanged clip
+journey or add the final long soak to CI.
 
 Report to `task-13a-report.md`: status, commits/source/build IDs, changes,
 commands/output paths and exit results, test/measurement claims with exact

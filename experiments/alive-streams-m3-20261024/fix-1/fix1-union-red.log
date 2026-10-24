@@ -1,0 +1,14 @@
+..F......
+======================================================================
+FAIL: test_group_union_limits_preserve_separate_cpu_reports (test_stream_measurement.MeasurementTests.test_group_union_limits_preserve_separate_cpu_reports)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/test_stream_measurement.py", line 133, in test_group_union_limits_preserve_separate_cpu_reports
+    with self.assertRaisesRegex(RuntimeError, 'simultaneous_process_limit'): groups.sample()
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+----------------------------------------------------------------------
+Ran 9 tests in 7.471s
+
+FAILED (failures=1)

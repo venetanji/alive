@@ -1,0 +1,901 @@
+{
+  "schema": "alive-task13a-parent-verification-v1",
+  "interim": true,
+  "qualification": "native controls and retained measurements only; review and final overhead/build association remain pending",
+  "files": [
+    {
+      "path": "native-clips/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-clips/alive-audio-settings.png",
+      "bytes": 122227,
+      "sha256": "03e868e5d4e18c42c34a3ecc9cf4fe463b22b56407cc8f792aff215e860c7c28"
+    },
+    {
+      "path": "native-clips/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "native-clips/chooser-focus.jsonl",
+      "bytes": 612,
+      "sha256": "3f8c159c7cd63c4dfe674ed02afd8f4bd230b24d0b527fcb7e5ec672615fc47f"
+    },
+    {
+      "path": "native-clips/clip-observations.json",
+      "bytes": 574,
+      "sha256": "03767c642fe5f4e738e39e50e46e5b08cc01c56a1965e03b3c692720925002fe"
+    },
+    {
+      "path": "native-clips/clips-initial.png",
+      "bytes": 91044,
+      "sha256": "c9070b75b4f435768dc9fccff791a7d46b730a430804e0d75bd13dff7535024f"
+    },
+    {
+      "path": "native-clips/clips-prepared.alive",
+      "bytes": 14150,
+      "sha256": "6645c79eb9c0195e7baa9ca87ab24cab4251db707895a4a6b1e386367479c5c6"
+    },
+    {
+      "path": "native-clips/clips-rendered.capture.json",
+      "bytes": 315,
+      "sha256": "faa9499c06d5298ca919ab5eb91a00b4421d774dcf7df0ff1bc157c0e1d96eb3"
+    },
+    {
+      "path": "native-clips/clips-rendered.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-clips/initial-v3.alive",
+      "bytes": 9335,
+      "sha256": "5135dca6582bb25b03685cc43bbc5721ba3381b7e85ad45d38d4bf07ef59951d"
+    },
+    {
+      "path": "native-clips/initial.alive",
+      "bytes": 5523,
+      "sha256": "542ad41257effae9dc67927cb770ea4ea4dfab7723e9d68016c092c6cb73379b"
+    },
+    {
+      "path": "native-clips/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2"
+    },
+    {
+      "path": "native-clips/native-focus-failure.json",
+      "bytes": 118445,
+      "sha256": "43faf7d0e87beaf9e73f890b566aa586091047d6b338960a06ad8fa10fe32fe0"
+    },
+    {
+      "path": "native-clips/native-focus-failure.png",
+      "bytes": 98903,
+      "sha256": "dea7b6b9093e696079ba628c25bc6ebf3c93319b286ae939fcec2cf4b890511e"
+    },
+    {
+      "path": "native-clips/native-inputs.json",
+      "bytes": 341,
+      "sha256": "6dafd3d9878f482b8b696499102039b401f2f1b828df546029c357746252b923"
+    },
+    {
+      "path": "native-clips/observability-actions.jsonl",
+      "bytes": 3317,
+      "sha256": "c41a0f957775769575085c39d6f1aa6a51573fe326bffb24d0381f8e0561b089"
+    },
+    {
+      "path": "native-clips/observability-epochs.jsonl",
+      "bytes": 67595,
+      "sha256": "561bb6db65415fb91097b0c8ddf61bc8d7a0b77302d79810b58bfe8f93b33823"
+    },
+    {
+      "path": "native-clips/observability-resources.jsonl",
+      "bytes": 86798,
+      "sha256": "1e23e6603d4805c2b17b86512b83b5a93ff2f31cb4ee3baea57faa08cf853812"
+    },
+    {
+      "path": "native-clips/pipewire.log",
+      "bytes": 171,
+      "sha256": "da8775c2b0b4f5cabe606df33044a96115a0f6feebaa20d7555d78a57bf6ef8c"
+    },
+    {
+      "path": "native-clips/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-clips/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae"
+    },
+    {
+      "path": "native-clips/shared-utility.ultra",
+      "bytes": 2149,
+      "sha256": "b800a01bf8722b60206ea491181d3461f33f175fd8f5bd7ad4cb1a5889c6f107"
+    },
+    {
+      "path": "native-clips/startup-app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "native-clips/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352"
+    },
+    {
+      "path": "native-clips-runner.log",
+      "bytes": 11637,
+      "sha256": "432f6c7f145b156f7abf0e17c8c91ddf7fe19e9313b95f08c6d99a4999878a4b"
+    },
+    {
+      "path": "native-clips-compact/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-clips-compact/alive-audio-settings.png",
+      "bytes": 122485,
+      "sha256": "eb2b670b92a124c2f3714ba7454163cc860bf427070af5c59843309524f5f8e4"
+    },
+    {
+      "path": "native-clips-compact/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "native-clips-compact/chooser-focus.jsonl",
+      "bytes": 3989,
+      "sha256": "8dfebb9febf4447f45d43ea4a7f1c69fa09c5f8ddf98f2cd4a7109d2869f2f15"
+    },
+    {
+      "path": "native-clips-compact/clip-observations.json",
+      "bytes": 913,
+      "sha256": "141f635ffb7bd5012d0ef967f12c25f4f26c90b33cdf7ead27945b02f6048db9"
+    },
+    {
+      "path": "native-clips-compact/clips-initial.png",
+      "bytes": 91044,
+      "sha256": "c9070b75b4f435768dc9fccff791a7d46b730a430804e0d75bd13dff7535024f"
+    },
+    {
+      "path": "native-clips-compact/clips-prepared.alive",
+      "bytes": 14150,
+      "sha256": "1c9f7a20f25c26c920d7613134b8cfcfb788d0686c949e0e5b2800daf8b24958"
+    },
+    {
+      "path": "native-clips-compact/clips-recovered.png",
+      "bytes": 97889,
+      "sha256": "a7c8a85049afcc690887b011d12b011ec7b692b491697dec1d2b79d26c1f7e3b"
+    },
+    {
+      "path": "native-clips-compact/clips-rendered.capture.json",
+      "bytes": 315,
+      "sha256": "d7d84f2a39665b78138696939d69422b73a2365f78102837d2db09392016a044"
+    },
+    {
+      "path": "native-clips-compact/clips-rendered.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-clips-compact/clips-stopped-saved.png",
+      "bytes": 96272,
+      "sha256": "f0e6a62d53350e407f65eacebb0dbcb92e10e9a7e8fca28844632aef6adbaf9a"
+    },
+    {
+      "path": "native-clips-compact/failed-value.png",
+      "bytes": 66914,
+      "sha256": "e831c1c7f1900cd51da88a8420ae0137310bd0743327788131872787cba08e3c"
+    },
+    {
+      "path": "native-clips-compact/initial-v3.alive",
+      "bytes": 9335,
+      "sha256": "5135dca6582bb25b03685cc43bbc5721ba3381b7e85ad45d38d4bf07ef59951d"
+    },
+    {
+      "path": "native-clips-compact/initial.alive",
+      "bytes": 5523,
+      "sha256": "542ad41257effae9dc67927cb770ea4ea4dfab7723e9d68016c092c6cb73379b"
+    },
+    {
+      "path": "native-clips-compact/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2"
+    },
+    {
+      "path": "native-clips-compact/moved/relocated.alive",
+      "bytes": 14161,
+      "sha256": "eb8bac9dc9b1310f16326bd8f50a42c55327232d6b70694a45f19e27a1a94583"
+    },
+    {
+      "path": "native-clips-compact/native-clips-report.json",
+      "bytes": 6392,
+      "sha256": "ddfc9f7361811cb509e6602d3e03ccc8f2ec57bf5a94bfb4db7dfb1265044ca8"
+    },
+    {
+      "path": "native-clips-compact/native-inputs.json",
+      "bytes": 1192,
+      "sha256": "2102f155100f89f03011d8d65c5b04fddd6e1a108dc26ae04f4c6dc138133117"
+    },
+    {
+      "path": "native-clips-compact/observability-actions.jsonl",
+      "bytes": 5636,
+      "sha256": "b37e9a969a776d83ed48ee50951f6c2d0a5df899c776aaa5a6cee800ac8f1f0e"
+    },
+    {
+      "path": "native-clips-compact/observability-epochs.jsonl",
+      "bytes": 93506,
+      "sha256": "892d8ad6abe02b24a4cf639ec13ac6c3be6e7e5c48f6b34a6ad80827f7b377b0"
+    },
+    {
+      "path": "native-clips-compact/observability-resources.jsonl",
+      "bytes": 91179,
+      "sha256": "650060808cab42da5990d7e4f9c727d44a79ad9f42f8136c0e151ada1825cdb9"
+    },
+    {
+      "path": "native-clips-compact/pipewire.log",
+      "bytes": 171,
+      "sha256": "944ecc677ed37ffb47ffc47813c614a4672076f5d9e46a45a8e6272c5e54018f"
+    },
+    {
+      "path": "native-clips-compact/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-clips-compact/preserved-changed.ultra",
+      "bytes": 1270,
+      "sha256": "1d97b83a04ecc06a060e14423ee49fd82d533ab5d23a85a07c70469c089437d2"
+    },
+    {
+      "path": "native-clips-compact/recovered-Harmony.alive",
+      "bytes": 14155,
+      "sha256": "c7459c15ccf5b1ac584d5964701d27e981c99839fd59945ee1809aacc82ff9b7"
+    },
+    {
+      "path": "native-clips-compact/recovered-Pulse.alive",
+      "bytes": 14152,
+      "sha256": "ae2e80b8063cd0c7ece11ec4893a27a2b73de2a7f7c16ee04027a8925f16109e"
+    },
+    {
+      "path": "native-clips-compact/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae"
+    },
+    {
+      "path": "native-clips-compact/shared-utility.ultra",
+      "bytes": 2149,
+      "sha256": "b800a01bf8722b60206ea491181d3461f33f175fd8f5bd7ad4cb1a5889c6f107"
+    },
+    {
+      "path": "native-clips-compact/startup-app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "native-clips-compact/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352"
+    },
+    {
+      "path": "native-clips-compact-runner.log",
+      "bytes": 12244,
+      "sha256": "2631213f69db4751c1932310006b1fa881d39d4906885008d426fa147731fbf0"
+    },
+    {
+      "path": "native-clips-final/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-clips-final/alive-audio-settings.png",
+      "bytes": 120944,
+      "sha256": "a6f6bcb994703d5214d34b459b2565d8563eeaab19622cd392b827a678d81436"
+    },
+    {
+      "path": "native-clips-final/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "native-clips-final/chooser-focus.jsonl",
+      "bytes": 2842,
+      "sha256": "b26dca4433317270e55296121eb32a465960a573b1e21f57098a91e3dd4c7ce7"
+    },
+    {
+      "path": "native-clips-final/clip-observations.json",
+      "bytes": 914,
+      "sha256": "1ebe2a61544a535560f26faca44d932ff810c75febe81d793d0a79f818d8a410"
+    },
+    {
+      "path": "native-clips-final/clips-initial.png",
+      "bytes": 91044,
+      "sha256": "c9070b75b4f435768dc9fccff791a7d46b730a430804e0d75bd13dff7535024f"
+    },
+    {
+      "path": "native-clips-final/clips-prepared.alive",
+      "bytes": 14150,
+      "sha256": "d66d985ca5a0bcf04d67edb04ac10d77d4d410ffd339acc378f999a54bc2a781"
+    },
+    {
+      "path": "native-clips-final/clips-rendered.capture.json",
+      "bytes": 314,
+      "sha256": "4f92312e04de75f5d835a58850031d6b32f8166a94b61f3459ca13643fa3667e"
+    },
+    {
+      "path": "native-clips-final/clips-rendered.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-clips-final/clips-stopped-saved.png",
+      "bytes": 94189,
+      "sha256": "026095f3806abbe0bd05dda2b6210a0964d09264df4f91f8fc98966400b99947"
+    },
+    {
+      "path": "native-clips-final/initial-v3.alive",
+      "bytes": 9335,
+      "sha256": "5135dca6582bb25b03685cc43bbc5721ba3381b7e85ad45d38d4bf07ef59951d"
+    },
+    {
+      "path": "native-clips-final/initial.alive",
+      "bytes": 5523,
+      "sha256": "542ad41257effae9dc67927cb770ea4ea4dfab7723e9d68016c092c6cb73379b"
+    },
+    {
+      "path": "native-clips-final/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2"
+    },
+    {
+      "path": "native-clips-final/moved/relocated.alive",
+      "bytes": 14161,
+      "sha256": "52513429aae7a44e7a6f85acc83ac5218d51e62e5ed7f4f64e48c9f0401e60eb"
+    },
+    {
+      "path": "native-clips-final/native-inputs.json",
+      "bytes": 1023,
+      "sha256": "9dd331031fb4878543f093ea29dd90d620e3b1a42f50a30fd0de5e41ff00fae5"
+    },
+    {
+      "path": "native-clips-final/observability-actions.jsonl",
+      "bytes": 5008,
+      "sha256": "5a8d10de7c5311c8f142fe3662de2f3990bfade4875dd6724e58f2f5306efd5b"
+    },
+    {
+      "path": "native-clips-final/observability-epochs.jsonl",
+      "bytes": 77670,
+      "sha256": "4f34f6e1ea275ddc56644268fa5c22342407bff8da6f688e6924309019064faf"
+    },
+    {
+      "path": "native-clips-final/observability-errors.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "native-clips-final/observability-resources.jsonl",
+      "bytes": 149953,
+      "sha256": "8631398e1e69ee5015bd4a77b0eb32ecd9eff68d487f44817d61197cb19d2818"
+    },
+    {
+      "path": "native-clips-final/pipewire.log",
+      "bytes": 171,
+      "sha256": "284f538d1faaff412aa2ea5720b4aee8e2b19d73054898d3c730e52b877c16fc"
+    },
+    {
+      "path": "native-clips-final/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-clips-final/preserved-changed.ultra",
+      "bytes": 1270,
+      "sha256": "1d97b83a04ecc06a060e14423ee49fd82d533ab5d23a85a07c70469c089437d2"
+    },
+    {
+      "path": "native-clips-final/recovered-Pulse.alive",
+      "bytes": 14152,
+      "sha256": "96e8c948dee7af8daf362923b45b97aebd592d0b96077e61919b9fef6d419262"
+    },
+    {
+      "path": "native-clips-final/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae"
+    },
+    {
+      "path": "native-clips-final/shared-utility.ultra",
+      "bytes": 2149,
+      "sha256": "b800a01bf8722b60206ea491181d3461f33f175fd8f5bd7ad4cb1a5889c6f107"
+    },
+    {
+      "path": "native-clips-final/startup-app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "native-clips-final/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352"
+    },
+    {
+      "path": "native-clips-final-runner.log",
+      "bytes": 12078,
+      "sha256": "82de54b71c4463f0ac5f8f098356a413bd62db2b738bc62df6bb6c7cb9929a33"
+    },
+    {
+      "path": "native-clips-single-ui/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-clips-single-ui/alive-audio-settings.png",
+      "bytes": 120993,
+      "sha256": "3b203a62abc1de7c5dd0507e803a491a0adc1cc0d6c330cb40fa3cbf7a0900c3"
+    },
+    {
+      "path": "native-clips-single-ui/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "native-clips-single-ui/chooser-focus.jsonl",
+      "bytes": 3989,
+      "sha256": "3bac38313f7fefae282d81bad1b061bef9906a8028680af89f55360b5eb5e386"
+    },
+    {
+      "path": "native-clips-single-ui/clip-observations.json",
+      "bytes": 915,
+      "sha256": "a023b8bb4ee0359262461ccc7e0e3e36ff44b9212861fee2701338d2c86f9025"
+    },
+    {
+      "path": "native-clips-single-ui/clips-initial.png",
+      "bytes": 91044,
+      "sha256": "c9070b75b4f435768dc9fccff791a7d46b730a430804e0d75bd13dff7535024f"
+    },
+    {
+      "path": "native-clips-single-ui/clips-prepared.alive",
+      "bytes": 14150,
+      "sha256": "15b061923bd19cd26edac7ee51b12f8dd02e707d0332b0e4f2a763ebb8f36e1d"
+    },
+    {
+      "path": "native-clips-single-ui/clips-recovered.png",
+      "bytes": 98272,
+      "sha256": "6f8a8e024f29136b218f4fdea89c6a4200d2dcd9208265931a842a8f1c004026"
+    },
+    {
+      "path": "native-clips-single-ui/clips-rendered.capture.json",
+      "bytes": 314,
+      "sha256": "6a698798b5a869dfa8ed836249e14fed9160e3de2bf924d75edd2b6ddffae3f3"
+    },
+    {
+      "path": "native-clips-single-ui/clips-rendered.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-clips-single-ui/clips-stopped-saved.png",
+      "bytes": 94392,
+      "sha256": "ab7c08ef02df37009eeed4f1823515fed82a059240fb4b9f1e314946cbc4eda1"
+    },
+    {
+      "path": "native-clips-single-ui/initial-v3.alive",
+      "bytes": 9335,
+      "sha256": "5135dca6582bb25b03685cc43bbc5721ba3381b7e85ad45d38d4bf07ef59951d"
+    },
+    {
+      "path": "native-clips-single-ui/initial.alive",
+      "bytes": 5523,
+      "sha256": "542ad41257effae9dc67927cb770ea4ea4dfab7723e9d68016c092c6cb73379b"
+    },
+    {
+      "path": "native-clips-single-ui/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2"
+    },
+    {
+      "path": "native-clips-single-ui/moved/relocated.alive",
+      "bytes": 14161,
+      "sha256": "c87e9e70cde50a4c5713a4f570dad24f63517f32fa5984bcd90a7e6887a4d5f9"
+    },
+    {
+      "path": "native-clips-single-ui/native-clips-report.json",
+      "bytes": 6160,
+      "sha256": "133354d4f56be95407e30bdde9ff70dd6c774df026f4b55220b27599cdb40226"
+    },
+    {
+      "path": "native-clips-single-ui/native-inputs.json",
+      "bytes": 1192,
+      "sha256": "f2b64d5edfa55f008c8a88ee680aa26b3820444a632d7e2d63e17f00ccbfeed1"
+    },
+    {
+      "path": "native-clips-single-ui/observability-actions.jsonl",
+      "bytes": 5570,
+      "sha256": "a5cafbd078b0134d14dcec54bf5916a97f420426037b63c2cbbe13eff2c8dc72"
+    },
+    {
+      "path": "native-clips-single-ui/observability-epochs.jsonl",
+      "bytes": 90365,
+      "sha256": "ffb200e18307477e579320f5916f52fb468e3e48e935416e6397a51710bbeb93"
+    },
+    {
+      "path": "native-clips-single-ui/observability-errors.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "native-clips-single-ui/observability-resources.jsonl",
+      "bytes": 255411,
+      "sha256": "b23e89d5cb0dc1065f62e3de88b46b20236645ab361b155d5b5c4525aa47662c"
+    },
+    {
+      "path": "native-clips-single-ui/pipewire.log",
+      "bytes": 171,
+      "sha256": "1eb4619bff4fd712dcab4e2f309ae34466924bb2f52f449c1cc311701e7def79"
+    },
+    {
+      "path": "native-clips-single-ui/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-clips-single-ui/preserved-changed.ultra",
+      "bytes": 1270,
+      "sha256": "1d97b83a04ecc06a060e14423ee49fd82d533ab5d23a85a07c70469c089437d2"
+    },
+    {
+      "path": "native-clips-single-ui/recovered-Harmony.alive",
+      "bytes": 14155,
+      "sha256": "1efabe24ba919e4924e363a8e1b87e7032c82459f8d793af751fa776581fb430"
+    },
+    {
+      "path": "native-clips-single-ui/recovered-Pulse.alive",
+      "bytes": 14152,
+      "sha256": "1de526c684bf93efa332bbc3f7968b33e768773f6a4862689fd8a9b3c8979eb4"
+    },
+    {
+      "path": "native-clips-single-ui/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae"
+    },
+    {
+      "path": "native-clips-single-ui/shared-utility.ultra",
+      "bytes": 2149,
+      "sha256": "b800a01bf8722b60206ea491181d3461f33f175fd8f5bd7ad4cb1a5889c6f107"
+    },
+    {
+      "path": "native-clips-single-ui/startup-app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "native-clips-single-ui/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352"
+    },
+    {
+      "path": "native-clips-single-ui-runner.log",
+      "bytes": 12352,
+      "sha256": "4c0e473c2c09186d669f2e9973305958ff93eb87bbb1ff4dd03bb42164f72ba0"
+    },
+    {
+      "path": "controls-probe/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "controls-probe/alive-audio-settings.png",
+      "bytes": 125916,
+      "sha256": "a2d31536b94ec0d91a6cc870add748b7716e695b898099eb1974b38a2ab1cfdf"
+    },
+    {
+      "path": "controls-probe/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "controls-probe/initial.alive",
+      "bytes": 14207,
+      "sha256": "1b448be0d4f058b4e01fc8b7e8b7be4cf912dbf70911cdfc5bd22f388c4a5a4e"
+    },
+    {
+      "path": "controls-probe/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2"
+    },
+    {
+      "path": "controls-probe/observability-actions.jsonl",
+      "bytes": 1455,
+      "sha256": "d90ec2f9dac105bc037b9c350e8d6488f4e352d80e3dd383ab2099406929aab2"
+    },
+    {
+      "path": "controls-probe/observability-epochs.jsonl",
+      "bytes": 87240,
+      "sha256": "4b29f6ba23ca68d10461fc2c2351806346cb30d5f4b2449a8691b840dbabf959"
+    },
+    {
+      "path": "controls-probe/observability-errors.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "controls-probe/observability-final.json",
+      "bytes": 54446,
+      "sha256": "a45f350cdac54c3178a96231af5037bf5a49e0acadf7dfa69e8b311a3083de44"
+    },
+    {
+      "path": "controls-probe/observability-report.json",
+      "bytes": 6184,
+      "sha256": "7ffd664f0d139fee4b732b5d0846ccde3e1bcedcf4cd2d7d2354cf42bfca04b5"
+    },
+    {
+      "path": "controls-probe/observability-resources.jsonl",
+      "bytes": 180040,
+      "sha256": "9a766f0114ef72430bb035959b2816577ffc10f4087f0a067a3cf6c9f4b9c4be"
+    },
+    {
+      "path": "controls-probe/pipewire.log",
+      "bytes": 171,
+      "sha256": "6eefe9481fb1c4f992518393425697b46cb088196f298adef2072c4ab546e15b"
+    },
+    {
+      "path": "controls-probe/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "controls-probe/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae"
+    },
+    {
+      "path": "controls-probe/startup-app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "controls-probe/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352"
+    },
+    {
+      "path": "controls-probe-runner.log",
+      "bytes": 10721,
+      "sha256": "1a4f5a48c1dd764f3833e642b07c210622e722c0b8a55ef774b722a31a05cd05"
+    },
+    {
+      "path": "native-accepted/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-accepted/alive-audio-settings.png",
+      "bytes": 122299,
+      "sha256": "5944f2c822f2f679e074c4cd5f162114462c3deef855b6301bb951733217d801"
+    },
+    {
+      "path": "native-accepted/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "native-accepted/chooser-focus.jsonl",
+      "bytes": 3989,
+      "sha256": "4a44789b89e64bbef14c3d95c9b73f517066d78e602367384a3f4fde60473b84"
+    },
+    {
+      "path": "native-accepted/clip-observations.json",
+      "bytes": 914,
+      "sha256": "4a2570703f96b2642c9a906ec29fdf03665bf7893fc42a7aae007c12cd0a73d6"
+    },
+    {
+      "path": "native-accepted/clips-initial.png",
+      "bytes": 91044,
+      "sha256": "c9070b75b4f435768dc9fccff791a7d46b730a430804e0d75bd13dff7535024f"
+    },
+    {
+      "path": "native-accepted/clips-prepared.alive",
+      "bytes": 14150,
+      "sha256": "53e56e7a64842317dfcba744304559066c345578a78efa137c19595314ba436e"
+    },
+    {
+      "path": "native-accepted/clips-recovered.png",
+      "bytes": 98171,
+      "sha256": "925ae53e4312ad06c122973b1d0acc89692364dbe56dcdd2aaffb5c6434fddca"
+    },
+    {
+      "path": "native-accepted/clips-rendered.capture.json",
+      "bytes": 315,
+      "sha256": "7a6f1477ee551b6837536bb37ffe9e2e3c8d10993e39b69ee8ebb082f3b4565e"
+    },
+    {
+      "path": "native-accepted/clips-rendered.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-accepted/clips-stopped-saved.png",
+      "bytes": 93999,
+      "sha256": "3577df729f6d6ffa1c25c53fa1856d557c8f592c78c1825b8e6da3145f139f07"
+    },
+    {
+      "path": "native-accepted/initial-v3.alive",
+      "bytes": 9335,
+      "sha256": "5135dca6582bb25b03685cc43bbc5721ba3381b7e85ad45d38d4bf07ef59951d"
+    },
+    {
+      "path": "native-accepted/initial.alive",
+      "bytes": 5523,
+      "sha256": "542ad41257effae9dc67927cb770ea4ea4dfab7723e9d68016c092c6cb73379b"
+    },
+    {
+      "path": "native-accepted/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2"
+    },
+    {
+      "path": "native-accepted/moved/relocated.alive",
+      "bytes": 14161,
+      "sha256": "0eaffdc603395f9b113454784c0aee38afbafd4edb6a75354b19461d4822f0ae"
+    },
+    {
+      "path": "native-accepted/native-clips-report.json",
+      "bytes": 6131,
+      "sha256": "00da547364a79347d917d0e19f24a44a234e07b15df509b450dfb6f68463abfd"
+    },
+    {
+      "path": "native-accepted/native-inputs.json",
+      "bytes": 1192,
+      "sha256": "4b853000e92403c0945bea68ca5a6f92d4c09e3610328a06614a1dd9be0208b0"
+    },
+    {
+      "path": "native-accepted/observability-actions.jsonl",
+      "bytes": 5918,
+      "sha256": "a70fa1de0b9b62ed5f46595b8116534bd1b2eb8e55bbd003440b61fd0c5d3c1b"
+    },
+    {
+      "path": "native-accepted/observability-epochs.jsonl",
+      "bytes": 149932,
+      "sha256": "b28e71b77d79b999ac9291f5799e766171eb0d504b62efbbfd1f13f59c851072"
+    },
+    {
+      "path": "native-accepted/observability-errors.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "native-accepted/observability-final.json",
+      "bytes": 63005,
+      "sha256": "633c58ac9830b4e96a76593f1b0b4c2733815dd8db95dae51134a98db091fe56"
+    },
+    {
+      "path": "native-accepted/observability-report.json",
+      "bytes": 7221,
+      "sha256": "67716cf7a59c22146f0a9644adf59a2f3ef4eed7b77cddb93a239ed37addbb68"
+    },
+    {
+      "path": "native-accepted/observability-resources.jsonl",
+      "bytes": 401906,
+      "sha256": "7f8b77772b10b089d98e7b64567cad95a8f276a046426583d8b9419134e55166"
+    },
+    {
+      "path": "native-accepted/pipewire.log",
+      "bytes": 171,
+      "sha256": "4b867cd982e265a34399f31e8d840ae9751f990fa94fa9eb70fae86dcf2652d1"
+    },
+    {
+      "path": "native-accepted/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-accepted/preserved-changed.ultra",
+      "bytes": 1270,
+      "sha256": "1d97b83a04ecc06a060e14423ee49fd82d533ab5d23a85a07c70469c089437d2"
+    },
+    {
+      "path": "native-accepted/recovered-Harmony.alive",
+      "bytes": 14155,
+      "sha256": "b7c0a7884e72002f19f35b75b17503fbc76c2a59128ae2a12ae93d957ac5569d"
+    },
+    {
+      "path": "native-accepted/recovered-Pulse.alive",
+      "bytes": 14152,
+      "sha256": "3a58c4b586332293f8ceaf0439fbd8ef83de93303c73966c60c02452079f102c"
+    },
+    {
+      "path": "native-accepted/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae"
+    },
+    {
+      "path": "native-accepted/shared-utility.ultra",
+      "bytes": 2149,
+      "sha256": "b800a01bf8722b60206ea491181d3461f33f175fd8f5bd7ad4cb1a5889c6f107"
+    },
+    {
+      "path": "native-accepted/startup-app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "native-accepted/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352"
+    },
+    {
+      "path": "native-accepted-runner.log",
+      "bytes": 17167,
+      "sha256": "c578fff608afef579220a6ad4cf11eba81f14e8c28ae5058492b3ba6161a6768"
+    }
+  ],
+  "streamed_pcm": [
+    {
+      "path": "native-clips/clips-rendered.f32",
+      "frames": 658432,
+      "bytes": 5267456,
+      "sha256": "21c9b0dd85a0a6066a9e86552101197b7d92536bceefde1cb62c0426d9f2e6d7",
+      "peak": 0.153170645236969,
+      "finite": true,
+      "raw_pcm_retained": false,
+      "original_path": "/tmp/alive-task13a-evidence/native-clips/clips-rendered.f32"
+    },
+    {
+      "path": "native-clips-compact/clips-rendered.f32",
+      "frames": 789504,
+      "bytes": 6316032,
+      "sha256": "8bdee4457575b8f1bc5a3a4c742246dc1908a175af2b1416956eeb0bce82b52c",
+      "peak": 0.2225944548845291,
+      "finite": true,
+      "raw_pcm_retained": false,
+      "original_path": "/tmp/alive-task13a-evidence/native-clips-compact/clips-rendered.f32"
+    },
+    {
+      "path": "native-clips-final/clips-rendered.f32",
+      "frames": 317440,
+      "bytes": 2539520,
+      "sha256": "e7ac6eea7f249ba1493ba9043e1ac87eae73c9c788b0de7fd452a88e1e02b438",
+      "peak": 0.2225944548845291,
+      "finite": true,
+      "raw_pcm_retained": false,
+      "original_path": "/tmp/alive-task13a-evidence/native-clips-final/clips-rendered.f32"
+    },
+    {
+      "path": "native-clips-single-ui/clips-rendered.f32",
+      "frames": 316928,
+      "bytes": 2535424,
+      "sha256": "efb11dce2be11a725ce1c544d6c51add6a49897d5e6194f705d03c48174a6fb9",
+      "peak": 0.2225944548845291,
+      "finite": true,
+      "raw_pcm_retained": false,
+      "original_path": "/tmp/alive-task13a-evidence/native-clips-single-ui/clips-rendered.f32"
+    },
+    {
+      "path": "native-accepted/clips-rendered.f32",
+      "frames": 319488,
+      "bytes": 2555904,
+      "sha256": "906ba53eb495bc8ec567ecf9a41b863735cae81e9dfbda8f4dbcca7689e12d17",
+      "peak": 0.2225944548845291,
+      "finite": true,
+      "raw_pcm_retained": false,
+      "original_path": "/tmp/alive-task13a-evidence/native-accepted/clips-rendered.f32"
+    }
+  ],
+  "accepted": {
+    "completed_epochs": 6,
+    "callbacks": 3808,
+    "output_frames": 1949696,
+    "duration_max_ns": 1991248,
+    "buffer_frames": [
+      512,
+      512
+    ],
+    "numeric_record_bytes": 3856,
+    "active_numeric_storage_bytes": 11616,
+    "completed_ring_numeric_limit_bytes": 246784,
+    "proven_playing_seconds": 8.010979165995028,
+    "excluded_seconds": 46.919748601998435,
+    "lifetime_merge_verified": true,
+    "all_clip_flags_verified": true
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "source_commit": "30240579dde52edb9de6c5fdcb7741fa1524b95c",
+  "source_files_independently_verified": 21,
+  "artifacts_independently_verified": 15,
+  "retained_files": [
+    {
+      "path": "fix2-source-manifest.json",
+      "bytes": 6148,
+      "sha256": "2c613de7434ba7d53a813ed415f06ce4b6c595345ff1d29fb1181ab4f02ec718"
+    },
+    {
+      "path": "fix2-artifacts.json",
+      "bytes": 2908,
+      "sha256": "858517bc6d41f5911da00a3684efb0aa6aeae302056a99ba4a911f1e02910307"
+    },
+    {
+      "path": "fix2-adjacent-libraries.json",
+      "bytes": 464,
+      "sha256": "0107902af9d9c091f4afaab29fb4cf26b9fe523bd8152cf3ec11ff200892ef8d"
+    },
+    {
+      "path": "fix2-admission-callers.txt",
+      "bytes": 10088,
+      "sha256": "ffbf9970b8989a6a56c0e29c65f24d8b5488a0351e3a6d67702b0a8b15996c12"
+    },
+    {
+      "path": "fix2-admission-callers-final.txt",
+      "bytes": 10244,
+      "sha256": "ec9af46c923c6804e522b9db8f6370476fa6fa7ac21d86a292e760bf2b169cf4"
+    },
+    {
+      "path": "fix2-numeric-red.log",
+      "bytes": 963,
+      "sha256": "51d58ddf3540ea9c19727455db50965947f7f27a5a393df940c47739081aee77"
+    },
+    {
+      "path": "fix2-initial-red.log",
+      "bytes": 859,
+      "sha256": "0a5805409d4270d40ef16074bf6f080c9b029f11273a0bdaf8320364f2058301"
+    },
+    {
+      "path": "fix2-owner-green.log",
+      "bytes": 5102,
+      "sha256": "4af3d5c862450b1946efcfa7a6ee33e112d9541e637a2eedb916a48715a2fd3e"
+    },
+    {
+      "path": "fix2-owner-corrected.log",
+      "bytes": 2656,
+      "sha256": "5138d158867a7cb088f21d98ad8421bd5118fc403007b683332426ca46c25092"
+    },
+    {
+      "path": "fix2-ui-routing.log",
+      "bytes": 8479,
+      "sha256": "1cddec2c4e32335e077a2cfcc75b9982d04559455a6f98f97dec40e317f8dcd5"
+    },
+    {
+      "path": "fix2-build-alive.log",
+      "bytes": 668,
+      "sha256": "1416ff6369b5539cb53ec9e70227252eaee0d04b090e0a994054dc820c3f6990"
+    },
+    {
+      "path": "fix2-build-ultra.log",
+      "bytes": 505,
+      "sha256": "68f44f9f153b507c1277a8a854c00bab4aabde4a4e1098a5b524765e45d9fe07"
+    },
+    {
+      "path": "control-fixture.alive",
+      "bytes": 14240,
+      "sha256": "e50033d6bb2459ce4d7bdf541ba528bd5b3ad1f9a97b646b1b2746ae6b056c46"
+    },
+    {
+      "path": "overhead-controls-keyboard.py",
+      "bytes": 5253,
+      "sha256": "dc43edaf54300e32d9881e4b3b1699db783f40227abe6824443e12d8749c8210"
+    },
+    {
+      "path": "fix2-ultra-numeric.py",
+      "bytes": 2399,
+      "sha256": "1752fe65c1b730b3c1965102b6b98e91bb14eea8639b7d8ba8c99eed3d7bbd4b"
+    },
+    {
+      "path": "fix2-ultra-numeric-ui.py",
+      "bytes": 2406,
+      "sha256": "fd041ff4a0f4c8ca16a81aee89831c4284fa95350b0e37be74b78cda5f41869a"
+    },
+    {
+      "path": "task-13a-fix-1-brief.md",
+      "bytes": 4989,
+      "sha256": "d707660fbbd7ba3528ec2a7658015ed316556223e28777833f8d9c06b94fa040"
+    },
+    {
+      "path": "task-13a-fix-1-review.md",
+      "bytes": 7778,
+      "sha256": "0f232f7ed8eb1dba3644e03126a9c08031bad992b74c48c9c9454f70b6f23686"
+    },
+    {
+      "path": "task-13a-fix-2-brief.md",
+      "bytes": 2659,
+      "sha256": "073afdbf7bec40558d8094cec0b325f453d545fd2b41ec3632fb5a82276f5a95"
+    },
+    {
+      "path": "task-13a-fix-2-review.md",
+      "bytes": 5990,
+      "sha256": "5214fc5b46d9c808793cdd304de5e447b0f3cec520e2dbf6d0def96271c3bfa9"
+    },
+    {
+      "path": "task-13a-fix-2-review.diff",
+      "bytes": 13466,
+      "sha256": "d8335a5de00786f2a549e59aa2ed7ccbaead3536796361736effcc56823dff80"
+    }
+  ],
+  "qualification": "source/tests/build identity and scoped review; actual corrected runtime/controls still pending"
+}

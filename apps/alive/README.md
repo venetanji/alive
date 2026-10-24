@@ -159,8 +159,8 @@ ULTRA_TEST_ALIVE=1 ALIVE_ENDURANCE_SECONDS=600 \
   ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_desktop.py" \
   bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-session-desktop
 ULTRA_TEST_ALIVE=1 \
-  ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_clips.py" \
-  bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-clips-desktop
+  ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_observability.py" \
+  bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-observability
 ULTRA_TEST_ALIVE=1 \
   ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_editor_resources.py" \
   bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-editor-resources
@@ -171,11 +171,14 @@ The desktop harness creates its own display, bus, runtime directory and software
 PipeWire server. It does not qualify physical audio or change desktop services.
 Without `ALIVE_ENDURANCE_SECONDS`, CI runs the same native journey without the
 ten-minute sustained phase. Reports preserve actual stream errors, backend,
-rate/buffer, captured audio and process-tree resource samples. The current
-interface reports aggregate stream errors; CPAL's typed backend xrun reports
-are not separated by these counters. A zero stream-error count does not
-establish zero physical underruns. Driver counters reset on Stop, so periodic
-zero observations do not establish complete cumulative totals across restarts.
+rate/buffer, captured audio and process-tree resource samples. The short
+observability wrapper preserves the clip journey and adds retained per-stream
+epochs and control cycles. Stream measurements separates typed CPAL xrun and
+other error reports, render failures, malformed buffers and processing-budget
+exceedances. Finalized lifetime totals survive stream Stop/restarts within the
+process; incomplete retirement and missing epoch coverage stay explicit. Zero
+reports do not establish zero physical underruns. The existing 600-second
+option remains historical coverage, not the expanded 1800-playing-second gate.
 The separate editor regression checks eight close/reopen cycles against the
 real webview process tree. Linux editors disconnect the pinned Wry IPC handler
 on GTK destruction to release its strong view/message-manager reference cycle.

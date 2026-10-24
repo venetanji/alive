@@ -1,0 +1,42 @@
+[  2%] Building Rust subsystems (cargo: clockwork-native)
+    Finished `release` profile [optimized] target(s) in 0.18s
+[  2%] Built target clockwork_rust
+[  8%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clockwork_client.cpp.o
+[  8%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/audio_processor.cpp.o
+[ 11%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clockwork_asset_pool.cpp.o
+[ 14%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/embed/clockwork_embed.cpp.o
+[ 17%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/lanes/lanes.cpp.o
+[ 20%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clockwork_pool.cpp.o
+[ 22%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/guest_malloc.cpp.o
+[ 25%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/tap_streams.cpp.o
+[ 28%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/mem_region.cpp.o
+[ 31%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/engine_support.cpp.o
+[ 34%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clock/MidiClockOut.cpp.o
+[ 37%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/native/OscEgress.cpp.o
+[ 40%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/workers/RingReader.cpp.o
+[ 42%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clock/ClockworkClock.cpp.o
+[ 45%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clock/EngineClock.cpp.o
+[ 48%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clock/ClockworkClockNative.cpp.o
+[ 51%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clock/TimeSource.cpp.o
+[ 54%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clock/MidiTimelines.cpp.o
+[ 57%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/native/LinkAudioHost.cpp.o
+[ 60%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clockwork_audio_file.cpp.o
+[ 62%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/flac_encoder.cpp.o
+[ 65%] Building C object core/clockwork/CMakeFiles/clockwork.dir/src/vendor/stb/stb_vorbis.c.o
+[ 68%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/vendor/oscpack/osc/OscTypes.cpp.o
+[ 71%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/vendor/oscpack/osc/OscOutboundPacketStream.cpp.o
+[ 74%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/vendor/oscpack/osc/OscReceivedElements.cpp.o
+[ 77%] Linking CXX static library libclockwork.a
+[ 77%] Built target clockwork
+[ 80%] Building CXX object core/clockwork/dsp-ultra_hardened_guest/CMakeFiles/ultra_hardened_guest.dir/guest.cpp.o
+[ 82%] Linking CXX static library libultra_hardened_guest.a
+[ 82%] Built target ultra_hardened_guest
+[ 85%] Building CXX object core/CMakeFiles/ultra_core.dir/engine.cpp.o
+[ 88%] Linking CXX static library libultra_core.a
+[ 88%] Built target ultra_core
+[ 91%] Building CXX object CMakeFiles/ultra_native.dir/src-tauri/native/backend.cpp.o
+[ 94%] Linking CXX shared library libultra_native.so
+[ 94%] Built target ultra_native
+[ 97%] Building CXX object CMakeFiles/ultra-diagnostic.dir/src-tauri/native/diagnostic.cpp.o
+[100%] Linking CXX executable ultra-diagnostic
+[100%] Built target ultra-diagnostic

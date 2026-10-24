@@ -1,0 +1,260 @@
+{
+  "physical_audio": false,
+  "physical_xruns": null,
+  "complete": true,
+  "playing_seconds_proven": 4.24473977567108,
+  "excluded_seconds": 18.212857485981658,
+  "completed_epochs": 5,
+  "resources": {
+    "path": "/tmp/alive-task13a-evidence/controls-probe/observability-resources.jsonl",
+    "bytes": 180040,
+    "sha256": "9a766f0114ef72430bb035959b2816577ffc10f4087f0a067a3cf6c9f4b9c4be"
+  },
+  "epochs": {
+    "path": "/tmp/alive-task13a-evidence/controls-probe/observability-epochs.jsonl",
+    "bytes": 87240,
+    "sha256": "4b29f6ba23ca68d10461fc2c2351806346cb30d5f4b2449a8691b840dbabf959"
+  },
+  "actions": {
+    "path": "/tmp/alive-task13a-evidence/controls-probe/observability-actions.jsonl",
+    "bytes": 1455,
+    "sha256": "d90ec2f9dac105bc037b9c350e8d6488f4e352d80e3dd383ab2099406929aab2"
+  },
+  "wall_seconds": 55.72454138599278,
+  "sampling_errors": [],
+  "cpu_coverage": "observed identities; transient workers and exited final deltas remain unavailable",
+  "epoch_duration_intervals": {
+    "1": {
+      "samples": 335,
+      "maximum": 1744662,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 724077,
+          "upper_inclusive": 756135
+        },
+        "p95": {
+          "lower_exclusive": 1217748,
+          "upper_inclusive": 1271662
+        },
+        "p99": {
+          "lower_exclusive": 1448155,
+          "upper_inclusive": 1512270
+        },
+        "p999": {
+          "lower_exclusive": 1722156,
+          "upper_inclusive": 1798402
+        }
+      }
+    },
+    "2": {
+      "samples": 771,
+      "maximum": 1516573,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 635831,
+          "upper_inclusive": 663982
+        },
+        "p95": {
+          "lower_exclusive": 1024000,
+          "upper_inclusive": 1069336
+        },
+        "p99": {
+          "lower_exclusive": 1217748,
+          "upper_inclusive": 1271662
+        },
+        "p999": {
+          "lower_exclusive": 1512270,
+          "upper_inclusive": 1579224
+        }
+      }
+    },
+    "3": {
+      "samples": 630,
+      "maximum": 1566027,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 663982,
+          "upper_inclusive": 693379
+        },
+        "p95": {
+          "lower_exclusive": 1166120,
+          "upper_inclusive": 1217748
+        },
+        "p99": {
+          "lower_exclusive": 1448155,
+          "upper_inclusive": 1512270
+        },
+        "p999": {
+          "lower_exclusive": 1512270,
+          "upper_inclusive": 1579224
+        }
+      }
+    },
+    "4": {
+      "samples": 631,
+      "maximum": 1597175,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 693379,
+          "upper_inclusive": 724077
+        },
+        "p95": {
+          "lower_exclusive": 1166120,
+          "upper_inclusive": 1217748
+        },
+        "p99": {
+          "lower_exclusive": 1448155,
+          "upper_inclusive": 1512270
+        },
+        "p999": {
+          "lower_exclusive": 1579224,
+          "upper_inclusive": 1649142
+        }
+      }
+    },
+    "5": {
+      "samples": 342,
+      "maximum": 1637200,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 608874,
+          "upper_inclusive": 635831
+        },
+        "p95": {
+          "lower_exclusive": 1024000,
+          "upper_inclusive": 1069336
+        },
+        "p99": {
+          "lower_exclusive": 1217748,
+          "upper_inclusive": 1271662
+        },
+        "p999": {
+          "lower_exclusive": 1579224,
+          "upper_inclusive": 1649142
+        }
+      }
+    }
+  },
+  "epoch_utilization_intervals": {
+    "1": {
+      "samples": 335,
+      "maximum": 163562,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 7,
+          "upper_inclusive": 8
+        },
+        "p95": {
+          "lower_exclusive": 11,
+          "upper_inclusive": 12
+        },
+        "p99": {
+          "lower_exclusive": 13,
+          "upper_inclusive": 14
+        },
+        "p999": {
+          "lower_exclusive": 16,
+          "upper_inclusive": 17
+        }
+      }
+    },
+    "2": {
+      "samples": 771,
+      "maximum": 142178,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 5,
+          "upper_inclusive": 6
+        },
+        "p95": {
+          "lower_exclusive": 9,
+          "upper_inclusive": 10
+        },
+        "p99": {
+          "lower_exclusive": 11,
+          "upper_inclusive": 12
+        },
+        "p999": {
+          "lower_exclusive": 14,
+          "upper_inclusive": 15
+        }
+      }
+    },
+    "3": {
+      "samples": 630,
+      "maximum": 146815,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 6,
+          "upper_inclusive": 7
+        },
+        "p95": {
+          "lower_exclusive": 11,
+          "upper_inclusive": 12
+        },
+        "p99": {
+          "lower_exclusive": 13,
+          "upper_inclusive": 14
+        },
+        "p999": {
+          "lower_exclusive": 14,
+          "upper_inclusive": 15
+        }
+      }
+    },
+    "4": {
+      "samples": 631,
+      "maximum": 149735,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 6,
+          "upper_inclusive": 7
+        },
+        "p95": {
+          "lower_exclusive": 11,
+          "upper_inclusive": 12
+        },
+        "p99": {
+          "lower_exclusive": 13,
+          "upper_inclusive": 14
+        },
+        "p999": {
+          "lower_exclusive": 14,
+          "upper_inclusive": 15
+        }
+      }
+    },
+    "5": {
+      "samples": 342,
+      "maximum": 153487,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 5,
+          "upper_inclusive": 6
+        },
+        "p95": {
+          "lower_exclusive": 9,
+          "upper_inclusive": 10
+        },
+        "p99": {
+          "lower_exclusive": 11,
+          "upper_inclusive": 12
+        },
+        "p999": {
+          "lower_exclusive": 15,
+          "upper_inclusive": 16
+        }
+      }
+    }
+  }
+}

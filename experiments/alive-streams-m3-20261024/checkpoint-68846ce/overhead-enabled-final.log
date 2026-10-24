@@ -1,0 +1,59 @@
+warning: method `reserve_native` is never used
+  --> src/document_windows.rs:39:8
+   |
+28 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+39 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: `ultra` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 13.20s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/release/deps/ultra_desktop-9e1feeb9c9029f98)
+
+running 2 tests
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":9678,"mode":"clock_pair","p50_ns":60,"p95_ns":80,"p999_ns":81,"p99_ns":81,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":4218,"mode":"fill_without_timing","p50_ns":131,"p95_ns":141,"p999_ns":170,"p99_ns":141,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":37621,"mode":"fill_with_timing","p50_ns":310,"p95_ns":381,"p999_ns":1192,"p99_ns":391,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":4308,"mode":"histogram_publication_tail","p50_ns":111,"p95_ns":121,"p999_ns":130,"p99_ns":121,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":5150,"mode":"clock_pair","p50_ns":60,"p95_ns":70,"p999_ns":71,"p99_ns":71,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":3737,"mode":"fill_without_timing","p50_ns":131,"p95_ns":141,"p999_ns":141,"p99_ns":141,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":47058,"mode":"fill_with_timing","p50_ns":310,"p95_ns":381,"p999_ns":521,"p99_ns":421,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":6893,"mode":"histogram_publication_tail","p50_ns":120,"p95_ns":121,"p999_ns":130,"p99_ns":121,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":8326,"mode":"clock_pair","p50_ns":60,"p95_ns":70,"p999_ns":71,"p99_ns":71,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":4217,"mode":"fill_without_timing","p50_ns":131,"p95_ns":141,"p999_ns":221,"p99_ns":141,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":4378,"mode":"fill_with_timing","p50_ns":310,"p95_ns":311,"p999_ns":321,"p99_ns":321,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":4188,"mode":"histogram_publication_tail","p50_ns":120,"p95_ns":121,"p999_ns":131,"p99_ns":130,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":3847,"mode":"clock_pair","p50_ns":60,"p95_ns":70,"p999_ns":71,"p99_ns":71,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":3917,"mode":"fill_without_timing","p50_ns":241,"p95_ns":251,"p999_ns":251,"p99_ns":251,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":4118,"mode":"fill_with_timing","p50_ns":431,"p95_ns":431,"p999_ns":441,"p99_ns":431,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":4538,"mode":"histogram_publication_tail","p50_ns":120,"p95_ns":121,"p999_ns":141,"p99_ns":121,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":4469,"mode":"clock_pair","p50_ns":60,"p95_ns":70,"p999_ns":71,"p99_ns":71,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":4568,"mode":"fill_without_timing","p50_ns":241,"p95_ns":251,"p999_ns":421,"p99_ns":251,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":4789,"mode":"fill_with_timing","p50_ns":421,"p95_ns":431,"p999_ns":641,"p99_ns":431,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":4478,"mode":"histogram_publication_tail","p50_ns":120,"p95_ns":121,"p999_ns":141,"p99_ns":130,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":6893,"mode":"clock_pair","p50_ns":60,"p95_ns":70,"p999_ns":71,"p99_ns":71,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":4508,"mode":"fill_without_timing","p50_ns":241,"p95_ns":251,"p999_ns":251,"p99_ns":251,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":5621,"mode":"fill_with_timing","p50_ns":431,"p95_ns":431,"p999_ns":642,"p99_ns":441,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":40556,"mode":"histogram_publication_tail","p50_ns":120,"p95_ns":140,"p999_ns":160,"p99_ns":150,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99"}
+test audio::instrumentation::paired_release_overhead ... ok
+NATIVE_OVERHEAD={"backend":"synchronous native external render; no CPAL scheduling","devices":4,"duration_samples":"5064","fixture_sha256":"e50033d6bb2459ce4d7bdf541ba528bd5b3ad1f9a97b646b1b2746ae6b056c46","frames":256,"max_ns":834692,"native_render_failures":"0","observed_frames_max":256,"observed_frames_min":256,"p50_ns":317297,"p95_ns":335561,"p999_ns":581465,"p99_ns":397398,"repetition":0,"samples":5000,"source_id":"c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99","startup_retained_in_metrics":true,"telemetry_enabled":true,"tracks":2,"warmup_callbacks":64}
+
+thread 'audio::instrumentation::native_saved_clip_release_overhead' panicked at src/audio_instrumentation.rs:163:13:
+assertion `left == right` failed
+  left: 0
+ right: 1
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test audio::instrumentation::native_saved_clip_release_overhead ... FAILED
+
+failures:
+
+failures:
+    audio::instrumentation::native_saved_clip_release_overhead
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 201 filtered out; finished in 1.68s
+
+error: test failed, to rerun pass `--lib`

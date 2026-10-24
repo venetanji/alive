@@ -1,0 +1,640 @@
+{
+  "source_commit": "30240579dde52edb9de6c5fdcb7741fa1524b95c",
+  "retained_files": [
+    {
+      "path": "fix2-adjacent-libraries.json",
+      "bytes": 464,
+      "sha256": "0107902af9d9c091f4afaab29fb4cf26b9fe523bd8152cf3ec11ff200892ef8d"
+    },
+    {
+      "path": "fix2-admission-callers-final.txt",
+      "bytes": 10244,
+      "sha256": "ec9af46c923c6804e522b9db8f6370476fa6fa7ac21d86a292e760bf2b169cf4"
+    },
+    {
+      "path": "fix2-admission-callers.txt",
+      "bytes": 10088,
+      "sha256": "ffbf9970b8989a6a56c0e29c65f24d8b5488a0351e3a6d67702b0a8b15996c12"
+    },
+    {
+      "path": "fix2-all-evidence-verified.log",
+      "bytes": 880,
+      "sha256": "08806577bffb15da7248f3a9369e26b0d867657dd014ebd2173495f584494d25"
+    },
+    {
+      "path": "fix2-artifacts.json",
+      "bytes": 3940,
+      "sha256": "e2a82aa86e1834f850adfc623b50f01aa5540ce2c78d146bc5bea36a41216490"
+    },
+    {
+      "path": "fix2-build-alive.log",
+      "bytes": 668,
+      "sha256": "1416ff6369b5539cb53ec9e70227252eaee0d04b090e0a994054dc820c3f6990"
+    },
+    {
+      "path": "fix2-build-ultra.log",
+      "bytes": 505,
+      "sha256": "68f44f9f153b507c1277a8a854c00bab4aabde4a4e1098a5b524765e45d9fe07"
+    },
+    {
+      "path": "fix2-controls-summary.json",
+      "bytes": 23327,
+      "sha256": "f35b0ba3bbd8487bc550465f4e85ced2e6349c0f4566222d39497b8bb4a01512"
+    },
+    {
+      "path": "fix2-controls-units-verified.log",
+      "bytes": 616,
+      "sha256": "a357868a584607a675c28f31f9313bb84854810950fb85fe04c0fcbb5edb4eb8"
+    },
+    {
+      "path": "fix2-controls-verified.log",
+      "bytes": 616,
+      "sha256": "a357868a584607a675c28f31f9313bb84854810950fb85fe04c0fcbb5edb4eb8"
+    },
+    {
+      "path": "fix2-diff-check.json",
+      "bytes": 200,
+      "sha256": "79d41a693b35e4a53a7c5e8138be86b3a8abd87c4bf98be3f4d49c08bfe1022b"
+    },
+    {
+      "path": "fix2-final-evidence-verified.log",
+      "bytes": 880,
+      "sha256": "08806577bffb15da7248f3a9369e26b0d867657dd014ebd2173495f584494d25"
+    },
+    {
+      "path": "fix2-initial-red.log",
+      "bytes": 859,
+      "sha256": "0a5805409d4270d40ef16074bf6f080c9b029f11273a0bdaf8320364f2058301"
+    },
+    {
+      "path": "fix2-native-accepted/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix2-native-accepted/alive-audio-settings.png",
+      "bytes": 120993,
+      "sha256": "3b203a62abc1de7c5dd0507e803a491a0adc1cc0d6c330cb40fa3cbf7a0900c3"
+    },
+    {
+      "path": "fix2-native-accepted/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "fix2-native-accepted/chooser-focus.jsonl",
+      "bytes": 3989,
+      "sha256": "b611cacf9c69f0fc2db15c3b2941a2b000036aa1304e4cce2154cc5898731c61"
+    },
+    {
+      "path": "fix2-native-accepted/clip-observations.json",
+      "bytes": 913,
+      "sha256": "5fd17ba39dbf17c78a2617355454de79752ad6e88017b18c9d9bfc59205b58df"
+    },
+    {
+      "path": "fix2-native-accepted/clips-initial.png",
+      "bytes": 91044,
+      "sha256": "c9070b75b4f435768dc9fccff791a7d46b730a430804e0d75bd13dff7535024f"
+    },
+    {
+      "path": "fix2-native-accepted/clips-prepared.alive",
+      "bytes": 14150,
+      "sha256": "10f4cc1f69f4b5fcbf1938896c99aec85b801499125e956c0c3bf7d967152e0b"
+    },
+    {
+      "path": "fix2-native-accepted/clips-recovered.png",
+      "bytes": 98414,
+      "sha256": "bacffa5d64213126a6ad20d1b141739fd5260fb622b4ee240b03c84f68fc9e8b"
+    },
+    {
+      "path": "fix2-native-accepted/clips-rendered.capture.json",
+      "bytes": 336,
+      "sha256": "a0f31d048eaadbedc477fc7ce22c6566217e7c5842030fba237cc5880a802b38"
+    },
+    {
+      "path": "fix2-native-accepted/clips-rendered.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix2-native-accepted/clips-stopped-saved.png",
+      "bytes": 94385,
+      "sha256": "cc199ba27b0eb017e0f2a124e4e45cd176dc3c31e218617a58421a1e3f3a8999"
+    },
+    {
+      "path": "fix2-native-accepted/initial-v3.alive",
+      "bytes": 9335,
+      "sha256": "5135dca6582bb25b03685cc43bbc5721ba3381b7e85ad45d38d4bf07ef59951d"
+    },
+    {
+      "path": "fix2-native-accepted/initial.alive",
+      "bytes": 5523,
+      "sha256": "542ad41257effae9dc67927cb770ea4ea4dfab7723e9d68016c092c6cb73379b"
+    },
+    {
+      "path": "fix2-native-accepted/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2"
+    },
+    {
+      "path": "fix2-native-accepted/moved/relocated.alive",
+      "bytes": 14161,
+      "sha256": "9d1651d77bb53d968762d33262e010ca5672f3131d11f8068f3068a17f0256ed"
+    },
+    {
+      "path": "fix2-native-accepted/native-clips-report.json",
+      "bytes": 6171,
+      "sha256": "8597ed86aea7271bc130c5c72626f8b6bae98d9f41136f90815719b732795542"
+    },
+    {
+      "path": "fix2-native-accepted/native-inputs.json",
+      "bytes": 1193,
+      "sha256": "5ff11b394505ae5aca87c7309ece6586cea30a05833a0802b9cfb2f1ae4e2974"
+    },
+    {
+      "path": "fix2-native-accepted/observability-actions.jsonl",
+      "bytes": 5915,
+      "sha256": "78b9e6fd6d4cb81fa24fdb585116dcbbb68f6f05afc723f92120aada1012369d"
+    },
+    {
+      "path": "fix2-native-accepted/observability-epochs.jsonl",
+      "bytes": 152918,
+      "sha256": "986e5f3526750ce3d94fd50a666e1693bb29dbf8ec3c7545b46c2256ea11c1a5"
+    },
+    {
+      "path": "fix2-native-accepted/observability-errors.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "fix2-native-accepted/observability-final.json",
+      "bytes": 63011,
+      "sha256": "ff6a2fa38c631ea56d2a79a0d93f9ded6ab404fe2e1239bd2fed7c15365f508e"
+    },
+    {
+      "path": "fix2-native-accepted/observability-report.json",
+      "bytes": 7235,
+      "sha256": "2435bd12e5186d57bed5c6deddc764f032da2240681178be53e5eb05edecab3e"
+    },
+    {
+      "path": "fix2-native-accepted/observability-resources.jsonl",
+      "bytes": 401390,
+      "sha256": "10be3a32da84406b4a5766779984f06cfdcb404a262f427c52bd81d685d6cdf2"
+    },
+    {
+      "path": "fix2-native-accepted/pipewire.log",
+      "bytes": 171,
+      "sha256": "2ecb7b1ea09e67a6c0d363a1c7392a1bf7fe3f5cb513ece5a3e3032ae238c348"
+    },
+    {
+      "path": "fix2-native-accepted/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix2-native-accepted/preserved-changed.ultra",
+      "bytes": 1270,
+      "sha256": "1d97b83a04ecc06a060e14423ee49fd82d533ab5d23a85a07c70469c089437d2"
+    },
+    {
+      "path": "fix2-native-accepted/recovered-Harmony.alive",
+      "bytes": 14155,
+      "sha256": "deaab4f27f8ad0627ec11ab1ff308e17ed147079d1084062777114ae364664d9"
+    },
+    {
+      "path": "fix2-native-accepted/recovered-Pulse.alive",
+      "bytes": 14152,
+      "sha256": "b08173e156182cb16bcad887b76f1b0697b739d0cd7ae0f363d2cdccae8b4b39"
+    },
+    {
+      "path": "fix2-native-accepted/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae"
+    },
+    {
+      "path": "fix2-native-accepted/shared-utility.ultra",
+      "bytes": 2149,
+      "sha256": "b800a01bf8722b60206ea491181d3461f33f175fd8f5bd7ad4cb1a5889c6f107"
+    },
+    {
+      "path": "fix2-native-accepted/startup-app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "fix2-native-accepted/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352"
+    },
+    {
+      "path": "fix2-native-accepted-runner.log",
+      "bytes": 17207,
+      "sha256": "ef1566dabb3415a4c7dcfab39bdf4dca8f9f58b811789728d2378d774fc2bbfb"
+    },
+    {
+      "path": "fix2-native-capture-verified.json",
+      "bytes": 169,
+      "sha256": "e2cfa5ba21b796d41d2a20406de898c783b162ec28e5d8565c1156a83dc44e93"
+    },
+    {
+      "path": "fix2-native-epoch-summary.json",
+      "bytes": 3772,
+      "sha256": "00e570612591b40224199b33b892ce4fca66530175de78774a9c5d8a39cabe9a"
+    },
+    {
+      "path": "fix2-numeric-red.log",
+      "bytes": 963,
+      "sha256": "51d58ddf3540ea9c19727455db50965947f7f27a5a393df940c47739081aee77"
+    },
+    {
+      "path": "fix2-overhead-controls/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix2-overhead-controls/alive-audio-settings.png",
+      "bytes": 125861,
+      "sha256": "9541798e4abe7b6c956fdbb7c24f034ed04c3680260e0b8e7348c7a1f28d8f4e"
+    },
+    {
+      "path": "fix2-overhead-controls/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "fix2-overhead-controls/control-resources.jsonl",
+      "bytes": 257265,
+      "sha256": "6fb9d0188d8e2b8801c95148ffcf23417f6b6465d5691faf74c04840fb80d026"
+    },
+    {
+      "path": "fix2-overhead-controls/diagnostics-0-sampler_diagnostics_capture.json",
+      "bytes": 14156,
+      "sha256": "9157d9817255946e26b0931361eb649806fc0c2c043150f8219595a5aeeaef6d"
+    },
+    {
+      "path": "fix2-overhead-controls/diagnostics-0-sampler_plus_diagnostics.json",
+      "bytes": 14149,
+      "sha256": "236ede6847527bd4ec2104246740a83829bee7ee351fbecd9fb64daaec7d0b5b"
+    },
+    {
+      "path": "fix2-overhead-controls/diagnostics-1-sampler_diagnostics_capture.json",
+      "bytes": 14172,
+      "sha256": "76a78b9a4680a39d429d3daf36f67cfab9344f363be20e03aa5c1abbdbaaef6e"
+    },
+    {
+      "path": "fix2-overhead-controls/diagnostics-1-sampler_plus_diagnostics.json",
+      "bytes": 14168,
+      "sha256": "9904a7ac8c16722de6887c8413908106bcd1db210fad637329b016e51f9cd0ea"
+    },
+    {
+      "path": "fix2-overhead-controls/final-epochs.json",
+      "bytes": 28952,
+      "sha256": "c846355b725aebd0c65e405fa36b10c68fab4add654a7ed8df7cc29bed3db5b0"
+    },
+    {
+      "path": "fix2-overhead-controls/initial.alive",
+      "bytes": 14241,
+      "sha256": "19a741b05586e74eb361383b8ff1e0ea0f0703cfc4e68d0fc61ec102633d0b17"
+    },
+    {
+      "path": "fix2-overhead-controls/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2"
+    },
+    {
+      "path": "fix2-overhead-controls/overhead-capture-0.capture.json",
+      "bytes": 336,
+      "sha256": "7bda1d8e832e09a3da6ecd04aa512f748b5f1178878c5555b33661bce30a6b9d"
+    },
+    {
+      "path": "fix2-overhead-controls/overhead-capture-0.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix2-overhead-controls/overhead-capture-1.capture.json",
+      "bytes": 336,
+      "sha256": "39dab8d21da6ec68891ad0b9408f3e953464b0f0df83969149eaeb19adaf4d0e"
+    },
+    {
+      "path": "fix2-overhead-controls/overhead-capture-1.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix2-overhead-controls/overhead-controls.json",
+      "bytes": 12199,
+      "sha256": "4545c022ee94ac09adc990e4eb3a6059c25df40841e61ec1337148f2f0a6e013"
+    },
+    {
+      "path": "fix2-overhead-controls/pipewire.log",
+      "bytes": 171,
+      "sha256": "e6740aea009077f9c04ac313c3295998edd804aaf5bf4c76b7b9baaab29a5160"
+    },
+    {
+      "path": "fix2-overhead-controls/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix2-overhead-controls/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae"
+    },
+    {
+      "path": "fix2-overhead-controls/startup-app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "fix2-overhead-controls/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352"
+    },
+    {
+      "path": "fix2-overhead-controls-runner.log",
+      "bytes": 10721,
+      "sha256": "8baf7fafc736ee62058217930eb6142e580e5e8df7fab5a071f69521335f380d"
+    },
+    {
+      "path": "fix2-owner-corrected.log",
+      "bytes": 2656,
+      "sha256": "5138d158867a7cb088f21d98ad8421bd5118fc403007b683332426ca46c25092"
+    },
+    {
+      "path": "fix2-owner-green.log",
+      "bytes": 5102,
+      "sha256": "4af3d5c862450b1946efcfa7a6ee33e112d9541e637a2eedb916a48715a2fd3e"
+    },
+    {
+      "path": "fix2-resource-summary.json",
+      "bytes": 6168,
+      "sha256": "08bce4615707c2294730c9872e2bc71cb974771e601a4c3c6c3ea6f379d72ccb"
+    },
+    {
+      "path": "fix2-source-manifest.json",
+      "bytes": 6148,
+      "sha256": "2c613de7434ba7d53a813ed415f06ce4b6c595345ff1d29fb1181ab4f02ec718"
+    },
+    {
+      "path": "fix2-ui-routing.log",
+      "bytes": 8479,
+      "sha256": "1cddec2c4e32335e077a2cfcc75b9982d04559455a6f98f97dec40e317f8dcd5"
+    },
+    {
+      "path": "fix2-ultra-numeric/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix2-ultra-numeric/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "fix2-ultra-numeric/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2"
+    },
+    {
+      "path": "fix2-ultra-numeric/missing-control.json",
+      "bytes": 12328,
+      "sha256": "3d8223acaef900efe579e9906e9ea50883fafc92a1dbff8980929c7996c25b6a"
+    },
+    {
+      "path": "fix2-ultra-numeric/missing-control.png",
+      "bytes": 37802,
+      "sha256": "5e4c845dc76d8f18add8381ac06d7595fcf4a13fffae1b69a6e4c414f031c75e"
+    },
+    {
+      "path": "fix2-ultra-numeric/numeric-authoring.ultra",
+      "bytes": 137,
+      "sha256": "3269df458853b148d215bddc19d5394bf2704d62522c38be8ac2af920cbfbeb0"
+    },
+    {
+      "path": "fix2-ultra-numeric/pipewire.log",
+      "bytes": 171,
+      "sha256": "9e1cf9f2e2130b742f4479c6d31a196cb8f8f989d71b683d3b29cbd859b90bc9"
+    },
+    {
+      "path": "fix2-ultra-numeric/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix2-ultra-numeric/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae"
+    },
+    {
+      "path": "fix2-ultra-numeric/startup-app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "fix2-ultra-numeric/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352"
+    },
+    {
+      "path": "fix2-ultra-numeric-accepted/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix2-ultra-numeric-accepted/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "fix2-ultra-numeric-accepted/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2"
+    },
+    {
+      "path": "fix2-ultra-numeric-accepted/numeric-authoring.ultra",
+      "bytes": 270,
+      "sha256": "57eb594a27aec936610fb1653a2e39c710fb5ab1b7adf5efc379bdf59c7a3907"
+    },
+    {
+      "path": "fix2-ultra-numeric-accepted/numeric-result.json",
+      "bytes": 309,
+      "sha256": "29334800e0297a4b84b12a4b967ec87a25113d779a94325ad5b995efc3ef7b1d"
+    },
+    {
+      "path": "fix2-ultra-numeric-accepted/pipewire.log",
+      "bytes": 171,
+      "sha256": "7510f8ceb3a494091de9b90a3808b753eb1af6153e4a966c8eb40613935a543f"
+    },
+    {
+      "path": "fix2-ultra-numeric-accepted/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix2-ultra-numeric-accepted/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae"
+    },
+    {
+      "path": "fix2-ultra-numeric-accepted/startup-app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "fix2-ultra-numeric-accepted/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352"
+    },
+    {
+      "path": "fix2-ultra-numeric-accepted-runner.log",
+      "bytes": 11030,
+      "sha256": "2b8071cb999bec26d906689b0777d9d91ecfe4016aae13cf1d75d7c3eabd41a8"
+    },
+    {
+      "path": "fix2-ultra-numeric-accepted.py",
+      "bytes": 2456,
+      "sha256": "dcb918ef338fc889ab77144da3e08f081c3e17b186da6d6604b82e92217c5e09"
+    },
+    {
+      "path": "fix2-ultra-numeric-runner.log",
+      "bytes": 11778,
+      "sha256": "6a4ecdfe007ebced610311115edada7d222ed700692678200ec68ae9280b4969"
+    },
+    {
+      "path": "fix2-ultra-numeric-ui/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix2-ultra-numeric-ui/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "fix2-ultra-numeric-ui/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2"
+    },
+    {
+      "path": "fix2-ultra-numeric-ui/numeric-authoring.ultra",
+      "bytes": 144,
+      "sha256": "5f5ec7dd505154973c8145e8c09f6d38405476e200abffdfa14e1c796bf92246"
+    },
+    {
+      "path": "fix2-ultra-numeric-ui/pipewire.log",
+      "bytes": 171,
+      "sha256": "4792b5e43c7d6b62ab50a3864d77ff16891dba3620b0821547d3f133fb78f4cc"
+    },
+    {
+      "path": "fix2-ultra-numeric-ui/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix2-ultra-numeric-ui/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae"
+    },
+    {
+      "path": "fix2-ultra-numeric-ui/startup-app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    {
+      "path": "fix2-ultra-numeric-ui/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352"
+    },
+    {
+      "path": "fix2-ultra-numeric-ui-runner.log",
+      "bytes": 11076,
+      "sha256": "29d7f10a0fb3d3863d5cae79ab212ff2407c6bb496430f9c631b778e2a63a52c"
+    },
+    {
+      "path": "fix2-ultra-numeric-ui.py",
+      "bytes": 2406,
+      "sha256": "fd041ff4a0f4c8ca16a81aee89831c4284fa95350b0e37be74b78cda5f41869a"
+    },
+    {
+      "path": "fix2-ultra-numeric.py",
+      "bytes": 2399,
+      "sha256": "1752fe65c1b730b3c1965102b6b98e91bb14eea8639b7d8ba8c99eed3d7bbd4b"
+    },
+    {
+      "path": "fix2-verify-evidence.py",
+      "bytes": 7020,
+      "sha256": "b081d9222e07e549c46fe6abf50dcefce8c9e2eb9891074b54759740c0faa436"
+    },
+    {
+      "path": "fix2-evidence-index.json",
+      "bytes": 20013,
+      "sha256": "bfd7b896018580d1e21e1a34c39489a3f57ae002013e157283eba9fb4f042506"
+    },
+    {
+      "path": "fix2-final-evidence-verified.log",
+      "bytes": 880,
+      "sha256": "08806577bffb15da7248f3a9369e26b0d867657dd014ebd2173495f584494d25"
+    },
+    {
+      "path": "task-13a-report.md",
+      "bytes": 41478,
+      "sha256": "34f241f21c587062ebfb485df9d0d5a4471cdd41dca805b32213bf5dd0345986"
+    },
+    {
+      "path": "task-13a-fix-2-review.md",
+      "bytes": 5990,
+      "sha256": "5214fc5b46d9c808793cdd304de5e447b0f3cec520e2dbf6d0def96271c3bfa9"
+    }
+  ],
+  "streamed_pcm": [
+    {
+      "path": "fix2-native-accepted/clips-rendered.f32",
+      "bytes": 2543616,
+      "sha256": "ed8767c361fcd83b201f4ce63abacab3e26197b6ef320811ded29f7656083e97",
+      "frames": 317952,
+      "peak": 0.2225944548845291,
+      "finite": true,
+      "raw_pcm_retained": false
+    },
+    {
+      "path": "fix2-overhead-controls/overhead-capture-0.f32",
+      "bytes": 3346432,
+      "sha256": "82547b05d6587a0e0d333bc40acd5275ad225ce36a9de42d701b7c0a7c6feda1",
+      "frames": 418304,
+      "peak": 0.2225944548845291,
+      "finite": true,
+      "raw_pcm_retained": false
+    },
+    {
+      "path": "fix2-overhead-controls/overhead-capture-1.f32",
+      "bytes": 3354624,
+      "sha256": "1cfbb2e4e50f4bcc073bd368bbcf13cdee15e674fbeaa32bd72074de6906110f",
+      "frames": 419328,
+      "peak": 0.2225944548845291,
+      "finite": true,
+      "raw_pcm_retained": false
+    }
+  ],
+  "source_files_verified": 21,
+  "artifacts_verified": 21,
+  "completed_epochs": 6,
+  "callbacks": "3787",
+  "output_frames": "1938944",
+  "playing_seconds_proven": 8.178363923348448,
+  "excluded_seconds": 47.839950484994915,
+  "wall_seconds": 105.71084703200904,
+  "resources": {
+    "samples": 73,
+    "pss_available": 73,
+    "pss_initial_kib": 527170,
+    "pss_final_kib": 497237,
+    "pss_max_kib": 624672,
+    "cpu_max_percent": 119.98795333077402,
+    "identity_coverage_gaps": 14
+  },
+  "native_recorder_group_gone_when_checked": true,
+  "physical_audio": false,
+  "physical_underruns": null,
+  "qualification": "All source findings addressed, final actual binary/workflows/control evidence independently checked; Task13a local gate satisfied. Capacity/scenes/final soak not qualified."
+}

@@ -1,0 +1,207 @@
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=1031869 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1031898): Gtk-WARNING **: 16:10:18.029: cannot open display: :0
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1031902): Gtk-WARNING **: 16:10:18.047: cannot open display: :0
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1031907): Gtk-WARNING **: 16:10:18.075: cannot open display: :0
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1031876): xdg-desktop-portal-WARNING **: 16:10:18.076: Failed to create settings proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1031876): xdg-desktop-portal-WARNING **: 16:10:18.076: Not providing Settings portal: No working backend
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1031910): Gtk-WARNING **: 16:10:18.092: cannot open display: :0
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1031876): xdg-desktop-portal-WARNING **: 16:10:18.093: Failed to create file chooser proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1031913): Gtk-WARNING **: 16:10:18.109: cannot open display: :0
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1031876): xdg-desktop-portal-WARNING **: 16:10:18.111: Failed to create app chooser proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1031916): Gtk-WARNING **: 16:10:18.126: cannot open display: :0
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1031876): xdg-desktop-portal-WARNING **: 16:10:18.128: Failed to create print proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1031919): Gtk-WARNING **: 16:10:18.144: cannot open display: :0
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1031876): xdg-desktop-portal-WARNING **: 16:10:18.145: Failed to create notification proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1031922): Gtk-WARNING **: 16:10:18.161: cannot open display: :0
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1031876): xdg-desktop-portal-WARNING **: 16:10:18.163: Failed to create inhibit proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1031876): xdg-desktop-portal-WARNING **: 16:10:18.163: The location portal requires an access impl
+
+(/usr/lib/xdg-desktop-portal:1031876): xdg-desktop-portal-WARNING **: 16:10:18.163: The camera portal requires an access impl
+
+(/usr/lib/xdg-desktop-portal:1031876): xdg-desktop-portal-WARNING **: 16:10:18.163: The screenshot portal requires an access impl
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1031925): Gtk-WARNING **: 16:10:18.179: cannot open display: :0
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1031876): xdg-desktop-portal-WARNING **: 16:10:18.180: Failed to create account proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1031928): Gtk-WARNING **: 16:10:18.195: cannot open display: :0
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1031876): xdg-desktop-portal-WARNING **: 16:10:18.197: Failed to create email proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1031933): Gtk-WARNING **: 16:10:18.219: cannot open display: :0
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1031876): xdg-desktop-portal-WARNING **: 16:10:18.222: Failed to create dynamic_launcher proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=1031876 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+PASS native hosted Basic, local references, independent overlays, source reveal and preserved live state
+PASS native file forwarding and cross-window typed messages
+PASS native menu creates exactly one patch window
+PASS native Save to an existing path
+PASS native unsaved-close Save, Discard, and Cancel
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Activating service name='ca.desrt.dconf' requested by ':1.108' (uid=1000 pid=1032478 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[1031788]: [session uid=1000 pid=1031788 pidfd=5] Successfully activated service 'ca.desrt.dconf'
+PASS native Open picker with a path containing spaces
+PASS help opens an independent native patch window
+PASS all ten native list objects with audio off
+PASS all ten native list objects with audio on
+PASS all twelve MSP objects, summed inputs, shared output, named Receive resume and global DSP restart
+PASS separate native child views, shared edits, owner-wide undo/redo and whole-tree child Save
+PASS native child audio continuity, source navigation, detach/reopen, deletion closure and owner close/cancel
+{
+  "status": "passed",
+  "scope": "actual Tauri/WebKit windows + native shared runtime and CPAL",
+  "argv_open_and_single_instance": true,
+  "canonical_path_deduplication": true,
+  "native_menu_new_is_local": true,
+  "native_save_existing_path": true,
+  "native_close_save_discard_cancel": true,
+  "native_open_picker": true,
+  "in_app_help_new_window": true,
+  "typed_send_receive_audio_off": true,
+  "typed_list_objects_audio_off_and_on": [
+    "iter",
+    "prepend",
+    "append",
+    "zl_reg",
+    "zl_join",
+    "zl_len",
+    "zl_iter",
+    "zl_slice",
+    "zl_rev",
+    "zl_rot"
+  ],
+  "two_document_stereo_peaks": [
+    0.006200012285262346,
+    0.006200012285262346
+  ],
+  "scoped_stop_stereo_peaks": [
+    0.0,
+    0.006200012285262346
+  ],
+  "msp_twelve_kinds": true,
+  "msp_stereo_peaks": [
+    0.03999999910593033,
+    0.125
+  ],
+  "msp_scoped_stop_stereo_peaks": [
+    0.0,
+    0.02500000037252903
+  ],
+  "msp_named_receive_resume_stereo_peaks": [
+    0.03999999910593033,
+    0.125
+  ],
+  "msp_global_restart_stereo_peaks": [
+    0.03999999910593033,
+    0.125
+  ],
+  "audio_environment": "private software-only CPAL PipeWire at 48 kHz / 512 frames",
+  "embedded_hierarchy": {
+    "control_console_audio_off_and_on": [
+      17,
+      19
+    ],
+    "initial_native_revision": "Document 0; active 0; native r1.",
+    "preserved_runtime_revision": 1,
+    "separate_native_child_windows": true,
+    "shared_child_edits_and_owner_history": true,
+    "message_box_non_consuming_root_and_child_display": "5 pear 2.25",
+    "message_box_reopen_retains_live_display_and_saved_template": true,
+    "before_navigation_stereo_peaks": [
+      0.0625,
+      0.05624999850988388
+    ],
+    "control_child_stereo_peaks": [
+      0.0625,
+      0.05624999850988388
+    ],
+    "signal_child_stereo_peaks": [
+      0.0625,
+      0.05624999850988388
+    ],
+    "after_child_close_stereo_peaks": [
+      0.0625,
+      0.05624999850988388
+    ],
+    "after_child_reopen_stereo_peaks": [
+      0.0625,
+      0.05624999850988388
+    ],
+    "after_owner_close_stereo_peaks": [
+      0.0,
+      0.02500000037252903
+    ],
+    "save_from_child_and_reopen_whole_tree": true,
+    "child_deletion_closes_obsolete_view": true,
+    "owner_close_cancel_preserves_all_views": true,
+    "owner_close_disposes_all_views_once": true,
+    "hidden_descendant_console_source_opens_child_without_reset": true
+  },
+  "help_shell": {
+    "status": "passed",
+    "local_reference_available": true,
+    "basic_stays_visible_and_selected": true,
+    "independent_native_basic_window": true,
+    "console_source_reveals_locally": true,
+    "preserved_runtime_revision": 1,
+    "preserved_numeric_value": 77,
+    "preserved_message_display": "fresh",
+    "saved_message_template": "17",
+    "canonical_export_and_save_omit_reference_and_local_state": true,
+    "whole_help_roots_qualified": 0
+  }
+}

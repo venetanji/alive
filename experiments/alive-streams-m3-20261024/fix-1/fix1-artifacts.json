@@ -1,0 +1,73 @@
+{
+  "source_commit": "ccba93b2e0a76915a9b060d604cc8c62a8f72c29",
+  "embedded_audio_source_id": "db3937551d59a00e195d7ed23440fb0d2b5d6cacf37fb2534e98e34c25c09d75",
+  "artifacts": [
+    {
+      "path": "apps/ultra/src-tauri/target/release/alive",
+      "bytes": 13544360,
+      "sha256": "a2f7ea6a57a7c7669c6b43b66d4db7c20cf129c59afd7912b25a51679b7401a0"
+    },
+    {
+      "path": "apps/ultra/src-tauri/target/release/ultra",
+      "bytes": 17387408,
+      "sha256": "1fed1a6a2f0bc2d6fbb11fd9e1337ad1e73368916a0ff61bbd98006ad223ac12"
+    },
+    {
+      "path": "apps/ultra/src-tauri/target/release/libultra_native.so",
+      "bytes": 12921768,
+      "sha256": "36ca6d5dabb59949d04d600d57a5c529e79e17d144e7af35335ee4e91a43718c"
+    },
+    {
+      "path": "apps/ultra/build/libultra_native.so",
+      "bytes": 12921768,
+      "sha256": "36ca6d5dabb59949d04d600d57a5c529e79e17d144e7af35335ee4e91a43718c"
+    },
+    {
+      "path": "apps/ultra/tests/check_alive_observability.py",
+      "bytes": 8040,
+      "sha256": "44041372e55f2001947c83e2928041e4b48066f6433aa4895606d69e347d37ab"
+    },
+    {
+      "path": "apps/ultra/tests/check_alive_clips.py",
+      "bytes": 7932,
+      "sha256": "a0908aa237a346120429d098f39e701b6931ffbc08a034eb0fa367196afbd111"
+    },
+    {
+      "path": "apps/ultra/tests/check_alive_desktop.py",
+      "bytes": 44801,
+      "sha256": "089e0d4e52ae1dbd3ef7121fc52c4e97506c94b63dd8c69854705d52739eb3f4"
+    },
+    {
+      "path": "apps/ultra/tests/check_canvas_desktop.sh",
+      "bytes": 7699,
+      "sha256": "e75bbd94e63ad4fc28476098e2b7bc1f8918c04706c709e7876fd8b47c2df574"
+    },
+    {
+      "path": "apps/ultra/tests/check_documents_desktop.py",
+      "bytes": 49595,
+      "sha256": "c62b3bd0fb46888761d0a8477d21f1c525680d8ba80ac2c68ceedc5cb052c6ac"
+    },
+    {
+      "path": "apps/ultra/tests/stream_measurement.py",
+      "bytes": 17129,
+      "sha256": "e9318ebd9123e681e851a54cd47a14eaf98afa39c1e42d5dc833d4797d53d9cd"
+    },
+    {
+      "evidence_path": "control-fixture.alive",
+      "bytes": 14240,
+      "sha256": "e50033d6bb2459ce4d7bdf541ba528bd5b3ad1f9a97b646b1b2746ae6b056c46"
+    },
+    {
+      "evidence_path": "overhead-controls-keyboard.py",
+      "bytes": 5253,
+      "sha256": "dc43edaf54300e32d9881e4b3b1699db783f40227abe6824443e12d8749c8210"
+    },
+    {
+      "evidence_path": "fix1-source-manifest.json",
+      "bytes": 6147,
+      "sha256": "0b1238682de21d49565ede91fa9e344dac74d7ec65e8ece6e93e03cfb6e45fbf"
+    }
+  ],
+  "build_features": "default timing-enabled production",
+  "native_library_source_unchanged": true
+}

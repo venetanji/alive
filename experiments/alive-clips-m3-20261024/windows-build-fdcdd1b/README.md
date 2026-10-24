@@ -8,12 +8,17 @@ separate from the preceding retained C3861 failure at `dc76fa9`.
 `job.json` records the completed job/steps; `windows-package.log` is the
 byte-preserved completed-job API log. `manifest.json` hashes both and records
 their source/run identity. No log normalization or rerun substitutes for the
-original observations. The complete package matrix still needs its own final
-receipt after both macOS runners finish.
+original observations. The complete package matrix's final failure receipt is
+retained separately: Linux, Windows and Apple Silicon pass; Intel macOS fails
+DMG creation.
 
 The log retains an MSVC C4244 integer-to-float conversion warning from
-`xutility`; successful packaging is not a warning-free build claim. Final
-whole-branch triage must identify its source before attributing it.
+`xutility`; successful packaging is not a warning-free build claim. Its template
+context identifies `backend.cpp:295`, `std::fill<float*, int>(..., 0)`. Blame
+attributes the line to older `5c5db48`, before this host branch; integer zero is
+exactly representable as float. This source attribution does not change the log.
+The C4805 at `alive_session.hpp:312` is a separate bool/uint32 mixer operation
+introduced by `db96180`; final review must triage it. No source fix is made here.
 
 This package checkpoint predates the local session-v3 clip-interface
 integration. Successful Windows packaging does not establish a Windows

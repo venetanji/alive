@@ -1,0 +1,124 @@
+{
+  "source_commit": "ccba93b2e0a76915a9b060d604cc8c62a8f72c29",
+  "source_files_independently_verified": 21,
+  "artifacts_independently_verified": 13,
+  "native_source_unchanged": true,
+  "retained_files": [
+    {
+      "path": "fix1-alive-rust.log",
+      "bytes": 967,
+      "sha256": "02d4248a56a7c3f5f92847916c2d59cec8fd26289cb22b1c0ade6ffd8c9dbca3"
+    },
+    {
+      "path": "fix1-build-alive.log",
+      "bytes": 668,
+      "sha256": "813d0f08d5714dcd3ad8df8ab61c2a2b71dad817dc09d9adaf7086a609ca71ca"
+    },
+    {
+      "path": "fix1-build-ultra.log",
+      "bytes": 505,
+      "sha256": "b909de5099f64aaa22480d80b9648a0e4ee0fcd7973660e42c85f3d5ba5aaf06"
+    },
+    {
+      "path": "fix1-epoch-quality-red.log",
+      "bytes": 1491,
+      "sha256": "9904f936171bd1612b9af754062ab51ab73302f315c012c98c40f3a0a2a75d2d"
+    },
+    {
+      "path": "fix1-owner-corrected.log",
+      "bytes": 2431,
+      "sha256": "e899e88d398232fe6d6acd54d4c3eb9d77cd8871b70a4b1829da1cd0d585ef83"
+    },
+    {
+      "path": "fix1-owner-green.log",
+      "bytes": 3880,
+      "sha256": "f19187de34e0aa486d4b97ed59f90165cf0343137ab07302b8804d6a2396b0b1"
+    },
+    {
+      "path": "fix1-rust-full.log",
+      "bytes": 19974,
+      "sha256": "e1b4d993034b7a927e25bf47a42ba0237aa6d60f97c01dca9e270d93d2e1f91c"
+    },
+    {
+      "path": "fix1-sampler-all-green.log",
+      "bytes": 1184,
+      "sha256": "4105c548b759a36fe9412b2e2f6023b8beaa981c0327d54c2bb2553d88ca9926"
+    },
+    {
+      "path": "fix1-sampler-final-green.log",
+      "bytes": 109,
+      "sha256": "9bca65764d206713d47bb2f604aa5b68fc37ba5b9d18af110186cf229edd8233"
+    },
+    {
+      "path": "fix1-sampler-freeze.log",
+      "bytes": 109,
+      "sha256": "22efd0e24237023c53cbd175e697e6250f00a764922207cfa50de291d6a0c338"
+    },
+    {
+      "path": "fix1-sampler-green-initial.log",
+      "bytes": 105,
+      "sha256": "dac513b37e1daa31bc1ef4100925d59a380dc880277cb6873bf95e83f9ae4ff2"
+    },
+    {
+      "path": "fix1-sampler-green.log",
+      "bytes": 107,
+      "sha256": "43d6a132e16b1751c598bb0c764f91ed49da6fcaad4fb017be7a148c72ba014a"
+    },
+    {
+      "path": "fix1-sampler-red.log",
+      "bytes": 2265,
+      "sha256": "7a08940cf9a9460596b5a26c84750f6e56f1e1324862520a84bf69e1d8df4124"
+    },
+    {
+      "path": "fix1-ultra-close-red.log",
+      "bytes": 843,
+      "sha256": "14772bb114c0b283bd592a1133c74f1b52328a7dafcef3451399f0f5924084f0"
+    },
+    {
+      "path": "fix1-ultra-green.log",
+      "bytes": 594,
+      "sha256": "368508c8e0e35f861757e057532450b09ff37551aed75edc307438b0b762d909"
+    },
+    {
+      "path": "fix1-ultra-red.log",
+      "bytes": 1359,
+      "sha256": "f834aa3838a0ca9742d85ba5d1fc6d5c086ab126a03fb3941cf07f5ae0743e52"
+    },
+    {
+      "path": "fix1-union-both-red.log",
+      "bytes": 1564,
+      "sha256": "94510589dcf22bb987f54d879e1c3a42723cd055a83224653cfc0e5ea4c83cc5"
+    },
+    {
+      "path": "fix1-union-red.log",
+      "bytes": 833,
+      "sha256": "9126bebc3117aeaad003bb6f122b47062c5b4271d6065e629a6dea3f87fe976d"
+    },
+    {
+      "path": "fix1-source-manifest.json",
+      "bytes": 6147,
+      "sha256": "0b1238682de21d49565ede91fa9e344dac74d7ec65e8ece6e93e03cfb6e45fbf"
+    },
+    {
+      "path": "fix1-artifacts.json",
+      "bytes": 2574,
+      "sha256": "a2b0f245c5c19d7e82f4c2ef48957cf2acad08bc588667216557fe53de3ee37f"
+    },
+    {
+      "path": "control-fixture.alive",
+      "bytes": 14240,
+      "sha256": "e50033d6bb2459ce4d7bdf541ba528bd5b3ad1f9a97b646b1b2746ae6b056c46"
+    },
+    {
+      "path": "overhead-controls-keyboard.py",
+      "bytes": 5253,
+      "sha256": "dc43edaf54300e32d9881e4b3b1699db783f40227abe6824443e12d8749c8210"
+    },
+    {
+      "path": "fix1-source-manifest.json",
+      "bytes": 6147,
+      "sha256": "0b1238682de21d49565ede91fa9e344dac74d7ec65e8ece6e93e03cfb6e45fbf"
+    }
+  ],
+  "qualification": "source/tests/build identity only; scoped review and native runtime/control qualification pending"
+}

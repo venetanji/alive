@@ -380,7 +380,9 @@ passes Linux, Windows/MSVC and Apple Silicon but fails Intel macOS at Tauri's
 DMG wrapper after successful compilation/app signing. The underlying cause is
 not exposed by the emitted generic error. Read-only diagnosis verifies that
 pinned Tauri CLI verbosity exposes the hidden child diagnostics; the separately
-reviewed one-argument diagnostic at `813ba76` awaits the next actual Intel job.
+reviewed one-argument diagnostic at `813ba76` exposes the next job's child
+output. The `16294e6` Intel job subsequently passes both application/DMG builds;
+the original hidden-child failure's cause remains unknown.
 It is not a claimed functional fix, and no environment setting changes.
 The exact Windows package log/source receipt qualifies the portable correction;
 the failed overall matrix does not qualify all packages.
@@ -437,7 +439,14 @@ worker but show PSS growth. These are short software Xvfb/PipeWire checks on
 Ryzen 9 5900HS at 48 kHz, requested/observed 512 frames, not endurance, physical
 audio, leak freedom or cumulative error totals. Raw PCM stays temporary;
 hashes/independent streamed checks and non-PCM artifacts are retained. Task 12
-is locally complete; exact newly pushed-head CI/packages remain outstanding.
+is locally complete. Pushed evidence checkpoint `16294e6` passes all three CI
+jobs (`40072316990`), including the new actual saved-clip journey, retained
+desktop/editor-resource gates and CPAL loopback. Both-app packages at
+`40072317053` pass all four package targets, including both Intel macOS DMGs;
+publishing is skipped. Exact job metadata and verbose Intel output are retained
+under `experiments/alive-clips-m3-20261024/macos-intel-16294e6/`.
+Its Linux artifact `12552037601` predates local Task 13a work and has not been
+downloaded/requalified locally. Final-source CI/packages still remain required.
 
 ### Task 13: Measure And Admit Eight Tracks
 
@@ -462,6 +471,37 @@ reject the 32/frame cap. Never shift authored timing or raise limits to pass.
 Report distributions/maxima and practical negotiated desktop buffers; proposed
 50% p99.9 headroom is advisory, not an invented user gate. Test an actual native
 eight-track clip/chain workflow. The final 30-minute soak belongs to Task 15.
+
+Task 13a is locally accepted through `3024057` after the original independent
+review and two scoped correction reviews. Callback ownership now gates native
+replacement and ordinary root Close until both callback owners are gone, while
+authorized Quit and scoped Stop remain available. Typed stream epochs, bounded
+numeric timing records, lifetime totals and the finite resource/capture sampler
+are integrated into the existing native CI journey. The profile remains
+two tracks / six devices / eight clips; Task 13b has not enabled eight tracks.
+
+Evidence: `experiments/alive-streams-m3-20261024/`. The final Alive clip wrapper
+has six complete epochs, 3787 callbacks, 8.178364 proven playing seconds and no
+typed CPAL/render/shape errors or processing-budget exceedances. The affected
+real Ultra numeric/history/save/restart workflow passes. Eight explicit-state
+control stages on a two-track/four-device fixture prove 63.230005 playing
+seconds, two final epochs and 8824 callbacks. The final software clip capture
+contains 317952 finite stereo frames. Parent checks source/build identities,
+retained bytes, exact lifetime/histogram sums, all stage CPU calculations and
+capture cleanup. Rust full 203 passes/four explicit ignores are attributed to
+the first correction checkpoint; final focused owner tests pass 21 and Node
+routing tests 84. Earlier native guards and same-source enabled/disabled timing
+distributions retain their source identity and documented impact assessment.
+
+These are short Linux Xvfb/software PipeWire checks on Ryzen 9 5900HS, 48 kHz
+stereo, requested/observed 512 frames. The control run's app PSS increases
+461980 -> 499640 KiB; transient CPU coverage remains incomplete. No leak-free,
+physical underrun, scheduling-lateness or endurance claim follows. Pinned CPAL
+may create/free its owned error payload outside the guarded app-owned fill and
+typed-action boundary. Timing excludes the final clock/publication tail; other
+platforms' terminal shutdown remains source-only here. The tooltip/pointer
+finding is deferred to the final interface audit. Exact pushed-checkpoint CI
+and packages remain pending; capacity, scenes and the final soak still follow.
 
 ### Task 14: Scene Launching
 

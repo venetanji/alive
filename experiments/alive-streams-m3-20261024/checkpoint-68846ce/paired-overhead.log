@@ -1,0 +1,51 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: method `reserve_native` is never used
+  --> src/document_windows.rs:39:8
+   |
+28 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+39 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `ultra` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 22.89s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/release/deps/ultra_desktop-9e1feeb9c9029f98)
+
+running 1 test
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":4548,"mode":"clock_pair","p50_ns":60,"p95_ns":80,"p999_ns":81,"p99_ns":81,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":13375,"mode":"fill_without_timing","p50_ns":131,"p95_ns":141,"p999_ns":161,"p99_ns":141,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":11131,"mode":"fill_with_timing","p50_ns":291,"p95_ns":301,"p999_ns":301,"p99_ns":301,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":9648,"mode":"histogram_publication_tail","p50_ns":111,"p95_ns":121,"p999_ns":131,"p99_ns":121,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":4067,"mode":"clock_pair","p50_ns":60,"p95_ns":70,"p999_ns":71,"p99_ns":71,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":9147,"mode":"fill_without_timing","p50_ns":131,"p95_ns":141,"p999_ns":141,"p99_ns":141,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":14858,"mode":"fill_with_timing","p50_ns":291,"p95_ns":301,"p999_ns":310,"p99_ns":301,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":241,"mode":"histogram_publication_tail","p50_ns":111,"p95_ns":121,"p999_ns":131,"p99_ns":121,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":120,"mode":"clock_pair","p50_ns":60,"p95_ns":70,"p999_ns":71,"p99_ns":71,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":3818,"mode":"fill_without_timing","p50_ns":131,"p95_ns":141,"p999_ns":141,"p99_ns":141,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":9428,"mode":"fill_with_timing","p50_ns":291,"p95_ns":301,"p999_ns":301,"p99_ns":301,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":256,"guard_build":true,"max_ns":3797,"mode":"histogram_publication_tail","p50_ns":120,"p95_ns":121,"p999_ns":131,"p99_ns":130,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":25678,"mode":"clock_pair","p50_ns":60,"p95_ns":70,"p999_ns":71,"p99_ns":71,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":4839,"mode":"fill_without_timing","p50_ns":241,"p95_ns":251,"p999_ns":251,"p99_ns":251,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":9438,"mode":"fill_with_timing","p50_ns":401,"p95_ns":411,"p999_ns":421,"p99_ns":411,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":9498,"mode":"histogram_publication_tail","p50_ns":111,"p95_ns":121,"p999_ns":131,"p99_ns":121,"render":"fixed fake render; native guard measurement separate","repetition":0,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":3787,"mode":"clock_pair","p50_ns":60,"p95_ns":70,"p999_ns":71,"p99_ns":71,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":24296,"mode":"fill_without_timing","p50_ns":241,"p95_ns":251,"p999_ns":251,"p99_ns":251,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":9327,"mode":"fill_with_timing","p50_ns":401,"p95_ns":411,"p999_ns":411,"p99_ns":411,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":8136,"mode":"histogram_publication_tail","p50_ns":120,"p95_ns":121,"p999_ns":131,"p99_ns":121,"render":"fixed fake render; native guard measurement separate","repetition":1,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":121,"mode":"clock_pair","p50_ns":60,"p95_ns":70,"p999_ns":71,"p99_ns":71,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":9237,"mode":"fill_without_timing","p50_ns":241,"p95_ns":251,"p999_ns":251,"p99_ns":251,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":9508,"mode":"fill_with_timing","p50_ns":401,"p95_ns":411,"p999_ns":421,"p99_ns":411,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+OVERHEAD={"frames":512,"guard_build":true,"max_ns":16982,"mode":"histogram_publication_tail","p50_ns":120,"p95_ns":121,"p999_ns":131,"p99_ns":130,"render":"fixed fake render; native guard measurement separate","repetition":2,"samples":20000,"source_id":"e74bf00eda4f7a737c749a13368acb79aad1b23062b688089e5f153f2aba6620"}
+test audio::instrumentation::paired_release_overhead ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 200 filtered out; finished in 0.10s
+
+     Running unittests src/main.rs (apps/ultra/src-tauri/target/release/deps/ultra-8ac820d0ea8bc89b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

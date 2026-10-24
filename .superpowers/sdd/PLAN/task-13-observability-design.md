@@ -159,8 +159,15 @@ neither the harness nor lifetime totals may silently call its last read final.
 All counts and elapsed units use unsigned 64-bit integers; JSON encodes large
 integer counters/IDs as decimal strings to avoid JavaScript precision loss.
 Configuration strings retain existing bounded validation. Store at most 8 KiB
-of numeric timing payload per epoch; a 64-record ring stays below 1 MiB plus
-bounded metadata. Separate these fields:
+of fixed numeric timing memory per retained epoch record; a 64-record ring
+stays below 1 MiB plus bounded metadata. The one active epoch also needs fixed
+ordinary accumulators, atomic publication and one last-coherent reader cache.
+Their aggregate may be about 12 KiB and must be measured/reported separately;
+the 8 KiB payload cap does not sum these necessary copies. No unbounded or extra
+observer copies are permitted. This clarification preserves all bins and u64
+counters rather than silently compressing/wrapping them. Decimal-string JSON
+expansion has a separate bounded wire size; it is not this numeric-memory cap.
+Separate these fields:
 
 | Fields | Meaning / bound |
 | --- | --- |
@@ -223,6 +230,18 @@ fetch complete retained timing records only through the diagnostics command.
 No histogram sorting or percentile calculation in callback. Test monotonic
 publication and whole-retirement totals rather than assume a live cross-thread
 error/timing snapshot is globally atomic.
+
+Implementation preflight clarification: the strict allocation/free/lock guard
+covers the complete app-owned data fill/clock/publication path and typed error
+counter/native action work. CPAL 0.18.2 `error.rs:138` owns an optional
+`Cow<'static, str>` in its by-value Error; backend message creation may allocate
+and error-parameter destruction may free that owned payload. PipeWire's command
+error sites construct owned formatted messages. This API boundary cannot support
+a universal no-free claim for the complete CPAL error closure with bounded
+storage. Retain a focused owned-error probe and disclose the limitation; do not
+clone/format/log/retain messages, leak them or redesign the pinned dependency in
+this slice. A complete backend error-path RT guarantee would require a separately
+reviewed CPAL/error-ingress contract. Data fill guards remain unchanged.
 
 ## Scheduling And Audio Evidence
 
