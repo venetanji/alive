@@ -18,11 +18,12 @@ import time
 
 import check_canvas_desktop as ui
 import check_documents_desktop as windows
-from gi.repository import Atspi
+from gi.repository import Atspi, GLib
 
 MAIN = 'Alive'
 DEVICE = Path('apps/ultra/examples/subtractive.ultra').resolve()
 operations = []
+native_inputs = []
 
 
 def screenshot(name):
@@ -88,6 +89,166 @@ class WindowAttributes(C.Structure):
                 ('override_redirect', C.c_int), ('screen', C.c_void_p)]
 
 
+ui.x.XInternAtom.argtypes = [C.c_void_p, C.c_char_p, C.c_int]
+ui.x.XInternAtom.restype = C.c_ulong
+ui.x.XGetWindowProperty.argtypes = [C.c_void_p, C.c_ulong, C.c_ulong, C.c_long, C.c_long,
+                                   C.c_int, C.c_ulong, C.POINTER(C.c_ulong), C.POINTER(C.c_int),
+                                   C.POINTER(C.c_ulong), C.POINTER(C.c_ulong), C.POINTER(C.c_void_p)]
+ui.x.XTranslateCoordinates.argtypes = [C.c_void_p, C.c_ulong, C.c_ulong, C.c_int, C.c_int,
+                                      C.POINTER(C.c_int), C.POINTER(C.c_int), C.POINTER(C.c_ulong)]
+
+
+def input_record(action, **fields):
+    row = {'action': action, 'monotonic': time.monotonic(), **fields}
+    native_inputs.append(row)
+    (ui.output / 'native-inputs.json').write_text(json.dumps(native_inputs, indent=2))
+    return row
+
+
+def window_property(window, name, kind):
+    atom = ui.x.XInternAtom(ui.display, name.encode(), 1)
+    actual = C.c_ulong(); form = C.c_int(); count = C.c_ulong(); rest = C.c_ulong(); data = C.c_void_p()
+    if not atom:
+        return []
+    result = ui.x.XGetWindowProperty(ui.display, window, atom, 0, 16, 0, kind,
+                                    C.byref(actual), C.byref(form), C.byref(count), C.byref(rest), C.byref(data))
+    try:
+        if result or actual.value != kind or form.value != 32 or not data.value:
+            return []
+        return list(C.cast(data, C.POINTER(C.c_ulong))[:count.value])
+    finally:
+        if data.value:
+            ui.x.XFree(data)
+
+
+def owned_frame_window():
+    frame = next(frame for frame in windows.app_frames()
+                 if frame.get_name().removeprefix('* ') == windows.scope
+                 and frame.get_state_set().contains(Atspi.StateType.SHOWING))
+    title = frame.get_name().removeprefix('* ')
+    pending = [ui.x.XDefaultRootWindow(ui.display)]
+    while pending:
+        window = pending.pop(); name = C.c_char_p()
+        if ui.x.XFetchName(ui.display, window, C.byref(name)) and name.value:
+            text = name.value.decode('utf-8', errors='replace').removeprefix('* ')
+            ui.x.XFree(name)
+            if text == title and window_property(window, '_NET_WM_PID', 6) == [ui.pid]:
+                return window
+        root = C.c_ulong(); parent = C.c_ulong(); children = C.POINTER(C.c_ulong)(); count = C.c_uint()
+        if ui.x.XQueryTree(ui.display, window, C.byref(root), C.byref(parent), C.byref(children), C.byref(count)):
+            try:
+                pending.extend(children[index] for index in range(count.value))
+            finally:
+                if children:
+                    ui.x.XFree(children)
+    raise AssertionError('No owned native window for scoped frame: ' + title)
+
+
+def native_hit_path(px, py):
+    root = ui.x.XDefaultRootWindow(ui.display); path = [root]
+    for _ in range(32):
+        dx = C.c_int(); dy = C.c_int(); child = C.c_ulong()
+        assert ui.x.XTranslateCoordinates(ui.display, root, path[-1], px, py,
+                                         C.byref(dx), C.byref(dy), C.byref(child))
+        if not child.value:
+            return path
+        path.append(child.value)
+    raise AssertionError('Native hit-test ancestry exceeds diagnostic bound')
+
+
+def reorder_point(control):
+    states = control.get_state_set()
+    if not all(states.contains(state) for state in (Atspi.StateType.ENABLED, Atspi.StateType.SHOWING,
+                                                    Atspi.StateType.SENSITIVE)):
+        raise LookupError('Reorder control is unavailable')
+    rect = Atspi.Component.get_extents(control, Atspi.CoordType.SCREEN)
+    if rect.width <= 0 or rect.height <= 0:
+        raise LookupError('Reorder control has no screen rectangle')
+    return [rect.x, rect.y, rect.width, rect.height], (rect.x + rect.width // 2, rect.y + rect.height // 2)
+
+
+def reorder_click(name):
+    """Dismiss native tooltip occlusion before one Alive reorder click."""
+    assert windows.scope == MAIN, 'Reorder input is scoped to the Alive main frame'
+    owner = owned_frame_window(); control = ui.wait_for(name)
+    Atspi.Component.grab_focus(control)
+    samples = []; point = None
+    deadline = time.monotonic() + 2
+    while time.monotonic() < deadline:
+        try:
+            # Focus/scroll and WebKit layout may change the accessible rectangle.
+            control = ui.find(name); rect, current = reorder_point(control)
+            path = native_hit_path(*current)
+            sample = {'rect': rect, 'hit_path': path}
+            if not samples or sample != samples[-1]:
+                samples.append(sample)
+            if current != point:
+                point = current
+                assert ui.t.XTestFakeMotionEvent(ui.display, 0, *point, 0)
+                ui.x.XFlush(ui.display)
+            elif owner in path:
+                try:
+                    assert ui.t.XTestFakeButtonEvent(ui.display, 1, 1, 0)
+                finally:
+                    assert ui.t.XTestFakeButtonEvent(ui.display, 1, 0, 0)
+                    ui.x.XFlush(ui.display)
+                return input_record('reorder click', name=name, owner=owner, samples=samples,
+                                    presses=1, releases=1, final_rect=rect)
+        except (StopIteration, LookupError, GLib.GError) as error:
+            sample = {'unavailable': str(error)}
+            if not samples or sample != samples[-1]:
+                samples.append(sample)
+        time.sleep(.01)
+    input_record('reorder blocked', name=name, owner=owner, samples=samples, presses=0, releases=0)
+    screenshot('reorder-input-blocked.png')
+    raise AssertionError('Native reorder target remains occluded or unavailable: ' + name)
+
+
+def force_reorder_tooltip(name, hover):
+    owner = owned_frame_window(); _, point = reorder_point(ui.wait_for(hover))
+    ui.t.XTestFakeMotionEvent(ui.display, 0, *point, 0); ui.x.XFlush(ui.display)
+    tooltip = ui.x.XInternAtom(ui.display, b'_NET_WM_WINDOW_TYPE_TOOLTIP', 0)
+    deadline = time.monotonic() + 3
+    while time.monotonic() < deadline:
+        rect, target = reorder_point(ui.find(name)); path = native_hit_path(*target)
+        if owner not in path and any(tooltip in window_property(window, '_NET_WM_WINDOW_TYPE', 4) for window in path):
+            screenshot('reorder-covering-tooltip.png')
+            return input_record('covering reorder tooltip', name=name, owner=owner, rect=rect, hit_path=path)
+        time.sleep(.02)
+    input_record('missing covering tooltip', name=name, owner=owner, rect=rect, hit_path=path)
+    screenshot('reorder-tooltip-missing.png')
+    raise AssertionError('Regression precondition: no native tooltip covering Earlier')
+
+
+def location_entry():
+    code = ui.x.XKeysymToKeycode(ui.display, ui.x.XStringToKeysym(b'slash'))
+    assert code
+    ready = False
+    try:
+        assert ui.t.XTestFakeKeyEvent(ui.display, code, 1, 0)
+        ui.x.XFlush(ui.display)
+        deadline = time.monotonic() + 8
+        while time.monotonic() < deadline:
+            try:
+                entry = ui.find('Native filename entry'); states = entry.get_state_set()
+                rect = Atspi.Component.get_extents(entry, Atspi.CoordType.SCREEN)
+                if ('EditableText' in entry.get_interfaces() and rect.width > 0 and rect.height > 0
+                        and all(states.contains(state) for state in (Atspi.StateType.SHOWING,
+                                Atspi.StateType.FOCUSED, Atspi.StateType.ENABLED, Atspi.StateType.SENSITIVE))):
+                    ready = True
+                    return entry
+            except (StopIteration, GLib.GError):
+                pass
+            time.sleep(.01)
+        screenshot('location-entry-unavailable.png')
+        raise AssertionError('Native location entry did not become usable before slash release')
+    finally:
+        released = bool(ui.t.XTestFakeKeyEvent(ui.display, code, 0, 0))
+        ui.x.XFlush(ui.display)
+        input_record('slash location entry', scope=windows.scope, ready_before_release=ready, released=released)
+        assert released, 'Slash key release failed'
+
+
 def focus_chooser(title):
     ui.x.XGetWindowAttributes.argtypes = [C.c_void_p, C.c_ulong, C.POINTER(WindowAttributes)]
     windows.scope = title
@@ -135,20 +296,13 @@ def choose_file(button, title, path):
                      and node.get_state_set().contains(Atspi.StateType.SHOWING))
         assert Atspi.EditableText.set_text_contents(entry, str(path))
     else:
-        for _ in range(3):
-            focus_chooser(title)
-            # Give the GTK file pane focus before its location shortcut.
-            ui.t.XTestFakeMotionEvent(ui.display, 0, 450, 250, 0)
-            ui.t.XTestFakeButtonEvent(ui.display, 1, 1, 0)
-            ui.t.XTestFakeButtonEvent(ui.display, 1, 0, 0)
-            ui.x.XFlush(ui.display)
-            ui.keys('slash')
-            time.sleep(.3)
-            try:
-                ui.find('Native filename entry')
-                break
-            except StopIteration:
-                continue
+        focus_chooser(title)
+        # Give the GTK file pane focus before its location shortcut.
+        ui.t.XTestFakeMotionEvent(ui.display, 0, 450, 250, 0)
+        ui.t.XTestFakeButtonEvent(ui.display, 1, 1, 0)
+        ui.t.XTestFakeButtonEvent(ui.display, 1, 0, 0)
+        ui.x.XFlush(ui.display)
+        location_entry()
         ui.text('Native filename entry', str(path))
     ui.click('Save' if title == 'Save Alive Session' else 'Open')
     deadline = time.monotonic() + 8
@@ -277,9 +431,10 @@ def prepare_chain():
     choose_file('Add effect', 'Load Ultra Device', utility)
     choose_file('Add effect', 'Load Ultra Device', lowpass)
     # Reordering twice must preserve identities and restore the saved signal order.
-    ui.click('Move Pulse Stereo Utility effect 1 later')
+    reorder_click('Move Pulse Stereo Utility effect 1 later')
     ui.wait_for('Select Pulse Stereo Utility effect 2')
-    ui.click('Move Pulse Stereo Utility effect 2 earlier')
+    force_reorder_tooltip('Move Pulse Stereo Utility effect 2 earlier', 'Move Pulse Stereo Lowpass effect 1 later')
+    reorder_click('Move Pulse Stereo Utility effect 2 earlier')
     ui.wait_for('Select Pulse Stereo Lowpass effect 2')
     # Another Utility with the same reusable ID/key belongs to Harmony alone.
     ui.click('Harmony clip')
@@ -544,8 +699,10 @@ def run():
     before_reorder = ui.output / 'before-reorder.alive'
     choose_file('Save session as', 'Save Alive Session', before_reorder)
     chain['prepared_instances'] = [d['instanceId'] for d in json.loads(before_reorder.read_text())['tracks'][0]['effects']]
-    ui.click('Move Pulse Stereo Utility effect 1 later')
-    ui.click('Move Pulse Stereo Utility effect 2 earlier')
+    reorder_click('Move Pulse Stereo Utility effect 1 later')
+    ui.wait_for('Select Pulse Stereo Utility effect 2')
+    reorder_click('Move Pulse Stereo Utility effect 2 earlier')
+    ui.wait_for('Select Pulse Stereo Lowpass effect 2')
     ui.click('Audio details')
     transport('start')
     capture = start_capture('native-walkthrough')
