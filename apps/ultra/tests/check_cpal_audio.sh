@@ -26,7 +26,7 @@ cargo test --release --manifest-path apps/ultra/src-tauri/Cargo.toml --locked --
 probe_binary=$(python3 - "$out/build-artifacts.jsonl" <<'PY'
 import json,sys
 rows=[json.loads(x) for x in open(sys.argv[1])]
-bins=[x['executable'] for x in rows if x.get('reason')=='compiler-artifact' and x.get('profile',{}).get('test') and x.get('target',{}).get('name')=='ultra' and x.get('executable')]
+bins=[x['executable'] for x in rows if x.get('reason')=='compiler-artifact' and x.get('profile',{}).get('test') and x.get('target',{}).get('name')=='ultra_desktop' and x.get('executable')]
 assert len(bins)==1,bins
 print(bins[0])
 PY

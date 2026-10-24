@@ -1,0 +1,24 @@
+[
+  [
+    "c++",
+    "-std=c++17",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-pthread",
+    "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+    "/tmp/alive-task14-evidence/native-final-focused/source/tests/alive_session_v3_test.cpp",
+    "/tmp/alive-task14-evidence/native-final-focused/source/src-tauri/native/backend.cpp",
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build/core/libultra_core_bundle.a",
+    "-ldl",
+    "-lrt",
+    "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock",
+    "-o",
+    "/tmp/alive-task14-evidence/native-final-focused/probe"
+  ],
+  [
+    "/tmp/alive-task14-evidence/native-final-focused/probe",
+    "--scenes"
+  ]
+]

@@ -1,0 +1,4587 @@
+{
+  "evidence_id": "LOCAL-S1",
+  "authority": "shipped-artifact",
+  "executable": {
+    "path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Program/Ableton Live 12 Suite.exe",
+    "bytes": 148198344,
+    "sha256": "fdc11a99a6a02c715115ed028becc29c1a2e3b67604ca99e22a81bbfd9d96c6e"
+  },
+  "analog_library": {
+    "path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Devices/Pc/Analog_64.dll",
+    "bytes": 816640,
+    "sha256": "4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133"
+  },
+  "devices": [
+    {
+      "path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Core Library/Defaults/Instruments/Analog.adv",
+      "bytes": 2550,
+      "sha256": "87b750c9c2f7bee20c7d9549c69e8fac371a79c6795bcad240203b124de6b0a6",
+      "class_tag": "UltraAnalog",
+      "creator": "Ableton Live 12.4d1",
+      "top_level_fields": [
+        "LomId",
+        "LomIdView",
+        "IsExpanded",
+        "BreakoutIsExpanded",
+        "On",
+        "ModulationSourceCount",
+        "ParametersListWrapper",
+        "Pointee",
+        "LastSelectedTimeableIndex",
+        "LastSelectedClipEnvelopeIndex",
+        "LastPresetRef",
+        "LockedScripts",
+        "IsFolded",
+        "ShouldShowPresetName",
+        "UserName",
+        "Annotation",
+        "SourceContext",
+        "MpePitchBendUsesTuning",
+        "ViewData",
+        "OverwriteProtectionNumber",
+        "Polyphony",
+        "PitchBendRange",
+        "Volume",
+        "PerNotePitchBendRange",
+        "ChannelPressureTarget1",
+        "ChannelPressureAmount1",
+        "ChannelPressureTarget2",
+        "ChannelPressureAmount2",
+        "MpeCC74Target1",
+        "MpeCC74Amount1",
+        "MpeCC74Target2",
+        "MpeCC74Amount2",
+        "Octave",
+        "OctaveRelativePosition",
+        "Transpose",
+        "TransposeRelativePosition",
+        "KeyboardFineTune",
+        "KeyboardUnisonToggle",
+        "KeyboardUnison",
+        "KeyboardDetune",
+        "KeyboardUnisonDelay",
+        "KeyboardPriority",
+        "KeyboardStretch",
+        "KeyboardError",
+        "VibratoToggle",
+        "VibratoSpeed",
+        "VibratoFadeIn",
+        "VibratoAmount",
+        "VibratoError",
+        "VibratoDelay",
+        "VibratoModWheel",
+        "PortamentoToggle",
+        "PortamentoTime",
+        "PortamentoMode",
+        "PortamentoLegato",
+        "NoiseToggle",
+        "NoiseColor",
+        "NoiseBalance",
+        "NoiseLevel",
+        "SignalChain1",
+        "SignalChain2",
+        "SelectedFinger"
+      ],
+      "automatable_state_count": 172,
+      "automatable_state_shapes": [
+        {
+          "path": "UltraAnalog/On",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/Polyphony",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/PitchBendRange",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/Volume",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/PerNotePitchBendRange",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/ChannelPressureTarget1",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/ChannelPressureAmount1",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/ChannelPressureTarget2",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/ChannelPressureAmount2",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/MpeCC74Target1",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/MpeCC74Amount1",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/MpeCC74Target2",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/MpeCC74Amount2",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/Octave",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/Transpose",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/KeyboardFineTune",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/KeyboardUnisonToggle",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/KeyboardUnison",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/KeyboardDetune",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/KeyboardUnisonDelay",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/KeyboardPriority",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/KeyboardStretch",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/KeyboardError",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/VibratoToggle",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/VibratoSpeed",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/VibratoFadeIn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/VibratoAmount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/VibratoError",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/VibratoDelay",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/VibratoModWheel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/PortamentoToggle",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/PortamentoTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/PortamentoMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/PortamentoLegato",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/NoiseToggle",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/NoiseColor",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/NoiseBalance",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/NoiseLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorToggle",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorWaveShape",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorOct",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorSemi",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorEnvTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorDetune",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorModulation1",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorPulseWidth",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorSubAmount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorBalance",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorEnvAmount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorLFOModPitch",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorLFOModPW",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/OscillatorLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/FilterToggle",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/FilterType",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/FilterDrive",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/FilterKbdCutoffMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/FilterCutoffFrequency",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/FilterKbdQMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/FilterQFactor",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/FilterLFOCutoffMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/FilterEnvCutoffMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/FilterLFOQMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/FilterEnvQMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/AmplifierToggle",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/AmplifierKbdAmpMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/AmplifierLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/AmplifierKbdPanMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/AmplifierPan",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/AmplifierLFOAmpMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/AmplifierLFOPanMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/AmplifierEnvPanMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/LFOToggle",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/LFOWaveShape",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/LFOSync",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/LFOSyncToggle",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/LFOGateReset",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/LFOPulseWidth",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/LFOSpeed",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/LFOPhase",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/LFODelay",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/LFOFadeIn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.0/ExponentialSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.0/Loop",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.0/FreeRun",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.0/Legato",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.0/AttackMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.0/AttackTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.0/DecayTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.0/AmpMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.0/SustainLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.0/SustainTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.0/ReleaseTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.1/ExponentialSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.1/Loop",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.1/FreeRun",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.1/Legato",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.1/AttackMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.1/AttackTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.1/DecayTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.1/AmpMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.1/SustainLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.1/SustainTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/Envelope.1/ReleaseTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain1/FilterToFilter2",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorToggle",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorWaveShape",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorOct",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorSemi",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorEnvTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorDetune",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorModulation1",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorPulseWidth",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorSubAmount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorBalance",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorEnvAmount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorLFOModPitch",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorLFOModPW",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/OscillatorLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/FilterToggle",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/FilterType",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/FilterDrive",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/FilterKbdCutoffMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/FilterCutoffFrequency",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/FilterKbdQMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/FilterQFactor",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/FilterLFOCutoffMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/FilterEnvCutoffMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/FilterLFOQMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/FilterEnvQMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/AmplifierToggle",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/AmplifierKbdAmpMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/AmplifierLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/AmplifierKbdPanMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/AmplifierPan",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/AmplifierLFOAmpMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/AmplifierLFOPanMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/AmplifierEnvPanMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/LFOToggle",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/LFOWaveShape",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/LFOSync",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/LFOSyncToggle",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/LFOGateReset",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/LFOPulseWidth",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/LFOSpeed",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/LFOPhase",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/LFODelay",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/LFOFadeIn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.0/ExponentialSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.0/Loop",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.0/FreeRun",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.0/Legato",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.0/AttackMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.0/AttackTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.0/DecayTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.0/AmpMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.0/SustainLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.0/SustainTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.0/ReleaseTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.1/ExponentialSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.1/Loop",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.1/FreeRun",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.1/Legato",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.1/AttackMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.1/AttackTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.1/DecayTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.1/AmpMod",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.1/SustainLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.1/SustainTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/Envelope.1/ReleaseTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "UltraAnalog/SignalChain2/FilterControllee",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Core Library/Defaults/Instruments/Simpler.adv",
+      "bytes": 3169,
+      "sha256": "db6b92cab1e8f2e43405636870c449017c68bb6f1eb88ab5311b17396d5eb1ec",
+      "class_tag": "OriginalSimpler",
+      "creator": "Ableton Live 12.4d1",
+      "top_level_fields": [
+        "LomId",
+        "LomIdView",
+        "IsExpanded",
+        "BreakoutIsExpanded",
+        "On",
+        "ModulationSourceCount",
+        "ParametersListWrapper",
+        "Pointee",
+        "LastSelectedTimeableIndex",
+        "LastSelectedClipEnvelopeIndex",
+        "LastPresetRef",
+        "LockedScripts",
+        "IsFolded",
+        "ShouldShowPresetName",
+        "UserName",
+        "Annotation",
+        "SourceContext",
+        "MpePitchBendUsesTuning",
+        "ViewData",
+        "OverwriteProtectionNumber",
+        "Player",
+        "Pitch",
+        "Filter",
+        "Shaper",
+        "VolumeAndPan",
+        "AuxEnv",
+        "Lfo",
+        "AuxLfos.0",
+        "AuxLfos.1",
+        "KeyDst",
+        "VelDst",
+        "RelVelDst",
+        "MidiCtrl.0",
+        "MidiCtrl.1",
+        "MidiCtrl.2",
+        "MidiCtrl.3",
+        "MidiCtrl.4",
+        "MidiCtrl.5",
+        "Globals",
+        "ViewSettings",
+        "SimplerSlicing"
+      ],
+      "automatable_state_count": 109,
+      "automatable_state_shapes": [
+        {
+          "path": "OriginalSimpler/On",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Player/LoopModulators/SampleStart",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Player/LoopModulators/SampleLength",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Player/LoopModulators/LoopOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Player/LoopModulators/LoopLength",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Player/LoopModulators/LoopFade",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Player/Reverse",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Player/Snap",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Player/SampleSelector",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Player/SubOsc/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/TransposeKey",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/TransposeFine",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/PitchLfoAmount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/AttackTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/AttackLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/AttackSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/DecayTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/DecayLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/DecaySlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/SustainLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/ReleaseTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/ReleaseLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/ReleaseSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/LoopMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/LoopTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/RepeatTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/TimeVelScale",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Pitch/Envelope/Slot/Value/SimplerPitchEnvelope/Amount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/LegacyType",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Type",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/CircuitLpHp",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/CircuitBpNoMo",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Slope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Freq",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/LegacyQ",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Res",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/X",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Drive",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/AttackTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/AttackLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/AttackSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/DecayTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/DecayLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/DecaySlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/SustainLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/ReleaseTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/ReleaseLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/ReleaseSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/LoopMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/LoopTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/RepeatTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/TimeVelScale",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/Envelope/Amount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/ModByPitch",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/ModByVelocity",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Filter/Slot/Value/SimplerFilter/ModByLfo",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Shaper/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Volume",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/VolumeVelScale",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/VolumeKeyScale",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/VolumeLfoAmount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Panorama",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/PanoramaKeyScale",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/PanoramaRnd",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/PanoramaLfoAmount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Envelope/AttackTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Envelope/AttackLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Envelope/AttackSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Envelope/DecayTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Envelope/DecayLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Envelope/DecaySlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Envelope/SustainLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Envelope/ReleaseTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Envelope/ReleaseLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Envelope/ReleaseSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Envelope/LoopMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Envelope/LoopTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Envelope/RepeatTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/Envelope/TimeVelScale",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/OneShotEnvelope/FadeInTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/OneShotEnvelope/SustainMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/VolumeAndPan/OneShotEnvelope/FadeOutTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/AuxEnv/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Lfo/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Lfo/Slot/Value/SimplerLfo/Type",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Lfo/Slot/Value/SimplerLfo/Frequency",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Lfo/Slot/Value/SimplerLfo/RateType",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Lfo/Slot/Value/SimplerLfo/BeatRate",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Lfo/Slot/Value/SimplerLfo/StereoMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Lfo/Slot/Value/SimplerLfo/Spin",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Lfo/Slot/Value/SimplerLfo/Phase",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Lfo/Slot/Value/SimplerLfo/Offset",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Lfo/Slot/Value/SimplerLfo/FrequencyKeyScale",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Lfo/Slot/Value/SimplerLfo/Smooth",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Lfo/Slot/Value/SimplerLfo/Attack",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Lfo/Slot/Value/SimplerLfo/Retrigger",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Lfo/Slot/Value/SimplerLfo/Width",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/AuxLfos.0/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/AuxLfos.1/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Globals/SpreadAmount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Globals/KeyZoneShift",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Globals/PortamentoMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Globals/PortamentoTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Globals/EnvScale/EnvTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Globals/EnvScale/EnvTimeKeyScale",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "OriginalSimpler/Globals/EnvScale/EnvTimeIncludeAttack",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Core Library/Defaults/Instruments/Sampler.adv",
+      "bytes": 2806,
+      "sha256": "7d1eb5950125579568f3abff3650b1813705c0f4fb47013e7c790a999b15c068",
+      "class_tag": "MultiSampler",
+      "creator": "Ableton Live 12.4d1",
+      "top_level_fields": [
+        "LomId",
+        "LomIdView",
+        "IsExpanded",
+        "BreakoutIsExpanded",
+        "On",
+        "ModulationSourceCount",
+        "ParametersListWrapper",
+        "Pointee",
+        "LastSelectedTimeableIndex",
+        "LastSelectedClipEnvelopeIndex",
+        "LastPresetRef",
+        "LockedScripts",
+        "IsFolded",
+        "ShouldShowPresetName",
+        "UserName",
+        "Annotation",
+        "SourceContext",
+        "MpePitchBendUsesTuning",
+        "ViewData",
+        "OverwriteProtectionNumber",
+        "Player",
+        "Pitch",
+        "Filter",
+        "Shaper",
+        "VolumeAndPan",
+        "AuxEnv",
+        "Lfo",
+        "AuxLfos.0",
+        "AuxLfos.1",
+        "KeyDst",
+        "VelDst",
+        "RelVelDst",
+        "MidiCtrl.0",
+        "MidiCtrl.1",
+        "MidiCtrl.2",
+        "MidiCtrl.3",
+        "MidiCtrl.4",
+        "MidiCtrl.5",
+        "Globals",
+        "ViewSettings",
+        "SimplerSlicing"
+      ],
+      "automatable_state_count": 81,
+      "automatable_state_shapes": [
+        {
+          "path": "MultiSampler/On",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "MultiSampler/Player/LoopModulators/SampleStart",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Player/LoopModulators/SampleLength",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Player/LoopModulators/LoopOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "MultiSampler/Player/LoopModulators/LoopLength",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Player/LoopModulators/LoopFade",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Player/Reverse",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "MultiSampler/Player/Snap",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "MultiSampler/Player/SampleSelector",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Player/SubOsc/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "MultiSampler/Pitch/TransposeKey",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Pitch/TransposeFine",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Pitch/PitchLfoAmount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Pitch/Envelope/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/LegacyType",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Type",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/CircuitLpHp",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/CircuitBpNoMo",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Slope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Freq",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/LegacyQ",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Res",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/X",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Drive",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/AttackTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/AttackLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/AttackSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/DecayTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/DecayLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/DecaySlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/SustainLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/ReleaseTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/ReleaseLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/ReleaseSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/LoopMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/LoopTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/RepeatTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/TimeVelScale",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/Envelope/Amount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/ModByPitch",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/ModByVelocity",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Filter/Slot/Value/SimplerFilter/ModByLfo",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Shaper/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Volume",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/VolumeVelScale",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/VolumeKeyScale",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/VolumeLfoAmount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Panorama",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/PanoramaKeyScale",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/PanoramaRnd",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/PanoramaLfoAmount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Envelope/AttackTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Envelope/AttackLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Envelope/AttackSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Envelope/DecayTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Envelope/DecayLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Envelope/DecaySlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Envelope/SustainLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Envelope/ReleaseTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Envelope/ReleaseLevel",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Envelope/ReleaseSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Envelope/LoopMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Envelope/LoopTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Envelope/RepeatTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/Envelope/TimeVelScale",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/OneShotEnvelope/FadeInTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/OneShotEnvelope/SustainMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "MultiSampler/VolumeAndPan/OneShotEnvelope/FadeOutTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/AuxEnv/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "MultiSampler/Lfo/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "MultiSampler/AuxLfos.0/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "MultiSampler/AuxLfos.1/IsOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "MultiSampler/Globals/SpreadAmount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Globals/KeyZoneShift",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Globals/PortamentoMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "MultiSampler/Globals/PortamentoTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Globals/EnvScale/EnvTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Globals/EnvScale/EnvTimeKeyScale",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "MultiSampler/Globals/EnvScale/EnvTimeIncludeAttack",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Core Library/Defaults/Audio Effects/Delay.adv",
+      "bytes": 1361,
+      "sha256": "3e1b33eb6da672f2e57a3dde78e84d63b9e8b50660bb10668b44be07c8d2091e",
+      "class_tag": "Delay",
+      "creator": "Ableton Live 12.4d1",
+      "top_level_fields": [
+        "LomId",
+        "LomIdView",
+        "IsExpanded",
+        "BreakoutIsExpanded",
+        "On",
+        "ModulationSourceCount",
+        "ParametersListWrapper",
+        "Pointee",
+        "LastSelectedTimeableIndex",
+        "LastSelectedClipEnvelopeIndex",
+        "LastPresetRef",
+        "LockedScripts",
+        "IsFolded",
+        "ShouldShowPresetName",
+        "UserName",
+        "Annotation",
+        "SourceContext",
+        "MpePitchBendUsesTuning",
+        "ViewData",
+        "OverwriteProtectionNumber",
+        "DelayLine_SmoothingMode",
+        "DelayLine_Link",
+        "DelayLine_PingPong",
+        "DelayLine_SyncL",
+        "DelayLine_SyncR",
+        "DelayLine_TimeL",
+        "DelayLine_TimeR",
+        "DelayLine_SimpleDelayTimeL",
+        "DelayLine_SimpleDelayTimeR",
+        "DelayLine_PingPongDelayTimeL",
+        "DelayLine_PingPongDelayTimeR",
+        "DelayLine_SyncedSixteenthL",
+        "DelayLine_SyncedSixteenthR",
+        "DelayLine_OffsetL",
+        "DelayLine_OffsetR",
+        "DelayLine_CompatibilityMode",
+        "Feedback",
+        "Freeze",
+        "Filter_On",
+        "Filter_Frequency",
+        "Filter_Bandwidth",
+        "Modulation_TimeMode",
+        "Modulation_Frequency",
+        "Modulation_Time",
+        "Modulation_SyncedRate",
+        "Modulation_Sixteenth",
+        "Modulation_Waveform",
+        "Modulation_Morph",
+        "Modulation_AmountTime",
+        "Modulation_AmountFilter",
+        "DryWet",
+        "DryWetMode",
+        "EcoProcessing",
+        "ShowLfo"
+      ],
+      "automatable_state_count": 31,
+      "automatable_state_shapes": [
+        {
+          "path": "Delay/On",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_SmoothingMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_Link",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_PingPong",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_SyncL",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_SyncR",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_TimeL",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_TimeR",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_SimpleDelayTimeL",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_SimpleDelayTimeR",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_PingPongDelayTimeL",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_PingPongDelayTimeR",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_SyncedSixteenthL",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_SyncedSixteenthR",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_OffsetL",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/DelayLine_OffsetR",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/Feedback",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/Freeze",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "Delay/Filter_On",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "Delay/Filter_Frequency",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/Filter_Bandwidth",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/Modulation_TimeMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "Delay/Modulation_Frequency",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/Modulation_Time",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/Modulation_SyncedRate",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/Modulation_Sixteenth",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/Modulation_Waveform",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "Delay/Modulation_Morph",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/Modulation_AmountTime",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/Modulation_AmountFilter",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "Delay/DryWet",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Core Library/Defaults/Audio Effects/Auto Filter.adv",
+      "bytes": 1702,
+      "sha256": "1e172a22f20ca7e27ef9ebf71802771108f90f06e191f94ca6b2705bb158190e",
+      "class_tag": "AutoFilter2",
+      "creator": "Ableton Live 12.4d1",
+      "top_level_fields": [
+        "LomId",
+        "LomIdView",
+        "IsExpanded",
+        "BreakoutIsExpanded",
+        "On",
+        "ModulationSourceCount",
+        "ParametersListWrapper",
+        "Pointee",
+        "LastSelectedTimeableIndex",
+        "LastSelectedClipEnvelopeIndex",
+        "LastPresetRef",
+        "LockedScripts",
+        "IsFolded",
+        "ShouldShowPresetName",
+        "UserName",
+        "Annotation",
+        "SourceContext",
+        "MpePitchBendUsesTuning",
+        "ViewData",
+        "OverwriteProtectionNumber",
+        "Filter_Frequency",
+        "Filter_Resonance",
+        "Filter_Morph",
+        "Filter_Type",
+        "Filter_Slope",
+        "Filter_MorphSlope",
+        "Filter_Circuit",
+        "Filter_Drive",
+        "Filter_DjControl",
+        "Filter_VowelPitch",
+        "Filter_VowelFormant",
+        "Lfo_Amount",
+        "Lfo_Waveform",
+        "Lfo_TimeMode",
+        "Lfo_Frequency",
+        "Lfo_Time",
+        "Lfo_SyncedRate",
+        "Lfo_Sixteenth",
+        "Lfo_Phase",
+        "Lfo_PhaseOffset",
+        "Lfo_StereoMode",
+        "Lfo_Spin",
+        "Lfo_Morph",
+        "Lfo_Smoothing",
+        "Lfo_QuantizationMode",
+        "Lfo_Steps",
+        "Lfo_SahRate",
+        "Envelope_Amount",
+        "Envelope_Attack",
+        "Envelope_HoldOn",
+        "Envelope_Release",
+        "Envelope_SahOn",
+        "Envelope_SahRate",
+        "Output",
+        "SoftClipOn",
+        "DryWet",
+        "SideChainEq_On",
+        "SideChainEq_Mode",
+        "SideChainEq_Freq",
+        "SideChainEq_Q",
+        "SideChainEq_Gain",
+        "InternalSideChainGain",
+        "SideChainMono",
+        "SideChainListen",
+        "HiQuality",
+        "SideChain"
+      ],
+      "automatable_state_count": 45,
+      "automatable_state_shapes": [
+        {
+          "path": "AutoFilter2/On",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Filter_Frequency",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Filter_Resonance",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Filter_Morph",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Filter_Type",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Filter_Slope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Filter_MorphSlope",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Filter_Circuit",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Filter_Drive",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Filter_DjControl",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Filter_VowelPitch",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Filter_VowelFormant",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_Amount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_Waveform",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_TimeMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_Frequency",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_Time",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_SyncedRate",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_Sixteenth",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_Phase",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_PhaseOffset",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_StereoMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_Spin",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_Morph",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_Smoothing",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_QuantizationMode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_Steps",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Lfo_SahRate",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Envelope_Amount",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Envelope_Attack",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Envelope_HoldOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Envelope_Release",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Envelope_SahOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Envelope_SahRate",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/Output",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/SoftClipOn",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "AutoFilter2/DryWet",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/SideChainEq_On",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "AutoFilter2/SideChainEq_Mode",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiControllerRange"
+          ]
+        },
+        {
+          "path": "AutoFilter2/SideChainEq_Freq",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/SideChainEq_Q",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/SideChainEq_Gain",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/SideChain/OnOff",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "AutomationTarget",
+            "MidiCCOnOffThresholds"
+          ]
+        },
+        {
+          "path": "AutoFilter2/SideChain/RoutedInput/Volume",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        },
+        {
+          "path": "AutoFilter2/SideChain/DryWet",
+          "state_fields": [
+            "LomId",
+            "Manual",
+            "MidiControllerRange",
+            "AutomationTarget",
+            "ModulationTarget"
+          ]
+        }
+      ]
+    }
+  ]
+}

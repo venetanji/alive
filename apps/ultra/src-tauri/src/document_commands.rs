@@ -14,6 +14,38 @@ pub struct Parameter { pub node: u32, pub key: String, pub value: f64, #[serde(d
 #[serde(deny_unknown_fields)]
 pub struct MessageText { pub node: u32, pub text: String }
 
+pub(crate) fn canvas_parameter(registry: &mut Registry, audio: &mut crate::AudioControl,
+    io: &mut crate::audio::Driver, label: &str, revision: u64, parameter: Parameter) -> Result<CommitResult, String> {
+    let owner = registry.get_open(label)?;
+    if revision != owner.runtime_revision { return Err("Stale canvas revision".into()); }
+    let base = owner.authoring_revision;
+    let mut patch = owner.patch.clone().unwrap();
+    fn update(scope: &mut Value, id: u32, key: &str, value: f64) -> bool {
+        let Some(nodes) = scope.get_mut("nodes").and_then(Value::as_array_mut) else { return false; };
+        for node in nodes {
+            if node["id"].as_u64() == Some(u64::from(id)) { node["params"][key] = serde_json::json!(value); return true; }
+            if let Some(child) = node.get_mut("patcher") { if update(child, id, key, value) { return true; } }
+        }
+        false
+    }
+    if !update(&mut patch, parameter.node, &parameter.key, parameter.value) { return Err("Unknown canvas node".into()); }
+    registry.commit(label, base, patch, true, |owner, patch| {
+        admit_owned(io, &mut audio.graphs[owner.id as usize], owner, patch, Some(&parameter), None, false)
+    })
+}
+
+pub fn admit_owned(io: &mut crate::audio::Driver, control: &mut canvas::CanvasState, owner: &Document, patch: &Value,
+    parameter: Option<&Parameter>, message_text: Option<&MessageText>, force: bool) -> Result<documents::Admission, String> {
+    io.reject_retiring()?;
+    admit_message(control, owner, patch, parameter, message_text, force)
+}
+
+pub fn close_owned(io: &mut crate::audio::Driver, document: u32) -> Result<(), String> {
+    io.reject_retiring()?;
+    if unsafe { crate::ultra_canvas_close_document(document) } == 0 { return Err("Patch is busy. Try closing the window again.".into()); }
+    Ok(())
+}
+
 pub fn admit(control: &mut canvas::CanvasState, owner: &Document, patch: &Value, parameter: Option<&Parameter>, force: bool) -> Result<documents::Admission, String> {
     admit_message(control,owner,patch,parameter,None,force)
 }
@@ -133,13 +165,15 @@ pub fn document_close_flushed(window: WebviewWindow, state: tauri::State<Documen
 }
 
 #[tauri::command]
-pub fn document_commit(window: WebviewWindow, state: tauri::State<Documents>, audio: tauri::State<Audio>, base_revision: u64,
+pub fn document_commit(window: WebviewWindow, state: tauri::State<Documents>, audio: tauri::State<Audio>, io: tauri::State<crate::AudioIo>, base_revision: u64,
     patch: Value, force: Option<bool>, parameter: Option<Parameter>, message_text: Option<MessageText>, history: Option<bool>) -> Result<CommitResult, String> {
     let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
     let mut audio = audio.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
     let result = registry.commit(window.label(), base_revision, patch, history.unwrap_or(true), |owner, patch| {
-        admit_message(&mut audio.graphs[owner.id as usize], owner, patch, parameter.as_ref(), message_text.as_ref(), force.unwrap_or(false))
+        admit_owned(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, parameter.as_ref(), message_text.as_ref(), force.unwrap_or(false))
     })?;
+    drop(io);
     drop(audio);
     let obsolete = if result.accepted { changed(window.app_handle(), &mut registry, &result.document.owner_label) } else { vec![] };
     drop(registry);
@@ -148,12 +182,14 @@ pub fn document_commit(window: WebviewWindow, state: tauri::State<Documents>, au
 }
 
 #[tauri::command]
-pub fn document_history(window: WebviewWindow, state: tauri::State<Documents>, audio: tauri::State<Audio>, base_revision: u64, direction: String) -> Result<CommitResult, String> {
+pub fn document_history(window: WebviewWindow, state: tauri::State<Documents>, audio: tauri::State<Audio>, io: tauri::State<crate::AudioIo>, base_revision: u64, direction: String) -> Result<CommitResult, String> {
     let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
     let mut audio = audio.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
     let result = registry.history(window.label(), base_revision, &direction, |owner, patch| {
-        admit(&mut audio.graphs[owner.id as usize], owner, patch, None, false)
+        admit_owned(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, None, None, false)
     })?;
+    drop(io);
     drop(audio);
     let obsolete = if result.accepted { changed(window.app_handle(), &mut registry, &result.document.owner_label) } else { vec![] };
     drop(registry);

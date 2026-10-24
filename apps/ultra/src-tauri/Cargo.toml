@@ -6,6 +6,13 @@ authors = ["Alive contributors"]
 edition = "2021"
 license = "AGPL-3.0-or-later"
 rust-version = "1.85"
+default-run = "ultra"
+
+[features]
+telemetry-disabled = []
+
+[lib]
+name = "ultra_desktop"
 
 [build-dependencies]
 tauri-build = { version = "=2.4.1", features = [] }

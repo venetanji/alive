@@ -1,0 +1,75 @@
+{
+  "complete": false,
+  "stages": [
+    {
+      "mode": "baseline",
+      "repetition": 0,
+      "wall_seconds": 8.079709993005963,
+      "playing_seconds_proven": 7.380741709343584,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 3.52,
+          "elapsed": 8.081147781995242,
+          "one_core_percent_observed": 43.55816890074134,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.23,
+          "elapsed": 8.080564692994813,
+          "one_core_percent_observed": 2.8463357294743417,
+          "identities_shared": 4,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.04,
+          "elapsed": 8.079817947000265,
+          "one_core_percent_observed": 0.495060659316594,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true
+    },
+    {
+      "mode": "sampler_1hz",
+      "repetition": 0,
+      "wall_seconds": 8.081887931999518,
+      "playing_seconds_proven": 7.95226811400312,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 3.13,
+          "elapsed": 8.08387885299453,
+          "one_core_percent_observed": 38.7190364541466,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.61,
+          "elapsed": 8.083705426004599,
+          "one_core_percent_observed": 7.5460443924352,
+          "identities_shared": 4,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.03,
+          "elapsed": 8.081883494000067,
+          "one_core_percent_observed": 0.37120059973979813,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true
+    }
+  ]
+}

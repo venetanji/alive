@@ -1,0 +1,328 @@
+{
+  "path": "/tmp/alive-task14-evidence/native-scenes-2",
+  "verified": true,
+  "resource_rows": 125,
+  "resources": {
+    "app": {
+      "samples": 125,
+      "duration_s": 124.00349630501296,
+      "cpu_percent_one_core": {
+        "p50": 105.84672061181769,
+        "p95": 127.10361868302292,
+        "max": 145.01565676034443
+      },
+      "pss_kib": {
+        "first": 486910,
+        "last": 492992,
+        "min": 482836,
+        "max": 615643,
+        "growth": 6082
+      },
+      "threads_max": 129,
+      "fds_max": 226,
+      "identities": [
+        [
+          1176974,
+          8771235,
+          "alive"
+        ],
+        [
+          1176987,
+          8771250,
+          "WebKitNetworkPr"
+        ],
+        [
+          1177025,
+          8771256,
+          "WebKitWebProces"
+        ],
+        [
+          1177535,
+          8776963,
+          "WebKitWebProces"
+        ],
+        [
+          1177592,
+          8777234,
+          "WebKitWebProces"
+        ],
+        [
+          1177774,
+          8779127,
+          "bwrap"
+        ],
+        [
+          1177775,
+          8779127,
+          "bwrap"
+        ],
+        [
+          1177776,
+          8779127,
+          "glycin-svg"
+        ],
+        [
+          1178554,
+          8779142,
+          "bwrap"
+        ],
+        [
+          1178555,
+          8779142,
+          "bwrap"
+        ],
+        [
+          1178556,
+          8779143,
+          "glycin-image-rs"
+        ]
+      ],
+      "coverage_gap_samples": 7,
+      "unavailable_records": 0,
+      "enumeration_gap_records": 1,
+      "unavailable_fields": 0,
+      "sample_cadence_s_max": 1.0114450929977465,
+      "sample_duration_s_max": 0.047274226002627984,
+      "missed_cadences": 0
+    },
+    "sampler_capture": {
+      "samples": 125,
+      "duration_s": 124.003146817995,
+      "cpu_percent_one_core": {
+        "p50": 28.006582975038874,
+        "p95": 33.01201852037952,
+        "max": 81.90459359800063
+      },
+      "pss_kib": {
+        "first": 47556,
+        "last": 46391,
+        "min": 44084,
+        "max": 85196,
+        "growth": -1165
+      },
+      "threads_max": 18,
+      "fds_max": 75,
+      "identities": [
+        [
+          1176975,
+          8771235,
+          "python3"
+        ],
+        [
+          1177097,
+          8771312,
+          "bwrap"
+        ],
+        [
+          1177098,
+          8771312,
+          "bwrap"
+        ],
+        [
+          1177099,
+          8771312,
+          "glycin-image-rs"
+        ],
+        [
+          1177288,
+          8773788,
+          "python3"
+        ],
+        [
+          1177291,
+          8773792,
+          "pw-cat"
+        ],
+        [
+          1177467,
+          8775629,
+          "python3"
+        ],
+        [
+          1177566,
+          8777047,
+          "python3"
+        ],
+        [
+          1177685,
+          8777766,
+          "python3"
+        ]
+      ],
+      "coverage_gap_samples": 9,
+      "unavailable_records": 0,
+      "enumeration_gap_records": 1,
+      "unavailable_fields": 2,
+      "sample_cadence_s_max": 1.0154177460062783,
+      "sample_duration_s_max": 0.034387140010949224,
+      "missed_cadences": 0
+    },
+    "server": {
+      "samples": 125,
+      "duration_s": 124.00134626698855,
+      "cpu_percent_one_core": {
+        "p50": 0.0,
+        "p95": 1.0116118237584408,
+        "max": 2.0169342891910262
+      },
+      "pss_kib": {
+        "first": 3330,
+        "last": 2880,
+        "min": 2880,
+        "max": 5912,
+        "growth": -450
+      },
+      "threads_max": 2,
+      "fds_max": 39,
+      "identities": [
+        [
+          1176299,
+          8770334,
+          "pipewire"
+        ]
+      ],
+      "coverage_gap_samples": 1,
+      "unavailable_records": 0,
+      "enumeration_gap_records": 1,
+      "unavailable_fields": 0,
+      "sample_cadence_s_max": 1.0188158249948174,
+      "sample_duration_s_max": 0.030292498995549977,
+      "missed_cadences": 0
+    }
+  },
+  "epochs": [
+    {
+      "epoch_id": "1",
+      "callbacks": 334,
+      "over_buffer_budget_count": 0,
+      "max_utilization_ppm": 372002,
+      "duration": {
+        "samples": 334,
+        "maximum": 3968024,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 2332239,
+            "upper_inclusive": 2435496
+          },
+          "p95": {
+            "lower_exclusive": 3024540,
+            "upper_inclusive": 3158448
+          },
+          "p99": {
+            "lower_exclusive": 3756049,
+            "upper_inclusive": 3922343
+          },
+          "p999": {
+            "lower_exclusive": 3922343,
+            "upper_inclusive": 4096000
+          }
+        }
+      }
+    },
+    {
+      "epoch_id": "2",
+      "callbacks": 6503,
+      "over_buffer_budget_count": 0,
+      "max_utilization_ppm": 470009,
+      "duration": {
+        "samples": 6503,
+        "maximum": 5013437,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 2332239,
+            "upper_inclusive": 2435496
+          },
+          "p95": {
+            "lower_exclusive": 3298284,
+            "upper_inclusive": 3444312
+          },
+          "p99": {
+            "lower_exclusive": 3756049,
+            "upper_inclusive": 3922343
+          },
+          "p999": {
+            "lower_exclusive": 4466720,
+            "upper_inclusive": 4664478
+          }
+        }
+      }
+    },
+    {
+      "epoch_id": "3",
+      "callbacks": 1536,
+      "over_buffer_budget_count": 0,
+      "max_utilization_ppm": 442437,
+      "duration": {
+        "samples": 1536,
+        "maximum": 4719337,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 2332239,
+            "upper_inclusive": 2435496
+          },
+          "p95": {
+            "lower_exclusive": 3298284,
+            "upper_inclusive": 3444312
+          },
+          "p99": {
+            "lower_exclusive": 4096000,
+            "upper_inclusive": 4277345
+          },
+          "p999": {
+            "lower_exclusive": 4664478,
+            "upper_inclusive": 4870992
+          }
+        }
+      }
+    },
+    {
+      "epoch_id": "4",
+      "callbacks": 1601,
+      "over_buffer_budget_count": 0,
+      "max_utilization_ppm": 415014,
+      "duration": {
+        "samples": 1601,
+        "maximum": 4426820,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 2233360,
+            "upper_inclusive": 2332239
+          },
+          "p95": {
+            "lower_exclusive": 3298284,
+            "upper_inclusive": 3444312
+          },
+          "p99": {
+            "lower_exclusive": 3756049,
+            "upper_inclusive": 3922343
+          },
+          "p999": {
+            "lower_exclusive": 4277345,
+            "upper_inclusive": 4466720
+          }
+        }
+      }
+    }
+  ],
+  "audio": {
+    "frames": 2482688,
+    "seconds": 51.72266666666667,
+    "channel_peaks": [
+      0.13149361312389374,
+      0.13149361312389374
+    ],
+    "sha256": "ff88b82a146ad4b9f4180cf9be29fed2a2e0deb0fb092a4957afcb874e92b843"
+  },
+  "artifacts": {
+    "pid": 1176974,
+    "files": {
+      "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/libultra_native.so": "074f64ddc0b1668bfd2479099cb89ff8c90eb9354cfeb001bb94e095ab477324",
+      "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive": "a5e8f4504e4a80a173619a82a0015c2c66b52ca63a3852b62487380e9024ffed"
+    }
+  },
+  "coverage_note": "Finite moving-workflow observation; process discovery can miss transient or reparented workers. No physical audio or long-run stability claim."
+}

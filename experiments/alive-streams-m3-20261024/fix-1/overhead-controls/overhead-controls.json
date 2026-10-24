@@ -1,0 +1,357 @@
+{
+  "complete": false,
+  "stages": [
+    {
+      "mode": "baseline",
+      "repetition": 0,
+      "wall_seconds": 8.081092767999507,
+      "playing_seconds_proven": 7.477580397336239,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 3.43,
+          "elapsed": 8.080479972995818,
+          "one_core_percent_observed": 42.447973529576565,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.2,
+          "elapsed": 8.081768721007393,
+          "one_core_percent_observed": 2.4747058088921654,
+          "identities_shared": 4,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.03,
+          "elapsed": 8.081162269008928,
+          "one_core_percent_observed": 0.3712337285324577,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true
+    },
+    {
+      "mode": "sampler_1hz",
+      "repetition": 0,
+      "wall_seconds": 8.08140684000682,
+      "playing_seconds_proven": 7.968150390013005,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 3.16,
+          "elapsed": 8.082949927003938,
+          "one_core_percent_observed": 39.09463783071213,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.64,
+          "elapsed": 8.082220502008568,
+          "one_core_percent_observed": 7.918615927899384,
+          "identities_shared": 4,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.04,
+          "elapsed": 8.081369890991482,
+          "one_core_percent_observed": 0.49496558800741275,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true
+    },
+    {
+      "mode": "sampler_plus_diagnostics",
+      "repetition": 0,
+      "wall_seconds": 8.07686884800205,
+      "playing_seconds_proven": 7.984003349996405,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 4.35,
+          "elapsed": 8.080729920009617,
+          "one_core_percent_observed": 53.83177068235468,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.68,
+          "elapsed": 8.07768490500166,
+          "one_core_percent_observed": 8.418253596138015,
+          "identities_shared": 4,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.03,
+          "elapsed": 8.07691342299222,
+          "one_core_percent_observed": 0.3714290153785755,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true
+    },
+    {
+      "mode": "sampler_diagnostics_capture",
+      "repetition": 0,
+      "wall_seconds": 8.084297772002174,
+      "playing_seconds_proven": 7.959778212004458,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 3.13,
+          "elapsed": 8.084290155995404,
+          "one_core_percent_observed": 38.71706655257488,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.77,
+          "elapsed": 8.086117148006451,
+          "one_core_percent_observed": 9.522493749547465,
+          "identities_shared": 6,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.04,
+          "elapsed": 8.084339930996066,
+          "one_core_percent_observed": 0.4947837466190221,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true,
+      "capture": {
+        "frames": 416768,
+        "seconds": 8.682666666666666,
+        "peak": 0.2225944548845291,
+        "one_second_peaks": [
+          0.1600058525800705,
+          0.2225944548845291,
+          0.15056835114955902,
+          0.19943729043006897,
+          0.1600058525800705,
+          0.2225944548845291,
+          0.15056835114955902,
+          0.19943729043006897,
+          0.13616713881492615
+        ],
+        "unequal_stereo_samples_after_setup": 0,
+        "sha256": "bb36cfb1853299b2e40a64a113e9f11210870a9699ef2b1b80b9e99fdc2ab2ef",
+        "path": "overhead-capture-0.f32",
+        "physical_audio": false,
+        "supervision": {
+          "complete": true,
+          "reason": "requested_stop",
+          "recorder_pid": 1017676,
+          "returncode": 1,
+          "wall_seconds": 8.774454768994474,
+          "audio_bytes": 3334144,
+          "stderr_bytes": 0,
+          "limits": {
+            "wall_seconds": 2700.0,
+            "audio_bytes": 1073741824,
+            "metadata_bytes": 67108864,
+            "stderr_bytes": 1048576,
+            "disk_reserve_bytes": 268435456
+          }
+        }
+      }
+    },
+    {
+      "mode": "baseline",
+      "repetition": 1,
+      "wall_seconds": 8.077330461004749,
+      "playing_seconds_proven": 7.984000919986633,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 3.32,
+          "elapsed": 8.077483779008617,
+          "one_core_percent_observed": 41.101908599654,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.08,
+          "elapsed": 8.077901987999212,
+          "one_core_percent_observed": 0.9903561607809868,
+          "identities_shared": 4,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.04,
+          "elapsed": 8.077323769000941,
+          "one_core_percent_observed": 0.4952135279448811,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true
+    },
+    {
+      "mode": "sampler_1hz",
+      "repetition": 1,
+      "wall_seconds": 8.085721901996294,
+      "playing_seconds_proven": 7.920071829010267,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 3.24,
+          "elapsed": 8.08878157500294,
+          "one_core_percent_observed": 40.055476464004066,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.64,
+          "elapsed": 8.087865719993715,
+          "one_core_percent_observed": 7.913088843919349,
+          "identities_shared": 4,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.03,
+          "elapsed": 8.085799508000491,
+          "one_core_percent_observed": 0.37102082447526075,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true
+    },
+    {
+      "mode": "sampler_plus_diagnostics",
+      "repetition": 1,
+      "wall_seconds": 8.082867104007164,
+      "playing_seconds_proven": 7.967927666998701,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 3.21,
+          "elapsed": 8.081573637988186,
+          "one_core_percent_observed": 39.719987019744494,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.62,
+          "elapsed": 8.082647199989879,
+          "one_core_percent_observed": 7.670754205389249,
+          "identities_shared": 4,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.04,
+          "elapsed": 8.0828963790118,
+          "one_core_percent_observed": 0.4948721117329272,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true
+    },
+    {
+      "mode": "sampler_diagnostics_capture",
+      "repetition": 1,
+      "wall_seconds": 8.079822794999927,
+      "playing_seconds_proven": 7.960056852994021,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 3.12,
+          "elapsed": 8.078077097001369,
+          "one_core_percent_observed": 38.62305301787925,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.79,
+          "elapsed": 8.078954320008052,
+          "one_core_percent_observed": 9.778493214691338,
+          "identities_shared": 6,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.02,
+          "elapsed": 8.079774223995628,
+          "one_core_percent_observed": 0.2475316691474277,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true,
+      "capture": {
+        "frames": 417792,
+        "seconds": 8.704,
+        "peak": 0.2225944548845291,
+        "one_second_peaks": [
+          0.19943729043006897,
+          0.1600058525800705,
+          0.2225944548845291,
+          0.15056835114955902,
+          0.19943729043006897,
+          0.1600058525800705,
+          0.2225944548845291,
+          0.15056835114955902,
+          0.13009348511695862
+        ],
+        "unequal_stereo_samples_after_setup": 0,
+        "sha256": "a2a0d75eb8bd3657da3ca31afaa52ab889b68314ca36fdfccf7d6f1935960fef",
+        "path": "overhead-capture-1.f32",
+        "physical_audio": false,
+        "supervision": {
+          "complete": true,
+          "reason": "requested_stop",
+          "recorder_pid": 1017953,
+          "returncode": 1,
+          "wall_seconds": 8.79453332500998,
+          "audio_bytes": 3342336,
+          "stderr_bytes": 0,
+          "limits": {
+            "wall_seconds": 2700.0,
+            "audio_bytes": 1073741824,
+            "metadata_bytes": 67108864,
+            "stderr_bytes": 1048576,
+            "disk_reserve_bytes": 268435456
+          }
+        }
+      }
+    }
+  ]
+}

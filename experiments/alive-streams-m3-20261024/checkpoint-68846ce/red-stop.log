@@ -1,0 +1,33 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: method `reserve_native` is never used
+  --> src/document_windows.rs:39:8
+   |
+28 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+39 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `ultra` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 24.57s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/release/deps/ultra_desktop-9e1feeb9c9029f98)
+
+running 1 test
+
+thread 'audio::tests::stop_retains_observed_callbacks' panicked at src/audio.rs:263:9:
+assertion `left == right` failed: Stop must not erase observations
+  left: 0
+ right: 7
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test audio::tests::stop_retains_observed_callbacks ... FAILED
+
+failures:
+
+failures:
+    audio::tests::stop_retains_observed_callbacks
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 189 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--lib`

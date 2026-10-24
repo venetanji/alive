@@ -1,0 +1,16 @@
+[package]
+name = "alive"
+version = "0.1.0-rc.1"
+description = "Alive session host for reusable Ultra instruments and effects"
+authors = ["Alive contributors"]
+edition = "2021"
+license = "AGPL-3.0-or-later"
+rust-version = "1.85"
+default-run = "alive"
+
+[build-dependencies]
+tauri-build = { version = "=2.4.1", features = [] }
+
+[dependencies]
+tauri = { version = "=2.8.5", features = [] }
+ultra_desktop = { package = "ultra", path = "../../ultra/src-tauri" }

@@ -1,0 +1,151 @@
+{
+  "source_commit": "68846ce83b56e8e4c419b22685f8486a240764d8",
+  "base": "16294e6",
+  "files": [
+    {
+      "path": ".github/workflows/ultra-ci.yml",
+      "current_sha256": "32ec78ea86f4a147f13e53813d29e0d469cb01213fa1d1800b332c127e721042",
+      "committed_sha256": "32ec78ea86f4a147f13e53813d29e0d469cb01213fa1d1800b332c127e721042",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/alive/README.md",
+      "current_sha256": "e65a760c0f1e894c3564d848b00d80f67a8bb4de8af53b688a7f74a019d6dac0",
+      "committed_sha256": "e65a760c0f1e894c3564d848b00d80f67a8bb4de8af53b688a7f74a019d6dac0",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/alive/STREAM_OBSERVABILITY.md",
+      "current_sha256": "41134396a37ae1252df5ca613c972b657d634e72d9a7f94320df8802fefd4c6d",
+      "committed_sha256": "41134396a37ae1252df5ca613c972b657d634e72d9a7f94320df8802fefd4c6d",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/src-tauri/Cargo.toml",
+      "current_sha256": "4e66c5c28483e64fb92a38a075ae0d5a5a5cee0c608c991e08172b8f24ed4a1e",
+      "committed_sha256": "4e66c5c28483e64fb92a38a075ae0d5a5a5cee0c608c991e08172b8f24ed4a1e",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/audio.rs",
+      "current_sha256": "2aa561234b08e00892d3d95d5ed64524a8f526e66bea98c6ad33108d7e801164",
+      "committed_sha256": "2aa561234b08e00892d3d95d5ed64524a8f526e66bea98c6ad33108d7e801164",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/audio_epoch.rs",
+      "current_sha256": "c694fefc6005755b80573af7dff815022382fb315a17af9aa7aba2202d848628",
+      "committed_sha256": "c694fefc6005755b80573af7dff815022382fb315a17af9aa7aba2202d848628",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/audio_instrumentation.rs",
+      "current_sha256": "a88d4108cccc9cecd6c71e0e3af3cdca623f36f41c355a6780319b34a34c0105",
+      "committed_sha256": "a88d4108cccc9cecd6c71e0e3af3cdca623f36f41c355a6780319b34a34c0105",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/lib.rs",
+      "current_sha256": "880549e43d65f5671da6218b776566f5a6d14504665e15656e5a5e79323980be",
+      "committed_sha256": "880549e43d65f5671da6218b776566f5a6d14504665e15656e5a5e79323980be",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/session/desktop.rs",
+      "current_sha256": "5c0d88dc8902645254a956b8eb60c0dad2b03b56b4a02aa1c54f0b47a283b6f3",
+      "committed_sha256": "5c0d88dc8902645254a956b8eb60c0dad2b03b56b4a02aa1c54f0b47a283b6f3",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/session/host.rs",
+      "current_sha256": "f39290e0c4a0c58405befea622bad0695f2cb8c62937fdb5ffc56d230c9bb6bc",
+      "committed_sha256": "f39290e0c4a0c58405befea622bad0695f2cb8c62937fdb5ffc56d230c9bb6bc",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/tests/check_alive_desktop.py",
+      "current_sha256": "ad09c227410b25c98627581c723791cc7fc20e17c8559ecd35412e5c0e48a8ab",
+      "committed_sha256": "ad09c227410b25c98627581c723791cc7fc20e17c8559ecd35412e5c0e48a8ab",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/tests/check_alive_observability.py",
+      "current_sha256": "7cd669abcb159ad4f87a1288028142999c9b1101ddd81ce6bdc5badf4bb58203",
+      "committed_sha256": "7cd669abcb159ad4f87a1288028142999c9b1101ddd81ce6bdc5badf4bb58203",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/tests/check_canvas_desktop.sh",
+      "current_sha256": "e75bbd94e63ad4fc28476098e2b7bc1f8918c04706c709e7876fd8b47c2df574",
+      "committed_sha256": "e75bbd94e63ad4fc28476098e2b7bc1f8918c04706c709e7876fd8b47c2df574",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/tests/ci/check-contracts.sh",
+      "current_sha256": "18696df6646d7daec0cbc2161c7a10c29d7fcbdb2df4cc238a1322265a10132c",
+      "committed_sha256": "18696df6646d7daec0cbc2161c7a10c29d7fcbdb2df4cc238a1322265a10132c",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/tests/stream_measurement.py",
+      "current_sha256": "d2cadd1c3578a99096b8be3f7c7790a6fd0aa818a72edb0941d16547bead097a",
+      "committed_sha256": "d2cadd1c3578a99096b8be3f7c7790a6fd0aa818a72edb0941d16547bead097a",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/tests/test_stream_measurement.py",
+      "current_sha256": "58197ab095504e91b0092376a6102bb743669ac12f61a82004b7099bdc43f2ad",
+      "committed_sha256": "58197ab095504e91b0092376a6102bb743669ac12f61a82004b7099bdc43f2ad",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/ui/alive.html",
+      "current_sha256": "d2eca0aae7a24a600d4b8cea5afbec827ef30258f86dbd3cc19bf63fb02123ba",
+      "committed_sha256": "d2eca0aae7a24a600d4b8cea5afbec827ef30258f86dbd3cc19bf63fb02123ba",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/ui/alive.mjs",
+      "current_sha256": "cd5e6581e1b58ff332952efdc1bb89aaac768e43f6254ab677624e0ca26ff0da",
+      "committed_sha256": "cd5e6581e1b58ff332952efdc1bb89aaac768e43f6254ab677624e0ca26ff0da",
+      "matches_commit": true
+    },
+    {
+      "path": "apps/ultra/tests/check_alive_clips.py",
+      "current_sha256": "a0908aa237a346120429d098f39e701b6931ffbc08a034eb0fa367196afbd111",
+      "unchanged_baseline_dependency": true
+    },
+    {
+      "path": "apps/ultra/tests/check_cpal_audio.sh",
+      "current_sha256": "831679e48e01616c4eaee72b8c6ebf19ddbd39946cb37aa462ee484304406096",
+      "unchanged_baseline_dependency": true
+    },
+    {
+      "path": "apps/ultra/tests/check_cpal_capture.py",
+      "current_sha256": "feddcb002aa56c502a028925bfd8d295c05927a76a259631900d8aa9ef6b7e1a",
+      "unchanged_baseline_dependency": true
+    },
+    {
+      "path": "apps/ultra/tests/cpal-software-pipewire.conf",
+      "current_sha256": "b9dcfd2e1ab82dbafd3bbeb54b3b78db80bab889da8570c0934b002056871419",
+      "unchanged_baseline_dependency": true
+    },
+    {
+      "path": "apps/ultra/src-tauri/Cargo.lock",
+      "current_sha256": "0e79088df3a013f9266baf762a65d00e258124a741753d7347bb5d80f6306630",
+      "unchanged_baseline_dependency": true
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/backend.cpp",
+      "current_sha256": "f5b69a2e72ade4e23a6b4b55a070bd402c8cbcab1b7ec81f468d359a0482aec1",
+      "unchanged_baseline_dependency": true
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/alive_session_clips.hpp",
+      "current_sha256": "ef937eb460e2bd7f5ec8027c2c76f9abc7288fa2bc2242bb80d7bbf58e717436",
+      "unchanged_baseline_dependency": true
+    }
+  ],
+  "embedded_audio_source_id": "c6dcbacaaa944b3ecb2ec2e0a69e0aba6a2d2bff11c2f5de90eb8fa1001b0a99",
+  "runtime_scope": "native-accepted uses identical production source to 910fabf; 28a149d and 68846ce change only harness/CI/test-only source; full changed-file committed/current identity is listed."
+}

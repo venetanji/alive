@@ -1,0 +1,78 @@
+{
+  "source_commit": "68846ce83b56e8e4c419b22685f8486a240764d8",
+  "production_source_commit": "910fabf",
+  "artifacts": [
+    {
+      "path": "apps/ultra/src-tauri/target/release/alive",
+      "bytes": 13463272,
+      "sha256": "293208e065f39cee382354184d60b9d064a41b1c34a197bd6acc60110fc26eb7"
+    },
+    {
+      "path": "apps/ultra/src-tauri/target/release/ultra",
+      "bytes": 17295344,
+      "sha256": "924d21eb5c3c58c6cea923bb009db136f78266b6322cc932fd9d241235c53bd6"
+    },
+    {
+      "path": "apps/ultra/src-tauri/target/release/libultra_native.so",
+      "bytes": 12921768,
+      "sha256": "36ca6d5dabb59949d04d600d57a5c529e79e17d144e7af35335ee4e91a43718c"
+    },
+    {
+      "path": "apps/ultra/build/libultra_native.so",
+      "bytes": 12921768,
+      "sha256": "36ca6d5dabb59949d04d600d57a5c529e79e17d144e7af35335ee4e91a43718c"
+    },
+    {
+      "path": "apps/ultra/tests/check_alive_observability.py",
+      "bytes": 8069,
+      "sha256": "7cd669abcb159ad4f87a1288028142999c9b1101ddd81ce6bdc5badf4bb58203"
+    },
+    {
+      "path": "apps/ultra/tests/check_alive_clips.py",
+      "bytes": 7932,
+      "sha256": "a0908aa237a346120429d098f39e701b6931ffbc08a034eb0fa367196afbd111"
+    },
+    {
+      "path": "apps/ultra/tests/check_alive_desktop.py",
+      "bytes": 44324,
+      "sha256": "ad09c227410b25c98627581c723791cc7fc20e17c8559ecd35412e5c0e48a8ab"
+    },
+    {
+      "path": "apps/ultra/tests/check_canvas_desktop.sh",
+      "bytes": 7699,
+      "sha256": "e75bbd94e63ad4fc28476098e2b7bc1f8918c04706c709e7876fd8b47c2df574"
+    },
+    {
+      "path": "apps/ultra/tests/stream_measurement.py",
+      "bytes": 13540,
+      "sha256": "d2cadd1c3578a99096b8be3f7c7790a6fd0aa818a72edb0941d16547bead097a"
+    },
+    {
+      "evidence_path": "control-fixture.alive",
+      "bytes": 14240,
+      "sha256": "e50033d6bb2459ce4d7bdf541ba528bd5b3ad1f9a97b646b1b2746ae6b056c46"
+    },
+    {
+      "evidence_path": "overhead-controls.py",
+      "bytes": 4640,
+      "sha256": "272fb0101ad80a368f83d763cf2bc9396a7f650fc92e29f033d8b150ed415df5"
+    },
+    {
+      "evidence_path": "closure-probe.py",
+      "bytes": 2697,
+      "sha256": "bb20747ab4d6d4e26b2415c40e0e85ca621441c07cbc58258ba36dca4a296b9f"
+    },
+    {
+      "evidence_path": "source-checkpoint-manifest.json",
+      "bytes": 6914,
+      "sha256": "93bea545e62d10a53fc6511bf4a387a012e65eedc4be9cd97dcc7f67c9b2a3f3"
+    },
+    {
+      "evidence_path": "storage-wire-bounds.json",
+      "bytes": 588,
+      "sha256": "e9aaf2c137b47ffbf86976bb06e8991edc379f309a5aee2e2df876dbc883c698"
+    }
+  ],
+  "production_build_features": "default; no telemetry-disabled; tests use enabled/disabled separately",
+  "native_source_changed": false
+}

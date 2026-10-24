@@ -1,0 +1,38 @@
+✔ polling preserves musical drafts and merges newer live base and mixer values (1.396778ms)
+✔ replacement invalidates old drafts only after generation changes (0.436562ms)
+✔ automation ownership displays saved base separately from effective value (0.746746ms)
+✔ a resolved native file dialog adopts its authoritative retained or discarded draft (0.412476ms)
+✔ independent same-source effects merge by instance identity while retaining chain order (0.39814ms)
+✔ older polling responses cannot replace a newer authoritative musical revision (0.277172ms)
+✖ native sequence and preparation strings reject late runtime snapshots beyond JS precision (0.989853ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 77.420307
+
+✖ failing tests:
+
+test at apps/ultra/ui/alive-model.test.mjs:59:1
+✖ native sequence and preparation strings reject late runtime snapshots beyond JS precision (0.989853ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-model.test.mjs:62:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

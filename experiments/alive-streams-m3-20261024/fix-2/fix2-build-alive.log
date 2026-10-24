@@ -1,0 +1,15 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: method `reserve_native` is never used
+  --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/document_windows.rs:47:8
+   |
+36 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+47 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `ultra` (lib) generated 1 warning
+   Compiling alive v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri)
+    Finished `release` profile [optimized] target(s) in 29.79s

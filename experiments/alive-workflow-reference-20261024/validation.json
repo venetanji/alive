@@ -1,0 +1,24 @@
+{
+  "checks": [
+    {
+      "command": "python3 experiments/alive-workflow-reference-20261024/verify.py",
+      "status": "passed",
+      "scope": "34 files before validation receipt, 24 screenshots, 114 actions, 16 coverage questions, target identities and original/source preference preservation, owned prefix/cache cleanup, REA exit=0 and four retained unknowns"
+    },
+    {
+      "command": "python3 experiments/alive-live-reference-20261024/verify.py",
+      "status": "passed",
+      "scope": "22 files and 11 screenshots from prior reference; original identities and scoped cleanup"
+    },
+    {
+      "command": "uv run --no-project --with-requirements apps/ultra/tests/ci/requirements.txt python experiments/max-ui-reference/verify.py",
+      "status": "passed",
+      "scope": "prior manifest schema, 14 hashed artifacts and own/supplied patch consistency"
+    }
+  ],
+  "limitations": [
+    "Evidence verification only. These commands do not execute Live, Max, Wine or audio.",
+    "System python3 alone could not import jsonschema for the prior Max verifier; the pinned uv environment passed.",
+    "No production code, tests or PLAN.md changed in this reference task."
+  ]
+}

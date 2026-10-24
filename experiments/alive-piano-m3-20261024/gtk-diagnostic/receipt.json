@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-24",
+  "purpose": "bounded retained GTK warning diagnosis; no source/library rebuild",
+  "binary_sha256": "0e0576124a45460c266f49f309bf140d02bda4cd8d223f1a1455abaf56846fdc",
+  "native_sha256": "693f0acff15caa77b8e572255f9e333bd8254eec2905c19386b38ffd9882a3a1",
+  "gtk_version": "3.24.52",
+  "display": "private Xvfb, existing harness, no persistent settings changes",
+  "baseline_harness_exit": 1,
+  "baseline": "G_DEBUG=fatal-criticals SIGTRAP on unrealized GtkFileChooserEntry, GDK_KEY_RELEASE=9, keyval=47 (slash)",
+  "paced_harness_exit": 0,
+  "paced": "200 ms between synthetic slash press/release; both native Add effect file choosers and Quit complete; inferior exits normally",
+  "debugger_after_exit": "gdb event postmortem pointer-print commands fail after normal inferior exit; not an application failure",
+  "limits": "Only this reproduced chooser warning path was traced. No general GTK-warning-free, physical keyboard, audio, or performance claim."
+}

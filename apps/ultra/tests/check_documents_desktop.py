@@ -33,7 +33,7 @@ ui.x.XFree.argtypes = [C.c_void_p]
 
 def app_frames():
     frames = []
-    for root in Atspi.get_desktop(0):
+    for root in ui.desktop_apps():
         try:
             if root.get_process_id() != ui.pid: continue
             for node in [root.get_child_at_index(i) for i in range(root.get_child_count())]:

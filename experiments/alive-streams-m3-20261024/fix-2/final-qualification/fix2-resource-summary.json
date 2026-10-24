@@ -1,0 +1,262 @@
+{
+  "samples": 73,
+  "raw_sha256": "10be3a32da84406b4a5766779984f06cfdcb404a262f427c52bd81d685d6cdf2",
+  "scope": "observed identities, not complete process-tree CPU or no-growth evidence",
+  "groups": {
+    "app": {
+      "pss_kib": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 527170,
+        "final": 497237,
+        "minimum": 468261,
+        "p50": 560385,
+        "p95": 620438,
+        "maximum": 624672,
+        "endpoint_delta": -29933
+      },
+      "rss_kib": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 828760,
+        "final": 778084,
+        "minimum": 768832,
+        "p50": 848800,
+        "p95": 1090944,
+        "maximum": 1102288,
+        "endpoint_delta": -50676
+      },
+      "cpu_percent": {
+        "available": 72,
+        "unavailable": 1,
+        "initial": 91.44679973600914,
+        "final": 51.86128728913925,
+        "minimum": 17.934468635153646,
+        "p50": 75.26199838075101,
+        "p95": 113.77795708453019,
+        "maximum": 119.98795333077402,
+        "endpoint_delta": -39.58551244686989
+      },
+      "threads": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 120,
+        "final": 114,
+        "minimum": 106,
+        "p50": 121,
+        "p95": 160,
+        "maximum": 165,
+        "endpoint_delta": -6
+      },
+      "fds": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 205,
+        "final": 153,
+        "minimum": 153,
+        "p50": 193,
+        "p95": 261,
+        "maximum": 279,
+        "endpoint_delta": -52
+      },
+      "sample_duration": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 0.04186948099231813,
+        "final": 0.0402865079959156,
+        "minimum": 0.03409878000093158,
+        "p50": 0.03955902800953481,
+        "p95": 0.04653743498784024,
+        "maximum": 0.04923769900051411,
+        "endpoint_delta": -0.0015829729964025319
+      },
+      "coverage_gap_samples": 14
+    },
+    "sampler_capture_overhead": {
+      "pss_kib": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 33333,
+        "final": 37356,
+        "minimum": 33333,
+        "p50": 36370,
+        "p95": 48115,
+        "maximum": 72723,
+        "endpoint_delta": 4023
+      },
+      "rss_kib": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 66020,
+        "final": 67896,
+        "minimum": 66020,
+        "p50": 66980,
+        "p95": 94748,
+        "maximum": 147948,
+        "endpoint_delta": 1876
+      },
+      "cpu_percent": {
+        "available": 72,
+        "unavailable": 1,
+        "initial": 31.220690192423532,
+        "final": 13.963031255064541,
+        "minimum": 8.00113230425206,
+        "p50": 16.118493736616543,
+        "p95": 29.878710392971502,
+        "maximum": 31.220690192423532,
+        "endpoint_delta": -17.25765893735899
+      },
+      "threads": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 10,
+        "final": 10,
+        "minimum": 10,
+        "p50": 10,
+        "p95": 13,
+        "maximum": 18,
+        "endpoint_delta": 0
+      },
+      "fds": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 31,
+        "final": 31,
+        "minimum": 31,
+        "p50": 31,
+        "p95": 62,
+        "maximum": 81,
+        "endpoint_delta": 0
+      },
+      "sample_duration": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 0.026239493003231473,
+        "final": 0.022431696008425206,
+        "minimum": 0.022092996005085297,
+        "p50": 0.02515739100635983,
+        "p95": 0.028269727001315914,
+        "maximum": 0.030689556995639578,
+        "endpoint_delta": -0.0038077969948062673
+      },
+      "coverage_gap_samples": 11
+    },
+    "private_audio_server": {
+      "pss_kib": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 3317,
+        "final": 2879,
+        "minimum": 2878,
+        "p50": 2898,
+        "p95": 5605,
+        "maximum": 5605,
+        "endpoint_delta": -438
+      },
+      "rss_kib": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 9232,
+        "final": 8556,
+        "minimum": 8556,
+        "p50": 8576,
+        "p95": 11520,
+        "maximum": 11520,
+        "endpoint_delta": -676
+      },
+      "cpu_percent": {
+        "available": 72,
+        "unavailable": 1,
+        "initial": 0.0,
+        "final": 0.0,
+        "minimum": 0.0,
+        "p50": 0.0,
+        "p95": 1.0053543685802682,
+        "maximum": 1.0069038016700191,
+        "endpoint_delta": 0.0
+      },
+      "threads": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 2,
+        "final": 2,
+        "minimum": 2,
+        "p50": 2,
+        "p95": 2,
+        "maximum": 2,
+        "endpoint_delta": 0
+      },
+      "fds": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 32,
+        "final": 25,
+        "minimum": 25,
+        "p50": 25,
+        "p95": 39,
+        "maximum": 39,
+        "endpoint_delta": -7
+      },
+      "sample_duration": {
+        "available": 73,
+        "unavailable": 0,
+        "initial": 0.0244458810047945,
+        "final": 0.02078208800230641,
+        "minimum": 0.019893748001777567,
+        "p50": 0.0230823110032361,
+        "p95": 0.02548672800185159,
+        "maximum": 0.02699742399272509,
+        "endpoint_delta": -0.0036637930024880916
+      },
+      "coverage_gap_samples": 1
+    }
+  },
+  "union_max_simultaneous": 16,
+  "union_lifetime_identities": 28,
+  "samples_per_action_or_mode": {
+    "41": 1,
+    "42": 1,
+    "43": 1,
+    "44": 1,
+    "45": 1,
+    "46": 1,
+    "47": 1,
+    "48": 1,
+    "50": 1,
+    "52": 1,
+    "53": 1,
+    "54": 2,
+    "55": 1,
+    "58": 1,
+    "60": 2,
+    "61": 1,
+    "63": 2,
+    "64": 1,
+    "66": 2,
+    "67": 1,
+    "68": 1,
+    "70": 1,
+    "71": 1,
+    "72": 1,
+    "73": 1,
+    "74": 5,
+    "76": 3,
+    "77": 9,
+    "78": 2,
+    "79": 10,
+    "80": 2,
+    "81": 9,
+    "82": 4
+  },
+  "webkit_process_count": {
+    "available": 73,
+    "unavailable": 0,
+    "initial": 2,
+    "final": 2,
+    "minimum": 2,
+    "p50": 2,
+    "p95": 3,
+    "maximum": 3,
+    "endpoint_delta": 0
+  }
+}

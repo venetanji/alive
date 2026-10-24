@@ -17,7 +17,7 @@ const NUMBER_LIMIT: f64 = 100_000.;
 #[path = "canvas_hierarchy.rs"]
 mod hierarchy;
 #[path = "canvas_device.rs"]
-mod device;
+pub(crate) mod device;
 
 // Keep these C-layout types in sync with native/patch_graph.h. Tests pin sizes.
 #[repr(C)]
@@ -386,6 +386,8 @@ fn inlet(node: &NativeNode, port: u32) -> Option<Port> {
         62 if port <= 2 => Some(Port::Control),
         63 if port <= 4 => Some(Port::Control),
         64 if port <= 1 => Some(Port::Voice4),
+        67 if port <= 1 => Some(Port::Mono),
+        67 if port <= 3 => Some(Port::Control),
         _ => None,
     }
 }
@@ -407,6 +409,7 @@ fn outlet(node: &NativeNode, port: u32) -> Option<Port> {
         60 if port <= 2 => Some(Port::Voice4),
         61..=64 if port == 0 => Some(Port::Voice4),
         65 if port == 0 => Some(Port::Mono),
+        66..=67 if port <= 1 => Some(Port::Mono),
         _ => None,
     }
 }
@@ -431,6 +434,7 @@ fn kind(name: &str) -> Option<u32> {
         "inlet", "outlet", "number_int", "message_box",
         "subtract", "divide", "modulo", "reverse_subtract", "reverse_divide", "abs",
         "poly_note", "saw_voice", "filter_voice", "adsr_voice", "multiply_voice", "mix_voice",
+        "audio_in", "filter_stereo",
     ]
     .iter()
     .position(|candidate| *candidate == name)
@@ -476,7 +480,7 @@ fn parameters(kind: u32) -> &'static [Parameter] {
         55..=56 | 58 => &[p!("rhs", 0, 1., -NUMBER_LIMIT, NUMBER_LIMIT, false, true), p!("numericmode", 1, 1., 1., 2., true, false)],
         59 => &[p!("numericmode", 1, 1., 1., 2., true, false)],
         60 => &[p!("voices", 0, 4., 1., 4., true, false)],
-        62 => &[
+        62 | 67 => &[
             p!("cutoff", 0, 2400., 20., 20000., false, true),
             p!("resonance", 1, 0.7, 0.1, 20., false, true),
         ],

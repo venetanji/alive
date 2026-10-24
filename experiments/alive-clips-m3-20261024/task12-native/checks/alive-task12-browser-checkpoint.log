@@ -1,0 +1,53 @@
+(node:918497) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:02] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 5 tests using 1 worker
+
+(node:918796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:918796) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(node:918796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:05] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:05] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:05] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:05] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:05] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:05] "GET /alive-model.mjs HTTP/1.1" 200 -
+  ✓  1 alive-chain.spec.mjs:200:1 › Add note queued behind track removal never edits the surviving track (2.8s)
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:05] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:05] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:05] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:05] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:05] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:05] "GET /alive-model.mjs HTTP/1.1" 200 -
+  ✓  2 alive-chain.spec.mjs:226:1 › selected instance controls, keyboard automation target, draft guard and desktop bounds (488ms)
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:06] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:06] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:06] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:06] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:06] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:06] "GET /alive-model.mjs HTTP/1.1" 200 -
+  ✓  3 alive-chain.spec.mjs:274:1 › long saved device names fit the minimum desktop window (188ms)
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:06] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:06] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:06] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:06] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:06] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:06] "GET /audio-settings.mjs HTTP/1.1" 200 -
+  ✓  4 alive-chain.spec.mjs:285:1 › piano body, resize, velocity, cancellation and keyboard gestures are bounded transactions (1.3s)
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:07] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:07] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:07] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:07] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:07] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [24/Oct/2026 14:36:07] "GET /alive-model.mjs HTTP/1.1" 200 -
+  ✓  5 alive-chain.spec.mjs:362:1 › four-slot bank preserves numeric note identity and fits the minimum desktop (525ms)
+
+  5 passed (6.1s)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m

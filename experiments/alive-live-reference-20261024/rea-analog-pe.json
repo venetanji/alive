@@ -1,0 +1,64 @@
+{
+  "evidence_id": "ev_0256d1a36685c81f0508e046ea29c2b17f95a8d6a0d4ec46fcdfcd797af498e5",
+  "subject": {
+    "name": "Analog_64.dll",
+    "digest": {
+      "sha256": "4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133"
+    },
+    "format": "pe",
+    "architecture": null,
+    "local_path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Devices/Pc/Analog_64.dll"
+  },
+  "provider": {
+    "id": "rea-pe-resources",
+    "name": "REA PE resource parser",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_pe_resources",
+  "parameters": {
+    "path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Devices/Pc/Analog_64.dll",
+    "max_file_bytes": 67108864,
+    "max_entries": 4096
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "artifact": {
+      "path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Devices/Pc/Analog_64.dll",
+      "sha256": "4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133",
+      "bytes": 816640
+    },
+    "format": "pe32-plus",
+    "machine": 34404,
+    "directory": null,
+    "directories": [],
+    "resources": [],
+    "icon_groups": [],
+    "coverage": {
+      "status": "complete",
+      "examined_entries": 0,
+      "resources": 0
+    },
+    "limitations": [
+      "Static PE32/PE32+ type/name/language resource inventory; payloads other than RT_GROUP_ICON remain opaque.",
+      "Icon candidates are resource-table relationships. Language fallback, image decoding and actual shell/window loading are not observed.",
+      "Exact shared byte ranges are retained; non-identical overlapping resource structures or payloads are rejected."
+    ]
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Static PE32/PE32+ type/name/language resource inventory; payloads other than RT_GROUP_ICON remain opaque.",
+    "Icon candidates are resource-table relationships. Language fallback, image decoding and actual shell/window loading are not observed.",
+    "Exact shared byte ranges are retained; non-identical overlapping resource structures or payloads are rejected."
+  ],
+  "locations": [
+    {
+      "kind": "artifact-path",
+      "path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Devices/Pc/Analog_64.dll"
+    }
+  ],
+  "evidence_links": []
+}

@@ -1,0 +1,523 @@
+       Debug [tauri_cli::helpers::app_paths] resolving Tauri directory from /home/venetanji/.codex/worktrees/edd5/alive
+       Debug [ignore::gitignore] opened gitignore file: /tmp/.gitignore
+       Debug [globset] built glob set; 0 literals, 3 basenames, 0 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/.gitignore
+       Debug [globset] built glob set; 1 literals, 0 basenames, 0 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/.git: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/.github: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/.impeccable: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/.superpowers: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/.gitignore
+       Debug [globset] built glob set; 8 literals, 2 basenames, 1 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [tauri_cli::helpers::app_paths] Found Tauri project directory /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri
+       Debug [tauri_cli::helpers::app_paths] resolving frontend directory from /home/venetanji/.codex/worktrees/edd5/alive
+       Debug [ignore::gitignore] opened gitignore file: /tmp/.gitignore
+       Debug [globset] built glob set; 0 literals, 3 basenames, 0 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/.gitignore
+       Debug [globset] built glob set; 1 literals, 0 basenames, 0 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/.git: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/.github: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/.impeccable: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/.superpowers: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/.gitignore
+       Debug [globset] built glob set; 8 literals, 2 basenames, 1 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build: Ignore(IgnoreMatch(Gitignore(Glob { from: Some("/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/.gitignore"), original: "build/", actual: "**/build", is_whitelist: false, is_only_dir: true })))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/.gitignore: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/.gitignore
+       Debug [globset] built glob set; 3 literals, 0 basenames, 0 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/.gitignore: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/experiments/clockwork-faust/.gitignore
+       Debug [globset] built glob set; 0 literals, 4 basenames, 0 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/experiments/clockwork-faust/.gitignore: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/experiments/clockwork-faust/.deps: Ignore(IgnoreMatch(Gitignore(Glob { from: Some("/home/venetanji/.codex/worktrees/edd5/alive/experiments/clockwork-faust/.gitignore"), original: ".deps/", actual: "**/.deps", is_whitelist: false, is_only_dir: true })))
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/experiments/clockwork-hardening/.gitignore
+       Debug [globset] glob converted to regex: Glob { glob: "**/build*", re: "(?-u)^(?:/?|.*/)build[^/]*$", opts: GlobOptions { case_insensitive: false, literal_separator: true, backslash_escape: true, empty_alternates: false }, tokens: Tokens([RecursivePrefix, Literal('b'), Literal('u'), Literal('i'), Literal('l'), Literal('d'), ZeroOrMore]) }
+       Debug [globset] built glob set; 0 literals, 0 basenames, 1 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 1 regexes
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/experiments/clockwork-hardening/.gitignore: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/experiments/faust-hoa/.gitignore
+       Debug [globset] built glob set; 0 literals, 2 basenames, 0 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/experiments/faust-hoa/.gitignore: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/experiments/faust-reference/.gitignore
+       Debug [globset] built glob set; 0 literals, 3 basenames, 0 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/experiments/faust-reference/.gitignore: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/experiments/faust-reference/.deps: Ignore(IgnoreMatch(Gitignore(Glob { from: Some("/home/venetanji/.codex/worktrees/edd5/alive/experiments/faust-reference/.gitignore"), original: ".deps/", actual: "**/.deps", is_whitelist: false, is_only_dir: true })))
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/experiments/libpd-adapter/.gitignore
+       Debug [globset] built glob set; 0 literals, 2 basenames, 0 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/experiments/libpd-adapter/.gitignore: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/experiments/max-pd-compare/.gitignore
+       Debug [globset] built glob set; 0 literals, 3 basenames, 0 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/experiments/max-pd-compare/.gitignore: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/experiments/max-reference/.gitignore
+       Debug [globset] built glob set; 0 literals, 1 basenames, 1 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/experiments/max-reference/.gitattributes: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/experiments/max-reference/.gitignore: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/experiments/max-subset/.gitignore
+       Debug [globset] built glob set; 1 literals, 1 basenames, 1 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/experiments/max-subset/.gitignore: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/experiments/max-subset/__pycache__: Ignore(IgnoreMatch(Gitignore(Glob { from: Some("/home/venetanji/.codex/worktrees/edd5/alive/experiments/max-subset/.gitignore"), original: "__pycache__/", actual: "**/__pycache__", is_whitelist: false, is_only_dir: true })))
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/experiments/pd-cyclone-faust/.gitignore
+       Debug [globset] built glob set; 0 literals, 3 basenames, 1 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/experiments/pd-cyclone-faust/.gitignore: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/.gitignore: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/dist: Ignore(IgnoreMatch(Gitignore(Glob { from: Some("/home/venetanji/.codex/worktrees/edd5/alive/.gitignore"), original: "/dist/", actual: "dist", is_whitelist: false, is_only_dir: true })))
+        Info [tauri_cli::build] Looking up installed tauri packages to check mismatched versions...
+     Running [tauri_cli] Command `cargo  build --locked --bins --features tauri/custom-protocol --release --target x86_64-unknown-linux-gnu`
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: method `reserve_native` is never used
+  --> src/document_windows.rs:47:8
+   |
+36 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+47 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `ultra` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 27.24s
+       Built [tauri_cli::build] application at: /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/ultra
+        Info [tauri_bundler::bundle] Patching binary "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/ultra" for type deb
+        Warn [tauri_bundler::bundle] Failed to add bundler type to the binary: __TAURI_BUNDLE_TYPE variable not found in binary. Make sure tauri crate and tauri-cli are up to date. Updater plugin may not be able to update this package. This shouldn't normally happen, please report it to https://github.com/tauri-apps/tauri/issues
+    Bundling [tauri_bundler::bundle::linux::debian] Ultra Research_0.1.0-rc.1_amd64.deb (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/deb/Ultra Research_0.1.0-rc.1_amd64.deb)
+        Info [tauri_bundler::bundle] Patching binary "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/ultra" for type appimage
+        Warn [tauri_bundler::bundle] Failed to add bundler type to the binary: __TAURI_BUNDLE_TYPE variable not found in binary. Make sure tauri crate and tauri-cli are up to date. Updater plugin may not be able to update this package. This shouldn't normally happen, please report it to https://github.com/tauri-apps/tauri/issues
+    Bundling [tauri_bundler::bundle::linux::appimage] Ultra Research_0.1.0-rc.1_amd64.AppImage (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research_0.1.0-rc.1_amd64.AppImage)
+     Running [tauri_bundler::utils] Command `/home/venetanji/.cache/tauri/linuxdeploy-x86_64.AppImage  --appimage-extract-and-run --verbosity 1 --appdir /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir --plugin gtk --output appimage`
+linuxdeploy version 1-alpha (git commit ID 659c9db), GitHub actions build 10 built on 2024-07-26 15:40:22 UTC
+
+-- Creating basic AppDir structure --
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/bin/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/share/applications/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/share/icons/hicolor/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/share/icons/hicolor/16x16/apps/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/share/icons/hicolor/32x32/apps/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/share/icons/hicolor/64x64/apps/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/share/icons/hicolor/128x128/apps/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/share/icons/hicolor/256x256/apps/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/share/icons/hicolor/scalable/apps/
+
+-- Deploying dependencies for existing files in AppDir --
+Deploying dependencies for ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/bin/ultra
+Deploying shared library /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build/libultra_native.so
+Deploying shared library /usr/lib/libpipewire-0.3.so.0
+Skipping deployment of blacklisted library /usr/lib/libasound.so.2
+Deploying shared library /usr/lib/libgdk-3.so.0
+Deploying shared library /usr/lib/libpango-1.0.so.0
+Deploying shared library /usr/lib/libgdk_pixbuf-2.0.so.0
+Deploying shared library /usr/lib/libcairo-gobject.so.2
+Deploying shared library /usr/lib/libcairo.so.2
+Deploying shared library /usr/lib/libgobject-2.0.so.0
+Deploying shared library /usr/lib/libglib-2.0.so.0
+Deploying shared library /usr/lib/libwebkit2gtk-4.1.so.0
+Deploying shared library /usr/lib/libgtk-3.so.0
+Deploying shared library /usr/lib/libsoup-3.0.so.0
+Deploying shared library /usr/lib/libgio-2.0.so.0
+Deploying shared library /usr/lib/libjavascriptcoregtk-4.1.so.0
+Skipping deployment of blacklisted library /usr/lib/libgcc_s.so.1
+Skipping deployment of blacklisted library /usr/lib/libm.so.6
+Skipping deployment of blacklisted library /usr/lib/libc.so.6
+Skipping deployment of blacklisted library /usr/lib/libstdc++.so.6
+Skipping deployment of blacklisted library /usr/lib/libfribidi.so.0
+Deploying shared library /usr/lib/libepoxy.so.0
+Skipping deployment of blacklisted library /usr/lib/libfontconfig.so.1
+Deploying shared library /usr/lib/libpangocairo-1.0.so.0
+Deploying shared library /usr/lib/libxkbcommon.so.0
+Deploying shared library /usr/lib/libwayland-client.so.0
+Deploying shared library /usr/lib/libwayland-cursor.so.0
+Deploying shared library /usr/lib/libwayland-egl.so.1
+Skipping deployment of blacklisted library /usr/lib/libX11.so.6
+Deploying shared library /usr/lib/libXi.so.6
+Deploying shared library /usr/lib/libXext.so.6
+Deploying shared library /usr/lib/libXcursor.so.1
+Deploying shared library /usr/lib/libXdamage.so.1
+Deploying shared library /usr/lib/libXfixes.so.3
+Deploying shared library /usr/lib/libXcomposite.so.1
+Deploying shared library /usr/lib/libXrandr.so.2
+Deploying shared library /usr/lib/libXinerama.so.1
+Deploying shared library /usr/lib/libthai.so.0
+Skipping deployment of blacklisted library /usr/lib/libharfbuzz.so.0
+Deploying shared library /usr/lib/libgmodule-2.0.so.0
+Deploying shared library /usr/lib/libglycin-2.so.0
+Skipping deployment of blacklisted library /usr/lib/libz.so.1
+Deploying shared library /usr/lib/libpng16.so.16
+Skipping deployment of blacklisted library /usr/lib/libfreetype.so.6
+Deploying shared library /usr/lib/libXrender.so.1
+Skipping deployment of blacklisted library /usr/lib/libxcb.so.1
+Deploying shared library /usr/lib/libxcb-render.so.0
+Deploying shared library /usr/lib/libxcb-shm.so.0
+Deploying shared library /usr/lib/libpixman-1.so.0
+Deploying shared library /usr/lib/libffi.so.8
+Deploying shared library /usr/lib/libpcre2-8.so.0
+Deploying shared library /usr/lib/libatk-1.0.so.0
+Deploying shared library /usr/lib/libwebpmux.so.3
+Skipping deployment of blacklisted library /usr/lib/libexpat.so.1
+Deploying shared library /usr/lib/libicui18n.so.78
+Deploying shared library /usr/lib/libsystemd.so.0
+Deploying shared library /usr/lib/libjpeg.so.8
+Deploying shared library /usr/lib/libicuuc.so.78
+Deploying shared library /usr/lib/libxml2.so.16
+Deploying shared library /usr/lib/libsqlite3.so.0
+Deploying shared library /usr/lib/libxslt.so.1
+Deploying shared library /usr/lib/liblcms2.so.2
+Deploying shared library /usr/lib/libgcrypt.so.20
+Deploying shared library /usr/lib/libgstallocators-1.0.so.0
+Deploying shared library /usr/lib/libgstapp-1.0.so.0
+Deploying shared library /usr/lib/libgstbase-1.0.so.0
+Deploying shared library /usr/lib/libgstreamer-1.0.so.0
+Deploying shared library /usr/lib/libgstpbutils-1.0.so.0
+Deploying shared library /usr/lib/libgstaudio-1.0.so.0
+Deploying shared library /usr/lib/libgsttag-1.0.so.0
+Deploying shared library /usr/lib/libgstvideo-1.0.so.0
+Deploying shared library /usr/lib/libgstgl-1.0.so.0
+Deploying shared library /usr/lib/libgstfft-1.0.so.0
+Deploying shared library /usr/lib/libwebpdemux.so.2
+Deploying shared library /usr/lib/libwebp.so.7
+Deploying shared library /usr/lib/libjxl.so.0.12
+Deploying shared library /usr/lib/libavif.so.16
+Deploying shared library /usr/lib/libharfbuzz-icu.so.0
+Deploying shared library /usr/lib/libwayland-server.so.0
+Deploying shared library /usr/lib/libmanette-0.2.so.0
+Deploying shared library /usr/lib/libseccomp.so.2
+Deploying shared library /usr/lib/libenchant-2.so.2
+Skipping deployment of blacklisted library /usr/lib/libgbm.so.1
+Skipping deployment of blacklisted library /usr/lib/libdrm.so.2
+Deploying shared library /usr/lib/libtasn1.so.6
+Deploying shared library /usr/lib/libhyphen.so.0
+Deploying shared library /usr/lib/libsecret-1.so.0
+Deploying shared library /usr/lib/libpangoft2-1.0.so.0
+Deploying shared library /usr/lib/libatk-bridge-2.0.so.0
+Deploying shared library /usr/lib/libcloudproviders.so.0
+Deploying shared library /usr/lib/libtinysparql-3.0.so.0
+Deploying shared library /usr/lib/libpsl.so.5
+Deploying shared library /usr/lib/libbrotlidec.so.1
+Deploying shared library /usr/lib/libzstd.so.1
+Deploying shared library /usr/lib/libgssapi_krb5.so.2
+Deploying shared library /usr/lib/libnghttp2.so.14
+Deploying shared library /usr/lib/libmount.so.1
+Deploying shared library /usr/lib/libatomic.so.1
+Deploying shared library /usr/lib/libdatrie.so.1
+Deploying shared library /usr/lib/libgraphite2.so.3
+Deploying shared library /usr/lib/libbz2.so.1.0
+Deploying shared library /usr/lib/libXau.so.6
+Deploying shared library /usr/lib/libXdmcp.so.6
+Deploying shared library /usr/lib/libicudata.so.78
+Skipping deployment of blacklisted library /usr/lib/libgpg-error.so.0
+Deploying shared library /usr/lib/libunwind.so.8
+Deploying shared library /usr/lib/libdw.so.1
+Deploying shared library /usr/lib/liborc-0.4.so.0
+Skipping deployment of blacklisted library /usr/lib/libEGL.so.1
+Skipping deployment of blacklisted library /usr/lib/libGLX.so.0
+Skipping deployment of blacklisted library /usr/lib/libX11-xcb.so.1
+Deploying shared library /usr/lib/libgudev-1.0.so.0
+Deploying shared library /usr/lib/libsharpyuv.so.0
+Deploying shared library /usr/lib/libjxl_cms.so.0.12
+Deploying shared library /usr/lib/libhwy.so.1
+Deploying shared library /usr/lib/libbrotlienc.so.1
+Deploying shared library /usr/lib/libyuv.so
+Deploying shared library /usr/lib/libdav1d.so.7
+Deploying shared library /usr/lib/librav1e.so.0.8
+Deploying shared library /usr/lib/libSvtAv1Enc.so.4
+Deploying shared library /usr/lib/libaom.so.3
+Deploying shared library /usr/lib/libhidapi-hidraw.so.0
+Deploying shared library /usr/lib/libevdev.so.2
+Deploying shared library /usr/lib/libtss2-esys.so.0
+Deploying shared library /usr/lib/libtss2-mu.so.0
+Deploying shared library /usr/lib/libtss2-rc.so.0
+Deploying shared library /usr/lib/libtss2-tctildr.so.0
+Deploying shared library /usr/lib/libatspi.so.0
+Deploying shared library /usr/lib/libdbus-1.so.3
+Deploying shared library /usr/lib/libjson-glib-1.0.so.0
+Deploying shared library /usr/lib/libunistring.so.5
+Deploying shared library /usr/lib/libidn2.so.0
+Deploying shared library /usr/lib/libbrotlicommon.so.1
+Deploying shared library /usr/lib/libkrb5.so.3
+Deploying shared library /usr/lib/libk5crypto.so.3
+Skipping deployment of blacklisted library /usr/lib/libcom_err.so.2
+Deploying shared library /usr/lib/libkrb5support.so.0
+Deploying shared library /usr/lib/libkeyutils.so.1
+Skipping deployment of blacklisted library /usr/lib/libresolv.so.2
+Deploying shared library /usr/lib/libblkid.so.1
+Deploying shared library /usr/lib/liblzma.so.5
+Deploying shared library /usr/lib/libelf.so.1
+Skipping deployment of blacklisted library /usr/lib/libGLdispatch.so.0
+Deploying shared library /usr/lib/libudev.so.1
+Deploying shared library /usr/lib/libcrypto.so.3
+Deploying shared library /usr/lib/libtss2-sys.so.1
+Deploying dependencies for ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/Ultra Research/libultra_native.so
+Deploying dependencies for ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/webkit2gtk-4.1/WebKitNetworkProcess
+Deploying dependencies for ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/webkit2gtk-4.1/WebKitWebProcess
+Deploying dependencies for ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/webkit2gtk-4.1/injected-bundle/libwebkit2gtkinjectedbundle.so
+
+-- Copying files into AppDir --
+Copying file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build/libultra_native.so to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libultra_native.so
+Copying file /usr/lib/libSvtAv1Enc.so.4 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libSvtAv1Enc.so.4
+Copying file /usr/lib/libXau.so.6 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXau.so.6
+Copying file /usr/lib/libXcomposite.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXcomposite.so.1
+Copying file /usr/lib/libXcursor.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXcursor.so.1
+Copying file /usr/lib/libXdamage.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXdamage.so.1
+Copying file /usr/lib/libXdmcp.so.6 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXdmcp.so.6
+Copying file /usr/lib/libXext.so.6 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXext.so.6
+Copying file /usr/lib/libXfixes.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXfixes.so.3
+Copying file /usr/lib/libXi.so.6 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXi.so.6
+Copying file /usr/lib/libXinerama.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXinerama.so.1
+Copying file /usr/lib/libXrandr.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXrandr.so.2
+Copying file /usr/lib/libXrender.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXrender.so.1
+Copying file /usr/lib/libaom.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libaom.so.3
+Copying file /usr/lib/libatk-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libatk-1.0.so.0
+Copying file /usr/lib/libatk-bridge-2.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libatk-bridge-2.0.so.0
+Copying file /usr/lib/libatomic.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libatomic.so.1
+Copying file /usr/lib/libatspi.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libatspi.so.0
+Copying file /usr/lib/libavif.so.16 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libavif.so.16
+Copying file /usr/lib/libblkid.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libblkid.so.1
+Copying file /usr/lib/libbrotlicommon.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libbrotlicommon.so.1
+Copying file /usr/lib/libbrotlidec.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libbrotlidec.so.1
+Copying file /usr/lib/libbrotlienc.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libbrotlienc.so.1
+Copying file /usr/lib/libbz2.so.1.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libbz2.so.1.0
+Copying file /usr/lib/libcairo-gobject.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libcairo-gobject.so.2
+Copying file /usr/lib/libcairo.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libcairo.so.2
+Copying file /usr/lib/libcloudproviders.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libcloudproviders.so.0
+Copying file /usr/lib/libcrypto.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libcrypto.so.3
+Copying file /usr/lib/libdatrie.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libdatrie.so.1
+Copying file /usr/lib/libdav1d.so.7 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libdav1d.so.7
+Copying file /usr/lib/libdbus-1.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libdbus-1.so.3
+Copying file /usr/lib/libdw.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libdw.so.1
+Copying file /usr/lib/libelf.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libelf.so.1
+Copying file /usr/lib/libenchant-2.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libenchant-2.so.2
+Copying file /usr/lib/libepoxy.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libepoxy.so.0
+Copying file /usr/lib/libevdev.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libevdev.so.2
+Copying file /usr/lib/libffi.so.8 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libffi.so.8
+Copying file /usr/lib/libgcrypt.so.20 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgcrypt.so.20
+Copying file /usr/lib/libgdk-3.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgdk-3.so.0
+Copying file /usr/lib/libgdk_pixbuf-2.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgdk_pixbuf-2.0.so.0
+Copying file /usr/lib/libgio-2.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgio-2.0.so.0
+Copying file /usr/lib/libglib-2.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libglib-2.0.so.0
+Copying file /usr/lib/libglycin-2.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libglycin-2.so.0
+Copying file /usr/lib/libgmodule-2.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgmodule-2.0.so.0
+Copying file /usr/lib/libgobject-2.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgobject-2.0.so.0
+Copying file /usr/lib/libgraphite2.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgraphite2.so.3
+Copying file /usr/lib/libgssapi_krb5.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgssapi_krb5.so.2
+Copying file /usr/lib/libgstallocators-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstallocators-1.0.so.0
+Copying file /usr/lib/libgstapp-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstapp-1.0.so.0
+Copying file /usr/lib/libgstaudio-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstaudio-1.0.so.0
+Copying file /usr/lib/libgstbase-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstbase-1.0.so.0
+Copying file /usr/lib/libgstfft-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstfft-1.0.so.0
+Copying file /usr/lib/libgstgl-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstgl-1.0.so.0
+Copying file /usr/lib/libgstpbutils-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstpbutils-1.0.so.0
+Copying file /usr/lib/libgstreamer-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstreamer-1.0.so.0
+Copying file /usr/lib/libgsttag-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgsttag-1.0.so.0
+Copying file /usr/lib/libgstvideo-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstvideo-1.0.so.0
+Copying file /usr/lib/libgtk-3.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgtk-3.so.0
+Copying file /usr/lib/libgudev-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgudev-1.0.so.0
+Copying file /usr/lib/libharfbuzz-icu.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libharfbuzz-icu.so.0
+Copying file /usr/lib/libhidapi-hidraw.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libhidapi-hidraw.so.0
+Copying file /usr/lib/libhwy.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libhwy.so.1
+Copying file /usr/lib/libhyphen.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libhyphen.so.0
+Copying file /usr/lib/libicudata.so.78 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libicudata.so.78
+Copying file /usr/lib/libicui18n.so.78 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libicui18n.so.78
+Copying file /usr/lib/libicuuc.so.78 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libicuuc.so.78
+Copying file /usr/lib/libidn2.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libidn2.so.0
+Copying file /usr/lib/libjavascriptcoregtk-4.1.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libjavascriptcoregtk-4.1.so.0
+Copying file /usr/lib/libjpeg.so.8 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libjpeg.so.8
+Copying file /usr/lib/libjson-glib-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libjson-glib-1.0.so.0
+Copying file /usr/lib/libjxl.so.0.12 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libjxl.so.0.12
+Copying file /usr/lib/libjxl_cms.so.0.12 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libjxl_cms.so.0.12
+Copying file /usr/lib/libk5crypto.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libk5crypto.so.3
+Copying file /usr/lib/libkeyutils.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libkeyutils.so.1
+Copying file /usr/lib/libkrb5.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libkrb5.so.3
+Copying file /usr/lib/libkrb5support.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libkrb5support.so.0
+Copying file /usr/lib/liblcms2.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/liblcms2.so.2
+Copying file /usr/lib/liblzma.so.5 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/liblzma.so.5
+Copying file /usr/lib/libmanette-0.2.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libmanette-0.2.so.0
+Copying file /usr/lib/libmount.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libmount.so.1
+Copying file /usr/lib/libnghttp2.so.14 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libnghttp2.so.14
+Copying file /usr/lib/liborc-0.4.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/liborc-0.4.so.0
+Copying file /usr/lib/libpango-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpango-1.0.so.0
+Copying file /usr/lib/libpangocairo-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpangocairo-1.0.so.0
+Copying file /usr/lib/libpangoft2-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpangoft2-1.0.so.0
+Copying file /usr/lib/libpcre2-8.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpcre2-8.so.0
+Copying file /usr/lib/libpipewire-0.3.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpipewire-0.3.so.0
+Copying file /usr/lib/libpixman-1.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpixman-1.so.0
+Copying file /usr/lib/libpng16.so.16 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpng16.so.16
+Copying file /usr/lib/libpsl.so.5 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpsl.so.5
+Copying file /usr/lib/librav1e.so.0.8 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/librav1e.so.0.8
+Copying file /usr/lib/libseccomp.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libseccomp.so.2
+Copying file /usr/lib/libsecret-1.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libsecret-1.so.0
+Copying file /usr/lib/libsharpyuv.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libsharpyuv.so.0
+Copying file /usr/lib/libsoup-3.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libsoup-3.0.so.0
+Copying file /usr/lib/libsqlite3.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libsqlite3.so.0
+Copying file /usr/lib/libsystemd.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libsystemd.so.0
+Copying file /usr/lib/libtasn1.so.6 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libtasn1.so.6
+Copying file /usr/lib/libthai.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libthai.so.0
+Copying file /usr/lib/libtinysparql-3.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libtinysparql-3.0.so.0
+Copying file /usr/lib/libtss2-esys.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libtss2-esys.so.0
+Copying file /usr/lib/libtss2-mu.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libtss2-mu.so.0
+Copying file /usr/lib/libtss2-rc.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libtss2-rc.so.0
+Copying file /usr/lib/libtss2-sys.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libtss2-sys.so.1
+Copying file /usr/lib/libtss2-tctildr.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libtss2-tctildr.so.0
+Copying file /usr/lib/libudev.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libudev.so.1
+Copying file /usr/lib/libunistring.so.5 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libunistring.so.5
+Copying file /usr/lib/libunwind.so.8 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libunwind.so.8
+Copying file /usr/lib/libwayland-client.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwayland-client.so.0
+Copying file /usr/lib/libwayland-cursor.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwayland-cursor.so.0
+Copying file /usr/lib/libwayland-egl.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwayland-egl.so.1
+Copying file /usr/lib/libwayland-server.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwayland-server.so.0
+Copying file /usr/lib/libwebkit2gtk-4.1.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwebkit2gtk-4.1.so.0
+Copying file /usr/lib/libwebp.so.7 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwebp.so.7
+Copying file /usr/lib/libwebpdemux.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwebpdemux.so.2
+Copying file /usr/lib/libwebpmux.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwebpmux.so.3
+Copying file /usr/lib/libxcb-render.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libxcb-render.so.0
+Copying file /usr/lib/libxcb-shm.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libxcb-shm.so.0
+Copying file /usr/lib/libxkbcommon.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libxkbcommon.so.0
+Copying file /usr/lib/libxml2.so.16 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libxml2.so.16
+Copying file /usr/lib/libxslt.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libxslt.so.1
+Copying file /usr/lib/libyuv.so to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libyuv.so
+Copying file /usr/lib/libzstd.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libzstd.so.1
+WARNING: $NO_STRIP environment variable detected, not stripping binaries
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/bin/ultra to $ORIGIN/../lib
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/Ultra Research/libultra_native.so to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libSvtAv1Enc.so.4 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXau.so.6 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXcomposite.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXcursor.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXdamage.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXdmcp.so.6 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXext.so.6 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXfixes.so.3 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXi.so.6 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXinerama.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXrandr.so.2 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libXrender.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libaom.so.3 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libatk-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libatk-bridge-2.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libatomic.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libatspi.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libavif.so.16 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libblkid.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libbrotlicommon.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libbrotlidec.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libbrotlienc.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libbz2.so.1.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libcairo-gobject.so.2 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libcairo.so.2 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libcloudproviders.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libcrypto.so.3 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libdatrie.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libdav1d.so.7 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libdbus-1.so.3 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libdw.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libelf.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libenchant-2.so.2 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libepoxy.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libevdev.so.2 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libffi.so.8 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgcrypt.so.20 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgdk-3.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgdk_pixbuf-2.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgio-2.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libglib-2.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libglycin-2.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgmodule-2.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgobject-2.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgraphite2.so.3 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgssapi_krb5.so.2 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstallocators-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstapp-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstaudio-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstbase-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstfft-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstgl-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstpbutils-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstreamer-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgsttag-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgstvideo-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgtk-3.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libgudev-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libharfbuzz-icu.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libhidapi-hidraw.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libhwy.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libhyphen.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libicudata.so.78 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libicui18n.so.78 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libicuuc.so.78 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libidn2.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libjavascriptcoregtk-4.1.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libjpeg.so.8 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libjson-glib-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libjxl.so.0.12 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libjxl_cms.so.0.12 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libk5crypto.so.3 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libkeyutils.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libkrb5.so.3 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libkrb5support.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/liblcms2.so.2 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/liblzma.so.5 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libmanette-0.2.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libmount.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libnghttp2.so.14 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/liborc-0.4.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpango-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpangocairo-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpangoft2-1.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpcre2-8.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpipewire-0.3.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpixman-1.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpng16.so.16 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libpsl.so.5 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/librav1e.so.0.8 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libseccomp.so.2 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libsecret-1.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libsharpyuv.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libsoup-3.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libsqlite3.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libsystemd.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libtasn1.so.6 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libthai.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libtinysparql-3.0.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libtss2-esys.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libtss2-mu.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libtss2-rc.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libtss2-sys.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libtss2-tctildr.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libudev.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libultra_native.so to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libunistring.so.5 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libunwind.so.8 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwayland-client.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwayland-cursor.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwayland-egl.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwayland-server.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwebkit2gtk-4.1.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwebp.so.7 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwebpdemux.so.2 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libwebpmux.so.3 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libxcb-render.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libxcb-shm.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libxkbcommon.so.0 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libxml2.so.16 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libxslt.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libyuv.so to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/libzstd.so.1 to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/webkit2gtk-4.1/WebKitNetworkProcess to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/webkit2gtk-4.1/WebKitWebProcess to $ORIGIN
+Setting rpath in ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir/usr/lib/webkit2gtk-4.1/injected-bundle/libwebkit2gtkinjectedbundle.so to $ORIGIN
+
+-- Running input plugin: gtk --
+[gtk/stdout] Installing AppRun hook
+[gtk/stdout] Installing GLib schemas
+[gtk/stdout] Installing GIRepository Typelibs
+[gtk/stdout] /usr/lib ~/.codex/worktrees/edd5/alive/apps/ultra/src-tauri
+[gtk/stdout] ~/.codex/worktrees/edd5/alive/apps/ultra/src-tauri
+[gtk/stdout] Installing GTK 3.0 modules
+[gtk/stderr] realpath: /usr/lib/gdk-pixbuf-2.0/2.10.0: No such file or directory
+[gtk/stdout] /usr/lib ~/.codex/worktrees/edd5/alive/apps/ultra/src-tauri
+[gtk/stdout] ~/.codex/worktrees/edd5/alive/apps/ultra/src-tauri
+[gtk/stdout] Updating immodules cache in /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Ultra Research.AppDir//usr/lib/gtk-3.0/3.0.0/immodules.cache
+[gtk/stdout] Installing GDK PixBufs
+[gtk/stdout] /usr/lib ~/.codex/worktrees/edd5/alive/apps/ultra/src-tauri
+[gtk/stderr] cp: cannot stat '': No such file or directory
+ERROR: Failed to run plugin: gtk (exit code: 1)
+failed to bundle project: `failed to run /home/venetanji/.cache/tauri/linuxdeploy-x86_64.AppImage`
+       Error [tauri_cli_node] failed to bundle project: `failed to run /home/venetanji/.cache/tauri/linuxdeploy-x86_64.AppImage`

@@ -1,0 +1,9 @@
+Earlier intermediate working-tree timing observation, retained by the controller
+from the tool output that directly read the then-current final-policy-traced.log.
+The worker confirms that a later run overwrote that path without a backup.
+The complete intermediate matrix and exact source snapshot are unavailable.
+This excerpt is not the final db96180 timing matrix and was not reconstructed
+by rerunning the workload. The final-source full log is retained separately as
+measure-final-policy-traced.log.
+
+combined_policy_upper_bound frames=64 iterations=1200 roots=126 writes=3904 scans=19456 extra_events=64 guard_steps=9252 mean_us=983.901 p99_us=1137.652 p999_us=1273.938 max_us=3016.577

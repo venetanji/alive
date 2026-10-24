@@ -1,0 +1,149 @@
+{
+  "kind": "actual standalone release Alive; private Xvfb and software PipeWire",
+  "physical_audio": false,
+  "settings": {
+    "saved": {
+      "host": "default",
+      "device": "default",
+      "sample_rate": 48000,
+      "buffer_frames": 512
+    },
+    "unsupported_buffer_preserved_settings": true,
+    "stop_audio_terminated_notes": true,
+    "restart_kept_transport_stopped": true
+  },
+  "observed_buffer": 512,
+  "audio": {
+    "frames": 318976,
+    "seconds": 6.645333333333333,
+    "peak": 0.2225944548845291,
+    "one_second_peaks": [
+      0.14840516448020935,
+      0.11835465580224991,
+      0.15238016843795776,
+      0.1600058525800705,
+      0.2225944548845291,
+      0.1396811455488205,
+      0.0650455504655838
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "1632fa19f6b3496baf2cb9d4acadaf8b1ec13723c0d57e5200c4fde6ce57db10",
+    "path": "clips-rendered.f32",
+    "physical_audio": false
+  },
+  "native_observations": [
+    {
+      "label": "Pulse clip runtime",
+      "value": "Cued Clip 1 / request 2 applied for Clip 1",
+      "monotonic": 66892.885260458
+    },
+    {
+      "label": "Pulse clip runtime",
+      "value": "Playing Clip 1 / request 4 pending for Clip 1 copy / pending launch at frame 358290",
+      "monotonic": 66893.935829608
+    },
+    {
+      "label": "Pulse clip runtime",
+      "value": "Playing Clip 1 copy / request 4 applied for Clip 1 copy",
+      "monotonic": 66895.44762442
+    },
+    {
+      "label": "Harmony clip runtime",
+      "value": "Playing Clip 1",
+      "monotonic": 66895.492945929
+    },
+    {
+      "label": "Pulse clip runtime",
+      "value": "Stopped / request 5 applied",
+      "monotonic": 66899.877295829
+    },
+    {
+      "label": "Harmony clip runtime",
+      "value": "Playing Clip 1",
+      "monotonic": 66899.922250576
+    },
+    {
+      "label": "Pulse clip runtime",
+      "value": "Cued Clip 1 copy",
+      "monotonic": 66904.982560357
+    }
+  ],
+  "shared_source_errors": [
+    "Device source changed or fingerprint invalid: Track 'Harmony' instance '0e74953a-0f42-4b72-aad5-b77b2c6cf71e' (../shared-utility.ultra). Selected Replace changes only that instance; stale siblings block full preparation. Stop transport and resolve pending edits; preserve the changed .ultra at a new path before restoring anything. Restore a matching original backup at the shared path, then explicitly Replace each intended instance from the preserved changed copy and Save. A matching original backup is required; without one there is no general supported recovery in the current desktop workflow. Replace gives a fresh instance identity, default bases/bypass and removes that instance's automation lanes. Copying alone or trying siblings in turn does not recover this session.",
+    "Device source changed or fingerprint invalid: Track 'Pulse' instance 'd22882da-4c00-46b2-aded-170a41e05eaa' (../shared-utility.ultra). Selected Replace changes only that instance; stale siblings block full preparation. Stop transport and resolve pending edits; preserve the changed .ultra at a new path before restoring anything. Restore a matching original backup at the shared path, then explicitly Replace each intended instance from the preserved changed copy and Save. A matching original backup is required; without one there is no general supported recovery in the current desktop workflow. Replace gives a fresh instance identity, default bases/bypass and removes that instance's automation lanes. Copying alone or trying siblings in turn does not recover this session."
+  ],
+  "initial": "/tmp/alive-task12-native-receipts-final/initial-v3.alive",
+  "saved": "/tmp/alive-task12-native-receipts-final/moved/relocated.alive",
+  "draft_editor_continuity": true,
+  "apply_editor_boundary": true,
+  "reopen_stopped_default": true,
+  "sequential_shared_source_recovery": true,
+  "failed_shared_replace_editor_continuity": true,
+  "native_inputs": [
+    {
+      "action": "slash location entry",
+      "monotonic": 66865.484515945,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 66868.123329555,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 66903.511557235,
+      "scope": "Open Alive Session",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 66907.476977452,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 66910.35596138,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 66913.228914696,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 66917.643663599,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    }
+  ],
+  "final_audio": {
+    "Audio backend": "PipeWire",
+    "Audio device": "default_output",
+    "Audio sample rate": "48000",
+    "Audio buffer frames": "0",
+    "Audio callbacks": "0",
+    "Audio stream errors": "0",
+    "Audio failed": "false",
+    "Audio status": "Audio is off.",
+    "Transport playing": "false",
+    "Absolute frame": "782336",
+    "Rejected commands": "0",
+    "Native generation": "16",
+    "Track 1 active voices": "0",
+    "Track 2 active voices": "0"
+  }
+}

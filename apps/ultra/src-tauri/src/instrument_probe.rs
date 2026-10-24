@@ -31,7 +31,8 @@ impl Host {
     }
     fn note(&self, label: &str, pitch: u32, velocity: u32) -> Result<(), String> {
         let owner=self.registry.get_open(label)?;
-        let node=owner.patch.as_ref().unwrap()["device"]["midi"]["node"].as_u64().unwrap() as u32;
+        let node=instrument_manifest(owner.patch.as_ref().unwrap())?.note_node
+            .ok_or("Instrument probe requires an authored MIDI input")?;
         let message=self.controls[owner.id as usize].event(owner.runtime_revision,node,0,json!([pitch,velocity]))?;
         if unsafe {crate::ultra_canvas_message_document(owner.id,owner.runtime_revision,node,0,&message)}==0 {
             return Err("Probe note was not admitted".into());
@@ -96,7 +97,7 @@ fn remove_input(scope: &mut Value, id: u32) -> bool {
     let Some(nodes)=scope.get_mut("nodes").and_then(Value::as_array_mut) else { return false; };
     nodes.iter_mut().filter_map(|node|node.get_mut("patcher")).any(|child|remove_input(child,id))
 }
-fn write_wav(path: &Path, samples: &[f32]) -> std::io::Result<()> {
+pub(crate) fn write_wav(path: &Path, samples: &[f32]) -> std::io::Result<()> {
     let bytes=(samples.len()*4) as u32;let mut file=fs::File::create(path)?;
     file.write_all(b"RIFF")?;file.write_all(&(36+bytes).to_le_bytes())?;file.write_all(b"WAVEfmt ")?;
     file.write_all(&16u32.to_le_bytes())?;file.write_all(&3u16.to_le_bytes())?;file.write_all(&2u16.to_le_bytes())?;
@@ -107,9 +108,19 @@ fn write_wav(path: &Path, samples: &[f32]) -> std::io::Result<()> {
 }
 fn require(condition: bool, message: &str) -> Result<(), String> { if condition {Ok(())}else{Err(message.into())} }
 
+fn instrument_manifest(source: &Value) -> Result<canvas::device::HostManifest, String> {
+    let prepared=canvas::prepare(source.clone())?;
+    let manifest=canvas::device::host_manifest(source,&prepared.native)?;
+    if manifest.kind!=canvas::device::DeviceKind::Instrument {
+        return Err("Instrument probe supports instruments only; an audio effect requires host audio input".into());
+    }
+    Ok(manifest)
+}
+
 pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
     let loaded=documents::read_patch(path)?;
     let source=loaded.patch.ok_or("Instrument probe requires an authored Ultra patch")?;
+    instrument_manifest(&source)?;
     let manifest=source.get("device").ok_or("Instrument probe requires a device manifest")?.clone();
     let bindings=manifest["parameters"].as_array().unwrap();
     let binding=|param:&str| bindings.iter().find(|row|row["param"]==param).cloned()
@@ -208,6 +219,30 @@ pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn version_two_instrument_uses_the_normalized_midi_entry_in_headless_render() {
+        const NAME: &str="instrument_probe::tests::version_two_instrument_uses_the_normalized_midi_entry_in_headless_render";
+        if std::env::var("ULTRA_V2_PROBE_TEST_PROCESS").as_deref()!=Ok("1") {
+            let child=std::process::Command::new(std::env::current_exe().unwrap()).args(["--exact",NAME,"--nocapture"])
+                .env("ULTRA_V2_PROBE_TEST_PROCESS","1").env_remove("DISPLAY").env_remove("WAYLAND_DISPLAY").output().unwrap();
+            assert!(child.status.success(),"{}\n{}",String::from_utf8_lossy(&child.stdout),String::from_utf8_lossy(&child.stderr));return;
+        }
+        let path=Path::new(env!("CARGO_MANIFEST_DIR")).join("../examples/subtractive.ultra");
+        let mut patch: Value=serde_json::from_slice(&fs::read(path).unwrap()).unwrap();
+        let d=&mut patch["device"];d["version"]=json!(2);d["kind"]=json!("instrument");
+        d["midi"]=json!({"input":d["midi"].clone(),"output":null});d["audio"]=json!({"input":null,"output":{"channels":2,"layout":"stereo"}});
+        let folder=std::env::temp_dir().join(format!("ultra-v2-instrument-probe-{}",std::process::id()));
+        fs::create_dir_all(&folder).unwrap();let source=folder.join("source.ultra");fs::write(&source,serde_json::to_vec(&patch).unwrap()).unwrap();
+        assert_eq!(run(&source,&folder.join("render")).unwrap()["passed"],true);fs::remove_dir_all(folder).unwrap();
+    }
+    #[test]
+    fn effects_are_rejected_by_the_instrument_probe_before_rendering() {
+        let source=Path::new(env!("CARGO_MANIFEST_DIR")).join("../examples/utility.ultra");
+        let output=std::env::temp_dir().join(format!("ultra-effect-probe-{}",std::process::id()));
+        let error=run(&source,&output).unwrap_err();
+        assert!(error.contains("instrument")&&error.contains("audio effect"),"{error}");
+        assert!(!output.exists());
+    }
     #[test]
     fn saved_instrument_renders_headlessly_with_independent_instances_and_authored_cables() {
         // The native workspace retains revisions after close. Give this host its

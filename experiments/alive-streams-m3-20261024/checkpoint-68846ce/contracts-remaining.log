@@ -1,0 +1,54 @@
+{"status": "verified", "patch_graphs": 44, "complete_Max_traces": 20, "schema_valid_manifests": 32, "hashed_artifacts": 150, "dsp_frames": 1920, "dsp_fresh_process_repeat_identical": true}
+Verified 6 original Max fixtures, 716 scored inputs, 2048 raw rows, 714 retained native matches, 2 explicit feedback exclusions
+{"compared": 714, "passed": 714, "mismatches": 0, "skipped": 2}
+{"status": "verified", "manifest_files": 37, "message_rows": 1604, "stimuli": 309, "sample_files": 14}
+{"compared_cases": 197, "compared_values": 114560, "passed_cases": 197, "failed_cases": 0, "absolute_tolerance": 2e-07}
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.005s
+
+OK
+{"status": "UNAVAILABLE", "oracle_executed": false, "reason": "Optional local hierarchy oracle bundle is not published; no comparison performed."}
+{"status": "verified", "schema": "urn:alive:max-reference-manifest:v1", "hashed_artifacts": 14, "scope": "recorded UI evidence only; no Max execution or compatibility certification"}
+test_bad_json_is_reported_not_passed (test_inventory.InventoryTests.test_bad_json_is_reported_not_passed) ... ok
+test_namespaces_nested_patchers_and_dependency_paths (test_inventory.InventoryTests.test_namespaces_nested_patchers_and_dependency_paths) ... ok
+test_nested_attribute_metadata_is_not_an_object_attribute (test_inventory.InventoryTests.test_nested_attribute_metadata_is_not_an_object_attribute) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+OK
+................
+----------------------------------------------------------------------
+Ran 16 tests in 0.108s
+
+OK
+PASS build replaces native library atomically; existing mapping stays intact
+test_installer_advertises_file_opening_and_original_extensions (__main__.PatchFileLaunch.test_installer_advertises_file_opening_and_original_extensions) ... ok
+test_relative_paths_with_spaces_and_shell_characters_reach_native_app (__main__.PatchFileLaunch.test_relative_paths_with_spaces_and_shell_characters_reach_native_app) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.111s
+
+OK
+PASS isolated runner selects the checked release binary and native library, preserving its PID
+PASS normal launcher prefers the release build and retains standalone bundle support
+PASS: native sequencer chord maths, million-frame partition invariance, rational metro, gate/stop/reconfigure, MIDI Start/Continue/Stop/clock, clock-loss release and rejection safety
+PASS: native canvas validation, actual routing plans, depth-first messages/math, MIDI, stale events, million-step bounded timers, partition invariance, live params, stop and rejection safety
+PASS: native mapped object parsing, scalar state, dynamic ports, list coercion, outlet order, routing and ramps
+PASS: bounded typed list objects, state, atomic overflow and synchronous global outlet order
+PASS: native signal topology, arithmetic, fan-in, gains, oscillators, ramps, snapshots and document stop/resume
+PASS: authored four-voice Faust graph, exact channel types, live filter/envelope/level, sustain, bounded release, stealing and document isolation
+PASS: stereo input separation, silent ordinary roots, Faust impulse tail/reset and live cutoff/resonance
+PASS: transparent hierarchy relays, original 11-channel boundaries, typed messages, ordering, multiplicity and separate domain cycles
+PASS: independent documents, typed global messages, receive retarget, bounded cycles and device ownership
+help-root trace contracts passed
+help-root transport contracts passed
+contextual Message replacement contracts passed
+admitted/runtime parameter separation contracts passed
+compiled-out observer equivalence passed
+numeric UI contracts passed
+arithmetic contracts passed
+{"native_input_deliveries": 291, "status_counts": {"compared-pass": 287, "explicit-local-refusal": 4, "outside-qualified-creation": 9}, "failures": 0}
+message UI oracle contracts passed
+print popup contracts passed

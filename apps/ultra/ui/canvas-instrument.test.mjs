@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {makeNode, nodeSpec, validatePatch, CanvasDocument} from './canvas-model.mjs';
 import {parseObjectText, objectText} from './canvas-catalog.mjs';
+import {readFileSync} from 'node:fs';
+import {deviceValues,presetParameters} from './canvas-device.mjs';
 
 const manifest=()=>({version:1,id:'org.alive.test',name:'Test synth',midi:{node:1,inlet:0},
   audio:{inputs:0,outputs:2,layout:'stereo'},parameters:[{key:'cutoff',label:'Cutoff',node:3,param:'cutoff',min:20,max:20000,unit:'Hz'}],
@@ -69,5 +71,45 @@ test('malformed device interfaces, duplicate bindings and out-of-range presets f
   ]){
     const patch={...graph(),device:manifest()};change(patch.device);
     assert.throws(()=>validatePatch(patch),/device/i);
+  }
+});
+
+test('version 2 instruments retain authored MIDI with explicit stereo output',()=>{
+  const patch={...graph(),device:{...manifest(),version:2,kind:'instrument',
+    midi:{input:{node:1,inlet:0},output:null},audio:{input:null,output:{channels:2,layout:'stereo'}}}};
+  assert.equal(validatePatch(patch).device.kind,'instrument');
+  for(const change of [d=>delete d.kind,d=>d.audio.input={node:3,bundle:{channels:2,layout:'stereo'}},
+    d=>d.midi.output={},d=>delete d.midi.output,d=>d.audio.output.layout='discrete',d=>d.kind='audioEffect']){
+    const invalid=structuredClone(patch);change(invalid.device);assert.throws(()=>validatePatch(invalid),/device/i);
+  }
+});
+
+test('version 2 effects bind stereo audio input and live filter parameters without MIDI',()=>{
+  const patch={version:1,profile:'ultra-canvas-v1',nodes:[makeNode('audio_in',1),makeNode('filter_stereo',2),makeNode('signal_dac',3,0,0,{channels:'1 2'})],
+    edges:[[1,0,2,0],[1,1,2,1],[2,0,3,0],[2,1,3,1]].map(([from,outlet,to,inlet])=>({from,outlet,to,inlet})),
+    device:{version:2,id:'org.alive.test-effect',name:'Stereo lowpass',kind:'audioEffect',midi:{input:null,output:null},
+      audio:{input:{node:1,bundle:{channels:2,layout:'stereo'}},output:{channels:2,layout:'stereo'}},
+      parameters:[{key:'cutoff',label:'Cutoff',node:2,param:'cutoff',min:20,max:20000}],presets:[{name:'Soft',values:{cutoff:350}}]}};
+  assert.equal(validatePatch(patch).device.kind,'audioEffect');
+  for(const change of [d=>d.midi.input={node:1,inlet:0},d=>d.audio.input=null,d=>d.audio.input.node=2,
+    d=>d.audio.input.bundle.channels=1,d=>d.audio.input.bundle.layout='mono',d=>d.audio.output.channels=4,
+    d=>d.audio.input.extra=true,d=>delete d.audio.input,d=>d.kind='effect']){
+    const invalid=structuredClone(patch);change(invalid.device);assert.throws(()=>validatePatch(invalid),/device/i);
+  }
+});
+
+test('saved stereo effects retain authored routes, stable parameter keys and working presets',()=>{
+  for(const [file,id,keys] of [['utility','org.alive.utility',['gain']],['stereo-lowpass','org.alive.stereo-lowpass',['cutoff','resonance']]]){
+    const patch=validatePatch(JSON.parse(readFileSync(new URL(`../examples/${file}.ultra`,import.meta.url),'utf8')));
+    assert.equal(patch.device.id,id);assert.equal(patch.device.kind,'audioEffect');assert.deepEqual(patch.device.parameters.map(p=>p.key),keys);
+    const doc=new CanvasDocument(patch);
+    for(const change of presetParameters(patch,patch.device.presets[1].name))doc.parameter(change.node,change.key,change.value);
+    assert.deepEqual(deviceValues(doc.document),patch.device.presets[1].values);
+    for(const node of patch.nodes)if(['audio_in','filter_stereo'].includes(node.type))assert.equal(parseObjectText(objectText(node)).type,node.type);
+    if(file==='utility'){
+      assert.equal(patch.nodes.filter(n=>n.type==='signal_multiply').length,2);
+      const gain=patch.nodes.find(n=>n.type==='line_signal');assert.equal(patch.device.parameters[0].node,gain.id);
+      assert.equal(patch.edges.filter(e=>e.from===gain.id).length,2);
+    }
   }
 });

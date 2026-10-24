@@ -1,0 +1,149 @@
+{
+  "verified": true,
+  "head": "2b1eab1068662b15846b39eef7cb1c91e754a57e",
+  "retained_files": 691,
+  "committed_files": 20,
+  "measured_native_files": 28,
+  "release_matrix": {
+    "cases": 56,
+    "samples": 67200,
+    "retained_manifest_files": 58,
+    "external_artifacts_checked": true,
+    "combined_policy_surrogate": [
+      {
+        "frames": 64,
+        "nearest_rank_p999_ns": 3783974,
+        "max_ns": 4310186
+      },
+      {
+        "frames": 128,
+        "nearest_rank_p999_ns": 4005692,
+        "max_ns": 4540039
+      },
+      {
+        "frames": 256,
+        "nearest_rank_p999_ns": 5697854,
+        "max_ns": 5912639
+      },
+      {
+        "frames": 512,
+        "nearest_rank_p999_ns": 8804767,
+        "max_ns": 9065259
+      },
+      {
+        "frames": 1024,
+        "nearest_rank_p999_ns": 15514588,
+        "max_ns": 16742724
+      }
+    ]
+  },
+  "guard_matrix": {
+    "cases": 56,
+    "samples": 224,
+    "retained_manifest_files": 58,
+    "external_artifacts_checked": true,
+    "combined_policy_surrogate": [
+      {
+        "frames": 64,
+        "nearest_rank_p999_ns": 3107150,
+        "max_ns": 3107150
+      },
+      {
+        "frames": 128,
+        "nearest_rank_p999_ns": 3978952,
+        "max_ns": 3978952
+      },
+      {
+        "frames": 256,
+        "nearest_rank_p999_ns": 4601291,
+        "max_ns": 4601291
+      },
+      {
+        "frames": 512,
+        "nearest_rank_p999_ns": 6808145,
+        "max_ns": 6808145
+      },
+      {
+        "frames": 1024,
+        "nearest_rank_p999_ns": 11656494,
+        "max_ns": 11656494
+      }
+    ]
+  },
+  "final_epochs": {
+    "epochs": 4,
+    "callbacks": 9974,
+    "frames": 5106688,
+    "duration_max_ns": 5013437
+  },
+  "resources": {
+    "app": {
+      "samples": 125,
+      "cpu_identity_intervals_checked": 646,
+      "cpu_p50_p95_max": [
+        105.84672061181769,
+        127.10361868302292,
+        145.01565676034443
+      ],
+      "pss_first_last_max_kib": [
+        486910,
+        492992,
+        615643
+      ],
+      "coverage_gap_samples": 7,
+      "enumeration_gaps": 1,
+      "unavailable_fields": 0
+    },
+    "sampler_capture": {
+      "samples": 125,
+      "cpu_identity_intervals_checked": 598,
+      "cpu_p50_p95_max": [
+        28.006582975038874,
+        33.01201852037952,
+        81.90459359800063
+      ],
+      "pss_first_last_max_kib": [
+        47556,
+        46391,
+        85196
+      ],
+      "coverage_gap_samples": 9,
+      "enumeration_gaps": 1,
+      "unavailable_fields": 2
+    },
+    "server": {
+      "samples": 125,
+      "cpu_identity_intervals_checked": 124,
+      "cpu_p50_p95_max": [
+        0.0,
+        1.0116118237584408,
+        2.0169342891910262
+      ],
+      "pss_first_last_max_kib": [
+        3330,
+        2880,
+        5912
+      ],
+      "coverage_gap_samples": 1,
+      "enumeration_gaps": 1,
+      "unavailable_fields": 0
+    }
+  },
+  "historical_packages": {
+    "head": "7b76c7e72d228ce7bc9a4ef8475013e09c85df54",
+    "targets": 4,
+    "final_head_qualification": false
+  },
+  "live_pcm": {
+    "native-scenes-2": {
+      "frames": 2482688,
+      "peak": 0.13149361312389374,
+      "sha256": "ff88b82a146ad4b9f4180cf9be29fed2a2e0deb0fb092a4957afcb874e92b843"
+    },
+    "native-clips-pointer-1": {
+      "frames": 529408,
+      "peak": 0.2225944548845291,
+      "sha256": "534ac1092516502cac73263662dd1ee009ecd178799932d53487b96180b5d3ca"
+    }
+  }
+}

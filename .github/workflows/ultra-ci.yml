@@ -97,7 +97,8 @@ jobs:
             libjack-jackd2-dev libgtk-3-dev libwebkit2gtk-4.1-dev \
             libasound2-dev libpipewire-0.3-dev libspa-0.2-dev libclang-dev \
             libayatana-appindicator3-dev librsvg2-dev patchelf \
-            pipewire-bin wireplumber dbus
+            pipewire-bin wireplumber dbus xvfb xauth python3-gi \
+            gir1.2-atspi-2.0 gir1.2-gtk-3.0 at-spi2-core libxtst6
       - name: Cache downloaded, checksum-verified native dependencies
         uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
@@ -124,7 +125,11 @@ jobs:
           export LD_LIBRARY_PATH="$ULTRA_NATIVE_LIB_DIR"
           rustc --version
           cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
+          cargo test --manifest-path apps/alive/src-tauri/Cargo.toml --target-dir "$GITHUB_WORKSPACE/apps/ultra/src-tauri/target" --release --locked
           cargo build --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
+          cargo build --manifest-path apps/alive/src-tauri/Cargo.toml --target-dir "$GITHUB_WORKSPACE/apps/ultra/src-tauri/target" --release --locked
+          cp apps/ultra/build/libultra_native.so apps/ultra/src-tauri/target/release/
+          python3 apps/ultra/tests/check_app_entrypoints.py
 
       - name: Render the saved instrument without a desktop or editor
         run: |
@@ -138,6 +143,62 @@ jobs:
         with:
           name: authored-instrument-${{ github.run_id }}-${{ github.run_attempt }}
           path: apps/ultra/build/instrument-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Render two saved devices through the headless Alive session host
+        run: |
+          env -u DISPLAY -u WAYLAND_DISPLAY \
+            LD_LIBRARY_PATH="$GITHUB_WORKSPACE/apps/ultra/build" \
+            apps/ultra/src-tauri/target/release/alive --session-probe \
+            apps/alive/examples/two-instruments.alive "$GITHUB_WORKSPACE/apps/ultra/build/session-evidence"
+      - name: Save Alive session render and round-trip evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: alive-session-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/session-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Exercise the actual Alive desktop session and hosted editor
+        timeout-minutes: 5
+        env:
+          ULTRA_TEST_ALIVE: '1'
+          ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_desktop.py
+        run: bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/session-desktop-evidence"
+      - name: Save actual Alive desktop evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: alive-desktop-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/session-desktop-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Exercise saved clips, stream epochs and bounded measurements in Alive
+        timeout-minutes: 5
+        env:
+          ULTRA_TEST_ALIVE: '1'
+          ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_observability.py
+        run: bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/clip-desktop-evidence"
+      - name: Save actual Alive clip evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: alive-clips-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/clip-desktop-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Bound hosted editor resources across repeated close and reopen
+        timeout-minutes: 4
+        env:
+          ULTRA_TEST_ALIVE: '1'
+          ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_editor_resources.py
+        run: bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/editor-resource-evidence"
+      - name: Save hosted editor resource evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: alive-editor-resources-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/editor-resource-evidence/
           if-no-files-found: warn
           retention-days: 7
       - name: Gate real CPAL output through a private software-only PipeWire graph

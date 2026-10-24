@@ -1,0 +1,80 @@
+[
+  {
+    "kind": "begin",
+    "monotonic": 80926.04086093,
+    "binary": "/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/alive",
+    "click_source": "def diagnostic_click(name):\n    for _ in range(30):\n        control = wait_for(name)\n        if control.get_state_set().contains(Atspi.StateType.ENABLED):\n            break\n        time.sleep(.1)\n    if not control.get_state_set().contains(Atspi.StateType.ENABLED):\n        names = []\n        for root in desktop_apps():\n            if root.get_process_id() != pid:\n                continue\n            for a in walk(root):\n                try:\n                    names.append({'name': a.get_name(), 'role': a.get_role_name(),\n                                  'enabled': a.get_state_set().contains(Atspi.StateType.ENABLED)})\n                except GLib.GError:\n                    continue\n        (output/'accessibility-failure.json').write_text(json.dumps(names, indent=2))\n        root = Gdk.get_default_root_window()\n        image = Gdk.pixbuf_get_from_window(root, 0, 0, root.get_width(), root.get_height())\n        image.savev(str(output/'native-action-failure.png'), 'png', [], [])\n        raise AssertionError(name + ' is disabled')\n    Atspi.Component.grab_focus(control)\n    rect = Atspi.Component.get_extents(control, Atspi.CoordType.SCREEN)\n    assert rect.width > 0 and rect.height > 0, name\n    assert t.XTestFakeMotionEvent(display, 0, rect.x+rect.width//2, rect.y+rect.height//2, 0)\n    assert t.XTestFakeButtonEvent(display, 1, 1, 0)\n    assert t.XTestFakeButtonEvent(display, 1, 0, 0)\n    x.XFlush(display)\n    time.sleep(.15)\n    if name in ('Undo pending edit', 'Redo pending edit'):\n        save('click', name=name, used_rect=[rect.x, rect.y, rect.width, rect.height])\n"
+  },
+  {
+    "kind": "piano_begin",
+    "monotonic": 80993.533398996
+  },
+  {
+    "kind": "value",
+    "monotonic": 80995.071256842,
+    "name": "Note 13 pitch",
+    "value": "80"
+  },
+  {
+    "kind": "value",
+    "monotonic": 80996.094507296,
+    "name": "Note 13 beat",
+    "value": "2.25"
+  },
+  {
+    "kind": "value",
+    "monotonic": 80996.302620293,
+    "name": "Note 13 pitch",
+    "value": "81"
+  },
+  {
+    "kind": "click",
+    "monotonic": 80996.498230865,
+    "name": "Undo pending edit",
+    "used_rect": [
+      614,
+      370,
+      119,
+      28
+    ]
+  },
+  {
+    "kind": "value",
+    "monotonic": 80996.723707386,
+    "name": "Note 13 pitch",
+    "value": "80"
+  },
+  {
+    "kind": "click",
+    "monotonic": 80996.923222062,
+    "name": "Redo pending edit",
+    "used_rect": [
+      742,
+      370,
+      119,
+      28
+    ]
+  },
+  {
+    "kind": "value",
+    "monotonic": 80997.123996633,
+    "name": "Note 13 pitch",
+    "value": "81"
+  },
+  {
+    "kind": "value",
+    "monotonic": 80997.761267326,
+    "name": "Note 13 pitch",
+    "value": "81"
+  },
+  {
+    "kind": "value",
+    "monotonic": 80999.885482048,
+    "name": "Note 13 pitch",
+    "value": "81"
+  },
+  {
+    "kind": "piano_pass",
+    "monotonic": 81005.900822399
+  }
+]

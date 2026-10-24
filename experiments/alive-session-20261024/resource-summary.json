@@ -1,0 +1,37 @@
+{
+  "rss_kib": {
+    "start": 788944,
+    "end": 817768,
+    "minimum": 765560,
+    "maximum": 822080,
+    "delta": 28824
+  },
+  "pss_kib": {
+    "start": 489751,
+    "end": 540315,
+    "minimum": 477717,
+    "maximum": 544625,
+    "delta": 50564
+  },
+  "fds": {
+    "start": 202,
+    "end": 164,
+    "minimum": 164,
+    "maximum": 202,
+    "delta": -38
+  },
+  "threads": {
+    "start": 128,
+    "end": 105,
+    "minimum": 105,
+    "maximum": 128,
+    "delta": -23
+  },
+  "samples": 17,
+  "process_counts": [
+    3,
+    9
+  ],
+  "observation_seconds": 837.5265799619992,
+  "scope": "Whole Alive process tree; RSS can double-count shared pages. PSS varies with sharing and allocator/GC state. Short portable-harness validation ran concurrently for part of the observation. These samples do not establish a general no-leak guarantee."
+}

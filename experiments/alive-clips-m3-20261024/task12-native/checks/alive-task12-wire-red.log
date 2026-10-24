@@ -1,0 +1,25 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+error[E0599]: no method named `to_clips` found for struct `session::Session` in the current scope
+  --> src/session/tests.rs:41:24
+   |
+41 |     let clips = legacy.to_clips().unwrap();
+   |                        ^^^^^^^^ method not found in `session::Session`
+   |
+  ::: src/session/mod.rs:16:1
+   |
+16 | pub struct Session {
+   | ------------------ method `to_clips` not found for this struct
+
+error[E0599]: no method named `to_clips` found for struct `session::Session` in the current scope
+  --> src/session/tests.rs:47:30
+   |
+47 |     assert_eq!(clips, legacy.to_clips().unwrap());
+   |                              ^^^^^^^^ method not found in `session::Session`
+   |
+  ::: src/session/mod.rs:16:1
+   |
+16 | pub struct Session {
+   | ------------------ method `to_clips` not found for this struct
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `ultra` (lib test) due to 2 previous errors

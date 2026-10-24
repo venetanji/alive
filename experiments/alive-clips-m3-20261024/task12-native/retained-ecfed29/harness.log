@@ -1,0 +1,292 @@
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=937864 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:937893): Gtk-WARNING **: 14:40:44.295: cannot open display: :0
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:937897): Gtk-WARNING **: 14:40:44.312: cannot open display: :0
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:937902): Gtk-WARNING **: 14:40:44.339: cannot open display: :0
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:937871): xdg-desktop-portal-WARNING **: 14:40:44.340: Failed to create settings proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:937871): xdg-desktop-portal-WARNING **: 14:40:44.340: Not providing Settings portal: No working backend
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:937905): Gtk-WARNING **: 14:40:44.357: cannot open display: :0
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:937871): xdg-desktop-portal-WARNING **: 14:40:44.359: Failed to create file chooser proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:937908): Gtk-WARNING **: 14:40:44.374: cannot open display: :0
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:937871): xdg-desktop-portal-WARNING **: 14:40:44.376: Failed to create app chooser proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:937911): Gtk-WARNING **: 14:40:44.392: cannot open display: :0
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:937871): xdg-desktop-portal-WARNING **: 14:40:44.393: Failed to create print proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:937914): Gtk-WARNING **: 14:40:44.409: cannot open display: :0
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:937871): xdg-desktop-portal-WARNING **: 14:40:44.410: Failed to create notification proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:937917): Gtk-WARNING **: 14:40:44.426: cannot open display: :0
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:937871): xdg-desktop-portal-WARNING **: 14:40:44.428: Failed to create inhibit proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:937871): xdg-desktop-portal-WARNING **: 14:40:44.428: The location portal requires an access impl
+
+(/usr/lib/xdg-desktop-portal:937871): xdg-desktop-portal-WARNING **: 14:40:44.428: The camera portal requires an access impl
+
+(/usr/lib/xdg-desktop-portal:937871): xdg-desktop-portal-WARNING **: 14:40:44.428: The screenshot portal requires an access impl
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:937920): Gtk-WARNING **: 14:40:44.443: cannot open display: :0
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:937871): xdg-desktop-portal-WARNING **: 14:40:44.445: Failed to create account proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:937923): Gtk-WARNING **: 14:40:44.461: cannot open display: :0
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:937871): xdg-desktop-portal-WARNING **: 14:40:44.463: Failed to create email proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:937928): Gtk-WARNING **: 14:40:44.483: cannot open display: :0
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:937871): xdg-desktop-portal-WARNING **: 14:40:44.485: Failed to create dynamic_launcher proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=937871 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Activating service name='ca.desrt.dconf' requested by ':1.108' (uid=1000 pid=938461 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[937762]: [session uid=1000 pid=937762 pidfd=5] Successfully activated service 'ca.desrt.dconf'
+{
+  "kind": "actual native Tauri application; private Xvfb + software PipeWire loopback",
+  "entrypoints": {
+    "alive_binary": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive",
+    "ultra_binary": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/ultra",
+    "simultaneous_native_windows": true
+  },
+  "audio_settings": {
+    "saved": {
+      "host": "default",
+      "device": "default",
+      "sample_rate": 48000,
+      "buffer_frames": 512
+    },
+    "unsupported_buffer_preserved_settings": true,
+    "stop_audio_terminated_notes": true,
+    "restart_kept_transport_stopped": true
+  },
+  "chain": {
+    "utility_source": "/tmp/alive-task12-retained-final/journey-utility.ultra",
+    "lowpass_source": "/tmp/alive-task12-retained-final/journey-lowpass.ultra",
+    "prepared_instances": [
+      "2460d147-47bf-4c0c-a3b6-228268d6ee0d",
+      "17e13e87-6695-4e19-a3c6-bcddbdbcfbec"
+    ],
+    "saved_instances": [
+      "2460d147-47bf-4c0c-a3b6-228268d6ee0d",
+      "17e13e87-6695-4e19-a3c6-bcddbdbcfbec"
+    ]
+  },
+  "hardware": {
+    "system": "Linux",
+    "node": "prometheus",
+    "release": "7.2.8-10-omarchy",
+    "version": "#1 SMP PREEMPT_DYNAMIC Wed, 21 Oct 2026 10:51:38 +0000",
+    "machine": "x86_64",
+    "processor": ""
+  },
+  "cpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  16\nOn-line CPU(s) list:                     0-15\nVendor ID:                               AuthenticAMD\nModel name:                              AMD Ryzen 9 5900HS with Radeon Graphics\nCPU family:                              25\nModel:                                   80\nThread(s) per core:                      2\nCore(s) per socket:                      8\nSocket(s):                               1\nStepping:                                0\nMicrocode version:                       0xa500012\nFrequency boost:                         enabled\nCPU(s) scaling MHz:                      67%\nCPU max MHz:                             3301.0000\nCPU min MHz:                             423.2060\nBogoMIPS:                                6587.66\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local user_shstk clzero irperf xsaveerptr rdpru wbnoinvd cppc arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm debug_swap\nVirtualization:                          AMD-V\nL1d cache:                               256 KiB (8 instances)\nL1i cache:                               256 KiB (8 instances)\nL2 cache:                                4 MiB (8 instances)\nL3 cache:                                16 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-15\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Mitigation; Safe RET\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Mitigation; Clear CPU buffers\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace\n",
+  "physical_audio": false,
+  "underruns": "not exposed by CPAL; no count claimed",
+  "walkthrough": {
+    "frames": 2853376,
+    "seconds": 59.44533333333333,
+    "peak": 0.35335424542427063,
+    "one_second_peaks": [
+      0.19271765649318695,
+      0.26254546642303467,
+      0.2748950719833374,
+      0.2027098536491394,
+      0.1988852173089981,
+      0.26254546642303467,
+      0.2748950719833374,
+      0.2027098536491394,
+      0.1988852173089981,
+      0.26254546642303467,
+      0.2748950719833374,
+      0.2027098536491394,
+      0.1804184764623642,
+      0.1988852173089981,
+      0.0,
+      0.2027098536491394,
+      0.1988852173089981,
+      0.26254546642303467,
+      0.2748950719833374,
+      0.20239873230457306,
+      0.2027098536491394,
+      0.1988852173089981,
+      0.26254546642303467,
+      0.35335424542427063,
+      0.24507638812065125,
+      0.24205709993839264,
+      0.2878889739513397,
+      0.3033173680305481,
+      0.2191377431154251,
+      0.2156253308057785,
+      0.2878889739513397,
+      0.3033173680305481,
+      0.2191377431154251,
+      0.2156253308057785,
+      0.2878889739513397,
+      0.3033173680305481,
+      0.2191377431154251,
+      0.2156253308057785,
+      0.2878889739513397,
+      0.3033173680305481,
+      0.1638280749320984,
+      0.0,
+      0.0,
+      0.0,
+      0.2191377431154251,
+      0.2156253308057785,
+      0.2878889739513397,
+      0.3033173680305481,
+      0.2191377431154251,
+      0.2156253308057785,
+      0.2878889739513397,
+      0.3033173680305481,
+      0.2191377431154251,
+      0.2156253308057785,
+      0.2878889739513397,
+      0.3033173680305481,
+      0.2191377431154251,
+      0.1546141356229782,
+      0.2156253308057785,
+      0.2878889739513397
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "15c526f3fbd5af5103c8b6d1b6c0856caa2a14bc015f8dcb95c8bd5482366219",
+    "path": "native-walkthrough.f32",
+    "physical_audio": false
+  },
+  "endurance": null,
+  "playing_seconds_conservative": 0.0,
+  "edit_transport_cycles": 0,
+  "process_tree_samples": [],
+  "final_audio": {
+    "Audio backend": "PipeWire",
+    "Audio device": "default_output",
+    "Audio sample rate": "48000",
+    "Audio buffer frames": "512",
+    "Audio callbacks": "1591",
+    "Audio stream errors": "0",
+    "Audio failed": "false",
+    "Audio status": "Audio output is running.",
+    "Transport playing": "true",
+    "Absolute frame": "3176448",
+    "Rejected commands": "0",
+    "Native generation": "35",
+    "Track 1 active voices": "3",
+    "Track 2 active voices": "3"
+  },
+  "operations": [
+    {
+      "action": "piano add/keyboard/undo/redo with independent effect editor; Stop/Apply/play",
+      "monotonic": 66415.551527326,
+      "audio": {
+        "Audio backend": "PipeWire",
+        "Audio device": "default_output",
+        "Audio sample rate": "48000",
+        "Audio buffer frames": "512",
+        "Audio callbacks": "242",
+        "Audio stream errors": "0",
+        "Audio failed": "false",
+        "Audio status": "Audio output is running.",
+        "Transport playing": "true",
+        "Absolute frame": "1162752",
+        "Rejected commands": "0",
+        "Native generation": "24",
+        "Track 1 active voices": "2",
+        "Track 2 active voices": "3"
+      }
+    },
+    {
+      "action": "two loaded devices, notes/automation prepared, live base/mixer, editor closed/reopened",
+      "monotonic": 66430.587580889,
+      "audio": {
+        "Audio backend": "PipeWire",
+        "Audio device": "default_output",
+        "Audio sample rate": "48000",
+        "Audio buffer frames": "512",
+        "Audio callbacks": "1648",
+        "Audio stream errors": "0",
+        "Audio failed": "false",
+        "Audio status": "Audio output is running.",
+        "Transport playing": "true",
+        "Absolute frame": "1887744",
+        "Rejected commands": "0",
+        "Native generation": "27",
+        "Track 1 active voices": "3",
+        "Track 2 active voices": "3"
+      }
+    },
+    {
+      "action": "saved/reopened/playing; missing and changed effect source rejected preserving session",
+      "monotonic": 66453.924904618,
+      "audio": {
+        "Audio backend": "PipeWire",
+        "Audio device": "default_output",
+        "Audio sample rate": "48000",
+        "Audio buffer frames": "512",
+        "Audio callbacks": "1161",
+        "Audio stream errors": "0",
+        "Audio failed": "false",
+        "Audio status": "Audio output is running.",
+        "Transport playing": "true",
+        "Absolute frame": "2960384",
+        "Rejected commands": "0",
+        "Native generation": "34",
+        "Track 1 active voices": "4",
+        "Track 2 active voices": "3"
+      }
+    }
+  ],
+  "accepted_apply_outer_quit_cancel_cleared_history": true,
+  "accepted_discard_canceled_save_picker_cleared_history": true,
+  "quit_cancel_preserved_session": true,
+  "native_window_close_reached_dirty_guard": true,
+  "pending_draft_quit_cancel_retained_edits_and_playback": true,
+  "quit_discard_exited": true
+}

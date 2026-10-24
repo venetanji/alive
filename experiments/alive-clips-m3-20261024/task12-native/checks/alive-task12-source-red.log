@@ -1,0 +1,24 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+error[E0425]: cannot find function `check_sources` in module `prepare`
+   --> src/session/desktop.rs:710:32
+    |
+710 | ...   let error=prepare::check_sources(&candidate,&root.join("session.alive"),Some(&before)).unwrap_err();assert!(error.contains(&b...
+    |                          ^^^^^^^^^^^^^ not found in `prepare`
+
+warning: unused imports: `ClipNote` and `Clip`
+  --> src/session/mod.rs:10:27
+   |
+10 | pub use clips::{Document, Clip, ClipNote, ClipBank};
+   |                           ^^^^  ^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Session`
+  --> src/session/probe.rs:93:52
+   |
+93 |     use super::{DeviceInstance, Lane, Note, Point, Session, Track};
+   |                                                    ^^^^^^^
+
+For more information about this error, try `rustc --explain E0425`.
+warning: `ultra` (lib test) generated 2 warnings
+error: could not compile `ultra` (lib test) due to 1 previous error; 2 warnings emitted

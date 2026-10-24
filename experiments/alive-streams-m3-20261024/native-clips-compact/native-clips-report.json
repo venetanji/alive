@@ -1,0 +1,175 @@
+{
+  "kind": "actual standalone release Alive; private Xvfb and software PipeWire",
+  "physical_audio": false,
+  "settings": {
+    "saved": {
+      "host": "default",
+      "device": "default",
+      "sample_rate": 48000,
+      "buffer_frames": 512
+    },
+    "unsupported_buffer_preserved_settings": true,
+    "stop_audio_terminated_notes": true,
+    "restart_kept_transport_stopped": true
+  },
+  "observed_buffer": 512,
+  "audio": {
+    "frames": 789504,
+    "seconds": 16.448,
+    "peak": 0.2225944548845291,
+    "one_second_peaks": [
+      0.1091950386762619,
+      0.11835465580224991,
+      0.15238016843795776,
+      0.12047216296195984,
+      0.153170645236969,
+      0.11835465580224991,
+      0.13893526792526245,
+      0.10917682945728302,
+      0.2225944548845291,
+      0.1998511403799057,
+      0.15056835114955902,
+      0.19943729043006897,
+      0.1600058525800705,
+      0.2225944548845291,
+      0.11261174082756042,
+      0.08029486984014511,
+      0.0
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "8bdee4457575b8f1bc5a3a4c742246dc1908a175af2b1416956eeb0bce82b52c",
+    "path": "clips-rendered.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "recorder_pid": 983514,
+      "returncode": 1,
+      "wall_seconds": 16.527280951006105,
+      "audio_bytes": 6316032,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    }
+  },
+  "native_observations": [
+    {
+      "label": "Pulse clip runtime",
+      "value": "Cued Clip 1 / request 2 applied for Clip 1",
+      "monotonic": 68916.00250298
+    },
+    {
+      "label": "Pulse clip runtime",
+      "value": "Playing Clip 1 / request 4 pending for Clip 1 copy / pending launch at frame 573330",
+      "monotonic": 68919.836560737
+    },
+    {
+      "label": "Pulse clip runtime",
+      "value": "Playing Clip 1 copy / request 4 applied for Clip 1 copy",
+      "monotonic": 68919.979453578
+    },
+    {
+      "label": "Harmony clip runtime",
+      "value": "Playing Clip 1",
+      "monotonic": 68920.063440527
+    },
+    {
+      "label": "Pulse clip runtime",
+      "value": "Stopped / request 5 applied",
+      "monotonic": 68932.841900419
+    },
+    {
+      "label": "Harmony clip runtime",
+      "value": "Playing Clip 1",
+      "monotonic": 68932.925509424
+    },
+    {
+      "label": "Pulse clip runtime",
+      "value": "Cued Clip 1 copy",
+      "monotonic": 68943.63882145
+    }
+  ],
+  "shared_source_errors": [
+    "Device source changed or fingerprint invalid: Track 'Harmony' instance '644f7d89-1618-473f-adc8-e5bb5a653642' (../shared-utility.ultra). Selected Replace changes only that instance; stale siblings block full preparation. Stop transport and resolve pending edits; preserve the changed .ultra at a new path before restoring anything. Restore a matching original backup at the shared path, then explicitly Replace each intended instance from the preserved changed copy and Save. A matching original backup is required; without one there is no general supported recovery in the current desktop workflow. Replace gives a fresh instance identity, default bases/bypass and removes that instance's automation lanes. Copying alone or trying siblings in turn does not recover this session.",
+    "Device source changed or fingerprint invalid: Track 'Pulse' instance '330863f1-a549-4d0e-a08a-b775a5846903' (../shared-utility.ultra). Selected Replace changes only that instance; stale siblings block full preparation. Stop transport and resolve pending edits; preserve the changed .ultra at a new path before restoring anything. Restore a matching original backup at the shared path, then explicitly Replace each intended instance from the preserved changed copy and Save. A matching original backup is required; without one there is no general supported recovery in the current desktop workflow. Replace gives a fresh instance identity, default bases/bypass and removes that instance's automation lanes. Copying alone or trying siblings in turn does not recover this session."
+  ],
+  "initial": "/tmp/alive-task13a-evidence/native-clips-compact/initial-v3.alive",
+  "saved": "/tmp/alive-task13a-evidence/native-clips-compact/moved/relocated.alive",
+  "draft_editor_continuity": true,
+  "apply_editor_boundary": true,
+  "reopen_stopped_default": true,
+  "sequential_shared_source_recovery": true,
+  "failed_shared_replace_editor_continuity": true,
+  "native_inputs": [
+    {
+      "action": "slash location entry",
+      "monotonic": 68885.47396228,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 68888.131454626,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 68941.374083868,
+      "scope": "Open Alive Session",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 68949.899705103,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 68955.277088352,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 68960.821744556,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 68969.479234007,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    }
+  ],
+  "final_audio": {
+    "Audio backend": "PipeWire",
+    "Audio device": "default_output",
+    "Audio sample rate": "48000",
+    "Audio buffer frames": "512",
+    "Audio callbacks": "2962",
+    "Audio stream errors": "0",
+    "Audio failed": "false",
+    "Audio status": "Audio is off.",
+    "Transport playing": "false",
+    "Absolute frame": "1677312",
+    "Rejected commands": "0",
+    "Native generation": "18",
+    "Track 1 active voices": "0",
+    "Track 2 active voices": "0"
+  }
+}

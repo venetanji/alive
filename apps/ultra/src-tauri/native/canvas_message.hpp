@@ -14,7 +14,8 @@ enum CanvasKind : unsigned {
  Sig,SignalAdd,SignalSubtract,SignalMultiply,SignalDivide,Cycle,Phasor,Noise,SignalClip,LineSignal,Snapshot,SignalDac,
  Inlet,Outlet,NumberInt,MessageBox,
  Subtract,Divide,Modulo,ReverseSubtract,ReverseDivide,Abs,
- PolyNote,SawVoice,FilterVoice,AdsrVoice,MultiplyVoice,MixVoice
+ PolyNote,SawVoice,FilterVoice,AdsrVoice,MultiplyVoice,MixVoice,
+ AudioIn=ULTRA_CANVAS_AUDIO_IN,FilterStereo=ULTRA_CANVAS_FILTER_STEREO
 };
 struct CanvasMessage {
  uint32_t count=0;
@@ -173,4 +174,3 @@ inline bool canvas_numeric_message(const CanvasMessage& message) noexcept {
 inline bool canvas_bang(const CanvasMessage& message) noexcept {return !message.count&&!message.selector[0];}
 inline bool canvas_named(const CanvasMessage& message,const char* name) noexcept {return std::strcmp(message.selector,name)==0;}
 }
-

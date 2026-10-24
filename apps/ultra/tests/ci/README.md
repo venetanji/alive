@@ -14,8 +14,8 @@ does not read repository secrets or use `pull_request_target`.
    and multi-document workspace execution tests. Document tests cover save/dirty
    races and independent new/open actions; send/receive tests
    cover typed names, ports and supported import semantics. The original help
-   manifest is checked against the browser library and 66 native object kinds plus patcher/comment constructs
-   (138 original help/example/starter entries).
+   manifest is checked against the browser library and 68 native object kinds plus patcher/comment constructs
+   (144 original help/example/starter/device entries).
    The list-runtime check compiles the production native headers and compares
    ordered outlets, selectors and values against recorded Max cases, including
    scalar integer/float identity. The recordings cannot establish numeric atom

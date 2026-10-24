@@ -6,9 +6,9 @@
 
 web
 
-Ultra's editor uses local HTML/CSS/JavaScript inside the existing Rust/Tauri Linux
-desktop app. The browser preview edits documents; the native app executes control
-messages and audio.
+Ultra's editor and Alive's session view use local HTML/CSS/JavaScript inside the
+existing Rust/Tauri Linux desktop app. The browser preview edits documents; the
+native app executes control messages, device hosting, transport and audio.
 
 ## Users
 
@@ -19,18 +19,35 @@ compact visual language as the blueprint.
 ## Product Purpose
 
 Author, understand, connect, save, reopen, and play a bounded patch without having
-to configure every object through permanent side panels.
+to configure every object through permanent side panels. Host reusable saved
+instruments in a small, reopenable Alive session with clips, automation and a mixer.
 
 ## Capabilities and Constraints
 
 - A patch-authored four-voice subtractive instrument combines Faust saw/filter/
   ADSR primitives, explicit voice-lane mixdown and stereo output. Its Perform
   panel, saved parameter/preset interface, independent instances and headless
-  host harness form the reusable-device slice. Alive session hosting is absent;
-  panel keys and an authored score provide playback without physical MIDI.
+  host harness form the reusable-device slice. Alive now loads that same saved
+  device independently on up to two tracks through its versioned interface.
+  A native shared transport plays editable chord clips with note velocity and
+  duration, metadata-selected instance/parameter automation, gain/mute/solo and
+  stereo peak meters. Each selected-track chain exposes an instrument and up to
+  two ordered stereo effects, live bases/effect bypass and optional instance editors.
+  Canonical session-v3 files preserve four clip slots per track, stable score IDs,
+  stopped saved defaults, independent instance IDs, original-source fingerprints,
+  order, bases, bypass, musical data and mixer values. Existing v1/v2 sessions
+  upgrade in memory when admitted; stricter clip-bank refusals retain playable v2.
+  Original cutoff/level lanes remain;
+  prepared automation owns effective values while musical edits remain drafts.
+  Optional hosted Ultra graph editors make supported bound parameter edits
+  without owning DSP lifetime. Clip/automation drafts support a fixed-grid piano
+  roll and Rust-owned focused
+  pending-edit history. Prepare / Apply and device structure changes require
+  stopped transport; the first hosted graph view is read-only for
+  structure. See `apps/alive/README.md` and `apps/alive/SESSION_CONTRACT.md`.
 
 - Up to 16 native patch, help and example windows each run an independent
-  `ultra-canvas-v1` graph with 66 native object kinds, 32 nodes and 64 edges. Ports
+  `ultra-canvas-v1` graph with 68 native object kinds, 32 nodes and 64 edges. Ports
   distinguish control, mono audio, mixed control/mono, stereo and explicit
   four-lane discrete voice bundles.
 - Native control objects and ramps operate with audio off. Typed messages and
@@ -43,8 +60,8 @@ to configure every object through permanent side panels.
   file. Max files expose named help tabs/patchers and compatibility reports;
   partial selections require explicit acceptance. Whole Max help files and
   arbitrary Max objects are not executable.
-- Help & Examples searches 138 original entries: help and an example for each
-  supported kind, plus the starter and subtractive instrument. Object help opens or focuses its own patch
+- Help & Examples searches 144 original entries: help and an example for each
+  supported kind, plus the starter, subtractive instrument and two stereo effects. Object help opens or focuses its own patch
   window; the library also switches between open native windows.
 - Existing controls operate across their face when locked or with Ctrl/Cmd while
   editing. Optional Max-named appearance overrides save with the document and
@@ -66,6 +83,24 @@ to configure every object through permanent side panels.
   only. Numeric creation/control values are bounded to -100000..100000; signal
   samples are not subject to that control bound. Exact Max noise sequences and
   periodic snapshot scheduling are not established.
+- Version 2 reusable manifests describe instruments or stereo audio effects;
+  version 1 instrument files remain valid. Stereo Utility and Stereo Lowpass
+  are authored saved graphs with live controls and presets. `audio.in~` reads
+  explicit host audio (silence in ordinary Ultra roots); `lowpass.stereo~` reuses
+  the existing Faust filter kernel. Alive hosts their saved graphs in its
+  current two-track, six-instance profile. Add/remove/reorder/replacement require
+  stopped preparation; live bypass preserves warm state without restarting I/O.
+  Selection does not launch playback. Individual Launch cues while stopped or
+  switches at the next strict four-beat bar; track Stop leaves other tracks
+  running. Create/duplicate/delete, names, independent clip lengths and saved
+  defaults share focused pending history. Draft-only clips cannot launch.
+  The selected-clip piano roll supports
+  add/select/move/resize/delete, velocity and
+  precise numeric/keyboard edits. Pending musical history is bounded to 64
+  entries / 8 MiB and preserves accepted live controls. Shared changed sources
+  require preserving the changed copy, restoring a matching original backup,
+  then explicitly replacing intended instances. Scenes, additional tracks and
+  alternate DSP paths remain outside this profile.
 - Supported object names and arguments must be explicit. Unsupported objects
   must be rejected visibly. Familiar appearance does not imply Max compatibility.
 - Linux desktop is the shipped target. A smaller browser preview supports
@@ -76,7 +111,9 @@ to configure every object through permanent side panels.
 
 ## Brand Commitments
 
-The product is Ultra. The user confirmed a close Max visual and workflow match
+Ultra is the patch editor and device authoring environment; Alive is its compact
+session host. They have separate `ultra` and `alive` executables/app identities
+and share the native engine and reusable device contracts. The user confirmed a close Max visual and workflow match
 on 2026-10-20. Build original controls and help content; do not redistribute Max
 code, fonts, proprietary help patches, icons, or application assets.
 

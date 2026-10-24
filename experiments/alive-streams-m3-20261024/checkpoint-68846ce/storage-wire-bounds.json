@@ -1,0 +1,11 @@
+{
+  "numeric_record_bytes": 3856,
+  "atomic_metrics_bytes": 3904,
+  "active_numeric_machinery_bytes": 11616,
+  "completed_numeric_ring_bytes": 246784,
+  "completed_records_plus_metadata_test_bound_bytes": 1048576,
+  "conservative_synthetic_wire_bytes": 1017406,
+  "wire_upper_bound_bytes": 2097152,
+  "synthetic_record_wire_bytes": 15417,
+  "construction": "64 completed + 1 active + lifetime; all u64 maximum20digit strings; device512 six-byte escapes; host128/sample_format32/state32/reason32/run64 oversized bounds; fixed schemas and edges. UTF8 JSON, separate from numeric storage."
+}

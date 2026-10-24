@@ -1,0 +1,75 @@
+{
+  "base_commit": "7b76c7e72d228ce7bc9a4ef8475013e09c85df54",
+  "source_sha256": {
+    ".superpowers/sdd/PLAN/task-14-report.md": "e2660d0e14f9822964bd429e0d769ecbcb7db6e5fb60628ccc189aa9868368ca",
+    "apps/alive/README.md": "c0b0d9ee796686d44e1b59b34abe6f36e375061c1c9b1bdbd1ed55ccda7d8eae",
+    "apps/alive/SESSION_CONTRACT.md": "fa85188bfcde9901988b160877f44beb54f45ddc77319f85b3e5f7411f236539",
+    "apps/ultra/src-tauri/native/alive_session_clip_policy.hpp": "b4466cd286908d2d2fee873902640c225703e987bf5e890e57320df5e3af72d8",
+    "apps/ultra/src-tauri/native/alive_session_clips.hpp": "2646026d358bed08fde645de4e5d46991d14aa8e8c0e019c2df35bd249598dd1",
+    "apps/ultra/src-tauri/native/alive_session_v3_policy.md": "cf55b2b44c05f12bf26de82c4a0bf9cf8a2328942a810cd0267f0cbc374fc450",
+    "apps/ultra/src-tauri/src/session/desktop.rs": "bcd917563481fd9b4533e1c80447fe2c736d7fc9077f7d234ffb71141c90f41a",
+    "apps/ultra/src-tauri/src/session/runtime.rs": "66a281a29eae3c6020b6097adc2bf6f8711385f70df33d360207bc74655f4657",
+    "apps/ultra/src-tauri/src/session/tests.rs": "70dbed958fc544c65f12c2f40a65702d6b041b9a92706947298f418975e015c2",
+    "apps/ultra/tests/alive_session_capacity.cpp": "d734005cf3e58e5e3c6b1afc34881a424b6005d2874b88ba224859f19c357948",
+    "apps/ultra/tests/alive_session_capacity_fixture.hpp": "8466164ab3f9e5561719a641138eb5757c6fec203824e65b7473bc290c145a09",
+    "apps/ultra/tests/alive_session_v3_measure.cpp": "1987fc4573f04fdd4ce8657c4421ad8d91dab7131ee5ceabe86fbaf7306bce21",
+    "apps/ultra/tests/alive_session_v3_test.cpp": "4c6b39e16cce4fb55c617e6d60005187625fc2d2c8b817ed4d8e1d10ef264020",
+    "apps/ultra/tests/check_alive_clips.py": "cbd3c7156358ad8283229c105eea64d6065bb98960f144f33c99c754109c51f7",
+    "apps/ultra/tests/check_alive_scenes.py": "8173a725663b7576c53042547e3970c0b728e5a405a653e047a00087f8d25941",
+    "apps/ultra/tests/run_alive_capacity.py": "3a5e0d7e4981fa6a18d04fc1cef7128a27da1a231bc0c8ca0514b20ede4e5d74",
+    "apps/ultra/ui/alive-dom.test.mjs": "3fa5ba6b80cac3c066614ddbe9d8454c7f8714815843c10b3916177cd53f703f",
+    "apps/ultra/ui/alive.css": "965e82000517bec0c41c91eef55c1bef994f2551b778bc920b5280c89df605a2",
+    "apps/ultra/ui/alive.html": "a1cce647a255781f6442acfbf7866cfd152b4f24dc86471372692cfb5bd679ee",
+    "apps/ultra/ui/alive.mjs": "f5eae1450673ac2224b134c3b4c0436829fef648aa1d7087d083cba8bcbf6e12"
+  },
+  "measured_native_files_still_equal": [
+    "apps/ultra/src-tauri/native/alive_session.h",
+    "apps/ultra/src-tauri/native/alive_session.hpp",
+    "apps/ultra/src-tauri/native/alive_session_bits.hpp",
+    "apps/ultra/src-tauri/native/alive_session_clip_policy.hpp",
+    "apps/ultra/src-tauri/native/alive_session_clips.hpp",
+    "apps/ultra/src-tauri/native/alive_session_envelope.hpp",
+    "apps/ultra/src-tauri/native/backend.cpp",
+    "apps/ultra/src-tauri/native/backend.h",
+    "apps/ultra/src-tauri/native/canvas_list_objects.hpp",
+    "apps/ultra/src-tauri/native/canvas_message.hpp",
+    "apps/ultra/src-tauri/native/canvas_message_box.hpp",
+    "apps/ultra/src-tauri/native/canvas_objects.hpp",
+    "apps/ultra/src-tauri/native/canvas_signal_objects.hpp",
+    "apps/ultra/src-tauri/native/canvas_voice_objects.hpp",
+    "apps/ultra/src-tauri/native/canvas_workspace.hpp",
+    "apps/ultra/src-tauri/native/diagnostic.cpp",
+    "apps/ultra/src-tauri/native/patch_graph.h",
+    "apps/ultra/src-tauri/native/patch_graph.hpp",
+    "apps/ultra/src-tauri/native/sequence.hpp",
+    "apps/ultra/src-tauri/native/vendor/fast_float/ascii_number.h",
+    "apps/ultra/src-tauri/native/vendor/fast_float/bigint.h",
+    "apps/ultra/src-tauri/native/vendor/fast_float/constexpr_feature_detect.h",
+    "apps/ultra/src-tauri/native/vendor/fast_float/decimal_to_binary.h",
+    "apps/ultra/src-tauri/native/vendor/fast_float/digit_comparison.h",
+    "apps/ultra/src-tauri/native/vendor/fast_float/fast_float.h",
+    "apps/ultra/src-tauri/native/vendor/fast_float/fast_table.h",
+    "apps/ultra/src-tauri/native/vendor/fast_float/float_common.h",
+    "apps/ultra/src-tauri/native/vendor/fast_float/parse_number.h"
+  ],
+  "verified_pointer_copy_equals_canonical": true,
+  "verified_scene_script_copy_equals_canonical": true,
+  "artifacts": {
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/ultra": {
+      "sha256": "ea63dad5520173b85941520794ffd52a3c56f1ecdaf7484fd4dde6f501d3f205",
+      "inode": 6834748
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive": {
+      "sha256": "a5e8f4504e4a80a173619a82a0015c2c66b52ca63a3852b62487380e9024ffed",
+      "inode": 6834813
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/libultra_native.so": {
+      "sha256": "074f64ddc0b1668bfd2479099cb89ff8c90eb9354cfeb001bb94e095ab477324",
+      "inode": 6834628
+    },
+    "/tmp/alive-task14-evidence/native-build/core/libultra_core_bundle.a": {
+      "sha256": "396ee93d6b12b45c25f6ca76f8996aa2c2dff45aaf46654692aa36f4fce58f83",
+      "inode": 229174
+    }
+  }
+}

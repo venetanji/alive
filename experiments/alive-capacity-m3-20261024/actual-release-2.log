@@ -1,0 +1,1153 @@
+-- Clockwork 94b67500c96e105491682ec68741b5018560eab7
+-- Ableton Link disabled — ClockworkClock uses its local-state backing
+-- DSP: ultra_hardened_guest
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build
+[  3%] Building Rust subsystems (cargo: clockwork-native)
+    Finished `release` profile [optimized] target(s) in 0.04s
+[  3%] Built target clockwork_rust
+[ 81%] Built target clockwork
+[ 87%] Built target ultra_hardened_guest
+[ 93%] Built target ultra_core
+[100%] Built target ultra_native
+[100%] Built target ultra-parser-test
+Portable bounded numeric parser passed
+Native shared library loaded; finite callback output and stop/restart passed
+        Appx Creating StoreLogo.png
+        Appx Creating Square30x30Logo.png
+        Appx Creating Square44x44Logo.png
+        Appx Creating Square71x71Logo.png
+        Appx Creating Square89x89Logo.png
+        Appx Creating Square107x107Logo.png
+        Appx Creating Square142x142Logo.png
+        Appx Creating Square150x150Logo.png
+        Appx Creating Square284x284Logo.png
+        Appx Creating Square310x310Logo.png
+        ICNS Creating icon.icns
+         ICO Creating icon.ico
+         PNG Creating 32x32.png
+         PNG Creating 64x64.png
+         PNG Creating 128x128.png
+         PNG Creating 128x128@2x.png
+         PNG Creating icon.png
+         PNG Creating mipmap-hdpi/ic_launcher_foreground.png
+         PNG Creating mipmap-hdpi/ic_launcher_round.png
+         PNG Creating mipmap-hdpi/ic_launcher.png
+         PNG Creating mipmap-mdpi/ic_launcher_foreground.png
+         PNG Creating mipmap-mdpi/ic_launcher_round.png
+         PNG Creating mipmap-mdpi/ic_launcher.png
+         PNG Creating mipmap-xhdpi/ic_launcher_foreground.png
+         PNG Creating mipmap-xhdpi/ic_launcher_round.png
+         PNG Creating mipmap-xhdpi/ic_launcher.png
+         PNG Creating mipmap-xxhdpi/ic_launcher_foreground.png
+         PNG Creating mipmap-xxhdpi/ic_launcher_round.png
+         PNG Creating mipmap-xxhdpi/ic_launcher.png
+         PNG Creating mipmap-xxxhdpi/ic_launcher_foreground.png
+         PNG Creating mipmap-xxxhdpi/ic_launcher_round.png
+         PNG Creating mipmap-xxxhdpi/ic_launcher.png
+         iOS Creating AppIcon-20x20@2x-1.png
+         iOS Creating AppIcon-20x20@1x.png
+         iOS Creating AppIcon-20x20@2x.png
+         iOS Creating AppIcon-20x20@3x.png
+         iOS Creating AppIcon-29x29@2x-1.png
+         iOS Creating AppIcon-29x29@1x.png
+         iOS Creating AppIcon-29x29@2x.png
+         iOS Creating AppIcon-29x29@3x.png
+         iOS Creating AppIcon-40x40@2x-1.png
+         iOS Creating AppIcon-40x40@1x.png
+         iOS Creating AppIcon-40x40@2x.png
+         iOS Creating AppIcon-40x40@3x.png
+         iOS Creating AppIcon-60x60@2x.png
+         iOS Creating AppIcon-60x60@3x.png
+         iOS Creating AppIcon-76x76@1x.png
+         iOS Creating AppIcon-76x76@2x.png
+         iOS Creating AppIcon-83.5x83.5@2x.png
+         iOS Creating AppIcon-512@2x.png
+warning: method `reserve_native` is never used
+  --> src/document_windows.rs:47:8
+   |
+36 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+47 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `ultra` (lib) generated 1 warning
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+    Finished `release` profile [optimized] target(s) in 1.41s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/deps/ultra_desktop-5eb604091aa76453)
+
+running 210 tests
+test audio::epoch::tests::duration_edges_and_exact_per_buffer_budgets ... ok
+test audio::instrumentation::native_saved_clip_release_overhead ... ignored, exact saved-fixture release measurement; requires ALIVE_MEASUREMENT_SESSION
+test audio::instrumentation::paired_release_overhead ... ignored, explicit release measurement; no timing acceptance threshold
+test audio::instrumentation::cpal_owned_error_destruction_is_separate_from_the_typed_action ... ok
+test audio::epoch::tests::reader_contention_returns_cached_payload_after_three_attempts ... ok
+test audio::epoch::tests::independent_closures_keep_late_errors_and_native_state_until_both_drop ... ok
+test audio::tests::callback_partitions_stereo_and_converts_without_losing_frames ... ok
+test audio::tests::configuration_rejects_unsupported_rates_buffers_and_fields ... ok
+test audio::tests::disconnected_or_stale_device_is_not_silently_replaced ... ok
+test audio::instrumentation::warmed_fill_clock_histogram_publication_allocate_and_free_nothing ... ok
+test audio::tests::native_failure_silences_the_whole_device_callback ... ok
+test audio::tests::private_software_output ... ignored, requires the private software-only PipeWire graph from check_cpal_audio.sh
+test audio::tests::invalid_saved_settings_use_defaults_without_rewriting_user_data ... ok
+test audio::tests::measured_fill_counts_all_returns_shapes_and_later_partition_failure ... ok
+test canvas::tests::all_allowed_live_parameters_use_their_native_slot_without_revising ... ok
+test canvas::tests::audio_map_supports_stereo_swap_dual_mono_and_partial_paths ... ok
+test canvas::tests::console_formatting_preserves_fractional_legacy_values_and_typed_float_identity ... ok
+test canvas::tests::authored_voice_parameter_bounds_are_strict ... ok
+test canvas::tests::batch_parameters_use_six_slots_and_refuse_crossed_flonum_limits_atomically ... ok
+test audio::tests::unavailable_saved_host_catalog_keeps_preferences_and_lists_recovery_hosts ... ok
+test canvas::tests::empty_document_is_a_valid_silent_graph ... ok
+test canvas::tests::defaults_compile_to_exact_native_slots ... ok
+test canvas::tests::events_validate_generation_target_control_ports_and_values ... ok
+test canvas::tests::creation_arguments_are_bounded_structural_and_drive_event_ports ... ok
+test canvas::tests::generation_admission_is_atomic_and_failure_keeps_last_plan ... ok
+test canvas::tests::arithmetic_modes_preserve_legacy_defaults_and_validate_new_descriptors ... ok
+test canvas::tests::arithmetic_numericmode_is_structural_and_rhs_live_admission_is_atomic ... ok
+test canvas::tests::authored_voice_objects_compile_with_exact_discrete_lanes_and_live_parameters ... ok
+test canvas::tests::finite_control_bounds_and_exact_size_limit_are_enforced ... ok
+test canvas::tests::hierarchy_boundary_order_treats_negative_zero_as_the_same_position ... ok
+test audio::tests::pending_start_configure_and_stop_refuse_without_consuming_an_epoch ... ok
+test audio::tests::stop_retains_observed_callbacks ... ok
+test canvas::tests::hierarchy_boundary_order_uses_x_then_saved_node_order_and_ignores_y ... ok
+test canvas::tests::hierarchy_keeps_v1_flat_and_forbids_public_v1_relays ... ok
+test canvas::tests::cable_midpoints_are_bounded_authoring_only_in_flat_and_nested_documents ... ok
+test audio::epoch::tests::concurrent_publication_reads_are_coherent_or_stale ... ok
+test canvas::tests::hierarchy_mixed_boundaries_allow_control_taps_and_mono_routes ... ok
+test canvas::tests::hierarchy_checks_control_and_active_signal_cycles_separately ... ok
+test canvas::tests::hierarchy_enforces_surface_ports_before_lowering_relays ... ok
+test canvas::tests::list_objects_prepare_stable_kinds_and_keep_inactive_zl_ports ... ok
+test canvas::tests::integer_number_ports_parameters_and_live_history_preserve_legacy_numbers ... ok
+test canvas::tests::list_sizes_validate_and_update_the_live_native_slot ... ok
+test canvas::tests::live_parameters_do_not_revise_graph_and_rejections_do_not_mutate ... ok
+test canvas::tests::message_snapshot_preserves_empty_bang_float_and_template_types ... ok
+test canvas::tests::message_text_admission_is_atomic_and_same_text_reapply_advances_serial ... ok
+test canvas::tests::hierarchy_lowers_nested_boundaries_without_splicing_or_reordering_cables ... ok
+test canvas::tests::mutable_message_schema_accepts_empty_and_fixed_head_templates ... ok
+test canvas::tests::named_bus_nodes_preserve_creation_names_and_exact_port_shapes ... ok
+test canvas::tests::messages_admit_typed_literals_and_reject_unsupported_syntax ... ok
+test canvas::tests::hierarchy_requires_global_ids_and_scope_local_wires ... ok
+test canvas::tests::node_identifiers_positions_and_counts_are_bounded ... ok
+test canvas::tests::physical_tab_validation_rejects_stale_and_non_ui_actions_without_changing_messages ... ok
+test canvas::tests::named_bus_parameters_are_strict_and_structural ... ok
+test canvas::tests::hierarchy_reports_native_capacity_without_truncating_the_authoring_tree ... ok
+test canvas::tests::print_popup_parameter_is_strict_and_live ... ok
+test canvas::tests::hierarchy_embedded_depth_is_bounded_independently_of_runtime_nodes ... ok
+test canvas::tests::print_prepares_a_bounded_label_and_has_no_output ... ok
+test canvas::tests::hierarchy_schema_rejects_unknown_fields_and_inapplicable_child_patchers ... ok
+test canvas::tests::object_batch_default_kinds_and_argument_dependent_ports_are_admitted ... ok
+test canvas::tests::revision_exhaustion_never_wraps_or_calls_native ... ok
+test canvas::tests::list_creation_text_is_typed_structural_and_strictly_bounded ... ok
+test canvas::tests::reusable_device_manifest_binds_live_saved_parameters_without_changing_runtime ... ok
+test canvas::tests::schema_is_strict_and_required ... ok
+test canvas::tests::print_popup_snapshot_preserves_types_and_rejects_malformed_rows ... ok
+test canvas::tests::serialized_input_is_bounded_without_an_unbounded_copy ... ok
+test canvas::tests::saved_effect_examples_share_native_admission_and_normalized_live_bindings ... ok
+test canvas::tests::signal_control_and_mixed_ports_reach_the_message_bridge_but_dac_stays_signal_only ... ok
+test canvas::tests::signal_creation_layouts_are_numeric_structural_and_bounded ... ok
+test canvas::tests::signal_objects_prepare_appended_ids_and_observed_defaults ... ok
+test canvas::tests::signal_parameters_use_live_slots_and_reject_unrepresented_configuration ... ok
+test canvas::tests::signal_graph_admits_mixed_inlets_fanin_and_sampled_control_feedback ... ok
+test canvas::tests::structural_routes_require_reapply_and_never_call_live_native_update ... ok
+test canvas::tests::shipped_editor_preset_compiles_as_the_same_native_profile ... ok
+test canvas::tests::typed_message_pod_layout_and_atom_identity_are_preserved ... ok
+test canvas::tests::typed_literal_messages_and_eight_atom_events_preserve_cardinality ... ok
+test canvas::tests::reusable_device_manifest_rejects_invalid_schema_bindings_and_presets ... ok
+test canvas::tests::version_two_instrument_manifest_normalizes_and_keeps_version_one_compatible ... ok
+test canvas::tests::signal_routes_allow_sums_and_fanout_but_preserve_device_and_bundle_ownership ... ok
+test canvas::tests::version_two_effect_manifest_requires_bound_stereo_input_without_midi ... ok
+test canvas::tests::strict_numeric_parameters_and_enum_integrality ... ok
+test canvas::tests::typed_ports_duplicates_cycles_and_edge_limit ... ok
+test document_windows::commands::tests::arithmetic_shared_rhs_history_retains_hot_state_and_mode_history_reinstalls ... ok
+test canvas::tests::reusable_device_manifest_bounds_counts_and_integer_bindings ... ok
+test document_windows::commands::tests::cable_midpoints_owner_commits_and_history_preserve_fresh_native_recall ... ok
+test document_windows::lifecycle_tests::app_menu_routes_to_focus_and_window_menu_keeps_its_source ... ok
+test document_windows::commands::tests::canvas_parameter_retirement_blocks_revision_zero_installation ... ok
+test document_windows::commands::tests::forced_graph_installs_cannot_silently_ignore_message_text_intent ... ok
+test document_windows::lifecycle_tests::exit_requires_every_current_owner_approval ... ok
+test document_windows::lifecycle_tests::focused_child_menu_retains_owner_authority ... ok
+test document_windows::lifecycle_tests::multi_owner_quit_waits_for_each_flush_and_cancel_preserves_owner ... ok
+test document_windows::lifecycle_tests::native_quit_requests_coalesce_and_old_dispatch_dies_after_cancel ... ok
+test document_windows::lifecycle_tests::quit_cancel_releases_every_flush_and_allows_a_new_round ... ok
+test document_windows::lifecycle_tests::quit_preparation_does_not_close_other_owners_before_cancel ... ok
+test document_windows::lifecycle_tests::quit_repeated_requests_pending_save_and_stale_approvals_are_inert ... ok
+test canvas::tests::appearance_shared_cases_validate_without_changing_native_descriptors ... ok
+test document_windows::lifecycle_tests::quit_save_retains_owner_until_save_and_final_close ... ok
+test documents::tests::a_child_ready_during_dirty_dialog_joins_barrier_without_retriggering_close ... ok
+test documents::tests::admitted_close_blocks_late_graph_and_save_commands_before_destroy ... ok
+test documents::tests::child_becoming_ready_during_owner_flush_adds_an_acknowledgement_obligation ... ok
+test documents::tests::child_close_flushes_only_that_view_and_disappearance_releases_owner_obligation ... ok
+test document_windows::commands::tests::integer_number_shared_edits_and_history_keep_runtime_and_tab_independent ... ok
+test documents::tests::child_views_share_owner_identity_without_consuming_slots_and_detach_independently ... ok
+test documents::tests::document_identity_is_independent_and_reused_slots_have_new_labels ... ok
+test documents::tests::descriptor_revision_orders_runtime_and_save_publications_without_authoring_conflicts ... ok
+test documents::tests::failed_close_flush_is_cancelled_and_next_attempt_uses_a_new_token ... ok
+test documents::tests::console_records_are_cached_for_each_view_and_drop_counts_stay_cumulative ... ok
+test document_windows::commands::tests::message_box_shared_restore_history_and_child_view_serials ... ok
+test documents::tests::file_open_canonicalizes_paths_and_routes_max_to_import_report ... ok
+test documents::tests::full_registry_retains_all_documents_and_closing_frees_one_slot ... ok
+test documents::tests::imported_max_json_cannot_save_over_its_own_source_path ... ok
+test documents::tests::native_descriptors_expose_shared_owner_authority ... ok
+test documents::tests::instantiating_clones_the_current_authored_root_into_an_independent_unsaved_owner ... ok
+test documents::tests::newly_ready_child_reopens_completed_gate_and_dialog_cancel_releases_all_members ... ok
+test documents::tests::owner_close_waits_for_all_ready_views_and_rejects_stale_or_forged_acknowledgements ... ok
+test document_windows::commands::tests::retiring_ultra_owner_refuses_admission_history_and_root_close ... ok
+test documents::tests::owner_cas_history_admission_and_save_race_are_atomic ... ok
+test documents::tests::instantiating_revalidates_and_retains_canonical_device_metadata ... ok
+test documents::tests::pending_reveal_is_not_relabelled_after_runtime_replacement ... ok
+test documents::tests::reading_owner_and_child_installs_once_and_removed_children_detach ... ok
+test documents::tests::owner_dirty_decision_observes_the_child_commit_flushed_before_its_acknowledgement ... ok
+test documents::tests::save_cannot_overwrite_max_source_through_an_ultra_symlink ... ok
+test documents::tests::save_as_rejects_another_open_documents_path_and_dirty_is_local ... ok
+test documents::tests::save_is_atomic_and_imported_sources_are_not_overwritten ... ok
+test documents::tests::writing_a_snapshot_compares_the_authoritative_tree ... ok
+test documents::tests::source_reveal_rejects_reused_ids_after_replacement_and_keeps_captured_revision ... ok
+test documents::tests::source_reveal_requires_matching_revision_before_creating_or_mutating_views ... ok
+test help_reference::tests::arithmetic_reference_routes_reject_unpinned_xml_and_public_symbol_aliases ... ok
+test canvas::tests::arithmetic_help_shell_policy_pairs_retain_topology_and_no_helper_ports ... ok
+test help_reference::tests::extraction_limits_apply_to_normalized_fields_and_reject_duplicate_sections ... ok
+test help_reference::tests::extracts_original_unicode_text_and_catalog_without_markup ... ok
+test help_reference::tests::files_are_fixed_bounded_and_contained_with_explicit_root_precedence ... ok
+test help_reference::tests::local_identity_and_catalog_are_available ... ignored, Reads the user's licensed local installation; emits identity/status facts only
+test help_reference::tests::arithmetic_reference_tuples_bind_fixed_route_digest_and_exact_symbolic_identity ... ok
+test help_reference::tests::exact_probe_identity_requires_all_helpers_and_preserves_raw_bytes ... ok
+test help_reference::tests::related_symbolic_classes_use_only_the_three_finite_safe_page_ids ... ok
+test help_reference::tests::arithmetic_probe_selects_its_policy_only_after_all_four_helpers_match ... ok
+test help_reference::tests::reference_requires_admitted_valid_shell_but_probe_does_not ... ok
+test canvas::tests::shared_help_shell_schema_and_lowering_cases ... ok
+test instrument_probe::tests::effects_are_rejected_by_the_instrument_probe_before_rendering ... ok
+test session::desktop::tests::actual_registered_window_binding_authenticates_instance_and_generation ... ok
+test canvas::tests::hierarchy_authoring_bounds_count_virtual_nodes_and_allow_large_comments ... ok
+test help_reference::tests::arithmetic_shell_owner_admission_history_and_disk_preserve_safe_policy ... ok
+test help_reference::tests::rejects_entities_controls_identity_and_all_parser_bounds ... ok
+test session::desktop::tests::alive_companion_loads_the_installed_shared_example_without_source_tree ... ok
+test documents::tests::child_view_limit_is_separate_from_root_slots_and_owner_close_detaches_all ... ok
+test session::desktop::tests::draft_rejects_device_substitution_and_overload_before_retention ... ok
+test session::desktop::tests::canonical_musical_drafts_cannot_change_format_identity_fingerprint_or_effect_order ... ok
+test help_reference::tests::shell_metadata_survives_child_commit_history_and_disk_roundtrip ... ok
+test session::desktop::tests::explicit_load_captures_fresh_identity_and_original_source_before_bases ... ok
+test session::desktop::tests::pending_history_versions_noops_baseline_redo_and_live_merge ... ok
+test session::desktop::tests::polling_or_close_during_native_dialog_never_blocks_the_ui ... ok
+test session::desktop::tests::edit_admission_rejects_ranges_targets_rounded_overlap_and_truncation_atomically ... ok
+test session::desktop::tests::failed_apply_source_and_native_density_preserve_retained_history ... ok
+test session::desktop::tests::stale_generation_and_unrelated_main_actions_reject ... ok
+test session::desktop::tests::pending_schedule_merges_latest_live_bases_and_mixer ... ok
+test session::desktop::tests::focused_clips_duplicate_scores_and_history_retains_ids_without_changing_devices ... ok
+test session::desktop::tests::removing_an_instrument_removes_its_whole_track_and_preserves_the_other_chain ... ok
+test document_windows::commands::tests::canvas_parameter_retirement_preserves_numeric_history_and_live_edits ... ok
+test document_windows::commands::tests::retiring_ultra_owner_refuses_root_close_independently ... ok
+test session::runtime::tests::receipts_match_both_identities_and_keep_queued_until_consumed ... ok
+test session::desktop::tests::structural_reorder_and_removal_keep_unrelated_instance_automation ... ok
+test audio::epoch::tests::retention_eviction_merges_each_attempt_once_and_reports_cursor_gap ... ok
+test session::history::tests::projection_restores_music_onto_current_chain_without_live_fields ... ok
+test session::tests::frame_conversion_orders_off_automation_on_and_preserves_required_offsets ... ok
+test session::desktop::tests::undo_redo_merge_same_source_effect_bases_bypass_and_mixer_by_identity ... ok
+test session::tests::global_root_and_chain_bounds_reject_before_dependency_reads ... ok
+test session::tests::native_v3_layout_matches_fixed_c_interface ... ok
+test session::desktop::tests::shared_changed_source_blocks_either_selected_replace_until_original_is_restored ... ok
+test session::tests::native_wire_layouts_have_matching_sizes_headers_and_offsets ... ok
+test session::tests::legacy_read_returns_canonical_v2_with_stable_instance_targets ... ok
+test session::tests::missing_and_incompatible_devices_identify_track_and_preserve_input ... ok
+test session::tests::frame_collision_voice_release_ambiguity_and_loop_seam_overload_are_rejected ... ok
+test session::tests::hashes_cover_original_json_before_instance_bases_and_formatting_is_irrelevant ... ok
+test session::history::tests::byte_eviction_and_strict_directions_are_bounded ... ok
+test document_windows::commands::tests::running_ultra_owner_keeps_live_authoring_available ... ok
+test session::tests::save_as_rebases_references_and_failed_save_retains_file ... ok
+test document_windows::commands::tests::shared_admission_preserves_live_state_and_uses_atomic_hot_numeric_updates ... ok
+test session::history::tests::musical_history_is_bounded_and_redo_is_transactional ... ok
+test session::tests::saved_session_resolves_two_real_independent_device_references ... ok
+test session::tests::session_roundtrip_preserves_notes_automation_and_mixer ... ok
+test session::tests::save_cannot_replace_source_device_or_accept_oversized_file ... ok
+test session::tests::v1_dispatch_is_strict_and_v2_never_infers_missing_instance_data ... ok
+test session::tests::session_v1_rejects_effects_with_an_explicit_chain_runtime_error ... ok
+test session::desktop::tests::delayed_retirement_preserves_draft_history_generation_and_prepared_roots ... ok
+test session::tests::session_v1_accepts_version_two_instruments_and_checks_declared_version ... ok
+test session::tests::saved_effect_order_and_automation_resolve_by_instance_not_chain_index ... ok
+test session::tests::rejects_invalid_schedule_and_parameter_binding_before_admission ... ok
+test tests::complete_disconnected_and_empty ... ok
+test tests::duplicate_objects_rejected ... ok
+test tests::independent_routes ... ok
+test tests::invalid_cords_rejected ... ok
+test session::tests::saving_through_a_session_symlink_keeps_dependency_paths_relative_to_target ... ok
+test session::tests::v3_compiles_independent_clip_ranges_and_empty_lane_ownership ... ok
+test tests::sequence_bounds_and_serialization ... ok
+test tests::unknown_type_and_bounds_rejected ... ok
+test session::tests::v3_strict_wire_migration_and_roundtrip_preserve_score_identity ... ok
+test session::tests::stable_parameter_keys_survive_explicit_source_manifest_reordering ... ok
+test session::tests::save_as_relocates_every_effect_and_cannot_overwrite_any_dependency ... ok
+test session::tests::v3_strict_ids_disabled_aggregate_and_source_free_range_rejections ... ok
+test session::tests::v3_save_as_preserves_bank_ids_beats_defaults_and_source_hashes ... ok
+test tests::native_canvas_ffi_retains_admitted_graph_while_stopped ... ok
+test tests::native_documents_forward_typed_messages_and_keep_other_graph_state ... ok
+test audio::tests::authorized_pending_exit_skips_destructors_in_child ... ok
+test document_windows::lifecycle_tests::approved_ultra_quit_retains_pending_roots_until_terminal_exit ... ok
+test documents::tests::shared_history_bounds_large_authoring_snapshots_by_bytes ... ok
+test session::tests::v3_native_host_defaults_requests_and_graph_fallback_are_real ... ok
+test session::tests::v3_eight_track_host_roundtrip_and_mixer ... ok
+test instrument_probe::tests::saved_instrument_renders_headlessly_with_independent_instances_and_authored_cables ... ok
+test instrument_probe::tests::version_two_instrument_uses_the_normalized_midi_entry_in_headless_render ... ok
+test session::tests::rust_host_installs_the_saved_session_without_editor_windows ... ok
+
+test result: ok. 206 passed; 0 failed; 4 ignored; 0 measured; 0 filtered out; finished in 1.94s
+
+     Running unittests src/main.rs (apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/deps/ultra-b3e502297b8d8d8b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests ultra_desktop
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+   Compiling alive v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri)
+warning: method `reserve_native` is never used
+  --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/document_windows.rs:47:8
+   |
+36 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+47 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `ultra` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 27.46s
+     Running unittests src/main.rs (apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/deps/alive-5b6b3420a89a08f6)
+
+running 1 test
+test tests::session_and_editor_context_can_listen_and_close_only_owned_windows ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+       Debug [tauri_cli::helpers::app_paths] Found Tauri project inside /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri on early lookup
+       Debug [tauri_cli::helpers::app_paths] resolving frontend directory from /home/venetanji/.codex/worktrees/edd5/alive/apps/alive
+       Debug [ignore::gitignore] opened gitignore file: /tmp/.gitignore
+       Debug [globset] built glob set; 0 literals, 3 basenames, 0 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/.gitignore
+       Debug [globset] built glob set; 1 literals, 0 basenames, 0 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::gitignore] opened gitignore file: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/.gitignore
+       Debug [globset] built glob set; 3 literals, 0 basenames, 0 extensions, 0 prefixes, 0 suffixes, 0 required extensions, 0 regexes
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/.gitignore: Ignore(IgnoreMatch(Hidden))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/tauri.release.generated.json: Ignore(IgnoreMatch(Gitignore(Glob { from: Some("/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/.gitignore"), original: "src-tauri/tauri.release.generated.json", actual: "src-tauri/tauri.release.generated.json", is_whitelist: false, is_only_dir: false })))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/gen: Ignore(IgnoreMatch(Gitignore(Glob { from: Some("/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/.gitignore"), original: "src-tauri/gen/", actual: "src-tauri/gen", is_whitelist: false, is_only_dir: true })))
+       Debug [ignore::walk] ignoring /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target: Ignore(IgnoreMatch(Gitignore(Glob { from: Some("/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/.gitignore"), original: "src-tauri/target/", actual: "src-tauri/target", is_whitelist: false, is_only_dir: true })))
+        Info [tauri_cli::build] Looking up installed tauri packages to check mismatched versions...
+     Running [tauri_cli] Command `cargo  build --locked --bins --features tauri/custom-protocol --release --target x86_64-unknown-linux-gnu`
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+   Compiling alive v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri)
+warning: method `reserve_native` is never used
+  --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/document_windows.rs:47:8
+   |
+36 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+47 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `ultra` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 26.96s
+       Built [tauri_cli::build] application at: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/alive
+        Info [tauri_bundler::bundle] Patching binary "/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/alive" for type deb
+        Warn [tauri_bundler::bundle] Failed to add bundler type to the binary: __TAURI_BUNDLE_TYPE variable not found in binary. Make sure tauri crate and tauri-cli are up to date. Updater plugin may not be able to update this package. This shouldn't normally happen, please report it to https://github.com/tauri-apps/tauri/issues
+    Bundling [tauri_bundler::bundle::linux::debian] Alive_0.1.0-rc.1_amd64.deb (/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/deb/Alive_0.1.0-rc.1_amd64.deb)
+        Info [tauri_bundler::bundle] Patching binary "/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/alive" for type appimage
+        Warn [tauri_bundler::bundle] Failed to add bundler type to the binary: __TAURI_BUNDLE_TYPE variable not found in binary. Make sure tauri crate and tauri-cli are up to date. Updater plugin may not be able to update this package. This shouldn't normally happen, please report it to https://github.com/tauri-apps/tauri/issues
+    Bundling [tauri_bundler::bundle::linux::appimage] Alive_0.1.0-rc.1_amd64.AppImage (/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive_0.1.0-rc.1_amd64.AppImage)
+     Running [tauri_bundler::utils] Command `/home/venetanji/.cache/tauri/linuxdeploy-x86_64.AppImage  --appimage-extract-and-run --verbosity 1 --appdir /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir --plugin gtk --output appimage`
+linuxdeploy version 1-alpha (git commit ID 659c9db), GitHub actions build 10 built on 2024-07-26 15:40:22 UTC
+
+-- Creating basic AppDir structure --
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/bin/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/share/applications/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/share/icons/hicolor/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/share/icons/hicolor/16x16/apps/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/share/icons/hicolor/32x32/apps/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/share/icons/hicolor/64x64/apps/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/share/icons/hicolor/128x128/apps/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/share/icons/hicolor/256x256/apps/
+Creating directory /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/share/icons/hicolor/scalable/apps/
+
+-- Deploying dependencies for existing files in AppDir --
+Deploying dependencies for ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/bin/alive
+Deploying shared library /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build/libultra_native.so
+Deploying shared library /usr/lib/libpipewire-0.3.so.0
+Skipping deployment of blacklisted library /usr/lib/libasound.so.2
+Deploying shared library /usr/lib/libgdk-3.so.0
+Deploying shared library /usr/lib/libpango-1.0.so.0
+Deploying shared library /usr/lib/libgdk_pixbuf-2.0.so.0
+Deploying shared library /usr/lib/libcairo-gobject.so.2
+Deploying shared library /usr/lib/libcairo.so.2
+Deploying shared library /usr/lib/libgobject-2.0.so.0
+Deploying shared library /usr/lib/libglib-2.0.so.0
+Deploying shared library /usr/lib/libwebkit2gtk-4.1.so.0
+Deploying shared library /usr/lib/libgtk-3.so.0
+Deploying shared library /usr/lib/libsoup-3.0.so.0
+Deploying shared library /usr/lib/libgio-2.0.so.0
+Deploying shared library /usr/lib/libjavascriptcoregtk-4.1.so.0
+Skipping deployment of blacklisted library /usr/lib/libgcc_s.so.1
+Skipping deployment of blacklisted library /usr/lib/libm.so.6
+Skipping deployment of blacklisted library /usr/lib/libc.so.6
+Skipping deployment of blacklisted library /usr/lib/libstdc++.so.6
+Skipping deployment of blacklisted library /usr/lib/libfribidi.so.0
+Deploying shared library /usr/lib/libepoxy.so.0
+Skipping deployment of blacklisted library /usr/lib/libfontconfig.so.1
+Deploying shared library /usr/lib/libpangocairo-1.0.so.0
+Deploying shared library /usr/lib/libxkbcommon.so.0
+Deploying shared library /usr/lib/libwayland-client.so.0
+Deploying shared library /usr/lib/libwayland-cursor.so.0
+Deploying shared library /usr/lib/libwayland-egl.so.1
+Skipping deployment of blacklisted library /usr/lib/libX11.so.6
+Deploying shared library /usr/lib/libXi.so.6
+Deploying shared library /usr/lib/libXext.so.6
+Deploying shared library /usr/lib/libXcursor.so.1
+Deploying shared library /usr/lib/libXdamage.so.1
+Deploying shared library /usr/lib/libXfixes.so.3
+Deploying shared library /usr/lib/libXcomposite.so.1
+Deploying shared library /usr/lib/libXrandr.so.2
+Deploying shared library /usr/lib/libXinerama.so.1
+Deploying shared library /usr/lib/libthai.so.0
+Skipping deployment of blacklisted library /usr/lib/libharfbuzz.so.0
+Deploying shared library /usr/lib/libgmodule-2.0.so.0
+Deploying shared library /usr/lib/libglycin-2.so.0
+Skipping deployment of blacklisted library /usr/lib/libz.so.1
+Deploying shared library /usr/lib/libpng16.so.16
+Skipping deployment of blacklisted library /usr/lib/libfreetype.so.6
+Deploying shared library /usr/lib/libXrender.so.1
+Skipping deployment of blacklisted library /usr/lib/libxcb.so.1
+Deploying shared library /usr/lib/libxcb-render.so.0
+Deploying shared library /usr/lib/libxcb-shm.so.0
+Deploying shared library /usr/lib/libpixman-1.so.0
+Deploying shared library /usr/lib/libffi.so.8
+Deploying shared library /usr/lib/libpcre2-8.so.0
+Deploying shared library /usr/lib/libatk-1.0.so.0
+Deploying shared library /usr/lib/libwebpmux.so.3
+Skipping deployment of blacklisted library /usr/lib/libexpat.so.1
+Deploying shared library /usr/lib/libicui18n.so.78
+Deploying shared library /usr/lib/libsystemd.so.0
+Deploying shared library /usr/lib/libjpeg.so.8
+Deploying shared library /usr/lib/libicuuc.so.78
+Deploying shared library /usr/lib/libxml2.so.16
+Deploying shared library /usr/lib/libsqlite3.so.0
+Deploying shared library /usr/lib/libxslt.so.1
+Deploying shared library /usr/lib/liblcms2.so.2
+Deploying shared library /usr/lib/libgcrypt.so.20
+Deploying shared library /usr/lib/libgstallocators-1.0.so.0
+Deploying shared library /usr/lib/libgstapp-1.0.so.0
+Deploying shared library /usr/lib/libgstbase-1.0.so.0
+Deploying shared library /usr/lib/libgstreamer-1.0.so.0
+Deploying shared library /usr/lib/libgstpbutils-1.0.so.0
+Deploying shared library /usr/lib/libgstaudio-1.0.so.0
+Deploying shared library /usr/lib/libgsttag-1.0.so.0
+Deploying shared library /usr/lib/libgstvideo-1.0.so.0
+Deploying shared library /usr/lib/libgstgl-1.0.so.0
+Deploying shared library /usr/lib/libgstfft-1.0.so.0
+Deploying shared library /usr/lib/libwebpdemux.so.2
+Deploying shared library /usr/lib/libwebp.so.7
+Deploying shared library /usr/lib/libjxl.so.0.12
+Deploying shared library /usr/lib/libavif.so.16
+Deploying shared library /usr/lib/libharfbuzz-icu.so.0
+Deploying shared library /usr/lib/libwayland-server.so.0
+Deploying shared library /usr/lib/libmanette-0.2.so.0
+Deploying shared library /usr/lib/libseccomp.so.2
+Deploying shared library /usr/lib/libenchant-2.so.2
+Skipping deployment of blacklisted library /usr/lib/libgbm.so.1
+Skipping deployment of blacklisted library /usr/lib/libdrm.so.2
+Deploying shared library /usr/lib/libtasn1.so.6
+Deploying shared library /usr/lib/libhyphen.so.0
+Deploying shared library /usr/lib/libsecret-1.so.0
+Deploying shared library /usr/lib/libpangoft2-1.0.so.0
+Deploying shared library /usr/lib/libatk-bridge-2.0.so.0
+Deploying shared library /usr/lib/libcloudproviders.so.0
+Deploying shared library /usr/lib/libtinysparql-3.0.so.0
+Deploying shared library /usr/lib/libpsl.so.5
+Deploying shared library /usr/lib/libbrotlidec.so.1
+Deploying shared library /usr/lib/libzstd.so.1
+Deploying shared library /usr/lib/libgssapi_krb5.so.2
+Deploying shared library /usr/lib/libnghttp2.so.14
+Deploying shared library /usr/lib/libmount.so.1
+Deploying shared library /usr/lib/libatomic.so.1
+Deploying shared library /usr/lib/libdatrie.so.1
+Deploying shared library /usr/lib/libgraphite2.so.3
+Deploying shared library /usr/lib/libbz2.so.1.0
+Deploying shared library /usr/lib/libXau.so.6
+Deploying shared library /usr/lib/libXdmcp.so.6
+Deploying shared library /usr/lib/libicudata.so.78
+Skipping deployment of blacklisted library /usr/lib/libgpg-error.so.0
+Deploying shared library /usr/lib/libunwind.so.8
+Deploying shared library /usr/lib/libdw.so.1
+Deploying shared library /usr/lib/liborc-0.4.so.0
+Skipping deployment of blacklisted library /usr/lib/libEGL.so.1
+Skipping deployment of blacklisted library /usr/lib/libGLX.so.0
+Skipping deployment of blacklisted library /usr/lib/libX11-xcb.so.1
+Deploying shared library /usr/lib/libgudev-1.0.so.0
+Deploying shared library /usr/lib/libsharpyuv.so.0
+Deploying shared library /usr/lib/libjxl_cms.so.0.12
+Deploying shared library /usr/lib/libhwy.so.1
+Deploying shared library /usr/lib/libbrotlienc.so.1
+Deploying shared library /usr/lib/libyuv.so
+Deploying shared library /usr/lib/libdav1d.so.7
+Deploying shared library /usr/lib/librav1e.so.0.8
+Deploying shared library /usr/lib/libSvtAv1Enc.so.4
+Deploying shared library /usr/lib/libaom.so.3
+Deploying shared library /usr/lib/libhidapi-hidraw.so.0
+Deploying shared library /usr/lib/libevdev.so.2
+Deploying shared library /usr/lib/libtss2-esys.so.0
+Deploying shared library /usr/lib/libtss2-mu.so.0
+Deploying shared library /usr/lib/libtss2-rc.so.0
+Deploying shared library /usr/lib/libtss2-tctildr.so.0
+Deploying shared library /usr/lib/libatspi.so.0
+Deploying shared library /usr/lib/libdbus-1.so.3
+Deploying shared library /usr/lib/libjson-glib-1.0.so.0
+Deploying shared library /usr/lib/libunistring.so.5
+Deploying shared library /usr/lib/libidn2.so.0
+Deploying shared library /usr/lib/libbrotlicommon.so.1
+Deploying shared library /usr/lib/libkrb5.so.3
+Deploying shared library /usr/lib/libk5crypto.so.3
+Skipping deployment of blacklisted library /usr/lib/libcom_err.so.2
+Deploying shared library /usr/lib/libkrb5support.so.0
+Deploying shared library /usr/lib/libkeyutils.so.1
+Skipping deployment of blacklisted library /usr/lib/libresolv.so.2
+Deploying shared library /usr/lib/libblkid.so.1
+Deploying shared library /usr/lib/liblzma.so.5
+Deploying shared library /usr/lib/libelf.so.1
+Skipping deployment of blacklisted library /usr/lib/libGLdispatch.so.0
+Deploying shared library /usr/lib/libudev.so.1
+Deploying shared library /usr/lib/libcrypto.so.3
+Deploying shared library /usr/lib/libtss2-sys.so.1
+Deploying dependencies for ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/Alive/libultra_native.so
+Deploying dependencies for ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/webkit2gtk-4.1/WebKitNetworkProcess
+Deploying dependencies for ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/webkit2gtk-4.1/WebKitWebProcess
+Deploying dependencies for ELF file /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/webkit2gtk-4.1/injected-bundle/libwebkit2gtkinjectedbundle.so
+
+-- Copying files into AppDir --
+Copying file /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build/libultra_native.so to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libultra_native.so
+Copying file /usr/lib/libSvtAv1Enc.so.4 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libSvtAv1Enc.so.4
+Copying file /usr/lib/libXau.so.6 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXau.so.6
+Copying file /usr/lib/libXcomposite.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXcomposite.so.1
+Copying file /usr/lib/libXcursor.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXcursor.so.1
+Copying file /usr/lib/libXdamage.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXdamage.so.1
+Copying file /usr/lib/libXdmcp.so.6 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXdmcp.so.6
+Copying file /usr/lib/libXext.so.6 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXext.so.6
+Copying file /usr/lib/libXfixes.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXfixes.so.3
+Copying file /usr/lib/libXi.so.6 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXi.so.6
+Copying file /usr/lib/libXinerama.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXinerama.so.1
+Copying file /usr/lib/libXrandr.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXrandr.so.2
+Copying file /usr/lib/libXrender.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXrender.so.1
+Copying file /usr/lib/libaom.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libaom.so.3
+Copying file /usr/lib/libatk-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatk-1.0.so.0
+Copying file /usr/lib/libatk-bridge-2.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatk-bridge-2.0.so.0
+Copying file /usr/lib/libatomic.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatomic.so.1
+Copying file /usr/lib/libatspi.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatspi.so.0
+Copying file /usr/lib/libavif.so.16 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libavif.so.16
+Copying file /usr/lib/libblkid.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libblkid.so.1
+Copying file /usr/lib/libbrotlicommon.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbrotlicommon.so.1
+Copying file /usr/lib/libbrotlidec.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbrotlidec.so.1
+Copying file /usr/lib/libbrotlienc.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbrotlienc.so.1
+Copying file /usr/lib/libbz2.so.1.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbz2.so.1.0
+Copying file /usr/lib/libcairo-gobject.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcairo-gobject.so.2
+Copying file /usr/lib/libcairo.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcairo.so.2
+Copying file /usr/lib/libcloudproviders.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcloudproviders.so.0
+Copying file /usr/lib/libcrypto.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcrypto.so.3
+Copying file /usr/lib/libdatrie.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdatrie.so.1
+Copying file /usr/lib/libdav1d.so.7 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdav1d.so.7
+Copying file /usr/lib/libdbus-1.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdbus-1.so.3
+Copying file /usr/lib/libdw.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdw.so.1
+Copying file /usr/lib/libelf.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libelf.so.1
+Copying file /usr/lib/libenchant-2.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libenchant-2.so.2
+Copying file /usr/lib/libepoxy.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libepoxy.so.0
+Copying file /usr/lib/libevdev.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libevdev.so.2
+Copying file /usr/lib/libffi.so.8 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libffi.so.8
+Copying file /usr/lib/libgcrypt.so.20 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgcrypt.so.20
+Copying file /usr/lib/libgdk-3.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgdk-3.so.0
+Copying file /usr/lib/libgdk_pixbuf-2.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgdk_pixbuf-2.0.so.0
+Copying file /usr/lib/libgio-2.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgio-2.0.so.0
+Copying file /usr/lib/libglib-2.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libglib-2.0.so.0
+Copying file /usr/lib/libglycin-2.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libglycin-2.so.0
+Copying file /usr/lib/libgmodule-2.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgmodule-2.0.so.0
+Copying file /usr/lib/libgobject-2.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgobject-2.0.so.0
+Copying file /usr/lib/libgraphite2.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgraphite2.so.3
+Copying file /usr/lib/libgssapi_krb5.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgssapi_krb5.so.2
+Copying file /usr/lib/libgstallocators-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstallocators-1.0.so.0
+Copying file /usr/lib/libgstapp-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstapp-1.0.so.0
+Copying file /usr/lib/libgstaudio-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstaudio-1.0.so.0
+Copying file /usr/lib/libgstbase-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstbase-1.0.so.0
+Copying file /usr/lib/libgstfft-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstfft-1.0.so.0
+Copying file /usr/lib/libgstgl-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstgl-1.0.so.0
+Copying file /usr/lib/libgstpbutils-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstpbutils-1.0.so.0
+Copying file /usr/lib/libgstreamer-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstreamer-1.0.so.0
+Copying file /usr/lib/libgsttag-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgsttag-1.0.so.0
+Copying file /usr/lib/libgstvideo-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstvideo-1.0.so.0
+Copying file /usr/lib/libgtk-3.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgtk-3.so.0
+Copying file /usr/lib/libgudev-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgudev-1.0.so.0
+Copying file /usr/lib/libharfbuzz-icu.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libharfbuzz-icu.so.0
+Copying file /usr/lib/libhidapi-hidraw.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libhidapi-hidraw.so.0
+Copying file /usr/lib/libhwy.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libhwy.so.1
+Copying file /usr/lib/libhyphen.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libhyphen.so.0
+Copying file /usr/lib/libicudata.so.78 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libicudata.so.78
+Copying file /usr/lib/libicui18n.so.78 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libicui18n.so.78
+Copying file /usr/lib/libicuuc.so.78 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libicuuc.so.78
+Copying file /usr/lib/libidn2.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libidn2.so.0
+Copying file /usr/lib/libjavascriptcoregtk-4.1.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjavascriptcoregtk-4.1.so.0
+Copying file /usr/lib/libjpeg.so.8 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjpeg.so.8
+Copying file /usr/lib/libjson-glib-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjson-glib-1.0.so.0
+Copying file /usr/lib/libjxl.so.0.12 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjxl.so.0.12
+Copying file /usr/lib/libjxl_cms.so.0.12 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjxl_cms.so.0.12
+Copying file /usr/lib/libk5crypto.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libk5crypto.so.3
+Copying file /usr/lib/libkeyutils.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libkeyutils.so.1
+Copying file /usr/lib/libkrb5.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libkrb5.so.3
+Copying file /usr/lib/libkrb5support.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libkrb5support.so.0
+Copying file /usr/lib/liblcms2.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/liblcms2.so.2
+Copying file /usr/lib/liblzma.so.5 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/liblzma.so.5
+Copying file /usr/lib/libmanette-0.2.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libmanette-0.2.so.0
+Copying file /usr/lib/libmount.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libmount.so.1
+Copying file /usr/lib/libnghttp2.so.14 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libnghttp2.so.14
+Copying file /usr/lib/liborc-0.4.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/liborc-0.4.so.0
+Copying file /usr/lib/libpango-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpango-1.0.so.0
+Copying file /usr/lib/libpangocairo-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpangocairo-1.0.so.0
+Copying file /usr/lib/libpangoft2-1.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpangoft2-1.0.so.0
+Copying file /usr/lib/libpcre2-8.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpcre2-8.so.0
+Copying file /usr/lib/libpipewire-0.3.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpipewire-0.3.so.0
+Copying file /usr/lib/libpixman-1.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpixman-1.so.0
+Copying file /usr/lib/libpng16.so.16 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpng16.so.16
+Copying file /usr/lib/libpsl.so.5 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpsl.so.5
+Copying file /usr/lib/librav1e.so.0.8 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/librav1e.so.0.8
+Copying file /usr/lib/libseccomp.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libseccomp.so.2
+Copying file /usr/lib/libsecret-1.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsecret-1.so.0
+Copying file /usr/lib/libsharpyuv.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsharpyuv.so.0
+Copying file /usr/lib/libsoup-3.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsoup-3.0.so.0
+Copying file /usr/lib/libsqlite3.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsqlite3.so.0
+Copying file /usr/lib/libsystemd.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsystemd.so.0
+Copying file /usr/lib/libtasn1.so.6 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtasn1.so.6
+Copying file /usr/lib/libthai.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libthai.so.0
+Copying file /usr/lib/libtinysparql-3.0.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtinysparql-3.0.so.0
+Copying file /usr/lib/libtss2-esys.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-esys.so.0
+Copying file /usr/lib/libtss2-mu.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-mu.so.0
+Copying file /usr/lib/libtss2-rc.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-rc.so.0
+Copying file /usr/lib/libtss2-sys.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-sys.so.1
+Copying file /usr/lib/libtss2-tctildr.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-tctildr.so.0
+Copying file /usr/lib/libudev.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libudev.so.1
+Copying file /usr/lib/libunistring.so.5 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libunistring.so.5
+Copying file /usr/lib/libunwind.so.8 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libunwind.so.8
+Copying file /usr/lib/libwayland-client.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-client.so.0
+Copying file /usr/lib/libwayland-cursor.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-cursor.so.0
+Copying file /usr/lib/libwayland-egl.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-egl.so.1
+Copying file /usr/lib/libwayland-server.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-server.so.0
+Copying file /usr/lib/libwebkit2gtk-4.1.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebkit2gtk-4.1.so.0
+Copying file /usr/lib/libwebp.so.7 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebp.so.7
+Copying file /usr/lib/libwebpdemux.so.2 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebpdemux.so.2
+Copying file /usr/lib/libwebpmux.so.3 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebpmux.so.3
+Copying file /usr/lib/libxcb-render.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxcb-render.so.0
+Copying file /usr/lib/libxcb-shm.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxcb-shm.so.0
+Copying file /usr/lib/libxkbcommon.so.0 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxkbcommon.so.0
+Copying file /usr/lib/libxml2.so.16 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxml2.so.16
+Copying file /usr/lib/libxslt.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxslt.so.1
+Copying file /usr/lib/libyuv.so to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libyuv.so
+Copying file /usr/lib/libzstd.so.1 to /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libzstd.so.1
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libSvtAv1Enc.so.4
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libSvtAv1Enc.so.4: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libSvtAv1Enc.so.4'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXau.so.6
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXau.so.6: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXau.so.6'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXcomposite.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXcomposite.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXcomposite.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXcursor.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXcursor.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXcursor.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXdamage.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXdamage.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXdamage.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXdmcp.so.6
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXdmcp.so.6: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXdmcp.so.6'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXext.so.6
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXext.so.6: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXext.so.6'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXfixes.so.3
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXfixes.so.3: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXfixes.so.3'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXi.so.6
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXi.so.6: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXi.so.6'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXinerama.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXinerama.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXinerama.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXrandr.so.2
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXrandr.so.2: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXrandr.so.2'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXrender.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXrender.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libXrender.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libaom.so.3
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libaom.so.3: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libaom.so.3'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatk-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatk-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatk-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatk-bridge-2.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatk-bridge-2.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatk-bridge-2.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatomic.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatomic.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatomic.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatspi.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatspi.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libatspi.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libavif.so.16
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libavif.so.16: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libavif.so.16'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libblkid.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libblkid.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libblkid.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbrotlicommon.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbrotlicommon.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbrotlicommon.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbrotlidec.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbrotlidec.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbrotlidec.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbrotlienc.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbrotlienc.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbrotlienc.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbz2.so.1.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbz2.so.1.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libbz2.so.1.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcairo-gobject.so.2
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcairo-gobject.so.2: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcairo-gobject.so.2'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcairo.so.2
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcairo.so.2: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcairo.so.2'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcloudproviders.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcloudproviders.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcloudproviders.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcrypto.so.3
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcrypto.so.3: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libcrypto.so.3'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdatrie.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdatrie.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdatrie.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdav1d.so.7
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdav1d.so.7: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdav1d.so.7'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdbus-1.so.3
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdbus-1.so.3: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdbus-1.so.3'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdw.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdw.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libdw.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libelf.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libelf.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libelf.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libenchant-2.so.2
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libenchant-2.so.2: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libenchant-2.so.2'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libepoxy.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libepoxy.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libepoxy.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libevdev.so.2
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libevdev.so.2: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libevdev.so.2'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libffi.so.8
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libffi.so.8: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libffi.so.8'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgcrypt.so.20
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgcrypt.so.20: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgcrypt.so.20'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgdk-3.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgdk-3.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgdk-3.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgdk_pixbuf-2.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgdk_pixbuf-2.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgdk_pixbuf-2.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgio-2.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgio-2.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgio-2.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libglib-2.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libglib-2.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libglib-2.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libglycin-2.so.0
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgmodule-2.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgmodule-2.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgmodule-2.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgobject-2.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgobject-2.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgobject-2.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgraphite2.so.3
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgraphite2.so.3: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgraphite2.so.3'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgssapi_krb5.so.2
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgssapi_krb5.so.2: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgssapi_krb5.so.2'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstallocators-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstallocators-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstallocators-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstapp-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstapp-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstapp-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstaudio-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstaudio-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstaudio-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstbase-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstbase-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstbase-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstfft-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstfft-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstfft-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstgl-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstgl-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstgl-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstpbutils-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstpbutils-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstpbutils-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstreamer-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstreamer-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstreamer-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgsttag-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgsttag-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgsttag-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstvideo-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstvideo-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgstvideo-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgtk-3.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgtk-3.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgtk-3.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgudev-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgudev-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libgudev-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libharfbuzz-icu.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libharfbuzz-icu.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libharfbuzz-icu.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libhidapi-hidraw.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libhidapi-hidraw.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libhidapi-hidraw.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libhwy.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libhwy.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libhwy.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libhyphen.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libhyphen.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libhyphen.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libicudata.so.78
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libicui18n.so.78
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libicui18n.so.78: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libicui18n.so.78'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libicuuc.so.78
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libicuuc.so.78: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libicuuc.so.78'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libidn2.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libidn2.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libidn2.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjavascriptcoregtk-4.1.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjavascriptcoregtk-4.1.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjavascriptcoregtk-4.1.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjpeg.so.8
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjpeg.so.8: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjpeg.so.8'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjson-glib-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjson-glib-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjson-glib-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjxl.so.0.12
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjxl.so.0.12: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjxl.so.0.12'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjxl_cms.so.0.12
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjxl_cms.so.0.12: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libjxl_cms.so.0.12'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libk5crypto.so.3
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libk5crypto.so.3: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libk5crypto.so.3'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libkeyutils.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libkeyutils.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libkeyutils.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libkrb5.so.3
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libkrb5.so.3: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libkrb5.so.3'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libkrb5support.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libkrb5support.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libkrb5support.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/liblcms2.so.2
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/liblcms2.so.2: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/liblcms2.so.2'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/liblzma.so.5
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/liblzma.so.5: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/liblzma.so.5'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libmanette-0.2.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libmanette-0.2.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libmanette-0.2.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libmount.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libmount.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libmount.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libnghttp2.so.14
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libnghttp2.so.14: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libnghttp2.so.14'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/liborc-0.4.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/liborc-0.4.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/liborc-0.4.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpango-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpango-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpango-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpangocairo-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpangocairo-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpangocairo-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpangoft2-1.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpangoft2-1.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpangoft2-1.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpcre2-8.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpcre2-8.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpcre2-8.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpipewire-0.3.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpipewire-0.3.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpipewire-0.3.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpixman-1.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpixman-1.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpixman-1.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpng16.so.16
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpng16.so.16: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpng16.so.16'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpsl.so.5
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpsl.so.5: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libpsl.so.5'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/librav1e.so.0.8
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libseccomp.so.2
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libseccomp.so.2: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libseccomp.so.2'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsecret-1.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsecret-1.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsecret-1.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsharpyuv.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsharpyuv.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsharpyuv.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsoup-3.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsoup-3.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsoup-3.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsqlite3.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsqlite3.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsqlite3.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsystemd.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsystemd.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libsystemd.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtasn1.so.6
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtasn1.so.6: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtasn1.so.6'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libthai.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libthai.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libthai.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtinysparql-3.0.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtinysparql-3.0.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtinysparql-3.0.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-esys.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-esys.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-esys.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-mu.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-mu.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-mu.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-rc.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-rc.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-rc.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-sys.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-sys.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-sys.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-tctildr.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-tctildr.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libtss2-tctildr.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libudev.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libudev.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libudev.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libultra_native.so
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libunistring.so.5
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libunistring.so.5: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libunistring.so.5'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libunwind.so.8
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libunwind.so.8: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libunwind.so.8'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-client.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-client.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-client.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-cursor.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-cursor.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-cursor.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-egl.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-egl.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-egl.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-server.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-server.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwayland-server.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebkit2gtk-4.1.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebkit2gtk-4.1.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebkit2gtk-4.1.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebp.so.7
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebp.so.7: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebp.so.7'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebpdemux.so.2
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebpdemux.so.2: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebpdemux.so.2'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebpmux.so.3
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebpmux.so.3: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libwebpmux.so.3'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxcb-render.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxcb-render.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxcb-render.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxcb-shm.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxcb-shm.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxcb-shm.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxkbcommon.so.0
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxkbcommon.so.0: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxkbcommon.so.0'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxml2.so.16
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxml2.so.16: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxml2.so.16'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxslt.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxslt.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libxslt.so.1'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libyuv.so
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libyuv.so: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libyuv.so'
+
+Calling strip on library /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libzstd.so.1
+ERROR: Strip call failed: /tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: /home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libzstd.so.1: unknown type [0x13] section `.relr.dyn'
+/tmp/appimage_extracted_5a27dadc81a3abf452534fdbee9c58ee/usr/bin/strip: Unable to recognise the format of the input file `/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/Alive.AppDir/usr/lib/libzstd.so.1'
+
+failed to bundle project: `failed to run /home/venetanji/.cache/tauri/linuxdeploy-x86_64.AppImage`
+       Error [tauri_cli_node] failed to bundle project: `failed to run /home/venetanji/.cache/tauri/linuxdeploy-x86_64.AppImage`
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/scripts/release.py", line 369, in <module>
+    main()
+    ~~~~^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/scripts/release.py", line 365, in main
+    run(*cli, '-v', 'build', '--target', args.target, '--bundles', bundles, '--config', config, '--', '--locked', cwd=app, env=env)
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/scripts/release.py", line 39, in run
+    subprocess.run([str(a) for a in args], cwd=cwd, env=env, check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['node', '/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/scripts/tooling/node_modules/@tauri-apps/cli/tauri.js', '-v', 'build', '--target', 'x86_64-unknown-linux-gnu', '--bundles', 'deb,appimage', '--config', '/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri/tauri.release.generated.json', '--', '--locked']' returned non-zero exit status 1.

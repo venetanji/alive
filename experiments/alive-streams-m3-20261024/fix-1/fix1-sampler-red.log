@@ -1,0 +1,30 @@
+E....F.
+======================================================================
+ERROR: test_collected_evicted_prefix_is_not_a_missing_epoch (test_stream_measurement.MeasurementTests.test_collected_evicted_prefix_is_not_a_missing_epoch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/test_stream_measurement.py", line 79, in test_collected_evicted_prefix_is_not_a_missing_epoch
+    collector.accept({'run_id': 'test', 'coverage_gap': first > 1,
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      'oldest_retained_epoch': str(first), 'complete': True, 'active': None,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      'completed': [{'epoch_id': str(i), 'final': True} for i in range(first, last+1)]})
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/stream_measurement.py", line 150, in accept
+    if observation['coverage_gap']: raise RuntimeError('epoch_coverage_gap')
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: epoch_coverage_gap
+
+======================================================================
+FAIL: test_recorder_reaps_stubborn_helper_after_leader_exits (test_stream_measurement.MeasurementTests.test_recorder_reaps_stubborn_helper_after_leader_exits)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/test_stream_measurement.py", line 109, in test_recorder_reaps_stubborn_helper_after_leader_exits
+    self.assertFalse(state.exists() and parse_stat(state.read_text())['state'] != 'Z', 'owned helper survived finish')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false : owned helper survived finish
+
+----------------------------------------------------------------------
+Ran 7 tests in 1.227s
+
+FAILED (failures=1, errors=1)

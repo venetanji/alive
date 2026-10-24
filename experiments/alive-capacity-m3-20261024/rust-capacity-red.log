@@ -1,0 +1,35 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+    Finished `release` profile [optimized] target(s) in 13.76s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/release/deps/ultra_desktop-9e1feeb9c9029f98)
+
+running 1 test
+
+thread 'session::tests::v3_eight_track_host_roundtrip_and_mixer' panicked at src/session/tests.rs:76:9:
+
+running 1 test
+test session::tests::v3_eight_track_host_roundtrip_and_mixer ... FAILED
+
+failures:
+
+failures:
+    session::tests::v3_eight_track_host_roundtrip_and_mixer
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 209 filtered out; finished in 0.00s
+
+
+
+thread 'session::tests::v3_eight_track_host_roundtrip_and_mixer' panicked at src/session/tests.rs:80:56:
+called `Result::unwrap()` on an `Err` value: "Alive supports one or two instrument tracks"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test session::tests::v3_eight_track_host_roundtrip_and_mixer ... FAILED
+
+failures:
+
+failures:
+    session::tests::v3_eight_track_host_roundtrip_and_mixer
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 209 filtered out; finished in 0.08s
+
+error: test failed, to rerun pass `--lib`

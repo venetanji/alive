@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Native-host Ultra packaging. No Max installation or DSP regeneration required."""
+"""Native-host Ultra and Alive packages, sharing the same device runtime."""
 import argparse
 import hashlib
 import json
@@ -18,6 +18,7 @@ from notices import validate as validate_notices
 
 ROOT = Path(__file__).resolve().parents[3]
 APP = ROOT / 'apps/ultra'
+PRODUCTS = {'ultra': ('Ultra Research', 'Ultra'), 'alive': ('Alive', 'Alive')}
 TARGETS = {
     'x86_64-unknown-linux-gnu': ('Linux', 'x86_64', 'libultra_native.so', ('deb', 'AppImage')),
     'x86_64-pc-windows-msvc': ('Windows', 'AMD64', 'ultra_native.dll', ('exe',)),
@@ -41,6 +42,15 @@ def digest(path):
     with path.open('rb') as f:
         return hashlib.file_digest(f, 'sha256').hexdigest()
 
+def install_native_library(source, destination):
+    with tempfile.NamedTemporaryFile(dir=destination.parent, prefix=destination.name + '.', delete=False) as staged:
+        staged_path = Path(staged.name)
+    try:
+        shutil.copy2(source, staged_path)
+        staged_path.replace(destination)
+    finally:
+        staged_path.unlink(missing_ok=True)
+
 def validate_version(cargo, tauri, tag=None):
     if cargo != tauri or not re.fullmatch(r'\d+\.\d+\.\d+(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?', cargo):
         raise ValueError('Cargo and Tauri must have the same supported SemVer version')
@@ -49,13 +59,22 @@ def validate_version(cargo, tauri, tag=None):
     return cargo
 
 def version(tag=None):
-    cargo = tomllib.loads((APP/'src-tauri/Cargo.toml').read_text())['package']['version']
-    tauri = json.loads((APP/'src-tauri/tauri.conf.json').read_text())['version']
-    return validate_version(cargo, tauri, tag)
+    versions = set()
+    for product in PRODUCTS:
+        app = ROOT/'apps'/product
+        cargo = tomllib.loads((app/'src-tauri/Cargo.toml').read_text())['package']['version']
+        tauri = json.loads((app/'src-tauri/tauri.conf.json').read_text())['version']
+        versions.add(validate_version(cargo, tauri, tag))
+    if len(versions) != 1:
+        raise ValueError('Ultra and Alive must have the same release version')
+    return versions.pop()
 
-def bundle_config(target, runtime_names=()):
+def bundle_config(target, runtime_names=(), product='ultra'):
+    PRODUCTS[product]
     system, _, library, _ = TARGETS[target]
     bundle = {'active': True, 'resources': {'../../../LICENSE': 'licenses/Alive-LICENSE', '../THIRD-PARTY.txt': 'licenses/THIRD-PARTY.txt', '../core/VOICE.txt': 'licenses/Faust-VOICE.txt', '../THIRD-PARTY-CRATES.json': 'licenses/THIRD-PARTY-CRATES.json', 'native/vendor/fast_float/LICENSE-MIT': 'licenses/fast_float-MIT'}, 'icon': ['icons/release/icon.ico', 'icons/release/icon.icns', 'icons/release/128x128.png']}
+    bundle['resources'].update({'../../alive/examples/two-instruments.alive': 'alive-session/alive/examples/two-instruments.alive',
+                                '../examples/subtractive.ultra': 'alive-session/ultra/examples/subtractive.ultra'})
     if system == 'Darwin':
         # Tauri copies/signs this nested library in Contents/Frameworks.
         bundle['macOS'] = {'frameworks': ['../build/' + library], 'minimumSystemVersion': '14.0'}
@@ -67,6 +86,14 @@ def bundle_config(target, runtime_names=()):
             bundle['resources']['../build/' + name] = name
         if system == 'Linux':
             bundle['linux'] = {'deb': {'depends': ['libwebkit2gtk-4.1-0', 'libgtk-3-0', 'libasound2t64', 'libpipewire-0.3-0']}}
+    if product == 'alive':
+        # The shared library's build script also consumes TAURI_CONFIG. Absolute
+        # sources keep its different manifest directory from changing resolution.
+        resolve = lambda path: str((APP/'src-tauri'/path).resolve())
+        bundle['resources'] = {resolve(source): dest for source, dest in bundle['resources'].items()}
+        bundle['icon'] = [resolve(path) for path in bundle['icon']]
+        if system == 'Darwin':
+            bundle['macOS']['frameworks'] = [resolve(path) for path in bundle['macOS']['frameworks']]
     return {'bundle': bundle}
 
 def prepare_dependencies():
@@ -91,7 +118,8 @@ def prepare_dependencies():
     if digest(lock) != '1cad43e702066ecb5a1659b7906306f513d71c5b88b6711323ece88b6458c20c':
         raise ValueError('Pinned Clockwork Cargo.lock differs')
 
-def collect_artifacts(bundle, output, target, ver):
+def collect_artifacts(bundle, output, target, ver, product='ultra'):
+    artifact = PRODUCTS[product][1]
     files = []
     for suffix in TARGETS[target][3]:
         matches = list(bundle.glob('**/*.' + suffix))
@@ -101,10 +129,10 @@ def collect_artifacts(bundle, output, target, ver):
     output.mkdir(parents=True, exist_ok=True)
     copied = []
     for src in files:
-        dst = output/f'Ultra-{ver}-{target}{src.suffix}'
+        dst = output/f'{artifact}-{ver}-{target}{src.suffix}'
         shutil.copy2(src, dst)
         copied.append(dst)
-    (output/f'SHA256SUMS-{target}.txt').write_text(''.join(f'{digest(p)}  {p.name}\n' for p in copied))
+    (output/f'SHA256SUMS-{product}-{target}.txt').write_text(''.join(f'{digest(p)}  {p.name}\n' for p in copied))
     return copied
 
 def verify_notice_resources(package):
@@ -119,7 +147,85 @@ def verify_notice_resources(package):
         if len(matches) != 1 or digest(matches[0]) != digest(source):
             raise ValueError('Package is missing or has stale notice: ' + name)
 
-def verify_packages(bundle, target):
+def verify_bundled_session(executable, resources, env):
+    session = resources/'alive-session/alive/examples/two-instruments.alive'
+    if not session.is_file():
+        raise ValueError('Package is missing its bundled Alive session')
+    with tempfile.TemporaryDirectory(prefix='alive-packaged-session-') as temporary:
+        # Run outside both the repository and the installed resource directory.
+        run(executable, '--session-probe', session, Path(temporary)/'render', cwd=temporary, env=env)
+
+def extract_deb(package, destination):
+    # DEB uses short SysV ar member names. Host ar dialects and Windows text
+    # stdout translation must not change the package's compressed bytes.
+    with package.open('rb') as container:
+        length = package.stat().st_size
+        if container.read(8) != b'!<arch>\n':
+            raise ValueError('Invalid DEB archive signature')
+        data = []
+        while container.tell() < length:
+            header = container.read(60)
+            if len(header) != 60 or header[58:] != b'`\n':
+                raise ValueError('Invalid DEB member header')
+            try:
+                name = header[:16].decode('ascii').rstrip().removesuffix('/')
+                size_text = header[48:58].decode('ascii').strip()
+                if not size_text.isdecimal():
+                    raise ValueError('Invalid DEB member size')
+                size = int(size_text)
+            except (UnicodeDecodeError, ValueError) as error:
+                raise ValueError('Invalid DEB member metadata') from error
+            offset = container.tell()
+            if offset + size + size % 2 > length:
+                raise ValueError('Truncated DEB member')
+            if re.fullmatch(r'data\.tar(?:\.(?:gz|xz|bz2))?', name):
+                data.append((offset, size))
+            container.seek(offset + size + size % 2)
+        if len(data) != 1:
+            raise ValueError('DEB must contain exactly one supported data archive')
+        offset, remaining = data[0]
+        container.seek(offset)
+        with tempfile.TemporaryFile() as payload:
+            while remaining:
+                block = container.read(min(remaining, 1024 * 1024))
+                if not block:
+                    raise ValueError('Truncated DEB data archive')
+                payload.write(block)
+                remaining -= len(block)
+            payload.seek(0)
+            with tarfile.open(fileobj=payload, mode='r:*') as archive:
+                archive.extractall(destination, filter='data')
+
+def linux_native_path(loaded, package, product, library):
+    match = re.search(r'libultra_native\.so\s+=>\s+(.+?)\s+\(', loaded)
+    paths = {(package/'usr/lib'/PRODUCTS[product][0]/library).resolve(),
+             (package/'usr/lib'/library).resolve()}
+    if 'not found' not in loaded and match:
+        native = Path(match.group(1)).resolve()
+        if native in paths and native.is_file():
+            return native
+    raise ValueError('Installed package cannot resolve its own native library: ' + loaded)
+
+def verify_linux_payload(dest, library, product, env):
+    product_name, _ = PRODUCTS[product]
+    resources = dest/'usr/lib'/product_name
+    native = resources/library
+    exe = dest/'usr/bin'/product
+    if not native.is_file() or not exe.is_file():
+        raise ValueError(f'{product_name} package lacks its executable or native library')
+    other = 'alive' if product == 'ultra' else 'ultra'
+    if (dest/'usr/bin'/other).exists():
+        raise ValueError('Separate application packages must not own the same executable: ' + other)
+    loaded = subprocess.check_output(['ldd', str(exe)], env=env, text=True)
+    # linuxdeploy moves linked libraries to usr/lib and patches the AppImage RPATH.
+    native = linux_native_path(loaded, dest, product, library)
+    desktops = list((dest/'usr/share/applications').glob('*.desktop'))
+    if len(desktops) != 1 or not re.search(r'^Exec=' + re.escape(product) + r'(?:\s|$)', desktops[0].read_text(), re.M):
+        raise ValueError('Package must launch its own application from its desktop entry')
+    run('python', APP/'scripts/smoke_native.py', native, env=env)
+    verify_bundled_session(exe, resources, env)
+
+def verify_packages(bundle, target, product='ultra'):
     """Check staged layouts without allowing the build-tree search path to hide errors."""
     system, _, library, _ = TARGETS[target]
     env = os.environ.copy()
@@ -127,42 +233,33 @@ def verify_packages(bundle, target):
     env.pop('DYLD_LIBRARY_PATH', None)
     env['PATH'] = os.pathsep.join(p for p in env['PATH'].split(os.pathsep) if Path(p) != APP/'build')
     if system == 'Linux':
-        with tempfile.TemporaryDirectory(prefix='ultra-install-') as temporary:
+        with tempfile.TemporaryDirectory(prefix=product + '-install-') as temporary:
             dest = Path(temporary)
             debs = list(bundle.glob('deb/*.deb'))
             if len(debs) != 1:
                 raise ValueError('Expected one DEB to verify')
-            run('dpkg-deb', '--extract', debs[0], dest)
+            extract_deb(debs[0], dest)
             verify_notice_resources(dest)
-            exe = dest/'usr/bin/ultra'
-            native = dest/'usr/lib/Ultra Research'/library
-            if not exe.is_file() or not native.is_file():
-                raise ValueError('DEB is missing its executable or native library')
-            loaded = subprocess.check_output(['ldd', str(exe)], env=env, text=True)
-            match = re.search(r'libultra_native\.so\s+=>\s+(.+?)\s+\(', loaded)
-            if 'not found' in loaded or not match or Path(match.group(1)).resolve() != native.resolve():
-                raise ValueError('Installed DEB cannot resolve its own native library: ' + loaded)
-            run('python', APP/'scripts/smoke_native.py', native, env=env)
+            verify_linux_payload(dest, library, product, env)
             images = list(bundle.glob('appimage/*.AppImage'))
             if len(images) != 1:
                 raise ValueError('Expected one AppImage to verify')
             images[0].chmod(images[0].stat().st_mode | 0o100)
             subprocess.run([str(images[0]), '--appimage-extract'], cwd=dest, env=env, stdout=subprocess.DEVNULL, check=True)
             verify_notice_resources(dest/'squashfs-root')
-            packaged = dest/'squashfs-root/usr/lib/Ultra Research'/library
-            if not packaged.is_file():
-                raise ValueError('AppImage lacks its native library')
-            run('python', APP/'scripts/smoke_native.py', packaged, env=env)
+            verify_linux_payload(dest/'squashfs-root', library, product, env)
     elif system == 'Darwin':
-        app = bundle/'macos/Ultra Research.app'
+        app = bundle/'macos'/(PRODUCTS[product][0] + '.app')
         verify_notice_resources(app)
         native = app/'Contents/Frameworks'/library
         if not native.is_file():
             raise ValueError('App bundle lacks native framework library')
-        linked = subprocess.check_output(['otool', '-L', str(app/'Contents/MacOS/ultra')], text=True)
+        exe = app/'Contents/MacOS'/product
+        linked = subprocess.check_output(['otool', '-L', str(exe)], text=True)
         if '@rpath/' + library not in linked:
-            raise ValueError('App must link its bundled @rpath native library')
+            raise ValueError('App must link its bundled @rpath native library: ' + product)
         run('python', APP/'scripts/smoke_native.py', native, env=env)
+        verify_bundled_session(exe, app/'Contents/Resources', env)
     else:
         # Inspect the actual NSIS payload, not the adjacent development DLL.
         with tempfile.TemporaryDirectory(prefix='ultra-install-') as temporary:
@@ -173,8 +270,8 @@ def verify_packages(bundle, target):
             run('7z', 'x', '-y', '-o' + str(dest), installers[0])
             verify_notice_resources(dest)
             dlls = list(dest.rglob(library))
-            if len(dlls) != 1 or not (dlls[0].parent/'ultra.exe').is_file():
-                raise ValueError('NSIS payload must place native DLL beside ultra.exe')
+            if len(dlls) != 1 or not (dlls[0].parent/(product + '.exe')).is_file():
+                raise ValueError('NSIS payload must place native DLL beside ' + product + '.exe')
             runtime_names = (APP/'build/windows-runtime-libraries.txt').read_text().splitlines()
             if not runtime_names or not all((dlls[0].parent/name).is_file() for name in runtime_names):
                 raise ValueError('NSIS payload lacks matching MSVC runtime libraries')
@@ -185,11 +282,13 @@ def verify_packages(bundle, target):
                     raise ValueError('Unbundled native runtime import: ' + name)
             print(imports)
             run('python', APP/'scripts/smoke_native.py', dlls[0], env=env)
+            verify_bundled_session(dlls[0].parent/(product + '.exe'), dlls[0].parent, env)
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('command', choices=['check-version', 'build', 'collect'])
     parser.add_argument('--target', choices=TARGETS)
+    parser.add_argument('--product', choices=['all', *PRODUCTS], default='all')
     parser.add_argument('--tag')
     args = parser.parse_args()
     ver = version(args.tag)
@@ -201,9 +300,11 @@ def main():
     system, machine, library, _ = TARGETS[args.target]
     if platform.system() != system or platform.machine().lower() != machine.lower():
         raise ValueError('Use the native runner matching the target; cross-compilation is not configured')
-    out = APP/'src-tauri/target'/args.target/'release'
+    products = list(PRODUCTS) if args.product == 'all' else [args.product]
     if args.command == 'collect':
-        collect_artifacts(out/'bundle', ROOT/'dist/ultra', args.target, ver)
+        for product in products:
+            out = ROOT/'apps'/product/'src-tauri/target'/args.target/'release'
+            collect_artifacts(out/'bundle', ROOT/'dist'/product, args.target, ver, product=product)
         return
     prepare_dependencies()
     validate_notices()
@@ -225,25 +326,44 @@ def main():
         env['DYLD_LIBRARY_PATH'] = str(build)
     # Exercise the real shared-library ABI before building installers.
     run('python', APP/'scripts/smoke_native.py', build/library, env=env)
-    out.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(build/library, out/library)
     # Reuse the existing original icon, not any Max/Ableton assets.
     cli = ['node', APP/'scripts/tooling/node_modules/@tauri-apps/cli/tauri.js']
     run(*cli, 'icon', 'src-tauri/icons/icon.png', '--output', 'src-tauri/icons/release', cwd=APP, env=env)
     # tauri-build embeds the default ICO even when running cargo test before bundling.
     if system == 'Windows':
         shutil.copy2(APP/'src-tauri/icons/release/icon.ico', APP/'src-tauri/icons/icon.ico')
+    # Cargo prepends its output directory to the loader path. Refresh both
+    # tested hosts before tests can resolve an older adjacent native library.
+    for product in dict.fromkeys(['ultra', *products]):
+        out = ROOT/'apps'/product/'src-tauri/target'/args.target/'release'
+        out.mkdir(parents=True, exist_ok=True)
+        install_native_library(build/library, out/library)
     run('cargo', 'test', '--manifest-path', APP/'src-tauri/Cargo.toml', '--release', '--locked', '--target', args.target, env=env)
-    config = APP/'src-tauri/tauri.release.generated.json'
+    if 'alive' in products:
+        run('cargo', 'test', '--manifest-path', ROOT/'apps/alive/src-tauri/Cargo.toml', '--release', '--locked', '--target', args.target, env=env)
     runtime_names = []
     if system == 'Windows':
         runtime_names = (build/'windows-runtime-libraries.txt').read_text().splitlines()
         if not runtime_names or not all((build/name).is_file() for name in runtime_names):
             raise ValueError('Matching MSVC runtime libraries must be staged')
-    config.write_text(json.dumps(bundle_config(args.target, runtime_names), indent=2) + '\n')
     bundles = {'Linux': 'deb,appimage', 'Darwin': 'app,dmg', 'Windows': 'nsis'}[system]
-    run(*cli, 'build', '--target', args.target, '--bundles', bundles, '--config', config, '--', '--locked', cwd=APP, env=env)
-    verify_packages(out/'bundle', args.target)
+    for product in products:
+        app = ROOT/'apps'/product
+        out = app/'src-tauri/target'/args.target/'release'
+        out.mkdir(parents=True, exist_ok=True)
+        # Atomic replacement preserves a library mapped by a running developer app.
+        install_native_library(build/library, out/library)
+        config = app/'src-tauri/tauri.release.generated.json'
+        generated = bundle_config(args.target, runtime_names, product)
+        if system == 'Linux':
+            resources = generated['bundle']['resources']
+            resources = {source: dest for source, dest in resources.items() if dest != library}
+            # tauri-build skips copying a resource already at its destination.
+            resources[str(out/library)] = library
+            generated['bundle']['resources'] = resources
+        config.write_text(json.dumps(generated, indent=2) + '\n')
+        run(*cli, '-v', 'build', '--target', args.target, '--bundles', bundles, '--config', config, '--', '--locked', cwd=app, env=env)
+        verify_packages(out/'bundle', args.target, product)
 
 if __name__ == '__main__':
     main()
