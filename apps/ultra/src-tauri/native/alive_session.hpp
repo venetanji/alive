@@ -148,11 +148,15 @@ class AliveSession {
   }
   error_="Alive configuration validated.";return true;
  }
- public:
- bool validate_graph(const AliveSessionTrack& track,const UltraCanvasGraph& graph)noexcept{
-  CanvasPlan plan{};if(!compile_canvas(graph,plan)||graph.revision!=track.revision)return reject("Alive device graph/revision is invalid.");
-  if(track.parameter_count>16||track.output_channels!=2||track.output_layout!=2)return reject("Alive device needs an explicit stereo speaker descriptor.");
-  const int note=plan.find(track.note_node);if(note<0||graph.nodes[unsigned(note)].kind!=PolyNote)return reject("Alive MIDI entry must bind a native poly_note node.");
+ enum class GraphAdmission {LegacyV1,DeviceV2};
+ bool validate_graph_common(const AliveSessionDeviceV2& device,const UltraCanvasGraph& graph,GraphAdmission policy)noexcept{
+  if(policy==GraphAdmission::DeviceV2&&!validate_device(device))return false;
+  CanvasPlan plan{};if(!compile_canvas(graph,plan)||graph.revision!=device.revision)return reject("Alive device graph/revision is invalid.");
+  // Standalone v1 graph admission checks only its original descriptor fields.
+  if(policy==GraphAdmission::LegacyV1&&(device.parameter_count>16||device.output_channels!=2||device.output_layout!=2))return reject("Alive device needs an explicit stereo speaker descriptor.");
+  const int entry=plan.find(device.kind==ALIVE_SESSION_DEVICE_INSTRUMENT?device.note_node:device.input_node);
+  const unsigned entry_kind=device.kind==ALIVE_SESSION_DEVICE_INSTRUMENT?PolyNote:AudioIn;
+  if(entry<0||graph.nodes[unsigned(entry)].kind!=entry_kind)return reject(policy==GraphAdmission::LegacyV1?"Alive MIDI entry must bind a native poly_note node.":"Alive device entry node has an incompatible native kind.");
   bool stereo=false;
   for(unsigned n=0;n<graph.node_count;++n){const auto& node=graph.nodes[n];
    if(node.kind==Voice)return reject("Alive native profile rejects legacy Clockwork Voice (+64 frames).");
@@ -162,32 +166,20 @@ class AliveSession {
   }
   if(!stereo)return reject("Alive device has no explicit stereo output route.");
   // Validate every declared base using the real graph compiler off callback.
-  for(unsigned p=0;p<track.parameter_count;++p){const auto& b=track.parameters[p];
-   const int slot=plan.find(b.node);
-   if(slot>=0&&(graph.nodes[unsigned(slot)].kind==Flonum||graph.nodes[unsigned(slot)].kind==NumberInt)&&(b.param==1||b.param==2))
-    return reject("Alive numeric UI min/max bounds are structural; bind the value instead.");
-   if(!change_canvas_param(plan,b.node,b.param,b.base))return reject("Alive bound parameter is incompatible with its native node.");
-  }
-  error_="Alive device validated.";return true;
- }
- bool validate_device_v2(const AliveSessionDeviceV2& device,const UltraCanvasGraph& graph)noexcept{
-  if(!validate_device(device))return false;
-  CanvasPlan plan{};if(!compile_canvas(graph,plan)||graph.revision!=device.revision)return reject("Alive device graph/revision is invalid.");
-  const int entry=plan.find(device.kind==ALIVE_SESSION_DEVICE_INSTRUMENT?device.note_node:device.input_node);
-  const unsigned entry_kind=device.kind==ALIVE_SESSION_DEVICE_INSTRUMENT?PolyNote:AudioIn;
-  if(entry<0||graph.nodes[unsigned(entry)].kind!=entry_kind)return reject("Alive device entry node has an incompatible native kind.");
-  bool stereo=false;
-  for(unsigned n=0;n<graph.node_count;++n){const auto& node=graph.nodes[n];
-   if(node.kind==Voice)return reject("Alive native profile rejects legacy Clockwork Voice (+64 frames).");
-   if(node.kind==Send||node.kind==Receive)return reject("Alive native profile rejects named Send/Receive paths.");
-   if(node.kind==Dac)stereo=true;
-   if(node.kind==SignalDac){const auto& args=plan.arguments[n];if(args.count!=2||args.values[0]!=1||args.values[1]!=2)return reject("Alive output must use explicit stereo speakers 1 2.");stereo=true;}
-  }
-  if(!stereo)return reject("Alive device has no explicit stereo output route.");
   for(unsigned p=0;p<device.parameter_count;++p){const auto& b=device.parameters[p];const int slot=plan.find(b.node);
    if(slot>=0&&(graph.nodes[unsigned(slot)].kind==Flonum||graph.nodes[unsigned(slot)].kind==NumberInt)&&(b.param==1||b.param==2))return reject("Alive numeric UI min/max bounds are structural; bind the value instead.");
    if(!change_canvas_param(plan,b.node,b.param,b.base))return reject("Alive bound parameter is incompatible with its native node.");
   }error_="Alive device validated.";return true;
+ }
+ public:
+ bool validate_graph(const AliveSessionTrack& track,const UltraCanvasGraph& graph)noexcept{
+  AliveSessionDeviceV2 device{};device.document=track.document;device.kind=ALIVE_SESSION_DEVICE_INSTRUMENT;device.note_node=track.note_node;
+  device.output_channels=track.output_channels;device.output_layout=track.output_layout;device.parameter_count=track.parameter_count;device.revision=track.revision;
+  std::memcpy(device.parameters,track.parameters,sizeof device.parameters);
+  return validate_graph_common(device,graph,GraphAdmission::LegacyV1);
+ }
+ bool validate_device_v2(const AliveSessionDeviceV2& device,const UltraCanvasGraph& graph)noexcept{
+  return validate_graph_common(device,graph,GraphAdmission::DeviceV2);
  }
  bool validate_values_v2(const AliveSessionConfigV2& config,unsigned device,const UltraCanvasGraph& graph)noexcept{
   CanvasPlan plan{};if(!compile_canvas(graph,plan))return reject("Alive automation graph is invalid.");

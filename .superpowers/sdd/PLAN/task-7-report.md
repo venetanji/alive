@@ -192,3 +192,59 @@ and extra-reader issues recorded above. No remaining known functional issue.
 No parent-owned PLAN/progress/documentation changes are staged. Contracts
 regenerated the historical arithmetic native-build.json receipt; it remains
 unstaged and is not part of this checkpoint.
+
+## Review Fix Round 1: Shared Graph Admission
+
+Independent scoped review found duplicated graph-profile and parameter-binding
+validation in the v1 and v2 paths. This was a structure/maintenance finding;
+the reviewer found no functional rendering defect. The amendment replaces both
+implementations with one private `validate_graph_common` helper and explicit
+private `GraphAdmission::{LegacyV1,DeviceV2}` policy.
+
+The v1 public graph method adapts the old track into an instrument descriptor
+and invokes that helper under the legacy policy. It retains the original
+standalone graph checks, their ordering and their messages. In particular it
+does not acquire v2 document, flag, reserved-field or declared-range checks.
+Under the v2 policy, the helper retains strict descriptor validation before
+graph compilation.
+Compilation/revision, entry-node kind, Voice/Send/Receive exclusions, stereo
+sinks, structural numeric exclusions and native base compatibility now have one
+implementation. Multiple stereo sinks and the confirmed AudioIn-reader policy
+remain admitted. No callback/ABI/rendering code or test assertions changed.
+
+This is a behavior-preserving off-callback extraction covered by the existing
+contract tests, rather than a new behavioral fix with a claimed runtime RED.
+Both focused executables were compiled afresh from the amended header/backend
+with exactly the existing static-core and callback wrapper settings:
+
+```sh
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE apps/ultra/tests/alive_session_test.cpp apps/ultra/src-tauri/native/backend.cpp apps/ultra/build/core/libultra_core_bundle.a -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock -ldl -lrt -o /tmp/alive-task7-fix1-v1
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread apps/ultra/tests/alive_session_v2_test.cpp apps/ultra/src-tauri/native/backend.cpp apps/ultra/build/core/libultra_core_bundle.a -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock -ldl -lrt -o /tmp/alive-task7-fix1-v2
+/tmp/alive-task7-fix1-v1 > /tmp/alive-task7-fix1-v1.log 2>&1
+/tmp/alive-task7-fix1-v2 > /tmp/alive-task7-fix1-v2.log 2>&1
+git diff --check
+```
+
+Both compiler commands exit 0 without diagnostics. Both test commands exit 0;
+complete output is:
+
+```text
+placement input=0 native=0 legacy=64 host_alignment=0
+placement input=1 native=1 legacy=65 host_alignment=0
+placement input=31 native=31 legacy=95 host_alignment=0
+placement input=63 native=63 legacy=127 host_alignment=0
+placement input=64 native=64 legacy=128 host_alignment=0
+placement input=127 native=127 legacy=191 host_alignment=0
+PASS: Alive exact frames, partitions, ownership, overload Stop, seek, loop, isolation, mono join, mixer and callback guard
+six-device dense 1024-frame callback mean_us=1052.995; six-device seek+one-frame mean_us=33.488 (wall clock, no deadline claim)
+PASS: v2 ordered chains, exact bypass/warm state, partitions, ownership, resets, admission, overload and callback guard
+```
+
+`git diff --check` exits 0 with no output. Self-review confirms that the helper
+is private, all shared profile/binding checks occur once, v1 standalone admission
+uses its legacy policy, and v2 descriptor validation still precedes graph
+validation. The existing original v1 suite and new v2 suite are unchanged.
+No native library replacement/build or broad native/contracts rerun was needed
+for this scoped helper extraction. Files changed in this fix are only
+`apps/ultra/src-tauri/native/alive_session.hpp` and this report. The two minor
+coverage suggestions remain assigned to Task 8 by the task owner.
