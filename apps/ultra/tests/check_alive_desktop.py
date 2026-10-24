@@ -15,6 +15,7 @@ from pathlib import Path
 import platform
 import subprocess
 import time
+from stream_measurement import Recorder, ProcessSampler, JsonLines, PlayingIntervals
 
 import check_canvas_desktop as ui
 import check_documents_desktop as windows
@@ -24,6 +25,10 @@ MAIN = 'Alive'
 DEVICE = Path('apps/ultra/examples/subtractive.ultra').resolve()
 operations = []
 native_inputs = []
+resource_sampler = None
+resource_writer = None
+playing = PlayingIntervals()
+control_action = 0
 
 
 def screenshot(name):
@@ -87,6 +92,8 @@ def log(action):
 
 
 def transport(action):
+    global control_action
+    control_action += 1
     ui.click(f'{action.title()} transport')
     wait_value('Transport playing', lambda s: s == str(action == 'start').lower())
 
@@ -334,11 +341,9 @@ def start_capture(name):
     path = ui.output / (name + '.f32')
     # Older pw-cat writes raw PCM to stdout without accepting --raw.
     raw = ['--raw'] if '--raw' in subprocess.check_output(['pw-cat', '--help'], text=True) else []
-    with path.open('wb') as output:
-        process = subprocess.Popen([
-            'pw-cat', '--record', *raw, '--rate=48000', '--format=f32', '--channels=2',
-            '--target=0', '--properties={ node.name = Alive-Session-Capture }', '-'],
-            stdout=output, stderr=subprocess.PIPE, text=True)
+    process = Recorder(path, [
+        'pw-cat', '--record', *raw, '--rate=48000', '--format=f32', '--channels=2',
+        '--target=0', '--properties={ node.name = Alive-Session-Capture }', '-'])
     for _ in range(50):
         if 'Alive-Session-Capture:input_FL' in subprocess.check_output(['pw-link', '-i'], text=True):
             break
@@ -351,9 +356,8 @@ def start_capture(name):
 
 def finish_capture(capture):
     process, path = capture
-    process.terminate()
-    stdout, stderr = process.communicate(timeout=8)
-    assert not stderr, (stdout or '') + stderr
+    supervision = process.finish()
+    assert supervision["complete"], supervision
     peaks, digest, frames, unequal = [], hashlib.sha256(), 0, 0
     with path.open('rb') as stream:
         while block := stream.read(48000 * 2 * 4):
@@ -367,38 +371,16 @@ def finish_capture(capture):
             peaks.append(max(map(abs, samples), default=0))
     return {'frames': frames, 'seconds': frames / 48000, 'peak': max(peaks, default=0),
             'one_second_peaks': peaks, 'unequal_stereo_samples_after_setup': unequal,
-            'sha256': digest.hexdigest(), 'path': path.name, 'physical_audio': False}
+            'sha256': digest.hexdigest(), 'path': path.name, 'physical_audio': False, 'supervision': supervision}
 
 
 def process_sample():
-    parents = {}
-    for entry in Path('/proc').iterdir():
-        if not entry.name.isdigit():
-            continue
-        try:
-            status = dict(line.split(':', 1) for line in (entry / 'status').read_text().splitlines() if ':' in line)
-            parents[int(entry.name)] = (int(status['PPid']), status)
-        except (OSError, ValueError, KeyError):
-            continue
-    descendants = {ui.pid}
-    while True:
-        expanded = descendants | {pid for pid, (parent, _) in parents.items() if parent in descendants}
-        if expanded == descendants:
-            break
-        descendants = expanded
-    result = {'monotonic': time.monotonic(), 'pids': sorted(descendants), 'rss_kib': 0,
-              'pss_kib': 0, 'threads': 0, 'fds': 0}
-    for pid in descendants:
-        try:
-            status = parents[pid][1]
-            result['rss_kib'] += int(status.get('VmRSS', '0 kB').split()[0])
-            result['threads'] += int(status['Threads'])
-            result['fds'] += len(list(Path(f'/proc/{pid}/fd').iterdir()))
-            for line in Path(f'/proc/{pid}/smaps_rollup').read_text().splitlines():
-                if line.startswith('Pss:'):
-                    result['pss_kib'] += int(line.split()[1])
-        except (OSError, KeyError):
-            continue
+    global resource_sampler, resource_writer
+    if resource_sampler is None:
+        resource_sampler = ProcessSampler(ui.pid)
+        resource_writer = JsonLines(ui.output/'resource-samples.jsonl')
+    result = resource_sampler.sample()
+    resource_writer.write(result)
     return result
 
 
@@ -828,12 +810,16 @@ def run():
             ui.click('Seek transport')
             if cycles % 4 == 0:
                 editor_edit(800 + cycles % 5 * 100)
-            time.sleep(min(8, max(0, required - played)))
+            playing.observe(time.monotonic(), value('Transport playing') == 'true', int(value('Absolute frame')), control_action)
+            segment_end = time.monotonic() + min(8, max(0, required - played))
+            while time.monotonic() < segment_end:
+                time.sleep(min(1, max(0, segment_end-time.monotonic())))
+                playing.observe(time.monotonic(), value('Transport playing') == 'true', int(value('Absolute frame')), control_action)
+                samples.append(process_sample())
             wait_value('Transport playing', lambda s: s == 'true')
             assert int(value('Absolute frame')) > frame_before, 'Audio frame clock stopped advancing'
-            played += time.monotonic() - started
-            # Driver metrics reset when Apply restarts I/O. Retain and check
-            # every stream before that boundary, rather than only the last one.
+            played = playing.seconds
+            # Retained stream epochs survive Apply; capture each boundary as well.
             log(f'endurance cycle {cycles + 1} before Stop/possible Apply')
             transport('stop')
             wait_value('Track 1 active voices', lambda s: s == '0')
@@ -866,7 +852,7 @@ def run():
               'entrypoints': entrypoints,
               'audio_settings': audio_settings, 'chain': chain,
               'hardware': platform.uname()._asdict(), 'cpu': subprocess.check_output(['lscpu'], text=True),
-              'physical_audio': False, 'underruns': 'not exposed by CPAL; no count claimed',
+              'physical_audio': False, 'underruns': 'typed CPAL Xrun reports are available through stream diagnostics; physical underruns unmeasured',
               'walkthrough': walkthrough, 'endurance': sustained,
               'playing_seconds_conservative': played, 'edit_transport_cycles': cycles,
               'process_tree_samples': samples, 'final_audio': final, 'operations': operations}

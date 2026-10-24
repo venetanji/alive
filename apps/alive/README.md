@@ -203,3 +203,10 @@ this profile.
 
 See `SESSION_CONTRACT.md` for timing, ownership, admission and persistence rules,
 and `PLAN.md` at the repository root for foundation and acceptance evidence.
+
+Stream ownership, retained typed timing records, shutdown and finite-run CPU/
+capture bounds are documented in [STREAM_OBSERVABILITY.md](STREAM_OBSERVABILITY.md).
+The Stream measurements disclosure under Audio details is optional; regular
+session snapshots remain compact. CPAL xrun reports, processing overruns and
+software capture observations are separate evidence, and none measures physical
+underruns on its own.

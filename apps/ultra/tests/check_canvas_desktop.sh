@@ -46,6 +46,7 @@ if [[ ${ULTRA_TEST_PRIVATE_SESSION:-} != 1 ]]; then
     pipewire -c "$ROOT/apps/ultra/tests/cpal-software-pipewire.conf" \
       >"$ULTRA_TEST_OUTPUT_DIR/pipewire.log" 2>&1 &
     ultra_audio_pid=$!
+    export ULTRA_TEST_AUDIO_PID="$ultra_audio_pid"
     for attempt in {1..50}; do
       if [[ -S "$ultra_runtime_dir/ultra-audio-test" ]]; then break; fi
       kill -0 "$ultra_audio_pid"

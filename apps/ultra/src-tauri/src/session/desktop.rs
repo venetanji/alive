@@ -168,7 +168,7 @@ impl Control {
         ensure_counter(self.generation)?;ensure_counter(self.draft_revision)?;
         self.stopped()?;
         self.host.validate(&prepared)?;
-        self.driver.stop();
+        self.driver.stop()?;
         self.host.install(prepared)?;
         self.generation += 1; self.editors.clear(); self.dirty = true; self.clear_scope()?;
         Ok(())
@@ -273,8 +273,9 @@ pub fn alive_transport(window: WebviewWindow, state: tauri::State<Desktop>, acti
 #[tauri::command]
 pub fn alive_audio_devices(window: WebviewWindow, state: tauri::State<Desktop>, host: Option<String>) -> Result<crate::audio::Catalog, String> {
     main_only(window.label())?;
-    let control = ui_lock(&state.0)?;
-    control.driver.catalog(host.as_deref().unwrap_or(&control.driver.snapshot().config.host))
+    let mut control = ui_lock(&state.0)?;
+    let selected=host.unwrap_or_else(||control.driver.snapshot().config.host);
+    control.driver.catalog(&selected)
 }
 #[tauri::command]
 pub fn alive_audio_configure(window: WebviewWindow, state: tauri::State<Desktop>, config: crate::audio::Config, generation: u64) -> Result<(), String> {
@@ -285,13 +286,17 @@ pub fn alive_audio_configure(window: WebviewWindow, state: tauri::State<Desktop>
     control.driver.configure(config)
 }
 #[tauri::command]
+pub fn alive_audio_diagnostics(window:WebviewWindow,state:tauri::State<Desktop>,after:String)->Result<serde_json::Value,String>{
+    main_only(window.label())?;let cursor=runtime::decimal(&after)?;Ok(ui_lock(&state.0)?.driver.diagnostics(cursor))
+}
+#[tauri::command]
 pub fn alive_audio(window: WebviewWindow, state: tauri::State<Desktop>, action: String, generation: u64) -> Result<(), String> {
     main_only(window.label())?;
     let mut control = ui_lock(&state.0)?;
     check_generation(control.generation, generation)?;
     match action.as_str() {
         "start" => control.driver.start(),
-        "stop" => { unsafe { native::alive_session_stop(); } control.driver.stop(); Ok(()) },
+        "stop" => { unsafe { native::alive_session_stop(); } control.driver.stop() },
         _ => Err("Unknown audio action".into()),
     }
 }
@@ -414,6 +419,7 @@ pub async fn alive_file(window: WebviewWindow, action: String, path: Option<Path
             "save" | "saveAs" | "quit" => None,
             _ => return Err("Unknown session action".into()),
         };
+        if matches!(action.as_str(),"new"|"open"){control.driver.reject_retiring()?;}
         if !resolve_draft(&window, &mut control)? { return Ok(None); }
         match action.as_str() {
             "save" | "saveAs" => { if !save_current(&window, &mut control, action == "saveAs", path)? { return Ok(None); } }
@@ -549,7 +555,7 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
                 .title("Alive").inner_size(1200., 800.).min_inner_size(900., 660.).build()?;
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![alive_current, alive_clip_edit, alive_clip_action, alive_enable_clips, alive_edit, alive_history, alive_discard, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio, alive_editor, alive_file, alive_device])
+        .invoke_handler(tauri::generate_handler![alive_current, alive_clip_edit, alive_clip_action, alive_enable_clips, alive_edit, alive_history, alive_discard, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio_diagnostics, alive_audio, alive_editor, alive_file, alive_device])
         .on_window_event(|window,event| { if window.label() == "main" { if let tauri::WindowEvent::CloseRequested { api, .. } = event { api.prevent_close(); request_close(window.app_handle()); } } })
         .build(context).expect("Unable to start Alive")
         .run(|app,event| match event {
@@ -559,7 +565,7 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
             }
             tauri::RunEvent::Exit => {
                 if let Ok(mut control) = app.state::<Desktop>().0.lock() {
-                    control.driver.stop();
+                    control.driver.authorized_exit();
                     unsafe { native::alive_session_stop(); native::alive_session_reset(); for slot in 0..16 { crate::ultra_canvas_close_document(slot); } }
                 }
             }
@@ -729,6 +735,17 @@ mod tests {
         let changed=root.join("changed.ultra");std::fs::copy(&path,&changed).unwrap();std::fs::write(&path,original).unwrap();
         let mut recovered=before.clone();for i in 0..2{let id=recovered.tracks[i].id.clone();let reference=capture_device(&changed,&recovered).unwrap();change_device(&mut recovered,&id,"replace",None,None,Some(reference)).unwrap();prepare(&recovered,&root.join("session.alive")).unwrap();}
         std::fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
+    fn delayed_retirement_preserves_draft_history_generation_and_prepared_roots(){
+        let _native_guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        let mut control=musical_control();let mut draft=control.host.prepared.as_ref().unwrap().document.clone();draft.tracks[0].notes[0].pitch=61;
+        control.edit(draft,"Change pitch",7,0).unwrap();let document=control.draft.clone();let history=serde_json::to_value(control.history.view()).unwrap();let prepared=control.host.prepared.as_ref().unwrap().document.clone();
+        let owner=crate::audio::tests::hold_retiring(&mut control.driver);
+        assert!(control.apply_draft().unwrap_err().starts_with("retirement_pending"));
+        assert_eq!(control.draft,document);assert_eq!(serde_json::to_value(control.history.view()).unwrap(),history);assert_eq!(control.generation,7);assert_eq!(control.draft_revision,1);assert_eq!(control.host.prepared.as_ref().unwrap().document,prepared);
+        unsafe{native::alive_session_stop_v3();} // scoped Stop remains available.
+        drop(owner);control.driver.stop().unwrap();
     }
     #[test]
     fn pending_history_versions_noops_baseline_redo_and_live_merge() {

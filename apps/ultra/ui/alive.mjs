@@ -376,6 +376,15 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   if(win?.__TAURI__?.event?.listen)win.__TAURI__.event.listen('alive-close-requested',()=>{guard(()=>file('quit'))();}).then(fn=>{unlisten=fn;});
   win?.addEventListener('blur',cancelGesture);
   async function poll(){if(disposed)return;try{await enqueue(refresh);}catch{}if(!disposed)win.setTimeout(poll,80);}
+  async function pollMeasurements(){
+    if(disposed)return;
+    if($('audio-details').open&&$('stream-measurements').open){
+      try{const result=await invoke('alive_audio_diagnostics',{after:'0'});if(!disposed)$('stream-diagnostics').value=JSON.stringify(result);}
+      catch(error){if(!disposed)$('stream-diagnostics').value=JSON.stringify({error:String(error)});}
+    }
+    if(!disposed)win.setTimeout(pollMeasurements,1000);
+  }
+  if(invoke)win.setTimeout(pollMeasurements,1000);
   if(invoke){enqueue(refresh).then(()=>notice('Ready. Select a clip to edit notes or automation.')).catch(()=>{});win.setTimeout(poll,80);}else notice('Open the native app with bash apps/alive/run.sh. This page does not synthesize audio.',true);
   return{model,refresh,dispose(){disposed=true;win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};
 }

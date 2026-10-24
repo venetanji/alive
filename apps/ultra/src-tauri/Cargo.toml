@@ -8,6 +8,9 @@ license = "AGPL-3.0-or-later"
 rust-version = "1.85"
 default-run = "ultra"
 
+[features]
+telemetry-disabled = []
+
 [lib]
 name = "ultra_desktop"
 

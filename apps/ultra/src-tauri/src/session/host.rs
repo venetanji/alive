@@ -111,7 +111,9 @@ impl Host {
         }
         Ok(())
     }
-    /// Caller must drop/stop its CPAL stream first. Musical Stop alone is insufficient.
+    /// Caller must witness both CPAL closures destroyed through Driver::stop.
+    /// A failed open, stream=None, or musical Stop alone is insufficient.
+    /// Headless probes have no CPAL closures and stop their renderer synchronously.
     pub fn install(&mut self, prepared: PreparedSession) -> Result<(), String> {
         self.validate(&prepared)?;
         unsafe { native::ultra_audio_stop(); }

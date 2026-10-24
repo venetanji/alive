@@ -79,7 +79,9 @@ struct Status {
     ready: bool,
     fault: bool,
     server_lost: bool,
+    #[serde(serialize_with="decimal_u64")]
     frames: u64,
+    #[serde(serialize_with="decimal_u64")]
     rejected: u64,
     period: u32,
     xruns: u32,
@@ -88,11 +90,13 @@ struct Status {
     sequence_enabled: bool,
     sequence_step: u32,
     sequence_note: u32,
+    #[serde(serialize_with="decimal_u64")]
     sequence_ticks: u64,
     sequence_clock_source: u32,
     message: String,
     output: Option<audio::Snapshot>,
 }
+fn decimal_u64<S:serde::Serializer>(value:&u64,serializer:S)->Result<S::Ok,S::Error>{serializer.serialize_str(&value.to_string())}
 fn status() -> Status {
     unsafe {
         let f = ultra_audio_flags();
@@ -119,7 +123,7 @@ fn status() -> Status {
         }
     }
 }
-fn device_status(io: &audio::Driver) -> Status {
+fn device_status(io: &mut audio::Driver) -> Status {
     let mut result = status();
     let output = io.snapshot();
     result.period = output.observed_buffer_frames;
@@ -135,15 +139,15 @@ fn device_status(io: &audio::Driver) -> Status {
 #[tauri::command]
 fn audio_status(state: tauri::State<Audio>, io: tauri::State<AudioIo>) -> Result<Status, String> {
     let _lock = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
-    let io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
-    Ok(device_status(&io))
+    let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
+    Ok(device_status(&mut io))
 }
 #[tauri::command]
 fn audio_start(state: tauri::State<Audio>, io: tauri::State<AudioIo>) -> Result<Status, String> {
     let _lock = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
     let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
     io.start()?;
-    Ok(device_status(&io))
+    Ok(device_status(&mut io))
 }
 #[tauri::command]
 fn audio_stop(state: tauri::State<Audio>, io: tauri::State<AudioIo>) -> Result<Status, String> {
@@ -152,12 +156,18 @@ fn audio_stop(state: tauri::State<Audio>, io: tauri::State<AudioIo>) -> Result<S
     unsafe {
         ultra_canvas_stop_all();
     }
-    io.stop();
-    Ok(device_status(&io))
+    io.stop()?;
+    Ok(device_status(&mut io))
+}
+#[tauri::command]
+fn audio_diagnostics(state:tauri::State<Audio>,io:tauri::State<AudioIo>,after:String)->Result<serde_json::Value,String>{
+    let _lock=state.0.lock().map_err(|_|"Audio control lock poisoned")?;
+    let cursor=after.parse::<u64>().map_err(|_|"Invalid epoch cursor")?;if cursor.to_string()!=after{return Err("Invalid epoch cursor".into());}
+    Ok(io.0.lock().map_err(|_|"Audio device lock poisoned")?.diagnostics(cursor))
 }
 #[tauri::command]
 fn audio_devices(io: tauri::State<AudioIo>, host: Option<String>) -> Result<audio::Catalog, String> {
-    let io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
+    let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
     let selected = host.unwrap_or_else(|| io.snapshot().config.host);
     io.catalog(&selected)
 }
@@ -166,7 +176,7 @@ fn audio_configure(state: tauri::State<Audio>, io: tauri::State<AudioIo>, config
     let _lock = state.0.lock().map_err(|_| "Audio control lock poisoned")?;
     let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
     io.configure(config)?;
-    Ok(device_status(&io))
+    Ok(device_status(&mut io))
 }
 #[tauri::command]
 fn audio_panic(state: tauri::State<Audio>) -> Result<Status, String> {
@@ -902,6 +912,7 @@ pub fn run_ultra(context: fn() -> tauri::Context<tauri::Wry>) {
             audio_stop,
             audio_panic,
             audio_devices,
+            audio_diagnostics,
             audio_configure,
             note_event,
             patch_apply,
@@ -944,7 +955,7 @@ pub fn run_ultra(context: fn() -> tauri::Context<tauri::Wry>) {
                     unsafe {
                         ultra_canvas_stop_all();
                     }
-                    if let Ok(mut io) = app.state::<AudioIo>().0.lock() { io.stop(); }
+                    if let Ok(mut io) = app.state::<AudioIo>().0.lock() { io.authorized_exit(); }
                 };
             }
         });
