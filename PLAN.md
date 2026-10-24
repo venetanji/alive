@@ -254,7 +254,7 @@ unused-helper warning remains ledgered; no physical/xrun/leak-free claim.
   individual clip loop length.
 - [x] Four clip slots per track and quantized individual launch/stop with
   reliable termination, separate selection/default/prepared/runtime state.
-- [ ] Expand to measured bounded eight tracks before adding scene launch.
+- [x] Expand to measured bounded eight tracks before adding scene launch.
 - [x] Automation binds stable device-instance/parameter IDs across chain edits
   and persistence; focused editing undo preserves existing Ultra behavior.
 - [ ] Add scene launching only after individual launch tests pass. Test and
@@ -478,7 +478,8 @@ replacement and ordinary root Close until both callback owners are gone, while
 authorized Quit and scoped Stop remain available. Typed stream epochs, bounded
 numeric timing records, lifetime totals and the finite resource/capture sampler
 are integrated into the existing native CI journey. The profile remains
-two tracks / six devices / eight clips; Task 13b has not enabled eight tracks.
+two tracks / six devices / eight clips at this checkpoint; the separately
+qualified Task 13b expansion follows below.
 
 Evidence: `experiments/alive-streams-m3-20261024/`. The final Alive clip wrapper
 has six complete epochs, 3787 callbacks, 8.178364 proven playing seconds and no
@@ -500,8 +501,70 @@ physical underrun, scheduling-lateness or endurance claim follows. Pinned CPAL
 may create/free its owned error payload outside the guarded app-owned fill and
 typed-action boundary. Timing excludes the final clock/publication tail; other
 platforms' terminal shutdown remains source-only here. The tooltip/pointer
-finding is deferred to the final interface audit. Exact pushed-checkpoint CI
-and packages remain pending; capacity, scenes and the final soak still follow.
+finding is deferred to the final interface audit. All three CI jobs at exact
+pushed checkpoint `e1f09e5` pass (`40078972894`), including sampler units,
+the actual saved-clip/observability journey, editor-resource and CPAL gates.
+The both-app package matrix (`40078972874`) passes all four targets: Linux,
+Windows/MSVC, Apple Silicon and Intel macOS. Publishing is skipped; exact-head
+CI/package receipts are retained with the stream evidence. Linux artifact `12554573512`
+is downloaded to `dist/alive/ci-e1f09e5/`; all four Alive/Ultra DEB/AppImage
+checksums and extracted notices/linkage/native ABI/bundled offline renders pass
+without a development library override. This is not a graphical package run.
+These results qualify the stream-lifetime checkpoint; capacity, scenes and
+the final soak still follow.
+
+Task 13b is locally accepted at production checkpoint `a04f259` with
+verification corrections `223dd34` and `1768324`. Independent review found two
+test-witness gaps; scoped reviews now accept both target-action termination
+and actual same-callback publication observations, with no new breakage.
+The original audio-isolation comparisons remain. Final focused allocation/free/
+lock guards pass, with sixteen target-action witnesses and 51,077 same-callback
+read observations. Copied-source negative probes reject discarded actions,
+late readers and the prior between-callback false pass. Production bytes,
+fixtures and timed functions are unchanged by the two verification fixes;
+historical measurements retain their exact source/artifact identities.
+
+Strict v3 admits up to eight tracks/sixteen roots with separately measured
+policy 2, retaining policy 1 within two tracks/six devices and legacy v2 at
+two/six. Four slots per track, at most two effects per track, 1024 events,
+32 events/frame, 64 events/1024 frames, 64 commands and 128 receipts remain.
+The explicit forty-event and seventeen-root cases reject, as do unchanged
+populated 188-frame loop fixtures whose conservative envelope is 96 > 64.
+Atomic multi-track actions remain disabled until Task 14 qualifies them.
+
+Evidence: `experiments/alive-capacity-m3-20261024/`. Parent independently checks
+692 original retained files/224 historical source hashes plus 327 first-fix and
+199 second-fix files, all 145 native timing distributions/174000 raw samples,
+60 paired telemetry distributions and eight CPU endpoint calculations. The
+eight-track combined 512-frame nearest-rank p99.9 is 7.163 ms/max 7.844 ms;
+at 1024 frames, 11.154 ms/max 11.203 ms. The largest eight-track 1024-frame
+maximum across cases is 12.642 ms. The combined scalar-scan surrogate is not a
+proven execution-time bound. Practical full-profile guidance is at least 512
+observed frames, preferring 1024 near bounds; policy 1 retains 256. Settings
+remain unchanged and the proposed 50% p99.9 target remains advisory.
+
+Actual separate release Alive/native/DEB artifacts and eight-track journey
+pass: all eight applied clip switches, independent bases/editors, automation
+ownership, gain/mute/solo, local Stop leaving seven tracks playing, Save/Open,
+remove/add/create/Apply/play and final termination. Four complete retired epochs
+total 8511 callbacks/4357632 frames, maximum fill 5.616093 ms, zero typed
+CPAL/render/shape/clock/overflow/budget-error counts. The finite software capture
+contains 2094080 frames/43.626667 seconds; parent streams/verifies all three
+captures and recorder cleanup. The short overhead controls report 63.133925
+live-checked playing seconds, but omit raw frame/monotonic interval observations
+and cannot count toward the final 1800-second gate.
+
+Host remains Ryzen 9 5900HS/Linux/private Xvfb/software PipeWire, 48 kHz stereo,
+requested/observed 512 frames. Native PSS is 485858 -> 495939 KiB/max 615699,
+with eight identity-gap rows; controls grow 490745 -> 528018 KiB with one gap.
+No physical underrun, scheduling-lateness, leak-free or endurance claim follows.
+The first journey's sticky-header pointer failure and previous tooltip finding
+belong to Task 15's one audit batch; keyboard activation is not a pointer fix.
+Full Rust 206 pass/four explicit ignores, full native, completed contracts,
+DOM 46 and release staging 18 pass. The narrow release prerequisite atomically
+stages fresh native-library inodes before Cargo tests. Local Arch AppImage
+tool failures and attributed compiler/display/portal noise remain retained;
+supported-runner final-source CI/packages are still required at final handoff.
 
 ### Task 14: Scene Launching
 

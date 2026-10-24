@@ -208,3 +208,26 @@ still two tracks / six devices / eight clips, with 48 kHz stereo, requested and
 observed 512 frames on the named software backend/hardware above. Capacity,
 scenes, final 1800-playing-second acceptance, physical audio/underruns,
 cross-platform runtime and leak freedom are not qualified by this checkpoint.
+
+## Pushed Checkpoint CI
+
+All three jobs in CI run `40078972894` pass on exact evidence checkpoint
+`e1f09e5be8398ac631aad84c31a82895e5f54caa`. This includes the sampler units,
+actual saved-clip/observability desktop journey, editor-resource regression and
+CPAL software loopback. The full exact-head job receipt is retained in
+`ci-e1f09e5.json`. Later capacity/scene changes require fresh qualification.
+Both-app package run `40078972874` passes Linux, Windows/MSVC, Apple Silicon
+and Intel macOS; publishing is skipped. `packages-e1f09e5.json` retains the
+complete exact-head job receipt.
+
+The Linux artifact `12554573512` is downloaded to `dist/alive/ci-e1f09e5/`.
+`linux-download-e1f09e5.json` retains all four verified package hashes; the
+Alive AppImage is `46db48f80db285e73051f70cac1c687e38928ca56e1fc22439f145f7b50d91a2`.
+All four Alive/Ultra DEB/AppImage payloads pass extracted notices, own-library
+linkage, native ABI and bundled-session offline rendering from outside the
+repository with development library/display overrides removed. The qualification
+receipt and full output are `linux-payload-e1f09e5.json` and
+`linux-payload-qualified-e1f09e5.log`. An initial parent verifier import failure
+before product execution is preserved in `linux-payload-e1f09e5.log`; correcting
+the temporary probe's Python module path requires no source/settings change.
+This is offline package qualification, not a graphical or physical-audio run.

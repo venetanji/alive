@@ -1,0 +1,30 @@
+[
+  [
+    "python3",
+    "apps/ultra/tests/alive_session_v3_fixtures.py",
+    "/tmp/alive-task13b-evidence/internal-verify-4/source/tests/saved_graphs.hpp"
+  ],
+  [
+    "c++",
+    "-std=c++17",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-pthread",
+    "-DCAPACITY_GUARDS",
+    "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+    "/tmp/alive-task13b-evidence/internal-verify-4/source/tests/alive_session_capacity.cpp",
+    "/tmp/alive-task13b-evidence/internal-verify-4/source/src-tauri/native/backend.cpp",
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build/core/libultra_core_bundle.a",
+    "-ldl",
+    "-lrt",
+    "-o",
+    "/tmp/alive-task13b-evidence/internal-verify-4/probe",
+    "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock"
+  ],
+  [
+    "/tmp/alive-task13b-evidence/internal-verify-4/probe",
+    "--verify"
+  ]
+]

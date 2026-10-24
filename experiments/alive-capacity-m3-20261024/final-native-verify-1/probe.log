@@ -1,0 +1,6 @@
+PASS: seventeen-root dependency refusal and exact forty-event frame rejection
+REFUSED,tracks=4,devices=8,length=188,events=8,window=1024,observed=96,limit=64,authored_timing_unchanged=true
+REFUSED,tracks=8,devices=16,length=188,events=8,window=1024,observed=96,limit=64,authored_timing_unchanged=true
+PASS: eight local launch/Stop paths preserve other saved chains across exact partitions
+PASS: concurrent callback/control/read accepted=1402 refused=2694 coherent_snapshots=61942 receipt_snapshots=61942 overlapping_callbacks=39 callbacks=2048
+PASS: capacity probe complete

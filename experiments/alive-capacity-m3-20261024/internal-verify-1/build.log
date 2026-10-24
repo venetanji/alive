@@ -1,0 +1,14 @@
+In file included from /tmp/alive-task13b-evidence/internal-verify-1/source/tests/../src-tauri/native/patch_graph.hpp:8,
+                 from /tmp/alive-task13b-evidence/internal-verify-1/source/tests/../src-tauri/native/canvas_workspace.hpp:2,
+                 from /tmp/alive-task13b-evidence/internal-verify-1/source/tests/../src-tauri/native/alive_session.hpp:3,
+                 from /tmp/alive-task13b-evidence/internal-verify-1/source/tests/alive_session_capacity_fixture.hpp:2,
+                 from /tmp/alive-task13b-evidence/internal-verify-1/source/tests/alive_session_capacity.cpp:1:
+/tmp/alive-task13b-evidence/internal-verify-1/source/tests/../src-tauri/native/canvas_voice_objects.hpp:25:10: fatal error: ../../core/generated/voice_saw.hpp: No such file or directory
+   25 | #include "../../core/generated/voice_saw.hpp"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+In file included from /tmp/alive-task13b-evidence/internal-verify-1/source/src-tauri/native/backend.cpp:2:
+/tmp/alive-task13b-evidence/internal-verify-1/source/src-tauri/native/sequence.hpp:3:10: fatal error: ../../core/engine.hpp: No such file or directory
+    3 | #include "../../core/engine.hpp"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.

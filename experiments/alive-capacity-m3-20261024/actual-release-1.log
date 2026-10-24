@@ -1,0 +1,103 @@
+-- Clockwork 94b67500c96e105491682ec68741b5018560eab7
+-- Ableton Link disabled — ClockworkClock uses its local-state backing
+-- DSP: ultra_hardened_guest
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build
+[  3%] Building Rust subsystems (cargo: clockwork-native)
+    Finished `release` profile [optimized] target(s) in 0.05s
+[  3%] Built target clockwork_rust
+[ 81%] Built target clockwork
+[ 87%] Built target ultra_hardened_guest
+[ 93%] Built target ultra_core
+[100%] Built target ultra_native
+[ 50%] Building CXX object CMakeFiles/ultra-parser-test.dir/tests/portable_parser_test.cpp.o
+[100%] Linking CXX executable ultra-parser-test
+[100%] Built target ultra-parser-test
+Portable bounded numeric parser passed
+Native shared library loaded; finite callback output and stop/restart passed
+        Appx Creating StoreLogo.png
+        Appx Creating Square30x30Logo.png
+        Appx Creating Square44x44Logo.png
+        Appx Creating Square71x71Logo.png
+        Appx Creating Square89x89Logo.png
+        Appx Creating Square107x107Logo.png
+        Appx Creating Square142x142Logo.png
+        Appx Creating Square150x150Logo.png
+        Appx Creating Square284x284Logo.png
+        Appx Creating Square310x310Logo.png
+        ICNS Creating icon.icns
+         ICO Creating icon.ico
+         PNG Creating 32x32.png
+         PNG Creating 64x64.png
+         PNG Creating 128x128.png
+         PNG Creating 128x128@2x.png
+         PNG Creating icon.png
+         PNG Creating mipmap-hdpi/ic_launcher_foreground.png
+         PNG Creating mipmap-hdpi/ic_launcher_round.png
+         PNG Creating mipmap-hdpi/ic_launcher.png
+         PNG Creating mipmap-mdpi/ic_launcher_foreground.png
+         PNG Creating mipmap-mdpi/ic_launcher_round.png
+         PNG Creating mipmap-mdpi/ic_launcher.png
+         PNG Creating mipmap-xhdpi/ic_launcher_foreground.png
+         PNG Creating mipmap-xhdpi/ic_launcher_round.png
+         PNG Creating mipmap-xhdpi/ic_launcher.png
+         PNG Creating mipmap-xxhdpi/ic_launcher_foreground.png
+         PNG Creating mipmap-xxhdpi/ic_launcher_round.png
+         PNG Creating mipmap-xxhdpi/ic_launcher.png
+         PNG Creating mipmap-xxxhdpi/ic_launcher_foreground.png
+         PNG Creating mipmap-xxxhdpi/ic_launcher_round.png
+         PNG Creating mipmap-xxxhdpi/ic_launcher.png
+         iOS Creating AppIcon-20x20@2x-1.png
+         iOS Creating AppIcon-20x20@1x.png
+         iOS Creating AppIcon-20x20@2x.png
+         iOS Creating AppIcon-20x20@3x.png
+         iOS Creating AppIcon-29x29@2x-1.png
+         iOS Creating AppIcon-29x29@1x.png
+         iOS Creating AppIcon-29x29@2x.png
+         iOS Creating AppIcon-29x29@3x.png
+         iOS Creating AppIcon-40x40@2x-1.png
+         iOS Creating AppIcon-40x40@1x.png
+         iOS Creating AppIcon-40x40@2x.png
+         iOS Creating AppIcon-40x40@3x.png
+         iOS Creating AppIcon-60x60@2x.png
+         iOS Creating AppIcon-60x60@3x.png
+         iOS Creating AppIcon-76x76@1x.png
+         iOS Creating AppIcon-76x76@2x.png
+         iOS Creating AppIcon-83.5x83.5@2x.png
+         iOS Creating AppIcon-512@2x.png
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: method `reserve_native` is never used
+  --> src/document_windows.rs:47:8
+   |
+36 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+47 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `ultra` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 29.16s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/deps/ultra_desktop-5eb604091aa76453)
+/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/deps/ultra_desktop-5eb604091aa76453: symbol lookup error: /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/deps/ultra_desktop-5eb604091aa76453: undefined symbol: alive_session_base_v2
+error: test failed, to rerun pass `--lib`
+
+Caused by:
+  process didn't exit successfully: `/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/x86_64-unknown-linux-gnu/release/deps/ultra_desktop-5eb604091aa76453` (exit status: 127)
+note: test exited abnormally; to see the full output pass --nocapture to the harness.
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/scripts/release.py", line 363, in <module>
+    main()
+    ~~~~^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/scripts/release.py", line 335, in main
+    run('cargo', 'test', '--manifest-path', APP/'src-tauri/Cargo.toml', '--release', '--locked', '--target', args.target, env=env)
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/scripts/release.py", line 39, in run
+    subprocess.run([str(a) for a in args], cwd=cwd, env=env, check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['cargo', 'test', '--manifest-path', '/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/Cargo.toml', '--release', '--locked', '--target', 'x86_64-unknown-linux-gnu']' returned non-zero exit status 127.

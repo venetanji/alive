@@ -18,6 +18,34 @@ The design's scalar mixed-result error priority is ratified:
 It is a request summary; authoritative member masks describe per-track results.
 Never present one reason as the distinct reason for every terminal member.
 
+Task 13 reconciliation: production capacity checkpoint `a04f259` uses policy 1
+for <=2 tracks/6 devices and the separately admitted policy 2 for larger strict
+v3 sessions up to 8/16. Both have four slots/track; 16 roots, 1024 events,
+32/frame, 64/1024-frame, 64 commands and 128 receipts remain. Atomic actions are
+still disabled on both profiles. Eight-track preview is already bounded at 128
+reads and coherent publication at 16592 bytes; measure scene reduction and the
+combined work before changing either profile's feature bits. Preserve explicit
+40-event refusal and unchanged 188-frame populated-fixture refusals 96 > 64.
+Task 13b measured guidance is observed buffers >=512, preferring 1024 near bounds;
+policy 1 retains >=256. No hard new buffer gate or automatic setting changes.
+
+Task 13a callback-retirement ownership is accepted through `3024057`, evidence
+checkpoint `e1f09e5`. Retain closure-owned metric Arcs, witnessed retirement gates,
+authorized terminal Quit and scoped Stop. Typed errors and duration histograms
+are per stream attempt, with 64 retained completed epochs and lifetime totals.
+Pinned CPAL owned error-payload allocation/free remains outside the strict
+app-owned typed-action guard; timing excludes separately measured final
+clock/publication tail. No universal backend RT, physical underrun or
+scheduling-lateness claim. The narrow Task13b release prerequisite atomically
+stages current native libraries before Cargo tests; preserve fresh inodes.
+
+Read task-13b-report.md for final production measurement/native artifacts and
+task-13b-evidence-closure.md for parent verification. Task 13b verification fixes
+change tests/report only; use the accepted latest source supplied at dispatch,
+while preserving historical a04f259 timing attribution. Do not rerun historical
+baselines just to rename them. New scene paths require their own same-source
+timing and actual release workflow. The final 1800-second soak remains Task 15.
+
 Task 12 reconciliation anchors, observed from frozen `16294e6`:
 
 - `session/desktop.rs::alive_clip_action` authenticates generation/preparation,

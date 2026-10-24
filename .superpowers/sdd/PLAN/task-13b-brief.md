@@ -7,6 +7,19 @@ passed their independent reviews and actual release workflows. Preserve those
 accepted implementations. Parent supplies their exact commits/reports at
 dispatch; do not work from the designs' obsolete v2 source anchors.
 
+Accepted prerequisites: Task 12 is `ecfed29` + `93879f5`, with its final rebuilt
+qualification at `813ba76`. Task 13a implementation is frozen through `3024057`,
+and its reviewed evidence/docs checkpoint is pushed at
+`e1f09e5be8398ac631aad84c31a82895e5f54caa` (your base). Its source findings are
+all addressed; the final real Ultra/Alive workflows and explicit-state controls
+are independently verified. Read current `apps/alive/STREAM_OBSERVABILITY.md`
+and the final sections of `task-13a-report.md`, plus final verification at
+`experiments/alive-streams-m3-20261024/fix-2/final-qualification/parent-native-verification.json`.
+The parent checkpoint changes documentation/evidence only after that production
+freeze. Historical distributions retain their actual source IDs. Preserve the
+CPAL owned-error and excluded-publication-tail boundaries; do not relabel them.
+The deferred tooltip pointer interaction belongs to Task 15's single audit.
+
 ## Scope And Constraints
 
 Measure the accepted 2-track/6-device profile, internal 4-track/8-device and
@@ -74,6 +87,14 @@ chain, automation/base/mute/solo, editor Close/reopen, Save/Open and playback.
 Retain typed per-epoch metrics, CPU/PSS/worker samples, software audio and
 screenshots. A browser fixture or native offline renderer alone is insufficient.
 Run affected and required full gates once; avoid unrelated repeated suites.
+
+Observed build prerequisite during this task: the local release workflow can
+resolve an old target-triple-adjacent native library while running Cargo tests.
+Retain the missing-symbol failure and narrow staging regression. Correcting
+that prerequisite is within this slice; stage the current native library on a
+new inode before tests/builds use it. Do not overwrite a mapped library, add
+environment-setting changes or use a development-library override to conceal
+an incorrect artifact. The independent review includes this build-path change.
 
 If measurement reveals a concrete blocker, leave the larger profile disabled,
 retain a small reproducible failing workload and report the working accepted

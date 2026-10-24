@@ -1,0 +1,841 @@
+{
+  "format": "alive-session-v3",
+  "title": "8 Independent Tracks",
+  "tempo": 240.0,
+  "lengthBeats": 8.0,
+  "loopEnabled": true,
+  "tracks": [
+    {
+      "id": "capacity-track-0",
+      "name": "Pulse",
+      "device": {
+        "instanceId": "capacity-instrument-0",
+        "sourceSha256": "723822d4ca7b721b5495b76644ca4a06e9c4ebdf7074086542fd35ed2aa004d7",
+        "bypassed": false,
+        "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/subtractive.ultra",
+        "id": "org.alive.subtractive",
+        "version": 1,
+        "parameters": {
+          "attack": 10.0,
+          "cutoff": 1777.0,
+          "decay": 150.0,
+          "level": 90.0,
+          "release": 300.0,
+          "resonance": 0.7,
+          "sustain": 0.65
+        }
+      },
+      "effects": [
+        {
+          "instanceId": "capacity-effect-0-0",
+          "sourceSha256": "a1d4a9c5e3c474979108ca42e53bc5fe1c58c28c8c18ad3681f5652dc1de30f8",
+          "bypassed": false,
+          "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/utility.ultra",
+          "id": "org.alive.utility",
+          "version": 2,
+          "parameters": {
+            "gain": 0.65
+          }
+        },
+        {
+          "instanceId": "capacity-effect-0-1",
+          "sourceSha256": "582bcdd1db059cf142acb963fc4124aca594a22d00c52d1251681714720bf787",
+          "bypassed": false,
+          "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/stereo-lowpass.ultra",
+          "id": "org.alive.stereo-lowpass",
+          "version": 2,
+          "parameters": {
+            "cutoff": 2400.0,
+            "resonance": 0.7
+          }
+        }
+      ],
+      "slots": [
+        {
+          "id": "capacity-clip-0-0",
+          "name": "Clip 1",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-0-0-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 48,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-0-0-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 52,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-0-0-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 56,
+              "velocity": 80
+            }
+          ],
+          "automation": [
+            {
+              "instanceId": "capacity-instrument-0",
+              "key": "cutoff",
+              "enabled": true,
+              "points": [
+                {
+                  "beat": 0.0,
+                  "value": 1200.0
+                },
+                {
+                  "beat": 4.0,
+                  "value": 2600.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "capacity-clip-0-1",
+          "name": "Clip 2",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-0-1-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 60,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-0-1-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 64,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-0-1-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 68,
+              "velocity": 80
+            }
+          ],
+          "automation": [
+            {
+              "instanceId": "capacity-instrument-0",
+              "key": "cutoff",
+              "enabled": true,
+              "points": [
+                {
+                  "beat": 0.0,
+                  "value": 1200.0
+                },
+                {
+                  "beat": 4.0,
+                  "value": 2600.0
+                }
+              ]
+            }
+          ]
+        },
+        null,
+        null
+      ],
+      "defaultClipId": "capacity-clip-0-0",
+      "gain": 0.2,
+      "mute": false,
+      "solo": false
+    },
+    {
+      "id": "capacity-track-1",
+      "name": "Harmony",
+      "device": {
+        "instanceId": "capacity-instrument-1",
+        "sourceSha256": "723822d4ca7b721b5495b76644ca4a06e9c4ebdf7074086542fd35ed2aa004d7",
+        "bypassed": false,
+        "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/subtractive.ultra",
+        "id": "org.alive.subtractive",
+        "version": 1,
+        "parameters": {
+          "attack": 10.0,
+          "cutoff": 2400.0,
+          "decay": 150.0,
+          "level": 90.0,
+          "release": 300.0,
+          "resonance": 0.7,
+          "sustain": 0.65
+        }
+      },
+      "effects": [
+        {
+          "instanceId": "capacity-effect-1-0",
+          "sourceSha256": "a1d4a9c5e3c474979108ca42e53bc5fe1c58c28c8c18ad3681f5652dc1de30f8",
+          "bypassed": false,
+          "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/utility.ultra",
+          "id": "org.alive.utility",
+          "version": 2,
+          "parameters": {
+            "gain": 1.0
+          }
+        },
+        {
+          "instanceId": "capacity-effect-1-1",
+          "sourceSha256": "582bcdd1db059cf142acb963fc4124aca594a22d00c52d1251681714720bf787",
+          "bypassed": false,
+          "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/stereo-lowpass.ultra",
+          "id": "org.alive.stereo-lowpass",
+          "version": 2,
+          "parameters": {
+            "cutoff": 2400.0,
+            "resonance": 0.7
+          }
+        }
+      ],
+      "slots": [
+        {
+          "id": "capacity-clip-1-0",
+          "name": "Clip 1",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-1-0-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 49,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-1-0-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 53,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-1-0-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 57,
+              "velocity": 80
+            }
+          ],
+          "automation": []
+        },
+        {
+          "id": "capacity-clip-1-1",
+          "name": "Clip 2",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-1-1-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 61,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-1-1-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 65,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-1-1-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 69,
+              "velocity": 80
+            }
+          ],
+          "automation": []
+        },
+        null,
+        null
+      ],
+      "defaultClipId": "capacity-clip-1-0",
+      "gain": 0.125,
+      "mute": false,
+      "solo": false
+    },
+    {
+      "id": "capacity-track-2",
+      "name": "Track 3",
+      "device": {
+        "instanceId": "capacity-instrument-2",
+        "sourceSha256": "723822d4ca7b721b5495b76644ca4a06e9c4ebdf7074086542fd35ed2aa004d7",
+        "bypassed": false,
+        "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/subtractive.ultra",
+        "id": "org.alive.subtractive",
+        "version": 1,
+        "parameters": {
+          "attack": 10.0,
+          "cutoff": 2400.0,
+          "decay": 150.0,
+          "level": 90.0,
+          "release": 300.0,
+          "resonance": 0.7,
+          "sustain": 0.65
+        }
+      },
+      "effects": [
+        {
+          "instanceId": "capacity-effect-2-0",
+          "sourceSha256": "a1d4a9c5e3c474979108ca42e53bc5fe1c58c28c8c18ad3681f5652dc1de30f8",
+          "bypassed": false,
+          "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/utility.ultra",
+          "id": "org.alive.utility",
+          "version": 2,
+          "parameters": {
+            "gain": 1.0
+          }
+        },
+        {
+          "instanceId": "capacity-effect-2-1",
+          "sourceSha256": "582bcdd1db059cf142acb963fc4124aca594a22d00c52d1251681714720bf787",
+          "bypassed": false,
+          "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/stereo-lowpass.ultra",
+          "id": "org.alive.stereo-lowpass",
+          "version": 2,
+          "parameters": {
+            "cutoff": 2400.0,
+            "resonance": 0.7
+          }
+        }
+      ],
+      "slots": [
+        {
+          "id": "capacity-clip-2-0",
+          "name": "Clip 1",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-2-0-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 50,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-2-0-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 54,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-2-0-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 58,
+              "velocity": 80
+            }
+          ],
+          "automation": []
+        },
+        {
+          "id": "capacity-clip-2-1",
+          "name": "Clip 2",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-2-1-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 62,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-2-1-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 66,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-2-1-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 70,
+              "velocity": 80
+            }
+          ],
+          "automation": []
+        },
+        null,
+        null
+      ],
+      "defaultClipId": "capacity-clip-2-0",
+      "gain": 0.125,
+      "mute": false,
+      "solo": false
+    },
+    {
+      "id": "capacity-track-3",
+      "name": "Track 4",
+      "device": {
+        "instanceId": "capacity-instrument-3",
+        "sourceSha256": "723822d4ca7b721b5495b76644ca4a06e9c4ebdf7074086542fd35ed2aa004d7",
+        "bypassed": false,
+        "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/subtractive.ultra",
+        "id": "org.alive.subtractive",
+        "version": 1,
+        "parameters": {
+          "attack": 10.0,
+          "cutoff": 2400.0,
+          "decay": 150.0,
+          "level": 90.0,
+          "release": 300.0,
+          "resonance": 0.7,
+          "sustain": 0.65
+        }
+      },
+      "effects": [
+        {
+          "instanceId": "capacity-effect-3-0",
+          "sourceSha256": "a1d4a9c5e3c474979108ca42e53bc5fe1c58c28c8c18ad3681f5652dc1de30f8",
+          "bypassed": false,
+          "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/utility.ultra",
+          "id": "org.alive.utility",
+          "version": 2,
+          "parameters": {
+            "gain": 1.0
+          }
+        },
+        {
+          "instanceId": "capacity-effect-3-1",
+          "sourceSha256": "582bcdd1db059cf142acb963fc4124aca594a22d00c52d1251681714720bf787",
+          "bypassed": false,
+          "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/stereo-lowpass.ultra",
+          "id": "org.alive.stereo-lowpass",
+          "version": 2,
+          "parameters": {
+            "cutoff": 2400.0,
+            "resonance": 0.7
+          }
+        }
+      ],
+      "slots": [
+        {
+          "id": "capacity-clip-3-0",
+          "name": "Clip 1",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-3-0-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 51,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-3-0-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 55,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-3-0-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 59,
+              "velocity": 80
+            }
+          ],
+          "automation": []
+        },
+        {
+          "id": "capacity-clip-3-1",
+          "name": "Clip 2",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-3-1-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 63,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-3-1-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 67,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-3-1-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 71,
+              "velocity": 80
+            }
+          ],
+          "automation": []
+        },
+        null,
+        null
+      ],
+      "defaultClipId": "capacity-clip-3-0",
+      "gain": 0.125,
+      "mute": false,
+      "solo": false
+    },
+    {
+      "id": "capacity-track-4",
+      "name": "Track 5",
+      "device": {
+        "instanceId": "capacity-instrument-4",
+        "sourceSha256": "723822d4ca7b721b5495b76644ca4a06e9c4ebdf7074086542fd35ed2aa004d7",
+        "bypassed": false,
+        "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/subtractive.ultra",
+        "id": "org.alive.subtractive",
+        "version": 1,
+        "parameters": {
+          "attack": 10.0,
+          "cutoff": 2400.0,
+          "decay": 150.0,
+          "level": 90.0,
+          "release": 300.0,
+          "resonance": 0.7,
+          "sustain": 0.65
+        }
+      },
+      "effects": [],
+      "slots": [
+        {
+          "id": "capacity-clip-4-0",
+          "name": "Clip 1",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-4-0-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 52,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-4-0-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 56,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-4-0-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 60,
+              "velocity": 80
+            }
+          ],
+          "automation": []
+        },
+        {
+          "id": "capacity-clip-4-1",
+          "name": "Clip 2",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-4-1-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 64,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-4-1-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 68,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-4-1-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 72,
+              "velocity": 80
+            }
+          ],
+          "automation": []
+        },
+        null,
+        null
+      ],
+      "defaultClipId": "capacity-clip-4-0",
+      "gain": 0.125,
+      "mute": false,
+      "solo": false
+    },
+    {
+      "id": "capacity-track-5",
+      "name": "Track 6",
+      "device": {
+        "instanceId": "capacity-instrument-5",
+        "sourceSha256": "723822d4ca7b721b5495b76644ca4a06e9c4ebdf7074086542fd35ed2aa004d7",
+        "bypassed": false,
+        "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/subtractive.ultra",
+        "id": "org.alive.subtractive",
+        "version": 1,
+        "parameters": {
+          "attack": 10.0,
+          "cutoff": 2400.0,
+          "decay": 150.0,
+          "level": 90.0,
+          "release": 300.0,
+          "resonance": 0.7,
+          "sustain": 0.65
+        }
+      },
+      "effects": [],
+      "slots": [
+        {
+          "id": "capacity-clip-5-0",
+          "name": "Clip 1",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-5-0-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 53,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-5-0-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 57,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-5-0-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 61,
+              "velocity": 80
+            }
+          ],
+          "automation": []
+        },
+        {
+          "id": "capacity-clip-5-1",
+          "name": "Clip 2",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-5-1-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 65,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-5-1-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 69,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-5-1-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 73,
+              "velocity": 80
+            }
+          ],
+          "automation": []
+        },
+        null,
+        null
+      ],
+      "defaultClipId": "capacity-clip-5-0",
+      "gain": 0.125,
+      "mute": false,
+      "solo": false
+    },
+    {
+      "id": "capacity-track-6",
+      "name": "Track 7",
+      "device": {
+        "instanceId": "capacity-instrument-6",
+        "sourceSha256": "723822d4ca7b721b5495b76644ca4a06e9c4ebdf7074086542fd35ed2aa004d7",
+        "bypassed": false,
+        "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/subtractive.ultra",
+        "id": "org.alive.subtractive",
+        "version": 1,
+        "parameters": {
+          "attack": 10.0,
+          "cutoff": 2400.0,
+          "decay": 150.0,
+          "level": 90.0,
+          "release": 300.0,
+          "resonance": 0.7,
+          "sustain": 0.65
+        }
+      },
+      "effects": [],
+      "slots": [
+        {
+          "id": "capacity-clip-6-0",
+          "name": "Clip 1",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-6-0-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 54,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-6-0-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 58,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-6-0-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 62,
+              "velocity": 80
+            }
+          ],
+          "automation": []
+        },
+        {
+          "id": "capacity-clip-6-1",
+          "name": "Clip 2",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-6-1-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 66,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-6-1-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 70,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-6-1-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 74,
+              "velocity": 80
+            }
+          ],
+          "automation": []
+        },
+        null,
+        null
+      ],
+      "defaultClipId": "capacity-clip-6-0",
+      "gain": 0.125,
+      "mute": false,
+      "solo": false
+    },
+    {
+      "id": "capacity-track-7",
+      "name": "Track 8",
+      "device": {
+        "instanceId": "capacity-instrument-7",
+        "sourceSha256": "723822d4ca7b721b5495b76644ca4a06e9c4ebdf7074086542fd35ed2aa004d7",
+        "bypassed": false,
+        "path": "../../../home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/examples/subtractive.ultra",
+        "id": "org.alive.subtractive",
+        "version": 1,
+        "parameters": {
+          "attack": 10.0,
+          "cutoff": 2400.0,
+          "decay": 150.0,
+          "level": 90.0,
+          "release": 300.0,
+          "resonance": 0.7,
+          "sustain": 0.65
+        }
+      },
+      "effects": [],
+      "slots": [
+        {
+          "id": "capacity-clip-7-0",
+          "name": "Clip 1",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-7-0-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 55,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-7-0-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 59,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-7-0-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 63,
+              "velocity": 80
+            }
+          ],
+          "automation": []
+        },
+        {
+          "id": "capacity-clip-7-1",
+          "name": "Clip 2",
+          "lengthBeats": 8.0,
+          "notes": [
+            {
+              "id": "capacity-note-7-1-0",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 67,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-7-1-1",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 71,
+              "velocity": 80
+            },
+            {
+              "id": "capacity-note-7-1-2",
+              "beat": 0.0,
+              "duration": 8.0,
+              "pitch": 75,
+              "velocity": 80
+            }
+          ],
+          "automation": []
+        },
+        null,
+        null
+      ],
+      "defaultClipId": "capacity-clip-7-0",
+      "gain": 0.125,
+      "mute": false,
+      "solo": false
+    }
+  ]
+}

@@ -1,0 +1,367 @@
+{
+  "complete": true,
+  "physical_audio": false,
+  "physical_xruns": null,
+  "stages": [
+    {
+      "mode": "baseline",
+      "repetition": 0,
+      "wall_seconds": 8.0797003179905,
+      "playing_seconds_proven": 7.429354390333018,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 5.76,
+          "elapsed": 8.078455279988702,
+          "one_core_percent_observed": 71.30075986517134,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.2,
+          "elapsed": 8.07925275999878,
+          "one_core_percent_observed": 2.4754764573058137,
+          "identities_shared": 4,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.03,
+          "elapsed": 8.079779013991356,
+          "one_core_percent_observed": 0.37129728360206976,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true
+    },
+    {
+      "mode": "sampler_1hz",
+      "repetition": 0,
+      "wall_seconds": 8.086745125008747,
+      "playing_seconds_proven": 8.000091898997198,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 5.45,
+          "elapsed": 8.085688459002995,
+          "one_core_percent_observed": 67.40304214827505,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.62,
+          "elapsed": 8.086559496994596,
+          "one_core_percent_observed": 7.667043075988319,
+          "identities_shared": 4,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.03,
+          "elapsed": 8.086743981999462,
+          "one_core_percent_observed": 0.3709774918901593,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true
+    },
+    {
+      "mode": "sampler_plus_diagnostics",
+      "repetition": 0,
+      "wall_seconds": 8.079053345994907,
+      "playing_seconds_proven": 7.99208895699284,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 6.4,
+          "elapsed": 8.076744260994019,
+          "one_core_percent_observed": 79.23984953823883,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.71,
+          "elapsed": 8.076976475989795,
+          "one_core_percent_observed": 8.790418074270704,
+          "identities_shared": 4,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.02,
+          "elapsed": 8.079012058005901,
+          "one_core_percent_observed": 0.24755502103974444,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true
+    },
+    {
+      "mode": "sampler_diagnostics_capture",
+      "repetition": 0,
+      "wall_seconds": 8.097474720998434,
+      "playing_seconds_proven": 8.00009477599815,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 5.48,
+          "elapsed": 8.093436486000428,
+          "one_core_percent_observed": 67.70918644359533,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.76,
+          "elapsed": 8.094822957005817,
+          "one_core_percent_observed": 9.388716764240577,
+          "identities_shared": 6,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.04,
+          "elapsed": 8.097387147005065,
+          "one_core_percent_observed": 0.4939865079168726,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true,
+      "capture": {
+        "frames": 420352,
+        "seconds": 8.757333333333333,
+        "peak": 0.13149361312389374,
+        "one_second_peaks": [
+          0.11041653156280518,
+          0.13149361312389374,
+          0.11041653156280518,
+          0.13149361312389374,
+          0.11041653156280518,
+          0.13149361312389374,
+          0.11041653156280518,
+          0.13149361312389374,
+          0.10394720733165741
+        ],
+        "unequal_stereo_samples_after_setup": 0,
+        "sha256": "9f96d789491082a074514e549d12e58f9a7631747c58176f1635b71dea98f627",
+        "path": "overhead-capture-0.f32",
+        "physical_audio": false,
+        "supervision": {
+          "complete": true,
+          "reason": "requested_stop",
+          "group_id": 1100784,
+          "recorder_pid": 1100788,
+          "returncode": 1,
+          "wall_seconds": 8.905921301004128,
+          "audio_bytes": 3362816,
+          "stderr_bytes": 0,
+          "limits": {
+            "wall_seconds": 2700.0,
+            "audio_bytes": 1073741824,
+            "metadata_bytes": 67108864,
+            "stderr_bytes": 1048576,
+            "disk_reserve_bytes": 268435456
+          }
+        }
+      }
+    },
+    {
+      "mode": "baseline",
+      "repetition": 1,
+      "wall_seconds": 8.077259311990929,
+      "playing_seconds_proven": 7.928052672010497,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 5.31,
+          "elapsed": 8.077448752999771,
+          "one_core_percent_observed": 65.73857863261581,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.08,
+          "elapsed": 8.077533714007586,
+          "one_core_percent_observed": 0.9904013134760264,
+          "identities_shared": 4,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.03,
+          "elapsed": 8.077269031011383,
+          "one_core_percent_observed": 0.37141266292876707,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true
+    },
+    {
+      "mode": "sampler_1hz",
+      "repetition": 1,
+      "wall_seconds": 8.080894083002931,
+      "playing_seconds_proven": 7.928079663004726,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 5.35,
+          "elapsed": 8.080111257993849,
+          "one_core_percent_observed": 66.21195957799611,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.63,
+          "elapsed": 8.080059783998877,
+          "one_core_percent_observed": 7.796972013098258,
+          "identities_shared": 4,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.04,
+          "elapsed": 8.080881098998361,
+          "one_core_percent_observed": 0.4949955272198977,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true
+    },
+    {
+      "mode": "sampler_plus_diagnostics",
+      "repetition": 1,
+      "wall_seconds": 8.081441734000691,
+      "playing_seconds_proven": 7.928083450009697,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 5.46,
+          "elapsed": 8.082225895006559,
+          "one_core_percent_observed": 67.55564705724633,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.62,
+          "elapsed": 8.082010073994752,
+          "one_core_percent_observed": 7.671358911008487,
+          "identities_shared": 4,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.02,
+          "elapsed": 8.081481248009368,
+          "one_core_percent_observed": 0.2474793838682284,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true
+    },
+    {
+      "mode": "sampler_diagnostics_capture",
+      "repetition": 1,
+      "wall_seconds": 8.092800400001579,
+      "playing_seconds_proven": 7.928078939003288,
+      "cpu": {
+        "app": {
+          "cpu_seconds_observed": 5.49,
+          "elapsed": 8.088818169009755,
+          "one_core_percent_observed": 67.8714725104532,
+          "identities_shared": 3,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "sampler_capture": {
+          "cpu_seconds_observed": 0.78,
+          "elapsed": 8.090112949998002,
+          "one_core_percent_observed": 9.641398146365715,
+          "identities_shared": 6,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        },
+        "server": {
+          "cpu_seconds_observed": 0.04,
+          "elapsed": 8.09275416500168,
+          "one_core_percent_observed": 0.4942693078826731,
+          "identities_shared": 1,
+          "identity_coverage_gap": false,
+          "unavailable_final_deltas": 0
+        }
+      },
+      "regular_ui_poll_ms": 80,
+      "constant_accessibility_transport_reads_hz": 1,
+      "telemetry_enabled": true,
+      "capture": {
+        "frames": 418304,
+        "seconds": 8.714666666666666,
+        "peak": 0.13149361312389374,
+        "one_second_peaks": [
+          0.13149361312389374,
+          0.11041653156280518,
+          0.13149361312389374,
+          0.11041653156280518,
+          0.13149361312389374,
+          0.11041653156280518,
+          0.13149361312389374,
+          0.11041653156280518,
+          0.13149361312389374
+        ],
+        "unequal_stereo_samples_after_setup": 0,
+        "sha256": "3cb1b69beee05d2bb4d883e26023e4ab2939ace81da256d22a83915af229544c",
+        "path": "overhead-capture-1.f32",
+        "physical_audio": false,
+        "supervision": {
+          "complete": true,
+          "reason": "requested_stop",
+          "group_id": 1101088,
+          "recorder_pid": 1101092,
+          "returncode": 1,
+          "wall_seconds": 8.870058165004593,
+          "audio_bytes": 3346432,
+          "stderr_bytes": 0,
+          "limits": {
+            "wall_seconds": 2700.0,
+            "audio_bytes": 1073741824,
+            "metadata_bytes": 67108864,
+            "stderr_bytes": 1048576,
+            "disk_reserve_bytes": 268435456
+          }
+        }
+      }
+    }
+  ],
+  "resources": {
+    "path": "/tmp/alive-task13b-evidence/overhead-controls-eight-1/control-resources.jsonl",
+    "bytes": 257440,
+    "sha256": "499d21ff2cf82d65c2663a1d1288a24e810acd6281f1e20a1e97c29e1c99f12b"
+  },
+  "scope": "Two repetitions of eight seconds per stage. Constant UI80ms and transport AT-SPI1Hz; optional diagnostic1Hz and observed process CPU. No percentile subtraction or complete-tree CPU claim."
+}

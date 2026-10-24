@@ -1,0 +1,63 @@
+{
+  "retained_files": 692,
+  "historical_source_files": 224,
+  "native": {
+    "epochs": 4,
+    "callbacks": 8511,
+    "frames": 4357632,
+    "duration_max_ns": 5616093
+  },
+  "controls": {
+    "epochs": 2,
+    "callbacks": 8792,
+    "frames": 4501504,
+    "duration_max_ns": 7277322
+  },
+  "control_stages_cpu_recomputed": 8,
+  "reported_control_playing_seconds": 63.133924746349415,
+  "control_raw_native_frame_intervals_retained": false,
+  "native_resources": {
+    "rows": 109,
+    "pss_first_kib": 485858,
+    "pss_last_kib": 495939,
+    "pss_max_kib": 615699,
+    "cpu_max_one_core_percent": 143.9696936605794,
+    "coverage_gap_rows": 8,
+    "pids_max": 9,
+    "webkit_workers_max": 3
+  },
+  "control_resources": {
+    "rows": 58,
+    "pss_first_kib": 490745,
+    "pss_last_kib": 528018,
+    "pss_max_kib": 528018,
+    "cpu_max_one_core_percent": 114.07854807232235,
+    "coverage_gap_rows": 1,
+    "pids_max": 3,
+    "webkit_workers_max": 2
+  },
+  "native_distributions": 145,
+  "native_raw_samples": 174000,
+  "paired_raw_distributions": 60,
+  "physical_audio": false,
+  "capture": {
+    "frames": 2094080,
+    "seconds": 43.626666666666665,
+    "peak": 0.13149361312389374,
+    "sha256": "28d90ca694c2472cbb2cbd5d114e5820e7039688d1920c6b82935a73d324cc92"
+  },
+  "control_captures": [
+    {
+      "frames": 420352,
+      "seconds": 8.757333333333333,
+      "peak": 0.13149361312389374,
+      "sha256": "9f96d789491082a074514e549d12e58f9a7631747c58176f1635b71dea98f627"
+    },
+    {
+      "frames": 418304,
+      "seconds": 8.714666666666666,
+      "peak": 0.13149361312389374,
+      "sha256": "3cb1b69beee05d2bb4d883e26023e4ab2939ace81da256d22a83915af229544c"
+    }
+  ]
+}
