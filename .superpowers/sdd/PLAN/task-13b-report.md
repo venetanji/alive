@@ -1,9 +1,10 @@
 # Task 13b: measured eight-track admission
 
 Status: production checkpoint and local measurement qualification complete;
-independent review found two verification gaps, addressed in fix round 1 below.
-Scoped independent re-review remains pending. The actual standalone eight-track
-release journey passes. This report is not parent task acceptance. Parent owns PLAN/ledger,
+independent review accepts I1 after fix round 1. Fix round 2 closes the remaining
+I2 between-callback witness gap; scoped independent re-review remains pending.
+The actual standalone eight-track release journey passes. This report is not
+parent task acceptance. Parent owns PLAN/ledger,
 retained experiments and independent review. Raw evidence root:
 `/tmp/alive-task13b-evidence/`. No intermediate run is overwritten.
 
@@ -339,7 +340,8 @@ ordering bug is covered by a meaningful red/green regression. First failures,
 startup observations, raw outliers, empty/short fixture refusals and missing
 physical/worker coverage remain visible. Independent review found zero Critical,
 two Important verification gaps (I1/I2), and one Minor warning-attribution item.
-Fix round 1 addresses I1/I2 without changing production source. The unused
+Fix round 1 addresses I1 and adds bounded I2 coordination; independent re-review
+found a remaining I2 generation gap, addressed in fix round 2 below. The unused
 `reserve_native` warning, Xvfb/DRI3 warnings and portal startup failures remain
 visible in retained logs and are deferred to parent's whole-branch triage;
 the successful runs are not warning-free. Task 15 owns pointer polish and the
@@ -370,7 +372,7 @@ observations. Roots stay live until both joins, and final emergency Stop still
 leaves every track's voices at zero. This is verification-only coordination;
 production callbacks acquire no new lock, wait or allocation.
 
-Exact-current-source command:
+Exact fix-round-1 source command:
 `python3 apps/ultra/tests/run_alive_capacity.py
 /tmp/alive-task13b-evidence/fix-1-final-verify --verify --guards`.
 It passes all allocation/free/lock guarded capacity, exact event/root refusal,
@@ -383,6 +385,13 @@ The outer log is `fix-1-final-verify-runner.log`. Observed concurrency:
 - 58331 coherent snapshots; 56278 snapshots with consumed live-phase requests.
 - 54295 render-overlap snapshots, callback endpoints 64 and 1984.
 - Overlap frame endpoints 1262431 and 1321920; producer endpoint callback 1984.
+
+These historical overlap counts use the first-round Boolean classifier. The
+subsequent review correctly found that two true observations can span different
+callbacks while the actual state read occurs entirely in the gap. The first-round
+late-reader mutation excludes observations only after completion; it does not
+exclude this between-callback case. Fix round 2 below supplies the missing
+same-generation check and replaces this count as the current concurrency proof.
 
 The compiled test source matches the worktree exactly, SHA-256
 `1ff32e1136f738f7def9fafc665468b7a5f29ee78cb32936188f42527bf5e6f7`.
@@ -444,3 +453,81 @@ historical `proven_control_playing_seconds` field does not strengthen that fact.
 Source review acceptance, final supported CI/packages and Task 15 endurance stay
 with parent. Scoped re-review should assess I1/I2 and any new verification
 breakage; no self-dispatched reviewer or broader production change is included.
+
+## Fix round 2: require one callback generation
+
+Previous head: `223dd34b48869d3c548e7add2e39c8da959a154d`. Review and contract:
+`task-13b-fix-1-review.md`, `task-13b-fix-2-brief.md`. I1 is accepted and its
+`partitioned()`/`deterministic_local()` source is byte-identical to that head.
+The remaining I2 issue is a Boolean ABA sequence: the first true can belong to
+callback N, the coherent state read can occur in the gap, and the second true
+can belong to callback N+1.
+
+The overlap predicate now additionally requires
+`before_callback == after_callback`. Those loads enclose both rendering-flag
+loads and the state call. The callback count increments after clearing the flag
+and before the next callback can set it; all these atomics retain their default
+sequentially consistent ordering, and the bounded 2048 callbacks cannot wrap
+the count. Equal counts plus both true flags therefore exclude the identified
+between-callback trace. The output names the count
+`same_callback_render_overlap_snapshots`. Startup/progress deadlines, the one
+producer, live roots through joins, receipt invariants and final emergency Stop
+remain unchanged. The producer-active flag denotes its live submission phase,
+including its bounded progress waits; callback and consumed-request advancement
+remain the progress witnesses, not a claim of continuous producer CPU execution.
+
+Focused command:
+`python3 apps/ultra/tests/run_alive_capacity.py
+/tmp/alive-task13b-evidence/fix-2-final-verify --verify --guards`.
+It passes with all sixteen target-action witnesses, exact event/root refusals,
+original other-track partitions and concurrent publication checks. Single-thread
+render guards retain their existing allocation/free/lock scope; the concurrent
+case remains a separate real renderer/publication test. Complete output and
+compiler output are `fix-2-final-verify/probe.log` and `build.log`; copied sources,
+`manifest.json` and `commands.json` bind the exact input/executable/arguments.
+The outer log is `fix-2-final-verify-runner.log`. Actual witnesses are:
+
+- 1352 accepted and 2744 queue/receipt refusals; 2048 callbacks complete.
+- 56861 coherent snapshots; 54841 snapshots with consumed live-phase requests.
+- 51077 same-callback render-overlap snapshots, callback endpoints 65 and 1984.
+- Overlap frame endpoints 1262431 and 1321920; producer endpoint callback 1984.
+
+Compiled test/worktree SHA-256:
+`96f956ecf2840d252c503a4321de5d93c0fcc5d2f6dc6a92ace6c1d3a39518c8`.
+Guard executable SHA-256:
+`3859b9eef06acf6b1c21696cf5613126cc7180e16bd2edd8cff3489b7e6f2d86`.
+
+Specific negative proof runs via
+`python3 /tmp/alive-task13b-evidence/run-fix-2-gap-probe.py`.
+It extracts the exact overlap predicates from checkpoint 223dd34 and the current
+copied source, then runs both against the same controlled callback-gap trace.
+The diagnostic uses the actual fixture, native renderer and coherent state API.
+Test-only handshakes outside native rendering force the complete state read
+between callbacks, while the captured rendering flags are both true and the
+callback observations are 0 then 1. The old predicate prints
+`read_between_callbacks=true,credited_overlap=1` and aborts its `!credited`
+assertion (SIGABRT, 0.164 seconds). The corrected predicate prints the same gap
+trace with `credited_overlap=0` and exits successfully (0.064 seconds).
+
+Evidence is in `fix-2-gap-probe-1/checkpoint-predicate/` and
+`fix-2-gap-probe-1/same-callback-predicate/`, each retaining the copied sources,
+predicate/diagnostic text, source/build hashes, binary, build and probe logs.
+The root retains exact `commands.json`, return codes/durations in `results.json`,
+and `complete.json`. Cores are disabled, handshakes have a 10-second deadline,
+and each execution has a 20-second outer bound; neither bound is reached.
+The retained diagnostic runner SHA-256 is
+`8cb373a9270daaa4700fc1d8f84d0a02f39e21f96495bdd9f902af4b37ffd804`.
+This deliberately scheduled diagnostic proves predicate discrimination of the
+reported false-pass trace; it is not a timing measurement or production failure.
+
+Self-review/impact: only the predicate, its explanatory comment and its output
+field change in `concurrent_publication()`, plus this report. The accepted I1
+checks, fixture/events, production native/Rust/UI sources, shared library and
+actual app are unchanged. The `measure()`/`timing()`/`main()` suffix still matches
+a04f259 byte-for-byte with SHA-256
+`42229acc3427efcc38fcdad79f32edaf65eec6f29a5802ad0e1cf4d7f243dd07`.
+The rebuilt diagnostic probe has a distinct executable layout and identity;
+all prior production/native/telemetry/UI timings retain their a04f259 artifact
+provenance. No production rebuild, timing rerun or unchanged full Rust/contracts/
+GUI suite is performed. All earlier logs and negative probes remain immutable.
+Parent owns scoped review, task acceptance, supported CI/packages and Task 15.

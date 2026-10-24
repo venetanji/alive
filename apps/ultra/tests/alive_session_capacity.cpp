@@ -199,7 +199,8 @@ void concurrent_publication() {
         assert(r.pending_mask + r.applied_mask + r.superseded_mask + r.canceled_mask + r.rejected_mask == r.track_mask);
       }
       if (s.last_consumed_request > first_live_serial) ++receipt_snapshots;
-      if (during_render && still_rendering && producer_active.load() && !done.load() &&
+      // A Boolean true/false/true cycle may enclose a read between callbacks.
+      if (during_render && still_rendering && before_callback == after_callback && producer_active.load() && !done.load() &&
           s.last_consumed_request > first_live_serial) {
         if (!overlaps.fetch_add(1)) {
           first_overlap_callback = before_callback;
@@ -247,7 +248,7 @@ void concurrent_publication() {
   assert(overlaps > 1 && first_overlap_callback < last_overlap_callback && last_overlap_callback <= producer_last_callback);
   assert(first_overlap_frame < last_overlap_frame && producer_last_callback >= 1984);
   for (unsigned t = 0; t < 8; ++t) assert(!s.tracks[t].mixer.active_voices);
-  std::printf("PASS: concurrent callback/control/read accepted=%u refused=%u coherent_snapshots=%u new_receipt_snapshots=%u render_overlap_snapshots=%u first_overlap_callback=%u last_overlap_callback=%u first_overlap_frame=%llu last_overlap_frame=%llu producer_last_callback=%u callbacks=2048\n",
+  std::printf("PASS: concurrent callback/control/read accepted=%u refused=%u coherent_snapshots=%u new_receipt_snapshots=%u same_callback_render_overlap_snapshots=%u first_overlap_callback=%u last_overlap_callback=%u first_overlap_frame=%llu last_overlap_frame=%llu producer_last_callback=%u callbacks=2048\n",
               accepted, refused, snapshots.load(), receipt_snapshots.load(), overlaps.load(), first_overlap_callback,
               last_overlap_callback, (unsigned long long)first_overlap_frame, (unsigned long long)last_overlap_frame, producer_last_callback);
 }
