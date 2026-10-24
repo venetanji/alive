@@ -19,6 +19,10 @@ pub struct PreparedDevice {
 #[derive(Clone, Debug)]
 pub struct PreparedTrack { pub instrument: usize, pub effects: Vec<usize> }
 #[derive(Clone, Debug)]
+pub struct PreparedClip { pub id:String, pub name:String, pub track:usize, pub slot:usize, pub event_begin:usize, pub event_count:usize, pub lane_count:u32, pub length_frames:u64, pub owned_masks:[u32;16] }
+#[derive(Clone, Debug)]
+pub enum Schedule { Legacy, Clips(Vec<PreparedClip>) }
+#[derive(Clone, Debug)]
 pub struct PreparedSession {
     pub origin: PathBuf,
     pub document: Session,
@@ -26,18 +30,30 @@ pub struct PreparedSession {
     pub devices: Vec<PreparedDevice>,
     pub events: Vec<FrameEvent>,
     pub length_frames: u64,
+    pub schedule: Schedule,
+    pub notice: Option<String>,
 }
-fn bounded(value: f64, min: f64, max: f64, label: &str) -> Result<(), String> {
+pub(super) fn bounded(value: f64, min: f64, max: f64, label: &str) -> Result<(), String> {
     if value.is_finite() && (min..=max).contains(&value) { Ok(()) }
     else { Err(format!("{label} must be finite and in {min}..{max}")) }
 }
-fn text(value: &str, limit: usize, label: &str) -> Result<(), String> {
+pub(super) fn text(value: &str, limit: usize, label: &str) -> Result<(), String> {
     if value.is_empty() || value.len() > limit || value.chars().any(char::is_control) {
         Err(format!("{label} must contain 1..{limit} bytes without control characters"))
     } else { Ok(()) }
 }
 
 pub fn prepare(session: &Session, path: &Path) -> Result<PreparedSession, String> {
+    if session.is_clips() {
+        session.validate_clips()?;
+        let mut common=(**session).clone();common.format="alive-session-v2".into();
+        let mut prepared=prepare(&Document::LegacyV2(common),path)?;
+        let mut document=session.clone();
+        for (target,source) in document.tracks.iter_mut().zip(&prepared.document.tracks) {
+            for (a,b) in target.devices_mut().zip(source.devices()) {a.parameters=b.parameters.clone();}
+        }
+        prepared.document=document;compile_clips(session,&mut prepared)?;return Ok(prepared);
+    }
     if session.format != "alive-session-v2" { return Err("Unsupported Alive session format; expected alive-session-v2".into()); }
     text(&session.title, 128, "Session title")?;
     bounded(session.tempo, 30., 240., "Tempo")?;
@@ -60,11 +76,12 @@ pub fn prepare(session: &Session, path: &Path) -> Result<PreparedSession, String
     let frames_per_beat = 48_000. * 60. / session.tempo;
     let frame = |beat: f64| (beat * frames_per_beat).round() as u64;
     let length_frames = frame(session.length_beats);
-    let mut result = PreparedSession { origin: path.to_path_buf(), document: session.clone(), tracks: vec![], devices: vec![], events: vec![], length_frames };
+    let mut result = PreparedSession { origin: path.to_path_buf(), document: session.clone(), tracks: vec![], devices: vec![], events: vec![], length_frames, schedule:Schedule::Legacy, notice:None };
     let mut references: Vec<_> = session.tracks.iter().enumerate().flat_map(|(track, t)| t.devices().enumerate().map(move |(position, d)| (track, position, d))).collect();
     references.sort_by_key(|(_, _, d)| &d.instance_id);
+    check_sources(session,path,None)?;
     for (track, position, reference) in references {
-        let context = |e| format!("Track '{}' instance '{}' ({}): {e}. Use Replace to recover", session.tracks[track].name, reference.instance_id, reference.path);
+        let context = |e| format!("Track '{}' instance '{}' ({}): {e}", session.tracks[track].name, reference.instance_id, reference.path);
         let device = prepare_device(reference, path, track).map_err(context)?;
         let expected = if position == 0 { canvas::device::DeviceKind::Instrument } else { canvas::device::DeviceKind::AudioEffect };
         if device.manifest.kind != expected { return Err(context("Track instruments only occupy the first chain position; effects require the chain runtime effect position".into())); }
@@ -84,8 +101,27 @@ pub fn prepare(session: &Session, path: &Path) -> Result<PreparedSession, String
     Ok(result)
 }
 
+pub(super) fn check_sources(session:&Session,origin:&Path,original:Option<&Session>)->Result<(),String>{
+    let resolve=|path:&str|{let path=origin.parent().unwrap_or(Path::new(".")).join(path);std::fs::canonicalize(&path).unwrap_or(path)};
+    let mut groups=std::collections::BTreeMap::<PathBuf,Vec<(&Track,&DeviceInstance)>>::new();
+    for track in &session.tracks{for reference in track.devices(){groups.entry(resolve(&reference.path)).or_default().push((track,reference));}}
+    for (path,references) in groups{
+        let context=references.iter().map(|(t,d)|format!("Track '{}' instance '{}' ({})",t.name,d.instance_id,d.path)).collect::<Vec<_>>().join("; ");
+        let loaded=documents::read_patch(&path).map_err(|e|format!("{context}: {e}. Restore this path from a matching original source, or explicitly Replace the intended instance. No matching backup is assumed."))?;
+        let patch=loaded.patch.ok_or_else(||format!("{context}: Expected a saved Ultra device"))?;let actual=fingerprint(&patch)?;
+        let stale=references.iter().filter(|(_,d)|d.source_sha256!=actual).map(|(t,d)|format!("Track '{}' instance '{}' ({})",t.name,d.instance_id,d.path)).collect::<Vec<_>>();
+        if stale.is_empty(){continue;}
+        let original_count=original.map_or(0,|s|s.tracks.iter().flat_map(Track::devices).filter(|d|resolve(&d.path)==path).count());
+        let guidance=if references.len()>1||original_count>1{
+            "Selected Replace changes only that instance; stale siblings block full preparation. Stop transport and resolve pending edits; preserve the changed .ultra at a new path before restoring anything. Restore a matching original backup at the shared path, then explicitly Replace each intended instance from the preserved changed copy and Save. A matching original backup is required; without one there is no general supported recovery in the current desktop workflow. Replace gives a fresh instance identity, default bases/bypass and removes that instance's automation lanes. Copying alone or trying siblings in turn does not recover this session."
+        }else{"Restore the original matching source at this path, or explicitly Replace this instance from the intended saved source. Replace resets its identity, bases/bypass and automation lanes."};
+        return Err(format!("Device source changed or fingerprint invalid: {}. {guidance}",stale.join("; ")));
+    }Ok(())
+}
+
 // Admission uses the current manifests only; dependency/hash and density checks stay at Apply.
 pub(super) fn validate_musical(session: &Session, prepared: &PreparedSession) -> Result<(), String> {
+    if session.is_clips(){let mut score=prepared.clone();return compile_clips(session,&mut score);}
     text(&session.title,128,"Session title")?;
     bounded(session.tempo,30.,240.,"Tempo")?;
     bounded(session.length_beats,1./64.,256.,"Clip length")?;
@@ -96,7 +132,7 @@ pub(super) fn validate_musical(session: &Session, prepared: &PreparedSession) ->
 }
 fn compile_music(session: &Session, result: &mut PreparedSession) -> Result<(), String> {
     let frames_per_beat=48_000.*60./session.tempo;
-    let frame=|beat:f64|(beat*frames_per_beat).round() as u64;
+    let frame=|beat:f64|if session.is_clips(){(beat*48_000.*60./session.tempo).round() as u64}else{(beat*frames_per_beat).round() as u64};
     let length_frames=result.length_frames;
     for (index, track) in session.tracks.iter().enumerate() {
         let context = |error: String| format!("Track '{}' ({}): {error}", track.name, track.device.path);
@@ -146,6 +182,36 @@ fn compile_music(session: &Session, result: &mut PreparedSession) -> Result<(), 
         result.tracks.push(PreparedTrack { instrument, effects });
     }
     Ok(())
+}
+
+pub(super) fn compile_clips(session:&Session,result:&mut PreparedSession)->Result<(),String> {
+    session.validate_clips()?;result.events.clear();let mut clips=Vec::new();
+    for (track,model) in session.tracks.iter().enumerate(){
+        bounded(model.gain,0.,2.,"Track gain")?;
+        for (slot,clip) in session.bank(&model.id).ok_or("Missing clip bank")?.slots.iter().enumerate(){
+            let Some(clip)=clip else {continue};
+            let begin=result.events.len();let length=(clip.length_beats*48_000.*60./session.tempo).round() as u64;
+            let mut score=session.clone();score.length_beats=clip.length_beats;
+            for t in &mut score.tracks {t.notes.clear();t.automation.clear();}
+            score.tracks[track].notes=clip.notes.iter().map(|n|Note{beat:n.beat,duration:n.duration,pitch:n.pitch,velocity:n.velocity}).collect();
+            score.tracks[track].automation=clip.automation.clone();
+            result.length_frames=length;result.tracks.clear();
+            compile_music(&score,result).map_err(|e|format!("Clip '{}' ({}): {e}",clip.name,clip.id))?;
+            result.events[begin..].sort_by_key(|e|(e.frame,e.kind,e.track,e.device,e.target));
+            let mut masks=[0;16];
+            for lane in clip.automation.iter().filter(|l|l.enabled){
+                let device=result.devices.iter().position(|d|d.instance_id==lane.instance_id&&d.track==track).ok_or("Missing automation device")?;
+                let parameter=result.devices[device].manifest.parameters.iter().position(|p|p.key==lane.key).ok_or("Missing automation parameter")?;
+                masks[device]|=1<<parameter;
+            }
+            clips.push(PreparedClip{id:clip.id.clone(),name:clip.name.clone(),track,slot,event_begin:begin,event_count:result.events.len()-begin,lane_count:clip.automation.iter().filter(|l|l.enabled).count() as u32,length_frames:length,owned_masks:masks});
+        }
+    }
+    if result.events.len()>1024{return Err("Stored clips exceed 1024 compiled events".into());}
+    // Empty banks still own their chain; compilation must not depend on a clip existing.
+    result.tracks=session.tracks.iter().map(|t|PreparedTrack{instrument:result.devices.iter().position(|d|d.instance_id==t.device.instance_id).unwrap(),effects:t.effects.iter().map(|e|result.devices.iter().position(|d|d.instance_id==e.instance_id).unwrap()).collect()}).collect();
+    result.length_frames=(session.length_beats*48_000.*60./session.tempo).round() as u64;
+    result.schedule=Schedule::Clips(clips);Ok(())
 }
 
 pub fn binding_value(binding: &canvas::device::HostParameter, value: f64) -> Result<(), String> {
@@ -223,7 +289,7 @@ pub(super) fn fingerprint(patch: &serde_json::Value) -> Result<String, String> {
     }
     Ok(format!("{:x}", Sha256::digest(serde_json::to_vec(&canonical(patch)).map_err(|e| e.to_string())?)))
 }
-fn token(value: &str, label: &str) -> Result<(), String> {
+pub(super) fn token(value: &str, label: &str) -> Result<(), String> {
     if value.is_empty() || value.len() > 64 || !value.bytes().all(|b| b.is_ascii_graphic() && b != b'/' && b != b'\\' && b != b'"') {
         return Err(format!("{label} must be a safe printable ASCII token of 1..64 bytes"));
     }

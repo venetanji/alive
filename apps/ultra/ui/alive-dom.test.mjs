@@ -27,6 +27,36 @@ class Element{
 }
 const descendants=element=>element.children.flatMap(child=>[child,...descendants(child)]);
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
+function clipState(){const s=state();s.mode='clipsV3';s.preparationRevision='1';s.snapshotSequence='1';s.document.format='alive-session-v3';s.preparedClips=[];
+  for(const t of s.document.tracks){const clip={id:`clip-${t.id}`,name:'Clip 1',lengthBeats:s.document.lengthBeats,notes:t.notes.map((n,i)=>({...n,id:`note-${t.id}-${i}`})),automation:t.automation};t.slots=[clip,null,null,null];t.defaultClipId=clip.id;delete t.notes;delete t.automation;s.preparedClips.push({trackId:t.id,clipId:clip.id,name:clip.name,slot:0,lengthFrames:'411429'});}
+  s.runtime={tracks:s.document.tracks.map(t=>({trackId:t.id,activeClipId:t.slots[0].id,phase:'0',epoch:'1',pendingAction:null,pendingClipId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'};return s;}
+
+test('four slots separate selection, draft-only launch and prepared runtime identity',async()=>{
+  const initial=clipState(),page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  assert.ok(page.find('Select Pulse slot 4'));await page.find('Select Pulse slot 2').fire('click');
+  assert.equal(native.calls.filter(c=>c.name==='alive_clip_action'||c.name==='alive_edit').length,0);
+  assert.ok(page.find('Create clip'));assert.equal(page.ids.get('add-note').disabled,true);
+  await page.find('Select Pulse slot 1').fire('click');await page.find('Launch Pulse Clip 1').fire('click');
+  const action=native.calls.find(c=>c.name==='alive_clip_action');assert.deepEqual(action.args.action,{kind:'launch',trackId:initial.document.tracks[0].id,clipId:initial.document.tracks[0].slots[0].id});assert.equal(action.args.preparationRevision,'1');view.dispose();
+});
+
+test('queued v3 note values keep originating clip and note IDs after selection changes',async()=>{
+  const initial=clipState(),first=initial.document.tracks[0].slots[0],second=structuredClone(first);second.id='second';second.name='Second';second.notes.forEach(n=>n.id+='-second');initial.document.tracks[0].slots[1]=second;
+  const page=dom('./alive.html'),native=backend(initial),boundary=delayedBoundary(native,'alive_base',()=>{}),view=mountAlive({...page,invoke:boundary.invoke});await settle();
+  const cutoff=page.find('Cutoff base');cutoff.value='1800';await cutoff.fire('change');
+  const pitch=page.find('Note 1 pitch');pitch.value='63';await pitch.fire('change');
+  await page.find('Select Pulse slot 2').fire('click');const velocity=page.find('Note 1 velocity');velocity.value='87';await velocity.fire('change');
+  boundary.release();await settle();await settle();
+  const doc=view.model.document();assert.equal(doc.tracks[0].slots[0].notes[0].pitch,63);assert.equal(doc.tracks[0].slots[1].notes[0].pitch,second.notes[0].pitch);assert.equal(doc.tracks[0].slots[1].notes[0].velocity,87);
+  assert.deepEqual(native.calls.filter(c=>c.name==='alive_edit').map(c=>c.args.draftRevision),[0,1]);view.dispose();
+});
+
+test('late focused clip creation accepts score without stealing a newer track selection',async()=>{
+  const initial=clipState(),page=dom('./alive.html'),native=backend(initial);let release;
+  const invoke=async(name,args)=>{if(name!=='alive_clip_edit')return native.invoke(name,args);await new Promise(resolve=>release=resolve);const snapshot=structuredClone(initial);snapshot.draft=structuredClone(snapshot.document);snapshot.draftRevision=1;snapshot.snapshotSequence='2';const t=snapshot.draft.tracks.find(t=>t.id===args.operation.trackId);t.slots[args.operation.slot]={id:'created',name:'Clip 2',lengthBeats:8,notes:[],automation:[]};return{snapshot,affected:{trackId:t.id,slot:1,clipId:'created',noteId:null}};};
+  const view=mountAlive({...page,invoke});await settle();await page.find('Select Pulse slot 2').fire('click');await page.find('Create clip').fire('click');await page.find('Select Harmony slot 1').fire('click');release();await settle();
+  assert.equal(view.model.document().tracks[0].slots[1].id,'created');assert.match(page.ids.get('clip-title').textContent,/Harmony/);assert.equal(page.find('Select Harmony slot 1').attrs['aria-pressed'],'true');view.dispose();
+});
 function dom(file){
   const ids=new Map(),doc={activeElement:null,addEventListener(){},removeEventListener(){}};doc.createElement=tag=>new Element(tag,doc);doc.createElementNS=(_,tag)=>new Element(tag,doc);doc.createTextNode=text=>{const e=new Element('text',doc);e.textContent=text;return e;};doc.getElementById=id=>ids.get(id);
   for(const[markup,tag,id]of readFileSync(new URL(file,import.meta.url),'utf8').matchAll(/<([\w-]+)\b[^>]*\bid="([^"]+)"[^>]*>/g)){const element=new Element(tag,doc);element.id=id;element.hidden=/\bhidden\b/.test(markup);ids.set(id,element);}

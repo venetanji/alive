@@ -8,6 +8,7 @@ pub struct Host {
     pub prepared: Option<PreparedSession>,
     revisions: [u64; 16],
     owned_roots: [bool; 16],
+    pub preparation_revision: u64,
 }
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -17,6 +18,29 @@ pub struct View<'a> {
     pub devices: Vec<&'a crate::canvas::device::HostManifest>,
 }
 impl Host {
+    fn configuration_v3(&self,prepared:&PreparedSession)->Result<(Box<native::ConfigV3>,Vec<crate::canvas::NativeGraph>),String> {
+        let mut limits=native::LimitsV3::default();
+        if unsafe{native::alive_session_limits_v3(native::V3_PROFILE_2X4,&mut limits)}==0||limits.features&native::V3_FEATURE_ADMITTED==0||limits.profile!=native::V3_PROFILE_2X4||limits.work_policy!=native::V3_WORK_POLICY_1||limits.max_tracks!=2||limits.max_devices!=6||limits.max_clips!=8{return Err("The native 2-track / 4-slot profile is unavailable".into());}
+        let (legacy,graphs)=self.configuration(prepared);let mut config=Box::<native::ConfigV3>::default();
+        config.profile=limits.profile;config.work_policy=limits.work_policy;config.preparation_revision=self.preparation_revision.checked_add(1).ok_or("Native preparation revision exhausted")?;
+        config.track_count=legacy.track_count;config.device_count=legacy.device_count;config.event_count=legacy.event_count;config.loop_enabled=legacy.loop_enabled;config.length_frames=prepared.length_frames;config.tempo_bpm=prepared.document.tempo;
+        config.devices[..prepared.devices.len()].copy_from_slice(&legacy.devices[..prepared.devices.len()]);config.events=legacy.events;
+        let Schedule::Clips(clips)=&prepared.schedule else{return Err("Not a clip bank".into())};config.clip_count=clips.len() as u32;
+        for (i,track) in prepared.document.tracks.iter().enumerate(){
+            config.tracks[i]=native::TrackV3{chain:legacy.tracks[i],slots:[native::V3_NONE;4],initial_clip:native::V3_NONE,reserved:0};
+            let default=&prepared.document.bank(&track.id).unwrap().default_clip_id;
+            for (index,clip) in clips.iter().enumerate().filter(|(_,c)|c.track==i){config.tracks[i].slots[clip.slot]=index as u32;if default.as_ref()==Some(&clip.id){config.tracks[i].initial_clip=index as u32;}}
+        }
+        for (index,clip) in clips.iter().enumerate(){config.clips[index]=native::ClipV3{track:clip.track as u32,event_begin:clip.event_begin as u32,event_count:clip.event_count as u32,lane_count:clip.lane_count,length_frames:clip.length_frames,owned_masks:clip.owned_masks};}
+        Ok((config,graphs))
+    }
+    /// Only a playable legacy candidate may fall back after stricter clip admission.
+    pub fn enable_clips(&self,mut prepared:PreparedSession)->Result<PreparedSession,String> {
+        self.validate(&prepared)?;
+        if prepared.document.is_clips(){return Ok(prepared);}
+        let attempt=(||{let mut candidate=prepared.clone();candidate.document=prepared.document.to_clips()?;let document=candidate.document.clone();prepare::compile_clips(&document,&mut candidate)?;self.admit(&candidate).map_err(|e|format!("{} (native reason {})",e.message,e.code))?;Ok::<_,String>(candidate)})();
+        match attempt {Ok(mut candidate)=>{candidate.notice=Some("Upgraded in memory; Save writes session v3".into());Ok(candidate)},Err(reason)=>{prepared.notice=Some(format!("Legacy session - clip-bank conversion unavailable: {reason}"));Ok(prepared)}}
+    }
     pub fn view(&self) -> Result<View<'_>, String> {
         let p = self.prepared.as_ref().ok_or("Create or open an Alive session")?;
         Ok(View { document: &p.document, path: &p.origin, devices: p.tracks.iter().map(|t| &p.devices[t.instrument].manifest).collect() })
@@ -44,7 +68,7 @@ impl Host {
                 parameter_count: device.manifest.parameters.len() as u32, revision: graph.revision, bypassed: reference.bypassed as u32, ..Default::default() };
             for (slot, parameter) in device.manifest.parameters.iter().enumerate() {
                 native.parameters[slot] = native::Parameter { node: parameter.node, param: parameter.slot,
-                    automated: model.automation.iter().any(|lane| lane.instance_id == device.instance_id && lane.key == parameter.key && lane.enabled) as u32,
+                    automated: match &prepared.schedule {Schedule::Legacy=>model.automation.iter().any(|lane| lane.instance_id == device.instance_id && lane.key == parameter.key && lane.enabled),Schedule::Clips(clips)=>clips.iter().any(|c|c.owned_masks[index]&(1<<slot)!=0)} as u32,
                     base: parameter.base, minimum: parameter.min, maximum: parameter.max, reserved: 0 };
             }
             config.devices[index] = native;
@@ -65,16 +89,25 @@ impl Host {
     }
     /// Prospective admission leaves the current playback and document untouched.
     pub fn validate(&self, prepared: &PreparedSession) -> Result<(), String> {
+        self.admit(prepared).map_err(|e|e.message)
+    }
+    pub(super) fn admit(&self,prepared:&PreparedSession)->Result<(),AdmissionError> {
+        if self.revisions.iter().any(|r|*r==u64::MAX)||self.preparation_revision==u64::MAX{return Err(AdmissionError{code:native::V3_BAD_FIELD,message:"Native revision exhausted".into()});}
+        if matches!(prepared.schedule,Schedule::Clips(_)) {
+            let (config,graphs)=self.configuration_v3(prepared).map_err(|message|AdmissionError{code:native::V3_FEATURE_DISABLED,message})?;
+            if unsafe {native::alive_session_validate_prepared_v3(&*config,graphs.as_ptr(),graphs.len() as u32)}==0{return Err(diagnostic(prepared));}
+            return Ok(());
+        }
         let (config, graphs) = self.configuration(prepared);
         for (index, graph) in graphs.iter().enumerate() {
             if unsafe { native::alive_session_validate_device_v2(&config.devices[index], graph) } == 0 {
                 let device = &prepared.devices[index];
                 let track = &prepared.document.tracks[device.track];
-                return Err(format!("Track '{}' instance '{}' ({}): {}. Use Replace to recover", track.name, device.instance_id, device.path.display(), native::error()));
+                return Err(AdmissionError{code:native::V3_GRAPH_REJECTED,message:format!("Track '{}' instance '{}' ({}): {}", track.name, device.instance_id, device.path.display(), native::error())});
             }
         }
         if unsafe { native::alive_session_validate_prepared_v2(&*config, graphs.as_ptr(), graphs.len() as u32) } == 0 {
-            return Err(native::error());
+            return Err(AdmissionError{code:native::V3_BAD_FIELD,message:native::error()});
         }
         Ok(())
     }
@@ -94,7 +127,10 @@ impl Host {
         Ok(())
     }
     fn apply(&mut self, prepared: &PreparedSession) -> Result<(), String> {
+        if self.revisions.iter().any(|r|*r==u64::MAX)||self.preparation_revision==u64::MAX{return Err("Native revision exhausted".into());}
         let (config, graphs) = self.configuration(prepared);
+        let clips=if prepared.document.is_clips(){Some(self.configuration_v3(prepared)?.0)}else{None};
+        self.preparation_revision=self.preparation_revision.checked_add(1).ok_or("Native preparation revision exhausted")?;
         unsafe {
             if native::alive_session_reset() == 0 { return Err("Stop device I/O before applying a session".into()); }
             for slot in 0..16 {
@@ -108,7 +144,8 @@ impl Host {
                 if crate::ultra_canvas_install_document(slot as u32, graph) == 0 { return Err(format!("Native device {} installation failed", slot + 1)); }
                 self.owned_roots[slot] = true;
             }
-            if native::alive_session_configure_v2(&*config) == 0 { return Err(native::error()); }
+            let accepted=match clips {Some(config)=>native::alive_session_configure_v3(&*config),None=>native::alive_session_configure_v2(&*config)};
+            if accepted == 0 { return Err(native::error()); }
         }
         Ok(())
     }
@@ -147,3 +184,14 @@ impl Host {
 }
 
 fn layout(value: &str) -> u32 { match value { "stereo" => 2, "mono" => 1, _ => 0 } }
+
+pub(super) struct AdmissionError {pub code:u32,pub message:String}
+fn diagnostic(prepared:&PreparedSession)->AdmissionError {
+    let native_message=native::error();let mut d=native::DiagnosticV3::default();
+    if unsafe{native::alive_session_diagnostic_v3(&mut d)}==0{return AdmissionError{code:native::V3_BAD_FIELD,message:native_message};}
+    if d.error==native::V3_GRAPH_REJECTED{return AdmissionError{code:d.error,message:format!("V3 graph policy restriction: {native_message}. The source may remain valid for legacy playback")};}
+    let resource=match d.resource{native::V3_RESOURCE_EVENTS=>"events",native::V3_RESOURCE_ROOT_CLEARS=>"root clears",native::V3_RESOURCE_EVENT_SCANS=>"event scans",native::V3_RESOURCE_PARAMETER_WRITES=>"parameter writes",native::V3_RESOURCE_GUARD_STEPS=>"guard steps",_=>"native admission"};
+    let contributors=prepared.document.tracks.iter().enumerate().filter(|(i,_)|d.track_mask&(1<<i)!=0).map(|(i,t)|{let clips=match &prepared.schedule {Schedule::Clips(clips)=>clips.iter().enumerate().filter(|(n,c)|c.track==i&&(d.clip[i]==native::V3_NONE||*n==d.clip[i] as usize)).map(|(_,c)|c.name.as_str()).collect::<Vec<_>>().join(", "),_=>String::new()};format!("{} [{}]: {}{}",t.name,clips,if d.contribution[i]==u32::MAX{"at least "}else{""},d.contribution[i])}).collect::<Vec<_>>().join("; ");
+    let envelope=d.conservative!=0||d.frame==native::V3_NO_FRAME||d.clip.iter().enumerate().any(|(i,c)|d.track_mask&(1<<i)!=0&&*c==native::V3_NONE);
+    AdmissionError{code:d.error,message:format!("{} exceeds {resource}: {}{} / {}. {contributors}. {native_message}. Use fewer simultaneous notes/points, longer very short loops, or simpler chains",if envelope{"Conservative combination envelope"}else{"Prepared bank"},if d.observed==u64::MAX{"at least "}else{""},d.observed,d.limit)}
+}

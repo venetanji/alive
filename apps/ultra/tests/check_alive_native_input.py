@@ -27,7 +27,7 @@ def run():
     ui.click('Audio details')
     assert alive.value('Transport playing') == 'false'
     ui.click('Audio details')
-    ui.click('Pulse clip')
+    alive.select_clip('Pulse')
     for filename in ('utility.ultra', 'stereo-lowpass.ultra'):
         source = ui.output / filename
         source.write_bytes((Path('apps/ultra/examples') / filename).read_bytes())

@@ -3,18 +3,19 @@ use super::{Session, Note, Lane};
 use serde::{Deserialize, Serialize};
 const MAX_BYTES: usize = 8 * 1024 * 1024;
 #[derive(Clone, Debug, PartialEq, Serialize)]
-pub(super) struct Projection { title:String, tempo:f64, length_beats:f64, loop_enabled:bool, tracks:Vec<MusicTrack> }
+pub(super) struct Projection { title:String, tempo:f64, length_beats:f64, loop_enabled:bool, tracks:Vec<MusicTrack>, banks:Vec<super::ClipBank> }
 #[derive(Clone, Debug, PartialEq, Serialize)]
 struct MusicTrack { id:String, name:String, notes:Vec<Note>, automation:Vec<Lane> }
 impl From<&Session> for Projection {
     fn from(s:&Session)->Self { Self { title:s.title.clone(),tempo:s.tempo,length_beats:s.length_beats,loop_enabled:s.loop_enabled,
-        tracks:s.tracks.iter().map(|t|MusicTrack{id:t.id.clone(),name:t.name.clone(),notes:t.notes.clone(),automation:t.automation.clone()}).collect() } }
+        tracks:s.tracks.iter().map(|t|MusicTrack{id:t.id.clone(),name:t.name.clone(),notes:t.notes.clone(),automation:t.automation.clone()}).collect(),banks:s.banks().to_vec() } }
 }
 impl Projection {
     pub fn materialize(&self, live:&Session)->Result<Session,String> {
         if self.tracks.len()!=live.tracks.len() || self.tracks.iter().zip(&live.tracks).any(|(a,b)|a.id!=b.id) { return Err("History belongs to another track scope".into()); }
         let mut s=live.clone(); s.title=self.title.clone();s.tempo=self.tempo;s.length_beats=self.length_beats;s.loop_enabled=self.loop_enabled;
-        for (a,b) in self.tracks.iter().zip(&mut s.tracks) {b.name=a.name.clone();b.notes=a.notes.clone();b.automation=a.automation.clone();} Ok(s)
+        for (a,b) in self.tracks.iter().zip(&mut s.tracks) {b.name=a.name.clone();b.notes=a.notes.clone();b.automation=a.automation.clone();}
+        if let super::Document::ClipsV3(doc)=&mut s{doc.banks=self.banks.clone();} Ok(s)
     }
 }
 #[derive(Clone, Copy, Deserialize)]
@@ -27,6 +28,7 @@ struct Entry { before:Projection,after:Projection,label:String,bytes:usize }
 #[derive(Default)]
 pub(super) struct History { entries:Vec<Entry>,cursor:usize,bytes:usize }
 impl History {
+    pub fn identities(&self)->std::collections::HashSet<String>{self.entries.iter().flat_map(|e|[&e.before,&e.after]).flat_map(|p|p.banks.iter().flat_map(|b|b.slots.iter().flatten())).flat_map(|c|std::iter::once(c.id.clone()).chain(c.notes.iter().map(|n|n.id.clone()))).collect()}
     pub fn clear(&mut self) { *self=Self::default(); }
     pub fn view(&self)->View { View {can_undo:self.cursor>0,can_redo:self.cursor<self.entries.len(),undo_label:self.cursor.checked_sub(1).map(|i|self.entries[i].label.clone()),redo_label:self.entries.get(self.cursor).map(|e|e.label.clone())} }
     pub fn record(&mut self,a:&Session,b:&Session,label:&str)->Result<bool,String> {

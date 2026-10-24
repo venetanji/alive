@@ -2,9 +2,13 @@
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 mod prepare;
-pub use prepare::{prepare, PreparedSession};
+pub use prepare::{prepare, PreparedSession, Schedule};
 mod persistence;
 mod history;
+mod clips;
+mod runtime;
+pub use clips::{Document, ClipBank};
+pub type Session = Document;
 pub use persistence::{read, save};
 pub mod native;
 pub mod host;
@@ -13,7 +17,7 @@ pub mod desktop;
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-pub struct Session {
+pub struct LegacySession {
     pub format: String,
     pub title: String,
     pub tempo: f64,

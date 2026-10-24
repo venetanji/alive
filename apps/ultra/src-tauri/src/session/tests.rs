@@ -36,6 +36,76 @@ fn example() -> Session {
 }
 
 #[test]
+fn v3_strict_wire_migration_and_roundtrip_preserve_score_identity() {
+    let legacy = example();
+    let clips = legacy.to_clips().unwrap();
+    let wire = serde_json::to_value(&clips).unwrap();
+    assert_eq!(wire["format"], "alive-session-v3");
+    assert_eq!(wire["tracks"][0]["slots"].as_array().unwrap().len(), 4);
+    assert!(wire["tracks"][0].get("notes").is_none());
+    assert_eq!(wire["tracks"][0]["slots"][0]["notes"][0]["beat"], legacy.tracks[0].notes[0].beat);
+    assert_eq!(wire["tracks"][0]["slots"][0]["id"], "clip-8254b7a92a82cb008365518183971131");
+    assert_eq!(wire["tracks"][0]["slots"][0]["notes"][0]["id"], "note-b81cb31228756f6d8c9d9d538eceec38");
+    assert_eq!(clips, legacy.to_clips().unwrap());
+    let encoded = serde_json::to_string(&clips).unwrap();
+    assert_eq!(persistence::decode(&encoded, &example_path()).unwrap(), clips);
+    for field in ["defaultClipId", "slots"] {
+        let mut bad = wire.clone(); bad["tracks"][0].as_object_mut().unwrap().remove(field);
+        assert!(persistence::decode(&bad.to_string(), &example_path()).is_err());
+    }
+    let duplicate = encoded.replacen("\"parameters\":{", "\"parameters\":{\"cutoff\":999,", 1);
+    assert!(persistence::decode(&duplicate, &example_path()).is_err());
+    let mut empty = wire.clone(); empty["tracks"][0]["defaultClipId"] = serde_json::Value::Null;
+    empty["tracks"][0]["slots"] = serde_json::json!([null,null,null,null]);
+    assert!(persistence::decode(&empty.to_string(), &example_path()).is_ok());
+    let mut bad = wire.clone(); bad["tracks"][0]["slots"].as_array_mut().unwrap().pop();
+    assert!(persistence::decode(&bad.to_string(), &example_path()).is_err());
+}
+
+#[test]
+fn v3_compiles_independent_clip_ranges_and_empty_lane_ownership() {
+    let mut document=example().to_clips().unwrap();document.tempo=120.;
+    let id=document.tracks[0].id.clone();
+    let bank=document.bank_mut(&id).unwrap();
+    let mut copied=bank.slots[0].clone().unwrap();copied.id="copy".into();copied.name="Second".into();copied.length_beats=32.;
+    for n in &mut copied.notes{n.id=format!("copy-{}",n.id);}
+    for lane in &mut copied.automation{lane.points.clear();}
+    bank.slots[2]=Some(copied);bank.default_clip_id=None;
+    let prepared=prepare(&document,&example_path()).unwrap();
+    let Schedule::Clips(clips)=&prepared.schedule else {panic!("expected clips")};
+    assert_eq!(clips.len(),3);assert_eq!(clips[1].slot,2);assert_eq!(clips[1].id,"copy");
+    assert_eq!(clips[1].length_frames,768000);assert!(clips[1].owned_masks.iter().any(|m|*m!=0));
+    assert_eq!(clips[1].event_begin,clips[0].event_begin+clips[0].event_count);
+    assert_eq!(prepared.document,document);
+}
+
+#[test]
+fn v3_strict_ids_disabled_aggregate_and_source_free_range_rejections(){
+    let document=example().to_clips().unwrap();let good=serde_json::to_value(&document).unwrap();
+    for mutate in [
+        |v:&mut serde_json::Value|v["tracks"][0]["slots"][0]["unknown"]=serde_json::json!(true),
+        |v:&mut serde_json::Value|v["tracks"][0]["slots"][0]["notes"][0].as_object_mut().unwrap().remove("id").map(|_|()).unwrap(),
+        |v:&mut serde_json::Value|v["tracks"][1]["slots"][0]["id"]=v["tracks"][0]["slots"][0]["id"].clone(),
+        |v:&mut serde_json::Value|v["tracks"][1]["slots"][0]["notes"][0]["id"]=v["tracks"][0]["slots"][0]["notes"][0]["id"].clone(),
+        |v:&mut serde_json::Value|v["tracks"][0]["defaultClipId"]=v["tracks"][1]["slots"][0]["id"].clone(),
+        |v:&mut serde_json::Value|v["tracks"][0]["slots"][0]["automation"][0]["instanceId"]=v["tracks"][1]["device"]["instanceId"].clone(),
+        |v:&mut serde_json::Value|{let mut c=v["tracks"][0]["slots"][0].clone();c["id"]=serde_json::json!("disabled");c["notes"]=serde_json::json!([]);for l in c["automation"].as_array_mut().unwrap(){l["enabled"]=serde_json::json!(false);l["points"]=(0..129).map(|i|serde_json::json!({"beat":i as f64/32.,"value":500})).collect();}v["tracks"][0]["slots"][1]=c;},
+    ]{let mut bad=good.clone();mutate(&mut bad);assert!(persistence::decode(&bad.to_string(),&example_path()).is_err(),"{bad}");}
+    let mut invalid=good.clone();invalid["tracks"][0]["device"]["path"]=serde_json::json!("/nonexistent/source.ultra");invalid["tracks"][0]["slots"][0]["notes"][0]["velocity"]=serde_json::json!(0);
+    assert!(persistence::decode(&invalid.to_string(),&example_path()).unwrap_err().contains("velocity"));
+}
+
+#[test]
+fn v3_save_as_preserves_bank_ids_beats_defaults_and_source_hashes(){
+    let mut document=example().to_clips().unwrap();let id=document.tracks[0].id.clone();document.bank_mut(&id).unwrap().slots[0].as_mut().unwrap().notes[0].beat=0.03125;document.tracks[0].gain=0.43;
+    let folder=std::env::temp_dir().join(format!("alive-v3-roundtrip-{}",std::process::id()));std::fs::create_dir_all(folder.join("nested")).unwrap();
+    let (path,saved)=persistence::save_document(&folder.join("nested/session.alive"),&document,&example_path()).unwrap();let reopened=read(&path).unwrap();
+    assert!(reopened.document.is_clips());assert_eq!(saved.banks(),document.banks());assert_eq!(reopened.document.banks(),document.banks());
+    assert_eq!(saved.tracks[0].device.source_sha256,document.tracks[0].device.source_sha256);assert_eq!(saved.tracks[0].device.parameters,document.tracks[0].device.parameters);assert_eq!(saved.tracks[0].gain,0.43);
+    std::fs::remove_dir_all(folder).unwrap();
+}
+
+#[test]
 fn saved_session_resolves_two_real_independent_device_references() {
     let session = example();
     assert_eq!(session.tracks.len(), 2);
@@ -146,7 +216,7 @@ fn rejects_invalid_schedule_and_parameter_binding_before_admission() {
         |s: &mut Session| s.tracks[0].notes[0].velocity = 128,
         |s: &mut Session| s.tracks[0].automation[0].key = "missing".into(),
         |s: &mut Session| s.tracks[0].automation[0].points[0].value = -1.,
-        |s: &mut Session| s.tracks.push(s.tracks[0].clone()),
+        |s: &mut Session| {let track=s.tracks[0].clone();s.tracks.push(track)},
     ] {
         let mut session = example();
         mutate(&mut session);
@@ -246,6 +316,39 @@ fn rust_host_installs_the_saved_session_without_editor_windows() {
     let error = host::Host::default().validate(&broken).unwrap_err();
     assert!(error.contains("Harmony") && error.contains("subtractive.ultra") && error.contains("stereo"), "{error}");
     std::fs::remove_dir_all(output).unwrap();
+}
+
+#[test]
+fn v3_native_host_defaults_requests_and_graph_fallback_are_real() {
+    const NAME:&str="session::tests::v3_native_host_defaults_requests_and_graph_fallback_are_real";
+    if std::env::var("ALIVE_V3_HOST_CHILD").as_deref()!=Ok("1"){
+        let child=std::process::Command::new(std::env::current_exe().unwrap()).args(["--exact",NAME,"--nocapture"]).env("ALIVE_V3_HOST_CHILD","1").env_remove("DISPLAY").env_remove("WAYLAND_DISPLAY").output().unwrap();
+        assert!(child.status.success(),"{}\n{}",String::from_utf8_lossy(&child.stdout),String::from_utf8_lossy(&child.stderr));return;
+    }
+    let mut host=host::Host::default();let upgraded=host.enable_clips(read(&example_path()).unwrap()).unwrap();assert!(upgraded.document.is_clips(),"{:?}",upgraded.notice);
+    let default=upgraded.document.bank(&upgraded.document.tracks[0].id).unwrap().default_clip_id.clone();host.install(upgraded).unwrap();
+    let mut raw=native::StateV3::default();assert_eq!(unsafe{native::alive_session_state_v3(&mut raw)},1);assert_eq!(raw.playing,0);assert_eq!(raw.tracks[0].active_clip,0);assert_eq!(raw.tracks[0].phase,0);assert!(default.is_some());
+    let mut runtime=runtime::Runtime::default();let mut request=native::RequestV3::default();request.kind=native::V3_START;
+    assert_eq!(unsafe{native::ultra_external_start()},1);let receipt=runtime.request(&host,request,None,None).unwrap();assert_eq!(receipt.status,"queued");
+    let mut left=[0f32;512];let mut right=[0f32;512];assert_eq!(unsafe{native::ultra_external_render(512,left.as_mut_ptr(),right.as_mut_ptr())},1);
+    let (state,view)=runtime.poll(&host).unwrap();assert_eq!(state["playing"],1);assert_eq!(view.unwrap().requests[0].status,"applied");
+    unsafe{native::alive_session_stop_v3();native::ultra_audio_stop();native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
+    let folder=std::env::temp_dir().join(format!("alive-v3-fallback-{}",std::process::id()));std::fs::create_dir_all(&folder).unwrap();
+    let mut old=example();let source=crate::documents::read_patch(&example_path().parent().unwrap().join(&old.tracks[0].device.path)).unwrap().patch.unwrap();let mut patch=source.clone();
+    patch["device"]["parameters"].as_array_mut().unwrap().push(serde_json::json!({"key":"demo","label":"Demo","node":12,"param":"value","min":0,"max":1,"unit":""}));
+    for preset in patch["device"]["presets"].as_array_mut().unwrap(){preset["values"]["demo"]=serde_json::json!(0);}
+    let path=folder.join("toggle-binding.ultra");std::fs::write(&path,serde_json::to_vec(&patch).unwrap()).unwrap();
+    old.tracks[0].device.path=path.to_string_lossy().into_owned();old.tracks[0].device.source_sha256=prepare::fingerprint(&patch).unwrap();
+    let candidate=prepare(&old,&example_path()).unwrap();host.validate(&candidate).unwrap();
+    let mut explicit=candidate.clone();explicit.document=explicit.document.to_clips().unwrap();let doc=explicit.document.clone();prepare::compile_clips(&doc,&mut explicit).unwrap();
+    assert_eq!(host.admit(&explicit).err().unwrap().code,native::V3_GRAPH_REJECTED);assert!(host.enable_clips(explicit).is_err());
+    let retained=host.enable_clips(candidate).unwrap();assert!(!retained.document.is_clips());assert!(retained.notice.as_ref().unwrap().contains("graph policy"));assert_eq!(retained.document.tracks[0].notes,old.tracks[0].notes);
+    let mut dense=example();dense.tempo=120.;dense.length_beats=4.;
+    for (i,t) in dense.tracks.iter_mut().enumerate(){t.automation.clear();t.notes=(40..60).map(|pitch|Note{beat:i as f64,duration:0.01,pitch,velocity:80}).collect();}
+    let density=host.enable_clips(prepare(&dense,&example_path()).unwrap()).unwrap();assert!(!density.document.is_clips(),"Expected conservative phase combination refusal");assert_eq!(density.document.tracks[1].notes,dense.tracks[1].notes);assert!(density.notice.as_ref().unwrap().contains("Conservative"));
+    host.install(retained).unwrap();assert_eq!(unsafe{native::ultra_external_start()},1);assert_eq!(unsafe{native::alive_session_start()},1);assert_eq!(unsafe{native::ultra_external_render(512,left.as_mut_ptr(),right.as_mut_ptr())},1);assert_eq!(native::state().unwrap().playing,1);
+    let p=host.prepared.as_ref().unwrap();let saved=save(&folder.join("retained.alive"),&p.document,&p.origin).unwrap();assert!(!read(&saved).unwrap().document.is_clips());
+    unsafe{native::alive_session_stop();native::ultra_audio_stop();native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}std::fs::remove_dir_all(folder).unwrap();
 }
 
 #[test]

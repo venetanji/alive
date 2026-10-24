@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 
 // Browser geometry and input coverage only. The native desktop journey qualifies hosting/audio.
-async function openSession(page,longNames=false){
+async function openSession(page,longNames=false,clipBank=false){
   const document=JSON.parse(readFileSync(new URL('../../../alive/examples/two-instruments.alive',import.meta.url))),patch=JSON.parse(readFileSync(new URL('../../examples/subtractive.ultra',import.meta.url)));
   document.format='alive-session-v2';const deviceInstances={},runtime=[];
   document.tracks.forEach((track,index)=>{
@@ -19,6 +19,11 @@ async function openSession(page,longNames=false){
     deviceInstances[instanceId]={track:0,index:runtime.length,manifest};runtime.push({effective:manifest.parameters.map(p=>p.base),owned:manifest.parameters.map(()=>0)});
   }
   const snapshot={generation:1,draftRevision:0,history:{canUndo:false,canRedo:false},document,deviceInstances,dirty:false,draft:null,state:{playing:0,position:0,absoluteFrame:0,rejected:0,generation:1,peakLeft:0,peakRight:0,devices:runtime,tracks:document.tracks.map(()=>({peakLeft:0,peakRight:0,activeVoices:0}))},audio:{config:{host:'default',device:'default',sample_rate:48000},observed_buffer_frames:0,callbacks:0,stream_errors:0,failed:false,message:'Browser fixture'}};
+  if(clipBank){
+    document.format='alive-session-v3';snapshot.mode='clipsV3';snapshot.preparationRevision='9007199254740993';snapshot.snapshotSequence='1';snapshot.preparedClips=[];
+    document.tracks.forEach(t=>{const c={id:`clip-${t.id}`,name:'Clip 1',lengthBeats:8,notes:t.notes.map((n,i)=>({...n,id:`note-${t.id}-${i}`})),automation:t.automation};t.slots=[c,null,null,null];t.defaultClipId=c.id;delete t.notes;delete t.automation;snapshot.preparedClips.push({trackId:t.id,clipId:c.id,name:c.name,slot:0,lengthFrames:'205714'});});
+    snapshot.runtime={tracks:document.tracks.map(t=>({trackId:t.id,activeClipId:t.slots[0].id,phase:'0',epoch:'1',pendingAction:null,pendingClipId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'};
+  }
   await page.addInitScript(snapshot=>{
     window.removeTrack=async trackId=>{
       await new Promise(resolve=>{window.finishRemoval=resolve;});
@@ -82,4 +87,17 @@ test('piano body, resize, velocity, cancellation and keyboard gestures are bound
   const velocity=page.getByLabel('Selected note velocity',{exact:true});await velocity.scrollIntoViewIfNeeded();const v=await velocity.boundingBox();await page.mouse.move(v.x+v.width*.4,v.y+v.height/2);await page.mouse.down();await page.mouse.move(v.x+v.width*.7,v.y+v.height/2,{steps:8});await page.mouse.up();await expect.poll(async()=>(await edits()).length).toBe(5);
   await piano.focus();await page.keyboard.press('Control+z');await expect(page.locator('#redo')).toBeEnabled();
   await page.screenshot({path:testInfo.outputPath('piano-selected-history.png')});expect(errors).toEqual([]);
+});
+
+
+test('four-slot bank preserves numeric note identity and fits the minimum desktop',async({page},testInfo)=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:900,height:660});await openSession(page,false,true);
+  await expect(page.getByRole('button',{name:'Select Pulse slot 4',exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Select Pulse slot 2',exact:true}).click();await expect(page.getByRole('button',{name:'Add note',exact:true})).toBeDisabled();
+  await expect(page.getByRole('button',{name:'Create clip',exact:true})).toBeVisible();expect(await page.evaluate(()=>window.calls.some(c=>c.name==='alive_edit'||c.name==='alive_clip_action'))).toBe(false);
+  await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).click();
+  const pitch=page.getByRole('spinbutton',{name:'Note 1 pitch',exact:true});await pitch.fill('62');await pitch.press('Tab');await expect(pitch).toHaveValue('62');
+  const changes=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_edit'));expect(changes).toHaveLength(1);expect(changes[0].args.document.tracks[0].slots[0].notes[0].id).toMatch(/^note-/);expect(changes[0].args.document.tracks[0].slots[0].notes[0].pitch).toBe(62);expect(changes[0].args.document.tracks[0].defaultClipId).toBe(changes[0].args.document.tracks[0].slots[0].id);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.querySelector('main').scrollWidth<=document.querySelector('main').clientWidth)).toBe(true);
+  await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).scrollIntoViewIfNeeded();await page.screenshot({path:testInfo.outputPath('four-slot-minimum-desktop.png')});expect(errors).toEqual([]);
 });

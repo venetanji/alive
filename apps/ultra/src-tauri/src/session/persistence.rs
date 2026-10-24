@@ -13,7 +13,8 @@ pub fn read(path: &Path) -> Result<PreparedSession, String> {
     let session = decode(&text, &path)?;
     prepare(&session, &path)
 }
-pub fn save(path: &Path, session: &Session, origin: &Path) -> Result<PathBuf, String> {
+pub fn save(path: &Path, session: &Session, origin: &Path) -> Result<PathBuf, String> { save_document(path,session,origin).map(|(path,_)|path) }
+pub(super) fn save_document(path: &Path, session: &Session, origin: &Path) -> Result<(PathBuf,Session), String> {
     let prepared = prepare(session, origin)?;
     let mut path = path.to_path_buf();
     if path.extension().is_none() { path.set_extension("alive"); }
@@ -50,7 +51,7 @@ pub fn save(path: &Path, session: &Session, origin: &Path) -> Result<PathBuf, St
         let _ = fs::remove_file(&temporary);
         return Err(format!("Session was not saved: {error}"));
     }
-    Ok(path)
+    Ok((path,document))
 }
 
 fn relative_path(base: &Path, target: &Path) -> PathBuf {
@@ -80,7 +81,8 @@ pub(super) fn decode(text: &str, origin: &Path) -> Result<Session, String> {
     use sha2::{Digest, Sha256};
     let value: serde_json::Value = serde_json::from_str(text).map_err(|e| format!("Invalid Alive session JSON: {e}"))?;
     match value["format"].as_str() {
-        Some("alive-session-v2") => serde_json::from_str(text).map_err(|e| format!("Invalid Alive session JSON: {e}")),
+        Some("alive-session-v3") => super::clips::decode_v3(text),
+        Some("alive-session-v2") => serde_json::from_str::<LegacySession>(text).map(Document::LegacyV2).map_err(|e| format!("Invalid Alive session JSON: {e}")),
         Some("alive-session-v1") => {
             let old: SessionV1 = serde_json::from_str(text).map_err(|e| format!("Invalid Alive v1 session JSON: {e}"))?;
             let _ = old.format;
@@ -94,14 +96,14 @@ pub(super) fn decode(text: &str, origin: &Path) -> Result<Session, String> {
             for track in old.tracks {
                 let instance_id = format!("legacy-{}", &format!("{:x}", Sha256::digest(track.id.as_bytes()))[..32]);
                 let source = crate::documents::read_patch(&origin.parent().unwrap_or(Path::new(".")).join(&track.device.path))
-                    .map_err(|e| format!("Track '{}' instance '{}' ({}): {e}. Use Replace to recover", track.name, instance_id, track.device.path))?;
+                    .map_err(|e| format!("Track '{}' instance '{}' ({}): {e}. Restore the original source at this path before opening; after opening, use explicit Replace to choose a different source", track.name, instance_id, track.device.path))?;
                 let patch = source.patch.ok_or("Expected a saved Ultra device")?;
                 let source_sha256 = super::prepare::fingerprint(&patch)?;
                 tracks.push(Track { id: track.id, name: track.name, device: DeviceInstance { instance_id: instance_id.clone(), source_sha256, bypassed: false,
                     path: track.device.path, id: track.device.id, version: track.device.version, parameters: track.device.parameters }, effects: vec![], notes: track.notes,
                     automation: track.automation.into_iter().map(|l| Lane { instance_id: instance_id.clone(), key: l.key, enabled: l.enabled, points: l.points }).collect(), gain: track.gain, mute: track.mute, solo: track.solo });
             }
-            Ok(Session { format: "alive-session-v2".into(), title: old.title, tempo: old.tempo, length_beats: old.length_beats, loop_enabled: old.loop_enabled, tracks })
+            Ok(Document::LegacyV2(LegacySession { format: "alive-session-v2".into(), title: old.title, tempo: old.tempo, length_beats: old.length_beats, loop_enabled: old.loop_enabled, tracks }))
         }
         _ => Err("Unsupported Alive session format".into()),
     }

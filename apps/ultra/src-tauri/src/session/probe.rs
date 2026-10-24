@@ -90,7 +90,7 @@ fn saved_device_boundaries(host: &mut Host, source: &super::PreparedSession, out
     Ok(json!({"offsets":offsets,"observations":observations,"partitionsIdentical":true,"audioSha256":digest(&baseline),"energy":energy(&baseline)}))
 }
 fn saved_chain_proof(host: &mut Host, source: &super::PreparedSession, output: &Path) -> Result<Value, String> {
-    use super::{DeviceInstance, Lane, Note, Point, Session, Track};
+    use super::{DeviceInstance, Lane, Note, Point, Track};
     let patch = json!({"version":1,"profile":"ultra-canvas-v1",
         "nodes":[{"id":1,"type":"poly_note","x":0,"y":0,"params":{"voices":4}},
             {"id":2,"type":"mix_voice","x":0,"y":80,"params":{}},
@@ -115,10 +115,11 @@ fn saved_chain_proof(host: &mut Host, source: &super::PreparedSession, output: &
     let instrument = reference(&impulse,"probe-instrument")?;
     let utility = reference(&folder.join("utility.ultra"),"probe-utility")?;
     let filter = reference(&folder.join("stereo-lowpass.ultra"),"probe-filter")?;
-    let document = Session { format:"alive-session-v2".into(), title:"Saved chain proof".into(), tempo:120., length_beats:1., loop_enabled:false,
+    let document = super::LegacySession { format:"alive-session-v2".into(), title:"Saved chain proof".into(), tempo:120., length_beats:1., loop_enabled:false,
         tracks:vec![Track { id:"probe-track".into(), name:"Saved impulse chain".into(), device:instrument, effects:vec![utility,filter],
             notes:vec![Note { beat:0., duration:1. / 24000., pitch:60, velocity:127 }], automation:vec![], gain:1., mute:false, solo:false }] };
     let origin = output.join("chain.alive");
+    let document = super::Document::LegacyV2(document);
     let saved = save(&origin,&document,&origin)?;
     let prepared = read(&saved)?;
     unsafe { native::ultra_audio_stop(); }

@@ -55,3 +55,11 @@ test('older polling responses cannot replace a newer authoritative musical revis
   const b=structuredClone(a);b.draftRevision=5;b.draft=structuredClone(b.document);b.draft.tempo=140;model.accept(b);model.accept(a);
   assert.equal(model.document().tempo,140);assert.equal(model.snapshot().draftRevision,5);
 });
+
+test('native sequence and preparation strings reject late runtime snapshots beyond JS precision',()=>{
+  const model=createAliveModel(),a={...snapshot(),draftRevision:4,preparationRevision:'9007199254740993',snapshotSequence:'9007199254740993'};
+  model.accept(a);const b=structuredClone(a);b.state.playing=0;b.snapshotSequence='9007199254740994';model.accept(b);model.accept(a);
+  assert.equal(model.snapshot().state.playing,0);
+  const old=structuredClone(b);old.snapshotSequence='9007199254740995';old.preparationRevision='9007199254740992';old.state.playing=1;model.accept(old);assert.equal(model.snapshot().state.playing,0);
+  assert.throws(()=>model.accept({...b,snapshotSequence:9007199254740994}),/decimal string/);
+});

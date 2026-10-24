@@ -40,6 +40,19 @@ def value(name):
                     if 'Text' in a.get_interfaces())
 
 
+def select_clip(track):
+    name = f'Select {track} slot 1'
+    try:
+        ui.find(name)
+    except StopIteration:
+        name = f'{track} clip'
+    ui.click(name)
+
+
+def score(track):
+    return track['slots'][0] if 'slots' in track else track
+
+
 def numeric(name, number):
     ui.text(name, str(number))
     ui.keys('Tab')
@@ -427,7 +440,7 @@ def prepare_chain():
     lowpass = ui.output / 'journey-lowpass.ultra'
     utility.write_bytes(Path('apps/ultra/examples/utility.ultra').read_bytes())
     lowpass.write_bytes(Path('apps/ultra/examples/stereo-lowpass.ultra').read_bytes())
-    ui.click('Pulse clip')
+    select_clip('Pulse')
     choose_file('Add effect', 'Load Ultra Device', utility)
     choose_file('Add effect', 'Load Ultra Device', lowpass)
     # Reordering twice must preserve identities and restore the saved signal order.
@@ -437,11 +450,11 @@ def prepare_chain():
     reorder_click('Move Pulse Stereo Utility effect 2 earlier')
     ui.wait_for('Select Pulse Stereo Lowpass effect 2')
     # Another Utility with the same reusable ID/key belongs to Harmony alone.
-    ui.click('Harmony clip')
+    select_clip('Harmony')
     choose_file('Add effect', 'Load Ultra Device', utility)
     ui.click('Select Harmony Stereo Utility effect 1')
     numeric('Gain base', .85)
-    ui.click('Pulse clip')
+    select_clip('Pulse')
     ui.click('Select Pulse Stereo Utility effect 1')
     numeric('Gain base', .6)
     ui.click('Select Pulse Stereo Lowpass effect 2')
@@ -548,10 +561,10 @@ def live_chain():
     piano_history_with_effect_editor()
     wait_value('Transport playing', lambda s: s == 'true')
     assert int(value('Audio callbacks')) > before
-    ui.click('Harmony clip')
+    select_clip('Harmony')
     ui.click('Select Harmony Stereo Utility effect 1')
     assert float(value('Gain base')) == .85
-    ui.click('Pulse clip')
+    select_clip('Pulse')
     ui.click('Select Pulse Stereo Utility effect 1')
     assert float(value('Gain base')) == .65
     ui.click('Bypass Pulse Stereo Utility effect 1')
@@ -675,7 +688,14 @@ def run():
         transport('stop')
         (ui.output / 'smoke.json').write_text(json.dumps(report, indent=2))
         return
+    try:
+        ui.find('Select Pulse slot 1')
+        upgraded = True
+    except StopIteration:
+        upgraded = False
     ui.click('New session')
+    if upgraded:
+        windows.focus('Unsaved Alive Session'); ui.click('Discard'); windows.focus(MAIN)
     time.sleep(.5)
     # Exercise native device loading twice; each track keeps an independent root.
     choose_file('Replace Pulse device', 'Load Ultra Device', DEVICE)
@@ -683,7 +703,7 @@ def run():
     ui.click('Audio details')  # Keep the lower automation controls unobscured.
     chain = prepare_chain()
     # Replacement intentionally clears lanes, so explicitly author both enabled lanes.
-    ui.click('Pulse clip')
+    select_clip('Pulse')
     numeric('Tempo', 116)
     numeric('Note 1 duration', .75)
     numeric('Note 1 velocity', 83)
@@ -738,12 +758,16 @@ def run():
     assert effects[0]['parameters']['gain'] == .65 and effects[1]['parameters']['cutoff'] == 2000
     assert effects[0]['bypassed'] is True and effects[1]['bypassed'] is False
     assert saved['tracks'][1]['effects'][0]['parameters']['gain'] == .85
-    assert any(l['instanceId'] == effects[1]['instanceId'] and l['key'] == 'cutoff' and l['points'][0]['value'] == 1200 for l in saved['tracks'][0]['automation'])
+    assert any(l['instanceId'] == effects[1]['instanceId'] and l['key'] == 'cutoff' and l['points'][0]['value'] == 1200 for l in score(saved['tracks'][0])['automation'])
     chain['saved_instances'] = [d['instanceId'] for d in effects]
     assert chain['saved_instances'] == chain['prepared_instances']
-    assert saved['tracks'][0]['notes'][0]['duration'] == .75
-    assert saved['tracks'][0]['notes'][0]['velocity'] == 83
-    assert saved['tracks'][0]['notes'][12] == {'beat': 2.25, 'pitch': 81, 'duration': .25, 'velocity': 100}
+    assert score(saved['tracks'][0])['notes'][0]['duration'] == .75
+    assert score(saved['tracks'][0])['notes'][0]['velocity'] == 83
+    added = score(saved['tracks'][0])['notes'][12]
+    assert {key: added[key] for key in ('beat', 'pitch', 'duration', 'velocity')} == {'beat': 2.25, 'pitch': 81, 'duration': .25, 'velocity': 100}
+    if saved['format'] == 'alive-session-v3':
+        assert added['id'].startswith('note-')
+        assert len({note['id'] for note in score(saved['tracks'][0])['notes']}) == len(score(saved['tracks'][0])['notes'])
     transport('stop')
     wait_value('Track 1 active voices', lambda s: s == '0')
     wait_value('Track 2 active voices', lambda s: s == '0')
@@ -832,7 +856,7 @@ def run():
     transport('stop')
     ui.click('Save session')
     # Device removal runs while stopped, after every voice has terminated.
-    ui.click('Harmony clip')
+    select_clip('Harmony')
     ui.click('Remove Harmony Stereo Utility effect 1'); time.sleep(.3)
     assert value('Track 1 active voices') == '0'
     choose_file('Replace Harmony device', 'Load Ultra Device', DEVICE)

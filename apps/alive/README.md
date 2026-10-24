@@ -1,12 +1,15 @@
-# Alive: Piano Roll, Instruments And Effect Chains
+# Alive: Saved Clips, Instruments And Effect Chains
 
 Alive is a separate `alive` executable with a compact Rust/Tauri session UI.
 Ultra remains the `ultra` patch-editor executable. Both share the native engine
 and Rust library; Alive hosts saved Ultra instruments and ordered stereo effect
 chains through versioned device manifests and the native Faust evaluator. Canonical
-`alive-session-v2` files preserve instance IDs, original-source fingerprints,
-ordered effects, parameter bases, bypass and automation targets. Existing
-session-v1 examples migrate on Open; version-1 instrument manifests remain valid.
+`alive-session-v3` files preserve four clip slots per track, stable clip/note IDs,
+saved defaults, instance IDs, original-source fingerprints, ordered effects,
+parameter bases, bypass and automation targets. Existing v1/v2 sessions upgrade
+in memory on Open when admitted; Save writes the upgrade. A playable legacy
+session refused by the stricter clip-bank policy remains editable and runnable
+in v2 with the reason shown. Version-1 instrument manifests remain valid.
 The example references the original subtractive device
 twice; it does not contain a copied patch or a fixed synthesizer implementation.
 
@@ -66,12 +69,29 @@ notes. Save & start audio opens the output while leaving musical transport
 stopped. The panel reports the observed callback size separately from the
 requested buffer. Refresh retains disconnected selections so you can explicitly
 choose a replacement; rejected settings preserve the previous saved values.
+Use an observed buffer of at least 256 frames for practical clip-bank work.
+Smaller buffers remain diagnostic choices; admission is not a physical audio
+underrun guarantee. This guidance does not change saved audio settings.
 
 ## Perform And Edit
 
 - Start/Stop share one native audio frame clock. Seek uses beats within the
-  prepared clip, and Loop repeats the session length. Space works outside
+  global transport region, and Loop repeats its length. Space works outside
   focused controls. Meters show post-mixer callback peaks, including the master.
+- Each track has four fixed slots. Select chooses the score to edit; Launch
+  cues it at phase zero while stopped or queues a switch at the next strict
+  four-beat bar while playing. Track Stop stops only that track; global Stop
+  clears pending actions and silences every track. Runtime text distinguishes
+  queued/pending, applied, rejected and unavailable observations. A queued
+  request is not proof that it played.
+- Create, Duplicate, Delete, Name, Clip length and Set Saved Default affect the
+  selected clip through pending history. Duplicate copies notes and automation
+  with new score IDs but shares the track's existing device chain. Clip length
+  is independent of Transport length. Reopen starts stopped with saved defaults
+  cued at phase zero. Selection and last playback are not saved defaults.
+  Draft-only clips cannot launch; an edited prepared clip launches its prepared
+  version until stopped Apply. Deleting a draft clip does not stop its prepared
+  version. Legacy mode offers an explicit stopped Enable clip bank retry.
 - Select a clip for its interactive piano roll and precise numeric note fields.
   Double-click empty grid to add a velocity-100, quarter-beat note. Select a note,
   drag its body to move or its right edge to resize, or use arrows (Shift plus
@@ -108,12 +128,20 @@ choose a replacement; rejected settings preserve the previous saved values.
   effect and lanes; replacing an instance clears only its lanes. Reordering
   retains instance identity, lanes, bases and bypass. Remove track explicitly
   deletes its whole instrument/effect chain, keeping at least one track.
-  Apply/structural preparation invalidates stale editors. Source-change errors
-  identify the reference and explain Replace recovery.
+  Apply/structural preparation invalidates stale editors. Draft edits, history,
+  selection, launch, Stop and Save As retain hosted editor bindings.
 - Save/Save As persist tracks, instrument/effect references, fingerprints, bases,
   order, bypass, notes, automation and mixer values. File actions explicitly resolve pending schedule edits,
   then unsaved changes. Missing/incompatible device errors identify the track
   and reference; failed Open preserves the working session.
+
+Source hashes remain strict. If several instances reference an externally changed
+file, replacing only one cannot install while another still expects the original
+hash. Preserve the changed file at a new path, restore a matching original backup
+at the shared path, then explicitly Replace each intended instance with the
+preserved copy. This requires the matching original backup; without it, restore
+the dependency from another trusted copy before retrying. Alive neither changes
+sibling fingerprints nor rewrites sources to make a replacement pass.
 
 ## Verify
 
@@ -131,6 +159,9 @@ ULTRA_TEST_ALIVE=1 ALIVE_ENDURANCE_SECONDS=600 \
   ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_desktop.py" \
   bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-session-desktop
 ULTRA_TEST_ALIVE=1 \
+  ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_clips.py" \
+  bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-clips-desktop
+ULTRA_TEST_ALIVE=1 \
   ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_editor_resources.py" \
   bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-editor-resources
 python3 experiments/alive-session-20261024/verify.py
@@ -143,7 +174,8 @@ ten-minute sustained phase. Reports preserve actual stream errors, backend,
 rate/buffer, captured audio and process-tree resource samples. The current
 interface reports aggregate stream errors; CPAL's typed backend xrun reports
 are not separated by these counters. A zero stream-error count does not
-establish zero physical underruns.
+establish zero physical underruns. Driver counters reset on Stop, so periodic
+zero observations do not establish complete cumulative totals across restarts.
 The separate editor regression checks eight close/reopen cycles against the
 real webview process tree. Linux editors disconnect the pinned Wry IPC handler
 on GTK destruction to release its strong view/message-manager reference cycle.
@@ -152,9 +184,13 @@ on GTK destruction to release its strong view/message-manager reference cycle.
 
 One or two instrument tracks, up to two stereo effects per track and six hosted
 instances total; four voices per instrument, 48 kHz, explicit mono/stereo channel
-bundles, declared stereo device/master output, one shared clip length, up to
-128 notes and 256 automation points per
-track. Session length is at most 256 beats and 512 seconds. Scheduled events,
+bundles, declared stereo device/master output, four slots per track and eight
+stored clips total. Across all stored clips on each track, at most 128 notes,
+16 automation lanes and 256 points are retained, including disabled lanes.
+Transport and clip lengths are independently at most 256 beats / 512 seconds.
+The native 2x4 profile applies conservative density/work and graph-family limits;
+refusals identify contributors and recovery choices without trimming the score.
+Scheduled events,
 command queues and per-callback work are bounded. Structural changes require
 stopped transport and preparation outside the callback.
 
@@ -162,7 +198,8 @@ The authored AOT Faust kernels run in Ultra's native evaluator, alongside
 Clockwork. The legacy Clockwork Voice path adds 64 samples and is rejected by
 this hosted profile; native hosted alignment delay is zero. Wider speaker
 layouts, arbitrary Faust/JIT devices, external MIDI, unrestricted live graph
-editing and a full DAW arrangement are outside this first slice.
+editing, scenes, eight-track admission and a full DAW arrangement remain outside
+this profile.
 
 See `SESSION_CONTRACT.md` for timing, ownership, admission and persistence rules,
 and `PLAN.md` at the repository root for foundation and acceptance evidence.

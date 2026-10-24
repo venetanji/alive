@@ -33,9 +33,11 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   duration, metadata-selected instance/parameter automation, gain/mute/solo and
   stereo peak meters. Each selected-track chain exposes an instrument and up to
   two ordered stereo effects, live bases/effect bypass and optional instance editors.
-  Canonical session-v2 files preserve independent instance IDs, original-source
-  fingerprints, order, bases, bypass, musical data and mixer values. Existing
-  session-v1 examples migrate on Open. Original cutoff/level lanes remain;
+  Canonical session-v3 files preserve four clip slots per track, stable score IDs,
+  stopped saved defaults, independent instance IDs, original-source fingerprints,
+  order, bases, bypass, musical data and mixer values. Existing v1/v2 sessions
+  upgrade in memory when admitted; stricter clip-bank refusals retain playable v2.
+  Original cutoff/level lanes remain;
   prepared automation owns effective values while musical edits remain drafts.
   Optional hosted Ultra graph editors make supported bound parameter edits
   without owning DSP lifetime. Clip/automation drafts support a fixed-grid piano
@@ -88,11 +90,17 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   the existing Faust filter kernel. Alive hosts their saved graphs in its
   current two-track, six-instance profile. Add/remove/reorder/replacement require
   stopped preparation; live bypass preserves warm state without restarting I/O.
-  Selection does not launch playback. The single-clip piano roll supports
+  Selection does not launch playback. Individual Launch cues while stopped or
+  switches at the next strict four-beat bar; track Stop leaves other tracks
+  running. Create/duplicate/delete, names, independent clip lengths and saved
+  defaults share focused pending history. Draft-only clips cannot launch.
+  The selected-clip piano roll supports
   add/select/move/resize/delete, velocity and
   precise numeric/keyboard edits. Pending musical history is bounded to 64
-  entries / 8 MiB and preserves accepted live controls. Clip banks, additional
-  tracks and alternate DSP paths remain outside this profile.
+  entries / 8 MiB and preserves accepted live controls. Shared changed sources
+  require preserving the changed copy, restoring a matching original backup,
+  then explicitly replacing intended instances. Scenes, additional tracks and
+  alternate DSP paths remain outside this profile.
 - Supported object names and arguments must be explicit. Unsupported objects
   must be rejected visibly. Familiar appearance does not imply Max compatibility.
 - Linux desktop is the shipped target. A smaller browser preview supports

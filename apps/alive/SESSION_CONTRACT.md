@@ -1,8 +1,9 @@
 # Alive Session And Ultra Device Contract
 
-Implementation target, session version 2. Acceptance evidence is tracked in `PLAN.md`.
+Implementation target, session version 3 with explicit legacy v2 compatibility.
+Acceptance evidence is tracked in `PLAN.md`.
 
-Alive owns one session, up to two instrument tracks, one clip per track, one
+Alive owns one session, up to two instrument tracks, four nullable clip slots per track, one
 shared transport and a stereo master. Each track loads a saved `.ultra` instrument followed by zero, one or two
 ordered saved effects through Ultra's versioned manifest and graph validator. Track identity and DSP
 state are independent even when their device paths are identical. No DSP source
@@ -18,7 +19,9 @@ discontinuity clears notes and advances a generation; past-generation work
 cannot rearm voices. Intervals are half-open and events at the right endpoint
 belong to the next interval. At a shared frame, termination precedes automation,
 which precedes note-on. Preparation converts beat positions to integer frames
-using round-to-nearest; native events carry exact frame offsets thereafter.
+using the independent expression `round(beat * 48000 * 60 / tempo)` for starts,
+ends, points and lengths; native events carry exact frame offsets thereafter.
+Authored beat values are never rewritten from frame positions.
 Panel/editor, mixer and transport commands enter a bounded control queue and
 take effect at the next callback boundary. They do not claim a UI wall-clock
 timestamp or sample-accurate physical controller ingress. Clip/automation
@@ -34,9 +37,11 @@ any chosen host alignment delay; never label startup muting as latency.
 ## Bounds And Ownership
 
 At most six devices across two tracks, four voices per instrument, 128 notes,
-16 automation lanes and 256 automation points per track across its entire chain,
+16 automation lanes and 256 automation points per track across all stored clips
+and its entire chain, including disabled lanes,
 16 manifest parameters per device and 1024 compiled events total. The native
-root pool remains sixteen; larger track/device profiles require a new ABI. Host callbacks
+root pool remains sixteen. Only the admitted native 2x4 profile is enabled;
+structural 8x4 storage does not enable eight tracks or scenes. Host callbacks
 accept 1..1024 frames. Admission checks event density as well as total storage.
 At most 32 events may share a frame and at most 64 may fall in any 1024-frame
 window, counting repeated loop seams. One serialized control producer submits
@@ -44,12 +49,22 @@ at most 64 queued commands; the callback consumes a bounded snapshot.
 Stop has out-of-band capacity; overload rejects edits without replacing the
 working schedule. DSP compilation, allocation, initialization and destruction
 are outside the callback. Callback command work has a fixed capacity/budget.
+V3 additionally applies the native policy-1 graph family and conservative
+per-track clip envelopes with queried work ceilings. The saved subtractive,
+Utility and stereo-lowpass devices are supported. Arbitrary graphs accepted by
+v2 may be refused by v3; Alive does not remove nodes or bindings to fit them.
+Density/work errors identify available track/clip contributors, saturated counts
+and conservative-envelope refusals. Reduce dense events or chain work and retry;
+admission never silently trims the score or increases limits.
 
 Parameters have saved base and runtime effective values. Enabled automation
 owns its parameter during playback (step/hold interpolation). Panel/editor
 changes update base state without overriding the automated effective value.
-Disabling a lane or stopping restores base. Restart/seek chase the most recent
-point at/before position; before the first point use base. This policy applies
+Disabling a lane or stopping restores base. V3 restart/seek/switch chase the most
+recent point strictly before the landing phase; a point exactly at landing
+dispatches once through its normal event range. V2 retains inclusive at/before
+chase. Before the first point use base; enabled empty lanes still own the
+parameter while playing. Notes already in progress are not chased. This applies
 identically to device-panel and Ultra-editor bound parameter edits.
 
 Stop, seek, loop wrap, transport end, removal and replacement hard-clear voices,
@@ -57,6 +72,14 @@ sustain, pending old events and every effect kernel, including bypassed effects.
 advancing; mute takes precedence over solo. Track gain is separate from the
 device level binding (Alive UI range 0..2; native ABI admits 0..4). Meters are
 per-callback peaks of post-mixer signal and stereo master, not RMS or loudness.
+
+Selection, saved default, prepared clip, active clip/phase and pending action are
+separate states. Stopped Launch cues a prepared clip at phase zero. Playing Launch
+targets the next strict four-beat bar; single-track Stop silences only that track.
+Global Stop has reserved capacity, invalidates pending actions and remains usable
+with stale view identities. Global transport wrap resets active phases. Reopen
+and Apply install saved defaults stopped at phase zero; Start resumes the current
+cues rather than reselecting defaults. No multi-track atomic action is enabled.
 
 ## Channels And Lifecycle
 
@@ -69,7 +92,7 @@ This first device profile requires a declared stereo output; it does not
 implicitly duplicate an arbitrary mono device at the track boundary.
 Reusable manifests version 1 and 2 normalize to the same host descriptor.
 Version 2 declares `kind`, nullable MIDI input, nullable bound audio input and
-explicit input/output bundles. The current `alive-session-v2` profile accepts
+explicit input/output bundles. The current session profile accepts
 instruments and declared stereo `audioEffect` devices. Old session-v1 files
 strictly migrate into instrument-only v2 chains.
 An absent note entry is represented as `noteNode:null`, never an invented node.
@@ -104,6 +127,10 @@ preferences. Host, output and requested buffer are explicit; rate is fixed at
 selected device advertises support. Driver callbacks larger than 1024 frames
 are partitioned into bounded native calls without losing scheduled offsets;
 the observed driver buffer is reported separately from the request.
+An observed buffer of at least 256 frames is practical guidance for clip-bank
+work, not an automatic settings change or a guarantee against physical underruns.
+Smaller buffers are diagnostic choices. Current driver counters reset on Stop;
+polled zero errors are not complete per-epoch or cumulative error totals.
 Audio configuration requires both stopped musical transport and stopped device
 I/O. Stop audio terminates transport and notes before reclaiming callback
 ownership; starting audio does not start transport. Failed configuration leaves
@@ -126,12 +153,14 @@ latency declaration; Alive desktop uses CPAL and the tested native host profile.
 
 ## Persistence And Errors
 
-New saves use strict camelCase `alive-session-v2` JSON. `Track.device` is the
+Admitted clip-bank saves use strict camelCase `alive-session-v3` JSON; legacy
+fallback saves remain v2. `Track.device` is the
 instrument and `Track.effects` is its ordered effect list. Each instance has a
 persisted UUID-shaped `instanceId`, independent of reusable manifest `id`, source
 path, chain position and transient root handle. Automation addresses that
 instance ID and a stable parameter key. Reordering retains IDs, bases, bypass
-and lanes; effect removal/replacement removes only the affected instance lanes.
+and lanes; effect removal/replacement removes only the affected instance lanes
+across all stored clips.
 The compatibility instrument Remove action removes its entire track, chain and
 lanes, preserving every other track; an instrument-less track is never retained.
 
@@ -141,13 +170,45 @@ its track ID, with empty effects, bypass false and retargeted lanes. Migration
 validates unique IDs and fingerprints dependencies before returning v2. Missing
 v2 fields are errors and never trigger legacy inference.
 
+V2-to-v3 migration moves each track's unchanged score into slot 0, names it
+`Clip 1`, copies the global length into its independent clip length, sets it as
+the saved default and leaves three null slots. Track/device IDs, source hashes,
+bases, mixer and authored values stay unchanged. Clip IDs are `clip-` plus the
+first 32 lowercase SHA-256 hex characters of the length-prefixed UTF-8 parts
+`["alive-v2-v3-clip", track.id]`; note IDs use `note-` and
+`["alive-v2-v3-note", track.id, canonical_zero_based_note_index]`. Each part is
+prefixed by its unsigned 32-bit big-endian byte length. Collisions reject.
+
+Open first prepares a playable legacy candidate. Conversion uses the same
+captured dependencies without refingerprinting. Stricter v3 graph, frame,
+density or work refusal retains the runnable v2 candidate and the exact reason.
+Missing/changed sources, invalid v2 and invalid explicit v3 fail normally and
+preserve the working session. Successful conversion is dirty in memory; Open
+does not rewrite disk. An explicit stopped Enable clip bank action retries after
+resolving drafts; Save and ordinary Apply do not implicitly retry fallback.
+
+V3 tracks have exactly four required nullable `slots` and required nullable
+`defaultClipId`. Each clip contains `id`, `name`, `lengthBeats`, `notes` and
+`automation`; each note has a required globally unique ID. Track/device/clip/note
+IDs are unique within their own namespaces. Defaults name a clip on their own
+track or null. Empty banks are valid. Unknown fields, duplicate JSON members
+(including parameter-map keys), missing fields, invalid values and unsupported
+formats reject. The duplicate-member pass reads original v3 text, preserving
+legacy decoder semantics. Notes and points fit their own clip, including disabled
+lanes; duplicate `(instanceId,key)` lanes within one clip reject.
+
 Every reference requires `sourceSha256`, 64 lowercase hexadecimal bytes over
 recursively key-sorted canonical JSON of the complete original source, before
 saved instance bases are applied. Arrays and numeric values are preserved;
 formatting and paths do not affect the hash. Graph, manifest, preset or appearance
 changes require explicit Load/Replace to capture a new fingerprint. Ordinary
-Open/prepare/Save compare it and identify track, instance, path and Replace
-recovery on missing, changed or incompatible dependencies.
+Open/prepare/Save compare it and identify track, instance and path on missing,
+changed or incompatible dependencies. Shared paths are resolved canonically,
+including symlink aliases. Selected Replace cannot install while another
+reference still expects the original hash of a changed shared file. Preserve
+the changed source at a new path, restore a matching original backup at the
+shared path, then explicitly Replace each intended instance. Recovery requires
+that matching original backup; siblings are never silently refingerprinted.
 
 Paths resolve relative to the session file. Save As relocates every instrument
 and effect dependency and preserves IDs, hashes and saved values. A session
@@ -158,10 +219,13 @@ and aggregate density receive prospective native validation before device I/O
 stops. Failed admission leaves the working model and playback intact. Root
 revisions increase per slot even through failed application and rollback; live
 base/bypass update the saved model only after native queue admission.
+Save returns the exact atomically written/rebased document instead of reopening
+and potentially changing its mode. Saved defaults are persisted; selection,
+active/pending clips, phase, receipts and runtime counters are not.
 
 ## Pending Musical Edits And Piano Roll
 
-The single-clip editor retains session-v2 and native-v2. Its fixed 1/16-note grid
+The selected-clip editor supports v3 and the retained single-score v2 mode. Its fixed 1/16-note grid
 is 0.25 quarter-note beat. Double-click adds a selected note with duration 0.25
 and velocity 100; body movement snaps displacement and pitch in semitones,
 right-edge resizing snaps duration displacement. Imported fractional offsets and
@@ -174,7 +238,8 @@ Selection alone changes no score, history or transport. One completed pointer or
 velocity gesture is one transaction. Keyboard editing/undo is scoped to the roll.
 
 Rust Control owns focused musical projections (title, tempo, length, looping,
-track IDs/names, notes and automation), bounded to 64 entries and 8 MiB combined
+track IDs/names, clip slots/IDs/names/lengths/defaults, notes/IDs and automation),
+bounded to 64 entries and 8 MiB combined
 serialized before/after payload plus labels across undo/redo. Oldest entries are
 evicted; an individually oversized entry rejects atomically. Live parameter
 bases, bypass and mixer, device identity/graphs, paths, runtime and UI selection
@@ -204,3 +269,30 @@ advances revision to reject pre-relocation documents while retaining redo and
 editor bindings. Live controls, transport, audio and editor lifecycle do not
 advance musical revision or history. Undo/redo do not reinstall DSP, stop audio,
 advance desktop generation or close editors. Ultra patch undo remains separate.
+
+Focused authenticated clip operations create, duplicate, delete, rename, change
+length/default or create a note through that same history gate. Rust allocates
+fresh IDs checked against prepared, draft and retained history identities.
+Duplication deep-copies score data with new clip/note IDs and keeps the existing
+track devices. Deletion leaves a null slot and clears a deleted saved default;
+it never compacts slots. Whole-document edits may only retain current clip
+membership and existing note identities. They cannot invent, reassign or
+resurrect IDs. Delayed renderer intents capture originating track/clip/note IDs
+and scope; selection changes cancel unfinished gestures.
+
+Draft-only clips cannot launch. Modified prepared clips can explicitly launch
+their prepared version. A draft deletion does not silence an active prepared
+clip; its runtime identity remains visible and track Stop remains available.
+Draft/history/selection/launch/Stop/Save As preserve editor bindings; successful
+Apply and structural installation retain the existing editor-close boundary.
+
+Native preparation revisions advance for every install attempt and rollback;
+desktop generation still denotes successful installation. Canonical decimal
+strings carry native 64-bit frames, epochs, serials and preparation identities
+to JavaScript. Snapshots carry an ordering sequence, mode, bounded capabilities,
+prepared ID maps and coherent runtime state. The renderer rejects late snapshots.
+Single-track launch/Stop requests name prepared persistent IDs and current
+preparation. Bounded observations match both native request keys and distinguish
+queued, pending, applied, rejected, superseded, canceled and unavailable states.
+A queued return does not imply application; receipt eviction never implies
+success. Poll failure marks state unavailable while retaining observations.
