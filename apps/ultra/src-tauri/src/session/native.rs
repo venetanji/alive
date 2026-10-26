@@ -477,3 +477,7 @@ extern "C" {
     pub fn alive_session_state_v3(state: *mut StateV3) -> i32;
     pub fn alive_session_diagnostic_v3(diagnostic: *mut DiagnosticV3) -> i32;
 }
+
+#[path = "native_v4.rs"]
+mod native_v4;
+pub use native_v4::*;

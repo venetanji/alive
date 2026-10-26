@@ -263,6 +263,7 @@ int alive_session_request_v3(const AliveSessionRequestV3*,
 uint64_t alive_session_stop_v3(void);
 int alive_session_state_v3(AliveSessionStateV3*);
 int alive_session_diagnostic_v3(AliveSessionDiagnosticV3*);
+#include "alive_session_workspaces.h"
 #ifdef __cplusplus
 }
 #endif
