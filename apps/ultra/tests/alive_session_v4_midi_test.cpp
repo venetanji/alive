@@ -467,12 +467,14 @@ void refusals() {
     r.kind = ALIVE_SESSION_V4_TRACK_ACTIONS; r.track_mask = 2;
     r.tracks[1] = {action, action == ALIVE_SESSION_V4_LAUNCH ? 3u : ALIVE_SESSION_V4_NONE};
     AliveSessionReceiptV4 out{}; out.version = 4; out.struct_bytes = sizeof out;
-    assert(!alive_session_request_v4(&r, &out) && out.error == ALIVE_SESSION_V4_FEATURE_DISABLED);
+    assert(alive_session_request_v4(&r, &out) && out.status == ALIVE_SESSION_V4_QUEUED);
   }
   assert(request(ALIVE_SESSION_V4_SEEK, false).error == ALIVE_SESSION_V4_FEATURE_DISABLED);
   render(1024);
   assert(state().playing && state().tracks[1].phase == 2748);
-  std::printf("transactional malformed/ownership/unused-source/loops/audio refusals=%u future-actions=4 PASS\n", refused);
+  assert(state().receipts[(serial - 1) % 128].error == ALIVE_SESSION_V4_END_CANCELED);
+  assert(state().tracks[1].authority == ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY);
+  std::printf("transactional malformed/ownership/unused-source/loops/audio refusals=%u unreachable-actions=3 Seek-refused PASS\n", refused);
 
   c = multi(2);
   c.source_count = 8;

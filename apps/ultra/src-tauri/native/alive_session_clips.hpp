@@ -467,8 +467,8 @@ bool snapshot_v3(AliveSessionStateV3 &result) const noexcept {
 }
 
 private:
-void prepare_chase(unsigned t) noexcept {
-  const auto &ts = state_.tracks[t];
+void prepare_chase(unsigned t, const AliveSessionTrackStateV3 *prospective = nullptr) noexcept {
+  const auto &ts = prospective ? prospective[t] : state_.tracks[t];
   const auto &chain = config_.tracks[t];
   auto &chase = chase_[t];
   chase.cursor = 0;
@@ -550,6 +550,8 @@ void cancel_pending(unsigned t, unsigned error) noexcept {
   ts.pending_clip = None;
   ts.pending_serial = 0;
   ts.pending_frame = NoFrame;
+  if (mode_ == Mode::Workspaces)
+    resolved_[t].pending_slot = None;
 }
 void terminate_v3(CanvasWorkspace &workspace, unsigned error, bool scheduled = false) noexcept {
   state_.playing = 0;
@@ -703,7 +705,7 @@ bool request_ingress(const Request &r, Receipt &immediate, unsigned version) noe
     return refused(ALIVE_SESSION_V3_STALE_PREPARATION, "Stale clip preparation.");
   if(version==4){
     if(!request_fields_v4(r))return refused(ALIVE_SESSION_V4_BAD_FIELD,"Malformed workspace request fields.");
-    if(r.kind!=ALIVE_SESSION_V4_START)return refused(ALIVE_SESSION_V4_FEATURE_DISABLED,"Only Arrangement START is provisionally admitted.");
+    if(r.kind==ALIVE_SESSION_V4_SEEK)return refused(ALIVE_SESSION_V4_FEATURE_DISABLED,"Workspace Seek is not provisionally admitted.");
   }
   if (!r.request_serial || r.request_serial <= ingress_serial_ || r.request_serial == UINT64_MAX)
     return refused(ALIVE_SESSION_V3_STALE_REQUEST, "Request serial must increase without wrapping.");
@@ -717,7 +719,7 @@ bool request_ingress(const Request &r, Receipt &immediate, unsigned version) noe
       return refused(ALIVE_SESSION_V3_BAD_FIELD, "Track action requires a mask and zero position.");
     const auto features = clip_admission::policy(config_.profile).features;
     const unsigned atomic = ALIVE_SESSION_V3_FEATURE_ADMITTED | ALIVE_SESSION_V3_FEATURE_ATOMIC_TRACK_ACTIONS;
-    if ((r.track_mask & (r.track_mask - 1)) && (features & atomic) != atomic)
+    if (version != 4 && (r.track_mask & (r.track_mask - 1)) && (features & atomic) != atomic)
       return refused(ALIVE_SESSION_V3_FEATURE_DISABLED, "Atomic track actions are not admitted yet.");
   } else if (r.track_mask || (r.kind == 1 ? r.position != 0 : r.position >= config_.length_frames))
     return refused(ALIVE_SESSION_V3_BAD_FIELD, "Invalid transport request position or mask.");
@@ -731,9 +733,10 @@ bool request_ingress(const Request &r, Receipt &immediate, unsigned version) noe
     if (action.action == ALIVE_SESSION_V3_LAUNCH) {
       if (action.slot >= 4)
         return refused(ALIVE_SESSION_V3_BAD_FIELD, "Clip slot is outside the bank.");
-      if (config_.bank[t].slots[action.slot] == None)
+      if ((version == 4 ? config_.slot_map[t][action.slot] : config_.bank[t].slots[action.slot]) == None)
         return refused(ALIVE_SESSION_V3_EMPTY_SLOT, "Cannot launch an empty slot.");
-    } else if (action.action != ALIVE_SESSION_V3_TRACK_STOP || action.slot != None)
+    } else if ((action.action != ALIVE_SESSION_V3_TRACK_STOP &&
+                !(version == 4 && action.action == ALIVE_SESSION_V4_RETURN)) || action.slot != None)
       return refused(ALIVE_SESSION_V3_BAD_FIELD, "Invalid track action.");
   }
   const unsigned cell = unsigned(r.request_serial % 128);
@@ -779,11 +782,14 @@ void candidate_cancel(unsigned t, unsigned status, unsigned error) noexcept {
   ts.pending_clip = None;
   ts.pending_serial = 0;
   ts.pending_frame = NoFrame;
+  if (mode_ == Mode::Workspaces)
+    candidate_resolved_[t].pending_slot = None;
 }
 uint64_t target_frame(uint64_t position) const noexcept {
   for (unsigned b = 0; b < prepared_.bar_count; ++b)
     if (prepared_.bars[b] >= position)
-      return state_.absolute_frame + prepared_.bars[b] - position;
+      return mode_ != Mode::Workspaces || prepared_.bars[b] - position < NoFrame - state_.absolute_frame
+                 ? state_.absolute_frame + prepared_.bars[b] - position : NoFrame;
   return config_.loop_enabled ? state_.absolute_frame + config_.length_frames - position : NoFrame;
 }
 Cost first_candidate_cost() const noexcept {
@@ -792,11 +798,11 @@ Cost first_candidate_cost() const noexcept {
     return out;
   const bool global = candidate_.position >= config_.length_frames;
   for (unsigned t = 0; t < config_.track_count; ++t) {
-    const auto &ts = candidate_.tracks[t];
+    const auto &ts = mode_ == Mode::Workspaces ? transition_v4_.tracks[t] : candidate_.tracks[t];
     unsigned clip = ts.active_clip;
     uint64_t phase = global ? 0 : ts.phase;
-    bool reset = global;
-    if (ts.pending_action && ts.pending_frame <= state_.absolute_frame) {
+    bool reset = mode_ == Mode::Workspaces ? bool(transition_v4_.changed & (1u << t)) : global;
+    if (mode_ != Mode::Workspaces && ts.pending_action && ts.pending_frame <= state_.absolute_frame) {
       clip = ts.pending_clip;
       phase = 0;
       reset = true;
@@ -810,7 +816,7 @@ Cost first_candidate_cost() const noexcept {
     if (clip == None)
       continue;
     const auto cl = source(clip);
-    if(mode_==Mode::Workspaces && (candidate_.clear_mask & (1u<<t)))out[0]+=4;
+    if(mode_==Mode::Workspaces && reset)out[0]+=4;
     unsigned lo = 0, hi = cl.event_count;
     while (lo < hi) {
       const unsigned mid = (lo + hi) / 2;
@@ -848,10 +854,27 @@ bool optional_admission() noexcept {
         optional_.total[m] + charge[m] > optional_window[m])
       return false;
   if(mode_==Mode::Workspaces && !reserve_optional_placement(2050))return false;
+  // Once the expensive preview/horizon begins, every rejection spends the
+  // guard credit as well as the placement comparison reservation.
+  const Cost guard{0, 0, 0, 0, HorizonSteps};
+  auto rejected_preview = [&]() {
+    if (mode_ == Mode::Workspaces) {
+      optional_.charge(state_.absolute_frame, guard);
+      trace_charge(1, guard);
+    }
+    return false;
+  };
+  if (mode_ == Mode::Workspaces &&
+      !transition_v4(candidate_.tracks, candidate_resolved_, candidate_.position,
+                     candidate_.playing, candidate_.clear_mask, true))
+    return rejected_preview();
+  if (mode_ == Mode::Workspaces &&
+      scheduled_placement_exceeds(transition_v4_.placement))
+    return rejected_preview();
   const auto first = first_candidate_cost();
   for (unsigned m = 0; m < 5; ++m)
     if (scheduled_.entries[current][m] + first[m] > (m ? scheduled_frame[m] : 32))
-      return false;
+      return rejected_preview();
   Cost past_scheduled = add(scheduled_.total, scheduled_.expired),
        past_optional = add(optional_.total, optional_.expired);
   subtract(past_scheduled, scheduled_.entries[current]);
@@ -886,8 +909,8 @@ bool optional_admission() noexcept {
   }
   // Failed expensive checks consume their guard allowance, but never spend
   // reset/chase credits. Fixed cheap rejection/reduction overhead is reserved.
-  optional_.charge(state_.absolute_frame, accepted ? charge : Cost{0, 0, 0, 0, HorizonSteps});
-  trace_charge(1, accepted ? charge : Cost{0, 0, 0, 0, HorizonSteps});
+  optional_.charge(state_.absolute_frame, accepted ? charge : guard);
+  trace_charge(1, accepted ? charge : guard);
   return accepted;
 }
 void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept {
@@ -905,6 +928,7 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
   if(mode_==Mode::Workspaces)candidate_resolved_ = resolved_;
   unsigned tail = tail_.load(std::memory_order_relaxed);
   uint64_t last_seek = 0;
+  unsigned resolve_mask = 0;
   std::array<unsigned, 8> stopped_actions{};
   for (unsigned budget = 0; tail != end && budget < 64; ++budget) {
     const auto &c = commands_[tail];
@@ -959,27 +983,23 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
         candidate_.group[index] = !state_.playing;
         continue;
       }
-      // Each track's <=8-placement search needs at most four probes. Reserve
-      // before changing this request's candidate. A refusal must keep
-      // natural-end position/phase and any earlier reductions in this batch.
-      if (mode_ == Mode::Workspaces && !reserve_optional_placement(4 * config_.track_count)) {
-        finish(receipt, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
-        ++state_.work_rejected;
-        continue;
-      }
       candidate_.group[index] = true;
       candidate_.unscheduled = true;
       candidate_.playing = 1;
+      const bool restart = candidate_.position >= config_.length_frames;
       if (candidate_.position >= config_.length_frames) {
         candidate_.position = 0;
         for (unsigned t = 0; t < config_.track_count; ++t)
           candidate_.tracks[t].phase = 0;
       }
       if(mode_==Mode::Workspaces){
-        for(unsigned t=0;t<config_.track_count;++t){unsigned probes=0;
-          candidate_resolved_[t]=resolve_arrangement(t,candidate_.position,probes);
-          candidate_.tracks[t].active_clip=candidate_resolved_[t].source;
-          candidate_.tracks[t].phase=candidate_resolved_[t].phase;
+        for(unsigned t=0;t<config_.track_count;++t){
+          auto &cursor = candidate_resolved_[t];
+          if (cursor.authority == ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY)
+            resolve_mask |= 1u << t;
+          else if (restart && cursor.remembered_slot != None)
+            cue_v4(cursor, ALIVE_SESSION_V4_LAUNCH, cursor.remembered_slot);
+          project_cursor_v4(candidate_.tracks[t], cursor);
         }
       }
       for (unsigned t = 0; t < config_.track_count; ++t)
@@ -1017,13 +1037,15 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
         const auto &action = r.tracks[t];
         auto &ts = candidate_.tracks[t];
         candidate_cancel(t, ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST);
-        const unsigned clip =
-            action.action == ALIVE_SESSION_V3_LAUNCH ? config_.bank[t].slots[action.slot] : None;
+        const unsigned clip = action.action == ALIVE_SESSION_V3_LAUNCH
+            ? (mode_ == Mode::Workspaces ? config_.slot_map[t][action.slot] : config_.bank[t].slots[action.slot]) : None;
         if (candidate_.playing) {
           ts.pending_action = action.action;
           ts.pending_clip = clip;
           ts.pending_serial = r.request_serial;
           ts.pending_frame = target;
+          if (mode_ == Mode::Workspaces)
+            candidate_resolved_[t].pending_slot = clip;
         } else {
           // Stopped cues have no pending serial. After START, their active
           // selection may coexist with a later future-pending action.
@@ -1031,8 +1053,16 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
             finish_members(candidate_.receipts[stopped_actions[t] - 1], 1u << t,
                            ALIVE_SESSION_V3_SUPERSEDED, ALIVE_SESSION_V3_REPLACED_REQUEST, true);
           stopped_actions[t] = index + 1;
-          ts.active_clip = clip;
-          ts.phase = 0;
+          if (mode_ == Mode::Workspaces) {
+            cue_v4(candidate_resolved_[t], action.action, clip);
+            resolve_mask &= ~(1u << t);
+            if (action.action == ALIVE_SESSION_V4_RETURN)
+              resolve_mask |= 1u << t;
+            project_cursor_v4(ts, candidate_resolved_[t]);
+          } else {
+            ts.active_clip = clip;
+            ts.phase = 0;
+          }
           ++ts.track_epoch;
           if (!clear_[t]) {
             candidate_.clear_mask |= 1u << t;
@@ -1043,7 +1073,25 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
     }
   }
   tail_.store(tail, std::memory_order_release);
-  const bool accepted = !candidate_.unscheduled || optional_admission();
+  bool resolved = true;
+  if (mode_ == Mode::Workspaces && resolve_mask) {
+    candidate_.unscheduled = true;
+    unsigned allowance = 0;
+    for (unsigned t = 0; t < config_.track_count; ++t)
+      if (resolve_mask & (1u << t)) allowance += 4;
+    resolved = reserve_optional_placement(allowance);
+    if (resolved)
+      for (unsigned t = 0; t < config_.track_count; ++t) {
+        if (!(resolve_mask & (1u << t))) continue;
+        unsigned probes = 0;
+        candidate_resolved_[t] = resolve_arrangement(t, candidate_.position, probes);
+        candidate_resolved_[t].pending_slot = candidate_.tracks[t].pending_clip;
+        project_cursor_v4(candidate_.tracks[t], candidate_resolved_[t]);
+        if (candidate_.playing && candidate_resolved_[t].source != None)
+          candidate_.clear_mask |= 1u << t;
+      }
+  }
+  const bool accepted = resolved && (!candidate_.unscheduled || optional_admission());
   if (accepted) {
     for (unsigned t = 0; t < config_.track_count; ++t)
       if (candidate_.old_status[t]) {
@@ -1109,16 +1157,14 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
       return;
     }
   }
-  if(mode_==Mode::Workspaces && state_.playing){
-    for(unsigned t=0;t<config_.track_count;++t){
-      if(state_.position<resolved_[t].next_boundary)continue;
-      if(!reserve_scheduled_placement(4)){fault_v3(workspace,6);return;}
-      const auto next=next_arrangement(t,state_.position);
-      if(next.occurrence!=resolved_[t].occurrence||next.source!=resolved_[t].source)mask|=1u<<t;
-      resolved_[t]=next;state_.tracks[t].active_clip=next.source;state_.tracks[t].phase=next.phase;
+  if (mode_ == Mode::Workspaces) {
+    if (!transition_v4(state_.tracks, resolved_, state_.position, state_.playing, mask, false)) {
+      fault_v3(workspace, 6);
+      return;
     }
+    mask = transition_v4_.changed;
   }
-  if (state_.playing)
+  if (state_.playing && mode_ != Mode::Workspaces)
     for (unsigned t = 0; t < config_.track_count; ++t) {
       auto &ts = state_.tracks[t];
       if (ts.pending_action && ts.pending_frame <= state_.absolute_frame) {
@@ -1146,7 +1192,7 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
     charge[2] = 0;
     for (unsigned t = 0; t < config_.track_count; ++t)
       if (mask & (1u << t))
-        prepare_chase(t);
+        prepare_chase(t, mode_ == Mode::Workspaces ? transition_v4_.tracks.data() : nullptr);
   }
   std::array<unsigned, 8> next = cursors_;
   struct Dispatch {
@@ -1157,7 +1203,7 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
   unsigned count = 0;
   if (state_.playing)
     for (unsigned t = 0; t < config_.track_count; ++t) {
-      const auto &ts = state_.tracks[t];
+      const auto &ts = mode_ == Mode::Workspaces ? transition_v4_.tracks[t] : state_.tracks[t];
       if (ts.active_clip == None)
         continue;
       const auto clip = source(ts.active_clip);
@@ -1190,6 +1236,10 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
   }
   scheduled_.charge(state_.absolute_frame, charge);
   trace_charge(0, charge);
+  if (mode_ == Mode::Workspaces) {
+    std::copy_n(transition_v4_.tracks.begin(), 8, state_.tracks);
+    resolved_ = transition_v4_.cursors;
+  }
   for (unsigned t = 0; t < config_.track_count; ++t) {
     auto &ts = state_.tracks[t];
     if (ts.pending_action && ts.pending_frame <= state_.absolute_frame) {
@@ -1201,6 +1251,8 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
       ts.pending_clip = None;
       ts.pending_serial = 0;
       ts.pending_frame = NoFrame;
+      if (mode_ == Mode::Workspaces)
+        resolved_[t].pending_slot = None;
     }
   }
   clear_tracks(workspace, mask, true);
@@ -1243,8 +1295,11 @@ void advance_v3(CanvasWorkspace &workspace) noexcept {
   if (state_.playing) {
     ++state_.position;
     for (unsigned t = 0; t < config_.track_count; ++t)
-      if (state_.tracks[t].active_clip != None)
+      if (state_.tracks[t].active_clip != None) {
         ++state_.tracks[t].phase;
+        if (mode_ == Mode::Workspaces)
+          resolved_[t].phase = state_.tracks[t].phase;
+      }
   }
   scheduled_.expire(state_.absolute_frame);
   optional_.expire(state_.absolute_frame);

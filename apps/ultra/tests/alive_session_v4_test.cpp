@@ -490,7 +490,10 @@ int main(int argc, char **argv) {
   assert(state().playing && state().tracks[0].active_source == 0);
   assert(request(99, false).error == ALIVE_SESSION_V4_BAD_FIELD);
   assert(request(ALIVE_SESSION_V4_SEEK, false).error == ALIVE_SESSION_V4_FEATURE_DISABLED);
-  assert(request(ALIVE_SESSION_V4_TRACK_ACTIONS, false).error == ALIVE_SESSION_V4_FEATURE_DISABLED);
+  const auto unreachable = request(ALIVE_SESSION_V4_TRACK_ACTIONS);
+  render(1);
+  assert(state().receipts[unreachable.request_serial % 128].error == ALIVE_SESSION_V4_END_CANCELED);
+  assert(state().tracks[0].authority == ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY);
   boundary_cases();
   refusals_and_receipts();
   rejected_candidate_identity();

@@ -275,6 +275,11 @@ struct ResolvedCursor {
   bool ended = false;
 };
 std::array<ResolvedCursor, 8> resolved_{}, candidate_resolved_{};
+struct TransitionV4 {
+  std::array<AliveSessionTrackStateV3, 8> tracks{};
+  std::array<ResolvedCursor, 8> cursors{};
+  unsigned changed = 0, placement = 0;
+} transition_v4_{};
 struct PlacementLedger {
   std::array<uint64_t, 1024> entries{};
   uint64_t total = 0, expired = 0;
@@ -291,13 +296,14 @@ struct PlacementLedger {
 } placement_scheduled_{}, placement_optional_{};
 clip_admission::Envelope placement_future_{};
 ResolvedCursor resolve_arrangement(unsigned track, uint64_t frame,
-                                   unsigned &probes) const noexcept {
+                                   unsigned &probes, unsigned family = 1) const noexcept {
+  (void)family;
   const unsigned begin = config_.placement_begin[track], count = config_.placement_size[track];
   unsigned lo = 0, hi = count;
   while (lo < hi) {
 #ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
     if (alive_session_test_placement_probe)
-      alive_session_test_placement_probe(1);
+      alive_session_test_placement_probe(family);
 #endif
     ++probes;
     const unsigned mid = (lo + hi) / 2;
@@ -323,15 +329,17 @@ ResolvedCursor resolve_arrangement(unsigned track, uint64_t frame,
     out.next_boundary = config_.placements[begin + lo].start_frame;
   return out;
 }
-ResolvedCursor next_arrangement(unsigned track, uint64_t frame) const noexcept {
+ResolvedCursor next_arrangement(unsigned track, uint64_t frame,
+                                const ResolvedCursor &previous, bool optional) const noexcept {
   ResolvedCursor out{};
-  out.next_placement = resolved_[track].next_placement;
+  out.next_placement = previous.next_placement;
   const unsigned end = config_.placement_begin[track] + config_.placement_size[track];
   if (out.next_placement < end) {
 #ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
     if (alive_session_test_placement_probe)
-      alive_session_test_placement_probe(0);
+      alive_session_test_placement_probe(optional ? 1 : 0);
 #endif
+    (void)optional;
     const unsigned index = out.next_placement;
     const auto &p = config_.placements[index];
     if (frame >= p.start_frame) {
@@ -344,6 +352,74 @@ ResolvedCursor next_arrangement(unsigned track, uint64_t frame) const noexcept {
       out.next_boundary = p.start_frame;
   }
   return out;
+}
+void cue_v4(ResolvedCursor &cursor, unsigned action, unsigned slot) const noexcept {
+  cursor = {};
+  if (action == ALIVE_SESSION_V4_RETURN)
+    return;
+  cursor.authority = ALIVE_SESSION_V4_SESSION_AUTHORITY;
+  if (action == ALIVE_SESSION_V4_LAUNCH) {
+    const auto &descriptor = config_.slots[slot];
+    cursor.active_slot = cursor.remembered_slot = slot;
+    cursor.source = descriptor.source;
+    cursor.phase = descriptor.source_offset;
+  }
+}
+static void project_cursor_v4(AliveSessionTrackStateV3 &track,
+                              const ResolvedCursor &cursor) noexcept {
+  track.active_clip = cursor.source;
+  track.phase = cursor.source == None ? 0 : cursor.phase;
+}
+// Preview and dispatch share the final authority/occurrence calculation. Its
+// descriptor allowance is reserved before any lookup; publication is separate.
+bool transition_v4(const AliveSessionTrackStateV3 *tracks,
+                   const std::array<ResolvedCursor, 8> &cursors,
+                   uint64_t position, bool playing, unsigned changed,
+                   bool optional) noexcept {
+  auto &out = transition_v4_;
+  std::copy_n(tracks, 8, out.tracks.begin());
+  out.cursors = cursors;
+  out.changed = changed;
+  out.placement = 0;
+  if (!playing || position >= config_.length_frames)
+    return true;
+  for (unsigned t = 0; t < config_.track_count; ++t) {
+    const auto &ts = tracks[t];
+    const auto &cursor = cursors[t];
+    const bool due = ts.pending_action && ts.pending_frame <= state_.absolute_frame;
+    if ((due && ts.pending_action == ALIVE_SESSION_V4_RETURN) ||
+        (!due && cursor.authority == ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY &&
+         position >= cursor.next_boundary))
+      out.placement += 4;
+  }
+  if (out.placement && !(optional ? reserve_optional_placement(out.placement)
+                                 : reserve_scheduled_placement(out.placement)))
+    return false;
+  for (unsigned t = 0; t < config_.track_count; ++t) {
+    auto &ts = out.tracks[t];
+    auto &cursor = out.cursors[t];
+    if (ts.pending_action && ts.pending_frame <= state_.absolute_frame) {
+      cue_v4(cursor, ts.pending_action, ts.pending_clip);
+      if (ts.pending_action == ALIVE_SESSION_V4_RETURN) {
+        unsigned probes = 0;
+        cursor = resolve_arrangement(t, position, probes, optional ? 1 : 0);
+      }
+      out.changed |= 1u << t;
+    } else if (cursor.authority == ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY) {
+      if (position >= cursor.next_boundary) {
+        cursor = next_arrangement(t, position, cursor, optional);
+        out.changed |= 1u << t;
+      }
+    } else if (cursor.source != None && ts.phase >= source(cursor.source).length_frames) {
+      cursor.ended = true;
+      cursor.ended_phase = ts.phase;
+      cursor.source = cursor.active_slot = None;
+      cursor.phase = 0;
+      out.changed |= 1u << t;
+    }
+    project_cursor_v4(ts, cursor);
+  }
+  return true;
 }
 unsigned chain_member(unsigned track, unsigned member) const noexcept {
   const auto &chain = config_.tracks[track];
@@ -688,9 +764,12 @@ bool reserve_optional_placement(uint64_t count) noexcept {
 #endif
   return true;
 }
+bool scheduled_placement_exceeds(uint64_t count) const noexcept {
+  return placement_scheduled_.entries[state_.absolute_frame % 1024] + count > 64 ||
+         placement_scheduled_.total + count > 512;
+}
 bool reserve_scheduled_placement(uint64_t count) noexcept {
-  if (placement_scheduled_.entries[state_.absolute_frame % 1024] + count > 64 ||
-      placement_scheduled_.total + count > 512)
+  if (scheduled_placement_exceeds(count))
     return false;
   placement_scheduled_.charge(state_.absolute_frame, count);
 #ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
