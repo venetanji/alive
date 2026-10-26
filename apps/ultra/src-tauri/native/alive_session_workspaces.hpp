@@ -77,7 +77,7 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
   bool final_midi = complete_midi;
 #ifdef ULTRA_ALIVE_SESSION_V4_PROVISIONAL
   final_midi = true;
-  bool unsupported = c.audio_buffer_count || c.loop_enabled;
+  bool unsupported = c.audio_buffer_count;
 #else
   bool unsupported = c.profile != 1 || c.track_count != 1 || c.source_count != 1 ||
                      !c.placement_count || c.placement_count > 8 || c.slot_count ||
@@ -282,6 +282,7 @@ std::array<ResolvedCursor, 8> resolved_{}, candidate_resolved_{};
 struct TransitionV4 {
   std::array<AliveSessionTrackStateV3, 8> tracks{};
   std::array<ResolvedCursor, 8> cursors{};
+  uint64_t position = 0;
   unsigned changed = 0, placement = 0;
 } transition_v4_{};
 struct PlacementLedger {
@@ -398,13 +399,16 @@ bool transition_v4(const AliveSessionTrackStateV3 *tracks,
   out.cursors = cursors;
   out.changed = changed;
   out.placement = 0;
+  const bool wrap = playing && config_.loop_enabled && position >= config_.loop_end;
+  out.position = position = wrap ? config_.loop_start : position;
   if (!playing || position >= config_.length_frames)
     return true;
   for (unsigned t = 0; t < config_.track_count; ++t) {
     const auto &ts = tracks[t];
     const auto &cursor = cursors[t];
     const bool due = ts.pending_action && ts.pending_frame <= state_.absolute_frame;
-    if (due && ts.pending_action == ALIVE_SESSION_V4_RETURN)
+    if ((due && ts.pending_action == ALIVE_SESSION_V4_RETURN) ||
+        (!due && wrap && cursor.authority == ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY))
       out.placement += 4;
     else if (!due && cursor.authority == ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY &&
              position >= cursor.next_boundary)
@@ -427,7 +431,11 @@ bool transition_v4(const AliveSessionTrackStateV3 *tracks,
       }
       out.changed |= 1u << t;
     } else if (cursor.authority == ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY) {
-      if (position >= cursor.next_boundary) {
+      if (wrap) {
+        unsigned probes = 0;
+        cursor = resolve_arrangement(t, position, probes, optional ? 1 : 0);
+        out.changed |= 1u << t;
+      } else if (position >= cursor.next_boundary) {
         cursor = next_arrangement(t, position, cursor, optional);
         out.changed |= 1u << t;
       }

@@ -720,7 +720,8 @@ bool request_ingress(const Request &r, Receipt &immediate, unsigned version) noe
     const unsigned atomic = ALIVE_SESSION_V3_FEATURE_ADMITTED | ALIVE_SESSION_V3_FEATURE_ATOMIC_TRACK_ACTIONS;
     if (version != 4 && (r.track_mask & (r.track_mask - 1)) && (features & atomic) != atomic)
       return refused(ALIVE_SESSION_V3_FEATURE_DISABLED, "Atomic track actions are not admitted yet.");
-  } else if (r.track_mask || (r.kind == 1 ? r.position != 0 : r.position >= config_.length_frames))
+  } else if (r.track_mask || (r.kind == 1 ? r.position != 0 :
+             r.position >= (version == 4 && config_.loop_enabled ? config_.loop_end : config_.length_frames)))
     return refused(ALIVE_SESSION_V3_BAD_FIELD, "Invalid transport request position or mask.");
   for (unsigned t = 0; t < 8; ++t) {
     const auto &action = r.tracks[t];
@@ -785,6 +786,21 @@ void candidate_cancel(unsigned t, unsigned status, unsigned error) noexcept {
     candidate_resolved_[t].pending_slot = None;
 }
 uint64_t target_frame(uint64_t position) const noexcept {
+  if (mode_ == Mode::Workspaces) {
+    if (config_.loop_enabled && position >= config_.loop_end)
+      position = config_.loop_start;
+    uint64_t point = NoFrame;
+    for (unsigned b = 0; b < prepared_.bar_count; ++b)
+      if (prepared_.bars[b] >= position) {
+        point = prepared_.bars[b];
+        break;
+      }
+    // The seam has its own prepared envelope, so the exact grid stays unchanged.
+    if (config_.loop_enabled)
+      point = std::min(point, position <= config_.loop_start ? config_.loop_start : config_.loop_end);
+    return point != NoFrame && point - position < NoFrame - state_.absolute_frame
+               ? state_.absolute_frame + (point - position) : NoFrame;
+  }
   for (unsigned b = 0; b < prepared_.bar_count; ++b)
     if (prepared_.bars[b] >= position)
       return mode_ != Mode::Workspaces || prepared_.bars[b] - position < NoFrame - state_.absolute_frame
@@ -795,7 +811,7 @@ Cost first_candidate_cost() const noexcept {
   Cost out{};
   if (!candidate_.playing)
     return out;
-  const bool global = candidate_.position >= config_.length_frames;
+  const bool global = mode_ != Mode::Workspaces && candidate_.position >= config_.length_frames;
   for (unsigned t = 0; t < config_.track_count; ++t) {
     const auto &ts = mode_ == Mode::Workspaces ? transition_v4_.tracks[t] : candidate_.tracks[t];
     unsigned clip = ts.active_clip;
@@ -985,8 +1001,9 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
       candidate_.group[index] = true;
       candidate_.unscheduled = true;
       candidate_.playing = 1;
-      const bool restart = candidate_.position >= config_.length_frames;
-      if (candidate_.position >= config_.length_frames) {
+      const bool restart = candidate_.position >= config_.length_frames &&
+                           !(mode_ == Mode::Workspaces && config_.loop_enabled);
+      if (restart) {
         candidate_.position = 0;
         for (unsigned t = 0; t < config_.track_count; ++t)
           candidate_.tracks[t].phase = 0;
@@ -1094,7 +1111,9 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
       for (unsigned t = 0; t < config_.track_count; ++t) {
         if (!(resolve_mask & (1u << t))) continue;
         unsigned probes = 0;
-        candidate_resolved_[t] = resolve_arrangement(t, candidate_.position, probes);
+        const uint64_t position = candidate_.playing && config_.loop_enabled &&
+            candidate_.position >= config_.loop_end ? config_.loop_start : candidate_.position;
+        candidate_resolved_[t] = resolve_arrangement(t, position, probes);
         candidate_resolved_[t].pending_slot =
             candidate_.tracks[t].pending_action == ALIVE_SESSION_V4_LAUNCH
                 ? candidate_.tracks[t].pending_clip : None;
@@ -1147,7 +1166,8 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
     return;
   unsigned mask = optional_clear_;
   Cost charge{};
-  if (state_.playing && state_.position >= config_.length_frames) {
+  if (state_.playing && state_.position >= config_.length_frames &&
+      !(mode_ == Mode::Workspaces && config_.loop_enabled)) {
     if (config_.loop_enabled) {
       state_.position = 0;
       for (unsigned t = 0; t < config_.track_count; ++t) {
@@ -1251,6 +1271,7 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
   if (mode_ == Mode::Workspaces) {
     std::copy_n(transition_v4_.tracks.begin(), 8, state_.tracks);
     resolved_ = transition_v4_.cursors;
+    state_.position = transition_v4_.position;
   }
   for (unsigned t = 0; t < config_.track_count; ++t) {
     auto &ts = state_.tracks[t];

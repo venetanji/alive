@@ -455,7 +455,7 @@ void refusals() {
   bad = c; bad.profile = bad.work_policy = 3; reject(bad);
   bad = c; bad.devices[0].output_layout = 1; reject(bad);
   bad = c; bad.tracks[0].gain = 2.01; reject(bad);
-  bad = c; bad.loop_enabled = 1; reject(bad);
+  bad = c; bad.loop_enabled = 1; assert(alive_session_validate_v4(&bad));
   bad = c; bad.placements[0].loop_enabled = 1; assert(alive_session_validate_v4(&bad));
   bad = c; bad.slots[7].loop_enabled = 1; assert(alive_session_validate_v4(&bad));
   bad = c; bad.audio_buffer_count = 1; reject(bad);
