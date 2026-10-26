@@ -2,6 +2,15 @@
 
 ## Active Direction: Arrangement And Session, 2026-10-26
 
+Current handoff: the pushed `ea8e401` checkpoint includes the implemented MIDI
+timeline, not only the earlier Session controls. See
+[the current workflow ledger](docs/WORKFLOW_COVERAGE.md#current-checkpoint-and-next-actions)
+for exact-head CI and remaining work. Its four-platform packaging passed;
+its native CI job was cancelled during dependency installation, so final native
+qualification remains open. No current product regression follows from that
+cancellation. The stage-by-stage records below preserve historical evidence,
+not a list of capabilities still missing today.
+
 The owner resumed the workflow goal after the compact Session checkpoint.
 The cutoff-after-reopen failure is fixed without weakening its assertion, and
 the MIDI desktop host is independently approved through `ee83d30`. Reviewed

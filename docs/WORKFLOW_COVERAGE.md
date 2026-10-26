@@ -10,8 +10,54 @@ test-only work and historical verification. It supplements the existing
 [workspace plan](superpowers/plans/alive-workspaces-20261026.md); it does not
 change the architecture or admission bounds. New reference captures stay private.
 
-Priority: P0 native CI failure; P1 real MIDI Arrangement journey; P2 imported WAV
-and portable mixed project; P3 separately scoped general Ultra authoring.
+## Current checkpoint and next actions
+
+Review checkpoint `ea8e4010f0d46f8294148825089908a4fa4922c3` includes the MIDI timeline. Its
+[packages](https://github.com/venetanji/alive/actions/runs/40405424298) passed all
+four targets. Its [CI](https://github.com/venetanji/alive/actions/runs/40405424319)
+passed UI/protocol and Chromium, but the native job was cancelled during Ubuntu
+dependency installation before product build/tests. The cancellation log does
+not establish its cause. Do not carry the older cutoff assertion failure forward
+as this checkpoint's result, or treat the earlier green `e38c87b` as proof for
+this timeline head. Follow subsequent exact-head runs in PR #6.
+
+Priority: P0 complete native CI qualification without weakening gates; P1 retain
+and regression-test the implemented MIDI journey, including the nonblocking
+Duplicate destination issue; P2 imported WAV and portable mixed project;
+P3 separately scoped general Ultra authoring. A documentation cleanup is not a
+new native test or implementation result.
+
+Current bounds: v3 Session supports up to eight instrument tracks; admitted v4
+MIDI profile 1 supports two tracks, subject to complete event/work admission.
+The original v3 example may legitimately refuse conversion without losing music.
+Start the timeline workflow with `apps/alive/examples/midi-arrangement.alive`.
+Stopped Prepare / Apply remains required for musical/structural edits. Audio
+sources, physical MIDI ingress and general-purpose Ultra device packaging are
+not qualified by this MIDI checkpoint.
+
+### Source-review follow-ups (not runtime-reproduced)
+
+1. `apps/ultra/ui/alive-timeline.mjs` includes loop start/end in its render-cache
+   key but omits `document.loopEnabled`. The loop-brace disabled class is updated
+   only on a cache rebuild. Add a loop-only DOM regression and include the enabled
+   state in invalidation (or update that class outside the cached rebuild).
+2. `apps/ultra/tests/check_alive_arrangement.py` captures 1440x900, whereas
+   `check_canvas_desktop.sh` starts Xvfb at 1280x840. The retained successful
+   journey used a private 1600x1000 wrapper, as recorded in its implementation
+   report. Provide a validated, checked-in screen-size option or dedicated
+   Arrangement wrapper, document a repository-only command, and qualify it before
+   adding the Arrangement journey to CI. Existing green native CI must not be
+   described as running this new journey unless the workflow actually invokes it.
+3. The existing independent review records a nonblocking Duplicate destination
+   suggestion that can overlap or exceed the song. Backend refusal preserves
+   music; improve the suggestion without weakening admission.
+
+These are follow-up fixes, not changes made by the documentation cleanup.
+Preserve stopped Apply, capacity bounds and original tests. First make the current
+MIDI checkpoint reproducibly testable; do not start WAV work as part of cleanup.
+
+The historical evidence below remains source-pinned. A stage's refusal or
+missing-feature statement does not override later N6/N7 implementation.
 
 | Workflow | Reference action and result | Expected behavior | Current implementation | Native verification | Gap / priority |
 | --- | --- | --- | --- | --- | --- |

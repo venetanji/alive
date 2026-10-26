@@ -38,10 +38,14 @@ unrelated patcher design. Consume current v3 commands and stable IDs unchanged.
 
 Task 1: independently approved through `97533b8`, including scoped re-review
 of the detail-field blur correction. Evidence and exact source/build attribution:
-`experiments/alive-workspaces-20261026/`. This completes the Session/shared-shell
-slice; Tasks 2-5 and full Arrangement/audio acceptance remain open.
+`experiments/alive-workspaces-20261026/`. This completed the Session/shared-shell slice. The current MIDI status is
+summarized below; audio and final mixed-project acceptance remain open.
 
 ## Task 2: Arrangement Model And Native MIDI Authority
+
+Current status: the bounded MIDI profile-1 scope is implemented and locally
+reviewed. The detailed paragraphs below retain stage-specific history. This is
+not full audio admission, unrestricted track capacity or final-head CI proof.
 
 Files: session model/clips/persistence/prepare/host/runtime/desktop modules;
 versioned native host API/scheduler plus deterministic native/Rust tests.
@@ -88,7 +92,7 @@ Focused and complete native suites pass; evidence is retained under
 `task2c-authority-actions/` and `task2c-authority-actions-fix1/` in the same
 experiment root. Source suffix loops and Arrangement-only Seek are independently approved at
 `a0c34e3`, with exact Session PCM continuity, pending-survives-refused-Seek and
-final-only candidate resolution proved. Full native CI passes in175.99seconds;
+final-only candidate resolution proved. Full native CI passes in 175.99 seconds;
 evidence is retained in `task2c-suffix-seek/`. Partial song loops/coincident
 boundaries are independently approved at `5981cfe`: exact Session PCM continuity,
 reachable targets, retained work and Stop/resume at the song end pass. Complete
@@ -104,7 +108,12 @@ retain their playable v3 document on refusal. Existing v3 eight-track support
 is unchanged. The review's nonblocking runner-completeness gap is retained in
 the ledger; the final independently audited sample set is complete. Evidence:
 `experiments/alive-workspaces-20261026/task2d-measurement/`.
-Task 2D desktop integration remains next; shipping features remain zero.
+Task 2D desktop integration is implemented at `4b9a88b` and independently
+reviewed through the queued-slot field preservation fix `ee83d30`. Measured
+MIDI profile 1 is admitted in the app; profile 2 and audio sources remain
+unavailable. The earlier zero-feature statements above describe historical
+stages only, not the current shipping MIDI capability. Evidence:
+`experiments/alive-workspaces-20261026/task2d-desktop/`.
 The accepted desktop interface supplement is
 `docs/superpowers/specs/2026-10-26-alive-workspaces-desktop-contract.md`.
 Complete the MIDI portion of Task 4 after MIDI admission and before Task 3,
@@ -119,13 +128,13 @@ device, mixer and detail readers to the real v4 projections. Keep optional
 instruments explicit; active v4 must not pass through legacy `.device` readers.
 Task 4 adds timeline editing, rather than repairing a temporarily broken Session.
 
-- [ ] Pin the additive versioned contracts and bounds against current source.
+- [x] Pin the additive versioned contracts and bounds against current source.
   Name all ABI sizes, ownership/migration and admission policies before code.
-- [ ] Write failing round-trip/placement/offset/loop/overlap tests and native
+- [x] Write failing round-trip/placement/offset/loop/overlap tests and native
   Session override/Back-to-Arrangement/termination/partition tests.
-- [ ] Implement strict model and bounded runtime on the existing frame clock;
+- [x] Implement strict model and bounded runtime on the existing frame clock;
   preserve v1/v2/v3 ABI/behavior and all original failure regressions.
-- [ ] Expose authenticated edits/receipts, focused history and prepared/observed
+- [x] Expose authenticated edits/receipts, focused history and prepared/observed
   authority; verify headless real Ultra devices, guards and timing; commit/review.
 
 ## Task 3: Genuine Audio Tracks
