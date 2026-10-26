@@ -26,6 +26,7 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2){
     snapshot.runtime={tracks:document.tracks.map(t=>({trackId:t.id,activeClipId:t.slots[0].id,phase:'0',epoch:'1',pendingAction:null,pendingClipId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'};
   }
   await page.addInitScript(snapshot=>{
+    window.sessionSnapshot=snapshot;
     window.removeTrack=async trackId=>{
       await new Promise(resolve=>{window.finishRemoval=resolve;});
       const index=snapshot.document.tracks.findIndex(track=>track.id===trackId);
@@ -34,9 +35,44 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2){
     };
     window.calls=[];const undo=[],redo=[];window.__TAURI__={core:{invoke:async(name,args)=>{window.calls.push({name,args});if(name==='alive_current')return structuredClone(snapshot);if(name==='alive_edit'){undo.push(structuredClone(snapshot.draft??snapshot.document));redo.length=0;snapshot.draft=args.document;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return structuredClone(snapshot);}if(name==='alive_history'){const from=args.direction==='undo'?undo:redo,to=args.direction==='undo'?redo:undo;to.push(structuredClone(snapshot.draft??snapshot.document));snapshot.draft=from.pop();snapshot.draftRevision++;snapshot.history={canUndo:!!undo.length,canRedo:!!redo.length};return structuredClone(snapshot);}}}};
     const invoke=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=(name,args)=>name==='alive_device'&&args.action==='remove'?window.removeTrack(args.trackId):invoke(name,args);
+    const previous=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=async(name,args)=>{
+      if(name==='alive_mixer'){window.calls.push({name,args});for(const document of [snapshot.document,snapshot.draft])if(document)Object.assign(document.tracks[args.track],{gain:args.gain,mute:args.mute,solo:args.solo});snapshot.dirty=true;return;}
+      if(name==='alive_clip_edit'){window.calls.push({name,args});const op=args.operation;if(op.kind!=='create')throw Error('Fixture supports create only');snapshot.draft??=structuredClone(snapshot.document);const track=snapshot.draft.tracks.find(t=>t.id===op.trackId);if(track.slots[op.slot])throw Error('Slot already occupied');track.slots[op.slot]={id:`new-${track.id}-${op.slot}`,name:'New clip',lengthBeats:8,notes:[],automation:[]};snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return{snapshot:structuredClone(snapshot),affected:{trackId:track.id,slot:op.slot}};}
+      return previous(name,args);
+    };
   },snapshot);
   await page.goto('/alive.html');await expect(page.locator('#chain-title')).toHaveText('Pulse chain');
 }
+
+test('empty body double-click creates one draft clip and never launches',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true);
+  const body=page.getByRole('button',{name:'Select Pulse slot 2',exact:true});await body.click();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await body.dblclick();await expect(page.getByLabel('Clip name',{exact:true})).toHaveValue('New clip');
+  const calls=await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'));expect(calls).toHaveLength(1);expect(calls[0].name).toBe('alive_clip_edit');expect(calls[0].args.operation).toEqual({kind:'create',trackId:'track-1',slot:1});
+  await expect(page.getByRole('button',{name:'Launch Pulse New clip',exact:true})).toBeDisabled();await expect(body).toHaveAttribute('aria-pressed','true');
+});
+
+test('vertical gain fader sends one bounded change and reflects external snapshots without erasing focused numeric text',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true);
+  const slider=page.getByRole('slider',{name:'Pulse gain fader',exact:true}),number=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});
+  const initial=Number(await slider.inputValue());await slider.focus();await slider.press('ArrowUp');
+  await expect(number).toHaveValue(String(Math.round((initial+.02)*100)/100));
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_mixer'))).toHaveLength(1);
+  await number.fill('0.83');await page.evaluate(()=>{window.sessionSnapshot.document.tracks[0].gain=.4;});
+  await expect(slider).toHaveValue('0.4');await expect(number).toHaveValue('0.83');
+  await number.press('Tab');await expect(slider).toHaveValue('0.83');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_mixer').map(c=>c.args.gain))).toEqual([Math.round((initial+.02)*100)/100,.83]);
+});
+
+for(const size of [{width:1440,height:900},{width:1280,height:800}])test(`two fixed track columns leave blank stage and expose piano roll at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page,false,true);
+  const geometry=await page.evaluate(()=>{const rect=e=>e.getBoundingClientRect().toJSON();return{track:[...document.querySelectorAll('.track')].map(rect),mixerControls:[...document.querySelectorAll('.mixer-toggle,.track-inspector')].map(rect),session:rect(document.querySelector('#session-workspace')),piano:rect(document.querySelector('#piano-roll')),detail:rect(document.querySelector('#detail-content')),scene:rect(document.querySelector('.scene-column'))};});
+  for(const track of geometry.track)expect(track.width).toBe(146);expect(geometry.scene.x-(geometry.track[1].x+geometry.track[1].width)).toBeGreaterThan(300);
+  for(const control of geometry.mixerControls)expect(control.bottom).toBeLessThanOrEqual(geometry.session.bottom);
+  expect(geometry.piano.y).toBeLessThan(geometry.detail.y+65);expect(Math.min(geometry.piano.bottom,geometry.detail.bottom)-geometry.piano.y).toBeGreaterThan(150);
+  await page.screenshot({path:testInfo.outputPath(`two-tracks-${size.width}x${size.height}.png`)});
+});
 
 test('Add note queued behind track removal never edits the surviving track',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:1100,height:800});await openSession(page);

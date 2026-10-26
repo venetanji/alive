@@ -81,6 +81,40 @@ function clipState(){const s=state();s.mode='clipsV3';s.preparationRevision='1';
   for(const t of s.document.tracks){const clip={id:`clip-${t.id}`,name:'Clip 1',lengthBeats:s.document.lengthBeats,notes:t.notes.map((n,i)=>({...n,id:`note-${t.id}-${i}`})),automation:t.automation};t.slots=[clip,null,null,null];t.defaultClipId=clip.id;delete t.notes;delete t.automation;s.preparedClips.push({trackId:t.id,clipId:clip.id,name:clip.name,slot:0,lengthFrames:'411429'});}
   s.runtime={tracks:s.document.tracks.map(t=>({trackId:t.id,activeClipId:t.slots[0].id,phase:'0',epoch:'1',pendingAction:null,pendingClipId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'};return s;}
 
+test('compact clip states follow native identities independently of selection and draft names',async()=>{
+  const initial=clipState();initial.draft=structuredClone(initial.document);
+  const track=initial.draft.tracks[0];track.slots[0].name='Draft rename';
+  track.slots[1]={...structuredClone(track.slots[0]),id:'draft-only',name:'Draft'};
+  initial.runtime.tracks[0].pendingClipId=track.slots[0].id;
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  await page.find('Select Pulse slot 3').fire('click');
+  const first=page.find('Select Pulse slot 1').parentElement,second=page.find('Select Pulse slot 2').parentElement,empty=page.find('Select Pulse slot 3').parentElement;
+  for(const state of ['occupied','playing','pending','saved-default'])assert.ok(first.classList.contains(state),state);
+  assert.equal(first.classList.contains('selected'),false);assert.ok(second.classList.contains('draft-only'));assert.ok(empty.classList.contains('empty'));assert.ok(empty.classList.contains('selected'));
+  native.snapshot.draft.tracks[0].slots[0]=null;native.snapshot.draftRevision++;native.snapshot.snapshotSequence='2';await view.refresh();
+  assert.match(page.find('Pulse clip runtime').textContent,/deleted in draft/);assert.match(page.find('Pulse clip runtime').textContent,/Playing Clip 1/);view.dispose();
+});
+
+test('gain fader commits once, synchronizes numeric and snapshots, and preserves unfinished numeric input',async()=>{
+  const page=dom('./alive.html'),native=backend(clipState()),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const slider=page.find('Pulse gain fader'),number=page.find('Pulse gain');assert.ok(slider);assert.equal(slider.min,'0');assert.equal(slider.max,'2');
+  slider.focus();slider.value='.7';await slider.fire('input');assert.equal(native.calls.filter(c=>c.name==='alive_mixer').length,0);
+  await slider.fire('change');assert.equal(native.calls.filter(c=>c.name==='alive_mixer').length,1);assert.equal(Number(number.value),.7);
+  number.focus();number.value='';native.snapshot.document.tracks[0].gain=.4;native.snapshot.snapshotSequence='2';await view.refresh();assert.equal(number.value,'');assert.equal(Number(slider.value),.4);
+  number.value='.85';await number.fire('change');assert.equal(Number(slider.value),.85);number.blur();await view.refresh();assert.equal(native.calls.filter(c=>c.name==='alive_mixer').length,2);
+  const meter=page.find('Pulse stereo peak');assert.equal(meter.children[0].style.height,'10%');assert.equal(meter.children[1].style.height,'20%');assert.equal(page.find('Pulse peak').textContent,'0.100 / 0.200');view.dispose();
+});
+
+test('empty body double-click creates once with no launch and late completion preserves newer selection',async()=>{
+  const page=dom('./alive.html'),native=backend(clipState());let release;
+  const invoke=async(name,args)=>{if(name==='alive_clip_edit')await new Promise(resolve=>{release=resolve;});return native.invoke(name,args);};
+  const view=mountAlive({...page,invoke});await settle();const empty=page.find('Select Pulse slot 2');
+  await empty.fire('click');await empty.fire('click');assert.equal(native.calls.filter(c=>c.name==='alive_clip_edit').length,0);
+  await empty.fire('dblclick');await empty.fire('dblclick');await page.find('Select Harmony slot 3').fire('click');assert.ok(release);release();await settle();await settle();
+  assert.equal(native.calls.filter(c=>c.name==='alive_clip_edit').length,1);assert.equal(native.calls.filter(c=>c.name==='alive_clip_action').length,0);
+  assert.equal(page.find('Select Harmony slot 3').attrs['aria-pressed'],'true');assert.ok(view.model.document().tracks[0].slots[1]);view.dispose();
+});
+
 test('scene controls launch a prepared row once without selection or document edits',async()=>{
   const initial=clipState();initial.capabilities={atomicTrackActions:true};initial.state.playing=0;initial.audio.running=true;
   initial.draft=structuredClone(initial.document);initial.draft.tracks[0].slots[0].name='Draft name';
@@ -211,6 +245,8 @@ function backend(initial){
   return{calls,get snapshot(){return snapshot;},async invoke(name,args={}){
     calls.push({name,args:structuredClone(args)});
     if(name==='alive_current')return structuredClone(snapshot);
+    if(name==='alive_mixer'){Object.assign(snapshot.document.tracks[args.track],{gain:args.gain,mute:args.mute,solo:args.solo});if(snapshot.draft)Object.assign(snapshot.draft.tracks[args.track],{gain:args.gain,mute:args.mute,solo:args.solo});return;}
+    if(name==='alive_clip_edit'){const op=args.operation;assert.equal(op.kind,'create');snapshot.draft??=structuredClone(snapshot.document);const track=snapshot.draft.tracks.find(t=>t.id===op.trackId);assert.equal(track.slots[op.slot],null);track.slots[op.slot]={id:'created-clip',name:'New clip',lengthBeats:8,notes:[],automation:[]};snapshot.draftRevision++;return{snapshot:structuredClone(snapshot),affected:{trackId:op.trackId,slot:op.slot}};}
     if(name==='alive_edit'){assert.equal(args.draftRevision,snapshot.draftRevision);snapshot.draft=args.document;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false,undoLabel:args.label};return structuredClone(snapshot);}
     if(name==='alive_discard'){snapshot.draft=null;snapshot.draftRevision++;snapshot.history={canUndo:false,canRedo:false};return structuredClone(snapshot);}
     if(name==='alive_base'){

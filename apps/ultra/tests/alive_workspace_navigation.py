@@ -18,6 +18,15 @@ def install(ui, windows):
     def prepare(name):
         if windows.scope != 'Alive':
             return
+        runtime = re.fullmatch(r'(.+) clip runtime', name)
+        if runtime:
+            expand(runtime.group(1) + ' runtime details')
+            return
+        scene = re.fullmatch(r'(?:Scene (\d+) request|Prepared scene (\d+))', name)
+        if scene:
+            expand('Scene receipts')
+            expand(f'Scene {next(value for value in scene.groups() if value)} receipt details')
+            return
         if name in diagnostic or re.fullmatch(r'Track \d+ active voices', name):
             expand('Audio details')
             return

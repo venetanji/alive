@@ -22,7 +22,14 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     input.addEventListener('change',guard(()=>{if(input.value===''||!Number.isFinite(Number(input.value)))throw Error(`${label} requires a number.`);return change(Number(input.value));}));return input;
   }
   function svgElement(tag,attrs={}){const e=doc.createElementNS('http://www.w3.org/2000/svg',tag);for(const[key,value]of Object.entries(attrs))e.setAttribute(key,String(value));return e;}
-  function meter(element,left,right){const bars=element.children;bars[0].style.width=`${Math.min(1,left)*100}%`;bars[1].style.width=`${Math.min(1,right)*100}%`;}
+  function icon(kind){
+    const paths={play:'M5 3 14 9 5 15Z',stop:'M4 4H14V14H4Z',browser:'M2 3H16V15H2ZM6 3V15M9 6H13M9 9H13',session:'M3 3H7V15H3ZM11 3H15V15H11Z',arrangement:'M3 4H15V7H3ZM3 11H11V14H3Z',clip:'M3 4H15V14H3ZM6 7H9M10 11H13',devices:'M2 5H7V13H2ZM11 5H16V13H11ZM7 9H11',detail:'M3 5 9 11 15 5M3 15H15',instrument:'M2 4H16V14H2ZM5 4V10M8 4V10M11 4V10M14 4V10',effect:'M3 5H15M3 13H15M6 2V8M12 10V16',file:'M4 2H11L15 6V16H4ZM10 2V7H15',save:'M3 2H13L16 5V16H3ZM6 2V7H12M6 11H13V16',edit:'M3 12 11 4 14 7 6 15H3ZM11 4 13 2 16 5 14 7',duplicate:'M6 6H15V15H6ZM3 11V3H11',remove:'M4 5H14M7 5V2H11V5M5 5 6 16H12L13 5',undo:'M7 3 3 7 7 11M3 7H11Q16 7 15 14',redo:'M11 3 15 7 11 11M15 7H7Q2 7 3 14'};
+    const svg=svgElement('svg',{viewBox:'0 0 18 18','aria-hidden':'true',focusable:'false'});svg.append(svgElement('path',{d:paths[kind]??paths.file}));return svg;
+  }
+  function decorate(button,kind,label,{only=false}={}){button.replaceChildren(icon(kind),make('span',only?'sr-only':'',label));button.title=button.getAttribute('aria-label')??label;}
+  for(const[id,kind]of Object.entries({'toggle-browser':'browser','view-session':'session','view-arrangement':'arrangement','detail-clip':'clip','detail-devices':'devices','toggle-detail':'detail','add-track':'instrument','add-effect':'effect','new':'file','open':'file','save':'save','save-as':'save','edit-device':'edit','undo':'undo','redo':'redo'}))decorate($(id),kind,$(id).textContent);
+  for(const[id,kind]of [['start','play'],['stop','stop']])decorate($(id),kind,id==='start'?'Start':'Stop',{only:true});
+  function meter(element,left,right){const bars=element.children,axis=element.classList.contains('vertical-meter')?'height':'width';bars[0].style[axis]=`${Math.min(1,left)*100}%`;bars[1].style[axis]=`${Math.min(1,right)*100}%`;}
   function peak(left,right){return`${left.toFixed(3)} / ${right.toFixed(3)}`;}
   function cancelGesture(){
     if(!gesture&&!preview)return;
@@ -119,10 +126,12 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     const enabled=snapshot.mode==='clipsV3';$('scene-controls').hidden=$('scene-help').hidden=!enabled;
     if(!enabled)return;
     if(!sceneViews.length)for(let slot=0;slot<4;slot++){
-      const row=make('div','scene-row'),launch=make('button','scene-launch',`Launch scene ${slot+1}`),prepared=make('small','muted'),result=make('output','scene-result');
+      const row=make('div','scene-row'),launch=make('button','scene-launch'),prepared=make('small','muted'),result=make('output','scene-result');
+      decorate(launch,'play',String(slot+1));
       launch.setAttribute('aria-label',`Launch scene ${slot+1}`);launch.setAttribute('aria-describedby','scene-help');launch.addEventListener('click',guard(()=>launchScene(slot)));
       prepared.setAttribute('aria-label',`Prepared scene ${slot+1}`);result.setAttribute('aria-label',`Scene ${slot+1} request`);
-      row.append(launch,prepared,result);$('scene-controls').append(row);sceneViews.push({slot,launch,prepared,result});
+      const receipt=make('details','scene-receipt'),summary=make('summary','',`Scene ${slot+1}`);summary.setAttribute('aria-label',`Scene ${slot+1} receipt details`);receipt.append(summary,prepared,result);$('scene-receipts').append(receipt);
+      row.append(launch);$('scene-controls').append(row);sceneViews.push({slot,launch,prepared,result});
     }
     for(const v of sceneViews){
       v.launch.disabled=!snapshot.capabilities?.atomicTrackActions;
@@ -154,49 +163,61 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     notice(`Transport ${requestText(request,snapshot)}`,request.status==='rejected');
   }
   function clipAction(action){return enqueue(async()=>{const result=await command('alive_clip_action',{action});await refresh();if(result){const observed=observedRequest(result);notice(requestText(observed,model.snapshot()),observed.status==='rejected');}});}
+  const creatingSlots=new Set();
   function buildSlots(bank,track,index){
     for(let slot=0;slot<4;slot++){
-      const c=track.slots[slot],cell=make('div','clip-slot'),choose=make('button','clip-select',c?.name??`Empty ${slot+1}`),launch=make('button','clip-launch','Launch'),status=make('small');
+      const c=track.slots[slot],cell=make('div','clip-slot'),choose=make('button','clip-select',c?.name??''),launch=make('button','clip-launch'),status=make('small','sr-only');
       choose.setAttribute('aria-label',`Select ${track.name} slot ${slot+1}`);choose.addEventListener('click',()=>{cancelGesture();selected=index;selectedSlots.set(track.id,slot);selectionToken++;selectedNote=null;musicKey=clipControlsKey='';render();});
+      choose.title=c?.name??`Empty slot ${slot+1}. Double-click to create a clip.`;
+      choose.addEventListener('dblclick',guard(async()=>{
+        const current=model.document().tracks[selected],key=`${track.id}:${slot}`;
+        if(current?.id!==track.id||slotOf(current)!==slot||current.slots[slot]||creatingSlots.has(key))return;
+        creatingSlots.add(key);try{await clipEdit({kind:'create',trackId:track.id,slot});}finally{creatingSlots.delete(key);}
+      }));
+      decorate(launch,'play','Launch',{only:true});
       launch.setAttribute('aria-label',`Launch ${track.name} ${c?.name??`slot ${slot+1}`}`);launch.disabled=!c;launch.addEventListener('click',guard(()=>clipAction({kind:'launch',trackId:track.id,clipId:c.id})));
-      cell.dataset.slot=String(slot);cell.append(choose,launch,status);bank.append(cell);slotViews.push({trackId:track.id,slot,clipId:c?.id,cell,choose,launch,status});
+      cell.dataset.slot=String(slot);cell.append(launch,choose,status);bank.append(cell);slotViews.push({trackId:track.id,slot,clipId:c?.id,cell,choose,launch,status});
     }
-    const stop=make('button','track-stop','Stop track');stop.setAttribute('aria-label',`Stop ${track.name} track`);stop.addEventListener('click',guard(()=>clipAction({kind:'stop',trackId:track.id})));bank.append(stop);
-    const state=make('output','clip-runtime');state.setAttribute('aria-label',`${track.name} clip runtime`);bank.append(state);slotViews.push({trackId:track.id,state});
+    const stop=make('button','track-stop');stop.setAttribute('aria-label',`Stop ${track.name} track`);decorate(stop,'stop','Stop track');stop.addEventListener('click',guard(()=>clipAction({kind:'stop',trackId:track.id})));bank.append(stop);
+    const receipt=make('details','runtime-receipt'),summary=make('summary','','Runtime'),state=make('output','clip-runtime');state.setAttribute('aria-label',`${track.name} clip runtime`);summary.setAttribute('aria-label',`${track.name} runtime details`);receipt.append(summary,state);bank.append(receipt);slotViews.push({trackId:track.id,state,summary});
   }
   function renderClipControls(){
     const snapshot=model.snapshot(),document=model.document(),track=document.tracks[selected],clip=selectedClip(track),enabled=document.format==='alive-session-v3',container=$('clip-controls');
     renderScenes(snapshot);
-    $('clip-bank-notice').textContent=snapshot.notice??'';
+    $('clip-bank-notice').textContent=snapshot.notice??'';$('clip-bank-notice').title=snapshot.notice??'';
     $('add-note').disabled=enabled&&!clip;$('add-lane').disabled=enabled&&!clip;
     for(const v of slotViews){
-      if(v.state){const r=snapshot.runtime?.tracks.find(t=>t.trackId===v.trackId),name=snapshot.preparedClips?.find(c=>c.clipId===r?.activeClipId)?.name,requests=snapshot.runtime?.requests.filter(q=>q.trackId===v.trackId),last=requests?.at(-1);v.state.textContent=`${r?.activeClipId?`${snapshot.state.playing?'Playing':'Cued'} ${name}`:'Stopped'}${last?` / ${requestText(last,snapshot)}`:''}${r?.pendingAction?` / pending ${r.pendingAction} at frame ${r.pendingFrame}`:''}`;continue;}
+      if(v.state){const r=snapshot.runtime?.tracks.find(t=>t.trackId===v.trackId),name=snapshot.preparedClips?.find(c=>c.clipId===r?.activeClipId)?.name,requests=snapshot.runtime?.requests.filter(q=>q.trackId===v.trackId),last=requests?.at(-1),deleted=r?.activeClipId&&!document.tracks.find(t=>t.id===v.trackId)?.slots.some(c=>c?.id===r.activeClipId);v.state.textContent=`${r?.activeClipId?`${snapshot.state.playing?'Playing':'Cued'} ${name}${deleted?' (deleted in draft)':''}`:'Stopped'}${last?` / ${requestText(last,snapshot)}`:''}${r?.pendingAction?` / pending ${r.pendingAction} at frame ${r.pendingFrame}`:''}`;v.summary.textContent=last?.status==='rejected'?'Request rejected':r?.pendingAction?'Pending action':r?.activeClipId?`${snapshot.state.playing?'Playing':'Cued'} ${name}`:'Stopped';v.summary.title=v.state.textContent;continue;}
       const t=document.tracks.find(t=>t.id===v.trackId),c=t?.slots[v.slot],runtime=snapshot.runtime?.tracks.find(t=>t.trackId===v.trackId),prepared=snapshot.preparedClips?.find(c=>c.clipId===v.clipId),active=runtime?.activeClipId===v.clipId&&!!v.clipId,pending=runtime?.pendingClipId===v.clipId&&!!v.clipId;
-      v.choose.setAttribute('aria-pressed',String(t?.id===track.id&&v.slot===slotOf(track)));v.cell.classList.toggle('selected',t?.id===track.id&&v.slot===slotOf(track));v.launch.disabled=!prepared;v.launch.textContent=prepared&&model.pending()?'Launch prepared':'Launch';v.launch.title=prepared?(model.pending()?'Launch prepared version':'Launch at the next native bar boundary'):'Apply while stopped to launch';
+      v.choose.setAttribute('aria-pressed',String(t?.id===track.id&&v.slot===slotOf(track)));v.cell.classList.toggle('selected',t?.id===track.id&&v.slot===slotOf(track));v.launch.disabled=!prepared;v.launch.title=prepared?(model.pending()?'Launch prepared version':'Launch at the next native bar boundary'):'Apply while stopped to launch';
+      for(const[state,on]of Object.entries({occupied:!!c,empty:!c,prepared:!!prepared,'draft-only':!!c&&!prepared,playing:active&&!!snapshot.state.playing,cued:active&&!snapshot.state.playing,pending,'saved-default':!!c&&t.defaultClipId===c.id}))v.cell.classList.toggle(state,on);
       const activeName=snapshot.preparedClips?.find(c=>c.clipId===runtime?.activeClipId)?.name;
       v.status.textContent=[c&&t.defaultClipId===c.id?'Saved default':'',active?`${snapshot.state.playing?'Playing':'Cued'} ${prepared?.name??''}`:'',pending?'Pending switch':'',v.slot===0&&runtime?.pendingAction==='stop'?'Pending track Stop':'',v.slot===0&&runtime?.activeClipId&&!t.slots.some(c=>c?.id===runtime.activeClipId)?`${snapshot.state.playing?'Playing':'Cued'} prepared ${activeName} (deleted in draft)`:''].filter(Boolean).join(' / ');
+      v.choose.title=[c?.name??`Empty slot ${v.slot+1}. Double-click to create a clip.`,v.status.textContent].filter(Boolean).join(' / ');
     }
     const key=JSON.stringify([enabled,track.id,slotOf(track),clip?.id,clip?.name,clip?.lengthBeats,track.defaultClipId,track.slots?.map(c=>c?.id),snapshot.generation]);if(key===clipControlsKey)return;clipControlsKey=key;container.replaceChildren();
     const button=(text,fn)=>{const b=make('button','',text);b.setAttribute('aria-label',text);b.addEventListener('click',guard(fn));container.append(b);return b;};
     if(!enabled){const b=button('Enable clip bank',()=>enqueue(async()=>{applySnapshot(await command('alive_enable_clips'));trackKey=musicKey=clipControlsKey='';render();}));b.disabled=!!snapshot.state.playing||model.pending();return;}
     const trackId=track.id,slot=slotOf(track);
-    if(!clip){button('Create clip',()=>clipEdit({kind:'create',trackId,slot}));container.append(make('span','muted',`Slot ${slot+1} is empty. Create a clip to edit notes.`));return;}
+    if(!clip){button('Create clip',()=>clipEdit({kind:'create',trackId,slot}));container.append(make('span','muted',`Empty slot ${slot+1}`));return;}
     const clipId=clip.id,name=make('input');name.value=clip.name;name.maxLength=64;name.setAttribute('aria-label','Clip name');name.addEventListener('change',guard(()=>clipEdit({kind:'rename',trackId,clipId,name:name.value})));container.append(name);
     const label=make('label','','Clip length '),length=numeric('Selected clip length',clip.lengthBeats,{min:1/64,max:256},lengthBeats=>clipEdit({kind:'length',trackId,clipId,lengthBeats}));label.append(length);container.append(label);
     const destination=make('select');destination.setAttribute('aria-label','Duplicate destination');track.slots.forEach((c,i)=>{if(!c){const option=make('option','',`Slot ${i+1}`);option.value=String(i);destination.append(option);}});destination.value=destination.children[0]?.value??'';container.append(destination);
     button('Duplicate clip',()=>clipEdit({kind:'duplicate',trackId,clipId,destinationSlot:Number(destination.value)})).disabled=!destination.children.length;
-    button('Delete clip',()=>clipEdit({kind:'delete',trackId,clipId}));button('Set Saved Default',()=>clipEdit({kind:'default',trackId,clipId}));button('Clear Saved Default',()=>clipEdit({kind:'default',trackId,clipId:null}));container.append(make('span','muted','Used after Apply and when reopened. Selection does not launch.'));
+    button('Delete clip',()=>clipEdit({kind:'delete',trackId,clipId}));button('Set Saved Default',()=>clipEdit({kind:'default',trackId,clipId})).title='Used after Apply and when reopened. Selection does not launch.';button('Clear Saved Default',()=>clipEdit({kind:'default',trackId,clipId:null}));
   }
   function buildTracks(document){
     $('tracks').replaceChildren();trackViews.length=0;slotViews=[];
     document.tracks.forEach((track,index)=>{
-      const row=make('article','track'),name=make('button','track-name'),title=make('span','',track.name),detail=make('small','',`${track.notes.length} notes / stereo`),clip=make('button','clip-preview'),svg=svgElement('svg');
+      const row=make('article','track'),name=make('button','track-name'),title=make('span','',`${index+1}  ${track.name}`),detail=make('small','',`${track.notes.length} notes / stereo`),clip=make('button','clip-preview'),svg=svgElement('svg');
       name.append(title,detail);name.setAttribute('aria-label',`Select ${track.name} track`);clip.setAttribute('aria-label',`${track.name} clip`);clip.append(svg);
       const choose=()=>{if(selected!==index){cancelGesture();selectedNote=null;selectionToken++;selected=index;selectedInstance=null;}musicKey=parameterKey='';render();};name.addEventListener('click',choose);clip.addEventListener('click',choose);
       const gainLabel=make('label','track-gain','Gain'),gain=numeric(`${track.name} gain`,track.gain,{min:0,max:2,step:.05},value=>mix(index,{gain:value}));gainLabel.append(gain);
+      const fader=make('input','gain-fader');fader.type='range';fader.min='0';fader.max='2';fader.step='any';fader.value=String(track.gain);fader.setAttribute('aria-label',`${track.name} gain fader`);fader.setAttribute('aria-orientation','vertical');fader.title='Linear gain, 0 to 2';
+      let faderEditing=false;fader.addEventListener('input',()=>{faderEditing=true;});fader.addEventListener('change',guard(()=>{faderEditing=false;return mix(index,{gain:Number(fader.value)});}));fader.addEventListener('pointercancel',()=>{faderEditing=false;render();});
       const mute=make('button','mixer-toggle','M'),solo=make('button','mixer-toggle','S');mute.setAttribute('aria-label',`${track.name} mute`);solo.setAttribute('aria-label',`${track.name} solo`);
       mute.addEventListener('click',guard(()=>mix(index,{mute:!model.document().tracks[index].mute})));solo.addEventListener('click',guard(()=>mix(index,{solo:!model.document().tracks[index].solo})));
-      const meters=make('div','track-meter'),bar=make('div','stereo-meter'),readout=make('output');bar.append(make('i'),make('i'));bar.setAttribute('aria-label',`${track.name} stereo peak`);readout.setAttribute('aria-label',`${track.name} peak`);meters.append(bar,readout);
+      const meters=make('div','track-meter'),bar=make('div','stereo-meter vertical-meter'),readout=make('output');bar.append(make('i'),make('i'));bar.setAttribute('aria-label',`${track.name} stereo peak`);readout.setAttribute('aria-label',`${track.name} peak`);meters.append(bar,readout);
       const actions=make('div','track-actions');for(const[action,label]of [['editor','Editor'],['load','Replace'],['remove','Remove track']]){
         const button=make('button','',label);button.setAttribute('aria-label',action==='editor'?`Open ${track.name} editor`:action==='remove'?`Remove ${track.name} track`:`${label} ${track.name} device`);
         button.addEventListener('click',guard(()=>enqueue(async()=>{
@@ -206,8 +227,8 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       }
       row.dataset.trackId=track.id;row.style.setProperty('--track-color',['#efbb62','#88c5c7','#91b9ed','#d8a0a7','#b4c98b','#d3b48a','#a5b9ce','#c5b6cf'][index%8]);
       const mixer=make('div','track-mixer'),toggles=make('div','mixer-toggles'),inspector=make('details','track-inspector'),summary=make('summary','','Device / track');
-      toggles.append(mute,solo);mixer.append(gainLabel,toggles,meters);inspector.append(summary,actions);
-      row.append(name);if(track.slots){row.classList.add('clips-track');clip.hidden=true;const bank=make('div','clip-bank');row.append(bank);buildSlots(bank,track,index);}row.append(clip,mixer,inspector);$('tracks').append(row);trackViews.push({row,detail,svg,gain,mute,solo,bar,readout,actions});
+      const strip=make('div','mixer-strip');strip.append(fader,meters);toggles.append(mute,solo);mixer.append(gainLabel,strip,toggles);inspector.append(summary,actions);
+      row.append(name);if(track.slots){row.classList.add('clips-track');clip.hidden=true;const bank=make('div','clip-bank');row.append(bank);buildSlots(bank,track,index);}row.append(clip,mixer,inspector);$('tracks').append(row);trackViews.push({row,detail,svg,gain,fader,faderEditing:()=>faderEditing,mute,solo,bar,readout,actions});
     });
   }
   function chainDevices(track=model.document().tracks[selected]){return [track.device,...track.effects];}
@@ -368,6 +389,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     document.tracks.forEach((track,index)=>{
       const view=trackViews[index],runtime=snapshot.state.tracks[index];view.row.classList.toggle('selected',selected===index);view.row.setAttribute('aria-label',`${track.name} track`);view.detail.textContent=`${track.notes.length} notes / stereo`;
       if(doc.activeElement!==view.gain&&!workspace.preserves(view.gain))view.gain.value=track.gain;view.mute.setAttribute('aria-pressed',String(track.mute));view.solo.setAttribute('aria-pressed',String(track.solo));
+      if(!view.faderEditing()&&!workspace.preserves(view.fader))view.fader.value=track.gain;
       const key=JSON.stringify([track.notes,document.lengthBeats]);if(view.paintKey!==key){view.paintKey=key;paintPiano(view.svg,track.notes,document.lengthBeats);}
       meter(view.bar,runtime.peakLeft,runtime.peakRight);view.readout.textContent=peak(runtime.peakLeft,runtime.peakRight);
       for(const button of [...view.actions.children].slice(1)){button.disabled=!!snapshot.state.playing||model.pending();button.title=model.pending()?'Apply or discard pending schedule edits before changing devices.':snapshot.state.playing?'Stop transport before replacing a device or removing a track.':button.textContent==='Remove track'?'Remove this whole track, its instrument, effects and automation. Keep at least one track.':'Replace this instrument from a saved Ultra source; its automation lanes are removed.';}
