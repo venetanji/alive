@@ -33,7 +33,8 @@ def install(ui, windows):
             'Set Saved Default', 'Clear Saved Default',
             'Selected clip piano roll', 'Selected note velocity', 'Add note')
         track_action = re.fullmatch(r'(?:Open (.+) editor|Replace (.+) device|Remove (.+) track)', name)
-        surface = device or clip or track_action or re.fullmatch(r'(?:Pulse|Harmony|Track \d+) (?:gain|mute|solo)', name)
+        surface = (name == 'Alive audio settings' or device or clip or track_action or
+                   re.fullmatch(r'(?:Pulse|Harmony|Track \d+) (?:gain|mute|solo)', name))
         if not surface:
             return
         details = ui.wait_for('Audio details')
