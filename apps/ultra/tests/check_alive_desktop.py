@@ -6,6 +6,7 @@ ULTRA_TEST_ALIVE=1 ULTRA_TEST_SCRIPT=$PWD/apps/ultra/tests/check_alive_desktop.p
 Set ALIVE_ENDURANCE_SECONDS=600 for the sustained acceptance run.
 """
 import array
+from contextlib import nullcontext
 import ctypes as C
 import hashlib
 import json
@@ -16,6 +17,7 @@ import platform
 import subprocess
 import time
 from stream_measurement import Recorder, ProcessSampler, ProcessGroups, JsonLines, PlayingIntervals
+from desktop_timing import TimingProbe
 
 import check_canvas_desktop as ui
 import check_documents_desktop as windows
@@ -23,6 +25,7 @@ from gi.repository import Atspi, GLib
 from alive_workspace_navigation import install as install_workspace_navigation
 
 prepare_workspace_control = install_workspace_navigation(ui, windows)
+timing = None
 
 MAIN = 'Alive'
 DEVICE = Path('apps/ultra/examples/subtractive.ultra').resolve()
@@ -33,6 +36,11 @@ resource_groups = None
 resource_writer = None
 playing = PlayingIntervals()
 control_action = 0
+
+
+def checkpoint(event, control=''):
+    if timing is not None:
+        timing.checkpoint(event, control)
 
 
 def screenshot(name):
@@ -89,11 +97,13 @@ def detail():
 
 
 def log(action):
+    checkpoint('operation-entry', action)
     audio = detail()
     operations.append({'action': action, 'monotonic': time.monotonic(), 'audio': audio})
     (ui.output / 'operations.json').write_text(json.dumps(operations, indent=2))
     assert audio['Audio stream errors'] == '0' and audio['Audio failed'] == 'false', audio
     assert audio['Rejected commands'] == '0', audio
+    checkpoint('operation-exit', action)
 
 
 def transport(action):
@@ -362,6 +372,11 @@ def start_capture(name):
 
 
 def finish_capture(capture):
+    with timing.phase('capture-finalize ' + capture[1].name) if timing else nullcontext():
+        return measured_finish_capture(capture)
+
+
+def measured_finish_capture(capture):
     process, path = capture
     supervision = process.finish()
     assert supervision["complete"], supervision
@@ -848,7 +863,8 @@ def run():
         samples.append(process_sample())
         sustained = finish_capture(capture)
         assert sustained['seconds'] >= required and sustained['peak'] > 1e-4
-    final = detail()
+    with timing.phase('final-diagnostics') if timing else nullcontext():
+        final = detail()
     assert final['Audio stream errors'] == '0' and final['Audio failed'] == 'false', final
     assert final['Rejected commands'] == '0', final
     screenshot('session-endurance.png')
@@ -870,6 +886,7 @@ def run():
               'playing_seconds_conservative': played, 'edit_transport_cycles': cycles,
               'process_tree_samples': samples, 'final_audio': final, 'operations': operations}
     (ui.output / 'native-session-report.json').write_text(json.dumps(report, indent=2))
+    checkpoint('report-write', 'before close/cancel/quit assertions')
     screenshot('session-device-removed.png')
     # An explicitly accepted musical boundary survives cancellation of a later dialog.
     ui.click('Audio details')
@@ -908,6 +925,7 @@ def run():
     ui.click('Audio details')
     wait_value('Transport playing', lambda s: s == 'true')
     report['pending_draft_quit_cancel_retained_edits_and_playback'] = True
+    checkpoint('final-quit-entry')
     ui.click('Quit Alive')
     windows.focus('Unsaved Alive Session')
     ui.click('Discard')
@@ -923,26 +941,36 @@ def run():
     else:
         raise AssertionError('Alive Quit did not exit after Discard')
     report['quit_discard_exited'] = True
+    checkpoint('final-quit-exit')
     (ui.output / 'native-session-report.json').write_text(json.dumps(report, indent=2))
+    checkpoint('report-write', 'final Quit assertions passed')
     print(json.dumps(report, indent=2), flush=True)
+    checkpoint('journey-complete')
 
 
 if __name__ == '__main__':
-    try:
-        run()
-    except Exception:
+    timing = TimingProbe(ui.output)
+    ui.wait_for = timing.wrap('wait_for', ui.wait_for)
+    windows.scoped_find = timing.wrap('scoped_find', windows.scoped_find)
+    ui.find = windows.scoped_find
+    ui.walk = timing.wrap_walk(ui.walk)
+    with timing:
         try:
-            ui.click('Audio details')
-        except Exception:
-            pass
-        nodes = []
-        for frame in windows.app_frames():
-            for item in ui.walk(frame):
-                try:
-                    nodes.append({'name': item.get_name(), 'role': item.get_role_name(),
-                                  'text': Atspi.Text.get_text(item, 0, -1) if 'Text' in item.get_interfaces() else ''})
-                except Exception:
-                    continue
-        (ui.output / 'journey-failure.json').write_text(json.dumps(nodes, indent=2))
-        screenshot('journey-failure.png')
-        raise
+            run()
+        except Exception as error:
+            timing.checkpoint('failure', type(error).__name__)
+            try:
+                ui.click('Audio details')
+            except Exception:
+                pass
+            nodes = []
+            for frame in windows.app_frames():
+                for item in ui.walk(frame):
+                    try:
+                        nodes.append({'name': item.get_name(), 'role': item.get_role_name(),
+                                      'text': Atspi.Text.get_text(item, 0, -1) if 'Text' in item.get_interfaces() else ''})
+                    except Exception:
+                        continue
+            (ui.output / 'journey-failure.json').write_text(json.dumps(nodes, indent=2))
+            screenshot('journey-failure.png')
+            raise
