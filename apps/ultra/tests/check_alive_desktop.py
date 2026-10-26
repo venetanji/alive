@@ -6,7 +6,7 @@ ULTRA_TEST_ALIVE=1 ULTRA_TEST_SCRIPT=$PWD/apps/ultra/tests/check_alive_desktop.p
 Set ALIVE_ENDURANCE_SECONDS=600 for the sustained acceptance run.
 """
 import array
-from contextlib import nullcontext
+from contextlib import contextmanager, nullcontext
 import ctypes as C
 import hashlib
 import json
@@ -193,18 +193,71 @@ def native_hit_path(px, py):
     raise AssertionError('Native hit-test ancestry exceeds diagnostic bound')
 
 
+class XErrorEvent(C.Structure):
+    _fields_ = [('type', C.c_int), ('display', C.c_void_p), ('resourceid', C.c_ulong),
+                ('serial', C.c_ulong), ('error_code', C.c_ubyte),
+                ('request_code', C.c_ubyte), ('minor_code', C.c_ubyte)]
+
+
+XErrorHandler = C.CFUNCTYPE(C.c_int, C.c_void_p, C.POINTER(XErrorEvent))
+
+
+@contextmanager
+def native_observation_errors():
+    """Trap only this locked connection's observational requests, then restore."""
+    native = ui.x
+    native.XSync.argtypes = [C.c_void_p, C.c_int]
+    native.XLockDisplay.argtypes = native.XUnlockDisplay.argtypes = [C.c_void_p]
+    native.XNextRequest.argtypes = [C.c_void_p]; native.XNextRequest.restype = C.c_ulong
+    native.XSetErrorHandler.argtypes = [C.c_void_p]; native.XSetErrorHandler.restype = C.c_void_p
+    native.XLockDisplay(ui.display)
+    try:
+        # Pending errors belong to the preceding operation, not this observation.
+        native.XSync(ui.display, 0)
+        first = native.XNextRequest(ui.display)
+        errors = []
+
+        @XErrorHandler
+        def handle(display, pointer):
+            event = pointer.contents
+            if display == ui.display and event.serial >= first:
+                if len(errors) < 16:
+                    errors.append({'code': event.error_code, 'request': event.request_code,
+                                   'minor': event.minor_code, 'resource': event.resourceid,
+                                   'serial': event.serial})
+                return 0
+            return previous_handler(display, pointer)
+
+        previous = native.XSetErrorHandler(C.cast(handle, C.c_void_p))
+        previous_handler = XErrorHandler(previous)
+        try:
+            yield errors
+        finally:
+            try:
+                # Deliver asynchronous errors while the callback is still alive.
+                native.XSync(ui.display, 0)
+            finally:
+                native.XSetErrorHandler(previous)
+    finally:
+        native.XUnlockDisplay(ui.display)
+
+
 def native_window_record(window):
-    name = C.c_char_p(); title = ''
-    if ui.x.XFetchName(ui.display, window, C.byref(name)) and name.value:
-        title = name.value.decode('utf-8', errors='replace')
-        ui.x.XFree(name)
-    ui.x.XGetWindowAttributes.argtypes = [C.c_void_p, C.c_ulong, C.POINTER(WindowAttributes)]
-    attributes = WindowAttributes()
-    available = ui.x.XGetWindowAttributes(ui.display, window, C.byref(attributes))
-    return {'window': int(window), 'title': title,
-            'map_state': attributes.map_state if available else None,
-            'pid': window_property(window, '_NET_WM_PID', 6),
-            'type': window_property(window, '_NET_WM_WINDOW_TYPE', 4)}
+    with native_observation_errors() as errors:
+        name = C.c_char_p(); title = ''
+        if ui.x.XFetchName(ui.display, window, C.byref(name)) and name.value:
+            title = name.value.decode('utf-8', errors='replace')
+            ui.x.XFree(name)
+        ui.x.XGetWindowAttributes.argtypes = [C.c_void_p, C.c_ulong, C.POINTER(WindowAttributes)]
+        attributes = WindowAttributes()
+        available = ui.x.XGetWindowAttributes(ui.display, window, C.byref(attributes))
+        row = {'window': int(window), 'title': title,
+               'map_state': attributes.map_state if available else None,
+               'pid': window_property(window, '_NET_WM_PID', 6),
+               'type': window_property(window, '_NET_WM_WINDOW_TYPE', 4)}
+    if errors or not available:
+        row.update(unavailable=True, x_errors=errors, map_state=None, pid=[], type=[])
+    return row
 
 
 def observe_replace_input(phase, name, rect):
@@ -215,7 +268,9 @@ def observe_replace_input(phase, name, rect):
            'point': [rect.x + rect.width // 2, rect.y + rect.height // 2]}
     try:
         if phase == 'before':
-            row['hit_path'] = native_hit_path(*row['point'])
+            with native_observation_errors() as errors:
+                row['x_errors'] = errors
+                row['hit_path'] = native_hit_path(*row['point'])
             row['windows'] = [native_window_record(window) for window in row['hit_path']]
         else:
             # Reached only after the original three XTest assertions and flush.
