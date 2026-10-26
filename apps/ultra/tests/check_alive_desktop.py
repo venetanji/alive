@@ -24,7 +24,8 @@ import check_documents_desktop as windows
 from gi.repository import Atspi, GLib
 from alive_workspace_navigation import install as install_workspace_navigation
 
-prepare_workspace_control = install_workspace_navigation(ui, windows)
+prepare_workspace_control = install_workspace_navigation(
+    ui, windows, select_device=lambda name: select_device_click(name))
 timing = None
 
 MAIN = 'Alive'
@@ -202,10 +203,10 @@ def reorder_point(control):
     return [rect.x, rect.y, rect.width, rect.height], (rect.x + rect.width // 2, rect.y + rect.height // 2)
 
 
-def reorder_click(name):
-    """Dismiss native tooltip occlusion before one Alive reorder click."""
+def native_control_click(name, kind):
+    """Dismiss native tooltip occlusion before one owned Alive pointer click."""
     prepare_workspace_control(name)
-    assert windows.scope == MAIN, 'Reorder input is scoped to the Alive main frame'
+    assert windows.scope == MAIN, 'Native input is scoped to the Alive main frame'
     owner = owned_frame_window(); control = ui.wait_for(name)
     Atspi.Component.grab_focus(control)
     samples = []; point = None
@@ -228,19 +229,29 @@ def reorder_click(name):
                 finally:
                     assert ui.t.XTestFakeButtonEvent(ui.display, 1, 0, 0)
                     ui.x.XFlush(ui.display)
-                return input_record('reorder click', name=name, owner=owner, samples=samples,
+                return input_record(kind + ' click', name=name, owner=owner, samples=samples,
                                     presses=1, releases=1, final_rect=rect)
         except (StopIteration, LookupError, GLib.GError) as error:
             sample = {'unavailable': str(error)}
             if not samples or sample != samples[-1]:
                 samples.append(sample)
         time.sleep(.01)
-    input_record('reorder blocked', name=name, owner=owner, samples=samples, presses=0, releases=0)
-    screenshot('reorder-input-blocked.png')
-    raise AssertionError('Native reorder target remains occluded or unavailable: ' + name)
+    input_record(kind + ' blocked', name=name, owner=owner, samples=samples, presses=0, releases=0)
+    screenshot(kind.replace(' ', '-') + '-input-blocked.png')
+    raise AssertionError('Native ' + kind + ' target remains occluded or unavailable: ' + name)
 
 
-def force_reorder_tooltip(name, hover):
+def reorder_click(name):
+    return native_control_click(name, 'reorder')
+
+
+def select_device_click(name):
+    result = native_control_click(name, 'device selection')
+    time.sleep(.15)  # Keep the original selector click's post-input allowance.
+    return result
+
+
+def force_covering_tooltip(name, hover, kind='reorder'):
     prepare_workspace_control(name)
     owner = owned_frame_window(); _, point = reorder_point(ui.wait_for(hover))
     ui.t.XTestFakeMotionEvent(ui.display, 0, *point, 0); ui.x.XFlush(ui.display)
@@ -249,12 +260,13 @@ def force_reorder_tooltip(name, hover):
     while time.monotonic() < deadline:
         rect, target = reorder_point(ui.find(name)); path = native_hit_path(*target)
         if owner not in path and any(tooltip in window_property(window, '_NET_WM_WINDOW_TYPE', 4) for window in path):
-            screenshot('reorder-covering-tooltip.png')
-            return input_record('covering reorder tooltip', name=name, owner=owner, rect=rect, hit_path=path)
+            screenshot(kind.replace(' ', '-') + '-covering-tooltip.png')
+            return input_record('covering ' + kind + ' tooltip', name=name, owner=owner,
+                                rect=rect, hit_path=path, tooltip_atom=tooltip)
         time.sleep(.02)
     input_record('missing covering tooltip', name=name, owner=owner, rect=rect, hit_path=path)
-    screenshot('reorder-tooltip-missing.png')
-    raise AssertionError('Regression precondition: no native tooltip covering Earlier')
+    screenshot(kind.replace(' ', '-') + '-tooltip-missing.png')
+    raise AssertionError('Regression precondition: no native tooltip covering ' + name)
 
 
 def location_entry():
@@ -455,7 +467,7 @@ def prepare_chain():
     # Reordering twice must preserve identities and restore the saved signal order.
     reorder_click('Move Pulse Stereo Utility effect 1 later')
     ui.wait_for('Select Pulse Stereo Utility effect 2')
-    force_reorder_tooltip('Move Pulse Stereo Utility effect 2 earlier', 'Move Pulse Stereo Lowpass effect 1 later')
+    force_covering_tooltip('Move Pulse Stereo Utility effect 2 earlier', 'Move Pulse Stereo Lowpass effect 1 later')
     reorder_click('Move Pulse Stereo Utility effect 2 earlier')
     ui.wait_for('Select Pulse Stereo Lowpass effect 2')
     # Another Utility with the same reusable ID/key belongs to Harmony alone.
@@ -787,6 +799,7 @@ def run():
     transport('start')
     assert float(value('Cutoff base')) == 1333
     assert float(value('Pulse gain')) == .55
+    force_covering_tooltip('Select Pulse Stereo Lowpass effect 2', 'Devices detail', kind='device selection')
     ui.click('Select Pulse Stereo Lowpass effect 2')
     assert float(value('Cutoff base')) == 2000
     wait_value('Cutoff effective ownership', lambda s: 'Automation: 1200' in s)

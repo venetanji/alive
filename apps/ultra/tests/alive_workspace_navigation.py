@@ -3,7 +3,7 @@ import re
 from gi.repository import Atspi
 
 
-def install(ui, windows):
+def install(ui, windows, select_device):
     click, text = ui.click, ui.text
     diagnostic = {'Audio backend', 'Audio device', 'Audio sample rate', 'Audio buffer frames',
                   'Audio callbacks', 'Audio stream errors', 'Audio failed', 'Audio status',
@@ -66,6 +66,8 @@ def install(ui, windows):
                 ui.keys('Return')
 
     def visible_click(name):
+        if re.fullmatch(r'Select .+ (?:instrument|effect \d+)', name):
+            return select_device(name)
         prepare(name)
         click(name)
 
