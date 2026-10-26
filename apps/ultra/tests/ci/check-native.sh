@@ -74,6 +74,13 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
   -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
   -ldl -lrt -o "$TEST_DIR/alive-v4-test"
 "$TEST_DIR/alive-v4-test"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
+  -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -I"$TEST_DIR" \
+  apps/ultra/tests/alive_session_v4_midi_test.cpp "$TEST_DIR/alive-v4-backend.o" \
+  "$NATIVE_BUILD/core/libultra_core_bundle.a" \
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+  -ldl -lrt -o "$TEST_DIR/alive-v4-midi-test"
+"$TEST_DIR/alive-v4-midi-test"
 for test in alive_session_v3_test alive_session_v3_measure alive_session_capacity; do
   c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DCAPACITY_GUARDS \
     -I"$TEST_DIR" "apps/ultra/tests/${test}.cpp" "$TEST_DIR/alive-v3-backend.o" \

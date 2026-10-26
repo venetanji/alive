@@ -959,9 +959,10 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
         candidate_.group[index] = !state_.playing;
         continue;
       }
-      // Reserve before changing this request's candidate. A refusal must keep
+      // Each track's <=8-placement search needs at most four probes. Reserve
+      // before changing this request's candidate. A refusal must keep
       // natural-end position/phase and any earlier reductions in this batch.
-      if (mode_ == Mode::Workspaces && !reserve_optional_placement(4)) {
+      if (mode_ == Mode::Workspaces && !reserve_optional_placement(4 * config_.track_count)) {
         finish(receipt, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
         ++state_.work_rejected;
         continue;

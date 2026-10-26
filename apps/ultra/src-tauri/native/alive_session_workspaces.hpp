@@ -74,9 +74,15 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
   std::array<unsigned, 8> notes{}, lanes{}, points{}, sources{};
   if (complete_midi && c.audio_buffer_count)
     return reject_v4(ALIVE_SESSION_V4_FEATURE_DISABLED, "MIDI preparation cannot admit audio.");
+  bool final_midi = complete_midi;
+#ifdef ULTRA_ALIVE_SESSION_V4_PROVISIONAL
+  final_midi = true;
+  bool unsupported = c.audio_buffer_count || c.loop_enabled;
+#else
   bool unsupported = c.profile != 1 || c.track_count != 1 || c.source_count != 1 ||
                      !c.placement_count || c.placement_count > 8 || c.slot_count ||
                      c.audio_buffer_count || c.loop_enabled;
+#endif
   for (unsigned d = 0; d < c.device_count; ++d) {
     if (!validate_device(c.devices[d]))
       return reject_v4(ALIVE_SESSION_V4_BAD_FIELD, "Invalid device.");
@@ -96,7 +102,7 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
         !flag(tr.mute) || !flag(tr.solo) || (tr.kind == 2 && tr.instrument != None))
       return reject_v4(ALIVE_SESSION_V4_BAD_FIELD, "Invalid workspace track.");
     unsupported |= tr.kind != 1;
-    if (complete_midi && (tr.kind != 1 || tr.gain > 2 || tr.placement_count > 8))
+    if (final_midi && (tr.kind != 1 || tr.gain > 2 || tr.placement_count > 8))
       return reject_v4(ALIVE_SESSION_V4_BAD_FIELD, "Invalid final MIDI track shape.");
     for (unsigned member = tr.kind == 1 ? 0 : 1; member <= tr.effect_count; ++member) {
       const unsigned d = member ? tr.effects[member - 1] : tr.instrument;
@@ -112,7 +118,9 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
         continue;
       if (slot >= c.slot_count || c.slots[slot].track != t || ++slot_owners[slot] != 1)
         return reject_v4(ALIVE_SESSION_V4_BAD_OWNERSHIP, "Invalid slot ownership.");
+#ifndef ULTRA_ALIVE_SESSION_V4_PROVISIONAL
       unsupported = true;
+#endif
     }
     if (tr.placement_begin > c.placement_count ||
         tr.placement_count > c.placement_count - tr.placement_begin)
@@ -129,7 +137,7 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
       const auto &source = c.sources[p.source];
       if (p.source_offset >= source.length_frames ||
           (!p.loop_enabled && p.duration_frames > source.length_frames - p.source_offset) ||
-          (complete_midi && p.loop_enabled && source.length_frames - p.source_offset < minimum))
+          (final_midi && p.loop_enabled && source.length_frames - p.source_offset < minimum))
         return reject_v4(ALIVE_SESSION_V4_BAD_PLACEMENT, "Placement exceeds source suffix.");
       placement_owners[index] = true;
       endpoint = p.start_frame + p.duration_frames;
@@ -144,10 +152,11 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
       return reject_v4(ALIVE_SESSION_V4_BAD_PLACEMENT, "Unowned placement.");
   for (unsigned i = 0; i < c.slot_count; ++i) {
     const auto &slot = c.slots[i];
+    unsupported |= slot.loop_enabled != 0;
     if (slot_owners[i] != 1 || slot.track >= c.track_count || slot.source >= c.source_count ||
         c.sources[slot.source].track != slot.track || slot.reserved || !flag(slot.loop_enabled) ||
         slot.source_offset >= c.sources[slot.source].length_frames ||
-        (complete_midi && slot.loop_enabled &&
+        (final_midi && slot.loop_enabled &&
          c.sources[slot.source].length_frames - slot.source_offset < minimum))
       return reject_v4(ALIVE_SESSION_V4_BAD_SOURCE, "Invalid slot source.");
   }
@@ -160,7 +169,7 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
         (source.kind == 1 ? source.audio_buffer != None
                           : source.audio_buffer >= c.audio_buffer_count))
       return reject_v4(ALIVE_SESSION_V4_BAD_SOURCE, "Invalid source fields or range.");
-    if (complete_midi && ++sources[source.track] > 4)
+    if (final_midi && ++sources[source.track] > 4)
       return reject_v4(ALIVE_SESSION_V4_BAD_SOURCE, "More than four sources per track.");
     unsigned enabled = 0;
     for (unsigned d = 0; d < 16; ++d) {
@@ -260,6 +269,10 @@ BorrowedSource source(unsigned index) const noexcept {
 struct ResolvedCursor {
   unsigned source = None, occurrence = None, next_placement = None;
   uint64_t phase = 0, next_boundary = NoFrame;
+  unsigned authority = ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY;
+  unsigned active_slot = None, remembered_slot = None, pending_slot = None;
+  uint64_t ended_phase = 0;
+  bool ended = false;
 };
 std::array<ResolvedCursor, 8> resolved_{}, candidate_resolved_{};
 struct PlacementLedger {
@@ -282,6 +295,10 @@ ResolvedCursor resolve_arrangement(unsigned track, uint64_t frame,
   const unsigned begin = config_.placement_begin[track], count = config_.placement_size[track];
   unsigned lo = 0, hi = count;
   while (lo < hi) {
+#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+    if (alive_session_test_placement_probe)
+      alive_session_test_placement_probe(1);
+#endif
     ++probes;
     const unsigned mid = (lo + hi) / 2;
     if (config_.placements[begin + mid].start_frame <= frame)
@@ -311,6 +328,10 @@ ResolvedCursor next_arrangement(unsigned track, uint64_t frame) const noexcept {
   out.next_placement = resolved_[track].next_placement;
   const unsigned end = config_.placement_begin[track] + config_.placement_size[track];
   if (out.next_placement < end) {
+#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+    if (alive_session_test_placement_probe)
+      alive_session_test_placement_probe(0);
+#endif
     const unsigned index = out.next_placement;
     const auto &p = config_.placements[index];
     if (frame >= p.start_frame) {
@@ -330,93 +351,14 @@ unsigned chain_member(unsigned track, unsigned member) const noexcept {
 }
 bool envelopes_v4(const AliveSessionConfigV4 &c, clip_admission::Prepared &out,
                   clip_admission::Envelope &placement) noexcept {
-  using namespace clip_admission;
-  out = {};
-  placement = {};
-  struct Pulse {
-    uint64_t frame;
-    Cost cost;
-    uint64_t placement;
-  };
-  auto pulses = std::make_unique<std::array<Pulse, 4144>>();
-  unsigned count = 0;
-  std::array<uint64_t, 17> boundaries{};
-  unsigned boundary_count = 0;
-  const auto &track = c.tracks[0];
-  const auto &src = c.sources[0];
-  auto &reset = out.reset[0];
-  reset[1] = 1 + track.effect_count;
-  reset[2] = src.event_count;
-  for (unsigned d = 0; d < c.device_count; ++d)
-    reset[3] += 2 * c.devices[d].parameter_count;
-  for (unsigned i = 0; i < c.placement_count; ++i) {
-    const auto &p = c.placements[i];
-    boundaries[boundary_count++] = p.start_frame;
-    boundaries[boundary_count++] = p.start_frame + p.duration_frames;
-  }
-  boundaries[boundary_count++] = c.length_frames;
-  std::sort(boundaries.begin(), boundaries.begin() + boundary_count);
-  boundary_count = unsigned(std::unique(boundaries.begin(), boundaries.begin() + boundary_count) -
-                            boundaries.begin());
-  for (unsigned begin = 0, end = 0; begin < boundary_count; ++begin) {
-    while (end < boundary_count && boundaries[end] - boundaries[begin] < 1024)
-      ++end;
-    if (end - begin > 6)
-      return reject_v4(ALIVE_SESSION_V4_WORK_LIMIT, "More than six forced boundaries per window.",
-                       6, end - begin, 6);
-  }
-  for (unsigned i = 0; i < c.placement_count; ++i) {
-    const auto &p = c.placements[i];
-    (*pulses)[count++] = {p.start_frame, reset, 4};
-    (*pulses)[count++] = {p.start_frame + p.duration_frames, reset, 4};
-    // Admission reserves the maximum four held-note dispatches at offset entry.
-    if (p.source_offset)
-      (*pulses)[count++] = {p.start_frame, Cost{4, 0, 0, 0, 0}, 0};
-    for (unsigned j = 0; j < src.event_count; ++j) {
-      const auto &e = c.events[src.event_begin + j];
-      if (e.frame >= p.source_offset && e.frame - p.source_offset < p.duration_frames)
-        (*pulses)[count++] = {p.start_frame + e.frame - p.source_offset,
-                              Cost{1, 0, 0, e.kind == ALIVE_SESSION_AUTOMATION ? 1u : 0u, 0}, 0};
-    }
-  }
-  std::sort(pulses->begin(), pulses->begin() + count,
-            [](const auto &a, const auto &b) { return a.frame < b.frame; });
-  for (unsigned width = 1; width <= 1024; ++width) {
-    unsigned end = 0;
-    Cost sum{};
-    uint64_t steps = 0;
-    for (unsigned begin = 0; begin < count; ++begin) {
-      while (end < count && (*pulses)[end].frame - (*pulses)[begin].frame < width) {
-        sum = add(sum, (*pulses)[end].cost);
-        steps += (*pulses)[end++].placement;
-      }
-      for (unsigned m = 0; m < 5; ++m)
-        out.future[m][width] = std::max(out.future[m][width], sum[m]);
-      placement[width] = std::max(placement[width], steps);
-      subtract(sum, (*pulses)[begin].cost);
-      steps -= (*pulses)[begin].placement;
-    }
-    // An arbitrary resumed START can contribute four additional chase notes.
-    out.future[0][width] += 4;
-  }
-  const auto limits = policy(1);
-  const auto frame = cost(limits.scheduled_frame), window = cost(limits.scheduled_window);
-  for (unsigned width : {1u, 1024u}) {
-    for (unsigned m = 0; m < 5; ++m) {
-      const auto cap = m ? (width == 1 ? frame[m] : window[m]) : (width == 1 ? 32u : 64u);
-      if (out.future[m][width] > cap)
-        return reject_v4(m ? ALIVE_SESSION_V4_WORK_LIMIT
-                           : (width == 1 ? ALIVE_SESSION_V4_EVENT_FRAME_LIMIT
-                                         : ALIVE_SESSION_V4_EVENT_WINDOW_LIMIT),
-                         "Finite Arrangement work exceeds policy.", m + 1, out.future[m][width],
-                         cap);
-    }
-    if (placement[width] > (width == 1 ? 64u : 512u))
-      return reject_v4(ALIVE_SESSION_V4_WORK_LIMIT, "Placement work exceeds policy.", 6,
-                       placement[width], width == 1 ? 64 : 512);
-  }
+  auto proof = std::make_unique<workspace_admission::Proof>();
+  if (!prepare_midi_envelopes_v4(c, *proof))
+    return false;
+  out = proof->prepared;
+  placement = proof->placement;
   return true;
 }
+
 AliveSessionStateV4 project_v4() const noexcept {
   AliveSessionStateV4 out{};
   out.version = 4;
@@ -444,16 +386,21 @@ AliveSessionStateV4 project_v4() const noexcept {
   COPY_STATE(peak_right);
 #undef COPY_STATE
   out.source_count = config_.source_count;
+  out.slot_count = config_.slot_count;
   out.placement_count = config_.placement_count;
   for (unsigned t = 0; t < 8; ++t) {
     auto &tr = out.tracks[t];
     const auto &old = state_.tracks[t];
     tr.mixer = old.mixer;
-    tr.active_slot = tr.pending_slot = None;
-    tr.pending_frame = NoFrame;
+    tr.authority = resolved_[t].authority;
+    tr.active_slot = resolved_[t].active_slot;
+    tr.pending_slot = resolved_[t].pending_slot;
+    tr.pending_action = old.pending_action;
+    tr.pending_serial = old.pending_serial;
+    tr.pending_frame = old.pending_action ? old.pending_frame : NoFrame;
     tr.active_source = resolved_[t].source;
     tr.active_placement = resolved_[t].occurrence;
-    tr.phase = old.phase;
+    tr.phase = tr.active_source == None ? 0 : old.phase;
     tr.track_epoch = old.track_epoch;
   }
   std::copy_n(state_.devices, 16, out.devices);
@@ -482,8 +429,8 @@ AliveSessionStateV4 project_v4() const noexcept {
 }
 
 public:
-// Off-callback preparation only: deliberately separate from configure/validate
-// admission until the complete MIDI runtime consumes this proof in the next slice.
+// Off-callback complete proof, also consumed by finite MIDI configuration.
+// Preparation alone does not enable the future authority or loop actions.
 bool prepare_midi_envelopes_v4(const AliveSessionConfigV4 &c,
                                workspace_admission::Proof &out) noexcept {
   out = {};
@@ -614,6 +561,8 @@ bool configure_v4(const AliveSessionConfigV4 &c, const AliveSessionAudioBufferV4
   config_.device_count = c.device_count;
   config_.event_count = c.event_count;
   config_.source_count = c.source_count;
+  config_.slot_count = c.slot_count;
+  config_.loop_enabled = c.loop_enabled;
   config_.placement_count = c.placement_count;
   config_.length_frames = c.length_frames;
   config_.loop_start = c.loop_start;
@@ -625,6 +574,15 @@ bool configure_v4(const AliveSessionConfigV4 &c, const AliveSessionAudioBufferV4
   std::copy_n(c.devices, 16, config_.devices);
   std::copy_n(c.events, 1024, config_.events);
   std::copy_n(c.sources, 32, config_.sources);
+  std::copy_n(c.slots, 32, config_.slots);
+  for (auto &map : config_.source_map)
+    map.fill(None);
+  for (auto &map : config_.slot_map)
+    map.fill(None);
+  for (unsigned s = 0; s < c.source_count; ++s) {
+    const unsigned t = c.sources[s].track;
+    config_.source_map[t][config_.source_size[t]++] = s;
+  }
   std::copy_n(c.placements, 64, config_.placements);
   const auto absolute = state_.absolute_frame, generation = state_.generation;
   state_ = {};
@@ -662,6 +620,7 @@ bool configure_v4(const AliveSessionConfigV4 &c, const AliveSessionAudioBufferV4
     chain.gain = tr.gain;
     chain.mute = tr.mute;
     chain.solo = tr.solo;
+    std::copy_n(tr.slots, 4, config_.slot_map[t].begin());
     config_.placement_begin[t] = tr.placement_begin;
     config_.placement_size[t] = tr.placement_count;
     unsigned probes = 0;

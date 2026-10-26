@@ -16,6 +16,7 @@ inline void (*alive_session_test_charge)(unsigned,const clip_admission::Cost&)no
 inline unsigned alive_session_test_fault_resource=0;
 inline void (*alive_session_test_dispatch)(uint64_t,unsigned,unsigned,const AliveSessionEventV2&)noexcept=nullptr;
 inline void (*alive_session_test_placement_charge)(unsigned,uint64_t)noexcept=nullptr;
+inline void (*alive_session_test_placement_probe)(unsigned)noexcept=nullptr;
 inline uint64_t alive_session_test_reconstruction_reads=0,alive_session_test_preview_reads=0;
 #endif
 class AliveSession {
@@ -27,10 +28,13 @@ class AliveSession {
   uint32_t profile=0,work_policy=0,clip_count=0;double tempo_bpm=0;
   AliveSessionTrackV2 tracks[8]{};AliveSessionDeviceV2 devices[16]{};AliveSessionEventV2 events[1024]{};
   AliveSessionTrackV3 bank[8]{};AliveSessionClipV3 clips[32]{};
-  uint32_t source_count=0,placement_count=0;
+  uint32_t source_count=0,placement_count=0,slot_count=0;
   AliveSessionSourceV4 sources[32]{};
+  AliveSessionSlotV4 slots[32]{};
   AliveSessionPlacementV4 placements[64]{};
   std::array<unsigned,8> placement_begin{},placement_size{};
+  std::array<std::array<unsigned,4>,8> source_map{},slot_map{};
+  std::array<unsigned,8> source_size{};
   void legacy(const AliveSessionConfigV2& c)noexcept{
    *this={};track_count=c.track_count;device_count=c.device_count;event_count=c.event_count;loop_enabled=c.loop_enabled;
    length_frames=c.length_frames;loop_start=c.loop_start;loop_end=c.loop_end;
