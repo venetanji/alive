@@ -5,6 +5,7 @@ Run through check_canvas_desktop.sh with ULTRA_TEST_ALIVE=1. Set
 ALIVE_TEST_EDITOR_OBSERVATION_ERROR=1 to exercise observer failure isolation.
 ALIVE_TEST_EDITOR_FOCUS_FAILURE=1 searches a deliberately absent title to
 verify that recording still propagates the original native focus assertion.
+ALIVE_TEST_EDITOR_WRITE_ERROR=queued or result fails that receipt's write.
 """
 import json
 import os
@@ -12,6 +13,30 @@ from pathlib import Path
 import time
 
 import check_alive_desktop as alive
+
+
+def check_unavailable_observations():
+    original = alive.editor_observation, alive.native_inputs, alive.editor_observation_failures
+    try:
+        alive.native_inputs, alive.editor_observation_failures = [], []
+        for _ in range(5):
+            alive.editor_observation = None
+            alive.observe_editor_input('before', 'Open Pulse editor', None)
+            alive.editor_observation = {}
+            alive.observe_editor_window(True)
+        assert alive.native_inputs == [], 'Unavailable observations must not invent input or ownership'
+        assert len(alive.editor_observation_failures) == 3
+        assert all(row['unavailable'] and len(row['error']) <= 512
+                   for row in alive.editor_observation_failures)
+        # A broken fallback collector must not escape the observation boundary.
+        alive.editor_observation_failures = None
+        alive.editor_observation = None
+        alive.observe_editor_input('before', 'Open Pulse editor', None)
+        alive.editor_observation = {}
+        alive.observe_editor_window(True)
+        assert alive.native_inputs == []
+    finally:
+        alive.editor_observation, alive.native_inputs, alive.editor_observation_failures = original
 
 
 def run():
@@ -24,13 +49,30 @@ def run():
     alive.transport('start')
     original_hit = alive.native_hit_path
     original_focus = windows.focus
+    original_write = Path.write_text
     observation_error = os.environ.get('ALIVE_TEST_EDITOR_OBSERVATION_ERROR') == '1'
     focus_failure = os.environ.get('ALIVE_TEST_EDITOR_FOCUS_FAILURE') == '1'
+    write_error = os.environ.get('ALIVE_TEST_EDITOR_WRITE_ERROR', '')
+    failed_writes, focus_errors, focus_calls = [], [], []
     absent_title = 'Diagnostic absent hosted editor'
-    if focus_failure:
-        def absent_focus(title):
-            return original_focus(absent_title if title == 'Pulse - Ultra Hosted Editor' else title)
-        windows.focus = absent_focus
+
+    def observed_focus(title):
+        focus_calls.append(title)
+        try:
+            return original_focus(absent_title if focus_failure and title == 'Pulse - Ultra Hosted Editor' else title)
+        except AssertionError as error:
+            focus_errors.append(error)
+            raise
+
+    def unavailable_write(path, contents, *args, **kwargs):
+        action = {'queued': 'editor input queued', 'result': 'editor window result'}.get(write_error)
+        if path == ui.output / 'native-inputs.json' and alive.native_inputs[-1]['action'] == action:
+            failed_writes.append(action)
+            raise OSError('Deliberately unavailable editor receipt write')
+        return original_write(path, contents, *args, **kwargs)
+
+    windows.focus = observed_focus
+    Path.write_text = unavailable_write
     if observation_error:
         def unavailable_hit(*point):
             raise LookupError('Deliberately unavailable editor observation')
@@ -40,12 +82,20 @@ def run():
             alive.editor_edit()
         except AssertionError as error:
             assert focus_failure and str(error) == 'Native window did not open: ' + absent_title
+            assert focus_errors and error is focus_errors[0], 'The original exception object must propagate'
             assert windows.scope == absent_title
         else:
             assert not focus_failure, 'The original missing-window assertion was swallowed'
     finally:
         alive.native_hit_path = original_hit
         windows.focus = original_focus
+        Path.write_text = original_write
+    assert focus_calls.count('Pulse - Ultra Hosted Editor') == 1
+    if write_error:
+        assert len(failed_writes) == 1, failed_writes
+        assert len(alive.editor_observation_failures) == 1
+        failure = alive.editor_observation_failures[0]
+        assert failure['unavailable'] and failure['error_type'] == 'OSError', failure
     rows = [row for row in alive.native_inputs if row['action'].startswith('editor ')]
     assert [row['action'] for row in rows] == [
         'editor input before', 'editor input queued', 'editor window result'], rows
@@ -86,8 +136,13 @@ def run():
         time.sleep(.1)
     else:
         raise AssertionError('Alive did not quit after the editor diagnostic')
+    check_unavailable_observations()
     (ui.output / 'editor-diagnostic-report.json').write_text(json.dumps({
         'receipts': rows, 'observation_error_exercised': observation_error,
+        'receipt_write_error_exercised': write_error,
+        'observation_failures': alive.editor_observation_failures,
+        'original_focus_exception_identity_preserved': bool(focus_errors),
+        'bounded_unavailable_observation_helpers_passed': True,
         'original_editor_assertions_passed': not focus_failure,
         'original_missing_window_assertion_propagated': focus_failure,
         'quit_discard_exited': True}, indent=2))

@@ -7,6 +7,7 @@ Set ALIVE_ENDURANCE_SECONDS=600 for the sustained acceptance run.
 """
 import array
 from contextlib import contextmanager, nullcontext
+from functools import wraps
 import ctypes as C
 import hashlib
 import json
@@ -35,6 +36,7 @@ DEVICE = Path('apps/ultra/examples/subtractive.ultra').resolve()
 operations = []
 native_inputs = []
 editor_observation = None
+editor_observation_failures = []
 resource_sampler = None
 resource_groups = None
 resource_writer = None
@@ -285,6 +287,25 @@ def observe_replace_input(phase, name, rect):
         (ui.output / 'native-inputs.json').write_text(json.dumps(native_inputs, indent=2))
 
 
+def isolate_editor_observation(observe):
+    """Keep observation and output failures outside the original input path."""
+    @wraps(observe)
+    def guarded(*args, **kwargs):
+        try:
+            return observe(*args, **kwargs)
+        except Exception as error:
+            try:
+                if len(editor_observation_failures) < 3:
+                    failure = {'observer': observe.__name__, 'unavailable': True,
+                               'error_type': type(error).__name__}
+                    editor_observation_failures.append(failure)
+                    failure['error'] = str(error)[:512]
+            except Exception:
+                pass  # Reporting an unavailable observation must also be best effort.
+    return guarded
+
+
+@isolate_editor_observation
 def observe_editor_input(phase, name, rect):
     """Buffer one original activation's receipts without changing its input."""
     global editor_observation
@@ -321,6 +342,7 @@ def observe_editor_input(phase, name, rect):
         (ui.output / 'native-inputs.json').write_text(json.dumps(native_inputs, indent=2))
 
 
+@isolate_editor_observation
 def observe_editor_window(focused, error=None):
     if editor_observation is None or editor_observation['result']:
         return
