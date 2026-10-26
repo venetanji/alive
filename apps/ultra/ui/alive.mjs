@@ -1,10 +1,12 @@
 import {geometry,point,beatAt,pitchAt,transformNote,addNote,keyEdit} from './alive-piano.mjs';
 import {createAliveModel,parameterReading,nativeInteger} from './alive-model.mjs';
 import {mountAudioSettings} from './audio-settings.mjs';
+import {mountWorkspace} from './alive-workspace.mjs';
 
 export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke=win?.__TAURI__?.core?.invoke}={}){
   const $=id=>doc.getElementById(id),make=(tag,cls,text)=>{const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
   const model=createAliveModel();let selected=0,selectedInstance=null,chainKey='',queue=Promise.resolve(),disposed=false,trackKey='',musicKey='',parameterKey='',laneKey='';
+  const workspace=mountWorkspace({doc,win});
   let selectedSlots=new Map(),selectionToken=0,activeEditClip=null,selectedNote=null,gesture=null,preview=null,pianoGeometry=null,velocityCanceled=false,listRevision=0,scopeRevision=0,transportRequestKey='';
   const trackViews=[],chainViews=[],parameterViews=new Map(),diagnostics=new Map();let audioSettings;
   function notice(text,error=false){$('notice').textContent=String(text);$('notice').classList.toggle('error',error);}
@@ -157,7 +159,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       const c=track.slots[slot],cell=make('div','clip-slot'),choose=make('button','clip-select',c?.name??`Empty ${slot+1}`),launch=make('button','clip-launch','Launch'),status=make('small');
       choose.setAttribute('aria-label',`Select ${track.name} slot ${slot+1}`);choose.addEventListener('click',()=>{cancelGesture();selected=index;selectedSlots.set(track.id,slot);selectionToken++;selectedNote=null;musicKey=clipControlsKey='';render();});
       launch.setAttribute('aria-label',`Launch ${track.name} ${c?.name??`slot ${slot+1}`}`);launch.disabled=!c;launch.addEventListener('click',guard(()=>clipAction({kind:'launch',trackId:track.id,clipId:c.id})));
-      cell.append(choose,launch,status);bank.append(cell);slotViews.push({trackId:track.id,slot,clipId:c?.id,cell,choose,launch,status});
+      cell.dataset.slot=String(slot);cell.append(choose,launch,status);bank.append(cell);slotViews.push({trackId:track.id,slot,clipId:c?.id,cell,choose,launch,status});
     }
     const stop=make('button','track-stop','Stop track');stop.setAttribute('aria-label',`Stop ${track.name} track`);stop.addEventListener('click',guard(()=>clipAction({kind:'stop',trackId:track.id})));bank.append(stop);
     const state=make('output','clip-runtime');state.setAttribute('aria-label',`${track.name} clip runtime`);bank.append(state);slotViews.push({trackId:track.id,state});
@@ -202,7 +204,10 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
           if(action==='editor')await command('alive_editor',{instanceId:track.device.instanceId});else{const snapshot=await command('alive_device',{trackId:track.id,instanceId:track.device.instanceId,action});applySnapshot(snapshot);trackKey=musicKey=parameterKey='';render();notice('Device updated. Start transport when ready.');}
         })));actions.append(button);
       }
-      row.append(name,clip,gainLabel,mute,solo,meters,actions);if(track.slots){row.classList.add('clips-track');clip.hidden=true;const bank=make('div','clip-bank');row.append(bank);buildSlots(bank,track,index);}$('tracks').append(row);trackViews.push({row,detail,svg,gain,mute,solo,bar,readout,actions});
+      row.dataset.trackId=track.id;row.style.setProperty('--track-color',['#efbb62','#88c5c7','#91b9ed','#d8a0a7','#b4c98b','#d3b48a','#a5b9ce','#c5b6cf'][index%8]);
+      const mixer=make('div','track-mixer'),toggles=make('div','mixer-toggles'),inspector=make('details','track-inspector'),summary=make('summary','','Device / track');
+      toggles.append(mute,solo);mixer.append(gainLabel,toggles,meters);inspector.append(summary,actions);
+      row.append(name);if(track.slots){row.classList.add('clips-track');clip.hidden=true;const bank=make('div','clip-bank');row.append(bank);buildSlots(bank,track,index);}row.append(clip,mixer,inspector);$('tracks').append(row);trackViews.push({row,detail,svg,gain,mute,solo,bar,readout,actions});
     });
   }
   function chainDevices(track=model.document().tracks[selected]){return [track.device,...track.effects];}
@@ -362,7 +367,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     const nextParameters=JSON.stringify([snapshot.generation,selected,selectedInstance]);if(nextParameters!==parameterKey){parameterKey=nextParameters;buildParameters(snapshot);}
     document.tracks.forEach((track,index)=>{
       const view=trackViews[index],runtime=snapshot.state.tracks[index];view.row.classList.toggle('selected',selected===index);view.row.setAttribute('aria-label',`${track.name} track`);view.detail.textContent=`${track.notes.length} notes / stereo`;
-      if(doc.activeElement!==view.gain)view.gain.value=track.gain;view.mute.setAttribute('aria-pressed',String(track.mute));view.solo.setAttribute('aria-pressed',String(track.solo));
+      if(doc.activeElement!==view.gain&&!workspace.preserves(view.gain))view.gain.value=track.gain;view.mute.setAttribute('aria-pressed',String(track.mute));view.solo.setAttribute('aria-pressed',String(track.solo));
       const key=JSON.stringify([track.notes,document.lengthBeats]);if(view.paintKey!==key){view.paintKey=key;paintPiano(view.svg,track.notes,document.lengthBeats);}
       meter(view.bar,runtime.peakLeft,runtime.peakRight);view.readout.textContent=peak(runtime.peakLeft,runtime.peakRight);
       for(const button of [...view.actions.children].slice(1)){button.disabled=!!snapshot.state.playing||model.pending();button.title=model.pending()?'Apply or discard pending schedule edits before changing devices.':snapshot.state.playing?'Stop transport before replacing a device or removing a track.':button.textContent==='Remove track'?'Remove this whole track, its instrument, effects and automation. Keep at least one track.':'Replace this instrument from a saved Ultra source; its automation lanes are removed.';}
@@ -417,6 +422,6 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   }
   if(invoke)win.setTimeout(pollMeasurements,1000);
   if(invoke){enqueue(refresh).then(()=>notice('Ready. Select a clip to edit notes or automation.')).catch(()=>{});win.setTimeout(poll,80);}else notice('Open the native app with bash apps/alive/run.sh. This page does not synthesize audio.',true);
-  return{model,refresh,dispose(){disposed=true;win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};
+  return{model,refresh,dispose(){disposed=true;workspace.dispose();win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};
 }
 if(globalThis.document)mountAlive();

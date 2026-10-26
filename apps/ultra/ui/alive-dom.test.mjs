@@ -27,6 +27,56 @@ class Element{
 }
 const descendants=element=>element.children.flatMap(child=>[child,...descendants(child)]);
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
+
+test('plain Tab navigates workspaces while controls and modified Tab keep native focus navigation',async()=>{
+  const page=dom('./alive.html'),native=backend(clipState()),view=mountAlive({...page,invoke:native.invoke});await settle();
+  let prevented=0;const tab=extra=>page.doc.fire('keydown',{key:'Tab',preventDefault(){prevented++;},...extra});
+  await tab({target:page.ids.get('session-workspace')});assert.equal(page.ids.get('arrangement-workspace').hidden,false);assert.equal(prevented,1);
+  for(const tag of ['input','select','textarea','button','summary'])await tab({target:page.doc.createElement(tag)});
+  const role=page.doc.createElement('div');role.setAttribute('role','slider');await tab({target:role});
+  const editable=page.doc.createElement('span');editable.setAttribute('contenteditable','true');await tab({target:editable});
+  for(const key of ['shiftKey','ctrlKey','altKey','metaKey'])await tab({target:page.ids.get('session-workspace'),[key]:true});
+  assert.equal(prevented,1);assert.equal(page.ids.get('arrangement-workspace').hidden,false);
+  await tab({target:page.ids.get('arrangement-workspace')});assert.equal(page.ids.get('session-workspace').hidden,false);view.dispose();
+});
+test('repeated view navigation preserves playing pending receipts, draft, clip, instance and editor lifecycle',async()=>{
+  const initial=clipState();initial.draft=structuredClone(initial.document);initial.draft.tracks[1].slots[0].name='Unsaved';
+  initial.runtime.tracks[1].pendingAction='launch';initial.runtime.tracks[1].pendingClipId='clip-track-2';initial.runtime.tracks[1].pendingFrame='96000';
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  await page.find('Select Harmony slot 1').fire('click');await page.ids.get('edit-device').fire('click');
+  const before=structuredClone(view.model.snapshot()),piano=page.ids.get('piano-roll'),parameter=page.find('Cutoff base');parameter.value='1717';
+  const calls=native.calls.length;
+  for(let i=0;i<4;i++){await page.ids.get('view-arrangement').fire('click');await page.ids.get('view-session').fire('click');}
+  assert.deepEqual(view.model.snapshot(),before);assert.equal(native.calls.length,calls);assert.equal(page.ids.get('piano-roll'),piano);assert.equal(page.find('Cutoff base'),parameter);assert.equal(parameter.value,'1717');
+  assert.equal(page.find('Select Harmony slot 1').attrs['aria-pressed'],'true');await page.ids.get('edit-device').fire('click');
+  assert.deepEqual(native.calls.filter(c=>c.name==='alive_editor').map(c=>c.args.instanceId),[initial.document.tracks[1].device.instanceId,initial.document.tracks[1].device.instanceId]);view.dispose();
+});
+test('browser and Clip Devices detail toggle locally without rebuilding active controls',async()=>{
+  const page=dom('./alive.html'),native=backend(clipState()),view=mountAlive({...page,invoke:native.invoke});await settle();const calls=native.calls.length;
+  const note=page.find('Note 1 pitch');note.value='73';
+  await page.ids.get('toggle-browser').fire('click');assert.equal(page.ids.get('workspace-browser').hidden,true);
+  await page.ids.get('detail-devices').fire('click');assert.equal(page.ids.get('device-detail').hidden,false);assert.equal(page.ids.get('clip-detail').hidden,true);
+  await page.ids.get('toggle-detail').fire('click');assert.equal(page.ids.get('detail-content').hidden,true);
+  await page.ids.get('detail-clip').fire('click');assert.equal(page.ids.get('detail-content').hidden,false);assert.equal(page.ids.get('clip-detail').hidden,false);
+  assert.equal(page.find('Note 1 pitch'),note);assert.equal(note.value,'73');assert.equal(native.calls.length,calls);view.dispose();
+});
+test('detail resize supports keyboard and cancels pointer preview with Escape',async()=>{
+  const page=dom('./alive.html'),native=backend(clipState()),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const handle=page.ids.get('detail-resizer'),shell=page.ids.get('workspace-shell');shell.clientHeight=700;
+  await handle.fire('keydown',{key:'ArrowUp'});assert.equal(handle.attrs['aria-valuenow'],'240');
+  await handle.fire('pointerdown',{pointerId:1,clientY:400});await handle.fire('pointermove',{pointerId:1,clientY:350});assert.equal(handle.attrs['aria-valuenow'],'290');
+  await page.doc.fire('keydown',{key:'Escape',target:handle});assert.equal(handle.attrs['aria-valuenow'],'240');assert.equal(shell.style['--detail-height'],'240px');
+  await handle.fire('pointerdown',{pointerId:2,clientY:400});await handle.fire('pointermove',{pointerId:2,clientY:450});await handle.fire('pointercancel');assert.equal(handle.attrs['aria-valuenow'],'240');view.dispose();
+});
+test('eight Session tracks expose four vertical slots and a mixer per column plus four scene rows',async()=>{
+  const initial=clipState();initial.capabilities={maxTracks:8,maxDevices:16,atomicTrackActions:true};
+  while(initial.document.tracks.length<8){const i=initial.document.tracks.length+1,t=structuredClone(initial.document.tracks[0]);t.id=`track-${i}`;t.name=`Track ${i}`;t.device.instanceId=`instance-${i}`;t.slots[0].id=`clip-${i}`;t.defaultClipId=t.slots[0].id;initial.document.tracks.push(t);initial.deviceInstances[t.device.instanceId]={...structuredClone(initial.deviceInstances[initial.document.tracks[0].device.instanceId]),index:i-1,track:i-1};initial.state.tracks.push(structuredClone(initial.state.tracks[0]));initial.state.devices.push(structuredClone(initial.state.devices[0]));}
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  assert.equal(page.ids.get('tracks').children.length,8);
+  for(const column of page.ids.get('tracks').children){assert.equal(descendants(column).filter(e=>e.classList.contains('clip-slot')).length,4);assert.ok(descendants(column).find(e=>e.classList.contains('track-mixer')));}
+  assert.equal(page.ids.get('scene-controls').children.length,4);assert.equal(page.ids.get('session-workspace').hidden,false);
+  await page.ids.get('view-arrangement').fire('click');assert.match(page.ids.get('arrangement-unavailable').textContent,/unavailable/i);assert.equal(native.calls.filter(c=>c.name!=='alive_current').length,0);view.dispose();
+});
 function clipState(){const s=state();s.mode='clipsV3';s.preparationRevision='1';s.snapshotSequence='1';s.document.format='alive-session-v3';s.preparedClips=[];
   for(const t of s.document.tracks){const clip={id:`clip-${t.id}`,name:'Clip 1',lengthBeats:s.document.lengthBeats,notes:t.notes.map((n,i)=>({...n,id:`note-${t.id}-${i}`})),automation:t.automation};t.slots=[clip,null,null,null];t.defaultClipId=clip.id;delete t.notes;delete t.automation;s.preparedClips.push({trackId:t.id,clipId:clip.id,name:clip.name,slot:0,lengthFrames:'411429'});}
   s.runtime={tracks:s.document.tracks.map(t=>({trackId:t.id,activeClipId:t.slots[0].id,phase:'0',epoch:'1',pendingAction:null,pendingClipId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'};return s;}
@@ -140,8 +190,9 @@ test('late focused clip creation accepts score without stealing a newer track se
   assert.equal(view.model.document().tracks[0].slots[1].id,'created');assert.match(page.ids.get('clip-title').textContent,/Harmony/);assert.equal(page.find('Select Harmony slot 1').attrs['aria-pressed'],'true');view.dispose();
 });
 function dom(file){
-  const ids=new Map(),doc={activeElement:null,addEventListener(){},removeEventListener(){}};doc.createElement=tag=>new Element(tag,doc);doc.createElementNS=(_,tag)=>new Element(tag,doc);doc.createTextNode=text=>{const e=new Element('text',doc);e.textContent=text;return e;};doc.getElementById=id=>ids.get(id);
-  for(const[markup,tag,id]of readFileSync(new URL(file,import.meta.url),'utf8').matchAll(/<([\w-]+)\b[^>]*\bid="([^"]+)"[^>]*>/g)){const element=new Element(tag,doc);element.id=id;element.hidden=/\bhidden\b/.test(markup);ids.set(id,element);}
+  const ids=new Map(),doc=new Element('document',null);doc.doc=doc;doc.activeElement=null;doc.createElement=tag=>new Element(tag,doc);doc.createElementNS=(_,tag)=>new Element(tag,doc);doc.createTextNode=text=>{const e=new Element('text',doc);e.textContent=text;return e;};doc.getElementById=id=>ids.get(id);
+  const html=readFileSync(new URL(file,import.meta.url),'utf8');
+  for(const[markup,tag,id]of html.matchAll(/<([\w-]+)\b[^>]*\bid="([^"]+)"[^>]*>/g)){const element=new Element(tag,doc);element.id=id;element.hidden=/\bhidden\b/.test(markup);const text=html.slice(html.indexOf(markup)+markup.length).match(/^[^<]+/);if(text)element.textContent=text[0];ids.set(id,element);}
   if(ids.has('master-meter'))ids.get('master-meter').append(doc.createElement('i'),doc.createElement('i'));
   const timeouts=[],win={setTimeout:fn=>timeouts.push(fn),addEventListener(){},removeEventListener(){}};
   return{doc,win,ids,find:label=>[...ids.values()].flatMap(e=>[e,...descendants(e)]).find(e=>e.attrs['aria-label']===label)};

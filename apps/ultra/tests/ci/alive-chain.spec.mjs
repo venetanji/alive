@@ -2,9 +2,10 @@ import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 
 // Browser geometry and input coverage only. The native desktop journey qualifies hosting/audio.
-async function openSession(page,longNames=false,clipBank=false){
+async function openSession(page,longNames=false,clipBank=false,trackCount=2){
   const document=JSON.parse(readFileSync(new URL('../../../alive/examples/two-instruments.alive',import.meta.url))),patch=JSON.parse(readFileSync(new URL('../../examples/subtractive.ultra',import.meta.url)));
   document.format='alive-session-v2';const deviceInstances={},runtime=[];
+  while(document.tracks.length<trackCount){const track=structuredClone(document.tracks[0]);track.id=`track-${document.tracks.length+1}`;track.name=`Track ${document.tracks.length+1}`;document.tracks.push(track);}
   document.tracks.forEach((track,index)=>{
     track.effects=[];track.device.instanceId=`instrument-${index}`;track.device.bypassed=false;
     track.automation.forEach(l=>l.instanceId=track.device.instanceId);
@@ -18,7 +19,7 @@ async function openSession(page,longNames=false,clipBank=false){
     document.tracks[0].effects.push({instanceId,id:device.id,path:`${file}.ultra`,parameters:{},bypassed:false});
     deviceInstances[instanceId]={track:0,index:runtime.length,manifest};runtime.push({effective:manifest.parameters.map(p=>p.base),owned:manifest.parameters.map(()=>0)});
   }
-  const snapshot={generation:1,draftRevision:0,history:{canUndo:false,canRedo:false},document,deviceInstances,dirty:false,draft:null,state:{playing:0,position:0,absoluteFrame:0,rejected:0,generation:1,peakLeft:0,peakRight:0,devices:runtime,tracks:document.tracks.map(()=>({peakLeft:0,peakRight:0,activeVoices:0}))},audio:{config:{host:'default',device:'default',sample_rate:48000},observed_buffer_frames:0,callbacks:0,stream_errors:0,failed:false,message:'Browser fixture'}};
+  const snapshot={generation:1,draftRevision:0,capabilities:{maxTracks:8,maxDevices:16,atomicTrackActions:true},history:{canUndo:false,canRedo:false},document,deviceInstances,dirty:false,draft:null,state:{playing:0,position:0,absoluteFrame:0,rejected:0,generation:1,peakLeft:0,peakRight:0,devices:runtime,tracks:document.tracks.map(()=>({peakLeft:0,peakRight:0,activeVoices:0}))},audio:{config:{host:'default',device:'default',sample_rate:48000},observed_buffer_frames:0,callbacks:0,stream_errors:0,failed:false,message:'Browser fixture'}};
   if(clipBank){
     document.format='alive-session-v3';snapshot.mode='clipsV3';snapshot.preparationRevision='9007199254740993';snapshot.snapshotSequence='1';snapshot.preparedClips=[];
     document.tracks.forEach(t=>{const c={id:`clip-${t.id}`,name:'Clip 1',lengthBeats:8,notes:t.notes.map((n,i)=>({...n,id:`note-${t.id}-${i}`})),automation:t.automation};t.slots=[c,null,null,null];t.defaultClipId=c.id;delete t.notes;delete t.automation;snapshot.preparedClips.push({trackId:t.id,clipId:c.id,name:c.name,slot:0,lengthFrames:'205714'});});
@@ -39,6 +40,7 @@ async function openSession(page,longNames=false,clipBank=false){
 
 test('Add note queued behind track removal never edits the surviving track',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:1100,height:800});await openSession(page);
+  await page.locator('.track-inspector summary').first().click();
   await page.getByRole('button',{name:'Remove Pulse track',exact:true}).click();
   await expect.poll(()=>page.evaluate(()=>typeof window.finishRemoval)).toBe('function');
   await page.getByRole('button',{name:'Add note',exact:true}).click();await page.evaluate(()=>window.finishRemoval());
@@ -49,9 +51,11 @@ test('Add note queued behind track removal never edits the surviving track',asyn
 
 test('selected instance controls, keyboard automation target, draft guard and desktop bounds',async({page},testInfo)=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:900,height:660});await openSession(page);
+  await page.locator('#detail-devices').click();
   await page.getByRole('button',{name:'Select Pulse Stereo Lowpass effect 2',exact:true}).click();
   await expect(page.locator('#device-title')).toHaveText('Stereo Lowpass');await expect(page.getByRole('spinbutton',{name:'Cutoff base',exact:true})).toHaveValue('1000');
   expect(await page.evaluate(()=>window.calls.some(c=>c.name==='alive_editor'||c.name==='alive_transport'))).toBe(false);
+  await page.locator('#detail-clip').click();await page.locator('.automation-section>summary').click();
   await page.getByLabel('Automation target',{exact:true}).selectOption(JSON.stringify(['stereo-lowpass','cutoff']));await page.getByRole('button',{name:'Add automation lane',exact:true}).click();
   await page.getByRole('button',{name:'Add Stereo Lowpass effect 2 / Cutoff point',exact:true}).click();
   await expect(page.getByLabel('Stereo Lowpass effect 2 / Cutoff point 1 value',{exact:true})).toHaveValue('1000');
@@ -63,6 +67,7 @@ test('selected instance controls, keyboard automation target, draft guard and de
 
 test('long saved device names fit the minimum desktop window',async({page})=>{
   await page.setViewportSize({width:900,height:660});await openSession(page,true);
+  await page.locator('#detail-devices').click();
   await expect(page.locator('.chain-select').nth(2)).toContainText('LongSavedDevice');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.querySelector('main').scrollWidth<=document.querySelector('main').clientWidth)).toBe(true);
 });
@@ -96,8 +101,54 @@ test('four-slot bank preserves numeric note identity and fits the minimum deskto
   await page.getByRole('button',{name:'Select Pulse slot 2',exact:true}).click();await expect(page.getByRole('button',{name:'Add note',exact:true})).toBeDisabled();
   await expect(page.getByRole('button',{name:'Create clip',exact:true})).toBeVisible();expect(await page.evaluate(()=>window.calls.some(c=>c.name==='alive_edit'||c.name==='alive_clip_action'))).toBe(false);
   await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).click();
+  await page.locator('.note-table>summary').click();
   const pitch=page.getByRole('spinbutton',{name:'Note 1 pitch',exact:true});await pitch.fill('62');await pitch.press('Tab');await expect(pitch).toHaveValue('62');
   const changes=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_edit'));expect(changes).toHaveLength(1);expect(changes[0].args.document.tracks[0].slots[0].notes[0].id).toMatch(/^note-/);expect(changes[0].args.document.tracks[0].slots[0].notes[0].pitch).toBe(62);expect(changes[0].args.document.tracks[0].defaultClipId).toBe(changes[0].args.document.tracks[0].slots[0].id);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.querySelector('main').scrollWidth<=document.querySelector('main').clientWidth)).toBe(true);
   await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).scrollIntoViewIfNeeded();await page.screenshot({path:testInfo.outputPath('four-slot-minimum-desktop.png')});expect(errors).toEqual([]);
+});
+
+for(const size of [{width:1440,height:900},{width:1280,height:800}])test(`eight columns align with four scene rows at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page,false,true,8);
+  const bounds=await page.evaluate(()=>{
+    const rect=e=>{const r=e.getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height};};
+    return{columns:[...document.querySelectorAll('.track')].map(e=>({box:rect(e),slots:[...e.querySelectorAll('.clip-slot')].map(rect),mixer:rect(e.querySelector('.track-mixer'))})),scenes:[...document.querySelectorAll('.scene-row')].map(rect),session:rect(document.querySelector('#session-workspace')),detail:rect(document.querySelector('#detail-panel')),whole:document.documentElement.scrollWidth};
+  });
+  expect(bounds.columns).toHaveLength(8);expect(bounds.scenes).toHaveLength(4);expect(bounds.whole).toBe(size.width);
+  for(let c=0;c<8;c++){expect(bounds.columns[c].box.x).toBeLessThan(bounds.columns[c].box.x+bounds.columns[c].box.width);if(c)expect(bounds.columns[c].box.x).toBeGreaterThan(bounds.columns[c-1].box.x);for(let r=0;r<4;r++){expect(bounds.columns[c].slots[r].y).toBe(bounds.scenes[r].y);expect(bounds.columns[c].slots[r].height).toBe(bounds.scenes[r].height);}expect(bounds.columns[c].mixer.y).toBeGreaterThanOrEqual(bounds.columns[c].slots[3].y+bounds.columns[c].slots[3].height);}
+  expect(bounds.session.height).toBeGreaterThan(250);expect(bounds.detail.y+bounds.detail.height).toBeLessThanOrEqual(size.height-30);
+  await page.screenshot({path:testInfo.outputPath(`session-${size.width}x${size.height}.png`)});
+  await page.locator('#session-workspace').evaluate(e=>e.scrollLeft=e.scrollWidth);await expect(page.getByRole('button',{name:'Select Track 8 slot 4',exact:true})).toBeInViewport();await expect(page.getByRole('button',{name:'Launch scene 4',exact:true})).toBeInViewport();
+});
+
+test('view buttons preserve focused uncommitted values and native Tab navigation',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true);
+  const tempo=page.locator('#tempo');await tempo.fill('135');
+  await page.locator('#view-arrangement').click();await expect(page.locator('#arrangement-unavailable')).toBeVisible();
+  await page.locator('#view-session').click();await expect(tempo).toHaveValue('135');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await tempo.press('Tab');await expect(page.locator('#session-workspace')).toBeVisible();
+  await page.locator('#session-workspace').focus();await page.keyboard.press('Tab');await expect(page.locator('#arrangement-workspace')).toBeVisible();
+  await page.keyboard.press('Tab');await expect(page.locator('#session-workspace')).toBeVisible();
+});
+
+test('hiding Session preserves an unfinished gain field without issuing a mixer mutation',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true);
+  const gain=page.getByLabel('Pulse gain',{exact:true});await gain.fill('0.85');
+  for(let i=0;i<3;i++){await page.locator('#view-arrangement').click();await page.locator('#view-session').click();}
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);await expect(gain).toHaveValue('0.85');
+  await gain.focus();await gain.press('Tab');expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_mixer').map(c=>c.args.gain))).toEqual([0.85]);
+});
+
+test('maximum detail resize leaves the entire detail and workspace reachable',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true);
+  const handle=page.getByRole('separator',{name:'Resize detail area'});await handle.focus();await page.keyboard.press('End');
+  const bounds=await page.evaluate(()=>({detail:document.querySelector('#detail-panel').getBoundingClientRect().bottom,footer:document.querySelector('footer').getBoundingClientRect().top,workspace:document.querySelector('#session-workspace').getBoundingClientRect().height}));
+  expect(bounds.detail).toBeLessThanOrEqual(bounds.footer);expect(bounds.workspace).toBeGreaterThanOrEqual(150);
+});
+
+test('track name and metadata line boxes fit the fixed Session header without clipping',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true,8);
+  const headers=await page.locator('.track-name').evaluateAll(elements=>elements.map(e=>({height:e.clientHeight,content:e.scrollHeight,lines:[...e.children].map(child=>({height:child.clientHeight,content:child.scrollHeight}))})));
+  for(const header of headers){expect(header.content).toBeLessThanOrEqual(header.height);for(const line of header.lines)expect(line.content).toBeLessThanOrEqual(line.height);}
 });

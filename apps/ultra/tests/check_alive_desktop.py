@@ -20,6 +20,9 @@ from stream_measurement import Recorder, ProcessSampler, ProcessGroups, JsonLine
 import check_canvas_desktop as ui
 import check_documents_desktop as windows
 from gi.repository import Atspi, GLib
+from alive_workspace_navigation import install as install_workspace_navigation
+
+prepare_workspace_control = install_workspace_navigation(ui, windows)
 
 MAIN = 'Alive'
 DEVICE = Path('apps/ultra/examples/subtractive.ultra').resolve()
@@ -39,6 +42,7 @@ def screenshot(name):
 
 
 def value(name):
+    prepare_workspace_control(name)
     control = ui.wait_for(name)
     if 'Text' in control.get_interfaces():
         return Atspi.Text.get_text(control, 0, -1)
@@ -190,6 +194,7 @@ def reorder_point(control):
 
 def reorder_click(name):
     """Dismiss native tooltip occlusion before one Alive reorder click."""
+    prepare_workspace_control(name)
     assert windows.scope == MAIN, 'Reorder input is scoped to the Alive main frame'
     owner = owned_frame_window(); control = ui.wait_for(name)
     Atspi.Component.grab_focus(control)
@@ -226,6 +231,7 @@ def reorder_click(name):
 
 
 def force_reorder_tooltip(name, hover):
+    prepare_workspace_control(name)
     owner = owned_frame_window(); _, point = reorder_point(ui.wait_for(hover))
     ui.t.XTestFakeMotionEvent(ui.display, 0, *point, 0); ui.x.XFlush(ui.display)
     tooltip = ui.x.XInternAtom(ui.display, b'_NET_WM_WINDOW_TYPE_TOOLTIP', 0)
@@ -413,6 +419,7 @@ def editor_edit(number=950):
 
 
 def automation_target(index):
+    prepare_workspace_control('Automation target')
     Atspi.Component.grab_focus(ui.wait_for('Automation target'))
     ui.keys('Home')
     for _ in range(index):
@@ -486,6 +493,7 @@ def piano_history_with_effect_editor():
         time.sleep(.07)
     time.sleep(.3)
     assert value('Note 13 pitch') == '80'
+    Atspi.Component.grab_focus(ui.wait_for('Selected clip piano roll'))
     ui.keys('Right'); time.sleep(.2)
     ui.keys('Up'); time.sleep(.2)
     assert value('Note 13 beat') == '2.25' and value('Note 13 pitch') == '81'
