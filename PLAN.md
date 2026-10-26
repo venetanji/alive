@@ -101,9 +101,43 @@ when DMG unmount repeatedly reports `hdiutil: Resource busy`. Publishing is
 skipped. This records the failure point without claiming its root cause. Evidence:
 `experiments/alive-workspaces-20261026/ci-9bf3180/`.
 
+Reviewed native source and retained evidence are pushed at `87cb416`.
+Exact-head CI `40271664266` passes UI/browser/native/Rust/offline checks and
+the full desktop journey in 267 seconds under its original five-minute limit.
+The subsequent saved-clips/observability test fails at `Duplicate clip`: the
+new workspace's Devices detail is open, while the existing navigation helper
+omits the selected-clip controls needed to reveal Clip detail. Later editor
+resource and CPAL gates are skipped. Correction `729dc9a` is independently
+approved for source/code quality: the original local failure reproduces, and
+the corrected run passes clip editing/history/preparation/save. The complete
+run still fails at the unchanged stopped-launch assertion: `Cued Clip 1 copy`
+remains visible instead of the requested Clip 1 with an applied receipt.
+One targeted press/release and native-frame ownership are recorded, but raw
+receipts and Session status were not retained, so the cause remains unproved.
+Full original GREEN is still required; bounded launch diagnosis precedes 2C.
+Evidence: `experiments/alive-workspaces-20261026/ci-clip-navigation/`. Package
+run `40271664433` has passed Linux, Windows and ARM macOS; Intel macOS remains
+pending at this observation. This does not qualify the final branch.
+
+Bounded phase/query/stack diagnostics are implemented at `08156ea`. The
+unchanged local full desktop journey passes in 185.552 seconds (wrapper
+194.928 seconds); capture finalization takes 1.362 seconds and final diagnostics
+7.153 seconds. Nine periodic snapshots and the final Quit are retained.
+Independent review identified missing stdout capacity for final-phase boundaries
+after ordinary progress is exhausted. Fix `cb079f2` reserves six bounded
+observations; its regression first fails against the original helper, then all
+ten helper tests and preservation checks pass. Scoped re-review approves the
+fix with no open findings. The local native measurements predate this
+stdout-only fix and retain their original source attribution.
+The provisional eight-minute CI step limit is diagnostic only. Prior timeout
+causes remain unproved, and this later remote pass does not explain them.
+Evidence: `experiments/alive-workspaces-20261026/ci-timing/`. These corrections
+precede 2C-prep's complete MIDI envelope/oracle proof and runtime widening.
+
 Foundation rechecked on 2026-10-26: the remote release integration still points
-to `31033483eb3baf15edab1734b966cc6d55c4b8c7`; the feature remote starts at
-`0e791ec28f2ecf89cb9bab31516d57668e361333`. That checkpoint's CI
+to `31033483eb3baf15edab1734b966cc6d55c4b8c7` and remains an ancestor of this
+branch; the feature remote is `87cb416`. Historical checkpoint
+`0e791ec28f2ecf89cb9bab31516d57668e361333` has CI
 `40089612067` passes browser, UI/contracts, native build/Rust and offline render,
 but fails the desktop journey opening `Pulse - Ultra Hosted Editor`; subsequent
 native clip/retirement/loopback steps are skipped. The failure screenshot shows

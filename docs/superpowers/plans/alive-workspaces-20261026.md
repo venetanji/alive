@@ -50,15 +50,28 @@ Contract target: `docs/superpowers/specs/2026-10-26-alive-workspaces-runtime-con
 It specifies the proposed v4 wire/ABI and admission rules; it is not evidence
 that the capabilities exist. Stage this task as 2A pure strict model/edits/
 prospective conversion, 2B additive ABI and one real MIDI Arrangement lane,
-2C authority/loops/receipts, then 2D envelopes, desktop integration and measured
-admission. Keep the pure 2A model outside the active `Document` enum until 2D
+2C complete MIDI envelopes/oracle followed by authority/loops/receipts, then
+2D measured qualification, desktop integration and admission. Keep the pure
+2A model outside the active `Document` enum until 2D
 can replace mandatory-instrument adapters with checked metadata/chain access.
 Never add a fake instrument or a panic adapter to make an intermediate compile.
 Each bounded slice gets its own tests, commit and independent task review.
 Task 2A is independently approved through `59c6076`: 24 focused / 77 session
 tests, including ten verified unavailable/smaller-native-profile conversion
 scenarios. The pure model remains outside active Document; evidence lives in
-`experiments/alive-workspaces-20261026/task2a/`. Task 2B is next.
+`experiments/alive-workspaces-20261026/task2a/`.
+Task 2B is independently approved through `db39ab0`: complete additive ABI,
+one real native MIDI lane and scoped corrections for rejected START atomicity
+and chased-note ordering. Full guarded native/shipping/regression evidence is
+retained in `experiments/alive-workspaces-20261026/task2b/` and `task2b-fix1/`.
+Only the dedicated test backend admits that finite subset; shipping feature
+bits remain zero and the app stays v3. Before widening runtime support, 2C-prep
+must prove full MIDI source/placement/authority/loop envelope construction with
+an independent bounded oracle. A finite 2B pulse proof cannot certify the new
+callback paths. The six-boundary/seven-segment cap and every work ceiling stay
+fixed. Subsequent bounded slices add multi-track preparation, authority/actions,
+suffix loops/seek, then partial song loops/coincident boundaries. Each has its
+own source/test review before the next slice.
 The pure 2A APIs produce prospective candidates: graph-family eligibility and
 manifest parameter existence/type/range cannot be certified from wire data or
 saved base maps. Task 2D must resolve them before admission. Stored-event counts

@@ -1,0 +1,9 @@
+{
+  "source_base_commit": "cb079f2b95d5d3d5755db85cf88d8744c4806caa",
+  "command": "env -u ALIVE_SYSROOT PATH=/usr/bin:/bin ULTRA_TEST_ALIVE=1 ULTRA_TEST_SCRIPT=/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_observability.py PYTHONUNBUFFERED=1 timeout --signal=TERM --kill-after=10s 480s bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-workspaces-clip-navigation/green",
+  "cwd": "/home/venetanji/.codex/worktrees/edd5/alive",
+  "start_utc": "2026-10-26T05:22:26.360664+00:00",
+  "source_diff": "/tmp/alive-workspaces-clip-navigation/navigation-fix.diff",
+  "exit": 1,
+  "end_utc": "2026-10-26T05:23:23.336929+00:00"
+}

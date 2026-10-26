@@ -1,0 +1,51 @@
+[
+  {
+    "name": "helper-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "apps/ultra/tests",
+      "-p",
+      "test_desktop_timing.py",
+      "-v"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "syntax",
+    "command": [
+      "python3",
+      "-m",
+      "py_compile",
+      "apps/ultra/tests/desktop_timing.py",
+      "apps/ultra/tests/test_desktop_timing.py",
+      "apps/ultra/tests/check_alive_desktop.py"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "targeted-preservation",
+    "command": [
+      "python3",
+      "/tmp/alive-workspaces-ci-timing/verify-targeted.py"
+    ],
+    "exit_code": 0
+  },
+  {
+    "name": "diff-check",
+    "command": [
+      "git",
+      "diff",
+      "--check",
+      "--",
+      ".github/workflows/ultra-ci.yml",
+      "apps/ultra/tests/check_alive_desktop.py",
+      "apps/ultra/tests/desktop_timing.py",
+      "apps/ultra/tests/test_desktop_timing.py"
+    ],
+    "exit_code": 0
+  }
+]

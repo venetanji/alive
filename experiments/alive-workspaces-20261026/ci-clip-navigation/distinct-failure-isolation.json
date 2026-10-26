@@ -1,0 +1,64 @@
+{
+  "status": "distinct failure; no full GREEN",
+  "source_commit": "729dc9a555a389130304fe52b081bae351f814da",
+  "assertion_file": "apps/ultra/tests/check_alive_clips.py:103",
+  "unchanged_expected": "'Cued Clip 1 /' in s and 'applied' in s",
+  "actual_accessibility_value_from_wait_failure": "Cued Clip 1 copy",
+  "original_native_input": {
+    "action": "reorder click",
+    "monotonic": 11127.910994523,
+    "name": "Launch Pulse Clip 1",
+    "owner": 4194307,
+    "samples": [
+      {
+        "rect": [
+          555,
+          159,
+          49,
+          24
+        ],
+        "hit_path": [
+          927,
+          4194307
+        ]
+      }
+    ],
+    "presses": 1,
+    "releases": 1,
+    "final_rect": [
+      555,
+      159,
+      49,
+      24
+    ]
+  },
+  "screenshot": "green/failed-value.png",
+  "screenshot_observations": {
+    "Pulse_selected_slot": 2,
+    "Pulse_selected_clip": "Clip 1 copy",
+    "focused_button": "Launch for Pulse Clip 1",
+    "Pulse_runtime": "Cued Clip 1 copy",
+    "Harmony_runtime": "Cued Clip 1",
+    "transport_playing": "false",
+    "absolute_frame": "782336",
+    "rejected_commands": "0",
+    "native_generation": "9",
+    "audio_callbacks": "1155",
+    "audio_stream_errors": "0",
+    "audio_failed": "false",
+    "audio_status": "Audio output is running.",
+    "scope": "Alive main window, Session workspace, Clip detail; diagnostics expanded"
+  },
+  "observation_provenance": "Runtime string is the actual AT-SPI value in the unchanged wait_value exception. Other final UI fields are transcribed from the original failed-value.png, not a new accessibility dump. Input record is copied verbatim from original native-inputs.json. No second run or additional input.",
+  "receipt_limit": "The original failure path does not persist raw runtime.requests, a Session status value, or an accessibility tree at wait-value failure. No native clip receipt/serial/reason can be established from these artifacts. Input reaches an owned window and produces focus; that alone does not prove command submission, receipt application, or correct runtime-label projection. Distinct failure cause remains unproven.",
+  "sampler_errors": [],
+  "sampler_resource_rows": 10,
+  "sampler_epoch_rows": 10,
+  "not_reached": [
+    "start_capture / rendered audio capture",
+    "later shared-source recovery assertions",
+    "three final qualification cycles",
+    "complete stream report / final diagnostics",
+    "final Save session / Quit Alive"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "base": "87cb416d0f22d6be65f72bc3c39dd5d3318dc087",
+  "cwd": "/home/venetanji/.codex/worktrees/edd5/alive",
+  "command": [
+    "env",
+    "ULTRA_TEST_ALIVE=1",
+    "ULTRA_TEST_SCRIPT=/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py",
+    "PYTHONUNBUFFERED=1",
+    "timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "480s",
+    "bash",
+    "apps/ultra/tests/check_canvas_desktop.sh",
+    "/tmp/alive-workspaces-ci-timing/native"
+  ],
+  "started_utc": "2026-10-26T05:05:13.939276+00:00",
+  "hashes_before": {
+    "apps/ultra/src-tauri/target/release/alive": "bac50bb1af01c2d15d985d0cf345f21a1efcd6a0be450f0b77870df4356c3260",
+    "apps/ultra/src-tauri/target/release/libultra_native.so": "4c54e3e0a2e7bf2007a56620d1006658e97b86d5f8828e08f13e9ffd3a1e9e70",
+    "apps/ultra/src-tauri/target/release/ultra": "51788adda242c24e22838737cd6525e0fa0af09223e817d7846449795107add3",
+    "apps/ultra/tests/check_alive_desktop.py": "01fa550262a00a1204484582f2d4c495a755c45e2601ecad50fd2516a5e8194d",
+    "apps/ultra/tests/desktop_timing.py": "a1cfa19830c499ecfee24db0e5acd56fdf89919434c46ade094f7547bd53957c",
+    "apps/ultra/tests/test_desktop_timing.py": "8f474098a82c042e32bec05cf3c8cd34bd54b0b054996954f128b0f0dc1c8f98",
+    "apps/ultra/tests/check_canvas_desktop.sh": "e75bbd94e63ad4fc28476098e2b7bc1f8918c04706c709e7876fd8b47c2df574",
+    "apps/ultra/tests/check_canvas_desktop.py": "5753440e59f6a5e25b18a9b402e13c8ce0b04176d4694cb82b8314026af39ec5",
+    "apps/ultra/tests/check_documents_desktop.py": "c62b3bd0fb46888761d0a8477d21f1c525680d8ba80ac2c68ceedc5cb052c6ac",
+    "apps/ultra/tests/alive_workspace_navigation.py": "9c4bda46692131a0f6a4ee61331312f28fd26ae9f7d03598a39db52ef25d29ac",
+    "apps/ultra/tests/stream_measurement.py": "e9318ebd9123e681e851a54cd47a14eaf98afa39c1e42d5dc833d4797d53d9cd",
+    ".github/workflows/ultra-ci.yml": "bfb610bd80510deb22680c59521f0c272715f1fd14caba68010dc60c89d21081"
+  },
+  "ALIVE_SMOKE_ONLY": null,
+  "ALIVE_ENDURANCE_SECONDS": null,
+  "exit_code": 0,
+  "elapsed_seconds": 194.9277143220006,
+  "finished_utc": "2026-10-26T05:08:28.905296+00:00",
+  "hashes_after": {
+    "apps/ultra/src-tauri/target/release/alive": "bac50bb1af01c2d15d985d0cf345f21a1efcd6a0be450f0b77870df4356c3260",
+    "apps/ultra/src-tauri/target/release/libultra_native.so": "4c54e3e0a2e7bf2007a56620d1006658e97b86d5f8828e08f13e9ffd3a1e9e70",
+    "apps/ultra/src-tauri/target/release/ultra": "51788adda242c24e22838737cd6525e0fa0af09223e817d7846449795107add3",
+    "apps/ultra/tests/check_alive_desktop.py": "01fa550262a00a1204484582f2d4c495a755c45e2601ecad50fd2516a5e8194d",
+    "apps/ultra/tests/desktop_timing.py": "a1cfa19830c499ecfee24db0e5acd56fdf89919434c46ade094f7547bd53957c",
+    "apps/ultra/tests/test_desktop_timing.py": "8f474098a82c042e32bec05cf3c8cd34bd54b0b054996954f128b0f0dc1c8f98",
+    "apps/ultra/tests/check_canvas_desktop.sh": "e75bbd94e63ad4fc28476098e2b7bc1f8918c04706c709e7876fd8b47c2df574",
+    "apps/ultra/tests/check_canvas_desktop.py": "5753440e59f6a5e25b18a9b402e13c8ce0b04176d4694cb82b8314026af39ec5",
+    "apps/ultra/tests/check_documents_desktop.py": "c62b3bd0fb46888761d0a8477d21f1c525680d8ba80ac2c68ceedc5cb052c6ac",
+    "apps/ultra/tests/alive_workspace_navigation.py": "9c4bda46692131a0f6a4ee61331312f28fd26ae9f7d03598a39db52ef25d29ac",
+    "apps/ultra/tests/stream_measurement.py": "e9318ebd9123e681e851a54cd47a14eaf98afa39c1e42d5dc833d4797d53d9cd",
+    ".github/workflows/ultra-ci.yml": "bfb610bd80510deb22680c59521f0c272715f1fd14caba68010dc60c89d21081"
+  }
+}
