@@ -1,0 +1,39 @@
+[
+  {
+    "name": "initial broader MIDI behavior RED",
+    "build": "c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -I/tmp/alive-workspaces-task2c-midi-preparation apps/ultra/tests/alive_session_v4_midi_test.cpp /tmp/alive-workspaces-task2c-midi-preparation/backend.o apps/ultra/build/core/libultra_core_bundle.a -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock -ldl -lrt -o /tmp/alive-workspaces-task2c-midi-preparation/midi-test",
+    "build_exit": 0,
+    "run": "/tmp/alive-workspaces-task2c-midi-preparation/midi-test",
+    "run_exit": 134,
+    "log": "red.log",
+    "reason": "two-track validate_v4 refused by old runtime subset",
+    "note": "The initial test source evolved into the final suite; the original executable and failure log are retained."
+  },
+  {
+    "name": "lookup reservation mutation RED",
+    "build": "c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -I/tmp/alive-workspaces-task2c-midi-preparation /tmp/alive-workspaces-task2c-midi-preparation/lookup-mutation/source/tests/alive_session_v4_midi_test.cpp /tmp/alive-workspaces-task2c-midi-preparation/lookup-mutation/source/src-tauri/native/backend.cpp apps/ultra/build/core/libultra_core_bundle.a -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock -ldl -lrt -o /tmp/alive-workspaces-task2c-midi-preparation/lookup-mutation/test",
+    "build_exit": 0,
+    "run": "/tmp/alive-workspaces-task2c-midi-preparation/lookup-mutation/test --lookups",
+    "run_exit": 134,
+    "log": "lookup-red.log",
+    "reason": "original four-probe reservation fails at fifth lookup before horizon reservation",
+    "source": "lookup-mutation/source"
+  },
+  {
+    "name": "final focused GREEN",
+    "metadata": "final-focused.json",
+    "expanded_commands": "focused.sh"
+  },
+  {
+    "name": "unchanged complete oracle GREEN",
+    "metadata": "final-envelope.json"
+  },
+  {
+    "name": "one complete native CI GREEN",
+    "metadata": "complete-native-ci.json"
+  },
+  {
+    "name": "current source shipping gate GREEN",
+    "metadata": "shipping-current-source.json"
+  }
+]

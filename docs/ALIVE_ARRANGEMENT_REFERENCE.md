@@ -52,9 +52,50 @@ Alive's required 1440x900/1280x800 visual acceptance. Live reported a pending
 and owned processes/display were removed. Original and source-copy preference
 hashes were unchanged, as recorded by `cleanup.json`.
 
-Still unobserved: left-edge offsets, Escape-canceled placement gestures,
-cross-track/overlapping drag policy, input-focused Tab, placement delete/redo,
-return inside a gap, exact queued return timing, process-restart restoration,
-device state in this project and missing-media recovery. Gather these only
-before implementing the corresponding interaction. Native Alive timing and
-termination tests remain necessary regardless of reference UI observations.
+The follow-up below resolves several interaction gaps. Still unobserved:
+running Return inside a gap, exact queued return timing, process-restart
+restoration, device state in this project and missing-media recovery.
+Native Alive timing and termination tests remain necessary regardless of
+reference UI observations.
+
+## Follow-Up Interaction Study
+
+LOCAL-ARR-R2, same executable and Wine version, fresh disposable copy of the
+authored study. New captures and saved project snapshots remain private.
+
+| Action | Observed result | Alive implication |
+| --- | --- | --- |
+| Trim left edge from bar 6 to 8 | End stays at 10, source loop stays four bars, notes unchanged. Saved source start offset becomes eight beats; detail Start becomes 3.1.1. | Left trim changes placement start/duration and source offset together. |
+| Undo trim; extend left edge from bar 6 to 4 | End stays at 10; saved source offset is eight beats in the unchanged four-bar loop. | Earlier looping extension wraps the offset; this modulo interpretation is derived from saved state. |
+| Hold a move preview at bars 10..14; Escape, then release | Original occurrence remains at 6..10. | Canceled gestures must leave placement and history state coherent. The probe does not establish canceled-history entry behavior. |
+| Hold a right resize preview through bar 14; Escape, then release | Four-bar occurrence, notes and offset restore. | Preview must not commit until the gesture completes. |
+| Tab while renaming track 1 | Track 2 name becomes editable; Arrangement stays visible. | An active editor handles focus navigation before the global view shortcut. |
+| Delete occurrence, Ctrl+Z, Windows Ctrl+Y, Ctrl+Z | Occurrence disappears/restores at the same bounds; the Session clip and other track remain unchanged. | Occurrence history must preserve source notes and independent Session placement. |
+| Move occurrence from track 1 to track 2 at bars 10..14 | Track 1 Session clip remains; track 2 has two occurrences with original note/offset data. | This is reference behavior; it does not expand the initial Alive cross-track editing scope. |
+| Move second occurrence left to overlap at bars 8..12 | Earlier occurrence is cropped from 6..10 to 6..8. Undo restores the previous state. | Alive deliberately rejects overlaps initially; overwrite/crop semantics are outside its accepted slice. |
+| Launch Session at stationary position 13.1.1, then per-track/global Return | Arrangement override clears while position remains beyond the occurrences ending at bar 10. Saved placement inventory stays unchanged. | UI authority transition only: no running-playback, gap-silence or exact-frame claim. |
+
+The last probe used No Audio after inherited PipeASIO stalled. Play was green
+but position did not advance; those frames are excluded from playback evidence.
+The first fast move/resize/cross-track attempts and unsettled undo capture did
+not establish their intended result; later pointer-held and settled captures
+do. Tests cover these MIDI clips and partial edge overlap, not every input,
+complete containment, multiple overlapping targets or audio clips.
+
+Private evidence: `~/.cache/alive-arrangement-gaps-20261026-230156/`.
+REA lifecycle ID:
+`ev_fc17621d9d940cf4965c5f4f281fddbf77c90632e0abbff5ad912b4853be1f2b`.
+The timed-out client was followed through the same retained completed process
+record. Action logs, inspected pixels and saved gzip/XML project inventories
+support the findings; REA alone does not semantically trace the UI. All 85
+manifest artifacts and cleanup were independently hash-checked. The manifest
+SHA-256 is `96e335553d381fdd957daa25dbc796610848eec27b2209a5ad67778262dc4084`.
+The owned prefix/processes/display were removed, and original/source preference
+digests match their pre-launch values. Live reported downloading an update;
+the disposable copy was never restarted and no install/update action was taken.
+
+Official Live 12 Arrangement section 6.7 corroborates move/edge-resize;
+Keyboard Shortcuts sections 42.5/42.26.1 document Windows redo and rename Tab.
+The Use Tab to Move Focus preference affects Live's wider shortcut behavior;
+the observation here is specifically a track-name editor. These references
+guide Alive interaction choices without supplying application assets or code.

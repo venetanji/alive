@@ -1,0 +1,71 @@
+tracks=2 roots=2 partition=1 muted=0 removed=0 events=5 steps=4140 PASS
+tracks=2 roots=2 partition=0 muted=0 removed=0 events=5 steps=4140 PASS
+tracks=2 roots=2 partition=31 muted=0 removed=0 events=5 steps=4140 PASS
+tracks=2 roots=2 partition=63 muted=0 removed=0 events=5 steps=4140 PASS
+tracks=2 roots=2 partition=64 muted=0 removed=0 events=5 steps=4140 PASS
+tracks=2 roots=2 partition=127 muted=0 removed=0 events=5 steps=4140 PASS
+tracks=2 roots=2 partition=1024 muted=0 removed=0 events=5 steps=4140 PASS
+tracks=8 roots=8 partition=1 muted=0 removed=0 events=3 steps=4184 PASS
+tracks=8 roots=8 partition=0 muted=0 removed=0 events=3 steps=4184 PASS
+tracks=8 roots=8 partition=31 muted=0 removed=0 events=3 steps=4184 PASS
+tracks=8 roots=8 partition=63 muted=0 removed=0 events=3 steps=4184 PASS
+tracks=8 roots=8 partition=64 muted=0 removed=0 events=3 steps=4184 PASS
+tracks=8 roots=8 partition=127 muted=0 removed=0 events=3 steps=4184 PASS
+tracks=8 roots=8 partition=1024 muted=0 removed=0 events=3 steps=4184 PASS
+tracks=2 roots=2 partition=31 muted=1 removed=0 events=4 steps=2082 PASS
+tracks=2 roots=2 partition=1024 muted=1 removed=1 events=1 steps=2062 PASS
+tracks=2 roots=4 partition=31 muted=1 removed=0 events=4 steps=2082 PASS
+tracks=2 roots=4 partition=1024 muted=1 removed=1 events=1 steps=2062 PASS
+tracks=2 roots=6 partition=31 muted=1 removed=0 events=4 steps=2082 PASS
+tracks=2 roots=6 partition=1024 muted=1 removed=1 events=1 steps=2062 PASS
+tracks=2 roots=4 partition=31 muted=1 removed=0 events=4 steps=2082 PASS
+tracks=2 roots=4 partition=1024 muted=1 removed=1 events=1 steps=2062 PASS
+work tracks=2 roots=6 actual-frame/admitted-frame actual-window/admitted-window: 1/12,2/24 3/30,3/48 1/10,1/16 20/200,20/320 0/0,0/0 4/34,4/40 reads/probes/clears/rolling1024=PASS
+work tracks=8 roots=8 actual-frame/admitted-frame actual-window/admitted-window: 1/11,1/21 1/27,1/32 1/9,1/14 14/378,14/448 0/0,0/0 4/60,4/65 reads/probes/clears/rolling1024=PASS
+eight placements/track, 64 STARTs: eight pre-reserved probes, one horizon=PASS
+transactional malformed/ownership/unused-source/loops/audio refusals=29 future-actions=4 PASS
+shape-valid eight-track/four-slot refusal placement=66/64 width=1 PASS
+two-track offset/automation/off/chased-before-ordinary/adjacent-one-clear=PASS
+direct native rejected configuration preserves playing v3/v4 publication and continuation=PASS
+removed configuration: all real roots remain silent across later fragments=PASS
+PASS: finite multi-track MIDI preparation and independent real PCM
+dispatch=512,2012,2512,4096,4572,5072,6072 placement_steps=2070 partition=1 effects=0 frames=8192 silence/chase/guards=PASS
+dispatch=512,2012,2512,4096,4572,5072,6072 placement_steps=2070 partition=0 effects=0 frames=8192 silence/chase/guards=PASS
+dispatch=512,2012,2512,4096,4572,5072,6072 placement_steps=2070 partition=31 effects=0 frames=8192 silence/chase/guards=PASS
+dispatch=512,2012,2512,4096,4572,5072,6072 placement_steps=2070 partition=32 effects=0 frames=8192 silence/chase/guards=PASS
+dispatch=512,2012,2512,4096,4572,5072,6072 placement_steps=2070 partition=63 effects=0 frames=8192 silence/chase/guards=PASS
+dispatch=512,2012,2512,4096,4572,5072,6072 placement_steps=2070 partition=64 effects=0 frames=8192 silence/chase/guards=PASS
+dispatch=512,2012,2512,4096,4572,5072,6072 placement_steps=2070 partition=127 effects=0 frames=8192 silence/chase/guards=PASS
+dispatch=512,2012,2512,4096,4572,5072,6072 placement_steps=2070 partition=128 effects=0 frames=8192 silence/chase/guards=PASS
+dispatch=512,2012,2512,4096,4572,5072,6072 placement_steps=2070 partition=256 effects=0 frames=8192 silence/chase/guards=PASS
+dispatch=512,2012,2512,4096,4572,5072,6072 placement_steps=2070 partition=512 effects=0 frames=8192 silence/chase/guards=PASS
+dispatch=512,2012,2512,4096,4572,5072,6072 placement_steps=2070 partition=1024 effects=0 frames=8192 silence/chase/guards=PASS
+dispatch=512,2012,2512,4096,4572,5072,6072 placement_steps=2070 partition=31 effects=2 frames=8192 silence/chase/guards=PASS
+entry occurrence=0 frame=512 note-order=64,60 expected=64,60
+entry occurrence=1 frame=1536 note-order=64,60 expected=64,60
+boundary held/off/on/automation/adjacent reset=PASS
+refusals/layout-aware receipt collision/queue-full Stop=PASS
+rejected candidate keeps applied occurrence; bounded later gap resume=PASS
+rejected-start attempt=1 placement=2058 position=375 phase=375
+rejected-start attempt=2 placement=2062 position=375 phase=375
+rejected-start attempt=3 placement=2066 position=375 phase=375
+rejected-start attempt=4 placement=2070 position=375 phase=375
+rejected-start attempt=5 placement=2074 position=375 phase=375
+rejected-start attempt=6 placement=2078 position=375 phase=375
+rejected-start attempt=7 placement=2082 position=375 phase=375
+rejected-start attempt=8 placement=2086 position=375 phase=375
+rejected-start attempt=9 placement=2090 position=375 phase=375
+rejected-start attempt=10 placement=2094 position=375 phase=375
+rejected-start attempt=11 placement=2098 position=375 phase=375
+rejected-start attempt=12 placement=2102 position=375 phase=375
+rejected-start attempt=13 placement=2106 position=375 phase=375
+rejected-start attempt=14 placement=2110 position=375 phase=375
+rejected-start attempt=15 placement=2114 position=375 phase=375
+rejected-start attempt=16 placement=2114 position=375 phase=375
+rejected-start attempt=17 placement=2114 position=375 phase=375
+rejected-start attempt=18 placement=2114 position=375 phase=375
+rejected-start attempt=19 placement=2114 position=375 phase=375
+rejected-start attempt=20 placement=2114 position=375 phase=375
+PASS: exhausted lookup refusal preserves natural-end candidate and prior mixer edits
+implicit source end/full chain clear/authenticated base/bypass/mixer=PASS
+PASS: v4 real saved-device Arrangement

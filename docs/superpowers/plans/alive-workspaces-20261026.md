@@ -75,7 +75,14 @@ own source/test review before the next slice.
 Task 2C-prep is independently approved at `c8f6522`: the complete MIDI envelope
 builder and bounded independent oracle pass, with complete native regressions.
 Evidence: `experiments/alive-workspaces-20261026/task2c-prep/`. Runtime consumption
-and finite multi-track preparation are next; this seam enables no app feature.
+and finite multi-track preparation follow; this seam enables no app feature.
+Finite multi-track preparation is independently approved at `0606542`, consuming
+the complete envelopes in actual native configuration. Two active tracks pass
+PCM/dispatch/transaction/work checks; an eight-track sparse fixture has one
+sounding lane and denser configurations remain refused. Complete native CI
+passes in 157.49 seconds. Evidence:
+`experiments/alive-workspaces-20261026/task2c-midi-preparation/`.
+Stopped/playing authority actions are next; shipping features remain zero.
 The accepted desktop interface supplement is
 `docs/superpowers/specs/2026-10-26-alive-workspaces-desktop-contract.md`.
 Complete the MIDI portion of Task 4 after MIDI admission and before Task 3,

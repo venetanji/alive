@@ -1,0 +1,24 @@
+[
+  {
+    "command": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "apps/ultra/tests/alive_session_workspace_envelope_test.cpp",
+      "-o",
+      "/tmp/alive-workspaces-task2c-midi-preparation/envelope-test"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 2.9699615790013922
+  },
+  {
+    "command": [
+      "/tmp/alive-workspaces-task2c-midi-preparation/envelope-test"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 1.751390427001752
+  }
+]

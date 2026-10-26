@@ -104,12 +104,22 @@ endurance. Existing accessibility/compositor harness warnings remain disclosed.
 Evidence: `experiments/alive-workspaces-20261026/cutoff-ci-fix/`.
 Remote CI on the new pushed checkpoint remains required.
 Checkpoint `5abd9eb` is pushed; CI `40338484521` and packages `40338484480`
-are in progress on that exact commit. PR #6 remains draft and records current
+ran on that exact commit. CI's Linux job hit its 40-minute limit after dependency
+installation consumed about 33 minutes (69.7 MB at 35.4 kB/s with Ubuntu mirror
+retries); native build/checks passed, Rust build
+was canceled and downstream desktop gates did not run. UI/protocol and Chromium
+jobs pass; packages are still in progress. PR #6 remains draft and records current
 working versus missing workflows. The complete-envelope/oracle 2C-prep slice
 is independently approved at `c8f6522`: 106,661,824 bounded oracle assertions
 and the complete native suite pass. No runtime capability is enabled by that
-preparation work. Finite multi-track native integration is next, followed by
-authority actions, loops and measured desktop admission.
+preparation work. Finite multi-track native integration at `0606542` passes the
+complete native suite (157.49 seconds), focused PCM/work/transaction tests and
+current-source shipping refusal; independent spec and quality review approved
+with no findings. Two active
+instrument tracks pass; the sparse eight-track fixture has one sounding lane,
+and denser configurations remain conservatively refused. Authority actions,
+loops and measured desktop admission are next. This is still native test work,
+not an available Arrangement app feature.
 
 Fresh private Arrangement study LOCAL-ARR-R1 observes occurrence creation,
 movement, source-loop extension/undo, two-track Session override, scoped Stop,
