@@ -114,10 +114,29 @@ run still fails at the unchanged stopped-launch assertion: `Cued Clip 1 copy`
 remains visible instead of the requested Clip 1 with an applied receipt.
 One targeted press/release and native-frame ownership are recorded, but raw
 receipts and Session status were not retained, so the cause remains unproved.
-Full original GREEN is still required; bounded launch diagnosis precedes 2C.
-Evidence: `experiments/alive-workspaces-20261026/ci-clip-navigation/`. Package
-run `40271664433` has passed Linux, Windows and ARM macOS; Intel macOS remains
-pending at this observation. This does not qualify the final branch.
+The one bounded diagnostic run then passes that original stopped Launch and
+all clip/shared-source recovery checks, but adds measured observation time,
+so it does not establish the prior failure's cause. It exposes a later
+qualification failure: expanded diagnostics cover the audio-settings opener.
+Its actual tree/screenshot and pinned layering support a second narrow helper
+correction at `3522e31`: reveal the existing audio-settings opener by collapsing
+expanded diagnostics. One original uninstrumented full journey then exits 0
+through stopped/quantized launch, scoped Stop, edit/history/Apply/editor,
+save/reopen, shared-source recovery, all three final qualification cycles and
+Save/Quit. Independent scoped review approves the correction with no new
+findings and closes the local full-original-GREEN gap. The earlier stopped-launch
+cause remains unproved; no retry or repeatability claim is added.
+The complete report records six finalized stream epochs, 4.117333 proven playing
+seconds and no sampling errors. Independent capture verification finds 417280
+finite stereo frames / 8.693333 capture seconds, distinct from playing time.
+Parent verifies 409 current input hashes, 407 committed input blobs, 47 raw
+artifact hashes and report-declared logs. This short private software-audio run
+does not qualify endurance, production v4 or final-head CI. Separate evidence:
+`experiments/alive-workspaces-20261026/ci-clip-navigation/` and
+`experiments/alive-workspaces-20261026/ci-clip-launch-diagnostic/`, with the
+approved correction under `ci-clip-navigation/fix1/`. Package run `40271664433`
+passed Linux, Windows and ARM macOS; Intel macOS was subsequently cancelled.
+This does not qualify the final branch. Native 2C has not started.
 
 Bounded phase/query/stack diagnostics are implemented at `08156ea`. The
 unchanged local full desktop journey passes in 185.552 seconds (wrapper
@@ -136,7 +155,9 @@ precede 2C-prep's complete MIDI envelope/oracle proof and runtime widening.
 
 Foundation rechecked on 2026-10-26: the remote release integration still points
 to `31033483eb3baf15edab1734b966cc6d55c4b8c7` and remains an ancestor of this
-branch; the feature remote is `87cb416`. Historical checkpoint
+branch; the reviewed diagnostic/navigation checkpoint `1194faf` is pushed.
+Exact-head CI `40274695732` passes UI/Chromium with native work still running;
+packages `40274695726` are pending. These are not final passes. Historical checkpoint
 `0e791ec28f2ecf89cb9bab31516d57668e361333` has CI
 `40089612067` passes browser, UI/contracts, native build/Rust and offline render,
 but fails the desktop journey opening `Pulse - Ultra Hosted Editor`; subsequent

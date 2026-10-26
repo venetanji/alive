@@ -1,0 +1,69 @@
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=484300 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=484307 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=484307 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=484307 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activating service name='org.a11y.Bus' requested by ':1.4' (uid=1000 pid=484329 comm="/usr/lib/xdg-desktop-portal-gtk")
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Successfully activated service 'org.a11y.Bus'
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=484339 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=484339 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+** (xdg-desktop-portal-gtk:484329): WARNING **: 13:30:53.333: AT-SPI: Could not obtain desktop path or name
+
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=484339 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+
+** (xdg-desktop-portal-gtk:484329): WARNING **: 13:30:53.335: atk-bridge: GetRegisteredEvents returned message with unknown signature
+
+** (xdg-desktop-portal-gtk:484329): WARNING **: 13:30:53.335: atk-bridge: get_device_events_reply: unknown signature
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=484307 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=484307 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=484307 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=484307 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Activating service name='ca.desrt.dconf' requested by ':1.113' (uid=1000 pid=485019 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[484134]: [session uid=1000 pid=484134 pidfd=5] Successfully activated service 'ca.desrt.dconf'
+Traceback (most recent call last):
+  File "/tmp/alive-workspaces-clip-launch-diagnostic/diagnostic_driver.py", line 104, in <module>
+    runpy.run_path(str(ROOT/'apps/ultra/tests/check_alive_observability.py'), run_name='__main__')
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 294, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_observability.py", line 189, in <module>
+    clips.run()
+    ~~~~~~~~~^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_clips.py", line 167, in run
+    ui.click('Quit Alive')
+    ~~~~~~~~^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_observability.py", line 130, in clicked
+    if name == 'Quit Alive': qualify_and_finish()
+                             ~~~~~~~~~~~~~~~~~~^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_observability.py", line 153, in qualify_and_finish
+    original_click('Save Alive audio settings')
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/alive_workspace_navigation.py", line 60, in visible_click
+    click(name)
+    ~~~~~^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_canvas_desktop.py", line 86, in click
+    control = wait_for(name)
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_canvas_desktop.py", line 81, in wait_for
+    raise AssertionError('Missing native control: ' + name)
+AssertionError: Missing native control: Save Alive audio settings

@@ -1,0 +1,11 @@
+{
+  "source_base": "1194faff81170fe57d7283fac04488233610cfcd",
+  "source_diff": "/tmp/alive-workspaces-clip-navigation-fix1/fix.diff",
+  "command": "env -u ALIVE_SYSROOT PATH=/usr/bin:/bin ULTRA_TEST_ALIVE=1 ULTRA_TEST_SCRIPT=/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_observability.py PYTHONUNBUFFERED=1 timeout --signal=TERM --kill-after=10s 480s bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-workspaces-clip-navigation-fix1/original",
+  "cwd": "/home/venetanji/.codex/worktrees/edd5/alive",
+  "start_utc": "2026-10-26T05:37:59.783442+00:00",
+  "instrumentation": "none; original check_alive_observability.py directly",
+  "exit": 0,
+  "end_utc": "2026-10-26T05:40:04.837236+00:00",
+  "input_hashes_unchanged_during_run": true
+}
