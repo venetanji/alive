@@ -1,0 +1,34 @@
+{
+  "compile": {
+    "command": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-I/tmp/alive-workspaces-task2c-authority-actions",
+      "apps/ultra/tests/alive_session_v4_authority_test.cpp",
+      "/tmp/alive-workspaces-task2c-midi-preparation/backend.o",
+      "apps/ultra/build/core/libultra_core_bundle.a",
+      "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock",
+      "-ldl",
+      "-lrt",
+      "-o",
+      "/tmp/alive-workspaces-task2c-authority-actions/red-test"
+    ],
+    "exit": 0
+  },
+  "run": {
+    "command": [
+      "/tmp/alive-workspaces-task2c-authority-actions/red-test"
+    ],
+    "exit": 134
+  },
+  "source": "red-source/alive_session_v4_authority_test.cpp",
+  "baseline": "base-source.tar",
+  "note": "Initial unused-helper Werror was fixed before the retained meaningful ingress RED. The command source path subsequently evolved; retained source is the exact behavioral RED source."
+}

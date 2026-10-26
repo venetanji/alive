@@ -103,12 +103,14 @@ This is software PipeWire/CPAL at 48 kHz/512 frames, not physical audio or
 endurance. Existing accessibility/compositor harness warnings remain disclosed.
 Evidence: `experiments/alive-workspaces-20261026/cutoff-ci-fix/`.
 Remote CI on the new pushed checkpoint remains required.
-Checkpoint `5abd9eb` is pushed; CI `40338484521` and packages `40338484480`
+Prior checkpoint `5abd9eb`: CI `40338484521` and packages `40338484480`
 ran on that exact commit. CI's Linux job hit its 40-minute limit after dependency
 installation consumed about 33 minutes (69.7 MB at 35.4 kB/s with Ubuntu mirror
 retries); native build/checks passed, Rust build
 was canceled and downstream desktop gates did not run. UI/protocol and Chromium
-jobs pass; packages are still in progress. PR #6 remains draft and records current
+jobs pass; Windows and both macOS packages pass, while Linux packaging was
+canceled for the newer PR run during dependency installation. PR #6 remains
+draft and records current
 working versus missing workflows. The complete-envelope/oracle 2C-prep slice
 is independently approved at `c8f6522`: 106,661,824 bounded oracle assertions
 and the complete native suite pass. No runtime capability is enabled by that
@@ -120,6 +122,18 @@ instrument tracks pass; the sparse eight-track fixture has one sounding lane,
 and denser configurations remain conservatively refused. Authority actions,
 loops and measured desktop admission are next. This is still native test work,
 not an available Arrangement app feature.
+Reviewed checkpoint `8a6192f` is pushed and PR #6's description is updated.
+Its CI `40351129360` passes UI/protocol and Chromium; Linux exceeded its
+40-minute job limit after dependency installation took 39 minutes 4 seconds.
+Native compilation was canceled and subsequent native gates did not run.
+Packages `40351129269` pass on all four targets. The local authority-actions
+slice at `92d84d1` passes its existing native suites, but independent review
+reproduced loss of a pending Launch slot in published state when playback
+crosses an Arrangement boundary. Fix `74d92d4` derives that projection from the
+queued action, with playing adjacent/gap boundaries and concurrent snapshots
+covered. Its focused tests and complete native suite (171.14 seconds) pass;
+independent scoped re-review approves with no new findings. Source suffix loops
+and Arrangement-only Seek are next. No existing launcher binary has been replaced.
 
 Fresh private Arrangement study LOCAL-ARR-R1 observes occurrence creation,
 movement, source-loop extension/undo, two-track Session override, scoped Stop,

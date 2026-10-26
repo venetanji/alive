@@ -82,7 +82,12 @@ PCM/dispatch/transaction/work checks; an eight-track sparse fixture has one
 sounding lane and denser configurations remain refused. Complete native CI
 passes in 157.49 seconds. Evidence:
 `experiments/alive-workspaces-20261026/task2c-midi-preparation/`.
-Stopped/playing authority actions are next; shipping features remain zero.
+Finite authority actions are independently approved through `74d92d4`, including
+a review correction for pending-slot projection across Arrangement boundaries.
+Focused and complete native suites pass; evidence is retained under
+`task2c-authority-actions/` and `task2c-authority-actions-fix1/` in the same
+experiment root. Source suffix loops/Seek, then partial song loops are next;
+shipping features remain zero.
 The accepted desktop interface supplement is
 `docs/superpowers/specs/2026-10-26-alive-workspaces-desktop-contract.md`.
 Complete the MIDI portion of Task 4 after MIDI admission and before Task 3,

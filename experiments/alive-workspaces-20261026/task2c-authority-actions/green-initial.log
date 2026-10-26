@@ -1,0 +1,3 @@
+PASS: finite MIDI authority actions
+v4_midi-test: apps/ultra/tests/alive_session_v4_midi_test.cpp:470: void refusals(): Assertion `!alive_session_request_v4(&r, &out) && out.error == ALIVE_SESSION_V4_FEATURE_DISABLED' failed.
+/tmp/alive-workspaces-task2c-authority-actions/focused.sh: line 5: 1848585 Aborted                    (core dumped) "$DIR/$name-test"

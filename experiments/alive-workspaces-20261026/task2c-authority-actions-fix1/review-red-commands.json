@@ -1,0 +1,37 @@
+[
+  {
+    "label": "review-red-build",
+    "command": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-return-type",
+      "-Wno-subobject-linkage",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-I/tmp/alive-workspaces-task2c-authority-actions/fix-1",
+      "/tmp/alive-workspaces-task2c-authority-actions/fix-1/review-reproduction.cpp",
+      "/tmp/alive-workspaces-task2c-authority-actions/fix-1/baseline-backend.o",
+      "apps/ultra/build/core/libultra_core_bundle.a",
+      "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock",
+      "-ldl",
+      "-lrt",
+      "-o",
+      "/tmp/alive-workspaces-task2c-authority-actions/fix-1/review-red"
+    ],
+    "exit": 0,
+    "seconds": 8.135926227005257
+  },
+  {
+    "label": "review-red",
+    "command": [
+      "/tmp/alive-workspaces-task2c-authority-actions/fix-1/review-red"
+    ],
+    "exit": 1,
+    "seconds": 0.03861384100309806
+  }
+]

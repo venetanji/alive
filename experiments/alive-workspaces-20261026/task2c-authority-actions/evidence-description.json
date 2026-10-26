@@ -1,0 +1,44 @@
+{
+  "pcm": {
+    "format": "native little-endian float32 interleaved stereo",
+    "frames": 145001,
+    "nonzero_samples": 290002,
+    "minimum": -0.019296012818813324,
+    "maximum": 0.019001483917236328
+  },
+  "dispatch_columns": [
+    "absolute_frame_relative_to_start",
+    "source",
+    "occurrence",
+    "kind",
+    "pitch_or_parameter",
+    "value"
+  ],
+  "receipt_columns": [
+    "preparation",
+    "serial",
+    "status",
+    "error",
+    "observed_absolute_frame",
+    "target_absolute_frame",
+    "pending_mask",
+    "applied_mask",
+    "superseded_mask",
+    "canceled_mask",
+    "rejected_mask"
+  ],
+  "work_columns": [
+    "relative_frame",
+    "scheduled(events,roots,scans,writes,guard)",
+    "optional(events,roots,scans,writes,guard)",
+    "emergency(events,roots,scans,writes,guard)",
+    "live(events,roots,scans,writes,guard)",
+    "scheduled_placement",
+    "optional_placement",
+    "scheduled_probes",
+    "optional_probes"
+  ],
+  "work_note": "Only nonzero frames retained; all omitted frames have zero charged work. Every fixed width1..1024 is checked at every charged endpoint.",
+  "accepted_fixtures": 27,
+  "refused_fixture": "refused-eight-track-32-slots.bin contains ConfigV4 followed by DiagnosticV4; observed placement66 versus64"
+}
