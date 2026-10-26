@@ -1,0 +1,44 @@
+{
+  "conclusion": "failure",
+  "headSha": "f0fb9e5009d3cee72f48ecdbc47b1cd94a00b880",
+  "jobs": [
+    {
+      "completedAt": "2026-10-26T03:31:27Z",
+      "conclusion": "success",
+      "databaseId": 121382923598,
+      "name": "Chromium canvas editing smoke",
+      "startedAt": "2026-10-26T03:28:07Z",
+      "status": "completed",
+      "url": "https://github.com/venetanji/alive/actions/runs/40264211910/job/121382923598",
+      "unsuccessful_steps": []
+    },
+    {
+      "completedAt": "2026-10-26T03:45:11Z",
+      "conclusion": "failure",
+      "databaseId": 121382923759,
+      "name": "Linux native build, Rust bridge, and CPAL loopback",
+      "startedAt": "2026-10-26T03:28:07Z",
+      "status": "completed",
+      "url": "https://github.com/venetanji/alive/actions/runs/40264211910/job/121382923759",
+      "unsuccessful_steps": [
+        {
+          "name": "Exercise the actual Alive desktop session and hosted editor",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "completedAt": "2026-10-26T03:31:54Z",
+      "conclusion": "success",
+      "databaseId": 121382923824,
+      "name": "UI, protocol, and reference tests",
+      "startedAt": "2026-10-26T03:28:07Z",
+      "status": "completed",
+      "url": "https://github.com/venetanji/alive/actions/runs/40264211910/job/121382923824",
+      "unsuccessful_steps": []
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/venetanji/alive/actions/runs/40264211910"
+}

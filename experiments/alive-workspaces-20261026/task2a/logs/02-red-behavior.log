@@ -1,0 +1,107 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: unused import: `Document`
+ --> src/session/workspaces.rs:2:46
+  |
+2 | use super::{clips::ClipNote, DeviceInstance, Document, Lane};
+  |                                              ^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `BTreeMap` and `BTreeSet`
+ --> src/session/workspaces.rs:4:24
+  |
+4 | use std::collections::{BTreeMap, BTreeSet, HashSet};
+  |                        ^^^^^^^^  ^^^^^^^^
+
+warning: constant `MAX_BYTES` is never used
+ --> src/session/workspaces.rs:6:7
+  |
+6 | const MAX_BYTES: usize = 1024 * 1024;
+  |       ^^^^^^^^^
+  |
+  = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `MIN_BEATS` is never used
+ --> src/session/workspaces.rs:7:7
+  |
+7 | const MIN_BEATS: f64 = 1. / 64.;
+  |       ^^^^^^^^^
+
+warning: suspicious definition of the runtime `write` symbol used by the standard library
+   --> src/audio.rs:420:13
+    |
+420 |             fn write(fd: i32, buf: *const u8, len: usize) -> isize;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected `unsafe extern "C" fn(i32, *const c_void, usize) -> isize` (for the current target)
+            found    `unsafe extern "C" fn(i32, *const u8, usize) -> isize`
+    = help: either fix the signature or remove any attributes like `#[unsafe(no_mangle)]`, `#[unsafe(export_name = "write")]`, or `#[link_name = "write"]`
+    = help: allow this lint if the signature is compatible
+    = note: `#[warn(suspicious_runtime_symbol_definitions)]` on by default
+
+warning: `ultra` (lib test) generated 5 warnings (run `cargo fix --lib -p ultra --tests` to apply 2 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 13.15s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/debug/deps/ultra_desktop-6951be0eecdd253e)
+
+running 9 tests
+test session::workspaces::tests::finite_bounds_and_loop_brace_apply_even_when_disabled ... FAILED
+test session::workspaces::tests::fresh_ids_check_current_and_reserved_history_and_undo_keeps_originals ... FAILED
+test session::workspaces::tests::offsets_suffix_bounds_and_touching_occurrences_use_endpoint_frames ... FAILED
+test session::workspaces::tests::shared_source_edits_and_independent_copy_preserve_occurrence_identity ... FAILED
+test session::workspaces::tests::strict_edits_reject_duplicate_unknown_and_missing_fields ... ok
+test session::workspaces::tests::strict_roundtrip_keeps_explicit_empty_slots_and_no_audio_instrument ... FAILED
+test session::workspaces::tests::tempo_and_source_shrink_fail_transactionally_with_referring_ids ... FAILED
+test session::workspaces::tests::validation_rejects_identity_kind_ownership_and_device_targets ... ok
+test session::workspaces::tests::wire_rejects_unknown_missing_duplicate_and_noncanonical_decimal_members ... FAILED
+
+failures:
+
+---- session::workspaces::tests::finite_bounds_and_loop_brace_apply_even_when_disabled stdout ----
+
+thread 'session::workspaces::tests::finite_bounds_and_loop_brace_apply_even_when_disabled' (195585) panicked at src/session/workspaces_tests.rs:19:57:
+called `Result::unwrap()` on an `Err` value: "V4 decoding not implemented"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- session::workspaces::tests::fresh_ids_check_current_and_reserved_history_and_undo_keeps_originals stdout ----
+
+thread 'session::workspaces::tests::fresh_ids_check_current_and_reserved_history_and_undo_keeps_originals' (195586) panicked at src/session/workspaces_tests.rs:19:57:
+called `Result::unwrap()` on an `Err` value: "V4 decoding not implemented"
+
+---- session::workspaces::tests::offsets_suffix_bounds_and_touching_occurrences_use_endpoint_frames stdout ----
+
+thread 'session::workspaces::tests::offsets_suffix_bounds_and_touching_occurrences_use_endpoint_frames' (195587) panicked at src/session/workspaces_tests.rs:115:5:
+assertion failed: decode(&v.to_string()).unwrap_err().contains("placement")
+
+---- session::workspaces::tests::shared_source_edits_and_independent_copy_preserve_occurrence_identity stdout ----
+
+thread 'session::workspaces::tests::shared_source_edits_and_independent_copy_preserve_occurrence_identity' (195588) panicked at src/session/workspaces_tests.rs:19:57:
+called `Result::unwrap()` on an `Err` value: "V4 decoding not implemented"
+
+---- session::workspaces::tests::strict_roundtrip_keeps_explicit_empty_slots_and_no_audio_instrument stdout ----
+
+thread 'session::workspaces::tests::strict_roundtrip_keeps_explicit_empty_slots_and_no_audio_instrument' (195590) panicked at src/session/workspaces_tests.rs:39:40:
+called `Result::unwrap()` on an `Err` value: "V4 decoding not implemented"
+
+---- session::workspaces::tests::tempo_and_source_shrink_fail_transactionally_with_referring_ids stdout ----
+
+thread 'session::workspaces::tests::tempo_and_source_shrink_fail_transactionally_with_referring_ids' (195591) panicked at src/session/workspaces_tests.rs:133:45:
+called `Result::unwrap()` on an `Err` value: "V4 decoding not implemented"
+
+---- session::workspaces::tests::wire_rejects_unknown_missing_duplicate_and_noncanonical_decimal_members stdout ----
+
+thread 'session::workspaces::tests::wire_rejects_unknown_missing_duplicate_and_noncanonical_decimal_members' (195593) panicked at src/session/workspaces_tests.rs:50:9:
+assertion failed: decode(&bad).unwrap_err().contains("Duplicate")
+
+
+failures:
+    session::workspaces::tests::finite_bounds_and_loop_brace_apply_even_when_disabled
+    session::workspaces::tests::fresh_ids_check_current_and_reserved_history_and_undo_keeps_originals
+    session::workspaces::tests::offsets_suffix_bounds_and_touching_occurrences_use_endpoint_frames
+    session::workspaces::tests::shared_source_edits_and_independent_copy_preserve_occurrence_identity
+    session::workspaces::tests::strict_roundtrip_keeps_explicit_empty_slots_and_no_audio_instrument
+    session::workspaces::tests::tempo_and_source_shrink_fail_transactionally_with_referring_ids
+    session::workspaces::tests::wire_rejects_unknown_missing_duplicate_and_noncanonical_decimal_members
+
+test result: FAILED. 2 passed; 7 failed; 0 ignored; 0 measured; 215 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--lib`

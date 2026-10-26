@@ -1,0 +1,301 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: suspicious definition of the runtime `write` symbol used by the standard library
+   --> src/audio.rs:420:13
+    |
+420 |             fn write(fd: i32, buf: *const u8, len: usize) -> isize;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected `unsafe extern "C" fn(i32, *const c_void, usize) -> isize` (for the current target)
+            found    `unsafe extern "C" fn(i32, *const u8, usize) -> isize`
+    = help: either fix the signature or remove any attributes like `#[unsafe(no_mangle)]`, `#[unsafe(export_name = "write")]`, or `#[link_name = "write"]`
+    = help: allow this lint if the signature is compatible
+    = note: `#[warn(suspicious_runtime_symbol_definitions)]` on by default
+
+warning: `ultra` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.59s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/debug/deps/ultra_desktop-6951be0eecdd253e)
+
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... Interposer compile: cc -shared -fPIC /tmp/alive-v4-native-refusal-257814/refuse-v3-admission.c -ldl -o /tmp/alive-v4-native-refusal-257814/refuse-v3-admission.so
+Child ALIVE_TEST_V3_ADMISSION=none ALIVE_TEST_V3_INPUT=v2-document: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+Child ALIVE_TEST_V3_ADMISSION=none ALIVE_TEST_V3_INPUT=v3-document: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+Child ALIVE_TEST_V3_ADMISSION=none ALIVE_TEST_V3_INPUT=v1-text: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.01s
+
+
+Child ALIVE_TEST_V3_ADMISSION=none ALIVE_TEST_V3_INPUT=v2-text: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+Child ALIVE_TEST_V3_ADMISSION=none ALIVE_TEST_V3_INPUT=v3-text: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+Child ALIVE_TEST_V3_ADMISSION=small ALIVE_TEST_V3_INPUT=v2-document: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+Child ALIVE_TEST_V3_ADMISSION=small ALIVE_TEST_V3_INPUT=v3-document: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+Child ALIVE_TEST_V3_ADMISSION=small ALIVE_TEST_V3_INPUT=v1-text: 
+running 1 test
+Capability refusal verified (small); v1-text prospective candidate succeeds
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.01s
+
+
+Child ALIVE_TEST_V3_ADMISSION=small ALIVE_TEST_V3_INPUT=v2-text: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+Child ALIVE_TEST_V3_ADMISSION=small ALIVE_TEST_V3_INPUT=v3-text: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+
+thread 'session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission' (257815) panicked at src/session/workspaces_tests.rs:912:5:
+none/v2-document: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+
+thread 'session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission' (257827) panicked at src/session/workspaces_tests.rs:843:49:
+called `Result::unwrap()` on an `Err` value: "The requested native clip profile is not admitted"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+none/v3-document: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+
+thread 'session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission' (257829) panicked at src/session/workspaces_tests.rs:848:89:
+called `Result::unwrap()` on an `Err` value: "The requested native clip profile is not admitted"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+none/v1-text: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.01s
+
+
+
+thread 'session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission' (257831) panicked at src/session/workspaces_tests.rs:865:60:
+called `Result::unwrap()` on an `Err` value: "The requested native clip profile is not admitted"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+none/v2-text: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+
+thread 'session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission' (257834) panicked at src/session/workspaces_tests.rs:854:60:
+called `Result::unwrap()` on an `Err` value: "The requested native clip profile is not admitted"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+none/v3-text: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+
+thread 'session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission' (257836) panicked at src/session/workspaces_tests.rs:859:60:
+called `Result::unwrap()` on an `Err` value: "The requested native clip profile is not admitted"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+small/v2-document: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+
+thread 'session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission' (257838) panicked at src/session/workspaces_tests.rs:843:49:
+called `Result::unwrap()` on an `Err` value: "This admitted clip profile supports one to 2 instrument tracks"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+small/v3-document: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+
+thread 'session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission' (257840) panicked at src/session/workspaces_tests.rs:848:89:
+called `Result::unwrap()` on an `Err` value: "This admitted clip profile supports one to 2 instrument tracks"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+small/v2-text: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+
+thread 'session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission' (257844) panicked at src/session/workspaces_tests.rs:854:60:
+called `Result::unwrap()` on an `Err` value: "This admitted clip profile supports one to 2 instrument tracks"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+small/v3-text: 
+running 1 test
+test session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission ... FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.00s
+
+
+
+thread 'session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission' (257846) panicked at src/session/workspaces_tests.rs:859:60:
+called `Result::unwrap()` on an `Err` value: "This admitted clip profile supports one to 2 instrument tracks"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 237 filtered out; finished in 0.13s
+
+error: test failed, to rerun pass `--lib`

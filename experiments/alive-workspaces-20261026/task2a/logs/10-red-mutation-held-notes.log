@@ -1,0 +1,37 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: suspicious definition of the runtime `write` symbol used by the standard library
+   --> src/audio.rs:420:13
+    |
+420 |             fn write(fd: i32, buf: *const u8, len: usize) -> isize;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected `unsafe extern "C" fn(i32, *const c_void, usize) -> isize` (for the current target)
+            found    `unsafe extern "C" fn(i32, *const u8, usize) -> isize`
+    = help: either fix the signature or remove any attributes like `#[unsafe(no_mangle)]`, `#[unsafe(export_name = "write")]`, or `#[link_name = "write"]`
+    = help: allow this lint if the signature is compatible
+    = note: `#[warn(suspicious_runtime_symbol_definitions)]` on by default
+
+warning: `ultra` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.57s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/debug/deps/ultra_desktop-6951be0eecdd253e)
+
+running 1 test
+test session::workspaces::tests::notes_reject_overlap_and_five_held_voices_but_allow_touching_ends ... FAILED
+
+failures:
+
+---- session::workspaces::tests::notes_reject_overlap_and_five_held_voices_but_allow_touching_ends stdout ----
+
+thread 'session::workspaces::tests::notes_reject_overlap_and_five_held_voices_but_allow_touching_ends' (220541) panicked at src/session/workspaces_tests.rs:299:9:
+assertion `left == right` failed
+  left: true
+ right: false
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    session::workspaces::tests::notes_reject_overlap_and_five_held_voices_but_allow_touching_ends
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 236 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--lib`

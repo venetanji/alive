@@ -55,6 +55,19 @@ admission. Keep the pure 2A model outside the active `Document` enum until 2D
 can replace mandatory-instrument adapters with checked metadata/chain access.
 Never add a fake instrument or a panic adapter to make an intermediate compile.
 Each bounded slice gets its own tests, commit and independent task review.
+Task 2A is independently approved through `59c6076`: 24 focused / 77 session
+tests, including ten verified unavailable/smaller-native-profile conversion
+scenarios. The pure model remains outside active Document; evidence lives in
+`experiments/alive-workspaces-20261026/task2a/`. Task 2B is next.
+The pure 2A APIs produce prospective candidates: graph-family eligibility and
+manifest parameter existence/type/range cannot be certified from wire data or
+saved base maps. Task 2D must resolve them before admission. Stored-event counts
+use exact compiled endpoints (no note-off at source end) and enabled-lane
+points; disabled lanes/points still spend saved aggregate limits.
+Before 2D exposes v4 documents to the desktop, adapt the existing Session,
+device, mixer and detail readers to the real v4 projections. Keep optional
+instruments explicit; active v4 must not pass through legacy `.device` readers.
+Task 4 adds timeline editing, rather than repairing a temporarily broken Session.
 
 - [ ] Pin the additive versioned contracts and bounds against current source.
   Name all ABI sizes, ownership/migration and admission policies before code.
@@ -99,6 +112,10 @@ model/runtime contracts; preserve Task 1 shell and existing editor features.
   1440x900 and 1280x800, retaining actual native screenshots/interaction recording.
 - [ ] Run actual create/edit/launch/override/return/view/editor/save/Quit/reopen
   workflow, final regressions and outstanding endurance/observability gates.
+  Retain raw monotonic time, transport-running, absolute-frame and action-boundary
+  observations for independent replay of at least 1800 proven playing seconds.
+  Capture duration or an unreplayable accumulated counter cannot satisfy this
+  gate. Keep bounded resource/epoch logs, observation gaps and recorder cleanup.
 - [ ] Reconcile refs, obtain whole-branch review, push tested checkpoints and
   qualify final-head CI/packages; update draft PR with commands/evidence/limits.
 

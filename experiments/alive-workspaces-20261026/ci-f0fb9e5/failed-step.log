@@ -1,0 +1,15 @@
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	﻿2026-10-26T03:39:50.1812499Z ##[group]Run bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/session-desktop-evidence"
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	2026-10-26T03:39:50.1813388Z ^[[36;1mbash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/session-desktop-evidence"^[[0m
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	2026-10-26T03:39:50.1874394Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	2026-10-26T03:39:50.1874752Z env:
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	2026-10-26T03:39:50.1874954Z   JOBS: 2
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	2026-10-26T03:39:50.1875152Z   CARGO_BUILD_JOBS: 2
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	2026-10-26T03:39:50.1875386Z   CARGO_NET_RETRY: 2
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	2026-10-26T03:39:50.1875613Z   CARGO_HTTP_TIMEOUT: 60
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	2026-10-26T03:39:50.1875862Z   ULTRA_TEST_ALIVE: 1
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	2026-10-26T03:39:50.1876272Z   ULTRA_TEST_SCRIPT: /home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	2026-10-26T03:39:50.1876741Z ##[endgroup]
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	2026-10-26T03:40:01.0767959Z PASS secondary file delivery during initialization preserves main and opens its own window
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	2026-10-26T03:40:26.7605005Z dbus-daemon[24596]: [session uid=1001 pid=24596] Activating service name='ca.desrt.dconf' requested by ':1.101' (uid=1001 pid=25059 comm="/home/runner/work/alive/alive/apps/ultra/src-tauri" label="unconfined")
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	2026-10-26T03:40:26.8400212Z dbus-daemon[24596]: [session uid=1001 pid=24596] Successfully activated service 'ca.desrt.dconf'
+Linux native build, Rust bridge, and CPAL loopback	Exercise the actual Alive desktop session and hosted editor	2026-10-26T03:45:02.6908667Z ##[error]The action 'Exercise the actual Alive desktop session and hosted editor' has timed out after 5 minutes.

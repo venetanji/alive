@@ -10,6 +10,18 @@ state are independent even when their device paths are identical. No DSP source
 or patch copy is embedded in the Alive example or host.
 Sessions span at most 256 beats and 512 seconds (30..240 BPM).
 
+## Prospective Workspace Model
+
+The separate `session::workspaces` module implements a strict v4 candidate
+model for MIDI/audio sources, distinct Session slots and Arrangement placements,
+transactional edits and deterministic legacy conversion. It is not part of
+the active `Document` or app Open/Save/Apply paths. Candidate validation checks
+pure bounds, identities, references and exact frame arithmetic without native
+admission; resolved graph/manifest/PCM checks still precede future installation.
+The staged wire/runtime target is documented in
+`docs/superpowers/specs/2026-10-26-alive-workspaces-runtime-contract.md`.
+No v4 playback capability is enabled by this model-only checkpoint.
+
 ## Clock And Execution
 
 The native audio callback is the sole audio-frame clock owner at 48 kHz.

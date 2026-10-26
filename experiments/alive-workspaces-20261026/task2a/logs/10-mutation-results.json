@@ -1,0 +1,128 @@
+[
+  {
+    "name": "duplicates",
+    "exit": 101,
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "apps/ultra/src-tauri/Cargo.toml",
+      "--lib",
+      "session::workspaces::tests::wire_rejects",
+      "--",
+      "--test-threads=1"
+    ]
+  },
+  {
+    "name": "decimal",
+    "exit": 101,
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "apps/ultra/src-tauri/Cargo.toml",
+      "--lib",
+      "session::workspaces::tests::wire_rejects",
+      "--",
+      "--test-threads=1"
+    ]
+  },
+  {
+    "name": "event-cap",
+    "exit": 101,
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "apps/ultra/src-tauri/Cargo.toml",
+      "--lib",
+      "session::workspaces::tests::source_event_pool",
+      "--",
+      "--test-threads=1"
+    ]
+  },
+  {
+    "name": "source-end",
+    "exit": 101,
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "apps/ultra/src-tauri/Cargo.toml",
+      "--lib",
+      "session::workspaces::tests::source_event_pool",
+      "--",
+      "--test-threads=1"
+    ]
+  },
+  {
+    "name": "held-notes",
+    "exit": 101,
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "apps/ultra/src-tauri/Cargo.toml",
+      "--lib",
+      "session::workspaces::tests::notes_reject",
+      "--",
+      "--test-threads=1"
+    ]
+  },
+  {
+    "name": "endpoint-duration",
+    "exit": 101,
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "apps/ultra/src-tauri/Cargo.toml",
+      "--lib",
+      "session::workspaces::tests::endpoint_difference",
+      "--",
+      "--test-threads=1"
+    ]
+  },
+  {
+    "name": "operation-order",
+    "exit": 101,
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "apps/ultra/src-tauri/Cargo.toml",
+      "--lib",
+      "session::workspaces::tests::finite_bounds",
+      "--",
+      "--test-threads=1"
+    ]
+  },
+  {
+    "name": "affected-references",
+    "exit": 101,
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "apps/ultra/src-tauri/Cargo.toml",
+      "--lib",
+      "session::workspaces::tests::shared_source_edits",
+      "--",
+      "--test-threads=1"
+    ]
+  },
+  {
+    "name": "independent-notes",
+    "exit": 101,
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "apps/ultra/src-tauri/Cargo.toml",
+      "--lib",
+      "session::workspaces::tests::shared_source_edits",
+      "--",
+      "--test-threads=1"
+    ]
+  }
+]

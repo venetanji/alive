@@ -122,7 +122,64 @@ than a proved flake or diagnosis. Packages `40089612068` passed all four
 platform targets with publishing skipped. These outcomes do not qualify the
 new workspace source.
 
+`ci-f0fb9e5/` retains the pushed workspace checkpoint's actual desktop timeout
+evidence. CI `40264211910` passes UI/browser, native/Rust and offline render, but
+its five-minute native-desktop step expires after save/reopen and changed-source
+recovery. The retained observations report zero stream errors/rejections; the
+journey has no final success report and subsequent native gates are skipped.
+The independently streamed capture has 9037312 finite stereo frames / 188.277333
+capture seconds, peak 0.353354245, SHA-256
+`93c5a4b466b741725fcd3faafc8dcdd849c54f590b6cc8a375edb587bc7ae947`.
+Capture duration does not establish continuously playing time.
+
+`native-followup-97533b8/` records a specific local reproduction of that full
+original desktop journey. It exits zero and passes its original chain, piano,
+automation, hosted-editor, source-failure, save/reopen, pending-history,
+device-removal and application Quit assertions on the exact final `97533b8`
+release assets. This closes the earlier local full-journey attribution gap;
+the separate CI timeout remains unresolved. The diagnostic driver adds only
+line timestamps and traceback sampling. Its traced run body takes 187.540
+seconds; no production source or assertion is substituted. Provenance pins
+Alive `bac50bb1`, Ultra `51788add` and native library `4c54e3e0` by full hashes.
+The pure v4 model changes are not part of this previously built executable.
+
+Parent streaming confirms 4175872 finite stereo frames / 86.997333 capture
+seconds, peak 0.353354245, SHA-256
+`d9c9ae9ed7da39799ccedbfdfa46fc042757c89dd94945f7b785606dc7c4f5a4`.
+This private PipeWire run uses 48 kHz / 512 frames, observes zero reported audio
+errors/rejections, and completes recorder cleanup. It is software loopback and
+does not satisfy endurance, physical-audio or final pushed-commit CI gates.
+Its raw PCM remains in `/tmp/alive-ci-f0fb9e5-local`; the downloaded CI raw PCM
+remains in `/tmp/alive-ci-f0fb9e5-native`.
+
 ## Runtime next step
+
+`task2a/` retains the pure v4 model source provenance, requirements, reports,
+independent review/fix re-review and exact red/green/mutation logs. Source
+`b34615c` adds strict MIDI/audio descriptors, timing/ownership/identity bounds,
+transactional focused edits and deterministic candidate conversion. The first
+review found native-v3 admission leaking into conversion. Fix `59c6076` shares
+the existing pure mapping and strict v3 decoder while keeping old app admission
+wrappers intact. Ten isolated child scenarios explicitly verify unavailable
+or smaller v3 capabilities before proving prospective conversion succeeds.
+Final results are 24 focused and 77 session tests passed; scoped re-review
+approves spec compliance and quality. The existing `audio.rs:420` runtime-symbol
+warning remains disclosed and unchanged.
+
+Pure candidates cannot certify graph-family eligibility or manifest parameter
+binding/ranges from saved bases, which may omit valid defaults. Those checks
+remain mandatory before native installation. Stored event counting uses
+compiled endpoints, excluding a note-off at source end; enabled points spend
+the event pool and disabled data still spends saved aggregate bounds.
+SlotAssign requires an empty cell and mints its identity; occupied assignment
+rejects with the existing ID and delete/assign guidance. SlotUpdate retains
+identity. These rulings are tested; their cost is possible later admission
+refusal and an explicit extra operation for replacing an occupied slot.
+
+No v4 type is added to active Document, no native ABI/capability or desktop
+command changes, and no new GUI binary is produced for this pure slice. The
+working app still opens/saves v1/v2/v3 under its existing policies. The model
+is not evidence of Arrangement, imported audio or integrated acceptance.
 
 `docs/superpowers/specs/2026-10-26-alive-workspaces-runtime-contract.md` is the
 proposed v4 model/ABI and staged implementation target, not implemented runtime

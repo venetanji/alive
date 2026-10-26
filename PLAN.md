@@ -32,12 +32,33 @@ approves compliance and quality with no remaining finding. Pushed-commit CI
 remains required at the checkpoint; no Arrangement/audio or
 final integrated acceptance is inferred from this UI increment.
 
-Next is pure strict v4 source/placement data and prospective edits/conversion,
-outside the active Document until native integration. The accepted staged
+The pure strict v4 source/placement model is implemented through `59c6076`,
+outside the active Document. Its strict wire, transactional focused edits,
+deterministic conversion, stable identities and exact endpoint timing pass
+24 focused and 77 session tests. Independent review caught native-v3 admission
+leaking into candidate conversion; the shared pure conversion/strict decoder
+fix is approved after ten capability-refusal scenarios and scoped re-review.
+This does not enable v4 app open/save, playback or audio-file support.
+Evidence: `experiments/alive-workspaces-20261026/task2a/`.
+Next are the additive native ABI and one genuine MIDI Arrangement lane, with
+shipping capability bits disabled until full measured admission. The staged
 contract is `docs/superpowers/specs/2026-10-26-alive-workspaces-runtime-contract.md`.
 It is a design target, not measured admission. Subsequent native slices add
 MIDI Arrangement, explicit authority/return, bounded PCM, then real timeline
 editing. The working v3 app and launcher stay usable throughout.
+
+At pushed `f0fb9e5`, CI `40264211910` passes browser, UI/contracts,
+native/Rust and offline rendering but its native desktop step times out after
+five minutes; later native gates are skipped. All four platform packages in
+`40264211925` succeed, with publishing skipped. A targeted local reproduction
+of the full unchanged desktop journey now passes on the exact `97533b8` release
+assets, including original history/editor/file/device-removal/Quit checks.
+Its private PipeWire capture has 4175872 finite stereo frames / 86.997333
+capture seconds at 48 kHz / 512 frames, with zero reported errors/rejections;
+this is neither endurance nor continuously playing time. The CI timeout cause
+remains unproved; a local pass does not qualify the failed CI run. Evidence:
+`experiments/alive-workspaces-20261026/ci-f0fb9e5/` and
+`experiments/alive-workspaces-20261026/native-followup-97533b8/`.
 
 Foundation rechecked on 2026-10-26: the remote release integration still points
 to `31033483eb3baf15edab1734b966cc6d55c4b8c7`; the feature remote starts at
