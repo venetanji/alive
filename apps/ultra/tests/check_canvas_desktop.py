@@ -81,7 +81,7 @@ def wait_for(name, text_content=False):
     raise AssertionError('Missing native control: ' + name)
 
 
-def click(name):
+def click(name, observer=None):
     for _ in range(30):
         control = wait_for(name)
         if control.get_state_set().contains(Atspi.StateType.ENABLED):
@@ -106,10 +106,14 @@ def click(name):
     Atspi.Component.grab_focus(control)
     rect = Atspi.Component.get_extents(control, Atspi.CoordType.SCREEN)
     assert rect.width > 0 and rect.height > 0, name
+    if observer is not None:
+        observer('before', name, rect)
     assert t.XTestFakeMotionEvent(display, 0, rect.x+rect.width//2, rect.y+rect.height//2, 0)
     assert t.XTestFakeButtonEvent(display, 1, 1, 0)
     assert t.XTestFakeButtonEvent(display, 1, 0, 0)
     x.XFlush(display)
+    if observer is not None:
+        observer('queued', name, rect)
     time.sleep(.15)
 
 

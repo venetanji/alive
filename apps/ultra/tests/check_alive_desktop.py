@@ -25,7 +25,8 @@ from gi.repository import Atspi, GLib
 from alive_workspace_navigation import install as install_workspace_navigation
 
 prepare_workspace_control = install_workspace_navigation(
-    ui, windows, select_device=lambda name: select_device_click(name))
+    ui, windows, select_device=lambda name: select_device_click(name),
+    observe_replace=lambda *args: observe_replace_input(*args))
 timing = None
 
 MAIN = 'Alive'
@@ -192,6 +193,41 @@ def native_hit_path(px, py):
     raise AssertionError('Native hit-test ancestry exceeds diagnostic bound')
 
 
+def native_window_record(window):
+    name = C.c_char_p(); title = ''
+    if ui.x.XFetchName(ui.display, window, C.byref(name)) and name.value:
+        title = name.value.decode('utf-8', errors='replace')
+        ui.x.XFree(name)
+    ui.x.XGetWindowAttributes.argtypes = [C.c_void_p, C.c_ulong, C.POINTER(WindowAttributes)]
+    attributes = WindowAttributes()
+    available = ui.x.XGetWindowAttributes(ui.display, window, C.byref(attributes))
+    return {'window': int(window), 'title': title,
+            'map_state': attributes.map_state if available else None,
+            'pid': window_property(window, '_NET_WM_PID', 6),
+            'type': window_property(window, '_NET_WM_WINDOW_TYPE', 4)}
+
+
+def observe_replace_input(phase, name, rect):
+    """Observe the original input batch; never retry, refocus or move its target."""
+    started = time.monotonic()
+    row = {'action': 'chooser input ' + phase, 'monotonic': started, 'name': name,
+           'scope': windows.scope, 'rect': [rect.x, rect.y, rect.width, rect.height],
+           'point': [rect.x + rect.width // 2, rect.y + rect.height // 2]}
+    try:
+        if phase == 'before':
+            row['hit_path'] = native_hit_path(*row['point'])
+            row['windows'] = [native_window_record(window) for window in row['hit_path']]
+        else:
+            # Reached only after the original three XTest assertions and flush.
+            row.update(motions=1, presses=1, releases=1)
+    except Exception as error:
+        row['observation_error'] = repr(error)
+    row['observation_seconds'] = time.monotonic() - started
+    native_inputs.append(row)
+    if phase == 'queued':
+        (ui.output / 'native-inputs.json').write_text(json.dumps(native_inputs, indent=2))
+
+
 def reorder_point(control):
     states = control.get_state_set()
     if not all(states.contains(state) for state in (Atspi.StateType.ENABLED, Atspi.StateType.SHOWING,
@@ -332,6 +368,18 @@ def focus_chooser(title):
             time.sleep(.2)
             return
         time.sleep(.1)
+    # Keep failed candidates too; a retained unmapped chooser differs from no match.
+    root = C.c_ulong(); parent = C.c_ulong(); children = C.POINTER(C.c_ulong)(); count = C.c_uint()
+    ui.x.XQueryTree(ui.display, ui.x.XDefaultRootWindow(ui.display), C.byref(root), C.byref(parent), C.byref(children), C.byref(count))
+    try:
+        failure = {'title': title, 'candidates': candidates,
+                   'root_windows': [native_window_record(children[index]) for index in range(min(count.value, 128))],
+                   'omitted_root_windows': max(0, count.value - 128)}
+        (ui.output / 'chooser-failure.json').write_text(json.dumps(failure, indent=2))
+    except Exception as error:
+        print('Chooser failure observation error:', repr(error), flush=True)
+    finally:
+        if children: ui.x.XFree(children)
     raise AssertionError('Native chooser did not become viewable: ' + title)
 
 
