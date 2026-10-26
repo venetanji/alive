@@ -1,5 +1,22 @@
 # Alive / Ultra Plan
 
+## Active Direction: Arrangement And Session, 2026-10-26
+
+The owner resumed work with PR #6 comment 6383966857 as the current product
+direction. It supersedes the earlier Arrangement exclusion and testing pause.
+Build a real horizontal MIDI/audio timeline and Tab-switchable Session columns,
+sharing tracks/mixer/Ultra chains with explicit per-track playback authority.
+Current v3 has neither timeline scheduling nor audio-file tracks; preserve it
+while adding those capabilities. Do not claim the existing control form meets
+the new UI acceptance gates. Work continues in this worktree/feature branch.
+
+Spec: `docs/superpowers/specs/2026-10-26-alive-workspaces-design.md`.
+Execution plan: `docs/superpowers/plans/alive-workspaces-20261026.md`.
+The implementation sequence is Session/shared shell, real Arrangement model/
+MIDI ownership, actual audio tracks, integrated timeline editing, and native
+two-view acceptance/evidence. Earlier completed work and open regression gates
+below retain their original scope and source attribution.
+
 Updated: 2026-10-24. Combined release integration includes packaging/audit PR #2, reusable-instrument PR #4 at `ab8b0e2`, and preserved validation PR #5 at `8da5fd2`. The 0.1.0-rc.1 candidate fixes the remaining native Quit and pending-history admission findings before final combined CI. Earlier evidence below retains its original source revisions and hardware limits.
 
 ## Alive Application: Active Implementation Plan
