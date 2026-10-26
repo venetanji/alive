@@ -47,7 +47,7 @@ template <class T> static bool zero_record(const T &value) noexcept {
       return false;
   return true;
 }
-bool bounds_v4(const AliveSessionConfigV4 &c) noexcept {
+bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexcept {
   if (!header_v4(c.version, c.struct_bytes, sizeof c))
     return reject_v4(ALIVE_SESSION_V4_BAD_HEADER, "Invalid v4 configuration header.");
   if ((c.profile != 1 && c.profile != 2) || c.work_policy != c.profile)
@@ -71,7 +71,9 @@ bool bounds_v4(const AliveSessionConfigV4 &c) noexcept {
   std::array<unsigned, 32> slot_owners{};
   std::array<bool, 64> placement_owners{};
   std::array<bool, 1024> covered{};
-  std::array<unsigned, 8> notes{}, lanes{}, points{};
+  std::array<unsigned, 8> notes{}, lanes{}, points{}, sources{};
+  if (complete_midi && c.audio_buffer_count)
+    return reject_v4(ALIVE_SESSION_V4_FEATURE_DISABLED, "MIDI preparation cannot admit audio.");
   bool unsupported = c.profile != 1 || c.track_count != 1 || c.source_count != 1 ||
                      !c.placement_count || c.placement_count > 8 || c.slot_count ||
                      c.audio_buffer_count || c.loop_enabled;
@@ -94,6 +96,8 @@ bool bounds_v4(const AliveSessionConfigV4 &c) noexcept {
         !flag(tr.mute) || !flag(tr.solo) || (tr.kind == 2 && tr.instrument != None))
       return reject_v4(ALIVE_SESSION_V4_BAD_FIELD, "Invalid workspace track.");
     unsupported |= tr.kind != 1;
+    if (complete_midi && (tr.kind != 1 || tr.gain > 2 || tr.placement_count > 8))
+      return reject_v4(ALIVE_SESSION_V4_BAD_FIELD, "Invalid final MIDI track shape.");
     for (unsigned member = tr.kind == 1 ? 0 : 1; member <= tr.effect_count; ++member) {
       const unsigned d = member ? tr.effects[member - 1] : tr.instrument;
       if (d >= c.device_count || owner[d] >= 0 || c.devices[d].kind != (member ? 2u : 1u))
@@ -124,7 +128,8 @@ bool bounds_v4(const AliveSessionConfigV4 &c) noexcept {
         return reject_v4(ALIVE_SESSION_V4_BAD_PLACEMENT, "Overlapping or invalid placement.");
       const auto &source = c.sources[p.source];
       if (p.source_offset >= source.length_frames ||
-          (!p.loop_enabled && p.duration_frames > source.length_frames - p.source_offset))
+          (!p.loop_enabled && p.duration_frames > source.length_frames - p.source_offset) ||
+          (complete_midi && p.loop_enabled && source.length_frames - p.source_offset < minimum))
         return reject_v4(ALIVE_SESSION_V4_BAD_PLACEMENT, "Placement exceeds source suffix.");
       placement_owners[index] = true;
       endpoint = p.start_frame + p.duration_frames;
@@ -141,7 +146,9 @@ bool bounds_v4(const AliveSessionConfigV4 &c) noexcept {
     const auto &slot = c.slots[i];
     if (slot_owners[i] != 1 || slot.track >= c.track_count || slot.source >= c.source_count ||
         c.sources[slot.source].track != slot.track || slot.reserved || !flag(slot.loop_enabled) ||
-        slot.source_offset >= c.sources[slot.source].length_frames)
+        slot.source_offset >= c.sources[slot.source].length_frames ||
+        (complete_midi && slot.loop_enabled &&
+         c.sources[slot.source].length_frames - slot.source_offset < minimum))
       return reject_v4(ALIVE_SESSION_V4_BAD_SOURCE, "Invalid slot source.");
   }
   for (unsigned s = 0; s < c.source_count; ++s) {
@@ -153,6 +160,8 @@ bool bounds_v4(const AliveSessionConfigV4 &c) noexcept {
         (source.kind == 1 ? source.audio_buffer != None
                           : source.audio_buffer >= c.audio_buffer_count))
       return reject_v4(ALIVE_SESSION_V4_BAD_SOURCE, "Invalid source fields or range.");
+    if (complete_midi && ++sources[source.track] > 4)
+      return reject_v4(ALIVE_SESSION_V4_BAD_SOURCE, "More than four sources per track.");
     unsigned enabled = 0;
     for (unsigned d = 0; d < 16; ++d) {
       const unsigned mask = source.owned_masks[d];
@@ -230,7 +239,7 @@ bool bounds_v4(const AliveSessionConfigV4 &c) noexcept {
   CHECK_UNUSED(placements, placement_count);
   CHECK_UNUSED(events, event_count);
 #undef CHECK_UNUSED
-  if (unsupported)
+  if (unsupported && !complete_midi)
     return reject_v4(ALIVE_SESSION_V4_FEATURE_DISABLED,
                      "Configuration exceeds the provisional Arrangement subset.");
   return true;
@@ -473,6 +482,21 @@ AliveSessionStateV4 project_v4() const noexcept {
 }
 
 public:
+// Off-callback preparation only: deliberately separate from configure/validate
+// admission until the complete MIDI runtime consumes this proof in the next slice.
+bool prepare_midi_envelopes_v4(const AliveSessionConfigV4 &c,
+                               workspace_admission::Proof &out) noexcept {
+  out = {};
+  if (!bounds_v4(c, true)) {
+    out.diagnostic = diagnostic4_;
+    return false;
+  }
+  const bool accepted = workspace_admission::build_validated(c, out);
+  diagnostic4_ = out.diagnostic;
+  if (!accepted)
+    return reject("Complete MIDI envelope exceeds bounded preparation policy.");
+  return true;
+}
 bool limits_v4(unsigned profile, AliveSessionLimitsV4 &out) const noexcept {
   if (!header_v4(out.version, out.struct_bytes, sizeof out) || (profile != 1 && profile != 2))
     return false;

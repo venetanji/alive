@@ -52,6 +52,9 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror \
 c++ -std=c++17 -O2 -Wall -Wextra -Werror \
   apps/ultra/tests/alive_session_envelope_test.cpp -o "$TEST_DIR/alive-envelope"
 "$TEST_DIR/alive-envelope"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror \
+  apps/ultra/tests/alive_session_workspace_envelope_test.cpp -o "$TEST_DIR/alive-workspace-envelope"
+"$TEST_DIR/alive-workspace-envelope"
 c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
   -c apps/ultra/src-tauri/native/backend.cpp -o "$TEST_DIR/alive-v3-backend.o"
 python3 apps/ultra/tests/alive_session_v3_fixtures.py "$TEST_DIR/saved_graphs.hpp"
