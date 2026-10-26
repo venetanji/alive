@@ -123,7 +123,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     });
   }
   function renderScenes(snapshot){
-    const enabled=snapshot.mode==='clipsV3';$('scene-controls').hidden=$('scene-help').hidden=!enabled;
+    const enabled=snapshot.mode==='clipsV3';$('scene-controls').hidden=$('scene-help').hidden=$('scene-history').hidden=!enabled;
     if(!enabled)return;
     if(!sceneViews.length)for(let slot=0;slot<4;slot++){
       const row=make('div','scene-row'),launch=make('button','scene-launch'),prepared=make('small','muted'),result=make('output','scene-result');

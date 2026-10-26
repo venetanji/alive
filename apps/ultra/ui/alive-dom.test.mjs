@@ -136,6 +136,21 @@ test('scene receipt shows separate member outcomes and never presents it as tran
   native.snapshot.snapshotSequence='2';native.snapshot.runtime.requests[0].status='mixed';native.snapshot.runtime.requests[0].members[0].status='applied';await view.refresh();
   assert.match(result.textContent,/Pulse: applied.*Harmony: superseded/);assert.doesNotMatch(result.textContent,/prior playback or pending action is retained/);view.dispose();
 });
+test('scene receipts hide through legacy fallback and refresh identities when clip-bank mode returns',async()=>{
+  const initial=clipState();initial.capabilities={atomicTrackActions:true};initial.preparedClips[0].name='Old session clip';
+  initial.runtime.requests=[{preparationRevision:'1',requestSerial:'13',sceneSlot:0,status:'applied',reason:0,members:[{trackId:'track-1',action:'launch',status:'applied'}]}];
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const history=page.ids.get('scene-history');assert.ok(history);history.open=true;
+  assert.equal(history.hidden,false);assert.match(page.find('Prepared scene 1').textContent,/Old session clip/);assert.match(page.find('Scene 1 request').textContent,/request 13 applied/);
+  Object.assign(native.snapshot,state(),{generation:2,mode:'legacyV2',snapshotSequence:'2',preparedClips:[],runtime:null});await view.refresh();
+  assert.equal(history.hidden,true);assert.equal(page.ids.get('scene-controls').hidden,true);
+  const next=clipState();next.generation=3;next.preparationRevision='2';next.snapshotSequence='3';next.preparedClips[0].name='Fresh session clip';next.preparedClips[0].clipId='fresh-clip';next.document.tracks[0].slots[0].id='fresh-clip';next.runtime.tracks[0].activeClipId='fresh-clip';
+  next.runtime.requests=[{preparationRevision:'2',requestSerial:'14',sceneSlot:0,status:'rejected',reason:7,members:[{trackId:'track-1',action:'launch',status:'rejected'}]}];
+  Object.assign(native.snapshot,next);await view.refresh();assert.equal(history.hidden,false);assert.equal(page.ids.get('scene-controls').hidden,false);
+  assert.match(page.find('Prepared scene 1').textContent,/Fresh session clip/);assert.doesNotMatch(page.find('Prepared scene 1').textContent,/Old session clip/);
+  assert.match(page.find('Scene 1 request').textContent,/request 14 rejected/);assert.doesNotMatch(page.find('Scene 1 request').textContent,/request 13/);
+  assert.equal(native.calls.filter(c=>c.name!=='alive_current').length,0);view.dispose();
+});
 test('queued scene captures preparation at gesture and late result preserves newer selection and focus',async()=>{
   const initial=clipState();initial.capabilities={atomicTrackActions:true};initial.audio.running=true;
   const page=dom('./alive.html'),native=backend(initial),boundary=delayedBoundary(native,'alive_base',()=>{}),view=mountAlive({...page,invoke:boundary.invoke});await settle();

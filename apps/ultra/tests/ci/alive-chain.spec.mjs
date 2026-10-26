@@ -53,6 +53,30 @@ test('empty body double-click creates one draft clip and never launches',async({
   await expect(page.getByRole('button',{name:'Launch Pulse New clip',exact:true})).toBeDisabled();await expect(body).toHaveAttribute('aria-pressed','true');
 });
 
+test('scene receipts leave the visual and accessibility tree in legacy mode and refresh on return',async({page})=>{
+  await openSession(page,false,true);
+  await page.evaluate(()=>{
+    const snapshot=window.sessionSnapshot;snapshot.preparedClips[0].name='Old session clip';snapshot.document.tracks[0].slots[0].name='Old session clip';
+    snapshot.runtime.requests=[{preparationRevision:snapshot.preparationRevision,requestSerial:'13',sceneSlot:0,status:'applied',reason:0,members:[{trackId:'track-1',action:'launch',status:'applied'}]}];
+  });
+  await page.locator('.scene-history>summary').click();await page.getByLabel('Scene 1 receipt details',{exact:true}).click();
+  await expect(page.getByLabel('Prepared scene 1',{exact:true})).toHaveText(/Old session clip/);await expect(page.getByLabel('Scene 1 request',{exact:true})).toHaveText(/request 13 applied/);
+  await page.evaluate(()=>{
+    const snapshot=window.sessionSnapshot;window.previousClipSnapshot=structuredClone(snapshot);snapshot.generation++;snapshot.snapshotSequence='2';snapshot.mode='legacyV2';snapshot.document.format='alive-session-v2';
+    for(const track of snapshot.document.tracks){track.notes=track.slots[0].notes;track.automation=track.slots[0].automation;delete track.slots;delete track.defaultClipId;}
+    snapshot.runtime=null;snapshot.preparedClips=[];
+  });
+  await expect(page.locator('#scene-controls')).toBeHidden();await expect(page.locator('.scene-history')).toBeHidden();
+  const legacyTree=await page.locator('.scene-column').ariaSnapshot();expect(legacyTree).not.toContain('Scene receipts');expect(legacyTree).not.toContain('Old session clip');expect(legacyTree).not.toContain('request 13');
+  await page.evaluate(()=>{
+    const next=structuredClone(window.previousClipSnapshot);next.generation+=2;next.snapshotSequence='3';next.preparationRevision='9007199254740994';next.document.tracks[0].slots[0].name='Fresh session clip';next.preparedClips[0].name='Fresh session clip';
+    next.runtime.requests=[{preparationRevision:next.preparationRevision,requestSerial:'14',sceneSlot:0,status:'rejected',reason:7,members:[{trackId:'track-1',action:'launch',status:'rejected'}]}];Object.assign(window.sessionSnapshot,next);
+  });
+  await expect(page.locator('.scene-history')).toBeVisible();await expect(page.getByLabel('Prepared scene 1',{exact:true})).toHaveText(/Fresh session clip/);await expect(page.getByLabel('Scene 1 request',{exact:true})).toHaveText(/request 14 rejected/);
+  const currentTree=await page.locator('.scene-column').ariaSnapshot();expect(currentTree).not.toContain('Old session clip');expect(currentTree).not.toContain('request 13');expect(currentTree).toContain('Fresh session clip');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
 test('vertical gain fader sends one bounded change and reflects external snapshots without erasing focused numeric text',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page,false,true);
   const slider=page.getByRole('slider',{name:'Pulse gain fader',exact:true}),number=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});
