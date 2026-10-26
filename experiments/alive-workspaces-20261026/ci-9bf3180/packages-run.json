@@ -1,0 +1,43 @@
+{
+  "conclusion": "failure",
+  "headSha": "9bf3180665c7beae86ba8e8e72b40c84e7397a2e",
+  "jobs": [
+    {
+      "name": "Package x86_64-apple-darwin",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-10-26T04:03:31Z",
+      "completedAt": "2026-10-26T04:31:33Z"
+    },
+    {
+      "name": "Package x86_64-unknown-linux-gnu",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-26T04:03:31Z",
+      "completedAt": "2026-10-26T04:21:16Z"
+    },
+    {
+      "name": "Package aarch64-apple-darwin",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-26T04:03:31Z",
+      "completedAt": "2026-10-26T04:20:56Z"
+    },
+    {
+      "name": "Package x86_64-pc-windows-msvc",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-26T04:03:31Z",
+      "completedAt": "2026-10-26T04:26:39Z"
+    },
+    {
+      "name": "Publish complete tag release",
+      "status": "completed",
+      "conclusion": "skipped",
+      "startedAt": "2026-10-26T04:31:33Z",
+      "completedAt": "2026-10-26T04:31:33Z"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/venetanji/alive/actions/runs/40267085031"
+}

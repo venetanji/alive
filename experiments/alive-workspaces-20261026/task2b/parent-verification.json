@@ -1,0 +1,18 @@
+{
+  "base": "9bf3180665c7beae86ba8e8e72b40c84e7397a2e",
+  "head": "d7f8490a783762a7c864f07957e12fce045b4b5d",
+  "committed_source_blobs_checked": 12,
+  "actual_binary_hashes_checked": 7,
+  "fixture_hashes_checked": 4,
+  "supplemental_trace_hashes_checked": 1,
+  "source_diff_whitespace_exit": 0,
+  "suites_repeated_by_parent": false,
+  "launcher_release_assets_replaced": false,
+  "shipping_features_enabled": false,
+  "independent_review": "needs fixes: I1 rejected post-end START mutation; I2 chase dispatch ordering",
+  "subsequent_fix": {
+    "head": "db39ab08def38c0b566bfa3823df8d604bc0432d",
+    "evidence": "../task2b-fix1/",
+    "independent_review": "Approved; original I1/I2 addressed; no new breakage"
+  }
+}

@@ -1,0 +1,5 @@
+/usr/bin/ld: /tmp/cc82aZAC.o: in function `main':
+alive_session_v4_shipping_test.cpp:(.text+0xd7): undefined reference to `alive_session_limits_v4'
+/usr/bin/ld: alive_session_v4_shipping_test.cpp:(.text+0x206): undefined reference to `alive_session_limits_v4'
+/usr/bin/ld: alive_session_v4_shipping_test.cpp:(.text+0x2fc): undefined reference to `alive_session_request_v4'
+collect2: error: ld returned 1 exit status

@@ -22,6 +22,20 @@ The staged wire/runtime target is documented in
 `docs/superpowers/specs/2026-10-26-alive-workspaces-runtime-contract.md`.
 No v4 playback capability is enabled by this model-only checkpoint.
 
+The additive native v4 ABI and a native-only one-track MIDI Arrangement subset
+are implemented at `db4a934` / `d7f8490`, with approved fixes at `db39ab0`.
+The subset renders saved graphs with source offsets, held-note/automation
+chase and finite nonlooping placements through the shared clock, queue,
+receipts and evaluator. It has separate C/Rust layout, guarded render,
+partition and shipping-refusal tests. Separate RED/GREEN regressions and scoped
+re-review cover rejected START preserving transport/prior mixer reductions,
+and same-frame termination/automation/chased-note/ordinary-note ordering.
+Both builds still publish zero feature bits: only a dedicated native test
+target may configure this provisional
+subset. The shipping app, launcher and active Document remain v3. Multi-track
+authority, seek, source/song loops, desktop integration, PCM and measured v4
+admission are subsequent gates; this subset does not certify them.
+
 ## Clock And Execution
 
 The native audio callback is the sole audio-frame clock owner at 48 kHz.

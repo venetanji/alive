@@ -1,0 +1,29 @@
+{
+  "conclusion": "failure",
+  "headSha": "9bf3180665c7beae86ba8e8e72b40c84e7397a2e",
+  "jobs": [
+    {
+      "name": "UI, protocol, and reference tests",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-26T04:03:30Z",
+      "completedAt": "2026-10-26T04:06:41Z"
+    },
+    {
+      "name": "Linux native build, Rust bridge, and CPAL loopback",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-10-26T04:03:30Z",
+      "completedAt": "2026-10-26T04:20:18Z"
+    },
+    {
+      "name": "Chromium canvas editing smoke",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-26T04:03:31Z",
+      "completedAt": "2026-10-26T04:06:24Z"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/venetanji/alive/actions/runs/40267085010"
+}

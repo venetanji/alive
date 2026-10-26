@@ -1,0 +1,12 @@
+BASE=9bf3180665c7beae86ba8e8e72b40c84e7397a2e
+CXX=c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread
+NORMAL=cmake --build apps/ultra/build --target ultra_native -j2
+LAYOUT=c++ -std=c++17 -Wall -Wextra -Werror apps/ultra/tests/alive_session_v4_layout_test.cpp -o /tmp/alive-workspaces-task2b/layout-test
+FIXTURES=python3 apps/ultra/tests/alive_session_v3_fixtures.py /tmp/alive-workspaces-task2b/saved_graphs.hpp
+PROVISIONAL_BACKEND=c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -c apps/ultra/src-tauri/native/backend.cpp -o /tmp/alive-workspaces-task2b/v4-backend.o
+PROVISIONAL_TEST=c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -I/tmp/alive-workspaces-task2b apps/ultra/tests/alive_session_v4_test.cpp /tmp/alive-workspaces-task2b/v4-backend.o apps/ultra/build/core/libultra_core_bundle.a -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock -ldl -lrt -o /tmp/alive-workspaces-task2b/v4-test
+SHIPPING_TEST=c++ -std=c++17 -O2 -Wall -Wextra -Werror -I/tmp/alive-workspaces-task2b apps/ultra/tests/alive_session_v4_shipping_test.cpp -Lapps/ultra/build -lultra_native -Wl,-rpath,$PWD/apps/ultra/build -o /tmp/alive-workspaces-task2b/shipping-test
+NATIVE_CI=bash apps/ultra/tests/ci/check-native.sh
+RUST=env ULTRA_NATIVE_LIB_DIR=$PWD/apps/ultra/build LD_LIBRARY_PATH=$PWD/apps/ultra/build cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --lib session:: -- --test-threads=1
+SUPPLEMENTAL_WORK_TRACE=c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -I/tmp/alive-workspaces-task2b -Iapps/ultra/tests /tmp/alive-workspaces-task2b/work-trace.cpp /tmp/alive-workspaces-task2b/v4-backend.o apps/ultra/build/core/libultra_core_bundle.a -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock -ldl -lrt -o /tmp/alive-workspaces-task2b/work-trace
+SUPPLEMENTAL_RUN=/tmp/alive-workspaces-task2b/work-trace

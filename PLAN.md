@@ -40,12 +40,41 @@ leaking into candidate conversion; the shared pure conversion/strict decoder
 fix is approved after ten capability-refusal scenarios and scoped re-review.
 This does not enable v4 app open/save, playback or audio-file support.
 Evidence: `experiments/alive-workspaces-20261026/task2a/`.
-Next are the additive native ABI and one genuine MIDI Arrangement lane, with
-shipping capability bits disabled until full measured admission. The staged
+The additive native ABI and one genuine MIDI Arrangement lane are committed
+at `db4a934` / `d7f8490`, with reviewed fixes at `db39ab0`. The native-only
+test subset uses one source across one to eight nonlooping placements, with
+real saved Ultra graphs, offset-held-note/automation chase, full-chain resets
+and bounded work. Exact PCM matches the mixed partition sequence and fixed
+partitions 1, 31, 32, 63, 64, 127, 128, 256, 512 and 1024. Shipping refusal,
+C/Rust layouts, full native regressions and 79 Rust session tests pass.
+Parent verifies twelve committed source blobs, seven binary and four fixture
+hashes against retained manifests. Independent review identified rejected
+post-end START atomicity and chased-before-ordinary note-on ordering. Separate
+regressions reproduce both failures before the fix and pass afterward. Scoped
+re-review approves the fixes with zero open blocking findings. The full guarded
+v4 suite, shipping refusal and full native CI pass after the correction; the
+original Stop/baseline comparison still passes 43008 samples. Fix evidence is
+retained separately in `experiments/alive-workspaces-20261026/task2b-fix1/`.
+This is not production v4 admission:
+both builds publish zero feature bits, and only the dedicated test target
+admits this subset. The normal library refuses configure/request without
+changing the playing v3 session. Multi-track authority, seek, loops, desktop
+integration and full measured admission remain open. Evidence:
+`experiments/alive-workspaces-20261026/task2b/`. The staged
 contract is `docs/superpowers/specs/2026-10-26-alive-workspaces-runtime-contract.md`.
 It is a design target, not measured admission. Subsequent native slices add
 MIDI Arrangement, explicit authority/return, bounded PCM, then real timeline
 editing. The working v3 app and launcher stay usable throughout.
+
+The local **Alive (Test)** launcher remains installed and freshly validates.
+It runs the separate `alive` release executable through `apps/alive/run.sh`,
+without rebuilding on launch. Its pinned Session UI build (`97533b8`) passes a
+fresh saved two-device offline probe, including exact offsets 0, 1, 31, 63, 64
+and 127, partition equality, automation ownership, isolation, mute/solo,
+loop/seek/Stop, save/reopen and device removal. This does not enable Arrangement
+or imported audio, and is not a new desktop or endurance result. Launcher
+hashes, command exits and probe report are retained under
+`experiments/alive-workspaces-20261026/launcher-checkpoint/`.
 
 At pushed `f0fb9e5`, CI `40264211910` passes browser, UI/contracts,
 native/Rust and offline rendering but its native desktop step times out after
@@ -59,6 +88,18 @@ this is neither endurance nor continuously playing time. The CI timeout cause
 remains unproved; a local pass does not qualify the failed CI run. Evidence:
 `experiments/alive-workspaces-20261026/ci-f0fb9e5/` and
 `experiments/alive-workspaces-20261026/native-followup-97533b8/`.
+
+At pushed `9bf3180`, CI `40267085010` repeats the five-minute desktop
+timeout after successful UI/browser/native/Rust/offline checks; later native
+gates are skipped. The artifact reaches save/reopen and dependency recovery
+and completes recorder cleanup, but has no final journey report. Independent
+streaming confirms 9246208 finite stereo frames / 192.629333 capture seconds,
+not endurance. Retained observations report zero audio errors/rejections;
+the timeout cause remains unproved. Packages `40267085031` pass Linux,
+Windows and ARM macOS; Intel macOS fails after building/signing Alive.app
+when DMG unmount repeatedly reports `hdiutil: Resource busy`. Publishing is
+skipped. This records the failure point without claiming its root cause. Evidence:
+`experiments/alive-workspaces-20261026/ci-9bf3180/`.
 
 Foundation rechecked on 2026-10-26: the remote release integration still points
 to `31033483eb3baf15edab1734b966cc6d55c4b8c7`; the feature remote starts at

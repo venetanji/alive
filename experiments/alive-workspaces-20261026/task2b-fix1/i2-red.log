@@ -1,0 +1,2 @@
+entry occurrence=0 frame=512 note-order=60,64 expected=64,60
+red-test: apps/ultra/tests/alive_session_v4_test.cpp:194: boundary_cases()::<lambda(unsigned int, unsigned int, uint64_t)>: Assertion `dispatches[begin + 2].kind == ALIVE_SESSION_NOTE_ON && dispatches[begin + 2].pitch == 64' failed.

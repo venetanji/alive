@@ -1,0 +1,49 @@
+--- a/apps/ultra/tests/alive_session_v4_test.cpp
++++ b/work-trace.cpp
+@@ -1,5 +1,5 @@
+-#include "../src-tauri/native/alive_session.hpp"
+-#include "../src-tauri/native/backend.h"
++#include "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/native/alive_session.hpp"
++#include "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/native/backend.h"
+ #include "canvas_callback_guard.hpp"
+ #include "saved_graphs.hpp"
+ #include <cassert>
+@@ -7,6 +7,11 @@
+ #include <cstring>
+ #include <vector>
+ namespace {
++std::array<ultra::clip_admission::Cost,4> work_trace{};
++void trace_work(unsigned family,const ultra::clip_admission::Cost &cost) noexcept {
++  for(unsigned i=0;i<5;++i)work_trace[family][i]+=cost[i];
++}
++
+ struct Dispatch {
+   uint64_t frame;
+   unsigned source, occurrence, kind, pitch;
+@@ -120,6 +125,7 @@
+   trace_origin = state().absolute_frame;
+   dispatch_count = 0;
+   placement_steps = 0;
++  work_trace={};
+   assert(ultra_external_start());
+   request();
+   std::vector<float> audio;
+@@ -133,6 +139,10 @@
+   }
+   const uint64_t expected_frames[] = {512, 2012, 2512, 4096, 4572, 5072, 6072};
+   assert(dispatch_count == 7);
++  assert(work_trace[0][0]==dispatch_count);
++  std::printf("work scheduled events=%llu roots=%llu scans=%llu writes=%llu guard=%llu optional_guard=%llu\n",
++    (unsigned long long)work_trace[0][0],(unsigned long long)work_trace[0][1],(unsigned long long)work_trace[0][2],
++    (unsigned long long)work_trace[0][3],(unsigned long long)work_trace[0][4],(unsigned long long)work_trace[1][4]);
+   for (unsigned i = 0; i < 7; ++i) {
+     assert(dispatches[i].frame == expected_frames[i]);
+     assert(dispatches[i].source == 0);
+@@ -382,6 +392,7 @@
+   std::puts("rejected candidate keeps applied occurrence; bounded later gap resume=PASS");
+ }
+ int main() {
++  ultra::alive_session_test_charge=trace_work;
+   for (unsigned profile : {1u, 2u}) {
+     AliveSessionLimitsV4 limits{};
+     limits.version = 4;

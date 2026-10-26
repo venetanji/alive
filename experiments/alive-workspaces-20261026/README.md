@@ -132,6 +132,21 @@ capture seconds, peak 0.353354245, SHA-256
 `93c5a4b466b741725fcd3faafc8dcdd849c54f590b6cc8a375edb587bc7ae947`.
 Capture duration does not establish continuously playing time.
 
+`ci-9bf3180/` retains the next checkpoint's repeated timeout. CI `40267085010`
+passes UI/browser/native/Rust/offline checks, then exceeds the same five-minute
+desktop deadline after save/reopen and dependency recovery. The recorder
+finishes cleanup, but no final journey report exists and later native gates
+are skipped. Retained observations show zero reported errors/rejections.
+Independent streaming confirms 9246208 finite stereo frames / 192.629333
+capture seconds, peak 0.353354245, SHA-256
+`ab7231d13003b49e19c44228b8752b3933ebc88825ac3fa56cb5c1bfeb303782`.
+The raw PCM remains in `/tmp/alive-ci-9bf3180-native`. This is software capture,
+not endurance, a successful full journey or a proved timeout diagnosis.
+The final package outcome passes Linux, Windows and ARM macOS. Intel macOS
+builds/signs Alive.app, then DMG unmount repeatedly returns `hdiutil: Resource
+busy`; bundling fails and publishing is skipped. Its final log excerpt is
+retained without asserting a root cause or treating the run as qualified.
+
 `native-followup-97533b8/` records a specific local reproduction of that full
 original desktop journey. It exits zero and passes its original chain, piano,
 automation, hosted-editor, source-failure, save/reopen, pending-history,
@@ -187,3 +202,44 @@ evidence. It keeps the current native owner/clock/device interface, introduces
 real source/placement ownership and an instrument-free audio path, and requires
 fresh admission/retirement/timing proof before enabling capabilities. See the
 current plan for the remaining MIDI, PCM, timeline and integrated native tasks.
+
+## Native MIDI Arrangement Slice
+
+`task2b/` retains the additive v4 C/Rust ABI and genuine one-track MIDI
+Arrangement source at `db4a934` / `d7f8490`, the original requirements, raw
+checks and independent review. One saved source plays through one to eight
+finite placements using the existing native clock, queue, receipts, evaluator
+and bounded work. Exact PCM matches mixed partitions and fixed widths 1, 31,
+32, 63, 64, 127, 128, 256, 512 and 1024, including a real saved two-effect chain.
+The initial source passes 79 Rust session checks and the full native suite,
+but review found two cases those tests missed; the original review is retained.
+
+`task2b-fix1/` separately retains repair `db39ab0`. Independent counterexamples
+fail against `d7f8490` with exit 134 for rejected START changing a natural-end
+position and ordinary note-on sorting before a chased note-on. Both pass after
+the fix. All twenty rejected START requests preserve the candidate and prior
+mixer edits; the correct 64,60 note order is observed at frames 512 and 1536.
+The complete guarded v4 suite, normal-library shipping refusal and full native
+CI pass, including original v3/capacity/concurrent-publication checks and the
+43008-sample Stop comparison. Scoped re-review approves compliance and quality
+with zero open blocking findings. Parent verifies the two final committed
+source blobs, original RED source, seven binaries, four fixtures, report hash
+and exact fix diff without repeating suites.
+
+Both builds still report zero v4 feature bits. Only the dedicated provisional
+native test admits this subset. The app and launcher retain v3; multi-track
+authority, seek/loops, desktop integration, PCM and measured admission remain
+open. These results do not qualify the later workspace acceptance gates.
+
+## Launcher Checkpoint
+
+`launcher-checkpoint/` records a fresh check of the installed **Alive (Test)**
+desktop entry, separate executable/library hashes, exact command exits and
+saved-session probe report. The launcher uses `apps/alive/run.sh` and the last
+completed release build; it never builds on launch. That executable remains
+the reviewed `97533b8` Session UI with Arrangement explicitly unavailable.
+The offline probe passes real two-device dependencies, automation at offsets
+0, 1, 31, 63, 64 and 127, arbitrary partitions, isolation, mute/solo, loop,
+seek, Stop, save/reopen and device removal. It creates no editor windows and
+does not provide fresh GUI, physical-audio or endurance evidence. Raw WAVs stay
+in `/tmp/alive-launcher-checkpoint-20261026/`.
