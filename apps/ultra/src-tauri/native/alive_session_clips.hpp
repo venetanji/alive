@@ -959,6 +959,13 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
         candidate_.group[index] = !state_.playing;
         continue;
       }
+      // Reserve before changing this request's candidate. A refusal must keep
+      // natural-end position/phase and any earlier reductions in this batch.
+      if (mode_ == Mode::Workspaces && !reserve_optional_placement(4)) {
+        finish(receipt, ALIVE_SESSION_V3_REJECTED, ALIVE_SESSION_V3_WORK_LIMIT);
+        ++state_.work_rejected;
+        continue;
+      }
       candidate_.group[index] = true;
       candidate_.unscheduled = true;
       candidate_.playing = 1;
@@ -968,10 +975,6 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
           candidate_.tracks[t].phase = 0;
       }
       if(mode_==Mode::Workspaces){
-        if(!reserve_optional_placement(4)){
-          candidate_.playing=0;candidate_.unscheduled=false;candidate_.group[index]=false;
-          finish(receipt,ALIVE_SESSION_V3_REJECTED,ALIVE_SESSION_V3_WORK_LIMIT);++state_.work_rejected;continue;
-        }
         for(unsigned t=0;t<config_.track_count;++t){unsigned probes=0;
           candidate_resolved_[t]=resolve_arrangement(t,candidate_.position,probes);
           candidate_.tracks[t].active_clip=candidate_resolved_[t].source;
@@ -1145,7 +1148,11 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
         prepare_chase(t);
   }
   std::array<unsigned, 8> next = cursors_;
-  std::array<const AliveSessionEventV2 *, 32> batch{};
+  struct Dispatch {
+    const AliveSessionEventV2 *event;
+    bool chased;
+  };
+  std::array<Dispatch, 32> batch{};
   unsigned count = 0;
   if (state_.playing)
     for (unsigned t = 0; t < config_.track_count; ++t) {
@@ -1157,7 +1164,7 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
         next[t] = chase_[t].cursor;
         for(unsigned i=0;i<chase_[t].note_count;++i){
           if(count==32){fault_v3(workspace,ALIVE_SESSION_V3_RESOURCE_EVENTS);return;}
-          batch[count++]=&chase_[t].notes[i];
+          batch[count++]={&chase_[t].notes[i],true};
         }
       }
       while (next[t] < clip.event_count) {
@@ -1168,7 +1175,7 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
           fault_v3(workspace, ALIVE_SESSION_V3_RESOURCE_EVENTS);
           return;
         }
-        batch[count++] = &e;
+        batch[count++] = {&e, false};
         ++next[t];
         if (e.kind == ALIVE_SESSION_AUTOMATION)
           ++charge[3];
@@ -1198,10 +1205,14 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
   clear_tracks(workspace, mask, true);
   optional_clear_ = 0;
   cursors_ = next;
-  // At most 32 heads, deterministic across all track/clip iteration orders.
-  std::sort(batch.begin(), batch.begin() + count, [](const auto *a, const auto *b) {
+  // Termination and automation precede notes; chased notes precede ordinary
+  // notes regardless of pitch. All v3 records retain their original ordering.
+  std::sort(batch.begin(), batch.begin() + count, [](const Dispatch &left, const Dispatch &right) {
+    const auto *a = left.event, *b = right.event;
     if (priority(a->kind) != priority(b->kind))
       return priority(a->kind) < priority(b->kind);
+    if (left.chased != right.chased)
+      return left.chased;
     if (a->track != b->track)
       return a->track < b->track;
     if (a->device != b->device)
@@ -1211,7 +1222,7 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
     return std::less<const AliveSessionEventV2 *>{}(a,b);
   });
   for (unsigned i = 0; i < count; ++i)
-    dispatch_event(workspace, *batch[i]);
+    dispatch_event(workspace, *batch[i].event);
 }
 unsigned scheduled_fits(const Cost &charge) const noexcept {
 #ifdef ULTRA_ALIVE_SESSION_TEST_TRACE

@@ -158,17 +158,17 @@ std::vector<float> play(unsigned partition, unsigned effects = 0) {
 }
 } // namespace
 void boundary_cases() {
-  // At O=1000: pitch 60 remains held, 61 ends, 62 starts, and due automation wins.
+  // At O=1000: 64 stays held, 61 ends, and ordinary 60 follows chased 64.
   auto c = prepare(2);
   c.placement_count = c.tracks[0].placement_count = 2;
   c.placements[0] = {0, 0, 0, 0, 512, 1024, 1000};
   c.placements[1] = {0, 0, 0, 0, 1536, 1024, 1000};
-  c.events[0] = {0, 0, ALIVE_SESSION_NOTE_ON, 0, 60, 100};
-  c.events[1] = {0, 0, ALIVE_SESSION_NOTE_ON, 0, 61, 100};
+  c.events[0] = {0, 0, ALIVE_SESSION_NOTE_ON, 0, 61, 100};
+  c.events[1] = {0, 0, ALIVE_SESSION_NOTE_ON, 0, 64, 100};
   c.events[2] = {500, 0, ALIVE_SESSION_AUTOMATION, 0, 0, 1000};
   c.events[3] = {1000, 0, ALIVE_SESSION_NOTE_OFF, 0, 61, 0};
   c.events[4] = {1000, 0, ALIVE_SESSION_AUTOMATION, 0, 0, 2000};
-  c.events[5] = {1000, 0, ALIVE_SESSION_NOTE_ON, 0, 62, 90};
+  c.events[5] = {1000, 0, ALIVE_SESSION_NOTE_ON, 0, 60, 90};
   c.event_count = c.sources[0].event_count = 6;
   c.sources[0].lane_count = 1;
   c.sources[0].owned_masks[0] = 1;
@@ -184,14 +184,28 @@ void boundary_cases() {
   assert(s.devices[0].effective[0] == 2000);
   assert(s.tracks[0].active_placement == 0);
   assert(dispatch_count == 4);
-  assert(dispatches[0].kind == ALIVE_SESSION_NOTE_OFF && dispatches[0].pitch == 61);
-  assert(dispatches[1].kind == ALIVE_SESSION_AUTOMATION);
-  assert(dispatches[2].kind == ALIVE_SESSION_NOTE_ON && dispatches[2].pitch == 60);
-  assert(dispatches[3].kind == ALIVE_SESSION_NOTE_ON && dispatches[3].pitch == 62);
+  auto assert_entry_order = [](unsigned begin, unsigned occurrence, uint64_t frame) {
+    std::printf("entry occurrence=%u frame=%llu note-order=%u,%u expected=64,60\n", occurrence,
+                static_cast<unsigned long long>(frame), dispatches[begin + 2].pitch,
+                dispatches[begin + 3].pitch);
+    std::fflush(stdout);
+    assert(dispatches[begin].kind == ALIVE_SESSION_NOTE_OFF && dispatches[begin].pitch == 61);
+    assert(dispatches[begin + 1].kind == ALIVE_SESSION_AUTOMATION);
+    assert(dispatches[begin + 2].kind == ALIVE_SESSION_NOTE_ON &&
+           dispatches[begin + 2].pitch == 64);
+    assert(dispatches[begin + 3].kind == ALIVE_SESSION_NOTE_ON &&
+           dispatches[begin + 3].pitch == 60);
+    for (unsigned i = begin; i < begin + 4; ++i) {
+      assert(dispatches[i].frame == frame && dispatches[i].source == 0);
+      assert(dispatches[i].occurrence == occurrence);
+    }
+  };
+  assert_entry_order(0, 0, 512);
   render(1023);
   render(1);
   s = state();
   assert(s.tracks[0].active_placement == 1 && dispatch_count == 8);
+  assert_entry_order(4, 1, 1536);
   assert(s.tracks[0].track_epoch > 2);
   render(1023);
   render(1024);
@@ -381,7 +395,74 @@ void rejected_candidate_identity() {
   assert(state().playing && state().tracks[0].active_placement == ALIVE_SESSION_V4_NONE);
   std::puts("rejected candidate keeps applied occurrence; bounded later gap resume=PASS");
 }
-int main() {
+void rejected_start_lookup_preserves_natural_end() {
+  auto c = prepare();
+  c.length_frames = c.loop_end = c.sources[0].length_frames = 375;
+  c.placement_count = c.tracks[0].placement_count = 1;
+  c.placements[0] = {0, 0, 0, 0, 0, 375, 0};
+  c.placements[1] = {};
+  c.event_count = c.sources[0].event_count = 1;
+  for (unsigned i = 1; i < 4; ++i)
+    c.events[i] = {};
+  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(ultra_external_start());
+  placement_steps = 0;
+  dispatch_count = 0;
+  request();
+  render(375);
+  assert(placement_steps == 2054 && dispatch_count == 1);
+  auto ended = state();
+  assert(!ended.playing && ended.position == 375 && ended.tracks[0].phase == 375);
+  for (unsigned attempt = 0; attempt < 20; ++attempt) {
+    const auto before = state();
+    const auto prior_steps = placement_steps;
+    const double gain = attempt % 2 ? 0.75 : 0.25;
+    // A rejected START must also preserve earlier reductions in this batch.
+    assert(alive_session_mixer(0, gain, 0, 0));
+    const auto queued = request();
+    render(1);
+    const auto after = state();
+    const auto &receipt = after.receipts[queued.request_serial % 128];
+    std::printf("rejected-start attempt=%u placement=%llu position=%llu phase=%llu\n", attempt + 1,
+                static_cast<unsigned long long>(placement_steps),
+                static_cast<unsigned long long>(after.position),
+                static_cast<unsigned long long>(after.tracks[0].phase));
+    std::fflush(stdout);
+    assert(receipt.status == ALIVE_SESSION_V4_REJECTED &&
+           receipt.error == ALIVE_SESSION_V4_WORK_LIMIT);
+    assert(placement_steps - prior_steps == (attempt < 15 ? 4 : 0));
+    assert(after.position == before.position && after.playing == before.playing);
+    assert(after.tracks[0].phase == before.tracks[0].phase);
+    assert(after.tracks[0].active_placement == before.tracks[0].active_placement);
+    assert(after.tracks[0].active_source == before.tracks[0].active_source);
+    assert(after.tracks[0].authority == before.tracks[0].authority);
+    assert(after.generation == before.generation && dispatch_count == 1);
+    assert(after.tracks[0].mixer.gain == gain);
+  }
+  render(1024);
+  const auto restart = request();
+  render(1);
+  const auto resumed = state();
+  assert(resumed.playing && resumed.position == 1 && resumed.tracks[0].phase == 1);
+  assert(resumed.receipts[restart.request_serial % 128].status == ALIVE_SESSION_V4_APPLIED);
+  std::puts("PASS: exhausted lookup refusal preserves natural-end candidate and prior mixer edits");
+}
+int main(int argc, char **argv) {
+  ultra::alive_session_test_dispatch = trace_event;
+  ultra::alive_session_test_placement_charge = trace_placement;
+  if (argc == 2 && std::strcmp(argv[1], "--start-reservation") == 0) {
+    rejected_start_lookup_preserves_natural_end();
+    ultra_audio_stop();
+    assert(alive_session_reset());
+    return 0;
+  }
+  if (argc == 2 && std::strcmp(argv[1], "--chase-order") == 0) {
+    boundary_cases();
+    ultra_audio_stop();
+    assert(alive_session_reset());
+    return 0;
+  }
+
   for (unsigned profile : {1u, 2u}) {
     AliveSessionLimitsV4 limits{};
     limits.version = 4;
@@ -413,6 +494,7 @@ int main() {
   boundary_cases();
   refusals_and_receipts();
   rejected_candidate_identity();
+  rejected_start_lookup_preserves_natural_end();
   source_end_and_authenticated_edits();
   ultra_audio_stop();
   assert(alive_session_reset());
