@@ -3,6 +3,7 @@
 #include "canvas_callback_guard.hpp"
 #include "saved_graphs.hpp"
 #include <cassert>
+#include <chrono>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -273,6 +274,15 @@ AliveSessionConfigV4 authority_fixture(unsigned effects = 0) {
     c.events[c.event_count++] = {0,      i / 2, ALIVE_SESSION_NOTE_ON, c.tracks[i / 2].instrument,
                                  48 + i, 80};
   }
+  return c;
+}
+AliveSessionConfigV4 pending_boundary_fixture() {
+  auto c = authority_fixture();
+  c.placement_count = 6;
+  c.tracks[1].placement_count = 3;
+  c.placements[3] = {1, 2, 0, 0, 0, 10000, 0};
+  c.placements[4] = {1, 2, 0, 0, 10000, 10000, 1000};
+  c.placements[5] = {1, 2, 0, 0, 30000, 130000, 0};
   return c;
 }
 void install(const AliveSessionConfigV4 &c) {
@@ -926,8 +936,54 @@ void saturation_and_first_sample() {
   std::puts(
       "serial/Stop epoch saturation/final first-sample admission/rejected expensive guard=PASS");
 }
+void pending_slot_boundaries() {
+  auto c = pending_boundary_fixture();
+  install(c);
+  request();
+  frames(3000);
+  const auto launch = actions(2, 0, 0, LAUNCH, 3);
+  const auto target = trace_origin + 48000;
+  for (unsigned position : {3001u, 9999u, 10000u, 10001u, 19999u, 20000u, 20001u, 29999u, 30000u,
+                            30001u, 47999u, 48000u}) {
+    frames(position - unsigned(state().position));
+    const auto s = state();
+    const auto &tr = s.tracks[1];
+    const auto &r = s.receipts[launch.request_serial % 128];
+    std::printf("pending boundary position=%u action=%u slot=%u serial=%llu target=%llu "
+                "placement=%u receipt_pending=%u\n",
+                position, tr.pending_action, tr.pending_slot, (unsigned long long)tr.pending_serial,
+                (unsigned long long)tr.pending_frame, tr.active_placement, r.pending_mask);
+    assert(tr.authority == ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY);
+    assert(tr.pending_action == LAUNCH && tr.pending_slot == 5 &&
+           tr.pending_serial == launch.request_serial && tr.pending_frame == target);
+    assert(r.request_serial == launch.request_serial && r.status == ALIVE_SESSION_V4_PENDING &&
+           r.pending_mask == 2 && r.target_frame == target &&
+           r.observed_frame == trace_origin + 3000 && !r.applied_mask && !r.canceled_mask &&
+           !r.superseded_mask && !r.rejected_mask);
+    const unsigned placement = position <= 10000   ? 3
+                               : position <= 20000 ? 4
+                               : position <= 30000 ? NONE
+                                                   : 5;
+    assert(tr.active_placement == placement && tr.active_source == (placement == NONE ? NONE : 2));
+    if (placement == NONE)
+      assert(tr.phase == 0);
+  }
+  const auto before = state();
+  render(1);
+  const auto s = state();
+  const auto &tr = s.tracks[1];
+  assert(s.position == 48001 && tr.authority == ALIVE_SESSION_V4_SESSION_AUTHORITY &&
+         tr.active_slot == 5 && tr.active_source == 3 && tr.active_placement == NONE &&
+         tr.phase == 1001 && tr.track_epoch == before.tracks[1].track_epoch + 1);
+  assert(!tr.pending_action && tr.pending_slot == NONE && !tr.pending_serial &&
+         tr.pending_frame == ALIVE_SESSION_V4_NO_FRAME);
+  receipt(launch, ALIVE_SESSION_V4_APPLIED, 2);
+  assert(s.receipts[launch.request_serial % 128].target_frame == target);
+  std::puts("pending local3/global5 survives adjacent occurrence, gap entry/exit and applies at "
+            "48000=PASS");
+}
 void bounded_reduction_and_coherence() {
-  auto c = authority_fixture();
+  auto c = pending_boundary_fixture();
   install(c);
   std::array<AliveSessionReceiptV4, 64> queued{};
   for (unsigned i = 0; i < 64; ++i)
@@ -951,6 +1007,8 @@ void bounded_reduction_and_coherence() {
   frames(1024);
   std::atomic<bool> done{false};
   std::atomic<unsigned> reads{0};
+  std::atomic<unsigned> playing_pending_reads{0}, boundary_reads{0}, applied_reads{0};
+  std::atomic<uint64_t> expected_serial{0}, expected_target{0};
   std::thread reader([&] {
     while (!done.load()) {
       AliveSessionStateV4 s{};
@@ -974,10 +1032,30 @@ void bounded_reduction_and_coherence() {
         if (tr.pending_action) {
           const auto &r = s.receipts[tr.pending_serial % 128];
           assert(r.request_serial == tr.pending_serial && r.pending_mask & (1u << t));
+          assert(tr.pending_frame == r.target_frame);
           assert(tr.pending_action == LAUNCH ? tr.pending_slot < c.slot_count
                                              : tr.pending_slot == NONE);
+          if (s.playing && t == 1) {
+            assert(tr.pending_action == LAUNCH && tr.pending_slot == 5 &&
+                   tr.pending_serial == expected_serial.load() &&
+                   tr.pending_frame == expected_target.load());
+            ++playing_pending_reads;
+            if (s.position >= 10001 && s.position <= 20000)
+              boundary_reads.fetch_or(1);
+            if (s.position >= 20001 && s.position <= 30000)
+              boundary_reads.fetch_or(2);
+            if (s.position >= 30001 && s.position <= 48000)
+              boundary_reads.fetch_or(4);
+          }
         } else
           assert(tr.pending_slot == NONE && tr.pending_frame == ALIVE_SESSION_V4_NO_FRAME);
+      }
+      const auto serial = expected_serial.load();
+      if (serial && s.receipts[serial % 128].request_serial == serial &&
+          s.receipts[serial % 128].applied_mask == 2) {
+        assert(s.position == 48001 && s.tracks[1].active_slot == 5 &&
+               s.tracks[1].active_source == 3 && s.tracks[1].phase == 1001);
+        ++applied_reads;
       }
       ++reads;
     }
@@ -990,9 +1068,30 @@ void bounded_reduction_and_coherence() {
     actions(3, RETURN, NONE, RETURN, NONE);
     frames(1024);
   }
+  request();
+  frames(3000);
+  const auto launch = actions(2, 0, 0, LAUNCH, 3);
+  expected_target = state().absolute_frame + 45000;
+  expected_serial = launch.request_serial;
+  auto await_read = [](auto predicate) {
+    const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(5);
+    while (!predicate()) {
+      assert(std::chrono::steady_clock::now() < deadline);
+      std::this_thread::yield();
+    }
+  };
+  for (unsigned i = 0; i < 3; ++i) {
+    frames((i + 1) * 10000 + 1 - unsigned(state().position));
+    await_read([&] { return boundary_reads.load() & (1u << i); });
+  }
+  frames(48001 - unsigned(state().position));
+  await_read([&] { return applied_reads.load() > 0; });
   done = true;
   reader.join();
   assert(reads > 0);
+  assert(playing_pending_reads > 0 && boundary_reads == 7 && applied_reads > 0);
+  std::printf("concurrent playing pending reads=%u boundary_mask=%u applied_reads=%u\n",
+              playing_pending_reads.load(), boundary_reads.load(), applied_reads.load());
   std::puts("64-command final-only lookup/coherent authority-slot-source-receipt publication=PASS");
 }
 void action_validation() {
@@ -1196,6 +1295,13 @@ int main(int argc, char **argv) {
     assert(alive_session_reset());
     return 0;
   }
+  if (argc == 2 && std::strcmp(argv[1], "--pending-slot") == 0) {
+    pending_slot_boundaries();
+    bounded_reduction_and_coherence();
+    ultra_audio_stop();
+    assert(alive_session_reset());
+    return 0;
+  }
   stopped_authority();
   reductions_and_cues();
   queued_resume_and_future();
@@ -1205,6 +1311,7 @@ int main(int argc, char **argv) {
   fault_and_race();
   work_curves();
   saturation_and_first_sample();
+  pending_slot_boundaries();
   bounded_reduction_and_coherence();
   action_validation();
   sparse_eight_and_denied_density();

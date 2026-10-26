@@ -417,6 +417,8 @@ bool transition_v4(const AliveSessionTrackStateV3 *tracks,
       cursor.phase = 0;
       out.changed |= 1u << t;
     }
+    // Occurrence replacement must retain the reducer's independent pending token.
+    cursor.pending_slot = ts.pending_action == ALIVE_SESSION_V4_LAUNCH ? ts.pending_clip : None;
     project_cursor_v4(ts, cursor);
   }
   return true;
