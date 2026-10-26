@@ -3,7 +3,7 @@ import re
 from gi.repository import Atspi
 
 
-def install(ui, windows, select_device, observe_replace=None):
+def install(ui, windows, select_device, observe_replace=None, observe_editor=None):
     click, text = ui.click, ui.text
     diagnostic = {'Audio backend', 'Audio device', 'Audio sample rate', 'Audio buffer frames',
                   'Audio callbacks', 'Audio stream errors', 'Audio failed', 'Audio status',
@@ -71,6 +71,8 @@ def install(ui, windows, select_device, observe_replace=None):
         prepare(name)
         if observe_replace is not None and re.fullmatch(r'Replace .+ device', name):
             click(name, observer=observe_replace)
+        elif observe_editor is not None and name == 'Open Pulse editor':
+            click(name, observer=observe_editor)
         else:
             click(name)
 

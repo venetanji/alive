@@ -26,13 +26,15 @@ from alive_workspace_navigation import install as install_workspace_navigation
 
 prepare_workspace_control = install_workspace_navigation(
     ui, windows, select_device=lambda name: select_device_click(name),
-    observe_replace=lambda *args: observe_replace_input(*args))
+    observe_replace=lambda *args: observe_replace_input(*args),
+    observe_editor=lambda *args: observe_editor_input(*args))
 timing = None
 
 MAIN = 'Alive'
 DEVICE = Path('apps/ultra/examples/subtractive.ultra').resolve()
 operations = []
 native_inputs = []
+editor_observation = None
 resource_sampler = None
 resource_groups = None
 resource_writer = None
@@ -283,6 +285,71 @@ def observe_replace_input(phase, name, rect):
         (ui.output / 'native-inputs.json').write_text(json.dumps(native_inputs, indent=2))
 
 
+def observe_editor_input(phase, name, rect):
+    """Buffer one original activation's receipts without changing its input."""
+    global editor_observation
+    if phase == 'before':
+        if editor_observation is not None:
+            return
+        editor_observation = {'queued': False, 'result': False}
+    elif phase != 'queued' or editor_observation is None or editor_observation['queued']:
+        return
+    if phase == 'queued':
+        editor_observation['queued'] = True
+    started = time.monotonic()
+    row = {'action': 'editor input ' + phase, 'monotonic': started, 'name': name,
+           'scope': windows.scope, 'rect': [rect.x, rect.y, rect.width, rect.height],
+           'point': [rect.x + rect.width // 2, rect.y + rect.height // 2]}
+    if phase == 'queued':
+        row.update(motions=1, presses=1, releases=1)
+    try:
+        with native_observation_errors() as errors:
+            row['x_errors'] = errors
+            focus = C.c_ulong(); revert = C.c_int()
+            ui.x.XGetInputFocus(ui.display, C.byref(focus), C.byref(revert))
+            row['input_focus'] = int(focus.value)
+            row['hit_path'] = native_hit_path(*row['point'])
+        row['windows'] = [native_window_record(window) for window in row['hit_path']]
+        if phase == 'queued':
+            current = Atspi.Component.get_extents(ui.find(name), Atspi.CoordType.SCREEN)
+            row['post_flush_rect'] = [current.x, current.y, current.width, current.height]
+    except Exception as error:
+        row['observation_error'] = repr(error)
+    row['observation_seconds'] = time.monotonic() - started
+    native_inputs.append(row)
+    if phase == 'queued':
+        (ui.output / 'native-inputs.json').write_text(json.dumps(native_inputs, indent=2))
+
+
+def observe_editor_window(focused, error=None):
+    if editor_observation is None or editor_observation['result']:
+        return
+    editor_observation['result'] = True
+    started = time.monotonic()
+    row = {'action': 'editor window result', 'monotonic': started,
+           'title': 'Pulse - Ultra Hosted Editor', 'focused': focused, 'scope': windows.scope}
+    if error is not None:
+        row['focus_error'] = repr(error)
+    try:
+        root = C.c_ulong(); parent = C.c_ulong(); children = C.POINTER(C.c_ulong)(); count = C.c_uint()
+        with native_observation_errors() as errors:
+            row['x_errors'] = errors
+            available = ui.x.XQueryTree(ui.display, ui.x.XDefaultRootWindow(ui.display),
+                                       C.byref(root), C.byref(parent), C.byref(children), C.byref(count))
+            try:
+                candidates = [int(children[index]) for index in range(min(count.value, 128))] if available else []
+            finally:
+                if children:
+                    ui.x.XFree(children)
+        row['root_windows'] = [native_window_record(window) for window in candidates]
+        row['omitted_root_windows'] = max(0, count.value - 128)
+    except Exception as observation_error:
+        row['observation_error'] = repr(observation_error)
+    row['observation_seconds'] = time.monotonic() - started
+    native_inputs.append(row)
+    (ui.output / 'native-inputs.json').write_text(json.dumps(native_inputs, indent=2))
+
+
 def reorder_point(control):
     states = control.get_state_set()
     if not all(states.contains(state) for state in (Atspi.StateType.ENABLED, Atspi.StateType.SHOWING,
@@ -527,7 +594,12 @@ def process_sample():
 
 def editor_edit(number=950):
     ui.click('Open Pulse editor')
-    windows.focus('Pulse - Ultra Hosted Editor')
+    try:
+        windows.focus('Pulse - Ultra Hosted Editor')
+    except Exception as error:
+        observe_editor_window(False, error)
+        raise
+    observe_editor_window(True)
     ui.wait_for('Hosted Cutoff base')
     numeric('Hosted Cutoff base', number)
     wait_value('Hosted Cutoff base', lambda s: float(s) == number)
