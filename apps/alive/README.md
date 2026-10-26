@@ -235,8 +235,11 @@ The authored AOT Faust kernels run in Ultra's native evaluator, alongside
 Clockwork. The legacy Clockwork Voice path adds 64 samples and is rejected by
 this hosted profile; native hosted alignment delay is zero. Wider speaker
 layouts, arbitrary Faust/JIT devices, external MIDI, unrestricted live graph
-editing and a full DAW arrangement remain outside
-this profile.
+editing and Arrangement remain outside this currently shipped v3 profile.
+Real MIDI Arrangement with Session override/return, followed by WAV tracks,
+is the active implementation direction; test-only v4 support is not an app
+feature. See `docs/WORKFLOW_COVERAGE.md` and the existing workspace plan from
+the repository root for current workflow evidence and gaps.
 
 See `SESSION_CONTRACT.md` for timing, ownership, admission and persistence rules,
 and `PLAN.md` at the repository root for foundation and acceptance evidence.

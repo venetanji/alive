@@ -2,6 +2,16 @@
 
 ## Active Direction: Arrangement And Session, 2026-10-26
 
+The owner has resumed the workflow goal after the compact Session checkpoint.
+First diagnose the native CI cutoff-after-reopen failure at `6beb210` without
+weakening its assertion. Then complete the existing staged MIDI Arrangement
+workflow through placement editing, playback, per-track Session override/return
+and save/Quit/reopen. Genuine WAV tracks and a portable mixed project follow;
+general Ultra authoring remains separately scoped. Current workflow/reference
+coverage is tracked in `docs/WORKFLOW_COVERAGE.md`; this is not a replacement
+implementation plan. New original-application captures stay private. Reuse
+reliable existing action/result evidence before adding each interaction.
+
 The owner resumed work with PR #6 comment 6383966857 as the current product
 direction. It supersedes the earlier Arrangement exclusion and testing pause.
 Build a real horizontal MIDI/audio timeline and Tab-switchable Session columns,
@@ -12,9 +22,10 @@ the new UI acceptance gates. Work continues in this worktree/feature branch.
 
 Spec: `docs/superpowers/specs/2026-10-26-alive-workspaces-design.md`.
 Execution plan: `docs/superpowers/plans/alive-workspaces-20261026.md`.
-The implementation sequence is Session/shared shell, real Arrangement model/
-MIDI ownership, actual audio tracks, integrated timeline editing, and native
-two-view acceptance/evidence. Earlier completed work and open regression gates
+The active implementation sequence is Session/shared shell, real Arrangement
+model/MIDI ownership and timeline editing through the native two-view MIDI
+journey, then actual audio tracks and mixed-project acceptance. Earlier completed
+work and open regression gates
 below retain their original scope and source attribution.
 
 The Session/shared-shell increment is implemented at `238c427`, with the
@@ -25,8 +36,9 @@ navigation; Arrangement remains explicitly unavailable. The corrected source
 passes 500 UI and 13 Alive browser checks, a separate release build and actual
 native WebKit pending-field/playback/scene/editor/Save/Quit checks. Parent
 verification matches 148 manifest entries and 116 committed source/harness
-blobs; finite software capture is 3.136 seconds, not endurance. The original
-full native journey passes on the separately pinned pre-header-CSS build.
+blobs; finite software capture is 3.136 seconds, not endurance. A later full
+native journey also passes on exact `97533b8` release assets, separately pinned
+under `native-followup-97533b8/`; neither pass qualifies subsequent source.
 Evidence: `experiments/alive-workspaces-20261026/`. Independent fix re-review
 approves compliance and quality with no remaining finding. Pushed-commit CI
 remains required at the checkpoint; no Arrangement/audio or
@@ -66,8 +78,40 @@ no blockers. The original full journey/screenshots retain `e38676a` attribution;
 final native validation covers the affected transition. Parent verifies all six
 final source/test/workflow blobs and UI/binary pins. The refreshed standalone
 launcher points to this tested final build.
-No new Arrangement or PCM admission follows; the larger goal remains paused
-while this focused testing follow-up is completed.
+No new Arrangement or PCM admission follows from that checkpoint. Its testing
+pause is superseded by the workflow resumption recorded at the top of this file.
+
+Exact checkpoint `6beb210` CI `40308165402` passes UI/Chromium, native/Rust
+and headless renders, then fails the full native desktop journey at
+`check_alive_desktop.py:791`: selected effect cutoff is expected to be 2000.
+The retained saved session contains effect cutoff 2000 and instrument cutoff
+1333; the failure accessibility tree still displays the Subtractive instrument
+and cutoff 1333. Later clip/editor-resource/CPAL gates are skipped.
+Packages `40308165397` pass all four targets, with publishing skipped. These
+outcomes supersede that checkpoint's previous pending status, not its failure.
+
+The cause is demonstrated and fixed at `cc7d541`: a native Devices detail
+tooltip intercepted button events queued with pointer motion; actual DOM
+tracing receives motion but no click. The test shares the existing bounded
+owned-window check before one press/release. Exact cutoff 2000 and all original
+journey assertions remain, with a real covering-tooltip regression. Actual
+native RED/GREEN and the complete original journey pass locally in 199.087s;
+independent review approves spec and quality. Parent verifies nine raw hashes,
+ten source/binary pins, seven committed blobs and 4,576,768 finite stereo capture
+frames (95.349333s). Final reported stream errors/rejected commands are zero.
+This is software PipeWire/CPAL at 48 kHz/512 frames, not physical audio or
+endurance. Existing accessibility/compositor harness warnings remain disclosed.
+Evidence: `experiments/alive-workspaces-20261026/cutoff-ci-fix/`.
+Remote CI on the new pushed checkpoint remains required.
+
+Fresh private Arrangement study LOCAL-ARR-R1 observes occurrence creation,
+movement, source-loop extension/undo, two-track Session override, scoped Stop,
+per-track/global Return and save/new/open. Derived findings and precise gaps
+are in `docs/ALIVE_ARRANGEMENT_REFERENCE.md`; raw captures/project stay private.
+Initial stalled PipeASIO transport is excluded from playback observations;
+advancing MME/DirectX transport establishes UI state only, with no audio capture
+or timing claim. Owned display/prefix cleanup verifies original preferences
+unchanged. Process-restart persistence and device-state reference remain open.
 
 The pure strict v4 source/placement model is implemented through `59c6076`,
 outside the active Document. Its strict wire, transactional focused edits,
