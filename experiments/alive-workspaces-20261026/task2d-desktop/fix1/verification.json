@@ -1,0 +1,22 @@
+{
+  "red": {
+    "log": "01-slot-orders-red.log",
+    "exit": 1,
+    "failed": 2
+  },
+  "green": {
+    "log": "02-slot-orders-green.log",
+    "exit": 0,
+    "passed": 2
+  },
+  "ui": {
+    "log": "03-ui-suite.log",
+    "exit": 0,
+    "passed": 85
+  },
+  "browser": {
+    "log": "04-browser-focus.log",
+    "exit": 0,
+    "passed": 2
+  }
+}

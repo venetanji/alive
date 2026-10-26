@@ -98,9 +98,15 @@ the secondary structural, numerical and diagnostic controls.
 
 Session and Arrangement buttons, or plain Tab outside controls, change only the
 workspace. Tab within inputs/buttons and modified Tab keep normal focus
-navigation. This intermediate checkpoint keeps Session playback active and
-explicitly marks Arrangement editing/playback and audio-file tracks unavailable;
-it does not create timeline placements or duplicate device instances.
+navigation. The existing Session view stays usable in both v3 and admitted MIDI
+workspaces. This development branch offers explicit stopped **Enable MIDI
+workspaces** conversion: it validates the entire project before installing v4,
+and refuses without trimming music or replacing the playable v3 project.
+Only measured profile 1 (two tracks) is currently admitted. The unchanged
+default example exceeds its event envelope; its conversion refusal is expected.
+An admitted v4 project plays Arrangement placements and supports per-track
+Session override, Stop and Return through the existing Session view. Timeline
+creation/editing and audio-file tracks remain unavailable in this increment.
 
 - Start/Stop share one native audio frame clock. Seek uses beats within the
   global transport region, and Loop repeats its length. Space works outside
@@ -236,9 +242,14 @@ Clockwork. The legacy Clockwork Voice path adds 64 samples and is rejected by
 this hosted profile; native hosted alignment delay is zero. Wider speaker
 layouts, arbitrary Faust/JIT devices, external MIDI, unrestricted live graph
 editing and Arrangement remain outside this currently shipped v3 profile.
-Real MIDI Arrangement with Session override/return, followed by WAV tracks,
-is the active implementation direction; test-only v4 support is not an app
-feature. See `docs/WORKFLOW_COVERAGE.md` and the existing workspace plan from
+MIDI v4 integration at `4b9a88b` has local native conversion, authority,
+editor-lifetime and Save/Quit/restart evidence. Independent review approves
+the integration after queued slot field fix `ee83d30`; its 85 UI and two
+focused browser checks pass. Broad native evidence remains pinned to `4b9a88b`.
+Its practical device-buffer recommendation is at least 256 frames, without
+changing audio settings or imposing a new native callback minimum. Profile 2
+remains unavailable. Timeline editing, genuine WAV tracks and final integrated
+qualification are still open. See `docs/WORKFLOW_COVERAGE.md` and the existing workspace plan from
 the repository root for current workflow evidence and gaps.
 
 See `SESSION_CONTRACT.md` for timing, ownership, admission and persistence rules,

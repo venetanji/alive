@@ -1,0 +1,14 @@
+{
+  "base": "6ab77758959d47891ad45dc458f4c9cbe16ff282",
+  "command": [
+    "python3",
+    "apps/ultra/tests/test_alive_clip_observation_failure.py",
+    "-v"
+  ],
+  "exit_code": 1,
+  "sha256": {
+    "apps/ultra/tests/check_alive_clip_observation.py": "29ffb3805cc1b93710997af2d430dea8abbc9ef3727cf02e60ddd12a39acb4d5",
+    "apps/ultra/tests/test_alive_clip_observation_failure.py": "6ba15b6f170098e1b2d3c465c37bec70c47d091011039f10c5fa5841ffb3aead",
+    ".github/workflows/ultra-ci.yml": "fcf85bf9e3108136a1354469f241d4a4d1b1aaba01bcd8ff6edbf0b8edf29763"
+  }
+}

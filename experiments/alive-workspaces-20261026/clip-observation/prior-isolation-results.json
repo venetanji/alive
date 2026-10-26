@@ -1,0 +1,791 @@
+{
+  "checks": [
+    {
+      "name": "native-input",
+      "script": "check_alive_native_input.py",
+      "flags": {},
+      "command": [
+        "bash",
+        "apps/ultra/tests/check_canvas_desktop.sh",
+        "/tmp/alive-workspaces-clip-ci-fix/native-input"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 25.50000105900108
+    },
+    {
+      "name": "chooser-diagnostics",
+      "script": "check_alive_chooser_diagnostics.py",
+      "flags": {},
+      "command": [
+        "bash",
+        "apps/ultra/tests/check_canvas_desktop.sh",
+        "/tmp/alive-workspaces-clip-ci-fix/chooser-diagnostics"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 21.48679372699553
+    },
+    {
+      "name": "editor-normal",
+      "script": "check_alive_editor_diagnostics.py",
+      "flags": {},
+      "command": [
+        "bash",
+        "apps/ultra/tests/check_canvas_desktop.sh",
+        "/tmp/alive-workspaces-clip-ci-fix/editor-normal"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 12.968066374000045
+    },
+    {
+      "name": "editor-observer-error",
+      "script": "check_alive_editor_diagnostics.py",
+      "flags": {
+        "ALIVE_TEST_EDITOR_OBSERVATION_ERROR": "1"
+      },
+      "command": [
+        "bash",
+        "apps/ultra/tests/check_canvas_desktop.sh",
+        "/tmp/alive-workspaces-clip-ci-fix/editor-observer-error"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 12.92308565100393
+    },
+    {
+      "name": "editor-original-focus-error",
+      "script": "check_alive_editor_diagnostics.py",
+      "flags": {
+        "ALIVE_TEST_EDITOR_FOCUS_FAILURE": "1"
+      },
+      "command": [
+        "bash",
+        "apps/ultra/tests/check_canvas_desktop.sh",
+        "/tmp/alive-workspaces-clip-ci-fix/editor-original-focus-error"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 19.402882836999197
+    },
+    {
+      "name": "editor-queued-write-error",
+      "script": "check_alive_editor_diagnostics.py",
+      "flags": {
+        "ALIVE_TEST_EDITOR_WRITE_ERROR": "queued"
+      },
+      "command": [
+        "bash",
+        "apps/ultra/tests/check_canvas_desktop.sh",
+        "/tmp/alive-workspaces-clip-ci-fix/editor-queued-write-error"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 12.955574807005178
+    },
+    {
+      "name": "editor-result-write-error",
+      "script": "check_alive_editor_diagnostics.py",
+      "flags": {
+        "ALIVE_TEST_EDITOR_WRITE_ERROR": "result"
+      },
+      "command": [
+        "bash",
+        "apps/ultra/tests/check_canvas_desktop.sh",
+        "/tmp/alive-workspaces-clip-ci-fix/editor-result-write-error"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 12.969762070999423
+    },
+    {
+      "name": "original-observability-green",
+      "script": "check_alive_observability.py",
+      "flags": {},
+      "command": [
+        "bash",
+        "apps/ultra/tests/check_canvas_desktop.sh",
+        "/tmp/alive-workspaces-clip-ci-fix/original-observability-green"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 125.47854995800299
+    }
+  ],
+  "observability": {
+    "physical_audio": false,
+    "physical_xruns": null,
+    "complete": true,
+    "playing_seconds_proven": 6.847777704996115,
+    "excluded_seconds": 16.47463973899721,
+    "completed_epochs": 6,
+    "resources": {
+      "path": "/tmp/alive-workspaces-clip-ci-fix/original-observability-green/observability-resources.jsonl",
+      "bytes": 436732,
+      "sha256": "84fe40ea8267ba1d7735e2894c37a8d21a3ebc64528805e149680756b09f3624"
+    },
+    "epochs": {
+      "path": "/tmp/alive-workspaces-clip-ci-fix/original-observability-green/observability-epochs.jsonl",
+      "bytes": 208382,
+      "sha256": "496c1482ef14b1693afb5b519cee74b8ec5099144e1bf5fdc29a9656f6e146c6"
+    },
+    "actions": {
+      "path": "/tmp/alive-workspaces-clip-ci-fix/original-observability-green/observability-actions.jsonl",
+      "bytes": 5841,
+      "sha256": "e6af15f4956dbe811999de71e187fdcaec1870370102fe685c8c79f79f7ba36d"
+    },
+    "wall_seconds": 117.28806826000073,
+    "sampling_errors": [],
+    "cpu_coverage": "observed identities; transient workers and exited final deltas remain unavailable",
+    "epoch_duration_intervals": {
+      "1": {
+        "samples": 397,
+        "maximum": 1806563,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 756135,
+            "upper_inclusive": 789612
+          },
+          "p95": {
+            "lower_exclusive": 1166120,
+            "upper_inclusive": 1217748
+          },
+          "p99": {
+            "lower_exclusive": 1512270,
+            "upper_inclusive": 1579224
+          },
+          "p999": {
+            "lower_exclusive": 1798402,
+            "upper_inclusive": 1878024
+          }
+        }
+      },
+      "2": {
+        "samples": 1972,
+        "maximum": 1920217,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 663982,
+            "upper_inclusive": 693379
+          },
+          "p95": {
+            "lower_exclusive": 1166120,
+            "upper_inclusive": 1217748
+          },
+          "p99": {
+            "lower_exclusive": 1386758,
+            "upper_inclusive": 1448155
+          },
+          "p999": {
+            "lower_exclusive": 1649142,
+            "upper_inclusive": 1722156
+          }
+        }
+      },
+      "3": {
+        "samples": 475,
+        "maximum": 1486252,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 663982,
+            "upper_inclusive": 693379
+          },
+          "p95": {
+            "lower_exclusive": 1166120,
+            "upper_inclusive": 1217748
+          },
+          "p99": {
+            "lower_exclusive": 1271662,
+            "upper_inclusive": 1327964
+          },
+          "p999": {
+            "lower_exclusive": 1448155,
+            "upper_inclusive": 1512270
+          }
+        }
+      },
+      "4": {
+        "samples": 645,
+        "maximum": 1583526,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 608874,
+            "upper_inclusive": 635831
+          },
+          "p95": {
+            "lower_exclusive": 1116680,
+            "upper_inclusive": 1166120
+          },
+          "p99": {
+            "lower_exclusive": 1271662,
+            "upper_inclusive": 1327964
+          },
+          "p999": {
+            "lower_exclusive": 1579224,
+            "upper_inclusive": 1649142
+          }
+        }
+      },
+      "5": {
+        "samples": 648,
+        "maximum": 1466535,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 608874,
+            "upper_inclusive": 635831
+          },
+          "p95": {
+            "lower_exclusive": 1069336,
+            "upper_inclusive": 1116680
+          },
+          "p99": {
+            "lower_exclusive": 1166120,
+            "upper_inclusive": 1217748
+          },
+          "p999": {
+            "lower_exclusive": 1448155,
+            "upper_inclusive": 1512270
+          }
+        }
+      },
+      "6": {
+        "samples": 267,
+        "maximum": 1568988,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 608874,
+            "upper_inclusive": 635831
+          },
+          "p95": {
+            "lower_exclusive": 899201,
+            "upper_inclusive": 939012
+          },
+          "p99": {
+            "lower_exclusive": 1166120,
+            "upper_inclusive": 1217748
+          },
+          "p999": {
+            "lower_exclusive": 1512270,
+            "upper_inclusive": 1579224
+          }
+        }
+      }
+    },
+    "epoch_utilization_intervals": {
+      "1": {
+        "samples": 397,
+        "maximum": 169365,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 7,
+            "upper_inclusive": 8
+          },
+          "p95": {
+            "lower_exclusive": 11,
+            "upper_inclusive": 12
+          },
+          "p99": {
+            "lower_exclusive": 14,
+            "upper_inclusive": 15
+          },
+          "p999": {
+            "lower_exclusive": 16,
+            "upper_inclusive": 17
+          }
+        }
+      },
+      "2": {
+        "samples": 1972,
+        "maximum": 180020,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 6,
+            "upper_inclusive": 7
+          },
+          "p95": {
+            "lower_exclusive": 11,
+            "upper_inclusive": 12
+          },
+          "p99": {
+            "lower_exclusive": 13,
+            "upper_inclusive": 14
+          },
+          "p999": {
+            "lower_exclusive": 15,
+            "upper_inclusive": 16
+          }
+        }
+      },
+      "3": {
+        "samples": 475,
+        "maximum": 139336,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 6,
+            "upper_inclusive": 7
+          },
+          "p95": {
+            "lower_exclusive": 10,
+            "upper_inclusive": 11
+          },
+          "p99": {
+            "lower_exclusive": 12,
+            "upper_inclusive": 13
+          },
+          "p999": {
+            "lower_exclusive": 13,
+            "upper_inclusive": 14
+          }
+        }
+      },
+      "4": {
+        "samples": 645,
+        "maximum": 148455,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 5,
+            "upper_inclusive": 6
+          },
+          "p95": {
+            "lower_exclusive": 10,
+            "upper_inclusive": 11
+          },
+          "p99": {
+            "lower_exclusive": 12,
+            "upper_inclusive": 13
+          },
+          "p999": {
+            "lower_exclusive": 14,
+            "upper_inclusive": 15
+          }
+        }
+      },
+      "5": {
+        "samples": 648,
+        "maximum": 137487,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 5,
+            "upper_inclusive": 6
+          },
+          "p95": {
+            "lower_exclusive": 10,
+            "upper_inclusive": 11
+          },
+          "p99": {
+            "lower_exclusive": 11,
+            "upper_inclusive": 12
+          },
+          "p999": {
+            "lower_exclusive": 13,
+            "upper_inclusive": 14
+          }
+        }
+      },
+      "6": {
+        "samples": 267,
+        "maximum": 147092,
+        "overflow_samples": 0,
+        "intervals": {
+          "p50": {
+            "lower_exclusive": 5,
+            "upper_inclusive": 6
+          },
+          "p95": {
+            "lower_exclusive": 8,
+            "upper_inclusive": 9
+          },
+          "p99": {
+            "lower_exclusive": 10,
+            "upper_inclusive": 11
+          },
+          "p999": {
+            "lower_exclusive": 14,
+            "upper_inclusive": 15
+          }
+        }
+      }
+    }
+  },
+  "clips": {
+    "kind": "actual standalone release Alive; private Xvfb and software PipeWire",
+    "physical_audio": false,
+    "settings": {
+      "saved": {
+        "host": "default",
+        "device": "default",
+        "sample_rate": 48000,
+        "buffer_frames": 512
+      },
+      "unsupported_buffer_preserved_settings": true,
+      "stop_audio_terminated_notes": true,
+      "restart_kept_transport_stopped": true
+    },
+    "observed_buffer": 512,
+    "audio": {
+      "frames": 570880,
+      "seconds": 11.893333333333333,
+      "peak": 0.2225944548845291,
+      "one_second_peaks": [
+        0.08689058572053909,
+        0.147203728556633,
+        0.15238016843795776,
+        0.11091748625040054,
+        0.13292111456394196,
+        0.1119689792394638,
+        0.11835465580224991,
+        0.13893526792526245,
+        0.1600058525800705,
+        0.2225944548845291,
+        0.11261174082756042,
+        0.0
+      ],
+      "unequal_stereo_samples_after_setup": 0,
+      "sha256": "24bb8e48516c00fffac13a1848b78cdae7a290e54a2eaf00481418bdfc2b8ccd",
+      "path": "clips-rendered.f32",
+      "physical_audio": false,
+      "supervision": {
+        "complete": true,
+        "reason": "requested_stop",
+        "group_id": 2131135,
+        "recorder_pid": 2131142,
+        "returncode": 1,
+        "wall_seconds": 12.049687129998347,
+        "audio_bytes": 4567040,
+        "stderr_bytes": 0,
+        "limits": {
+          "wall_seconds": 2700.0,
+          "audio_bytes": 1073741824,
+          "metadata_bytes": 67108864,
+          "stderr_bytes": 1048576,
+          "disk_reserve_bytes": 268435456
+        }
+      }
+    },
+    "native_observations": [
+      {
+        "label": "Pulse clip runtime",
+        "value": "Cued Clip 1 / request 2 applied for Clip 1",
+        "monotonic": 64969.568651623
+      },
+      {
+        "label": "Pulse clip runtime",
+        "value": "Playing Clip 1 / request 4 pending for Clip 1 copy / pending launch at frame 634715",
+        "monotonic": 64972.272279113
+      },
+      {
+        "label": "Pulse clip runtime",
+        "value": "Playing Clip 1 copy / request 4 applied for Clip 1 copy",
+        "monotonic": 64974.161171106
+      },
+      {
+        "label": "Harmony clip runtime",
+        "value": "Playing Clip 1",
+        "monotonic": 64974.406306954
+      },
+      {
+        "label": "Pulse clip runtime",
+        "value": "Stopped / request 5 applied",
+        "monotonic": 64980.740932625
+      },
+      {
+        "label": "Harmony clip runtime",
+        "value": "Playing Clip 1",
+        "monotonic": 64980.84263532
+      },
+      {
+        "label": "Pulse clip runtime",
+        "value": "Cued Clip 1 copy",
+        "monotonic": 64987.151900678
+      }
+    ],
+    "shared_source_errors": [
+      "Device source changed or fingerprint invalid: Track 'Harmony' instance '9e3c7225-a75d-4561-acf5-2f22c1af63ef' (../shared-utility.ultra). Selected Replace changes only that instance; stale siblings block full preparation. Stop transport and resolve pending edits; preserve the changed .ultra at a new path before restoring anything. Restore a matching original backup at the shared path, then explicitly Replace each intended instance from the preserved changed copy and Save. A matching original backup is required; without one there is no general supported recovery in the current desktop workflow. Replace gives a fresh instance identity, default bases/bypass and removes that instance's automation lanes. Copying alone or trying siblings in turn does not recover this session.",
+      "Device source changed or fingerprint invalid: Track 'Pulse' instance 'abcce5b4-216d-4ab9-aeed-81b77411b663' (../shared-utility.ultra). Selected Replace changes only that instance; stale siblings block full preparation. Stop transport and resolve pending edits; preserve the changed .ultra at a new path before restoring anything. Restore a matching original backup at the shared path, then explicitly Replace each intended instance from the preserved changed copy and Save. A matching original backup is required; without one there is no general supported recovery in the current desktop workflow. Replace gives a fresh instance identity, default bases/bypass and removes that instance's automation lanes. Copying alone or trying siblings in turn does not recover this session."
+    ],
+    "initial": "/tmp/alive-workspaces-clip-ci-fix/original-observability-green/initial-v3.alive",
+    "saved": "/tmp/alive-workspaces-clip-ci-fix/original-observability-green/moved/relocated.alive",
+    "draft_editor_continuity": true,
+    "apply_editor_boundary": true,
+    "reopen_stopped_default": true,
+    "sequential_shared_source_recovery": true,
+    "failed_shared_replace_editor_continuity": true,
+    "native_inputs": [
+      {
+        "action": "slash location entry",
+        "monotonic": 64934.26726229,
+        "scope": "Load Ultra Device",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "slash location entry",
+        "monotonic": 64936.718976782,
+        "scope": "Load Ultra Device",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "device selection click",
+        "monotonic": 64938.449619658,
+        "name": "Select Pulse Stereo Utility effect 1",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              168,
+              612,
+              160,
+              25
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          168,
+          612,
+          160,
+          25
+        ]
+      },
+      {
+        "action": "reorder click",
+        "monotonic": 64969.272962063,
+        "name": "Launch Pulse Clip 1",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              156,
+              147,
+              23,
+              26
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          156,
+          147,
+          23,
+          26
+        ]
+      },
+      {
+        "action": "disclosure click",
+        "monotonic": 64969.46007359,
+        "name": "Pulse runtime details",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              156,
+              285,
+              145,
+              21
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          156,
+          285,
+          145,
+          21
+        ]
+      },
+      {
+        "action": "disclosure click",
+        "monotonic": 64974.364187137,
+        "name": "Harmony runtime details",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              302,
+              285,
+              145,
+              21
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          302,
+          285,
+          145,
+          21
+        ]
+      },
+      {
+        "action": "device selection click",
+        "monotonic": 64975.416724712,
+        "name": "Select Pulse Stereo Utility effect 1",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              168,
+              607,
+              160,
+              25
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          168,
+          607,
+          160,
+          25
+        ]
+      },
+      {
+        "action": "slash location entry",
+        "monotonic": 64985.383916052,
+        "scope": "Open Alive Session",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "disclosure click",
+        "monotonic": 64987.115228602,
+        "name": "Pulse runtime details",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              156,
+              285,
+              145,
+              21
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          156,
+          285,
+          145,
+          21
+        ]
+      },
+      {
+        "action": "device selection click",
+        "monotonic": 64988.366687686,
+        "name": "Select Pulse Stereo Utility effect 1",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              168,
+              569,
+              160,
+              25
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          168,
+          569,
+          160,
+          25
+        ]
+      },
+      {
+        "action": "slash location entry",
+        "monotonic": 64990.944553456,
+        "scope": "Load Ultra Device",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "slash location entry",
+        "monotonic": 64993.646884143,
+        "scope": "Load Ultra Device",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "slash location entry",
+        "monotonic": 64996.434015164,
+        "scope": "Load Ultra Device",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "slash location entry",
+        "monotonic": 65000.862669861,
+        "scope": "Load Ultra Device",
+        "ready_before_release": true,
+        "released": true
+      }
+    ],
+    "final_audio": {
+      "Audio backend": "PipeWire",
+      "Audio device": "default_output",
+      "Audio sample rate": "48000",
+      "Audio buffer frames": "512",
+      "Audio callbacks": "1972",
+      "Audio stream errors": "0",
+      "Audio failed": "false",
+      "Audio status": "Audio is off.",
+      "Transport playing": "false",
+      "Absolute frame": "1212928",
+      "Rejected commands": "0",
+      "Native generation": "18",
+      "Track 1 active voices": "0",
+      "Track 2 active voices": "0"
+    }
+  },
+  "cleanup": {
+    "sampled_process_identities": 58,
+    "matching_identities_remaining": [],
+    "final_recorder_process_present": {
+      "group_id": false,
+      "recorder_pid": false
+    },
+    "qualified_application_pids_remaining": [],
+    "capture_supervision_complete": true
+  }
+}

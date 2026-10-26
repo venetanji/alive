@@ -1,0 +1,106 @@
+[
+  {
+    "name": "native-input",
+    "script": "check_alive_native_input.py",
+    "flags": {},
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/native-input"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 25.50000105900108
+  },
+  {
+    "name": "chooser-diagnostics",
+    "script": "check_alive_chooser_diagnostics.py",
+    "flags": {},
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/chooser-diagnostics"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 21.48679372699553
+  },
+  {
+    "name": "editor-normal",
+    "script": "check_alive_editor_diagnostics.py",
+    "flags": {},
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/editor-normal"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 12.968066374000045
+  },
+  {
+    "name": "editor-observer-error",
+    "script": "check_alive_editor_diagnostics.py",
+    "flags": {
+      "ALIVE_TEST_EDITOR_OBSERVATION_ERROR": "1"
+    },
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/editor-observer-error"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 12.92308565100393
+  },
+  {
+    "name": "editor-original-focus-error",
+    "script": "check_alive_editor_diagnostics.py",
+    "flags": {
+      "ALIVE_TEST_EDITOR_FOCUS_FAILURE": "1"
+    },
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/editor-original-focus-error"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 19.402882836999197
+  },
+  {
+    "name": "editor-queued-write-error",
+    "script": "check_alive_editor_diagnostics.py",
+    "flags": {
+      "ALIVE_TEST_EDITOR_WRITE_ERROR": "queued"
+    },
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/editor-queued-write-error"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 12.955574807005178
+  },
+  {
+    "name": "editor-result-write-error",
+    "script": "check_alive_editor_diagnostics.py",
+    "flags": {
+      "ALIVE_TEST_EDITOR_WRITE_ERROR": "result"
+    },
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/editor-result-write-error"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 12.969762070999423
+  },
+  {
+    "name": "original-observability-green",
+    "script": "check_alive_observability.py",
+    "flags": {},
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/original-observability-green"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 125.47854995800299
+  }
+]

@@ -1,0 +1,30 @@
+PASS: route ordering, fresh UI presses, B isolation, FIFO overflow, stopped cleanup and current recovery errors
+PASS: explicit fake-JACK adapter tests (NOT real JACK/hardware execution)
+PASS: native sequencer chord maths, million-frame partition invariance, rational metro, gate/stop/reconfigure, MIDI Start/Continue/Stop/clock, clock-loss release and rejection safety
+PASS: real native adapter sequence, A reservation/B isolation, config/route/AllOff/Panic/restart, external transport and clock-loss termination, ingress overflow
+PASS: native canvas validation, actual routing plans, depth-first messages/math, MIDI, stale events, million-step bounded timers, partition invariance, live params, stop and rejection safety
+PASS: real Engine canvas rewires/swap/duplicate/silence, bounded publication, MIDI, messages/math, sample timers, no-reset params, stale generation, stop/restart and fail-closed overflow
+PASS: Rust-host native ABI, callback partition invariance, audible output and bounded failure
+PASS: document console epochs, close/reuse, named subscriber removal, timer isolation and full-FIFO close rejection
+PASS: one engine, independent document audio, isolated replace/close/stop and legacy device bounds
+PASS: native MSP sums, ramps, document Stop/resume, global DSP restart, cross-window sample ordering and callback partition invariance
+numeric UI backend admission, callback order and stop drain passed
+message UI backend admission and FIFO passed
+print popup backend nonconsuming publication and threaded reads passed
+overflow release safety: saved message=1, named route=1, related sender=1
+PASS: authored backend overload noteoff/transformed release/sustain/panic, stale FIFO invalidation, Stop/restart, independent roots, seven callback partitions and stereo filter/reset without callback allocation/free/locks
+placement input=0 native=0 legacy=64 host_alignment=0
+placement input=1 native=1 legacy=65 host_alignment=0
+placement input=31 native=31 legacy=95 host_alignment=0
+placement input=63 native=63 legacy=127 host_alignment=0
+placement input=64 native=64 legacy=128 host_alignment=0
+placement input=127 native=127 legacy=191 host_alignment=0
+PASS: Alive exact frames, partitions, ownership, overload Stop, seek, loop, isolation, mono join, mixer and callback guard
+six-device dense 1024-frame callback mean_us=1062.637; six-device seek+one-frame mean_us=37.931 (wall clock, no deadline claim)
+PASS: v2 ordered chains, exact bypass/warm state, partitions, ownership, resets, admission, overload and callback guard
+PASS: v3 C layout
+PASS: v4 C layout
+PASS: cyclic weighted/duplicate/empty envelopes and independently enumerated splices
+PASS: sources=8576 boundaries=7620 splices=144 authority=217600 native=12792 accepted=13 refused=1 assertions=106661824
+alive-v4-shipping: apps/ultra/tests/alive_session_v4_shipping_test.cpp:139: int main(): Assertion `alive_session_request_v4(&request, &receipt)' failed.
+/tmp/alive-workspaces-task2d-desktop/check-native-isolated.sh: line 64: 2077271 Aborted                    (core dumped) "$TEST_DIR/alive-v4-shipping"

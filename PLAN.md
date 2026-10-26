@@ -195,6 +195,68 @@ exception, and passes the full journey in 193.83 seconds. Scoped re-review appro
 Packages `40374437738` pass all four targets, with tag publication skipped.
 The real Arrangement and mixed-project acceptance gates remain open.
 
+Reviewed checkpoint `ad706ca` is pushed with the measurement policy, diagnostic
+correction and retained evidence; PR #6 remains draft with an updated workflow
+description. CI `40384189184` passes UI/protocol, Chromium, native/Rust, offline
+renders and the complete desktop/editor journey. The subsequent clip test fails
+waiting for transient "pending launch" while observing the requested clip
+already Playing/applied; timing diagnosis is in progress, with no product cause
+claimed. Later editor-resource/CPAL gates skip. Packages `40384188941` pass
+all four targets, with tag publication skipped. Task 2D desktop integration
+is active on that base: checked document/chain access, strict MIDI v4
+preparation, authenticated commands, history/persistence and real Session
+readers precede the immediate Task 4 MIDI timeline. A bounded reference-only
+WAV study fills the subsequent audio task's import/trim/source-recovery gap;
+it does not delay or reorder MIDI implementation. That study is now complete:
+`docs/ALIVE_AUDIO_REFERENCE.md` records import, mono/stereo waveforms, movement,
+trim, looping and external-reference save. Restart/missing-source recovery
+remain unobserved after the pinned disposable reference failed to reopen;
+official documentation is explicitly labeled fallback. All 113 private artifacts
+verify, and owned reference processes/display are cleaned.
+
+Task 2D's provisional native app now passes explicit MIDI conversion, two-track
+Arrangement playback, Session override/Return/scoped Stop, automation and
+hosted-editor lifetime, followed by Save/Quit/restart and exact document
+round-trip/playback. The unchanged original template refuses its excessive
+event envelope transactionally; a separately authored split-triad progression
+with cutoff, level and Utility gain automation admits under profile 1. This
+does not simplify saved user music during conversion. The provisional journey
+captures 18.048 seconds of finite software audio and both viewport sizes, not
+endurance. Its observed 48 kHz/512-frame epoch reports zero CPAL errors/Xruns
+but one callback over budget (13.34 ms maximum); no deadline claim is made.
+The queued-source-identity regression and shared v3/v4 request-serial reuse are
+fixed at `4b9a88b`. Final checks pass: 252 Rust tests (four existing ignores),
+79 UI tests, all 20 Alive browser tests, complete native suites and the unchanged
+original v3 desktop journey. The final v4 native run also plays v3 before
+conversion, then repeats the full workflow and process-restart roundtrip. Its
+observed pre-Quit epochs have zero reported errors/Xruns/over-budget callbacks;
+15.562667 finite software-capture seconds are not endurance. The earlier
+over-budget observation remains retained. Evidence:
+`experiments/alive-workspaces-20261026/task2d-desktop/`.
+Independent Task 2D review found a queued slot edit could overwrite an accepted
+sibling field. Fix `ee83d30` resolves unchanged fields from the current slot
+inside the queue and refuses deleted or rewired targets. Both edit orders
+reproduce before the fix and pass afterward; 85 UI and two focused browser
+checks pass. Scoped re-review approves, closing the integration task. Broad
+native evidence remains pinned to `4b9a88b`. A separate scoped harness
+correction addresses the saved-clip CI observation failure. Timeline
+creation/editing remains the immediate next product increment; this is not yet
+the complete Arrangement journey.
+
+
+The saved-clip harness correction is independently approved through `a634f4d`.
+A controlled launch has 30.85 ms left pending while its accessibility traversal
+takes 71.58 ms; bounded early-bar synchronization preserves the original pending
+and applied assertions. A separate covering-tooltip reproduction establishes
+runtime disclosure interception; existing owned-window readiness fixes it.
+Recording and failure screenshots cannot mask original input errors. All twelve
+native checks pass on harness `6ab7775` with product `4b9a88b`; the final
+screenshot guard has focused RED/GREEN coverage. Parent verifies 563712 finite
+software capture frames (11.744 seconds), with zero final reported errors,
+rejections or voices. This is not endurance. Original remote causation remains
+unproved and exact-head remote CI remains open. Evidence:
+`experiments/alive-workspaces-20261026/clip-observation/`.
+
 Fresh private Arrangement study LOCAL-ARR-R1 observes occurrence creation,
 movement, source-loop extension/undo, two-track Session override, scoped Stop,
 per-track/global Return and save/new/open. Derived findings and precise gaps

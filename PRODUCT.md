@@ -107,9 +107,15 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   The active product direction adds a horizontal Arrangement and a Session
   workspace of track columns, aligned slots/scenes and per-column mixers,
   sharing one transport, device owner and bottom Clip/Devices detail area.
-  Tab is view navigation only. Arrangement scheduling and genuine audio-file
-  tracks still require explicit model/runtime extensions; the existing v3
-  instrument-track foundation does not implement them. Alternate DSP paths
+  Tab is view navigation only. The MIDI v4 integration at `4b9a88b` adds explicit
+  stopped conversion, Arrangement scheduling, Session override/Return and
+  strict persistence through the current Session interface. Only measured
+  profile 1 is admitted; complete candidate refusal preserves old music and
+  v3's existing capacity. Local native conversion/editor/save/Quit/restart
+  checks pass. Independent review approves the integration after queued slot
+  field preservation fix `ee83d30` (85 UI and two focused browser checks pass).
+  Timeline creation/editing and
+  genuine audio-file tracks remain the next staged work. Alternate DSP paths
   remain outside the supported Alive profile.
 - Supported object names and arguments must be explicit. Unsupported objects
   must be rejected visibly. Familiar appearance does not imply Max compatibility.

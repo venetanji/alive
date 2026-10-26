@@ -1,0 +1,588 @@
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=2155318 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=2155325 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=2155325 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=2155325 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activating service name='org.a11y.Bus' requested by ':1.4' (uid=1000 pid=2155347 comm="/usr/lib/xdg-desktop-portal-gtk")
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Successfully activated service 'org.a11y.Bus'
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2155357 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2155357 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+** (xdg-desktop-portal-gtk:2155347): WARNING **: 04:31:10.505: AT-SPI: Could not obtain desktop path or name
+
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2155357 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+
+** (xdg-desktop-portal-gtk:2155347): WARNING **: 04:31:10.507: atk-bridge: GetRegisteredEvents returned message with unknown signature
+
+** (xdg-desktop-portal-gtk:2155347): WARNING **: 04:31:10.507: atk-bridge: get_device_events_reply: unknown signature
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2155325 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2155325 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2155325 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2155325 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Activating service name='ca.desrt.dconf' requested by ':1.113' (uid=1000 pid=2155897 comm="/tmp/alive-workspaces-task2d-desktop/app-qualified")
+dbus-daemon[2155266]: [session uid=1000 pid=2155266 pidfd=5] Successfully activated service 'ca.desrt.dconf'
+{
+  "kind": "actual standalone release Alive; private Xvfb and software PipeWire",
+  "physical_audio": false,
+  "settings": {
+    "saved": {
+      "host": "default",
+      "device": "default",
+      "sample_rate": 48000,
+      "buffer_frames": 512
+    },
+    "unsupported_buffer_preserved_settings": true,
+    "stop_audio_terminated_notes": true,
+    "restart_kept_transport_stopped": true
+  },
+  "observed_buffer": 512,
+  "audio": {
+    "frames": 563712,
+    "seconds": 11.744,
+    "peak": 0.2225944548845291,
+    "one_second_peaks": [
+      0.08710924535989761,
+      0.147203728556633,
+      0.15238016843795776,
+      0.11805150657892227,
+      0.08279293775558472,
+      0.13292111456394196,
+      0.11835465580224991,
+      0.13893526792526245,
+      0.1600058525800705,
+      0.2225944548845291,
+      0.11584984511137009,
+      0.0
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "565740d7f42bf4f477ec029288115ad5e8843058207502eb40afdd1cb2025f25",
+    "path": "clips-rendered.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "group_id": 2159094,
+      "recorder_pid": 2159097,
+      "returncode": 1,
+      "wall_seconds": 11.904780758995912,
+      "audio_bytes": 4509696,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    }
+  },
+  "native_observations": [
+    {
+      "label": "Pulse clip runtime",
+      "value": "Cued Clip 1 / request 2 applied for Clip 1",
+      "monotonic": 65647.004712612
+    },
+    {
+      "label": "Pulse clip runtime",
+      "value": "Playing Clip 1 / request 4 pending for Clip 1 copy / pending launch at frame 634715",
+      "monotonic": 65649.855168935
+    },
+    {
+      "label": "Pulse clip runtime",
+      "value": "Playing Clip 1 copy / request 4 applied for Clip 1 copy",
+      "monotonic": 65651.676685679
+    },
+    {
+      "label": "Harmony clip runtime",
+      "value": "Playing Clip 1",
+      "monotonic": 65651.914822745
+    },
+    {
+      "label": "Pulse clip runtime",
+      "value": "Stopped / request 5 applied",
+      "monotonic": 65658.116451864
+    },
+    {
+      "label": "Harmony clip runtime",
+      "value": "Playing Clip 1",
+      "monotonic": 65658.222587722
+    },
+    {
+      "label": "Pulse clip runtime",
+      "value": "Cued Clip 1 copy",
+      "monotonic": 65664.413450133
+    }
+  ],
+  "shared_source_errors": [
+    "Device source changed or fingerprint invalid: Track 'Harmony' instance 'deaee4d3-b3fa-41f0-ac81-e9408435432d' (../shared-utility.ultra). Selected Replace changes only that instance; stale siblings block full preparation. Stop transport and resolve pending edits; preserve the changed .ultra at a new path before restoring anything. Restore a matching original backup at the shared path, then explicitly Replace each intended instance from the preserved changed copy and Save. A matching original backup is required; without one there is no general supported recovery in the current desktop workflow. Replace gives a fresh instance identity, default bases/bypass and removes that instance's automation lanes. Copying alone or trying siblings in turn does not recover this session.",
+    "Device source changed or fingerprint invalid: Track 'Pulse' instance '80bb39ef-e522-4c74-a2a2-cc0aafe85351' (../shared-utility.ultra). Selected Replace changes only that instance; stale siblings block full preparation. Stop transport and resolve pending edits; preserve the changed .ultra at a new path before restoring anything. Restore a matching original backup at the shared path, then explicitly Replace each intended instance from the preserved changed copy and Save. A matching original backup is required; without one there is no general supported recovery in the current desktop workflow. Replace gives a fresh instance identity, default bases/bypass and removes that instance's automation lanes. Copying alone or trying siblings in turn does not recover this session."
+  ],
+  "initial": "/tmp/alive-workspaces-clip-ci-fix/final-observability-green/initial-v3.alive",
+  "saved": "/tmp/alive-workspaces-clip-ci-fix/final-observability-green/moved/relocated.alive",
+  "draft_editor_continuity": true,
+  "apply_editor_boundary": true,
+  "reopen_stopped_default": true,
+  "sequential_shared_source_recovery": true,
+  "failed_shared_replace_editor_continuity": true,
+  "native_inputs": [
+    {
+      "action": "slash location entry",
+      "monotonic": 65611.652115178,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 65614.093609404,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "device selection click",
+      "monotonic": 65615.79573835,
+      "name": "Select Pulse Stereo Utility effect 1",
+      "owner": 4194307,
+      "samples": [
+        {
+          "rect": [
+            168,
+            612,
+            160,
+            25
+          ],
+          "hit_path": [
+            927,
+            4194307
+          ]
+        }
+      ],
+      "presses": 1,
+      "releases": 1,
+      "final_rect": [
+        168,
+        612,
+        160,
+        25
+      ]
+    },
+    {
+      "action": "reorder click",
+      "monotonic": 65646.721143132,
+      "name": "Launch Pulse Clip 1",
+      "owner": 4194307,
+      "samples": [
+        {
+          "rect": [
+            156,
+            147,
+            23,
+            26
+          ],
+          "hit_path": [
+            927,
+            4194307
+          ]
+        }
+      ],
+      "presses": 1,
+      "releases": 1,
+      "final_rect": [
+        156,
+        147,
+        23,
+        26
+      ]
+    },
+    {
+      "action": "disclosure click",
+      "monotonic": 65646.895213619,
+      "name": "Pulse runtime details",
+      "owner": 4194307,
+      "samples": [
+        {
+          "rect": [
+            156,
+            285,
+            145,
+            21
+          ],
+          "hit_path": [
+            927,
+            4194307
+          ]
+        }
+      ],
+      "presses": 1,
+      "releases": 1,
+      "final_rect": [
+        156,
+        285,
+        145,
+        21
+      ]
+    },
+    {
+      "action": "disclosure click",
+      "monotonic": 65651.872794381,
+      "name": "Harmony runtime details",
+      "owner": 4194307,
+      "samples": [
+        {
+          "rect": [
+            302,
+            285,
+            145,
+            21
+          ],
+          "hit_path": [
+            927,
+            4194307
+          ]
+        }
+      ],
+      "presses": 1,
+      "releases": 1,
+      "final_rect": [
+        302,
+        285,
+        145,
+        21
+      ]
+    },
+    {
+      "action": "device selection click",
+      "monotonic": 65652.971239402,
+      "name": "Select Pulse Stereo Utility effect 1",
+      "owner": 4194307,
+      "samples": [
+        {
+          "rect": [
+            168,
+            607,
+            160,
+            25
+          ],
+          "hit_path": [
+            927,
+            4194307
+          ]
+        }
+      ],
+      "presses": 1,
+      "releases": 1,
+      "final_rect": [
+        168,
+        607,
+        160,
+        25
+      ]
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 65662.651134226,
+      "scope": "Open Alive Session",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "disclosure click",
+      "monotonic": 65664.376552249,
+      "name": "Pulse runtime details",
+      "owner": 4194307,
+      "samples": [
+        {
+          "rect": [
+            156,
+            285,
+            145,
+            21
+          ],
+          "hit_path": [
+            927,
+            4194307
+          ]
+        }
+      ],
+      "presses": 1,
+      "releases": 1,
+      "final_rect": [
+        156,
+        285,
+        145,
+        21
+      ]
+    },
+    {
+      "action": "device selection click",
+      "monotonic": 65665.617201375,
+      "name": "Select Pulse Stereo Utility effect 1",
+      "owner": 4194307,
+      "samples": [
+        {
+          "rect": [
+            168,
+            569,
+            160,
+            25
+          ],
+          "hit_path": [
+            927,
+            4194307
+          ]
+        }
+      ],
+      "presses": 1,
+      "releases": 1,
+      "final_rect": [
+        168,
+        569,
+        160,
+        25
+      ]
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 65668.213716616,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 65670.908416883,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 65673.676736408,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 65678.094545826,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "device selection click",
+      "monotonic": 65690.910016774,
+      "name": "Select Pulse Subtractive instrument",
+      "owner": 4194307,
+      "samples": [
+        {
+          "rect": [
+            168,
+            544,
+            160,
+            25
+          ],
+          "hit_path": [
+            927,
+            4194307
+          ]
+        }
+      ],
+      "presses": 1,
+      "releases": 1,
+      "final_rect": [
+        168,
+        544,
+        160,
+        25
+      ]
+    },
+    {
+      "action": "editor input before",
+      "monotonic": 65691.431251006,
+      "name": "Open Pulse editor",
+      "scope": "Alive",
+      "rect": [
+        164,
+        385,
+        129,
+        25
+      ],
+      "point": [
+        228,
+        397
+      ],
+      "x_errors": [],
+      "input_focus": 4194307,
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            2155897
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "observation_seconds": 0.0007829329988453537
+    },
+    {
+      "action": "editor input queued",
+      "monotonic": 65691.432072131,
+      "name": "Open Pulse editor",
+      "scope": "Alive",
+      "rect": [
+        164,
+        385,
+        129,
+        25
+      ],
+      "point": [
+        228,
+        397
+      ],
+      "motions": 1,
+      "presses": 1,
+      "releases": 1,
+      "x_errors": [],
+      "input_focus": 4194307,
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            2155897
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "post_flush_rect": [
+        164,
+        385,
+        129,
+        25
+      ],
+      "observation_seconds": 0.04151695399195887
+    },
+    {
+      "action": "device selection click",
+      "monotonic": 65703.528050356,
+      "name": "Select Pulse Subtractive instrument",
+      "owner": 4194307,
+      "samples": [
+        {
+          "rect": [
+            168,
+            544,
+            160,
+            25
+          ],
+          "hit_path": [
+            927,
+            4194307
+          ]
+        }
+      ],
+      "presses": 1,
+      "releases": 1,
+      "final_rect": [
+        168,
+        544,
+        160,
+        25
+      ]
+    },
+    {
+      "action": "device selection click",
+      "monotonic": 65716.044206108,
+      "name": "Select Pulse Subtractive instrument",
+      "owner": 4194307,
+      "samples": [
+        {
+          "rect": [
+            168,
+            544,
+            160,
+            25
+          ],
+          "hit_path": [
+            927,
+            4194307
+          ]
+        }
+      ],
+      "presses": 1,
+      "releases": 1,
+      "final_rect": [
+        168,
+        544,
+        160,
+        25
+      ]
+    }
+  ],
+  "final_audio": {
+    "Audio backend": "PipeWire",
+    "Audio device": "default_output",
+    "Audio sample rate": "48000",
+    "Audio buffer frames": "512",
+    "Audio callbacks": "1960",
+    "Audio stream errors": "0",
+    "Audio failed": "false",
+    "Audio status": "Audio is off.",
+    "Transport playing": "false",
+    "Absolute frame": "1200128",
+    "Rejected commands": "0",
+    "Native generation": "18",
+    "Track 1 active voices": "0",
+    "Track 2 active voices": "0"
+  }
+}

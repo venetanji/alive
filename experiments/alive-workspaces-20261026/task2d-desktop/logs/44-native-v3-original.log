@@ -1,0 +1,75 @@
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=2076302 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=2076309 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=2076309 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=2076309 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activating service name='org.a11y.Bus' requested by ':1.4' (uid=1000 pid=2076331 comm="/usr/lib/xdg-desktop-portal-gtk")
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Successfully activated service 'org.a11y.Bus'
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2076341 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2076341 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+** (xdg-desktop-portal-gtk:2076331): WARNING **: 03:49:32.622: AT-SPI: Could not obtain desktop path or name
+
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2076341 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+
+** (xdg-desktop-portal-gtk:2076331): WARNING **: 03:49:32.624: atk-bridge: GetRegisteredEvents returned message with unknown signature
+
+** (xdg-desktop-portal-gtk:2076331): WARNING **: 03:49:32.624: atk-bridge: get_device_events_reply: unknown signature
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2076309 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2076309 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2076309 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2076309 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2076248]: [session uid=1000 pid=2076248 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+{"event": "journey-entry", "control": "", "utc": "2026-10-26T19:49:36.689095+00:00", "monotonic": 63109.491724396}
+{"event": "failure", "control": "FileNotFoundError", "utc": "2026-10-26T19:49:37.032103+00:00", "monotonic": 63109.834753699}
+{"event": "failure", "control": "FileNotFoundError", "utc": "2026-10-26T19:49:37.535266+00:00", "monotonic": 63110.337911202}
+{"event": "observer-stop", "control": "", "utc": "2026-10-26T19:49:37.535879+00:00", "monotonic": 63110.338508599}
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py", line 1169, in <module>
+    run()
+    ~~~^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py", line 900, in run
+    entrypoints = check_separate_apps()
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py", line 830, in check_separate_apps
+    other = subprocess.Popen([str(binary.with_name('ultra')), str(patch)], stdout=log, stderr=log)
+  File "/usr/lib/python3.14/subprocess.py", line 1039, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 1875, in _execute_child
+    self._posix_spawn(args, executable, env, restore_signals, close_fds,
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      p2cread, p2cwrite,
+                      ^^^^^^^^^^^^^^^^^^
+                      c2pread, c2pwrite,
+                      ^^^^^^^^^^^^^^^^^^
+                      errread, errwrite)
+                      ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 1819, in _posix_spawn
+    self.pid = os.posix_spawn(executable, args, env, **kwargs)
+               ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/alive-workspaces-task2d-desktop/app-final/ultra'

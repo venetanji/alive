@@ -1,0 +1,31 @@
+
+running 1 test
+
+thread 'session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal' (2053417) panicked at src/session/tests.rs:691:9:
+
+running 1 test
+test session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal ... FAILED
+
+failures:
+
+failures:
+    session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 244 filtered out; finished in 0.03s
+
+
+
+thread 'session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal' (2053419) panicked at src/session/tests.rs:696:31:
+called `Result::unwrap()` on an `Err` value: "Measured MIDI workspace profile 1 is unavailable in this native backend"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal ... FAILED
+
+failures:
+
+failures:
+    session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 244 filtered out; finished in 0.04s
+

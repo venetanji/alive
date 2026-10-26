@@ -1,0 +1,96 @@
+    Checking ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+error[E0615]: attempted to take value of method `tracks` on type `session::clips::Document`
+   --> src/session/probe.rs:129:68
+    |
+129 |     let mut dry_document = prepared.document.clone(); dry_document.tracks[0].effects[1].bypassed = true;
+    |                                                                    ^^^^^^ method, not a field
+    |
+    = help: methods are immutable and cannot be assigned to
+
+error[E0615]: attempted to take value of method `tracks` on type `session::clips::Document`
+   --> src/session/probe.rs:145:13
+    |
+145 |     ordered.tracks[0].automation.push(Lane { instance_id:"probe-utility".into(),key:"gain".into(),enabled:true,points:vec![Point { ...
+    |             ^^^^^^ method, not a field
+    |
+help: use parentheses to call the method
+    |
+145 |     ordered.tracks()[0].automation.push(Lane { instance_id:"probe-utility".into(),key:"gain".into(),enabled:true,points:vec![Point { beat:1. / 24000.,value:0. }] });
+    |                   ++
+
+error[E0615]: attempted to take value of method `tracks` on type `session::clips::Document`
+   --> src/session/probe.rs:149:13
+    |
+149 |     ordered.tracks[0].effects.reverse();
+    |             ^^^^^^ method, not a field
+    |
+help: use parentheses to call the method
+    |
+149 |     ordered.tracks()[0].effects.reverse();
+    |                   ++
+
+error[E0615]: attempted to take value of method `tracks` on type `&session::clips::Document`
+   --> src/session/probe.rs:172:19
+    |
+172 |     require(model.tracks[0].effects[0].parameters["gain"] == 0.4 && !model.tracks[0].effects[1].bypassed,"Rejected live value leake...
+    |                   ^^^^^^ method, not a field
+    |
+help: use parentheses to call the method
+    |
+172 |     require(model.tracks()[0].effects[0].parameters["gain"] == 0.4 && !model.tracks[0].effects[1].bypassed,"Rejected live value leaked into saved state")?;
+    |                         ++
+
+error[E0615]: attempted to take value of method `tracks` on type `&session::clips::Document`
+   --> src/session/probe.rs:172:76
+    |
+172 |     require(model.tracks[0].effects[0].parameters["gain"] == 0.4 && !model.tracks[0].effects[1].bypassed,"Rejected live value leake...
+    |                                                                            ^^^^^^ method, not a field
+    |
+help: use parentheses to call the method
+    |
+172 |     require(model.tracks[0].effects[0].parameters["gain"] == 0.4 && !model.tracks()[0].effects[1].bypassed,"Rejected live value leaked into saved state")?;
+    |                                                                                  ++
+
+error[E0615]: attempted to take value of method `tracks` on type `session::clips::Document`
+   --> src/session/probe.rs:183:25
+    |
+183 |     let mut other = two.tracks[0].clone(); other.id = "other-track".into(); other.name = "Independent identical sources".into();
+    |                         ^^^^^^ method, not a field
+    |
+help: use parentheses to call the method
+    |
+183 |     let mut other = two.tracks()[0].clone(); other.id = "other-track".into(); other.name = "Independent identical sources".into();
+    |                               ++
+
+error[E0615]: attempted to take value of method `tracks` on type `session::clips::Document`
+   --> src/session/probe.rs:187:9
+    |
+187 |     two.tracks.push(other);
+    |         ^^^^^^ method, not a field
+    |
+help: use parentheses to call the method
+    |
+187 |     two.tracks().push(other);
+    |               ++
+
+error[E0615]: attempted to take value of method `tracks` on type `session::clips::Document`
+   --> src/session/probe.rs:195:50
+    |
+195 |     let mut only_other = two.clone(); only_other.tracks[0].mute = true;
+    |                                                  ^^^^^^ method, not a field
+    |
+    = help: methods are immutable and cannot be assigned to
+
+error[E0615]: attempted to take value of method `tracks` on type `session::clips::Document`
+   --> src/session/probe.rs:288:12
+    |
+288 |     single.tracks.truncate(1);
+    |            ^^^^^^ method, not a field
+    |
+help: use parentheses to call the method
+    |
+288 |     single.tracks().truncate(1);
+    |                  ++
+
+For more information about this error, try `rustc --explain E0615`.
+error: could not compile `ultra` (lib) due to 9 previous errors

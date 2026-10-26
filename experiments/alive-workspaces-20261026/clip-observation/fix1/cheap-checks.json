@@ -1,0 +1,30 @@
+[
+  {
+    "command": [
+      "python3",
+      "-m",
+      "py_compile",
+      "apps/ultra/tests/check_alive_clip_observation.py",
+      "apps/ultra/tests/test_alive_clip_observation_failure.py"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "python3",
+      "/tmp/alive-workspaces-clip-ci-fix/fix1/check_scope.py"
+    ],
+    "exit_code": 0,
+    "output": "PASS YAML parse; routine regression wired; existing workflow/timeouts and native run body unchanged\n"
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": ""
+  }
+]
