@@ -208,10 +208,18 @@ class TimingTests(unittest.TestCase):
         self.assertEqual(snapshot['queries']['wait_for']['count'], 1)
         self.assertEqual(artifact['queries']['wait_for']['count'], 2)
 
-    def test_terminal_failure_and_quit_still_flush_after_progress_output_budget(self):
+    def test_final_phases_failure_and_quit_still_flush_after_progress_output_budget(self):
         probe = self.probe(retention=1)
         for _ in range(5):
             probe.checkpoint('operation')
+        phases = ('capture-finalize native-walkthrough.f32',
+                  'capture-finalize endurance.f32', 'final-diagnostics')
+        for phase in phases:
+            # An early repeated capture must not exhaust later phase reserves.
+            for _ in range(21 if phase == phases[0] else 1):
+                with probe.phase(phase):
+                    pass
+            self.assertEqual(self.read()['events'][-1]['event'], 'phase-exit')
         probe.checkpoint('failure', 'ValueError')
         probe.checkpoint('final-quit-entry')
         probe.close()
@@ -219,6 +227,25 @@ class TimingTests(unittest.TestCase):
         self.assertIn('failure', events)
         self.assertIn('final-quit-entry', events)
         self.assertIn('observer-stop', events)
+        phase_rows = [(row['event'], row['control'])
+                      for row in map(json.loads, self.stream.getvalue().splitlines())
+                      if row['event'] in ('phase-entry', 'phase-exit')]
+        self.assertEqual(phase_rows, [
+            ('phase-entry', 'capture-finalize native-walkthrough.f32'),
+            ('phase-exit', 'capture-finalize native-walkthrough.f32'),
+            ('phase-entry', 'capture-finalize endurance.f32'),
+            ('phase-exit', 'capture-finalize endurance.f32'),
+            ('phase-entry', 'final-diagnostics'),
+            ('phase-exit', 'final-diagnostics')])
+        # Repeated capture events must neither grow output nor consume the
+        # separately reserved observation of the later final diagnostics.
+        for _ in range(20):
+            for phase in phases:
+                with probe.phase(phase):
+                    pass
+        repeated = [json.loads(line) for line in self.stream.getvalue().splitlines()]
+        self.assertEqual(sum(row['event'] in ('phase-entry', 'phase-exit')
+                             for row in repeated), 6)
         stream = io.StringIO()
         failures_only = TimingProbe(self.output, stream=stream, retention=1)
         for _ in range(100):

@@ -36,6 +36,7 @@ class TimingProbe:
         self.owner = threading.get_ident()
         self.snapshots_emitted = self.events_dropped = self.checkpoints_emitted = 0
         self.terminal_emitted = 0
+        self.final_phases_emitted = set()
         self.closed = False
 
     def _row(self, event, control=''):
@@ -65,10 +66,21 @@ class TimingProbe:
             terminal = row['event'] in ('failure', 'phase-failure', 'report-write',
                                        'final-quit-entry', 'final-quit-exit',
                                        'journey-complete', 'observer-stop')
-            allowed = self.terminal_emitted < 16 if terminal else self.checkpoints_emitted < self.events.maxlen
+            final_phase = (row['event'] in ('phase-entry', 'phase-exit') and
+                           row['control'] in ('capture-finalize native-walkthrough.f32',
+                                              'capture-finalize endurance.f32', 'final-diagnostics'))
+            phase_key = (row['event'], row['control'])
+            # Six finite boundary observations have independent reserves so
+            # long progress or repeated captures cannot hide later diagnostics.
+            if final_phase:
+                allowed = phase_key not in self.final_phases_emitted
+            else:
+                allowed = self.terminal_emitted < 16 if terminal else self.checkpoints_emitted < self.events.maxlen
             if periodic or allowed:
                 print(json.dumps(row), file=self.stream, flush=True)
-                if terminal:
+                if final_phase:
+                    self.final_phases_emitted.add(phase_key)
+                elif terminal:
                     self.terminal_emitted += 1
                 elif not periodic:
                     self.checkpoints_emitted += 1
