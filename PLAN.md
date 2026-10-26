@@ -2,12 +2,16 @@
 
 ## Active Direction: Arrangement And Session, 2026-10-26
 
-The owner has resumed the workflow goal after the compact Session checkpoint.
-First diagnose the native CI cutoff-after-reopen failure at `6beb210` without
-weakening its assertion. Then complete the existing staged MIDI Arrangement
-workflow through placement editing, playback, per-track Session override/return
-and save/Quit/reopen. Genuine WAV tracks and a portable mixed project follow;
-general Ultra authoring remains separately scoped. Current workflow/reference
+The owner resumed the workflow goal after the compact Session checkpoint.
+The cutoff-after-reopen failure is fixed without weakening its assertion, and
+the MIDI desktop host is independently approved through `ee83d30`. Reviewed
+checkpoint `e38c87b` is pushed; exact-head CI and all four package targets pass.
+MIDI timeline editing at `91cb9d1` now passes the actual create/edit/play,
+per-track Session override/return and save/Quit/process-restart journey.
+Both target sizes and final direct Arrangement gain are verified; independent
+task review approves. Alive (Test) now uses the coherent tested build.
+Genuine WAV tracks and a portable mixed project follow; general Ultra authoring
+remains separately scoped. Current workflow/reference
 coverage is tracked in `docs/WORKFLOW_COVERAGE.md`; this is not a replacement
 implementation plan. New original-application captures stay private. Reuse
 reliable existing action/result evidence before adding each interaction.
@@ -256,6 +260,16 @@ software capture frames (11.744 seconds), with zero final reported errors,
 rejections or voices. This is not endurance. Original remote causation remains
 unproved and exact-head remote CI remains open. Evidence:
 `experiments/alive-workspaces-20261026/clip-observation/`.
+
+Reviewed checkpoint `e38c87b` is pushed with the admitted MIDI desktop host,
+queued-slot correction, native harness correction and retained reviews/evidence.
+PR #6 remains draft with its current workflow description and attributed native
+screenshots. Exact-head CI `40398432588` passes all jobs, including the original native
+journeys, new observation fault modes, editor resources and CPAL software
+loopback. Packages `40398432637` have Linux/Windows/Apple Silicon passes; Intel
+macOS is still running. Task 4 real MIDI timeline editing is active on this
+base, with the first actual create/select/move interaction inspected before
+broadening. The installed launcher remains on the prior coherent tested product.
 
 Fresh private Arrangement study LOCAL-ARR-R1 observes occurrence creation,
 movement, source-loop extension/undo, two-track Session override, scoped Stop,

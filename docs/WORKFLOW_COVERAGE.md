@@ -1,12 +1,10 @@
 # Current Alive / Ultra Workflow Coverage
 
-Updated 2026-10-27 against app product `4470230`, pushed checkpoint `ad706ca`
-and independently reviewed test-only MIDI runtime through `5981cfe`.
-Measurement commit `8e17719` is independently approved. MIDI v4 desktop source
-`4b9a88b` enables measured profile 1 and passes local native qualification;
-independent review approves it after queued slot field fix `ee83d30`. The
-installed launcher is still the prior
-coherent product. Profile 2 and audio sources remain unavailable.
+Updated 2026-10-27. Pushed checkpoint `e38c87b` passes all CI jobs and native
+regression gates. All four package targets pass, with tag publication skipped. MIDI v4 desktop source is independently approved through
+`ee83d30`; timeline source `91cb9d1` passes its complete native MIDI journey and
+is independently approved. The installed Alive (Test) launcher uses its
+coherent tested Alive/Ultra/native library triple. Profile 2 and audio sources remain unavailable.
 This ledger distinguishes app features,
 test-only work and historical verification. It supplements the existing
 [workspace plan](superpowers/plans/alive-workspaces-20261026.md); it does not
@@ -18,11 +16,11 @@ and portable mixed project; P3 separately scoped general Ultra authoring.
 | Workflow | Reference action and result | Expected behavior | Current implementation | Native verification | Gap / priority |
 | --- | --- | --- | --- | --- | --- |
 | Session MIDI editing | R1: empty-slot double-click creates clip; note add/move/resize/delete/undo changes and restores notes. R2: naming and duplication produce distinct clips. | Four playable slots, selection separate from launch, editable pitch/time/duration/velocity, focused history. | v3 app feature, including piano roll and stopped Apply. | N1 full journey; N2 unfinished-field regression. | Preserve; qualify current CI. P0/P1. |
-| Clip/scene launch and track Stop | R1: queued B leaves A playing until launch; queued track Stop leaves global transport running. | Quantized native requests/receipts, atomic scene launch, scoped Stop. | v3 app feature; corrected legacy scene disclosure and stale receipts. | N1 full journey; targeted legacy-to-v3 native transition at `6a8f644`. | Original-app atomic scene timing is not measured; Arrangement authority missing. P1. |
-| Shared views, tracks and details | R3: hide/restore details preserves values; selecting a second device then returning preserves independent values. R2: compact grid/browser/detail layout. | Tab changes view only; same tracks/devices/selection; usable at 1440x900 and 1280x800. | Session shell implemented; v4 Arrangement plays through Session controls, but the timeline editor is unavailable. | N1 both Session sizes; N2 focus and playing view-switch checks. | Two real views of the same project still missing. P1. |
-| MIDI Arrangement | R5: create/move/extend/undo occurrence; Session launch dims only its Arrangement track; scoped Stop keeps override; per-track/global Return restores Arrangement. | Create/place/select/drag/resize/undo/play MIDI, override one track, return at current position, save/Quit/reopen. | **Timeline editing is not an app feature.** Active MIDI v4 desktop integration, strict sources/placements, measured profile 1, Session override/Return and transactional conversion are implemented at `4b9a88b`, independently approved after `ee83d30`. | N3 exact PCM, offsets/chase/Stop/partitions and shipping refusal. Preparation oracle at `c8f6522` passes 106,661,824 bounded assertions. `0606542` adds two-active-track PCM/dispatch/work/isolation and transactional refusal proofs; complete native CI passes in 157.49s. Reviewed authority actions through `74d92d4` add quantized Launch/Return/scoped Stop, unchanged-track PCM and pending-slot boundary coherence; full native CI passes in 171.14s. Reviewed suffix loops/Arrangement-only Seek at `a0c34e3` preserve Session PCM and pending requests across refused Seek; full native CI passes in 175.99s. Song loops/coincident boundaries at `5981cfe` pass exact PCM/dispatch/work tests and independent review; full native CI passes in 180.70s. No deadline or GUI claim. | MIDI timeline edits and the complete native create/place journey. N6 proves conversion/playback/persistence, not timeline editing. P1. |
-| Devices, effects and automation | R3: ordered effects; R1: stereo host connections and editor close/reopen with advancing transport. | Independent instances, explicit base/automation ownership, ordered effects, editor lifetime separate from DSP. | v3 app feature; instrument plus up to two effects, existing 8-track/16-instance bounds. | N5 full original journey passes after demonstrated native-tooltip test-input fix. | Exact-head remote CI still needed. P0. |
-| Persistence and recovery | R5 saves two Arrangement occurrences plus a Session clip; New then Open restores them stopped. Invalid filename preserves project. | Restore musical/device/mixer state; actionable transactional dependency errors; pending/dirty Quit handling. | v1/v2/v3 app feature; active strict MIDI v4 persistence at `4b9a88b`, independently approved after `ee83d30`. | N5 full original save/reopen, source rejection and pending/dirty Quit passes locally. | N6 proves MIDI v4 save/Quit/process-restart exact state and playback. Audio dependency recovery remains open. R5 does not prove reference process-restart persistence or missing-media recovery. P1/P2. |
+| Clip/scene launch and track Stop | R1: queued B leaves A playing until launch; queued track Stop leaves global transport running. | Quantized native requests/receipts, atomic scene launch, scoped Stop. | v3 app feature; corrected legacy scene disclosure and stale receipts. | N1 full journey; targeted legacy-to-v3 native transition at `6a8f644`. | Original-app atomic scene timing is not measured; native v4 authority is covered by N6/N7. Preserve. |
+| Shared views, tracks and details | R3: hide/restore details preserves values; selecting a second device then returning preserves independent values. R2: compact grid/browser/detail layout. | Tab changes view only; same tracks/devices/selection; usable at 1440x900 and 1280x800. | Session and real MIDI Arrangement share tracks, source selection, devices, mixer and Clip detail at `91cb9d1`. | N1/N2 prior Session checks; N7 both views/sizes, pending Return navigation and shared live gain. | Timeline review approved; imported audio remains P2. |
+| MIDI Arrangement | R5: create/move/extend/undo occurrence; Session launch dims only its Arrangement track; scoped Stop keeps override; per-track/global Return restores Arrangement. | Create/place/select/drag/resize/undo/play MIDI, override one track, return at current position, save/Quit/reopen. | Real source creation/notes, placement move/trim/resize, offset/suffix loop, duplicate/independence, history, zoom/pan/seek and Return are implemented at `91cb9d1`; independent task review approved. Existing measured MIDI profile 1 and transactional conversion remain unchanged. | N3 exact PCM, offsets/chase/Stop/partitions and shipping refusal. Preparation oracle at `c8f6522` passes 106,661,824 bounded assertions. `0606542` adds two-active-track PCM/dispatch/work/isolation and transactional refusal proofs; complete native CI passes in 157.49s. Reviewed authority actions through `74d92d4` add quantized Launch/Return/scoped Stop, unchanged-track PCM and pending-slot boundary coherence; full native CI passes in 171.14s. Reviewed suffix loops/Arrangement-only Seek at `a0c34e3` preserve Session PCM and pending requests across refused Seek; full native CI passes in 175.99s. Song loops/coincident boundaries at `5981cfe` pass exact PCM/dispatch/work tests and independent review; full native CI passes in 180.70s. No deadline or GUI claim. | N7 proves actual author/play/override/Return/save/Quit/restart and authored replay; final integrated and exact-head CI qualification remain open. P1. |
+| Devices, effects and automation | R3: ordered effects; R1: stereo host connections and editor close/reopen with advancing transport. | Independent instances, explicit base/automation ownership, ordered effects, editor lifetime separate from DSP. | v3 app feature; instrument plus up to two effects, existing 8-track/16-instance bounds. | N5 full original journey passes after demonstrated native-tooltip test-input fix. | Checkpoint e38c87b CI passes; final mixed-project head still needs qualification. |
+| Persistence and recovery | R5 saves two Arrangement occurrences plus a Session clip; New then Open restores them stopped. Invalid filename preserves project. | Restore musical/device/mixer state; actionable transactional dependency errors; pending/dirty Quit handling. | v1/v2/v3 app feature; active strict MIDI v4 persistence at `4b9a88b`, independently approved after `ee83d30`. | N5 full original save/reopen, source rejection and pending/dirty Quit passes locally. | N7 additionally proves authored timeline/save/Quit/process-restart exact state and replay. Audio dependency recovery remains open. R5 does not prove reference process-restart persistence or missing-media recovery. P1/P2. |
 | Imported WAV and mixed project | R6: mono/stereo import, real waveforms, move, left trim/undo, Warp+Loop extension and separate Session/Arrangement clips; ordinary Save retains external references. | Decode actual PCM, derive real peaks, play through shared effects, save portable mixed project. | **Not an app feature.** Proposed descriptors/ABI do not implement decoding or playback. | No imported-PCM native/app evidence. Rendered synth WAV output is a different operation. | Decoder, runtime, waveform and portability journey after MIDI. Reference restart/missing-file recovery remains unobserved; manual fallback recorded. P2. |
 | Ultra device authoring | R4: edit mode, object entry/autocomplete, connections and unknown-object state. Recorded reference save attempt did not establish saved round-trip. | Author/debug/save reusable devices, independent instances and explicit supported limits. | Substantial bounded app feature; instrument/Perform/presets. Hosted structure remains read-only. | N4 authored instrument, save/reopen, two instances and software capture at historical checkpoint. | Fresh general-authoring journey separately scoped; no broad Max conformance claim. P3. |
 
@@ -79,6 +77,26 @@ and portable mixed project; P3 separately scoped general Ultra authoring.
   and passing afterward; 85 UI and two focused browser checks pass. Broad
   native evidence remains pinned to `4b9a88b`.
 
+- N7: `experiments/alive-workspaces-20261026/task4-midi/`, timeline source
+  `91cb9d1`. Full native journey is pinned to the pre-gain UI, followed by a
+  focused final gain test and clean screenshots at both sizes. New source and
+  placement IDs are observed during playback; Session override/silent Stop,
+  gap Return, partial wrap, Seek, global Return, live controls/editor lifetime,
+  exact saved document equality after Quit/restart and authored replay pass.
+  Main software capture is 2229760 finite stereo frames (46.453333 seconds),
+  reopened capture 189952 frames (3.957333 seconds); neither proves endurance.
+  Observed active epoch: 48 kHz/512 frames, 4541 callbacks, zero reported CPAL
+  errors/Xruns/over-budget callbacks, max 1.969 ms. One deliberate admission
+  refusal is retained; final new-process errors/rejections/voices are zero.
+  Original v3 native regression passes. Parent verifies all 18 committed source
+  pins and three final build pins; independent task review approves.
+
+Checkpoint `e38c87b`: CI `40398432588` passes all three jobs and every original
+native desktop/editor/clip/resource/CPAL gate. Software-loopback report/PCM
+hashes are independently checked; short runs do not qualify final endurance.
+Packages `40398432637` pass all four platforms; tag publication is skipped.
+Evidence: `experiments/alive-workspaces-20261026/ci-e38c87b/`.
+
 
 The saved-clip harness correction is independently approved through `a634f4d`.
 A controlled launch has 30.85 ms left pending while its accessibility traversal
@@ -90,7 +108,7 @@ native checks pass on harness `6ab7775` with product `4b9a88b`; the final
 screenshot guard has focused RED/GREEN coverage. Parent verifies 563712 finite
 software capture frames (11.744 seconds), with zero final reported errors,
 rejections or voices. This is not endurance. Original remote causation remains
-unproved and exact-head remote CI remains open. Evidence:
+unproved; exact checkpoint e38c87b CI now passes every original gate. Evidence:
 `experiments/alive-workspaces-20261026/clip-observation/`.
 
 Exact checkpoint `6beb210`: CI `40308165402` fails the desktop cutoff assertion
@@ -137,8 +155,8 @@ approval and no remaining finding. Evidence is under `editor-activation/` in the
 Checkpoint `ad706ca` CI `40384189184` passes UI/protocol, Chromium, native/Rust,
 offline renders and the full actual desktop/editor journey. The subsequent
 clip/observability journey fails waiting for transient "pending launch", while
-the requested copy is already Playing/applied. Timing diagnosis is in progress;
-no product cause or completed clip journey is claimed. Later resource/CPAL
+the requested copy is already Playing/applied. The later reviewed clip-observation correction and successful e38c87b CI are
+recorded separately; this failed run does not establish a product cause. Later resource/CPAL
 gates skip. Packages `40384188941` pass all four targets, with tag publication
 skipped. Retained exact-head results: `experiments/alive-workspaces-20261026/ci-ad706ca/`.
 

@@ -104,9 +104,27 @@ workspaces** conversion: it validates the entire project before installing v4,
 and refuses without trimming music or replacing the playable v3 project.
 Only measured profile 1 (two tracks) is currently admitted. The unchanged
 default example exceeds its event envelope; its conversion refusal is expected.
-An admitted v4 project plays Arrangement placements and supports per-track
-Session override, Stop and Return through the existing Session view. Timeline
-creation/editing and audio-file tracks remain unavailable in this increment.
+Open `apps/alive/examples/midi-arrangement.alive` for the admitted two-instrument
+Arrangement starting project, or launch it directly:
+
+```sh
+bash apps/alive/run.sh apps/alive/examples/midi-arrangement.alive
+```
+
+The timeline shares tracks, devices and Clip detail with Session. Create a MIDI
+source in Clip detail, edit its notes, drag a blank lane to choose a range, and
+use **Place source in range**. Move a placement by dragging its body; drag its
+edges to trim or resize. The inspector exposes Start, Duration, Offset and
+suffix looping, an explicit duplicate destination and Make Independent.
+Source edits affect every reference until you make an independent copy.
+Stopped **Prepare / Apply** installs musical edits for playback; dashed draft
+geometry and prepared outlines distinguish the two states.
+
+Session launch overrides that track; track Stop retains a silent override.
+Use its **Return** button or **Return all** to resume Arrangement at the current
+position. The ruler seeks explicitly; changing views, zooming and scrolling
+does not change playback authority. Arrangement exposes gain for the selected
+track and mute/solo in each header. Audio-file tracks remain unavailable.
 
 - Start/Stop share one native audio frame clock. Seek uses beats within the
   global transport region, and Loop repeats its length. Space works outside
@@ -248,8 +266,11 @@ the integration after queued slot field fix `ee83d30`; its 85 UI and two
 focused browser checks pass. Broad native evidence remains pinned to `4b9a88b`.
 Its practical device-buffer recommendation is at least 256 frames, without
 changing audio settings or imposing a new native callback minimum. Profile 2
-remains unavailable. Timeline editing, genuine WAV tracks and final integrated
-qualification are still open. See `docs/WORKFLOW_COVERAGE.md` and the existing workspace plan from
+remains unavailable. Timeline source `91cb9d1` passes 101 UI tests, all 32 browser
+checks plus 14 affected checks after adding gain, the native MIDI roundtrip,
+and the original Session regression. Independent review approves; the Alive (Test) launcher uses the coherent tested
+build. Genuine WAV tracks and final integrated qualification remain open.
+See `docs/WORKFLOW_COVERAGE.md` and the existing workspace plan from
 the repository root for current workflow evidence and gaps.
 
 See `SESSION_CONTRACT.md` for timing, ownership, admission and persistence rules,

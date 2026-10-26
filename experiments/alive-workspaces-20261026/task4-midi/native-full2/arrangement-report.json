@@ -1,0 +1,172 @@
+{
+  "physical_audio": false,
+  "actions": [
+    {
+      "action": "loaded",
+      "monotonic": 67946.091810744,
+      "executable": "/tmp/alive-workspaces-task4-midi/app-final/alive",
+      "native_mappings": [
+        "7fa676800000-7fa676862000 r--p 00000000 00:37 72502                      /tmp/alive-workspaces-task4-midi/app-final/libultra_native.so",
+        "7fa676862000-7fa6769d0000 r-xp 00062000 00:37 72502                      /tmp/alive-workspaces-task4-midi/app-final/libultra_native.so",
+        "7fa6769d0000-7fa676a47000 r--p 001d0000 00:37 72502                      /tmp/alive-workspaces-task4-midi/app-final/libultra_native.so",
+        "7fa676a47000-7fa676a52000 r--p 00247000 00:37 72502                      /tmp/alive-workspaces-task4-midi/app-final/libultra_native.so",
+        "7fa676a52000-7fa676d28000 rw-p 00252000 00:37 72502                      /tmp/alive-workspaces-task4-midi/app-final/libultra_native.so"
+      ]
+    },
+    {
+      "action": "native create, note, place, move, right resize, fixed-end left trim",
+      "monotonic": 67956.835845807,
+      "placement_id": "placement-fc9eb829ab873e3c0c4f4d7b9e02e63b",
+      "video": "arrangement-interaction.mp4",
+      "video_scope": "UI interaction only; no audio or exact timing proof"
+    },
+    {
+      "action": "complete candidate refused without changing preparation or clearing pending history",
+      "monotonic": 67972.955400757,
+      "refusal": "Measured workspace profile 1 refused the complete candidate: Complete MIDI envelope exceeds bounded preparation policy. (resource 2, observed 21, limit 18). Keep the current playable project, reduce simultaneous music or simplify chains. Profile 2 is not admitted.",
+      "native_generation": "3",
+      "prepared_placement": "placement-c532c9612459d4c4de79a3c4caaaa690"
+    },
+    {
+      "action": "explicit original-occurrence trim to fit partial-brace admission",
+      "monotonic": 67979.924488432,
+      "range": [
+        2,
+        8
+      ],
+      "offset": 2
+    },
+    {
+      "action": "saved",
+      "monotonic": 67982.28591395,
+      "path": "/tmp/alive-workspaces-task4-midi/native-full2/authored.alive"
+    },
+    {
+      "action": "occurrence edits, refusal, independent copy, Session reuse, delete/undo/redo, stopped Apply",
+      "monotonic": 67982.28611596,
+      "first": {
+        "id": "placement-fc9eb829ab873e3c0c4f4d7b9e02e63b",
+        "trackId": "track-1",
+        "sourceId": "source-9b2855062ea7c356c3145ba861f15f42",
+        "start": 9.5,
+        "duration": 2.5,
+        "sourceOffset": {
+          "kind": "beats",
+          "value": 0.25
+        },
+        "loopEnabled": true
+      },
+      "independent": {
+        "id": "placement-55252e6b1b4fac401ccb682c757bf0a5",
+        "trackId": "track-1",
+        "sourceId": "source-a6aeb7a8036c5711ed1202dc6786afc3",
+        "start": 12.5,
+        "duration": 2.5,
+        "sourceOffset": {
+          "kind": "beats",
+          "value": 0.25
+        },
+        "loopEnabled": true
+      }
+    },
+    {
+      "action": "newly authored MIDI is native-active inside extended brace",
+      "monotonic": 67993.134646348,
+      "placement": "placement-fc9eb829ab873e3c0c4f4d7b9e02e63b",
+      "source": "source-9b2855062ea7c356c3145ba861f15f42",
+      "absolute_frame": "510464"
+    },
+    {
+      "action": "Return into Arrangement gap while Harmony retains Session",
+      "monotonic": 68010.101916417,
+      "pulse_source": "-",
+      "absolute_frame": "1325056"
+    },
+    {
+      "action": "partial brace wrap, seek retains Session, global Return observed",
+      "monotonic": 68015.444977151
+    },
+    {
+      "action": "failure",
+      "monotonic": 68029.315540665,
+      "error": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"
+    }
+  ],
+  "kind": "Actual Tauri/WebKit with private software PipeWire",
+  "playing_started": 67983.151327597,
+  "playing_stopped": 68027.536406856,
+  "audio": {
+    "frames": 2168832,
+    "seconds": 45.184,
+    "peak": 0.16578409075737,
+    "one_second_peaks": [
+      0.0,
+      0.10983739048242569,
+      0.16347549855709076,
+      0.04603293910622597,
+      0.03937757387757301,
+      0.03937757387757301,
+      0.10983739048242569,
+      0.16347549855709076,
+      0.1610753834247589,
+      0.09816010296344757,
+      0.04603293910622597,
+      0.04603293910622597,
+      0.03937757387757301,
+      0.11144816130399704,
+      0.09550442546606064,
+      0.16379322111606598,
+      0.12484265863895416,
+      0.08638431131839752,
+      0.058218758553266525,
+      0.0,
+      0.0,
+      0.042092014104127884,
+      0.04202752560377121,
+      0.042277704924345016,
+      0.04247090965509415,
+      0.06850429624319077,
+      0.06307131052017212,
+      0.06094007566571236,
+      0.0881015732884407,
+      0.09054670482873917,
+      0.15684038400650024,
+      0.14553216099739075,
+      0.11126797646284103,
+      0.04603293910622597,
+      0.04603293910622597,
+      0.04010887071490288,
+      0.04010887071490288,
+      0.11112134903669357,
+      0.16578409075737,
+      0.16339389979839325,
+      0.09966535121202469,
+      0.0468878336250782,
+      0.045324478298425674,
+      0.03877154365181923,
+      0.11112134903669357,
+      0.0
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "39c852d8ee7b3c427c31b7655647d896ffe7ab2dc0921b92ae884689436ec8ca",
+    "path": "midi-arrangement-playback.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "group_id": 2186879,
+      "recorder_pid": 2186882,
+      "returncode": 1,
+      "wall_seconds": 45.33790288500313,
+      "audio_bytes": 17350656,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    }
+  }
+}

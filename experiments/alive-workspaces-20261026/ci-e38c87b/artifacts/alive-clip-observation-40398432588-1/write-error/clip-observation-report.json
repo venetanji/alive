@@ -1,0 +1,103 @@
+{
+  "physical_audio": false,
+  "covering_tooltip": {
+    "action": "covering disclosure tooltip",
+    "monotonic": 1281.534445526,
+    "name": "Pulse runtime details",
+    "owner": 4194307,
+    "rect": [
+      156,
+      285,
+      145,
+      21
+    ],
+    "hit_path": [
+      543,
+      4194397
+    ],
+    "tooltip_atom": 267
+  },
+  "single_disclosure_click": {
+    "action": "disclosure click",
+    "monotonic": 1281.807116827,
+    "name": "Pulse runtime details",
+    "owner": 4194307,
+    "samples": [
+      {
+        "rect": [
+          156,
+          285,
+          145,
+          21
+        ],
+        "hit_path": [
+          543,
+          4194397
+        ]
+      },
+      {
+        "rect": [
+          156,
+          285,
+          145,
+          21
+        ],
+        "hit_path": [
+          543,
+          4194307
+        ]
+      }
+    ],
+    "presses": 1,
+    "releases": 1,
+    "final_rect": [
+      156,
+      285,
+      145,
+      21
+    ]
+  },
+  "late_position": "7.467 beats",
+  "launch_position_beats": 0.243,
+  "pending": "Playing Clip 1 / request 3 pending for Clip 1 copy / pending launch at frame 532827",
+  "applied": "Playing Clip 1 copy / request 3 applied for Clip 1 copy",
+  "settings": {
+    "saved": {
+      "host": "default",
+      "device": "default",
+      "sample_rate": 48000,
+      "buffer_frames": 512
+    },
+    "unsupported_buffer_preserved_settings": true,
+    "stop_audio_terminated_notes": true,
+    "restart_kept_transport_stopped": true
+  },
+  "audio": {
+    "Audio backend": "PipeWire",
+    "Audio device": "default_output",
+    "Audio sample rate": "48000",
+    "Audio buffer frames": "512",
+    "Audio callbacks": "846",
+    "Audio stream errors": "0",
+    "Audio failed": "false",
+    "Audio status": "Audio output is running.",
+    "Transport playing": "false",
+    "Absolute frame": "824832",
+    "Rejected commands": "0",
+    "Native generation": "10",
+    "Track 1 active voices": "0",
+    "Track 2 active voices": "0"
+  },
+  "quit_discard_exited": true,
+  "failed_writes": [
+    "disclosure click"
+  ],
+  "observation_failures": [
+    {
+      "action": "disclosure click",
+      "unavailable": true,
+      "error_type": "OSError",
+      "error": "Deliberately unavailable disclosure receipt write"
+    }
+  ]
+}

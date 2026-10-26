@@ -154,6 +154,14 @@ model/runtime contracts; preserve Task 1 shell and existing editor features.
 - [ ] Verify slots and placements round-trip separately, audio/MIDI clip details,
   navigation/focus/drag/resize and uninterrupted Tab switching; commit/review.
 
+Task 4 MIDI portion: independently approved at `91cb9d1`. Real create/edit/play,
+Session override/Return, shared mixer/editor and Save/Quit/process-restart pass
+in the native app at both target sizes. The tested launcher is refreshed.
+Evidence: `experiments/alive-workspaces-20261026/task4-midi/`. Actual waveforms
+and audio Clip readers remain part of Task 3; these mixed MIDI/audio checkboxes
+are not marked complete by the MIDI-only journey. Nonblocking invalid adjacent
+Duplicate default is carried into that timeline adaptation.
+
 ## Task 5: Integrated Native Evidence And PR Handoff
 
 - [ ] Ship one portable contrasting mixed MIDI/audio project with independent

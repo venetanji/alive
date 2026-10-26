@@ -114,8 +114,12 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   v3's existing capacity. Local native conversion/editor/save/Quit/restart
   checks pass. Independent review approves the integration after queued slot
   field preservation fix `ee83d30` (85 UI and two focused browser checks pass).
-  Timeline creation/editing and
-  genuine audio-file tracks remain the next staged work. Alternate DSP paths
+  MIDI timeline source creation, placement move/trim/resize, source offsets,
+  suffix looping, duplication/independence and shared Clip detail are implemented
+  at `91cb9d1`. The native author/play/override/Return/save/Quit/restart journey
+  passes; independent task review approves. The admitted starting project is
+  `apps/alive/examples/midi-arrangement.alive`. Genuine audio-file tracks remain
+  the next staged work. Alternate DSP paths
   remain outside the supported Alive profile.
 - Supported object names and arguments must be explicit. Unsupported objects
   must be rejected visibly. Familiar appearance does not imply Max compatibility.
