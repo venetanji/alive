@@ -480,4 +480,5 @@ extern "C" {
 
 #[path = "native_v4.rs"]
 mod native_v4;
+#[allow(unused_imports)] // The additive ABI is not wired into Document until Task 2D.
 pub use native_v4::*;

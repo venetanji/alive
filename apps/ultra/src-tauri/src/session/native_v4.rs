@@ -1,5 +1,5 @@
 //! Additive workspace ABI; capability admission is independent of POD validation.
-use super::{DeviceV2, EventV2, TrackStateV2, DeviceStateV2, NativeGraph};
+use super::{DeviceStateV2, DeviceV2, EventV2, NativeGraph, TrackStateV2};
 pub const V4_RESULT_EMPTY: u32 = 0;
 pub const V4_QUEUED: u32 = 1;
 pub const V4_PENDING: u32 = 2;
@@ -67,8 +67,8 @@ pub const V4_FEATURE_ADMITTED: u32 = 1;
 pub const V4_FEATURE_ATOMIC_TRACK_ACTIONS: u32 = 2;
 pub const V4_FEATURE_ARRANGEMENT: u32 = 4;
 pub const V4_FEATURE_AUDIO: u32 = 8;
-pub const NONE_V4: u32 = u32::MAX;
-pub const NO_FRAME_V4: u64 = u64::MAX;
+pub const V4_NONE: u32 = u32::MAX;
+pub const V4_NO_FRAME: u64 = u64::MAX;
 #[repr(C)]
 #[derive(Clone, Copy)]
 pub struct TrackV4 {
@@ -90,7 +90,7 @@ impl Default for TrackV4 {
         #[allow(unused_mut)]
         let mut value: Self = unsafe { std::mem::zeroed() };
         value.kind = 1;
-        value.slots = [NONE_V4; 4];
+        value.slots = [V4_NONE; 4];
         value.gain = 1.;
         value
     }
@@ -115,7 +115,7 @@ impl Default for SourceV4 {
         #[allow(unused_mut)]
         let mut value: Self = unsafe { std::mem::zeroed() };
         value.kind = 1;
-        value.audio_buffer = NONE_V4;
+        value.audio_buffer = V4_NONE;
         value
     }
 }
@@ -278,8 +278,8 @@ impl Default for ReceiptV4 {
         let mut value: Self = unsafe { std::mem::zeroed() };
         value.version = 4;
         value.struct_bytes = std::mem::size_of::<Self>() as u32;
-        value.observed_frame = NO_FRAME_V4;
-        value.target_frame = NO_FRAME_V4;
+        value.observed_frame = V4_NO_FRAME;
+        value.target_frame = V4_NO_FRAME;
         value
     }
 }
@@ -370,9 +370,9 @@ impl Default for DiagnosticV4 {
         let mut value: Self = unsafe { std::mem::zeroed() };
         value.version = 4;
         value.struct_bytes = std::mem::size_of::<Self>() as u32;
-        value.frame = NO_FRAME_V4;
-        value.source = [NONE_V4; 8];
-        value.placement = [NONE_V4; 8];
+        value.frame = V4_NO_FRAME;
+        value.source = [V4_NONE; 8];
+        value.placement = [V4_NONE; 8];
         value
     }
 }
@@ -398,11 +398,11 @@ impl Default for TrackStateV4 {
         // All fields are scalars, arrays of POD, or a nullable borrowed pointer.
         #[allow(unused_mut)]
         let mut value: Self = unsafe { std::mem::zeroed() };
-        value.active_slot = NONE_V4;
-        value.active_source = NONE_V4;
-        value.active_placement = NONE_V4;
-        value.pending_slot = NONE_V4;
-        value.pending_frame = NO_FRAME_V4;
+        value.active_slot = V4_NONE;
+        value.active_source = V4_NONE;
+        value.active_placement = V4_NONE;
+        value.pending_slot = V4_NONE;
+        value.pending_frame = V4_NO_FRAME;
         value
     }
 }
@@ -457,15 +457,18 @@ extern "C" {
     pub fn alive_session_limits_v4(profile: u32, out: *mut LimitsV4) -> i32;
     pub fn alive_session_validate_v4(config: *const ConfigV4) -> i32;
     pub fn alive_session_validate_prepared_v4(
-        config: *const ConfigV4, graphs: *const NativeGraph, graph_count: u32,
-        audio: *const AudioBufferV4, audio_count: u32,
+        config: *const ConfigV4,
+        graphs: *const NativeGraph,
+        graph_count: u32,
+        audio: *const AudioBufferV4,
+        audio_count: u32,
     ) -> i32;
     pub fn alive_session_configure_v4(
-        config: *const ConfigV4, audio: *const AudioBufferV4, audio_count: u32,
+        config: *const ConfigV4,
+        audio: *const AudioBufferV4,
+        audio_count: u32,
     ) -> i32;
-    pub fn alive_session_request_v4(
-        request: *const RequestV4, immediate: *mut ReceiptV4,
-    ) -> i32;
+    pub fn alive_session_request_v4(request: *const RequestV4, immediate: *mut ReceiptV4) -> i32;
     pub fn alive_session_stop_v4() -> u64;
     pub fn alive_session_state_v4(out: *mut StateV4) -> i32;
     pub fn alive_session_diagnostic_v4(out: *mut DiagnosticV4) -> i32;
@@ -474,7 +477,25 @@ extern "C" {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::mem::{size_of, align_of, offset_of};
+    use std::mem::{align_of, offset_of, size_of};
+    #[test]
+    fn defaults_initialize_headers_and_active_record_sentinels() {
+        let config = ConfigV4::default();
+        assert_eq!(
+            (config.version, config.struct_bytes),
+            (4, size_of::<ConfigV4>() as u32)
+        );
+        assert_eq!(config.track_count, 0);
+        assert_eq!(config.tracks[0].kind, 0);
+        assert_eq!(TrackV4::default().slots, [V4_NONE; 4]);
+        assert_eq!(SourceV4::default().audio_buffer, V4_NONE);
+        let state = StateV4::default();
+        assert_eq!(state.tracks[0].active_source, V4_NONE);
+        assert_eq!(state.tracks[0].active_placement, V4_NONE);
+        assert_eq!(state.tracks[0].pending_frame, V4_NO_FRAME);
+        assert_eq!(state.receipts[127].version, 4);
+        assert_eq!(state.receipts[127].target_frame, V4_NO_FRAME);
+    }
     #[test]
     fn exact_v4_layout() {
         assert_eq!(size_of::<TrackV4>(), 64);

@@ -25,7 +25,8 @@ clip_admission::Ledger scheduled_{}, optional_{};
 std::array<unsigned, 8> cursors_{};
 struct Chase {
   std::array<std::array<double, 16>, 3> values{};
-  unsigned cursor = 0;
+  unsigned cursor = 0, note_count = 0;
+  std::array<AliveSessionEventV2,4> notes{};
 };
 std::array<Chase, 8> chase_{};
 std::array<bool, 8> clear_{};
@@ -62,7 +63,7 @@ bool reject_v3(unsigned error, const char *message, unsigned resource = 0, uint6
   return reject(message);
 }
 static bool terminal(unsigned status) noexcept { return status >= ALIVE_SESSION_V3_APPLIED; }
-static void finish(AliveSessionReceiptV3 &receipt, unsigned status, unsigned error = 0) noexcept {
+template<class Receipt> static void finish(Receipt &receipt, unsigned status, unsigned error = 0) noexcept {
   receipt.status = status;
   receipt.error = error;
   receipt.applied_mask = receipt.superseded_mask = receipt.canceled_mask = receipt.rejected_mask = 0;
@@ -334,9 +335,12 @@ bool envelopes_v3(const AliveSessionConfigV3 &c, clip_admission::Prepared &out) 
     }
   return true;
 }
-bool graph_v3(const AliveSessionConfigV3 &c, unsigned device, const UltraCanvasGraph &graph) noexcept {
-  if (!validate_device_v2(c.devices[device], graph))
-    return reject_v3(ALIVE_SESSION_V3_GRAPH_REJECTED,
+template<class Reject>
+bool measured_graph(const AliveSessionDeviceV2 &descriptor, unsigned device,
+                    const AliveSessionEventV2 *events, unsigned event_count,
+                    const UltraCanvasGraph &graph, Reject refused) noexcept {
+  if (!validate_device_v2(descriptor, graph))
+    return refused(ALIVE_SESSION_V3_GRAPH_REJECTED,
                      "Clip device graph rejected by common device validation.");
   // A finite signal-kernel profile: one four-voice subtractive instrument or
   // one stereo filter per root. Control-only arbitrary patchers remain legacy.
@@ -376,38 +380,43 @@ bool graph_v3(const AliveSessionConfigV3 &c, unsigned device, const UltraCanvasG
     case MakeNote:
       break;
     default:
-      return reject_v3(ALIVE_SESSION_V3_GRAPH_REJECTED,
+      return refused(ALIVE_SESSION_V3_GRAPH_REJECTED,
                        "Graph contains a node outside the measured clip kernel profile.");
     }
   }
-  const bool instrument = c.devices[device].kind == 1;
+  const bool instrument = descriptor.kind == 1;
   if (saw > unsigned(instrument) || filter > unsigned(instrument) || adsr > unsigned(instrument) ||
       poly != unsigned(instrument) || stereo > unsigned(!instrument))
-    return reject_v3(ALIVE_SESSION_V3_GRAPH_REJECTED, "Graph exceeds the measured kernel counts.");
+    return refused(ALIVE_SESSION_V3_GRAPH_REJECTED, "Graph exceeds the measured kernel counts.");
   CanvasPlan plan{};
   if (!compile_canvas(graph, plan))
-    return reject_v3(ALIVE_SESSION_V3_GRAPH_REJECTED, "Cannot compile clip graph.");
-  for (unsigned p = 0; p < c.devices[device].parameter_count; ++p) {
-    const auto &b = c.devices[device].parameters[p];
+    return refused(ALIVE_SESSION_V3_GRAPH_REJECTED, "Cannot compile clip graph.");
+  for (unsigned p = 0; p < descriptor.parameter_count; ++p) {
+    const auto &b = descriptor.parameters[p];
     const int slot = plan.find(b.node);
     if (slot < 0)
-      return reject_v3(ALIVE_SESSION_V3_GRAPH_REJECTED, "Missing bound parameter node.");
+      return refused(ALIVE_SESSION_V3_GRAPH_REJECTED, "Missing bound parameter node.");
     const unsigned kind = graph.nodes[unsigned(slot)].kind;
     if (kind != Gain && kind != FilterVoice && kind != AdsrVoice && kind != FilterStereo &&
         kind != LineSignal && kind != PolyNote)
-      return reject_v3(ALIVE_SESSION_V3_GRAPH_REJECTED, "Parameter can activate an unmeasured control path.");
+      return refused(ALIVE_SESSION_V3_GRAPH_REJECTED, "Parameter can activate an unmeasured control path.");
     if (!change_canvas_param(plan, b.node, b.param, b.base))
-      return reject_v3(ALIVE_SESSION_V3_GRAPH_REJECTED, "Invalid clip base parameter.");
+      return refused(ALIVE_SESSION_V3_GRAPH_REJECTED, "Invalid clip base parameter.");
   }
-  for (unsigned i = 0; i < c.event_count; ++i) {
-    const auto &e = c.events[i];
+  for (unsigned i = 0; i < event_count; ++i) {
+    const auto &e = events[i];
     if (e.device != device || e.kind != ALIVE_SESSION_AUTOMATION)
       continue;
-    const auto &b = c.devices[device].parameters[e.target];
+    const auto &b = descriptor.parameters[e.target];
     if (!change_canvas_param(plan, b.node, b.param, e.value))
-      return reject_v3(ALIVE_SESSION_V3_GRAPH_REJECTED, "Invalid clip automation parameter.");
+      return refused(ALIVE_SESSION_V3_GRAPH_REJECTED, "Invalid clip automation parameter.");
   }
   return true;
+}
+
+bool graph_v3(const AliveSessionConfigV3 &c, unsigned device, const UltraCanvasGraph &graph) noexcept {
+  return measured_graph(c.devices[device], device, c.events, c.event_count, graph,
+      [&](unsigned error, const char *message) { return reject_v3(error, message); });
 }
 
 public:
@@ -463,24 +472,39 @@ void prepare_chase(unsigned t) noexcept {
   const auto &chain = config_.tracks[t];
   auto &chase = chase_[t];
   chase.cursor = 0;
+  chase.note_count = 0;
+  std::array<unsigned,128> held;
+  if(mode_==Mode::Workspaces)held.fill(0);
   for (unsigned i = 0; i <= chain.effect_count; ++i) {
-    const unsigned d = i ? chain.effects[i - 1] : chain.instrument;
+    const unsigned d = chain_member(t,i);
     for (unsigned p = 0; p < config_.devices[d].parameter_count; ++p)
       chase.values[i][p] = state_.devices[d].base[p];
   }
   if (state_.playing && ts.active_clip != None) {
-    const auto &clip = config_.clips[ts.active_clip];
-    // One strict-prefix scan both chases automation and locates the event head.
-    while (chase.cursor < clip.event_count) {
+    const auto clip = source(ts.active_clip);
+    // V3 stops at its original strict-prefix probe. V4 continues over due
+    // heads in the same reserved scan to exclude ending/starting pitches.
+    for (unsigned scan=0; scan<clip.event_count; ++scan) {
       trace_read(false);
-      const auto &e = config_.events[clip.event_begin + chase.cursor];
-      if (e.frame >= ts.phase)
-        break;
+      const auto &e = config_.events[clip.event_begin + scan];
+      if (e.frame >= ts.phase) {
+        if(mode_!=Mode::Workspaces || e.frame>ts.phase)break;
+        if(e.kind==ALIVE_SESSION_NOTE_OFF || e.kind==ALIVE_SESSION_NOTE_ON)held[e.target]=0;
+        continue;
+      }
       ++chase.cursor;
+      if(mode_==Mode::Workspaces){
+        if(e.kind==ALIVE_SESSION_NOTE_ON)held[e.target]=unsigned(e.value);
+        if(e.kind==ALIVE_SESSION_NOTE_OFF)held[e.target]=0;
+      }
       if (e.kind == ALIVE_SESSION_AUTOMATION)
         for (unsigned i = 0; i <= chain.effect_count; ++i)
-          if (e.device == (i ? chain.effects[i - 1] : chain.instrument))
+          if (e.device == chain_member(t,i))
             chase.values[i][e.target] = e.value;
+    }
+    if(mode_==Mode::Workspaces){
+      for(unsigned pitch=0;pitch<128;++pitch)if(held[pitch]&&chase.note_count<4)
+        chase.notes[chase.note_count++]={ts.phase,t,ALIVE_SESSION_NOTE_ON,chain.instrument,pitch,double(held[pitch])};
     }
   }
 }
@@ -491,12 +515,12 @@ void clear_track(CanvasWorkspace &workspace, unsigned t, bool chased) noexcept {
   const auto &chain = config_.tracks[t];
   cursors_[t] = chase_[t].cursor;
   for (unsigned i = 0; i <= chain.effect_count; ++i) {
-    const unsigned d = i ? chain.effects[i - 1] : chain.instrument;
+    const unsigned d = chain_member(t,i);
     auto &runtime = workspace.runtime(config_.devices[d].document);
     runtime.reset(runtime.plan());
     for (unsigned p = 0; p < config_.devices[d].parameter_count; ++p) {
       state_.devices[d].owned[p] = state_.playing && ts.active_clip != None &&
-                                   bool(config_.clips[ts.active_clip].owned_masks[d] & (1u << p));
+                                   bool(source(ts.active_clip).owned_masks[d] & (1u << p));
       parameter(workspace, d, p, chase_[t].values[i][p]);
     }
     if (!state_.playing || ts.active_clip == None) {
@@ -582,7 +606,7 @@ bool configure_v3(const AliveSessionConfigV3 &c, CanvasWorkspace &workspace) noe
   parameter_plans_ = *plans;
   document_devices_ = documents;
   prepared_ = *scratch;
-  clips_mode_ = true;
+  mode_ = Mode::Clips;
   last_preparation_ = c.preparation_revision;
   config_ = {};
   config_.track_count = c.track_count;
@@ -653,10 +677,15 @@ bool configure_v3(const AliveSessionConfigV3 &c, CanvasWorkspace &workspace) noe
   return true;
 }
 bool request_v3(const AliveSessionRequestV3 &r, AliveSessionReceiptV3 &immediate) noexcept {
-  if (!output_header(immediate.version, immediate.struct_bytes, sizeof immediate))
+  return request_ingress(r,immediate,3);
+}
+private:
+template<class Request,class Receipt>
+bool request_ingress(const Request &r, Receipt &immediate, unsigned version) noexcept {
+  if ((immediate.version != version || immediate.struct_bytes != sizeof immediate))
     return false;
-  AliveSessionReceiptV3 receipt{};
-  receipt.version = 3;
+  Receipt receipt{};
+  receipt.version = version;
   receipt.struct_bytes = sizeof receipt;
   receipt.preparation_revision = r.preparation_revision;
   receipt.request_serial = r.request_serial;
@@ -666,12 +695,16 @@ bool request_v3(const AliveSessionRequestV3 &r, AliveSessionReceiptV3 &immediate
   auto refused = [&](unsigned error, const char *message) {
     finish(receipt, ALIVE_SESSION_V3_REJECTED, error);
     immediate = receipt;
-    return reject_v3(error, message);
+    return version == 4 ? reject_v4(error, message) : reject_v3(error, message);
   };
-  if (!output_header(r.version, r.struct_bytes, sizeof r))
+  if ((r.version != version || r.struct_bytes != sizeof r))
     return refused(ALIVE_SESSION_V3_BAD_HEADER, "Invalid v3 request header.");
-  if (!clips_mode_ || !configured() || r.preparation_revision != config_.preparation_revision)
+  if ((version == 4 ? mode_ != Mode::Workspaces : mode_ != Mode::Clips) || !configured() || r.preparation_revision != config_.preparation_revision)
     return refused(ALIVE_SESSION_V3_STALE_PREPARATION, "Stale clip preparation.");
+  if(version==4){
+    if(!request_fields_v4(r))return refused(ALIVE_SESSION_V4_BAD_FIELD,"Malformed workspace request fields.");
+    if(r.kind!=ALIVE_SESSION_V4_START)return refused(ALIVE_SESSION_V4_FEATURE_DISABLED,"Only Arrangement START is provisionally admitted.");
+  }
   if (!r.request_serial || r.request_serial <= ingress_serial_ || r.request_serial == UINT64_MAX)
     return refused(ALIVE_SESSION_V3_STALE_REQUEST, "Request serial must increase without wrapping.");
   ingress_serial_ = r.request_serial;
@@ -705,14 +738,14 @@ bool request_v3(const AliveSessionRequestV3 &r, AliveSessionReceiptV3 &immediate
   }
   const unsigned cell = unsigned(r.request_serial % 128);
   if (reservations_[cell]) {
-    AliveSessionStateV3 value{};
-    if (!coherent(value) || value.preparation_revision != r.preparation_revision ||
-        value.receipts[cell].request_serial != reservations_[cell] || !terminal(value.receipts[cell].status))
+    if (!receipt_available(cell, r.preparation_revision, reservations_[cell], version))
       return refused(ALIVE_SESSION_V3_RECEIPT_BUSY, "Receipt cell is still queued or pending.");
   }
   Command c{};
   c.kind = 6;
-  c.request = r;
+  c.request.kind=r.kind;c.request.track_mask=r.track_mask;c.request.preparation_revision=r.preparation_revision;
+  c.request.request_serial=r.request_serial;c.request.position=r.position;
+  for(unsigned t=0;t<8;++t){c.request.tracks[t].action=r.tracks[t].action;c.request.tracks[t].slot=r.tracks[t].slot;}
   if (!enqueue(c, false))
     return refused(ALIVE_SESSION_V3_QUEUE_FULL, "Clip command queue is full.");
   reservations_[cell] = r.request_serial;
@@ -768,7 +801,7 @@ Cost first_candidate_cost() const noexcept {
       phase = 0;
       reset = true;
     }
-    if (clip != None && phase >= config_.clips[clip].length_frames) {
+    if (mode_ != Mode::Workspaces && clip != None && phase >= source(clip).length_frames) {
       phase = 0;
       reset = true;
     }
@@ -776,7 +809,8 @@ Cost first_candidate_cost() const noexcept {
       out = clip_admission::add(out, prepared_.reset[t]);
     if (clip == None)
       continue;
-    const auto &cl = config_.clips[clip];
+    const auto cl = source(clip);
+    if(mode_==Mode::Workspaces && (candidate_.clear_mask & (1u<<t)))out[0]+=4;
     unsigned lo = 0, hi = cl.event_count;
     while (lo < hi) {
       const unsigned mid = (lo + hi) / 2;
@@ -813,6 +847,7 @@ bool optional_admission() noexcept {
     if (optional_.entries[current][m] + charge[m] > optional_frame[m] ||
         optional_.total[m] + charge[m] > optional_window[m])
       return false;
+  if(mode_==Mode::Workspaces && !reserve_optional_placement(2050))return false;
   const auto first = first_candidate_cost();
   for (unsigned m = 0; m < 5; ++m)
     if (scheduled_.entries[current][m] + first[m] > (m ? scheduled_frame[m] : 32))
@@ -822,6 +857,8 @@ bool optional_admission() noexcept {
   subtract(past_scheduled, scheduled_.entries[current]);
   subtract(past_optional, optional_.entries[current]);
   bool accepted = true;
+  uint64_t past_placement=placement_scheduled_.total+placement_scheduled_.expired-placement_scheduled_.entries[current];
+  uint64_t past_optional_placement=placement_optional_.total+placement_optional_.expired-placement_optional_.entries[current];
   for (unsigned j = 0; j <= Window; ++j) {
     for (unsigned m = 0; m < 5; ++m) {
       const uint64_t future = j && candidate_.playing ? prepared_.future[m][j] : 0;
@@ -830,6 +867,13 @@ bool optional_admission() noexcept {
         accepted = false;
       if (m && past_optional[m] + (j ? charge[m] + optional_.entries[current][m] : 0) > optional_window[m])
         accepted = false;
+    }
+    if(mode_==Mode::Workspaces){
+      const uint64_t future=j&&candidate_.playing?placement_future_[j]:0;
+      if(past_placement+future+(j?placement_scheduled_.entries[current]:0)>512)accepted=false;
+      if(past_optional_placement+(j?placement_optional_.entries[current]:0)>2114)accepted=false;
+      if(j==0){past_placement-=placement_scheduled_.expired;past_optional_placement-=placement_optional_.expired;}
+      else if(j<Window){const auto old=(current+j)%Window;past_placement-=placement_scheduled_.entries[old];past_optional_placement-=placement_optional_.entries[old];}
     }
     if (j == 0) {
       subtract(past_scheduled, scheduled_.expired);
@@ -858,6 +902,7 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
   std::copy_n(state_.tracks, 8, candidate_.tracks);
   candidate_.playing = state_.playing;
   candidate_.position = state_.position;
+  if(mode_==Mode::Workspaces)candidate_resolved_ = resolved_;
   unsigned tail = tail_.load(std::memory_order_relaxed);
   uint64_t last_seek = 0;
   std::array<unsigned, 8> stopped_actions{};
@@ -921,6 +966,17 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
         candidate_.position = 0;
         for (unsigned t = 0; t < config_.track_count; ++t)
           candidate_.tracks[t].phase = 0;
+      }
+      if(mode_==Mode::Workspaces){
+        if(!reserve_optional_placement(4)){
+          candidate_.playing=0;candidate_.unscheduled=false;candidate_.group[index]=false;
+          finish(receipt,ALIVE_SESSION_V3_REJECTED,ALIVE_SESSION_V3_WORK_LIMIT);++state_.work_rejected;continue;
+        }
+        for(unsigned t=0;t<config_.track_count;++t){unsigned probes=0;
+          candidate_resolved_[t]=resolve_arrangement(t,candidate_.position,probes);
+          candidate_.tracks[t].active_clip=candidate_resolved_[t].source;
+          candidate_.tracks[t].phase=candidate_resolved_[t].phase;
+        }
       }
       for (unsigned t = 0; t < config_.track_count; ++t)
         if (candidate_.tracks[t].active_clip != None)
@@ -993,6 +1049,7 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
           finish_members(receipt, 1u << t, candidate_.old_status[t], candidate_.old_error[t]);
       }
     std::copy_n(candidate_.tracks, 8, state_.tracks);
+    if(mode_==Mode::Workspaces)resolved_=candidate_resolved_;
     state_.position = candidate_.position;
     state_.playing = candidate_.playing;
     optional_clear_ |= candidate_.clear_mask;
@@ -1048,6 +1105,15 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
       return;
     }
   }
+  if(mode_==Mode::Workspaces && state_.playing){
+    for(unsigned t=0;t<config_.track_count;++t){
+      if(state_.position<resolved_[t].next_boundary)continue;
+      if(!reserve_scheduled_placement(4)){fault_v3(workspace,6);return;}
+      const auto next=next_arrangement(t,state_.position);
+      if(next.occurrence!=resolved_[t].occurrence||next.source!=resolved_[t].source)mask|=1u<<t;
+      resolved_[t]=next;state_.tracks[t].active_clip=next.source;state_.tracks[t].phase=next.phase;
+    }
+  }
   if (state_.playing)
     for (unsigned t = 0; t < config_.track_count; ++t) {
       auto &ts = state_.tracks[t];
@@ -1055,7 +1121,7 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
         ts.active_clip = ts.pending_clip;
         ts.phase = 0;
         mask |= 1u << t;
-      } else if (ts.active_clip != None && ts.phase >= config_.clips[ts.active_clip].length_frames) {
+      } else if (mode_ != Mode::Workspaces && ts.active_clip != None && ts.phase >= source(ts.active_clip).length_frames) {
         ts.phase = 0;
         mask |= 1u << t;
       }
@@ -1086,9 +1152,14 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
       const auto &ts = state_.tracks[t];
       if (ts.active_clip == None)
         continue;
-      const auto &clip = config_.clips[ts.active_clip];
-      if (mask & (1u << t))
+      const auto clip = source(ts.active_clip);
+      if (mask & (1u << t)) {
         next[t] = chase_[t].cursor;
+        for(unsigned i=0;i<chase_[t].note_count;++i){
+          if(count==32){fault_v3(workspace,ALIVE_SESSION_V3_RESOURCE_EVENTS);return;}
+          batch[count++]=&chase_[t].notes[i];
+        }
+      }
       while (next[t] < clip.event_count) {
         const auto &e = config_.events[clip.event_begin + next[t]];
         if (e.frame != ts.phase)
@@ -1137,7 +1208,7 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
       return a->device < b->device;
     if (a->target != b->target)
       return a->target < b->target;
-    return a < b;
+    return std::less<const AliveSessionEventV2 *>{}(a,b);
   });
   for (unsigned i = 0; i < count; ++i)
     dispatch_event(workspace, *batch[i]);
@@ -1165,6 +1236,7 @@ void advance_v3(CanvasWorkspace &workspace) noexcept {
   }
   scheduled_.expire(state_.absolute_frame);
   optional_.expire(state_.absolute_frame);
+  if(mode_==Mode::Workspaces){placement_scheduled_.expire(state_.absolute_frame);placement_optional_.expire(state_.absolute_frame);}
   if (state_.playing && !config_.loop_enabled && state_.position >= config_.length_frames)
     sample_v3(workspace);
 }

@@ -47,11 +47,30 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror \
   apps/ultra/tests/alive_session_v3_layout_test.cpp -o "$TEST_DIR/alive-v3-layout"
 "$TEST_DIR/alive-v3-layout"
 c++ -std=c++17 -O2 -Wall -Wextra -Werror \
+  apps/ultra/tests/alive_session_v4_layout_test.cpp -o "$TEST_DIR/alive-v4-layout"
+"$TEST_DIR/alive-v4-layout"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror \
   apps/ultra/tests/alive_session_envelope_test.cpp -o "$TEST_DIR/alive-envelope"
 "$TEST_DIR/alive-envelope"
 c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
   -c apps/ultra/src-tauri/native/backend.cpp -o "$TEST_DIR/alive-v3-backend.o"
 python3 apps/ultra/tests/alive_session_v3_fixtures.py "$TEST_DIR/saved_graphs.hpp"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -I"$TEST_DIR" \
+  apps/ultra/tests/alive_session_v4_shipping_test.cpp \
+  -L"$NATIVE_BUILD" -lultra_native -Wl,-rpath,"$NATIVE_BUILD" -o "$TEST_DIR/alive-v4-shipping"
+"$TEST_DIR/alive-v4-shipping"
+# The provisional definition affects admission only, on this separate object.
+# The normal library and the v3 traced backend always retain the shipping gate.
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
+  -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL \
+  -c apps/ultra/src-tauri/native/backend.cpp -o "$TEST_DIR/alive-v4-backend.o"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
+  -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -I"$TEST_DIR" \
+  apps/ultra/tests/alive_session_v4_test.cpp "$TEST_DIR/alive-v4-backend.o" \
+  "$NATIVE_BUILD/core/libultra_core_bundle.a" \
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+  -ldl -lrt -o "$TEST_DIR/alive-v4-test"
+"$TEST_DIR/alive-v4-test"
 for test in alive_session_v3_test alive_session_v3_measure alive_session_capacity; do
   c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DCAPACITY_GUARDS \
     -I"$TEST_DIR" "apps/ultra/tests/${test}.cpp" "$TEST_DIR/alive-v3-backend.o" \
