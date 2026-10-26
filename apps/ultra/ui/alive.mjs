@@ -374,7 +374,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     });
     for(const[bindingIndex,binding]of (instanceView(selectedInstance).manifest.parameters??[]).entries()){
       const view=parameterViews.get(binding.key),reading=parameterReading(binding,snapshot.state.devices[instanceView(selectedInstance).index],bindingIndex);if(!view)continue;
-      if(doc.activeElement!==view.number)view.number.value=reading.base;if(doc.activeElement!==view.range)view.range.value=reading.base;
+      if(doc.activeElement!==view.number&&!workspace.preserves(view.number))view.number.value=reading.base;if(doc.activeElement!==view.range&&!workspace.preserves(view.range))view.range.value=reading.base;
       view.output.textContent=`${reading.owner}: ${Number(reading.effective.toFixed(3))}${binding.unit?' '+binding.unit:''}`;view.section.classList.toggle('automated',reading.owner==='Automation');
     }
     const frameBeat=value=>typeof value==='string'?Number(nativeInteger(value)*1000000n/48000n)/1000000*snapshot.document.tempo/60:value/(48000*60/snapshot.document.tempo);const beat=frameBeat(snapshot.state.position);$('position').textContent=`${beat.toFixed(3)} beats`;

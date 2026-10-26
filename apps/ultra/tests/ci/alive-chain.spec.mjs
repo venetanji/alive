@@ -140,6 +140,47 @@ test('hiding Session preserves an unfinished gain field without issuing a mixer 
   await gain.focus();await gain.press('Tab');expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_mixer').map(c=>c.args.gain))).toEqual([0.85]);
 });
 
+for(const kind of ['device','note'])test(`detail navigation preserves an unfinished ${kind} field until one deliberate commit`,async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true);
+  const device=kind==='device',own=device?'devices':'clip',other=device?'clip':'devices',typed=device?'1717':'73';
+  if(device)await page.locator('#detail-devices').click();else await page.locator('.note-table>summary').click();
+  const input=page.getByRole('spinbutton',{name:device?'Cutoff base':'Note 1 pitch',exact:true,includeHidden:true});
+  const original=JSON.parse(readFileSync(new URL('../../../alive/examples/two-instruments.alive',import.meta.url)));
+  const mutations=()=>page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'));
+  const acrossPolls=async()=>{
+    const before=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);
+    await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(before+2);
+    expect(await mutations()).toEqual([]);await expect(input).toHaveValue(typed);
+  };
+  await input.fill(typed);
+  for(let i=0;i<3;i++){
+    await page.locator('#detail-'+other).click();await acrossPolls();
+    await page.locator('#toggle-detail').click();await acrossPolls();
+    await page.locator('#toggle-detail').click();await acrossPolls();
+    expect(await input.evaluate(e=>document.activeElement===e)).toBe(false);
+    await page.locator('#detail-'+own).click();await acrossPolls();
+    await page.locator('#toggle-detail').click();await acrossPolls();
+    await page.locator('#detail-'+other).click();await acrossPolls();
+    expect(await input.evaluate(e=>document.activeElement===e)).toBe(false);
+    await page.locator('#detail-'+own).click();await acrossPolls();
+  }
+  await input.focus();await input.press('Tab');
+  await expect.poll(async()=>(await mutations()).length).toBe(1);
+  const [call]=await mutations();
+  if(device){expect(call.name).toBe('alive_base');expect(call.args).toMatchObject({instanceId:'instrument-0',key:'cutoff',value:1717});}
+  else{
+    expect(call.name).toBe('alive_edit');expect(call.args.label).toBe('Edit note');
+    const expected=structuredClone(original.tracks[0].notes);expected[0].pitch=73;
+    const tracks=call.args.document.tracks;
+    expect(tracks[0].id).toBe(original.tracks[0].id);expect(tracks[0].slots[0].id).toBe(`clip-${original.tracks[0].id}`);
+    expect(tracks[0].slots[0].notes).toEqual(expected.map((note,i)=>({...note,id:`note-${original.tracks[0].id}-${i}`})));
+    expect(tracks[1].slots[0].notes.map(({id,...note})=>note)).toEqual(original.tracks[1].notes);
+  }
+  const before=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(before+2);
+  expect(await mutations()).toHaveLength(1);
+});
+
 test('maximum detail resize leaves the entire detail and workspace reachable',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page,false,true);
   const handle=page.getByRole('separator',{name:'Resize detail area'});await handle.focus();await page.keyboard.press('End');
