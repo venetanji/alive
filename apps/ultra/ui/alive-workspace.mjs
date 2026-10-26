@@ -1,5 +1,5 @@
 // Workspace navigation owns only presentation. Native state and editor nodes stay mounted.
-export function mountWorkspace({doc,win}){
+export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   const $=id=>doc.getElementById(id);
   let view='session',detail='clip',expanded=true,browser=true,height=220,resize=null;
   const handle=$('detail-resizer'),shell=$('workspace-shell');
@@ -21,12 +21,12 @@ export function mountWorkspace({doc,win}){
     $('toggle-detail').setAttribute('aria-expanded',String(expanded));
     for(const name of ['clip','devices']){$('detail-'+name).setAttribute('aria-pressed',String(detail===name));$(name==='clip'?'clip-detail':'device-detail').hidden=detail!==name;}
     shell.style.setProperty('--detail-height',`${height}px`);handle.setAttribute('aria-valuenow',height);handle.setAttribute('aria-valuemax',maxHeight());
-    if(view==='session')restore($('session-workspace'));
+    restore($(view+'-workspace'));
     if(expanded)restore(detailRoot());
   }
   function setHeight(value){height=Math.round(Math.max(160,Math.min(maxHeight(),value)));paint();}
   function cancelResize(){if(!resize)return;const old=resize;resize=null;setHeight(old.height);if(handle.hasPointerCapture?.(old.id))handle.releasePointerCapture(old.id);}
-  function navigate(name){cancelResize();if(name!==view&&name==='arrangement')park($('session-workspace'));view=name;paint();}
+  function navigate(name){cancelResize();if(name!==view){park($(view+'-workspace'));onNavigate(name);}view=name;paint();}
   for(const name of ['session','arrangement'])$('view-'+name).addEventListener('click',()=>navigate(name));
   // A pointer navigation must not blur an unfinished field and publish its change.
   for(const id of ['view-session','view-arrangement','toggle-browser','toggle-detail','detail-clip','detail-devices'])$(id).addEventListener('pointerdown',event=>event.preventDefault());
@@ -46,5 +46,5 @@ export function mountWorkspace({doc,win}){
     $(view+'-workspace').focus();
   };
   const fit=()=>{cancelResize();setHeight(height);};doc.addEventListener('keydown',keydown);win?.addEventListener('blur',cancelResize);win?.addEventListener('resize',fit);paint();
-  return{preserves:element=>parked.has(element),dispose(){doc.removeEventListener('keydown',keydown);doc.removeEventListener('change',change,true);doc.removeEventListener('blur',blur,true);parked.clear();win?.removeEventListener('blur',cancelResize);win?.removeEventListener('resize',fit);}};
+  return{preserves:element=>parked.has(element),openClip(){if(expanded&&detail!=='clip')park(detailRoot());detail='clip';expanded=true;paint();},dispose(){doc.removeEventListener('keydown',keydown);doc.removeEventListener('change',change,true);doc.removeEventListener('blur',blur,true);parked.clear();win?.removeEventListener('blur',cancelResize);win?.removeEventListener('resize',fit);}};
 }

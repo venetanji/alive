@@ -26,7 +26,7 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2,work
     snapshot.runtime={tracks:document.tracks.map(t=>({trackId:t.id,activeClipId:t.slots[0].id,phase:'0',epoch:'1',pendingAction:null,pendingClipId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'};
   }
   if(workspaces){
-    document.format='alive-session-v4';document.loopStartBeats=0;document.loopEndBeats=document.lengthBeats;document.sources=[];document.placements=[];snapshot.mode='workspacesV4';snapshot.devices=[];snapshot.preparedClips=[];snapshot.trackChains=[];snapshot.preparedWorkspaces={preparationRevision:snapshot.preparationRevision,sources:[],slots:[],placements:[]};
+    snapshot.capabilities.arrangement=true;snapshot.capabilities.workspaces=true;document.format='alive-session-v4';document.loopStartBeats=0;document.loopEndBeats=document.lengthBeats;document.sources=[];document.placements=[];snapshot.mode='workspacesV4';snapshot.devices=[];snapshot.preparedClips=[];snapshot.trackChains=[];snapshot.preparedWorkspaces={preparationRevision:snapshot.preparationRevision,sources:[],slots:[],placements:[]};
     document.tracks.forEach((t,i)=>{const clip=t.slots[0],sourceId=`source-${t.id}`;document.sources.push({kind:'midi',id:sourceId,trackId:t.id,name:clip.name,lengthBeats:clip.lengthBeats,notes:clip.notes,automation:clip.automation});t.color='#c77b61';t.chain={kind:'midi',instrument:t.device};delete t.device;delete t.defaultClipId;t.slots[0]={id:clip.id,name:clip.name,sourceId,sourceOffset:{kind:'beats',value:0},loopEnabled:true};snapshot.trackChains.push({trackId:t.id,kind:'midi',instrumentId:t.chain.instrument.instanceId,effectIds:t.effects.map(e=>e.instanceId)});snapshot.preparedWorkspaces.sources.push({trackId:t.id,sourceId,kind:'midi',name:clip.name,lengthFrames:'205714'});snapshot.preparedWorkspaces.slots.push({trackId:t.id,slotId:clip.id,slot:0,sourceId,name:clip.name,sourceOffsetFrames:'0',loopEnabled:true});});
     snapshot.runtime.tracks=document.tracks.map(t=>({trackId:t.id,authority:'arrangement',activeSourceId:null,activePlacementId:null,activeSlotId:null,phase:null,epoch:'1',pendingAction:null,pendingAuthority:null,pendingSlotId:null,pendingSerial:null,pendingFrame:null}));
   }
@@ -41,7 +41,19 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2,work
     window.calls=[];const undo=[],redo=[];window.__TAURI__={core:{invoke:async(name,args)=>{window.calls.push({name,args});if(name==='alive_current')return structuredClone(snapshot);if(name==='alive_edit'){undo.push(structuredClone(snapshot.draft??snapshot.document));redo.length=0;snapshot.draft=args.document;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return structuredClone(snapshot);}if(name==='alive_history'){const from=args.direction==='undo'?undo:redo,to=args.direction==='undo'?redo:undo;to.push(structuredClone(snapshot.draft??snapshot.document));snapshot.draft=from.pop();snapshot.draftRevision++;snapshot.history={canUndo:!!undo.length,canRedo:!!redo.length};return structuredClone(snapshot);}}}};
     const invoke=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=(name,args)=>name==='alive_device'&&args.action==='remove'?window.removeTrack(args.trackId):invoke(name,args);
     const previous=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=async(name,args)=>{
-      if(name==='alive_workspace_edit'){window.calls.push({name,args});const op=args.operation;if(op.kind!=='noteUpdate')throw Error('Fixture supports noteUpdate only');snapshot.draft??=structuredClone(snapshot.document);Object.assign(snapshot.draft.sources.find(s=>s.id===op.sourceId).notes.find(n=>n.id===op.noteId),{beat:op.beat,duration:op.duration,pitch:op.pitch,velocity:op.velocity});snapshot.draftRevision++;return{snapshot:structuredClone(snapshot),affected:{sourceId:op.sourceId,noteId:op.noteId}};}
+      if(name==='alive_workspace_edit'){
+        window.calls.push({name,args});const op=args.operation;if(args.draftRevision!==snapshot.draftRevision)throw Error('Stale draft');const draft=structuredClone(snapshot.draft??snapshot.document),affected={trackId:op.trackId??null,sourceId:op.sourceId??null,placementId:null,slotId:null,noteId:op.noteId??null};
+        if(op.kind==='noteUpdate')Object.assign(draft.sources.find(s=>s.id===op.sourceId).notes.find(n=>n.id===op.noteId),{beat:op.beat,duration:op.duration,pitch:op.pitch,velocity:op.velocity});
+        else if(op.kind==='noteDelete'){const source=draft.sources.find(s=>s.id===op.sourceId);source.notes=source.notes.filter(n=>n.id!==op.noteId);}
+        else if(op.kind==='sourceCreateMidi'){affected.sourceId=`new-source-${snapshot.draftRevision}`;draft.sources.push({id:affected.sourceId,kind:'midi',trackId:op.trackId,name:op.name,lengthBeats:op.lengthBeats,notes:[],automation:[]});}
+        else if(op.kind==='placementCreate'){const {kind,...p}=op;affected.placementId=`new-placement-${snapshot.draftRevision}`;draft.placements.push({id:affected.placementId,...p});}
+        else if(op.kind==='placementUpdate'){const p=draft.placements.find(p=>p.id===op.placementId);Object.assign(affected,{trackId:p.trackId,sourceId:p.sourceId,placementId:p.id});Object.assign(p,{start:op.start,duration:op.duration,sourceOffset:op.sourceOffset,loopEnabled:op.loopEnabled});}
+        else if(op.kind==='placementDelete'){const p=draft.placements.find(p=>p.id===op.placementId);Object.assign(affected,{trackId:p.trackId,sourceId:p.sourceId,placementId:p.id});draft.placements=draft.placements.filter(p=>p.id!==op.placementId);}
+        else if(op.kind==='sourceRename'){const s=draft.sources.find(s=>s.id===op.sourceId);s.name=op.name;affected.trackId=s.trackId;}
+        else if(op.kind==='transportRange'){const {kind,...fields}=op;Object.assign(draft,fields);}
+        else throw Error('Unsupported fixture edit '+op.kind);
+        undo.push(structuredClone(snapshot.draft??snapshot.document));redo.length=0;snapshot.draft=draft;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return{snapshot:structuredClone(snapshot),affected};
+      }
       if(name==='alive_mixer'){window.calls.push({name,args});for(const document of [snapshot.document,snapshot.draft])if(document)Object.assign(document.tracks[args.track],{gain:args.gain,mute:args.mute,solo:args.solo});snapshot.dirty=true;return;}
       if(name==='alive_clip_edit'){window.calls.push({name,args});const op=args.operation;if(op.kind!=='create')throw Error('Fixture supports create only');snapshot.draft??=structuredClone(snapshot.document);const track=snapshot.draft.tracks.find(t=>t.id===op.trackId);if(track.slots[op.slot])throw Error('Slot already occupied');track.slots[op.slot]={id:`new-${track.id}-${op.slot}`,name:'New clip',lengthBeats:8,notes:[],automation:[]};snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return{snapshot:structuredClone(snapshot),affected:{trackId:track.id,slot:op.slot}};}
       return previous(name,args);
@@ -278,4 +290,66 @@ for(const kind of ['gain','note'])test(`v4 navigation and polling preserve unfin
   await page.keyboard.press('Tab');await expect(page.locator('#arrangement-workspace')).toBeVisible();await page.keyboard.press('Tab');await expect(page.locator('#session-workspace')).toBeVisible();
   expect(await page.evaluate(()=>window.sessionSnapshot.runtime.tracks.every(t=>t.authority==='arrangement'&&t.activeSourceId===null))).toBe(true);
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual(committed);
+});
+
+async function openArrangement(page,size){
+  await page.setViewportSize(size);await openSession(page,false,true,2,true);
+  await page.evaluate(()=>{const s=window.sessionSnapshot,d=s.document;d.lengthBeats=16;d.placements=d.tracks.map((t,i)=>({id:`p-${i}`,trackId:t.id,sourceId:d.sources[i].id,start:0,duration:4,sourceOffset:{kind:'beats',value:0},loopEnabled:true}));s.preparedWorkspaces.placements=d.placements.map(p=>({placementId:p.id,trackId:p.trackId,sourceId:p.sourceId,startFrame:'0',durationFrames:'102857',sourceOffsetFrames:'0',loopEnabled:true}));s.draftRevision++;});
+  await page.locator('#view-arrangement').click();await expect(page.getByRole('button',{name:'Select placement p-0',exact:true})).toBeVisible();
+}
+const workspaceEdits=page=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit'));
+async function dragTimeline(page,locator,from,to,{cancel=false,hide=false}={}){
+  const box=await locator.boundingBox();await page.mouse.move(box.x+from[0],box.y+from[1]);await page.mouse.down();await page.mouse.move(box.x+to[0],box.y+to[1],{steps:6});
+  if(cancel)await page.keyboard.press('Escape');if(hide)await page.locator('#view-session').click();await page.mouse.up();
+}
+for(const size of [{width:1440,height:900},{width:1280,height:800}]){
+  test(`Arrangement pointer edits, cancellation and local view controls at ${size.width}`,async({page})=>{
+    await openArrangement(page,size);const p=page.getByRole('button',{name:'Select placement p-0',exact:true});
+    const box=await p.boundingBox();await page.mouse.move(box.x+30,box.y+12);await page.mouse.down();await page.mouse.move(box.x+126,box.y+12,{steps:5});expect(await workspaceEdits(page)).toHaveLength(0);await page.mouse.up();
+    await expect(page.getByLabel('Placement start',{exact:true})).toHaveValue('2');expect(await workspaceEdits(page)).toHaveLength(1);
+    await dragTimeline(page,p,[30,12],[78,12],{cancel:true});expect(await workspaceEdits(page)).toHaveLength(1);await expect(page.getByLabel('Placement start',{exact:true})).toHaveValue('2');
+    await dragTimeline(page,p.locator('.timeline-edge.right'),[3,15],[51,15]);await expect(page.getByLabel('Placement duration',{exact:true})).toHaveValue('5');
+    await dragTimeline(page,p.locator('.timeline-edge.left'),[3,15],[27,15]);await expect(page.getByLabel('Placement start',{exact:true})).toHaveValue('2.5');await expect(page.getByLabel('Placement source offset',{exact:true})).toHaveValue('0.5');
+    await page.getByLabel('Loop source suffix',{exact:true}).uncheck();expect((await workspaceEdits(page)).at(-1).args.operation).toMatchObject({kind:'placementUpdate',loopEnabled:false,start:2.5,duration:4.5,sourceOffset:{kind:'beats',value:.5}});const count=(await workspaceEdits(page)).length;await dragTimeline(page,p,[30,12],[78,12],{hide:true});await page.locator('#view-arrangement').click();expect(await workspaceEdits(page)).toHaveLength(count);
+    await page.getByRole('button',{name:'Zoom timeline in',exact:true}).click();await page.getByRole('button',{name:'Zoom timeline out',exact:true}).click();await page.locator('#timeline-scroll').evaluate(e=>e.scrollLeft=100);await page.getByRole('button',{name:'Fit timeline',exact:true}).click();
+    expect(await page.evaluate(()=>window.calls.filter(c=>['alive_workspace_action','alive_transport','alive_clip_action'].includes(c.name)))).toHaveLength(0);
+    await page.getByRole('button',{name:'Delete placement',exact:true}).click();await expect(p).toHaveCount(0);await page.locator('#undo').click();await expect(p).toBeVisible();
+    expect(await page.evaluate(()=>window.sessionSnapshot.draft.tracks[0].slots[0].sourceId)).toBe('source-track-1');
+    await page.screenshot({path:`/tmp/alive-workspaces-task4-midi/browser-arrangement-${size.width}x${size.height}.png`});
+  });
+  for(const field of ['Placement start','Placement source offset','Arrangement source name'])test(`Arrangement unfinished ${field} survives hiding and polling at ${size.width}`,async({page})=>{
+    await openArrangement(page,size);await page.getByRole('button',{name:'Select placement p-0',exact:true}).click();const input=page.getByLabel(field,{exact:true}),value=field.includes('name')?'Unfinished source':field.includes('offset')?'0.5':'1';await input.fill(value);await input.evaluate(e=>window.retainedArrangementField=e);
+    for(let i=0;i<2;i++){await page.locator('#view-session').click();await page.locator('#view-arrangement').click();}
+    await page.locator('#toggle-browser').click();await page.locator('#toggle-browser').click();const polls=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(polls+2);
+    expect(await workspaceEdits(page)).toHaveLength(0);await expect(input).toHaveValue(value);expect(await input.evaluate(e=>e===window.retainedArrangementField)).toBe(true);
+    await input.focus();await input.press('Tab');await expect.poll(async()=>(await workspaceEdits(page)).length).toBe(1);await expect(input).toHaveValue(value);
+  });
+}
+test('Arrangement creates separate source and occurrence history and cancels stale gestures and brace previews',async({page})=>{
+  await openArrangement(page,{width:1280,height:800});const lane=page.locator('.timeline-lane').first();await dragTimeline(page,lane,[384,35],[480,35]);await page.getByRole('button',{name:'Create MIDI source',exact:true}).click();await expect(page.getByLabel('MIDI source',{exact:true})).toHaveValue('new-source-1');await page.getByRole('button',{name:'Place source in range',exact:true}).click();expect((await workspaceEdits(page)).map(c=>c.args.operation.kind)).toEqual(['sourceCreateMidi','placementCreate']);
+  const p=page.getByRole('button',{name:'Select placement new-placement-2',exact:true});const b=await p.boundingBox();await page.mouse.move(b.x+30,b.y+15);await page.mouse.down();await page.mouse.move(b.x+78,b.y+15);const polls=await page.evaluate(()=>{window.sessionSnapshot.draftRevision++;return window.calls.filter(c=>c.name==='alive_current').length;});await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(polls+1);await page.mouse.up();expect(await workspaceEdits(page)).toHaveLength(2);
+  await dragTimeline(page,page.locator('.timeline-brace .right'),[3,8],[-93,8],{cancel:true});expect(await workspaceEdits(page)).toHaveLength(2);
+  await dragTimeline(page,page.locator('.timeline-brace .right'),[3,8],[-93,8]);await expect(page.getByLabel('Song loop end',{exact:true})).toHaveValue('6');expect((await workspaceEdits(page)).at(-1).args.operation.kind).toBe('transportRange');
+});
+for(const size of [{width:1440,height:900},{width:1280,height:800}])test(`Arrangement eight-track scrolling, long names and expanded detail stay bounded at ${size.width}`,async({page})=>{
+  await page.setViewportSize(size);await openSession(page,true,true,8,true);await page.evaluate(()=>{const s=window.sessionSnapshot;s.document.lengthBeats=128;s.document.tracks[0].name='Long track name '.repeat(8);s.document.placements=[{id:'long',trackId:s.document.tracks[0].id,sourceId:s.document.sources[0].id,start:0,duration:4,sourceOffset:{kind:'beats',value:0},loopEnabled:true}];s.document.sources[0].name='Long MIDI source name '.repeat(5);s.draftRevision++;});
+  await page.locator('#view-arrangement').click();await page.getByRole('button',{name:'Select placement long',exact:true}).click();await page.getByRole('separator',{name:'Resize detail area'}).focus();await page.keyboard.press('End');
+  const bounds=await page.evaluate(()=>{const scroll=document.querySelector('#timeline-scroll');return{body:document.body.scrollHeight,viewport:innerHeight,workspace:document.querySelector('#arrangement-workspace').clientHeight,detail:document.querySelector('#detail-panel').getBoundingClientRect().bottom,footer:document.querySelector('footer').getBoundingClientRect().top,scrollX:scroll.scrollWidth>scroll.clientWidth,scrollY:scroll.scrollHeight>scroll.clientHeight};});
+  expect(bounds.body).toBe(bounds.viewport);expect(bounds.workspace).toBeGreaterThanOrEqual(150);expect(bounds.detail).toBeLessThanOrEqual(bounds.footer);expect(bounds.scrollX&&bounds.scrollY).toBe(true);
+  await page.locator('#timeline-scroll').evaluate(e=>{e.scrollTop=240;e.scrollLeft=800;});expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+test('Arrangement selection opens Clip detail and piano Delete never deletes its occurrence',async({page})=>{
+  await openArrangement(page,{width:1280,height:800});await page.locator('#detail-devices').click();await page.getByRole('button',{name:'Select placement p-0',exact:true}).click();
+  await expect(page.locator('#clip-detail')).toBeVisible();
+  await page.locator('#piano-roll [data-note="0"][data-part="body"]').click();await page.locator('#piano-roll').press('Delete');
+  await expect.poll(async()=>(await workspaceEdits(page)).length).toBeGreaterThan(0);expect((await workspaceEdits(page)).map(c=>c.args.operation.kind)).toEqual(['noteDelete']);await expect(page.getByRole('button',{name:'Select placement p-0',exact:true})).toBeVisible();
+});
+for(const size of [{width:1440,height:900},{width:1280,height:800}])test(`Arrangement gain preserves unfinished input and shares Session mixer at ${size.width}`,async({page})=>{
+  await openArrangement(page,size);const gain=page.getByLabel('Pulse Arrangement gain',{exact:true});await gain.fill('0.713');
+  for(let i=0;i<2;i++){await page.locator('#view-session').click();await page.locator('#view-arrangement').click();}
+  const polls=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(polls+2);
+  await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await gain.focus();await gain.press('Tab');await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_mixer').length)).toBe(1);
+  expect(await page.evaluate(()=>window.calls.find(c=>c.name==='alive_mixer').args)).toMatchObject({track:0,gain:.713});await expect(page.locator('#arrangement-workspace')).toBeVisible();
+  await page.locator('#view-session').click();await expect(page.getByLabel('Pulse gain',{exact:true})).toHaveValue('0.713');
 });

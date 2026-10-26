@@ -63,3 +63,11 @@ test('native sequence and preparation strings reject late runtime snapshots beyo
   const old=structuredClone(b);old.snapshotSequence='9007199254740995';old.preparationRevision='9007199254740992';old.state.playing=1;model.accept(old);assert.equal(model.snapshot().state.playing,0);
   assert.throws(()=>model.accept({...b,snapshotSequence:9007199254740994}),/decimal string/);
 });
+
+test('v4 live polls preserve placement/source drafts and immutable prepared labels',()=>{
+  const doc=document(),t=doc.tracks[0];doc.format='alive-session-v4';t.chain={kind:'midi',instrument:t.device};delete t.device;t.slots=[];doc.sources=[{id:'source',trackId:t.id,name:'Prepared name',notes:t.notes,automation:t.automation}];delete t.notes;delete t.automation;doc.placements=[{id:'occurrence',trackId:t.id,sourceId:'source',start:0,duration:4,sourceOffset:{kind:'beats',value:0},loopEnabled:true}];
+  const initial={...snapshot(doc),draftRevision:2,preparationRevision:'9007199254740993',snapshotSequence:'9007199254740995',preparedWorkspaces:{preparationRevision:'9007199254740993',sources:[{sourceId:'source',name:'Prepared name'}],placements:[{placementId:'occurrence',sourceId:'source',startFrame:'0'}]}};
+  const model=createAliveModel();model.accept(initial);model.edit(d=>{d.sources[0].name='Pending name';d.sources[0].notes[0].pitch=72;d.placements[0].start=2;});
+  const poll=structuredClone(initial);poll.snapshotSequence='9007199254740996';poll.document.tracks[0].chain.instrument.parameters.cutoff=1700;poll.document.tracks[0].gain=.5;model.accept(poll);
+  assert.equal(model.document().placements[0].start,2);assert.equal(model.document().sources[0].notes[0].pitch,72);assert.equal(model.document().tracks[0].gain,.5);assert.equal(model.document().tracks[0].chain.instrument.parameters.cutoff,1700);assert.equal(model.snapshot().preparedWorkspaces.sources[0].name,'Prepared name');assert.equal(model.snapshot().preparedWorkspaces.placements[0].startFrame,'0');
+});

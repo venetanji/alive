@@ -134,7 +134,9 @@ from pathlib import Path
 source, target = map(Path, sys.argv[1:])
 session = json.loads(source.read_text())
 for track in session['tracks']:
-    track['device']['path'] = str((source.parent / track['device']['path']).resolve(strict=True))
+    instrument = track.get('device') or track.get('chain', {}).get('instrument')
+    for device in ([instrument] if instrument else []) + track.get('effects', []):
+        device['path'] = str((source.parent / device['path']).resolve(strict=True))
 target.write_text(json.dumps(session, indent=2) + '\n')
 PY
   ultra_launch_arguments=("$ultra_initial_session")
