@@ -759,3 +759,38 @@ for(const effectFirst of [false,true])test(`v4 unavailable audio chain has expli
   if(effectFirst){const bypass=descendants(page.ids.get('chain')).find(e=>e.attrs['aria-label']?.startsWith('Bypass '));assert.equal(bypass.disabled,false);}
   view.dispose();
 });
+
+for(const firstField of ['name','offset'])test(`v4 queued slot ${firstField} edit preserves the other accepted field`,async()=>{
+  const initial=workspaceState(),page=dom('./alive.html'),native=backend(initial);let release;
+  const view=mountAlive({...page,invoke:async(name,args)=>{
+    if(name!=='alive_workspace_edit')return native.invoke(name,args);
+    native.calls.push({name,args});if(!release)await new Promise(resolve=>{release=resolve;});
+    native.snapshot.draft??=structuredClone(native.snapshot.document);const op=args.operation;
+    const slot=native.snapshot.draft.tracks.find(t=>t.id===op.trackId).slots.find(s=>s?.id===op.slotId);
+    Object.assign(slot,{name:op.name,sourceOffset:op.sourceOffset,loopEnabled:op.loopEnabled});native.snapshot.draftRevision++;
+    return{snapshot:structuredClone(native.snapshot),affected:{trackId:op.trackId,slotId:op.slotId,sourceId:slot.sourceId,noteId:null,placementId:null}};
+  }});await settle();
+  const name=page.find('Clip name'),offset=page.find('Slot source offset');name.value='Renamed slot';offset.value='0.25';
+  await(firstField==='name'?name:offset).fire('change');await(firstField==='name'?offset:name).fire('change');
+  assert.equal(native.calls.filter(c=>c.name==='alive_workspace_edit').length,1);release();await settle();await settle();await settle();
+  const edits=native.calls.filter(c=>c.name==='alive_workspace_edit');assert.deepEqual(edits.map(c=>c.args.draftRevision),[0,1]);
+  assert.deepEqual(edits[1].args.operation,{kind:'slotUpdate',trackId:'track-1',slotId:'clip-track-1',name:'Renamed slot',sourceOffset:{kind:'beats',value:0.25},loopEnabled:true});
+  assert.deepEqual(view.model.document().tracks[0].slots[0],{...initial.document.tracks[0].slots[0],name:'Renamed slot',sourceOffset:{kind:'beats',value:0.25}});view.dispose();
+});
+
+for(const field of ['name','offset'])for(const boundary of ['rewire','delete'])test(`v4 queued slot ${field} refuses an earlier ${boundary}`,async()=>{
+  const initial=workspaceState(),page=dom('./alive.html'),native=backend(initial);let release;
+  const view=mountAlive({...page,invoke:async(name,args)=>{
+    if(name!=='alive_workspace_edit')return native.invoke(name,args);
+    native.calls.push({name,args});if(!release)await new Promise(resolve=>{release=resolve;});
+    native.snapshot.draft??=structuredClone(native.snapshot.document);const slot=native.snapshot.draft.tracks[0].slots[0];
+    if(boundary==='delete')native.snapshot.draft.tracks[0].slots[0]=null;
+    else{const source=structuredClone(native.snapshot.draft.sources[0]);source.id='new-independent-source';source.notes.forEach(n=>n.id+='-new');native.snapshot.draft.sources.push(source);slot.sourceId=source.id;}
+    native.snapshot.draftRevision++;
+    return{snapshot:structuredClone(native.snapshot),affected:{trackId:'track-1',slotId:slot.id,sourceId:slot.sourceId,noteId:null,placementId:null}};
+  }});await settle();
+  const input=page.find(field==='name'?'Clip name':'Slot source offset');
+  await page.find(boundary==='rewire'?'Make source independent':'Delete clip').fire('click');input.value=field==='name'?'Stale name':'0.25';await input.fire('change');
+  release();await settle();await settle();await settle();
+  assert.equal(native.calls.filter(c=>c.name==='alive_workspace_edit').length,1);assert.match(page.ids.get('notice').textContent,/slot or source changed/);view.dispose();
+});

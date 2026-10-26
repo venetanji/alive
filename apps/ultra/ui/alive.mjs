@@ -196,13 +196,20 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   }
   function workspaceEdit(operation){
     const scope=scopeRevision,token=selectionToken;
-    return enqueue(async()=>{if(scope!==scopeRevision)throw Error('The source scope changed. Select it and try again.');const result=await command('alive_workspace_edit',{operation});model.applied(result.snapshot);listRevision++;
+    return enqueue(async()=>{if(scope!==scopeRevision)throw Error('The source scope changed. Select it and try again.');const result=await command('alive_workspace_edit',{operation:typeof operation==='function'?operation():operation});model.applied(result.snapshot);listRevision++;
       if(token===selectionToken){const a=result.affected,track=model.document().tracks.find(t=>t.id===a.trackId);if(a.slotId&&track){const slot=track.slots.findIndex(s=>s?.id===a.slotId);if(slot>=0)selectedSlots.set(a.trackId,slot);}selectedNote=a.noteId??null;}
       musicKey=clipControlsKey=trackKey='';render();return result;});
   }
+  function workspaceSlotEdit(trackId,slotId,sourceId,changes){
+    return workspaceEdit(()=>{
+      const slot=model.document().tracks.find(t=>t.id===trackId)?.slots.find(s=>s?.id===slotId);
+      if(!slot||slot.sourceId!==sourceId)throw Error('The originating slot or source changed. Select it and try again.');
+      return{kind:'slotUpdate',trackId,slotId,name:slot.name,sourceOffset:slot.sourceOffset,loopEnabled:slot.loopEnabled,...changes};
+    });
+  }
   function workspaceClipEdit(operation){
     const track=model.document().tracks.find(t=>t.id===operation.trackId),slot=track?.slots.find(s=>s?.id===operation.clipId),source=model.document().sources.find(s=>s.id===slot?.sourceId);
-    const {kind,trackId,clipId,...rest}=operation;
+    const {kind,trackId,clipId,sourceId,...rest}=operation;
     if(kind==='create'){
       const scope=scopeRevision,token=selectionToken;
       return enqueue(async()=>{if(scope!==scopeRevision)throw Error('The source scope changed.');const created=await command('alive_workspace_edit',{operation:{kind:'sourceCreateMidi',trackId,name:`Clip ${rest.slot+1}`,lengthBeats:model.document().lengthBeats}});model.applied(created.snapshot);
@@ -211,7 +218,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     if(!slot||!source)throw Error('Select a MIDI source slot.');
     if(kind==='duplicate')return workspaceEdit({kind:'slotDuplicate',trackId,slotId:slot.id,...rest});
     if(kind==='delete')return workspaceEdit({kind:'slotDelete',trackId,slotId:slot.id});
-    if(kind==='rename')return workspaceEdit({kind:'slotUpdate',trackId,slotId:slot.id,name:rest.name,sourceOffset:slot.sourceOffset,loopEnabled:slot.loopEnabled});
+    if(kind==='rename')return workspaceSlotEdit(trackId,slot.id,sourceId??source.id,{name:rest.name});
     if(kind==='length')return workspaceEdit({kind:'sourceLength',sourceId:source.id,...rest});
     if(kind==='noteCreate')return workspaceEdit({kind:'noteCreate',sourceId:source.id,...rest});
     throw Error('This clip operation is unavailable in workspaces.');
@@ -256,8 +263,8 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     if(!source){container.append(make('span','muted','Source unavailable'));return;}
     const references=document.tracks.reduce((n,t)=>n+t.slots.filter(s=>s?.sourceId===source.id).length,0)+document.placements.filter(p=>p.sourceId===source.id).length;
     container.append(make('span','source-scope',`${source.name} / shared source: ${references} references. Notes and automation edit every reference.`));
-    const name=make('input');name.value=slot.name;name.setAttribute('aria-label','Clip name');name.maxLength=64;name.addEventListener('change',guard(()=>clipEdit({kind:'rename',trackId:track.id,clipId:slot.id,name:name.value})));container.append(name);
-    if(source.kind==='midi'){container.append(numeric('Selected clip length',source.lengthBeats,{min:1/64,max:256},lengthBeats=>workspaceEdit({kind:'sourceLength',sourceId:source.id,lengthBeats})));container.append(numeric('Slot source offset',slot.sourceOffset.value,{min:0,max:source.lengthBeats},value=>workspaceEdit({kind:'slotUpdate',trackId:track.id,slotId:slot.id,name:slot.name,sourceOffset:{kind:'beats',value},loopEnabled:slot.loopEnabled})));}
+    const name=make('input');name.value=slot.name;name.setAttribute('aria-label','Clip name');name.maxLength=64;name.addEventListener('change',guard(()=>clipEdit({kind:'rename',trackId:track.id,clipId:slot.id,sourceId:source.id,name:name.value})));container.append(name);
+    if(source.kind==='midi'){container.append(numeric('Selected clip length',source.lengthBeats,{min:1/64,max:256},lengthBeats=>workspaceEdit({kind:'sourceLength',sourceId:source.id,lengthBeats})));container.append(numeric('Slot source offset',slot.sourceOffset.value,{min:0,max:source.lengthBeats},value=>workspaceSlotEdit(track.id,slot.id,source.id,{sourceOffset:{kind:'beats',value}})));}
     const destination=make('select');destination.setAttribute('aria-label','Duplicate destination');track.slots.forEach((s,i)=>{if(!s){const option=make('option','',`Slot ${i+1}`);option.value=String(i);destination.append(option);}});destination.value=destination.children[0]?.value??'';container.append(destination);
     button('Duplicate clip',()=>workspaceEdit({kind:'slotDuplicate',trackId:track.id,slotId:slot.id,destinationSlot:Number(destination.value)})).disabled=!destination.children.length;
     button('Make source independent',()=>workspaceEdit({kind:'sourceIndependent',occurrence:{kind:'slot',trackId:track.id,slotId:slot.id}}));
