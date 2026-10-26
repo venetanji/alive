@@ -705,7 +705,6 @@ bool request_ingress(const Request &r, Receipt &immediate, unsigned version) noe
     return refused(ALIVE_SESSION_V3_STALE_PREPARATION, "Stale clip preparation.");
   if(version==4){
     if(!request_fields_v4(r))return refused(ALIVE_SESSION_V4_BAD_FIELD,"Malformed workspace request fields.");
-    if(r.kind==ALIVE_SESSION_V4_SEEK)return refused(ALIVE_SESSION_V4_FEATURE_DISABLED,"Workspace Seek is not provisionally admitted.");
   }
   if (!r.request_serial || r.request_serial <= ingress_serial_ || r.request_serial == UINT64_MAX)
     return refused(ALIVE_SESSION_V3_STALE_REQUEST, "Request serial must increase without wrapping.");
@@ -1015,7 +1014,11 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
       for (unsigned t = 0; t < config_.track_count; ++t) {
         candidate_cancel(t, ALIVE_SESSION_V3_CANCELED, ALIVE_SESSION_V3_REPLACED_REQUEST);
         auto &ts = candidate_.tracks[t];
-        if (ts.active_clip != None)
+        if (mode_ == Mode::Workspaces) {
+          if (candidate_resolved_[t].authority == ALIVE_SESSION_V4_SESSION_AUTHORITY)
+            continue;
+          resolve_mask |= 1u << t;
+        } else if (ts.active_clip != None)
           ts.phase = r.position % config_.clips[ts.active_clip].length_frames;
         if (candidate_.playing || !clear_[t])
           candidate_.clear_mask |= 1u << t;
@@ -1074,6 +1077,13 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
   }
   tail_.store(tail, std::memory_order_release);
   bool resolved = true;
+  if (mode_ == Mode::Workspaces && last_seek && candidate_.playing)
+    for (unsigned t = 0; t < config_.track_count; ++t)
+      if (candidate_.tracks[t].pending_action &&
+          candidate_.tracks[t].pending_frame <= state_.absolute_frame)
+        // The shared transition scratch resolves this final action, not the
+        // Arrangement occurrence that the same-sample action replaces.
+        resolve_mask &= ~(1u << t);
   if (mode_ == Mode::Workspaces && resolve_mask) {
     candidate_.unscheduled = true;
     unsigned allowance = 0;
@@ -1085,7 +1095,9 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
         if (!(resolve_mask & (1u << t))) continue;
         unsigned probes = 0;
         candidate_resolved_[t] = resolve_arrangement(t, candidate_.position, probes);
-        candidate_resolved_[t].pending_slot = candidate_.tracks[t].pending_clip;
+        candidate_resolved_[t].pending_slot =
+            candidate_.tracks[t].pending_action == ALIVE_SESSION_V4_LAUNCH
+                ? candidate_.tracks[t].pending_clip : None;
         project_cursor_v4(candidate_.tracks[t], candidate_resolved_[t]);
         if (candidate_.playing && candidate_resolved_[t].source != None)
           candidate_.clear_mask |= 1u << t;

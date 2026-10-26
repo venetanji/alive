@@ -456,8 +456,8 @@ void refusals() {
   bad = c; bad.devices[0].output_layout = 1; reject(bad);
   bad = c; bad.tracks[0].gain = 2.01; reject(bad);
   bad = c; bad.loop_enabled = 1; reject(bad);
-  bad = c; bad.placements[0].loop_enabled = 1; reject(bad);
-  bad = c; bad.slots[7].loop_enabled = 1; reject(bad);
+  bad = c; bad.placements[0].loop_enabled = 1; assert(alive_session_validate_v4(&bad));
+  bad = c; bad.slots[7].loop_enabled = 1; assert(alive_session_validate_v4(&bad));
   bad = c; bad.audio_buffer_count = 1; reject(bad);
   for (unsigned action : {ALIVE_SESSION_V4_LAUNCH, ALIVE_SESSION_V4_TRACK_STOP,
                           ALIVE_SESSION_V4_RETURN}) {
@@ -469,12 +469,15 @@ void refusals() {
     AliveSessionReceiptV4 out{}; out.version = 4; out.struct_bytes = sizeof out;
     assert(alive_session_request_v4(&r, &out) && out.status == ALIVE_SESSION_V4_QUEUED);
   }
-  assert(request(ALIVE_SESSION_V4_SEEK, false).error == ALIVE_SESSION_V4_FEATURE_DISABLED);
   render(1024);
   assert(state().playing && state().tracks[1].phase == 2748);
-  assert(state().receipts[(serial - 1) % 128].error == ALIVE_SESSION_V4_END_CANCELED);
+  assert(state().receipts[serial % 128].error == ALIVE_SESSION_V4_END_CANCELED);
   assert(state().tracks[1].authority == ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY);
-  std::printf("transactional malformed/ownership/unused-source/loops/audio refusals=%u unreachable-actions=3 Seek-refused PASS\n", refused);
+  const auto sought = request(ALIVE_SESSION_V4_SEEK);
+  render(1);
+  assert(state().position == 1 && state().tracks[1].phase == 701 &&
+         state().receipts[sought.request_serial % 128].status == ALIVE_SESSION_V4_APPLIED);
+  std::printf("transactional malformed/ownership/unused-source/song-loop/audio refusals=%u unreachable-actions=3 Seek-applied PASS\n", refused);
 
   c = multi(2);
   c.source_count = 8;

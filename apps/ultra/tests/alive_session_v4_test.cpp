@@ -231,9 +231,7 @@ void refusals_and_receipts() {
   assert(!alive_session_validate_v4(&bad));
   bad = c;
   bad.placements[0].loop_enabled = 1;
-  assert(!alive_session_validate_v4(&bad));
-  assert(alive_session_diagnostic_v4(&diagnostic) &&
-         diagnostic.error == ALIVE_SESSION_V4_FEATURE_DISABLED);
+  assert(alive_session_validate_v4(&bad));
   bad = c;
   bad.event_count = bad.sources[0].event_count = 5;
   for (unsigned i = 0; i < 5; ++i)
@@ -489,11 +487,14 @@ int main(int argc, char **argv) {
   render(1);
   assert(state().playing && state().tracks[0].active_source == 0);
   assert(request(99, false).error == ALIVE_SESSION_V4_BAD_FIELD);
-  assert(request(ALIVE_SESSION_V4_SEEK, false).error == ALIVE_SESSION_V4_FEATURE_DISABLED);
   const auto unreachable = request(ALIVE_SESSION_V4_TRACK_ACTIONS);
   render(1);
   assert(state().receipts[unreachable.request_serial % 128].error == ALIVE_SESSION_V4_END_CANCELED);
   assert(state().tracks[0].authority == ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY);
+  render(1024);
+  const auto sought = request(ALIVE_SESSION_V4_SEEK);
+  render(1);
+  assert(state().position == 1 && state().receipts[sought.request_serial % 128].status == ALIVE_SESSION_V4_APPLIED);
   boundary_cases();
   refusals_and_receipts();
   rejected_candidate_identity();

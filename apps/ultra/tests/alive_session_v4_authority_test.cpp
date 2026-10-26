@@ -1267,6 +1267,530 @@ void exact_combined_batch() {
   std::puts("combined chased/ordinary events: retained28+batch4=32 accepted; retained29+batch4=33 "
             "atomic refusal=PASS");
 }
+AliveSessionReceiptV4 seek(uint64_t position, bool expected = true) {
+  AliveSessionRequestV4 r{};
+  r.version = 4;
+  r.struct_bytes = sizeof r;
+  r.kind = ALIVE_SESSION_V4_SEEK;
+  r.preparation_revision = preparation;
+  r.request_serial = ++serial;
+  r.position = position;
+  AliveSessionReceiptV4 out{};
+  out.version = 4;
+  out.struct_bytes = sizeof out;
+  assert(bool(alive_session_request_v4(&r, &out)) == expected);
+  return out;
+}
+AliveSessionConfigV4 suffix_fixture(unsigned effects = 0) {
+  auto c = prepare(effects);
+  c.length_frames = c.loop_end = 12000;
+  c.sources[0].length_frames = 2000;
+  c.sources[0].event_count = c.event_count = 8;
+  c.sources[0].lane_count = c.sources[0].owned_masks[0] = 1;
+  c.devices[0].parameters[0].automated = 1;
+  c.events[0] = {0, 0, ALIVE_SESSION_NOTE_ON, 0, 61, 100};
+  c.events[1] = {0, 0, ALIVE_SESSION_NOTE_ON, 0, 64, 100};
+  c.events[2] = {100, 0, ALIVE_SESSION_AUTOMATION, 0, 0, 1000};
+  c.events[3] = {400, 0, ALIVE_SESSION_NOTE_OFF, 0, 61, 0};
+  c.events[4] = {400, 0, ALIVE_SESSION_AUTOMATION, 0, 0, 2000};
+  c.events[5] = {400, 0, ALIVE_SESSION_NOTE_ON, 0, 60, 90};
+  c.events[6] = {700, 0, ALIVE_SESSION_NOTE_OFF, 0, 64, 0};
+  c.events[7] = {900, 0, ALIVE_SESSION_NOTE_OFF, 0, 60, 0};
+  c.slot_count = 1;
+  c.tracks[0].slots[3] = 0;
+  c.slots[0] = {0, 0, 1, 0, 400};
+  c.placements[0] = {0, 0, 1, 0, 0, 3500, 400};
+  c.placements[1] = {0, 0, 1, 0, 3500, 2100, 400};
+  return c;
+}
+AudioRun suffix_playback(unsigned partition, unsigned effects = 0, bool session = false) {
+  auto c = suffix_fixture(effects);
+  install(c);
+  if (session)
+    actions(1, LAUNCH, 3);
+  request();
+  AudioRun out;
+  frames(6000, partition, &out.pcm);
+  const auto s = state();
+  assert(s.playing && !s.fault);
+  if (session) {
+    assert(s.tracks[0].active_slot == 0 && s.tracks[0].phase == 1600);
+    assert(s.tracks[0].authority == ALIVE_SESSION_V4_SESSION_AUTHORITY);
+  } else {
+    assert(s.tracks[0].active_source == NONE && !s.tracks[0].phase);
+    assert(std::all_of(out.pcm.begin() + 11200, out.pcm.end(), [](float v) { return v == 0; }));
+    assert(std::none_of(dispatches.begin(), dispatches.begin() + dispatch_count,
+                        [](const Dispatch &e) { return e.frame == 5600; }));
+  }
+  const unsigned kinds[]{ALIVE_SESSION_NOTE_OFF, ALIVE_SESSION_AUTOMATION,
+                         ALIVE_SESSION_NOTE_ON, ALIVE_SESSION_NOTE_ON};
+  const unsigned pitches[]{61, 0, 64, 60};
+  for (unsigned seam : session ? std::vector<unsigned>{0, 1600, 3200, 4800}
+                               : std::vector<unsigned>{0, 1600, 3200, 3500, 5100}) {
+    auto it = std::find_if(dispatches.begin(), dispatches.begin() + dispatch_count,
+                           [=](const Dispatch &e) { return e.frame == seam; });
+    assert(it != dispatches.begin() + dispatch_count);
+    for (unsigned j = 0; j < 4; ++j) {
+      assert(it[j].frame == seam && it[j].kind == kinds[j] && it[j].pitch == pitches[j]);
+      assert(it[j].occurrence == (session ? NONE : seam < 3500 ? 0u : 1u));
+    }
+    // Every real instrument/effect root restarts to the identical audible state.
+    for (unsigned i = 0; i < 200; ++i)
+      assert(out.pcm[i] == out.pcm[seam * 2 + i]);
+  }
+  out.events.assign(dispatches.begin(), dispatches.begin() + dispatch_count);
+  return out;
+}
+AudioRun seek_continuity(unsigned partition, unsigned effects, bool change, bool looping = false) {
+  auto c = authority_fixture(effects);
+  if (looping) {
+    for (unsigned s = 0; s < 4; ++s)
+      c.sources[s].length_frames = s < 2 ? 2000 : 2301;
+    for (unsigned i = 0; i < c.slot_count; ++i) {
+      c.slots[i].source_offset = 400;
+      c.slots[i].loop_enabled = 1;
+    }
+    for (unsigned i = 0; i < c.placement_count; ++i) {
+      c.placements[i].source_offset = 400;
+      c.placements[i].loop_enabled = 1;
+    }
+  }
+  c.tracks[0].mute = 1;
+  install(c);
+  actions(2, 0, 0, LAUNCH, 3);
+  request();
+  AudioRun out;
+  frames(2048, partition, &out.pcm);
+  unsigned elapsed = 2048;
+  for (unsigned position : {2000u, 48000u, 125000u, 0u}) {
+    const auto before = state().tracks[1];
+    if (change)
+      seek(position);
+    frames(2048, partition, &out.pcm);
+    const auto after = state().tracks[1];
+    assert(after.active_slot == 5 && after.active_source == 3 &&
+           after.phase == (looping ? 400 + (elapsed + 2048) % 1901 : before.phase + 2048));
+    assert(after.track_epoch == before.track_epoch +
+           (looping ? (elapsed + 2047) / 1901 - (elapsed - 1) / 1901 : 0));
+    elapsed += 2048;
+    if (change)
+      assert(state().position == position + 2048);
+  }
+  out.events.assign(dispatches.begin(), dispatches.begin() + dispatch_count);
+  return out;
+}
+void seek_reduction() {
+  auto c = authority_fixture();
+  install(c);
+  request();
+  frames(2048);
+  Work measured{};
+  work = &measured;
+  std::array<AliveSessionReceiptV4, 64> requests{};
+  for (unsigned i = 0; i < 64; ++i)
+    requests[i] = seek(i == 63 ? 2000 : i % 2 ? 48000 : 125000);
+  render(1);
+  work = nullptr;
+  assert(state().position == 2001 && measured.probes[1] == 3 && measured.placement[1] == 2058);
+  for (unsigned i = 0; i < 64; ++i)
+    receipt(requests[i], i == 63 ? ALIVE_SESSION_V4_APPLIED : ALIVE_SESSION_V4_SUPERSEDED, 0);
+  frames(2048);
+  const auto before = state();
+  seek(0);
+  const auto launch = actions(1, LAUNCH, 0);
+  measured = {};
+  work = &measured;
+  const auto events = dispatch_count;
+  render(1);
+  work = nullptr;
+  // The final due Launch replaces track zero's Seek resolution entirely.
+  assert(measured.probes[1] == 1 && measured.placement[1] == 2054);
+  assert(state().tracks[0].active_source == 1 && state().tracks[0].phase == 1001 &&
+         state().tracks[0].track_epoch == before.tracks[0].track_epoch + 1);
+  assert(dispatches[events].source == 1 && dispatches[events].pitch == 49);
+  receipt(launch, ALIVE_SESSION_V4_APPLIED, 1);
+}
+void minimum_suffixes() {
+  for (unsigned tempo : {120u, 240u}) {
+    const unsigned period = tempo == 120 ? 375 : 188;
+    auto c = suffix_fixture();
+    c.tempo_bpm = tempo;
+    c.sources[0].length_frames = 400 + period;
+    c.sources[0].event_count = c.event_count = 1;
+    c.sources[0].owned_masks[0] = c.sources[0].lane_count = 0;
+    c.devices[0].parameters[0].automated = 0;
+    std::fill(c.events + 1, c.events + 1024, AliveSessionEventV2{});
+    auto bad = c;
+    --bad.sources[0].length_frames;
+    assert(!alive_session_validate_v4(&bad));
+    if (const auto dir = std::getenv("ALIVE_AUTHORITY_EVIDENCE")) {
+      const auto path = std::string(dir) + "/refused-suffix-" + std::to_string(tempo) + ".bin";
+      FILE *file = std::fopen(path.c_str(), "wb");
+      assert(file && std::fwrite(&bad, sizeof bad, 1, file) == 1);
+      assert(std::fclose(file) == 0);
+    }
+    install(c);
+    request();
+    frames(period);
+    const auto before = state().tracks[0].track_epoch;
+    render(1);
+    assert(state().tracks[0].phase == 401 && state().tracks[0].track_epoch == before + 1);
+    assert(dispatches[dispatch_count - 1].frame == period);
+    alive_session_stop_v4();
+    render(1);
+    assert(!state().playing && left[0] == 0 && right[0] == 0);
+    ultra_audio_stop();
+    assert(alive_session_reset());
+    assert(ultra_external_start());
+    render(32);
+    assert(std::all_of(left.begin(), left.begin() + 32, [](float v) { return v == 0; }));
+  }
+  std::puts("tempo minimum suffixes 375/120BPM and188/240BPM; shorter refused; Stop/removal silent=PASS");
+}
+void seek_boundaries() {
+  const auto c = suffix_fixture(2);
+  install(c);
+  request();
+  frames(2048);
+  for (unsigned position : {200u, 1600u, 3500u, 6000u}) {
+    const auto before = state().tracks[0].track_epoch;
+    const auto events = dispatch_count;
+    const auto accepted = seek(position);
+    render(1);
+    const auto s = state();
+    receipt(accepted, ALIVE_SESSION_V4_APPLIED, 0);
+    assert(s.position == position + 1 && s.tracks[0].track_epoch == before + 1);
+    if (position == 6000) {
+      assert(s.tracks[0].active_source == NONE && !s.devices[0].owned[0]);
+      assert(dispatch_count == events && left[0] == 0 && right[0] == 0);
+    } else {
+      assert(s.tracks[0].active_placement == (position == 3500 ? 1u : 0u));
+      assert(s.tracks[0].phase == (position == 200 ? 601u : 401u));
+      assert(s.devices[0].effective[0] == 2000);
+      assert(dispatch_count - events == (position == 200 ? 2u : 4u));
+    }
+    frames(2048);
+  }
+  assert(seek(c.length_frames, false).error == ALIVE_SESSION_V4_BAD_FIELD);
+  assert(seek(UINT64_MAX, false).error == ALIVE_SESSION_V4_BAD_FIELD);
+  alive_session_stop_v4();
+  render(1);
+  actions(1, LAUNCH, 3);
+  render(1);
+  const auto cue = state().tracks[0];
+  seek(3500);
+  render(1);
+  assert(!state().playing && state().tracks[0].active_slot == cue.active_slot &&
+         state().tracks[0].phase == cue.phase && state().tracks[0].track_epoch == cue.track_epoch);
+  std::puts("Seek held/source seam/placement boundary/gap/range/stopped Session cue=PASS");
+}
+void seek_ended_cue() {
+  auto c = suffix_fixture();
+  c.slots[0].loop_enabled = 0;
+  install(c);
+  actions(1, LAUNCH, 3);
+  request();
+  frames(2048);
+  auto ended = state().tracks[0];
+  assert(ended.authority == ALIVE_SESSION_V4_SESSION_AUTHORITY && ended.active_source == NONE);
+  seek(6000);
+  render(1);
+  assert(state().tracks[0].active_source == NONE && state().tracks[0].phase == 0 &&
+         state().tracks[0].track_epoch == ended.track_epoch);
+  frames(5999);
+  assert(!state().playing);
+  request();
+  render(1);
+  assert(state().playing && state().tracks[0].active_slot == 0 && state().tracks[0].phase == 401);
+  std::puts("Seek retains ended one-shot silence and private restart cue=PASS");
+}
+void suffix_work_curves() {
+  auto c = suffix_fixture(2);
+  auto owner = std::make_unique<ultra::AliveSession>();
+  auto proof = std::make_unique<ultra::workspace_admission::Proof>();
+  assert(owner->prepare_midi_envelopes_v4(c, *proof));
+  install(c);
+  request();
+  std::vector<Work> observed(10000);
+  std::array<uint64_t, 6> peak{}, window{};
+  const auto policy = ultra::clip_admission::policy(c.profile);
+  const auto optional = ultra::clip_admission::cost(policy.optional_frame);
+  for (unsigned frame = 0; frame < observed.size(); ++frame) {
+    if (frame == 2300) seek(1600);
+    if (frame == 4500) seek(3500);
+    if (frame == 6700) seek(200);
+    work = &observed[frame];
+    const auto before = state().tracks[0].track_epoch;
+    const auto events = dispatch_count;
+    const auto reads = ultra::alive_session_test_reconstruction_reads;
+    const auto previews = ultra::alive_session_test_preview_reads;
+    render(1);
+    assert(!state().fault && dispatch_count - events == work->cost[0][0]);
+    assert(ultra::alive_session_test_reconstruction_reads - reads <= work->cost[0][2] + work->cost[1][2]);
+    assert(ultra::alive_session_test_preview_reads - previews <= 128);
+    assert(state().tracks[0].track_epoch - before <= 1);
+    assert((state().tracks[0].track_epoch - before) * 3 <= work->cost[0][1] + work->cost[1][1]);
+    bool charged = work->placement[0] || work->placement[1];
+    for (const auto &family : work->cost)
+      for (auto value : family) charged |= value != 0;
+    if (!charged) continue;
+    Cost scheduled{}, unscheduled{};
+    uint64_t placement = 0, optional_placement = 0;
+    for (unsigned width = 1; width <= std::min(1024u, frame + 1); ++width) {
+      const auto &old = observed[frame + 1 - width];
+      scheduled = ultra::clip_admission::add(scheduled, old.cost[0]);
+      unscheduled = ultra::clip_admission::add(unscheduled, old.cost[1]);
+      placement += old.placement[0];
+      optional_placement += old.placement[1];
+      for (unsigned m = 0; m < 5; ++m) {
+        assert(scheduled[m] <= proof->prepared.future[m][width]);
+        assert(!m || unscheduled[m] <= optional[m]);
+        if (width == 1) peak[m] = std::max(peak[m], scheduled[m]);
+        window[m] = std::max(window[m], scheduled[m]);
+      }
+      assert(placement <= proof->placement[width] && optional_placement <= 2114);
+      if (width == 1) peak[5] = std::max(peak[5], placement);
+      window[5] = std::max(window[5], placement);
+    }
+  }
+  work = nullptr;
+  std::printf("suffix/Seek actual-frame/admitted-frame actual-window/admitted-window:");
+  for (unsigned m = 0; m < 6; ++m) {
+    const auto &curve = m == 5 ? proof->placement : proof->prepared.future[m];
+    std::printf(" %llu/%llu,%llu/%llu", (unsigned long long)peak[m], (unsigned long long)curve[1],
+                (unsigned long long)window[m], (unsigned long long)curve[1024]);
+  }
+  std::puts("");
+  if (const auto dir = std::getenv("ALIVE_AUTHORITY_EVIDENCE")) {
+    const auto path = std::string(dir) + "/suffix-work.tsv";
+    FILE *file = std::fopen(path.c_str(), "w");
+    assert(file);
+    for (unsigned frame = 0; frame < observed.size(); ++frame) {
+      std::fprintf(file, "%u", frame);
+      for (const auto &cost : observed[frame].cost)
+        for (auto amount : cost) std::fprintf(file, "\t%llu", (unsigned long long)amount);
+      for (auto amount : observed[frame].placement) std::fprintf(file, "\t%llu", (unsigned long long)amount);
+      for (auto amount : observed[frame].probes) std::fprintf(file, "\t%llu", (unsigned long long)amount);
+      std::fprintf(file, "\n");
+    }
+    assert(std::fclose(file) == 0);
+  }
+}
+AudioRun refused_seek_pending(bool refuse) {
+  auto c = authority_fixture(2);
+  auto owner = std::make_unique<ultra::AliveSession>();
+  auto workspace = std::make_unique<ultra::CanvasWorkspace>();
+  auto emit = [](alive::Event) { return true; };
+  for (unsigned d = 0; d < c.device_count; ++d) {
+    UltraCanvasGraph graph{};
+    AliveSessionDeviceV2 descriptor{};
+    if (d % 3 == 0) saved_0(graph, descriptor);
+    else if (d % 3 == 1) saved_1(graph, descriptor);
+    else saved_2(graph, descriptor);
+    graph.revision = c.devices[d].revision;
+    ultra::CanvasPlan plan{};
+    assert(ultra::compile_canvas(graph, plan) && workspace->install(d, plan, 0, emit));
+  }
+  assert(owner->configure_v4(c, nullptr, 0, *workspace));
+  AliveSessionRequestV4 r{};
+  r.version = 4;
+  r.struct_bytes = sizeof r;
+  r.preparation_revision = c.preparation_revision;
+  AliveSessionReceiptV4 immediate{};
+  immediate.version = 4;
+  immediate.struct_bytes = sizeof immediate;
+  auto submit = [&] { ++r.request_serial; assert(owner->request_v4(r, immediate)); };
+  auto snapshot = [&] {
+    owner->publish(*workspace);
+    AliveSessionStateV4 s{};
+    s.version = 4;
+    s.struct_bytes = sizeof s;
+    assert(owner->snapshot_v4(s));
+    return s;
+  };
+  auto evidence = [&](const AliveSessionStateV4 &s, const char *stage, const char *mode) {
+    const auto dir = std::getenv("ALIVE_AUTHORITY_EVIDENCE");
+    if (!dir) return;
+    const auto path = std::string(dir) + "/seek-receipts.tsv";
+    FILE *file = std::fopen(path.c_str(), mode);
+    assert(file);
+    for (unsigned i = 2; i <= r.request_serial; ++i) {
+      const auto &receipt = s.receipts[i];
+      std::fprintf(file, "%s\t%llu\t%u\t%u\t%u\t%u\t%u\t%u\t%llu\t%llu\n", stage,
+                   (unsigned long long)s.position, i, receipt.status, receipt.error,
+                   receipt.pending_mask, receipt.applied_mask, receipt.canceled_mask,
+                   (unsigned long long)receipt.observed_frame, (unsigned long long)receipt.target_frame);
+    }
+    assert(std::fclose(file) == 0);
+  };
+  AudioRun out;
+  auto tick = [&] {
+    callback_guard::begin();
+    owner->sample(*workspace);
+    assert(workspace->sample(0, emit));
+    const std::array<float, alive::DocumentDevices> voices{};
+    const auto pcm = owner->render_sample(*workspace, voices, 1, emit);
+    owner->advance(*workspace, pcm[0], pcm[1]);
+    callback_guard::end();
+    out.pcm.push_back(float(pcm[0]));
+    out.pcm.push_back(float(pcm[1]));
+  };
+  r.kind = ALIVE_SESSION_V4_START;
+  submit();
+  owner->begin(*workspace);
+  for (unsigned i = 0; i < 3072; ++i) tick();
+  r.kind = ALIVE_SESSION_V4_TRACK_ACTIONS;
+  r.track_mask = 3;
+  r.tracks[0] = {LAUNCH, 0};
+  r.tracks[1] = {LAUNCH, 3};
+  submit();
+  owner->begin(*workspace);
+  tick();
+  const auto before = snapshot();
+  assert(before.receipts[2].pending_mask == 3 && before.tracks[1].pending_slot == 5);
+  if (refuse) {
+    evidence(before, "committed-pending", "w");
+    (owner.get()->*access(Scheduled{})).charge(3073, Cost{31, 0, 0, 0, 0});
+    r.kind = ALIVE_SESSION_V4_SEEK;
+    r.track_mask = 0;
+    r.tracks[0] = r.tracks[1] = {};
+    r.position = 48000;
+    submit();
+    Work measured{};
+    work = &measured;
+    const auto reads = ultra::alive_session_test_reconstruction_reads;
+    owner->begin(*workspace);
+    tick();
+    work = nullptr;
+    const auto after = snapshot();
+    evidence(after, "refused-seek", "a");
+    assert(after.playing && !after.fault && after.position == 3074 && after.work_rejected == 1);
+    assert(after.receipts[3].status == ALIVE_SESSION_V4_REJECTED &&
+           after.receipts[3].error == ALIVE_SESSION_V4_WORK_LIMIT);
+    assert(std::memcmp(&before.receipts[2], &after.receipts[2], sizeof before.receipts[2]) == 0);
+    for (unsigned t = 0; t < 2; ++t) {
+      assert(after.tracks[t].pending_serial == 2 && after.tracks[t].pending_action == LAUNCH &&
+             after.tracks[t].pending_slot == (t ? 5u : 0u) && after.tracks[t].pending_frame == 48000);
+      assert(after.tracks[t].phase == before.tracks[t].phase + 1 &&
+             after.tracks[t].track_epoch == before.tracks[t].track_epoch);
+    }
+    assert(measured.cost[1][4] == ultra::clip_admission::HorizonSteps &&
+           measured.placement[1] == 2058 && !measured.cost[1][1] && !measured.cost[1][2]);
+    assert(ultra::alive_session_test_reconstruction_reads == reads &&
+           (owner.get()->*access(Scheduled{})).total[0] == 31);
+    // A second candidate cannot erase the guard history spent by the first refusal.
+    submit();
+    owner->begin(*workspace);
+    tick();
+    const auto again = snapshot();
+    evidence(again, "retained-history-refusal", "a");
+    assert(again.work_rejected == 2 && again.receipts[4].error == ALIVE_SESSION_V4_WORK_LIMIT &&
+           again.receipts[2].pending_mask == 3 && again.tracks[1].pending_slot == 5);
+    std::printf("pending-survives-refused-Seek: serial2 mask3 slot5 target48000 guard=%llu placement=%llu\n",
+                (unsigned long long)measured.cost[1][4], (unsigned long long)measured.placement[1]);
+  } else {
+    tick();
+    tick();
+  }
+  for (unsigned i = 0; i < 1024; ++i) tick();
+  assert(std::any_of(out.pcm.begin(), out.pcm.end(), [](float v) { return v != 0; }));
+  if (refuse) {
+    submit();
+    owner->begin(*workspace);
+    tick();
+    const auto accepted = snapshot();
+    evidence(accepted, "accepted-seek", "a");
+    assert(accepted.receipts[5].status == ALIVE_SESSION_V4_APPLIED && accepted.position == 48001);
+    assert(accepted.receipts[2].canceled_mask == 3 &&
+           accepted.receipts[2].error == ALIVE_SESSION_V4_REPLACED_REQUEST);
+    assert(!accepted.tracks[0].pending_action && !accepted.tracks[1].pending_action &&
+           accepted.tracks[0].pending_slot == NONE && accepted.tracks[1].pending_slot == NONE);
+    // This accepted relocation is outside the refused-continuity PCM interval.
+    out.pcm.resize(out.pcm.size() - 2);
+  }
+  return out;
+}
+void suffix_pending() {
+  auto c = authority_fixture();
+  c.sources[2].length_frames = 2301;
+  c.placements[3].loop_enabled = 1;
+  c.placements[3].source_offset = 400;
+  install(c);
+  request();
+  frames(2048);
+  const auto pending = actions(2, 0, 0, LAUNCH, 3);
+  render(1);
+  const auto token = state().receipts[pending.request_serial % 128];
+  for (unsigned position : {3803u, 5704u, 10000u, 30000u, 48000u}) {
+    frames(position - unsigned(state().position));
+    const auto s = state();
+    assert(s.tracks[1].pending_slot == 5 && s.tracks[1].pending_action == LAUNCH &&
+           s.tracks[1].pending_serial == pending.request_serial &&
+           s.tracks[1].pending_frame == trace_origin + 48000);
+    assert(std::memcmp(&token, &s.receipts[pending.request_serial % 128], sizeof token) == 0);
+  }
+  const auto before = state().tracks[1].track_epoch;
+  render(1);
+  assert(state().tracks[1].active_slot == 5 && state().tracks[1].active_source == 3 &&
+         state().tracks[1].phase == 1001 && state().tracks[1].track_epoch == before + 1);
+  receipt(pending, ALIVE_SESSION_V4_APPLIED, 2);
+  std::puts("sparse pending Launch global5 survives repeated Arrangement source seams=PASS");
+}
+void suffix_evidence(const AudioRun &run, const char *name) {
+  const auto dir = std::getenv("ALIVE_AUTHORITY_EVIDENCE");
+  if (!dir) return;
+  const auto base = std::string(dir) + "/" + name;
+  FILE *file = std::fopen((base + ".f32").c_str(), "wb");
+  assert(file);
+  assert(std::fwrite(run.pcm.data(), sizeof(float), run.pcm.size(), file) == run.pcm.size());
+  assert(std::fclose(file) == 0);
+  file = std::fopen((base + "-dispatch.tsv").c_str(), "w");
+  assert(file);
+  for (const auto &e : run.events)
+    std::fprintf(file, "%llu\t%u\t%u\t%u\t%u\t%.17g\n", (unsigned long long)e.frame,
+                 e.source, e.occurrence, e.kind, e.pitch, e.value);
+  assert(std::fclose(file) == 0);
+}
+void suffix_seek_tests(bool loops, bool seeks) {
+  if (loops) {
+    minimum_suffixes();
+    suffix_work_curves();
+    suffix_pending();
+    const auto reference = suffix_playback(1);
+    suffix_evidence(reference, "suffix-pcm");
+    for (unsigned partition : {0u, 31u, 63u, 64u, 127u, 1024u})
+      same_audio(reference, suffix_playback(partition));
+    for (unsigned effects : {0u, 1u, 2u}) {
+      suffix_playback(127, effects);
+      suffix_playback(31, effects, true);
+    }
+    std::puts("suffix L2000/O400 period1600 ordering/cutoff/adjacent occurrence/effect PCM=PASS");
+  }
+  if (seeks) {
+    seek_reduction();
+    seek_boundaries();
+    seek_ended_cue();
+    const auto refused = refused_seek_pending(true);
+    const auto continued = refused_seek_pending(false);
+    assert(refused.pcm == continued.pcm);
+    suffix_evidence(refused, "refused-seek-pcm");
+    suffix_evidence(continued, "refused-seek-control-pcm");
+    for (unsigned effects : {0u, 1u, 2u, 3u}) {
+      const auto changed = seek_continuity(31, effects, true);
+      const auto control = seek_continuity(1024, effects, false);
+      assert(changed.pcm == control.pcm);
+      assert(std::any_of(control.pcm.begin(), control.pcm.end(), [](float v) { return v != 0; }));
+      const auto looping = seek_continuity(63, effects, true, true);
+      const auto independent = seek_continuity(1024, effects, false, true);
+      assert(looping.pcm == independent.pcm);
+    }
+    const auto gestures = seek_continuity(1, 0, true, true);
+    suffix_evidence(gestures, "seek-gestures-pcm");
+    for (unsigned partition : {0u, 31u, 63u, 64u, 127u, 1024u})
+      same_audio(gestures, seek_continuity(partition, 0, true, true));
+    std::puts("Arrangement-only Seek preserves Session phase/epoch/real PCM=PASS");
+  }
+}
 void save_audio(const AudioRun &run) {
   const auto dir = std::getenv("ALIVE_AUTHORITY_EVIDENCE");
   if (!dir)
@@ -1289,6 +1813,12 @@ int main(int argc, char **argv) {
   ultra::alive_session_test_placement_probe = trace_probe;
   ultra::alive_session_test_dispatch = trace_event;
   ultra::alive_session_test_placement_charge = trace_placement;
+  if (argc == 2 && (std::strcmp(argv[1], "--suffix") == 0 || std::strcmp(argv[1], "--seek") == 0)) {
+    suffix_seek_tests(std::strcmp(argv[1], "--suffix") == 0, std::strcmp(argv[1], "--seek") == 0);
+    ultra_audio_stop();
+    assert(alive_session_reset());
+    return 0;
+  }
   if (argc == 2 && std::strcmp(argv[1], "--first-sample") == 0) {
     saturation_and_first_sample();
     ultra_audio_stop();
@@ -1316,6 +1846,7 @@ int main(int argc, char **argv) {
   action_validation();
   sparse_eight_and_denied_density();
   exact_combined_batch();
+  suffix_seek_tests(true, true);
   const auto reference = playing_authority(1, 0, false, true);
   save_audio(reference);
   for (unsigned partition : {0u, 31u, 63u, 64u, 127u, 1024u})
@@ -1331,5 +1862,5 @@ int main(int argc, char **argv) {
             "partitions=PASS");
   ultra_audio_stop();
   assert(alive_session_reset());
-  std::puts("PASS: finite MIDI authority actions");
+  std::puts("PASS: MIDI authority actions, source suffix loops and Arrangement Seek");
 }

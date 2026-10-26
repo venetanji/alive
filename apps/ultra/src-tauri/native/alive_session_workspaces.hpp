@@ -141,7 +141,9 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
         return reject_v4(ALIVE_SESSION_V4_BAD_PLACEMENT, "Placement exceeds source suffix.");
       placement_owners[index] = true;
       endpoint = p.start_frame + p.duration_frames;
+#ifndef ULTRA_ALIVE_SESSION_V4_PROVISIONAL
       unsupported |= p.loop_enabled != 0;
+#endif
     }
   }
   for (unsigned d = 0; d < c.device_count; ++d)
@@ -152,7 +154,9 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
       return reject_v4(ALIVE_SESSION_V4_BAD_PLACEMENT, "Unowned placement.");
   for (unsigned i = 0; i < c.slot_count; ++i) {
     const auto &slot = c.slots[i];
+#ifndef ULTRA_ALIVE_SESSION_V4_PROVISIONAL
     unsupported |= slot.loop_enabled != 0;
+#endif
     if (slot_owners[i] != 1 || slot.track >= c.track_count || slot.source >= c.source_count ||
         c.sources[slot.source].track != slot.track || slot.reserved || !flag(slot.loop_enabled) ||
         slot.source_offset >= c.sources[slot.source].length_frames ||
@@ -268,7 +272,7 @@ BorrowedSource source(unsigned index) const noexcept {
 }
 struct ResolvedCursor {
   unsigned source = None, occurrence = None, next_placement = None;
-  uint64_t phase = 0, next_boundary = NoFrame;
+  uint64_t phase = 0, next_boundary = NoFrame, occurrence_end = NoFrame;
   unsigned authority = ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY;
   unsigned active_slot = None, remembered_slot = None, pending_slot = None;
   uint64_t ended_phase = 0;
@@ -295,6 +299,17 @@ struct PlacementLedger {
   }
 } placement_scheduled_{}, placement_optional_{};
 clip_admission::Envelope placement_future_{};
+void placement_cursor_v4(ResolvedCursor &out, unsigned index, uint64_t frame) const noexcept {
+  const auto &p = config_.placements[index];
+  const auto elapsed = frame - p.start_frame;
+  const auto period = source(p.source).length_frames - p.source_offset;
+  out.source = p.source;
+  out.occurrence = index;
+  out.phase = p.source_offset + (p.loop_enabled ? elapsed % period : elapsed);
+  out.occurrence_end = out.next_boundary = p.start_frame + p.duration_frames;
+  if (p.loop_enabled)
+    out.next_boundary = frame + std::min(period - elapsed % period, out.occurrence_end - frame);
+}
 ResolvedCursor resolve_arrangement(unsigned track, uint64_t frame,
                                    unsigned &probes, unsigned family = 1) const noexcept {
   (void)family;
@@ -318,10 +333,7 @@ ResolvedCursor resolve_arrangement(unsigned track, uint64_t frame,
     const unsigned index = begin + lo - 1;
     const auto &p = config_.placements[index];
     if (frame - p.start_frame < p.duration_frames) {
-      out.source = p.source;
-      out.occurrence = index;
-      out.phase = p.source_offset + frame - p.start_frame;
-      out.next_boundary = p.start_frame + p.duration_frames;
+      placement_cursor_v4(out, index, frame);
       return out;
     }
   }
@@ -333,6 +345,14 @@ ResolvedCursor next_arrangement(unsigned track, uint64_t frame,
                                 const ResolvedCursor &previous, bool optional) const noexcept {
   ResolvedCursor out{};
   out.next_placement = previous.next_placement;
+  if (previous.occurrence != None && frame < previous.occurrence_end) {
+#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+    if (alive_session_test_placement_probe)
+      alive_session_test_placement_probe(optional ? 1 : 0);
+#endif
+    placement_cursor_v4(out, previous.occurrence, frame);
+    return out;
+  }
   const unsigned end = config_.placement_begin[track] + config_.placement_size[track];
   if (out.next_placement < end) {
 #ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
@@ -343,10 +363,7 @@ ResolvedCursor next_arrangement(unsigned track, uint64_t frame,
     const unsigned index = out.next_placement;
     const auto &p = config_.placements[index];
     if (frame >= p.start_frame) {
-      out.source = p.source;
-      out.occurrence = index;
-      out.phase = p.source_offset + frame - p.start_frame;
-      out.next_boundary = p.start_frame + p.duration_frames;
+      placement_cursor_v4(out, index, frame);
       ++out.next_placement;
     } else
       out.next_boundary = p.start_frame;
@@ -387,10 +404,14 @@ bool transition_v4(const AliveSessionTrackStateV3 *tracks,
     const auto &ts = tracks[t];
     const auto &cursor = cursors[t];
     const bool due = ts.pending_action && ts.pending_frame <= state_.absolute_frame;
-    if ((due && ts.pending_action == ALIVE_SESSION_V4_RETURN) ||
-        (!due && cursor.authority == ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY &&
-         position >= cursor.next_boundary))
+    if (due && ts.pending_action == ALIVE_SESSION_V4_RETURN)
       out.placement += 4;
+    else if (!due && cursor.authority == ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY &&
+             position >= cursor.next_boundary)
+      out.placement += cursor.next_boundary < cursor.occurrence_end ? 1 : 4;
+    else if (!due && cursor.authority == ALIVE_SESSION_V4_SESSION_AUTHORITY &&
+             cursor.source != None && ts.phase >= source(cursor.source).length_frames)
+      ++out.placement;
   }
   if (out.placement && !(optional ? reserve_optional_placement(out.placement)
                                  : reserve_scheduled_placement(out.placement)))
@@ -411,10 +432,19 @@ bool transition_v4(const AliveSessionTrackStateV3 *tracks,
         out.changed |= 1u << t;
       }
     } else if (cursor.source != None && ts.phase >= source(cursor.source).length_frames) {
-      cursor.ended = true;
-      cursor.ended_phase = ts.phase;
-      cursor.source = cursor.active_slot = None;
-      cursor.phase = 0;
+      const auto &slot = config_.slots[cursor.active_slot];
+#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+      if (alive_session_test_placement_probe)
+        alive_session_test_placement_probe(optional ? 1 : 0);
+#endif
+      if (slot.loop_enabled)
+        cursor.phase = slot.source_offset;
+      else {
+        cursor.ended = true;
+        cursor.ended_phase = ts.phase;
+        cursor.source = cursor.active_slot = None;
+        cursor.phase = 0;
+      }
       out.changed |= 1u << t;
     }
     // Occurrence replacement must retain the reducer's independent pending token.
