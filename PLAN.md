@@ -162,7 +162,38 @@ passes the unchanged original journey in 193.11 seconds, including changed-sourc
 recovery and Quit. Independent spec and quality review approves; existing build/
 harness warnings remain disclosed. The existing launcher now
 uses the tested replacement; old binaries are retained. Task 2D MIDI measurement
-is active, with shipping v4 still disabled.
+is complete and independently approved at `8e17719`, with shipping v4 still
+disabled. The runner retains 287 distributions / 344400 timing samples,
+separate guards and exact provenance. Full native CI passes in 180.37 seconds.
+Parent verification matches all 733 raw artifacts, four committed source pins
+and every quantile/deadline-overrun count recomputed from the samples.
+The review records a nonblocking runner-completeness hardening gap; the final
+audited sample set is unaffected. Profile 1 is the desktop candidate at
+practical buffers >=256 frames;
+profile 2 remains unadmitted because combined synthetic stress overruns even
+at 1024. The synthetic extra DSP bank and scalar work surrogates are explicit
+limitations. Complete prospective native admission still governs each project.
+Use two instruments and an admitted three-root project for the first MIDI
+journey; larger conversions refuse without replacing the playable v3 project.
+Existing v3 eight-track support and audio settings remain unchanged. Evidence:
+`experiments/alive-workspaces-20261026/task2d-measurement/`.
+Reviewed checkpoint `a1cf2e7` is pushed with these fixes, native MIDI evidence
+and independent reviews. PR #6 remains draft and its description is updated.
+Exact-head CI `40374437793` passes UI/Chromium, native/Rust and offline renders,
+then fails the desktop journey when the Pulse hosted-editor window is not
+observed opening (`check_alive_desktop.py:860`, `check_documents_desktop.py:126`).
+Earlier chooser and piano/history actions pass; later clip/resource/CPAL gates
+skip. Artifact diagnosis leaves the original activation cause unresolved;
+focus/scroll timing is a hypothesis. A bounded native activation probe follows
+the completed timing run: both original single-activation probes pass, leaving
+the CI cause unknown. Diagnostic source `6d88803` adds three first-activation
+receipts and passes the full original journey in 193.18 seconds. Review finds
+that receipt-file failures could interrupt the test; correction `6d8c95a`
+reproduces three native failure paths, preserves the identical original focus
+exception, and passes the full journey in 193.83 seconds. Scoped re-review approves with no remaining finding. No product, original input, timeout or assertion changed. Evidence:
+`experiments/alive-workspaces-20261026/editor-activation/`.
+Packages `40374437738` pass all four targets, with tag publication skipped.
+The real Arrangement and mixed-project acceptance gates remain open.
 
 Fresh private Arrangement study LOCAL-ARR-R1 observes occurrence creation,
 movement, source-loop extension/undo, two-track Session override, scoped Stop,

@@ -1,0 +1,21 @@
+{
+  "commit": "8e177199c0f7d09b6a9380b67a37709b9ab4b31c",
+  "base": "a1cf2e71d93c138f7c710440f765900ff81f32eb",
+  "commit_subject": "test(alive): measure complete MIDI workspace policies",
+  "staged_check_exit": 0,
+  "scoped_files": [
+    "apps/ultra/src-tauri/native/alive_session_v4_policy.md",
+    "apps/ultra/tests/alive_session_v4_measure.cpp",
+    "apps/ultra/tests/run_alive_workspaces_measurement.py",
+    "apps/ultra/tests/test_workspaces_measurement.py"
+  ],
+  "post_commit_index_argv": [
+    "git",
+    "diff",
+    "--cached",
+    "--exit-code"
+  ],
+  "post_commit_index_exit": 0,
+  "index_empty": true,
+  "source_test_index_frozen": true
+}

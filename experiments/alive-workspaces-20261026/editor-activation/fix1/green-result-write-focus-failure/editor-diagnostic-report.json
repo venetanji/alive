@@ -1,0 +1,180 @@
+{
+  "receipts": [
+    {
+      "action": "editor input before",
+      "monotonic": 60109.644395228,
+      "name": "Open Pulse editor",
+      "scope": "Alive",
+      "rect": [
+        164,
+        385,
+        129,
+        25
+      ],
+      "point": [
+        228,
+        397
+      ],
+      "x_errors": [],
+      "input_focus": 4194307,
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            2020141
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "observation_seconds": 0.000804279996373225
+    },
+    {
+      "action": "editor input queued",
+      "monotonic": 60109.64523222,
+      "name": "Open Pulse editor",
+      "scope": "Alive",
+      "rect": [
+        164,
+        385,
+        129,
+        25
+      ],
+      "point": [
+        228,
+        397
+      ],
+      "motions": 1,
+      "presses": 1,
+      "releases": 1,
+      "x_errors": [],
+      "input_focus": 4194307,
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            2020141
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "post_flush_rect": [
+        164,
+        385,
+        129,
+        25
+      ],
+      "observation_seconds": 0.03528769600234227
+    },
+    {
+      "action": "editor window result",
+      "monotonic": 60118.180616037,
+      "title": "Pulse - Ultra Hosted Editor",
+      "focused": false,
+      "scope": "Diagnostic absent hosted editor",
+      "focus_error": "AssertionError('Native window did not open: Diagnostic absent hosted editor')",
+      "x_errors": [],
+      "root_windows": [
+        {
+          "window": 4194305,
+          "title": "alive",
+          "map_state": 0,
+          "pid": [
+            2020141
+          ],
+          "type": []
+        },
+        {
+          "window": 4194313,
+          "title": "",
+          "map_state": 0,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 8388609,
+          "title": "check_alive_editor_diagnostics.py",
+          "map_state": 0,
+          "pid": [
+            2020142
+          ],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            2020141
+          ],
+          "type": [
+            268
+          ]
+        },
+        {
+          "window": 4194449,
+          "title": "Pulse - Ultra Hosted Editor",
+          "map_state": 2,
+          "pid": [
+            2020141
+          ],
+          "type": [
+            268
+          ]
+        },
+        {
+          "window": 8388611,
+          "title": "",
+          "map_state": 0,
+          "pid": [],
+          "type": []
+        }
+      ],
+      "omitted_root_windows": 0,
+      "observation_seconds": 0.0014751499984413385
+    }
+  ],
+  "observation_error_exercised": false,
+  "receipt_write_error_exercised": "result",
+  "observation_failures": [
+    {
+      "observer": "observe_editor_window",
+      "unavailable": true,
+      "error_type": "OSError",
+      "error": "Deliberately unavailable editor receipt write"
+    }
+  ],
+  "original_focus_exception_identity_preserved": true,
+  "original_editor_assertions_passed": false,
+  "original_missing_window_assertion_propagated": true,
+  "quit_discard_exited": true
+}

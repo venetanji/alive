@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "480s",
+    "bash",
+    "apps/ultra/tests/check_canvas_desktop.sh",
+    "/tmp/alive-workspaces-editor-ci-probe/suffix-observed"
+  ],
+  "script": "/tmp/alive-workspaces-editor-ci-probe/probe.py",
+  "env": {
+    "WEBKIT_INSPECTOR_HTTP_SERVER": "127.0.0.1:19229",
+    "EDITOR_PROBE_SUFFIX": "1",
+    "PATH": "/usr/bin:/bin",
+    "PYTHONUNBUFFERED": "1",
+    "ULTRA_TEST_ALIVE": "1",
+    "ULTRA_TEST_SCRIPT": "/tmp/alive-workspaces-editor-ci-probe/probe.py"
+  },
+  "start": "2026-10-26T18:42:27.027146+00:00",
+  "exit": 0,
+  "seconds": 18.248763153002074,
+  "end": "2026-10-26T18:42:45.275922+00:00"
+}

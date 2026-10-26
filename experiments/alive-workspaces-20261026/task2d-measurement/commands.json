@@ -1,0 +1,260 @@
+[
+  {
+    "argv": [
+      "python3",
+      "/tmp/alive-workspaces-task2d-measurement/final/source/tests/alive_session_v3_fixtures.py",
+      "/tmp/alive-workspaces-task2d-measurement/final/source/tests/saved_graphs.hpp"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final",
+    "exit": 0,
+    "elapsed_seconds": 0.03207097399717895,
+    "log": "fixtures.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-c",
+      "/tmp/alive-workspaces-task2d-measurement/final/source/src-tauri/native/backend.cpp",
+      "-o",
+      "/tmp/alive-workspaces-task2d-measurement/final/timing-backend.o"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final",
+    "exit": 0,
+    "elapsed_seconds": 16.650744754006155,
+    "log": "timing-backend.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "/tmp/alive-workspaces-task2d-measurement/final/source/tests/alive_session_v4_measure.cpp",
+      "/tmp/alive-workspaces-task2d-measurement/final/timing-backend.o",
+      "/tmp/alive-workspaces-task2d-measurement/final/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-o",
+      "/tmp/alive-workspaces-task2d-measurement/final/timing-probe"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final",
+    "exit": 0,
+    "elapsed_seconds": 6.6211386539944215,
+    "log": "timing-build.log"
+  },
+  {
+    "argv": [
+      "/tmp/alive-workspaces-task2d-measurement/final/timing-probe",
+      "1200"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final/timing",
+    "exit": 0,
+    "elapsed_seconds": 522.2237232949992,
+    "log": "timing.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "-DWORKSPACES_GUARDS",
+      "-c",
+      "/tmp/alive-workspaces-task2d-measurement/final/source/src-tauri/native/backend.cpp",
+      "-o",
+      "/tmp/alive-workspaces-task2d-measurement/final/guards-backend.o"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final",
+    "exit": 0,
+    "elapsed_seconds": 16.69720285099902,
+    "log": "guards-backend.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "-DWORKSPACES_GUARDS",
+      "/tmp/alive-workspaces-task2d-measurement/final/source/tests/alive_session_v4_measure.cpp",
+      "/tmp/alive-workspaces-task2d-measurement/final/guards-backend.o",
+      "/tmp/alive-workspaces-task2d-measurement/final/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock",
+      "-o",
+      "/tmp/alive-workspaces-task2d-measurement/final/guards-probe"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final",
+    "exit": 0,
+    "elapsed_seconds": 6.879863501002546,
+    "log": "guards-build.log"
+  },
+  {
+    "argv": [
+      "/tmp/alive-workspaces-task2d-measurement/final/guards-probe",
+      "20"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final/guards",
+    "exit": 0,
+    "elapsed_seconds": 14.942903490999015,
+    "log": "guards.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "-DWORKSPACES_GUARDS",
+      "/tmp/alive-workspaces-task2d-measurement/final/source/tests/alive_session_v4_test.cpp",
+      "/tmp/alive-workspaces-task2d-measurement/final/guards-backend.o",
+      "/tmp/alive-workspaces-task2d-measurement/final/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock",
+      "-o",
+      "/tmp/alive-workspaces-task2d-measurement/final/v4-test"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final",
+    "exit": 0,
+    "elapsed_seconds": 1.7509313039990957,
+    "log": "v4-build.log"
+  },
+  {
+    "argv": [
+      "/tmp/alive-workspaces-task2d-measurement/final/v4-test"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final",
+    "exit": 0,
+    "elapsed_seconds": 0.537499158999708,
+    "log": "v4.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "-DWORKSPACES_GUARDS",
+      "/tmp/alive-workspaces-task2d-measurement/final/source/tests/alive_session_v4_midi_test.cpp",
+      "/tmp/alive-workspaces-task2d-measurement/final/guards-backend.o",
+      "/tmp/alive-workspaces-task2d-measurement/final/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock",
+      "-o",
+      "/tmp/alive-workspaces-task2d-measurement/final/v4_midi-test"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final",
+    "exit": 0,
+    "elapsed_seconds": 8.01969184900372,
+    "log": "v4_midi-build.log"
+  },
+  {
+    "argv": [
+      "/tmp/alive-workspaces-task2d-measurement/final/v4_midi-test"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final",
+    "exit": 0,
+    "elapsed_seconds": 3.200220247003017,
+    "log": "v4_midi.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "-DWORKSPACES_GUARDS",
+      "/tmp/alive-workspaces-task2d-measurement/final/source/tests/alive_session_v4_authority_test.cpp",
+      "/tmp/alive-workspaces-task2d-measurement/final/guards-backend.o",
+      "/tmp/alive-workspaces-task2d-measurement/final/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock",
+      "-o",
+      "/tmp/alive-workspaces-task2d-measurement/final/v4_authority-test"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final",
+    "exit": 0,
+    "elapsed_seconds": 12.409503580005548,
+    "log": "v4_authority-build.log"
+  },
+  {
+    "argv": [
+      "/tmp/alive-workspaces-task2d-measurement/final/v4_authority-test"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final",
+    "exit": 0,
+    "elapsed_seconds": 11.669977308003581,
+    "log": "v4_authority.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "/tmp/alive-workspaces-task2d-measurement/final/source/tests/alive_session_v4_shipping_test.cpp",
+      "/tmp/alive-workspaces-task2d-measurement/final/source/src-tauri/native/backend.cpp",
+      "/tmp/alive-workspaces-task2d-measurement/final/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-o",
+      "/tmp/alive-workspaces-task2d-measurement/final/shipping-test"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final",
+    "exit": 0,
+    "elapsed_seconds": 16.85585936800635,
+    "log": "shipping-build.log"
+  },
+  {
+    "argv": [
+      "/tmp/alive-workspaces-task2d-measurement/final/shipping-test"
+    ],
+    "cwd": "/tmp/alive-workspaces-task2d-measurement/final",
+    "exit": 0,
+    "elapsed_seconds": 0.03326125899911858,
+    "log": "shipping.log"
+  }
+]

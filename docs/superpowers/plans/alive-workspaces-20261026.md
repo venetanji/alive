@@ -93,8 +93,18 @@ evidence is retained in `task2c-suffix-seek/`. Partial song loops/coincident
 boundaries are independently approved at `5981cfe`: exact Session PCM continuity,
 reachable targets, retained work and Stop/resume at the song end pass. Complete
 native CI passes in 180.70 seconds; evidence is in `task2c-song-loops/`. This
-completes native Task 2C. Task 2D measurement and desktop admission remain next;
-shipping features remain zero.
+completes native Task 2C. Task 2D measurement is independently approved at
+`8e17719`: 344400 raw timing samples, separate callback guards, complete native
+regressions and direct current-source shipping refusal. Profile 1 is the desktop
+candidate at practical buffers >=256; profile 2 remains unadmitted after
+combined synthetic deadline failures through 1024. These finite measurements
+do not introduce a native callback-size minimum or universal driver guarantee.
+Complete candidate admission remains required; larger/effect-heavy conversions
+retain their playable v3 document on refusal. Existing v3 eight-track support
+is unchanged. The review's nonblocking runner-completeness gap is retained in
+the ledger; the final independently audited sample set is complete. Evidence:
+`experiments/alive-workspaces-20261026/task2d-measurement/`.
+Task 2D desktop integration remains next; shipping features remain zero.
 The accepted desktop interface supplement is
 `docs/superpowers/specs/2026-10-26-alive-workspaces-desktop-contract.md`.
 Complete the MIDI portion of Task 4 after MIDI admission and before Task 3,

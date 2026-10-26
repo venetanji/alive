@@ -1,0 +1,24 @@
+{
+  "raw_root": "/tmp/alive-workspaces-task2d-measurement/final",
+  "verified_raw_manifest_entries": 733,
+  "distributions": 287,
+  "raw_samples": 344400,
+  "quantiles_and_overrun_counts": "independently recomputed from raw samples; all match",
+  "compressed_artifacts": {
+    "timing-samples.csv.gz": {
+      "source": "timing/samples.csv",
+      "uncompressed_sha256": "74f895d225d7636de96efa07333ccd84428459cd216e592cb5fb726bda209aa9",
+      "bytes": 23243644
+    },
+    "guards-samples.csv.gz": {
+      "source": "guards/samples.csv",
+      "uncompressed_sha256": "4c70c25952b46f7a5b53b7ff6c17fbec3c0dd418b4126f96a57f45a194c818aa",
+      "bytes": 374223
+    },
+    "guards-work.csv.gz": {
+      "source": "guards/work.csv",
+      "uncompressed_sha256": "b173c48689cadbb3f0c98bfa11c00c4f7f92dd4bb6b99a6735af14355fa9331c",
+      "bytes": 1226743
+    }
+  }
+}

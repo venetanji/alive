@@ -1,0 +1,378 @@
+{
+  "full_run": {
+    "argv": [
+      "timeout",
+      "--signal=TERM",
+      "--kill-after=10s",
+      "480s",
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-editor-ci-probe/full-original"
+    ],
+    "script": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py",
+    "sha256": {
+      "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py": "1f1b7e9786343d255d72f226b06634e3f23524588b4f326cb7b5f47515235614",
+      "apps/ultra/tests/check_alive_desktop.py": "1f1b7e9786343d255d72f226b06634e3f23524588b4f326cb7b5f47515235614",
+      "apps/ultra/tests/alive_workspace_navigation.py": "dc7e884dbe17cbd2d4db5984f8315552ea18ccfedd1cc1052202d40b95e3ce20",
+      "apps/ultra/tests/check_canvas_desktop.py": "fa5d5c543afa5cdfa261874ee2123a47c9ac168ad4f79811b1a7a71847684684",
+      "apps/ultra/tests/check_documents_desktop.py": "97685d35f6c9c1410c35ed45c4e2dbb32282f86383ec366ab12d40234ccd0c88"
+    },
+    "env": {
+      "PATH": "/usr/bin:/bin",
+      "PYTHONUNBUFFERED": "1",
+      "ULTRA_TEST_ALIVE": "1",
+      "ULTRA_TEST_SCRIPT": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py"
+    },
+    "start": "2026-10-26T18:47:45.567856+00:00",
+    "exit": 0,
+    "seconds": 193.18081350500142,
+    "end": "2026-10-26T18:50:58.748684+00:00"
+  },
+  "editor_rows": [
+    {
+      "action": "editor input before",
+      "monotonic": 59517.209831886,
+      "name": "Open Pulse editor",
+      "scope": "Alive",
+      "rect": [
+        164,
+        385,
+        129,
+        25
+      ],
+      "point": [
+        228,
+        397
+      ],
+      "x_errors": [],
+      "input_focus": 4194307,
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "observation_seconds": 0.0006240700022317469
+    },
+    {
+      "action": "editor input queued",
+      "monotonic": 59517.210486263,
+      "name": "Open Pulse editor",
+      "scope": "Alive",
+      "rect": [
+        164,
+        385,
+        129,
+        25
+      ],
+      "point": [
+        228,
+        397
+      ],
+      "motions": 1,
+      "presses": 1,
+      "releases": 1,
+      "x_errors": [],
+      "input_focus": 4194307,
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "post_flush_rect": [
+        164,
+        385,
+        129,
+        25
+      ],
+      "observation_seconds": 0.03968179599905852
+    },
+    {
+      "action": "editor window result",
+      "monotonic": 59517.601331956,
+      "title": "Pulse - Ultra Hosted Editor",
+      "focused": true,
+      "scope": "Pulse - Ultra Hosted Editor",
+      "x_errors": [],
+      "root_windows": [
+        {
+          "window": 4194305,
+          "title": "alive",
+          "map_state": 0,
+          "pid": [
+            2003845
+          ],
+          "type": []
+        },
+        {
+          "window": 4194313,
+          "title": "",
+          "map_state": 0,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 8388609,
+          "title": "check_alive_desktop.py",
+          "map_state": 0,
+          "pid": [
+            2003846
+          ],
+          "type": []
+        },
+        {
+          "window": 8388611,
+          "title": "",
+          "map_state": 0,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4195889,
+          "title": "alive",
+          "map_state": 0,
+          "pid": [
+            2003845
+          ],
+          "type": []
+        },
+        {
+          "window": 4197646,
+          "title": "alive",
+          "map_state": 0,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            263
+          ]
+        },
+        {
+          "window": 4196559,
+          "title": "Load Ultra Device",
+          "map_state": 0,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            264
+          ]
+        },
+        {
+          "window": 4200298,
+          "title": "alive",
+          "map_state": 0,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            263
+          ]
+        },
+        {
+          "window": 4199544,
+          "title": "Load Ultra Device",
+          "map_state": 0,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            264
+          ]
+        },
+        {
+          "window": 4202766,
+          "title": "alive",
+          "map_state": 0,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            263
+          ]
+        },
+        {
+          "window": 4202014,
+          "title": "Load Ultra Device",
+          "map_state": 0,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            264
+          ]
+        },
+        {
+          "window": 4205526,
+          "title": "alive",
+          "map_state": 0,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            263
+          ]
+        },
+        {
+          "window": 4204514,
+          "title": "Load Ultra Device",
+          "map_state": 0,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            264
+          ]
+        },
+        {
+          "window": 4208542,
+          "title": "alive",
+          "map_state": 0,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            263
+          ]
+        },
+        {
+          "window": 4207785,
+          "title": "Load Ultra Device",
+          "map_state": 0,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            264
+          ]
+        },
+        {
+          "window": 4213857,
+          "title": "alive",
+          "map_state": 0,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            263
+          ]
+        },
+        {
+          "window": 4213117,
+          "title": "Save Alive Session",
+          "map_state": 0,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            264
+          ]
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            268
+          ]
+        },
+        {
+          "window": 4220943,
+          "title": "Pulse - Ultra Hosted Editor",
+          "map_state": 2,
+          "pid": [
+            2003845
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "omitted_root_windows": 0,
+      "observation_seconds": 0.004832425001950469
+    }
+  ],
+  "original_quit_flags": {
+    "physical_audio": false,
+    "accepted_apply_outer_quit_cancel_cleared_history": true,
+    "accepted_discard_canceled_save_picker_cleared_history": true,
+    "quit_cancel_preserved_session": true,
+    "native_window_close_reached_dirty_guard": true,
+    "pending_draft_quit_cancel_retained_edits_and_playback": true,
+    "quit_discard_exited": true
+  },
+  "final_audio": {
+    "Audio backend": "PipeWire",
+    "Audio device": "default_output",
+    "Audio sample rate": "48000",
+    "Audio buffer frames": "512",
+    "Audio callbacks": "2652",
+    "Audio stream errors": "0",
+    "Audio failed": "false",
+    "Audio status": "Audio output is running.",
+    "Transport playing": "true",
+    "Absolute frame": "4499456",
+    "Rejected commands": "0",
+    "Native generation": "42",
+    "Track 1 active voices": "3",
+    "Track 2 active voices": "3"
+  },
+  "walkthrough_frames": 4229632,
+  "capture_supervision": {
+    "complete": true,
+    "reason": "requested_stop",
+    "group_id": 2008562,
+    "recorder_pid": 2008565,
+    "returncode": 1,
+    "wall_seconds": 88.26985100399907,
+    "audio_bytes": 33837056,
+    "stderr_bytes": 0,
+    "limits": {
+      "wall_seconds": 2700.0,
+      "audio_bytes": 1073741824,
+      "metadata_bytes": 67108864,
+      "stderr_bytes": 1048576,
+      "disk_reserve_bytes": 268435456
+    }
+  }
+}

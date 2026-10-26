@@ -1,0 +1,287 @@
+{
+  "accounting": "inclusive wall seconds; query totals overlap; walk excludes yield suspension",
+  "events": [
+    {
+      "event": "journey-entry",
+      "control": "",
+      "utc": "2026-10-26T18:15:05.234527+00:00",
+      "monotonic": 743.269290657
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-26T18:15:25.234996+00:00",
+      "monotonic": 763.269766952,
+      "queries": {
+        "walk": {
+          "count": 66,
+          "inclusive_elapsed_seconds": 4.56910205500435,
+          "max_seconds": 0.19535879399893474,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 58,
+          "inclusive_elapsed_seconds": 7.269820150999749,
+          "max_seconds": 0.3196172350000097,
+          "errors": 1
+        },
+        "wait_for": {
+          "count": 54,
+          "inclusive_elapsed_seconds": 7.170429946999775,
+          "max_seconds": 0.556487268000069,
+          "errors": 0
+        }
+      },
+      "active": [],
+      "active_omitted": 0,
+      "stack": "  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 1075, in <module>\n    run()\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 827, in run\n    choose_file('Replace Harmony device', 'Load Ultra Device', DEVICE)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 468, in choose_file\n    time.sleep(.3)\n"
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-26T18:15:45.235830+00:00",
+      "monotonic": 783.270601235,
+      "queries": {
+        "walk": {
+          "count": 171,
+          "inclusive_elapsed_seconds": 8.492903328008083,
+          "max_seconds": 0.19535879399893474,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 149,
+          "inclusive_elapsed_seconds": 12.876821002000156,
+          "max_seconds": 0.3196172350000097,
+          "errors": 1
+        },
+        "wait_for": {
+          "count": 121,
+          "inclusive_elapsed_seconds": 11.389375697999299,
+          "max_seconds": 0.556487268000069,
+          "errors": 0
+        }
+      },
+      "active": [
+        {
+          "kind": "wait_for",
+          "control": "Add Stereo Lowpass effect 2 / Cutoff point",
+          "running_seconds": 0.06670920299995942
+        },
+        {
+          "kind": "scoped_find",
+          "control": "Add Stereo Lowpass effect 2 / Cutoff point",
+          "running_seconds": 0.06670729999996183
+        },
+        {
+          "kind": "walk",
+          "control": "accessibility traversal",
+          "running_seconds": 4.6850999979142216e-05
+        }
+      ],
+      "active_omitted": 0,
+      "stack": "  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 1075, in <module>\n    run()\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 829, in run\n    chain = prepare_chain()\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 592, in prepare_chain\n    ui.click('Add Stereo Lowpass effect 2 / Cutoff point')\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 75, in visible_click\n    click(name)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 86, in click\n    control = wait_for(name)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 129, in measured\n    return function(*args, **kwargs)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 65, in wait_for\n    return find(name, text_content)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 129, in measured\n    return function(*args, **kwargs)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_documents_desktop.py\", line 59, in scoped_find\n    for node in ui.walk(frame):\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 146, in measured\n    return (yield from _WalkIterator(self, iterator))\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 234, in __next__\n    return self._step(self.iterator.__next__)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 219, in _step\n    return method(*args)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 38, in walk\n    children = [a.get_child_at_index(i) for i in range(a.get_child_count())]\n"
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-26T18:16:05.237231+00:00",
+      "monotonic": 803.272017644,
+      "queries": {
+        "walk": {
+          "count": 256,
+          "inclusive_elapsed_seconds": 15.847363621006366,
+          "max_seconds": 0.1969369020000613,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 214,
+          "inclusive_elapsed_seconds": 22.60340785400001,
+          "max_seconds": 0.3200811699999804,
+          "errors": 1
+        },
+        "wait_for": {
+          "count": 185,
+          "inclusive_elapsed_seconds": 21.08720193299962,
+          "max_seconds": 0.556487268000069,
+          "errors": 0
+        }
+      },
+      "active": [],
+      "active_omitted": 0,
+      "stack": "  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 1075, in <module>\n    run()\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 841, in run\n    numeric(f'{label} point 2 value', second)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 77, in numeric\n    ui.text(name, str(number))\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 79, in visible_text\n    text(name, value)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 154, in text\n    keys('Control_L', 'a')\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 186, in keys\n    time.sleep(.2)\n"
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-26T18:16:25.240911+00:00",
+      "monotonic": 823.275681755,
+      "queries": {
+        "walk": {
+          "count": 346,
+          "inclusive_elapsed_seconds": 20.829365837009163,
+          "max_seconds": 0.2628221339996344,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 295,
+          "inclusive_elapsed_seconds": 31.29882793600052,
+          "max_seconds": 0.6679917689999684,
+          "errors": 3
+        },
+        "wait_for": {
+          "count": 256,
+          "inclusive_elapsed_seconds": 29.453711961000067,
+          "max_seconds": 0.8471651429999838,
+          "errors": 0
+        }
+      },
+      "active": [
+        {
+          "kind": "wait_for",
+          "control": "Audio details",
+          "running_seconds": 0.0513778160000129
+        },
+        {
+          "kind": "scoped_find",
+          "control": "Audio details",
+          "running_seconds": 0.05136811099998795
+        },
+        {
+          "kind": "walk",
+          "control": "accessibility traversal",
+          "running_seconds": 0.0008674810000002253
+        }
+      ],
+      "active_omitted": 0,
+      "stack": "  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 1075, in <module>\n    run()\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 854, in run\n    live_chain()\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 686, in live_chain\n    piano_history_with_effect_editor()\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 615, in piano_history_with_effect_editor\n    ui.click('Selected clip piano roll')\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 71, in visible_click\n    prepare(name)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 49, in prepare\n    details = ui.wait_for('Audio details')\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 129, in measured\n    return function(*args, **kwargs)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 65, in wait_for\n    return find(name, text_content)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 129, in measured\n    return function(*args, **kwargs)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_documents_desktop.py\", line 59, in scoped_find\n    for node in ui.walk(frame):\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 146, in measured\n    return (yield from _WalkIterator(self, iterator))\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 234, in __next__\n    return self._step(self.iterator.__next__)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 219, in _step\n    return method(*args)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 38, in walk\n    children = [a.get_child_at_index(i) for i in range(a.get_child_count())]\n"
+    },
+    {
+      "event": "operation-entry",
+      "control": "piano add/keyboard/undo/redo with independent effect editor; Stop/Apply/play",
+      "utc": "2026-10-26T18:16:41.904775+00:00",
+      "monotonic": 839.939549727
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-26T18:16:45.242133+00:00",
+      "monotonic": 843.276903488,
+      "queries": {
+        "walk": {
+          "count": 419,
+          "inclusive_elapsed_seconds": 29.422967354004527,
+          "max_seconds": 0.384113491999301,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 368,
+          "inclusive_elapsed_seconds": 45.360667383000646,
+          "max_seconds": 0.6687769880001042,
+          "errors": 4
+        },
+        "wait_for": {
+          "count": 328,
+          "inclusive_elapsed_seconds": 43.616372065000064,
+          "max_seconds": 0.8471651429999838,
+          "errors": 0
+        }
+      },
+      "active": [
+        {
+          "kind": "wait_for",
+          "control": "Audio details",
+          "running_seconds": 0.46359366100000443
+        },
+        {
+          "kind": "scoped_find",
+          "control": "Audio details",
+          "running_seconds": 0.4635917289999725
+        },
+        {
+          "kind": "walk",
+          "control": "accessibility traversal",
+          "running_seconds": 0.0006702230000428244
+        }
+      ],
+      "active_omitted": 0,
+      "stack": "  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 1075, in <module>\n    run()\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 854, in run\n    live_chain()\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 686, in live_chain\n    piano_history_with_effect_editor()\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 657, in piano_history_with_effect_editor\n    log('piano add/keyboard/undo/redo with independent effect editor; Stop/Apply/play')\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 103, in log\n    audio = detail()\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 94, in detail\n    return {name: value(name) for name in (\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 55, in value\n    prepare_workspace_control(name)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 31, in prepare\n    expand('Audio details')\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 14, in expand\n    control = ui.wait_for(name)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 129, in measured\n    return function(*args, **kwargs)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 65, in wait_for\n    return find(name, text_content)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 129, in measured\n    return function(*args, **kwargs)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_documents_desktop.py\", line 59, in scoped_find\n    for node in ui.walk(frame):\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 146, in measured\n    return (yield from _WalkIterator(self, iterator))\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 234, in __next__\n    return self._step(self.iterator.__next__)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 219, in _step\n    return method(*args)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 38, in walk\n    children = [a.get_child_at_index(i) for i in range(a.get_child_count())]\n"
+    },
+    {
+      "event": "operation-exit",
+      "control": "piano add/keyboard/undo/redo with independent effect editor; Stop/Apply/play",
+      "utc": "2026-10-26T18:16:50.583314+00:00",
+      "monotonic": 848.618077669
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-26T18:17:05.246501+00:00",
+      "monotonic": 863.281273289,
+      "queries": {
+        "walk": {
+          "count": 497,
+          "inclusive_elapsed_seconds": 36.61590817300373,
+          "max_seconds": 0.384113491999301,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 441,
+          "inclusive_elapsed_seconds": 56.31161687000031,
+          "max_seconds": 0.6687769880001042,
+          "errors": 4
+        },
+        "wait_for": {
+          "count": 393,
+          "inclusive_elapsed_seconds": 54.02337151100039,
+          "max_seconds": 0.8471651429999838,
+          "errors": 0
+        }
+      },
+      "active": [],
+      "active_omitted": 0,
+      "stack": "  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 1075, in <module>\n    run()\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 860, in run\n    editor_edit()\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 530, in editor_edit\n    windows.focus('Pulse - Ultra Hosted Editor')\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_documents_desktop.py\", line 117, in focus\n    time.sleep(.1)\n"
+    },
+    {
+      "event": "failure",
+      "control": "AssertionError",
+      "utc": "2026-10-26T18:17:08.647493+00:00",
+      "monotonic": 866.682263619
+    },
+    {
+      "event": "failure",
+      "control": "AssertionError",
+      "utc": "2026-10-26T18:17:17.077838+00:00",
+      "monotonic": 875.112610007
+    },
+    {
+      "event": "observer-stop",
+      "control": "",
+      "utc": "2026-10-26T18:17:17.078913+00:00",
+      "monotonic": 875.113669638
+    }
+  ],
+  "queries": {
+    "walk": {
+      "count": 500,
+      "inclusive_elapsed_seconds": 36.81045695200464,
+      "max_seconds": 0.384113491999301,
+      "errors": 0
+    },
+    "scoped_find": {
+      "count": 521,
+      "inclusive_elapsed_seconds": 56.409689955000545,
+      "max_seconds": 0.6687769880001042,
+      "errors": 84
+    },
+    "wait_for": {
+      "count": 394,
+      "inclusive_elapsed_seconds": 62.286054382000316,
+      "max_seconds": 8.262682870999924,
+      "errors": 1
+    }
+  },
+  "active": [],
+  "active_omitted": 0,
+  "snapshots_emitted": 6,
+  "events_dropped": 0
+}

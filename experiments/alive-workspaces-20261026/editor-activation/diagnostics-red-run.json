@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "480s",
+    "bash",
+    "apps/ultra/tests/check_canvas_desktop.sh",
+    "/tmp/alive-workspaces-editor-ci-probe/diagnostics-red"
+  ],
+  "script": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_editor_diagnostics.py",
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "PYTHONUNBUFFERED": "1",
+    "ULTRA_TEST_ALIVE": "1",
+    "ULTRA_TEST_SCRIPT": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_editor_diagnostics.py"
+  },
+  "start": "2026-10-26T18:44:50.395585+00:00",
+  "exit": 1,
+  "seconds": 13.555716417999065,
+  "end": "2026-10-26T18:45:03.951315+00:00"
+}

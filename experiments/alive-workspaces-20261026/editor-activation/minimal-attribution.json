@@ -1,0 +1,21 @@
+{
+  "script": "probe.py initial version; initial source was not separately frozen before the first run",
+  "command": [
+    "env",
+    "-u",
+    "ALIVE_SYSROOT",
+    "PATH=/usr/bin:/bin",
+    "PYTHONUNBUFFERED=1",
+    "ULTRA_TEST_ALIVE=1",
+    "ULTRA_TEST_SCRIPT=/tmp/alive-workspaces-editor-ci-probe/probe.py",
+    "timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "100s",
+    "bash",
+    "apps/ultra/tests/check_canvas_desktop.sh",
+    "/tmp/alive-workspaces-editor-ci-probe/minimal"
+  ],
+  "activation": "passed; original geometry,input and hosted-control check retained in editor-probe.json",
+  "failure": "temporary probe Quit omitted migration Discard; no original journey assertion changed"
+}

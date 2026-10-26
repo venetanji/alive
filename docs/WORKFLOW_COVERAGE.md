@@ -1,7 +1,8 @@
 # Current Alive / Ultra Workflow Coverage
 
-Updated 2026-10-27 against app product `6beb210`, test correction `cc7d541`
+Updated 2026-10-27 against app product `4470230`, pushed checkpoint `a1cf2e7`
 and independently reviewed test-only MIDI runtime through `5981cfe`.
+Measurement commit `8e17719` is independently approved; shipping v4 is disabled.
 This ledger distinguishes app features,
 test-only work and historical verification. It supplements the existing
 [workspace plan](superpowers/plans/alive-workspaces-20261026.md); it does not
@@ -84,6 +85,29 @@ assertion is weakened. Packages `40360212684` pass
 all four targets, with tag publication skipped. Song-loop native commit
 `5981cfe` passes its full suite and independent review, but awaits measured
 shipping admission; it does not add an available Arrangement interface.
+
+Checkpoint `a1cf2e7` CI `40374437793` passes UI/Chromium, native/Rust and
+offline renders, then fails to observe the first Pulse instrument editor
+window. Earlier Replace choosers and effect-editor/history operations pass.
+The failing activation lacks an input/invocation receipt, so its cause remains
+unresolved; focus/scroll timing is a hypothesis. Later native gates skip.
+Evidence: `experiments/alive-workspaces-20261026/ci-a1cf2e7/`.
+Packages `40374437738` pass all four targets; tag publication is skipped.
+Bounded local editor probes pass, leaving the CI cause unresolved. Diagnostic
+receipts at `6d88803` preserve the original activation; review identifies a
+receipt-write isolation gap. Correction `6d8c95a` passes three native RED/GREEN
+failure paths and the unchanged full journey in 193.83s, with scoped re-review
+approval and no remaining finding. Evidence is under `editor-activation/` in the same experiment root.
+
+MIDI measurement `8e17719` completes 287 distributions / 344400 timing samples
+with separate callback guards, full native CI and current-source shipping
+refusal checks. Independent review approves with one nonblocking runner
+completeness gap; the audited final run is unaffected. The desktop scope is
+profile 1 at practical buffers of at least 256 frames. Profile 2 remains
+unadmitted because its combined synthetic stress exceeds the deadline even at
+1024 frames. Synthetic workload limitations and all failures are retained in
+`experiments/alive-workspaces-20261026/task2d-measurement/`. This is software
+processing evidence, not a desktop feature or physical audio qualification.
 
 ## Reference Gaps For The Next Increment
 
