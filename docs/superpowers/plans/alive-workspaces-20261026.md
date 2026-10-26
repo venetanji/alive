@@ -72,6 +72,14 @@ callback paths. The six-boundary/seven-segment cap and every work ceiling stay
 fixed. Subsequent bounded slices add multi-track preparation, authority/actions,
 suffix loops/seek, then partial song loops/coincident boundaries. Each has its
 own source/test review before the next slice.
+Task 2C-prep is independently approved at `c8f6522`: the complete MIDI envelope
+builder and bounded independent oracle pass, with complete native regressions.
+Evidence: `experiments/alive-workspaces-20261026/task2c-prep/`. Runtime consumption
+and finite multi-track preparation are next; this seam enables no app feature.
+The accepted desktop interface supplement is
+`docs/superpowers/specs/2026-10-26-alive-workspaces-desktop-contract.md`.
+Complete the MIDI portion of Task 4 after MIDI admission and before Task 3,
+following the owner's MIDI-first workflow priority.
 The pure 2A APIs produce prospective candidates: graph-family eligibility and
 manifest parameter existence/type/range cannot be certified from wire data or
 saved base maps. Task 2D must resolve them before admission. Stored-event counts

@@ -129,10 +129,13 @@ code, fonts, proprietary help patches, icons, or application assets.
 
 ## Evidence on Hand
 
-`PLAN.md` records the first canvas, its runtime boundaries, and the assigned local
-UI investigation. `experiments/max-reference/` records prior local Max semantics.
-New UI observations belong in `experiments/max-ui-reference/` with execution and
-coverage limits kept explicit.
+`PLAN.md` records the active workflow sequence and runtime boundaries.
+`docs/WORKFLOW_COVERAGE.md` distinguishes current app features, test-only work,
+source-pinned native verification and remaining reference gaps.
+`experiments/max-reference/` and `experiments/max-ui-reference/` retain historical
+Max observations. New original-application captures stay private; publish derived
+action/result findings and their execution/coverage limits without proprietary
+assets. `docs/ALIVE_ARRANGEMENT_REFERENCE.md` records the latest bounded study.
 Frozen signal observations and production-header replay live in
 `experiments/max-reference/signal-runtime-20261021/`. Original runnable examples
 and partial imports do not establish complete execution of installed Max help.

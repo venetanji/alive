@@ -823,6 +823,14 @@ message. Do not present a nonfunctional Arrangement as usable.
 
 ## 7. Authenticated desktop commands and observations
 
+Exact additive snapshot/prepared DTOs, primary affected IDs, stopped structural
+track operations, reserved Stop dispatch and retained-history path handling are
+pinned in [the desktop contract](2026-10-26-alive-workspaces-desktop-contract.md).
+That supplement is a design contract, not evidence of active app admission.
+V4 UI Play starts audio then requests Start using the same originally captured
+generation/preparation identity; each endpoint retains its own authentication
+and the runtime request still requires a live driver.
+
 New command arguments are strict typed enums/structs. Runtime requests require
 main window, current desktop generation, canonical preparation revision and
 running audio; optional stopped cues still require a live driver to observe the

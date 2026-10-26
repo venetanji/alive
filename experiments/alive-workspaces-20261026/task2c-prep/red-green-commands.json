@@ -1,0 +1,74 @@
+[
+  {
+    "stage": "red",
+    "compile": "c++ -std=c++17 -O2 -Wall -Wextra -Werror apps/ultra/tests/alive_session_workspace_envelope_test.cpp -o /tmp/alive-workspaces-task2c-prep/envelope-test",
+    "compile_exit": 0,
+    "compile_log": "/tmp/alive-workspaces-task2c-prep/red-build.log",
+    "run": "/tmp/alive-workspaces-task2c-prep/envelope-test",
+    "run_exit": 134,
+    "run_log": "/tmp/alive-workspaces-task2c-prep/red-run.log"
+  },
+  {
+    "stage": "green",
+    "compile": "c++ -std=c++17 -O2 -Wall -Wextra -Werror apps/ultra/tests/alive_session_workspace_envelope_test.cpp -o /tmp/alive-workspaces-task2c-prep/envelope-test",
+    "compile_exit": 0,
+    "compile_log": "/tmp/alive-workspaces-task2c-prep/green-build.log",
+    "run": "/tmp/alive-workspaces-task2c-prep/envelope-test",
+    "run_exit": 0,
+    "run_log": "/tmp/alive-workspaces-task2c-prep/green-run.log"
+  },
+  {
+    "stage": "oracle",
+    "compile": "c++ -std=c++17 -O2 -Wall -Wextra -Werror apps/ultra/tests/alive_session_workspace_envelope_test.cpp -o /tmp/alive-workspaces-task2c-prep/envelope-test",
+    "compile_exit": 0,
+    "compile_log": "/tmp/alive-workspaces-task2c-prep/oracle-build.log",
+    "run": "/tmp/alive-workspaces-task2c-prep/envelope-test",
+    "run_exit": 0,
+    "run_log": "/tmp/alive-workspaces-task2c-prep/oracle-run.log"
+  },
+  {
+    "stage": "eight-red",
+    "compile": "c++ -std=c++17 -O2 -Wall -Wextra -Werror apps/ultra/tests/alive_session_workspace_envelope_test.cpp -o /tmp/alive-workspaces-task2c-prep/envelope-test",
+    "compile_exit": 0,
+    "compile_log": "/tmp/alive-workspaces-task2c-prep/eight-red-build.log",
+    "run": "/tmp/alive-workspaces-task2c-prep/envelope-test",
+    "run_exit": 134,
+    "run_log": "/tmp/alive-workspaces-task2c-prep/eight-red-run.log"
+  },
+  {
+    "stage": "authority",
+    "compile": "c++ -std=c++17 -O2 -Wall -Wextra -Werror apps/ultra/tests/alive_session_workspace_envelope_test.cpp -o /tmp/alive-workspaces-task2c-prep/envelope-test",
+    "compile_exit": 0,
+    "compile_log": "/tmp/alive-workspaces-task2c-prep/authority-build.log",
+    "run": "/tmp/alive-workspaces-task2c-prep/envelope-test",
+    "run_exit": 0,
+    "run_log": "/tmp/alive-workspaces-task2c-prep/authority-run.log"
+  },
+  {
+    "stage": "native-oracle",
+    "compile": "c++ -std=c++17 -O2 -Wall -Wextra -Werror apps/ultra/tests/alive_session_workspace_envelope_test.cpp -o /tmp/alive-workspaces-task2c-prep/envelope-test",
+    "compile_exit": 0,
+    "compile_log": "/tmp/alive-workspaces-task2c-prep/native-oracle-build.log",
+    "run": "/tmp/alive-workspaces-task2c-prep/envelope-test",
+    "run_exit": 0,
+    "run_log": "/tmp/alive-workspaces-task2c-prep/native-oracle-run.log"
+  },
+  {
+    "stage": "full-oracle",
+    "compile": "c++ -std=c++17 -O2 -Wall -Wextra -Werror apps/ultra/tests/alive_session_workspace_envelope_test.cpp -o /tmp/alive-workspaces-task2c-prep/envelope-test",
+    "compile_exit": 0,
+    "compile_log": "/tmp/alive-workspaces-task2c-prep/full-oracle-build.log",
+    "run": "/tmp/alive-workspaces-task2c-prep/envelope-test",
+    "run_exit": 0,
+    "run_log": "/tmp/alive-workspaces-task2c-prep/full-oracle-run.log"
+  },
+  {
+    "stage": "final-oracle",
+    "compile": "c++ -std=c++17 -O2 -Wall -Wextra -Werror apps/ultra/tests/alive_session_workspace_envelope_test.cpp -o /tmp/alive-workspaces-task2c-prep/envelope-test",
+    "compile_exit": 0,
+    "compile_log": "/tmp/alive-workspaces-task2c-prep/final-oracle-build.log",
+    "run": "/tmp/alive-workspaces-task2c-prep/envelope-test",
+    "run_exit": 0,
+    "run_log": "/tmp/alive-workspaces-task2c-prep/final-oracle-run.log"
+  }
+]

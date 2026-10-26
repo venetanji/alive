@@ -103,6 +103,13 @@ This is software PipeWire/CPAL at 48 kHz/512 frames, not physical audio or
 endurance. Existing accessibility/compositor harness warnings remain disclosed.
 Evidence: `experiments/alive-workspaces-20261026/cutoff-ci-fix/`.
 Remote CI on the new pushed checkpoint remains required.
+Checkpoint `5abd9eb` is pushed; CI `40338484521` and packages `40338484480`
+are in progress on that exact commit. PR #6 remains draft and records current
+working versus missing workflows. The complete-envelope/oracle 2C-prep slice
+is independently approved at `c8f6522`: 106,661,824 bounded oracle assertions
+and the complete native suite pass. No runtime capability is enabled by that
+preparation work. Finite multi-track native integration is next, followed by
+authority actions, loops and measured desktop admission.
 
 Fresh private Arrangement study LOCAL-ARR-R1 observes occurrence creation,
 movement, source-loop extension/undo, two-track Session override, scoped Stop,
