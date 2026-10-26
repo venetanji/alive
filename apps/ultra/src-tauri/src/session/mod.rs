@@ -6,6 +6,7 @@ pub use prepare::{prepare, PreparedSession, Schedule};
 mod persistence;
 mod history;
 mod clips;
+pub mod workspaces;
 mod runtime;
 pub use clips::{Document, ClipBank};
 pub type Session = Document;
