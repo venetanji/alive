@@ -1,0 +1,80 @@
+{
+  "base": "c511f1441860e77fd7f25810a00ad121a1d7bf9d",
+  "branch": "feat/alive-session-host",
+  "files": {
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive.html": {
+      "sha256": "e7a9de558b7f66ef4f35403b654a00f917f7841ff646c82311c0f60fb7209d85",
+      "size": 11138
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive.css": {
+      "sha256": "adaac15b57ee7cee339bfb9ed56f11af76a222eca5b9ff436147279527617d92",
+      "size": 20505
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive.mjs": {
+      "sha256": "0c5fac1686361e068b8a1c7469e414531bf25892d5fe50ab53e0ded75cd353b0",
+      "size": 55252
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-workspace.mjs": {
+      "sha256": "1bc831656001cb820d8db57a806b3c6a07a381c7477d04011d2fc4fc33ed0c5d",
+      "size": 5479
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-dom.test.mjs": {
+      "sha256": "b117345436f09a7fed41ac0a3911ad0334e3067a3e52e6f97b3109d17e103484",
+      "size": 56819
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive": {
+      "sha256": "2e9ce47f343e44b1e28770c3b7e7060d4c9e20e6452a6678a33d6e4392af9244",
+      "size": 13518024
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/ultra": {
+      "sha256": "8505419c2dacea8b9c0586052c4b9ed378ae6bd37e70b466ff0074e1f044d682",
+      "size": 17357648
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/libultra_native.so": {
+      "sha256": "4c54e3e0a2e7bf2007a56620d1006658e97b86d5f8828e08f13e9ffd3a1e9e70",
+      "size": 12917760
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_canvas_desktop.sh": {
+      "sha256": "e75bbd94e63ad4fc28476098e2b7bc1f8918c04706c709e7876fd8b47c2df574",
+      "size": 7699
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py": {
+      "sha256": "18319200111d2a7f119eeafa329ba3e3e577a394d8856bd286d2740e299b43af",
+      "size": 45182
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/alive_workspace_navigation.py": {
+      "sha256": "9c4bda46692131a0f6a4ee61331312f28fd26ae9f7d03598a39db52ef25d29ac",
+      "size": 2884
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_canvas_desktop.py": {
+      "sha256": "5753440e59f6a5e25b18a9b402e13c8ce0b04176d4694cb82b8314026af39ec5",
+      "size": 42071
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_documents_desktop.py": {
+      "sha256": "c62b3bd0fb46888761d0a8477d21f1c525680d8ba80ac2c68ceedc5cb052c6ac",
+      "size": 49595
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs": {
+      "sha256": "19468aa92ccc06b4ce2ccb4791c93ea7d22db1d764c39305b0d9f80a028f9285",
+      "size": 16732
+    },
+    "/tmp/alive-workspaces-task1/native-check.py": {
+      "sha256": "c18e393e56e1fc49c52fcf03229f8f0673ae971cc0d70d7b2f4a8218070bbe48",
+      "size": 5318
+    },
+    "/tmp/alive-workspaces-task1/private-desktop.sh": {
+      "sha256": "0dfb4526f198e54e38ba210b3c1611ae50a7336ae3bf6f028ce6a4b0b1c560c0",
+      "size": 7704
+    },
+    "/tmp/alive-workspaces-task1/eight-tracks.alive": {
+      "sha256": "34f915e4814f57e43a20e4173e7d31b0e799fcff97bfd2c4c39f45837a75d6ad",
+      "size": 17486
+    }
+  },
+  "build_command": "bash apps/alive/build.sh",
+  "native_commands": [
+    "ULTRA_TEST_ALIVE=1 ULTRA_TEST_SCRIPT=/tmp/alive-workspaces-task1/native-check.py ULTRA_TEST_ALIVE_SESSION=/tmp/alive-workspaces-task1/eight-tracks.alive bash /tmp/alive-workspaces-task1/private-desktop.sh /tmp/alive-workspaces-task1/native",
+    "ULTRA_TEST_ALIVE=1 ULTRA_TEST_SCRIPT=\"$PWD/apps/ultra/tests/check_alive_desktop.py\" bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-workspaces-task1/original-final"
+  ],
+  "original_journey_result": "original-final/native-session-report.json"
+}

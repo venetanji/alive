@@ -1,0 +1,3013 @@
+TAP version 13
+# Subtest: plain Tab navigates workspaces while controls and modified Tab keep native focus navigation
+ok 1 - plain Tab navigates workspaces while controls and modified Tab keep native focus navigation
+  ---
+  duration_ms: 43.465358
+  type: 'test'
+  ...
+# Subtest: repeated view navigation preserves playing pending receipts, draft, clip, instance and editor lifecycle
+ok 2 - repeated view navigation preserves playing pending receipts, draft, clip, instance and editor lifecycle
+  ---
+  duration_ms: 19.164123
+  type: 'test'
+  ...
+# Subtest: browser and Clip Devices detail toggle locally without rebuilding active controls
+ok 3 - browser and Clip Devices detail toggle locally without rebuilding active controls
+  ---
+  duration_ms: 12.746559
+  type: 'test'
+  ...
+# Subtest: detail resize supports keyboard and cancels pointer preview with Escape
+ok 4 - detail resize supports keyboard and cancels pointer preview with Escape
+  ---
+  duration_ms: 6.978681
+  type: 'test'
+  ...
+# Subtest: eight Session tracks expose four vertical slots and a mixer per column plus four scene rows
+ok 5 - eight Session tracks expose four vertical slots and a mixer per column plus four scene rows
+  ---
+  duration_ms: 17.076809
+  type: 'test'
+  ...
+# Subtest: scene controls launch a prepared row once without selection or document edits
+ok 6 - scene controls launch a prepared row once without selection or document edits
+  ---
+  duration_ms: 19.685696
+  type: 'test'
+  ...
+# Subtest: scene receipt shows separate member outcomes and never presents it as transport success
+ok 7 - scene receipt shows separate member outcomes and never presents it as transport success
+  ---
+  duration_ms: 11.122634
+  type: 'test'
+  ...
+# Subtest: queued scene captures preparation at gesture and late result preserves newer selection and focus
+ok 8 - queued scene captures preparation at gesture and late result preserves newer selection and focus
+  ---
+  duration_ms: 37.957204
+  type: 'test'
+  ...
+# Subtest: track addition follows explicitly advertised capacity and retains the legacy fallback
+ok 9 - track addition follows explicitly advertised capacity and retains the legacy fallback
+  ---
+  duration_ms: 6.71099
+  type: 'test'
+  ...
+# Subtest: four slots separate selection, draft-only launch and prepared runtime identity
+ok 10 - four slots separate selection, draft-only launch and prepared runtime identity
+  ---
+  duration_ms: 20.134634
+  type: 'test'
+  ...
+# Subtest: asynchronous work refusal names the requested clip and preserves actionable runtime context
+ok 11 - asynchronous work refusal names the requested clip and preserves actionable runtime context
+  ---
+  duration_ms: 14.200912
+  type: 'test'
+  ...
+# Subtest: v3 start reports native refusal instead of transport success
+ok 12 - v3 start reports native refusal instead of transport success
+  ---
+  duration_ms: 5.565907
+  type: 'test'
+  ...
+# Subtest: v3 seek reports native refusal instead of transport success
+ok 13 - v3 seek reports native refusal instead of transport success
+  ---
+  duration_ms: 16.667756
+  type: 'test'
+  ...
+# Subtest: trackless transport receipts progress from queued to asynchronous refusal without automatic retry
+ok 14 - trackless transport receipts progress from queued to asynchronous refusal without automatic retry
+  ---
+  duration_ms: 28.579863
+  type: 'test'
+  ...
+# Subtest: immediate queued transport response cannot overwrite a matching applied publication
+ok 15 - immediate queued transport response cannot overwrite a matching applied publication
+  ---
+  duration_ms: 7.790345
+  type: 'test'
+  ...
+# Subtest: queued v3 note values keep originating clip and note IDs after selection changes
+ok 16 - queued v3 note values keep originating clip and note IDs after selection changes
+  ---
+  duration_ms: 47.142459
+  type: 'test'
+  ...
+# Subtest: late focused clip creation accepts score without stealing a newer track selection
+ok 17 - late focused clip creation accepts score without stealing a newer track selection
+  ---
+  duration_ms: 11.709945
+  type: 'test'
+  ...
+# Subtest: queued Add note cannot cross successful removal into a reused track index
+ok 18 - queued Add note cannot cross successful removal into a reused track index
+  ---
+  duration_ms: 17.021253
+  type: 'test'
+  ...
+# Subtest: queued tempo cannot cross successful new
+ok 19 - queued tempo cannot cross successful new
+  ---
+  duration_ms: 6.357228
+  type: 'test'
+  ...
+# Subtest: queued lengthBeats cannot cross successful open
+ok 20 - queued lengthBeats cannot cross successful open
+  ---
+  duration_ms: 9.845287
+  type: 'test'
+  ...
+# Subtest: queued loopEnabled cannot cross successful open
+ok 21 - queued loopEnabled cannot cross successful open
+  ---
+  duration_ms: 13.550099
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after apply with file outcome none
+ok 22 - queued global edits cancel after apply with file outcome none
+  ---
+  duration_ms: 24.415312
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after apply with file outcome error
+ok 23 - queued global edits cancel after apply with file outcome error
+  ---
+  duration_ms: 8.082849
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after discard with file outcome none
+ok 24 - queued global edits cancel after discard with file outcome none
+  ---
+  duration_ms: 11.90445
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after discard with file outcome error
+ok 25 - queued global edits cancel after discard with file outcome error
+  ---
+  duration_ms: 7.978907
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after relocate with file outcome snapshot
+ok 26 - queued global edits cancel after relocate with file outcome snapshot
+  ---
+  duration_ms: 20.18062
+  type: 'test'
+  ...
+# Subtest: file none without an accepted boundary preserves queued same-scope edits
+ok 27 - file none without an accepted boundary preserves queued same-scope edits
+  ---
+  duration_ms: 10.103869
+  type: 'test'
+  ...
+# Subtest: file error without an accepted boundary preserves queued same-scope edits
+ok 28 - file error without an accepted boundary preserves queued same-scope edits
+  ---
+  duration_ms: 10.121947
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after accepted apply
+ok 29 - queued global edits cancel after accepted apply
+  ---
+  duration_ms: 14.006703
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after accepted discard
+ok 30 - queued global edits cancel after accepted discard
+  ---
+  duration_ms: 5.479747
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after accepted undo
+ok 31 - queued global edits cancel after accepted undo
+  ---
+  duration_ms: 5.359941
+  type: 'test'
+  ...
+# Subtest: real musical fields retain drafts across polls and rejected Apply
+ok 32 - real musical fields retain drafts across polls and rejected Apply
+  ---
+  duration_ms: 9.314105
+  type: 'test'
+  ...
+# Subtest: Alive audio settings preserve drafts and route configuration through the session owner
+ok 33 - Alive audio settings preserve drafts and route configuration through the session owner
+  ---
+  duration_ms: 11.997017
+  type: 'test'
+  ...
+# Subtest: draft writes precede file actions and actual native metrics remain visible
+ok 34 - draft writes precede file actions and actual native metrics remain visible
+  ---
+  duration_ms: 7.771495
+  type: 'test'
+  ...
+# Subtest: automation base segments follow live controls without rebuilding unchanged poll frames
+ok 35 - automation base segments follow live controls without rebuilding unchanged poll frames
+  ---
+  duration_ms: 6.332206
+  type: 'test'
+  ...
+# Subtest: a rejected edit restores the authoritative score before a later save
+ok 36 - a rejected edit restores the authoritative score before a later save
+  ---
+  duration_ms: 6.432319
+  type: 'test'
+  ...
+# Subtest: hosted editor uses real patch objects and shared base command; close only releases UI
+ok 37 - hosted editor uses real patch objects and shared base command; close only releases UI
+  ---
+  duration_ms: 17.29711
+  type: 'test'
+  ...
+# Subtest: hosted zoom selection follows fitted and manually selected graph scale
+ok 38 - hosted zoom selection follows fitted and manually selected graph scale
+  ---
+  duration_ms: 3.616223
+  type: 'test'
+  ...
+# Subtest: an effect editor owns its own manifest patch state and instance command
+ok 39 - an effect editor owns its own manifest patch state and instance command
+  ---
+  duration_ms: 3.42279
+  type: 'test'
+  ...
+# Subtest: chain selection uses stable instance metadata without launching and live bypass retains transport
+ok 40 - chain selection uses stable instance metadata without launching and live bypass retains transport
+  ---
+  duration_ms: 6.227071
+  type: 'test'
+  ...
+# Subtest: metadata automation targets distinguish matching keys across instances and preserve original lanes
+ok 41 - metadata automation targets distinguish matching keys across instances and preserve original lanes
+  ---
+  duration_ms: 6.251332
+  type: 'test'
+  ...
+# Subtest: stopped reorder and editor commands retain instance identity and instrument removal names its track scope
+ok 42 - stopped reorder and editor commands retain instance identity and instrument removal names its track scope
+  ---
+  duration_ms: 9.56523
+  type: 'test'
+  ...
+# Subtest: selecting the current clip retains its separate device selection and rejected mutations preserve the chain
+ok 43 - selecting the current clip retains its separate device selection and rejected mutations preserve the chain
+  ---
+  duration_ms: 4.795197
+  type: 'test'
+  ...
+# Subtest: new automation points use the current live instance base after polling
+ok 44 - new automation points use the current live instance base after polling
+  ---
+  duration_ms: 5.400358
+  type: 'test'
+  ...
+# Subtest: piano selection is clean and keyboard edits use one authenticated transaction
+ok 45 - piano selection is clean and keyboard edits use one authenticated transaction
+  ---
+  duration_ms: 4.951701
+  type: 'test'
+  ...
+# Subtest: pointer previews commit once; cancel, Escape, scope actions and new revisions commit none
+ok 46 - pointer previews commit once; cancel, Escape, scope actions and new revisions commit none
+  ---
+  duration_ms: 17.647398
+  type: 'test'
+  ...
+# Subtest: velocity preview is one transaction and external live polls do not replace a drag
+ok 47 - velocity preview is one transaction and external live polls do not replace a drag
+  ---
+  duration_ms: 4.747105
+  type: 'test'
+  ...
+# Subtest: file cancellation after an accepted boundary refreshes authoritative revision and history
+ok 48 - file cancellation after an accepted boundary refreshes authoritative revision and history
+  ---
+  duration_ms: 8.82429
+  type: 'test'
+  ...
+# Subtest: queued numeric edits retain their originating track after a selection change
+ok 49 - queued numeric edits retain their originating track after a selection change
+  ---
+  duration_ms: 6.646546
+  type: 'test'
+  ...
+# Subtest: Escape cancels a velocity drag including late input and change events
+ok 50 - Escape cancels a velocity drag including late input and change events
+  ---
+  duration_ms: 10.204754
+  type: 'test'
+  ...
+# Subtest: rejected audio configuration reaches the audio panel error handler
+ok 51 - rejected audio configuration reaches the audio panel error handler
+  ---
+  duration_ms: 2.437549
+  type: 'test'
+  ...
+# Subtest: automation event rejection restores accepted score and the next edit recovers
+ok 52 - automation event rejection restores accepted score and the next edit recovers
+  ---
+  duration_ms: 3.903756
+  type: 'test'
+  ...
+# Subtest: a queued note index cannot target another note after a preceding deletion
+ok 53 - a queued note index cannot target another note after a preceding deletion
+  ---
+  duration_ms: 4.275218
+  type: 'test'
+  ...
+# Subtest: automation point indices also invalidate after a queued deletion
+ok 54 - automation point indices also invalidate after a queued deletion
+  ---
+  duration_ms: 3.729373
+  type: 'test'
+  ...
+# Subtest: polling preserves musical drafts and merges newer live base and mixer values
+ok 55 - polling preserves musical drafts and merges newer live base and mixer values
+  ---
+  duration_ms: 1.731164
+  type: 'test'
+  ...
+# Subtest: replacement invalidates old drafts only after generation changes
+ok 56 - replacement invalidates old drafts only after generation changes
+  ---
+  duration_ms: 0.441903
+  type: 'test'
+  ...
+# Subtest: automation ownership displays saved base separately from effective value
+ok 57 - automation ownership displays saved base separately from effective value
+  ---
+  duration_ms: 0.957704
+  type: 'test'
+  ...
+# Subtest: a resolved native file dialog adopts its authoritative retained or discarded draft
+ok 58 - a resolved native file dialog adopts its authoritative retained or discarded draft
+  ---
+  duration_ms: 0.664127
+  type: 'test'
+  ...
+# Subtest: independent same-source effects merge by instance identity while retaining chain order
+ok 59 - independent same-source effects merge by instance identity while retaining chain order
+  ---
+  duration_ms: 0.500227
+  type: 'test'
+  ...
+# Subtest: older polling responses cannot replace a newer authoritative musical revision
+ok 60 - older polling responses cannot replace a newer authoritative musical revision
+  ---
+  duration_ms: 0.414614
+  type: 'test'
+  ...
+# Subtest: native sequence and preparation strings reject late runtime snapshots beyond JS precision
+ok 61 - native sequence and preparation strings reject late runtime snapshots beyond JS precision
+  ---
+  duration_ms: 0.725478
+  type: 'test'
+  ...
+# Subtest: scroll-independent viewBox mapping and stable viewport geometry
+ok 62 - scroll-independent viewBox mapping and stable viewport geometry
+  ---
+  duration_ms: 5.807482
+  type: 'test'
+  ...
+# Subtest: move and resize snap displacement while preserving imported offsets
+ok 63 - move and resize snap displacement while preserving imported offsets
+  ---
+  duration_ms: 2.434535
+  type: 'test'
+  ...
+# Subtest: new notes use the fixed grid, velocity and duration and reject clipped placement
+ok 64 - new notes use the fixed grid, velocity and duration and reject clipped placement
+  ---
+  duration_ms: 3.376505
+  type: 'test'
+  ...
+# Subtest: all audio ports describe a bus, including one-channel mono
+ok 65 - all audio ports describe a bus, including one-channel mono
+  ---
+  duration_ms: 3.22895
+  type: 'test'
+  ...
+# Subtest: constructor clones and deeply freezes JSON-serializable metadata only
+ok 66 - constructor clones and deeply freezes JSON-serializable metadata only
+  ---
+  duration_ms: 1.041753
+  type: 'test'
+  ...
+# Subtest: channel counts must be integers in the bounded 1–64 range
+ok 67 - channel counts must be integers in the bounded 1–64 range
+  ---
+  duration_ms: 0.800097
+  type: 'test'
+  ...
+# Subtest: mono and stereo layouts reject contradictory channel counts
+ok 68 - mono and stereo layouts reject contradictory channel counts
+  ---
+  duration_ms: 0.507252
+  type: 'test'
+  ...
+# Subtest: bus and layout shapes reject missing, unknown and non-data properties
+ok 69 - bus and layout shapes reject missing, unknown and non-data properties
+  ---
+  duration_ms: 0.715647
+  type: 'test'
+  ...
+# Subtest: full 3D ambisonic orders derive exactly (order + 1) squared channels
+ok 70 - full 3D ambisonic orders derive exactly (order + 1) squared channels
+  ---
+  duration_ms: 1.087982
+  type: 'test'
+  ...
+# Subtest: ambisonic validation rejects incomplete fields and contradictory conventions
+ok 71 - ambisonic validation rejects incomplete fields and contradictory conventions
+  ---
+  duration_ms: 2.317395
+  type: 'test'
+  ...
+# Subtest: circular 2D metadata matches the measured Faust unit circular basis
+ok 72 - circular 2D metadata matches the measured Faust unit circular basis
+  ---
+  duration_ms: 2.056708
+  type: 'test'
+  ...
+# Subtest: circular profiles reject bad orders, counts and mixed 2D/3D conventions
+ok 73 - circular profiles reject bad orders, counts and mixed 2D/3D conventions
+  ---
+  duration_ms: 1.127666
+  type: 'test'
+  ...
+# Subtest: circular fields never connect implicitly to 3D, discrete or mono even at equal width
+ok 74 - circular fields never connect implicitly to 3D, discrete or mono even at equal width
+  ---
+  duration_ms: 1.630931
+  type: 'test'
+  ...
+# Subtest: circular routing metadata cannot act as an encoder, decoder or 3D conversion
+ok 75 - circular routing metadata cannot act as an encoder, decoder or 3D conversion
+  ---
+  duration_ms: 1.953408
+  type: 'test'
+  ...
+# Subtest: direct connections require exact count AND semantic layout
+ok 76 - direct connections require exact count AND semantic layout
+  ---
+  duration_ms: 1.981649
+  type: 'test'
+  ...
+# Subtest: joining mono A/B into stereo is an explicit ordered operation, not summing
+ok 77 - joining mono A/B into stereo is an explicit ordered operation, not summing
+  ---
+  duration_ms: 0.61878
+  type: 'test'
+  ...
+# Subtest: joining never drops, duplicates or zero-pads undeclared channels
+ok 78 - joining never drops, duplicates or zero-pads undeclared channels
+  ---
+  duration_ms: 0.791499
+  type: 'test'
+  ...
+# Subtest: splitting exhaustively partitions channels, preserving their order
+ok 79 - splitting exhaustively partitions channels, preserving their order
+  ---
+  duration_ms: 0.750101
+  type: 'test'
+  ...
+# Subtest: explicit maps describe selections, reorders and duplication, never a mix
+ok 80 - explicit maps describe selections, reorders and duplication, never a mix
+  ---
+  duration_ms: 1.075956
+  type: 'test'
+  ...
+# Subtest: routing descriptors cannot masquerade as ambisonic encoders or decoders
+ok 81 - routing descriptors cannot masquerade as ambisonic encoders or decoders
+  ---
+  duration_ms: 0.980252
+  type: 'test'
+  ...
+# Subtest: native adapter distinguishes logical devices from stereo channels and DSP capability
+ok 82 - native adapter distinguishes logical devices from stereo channels and DSP capability
+  ---
+  duration_ms: 0.410506
+  type: 'test'
+  ...
+# Subtest: Refresh preserves an explicit unsaved output and buffer selection
+ok 83 - Refresh preserves an explicit unsaved output and buffer selection
+  ---
+  duration_ms: 3.289299
+  type: 'test'
+  ...
+# Subtest: Refresh retains a disconnected selection and blocks save/start until another output is chosen
+ok 84 - Refresh retains a disconnected selection and blocks save/start until another output is chosen
+  ---
+  duration_ms: 2.917104
+  type: 'test'
+  ...
+# Subtest: Unavailable saved host retains its identity, lists recovery alternatives and exposes the diagnostic
+ok 85 - Unavailable saved host retains its identity, lists recovery alternatives and exposes the diagnostic
+  ---
+  duration_ms: 1.981438
+  type: 'test'
+  ...
+# Subtest: optional display style round-trips without changing the required legacy document fields
+ok 86 - optional display style round-trips without changing the required legacy document fields
+  ---
+  duration_ms: 4.95789
+  type: 'test'
+  ...
+# Subtest: JS consumes the shared valid and invalid appearance cases used by Rust preparation
+ok 87 - JS consumes the shared valid and invalid appearance cases used by Rust preparation
+  ---
+  duration_ms: 6.608812
+  type: 'test'
+  ...
+# Subtest: comment callout appearance survives save and undo without persisting omitted defaults
+ok 88 - comment callout appearance survives save and undo without persisting omitted defaults
+  ---
+  duration_ms: 3.101729
+  type: 'test'
+  ...
+# Subtest: appearance metadata exposes applicable Max attributes and immutable constraints
+ok 89 - appearance metadata exposes applicable Max attributes and immutable constraints
+  ---
+  duration_ms: 2.303435
+  type: 'test'
+  ...
+# Subtest: style validation rejects nonfinite numbers and clones RGBA input rather than retaining caller state
+ok 90 - style validation rejects nonfinite numbers and clones RGBA input rather than retaining caller state
+  ---
+  duration_ms: 1.053428
+  type: 'test'
+  ...
+# Subtest: document styles are atomic undoable overrides, including individual and whole resets
+ok 91 - document styles are atomic undoable overrides, including individual and whole resets
+  ---
+  duration_ms: 1.599503
+  type: 'test'
+  ...
+# Subtest: configure preserves shared styles and filters only attributes unavailable on the new type
+ok 92 - configure preserves shared styles and filters only attributes unavailable on the new type
+  ---
+  duration_ms: 1.236809
+  type: 'test'
+  ...
+# Subtest: controller style edits and history retain native revisions observations and queued events without IPC
+ok 93 - controller style edits and history retain native revisions observations and queued events without IPC
+  ---
+  duration_ms: 5.544571
+  type: 'test'
+  ...
+# Subtest: styles changed while apply is pending do not create a second graph or discard the style
+ok 94 - styles changed while apply is pending do not create a second graph or discard the style
+  ---
+  duration_ms: 1.43882
+  type: 'test'
+  ...
+# Subtest: styling leaves accepted native events in flight and in the queue
+ok 95 - styling leaves accepted native events in flight and in the queue
+  ---
+  duration_ms: 2.39975
+  type: 'test'
+  ...
+# Subtest: original arithmetic examples expose direct console output and explicit numeric modes
+ok 96 - original arithmetic examples expose direct console output and explicit numeric modes
+  ---
+  duration_ms: 10.640275
+  type: 'test'
+  ...
+# Subtest: new addition and multiplication library demos use explicit typed arithmetic
+ok 97 - new addition and multiplication library demos use explicit typed arithmetic
+  ---
+  duration_ms: 41.885416
+  type: 'test'
+  ...
+# Subtest: saved rhs-only arithmetic and English legacy text retain existing defaults
+ok 98 - saved rhs-only arithmetic and English legacy text retain existing defaults
+  ---
+  duration_ms: 7.613005
+  type: 'test'
+  ...
+# Subtest: typed creation retains whole float spelling and bare edits reset operand and mode
+ok 99 - typed creation retains whole float spelling and bare edits reset operand and mode
+  ---
+  duration_ms: 4.780732
+  type: 'test'
+  ...
+# Subtest: qualified decimal modulo and abs creation retain float mode without exponent aliases
+ok 100 - qualified decimal modulo and abs creation retain float mode without exponent aliases
+  ---
+  duration_ms: 1.833422
+  type: 'test'
+  ...
+# Subtest: integer saved operands validate atomically across flat and nested patches
+ok 101 - integer saved operands validate atomically across flat and nested patches
+  ---
+  duration_ms: 4.120994
+  type: 'test'
+  ...
+# Subtest: mode changes and their undo redo reapply standalone graphs while rhs stays live
+ok 102 - mode changes and their undo redo reapply standalone graphs while rhs stays live
+  ---
+  duration_ms: 4.735805
+  type: 'test'
+  ...
+# Subtest: new arithmetic reuses generic faces and exposes fixed type in help and creation hints
+ok 103 - new arithmetic reuses generic faces and exposes fixed type in help and creation hints
+  ---
+  duration_ms: 2.142933
+  type: 'test'
+  ...
+# Subtest: Max import uses typed symbols and refuses Ultra-only legacy spellings
+ok 104 - Max import uses typed symbols and refuses Ultra-only legacy spellings
+  ---
+  duration_ms: 5.382105
+  type: 'test'
+  ...
+# Subtest: qualified arithmetic set cables import and ignored reverse set is described accurately
+ok 105 - qualified arithmetic set cables import and ignored reverse set is described accurately
+  ---
+  duration_ms: 2.256254
+  type: 'test'
+  ...
+# Subtest: midpoints preserve empty arrays repeated vertices fractional coordinates and exact bounds
+ok 106 - midpoints preserve empty arrays repeated vertices fractional coordinates and exact bounds
+  ---
+  duration_ms: 2.520468
+  type: 'test'
+  ...
+# Subtest: midpoints reject malformed arrays nonnumbers nonfinite coordinates and excess without coercion
+ok 107 - midpoints reject malformed arrays nonnumbers nonfinite coordinates and excess without coercion
+  ---
+  duration_ms: 1.071306
+  type: 'test'
+  ...
+# Subtest: translation carries only equally moved endpoint pairs and never mutates its inputs
+ok 108 - translation carries only equally moved endpoint pairs and never mutates its inputs
+  ---
+  duration_ms: 2.093247
+  type: 'test'
+  ...
+# Subtest: fractional group movement tolerates subtraction roundoff but preserves genuinely different endpoint moves
+ok 109 - fractional group movement tolerates subtraction roundoff but preserves genuinely different endpoint moves
+  ---
+  duration_ms: 0.387587
+  type: 'test'
+  ...
+# Subtest: translation removes only floating point boundary drift and rejects genuine overflow
+ok 110 - translation removes only floating point boundary drift and rejects genuine overflow
+  ---
+  duration_ms: 0.55774
+  type: 'test'
+  ...
+# Subtest: saved cable corners are rounded while joining actual ports vertically
+ok 111 - saved cable corners are rounded while joining actual ports vertically
+  ---
+  duration_ms: 1.567505
+  type: 'test'
+  ...
+# Subtest: stale endpoint x coordinates render against current ports without rewriting source
+ok 112 - stale endpoint x coordinates render against current ports without rewriting source
+  ---
+  duration_ms: 1.214351
+  type: 'test'
+  ...
+# Subtest: single and repeated saved points render an endpoint-aligned dogleg
+ok 113 - single and repeated saved points render an endpoint-aligned dogleg
+  ---
+  duration_ms: 2.485915
+  type: 'test'
+  ...
+# Subtest: short segments limit corner rounding without overshoot
+ok 114 - short segments limit corner rounding without overshoot
+  ---
+  duration_ms: 0.277632
+  type: 'test'
+  ...
+# Subtest: coincident ports and collinear or reversing points never produce invalid curves
+ok 115 - coincident ports and collinear or reversing points never produce invalid curves
+  ---
+  duration_ms: 0.319332
+  type: 'test'
+  ...
+# Subtest: unrouted and explicitly empty cables keep automatic curves
+ok 116 - unrouted and explicitly empty cables keep automatic curves
+  ---
+  duration_ms: 0.268724
+  type: 'test'
+  ...
+# Subtest: camera bounds include every saved bend and ignore automatic routes
+ok 117 - camera bounds include every saved bend and ignore automatic routes
+  ---
+  duration_ms: 0.348223
+  type: 'test'
+  ...
+# Subtest: typed names and arguments build the supported profile without approximating Max classes
+ok 118 - typed names and arguments build the supported profile without approximating Max classes
+  ---
+  duration_ms: 7.734565
+  type: 'test'
+  ...
+# Subtest: every supported object has round-trippable creation text and directional port help
+ok 119 - every supported object has round-trippable creation text and directional port help
+  ---
+  duration_ms: 14.653278
+  type: 'test'
+  ...
+# Subtest: autocomplete ranks exact names before prefixes, and never invents unsupported objects
+ok 120 - autocomplete ranks exact names before prefixes, and never invents unsupported objects
+  ---
+  duration_ms: 1.74349
+  type: 'test'
+  ...
+# Subtest: comment creation text round-trips multiline whitespace and the full annotation limit
+ok 121 - comment creation text round-trips multiline whitespace and the full annotation limit
+  ---
+  duration_ms: 1.805342
+  type: 'test'
+  ...
+# Subtest: named creation parameters share the positional validator and preserve unspecified edit values
+ok 122 - named creation parameters share the positional validator and preserve unspecified edit values
+  ---
+  duration_ms: 1.45759
+  type: 'test'
+  ...
+# Subtest: creation and text replacement are atomic, undoable and preserve identity and valid cords
+ok 123 - creation and text replacement are atomic, undoable and preserve identity and valid cords
+  ---
+  duration_ms: 3.417582
+  type: 'test'
+  ...
+# Subtest: group movement and deletion each have one undo step, preserving internal wires
+ok 124 - group movement and deletion each have one undo step, preserving internal wires
+  ---
+  duration_ms: 1.445835
+  type: 'test'
+  ...
+# Subtest: callouts reserve fifteen pixels on the selected side without expanding the saved box
+ok 125 - callouts reserve fifteen pixels on the selected side without expanding the saved box
+  ---
+  duration_ms: 5.502902
+  type: 'test'
+  ...
+# Subtest: normalized callout points move toward each end of the selected side
+ok 126 - normalized callout points move toward each end of the selected side
+  ---
+  duration_ms: 0.916596
+  type: 'test'
+  ...
+# Subtest: minimum dimensions and point extremes keep the entire contour and padding bounded
+ok 127 - minimum dimensions and point extremes keep the entire contour and padding bounded
+  ---
+  duration_ms: 6.180308
+  type: 'test'
+  ...
+# Subtest: empty object text has no implicit completion
+ok 128 - empty object text has no implicit completion
+  ---
+  duration_ms: 2.65237
+  type: 'test'
+  ...
+# Subtest: object completion exposes syntax and argument guidance from the validated profile
+ok 129 - object completion exposes syntax and argument guidance from the validated profile
+  ---
+  duration_ms: 2.566997
+  type: 'test'
+  ...
+# Subtest: option and value completion follows the caret and retains text after the current token
+ok 130 - option and value completion follows the caret and retains text after the current token
+  ---
+  duration_ms: 1.497595
+  type: 'test'
+  ...
+# Subtest: legacy zl names use the selected mode instead of completing to the first zl object
+ok 131 - legacy zl names use the selected mode instead of completing to the first zl object
+  ---
+  duration_ms: 0.654266
+  type: 'test'
+  ...
+# Subtest: arithmetic completion retains the authored legacy defaults and decimal semantics
+ok 132 - arithmetic completion retains the authored legacy defaults and decimal semantics
+  ---
+  duration_ms: 0.720578
+  type: 'test'
+  ...
+# Subtest: print is a typed native sink with a bounded label and live severity
+ok 133 - print is a typed native sink with a bounded label and live severity
+  ---
+  duration_ms: 5.818406
+  type: 'test'
+  ...
+# Subtest: console retains ordered native records across polls and graph edits, clears without replay
+ok 134 - console retains ordered native records across polls and graph edits, clears without replay
+  ---
+  duration_ms: 9.959171
+  type: 'test'
+  ...
+# Subtest: Clear discards an older status reply already in flight
+ok 135 - Clear discards an older status reply already in flight
+  ---
+  duration_ms: 1.073972
+  type: 'test'
+  ...
+# Subtest: two input sources holding the same key release only after both let go
+ok 136 - two input sources holding the same key release only after both let go
+  ---
+  duration_ms: 3.82431
+  type: 'test'
+  ...
+# Subtest: lost focus releases held keys and a rejected note-off invokes the out-of-band Stop
+ok 137 - lost focus releases held keys and a rejected note-off invokes the out-of-band Stop
+  ---
+  duration_ms: 0.985373
+  type: 'test'
+  ...
+# Subtest: press and release retain order while native admission is pending
+ok 138 - press and release retain order while native admission is pending
+  ---
+  duration_ms: 0.792231
+  type: 'test'
+  ...
+# Subtest: native document boot adopts its patch before marking it clean and tracks undo back to the saved content
+ok 139 - native document boot adopts its patch before marking it clean and tracks undo back to the saved content
+  ---
+  duration_ms: 6.609022
+  type: 'test'
+  ...
+# Subtest: saving preserves edits made while the native dialog is pending and cancelled Save As stays dirty
+ok 140 - saving preserves edits made while the native dialog is pending and cancelled Save As stays dirty
+  ---
+  duration_ms: 1.467542
+  type: 'test'
+  ...
+# Subtest: opening and creating native documents never replace the invoking document
+ok 141 - opening and creating native documents never replace the invoking document
+  ---
+  duration_ms: 0.872952
+  type: 'test'
+  ...
+# Subtest: save-before-close confirms the close only after a successful save
+ok 142 - save-before-close confirms the close only after a successful save
+  ---
+  duration_ms: 0.912768
+  type: 'test'
+  ...
+# Subtest: edits during a native save reassert native dirty after the save acknowledges clean
+ok 143 - edits during a native save reassert native dirty after the save acknowledges clean
+  ---
+  duration_ms: 2.304127
+  type: 'test'
+  ...
+# Subtest: Max source documents adopt an empty graph before showing compatibility analysis
+ok 144 - Max source documents adopt an empty graph before showing compatibility analysis
+  ---
+  duration_ms: 0.719896
+  type: 'test'
+  ...
+# Subtest: shared document boot adopts its native descriptor and uses the owner dirty baseline
+ok 145 - shared document boot adopts its native descriptor and uses the owner dirty baseline
+  ---
+  duration_ms: 0.833218
+  type: 'test'
+  ...
+# Subtest: shared save flushes pending authoring before capturing the complete owner and accepts native dirty state
+ok 146 - shared save flushes pending authoring before capturing the complete owner and accepts native dirty state
+  ---
+  duration_ms: 0.80607
+  type: 'test'
+  ...
+# Subtest: owner descriptor broadcasts update all view metadata and ignore older authoring revisions
+ok 147 - owner descriptor broadcasts update all view metadata and ignore older authoring revisions
+  ---
+  duration_ms: 1.036401
+  type: 'test'
+  ...
+# Subtest: native OS close acknowledges a view only after its queued authoring has flushed
+ok 148 - native OS close acknowledges a view only after its queued authoring has flushed
+  ---
+  duration_ms: 1.310457
+  type: 'test'
+  ...
+# Subtest: failed authoring flush cancels native close instead of leaving an unanswered request
+ok 149 - failed authoring flush cancels native close instead of leaving an unanswered request
+  ---
+  duration_ms: 1.341132
+  type: 'test'
+  ...
+# Subtest: late responses cannot replace newer save metadata at the same authoring revision
+ok 150 - late responses cannot replace newer save metadata at the same authoring revision
+  ---
+  duration_ms: 0.671082
+  type: 'test'
+  ...
+# Subtest: a cancelled close does not acknowledge its obsolete flush
+ok 151 - a cancelled close does not acknowledge its obsolete flush
+  ---
+  duration_ms: 0.470313
+  type: 'test'
+  ...
+# Subtest: a real shared-controller admission rejection sends a failed native close acknowledgement
+ok 152 - a real shared-controller admission rejection sends a failed native close acknowledgement
+  ---
+  duration_ms: 29.209568
+  type: 'test'
+  ...
+# Subtest: save-before-close cancels the native transaction on preflight
+ok 153 - save-before-close cancels the native transaction on preflight
+  ---
+  duration_ms: 0.85308
+  type: 'test'
+  ...
+# Subtest: save-before-close cancels the native transaction on save
+ok 154 - save-before-close cancels the native transaction on save
+  ---
+  duration_ms: 0.518666
+  type: 'test'
+  ...
+# Subtest: save-before-close cancels the native transaction on cancelled
+ok 155 - save-before-close cancels the native transaction on cancelled
+  ---
+  duration_ms: 0.502262
+  type: 'test'
+  ...
+# Subtest: save-before-close cancels the native transaction on dirty
+ok 156 - save-before-close cancels the native transaction on dirty
+  ---
+  duration_ms: 0.499196
+  type: 'test'
+  ...
+# Subtest: save-before-close cancels the native transaction on confirmation
+ok 157 - save-before-close cancels the native transaction on confirmation
+  ---
+  duration_ms: 1.275071
+  type: 'test'
+  ...
+# Subtest: successful save-before-close confirms once without cancelling the native transaction
+ok 158 - successful save-before-close confirms once without cancelling the native transaction
+  ---
+  duration_ms: 0.601955
+  type: 'test'
+  ...
+# Subtest: save-before-close preserves the Quit generation when confirmation is true
+ok 159 - save-before-close preserves the Quit generation when confirmation is true
+  ---
+  duration_ms: 0.78287
+  type: 'test'
+  ...
+# Subtest: save-before-close preserves the Quit generation when confirmation is false
+ok 160 - save-before-close preserves the Quit generation when confirmation is false
+  ---
+  duration_ms: 0.54366
+  type: 'test'
+  ...
+# Subtest: save-before-close retains the Quit generation when frontend preflight fails
+ok 161 - save-before-close retains the Quit generation when frontend preflight fails
+  ---
+  duration_ms: 0.579266
+  type: 'test'
+  ...
+# Subtest: effect panel exposes live parameters and presets without a keyboard claim
+ok 162 - effect panel exposes live parameters and presets without a keyboard claim
+  ---
+  duration_ms: 137.404407
+  type: 'test'
+  ...
+# Subtest: help shell hosts Basic while question/reference navigation preserves the native runtime
+ok 163 - help shell hosts Basic while question/reference navigation preserves the native runtime
+  ---
+  duration_ms: 71.712792
+  type: 'test'
+  ...
+# Subtest: Basic cable feedback validates the complete help shell like the committed edit
+ok 164 - Basic cable feedback validates the complete help shell like the committed edit
+  ---
+  duration_ms: 44.917919
+  type: 'test'
+  ...
+# Subtest: help reference replies cannot attach to a replacement shell and unavailable states stay readable
+ok 165 - help reference replies cannot attach to a replacement shell and unavailable states stay readable
+  ---
+  duration_ms: 56.026962
+  type: 'test'
+  ...
+# Subtest: importing a help shell waits for native admission before requesting local reference text
+ok 166 - importing a help shell waits for native admission before requesting local reference text
+  ---
+  duration_ms: 19.447967
+  type: 'test'
+  ...
+# Subtest: console reveal closes the reference pane in a real bound Basic child
+ok 167 - console reveal closes the reference pane in a real bound Basic child
+  ---
+  duration_ms: 17.27319
+  type: 'test'
+  ...
+# Subtest: a native Basic tab can open an independently bound window without changing its hosted scope
+ok 168 - a native Basic tab can open an independently bound window without changing its hosted scope
+  ---
+  duration_ms: 17.716896
+  type: 'test'
+  ...
+# Subtest: live Print bubbles expose safe text and expire independently of console visibility
+ok 169 - live Print bubbles expose safe text and expire independently of console visibility
+  ---
+  duration_ms: 11.986695
+  type: 'test'
+  ...
+# Subtest: comment callout geometry follows appearance and resets without native graph work
+ok 170 - comment callout geometry follows appearance and resets without native graph work
+  ---
+  duration_ms: 16.445515
+  type: 'test'
+  ...
+# Subtest: console displays native messages safely, filters severity, selects source and clears
+ok 171 - console displays native messages safely, filters severity, selects source and clears
+  ---
+  duration_ms: 9.379545
+  type: 'test'
+  ...
+# Subtest: console source links reveal descendant objects from the root view
+ok 172 - console source links reveal descendant objects from the root view
+  ---
+  duration_ms: 13.453423
+  type: 'test'
+  ...
+# Subtest: browser page mounts editable palette, honest preview, and exclusively top/bottom typed ports
+ok 173 - browser page mounts editable palette, honest preview, and exclusively top/bottom typed ports
+  ---
+  duration_ms: 5.496714
+  type: 'test'
+  ...
+# Subtest: audio settings save requested device buffer without starting sound, then lock edits during playback
+ok 174 - audio settings save requested device buffer without starting sound, then lock edits during playback
+  ---
+  duration_ms: 13.183317
+  type: 'test'
+  ...
+# Subtest: audio settings browser preview never invents devices or invokes a native host
+ok 175 - audio settings browser preview never invents devices or invokes a native host
+  ---
+  duration_ms: 4.776537
+  type: 'test'
+  ...
+# Subtest: real page adds, wires, selects, disconnects, deletes and undoes objects
+ok 176 - real page adds, wires, selects, disconnects, deletes and undoes objects
+  ---
+  duration_ms: 31.031924
+  type: 'test'
+  ...
+# Subtest: actual numeric, bang, toggle and message controls emit native events; drag is layout-only
+ok 177 - actual numeric, bang, toggle and message controls emit native events; drag is layout-only
+  ---
+  duration_ms: 21.180723
+  type: 'test'
+  ...
+# Subtest: message editing validates before replacement and bad ports leave last valid document intact
+ok 178 - message editing validates before replacement and bad ports leave last valid document intact
+  ---
+  duration_ms: 16.866182
+  type: 'test'
+  ...
+# Subtest: focus and visibility preserve the running graph; navigation disposes only its document
+ok 179 - focus and visibility preserve the running graph; navigation disposes only its document
+  ---
+  duration_ms: 11.008258
+  type: 'test'
+  ...
+# Subtest: pagehide handles an already-closed native graph without an unhandled rejection
+ok 180 - pagehide handles an already-closed native graph without an unhandled rejection
+  ---
+  duration_ms: 10.253769
+  type: 'test'
+  ...
+# Subtest: status polls retain cable elements while selection and endpoint changes redraw them
+ok 181 - status polls retain cable elements while selection and endpoint changes redraw them
+  ---
+  duration_ms: 12.652255
+  type: 'test'
+  ...
+# Subtest: a bang flash still clears on the next unchanged observation
+ok 182 - a bang flash still clears on the next unchanged observation
+  ---
+  duration_ms: 8.199047
+  type: 'test'
+  ...
+# Subtest: advancing diagnostics stay current without rewriting the canvas and faults remain visible
+ok 183 - advancing diagnostics stay current without rewriting the canvas and faults remain visible
+  ---
+  duration_ms: 15.274888
+  type: 'test'
+  ...
+# Subtest: hidden windows poll less often and restore immediately without stopping audio
+ok 184 - hidden windows poll less often and restore immediately without stopping audio
+  ---
+  duration_ms: 9.042024
+  type: 'test'
+  ...
+# Subtest: import replacing a reused node ID rebuilds its type-specific controls and ports
+ok 185 - import replacing a reused node ID rebuilds its type-specific controls and ports
+  ---
+  duration_ms: 2.847724
+  type: 'test'
+  ...
+# Subtest: consecutive palette objects are placed without overlapping headers or ports
+ok 186 - consecutive palette objects are placed without overlapping headers or ports
+  ---
+  duration_ms: 3.692034
+  type: 'test'
+  ...
+# Subtest: keyboard creation rejects unknown objects and Escape cancels without mutating the patch
+ok 187 - keyboard creation rejects unknown objects and Escape cancels without mutating the patch
+  ---
+  duration_ms: 10.004628
+  type: 'test'
+  ...
+# Subtest: lock protects structure while unlocked UI clicks select instead of triggering
+ok 188 - lock protects structure while unlocked UI clicks select instead of triggering
+  ---
+  duration_ms: 9.343498
+  type: 'test'
+  ...
+# Subtest: inlet and outlet context information separates accepted messages from emitted data
+ok 189 - inlet and outlet context information separates accepted messages from emitted data
+  ---
+  duration_ms: 7.923439
+  type: 'test'
+  ...
+# Subtest: number display follows native observations without changing saved parameters
+ok 190 - number display follows native observations without changing saved parameters
+  ---
+  duration_ms: 6.112677
+  type: 'test'
+  ...
+# Subtest: controls can return a live observed value to the saved value without duplicate native events
+ok 191 - controls can return a live observed value to the saved value without duplicate native events
+  ---
+  duration_ms: 13.022925
+  type: 'test'
+  ...
+# Subtest: Escape stops notes from focused ordinary inputs but entry Escape only cancels
+ok 192 - Escape stops notes from focused ordinary inputs but entry Escape only cancels
+  ---
+  duration_ms: 13.234336
+  type: 'test'
+  ...
+# Subtest: locked inspector rejects structural parameters while keeping live controls available
+ok 193 - locked inspector rejects structural parameters while keeping live controls available
+  ---
+  duration_ms: 10.082915
+  type: 'test'
+  ...
+# Subtest: camera pan, zoom and reset never send native graph or audio commands
+ok 194 - camera pan, zoom and reset never send native graph or audio commands
+  ---
+  duration_ms: 10.497479
+  type: 'test'
+  ...
+# Subtest: locking cancels an in-flight move and examples open independently
+ok 195 - locking cancels an in-flight move and examples open independently
+  ---
+  duration_ms: 5.966194
+  type: 'test'
+  ...
+# Subtest: new variadic objects rebuild node-aware ports after configuration changes
+ok 196 - new variadic objects rebuild node-aware ports after configuration changes
+  ---
+  duration_ms: 4.559785
+  type: 'test'
+  ...
+# Subtest: MSP channel configuration uses text, rebuilds ports and stays locked during performance
+ok 197 - MSP channel configuration uses text, rebuilds ports and stays locked during performance
+  ---
+  duration_ms: 4.129046
+  type: 'test'
+  ...
+# Subtest: locked flonum and slider emit hot native events with audio off, physical Tab is a UI action and observations display
+ok 198 - locked flonum and slider emit hot native events with audio off, physical Tab is a UI action and observations display
+  ---
+  duration_ms: 9.565431
+  type: 'test'
+  ...
+# Subtest: flonum Tab commits pending text before the native second-outlet event
+ok 199 - flonum Tab commits pending text before the native second-outlet event
+  ---
+  duration_ms: 4.217184
+  type: 'test'
+  ...
+# Subtest: integer UI entry truncates either sign and silent runtime values display without changing the document
+ok 200 - integer UI entry truncates either sign and silent runtime values display without changing the document
+  ---
+  duration_ms: 4.939214
+  type: 'test'
+  ...
+# Subtest: slider pointer values remain raw and offset/multiplier apply only to the output readout
+ok 201 - slider pointer values remain raw and offset/multiplier apply only to the output readout
+  ---
+  duration_ms: 4.053004
+  type: 'test'
+  ...
+# Subtest: line Help opens its own runnable native example without starting audio or sending events
+ok 202 - line Help opens its own runnable native example without starting audio or sending events
+  ---
+  duration_ms: 7.073266
+  type: 'test'
+  ...
+# Subtest: native startup applies only its own document and file controls preserve the current graph
+ok 203 - native startup applies only its own document and file controls preserve the current graph
+  ---
+  duration_ms: 3.240662
+  type: 'test'
+  ...
+# Subtest: searchable library opens a new example window and focuses existing native windows
+ok 204 - searchable library opens a new example window and focuses existing native windows
+  ---
+  duration_ms: 12.137978
+  type: 'test'
+  ...
+# Subtest: receive binding edits rebuild inlet DOM and remain structural while locked
+ok 205 - receive binding edits rebuild inlet DOM and remain structural while locked
+  ---
+  duration_ms: 3.541323
+  type: 'test'
+  ...
+# Subtest: native menu, close-save and error events reach only their targeted document window
+ok 206 - native menu, close-save and error events reach only their targeted document window
+  ---
+  duration_ms: 11.826012
+  type: 'test'
+  ...
+# Subtest: native child boot attaches to its owner snapshot and closing the view leaves execution running
+ok 207 - native child boot attaches to its owner snapshot and closing the view leaves execution running
+  ---
+  duration_ms: 3.612725
+  type: 'test'
+  ...
+# Subtest: native patcher headers request a child window while retaining the parent view
+ok 208 - native patcher headers request a child window while retaining the parent view
+  ---
+  duration_ms: 2.57439
+  type: 'test'
+  ...
+# Subtest: console reveal preserves its source revision across pending edits and native routing
+ok 209 - console reveal preserves its source revision across pending edits and native routing
+  ---
+  duration_ms: 9.210173
+  type: 'test'
+  ...
+# Subtest: target windows reject stale reveal descriptors and events with a reused node ID
+ok 210 - target windows reject stale reveal descriptors and events with a reused node ID
+  ---
+  duration_ms: 2.884693
+  type: 'test'
+  ...
+# Subtest: target reveal adopts an authoritative descriptor ahead of its last broadcast
+ok 211 - target reveal adopts an authoritative descriptor ahead of its last broadcast
+  ---
+  duration_ms: 2.675456
+  type: 'test'
+  ...
+# Subtest: native reveal waits for shared controller adoption during startup
+ok 212 - native reveal waits for shared controller adoption during startup
+  ---
+  duration_ms: 2.504522
+  type: 'test'
+  ...
+# Subtest: native owner broadcast arriving during initial adoption cannot leave a child on an older snapshot
+ok 213 - native owner broadcast arriving during initial adoption cannot leave a child on an older snapshot
+  ---
+  duration_ms: 2.689316
+  type: 'test'
+  ...
+# Subtest: native readiness waits for the close-flush event subscription to finish
+ok 214 - native readiness waits for the close-flush event subscription to finish
+  ---
+  duration_ms: 7.97058
+  type: 'test'
+  ...
+# Subtest: a close request arriving before initial native adoption binds to the shared controller
+ok 215 - a close request arriving before initial native adoption binds to the shared controller
+  ---
+  duration_ms: 2.749234
+  type: 'test'
+  ...
+# Subtest: unchanged stopped status polls preserve cable paths while cable inputs invalidate them
+ok 216 - unchanged stopped status polls preserve cable paths while cable inputs invalidate them
+  ---
+  duration_ms: 26.150424
+  type: 'test'
+  ...
+# Subtest: number preserves a rejected undo draft through blur and retries Enter
+ok 217 - number preserves a rejected undo draft through blur and retries Enter
+  ---
+  duration_ms: 6.159377
+  type: 'test'
+  ...
+# Subtest: number preserves a rejected redo draft through blur and retries Enter
+ok 218 - number preserves a rejected redo draft through blur and retries Enter
+  ---
+  duration_ms: 5.419157
+  type: 'test'
+  ...
+# Subtest: number_int preserves a rejected undo draft through blur and retries Enter
+ok 219 - number_int preserves a rejected undo draft through blur and retries Enter
+  ---
+  duration_ms: 4.815891
+  type: 'test'
+  ...
+# Subtest: number_int preserves a rejected redo draft through blur and retries Enter
+ok 220 - number_int preserves a rejected redo draft through blur and retries Enter
+  ---
+  duration_ms: 8.748208
+  type: 'test'
+  ...
+# Subtest: flonum preserves a rejected undo draft through blur and retries Enter
+ok 221 - flonum preserves a rejected undo draft through blur and retries Enter
+  ---
+  duration_ms: 4.980482
+  type: 'test'
+  ...
+# Subtest: flonum preserves a rejected redo draft through blur and retries Enter
+ok 222 - flonum preserves a rejected redo draft through blur and retries Enter
+  ---
+  duration_ms: 5.203438
+  type: 'test'
+  ...
+# Subtest: drag rejected during undo restores preview and accepts a later gesture
+ok 223 - drag rejected during undo restores preview and accepts a later gesture
+  ---
+  duration_ms: 5.163392
+  type: 'test'
+  ...
+# Subtest: drag rejected during redo restores preview and accepts a later gesture
+ok 224 - drag rejected during redo restores preview and accepts a later gesture
+  ---
+  duration_ms: 15.963757
+  type: 'test'
+  ...
+# Subtest: a typed draft matching the pre-Undo display still requires admission
+ok 225 - a typed draft matching the pre-Undo display still requires admission
+  ---
+  duration_ms: 8.602889
+  type: 'test'
+  ...
+# Subtest: native save-before-close events retain their Quit generation through the page listener
+ok 226 - native save-before-close events retain their Quit generation through the page listener
+  ---
+  duration_ms: 4.956781
+  type: 'test'
+  ...
+# Subtest: range thumb reflects the admitted endpoint in the same pointer dispatch
+ok 227 - range thumb reflects the admitted endpoint in the same pointer dispatch
+  ---
+  duration_ms: 3.218094
+  type: 'test'
+  ...
+# Subtest: synthetic times admission retains the complete tree and selected adapter
+ok 228 - synthetic times admission retains the complete tree and selected adapter
+  ---
+  duration_ms: 39.954125
+  type: 'test'
+  ...
+# Subtest: synthetic plus admission retains the complete tree and selected adapter
+ok 229 - synthetic plus admission retains the complete tree and selected adapter
+  ---
+  duration_ms: 25.3113
+  type: 'test'
+  ...
+# Subtest: synthetic minus admission retains the complete tree and selected adapter
+ok 230 - synthetic minus admission retains the complete tree and selected adapter
+  ---
+  duration_ms: 21.961311
+  type: 'test'
+  ...
+# Subtest: arithmetic recognition refuses crossed profiles, unknown objects and wrong source pins
+ok 231 - arithmetic recognition refuses crossed profiles, unknown objects and wrong source pins
+  ---
+  duration_ms: 0.975631
+  type: 'test'
+  ...
+# Subtest: the probe snapshots its verified native response before asynchronous hashing
+ok 232 - the probe snapshots its verified native response before asynchronous hashing
+  ---
+  duration_ms: 15.171103
+  type: 'test'
+  ...
+# Subtest: arithmetic tokens cannot be forged, serialized, reused on changed text or supplied digest facts
+ok 233 - arithmetic tokens cannot be forged, serialized, reused on changed text or supplied digest facts
+  ---
+  duration_ms: 34.128634
+  type: 'test'
+  ...
+# Subtest: role-specific argument and whole starter hashes remain mandatory even after a native response
+ok 234 - role-specific argument and whole starter hashes remain mandatory even after a native response
+  ---
+  duration_ms: 78.24742
+  type: 'test'
+  ...
+# Subtest: wrong digest outcomes and caller-provided profile overrides cannot authorize arithmetic helpers
+ok 235 - wrong digest outcomes and caller-provided profile overrides cannot authorize arithmetic helpers
+  ---
+  duration_ms: 8.606826
+  type: 'test'
+  ...
+# Subtest: a wrong whole starter digest refuses otherwise matching arithmetic helper facts
+ok 236 - a wrong whole starter digest refuses otherwise matching arithmetic helper facts
+  ---
+  duration_ms: 11.967854
+  type: 'test'
+  ...
+# Subtest: unavailable or failing WebCrypto cannot mint an arithmetic admission token
+ok 237 - unavailable or failing WebCrypto cannot mint an arithmetic admission token
+  ---
+  duration_ms: 6.78465
+  type: 'test'
+  ...
+# Subtest: helper hashing refuses oversized values even when a caller supplies matching digest outcomes
+ok 238 - helper hashing refuses oversized values even when a caller supplies matching digest outcomes
+  ---
+  duration_ms: 15.46825
+  type: 'test'
+  ...
+# Subtest: arithmetic helpers require exact anchors, filenames, saved attributes, ports and isolated routes
+ok 239 - arithmetic helpers require exact anchors, filenames, saved attributes, ports and isolated routes
+  ---
+  duration_ms: 109.0371
+  type: 'test'
+  ...
+# Subtest: additional script boxes anywhere cannot be admitted as arithmetic shell content
+ok 240 - additional script boxes anywhere cannot be admitted as arithmetic shell content
+  ---
+  duration_ms: 27.055934
+  type: 'test'
+  ...
+# Subtest: serialized help shells accept exact arithmetic policy pairs and refuse crossed or symbolic identities
+ok 241 - serialized help shells accept exact arithmetic policy pairs and refuse crossed or symbolic identities
+  ---
+  duration_ms: 4.944406
+  type: 'test'
+  ...
+# Subtest: a native-probed whole help shell retains all helpers and source maps without script execution
+ok 242 - a native-probed whole help shell retains all helpers and source maps without script execution
+  ---
+  duration_ms: 35.417875
+  type: 'test'
+  ...
+# Subtest: unprobed, changed, object-valued and forged input cannot select the native helper adapter
+ok 243 - unprobed, changed, object-valued and forged input cannot select the native helper adapter
+  ---
+  duration_ms: 14.78109
+  type: 'test'
+  ...
+# Subtest: recognized input still independently checks helper arguments, ports, shape and cable isolation
+ok 244 - recognized input still independently checks helper arguments, ports, shape and cable isolation
+  ---
+  duration_ms: 12.052648
+  type: 'test'
+  ...
+# Subtest: file reading preserves exact UTF-8 BOM bytes and refuses invalid encoding or oversized input
+ok 245 - file reading preserves exact UTF-8 BOM bytes and refuses invalid encoding or oversized input
+  ---
+  duration_ms: 1.189498
+  type: 'test'
+  ...
+# Subtest: original help shell schema corpus agrees with strict native admission
+ok 246 - original help shell schema corpus agrees with strict native admission
+  ---
+  duration_ms: 44.735097
+  type: 'test'
+  ...
+# Subtest: times accepts only its exact safe Reference response identity
+ok 247 - times accepts only its exact safe Reference response identity
+  ---
+  duration_ms: 2.13704
+  type: 'test'
+  ...
+# Subtest: times shell opens and renders its Reference as plain text
+ok 248 - times shell opens and renders its Reference as plain text
+  ---
+  duration_ms: 14.516485
+  type: 'test'
+  ...
+# Subtest: plus accepts only its exact safe Reference response identity
+ok 249 - plus accepts only its exact safe Reference response identity
+  ---
+  duration_ms: 0.560366
+  type: 'test'
+  ...
+# Subtest: plus shell opens and renders its Reference as plain text
+ok 250 - plus shell opens and renders its Reference as plain text
+  ---
+  duration_ms: 3.76307
+  type: 'test'
+  ...
+# Subtest: minus accepts only its exact safe Reference response identity
+ok 251 - minus accepts only its exact safe Reference response identity
+  ---
+  duration_ms: 0.583084
+  type: 'test'
+  ...
+# Subtest: minus shell opens and renders its Reference as plain text
+ok 252 - minus shell opens and renders its Reference as plain text
+  ---
+  duration_ms: 3.301184
+  type: 'test'
+  ...
+# Subtest: safe arithmetic related links navigate while symbolic, path and unknown aliases remain disabled
+ok 253 - safe arithmetic related links navigate while symbolic, path and unknown aliases remain disabled
+  ---
+  duration_ms: 6.154091
+  type: 'test'
+  ...
+# Subtest: arithmetic Reference admission retains response bounds and plain-text field checks
+ok 254 - arithmetic Reference admission retains response bounds and plain-text field checks
+  ---
+  duration_ms: 0.631368
+  type: 'test'
+  ...
+# Subtest: a delayed reference response preserves keyboard focus in the open menu
+ok 255 - a delayed reference response preserves keyboard focus in the open menu
+  ---
+  duration_ms: 4.189009
+  type: 'test'
+  ...
+# Subtest: refreshing the menu preserves the selected related item
+ok 256 - refreshing the menu preserves the selected related item
+  ---
+  duration_ms: 2.167796
+  type: 'test'
+  ...
+# Subtest: a delayed menu refresh does not steal focus from outside the menu
+ok 257 - a delayed menu refresh does not steal focus from outside the menu
+  ---
+  duration_ms: 1.464285
+  type: 'test'
+  ...
+# Subtest: status polling preserves a helper drag preview until committed geometry arrives
+ok 258 - status polling preserves a helper drag preview until committed geometry arrives
+  ---
+  duration_ms: 1.165787
+  type: 'test'
+  ...
+# Subtest: resetting helper appearance clears an explicit width and permits restoring it
+ok 259 - resetting helper appearance clears an explicit width and permits restoring it
+  ---
+  duration_ms: 1.234815
+  type: 'test'
+  ...
+# Subtest: question arrow navigation does not bubble into canvas object movement
+ok 260 - question arrow navigation does not bubble into canvas object movement
+  ---
+  duration_ms: 5.404843
+  type: 'test'
+  ...
+# Subtest: v2 hierarchy round trips the complete tree and preserves v1 strictness
+ok 261 - v2 hierarchy round trips the complete tree and preserves v1 strictness
+  ---
+  duration_ms: 9.053128
+  type: 'test'
+  ...
+# Subtest: hierarchy midpoints stay in their source scope and are stripped explicitly from native lowering
+ok 262 - hierarchy midpoints stay in their source scope and are stripped explicitly from native lowering
+  ---
+  duration_ms: 8.720317
+  type: 'test'
+  ...
+# Subtest: global IDs and authoring scopes are checked before flattening
+ok 263 - global IDs and authoring scopes are checked before flattening
+  ---
+  duration_ms: 1.38716
+  type: 'test'
+  ...
+# Subtest: virtual objects reject explicitly invalid styles like native leaves
+ok 264 - virtual objects reject explicitly invalid styles like native leaves
+  ---
+  duration_ms: 1.917362
+  type: 'test'
+  ...
+# Subtest: nested execution validates control and signal cycles through boundaries
+ok 265 - nested execution validates control and signal cycles through boundaries
+  ---
+  duration_ms: 2.810658
+  type: 'test'
+  ...
+# Subtest: execution limits count leaves and relays, omitting containers and comments
+ok 266 - execution limits count leaves and relays, omitting containers and comments
+  ---
+  duration_ms: 3.450292
+  type: 'test'
+  ...
+# Subtest: view navigation keeps a single root history and complete serialization
+ok 267 - view navigation keeps a single root history and complete serialization
+  ---
+  duration_ms: 2.61967
+  type: 'test'
+  ...
+# Subtest: voice allocation considers the complete owner tree
+ok 268 - voice allocation considers the complete owner tree
+  ---
+  duration_ms: 1.64011
+  type: 'test'
+  ...
+# Subtest: moving and removing boundaries preserves cable identity in one undo transaction
+ok 269 - moving and removing boundaries preserves cable identity in one undo transaction
+  ---
+  duration_ms: 2.474981
+  type: 'test'
+  ...
+# Subtest: controller navigation neither installs a graph nor loses live descendant observations
+ok 270 - controller navigation neither installs a graph nor loses live descendant observations
+  ---
+  duration_ms: 7.045614
+  type: 'test'
+  ...
+# Subtest: comment edits and boundary-preserving moves do not reinstall the runtime
+ok 271 - comment edits and boundary-preserving moves do not reinstall the runtime
+  ---
+  duration_ms: 4.491795
+  type: 'test'
+  ...
+# Subtest: loading replacement values installs them even when topology is unchanged
+ok 272 - loading replacement values installs them even when topology is unchanged
+  ---
+  duration_ms: 2.214335
+  type: 'test'
+  ...
+# Subtest: object text changes install numeric arguments while metadata edits keep execution
+ok 273 - object text changes install numeric arguments while metadata edits keep execution
+  ---
+  duration_ms: 3.033122
+  type: 'test'
+  ...
+# Subtest: near-limit authoring documents round trip their readable exported representation
+ok 274 - near-limit authoring documents round trip their readable exported representation
+  ---
+  duration_ms: 44.731168
+  type: 'test'
+  ...
+# Subtest: comment Inspector swatches and opacity edits use the visible inherited callout colors
+ok 275 - comment Inspector swatches and opacity edits use the visible inherited callout colors
+  ---
+  duration_ms: 3.638614
+  type: 'test'
+  ...
+# Subtest: a subtractive voice graph connects through an explicit four-lane mixdown to stereo
+ok 276 - a subtractive voice graph connects through an explicit four-lane mixdown to stereo
+  ---
+  duration_ms: 5.424976
+  type: 'test'
+  ...
+# Subtest: voice lanes cannot silently become mono or accept a mono oscillator
+ok 277 - voice lanes cannot silently become mono or accept a mono oscillator
+  ---
+  duration_ms: 1.638065
+  type: 'test'
+  ...
+# Subtest: voice dependency cycles and a second allocator are rejected
+ok 278 - voice dependency cycles and a second allocator are rejected
+  ---
+  duration_ms: 0.92368
+  type: 'test'
+  ...
+# Subtest: all six objects are keyboard-authorable and live parameter edits retain their bounds
+ok 279 - all six objects are keyboard-authorable and live parameter edits retain their bounds
+  ---
+  duration_ms: 6.178444
+  type: 'test'
+  ...
+# Subtest: device bindings and presets survive serialization and metadata edits are undoable
+ok 280 - device bindings and presets survive serialization and metadata edits are undoable
+  ---
+  duration_ms: 1.937534
+  type: 'test'
+  ...
+# Subtest: malformed device interfaces, duplicate bindings and out-of-range presets fail admission
+ok 281 - malformed device interfaces, duplicate bindings and out-of-range presets fail admission
+  ---
+  duration_ms: 3.656984
+  type: 'test'
+  ...
+# Subtest: version 2 instruments retain authored MIDI with explicit stereo output
+ok 282 - version 2 instruments retain authored MIDI with explicit stereo output
+  ---
+  duration_ms: 3.536847
+  type: 'test'
+  ...
+# Subtest: version 2 effects bind stereo audio input and live filter parameters without MIDI
+ok 283 - version 2 effects bind stereo audio input and live filter parameters without MIDI
+  ---
+  duration_ms: 6.569909
+  type: 'test'
+  ...
+# Subtest: saved stereo effects retain authored routes, stable parameter keys and working presets
+ok 284 - saved stereo effects retain authored routes, stable parameter keys and working presets
+  ---
+  duration_ms: 4.910448
+  type: 'test'
+  ...
+# Subtest: every supported object has searchable original help and an executable example containing that object
+ok 285 - every supported object has searchable original help and an executable example containing that object
+  ---
+  duration_ms: 163.782554
+  type: 'test'
+  ...
+# Subtest: native help manifest and browser library contain the same runnable patches
+ok 286 - native help manifest and browser library contain the same runnable patches
+  ---
+  duration_ms: 70.36422
+  type: 'test'
+  ...
+# Subtest: library search finds aliases, topic words and an empty result without changing its entries
+ok 287 - library search finds aliases, topic words and an empty result without changing its entries
+  ---
+  duration_ms: 1.114467
+  type: 'test'
+  ...
+# Subtest: list object creation preserves typed argument spelling and fixed saved topology
+ok 288 - list object creation preserves typed argument spelling and fixed saved topology
+  ---
+  duration_ms: 6.511955
+  type: 'test'
+  ...
+# Subtest: optional retained lists and bare prepend may be explicitly empty without weakening existing argument validation
+ok 289 - optional retained lists and bare prepend may be explicitly empty without weakening existing argument validation
+  ---
+  duration_ms: 4.474939
+  type: 'test'
+  ...
+# Subtest: legacy fixed zl modes normalize to dotted names while unsupported modes and execution options are refused
+ok 290 - legacy fixed zl modes normalize to dotted names while unsupported modes and execution options are refused
+  ---
+  duration_ms: 4.419721
+  type: 'test'
+  ...
+# Subtest: list help documents active and inactive ports and includes original runnable examples
+ok 291 - list help documents active and inactive ports and includes original runnable examples
+  ---
+  duration_ms: 11.957816
+  type: 'test'
+  ...
+# Subtest: Max list imports retain both saved zl ports and admit typed data selectors
+ok 292 - Max list imports retain both saved zl ports and admit typed data selectors
+  ---
+  duration_ms: 12.174596
+  type: 'test'
+  ...
+# Subtest: unsupported list execution attributes and modes never become an approved Max box
+ok 293 - unsupported list execution attributes and modes never become an approved Max box
+  ---
+  duration_ms: 3.410143
+  type: 'test'
+  ...
+# Subtest: Max runtime mode and capacity messages remain explicit gaps while ordinary selector data reaches fixed zl modes
+ok 294 - Max runtime mode and capacity messages remain explicit gaps while ordinary selector data reaches fixed zl modes
+  ---
+  duration_ms: 6.646606
+  type: 'test'
+  ...
+# Subtest: native recognition prefers the complete root and import uses that exact probed source
+ok 295 - native recognition prefers the complete root and import uses that exact probed source
+  ---
+  duration_ms: 24.695386
+  type: 'test'
+  ...
+# Subtest: editing, closing and newer inspection invalidate late native probe replies
+ok 296 - editing, closing and newer inspection invalidate late native probe replies
+  ---
+  duration_ms: 3.981816
+  type: 'test'
+  ...
+# Subtest: browser import keeps ordinary helper diagnostics and cannot infer native recognition
+ok 297 - browser import keeps ordinary helper diagnostics and cannot infer native recognition
+  ---
+  duration_ms: 6.366716
+  type: 'test'
+  ...
+# Subtest: CRLF textarea normalization preserves exact probed source through final import
+ok 298 - CRLF textarea normalization preserves exact probed source through final import
+  ---
+  duration_ms: 9.858346
+  type: 'test'
+  ...
+# Subtest: file reads are invalidated by edits, close, reset, new files and new inspections
+ok 299 - file reads are invalidated by edits, close, reset, new files and new inspections
+  ---
+  duration_ms: 9.876153
+  type: 'test'
+  ...
+# Subtest: late file failures cannot replace a newer inspection or its status
+ok 300 - late file failures cannot replace a newer inspection or its status
+  ---
+  duration_ms: 4.047833
+  type: 'test'
+  ...
+# Subtest: file inspection stages Max and ordinary Ultra JSON and reports current failures
+ok 301 - file inspection stages Max and ordinary Ultra JSON and reports current failures
+  ---
+  duration_ms: 6.161521
+  type: 'test'
+  ...
+# Subtest: print imports as a console sink and accepts arbitrary literal selectors
+ok 302 - print imports as a console sink and accepts arbitrary literal selectors
+  ---
+  duration_ms: 12.36741
+  type: 'test'
+  ...
+# Subtest: imports named embedded patchers and keeps explicit source selection
+ok 303 - imports named embedded patchers and keeps explicit source selection
+  ---
+  duration_ms: 5.465272
+  type: 'test'
+  ...
+# Subtest: imports recursive inline boundaries with globally unique IDs and retained comments
+ok 304 - imports recursive inline boundaries with globally unique IDs and retained comments
+  ---
+  duration_ms: 6.41108
+  type: 'test'
+  ...
+# Subtest: flat Max comments retain callout appearance and source identity in a version 2 document
+ok 305 - flat Max comments retain callout appearance and source identity in a version 2 document
+  ---
+  duration_ms: 1.499139
+  type: 'test'
+  ...
+# Subtest: invalid comment callout values are omitted individually without clamping or dropping the annotation
+ok 306 - invalid comment callout values are omitted individually without clamping or dropping the annotation
+  ---
+  duration_ms: 1.369192
+  type: 'test'
+  ...
+# Subtest: comments snapshot the nearest valid patcher font size in whole imports and selected fragments
+ok 307 - comments snapshot the nearest valid patcher font size in whole imports and selected fragments
+  ---
+  duration_ms: 5.735967
+  type: 'test'
+  ...
+# Subtest: inherited comment font size leaves unresolved font and named-style dependencies visible
+ok 308 - inherited comment font size leaves unresolved font and named-style dependencies visible
+  ---
+  duration_ms: 0.742564
+  type: 'test'
+  ...
+# Subtest: reports descendant failures in their owner scope and requires explicit partial import
+ok 309 - reports descendant failures in their owner scope and requires explicit partial import
+  ---
+  duration_ms: 4.273825
+  type: 'test'
+  ...
+# Subtest: diagnoses unsupported patcher arguments and does not relabel bpatcher as an embedded p
+ok 310 - diagnoses unsupported patcher arguments and does not relabel bpatcher as an embedded p
+  ---
+  duration_ms: 1.878216
+  type: 'test'
+  ...
+# Subtest: retains standalone inlet/outlet fragments as v2 without restoring saved execution attributes
+ok 311 - retains standalone inlet/outlet fragments as v2 without restoring saved execution attributes
+  ---
+  duration_ms: 2.874531
+  type: 'test'
+  ...
+# Subtest: counts executable hierarchy limits across descendants without charging comments or containers
+ok 312 - counts executable hierarchy limits across descendants without charging comments or containers
+  ---
+  duration_ms: 43.482474
+  type: 'test'
+  ...
+# Subtest: does not reroute a parent cable to a different child when a boundary is omitted
+ok 313 - does not reroute a parent cable to a different child when a boundary is omitted
+  ---
+  duration_ms: 3.920933
+  type: 'test'
+  ...
+# Subtest: preserves mixed signal boundaries and refuses cables that escape a child scope
+ok 314 - preserves mixed signal boundaries and refuses cables that escape a child scope
+  ---
+  duration_ms: 6.656065
+  type: 'test'
+  ...
+# Subtest: keeps source maps distinct when a literal root box ID resembles a descendant path
+ok 315 - keeps source maps distinct when a literal root box ID resembles a descendant path
+  ---
+  duration_ms: 1.08787
+  type: 'test'
+  ...
+# Subtest: preserves coordinates, inlet/outlet indices and explicit Max fanout order
+ok 316 - preserves coordinates, inlet/outlet indices and explicit Max fanout order
+  ---
+  duration_ms: 1.775206
+  type: 'test'
+  ...
+# Subtest: requires explicit partial import and diagnoses every unknown box and boundary cable
+ok 317 - requires explicit partial import and diagnoses every unknown box and boundary cable
+  ---
+  duration_ms: 0.925263
+  type: 'test'
+  ...
+# Subtest: does not reinterpret Max counter arguments or Max-only classes as native namesakes
+ok 318 - does not reinterpret Max counter arguments or Max-only classes as native namesakes
+  ---
+  duration_ms: 1.123637
+  type: 'test'
+  ...
+# Subtest: retains integer Tab and message cold cables while surfacing the remaining metro gap
+ok 319 - retains integer Tab and message cold cables while surfacing the remaining metro gap
+  ---
+  duration_ms: 1.612419
+  type: 'test'
+  ...
+# Subtest: preserves the lexical output mode of Max line creation arguments
+ok 320 - preserves the lexical output mode of Max line creation arguments
+  ---
+  duration_ms: 0.940996
+  type: 'test'
+  ...
+# Subtest: surfaces toggle value coercion and unsupported saved behavioral attributes
+ok 321 - surfaces toggle value coercion and unsupported saved behavioral attributes
+  ---
+  duration_ms: 1.272574
+  type: 'test'
+  ...
+# Subtest: refuses argument placeholders that Max pack treats as literal symbols
+ok 322 - refuses argument placeholders that Max pack treats as literal symbols
+  ---
+  duration_ms: 0.954836
+  type: 'test'
+  ...
+# Subtest: surfaces ambiguous cable order instead of certifying fanout parity
+ok 323 - surfaces ambiguous cable order instead of certifying fanout parity
+  ---
+  duration_ms: 2.1052
+  type: 'test'
+  ...
+# Subtest: preserves approved native Max appearance attributes and saved dimensions
+ok 324 - preserves approved native Max appearance attributes and saved dimensions
+  ---
+  duration_ms: 0.832486
+  type: 'test'
+  ...
+# Subtest: reports invalid or unmapped appearance without clamping or hiding executable objects
+ok 325 - reports invalid or unmapped appearance without clamping or hiding executable objects
+  ---
+  duration_ms: 0.626035
+  type: 'test'
+  ...
+# Subtest: rejects unsupported message syntax and unsupported receiving selectors explicitly
+ok 326 - rejects unsupported message syntax and unsupported receiving selectors explicitly
+  ---
+  duration_ms: 3.036997
+  type: 'test'
+  ...
+# Subtest: does not repair cycles or truncate graphs to the native limits
+ok 327 - does not repair cycles or truncate graphs to the native limits
+  ---
+  duration_ms: 5.220885
+  type: 'test'
+  ...
+# Subtest: rejects malformed, duplicate, oversized and recursive inputs within analysis bounds
+ok 328 - rejects malformed, duplicate, oversized and recursive inputs within analysis bounds
+  ---
+  duration_ms: 1.750864
+  type: 'test'
+  ...
+# Subtest: does not certify mismatched saved port shapes even when the absent port is unused
+ok 329 - does not certify mismatched saved port shapes even when the absent port is unused
+  ---
+  duration_ms: 0.685813
+  type: 'test'
+  ...
+# Subtest: rejects endpoints beyond the saved Max ports even when the native object has extra ports
+ok 330 - rejects endpoints beyond the saved Max ports even when the native object has extra ports
+  ---
+  duration_ms: 0.771526
+  type: 'test'
+  ...
+# Subtest: does not activate disabled saved cables or silently ignore their attributes
+ok 331 - does not activate disabled saved cables or silently ignore their attributes
+  ---
+  duration_ms: 1.188004
+  type: 'test'
+  ...
+# Subtest: imports bounded cable midpoints losslessly and isolates invalid geometry from executable cable admission
+ok 332 - imports bounded cable midpoints losslessly and isolates invalid geometry from executable cable admission
+  ---
+  duration_ms: 6.203
+  type: 'test'
+  ...
+# Subtest: installed toggle.maxhelp basic tab imports an explicitly partial native graph
+ok 333 - installed toggle.maxhelp basic tab imports an explicitly partial native graph
+  ---
+  duration_ms: 98.498373
+  type: 'test'
+  ...
+# Subtest: installed button.maxhelp basic tab imports an explicitly partial native graph
+ok 334 - installed button.maxhelp basic tab imports an explicitly partial native graph
+  ---
+  duration_ms: 20.298842
+  type: 'test'
+  ...
+# Subtest: installed number.maxhelp basic tab imports an explicitly partial native graph
+ok 335 - installed number.maxhelp basic tab imports an explicitly partial native graph
+  ---
+  duration_ms: 36.257658
+  type: 'test'
+  ...
+# Subtest: installed flonum.maxhelp basic tab imports an explicitly partial native graph
+ok 336 - installed flonum.maxhelp basic tab imports an explicitly partial native graph
+  ---
+  duration_ms: 23.044148
+  type: 'test'
+  ...
+# Subtest: installed slider.maxhelp basic tab imports an explicitly partial native graph
+ok 337 - installed slider.maxhelp basic tab imports an explicitly partial native graph
+  ---
+  duration_ms: 20.576304
+  type: 'test'
+  ...
+# Subtest: installed int.maxhelp basic tab imports an explicitly partial native graph
+ok 338 - installed int.maxhelp basic tab imports an explicitly partial native graph
+  ---
+  duration_ms: 15.934966
+  type: 'test'
+  ...
+# Subtest: installed float.maxhelp basic tab imports an explicitly partial native graph
+ok 339 - installed float.maxhelp basic tab imports an explicitly partial native graph
+  ---
+  duration_ms: 16.778144
+  type: 'test'
+  ...
+# Subtest: installed pack.maxhelp basic tab imports an explicitly partial native graph
+ok 340 - installed pack.maxhelp basic tab imports an explicitly partial native graph
+  ---
+  duration_ms: 20.231359
+  type: 'test'
+  ...
+# Subtest: installed unpack.maxhelp basic tab imports an explicitly partial native graph
+ok 341 - installed unpack.maxhelp basic tab imports an explicitly partial native graph
+  ---
+  duration_ms: 15.211252
+  type: 'test'
+  ...
+# Subtest: installed select.maxhelp basic tab imports an explicitly partial native graph
+ok 342 - installed select.maxhelp basic tab imports an explicitly partial native graph
+  ---
+  duration_ms: 13.321602
+  type: 'test'
+  ...
+# Subtest: installed route.maxhelp basic tab imports an explicitly partial native graph
+ok 343 - installed route.maxhelp basic tab imports an explicitly partial native graph
+  ---
+  duration_ms: 24.595186
+  type: 'test'
+  ...
+# Subtest: installed trigger.maxhelp basic tab imports an explicitly partial native graph
+ok 344 - installed trigger.maxhelp basic tab imports an explicitly partial native graph
+  ---
+  duration_ms: 25.864804
+  type: 'test'
+  ...
+# Subtest: installed line.maxhelp basic tab imports an explicitly partial native graph
+ok 345 - installed line.maxhelp basic tab imports an explicitly partial native graph
+  ---
+  duration_ms: 28.409822
+  type: 'test'
+  ...
+# Subtest: Message templates admit empty, typed literals and only complete $1/$2 references
+ok 346 - Message templates admit empty, typed literals and only complete $1/$2 references
+  ---
+  duration_ms: 2.687264
+  type: 'test'
+  ...
+# Subtest: new Message authoring has two inlets and preserves saved legacy literals
+ok 347 - new Message authoring has two inlets and preserves saved legacy literals
+  ---
+  duration_ms: 4.718629
+  type: 'test'
+  ...
+# Subtest: display cache preserves empty templates, refuses stale serials and keeps non-consuming snapshots
+ok 348 - display cache preserves empty templates, refuses stale serials and keeps non-consuming snapshots
+  ---
+  duration_ms: 1.876765
+  type: 'test'
+  ...
+# Subtest: standalone Message text edit and history precede hot input without graph replacement
+ok 349 - standalone Message text edit and history precede hot input without graph replacement
+  ---
+  duration_ms: 9.070074
+  type: 'test'
+  ...
+# Subtest: shared Message same-text restore carries explicit CAS hint and serial-gates all views
+ok 350 - shared Message same-text restore carries explicit CAS hint and serial-gates all views
+  ---
+  duration_ms: 6.644388
+  type: 'test'
+  ...
+# Subtest: standalone Message edits preserve interleaved text / trigger order
+ok 351 - standalone Message edits preserve interleaved text / trigger order
+  ---
+  duration_ms: 1.682049
+  type: 'test'
+  ...
+# Subtest: rejected standalone text admission preserves saved text and history and blocks dependent edits
+ok 352 - rejected standalone text admission preserves saved text and history and blocks dependent edits
+  ---
+  duration_ms: 1.488516
+  type: 'test'
+  ...
+# Subtest: both controllers admit replacement placeholders only for MessageBox cold/set input
+ok 353 - both controllers admit replacement placeholders only for MessageBox cold/set input
+  ---
+  duration_ms: 3.062976
+  type: 'test'
+  ...
+# Subtest: Stop cancels queued text edits and settles already-admitted text without losing saved state
+ok 354 - Stop cancels queued text edits and settles already-admitted text without losing saved state
+  ---
+  duration_ms: 1.827259
+  type: 'test'
+  ...
+# Subtest: registry exposes exclusively top inlet / bottom outlet descriptors
+ok 355 - registry exposes exclusively top inlet / bottom outlet descriptors
+  ---
+  duration_ms: 2.191264
+  type: 'test'
+  ...
+# Subtest: starter is a valid real editable graph, including independent MIDI voice and explicit stereo join
+ok 356 - starter is a valid real editable graph, including independent MIDI voice and explicit stereo join
+  ---
+  duration_ms: 8.881723
+  type: 'test'
+  ...
+# Subtest: add/delete/connect/disconnect and layout retain stable IDs and explicit fan-out order
+ok 357 - add/delete/connect/disconnect and layout retain stable IDs and explicit fan-out order
+  ---
+  duration_ms: 3.132912
+  type: 'test'
+  ...
+# Subtest: strict validation rejects malformed, unknown, oversized, duplicate and cyclic edits atomically
+ok 358 - strict validation rejects malformed, unknown, oversized, duplicate and cyclic edits atomically
+  ---
+  duration_ms: 36.20858
+  type: 'test'
+  ...
+# Subtest: audio supports missing paths, mono fan-in and parallel gains while rejecting duplicate devices
+ok 359 - audio supports missing paths, mono fan-in and parallel gains while rejecting duplicate devices
+  ---
+  duration_ms: 2.243064
+  type: 'test'
+  ...
+# Subtest: parameter edit and undo round trip without mutating past snapshots; message is structural
+ok 360 - parameter edit and undo round trip without mutating past snapshots; message is structural
+  ---
+  duration_ms: 2.676979
+  type: 'test'
+  ...
+# Subtest: preview can edit and export but never invents runtime execution
+ok 361 - preview can edit and export but never invents runtime execution
+  ---
+  duration_ms: 5.361054
+  type: 'test'
+  ...
+# Subtest: standalone help hosting initializes Basic and navigation preserves runtime and saved content
+ok 362 - standalone help hosting initializes Basic and navigation preserves runtime and saved content
+  ---
+  duration_ms: 9.37267
+  type: 'test'
+  ...
+# Subtest: standalone load and history reconcile shell identity and helper-only history never sends parameters
+ok 363 - standalone load and history reconcile shell identity and helper-only history never sends parameters
+  ---
+  duration_ms: 13.99121
+  type: 'test'
+  ...
+# Subtest: message-text history admission also reconciles appearance of a shell with the same executable graph
+ok 364 - message-text history admission also reconciles appearance of a shell with the same executable graph
+  ---
+  duration_ms: 9.133951
+  type: 'test'
+  ...
+# Subtest: prepare precedes audio; actual events include revision and own hot number inlet
+ok 365 - prepare precedes audio; actual events include revision and own hot number inlet
+  ---
+  duration_ms: 6.018236
+  type: 'test'
+  ...
+# Subtest: starting audio leaves continuous DSP running without requiring a control event
+ok 366 - starting audio leaves continuous DSP running without requiring a control event
+  ---
+  duration_ms: 1.20993
+  type: 'test'
+  ...
+# Subtest: parameter dragging uses bounded latest-wins native admission and never stops/reapplies graph
+ok 367 - parameter dragging uses bounded latest-wins native admission and never stops/reapplies graph
+  ---
+  duration_ms: 127.878816
+  type: 'test'
+  ...
+# Subtest: structural apply prevents stale actions, resets observations, and retains valid graph on native rejection
+ok 368 - structural apply prevents stale actions, resets observations, and retains valid graph on native rejection
+  ---
+  duration_ms: 2.274852
+  type: 'test'
+  ...
+# Subtest: latest structural graph wins while earlier apply is pending; intermediate controls never send
+ok 369 - latest structural graph wins while earlier apply is pending; intermediate controls never send
+  ---
+  duration_ms: 4.524179
+  type: 'test'
+  ...
+# Subtest: native observations, stop, panic and awaited navigation cleanup use native commands
+ok 370 - native observations, stop, panic and awaited navigation cleanup use native commands
+  ---
+  duration_ms: 2.740024
+  type: 'test'
+  ...
+# Subtest: MIDI channel and voice device edits are structural safety boundaries
+ok 371 - MIDI channel and voice device edits are structural safety boundaries
+  ---
+  duration_ms: 2.297299
+  type: 'test'
+  ...
+# Subtest: failed native startup never claims audio ready and reports backend reason
+ok 372 - failed native startup never claims audio ready and reports backend reason
+  ---
+  duration_ms: 2.445346
+  type: 'test'
+  ...
+# Subtest: event queue overflow fails closed instead of dropping a possible note termination
+ok 373 - event queue overflow fails closed instead of dropping a possible note termination
+  ---
+  duration_ms: 8.735611
+  type: 'test'
+  ...
+# Subtest: dispose while startup is pending cancels startup and stops only its document
+ok 374 - dispose while startup is pending cancels startup and stops only its document
+  ---
+  duration_ms: 1.59419
+  type: 'test'
+  ...
+# Subtest: missing known parameters normalize to protocol defaults but unknown parameters still reject
+ok 375 - missing known parameters normalize to protocol defaults but unknown parameters still reject
+  ---
+  duration_ms: 0.560456
+  type: 'test'
+  ...
+# Subtest: Panic cancels a pending startup and cannot be overwritten by an apply result
+ok 376 - Panic cancels a pending startup and cannot be overwritten by an apply result
+  ---
+  duration_ms: 1.812846
+  type: 'test'
+  ...
+# Subtest: undo and redo of numeric parameters remain live, while topology undo reapplies
+ok 377 - undo and redo of numeric parameters remain live, while topology undo reapplies
+  ---
+  duration_ms: 4.004641
+  type: 'test'
+  ...
+# Subtest: native audio fault retains the backend reason and recovery instruction
+ok 378 - native audio fault retains the backend reason and recovery instruction
+  ---
+  duration_ms: 0.973426
+  type: 'test'
+  ...
+# Subtest: flat authoring retains valid midpoint arrays and refuses invalid geometry without weakening cable schema
+ok 379 - flat authoring retains valid midpoint arrays and refuses invalid geometry without weakening cable schema
+  ---
+  duration_ms: 1.049688
+  type: 'test'
+  ...
+# Subtest: movement keeps absolute bends for one endpoint and translates equal endpoint moves atomically with history
+ok 380 - movement keeps absolute bends for one endpoint and translates equal endpoint moves atomically with history
+  ---
+  duration_ms: 0.792481
+  type: 'test'
+  ...
+# Subtest: moving routed cables and undo redo preserve standalone native admission and live observations
+ok 381 - moving routed cables and undo redo preserve standalone native admission and live observations
+  ---
+  duration_ms: 2.16639
+  type: 'test'
+  ...
+# Subtest: Max number authoring uses an integer box while saved legacy numbers round-trip unchanged
+ok 382 - Max number authoring uses an integer box while saved legacy numbers round-trip unchanged
+  ---
+  duration_ms: 7.002825
+  type: 'test'
+  ...
+# Subtest: Max integer bounds and Tab cables import without a number semantic or port warning
+ok 383 - Max integer bounds and Tab cables import without a number semantic or port warning
+  ---
+  duration_ms: 6.119391
+  type: 'test'
+  ...
+# Subtest: plain numeric send methods import but unresolved destination scope stays an error
+ok 384 - plain numeric send methods import but unresolved destination scope stays an error
+  ---
+  duration_ms: 7.119885
+  type: 'test'
+  ...
+# Subtest: integer bound messages outside the qualified integral profile keep an import error
+ok 385 - integer bound messages outside the qualified integral profile keep an import error
+  ---
+  duration_ms: 1.721302
+  type: 'test'
+  ...
+# Subtest: physical Tab is a separate queued action after numeric commit and selector tab stays data
+ok 386 - physical Tab is a separate queued action after numeric commit and selector tab stays data
+  ---
+  duration_ms: 4.691165
+  type: 'test'
+  ...
+# Subtest: shared numeric Tab waits for atomic hot admission and close barriers cancel it
+ok 387 - shared numeric Tab waits for atomic hot admission and close barriers cancel it
+  ---
+  duration_ms: 27.1386
+  type: 'test'
+  ...
+# Subtest: appended control objects preserve protocol order and typed authoring aliases
+ok 388 - appended control objects preserve protocol order and typed authoring aliases
+  ---
+  duration_ms: 9.532621
+  type: 'test'
+  ...
+# Subtest: variadic objects round-trip typed configuration and validate per-node port shapes atomically
+ok 389 - variadic objects round-trip typed configuration and validate per-node port shapes atomically
+  ---
+  duration_ms: 6.010189
+  type: 'test'
+  ...
+# Subtest: literal typed messages retain legacy numeric arrays and reject unsupported syntax
+ok 390 - literal typed messages retain legacy numeric arrays and reject unsupported syntax
+  ---
+  duration_ms: 0.853511
+  type: 'test'
+  ...
+# Subtest: numeric configuration options and variadic guidance appear in completion
+ok 391 - numeric configuration options and variadic guidance appear in completion
+  ---
+  duration_ms: 3.548498
+  type: 'test'
+  ...
+# Subtest: control-only native graphs accept typed events while DSP is stopped and dynamic inlets enforce bounds
+ok 392 - control-only native graphs accept typed events while DSP is stopped and dynamic inlets enforce bounds
+  ---
+  duration_ms: 7.663785
+  type: 'test'
+  ...
+# Subtest: parameter edits admitted during Stop cannot send a delayed hot event
+ok 393 - parameter edits admitted during Stop cannot send a delayed hot event
+  ---
+  duration_ms: 1.502695
+  type: 'test'
+  ...
+# Subtest: Tab waits for a pending value commit and retains its admission epoch across Stop
+ok 394 - Tab waits for a pending value commit and retains its admission epoch across Stop
+  ---
+  duration_ms: 2.656495
+  type: 'test'
+  ...
+# Subtest: bundled control examples match editable source files and retain valid node-aware graphs
+ok 395 - bundled control examples match editable source files and retain valid node-aware graphs
+  ---
+  duration_ms: 21.463436
+  type: 'test'
+  ...
+# Subtest: visibility changes keep a single poll and resume immediately
+ok 396 - visibility changes keep a single poll and resume immediately
+  ---
+  duration_ms: 1.83797
+  type: 'test'
+  ...
+# Subtest: an in-flight poll does not overlap after restoring or reschedule after disposal
+ok 397 - an in-flight poll does not overlap after restoring or reschedule after disposal
+  ---
+  duration_ms: 0.506541
+  type: 'test'
+  ...
+# Subtest: Print popup defaults off and round-trips strict @popup authoring
+ok 398 - Print popup defaults off and round-trips strict @popup authoring
+  ---
+  duration_ms: 6.816297
+  type: 'test'
+  ...
+# Subtest: Max popup Print creation and saved values retain every ordinary message cable
+ok 399 - Max popup Print creation and saved values retain every ordinary message cable
+  ---
+  duration_ms: 10.131689
+  type: 'test'
+  ...
+# Subtest: independent popup deadlines use frame age and cannot extend or resurrect on polling
+ok 400 - independent popup deadlines use frame age and cannot extend or resurrect on polling
+  ---
+  duration_ms: 0.832115
+  type: 'test'
+  ...
+# Subtest: popup disable and reenable do not restore a previous receipt
+ok 401 - popup disable and reenable do not restore a previous receipt
+  ---
+  duration_ms: 0.599759
+  type: 'test'
+  ...
+# Subtest: popup snapshots are non-consuming, revision-bound and retain local expiry on unavailable reads
+ok 402 - popup snapshots are non-consuming, revision-bound and retain local expiry on unavailable reads
+  ---
+  duration_ms: 0.625304
+  type: 'test'
+  ...
+# Subtest: malformed popup snapshots cannot replace an accepted display
+ok 403 - malformed popup snapshots cannot replace an accepted display
+  ---
+  duration_ms: 0.357622
+  type: 'test'
+  ...
+# Subtest: both controllers project live Print values without changing authoring or opening console
+ok 404 - both controllers project live Print values without changing authoring or opening console
+  ---
+  duration_ms: 17.328748
+  type: 'test'
+  ...
+# Subtest: standalone lifecycle operations cannot resurrect an expired Print receipt
+ok 405 - standalone lifecycle operations cannot resurrect an expired Print receipt
+  ---
+  duration_ms: 7.678918
+  type: 'test'
+  ...
+# Subtest: send and receive authoring preserves names, aliases, and creation-dependent ports
+ok 406 - send and receive authoring preserves names, aliases, and creation-dependent ports
+  ---
+  duration_ms: 9.449533
+  type: 'test'
+  ...
+# Subtest: bus names remain bounded ASCII symbols and send requires a nonempty name
+ok 407 - bus names remain bounded ASCII symbols and send requires a nonempty name
+  ---
+  duration_ms: 3.987965
+  type: 'test'
+  ...
+# Subtest: name edits and their undo reapply the document instead of numeric parameter commands
+ok 408 - name edits and their undo reapply the document instead of numeric parameter commands
+  ---
+  duration_ms: 4.307808
+  type: 'test'
+  ...
+# Subtest: Max import admits named and unbound receives, send aliases, and set as bus payload
+ok 409 - Max import admits named and unbound receives, send aliases, and set as bus payload
+  ---
+  duration_ms: 21.750228
+  type: 'test'
+  ...
+# Subtest: disposing a document stops only its own graph and leaves global audio running
+ok 410 - disposing a document stops only its own graph and leaves global audio running
+  ---
+  duration_ms: 3.634873
+  type: 'test'
+  ...
+# Subtest: Max message \#0 expansion cannot become a literal runtime receive binding
+ok 411 - Max message \#0 expansion cannot become a literal runtime receive binding
+  ---
+  duration_ms: 1.218649
+  type: 'test'
+  ...
+# Subtest: document disposal during pending canvas_apply cancels its startup without stopping global audio
+ok 412 - document disposal during pending canvas_apply cancels its startup without stopping global audio
+  ---
+  duration_ms: 17.18887
+  type: 'test'
+  ...
+# Subtest: document disposal during pending audio_start cancels its startup without stopping global audio
+ok 413 - document disposal during pending audio_start cancels its startup without stopping global audio
+  ---
+  duration_ms: 2.995027
+  type: 'test'
+  ...
+# Subtest: failed document stop rejects disposal and allows cleanup to be retried
+ok 414 - failed document stop rejects disposal and allows cleanup to be retried
+  ---
+  duration_ms: 2.045903
+  type: 'test'
+  ...
+# Subtest: shared controller is available
+ok 415 - shared controller is available
+  ---
+  duration_ms: 1.711451
+  type: 'test'
+  ...
+# Subtest: device bindings address the root tree while retaining the current child view
+ok 416 - device bindings address the root tree while retaining the current child view
+  ---
+  duration_ms: 19.390085
+  type: 'test'
+  ...
+# Subtest: shared root and child modes commit structurally while operands retain live admission
+ok 417 - shared root and child modes commit structurally while operands retain live admission
+  ---
+  duration_ms: 17.734744
+  type: 'test'
+  ...
+# Subtest: opening root and child adopts one owner graph and child scope without resetting it
+ok 418 - opening root and child adopts one owner graph and child scope without resetting it
+  ---
+  duration_ms: 2.526238
+  type: 'test'
+  ...
+# Subtest: optimistic edits serialize and stale disjoint edits rebase without overwriting the owner
+ok 419 - optimistic edits serialize and stale disjoint edits rebase without overwriting the owner
+  ---
+  duration_ms: 8.92275
+  type: 'test'
+  ...
+# Subtest: simultaneous changes to one field retain the canonical tree and report conflict
+ok 420 - simultaneous changes to one field retain the canonical tree and report conflict
+  ---
+  duration_ms: 5.4861
+  type: 'test'
+  ...
+# Subtest: broadcasts during admission preserve later local edits and ignore older descriptors
+ok 421 - broadcasts during admission preserve later local edits and ignore older descriptors
+  ---
+  duration_ms: 16.507817
+  type: 'test'
+  ...
+# Subtest: numeric hot edits use one native admission and queued events wait for admission
+ok 422 - numeric hot edits use one native admission and queued events wait for admission
+  ---
+  duration_ms: 4.587955
+  type: 'test'
+  ...
+# Subtest: native owner history includes edits from another child and continuous history groups
+ok 423 - native owner history includes edits from another child and continuous history groups
+  ---
+  duration_ms: 8.001616
+  type: 'test'
+  ...
+# Subtest: admission rejection restores the authoritative root and cancels dependent events
+ok 424 - admission rejection restores the authoritative root and cancels dependent events
+  ---
+  duration_ms: 3.449457
+  type: 'test'
+  ...
+# Subtest: flush returns canonical descriptor for whole-owner save and layout preserves runtime revision
+ok 425 - flush returns canonical descriptor for whole-owner save and layout preserves runtime revision
+  ---
+  duration_ms: 2.129522
+  type: 'test'
+  ...
+# Subtest: observations cover descendants and each view retains its own native console cursor
+ok 426 - observations cover descendants and each view retains its own native console cursor
+  ---
+  duration_ms: 4.260507
+  type: 'test'
+  ...
+# Subtest: recursive model validation is atomic and detach never stops the owner graph
+ok 427 - recursive model validation is atomic and detach never stops the owner graph
+  ---
+  duration_ms: 3.17899
+  type: 'test'
+  ...
+# Subtest: structural child edits publish a fresh runtime revision before events and never reinstall through legacy IPC
+ok 428 - structural child edits publish a fresh runtime revision before events and never reinstall through legacy IPC
+  ---
+  duration_ms: 2.727898
+  type: 'test'
+  ...
+# Subtest: simultaneous additions cannot overwrite the other view when both allocate the same ID
+ok 429 - simultaneous additions cannot overwrite the other view when both allocate the same ID
+  ---
+  duration_ms: 3.508012
+  type: 'test'
+  ...
+# Subtest: a stale owner undo retains newer native changes and asks the caller to try again
+ok 430 - a stale owner undo retains newer native changes and asks the caller to try again
+  ---
+  duration_ms: 3.109311
+  type: 'test'
+  ...
+# Subtest: same-node edits to independent fields rebase and history remains native
+ok 431 - same-node edits to independent fields rebase and history remains native
+  ---
+  duration_ms: 3.520449
+  type: 'test'
+  ...
+# Subtest: hot numeric admission restores a live value to unchanged saved state exactly once
+ok 432 - hot numeric admission restores a live value to unchanged saved state exactly once
+  ---
+  duration_ms: 3.256786
+  type: 'test'
+  ...
+# Subtest: whole-document loads keep a surviving native child view anchored to its descriptor path
+ok 433 - whole-document loads keep a surviving native child view anchored to its descriptor path
+  ---
+  duration_ms: 2.629518
+  type: 'test'
+  ...
+# Subtest: native descriptors restore their view path after local navigation and repair removed paths
+ok 434 - native descriptors restore their view path after local navigation and repair removed paths
+  ---
+  duration_ms: 3.368534
+  type: 'test'
+  ...
+# Subtest: late descriptors cannot regress a runtime reapply at the same authoring revision
+ok 435 - late descriptors cannot regress a runtime reapply at the same authoring revision
+  ---
+  duration_ms: 1.334116
+  type: 'test'
+  ...
+# Subtest: close flush reports a real pending admission failure and allows retry after cancellation
+ok 436 - close flush reports a real pending admission failure and allows retry after cancellation
+  ---
+  duration_ms: 4.217054
+  type: 'test'
+  ...
+# Subtest: an acknowledged view blocks new authoring until every matching close barrier releases
+ok 437 - an acknowledged view blocks new authoring until every matching close barrier releases
+  ---
+  duration_ms: 3.791887
+  type: 'test'
+  ...
+# Subtest: a pending undo rejected by owner CAS cancels the close flush
+ok 438 - a pending undo rejected by owner CAS cancels the close flush
+  ---
+  duration_ms: 3.391653
+  type: 'test'
+  ...
+# Subtest: help root hosts Basic locally while a real Basic child keeps its native binding
+ok 439 - help root hosts Basic locally while a real Basic child keeps its native binding
+  ---
+  duration_ms: 7.799114
+  type: 'test'
+  ...
+# Subtest: help hosting survives optimistic edits CAS publications save descriptors and rejected edit recovery
+ok 440 - help hosting survives optimistic edits CAS publications save descriptors and rejected edit recovery
+  ---
+  duration_ms: 10.354554
+  type: 'test'
+  ...
+# Subtest: shell import into adopted owner and history reconcile identity and restore local Basic
+ok 441 - shell import into adopted owner and history reconcile identity and restore local Basic
+  ---
+  duration_ms: 12.572725
+  type: 'test'
+  ...
+# Subtest: pending shell import keeps hosting across older publications and rejected import restores ordinary state
+ok 442 - pending shell import keeps hosting across older publications and rejected import restores ordinary state
+  ---
+  duration_ms: 20.680868
+  type: 'test'
+  ...
+# Subtest: local Basic navigation preserves numeric Message and Print observations and independent views
+ok 443 - local Basic navigation preserves numeric Message and Print observations and independent views
+  ---
+  duration_ms: 3.61039
+  type: 'test'
+  ...
+# Subtest: Panic then global Stop Audio recovers even when scoped stop rejects the fault state
+ok 444 - Panic then global Stop Audio recovers even when scoped stop rejects the fault state
+  ---
+  duration_ms: 2.155387
+  type: 'test'
+  ...
+# Subtest: continuous edits retain bounded snapshots and their native undo boundary
+ok 445 - continuous edits retain bounded snapshots and their native undo boundary
+  ---
+  duration_ms: 117.971447
+  type: 'test'
+  ...
+# Subtest: coalescing cannot cross an event or discrete undo boundary and backlog rejects atomically
+ok 446 - coalescing cannot cross an event or discrete undo boundary and backlog rejects atomically
+  ---
+  duration_ms: 82.353101
+  type: 'test'
+  ...
+# Subtest: Stop and Panic run immediately after in-flight admission ahead of queued edits in request order
+ok 447 - Stop and Panic run immediately after in-flight admission ahead of queued edits in request order
+  ---
+  duration_ms: 2.992963
+  type: 'test'
+  ...
+# Subtest: queued event dispatch uses the admitted tree before a later deletion
+ok 448 - queued event dispatch uses the admitted tree before a later deletion
+  ---
+  duration_ms: 2.666547
+  type: 'test'
+  ...
+# Subtest: pending native history blocks authoring until its canonical base arrives
+ok 449 - pending native history blocks authoring until its canonical base arrives
+  ---
+  duration_ms: 3.633128
+  type: 'test'
+  ...
+# Subtest: signal authoring follows Max positional syntax and observed defaults
+ok 450 - signal authoring follows Max positional syntax and observed defaults
+  ---
+  duration_ms: 7.905149
+  type: 'test'
+  ...
+# Subtest: signal text edits preserve saved inspector settings without treating them as positional Max arguments
+ok 451 - signal text edits preserve saved inspector settings without treating them as positional Max arguments
+  ---
+  duration_ms: 5.631149
+  type: 'test'
+  ...
+# Subtest: signal completion explains frequency and phase units and channel limitations
+ok 452 - signal completion explains frequency and phase units and channel limitations
+  ---
+  duration_ms: 2.542543
+  type: 'test'
+  ...
+# Subtest: sig values and output channels are bounded numeric creation lists with dynamic ports
+ok 453 - sig values and output channels are bounded numeric creation lists with dynamic ports
+  ---
+  duration_ms: 1.774054
+  type: 'test'
+  ...
+# Subtest: mono fan-in sums and independent legacy gain branches remain valid signal paths
+ok 454 - mono fan-in sums and independent legacy gain branches remain valid signal paths
+  ---
+  duration_ms: 1.664319
+  type: 'test'
+  ...
+# Subtest: separate signal and control cycles reject zero-delay feedback but permit snapshot boundaries
+ok 455 - separate signal and control cycles reject zero-delay feedback but permit snapshot boundaries
+  ---
+  duration_ms: 1.020145
+  type: 'test'
+  ...
+# Subtest: signal dac channel edits rebuild graphs and undo restores their ports
+ok 456 - signal dac channel edits rebuild graphs and undo restores their ports
+  ---
+  duration_ms: 4.212905
+  type: 'test'
+  ...
+# Subtest: mixed signal inlets accept direct control events through the native controller
+ok 457 - mixed signal inlets accept direct control events through the native controller
+  ---
+  duration_ms: 1.65983
+  type: 'test'
+  ...
+# Subtest: Max signal import preserves mono topology and mixed message connections
+ok 458 - Max signal import preserves mono topology and mixed message connections
+  ---
+  duration_ms: 4.151875
+  type: 'test'
+  ...
+# Subtest: unsupported Max signal attributes and runtime methods remain explicit import gaps
+ok 459 - unsupported Max signal attributes and runtime methods remain explicit import gaps
+  ---
+  duration_ms: 8.412962
+  type: 'test'
+  ...
+# Subtest: Max signal literal admission checks supported data shape for each inlet
+ok 460 - Max signal literal admission checks supported data shape for each inlet
+  ---
+  duration_ms: 17.573831
+  type: 'test'
+  ...
+# Subtest: signal help explains accepted port messages without promising arbitrary selectors
+ok 461 - signal help explains accepted port messages without promising arbitrary selectors
+  ---
+  duration_ms: 1.070252
+  type: 'test'
+  ...
+# Subtest: each signal help patch is original, runnable and matches its installed example
+ok 462 - each signal help patch is original, runnable and matches its installed example
+  ---
+  duration_ms: 19.053386
+  type: 'test'
+  ...
+# Subtest: browser page mounts all controls, draws validated buses, and does not fake playback
+ok 463 - browser page mounts all controls, draws validated buses, and does not fake playback
+  ---
+  duration_ms: 24.149465
+  type: 'test'
+  ...
+# Subtest: native page wires Start, Run, pointer release, focus cleanup, and stopped backlink
+ok 464 - native page wires Start, Run, pointer release, focus cleanup, and stopped backlink
+  ---
+  duration_ms: 17.969334
+  type: 'test'
+  ...
+# Subtest: chord math matches native zero-based triad / octave / clamp formula
+ok 465 - chord math matches native zero-based triad / octave / clamp formula
+  ---
+  duration_ms: 3.000088
+  type: 'test'
+  ...
+# Subtest: audio start applies fixed routes first, then both devices’ parameters, with transport disarmed
+ok 466 - audio start applies fixed routes first, then both devices’ parameters, with transport disarmed
+  ---
+  duration_ms: 2.585264
+  type: 'test'
+  ...
+# Subtest: opening the lab accepts the fixed routes and stops an inherited transport
+ok 467 - opening the lab accepts the fixed routes and stops an inherited transport
+  ---
+  duration_ms: 1.184295
+  type: 'test'
+  ...
+# Subtest: opening from every disconnected patcher mask accepts routes before route-sensitive release events
+ok 468 - opening from every disconnected patcher mask accepts routes before route-sensitive release events
+  ---
+  duration_ms: 3.965798
+  type: 'test'
+  ...
+# Subtest: native disarm reconciles the Run button after an enabled state was observed
+ok 469 - native disarm reconciles the Run button after an enabled state was observed
+  ---
+  duration_ms: 1.015646
+  type: 'test'
+  ...
+# Subtest: parameter edits during startup survive the in-flight parameter snapshot
+ok 470 - parameter edits during startup survive the in-flight parameter snapshot
+  ---
+  duration_ms: 1.180819
+  type: 'test'
+  ...
+# Subtest: unexpected control rejection requests a native panic, not only a UI fault
+ok 471 - unexpected control rejection requests a native panic, not only a UI fault
+  ---
+  duration_ms: 0.979299
+  type: 'test'
+  ...
+# Subtest: failed note-off requests Panic and Stop still recovers if Panic IPC also fails
+ok 472 - failed note-off requests Panic and Stop still recovers if Panic IPC also fails
+  ---
+  duration_ms: 1.317269
+  type: 'test'
+  ...
+# Subtest: Run is explicit and configuration changes stop until another Run
+ok 473 - Run is explicit and configuration changes stop until another Run
+  ---
+  duration_ms: 1.259727
+  type: 'test'
+  ...
+# Subtest: pending Run cannot revive transport after focus loss
+ok 474 - pending Run cannot revive transport after focus loss
+  ---
+  duration_ms: 1.830565
+  type: 'test'
+  ...
+# Subtest: manual keyboard uses B, deduplicates pitches, and always releases
+ok 475 - manual keyboard uses B, deduplicates pitches, and always releases
+  ---
+  duration_ms: 2.247493
+  type: 'test'
+  ...
+# Subtest: release during pending note-on cannot leave a held voice
+ok 476 - release during pending note-on cannot leave a held voice
+  ---
+  duration_ms: 0.822414
+  type: 'test'
+  ...
+# Subtest: rapid committed controls coalesce to a bounded latest-value queue
+ok 477 - rapid committed controls coalesce to a bounded latest-value queue
+  ---
+  duration_ms: 1.064921
+  type: 'test'
+  ...
+# Subtest: Panic latches locally and only Stop then Start allows Run again
+ok 478 - Panic latches locally and only Stop then Start allows Run again
+  ---
+  duration_ms: 1.051382
+  type: 'test'
+  ...
+# Subtest: browser preview rejects playback without fake processing
+ok 479 - browser preview rejects playback without fake processing
+  ---
+  duration_ms: 0.233237
+  type: 'test'
+  ...
+# Subtest: invalid UI control data is not transmitted
+ok 480 - invalid UI control data is not transmitted
+  ---
+  duration_ms: 0.854643
+  type: 'test'
+  ...
+# Subtest: presets validate the complete fixed patch before mutating controls and never autorun
+ok 481 - presets validate the complete fixed patch before mutating controls and never autorun
+  ---
+  duration_ms: 2.117656
+  type: 'test'
+  ...
+# Subtest: page contract includes accessible native controls and safe navigation, not a JS note clock
+ok 482 - page contract includes accessible native controls and safe navigation, not a JS note clock
+  ---
+  duration_ms: 1.376867
+  type: 'test'
+  ...
+# Subtest: state is bounded, finite, typed and JSON round-trippable
+ok 483 - state is bounded, finite, typed and JSON round-trippable
+  ---
+  duration_ms: 6.534086
+  type: 'test'
+  ...
+# Subtest: message protocol does not pretend to implement Max parsing
+ok 484 - message protocol does not pretend to implement Max parsing
+  ---
+  duration_ms: 0.687747
+  type: 'test'
+  ...
+# Subtest: object commit and escape preserve focus-safe editing
+ok 485 - object commit and escape preserve focus-safe editing
+  ---
+  duration_ms: 1.423065
+  type: 'test'
+  ...
+# Subtest: message edits never output until explicitly activated
+ok 486 - message edits never output until explicitly activated
+  ---
+  duration_ms: 0.606865
+  type: 'test'
+  ...
+# Subtest: numeric editing clamps and ignores empty/non-finite values
+ok 487 - numeric editing clamps and ignores empty/non-finite values
+  ---
+  duration_ms: 0.650187
+  type: 'test'
+  ...
+# Subtest: slider previews are separate from its one commit
+ok 488 - slider previews are separate from its one commit
+  ---
+  duration_ms: 0.444749
+  type: 'test'
+  ...
+# Subtest: bang, toggle and ports use native activation with clear contracts
+ok 489 - bang, toggle and ports use native activation with clear contracts
+  ---
+  duration_ms: 0.77347
+  type: 'test'
+  ...
+# Subtest: disabled controls block mutation and output but accept silent host updates
+ok 490 - disabled controls block mutation and output but accept silent host updates
+  ---
+  duration_ms: 0.88124
+  type: 'test'
+  ...
+# Subtest: meter is passive, updates are silent, state snapshots cannot mutate component
+ok 491 - meter is passive, updates are silent, state snapshots cannot mutate component
+  ---
+  duration_ms: 0.845213
+  type: 'test'
+  ...
+# Subtest: state rejects null, malformed versions, unsafe integers and unknown fields
+ok 492 - state rejects null, malformed versions, unsafe integers and unknown fields
+  ---
+  duration_ms: 3.171494
+  type: 'test'
+  ...
+# Subtest: numeric text does not accept alternate JS literal syntax
+ok 493 - numeric text does not accept alternate JS literal syntax
+  ---
+  duration_ms: 0.422732
+  type: 'test'
+  ...
+# Subtest: IME Enter does not prematurely commit, message activation commits pending edit
+ok 494 - IME Enter does not prematurely commit, message activation commits pending edit
+  ---
+  duration_ms: 0.294638
+  type: 'test'
+  ...
+# Subtest: state updates are atomic, silent and immutable in identity; disposal is idempotent
+ok 495 - state updates are atomic, silent and immutable in identity; disposal is idempotent
+  ---
+  duration_ms: 0.396546
+  type: 'test'
+  ...
+# Subtest: lab wiring updates a passive meter and serializes/reset/disables controls
+ok 496 - lab wiring updates a passive meter and serializes/reset/disables controls
+  ---
+  duration_ms: 2.943858
+  type: 'test'
+  ...
+# Subtest: slider canonical state quantizes to valid step positions including uneven bounds
+ok 497 - slider canonical state quantizes to valid step positions including uneven bounds
+  ---
+  duration_ms: 0.382115
+  type: 'test'
+  ...
+# Subtest: range bounds are configured before browser value sanitization
+ok 498 - range bounds are configured before browser value sanitization
+  ---
+  duration_ms: 0.452405
+  type: 'test'
+  ...
+# PASS: pending patch edits preserve releases and latest gains; reconnect avoids inactive-device resets.
+# PASS: unaffected presses survive edits; removed/reconnecting routes wait for latest acceptance.
+# Subtest: apps/ultra/ui/events.test.mjs
+ok 41 - apps/ultra/ui/events.test.mjs
+  ---
+  duration_ms: 91.432253
+  type: 'test'
+  ...
+# PASS: complete/incomplete/disconnected routes, cross-device and duplicate rejection, file validation, IPC payload.
+# Subtest: apps/ultra/ui/graph.test.mjs
+ok 42 - apps/ultra/ui/graph.test.mjs
+  ---
+  duration_ms: 63.011117
+  type: 'test'
+  ...
+1..500
+# tests 500
+# suites 0
+# pass 500
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1124.56603

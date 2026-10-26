@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ultra - patcher</title><link rel="stylesheet" href="canvas.css"><link rel="stylesheet" href="canvas-console.css"><link rel="stylesheet" href="canvas-help.css"><link rel="stylesheet" href="canvas-device.css">
+</head>
+<body>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+  <symbol id="i-plus" viewBox="0 0 20 20"><path d="M10 4v12M4 10h12"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 20 20"><rect x="4.5" y="9" width="11" height="8" rx="1"/><path d="M7 9V6a3 3 0 0 1 6 0v3"/></symbol>
+  <symbol id="i-unlock" viewBox="0 0 20 20"><rect x="4.5" y="9" width="11" height="8" rx="1"/><path d="M7 9V6a3 3 0 0 1 5.8-1"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 20 20"><path d="M7 4 3 8l4 4M3 8h8a5 5 0 0 1 0 10"/></symbol>
+  <symbol id="i-redo" viewBox="0 0 20 20"><path d="m13 4 4 4-4 4m4-4H9a5 5 0 0 0 0 10"/></symbol>
+  <symbol id="i-inspect" viewBox="0 0 20 20"><path d="M4 3v14M10 3v14M16 3v14M2 7h4m2 6h4m2-7h4"/></symbol>
+  <symbol id="i-help" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path d="M8 7a2 2 0 1 1 3 1.8c-.8.5-1 1-1 2M10 14v.2"/></symbol>
+  <symbol id="i-close" viewBox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 20 20"><rect x="5" y="5" width="10" height="10"/></symbol>
+  <symbol id="i-power" viewBox="0 0 20 20"><path d="M10 2v8m-4-5a7 7 0 1 0 8 0"/></symbol>
+  <symbol id="i-fit" viewBox="0 0 20 20"><path d="M3 8V3h5m4 0h5v5m0 4v5h-5m-4 0H3v-5"/></symbol>
+  <symbol id="i-box" viewBox="0 0 20 20"><rect x="2" y="5" width="16" height="10"/><path d="M5 5v2m10-2v2M5 13v2"/></symbol>
+  <symbol id="i-console" viewBox="0 0 20 20"><rect x="2" y="3" width="16" height="14" rx="1"/><path d="m5 7 3 3-3 3m5 0h5"/></symbol>
+  <symbol id="i-new" viewBox="0 0 20 20"><path d="M11 2H4v16h12V7l-5-5Zm0 0v5h5M7 12h6m-3-3v6"/></symbol>
+  <symbol id="i-open" viewBox="0 0 20 20"><path d="M2 6V4h6l2 3h8l-3 10H2V7h15M2 10h14"/></symbol>
+  <symbol id="i-save" viewBox="0 0 20 20"><path d="M3 2h12l3 3v13H2V2Zm3 0v6h8V2M6 18v-7h8v7"/></symbol>
+  <symbol id="i-library" viewBox="0 0 20 20"><path d="M3 3h4v14H3Zm6 0h3v14H9Zm5 1 3-1 3 13-3 1Z"/></symbol>
+</defs></svg>
+<header class="app-chrome">
+  <div class="document-bar">
+    <span class="wordmark">ultra</span>
+    <details id="file-menu" class="file-menu"><summary aria-label="Patch file actions">File</summary><div class="menu-surface">
+      <button id="new-patch">New patch <kbd>Ctrl N</kbd></button>
+      <button id="document-open-menu">Open... <kbd>Ctrl O</kbd></button>
+      <button id="document-save-menu">Save <kbd>Ctrl S</kbd></button>
+      <button id="document-save-as">Save As... <kbd>Ctrl Shift S</kbd></button>
+      <button id="help-library-menu">Help &amp; Examples</button>
+      <button id="starter-patch">Open starter patch</button>
+      <div class="menu-divider"></div>
+      <button id="open-patch">Advanced JSON / Max import...</button>
+      <button id="export-patch">Export JSON...</button>
+      <div class="menu-divider"></div>
+      <a id="legacy-link" href="index.html">Legacy patcher</a>
+      <a id="lab-link" href="chord-lab.html">Fixed chord lab</a>
+    </div></details>
+    <div class="document-tools" role="toolbar" aria-label="Documents"><button id="document-new" class="icon-button" aria-label="New patch window" title="New patch window (Ctrl N)"><svg><use href="#i-new"/></svg></button><button id="document-open" class="icon-button" aria-label="Open patch file" title="Open patch file (Ctrl O)"><svg><use href="#i-open"/></svg></button><button id="document-save" class="icon-button" aria-label="Save patch" title="Save patch (Ctrl S)"><svg><use href="#i-save"/></svg></button><button id="open-help-library" class="icon-button" aria-label="Help and examples library" title="Help &amp; Examples"><svg><use href="#i-library"/></svg></button></div>
+    <span class="document-name"><span id="document-title">Untitled patch</span><span id="document-dirty" aria-label="Unsaved changes" hidden>*</span></span>
+    <span id="patch-summary" class="document-summary"></span>
+    <span id="runtime-label" class="runtime-label">Native editor</span>
+  </div>
+  <div class="toolbar" role="toolbar" aria-label="Patcher tools">
+    <button id="lock-patch" class="mode-button" aria-pressed="false" title="Lock patch (Ctrl E)"><svg><use href="#i-unlock"/></svg><span id="lock-label">Edit</span></button>
+    <span class="toolbar-divider"></span>
+    <button id="add-object" title="New object (N)"><svg><use href="#i-plus"/></svg><span>Object</span><kbd>N</kbd></button>
+    <button id="show-library" class="icon-button" aria-label="Object library" title="Object library"><svg><use href="#i-box"/></svg></button>
+    <span class="toolbar-divider"></span>
+    <button id="undo" class="icon-button" aria-label="Undo" title="Undo (Ctrl Z)"><svg><use href="#i-undo"/></svg></button>
+    <button id="redo" class="icon-button" aria-label="Redo" title="Redo (Ctrl Shift Z)"><svg><use href="#i-redo"/></svg></button>
+    <span class="toolbar-divider"></span>
+    <button id="reset-view" title="Reset view (Ctrl 0)" aria-label="Reset canvas view">1:1</button>
+    <label class="zoom-control" title="Z / Shift Z: zoom in / out at pointer. Ctrl / Cmd wheel or pinch: zoom. Scroll to move; Shift scroll moves horizontally. Space + drag or middle drag: pan."><span class="sr-only">Canvas zoom</span><select id="canvas-zoom" aria-label="Canvas zoom"><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option><option id="zoom-fit" value="fit" hidden>Fit</option></select></label>
+    <button id="fit-patch" class="icon-button" aria-label="Fit patch" title="Fit patch to window"><svg><use href="#i-fit"/></svg></button>
+    <div class="toolbar-end">
+      <button id="show-instrument" aria-label="Perform instrument" aria-controls="instrument-panel" aria-pressed="false">Perform</button>
+      <button id="show-console" class="icon-button" aria-label="Console" aria-controls="patch-console" title="Console (Ctrl M)" aria-pressed="false"><svg><use href="#i-console"/></svg><span id="console-count" hidden></span></button>
+      <button id="show-inspector" class="icon-button" aria-label="Inspector" title="Inspector (Ctrl I)" aria-pressed="false"><svg><use href="#i-inspect"/></svg></button>
+      <button id="show-help" class="icon-button" aria-label="Patcher help" title="Patcher help (F1)"><svg><use href="#i-help"/></svg></button>
+    </div>
+  </div>
+  <nav id="patcher-path" class="patcher-path" aria-label="Patcher path" hidden></nav>
+  <div id="help-shell-controls" class="help-shell-controls" hidden>
+    <div role="tablist" aria-label="Help patch tabs"><button id="help-basic" type="button" role="tab" aria-selected="true" aria-controls="workspace">Basic</button></div>
+    <button id="help-question" type="button" aria-label="Reference and related objects" aria-haspopup="menu" aria-expanded="false" aria-controls="help-reference-menu">?</button>
+    <div id="help-reference-menu" role="menu" aria-label="Reference and related objects" hidden></div>
+  </div>
+</header>
+<div id="preview-banner" class="preview" hidden>Browser preview. File actions open preview windows or download patches; audio runs in the native Ultra app.</div>
+<main>
+  <section id="workspace" aria-label="Editable patch canvas" tabindex="0">
+    <div id="canvas-space"><div id="canvas"><svg id="cables" aria-label="Patch cables"></svg><div id="objects"></div><div id="selection-box" hidden></div></div></div>
+    <div id="empty-patch" class="empty-patch" hidden><h1>Start patching.</h1><p>Press <kbd>N</kbd> or double-click to create an object.</p><p><kbd>I</kbd> number <kbd>F</kbd> float <kbd>S</kbd> slider</p><p><kbd>B</kbd> bang <kbd>M</kbd> message <kbd>T</kbd> toggle</p><button id="empty-add">Create an object</button></div>
+  </section>
+  <aside id="help-reference-pane" aria-labelledby="help-reference-title" hidden>
+    <header class="panel-header"><h2 id="help-reference-title">Reference</h2><button id="help-reference-close" class="icon-button" aria-label="Close reference"><svg><use href="#i-close"/></svg></button></header>
+    <div id="help-reference-body"></div>
+  </aside>
+  <aside id="details-panel" hidden aria-label="Object details">
+    <header class="panel-header"><h2 id="panel-title">Inspector</h2><button id="close-panel" class="icon-button" aria-label="Close panel"><svg><use href="#i-close"/></svg></button></header>
+    <section id="library-content" hidden><label for="object-search" class="sr-only">Find an object</label><input id="object-search" type="search" placeholder="Find an object..." autocomplete="off"><div id="palette"></div><p id="object-profile-note" class="panel-note">Supported objects in Ultra's bounded profile.</p></section>
+    <section id="inspector-content"><div id="inspector"></div><button id="edit-object" class="panel-action">Edit object text</button><button id="delete-selection" class="panel-action">Delete selection</button><details class="diagnostics"><summary>Native observations</summary><p id="revision-state"></p><p id="observation-state"></p><button id="reapply" class="panel-action">Reapply graph</button></details></section>
+    <section id="help-content" hidden></section>
+    <section id="audio-content" hidden>
+      <p class="audio-intro">Choose where your patch plays. Settings apply to Ultra and are remembered on this device.</p>
+      <label class="audio-field" for="audio-host">Audio system<select id="audio-host"></select></label>
+      <p id="audio-host-detail" class="audio-hint"></p>
+      <label class="audio-field" for="audio-device">Output device<select id="audio-device"></select></label>
+      <div class="audio-format-fields">
+        <label class="audio-field" for="audio-rate">Sample rate<select id="audio-rate" disabled><option value="48000">48,000 Hz</option></select></label>
+        <label class="audio-field" for="audio-buffer">Buffer / period<select id="audio-buffer"><option value="auto">Automatic</option><option value="32">32 frames</option><option value="64">64 frames</option><option value="128">128 frames</option><option value="256">256 frames</option><option value="512">512 frames</option><option value="1024">1024 frames</option><option value="2048">2048 frames</option><option value="4096">4096 frames</option><option value="8192">8192 frames</option></select></label>
+      </div>
+      <p class="audio-hint">The current DSP core runs at 48 kHz in stereo. Smaller buffers respond faster; larger buffers give your computer more time.</p>
+      <p id="audio-buffer-duration" class="audio-hint"></p>
+      <div class="audio-settings-actions"><button id="audio-save" class="panel-action">Save settings</button><button id="audio-start-configured" class="audio-primary">Save &amp; start audio</button></div>
+      <button id="audio-stop-configured" class="panel-action">Stop audio to edit settings</button>
+      <p id="audio-settings-notice" role="status" class="audio-settings-notice"></p>
+      <div class="audio-live-heading"><h3>Live output</h3><button id="audio-refresh">Refresh devices</button></div>
+      <dl class="audio-live"><dt>Status</dt><dd id="audio-live-state">Audio off</dd><dt>Output</dt><dd id="audio-live-device">Not started</dd><dt>Observed buffer</dt><dd id="audio-live-buffer">Waiting for audio</dd><dt>Legacy Voice pipeline</dt><dd>64 frames / 1.33 ms</dd><dt>Stream errors</dt><dd id="audio-live-errors">0</dd></dl>
+      <p class="audio-hint">Observed buffer comes from the device callback and may differ from your request. Buffer duration is not total speaker latency.</p>
+      <p class="audio-hint">This output path does not capture a microphone. Physical MIDI input is not connected through CPAL yet.</p>
+    </section>
+  </aside>
+  <aside id="instrument-panel" aria-label="Instrument panel" hidden>
+    <header class="panel-header"><h2 id="instrument-title">Instrument</h2><button id="instrument-close" class="icon-button" aria-label="Close instrument panel"><svg><use href="#i-close"/></svg></button></header>
+    <section id="instrument-empty"><p>Wire a poly.note~, saw.voice~, lowpass.voice~, adsr.voice~, *.voice~ and mix.voice~ into gain~ and stereo output. Package the graph to expose its controls here.</p></section>
+    <section id="instrument-playable" hidden>
+      <div id="instrument-controls"></div>
+      <div class="instrument-presets"><select id="instrument-preset" aria-label="Instrument preset"></select><button id="instrument-recall">Recall</button></div>
+      <div class="instrument-presets"><input id="instrument-preset-name" aria-label="New preset name" placeholder="Preset name" maxlength="64"><button id="instrument-store">Store preset</button></div>
+      <p id="instrument-keyboard-note"></p><div id="instrument-keyboard" aria-label="Instrument keyboard" role="group" tabindex="0"></div>
+      <div class="instrument-actions"><button id="instrument-release">Release all</button><button id="instrument-instance">New instance</button></div>
+    </section>
+    <section><label class="instrument-name-field">Instrument name<input id="instrument-name" maxlength="64" placeholder="Subtractive instrument"></label><button id="instrument-package" class="panel-action">Package instrument</button><p>Save the patch to keep its device interface and presets. Alive currently hosts instruments; effect chains are pending.</p></section>
+  </aside>
+</main>
+<section id="patch-console" aria-label="Console" hidden>
+  <div class="console-toolbar"><h2>Console</h2><label class="sr-only" for="console-level">Console level</label><select id="console-level"><option value="all">All messages</option><option value="2">Errors</option><option value="1">Warnings</option><option value="0">Messages</option><option value="3">Debug</option></select><label class="sr-only" for="console-search">Filter console</label><input id="console-search" type="search" placeholder="Filter messages..."><button id="clear-console">Clear</button><button id="close-console" class="icon-button" aria-label="Close console"><svg><use href="#i-close"/></svg></button></div>
+  <div id="console-rows" role="log" aria-label="Printed messages" aria-live="off" tabindex="0"></div><p id="console-status"></p>
+</section>
+<div class="assist-bar"><span id="assist" aria-live="polite">Drag between ports to connect. N: new object. Ctrl E: lock to perform.</span><span id="selection-hint">Editing</span></div>
+<footer class="audio-bar">
+  <div class="audio-controls"><button id="start-audio" title="Start the native audio engine"><svg><use href="#i-power"/></svg><span>Start audio</span></button><button id="stop-audio" class="icon-button" aria-label="Stop audio" title="Stop audio"><svg><use href="#i-stop"/></svg></button><span id="engine-state" role="status">Audio off</span><button id="show-audio" aria-pressed="false" title="Configure audio output and buffer size">Audio settings</button><span id="audio-format">48 kHz / stereo</span></div>
+  <span id="notice" role="status">Preparing patch...</span>
+  <button id="stop-graph" title="Stop this patch's timers and notes (Esc)">Stop patch</button><button id="panic" class="panic-button" title="Latch emergency mute; Stop audio then Start to recover">Panic</button>
+</footer>
+<div id="object-entry" class="object-entry" hidden>
+  <label for="object-text" class="sr-only">Object name and arguments</label>
+  <textarea id="object-text" rows="1" role="combobox" aria-label="Object name and arguments" aria-autocomplete="list" aria-controls="object-suggestions" aria-describedby="object-arguments object-error entry-keys" aria-expanded="false" autocomplete="off" spellcheck="false"></textarea>
+  <div id="entry-assistance" class="entry-assistance">
+  <div id="object-arguments" hidden></div>
+  <div id="object-suggestions" role="listbox" aria-label="Supported objects"></div>
+  <p id="object-error" role="status"></p><p id="entry-keys" class="entry-hint"><kbd>Up</kbd><kbd>Down</kbd> choose <kbd>Tab</kbd> complete <kbd>Enter</kbd> create <kbd>Esc</kbd> cancel</p>
+  </div>
+</div>
+<div id="port-tooltip" class="port-tooltip" role="tooltip" hidden></div>
+<div id="context-menu" class="context-menu" role="menu" hidden></div>
+<dialog id="patch-dialog"><form method="dialog"><button class="dialog-close icon-button" aria-label="Close dialog"><svg><use href="#i-close"/></svg></button></form><h2 id="dialog-title">Patch JSON</h2><p id="dialog-help">Choose an Ultra, .maxpat or .maxhelp file, or paste JSON. Embedded patchers share one runtime with up to 32 executable objects and 64 cables. A saved hierarchy supports 512 objects and 1 MiB; Max files up to 8 MiB can be inspected.</p><textarea id="patch-json" spellcheck="false" aria-label="Patch JSON"></textarea>
+<section id="max-import" hidden aria-label="Max compatibility report">
+  <label class="max-patcher-field">Patcher / help tab<select id="max-patcher" aria-label="Max patcher or help tab"></select></label>
+  <p id="max-summary" role="status"></p>
+  <details open><summary>Compatibility details</summary><ul id="max-diagnostics"></ul></details>
+  <label id="max-partial-field"><input id="max-allow-partial" type="checkbox"> Allow partial import with the listed omissions and behavior differences</label>
+  <p class="panel-note">Supported embedded patchers and comments are kept in the selected tree and share one runtime. Scripts, helper interfaces, abstractions and initialization remain listed compatibility gaps. Partial import requires your choice; importing does not run Max scripts or startup messages.</p>
+</section>
+<div class="dialog-actions"><button id="copy-patch">Copy JSON</button><button id="download-patch">Download JSON</button><button id="choose-file">Choose file...</button><button id="analyze-max">Inspect Max JSON</button><button id="import-patch">Import JSON</button></div><p id="dialog-status" role="status"></p></dialog>
+<input id="patch-file" type="file" accept=".json,.ultra,.maxpat,.maxhelp,application/json" hidden>
+<input id="document-file" type="file" accept=".json,.ultra,.maxpat,.maxhelp,application/json" hidden>
+<dialog id="help-library" aria-labelledby="help-library-title"><header class="library-header"><div><h2 id="help-library-title">Help &amp; Examples</h2><p>Original, runnable patches. Each opens in its own window.</p></div><button id="help-library-close" class="icon-button" aria-label="Close help library"><svg><use href="#i-close"/></svg></button></header><div class="library-search"><label class="sr-only" for="help-library-search">Search help and examples</label><input id="help-library-search" type="search" placeholder="Search objects, aliases, or topics..." autocomplete="off"><label class="sr-only" for="help-library-kind">Entry type</label><select id="help-library-kind"><option value="all">All entries</option><option value="help">Help patches</option><option value="example">Examples</option></select></div><p id="help-library-count" class="library-count" role="status"></p><div id="help-library-results" aria-label="Help and example entries"></div><section id="document-windows-section" hidden><h3>Open Windows</h3><div id="document-windows"></div></section></dialog>
+<script type="module" src="canvas.mjs"></script>
+</body></html>

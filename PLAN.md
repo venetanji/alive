@@ -17,7 +17,40 @@ MIDI ownership, actual audio tracks, integrated timeline editing, and native
 two-view acceptance/evidence. Earlier completed work and open regression gates
 below retain their original scope and source attribution.
 
-Updated: 2026-10-24. Combined release integration includes packaging/audit PR #2, reusable-instrument PR #4 at `ab8b0e2`, and preserved validation PR #5 at `8da5fd2`. The 0.1.0-rc.1 candidate fixes the remaining native Quit and pending-history admission findings before final combined CI. Earlier evidence below retains its original source revisions and hardware limits.
+The Session/shared-shell increment is implemented at `238c427`, with the
+focused unfinished-detail-field correction at `97533b8`. Track columns,
+aligned slots/scenes, per-column mixers, collapsible browser and resizable
+Clip/Devices detail now use the existing native owner. View changes are local
+navigation; Arrangement remains explicitly unavailable. The corrected source
+passes 500 UI and 13 Alive browser checks, a separate release build and actual
+native WebKit pending-field/playback/scene/editor/Save/Quit checks. Parent
+verification matches 148 manifest entries and 116 committed source/harness
+blobs; finite software capture is 3.136 seconds, not endurance. The original
+full native journey passes on the separately pinned pre-header-CSS build.
+Evidence: `experiments/alive-workspaces-20261026/`. Independent fix re-review
+approves compliance and quality with no remaining finding. Pushed-commit CI
+remains required at the checkpoint; no Arrangement/audio or
+final integrated acceptance is inferred from this UI increment.
+
+Next is pure strict v4 source/placement data and prospective edits/conversion,
+outside the active Document until native integration. The accepted staged
+contract is `docs/superpowers/specs/2026-10-26-alive-workspaces-runtime-contract.md`.
+It is a design target, not measured admission. Subsequent native slices add
+MIDI Arrangement, explicit authority/return, bounded PCM, then real timeline
+editing. The working v3 app and launcher stay usable throughout.
+
+Foundation rechecked on 2026-10-26: the remote release integration still points
+to `31033483eb3baf15edab1734b966cc6d55c4b8c7`; the feature remote starts at
+`0e791ec28f2ecf89cb9bab31516d57668e361333`. That checkpoint's CI
+`40089612067` passes browser, UI/contracts, native build/Rust and offline render,
+but fails the desktop journey opening `Pulse - Ultra Hosted Editor`; subsequent
+native clip/retirement/loopback steps are skipped. The failure screenshot shows
+lower chain controls obscured by expanded diagnostics, a possible pointer cause
+that remains unproved. Its packages run `40089612068` passes Linux, Windows and
+both macOS targets; publishing is skipped. These are historical outcomes, not
+qualification of the workspace changes.
+
+Updated: 2026-10-26. Combined release integration includes packaging/audit PR #2, reusable-instrument PR #4 at `ab8b0e2`, and preserved validation PR #5 at `8da5fd2`. The 0.1.0-rc.1 candidate includes the native Quit and pending-history admission fixes. Earlier evidence below retains its original source revisions and hardware limits.
 
 ## Alive Application: Active Implementation Plan
 
@@ -37,14 +70,15 @@ Execute and test these milestones in order, retaining a usable example and
 coherent pushed checkpoints. Read-only reference/design work may proceed in
 parallel. Preserve existing native/UI/history/Quit/scoped-Stop/notice gates.
 
-**Checkpoint pause:** User requested a pause for hands-on testing after Task 14.
-The reviewed atomic scenes and retained evidence are complete locally
-(`2b1eab1`, `3d4beb0`). The existing standalone release binary matches that
-scene source and is ready through `bash apps/alive/run.sh`. Task 15 was
+**Historical checkpoint pause (superseded by the active direction):** User
+requested a pause for hands-on testing after Task 14.
+The reviewed atomic scenes and retained evidence were complete locally
+(`2b1eab1`, `3d4beb0`). The standalone release binary matched that
+scene source at that checkpoint and ran through `bash apps/alive/run.sh`. Task 15 was
 dispatched but interrupted before implementation; the final example/audit,
 1800 proven-playing seconds, whole-branch review and final exact-head CI/package
-qualification remain open. Finish only this checkpoint's push/PR handoff, then
-wait for the user to resume.
+qualification remain open. The subsequent Arrangement/Session request resumed
+implementation; final qualification belongs to the resulting interface/runtime.
 
 ### Milestone 1: Standalone Application
 

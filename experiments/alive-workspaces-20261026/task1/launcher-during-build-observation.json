@@ -1,0 +1,26 @@
+{
+  "scope": "Installed desktop entry syntax and --help verified. --session-probe passed before hashes were sampled during a concurrent UI build; hashes are observations only and do not attribute that render or qualify the new UI.",
+  "validation": "desktop-file-validate exit 0; apps/alive/run.sh --help exit 0; earlier --session-probe exit 0",
+  "files": [
+    {
+      "path": "/home/venetanji/.local/share/applications/org.alive.session.test.desktop",
+      "sha256": "349f1991bde6886237bac911ef2df16874ecf62f7bb01ab0cdf565e04a9f66b9"
+    },
+    {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/run.sh",
+      "sha256": "154354031370b86fb0bee2c370f5355a35f37b7c6d9f9f2246266251c5300f89"
+    },
+    {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive",
+      "sha256": "3107f210e1ea8f1d1d8cba1bb54490c56fb4911b4ca4ed690f150b7512095f79"
+    },
+    {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/ultra",
+      "sha256": "b26a73b3761a59f44c67c564e46481b8f7418e8a13a4b1420b531b21d918c84a"
+    },
+    {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+      "sha256": "4c54e3e0a2e7bf2007a56620d1006658e97b86d5f8828e08f13e9ffd3a1e9e70"
+    }
+  ]
+}

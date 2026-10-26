@@ -28,7 +28,8 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   ADSR primitives, explicit voice-lane mixdown and stereo output. Its Perform
   panel, saved parameter/preset interface, independent instances and headless
   host harness form the reusable-device slice. Alive now loads that same saved
-  device independently on up to two tracks through its versioned interface.
+  device independently on up to eight instrument tracks through its versioned
+  interface (the original legacy profile retains its two-track limit).
   A native shared transport plays editable chord clips with note velocity and
   duration, metadata-selected instance/parameter automation, gain/mute/solo and
   stereo peak meters. Each selected-track chain exposes an instrument and up to
@@ -88,7 +89,8 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   are authored saved graphs with live controls and presets. `audio.in~` reads
   explicit host audio (silence in ordinary Ultra roots); `lowpass.stereo~` reuses
   the existing Faust filter kernel. Alive hosts their saved graphs in its
-  current two-track, six-instance profile. Add/remove/reorder/replacement require
+  legacy two-track/six-instance and admitted eight-track/sixteen-instance
+  profiles. Add/remove/reorder/replacement require
   stopped preparation; live bypass preserves warm state without restarting I/O.
   Selection does not launch playback. Individual Launch cues while stopped or
   switches at the next strict four-beat bar; track Stop leaves other tracks
@@ -99,8 +101,16 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   precise numeric/keyboard edits. Pending musical history is bounded to 64
   entries / 8 MiB and preserves accepted live controls. Shared changed sources
   require preserving the changed copy, restoring a matching original backup,
-  then explicitly replacing intended instances. Scenes, additional tracks and
-  alternate DSP paths remain outside this profile.
+  then explicitly replacing intended instances. Four prepared scene rows launch
+  or stop their member tracks atomically, with observed per-track receipts;
+  selection and saved defaults remain independent from these runtime actions.
+  The active product direction adds a horizontal Arrangement and a Session
+  workspace of track columns, aligned slots/scenes and per-column mixers,
+  sharing one transport, device owner and bottom Clip/Devices detail area.
+  Tab is view navigation only. Arrangement scheduling and genuine audio-file
+  tracks still require explicit model/runtime extensions; the existing v3
+  instrument-track foundation does not implement them. Alternate DSP paths
+  remain outside the supported Alive profile.
 - Supported object names and arguments must be explicit. Unsupported objects
   must be rejected visibly. Familiar appearance does not imply Max compatibility.
 - Linux desktop is the shipped target. A smaller browser preview supports

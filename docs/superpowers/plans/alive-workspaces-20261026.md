@@ -26,20 +26,35 @@ Files: `apps/ultra/ui/alive.html`, `alive.css`, `alive.mjs`, new focused
 `alive-workspace.mjs` and tests; update the Alive surface context, not Ultra's
 unrelated patcher design. Consume current v3 commands and stable IDs unchanged.
 
-- [ ] Add failing tests for plain-Tab versus input/button focus, view-only
+- [x] Add failing tests for plain-Tab versus input/button focus, view-only
   changes during pending requests/playback, selected instance/clip identity,
   detail/browser toggle, and eight columns/four aligned scene rows.
-- [ ] Build track columns/slots, right scenes, per-column mixer, shared top/left/
+- [x] Build track columns/slots, right scenes, per-column mixer, shared top/left/
   bottom shell and resizable detail with current commands and original assertions.
-- [ ] Keep Arrangement capability visibly unavailable until its runtime exists;
+- [x] Keep Arrangement capability visibly unavailable until its runtime exists;
   no invented placements/waveforms. A transitional shell is not final acceptance.
-- [ ] Run focused UI/browser checks and actual native launch; retain both target
+- [x] Run focused UI/browser checks and actual native launch; retain both target
   viewport screenshots and exact provenance, commit, then independent review.
+
+Task 1: independently approved through `97533b8`, including scoped re-review
+of the detail-field blur correction. Evidence and exact source/build attribution:
+`experiments/alive-workspaces-20261026/`. This completes the Session/shared-shell
+slice; Tasks 2-5 and full Arrangement/audio acceptance remain open.
 
 ## Task 2: Arrangement Model And Native MIDI Authority
 
 Files: session model/clips/persistence/prepare/host/runtime/desktop modules;
 versioned native host API/scheduler plus deterministic native/Rust tests.
+
+Contract target: `docs/superpowers/specs/2026-10-26-alive-workspaces-runtime-contract.md`.
+It specifies the proposed v4 wire/ABI and admission rules; it is not evidence
+that the capabilities exist. Stage this task as 2A pure strict model/edits/
+prospective conversion, 2B additive ABI and one real MIDI Arrangement lane,
+2C authority/loops/receipts, then 2D envelopes, desktop integration and measured
+admission. Keep the pure 2A model outside the active `Document` enum until 2D
+can replace mandatory-instrument adapters with checked metadata/chain access.
+Never add a fake instrument or a panic adapter to make an intermediate compile.
+Each bounded slice gets its own tests, commit and independent task review.
 
 - [ ] Pin the additive versioned contracts and bounds against current source.
   Name all ABI sizes, ownership/migration and admission policies before code.

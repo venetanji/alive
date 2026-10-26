@@ -31,6 +31,11 @@ The launcher runs the Alive executable directly. Both apps can open at once.
 Alive uses application identifier `org.alive.session`, separate from Ultra's
 `org.alive.ultra.research`. The old `ultra --alive` entry remains compatible.
 
+On the local test machine, open **Alive (Test)** from the desktop app launcher.
+Its desktop entry runs `apps/alive/run.sh` in this checkout and follows the
+latest completed release build; it does not rebuild on launch. Close and reopen
+Alive after a new build to test the updated executable.
+
 The existing release pipeline builds separate Alive and Ultra desktop packages:
 DEB and AppImage on Linux, NSIS on Windows, and application bundles/DMG on macOS.
 Each package owns its executable and desktop identity, includes the shared native
@@ -81,6 +86,21 @@ Smaller buffers remain diagnostic choices; admission is not a physical audio
 underrun guarantee. This guidance does not change saved audio settings.
 
 ## Perform And Edit
+
+Session presents tracks as columns with four aligned clip slots, scene launch
+buttons at the right, and each track's mixer below its slots. Scroll the track
+area horizontally to reach additional tracks. Select a clip or track, then use
+Clip or Devices in the bottom detail area. Drag the separator above those tabs
+to resize the detail area, or focus it and use Up/Down (Shift for larger steps),
+Home or End. Browser and Detail toggle those areas without changing playback.
+Device / track, Note inspector, Automation inspector and Audio details expose
+the secondary structural, numerical and diagnostic controls.
+
+Session and Arrangement buttons, or plain Tab outside controls, change only the
+workspace. Tab within inputs/buttons and modified Tab keep normal focus
+navigation. This intermediate checkpoint keeps Session playback active and
+explicitly marks Arrangement editing/playback and audio-file tracks unavailable;
+it does not create timeline placements or duplicate device instances.
 
 - Start/Stop share one native audio frame clock. Seek uses beats within the
   global transport region, and Loop repeats its length. Space works outside

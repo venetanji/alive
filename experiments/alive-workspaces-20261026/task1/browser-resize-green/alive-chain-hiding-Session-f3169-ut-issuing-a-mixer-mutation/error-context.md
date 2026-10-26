@@ -1,0 +1,214 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - strong [ref=e3]: Alive
+    - generic [ref=e4]: First Light
+    - navigation "Session files" [ref=e5]:
+      - button "New session" [ref=e6] [cursor=pointer]: New
+      - button "Open session" [ref=e7] [cursor=pointer]: Open...
+      - button "Save session" [ref=e8] [cursor=pointer]: Save
+      - button "Save session as" [ref=e9] [cursor=pointer]: Save As...
+      - button "Quit Alive" [ref=e10] [cursor=pointer]: Quit
+  - region "Transport" [ref=e11]:
+    - button "Start transport" [ref=e12] [cursor=pointer]:
+      - img [ref=e13]
+      - text: Start
+    - button "Stop transport" [ref=e15] [cursor=pointer]:
+      - img [ref=e16]
+      - text: Stop
+    - generic [ref=e18]:
+      - text: Tempo
+      - spinbutton "Tempo" [ref=e19]: "112"
+      - generic [ref=e20]: BPM
+    - generic [ref=e21]:
+      - text: Transport length
+      - spinbutton "Transport length beats" [ref=e22]: "8"
+      - generic [ref=e23]: beats
+    - generic [ref=e24]:
+      - checkbox "Loop session" [checked] [ref=e25]
+      - text: Loop
+    - status "Transport position" [ref=e26]: 0.000 beats
+    - generic [ref=e27]:
+      - text: Seek
+      - spinbutton "Seek beat" [ref=e28]: "0"
+    - button "Seek transport" [ref=e29] [cursor=pointer]: Go
+    - generic [ref=e30]:
+      - generic [ref=e31]: Master
+      - generic "Master stereo peak" [ref=e32]
+  - generic [ref=e33]:
+    - button "Toggle browser" [expanded] [ref=e34] [cursor=pointer]: Browser
+    - navigation "Workspaces" [ref=e35]:
+      - button "Session workspace" [pressed] [ref=e36] [cursor=pointer]: Session
+      - button "Arrangement workspace" [ref=e37] [cursor=pointer]: Arrangement
+    - generic [ref=e38]: Session playback
+  - main [ref=e39]:
+    - complementary "Device and file browser" [ref=e40]:
+      - heading "Browser" [level=2] [ref=e41]
+      - paragraph [ref=e42]: Saved Ultra instruments and effects
+      - button "Add instrument track" [ref=e43] [cursor=pointer]: Add instrument...
+      - button "Add effect" [disabled] [ref=e44]: Add effect...
+      - paragraph [ref=e45]: Choose a saved .ultra device in the native file picker. Open a session from the file bar.
+      - group [ref=e46]:
+        - generic "Supported media" [ref=e47] [cursor=pointer]
+    - generic [ref=e48]:
+      - region "Session workspace" [ref=e49]:
+        - generic [ref=e50]:
+          - paragraph [ref=e51]: Launches this prepared row. Empty slots stop their tracks.
+          - region "Instrument tracks" [ref=e52]:
+            - article "Pulse track" [ref=e53]:
+              - button "Select Pulse track" [ref=e54] [cursor=pointer]:
+                - generic [ref=e55]: Pulse
+                - generic [ref=e56]: 12 notes / stereo
+              - generic [ref=e57]:
+                - generic [ref=e58]:
+                  - button "Select Pulse slot 1" [pressed] [ref=e59] [cursor=pointer]: Clip 1
+                  - button "Launch Pulse Clip 1" [ref=e60] [cursor=pointer]: Launch
+                  - generic [ref=e61]: Saved default / Cued Clip 1
+                - generic [ref=e62]:
+                  - button "Select Pulse slot 2" [ref=e63] [cursor=pointer]: Empty 2
+                  - button "Launch Pulse slot 2" [disabled] [ref=e64]: Launch
+                - generic [ref=e66]:
+                  - button "Select Pulse slot 3" [ref=e67] [cursor=pointer]: Empty 3
+                  - button "Launch Pulse slot 3" [disabled] [ref=e68]: Launch
+                - generic [ref=e70]:
+                  - button "Select Pulse slot 4" [ref=e71] [cursor=pointer]: Empty 4
+                  - button "Launch Pulse slot 4" [disabled] [ref=e72]: Launch
+                - button "Stop Pulse track" [ref=e74] [cursor=pointer]: Stop track
+                - status "Pulse clip runtime" [ref=e75]: Cued Clip 1
+              - generic [ref=e76]:
+                - generic [ref=e77]:
+                  - text: Gain
+                  - spinbutton "Pulse gain" [ref=e78]: "0.85"
+                - generic [ref=e79]:
+                  - button "Pulse mute" [active] [ref=e80] [cursor=pointer]: M
+                  - button "Pulse solo" [ref=e81] [cursor=pointer]: S
+                - generic [ref=e82]:
+                  - generic "Pulse stereo peak" [ref=e83]
+                  - status "Pulse peak" [ref=e84]: 0.000 / 0.000
+              - group [ref=e85]:
+                - generic "Device / track" [ref=e86] [cursor=pointer]
+            - article "Harmony track" [ref=e87]:
+              - button "Select Harmony track" [ref=e88] [cursor=pointer]:
+                - generic [ref=e89]: Harmony
+                - generic [ref=e90]: 12 notes / stereo
+              - generic [ref=e91]:
+                - generic [ref=e92]:
+                  - button "Select Harmony slot 1" [ref=e93] [cursor=pointer]: Clip 1
+                  - button "Launch Harmony Clip 1" [ref=e94] [cursor=pointer]: Launch
+                  - generic [ref=e95]: Saved default / Cued Clip 1
+                - generic [ref=e96]:
+                  - button "Select Harmony slot 2" [ref=e97] [cursor=pointer]: Empty 2
+                  - button "Launch Harmony slot 2" [disabled] [ref=e98]: Launch
+                - generic [ref=e100]:
+                  - button "Select Harmony slot 3" [ref=e101] [cursor=pointer]: Empty 3
+                  - button "Launch Harmony slot 3" [disabled] [ref=e102]: Launch
+                - generic [ref=e104]:
+                  - button "Select Harmony slot 4" [ref=e105] [cursor=pointer]: Empty 4
+                  - button "Launch Harmony slot 4" [disabled] [ref=e106]: Launch
+                - button "Stop Harmony track" [ref=e108] [cursor=pointer]: Stop track
+                - status "Harmony clip runtime" [ref=e109]: Cued Clip 1
+              - generic [ref=e110]:
+                - generic [ref=e111]:
+                  - text: Gain
+                  - spinbutton "Harmony gain" [ref=e112]: "0.7"
+                - generic [ref=e113]:
+                  - button "Harmony mute" [ref=e114] [cursor=pointer]: M
+                  - button "Harmony solo" [ref=e115] [cursor=pointer]: S
+                - generic [ref=e116]:
+                  - generic "Harmony stereo peak" [ref=e117]
+                  - status "Harmony peak" [ref=e118]: 0.000 / 0.000
+              - group [ref=e119]:
+                - generic "Device / track" [ref=e120] [cursor=pointer]
+          - complementary [ref=e121]:
+            - heading "Scenes" [level=2] [ref=e122]
+            - region "Prepared scene rows" [ref=e123]:
+              - generic [ref=e124]:
+                - button "Launch scene 1" [ref=e125] [cursor=pointer]
+                - generic "Prepared scene 1" [ref=e126]: "Pulse: Clip 1 / Harmony: Clip 1"
+                - status "Scene 1 request"
+              - generic [ref=e127]:
+                - button "Launch scene 2" [ref=e128] [cursor=pointer]
+                - generic "Prepared scene 2" [ref=e129]: "Pulse: Stop / Harmony: Stop"
+                - status "Scene 2 request"
+              - generic [ref=e130]:
+                - button "Launch scene 3" [ref=e131] [cursor=pointer]
+                - generic "Prepared scene 3" [ref=e132]: "Pulse: Stop / Harmony: Stop"
+                - status "Scene 3 request"
+              - generic [ref=e133]:
+                - button "Launch scene 4" [ref=e134] [cursor=pointer]
+                - generic "Prepared scene 4" [ref=e135]: "Pulse: Stop / Harmony: Stop"
+                - status "Scene 4 request"
+      - generic [ref=e136]:
+        - generic [ref=e137]: Prepared schedule
+        - button "Undo pending edit" [disabled] [ref=e138]
+        - button "Redo pending edit" [disabled] [ref=e139]
+        - button "Prepare / Apply" [disabled] [ref=e140]
+        - button "Discard edits" [disabled] [ref=e141]
+      - region "Selected track detail" [ref=e142]:
+        - separator "Resize detail area" [ref=e143]
+        - generic [ref=e144]:
+          - button "Clip detail" [pressed] [ref=e145] [cursor=pointer]: Clip
+          - button "Devices detail" [ref=e146] [cursor=pointer]: Devices
+          - button "Toggle detail" [expanded] [ref=e147] [cursor=pointer]: Detail
+        - generic [ref=e149]:
+          - generic "Selected clip controls" [ref=e150]:
+            - textbox "Clip name" [ref=e151]: Clip 1
+            - generic [ref=e152]:
+              - text: Clip length
+              - spinbutton "Selected clip length" [ref=e153]: "8"
+            - combobox "Duplicate destination" [ref=e154]:
+              - option "Slot 2" [selected]
+              - option "Slot 3"
+              - option "Slot 4"
+            - button "Duplicate clip" [ref=e155] [cursor=pointer]
+            - button "Delete clip" [ref=e156] [cursor=pointer]
+            - button "Set Saved Default" [ref=e157] [cursor=pointer]
+            - button "Clear Saved Default" [ref=e158] [cursor=pointer]
+            - generic [ref=e159]: Used after Apply and when reopened. Selection does not launch.
+          - region "Pulse / Clip 1" [ref=e160]:
+            - generic [ref=e161]:
+              - heading "Pulse / Clip 1" [level=1] [ref=e162]
+              - generic [ref=e163]: Clip length is independent. Global loop wrap resets active phases.
+              - button "Add note" [ref=e164] [cursor=pointer]
+            - generic [ref=e165]:
+              - generic [ref=e166]:
+                - group "Selected clip piano roll" [ref=e167]:
+                  - generic [ref=e168]: C3
+                  - generic [ref=e174]: C4
+                  - generic [ref=e180]: C5
+                  - generic [ref=e186]: C6
+                  - generic [ref=e188]: "0"
+                  - generic [ref=e189]: "1"
+                  - generic [ref=e190]: "2"
+                  - generic [ref=e191]: "3"
+                  - generic [ref=e192]: "4"
+                  - generic [ref=e193]: "5"
+                  - generic [ref=e194]: "6"
+                  - generic [ref=e195]: "7"
+                  - generic [ref=e196]: "8"
+                - generic [ref=e221]:
+                  - text: Selected velocity
+                  - slider "Selected note velocity" [disabled] [ref=e222]: "100"
+                  - status [ref=e223]: Select a note
+              - group [ref=e224]:
+                - generic "Note inspector" [ref=e225] [cursor=pointer]
+          - group "Selected clip automation" [ref=e226]:
+            - generic "Automation inspector" [ref=e227] [cursor=pointer]
+            - option "Subtractive instrument / Attack" [selected]
+            - option "Subtractive instrument / Decay"
+            - option "Subtractive instrument / Sustain"
+            - option "Subtractive instrument / Release"
+            - option "Subtractive instrument / Cutoff"
+            - option "Subtractive instrument / Resonance"
+            - option "Subtractive instrument / Level"
+            - option "Stereo Utility effect 1 / Gain"
+            - option "Stereo Lowpass effect 2 / Cutoff"
+            - option "Stereo Lowpass effect 2 / Resonance"
+  - contentinfo [ref=e228]:
+    - status "Session status" [ref=e229]: Ready. Select a clip to edit notes or automation.
+    - button "Alive audio settings" [ref=e230] [cursor=pointer]: Audio settings
+    - group [ref=e231]:
+      - generic "Audio details" [ref=e232] [cursor=pointer]
+```
