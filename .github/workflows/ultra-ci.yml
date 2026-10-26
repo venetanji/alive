@@ -184,6 +184,7 @@ jobs:
           ULTRA_TEST_ALIVE: '1'
           ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_clip_observation.py
         run: |
+          python3 apps/ultra/tests/test_alive_clip_observation_failure.py
           bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/clip-observation-evidence/normal"
           ALIVE_TEST_DISCLOSURE_WRITE_ERROR=1 bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/clip-observation-evidence/write-error"
           ALIVE_TEST_DISCLOSURE_WRITE_ERROR=1 ALIVE_TEST_DISCLOSURE_BLOCKED=1 bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/clip-observation-evidence/blocked"

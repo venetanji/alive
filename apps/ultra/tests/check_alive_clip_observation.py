@@ -145,5 +145,8 @@ if __name__ == '__main__':
     try:
         run()
     except Exception:
-        alive.screenshot('clip-observation-failure.png')
+        try:
+            alive.screenshot('clip-observation-failure.png')
+        except Exception:
+            pass
         raise
