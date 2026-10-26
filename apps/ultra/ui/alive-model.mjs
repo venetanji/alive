@@ -1,4 +1,6 @@
 export function nativeInteger(value){if(typeof value!=='string'||! /^(0|[1-9][0-9]*)$/.test(value))throw Error('Native identity requires a canonical decimal string.');const result=BigInt(value);if(result>18446744073709551615n)throw Error('Native identity exceeds u64.');return result;}
+export function instrumentOf(track){return track?.chain?(track.chain.kind==='midi'?track.chain.instrument:null):track?.device??null;}
+export function actualDevices(track){return [instrumentOf(track),...(track?.effects??[])].filter(Boolean);}
 export function createAliveModel(){
   let current=null,draft=null;
   const clone=value=>structuredClone(value);
@@ -14,7 +16,7 @@ export function createAliveModel(){
     if(!draft||!current)return;
     for(const track of draft.tracks){
       const live=current.document.tracks.find(item=>item.id===track.id);
-      if(live){for(const device of [track.device,...track.effects]){const current=[live.device,...live.effects].find(d=>d.instanceId===device.instanceId);if(current){device.parameters=clone(current.parameters);device.bypassed=current.bypassed;}}for(const key of ['gain','mute','solo'])track[key]=live[key];}
+      if(live){for(const device of actualDevices(track)){const current=actualDevices(live).find(d=>d.instanceId===device.instanceId);if(current){device.parameters=clone(current.parameters);device.bypassed=current.bypassed;}}for(const key of ['gain','mute','solo'])track[key]=live[key];}
     }
   }
   return{

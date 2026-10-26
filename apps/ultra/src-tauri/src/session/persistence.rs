@@ -30,11 +30,8 @@ pub(super) fn save_document(path: &Path, session: &Session, origin: &Path) -> Re
     if prepared.devices.iter().any(|device| device.path == path) { return Err("A session cannot replace its Ultra device file".into()); }
     let mut document = prepared.document;
     // Preserve resolved identities when Save As moves a session to another folder.
-    for track in &mut document.tracks {
-        for reference in track.devices_mut() {
-            let device = prepared.devices.iter().find(|d| d.instance_id == reference.instance_id).unwrap();
-            reference.path = relative_path(parent, &device.path).to_str().ok_or("Device path cannot be represented as UTF-8")?.to_owned();
-        }
+    for device in &prepared.devices {
+        document.device_mut(&device.instance_id)?.path = relative_path(parent, &device.path).to_str().ok_or("Device path cannot be represented as UTF-8")?.to_owned();
     }
     let mut bytes = serde_json::to_vec_pretty(&document).map_err(|e| e.to_string())?;
     bytes.push(b'\n');
@@ -81,6 +78,7 @@ pub(super) fn decode(text: &str, origin: &Path) -> Result<Session, String> {
     use sha2::{Digest, Sha256};
     let value: serde_json::Value = serde_json::from_str(text).map_err(|e| format!("Invalid Alive session JSON: {e}"))?;
     match value["format"].as_str() {
+        Some("alive-session-v4") => workspaces::decode(text).map(Document::WorkspacesV4),
         Some("alive-session-v3") => super::clips::decode_v3(text),
         Some("alive-session-v2") => serde_json::from_str::<LegacySession>(text).map(Document::LegacyV2).map_err(|e| format!("Invalid Alive session JSON: {e}")),
         Some("alive-session-v1") => {

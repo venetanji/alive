@@ -1,10 +1,10 @@
 //! Strict clip wire data, persistent identities, and legacy compatibility.
 use super::*;
 use serde::{Deserializer, Serializer};
-use std::{collections::HashSet, ops::{Deref, DerefMut}};
+use std::collections::HashSet;
 
 #[derive(Clone, Debug, PartialEq)]
-pub enum Document { LegacyV2(LegacySession), ClipsV3(ClipDocument) }
+pub enum Document { LegacyV2(LegacySession), ClipsV3(ClipDocument), WorkspacesV4(workspaces::ProjectV4) }
 #[derive(Clone, Debug, PartialEq)]
 pub struct ClipDocument { pub common: LegacySession, pub banks: Vec<ClipBank> }
 #[derive(Clone, Debug, PartialEq, Serialize)]
@@ -26,12 +26,11 @@ struct WireTrack {
     default_clip_id:Option<String>, gain:f64, mute:bool, solo:bool,
 }
 fn required_nullable<'de,D:Deserializer<'de>>(d:D)->Result<Option<String>,D::Error> { Option::deserialize(d) }
-impl Deref for Document { type Target=LegacySession; fn deref(&self)->&LegacySession {match self {Self::LegacyV2(s)=>s,Self::ClipsV3(s)=>&s.common}} }
-impl DerefMut for Document { fn deref_mut(&mut self)->&mut LegacySession {match self {Self::LegacyV2(s)=>s,Self::ClipsV3(s)=>&mut s.common}} }
 impl Serialize for Document {
     fn serialize<S:Serializer>(&self,s:S)->Result<S::Ok,S::Error> {
         match self {
             Self::LegacyV2(old)=>old.serialize(s),
+            Self::WorkspacesV4(project)=>project.serialize(s),
             Self::ClipsV3(doc)=>Wire {format:doc.common.format.clone(),title:doc.common.title.clone(),tempo:doc.common.tempo,length_beats:doc.common.length_beats,loop_enabled:doc.common.loop_enabled,
                 tracks:doc.common.tracks.iter().map(|t| {let bank=doc.banks.iter().find(|b|b.track_id==t.id).expect("clip bank follows track identity");
                     WireTrack{id:t.id.clone(),name:t.name.clone(),device:t.device.clone(),effects:t.effects.clone(),slots:bank.slots.clone(),default_clip_id:bank.default_clip_id.clone(),gain:t.gain,mute:t.mute,solo:t.solo}}).collect()}.serialize(s),
@@ -40,9 +39,11 @@ impl Serialize for Document {
 }
 impl<'de> Deserialize<'de> for Document {
     fn deserialize<D:Deserializer<'de>>(d:D)->Result<Self,D::Error> {
-        let value=serde_json::Value::deserialize(d)?;
+        let raw=Box::<serde_json::value::RawValue>::deserialize(d)?;
+        let value:serde_json::Value=serde_json::from_str(raw.get()).map_err(serde::de::Error::custom)?;
         match value["format"].as_str() {
             Some("alive-session-v2")=>serde_json::from_value(value).map(Self::LegacyV2).map_err(serde::de::Error::custom),
+            Some("alive-session-v4")=>workspaces::decode(raw.get()).map(Self::WorkspacesV4).map_err(serde::de::Error::custom),
             Some("alive-session-v3")=>serde_json::from_value::<Wire>(value).map(Document::from_wire).map_err(serde::de::Error::custom),
             _=>Err(serde::de::Error::custom("Unsupported Alive session format")),
         }
@@ -55,35 +56,36 @@ impl Document {
             tracks:w.tracks.into_iter().map(|t|Track{id:t.id,name:t.name,device:t.device,effects:t.effects,notes:vec![],automation:vec![],gain:t.gain,mute:t.mute,solo:t.solo}).collect()},banks})
     }
     pub fn is_clips(&self)->bool {matches!(self,Self::ClipsV3(_))}
-    pub fn banks(&self)->&[ClipBank] {match self {Self::LegacyV2(_)=>&[],Self::ClipsV3(s)=>&s.banks}}
+    pub fn banks(&self)->&[ClipBank] {match self {Self::LegacyV2(_)|Self::WorkspacesV4(_)=>&[],Self::ClipsV3(s)=>&s.banks}}
     pub fn bank(&self,id:&str)->Option<&ClipBank> {self.banks().iter().find(|b|b.track_id==id)}
     pub fn bank_mut(&mut self,id:&str)->Option<&mut ClipBank> {match self {Self::ClipsV3(s)=>s.banks.iter_mut().find(|b|b.track_id==id),_=>None}}
     pub fn to_clips(&self)->Result<Self,String> {
         if self.is_clips(){return Ok(self.clone());}
-        let document=self.map_to_clips();document.validate_clips()?;Ok(document)
+        let document=self.map_to_clips()?;document.validate_clips()?;Ok(document)
     }
     // Shared deterministic mapping; callers apply their own model/admission checks.
-    pub(super) fn map_to_clips(&self)->Self {
-        if self.is_clips(){return self.clone();}
-        let mut common=self.deref().clone();common.format="alive-session-v3".into();
+    pub(super) fn map_to_clips(&self)->Result<Self,String> {
+        if self.is_clips(){return Ok(self.clone());}
+        let mut common=self.legacy()?.clone();common.format="alive-session-v3".into();
         let banks=common.tracks.iter_mut().map(|t| {
             let id=identity("clip", &["alive-v2-v3-clip", &t.id]);
             let notes=t.notes.drain(..).enumerate().map(|(index,n)|ClipNote{id:identity("note", &["alive-v2-v3-note",&t.id,&index.to_string()]),beat:n.beat,duration:n.duration,pitch:n.pitch,velocity:n.velocity}).collect();
-            ClipBank{track_id:t.id.clone(),slots:[Some(Clip{id:id.clone(),name:"Clip 1".into(),length_beats:self.length_beats,notes,automation:std::mem::take(&mut t.automation)}),None,None,None],default_clip_id:Some(id)}
+            ClipBank{track_id:t.id.clone(),slots:[Some(Clip{id:id.clone(),name:"Clip 1".into(),length_beats:self.length_beats(),notes,automation:std::mem::take(&mut t.automation)}),None,None,None],default_clip_id:Some(id)}
         }).collect();
-        Self::ClipsV3(ClipDocument{common,banks})
+        Ok(Self::ClipsV3(ClipDocument{common,banks}))
     }
     pub fn validate_clips(&self)->Result<(),String> {
-        if !self.is_clips(){return Ok(());}
-        super::prepare::text(&self.title,128,"Session title")?;
-        super::prepare::bounded(self.tempo,30.,240.,"Tempo")?;
-        super::prepare::bounded(self.length_beats,1./64.,256.,"Transport length")?;
-        let count:usize=self.tracks.iter().map(|t|1+t.effects.len()).sum();
+        if !self.is_clips(){return Err("Expected a v3 clip document".into());}
+        let model=self.legacy()?;
+        super::prepare::text(&model.title,128,"Session title")?;
+        super::prepare::bounded(model.tempo,30.,240.,"Tempo")?;
+        super::prepare::bounded(model.length_beats,1./64.,256.,"Transport length")?;
+        let count:usize=model.tracks.iter().map(|t|1+t.effects.len()).sum();
         if count>16{return Err("Session exceeds sixteen native roots".into());}
         let limits=super::native::clip_capacity()?;
-        if self.tracks.is_empty()||self.tracks.len()>limits.max_tracks as usize{return Err(format!("This admitted clip profile supports one to {} instrument tracks",limits.max_tracks));}
+        if model.tracks.is_empty()||model.tracks.len()>limits.max_tracks as usize{return Err(format!("This admitted clip profile supports one to {} instrument tracks",limits.max_tracks));}
         let mut ids=HashSet::new();let mut notes=HashSet::new();let mut tracks=HashSet::new();let mut devices=HashSet::new();
-        for t in &self.tracks {
+        for t in &model.tracks {
             super::prepare::token(&t.id,"Track ID")?;super::prepare::text(&t.name,64,"Track name")?;
             super::prepare::bounded(t.gain,0.,2.,"Track gain")?;
             if !tracks.insert(&t.id){return Err("Duplicate track ID".into());}
@@ -136,7 +138,7 @@ pub(super) fn fresh(prefix:&str,ids:&mut HashSet<String>)->String {
 pub(super) fn apply_edit(document:&mut Document,operation:Edit,mut ids:HashSet<String>)->Result<Affected,String> {
     for c in document.banks().iter().flat_map(|b|b.slots.iter().flatten()){ids.insert(c.id.clone());ids.extend(c.notes.iter().map(|n|n.id.clone()));}
     let track_id=match &operation{Edit::Create{track_id,..}|Edit::Duplicate{track_id,..}|Edit::Delete{track_id,..}|Edit::Rename{track_id,..}|Edit::Length{track_id,..}|Edit::Default{track_id,..}|Edit::NoteCreate{track_id,..}=>track_id.clone()};
-    let length=document.length_beats;let bank=document.bank_mut(&track_id).ok_or("Enable the clip bank first")?;
+    let length=document.length_beats();let bank=document.bank_mut(&track_id).ok_or("Enable the clip bank first")?;
     let find=|bank:&ClipBank,id:&str|bank.slots.iter().position(|c|c.as_ref().is_some_and(|c|c.id==id)).ok_or_else(||"Unknown clip on this track".to_string());
     let mut result=Affected{track_id,slot:None,clip_id:None,note_id:None};
     match operation {

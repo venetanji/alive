@@ -17,11 +17,14 @@ pub struct PreparedDevice {
     pub manifest: canvas::device::HostManifest,
 }
 #[derive(Clone, Debug)]
-pub struct PreparedTrack { pub instrument: usize, pub effects: Vec<usize> }
+pub enum PreparedTrackInput { Midi { instrument: usize }, Audio }
+#[derive(Clone, Debug)]
+pub struct PreparedTrack { pub input: PreparedTrackInput, pub effects: Vec<usize> }
+impl PreparedTrack {pub fn midi_instrument(&self)->Result<usize,String>{match self.input {PreparedTrackInput::Midi{instrument}=>Ok(instrument),PreparedTrackInput::Audio=>Err("This operation requires a MIDI instrument track".into())}}}
 #[derive(Clone, Debug)]
 pub struct PreparedClip { pub id:String, pub name:String, pub track:usize, pub slot:usize, pub event_begin:usize, pub event_count:usize, pub lane_count:u32, pub length_frames:u64, pub owned_masks:[u32;16] }
 #[derive(Clone, Debug)]
-pub enum Schedule { Legacy, Clips(Vec<PreparedClip>) }
+pub enum Schedule { Legacy, Clips(Vec<PreparedClip>), Workspaces(super::prepare_workspaces::PreparedWorkspaces) }
 #[derive(Clone, Debug)]
 pub struct PreparedSession {
     pub origin: PathBuf,
@@ -44,20 +47,21 @@ pub(super) fn text(value: &str, limit: usize, label: &str) -> Result<(), String>
 }
 
 pub fn prepare(session: &Session, path: &Path) -> Result<PreparedSession, String> {
+    if let Document::WorkspacesV4(project)=session {return super::prepare_workspaces::prepare(project,path);}
     if session.is_clips() {
         session.validate_clips()?;
-        let mut common=(**session).clone();common.format="alive-session-v2".into();
+        let mut common=session.legacy()?.clone();common.format="alive-session-v2".into();
         let limits=native::clip_capacity()?;
-        let mut prepared=prepare_common(&Document::LegacyV2(common),path,limits.max_tracks as usize,limits.max_devices as usize)?;
+        let mut prepared=prepare_common(&common,path,limits.max_tracks as usize,limits.max_devices as usize)?;
         let mut document=session.clone();
-        for (target,source) in document.tracks.iter_mut().zip(&prepared.document.tracks) {
+        for (target,source) in document.legacy_mut()?.tracks.iter_mut().zip(&prepared.document.legacy()?.tracks) {
             for (a,b) in target.devices_mut().zip(source.devices()) {a.parameters=b.parameters.clone();}
         }
         prepared.document=document;compile_clips(session,&mut prepared)?;return Ok(prepared);
     }
-    prepare_common(session,path,2,6)
+    prepare_common(session.legacy()?,path,2,6)
 }
-fn prepare_common(session:&Session,path:&Path,max_tracks:usize,max_devices:usize)->Result<PreparedSession,String> {
+fn prepare_common(session:&LegacySession,path:&Path,max_tracks:usize,max_devices:usize)->Result<PreparedSession,String> {
     if session.format != "alive-session-v2" { return Err("Unsupported Alive session format; expected alive-session-v2".into()); }
     text(&session.title, 128, "Session title")?;
     bounded(session.tempo, 30., 240., "Tempo")?;
@@ -80,10 +84,10 @@ fn prepare_common(session:&Session,path:&Path,max_tracks:usize,max_devices:usize
     let frames_per_beat = 48_000. * 60. / session.tempo;
     let frame = |beat: f64| (beat * frames_per_beat).round() as u64;
     let length_frames = frame(session.length_beats);
-    let mut result = PreparedSession { origin: path.to_path_buf(), document: session.clone(), tracks: vec![], devices: vec![], events: vec![], length_frames, schedule:Schedule::Legacy, notice:None };
+    let mut result = PreparedSession { origin: path.to_path_buf(), document: Document::LegacyV2(session.clone()), tracks: vec![], devices: vec![], events: vec![], length_frames, schedule:Schedule::Legacy, notice:None };
     let mut references: Vec<_> = session.tracks.iter().enumerate().flat_map(|(track, t)| t.devices().enumerate().map(move |(position, d)| (track, position, d))).collect();
     references.sort_by_key(|(_, _, d)| &d.instance_id);
-    check_sources(session,path,None)?;
+    check_sources(&result.document,path,None)?;
     for (track, position, reference) in references {
         let context = |e| format!("Track '{}' instance '{}' ({}): {e}", session.tracks[track].name, reference.instance_id, reference.path);
         let device = prepare_device(reference, path, track).map_err(context)?;
@@ -92,8 +96,8 @@ fn prepare_common(session:&Session,path:&Path,max_tracks:usize,max_devices:usize
         if position == 0 && reference.bypassed { return Err(context("Instrument bypass is unsupported".into())); }
         result.devices.push(device);
     }
-    compile_music(session, &mut result)?;
-    for track in &mut result.document.tracks {
+    compile_music(session, &mut result, false)?;
+    for track in &mut result.document.legacy_mut()?.tracks {
         for reference in track.devices_mut() {
             let device = result.devices.iter().find(|d| d.instance_id == reference.instance_id).unwrap();
             reference.parameters = device.manifest.parameters.iter().map(|p| (p.key.clone(), p.base)).collect();
@@ -107,15 +111,15 @@ fn prepare_common(session:&Session,path:&Path,max_tracks:usize,max_devices:usize
 
 pub(super) fn check_sources(session:&Session,origin:&Path,original:Option<&Session>)->Result<(),String>{
     let resolve=|path:&str|{let path=origin.parent().unwrap_or(Path::new(".")).join(path);std::fs::canonicalize(&path).unwrap_or(path)};
-    let mut groups=std::collections::BTreeMap::<PathBuf,Vec<(&Track,&DeviceInstance)>>::new();
-    for track in &session.tracks{for reference in track.devices(){groups.entry(resolve(&reference.path)).or_default().push((track,reference));}}
+    let mut groups=std::collections::BTreeMap::<PathBuf,Vec<(document::TrackRef<'_>,&DeviceInstance)>>::new();
+    for track in session.tracks(){for reference in track.devices(){groups.entry(resolve(&reference.path)).or_default().push((track,reference));}}
     for (path,references) in groups{
-        let context=references.iter().map(|(t,d)|format!("Track '{}' instance '{}' ({})",t.name,d.instance_id,d.path)).collect::<Vec<_>>().join("; ");
+        let context=references.iter().map(|(t,d)|format!("Track '{}' instance '{}' ({})",t.name(),d.instance_id,d.path)).collect::<Vec<_>>().join("; ");
         let loaded=documents::read_patch(&path).map_err(|e|format!("{context}: {e}. Restore this path from a matching original source, or explicitly Replace the intended instance. No matching backup is assumed."))?;
         let patch=loaded.patch.ok_or_else(||format!("{context}: Expected a saved Ultra device"))?;let actual=fingerprint(&patch)?;
-        let stale=references.iter().filter(|(_,d)|d.source_sha256!=actual).map(|(t,d)|format!("Track '{}' instance '{}' ({})",t.name,d.instance_id,d.path)).collect::<Vec<_>>();
+        let stale=references.iter().filter(|(_,d)|d.source_sha256!=actual).map(|(t,d)|format!("Track '{}' instance '{}' ({})",t.name(),d.instance_id,d.path)).collect::<Vec<_>>();
         if stale.is_empty(){continue;}
-        let original_count=original.map_or(0,|s|s.tracks.iter().flat_map(Track::devices).filter(|d|resolve(&d.path)==path).count());
+        let original_count=original.map_or(0,|s|s.tracks().into_iter().flat_map(document::TrackRef::devices).filter(|d|resolve(&d.path)==path).count());
         let guidance=if references.len()>1||original_count>1{
             "Selected Replace changes only that instance; stale siblings block full preparation. Stop transport and resolve pending edits; preserve the changed .ultra at a new path before restoring anything. Restore a matching original backup at the shared path, then explicitly Replace each intended instance from the preserved changed copy and Save. A matching original backup is required; without one there is no general supported recovery in the current desktop workflow. Replace gives a fresh instance identity, default bases/bypass and removes that instance's automation lanes. Copying alone or trying siblings in turn does not recover this session."
         }else{"Restore the original matching source at this path, or explicitly Replace this instance from the intended saved source. Replace resets its identity, bases/bypass and automation lanes."};
@@ -125,18 +129,20 @@ pub(super) fn check_sources(session:&Session,origin:&Path,original:Option<&Sessi
 
 // Admission uses the current manifests only; dependency/hash and density checks stay at Apply.
 pub(super) fn validate_musical(session: &Session, prepared: &PreparedSession) -> Result<(), String> {
+    if let Document::WorkspacesV4(project)=session {let mut candidate=prepared.clone();return super::prepare_workspaces::compile(project,&mut candidate);}
     if session.is_clips(){let mut score=prepared.clone();return compile_clips(session,&mut score);}
+    let session=session.legacy()?;
     text(&session.title,128,"Session title")?;
     bounded(session.tempo,30.,240.,"Tempo")?;
     bounded(session.length_beats,1./64.,256.,"Clip length")?;
     for track in &session.tracks { text(&track.name,64,"Track name")?; }
     let mut score=prepared.clone();score.events.clear();score.tracks.clear();
     score.length_frames=(session.length_beats*48_000.*60./session.tempo).round() as u64;
-    compile_music(session,&mut score)
+    compile_music(session,&mut score,false)
 }
-fn compile_music(session: &Session, result: &mut PreparedSession) -> Result<(), String> {
+fn compile_music(session: &LegacySession, result: &mut PreparedSession, clips:bool) -> Result<(), String> {
     let frames_per_beat=48_000.*60./session.tempo;
-    let frame=|beat:f64|if session.is_clips(){(beat*48_000.*60./session.tempo).round() as u64}else{(beat*frames_per_beat).round() as u64};
+    let frame=|beat:f64|if clips{(beat*48_000.*60./session.tempo).round() as u64}else{(beat*frames_per_beat).round() as u64};
     let length_frames=result.length_frames;
     for (index, track) in session.tracks.iter().enumerate() {
         let context = |error: String| format!("Track '{}' ({}): {error}", track.name, track.device.path);
@@ -183,24 +189,24 @@ fn compile_music(session: &Session, result: &mut PreparedSession) -> Result<(), 
                 if lane.enabled { result.events.push(FrameEvent { frame: at, track: index as u32, kind: 1, device: device as u32, target: parameter as u32, value: point.value }); }
             }
         }
-        result.tracks.push(PreparedTrack { instrument, effects });
+        result.tracks.push(PreparedTrack { input:PreparedTrackInput::Midi{instrument}, effects });
     }
     Ok(())
 }
 
 pub(super) fn compile_clips(session:&Session,result:&mut PreparedSession)->Result<(),String> {
-    session.validate_clips()?;result.events.clear();let mut clips=Vec::new();
-    for (track,model) in session.tracks.iter().enumerate(){
+    session.validate_clips()?;let common=session.legacy()?;result.events.clear();let mut clips=Vec::new();
+    for (track,model) in common.tracks.iter().enumerate(){
         bounded(model.gain,0.,2.,"Track gain")?;
         for (slot,clip) in session.bank(&model.id).ok_or("Missing clip bank")?.slots.iter().enumerate(){
             let Some(clip)=clip else {continue};
-            let begin=result.events.len();let length=(clip.length_beats*48_000.*60./session.tempo).round() as u64;
-            let mut score=session.clone();score.length_beats=clip.length_beats;
+            let begin=result.events.len();let length=(clip.length_beats*48_000.*60./common.tempo).round() as u64;
+            let mut score=common.clone();score.length_beats=clip.length_beats;
             for t in &mut score.tracks {t.notes.clear();t.automation.clear();}
             score.tracks[track].notes=clip.notes.iter().map(|n|Note{beat:n.beat,duration:n.duration,pitch:n.pitch,velocity:n.velocity}).collect();
             score.tracks[track].automation=clip.automation.clone();
             result.length_frames=length;result.tracks.clear();
-            compile_music(&score,result).map_err(|e|format!("Clip '{}' ({}): {e}",clip.name,clip.id))?;
+            compile_music(&score,result,true).map_err(|e|format!("Clip '{}' ({}): {e}",clip.name,clip.id))?;
             result.events[begin..].sort_by_key(|e|(e.frame,e.kind,e.track,e.device,e.target));
             let mut masks=[0;16];
             for lane in clip.automation.iter().filter(|l|l.enabled){
@@ -213,8 +219,8 @@ pub(super) fn compile_clips(session:&Session,result:&mut PreparedSession)->Resul
     }
     if result.events.len()>1024{return Err("Stored clips exceed 1024 compiled events".into());}
     // Empty banks still own their chain; compilation must not depend on a clip existing.
-    result.tracks=session.tracks.iter().map(|t|PreparedTrack{instrument:result.devices.iter().position(|d|d.instance_id==t.device.instance_id).unwrap(),effects:t.effects.iter().map(|e|result.devices.iter().position(|d|d.instance_id==e.instance_id).unwrap()).collect()}).collect();
-    result.length_frames=(session.length_beats*48_000.*60./session.tempo).round() as u64;
+    result.tracks=common.tracks.iter().map(|t|PreparedTrack{input:PreparedTrackInput::Midi{instrument:result.devices.iter().position(|d|d.instance_id==t.device.instance_id).unwrap()},effects:t.effects.iter().map(|e|result.devices.iter().position(|d|d.instance_id==e.instance_id).unwrap()).collect()}).collect();
+    result.length_frames=(common.length_beats*48_000.*60./common.tempo).round() as u64;
     result.schedule=Schedule::Clips(clips);Ok(())
 }
 
@@ -224,7 +230,7 @@ pub fn binding_value(binding: &canvas::device::HostParameter, value: f64) -> Res
     Ok(())
 }
 
-fn prepare_device(reference: &DeviceInstance, session_path: &Path, track: usize) -> Result<PreparedDevice, String> {
+pub(super) fn prepare_device(reference: &DeviceInstance, session_path: &Path, track: usize) -> Result<PreparedDevice, String> {
     text(&reference.path, 4096, "Device path")?;
     if !matches!(reference.version, 1 | 2) { return Err(format!("Unsupported device manifest version {} (host supports 1 and 2)", reference.version)); }
     let path = session_path.parent().unwrap_or(Path::new(".")).join(&reference.path);

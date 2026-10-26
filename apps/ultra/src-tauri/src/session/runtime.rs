@@ -44,12 +44,18 @@ pub struct View {pub tracks:Vec<Track>,pub requests:Vec<RequestResult>,pub reque
 #[serde(rename_all="camelCase")]
 pub struct PreparedClip {track_id:String,clip_id:String,name:String,slot:usize,length_frames:String}
 #[derive(Default)]
-pub struct Runtime {revision:u64,serial:u64,requests:Vec<RequestResult>}
+pub struct Runtime {revision:u64,serial:u64,requests:Vec<RequestResult>,pub workspace:super::runtime_workspaces::Runtime}
 fn status(value:u32)->&'static str{match value{n::V3_QUEUED=>"queued",n::V3_PENDING=>"pending",n::V3_APPLIED=>"applied",n::V3_REJECTED=>"rejected",n::V3_SUPERSEDED=>"superseded",n::V3_CANCELED=>"canceled",n::V3_MIXED=>"mixed",_=>"unavailable"}}
 fn frame(value:u64)->Option<String>{(value!=n::V3_NO_FRAME).then(||value.to_string())}
 impl Runtime {
-    pub fn poll(&mut self,host:&Host)->Result<(serde_json::Value,Option<View>),String>{
+    pub fn workspace_request(&mut self,host:&Host,action:super::runtime_workspaces::Action)->Result<super::runtime_workspaces::RequestResult,String>{
+        // Native ingress retains one serial floor across v3/v4 preparation changes.
+        self.workspace.request(host,action,&mut self.serial)
+    }
+    pub fn poll(&mut self,host:&Host)->Result<(serde_json::Value,Option<serde_json::Value>),String>{
         let p=host.prepared.as_ref().ok_or("No session")?;
+        super::host::Host::check_schedule(p)?;
+        if p.document.is_workspaces(){return self.workspace.poll(host);}
         if !p.document.is_clips(){return Ok((serde_json::to_value(n::state()?).map_err(|e|e.to_string())?,None));}
         let mut raw=Box::<n::StateV3>::default();if unsafe{n::alive_session_state_v3(&mut *raw)}==0{return Err("Session state is temporarily unavailable".into());}
         if raw.preparation_revision!=host.preparation_revision{return Err("Native preparation publication is temporarily unavailable".into());}
@@ -57,10 +63,10 @@ impl Runtime {
         self.reconcile(&raw);
         let Schedule::Clips(clips)=&p.schedule else{return Err("Missing prepared bank".into())};
         let clip_id=|index:u32|clips.get(index as usize).map(|c|c.id.clone());
-        let tracks=p.document.tracks.iter().enumerate().map(|(i,t)|{let r=&raw.tracks[i];Track{track_id:t.id.clone(),active_clip_id:clip_id(r.active_clip),phase:r.phase.to_string(),epoch:r.track_epoch.to_string(),pending_action:match r.pending_action{n::V3_LAUNCH=>Some("launch".into()),n::V3_TRACK_STOP=>Some("stop".into()),_=>None},pending_clip_id:clip_id(r.pending_clip),pending_serial:(r.pending_serial!=0).then(||r.pending_serial.to_string()),pending_frame:frame(r.pending_frame)}}).collect();
+        let tracks=p.document.tracks().into_iter().enumerate().map(|(i,t)|{let r=&raw.tracks[i];Track{track_id:t.id().to_owned(),active_clip_id:clip_id(r.active_clip),phase:r.phase.to_string(),epoch:r.track_epoch.to_string(),pending_action:match r.pending_action{n::V3_LAUNCH=>Some("launch".into()),n::V3_TRACK_STOP=>Some("stop".into()),_=>None},pending_clip_id:clip_id(r.pending_clip),pending_serial:(r.pending_serial!=0).then(||r.pending_serial.to_string()),pending_frame:frame(r.pending_frame)}}).collect();
         let devices=raw.devices[..p.devices.len()].iter().map(|d|serde_json::json!({"document":d.document,"bypassed":d.bypassed,"parameterCount":d.parameter_count,"revision":d.revision.to_string(),"base":d.base,"effective":d.effective,"owned":d.owned})).collect::<Vec<_>>();
         let state=serde_json::json!({"playing":raw.playing,"configured":raw.configured,"absoluteFrame":raw.absolute_frame.to_string(),"position":raw.position.to_string(),"generation":raw.generation.to_string(),"rejected":raw.rejected.to_string(),"peakLeft":raw.peak_left,"peakRight":raw.peak_right,"tracks":raw.tracks[..p.tracks.len()].iter().map(|t|t.mixer).collect::<Vec<_>>(),"devices":devices});
-        Ok((state,Some(View{tracks,requests:self.requests.clone(),requested_stop_epoch:raw.requested_stop_epoch.to_string(),applied_stop_epoch:raw.applied_stop_epoch.to_string()})))
+        Ok((state,Some(serde_json::to_value(View{tracks,requests:self.requests.clone(),requested_stop_epoch:raw.requested_stop_epoch.to_string(),applied_stop_epoch:raw.applied_stop_epoch.to_string()}).map_err(|e|e.to_string())?)))
     }
     fn reconcile(&mut self,raw:&n::StateV3){
         for request in &mut self.requests {
@@ -84,9 +90,9 @@ impl Runtime {
         self.poll(host)?;
         let p=host.prepared.as_ref().ok_or("No session")?;
         let Schedule::Clips(clips)=&p.schedule else{return Err("Enable the clip bank first".into())};
-        let members=p.document.tracks.iter().enumerate().filter(|(i,_)|request.track_mask&(1<<i)!=0).map(|(i,t)|{
+        let members=p.document.tracks().into_iter().enumerate().filter(|(i,_)|request.track_mask&(1<<i)!=0).map(|(i,t)|{
             let action=request.tracks[i];
-            Member{track_index:i,track_id:t.id.clone(),clip_id:if action.action==n::V3_LAUNCH{clips.iter().find(|c|c.track==i&&c.slot==action.slot as usize).map(|c|c.id.clone())}else{None},
+            Member{track_index:i,track_id:t.id().to_owned(),clip_id:if action.action==n::V3_LAUNCH{clips.iter().find(|c|c.track==i&&c.slot==action.slot as usize).map(|c|c.id.clone())}else{None},
                 action:if action.action==n::V3_LAUNCH{"launch"}else{"stop"}.into(),status:"queued".into()}
         }).collect();
         // Terminal observations can be summarized; native alone owns receipt reservation.
@@ -112,7 +118,7 @@ fn scene_request(p:&super::PreparedSession,slot:usize)->Result<n::RequestV3,Stri
     for t in 0..p.tracks.len(){request.tracks[t]=if clips.iter().any(|c|c.track==t&&c.slot==slot){n::TrackActionV3{action:n::V3_LAUNCH,slot:slot as u32}}else{n::TrackActionV3{action:n::V3_TRACK_STOP,slot:n::V3_NONE}};}
     Ok(request)
 }
-pub fn prepared(host:&Host)->Vec<PreparedClip>{let Some(p)=&host.prepared else{return vec![]};match &p.schedule{Schedule::Legacy=>vec![],Schedule::Clips(clips)=>clips.iter().map(|c|PreparedClip{track_id:p.document.tracks[c.track].id.clone(),clip_id:c.id.clone(),name:c.name.clone(),slot:c.slot,length_frames:c.length_frames.to_string()}).collect()}}
+pub fn prepared(host:&Host)->Vec<PreparedClip>{let Some(p)=&host.prepared else{return vec![]};match &p.schedule{Schedule::Legacy|Schedule::Workspaces(_)=>vec![],Schedule::Clips(clips)=>clips.iter().map(|c|PreparedClip{track_id:p.document.tracks()[c.track].id().to_owned(),clip_id:c.id.clone(),name:c.name.clone(),slot:c.slot,length_frames:c.length_frames.to_string()}).collect()}}
 
 #[cfg(test)]
 mod tests {
@@ -149,7 +155,7 @@ mod tests {
     fn scene_mapper_uses_immutable_prepared_slots_and_empty_members_stop(){
         let path=std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive");
         let old=super::super::read(&path).unwrap();let mut doc=old.document.to_clips().unwrap();
-        let track=doc.tracks[1].id.clone();let bank=doc.bank_mut(&track).unwrap();bank.slots[0]=None;bank.default_clip_id=None;
+        let track=doc.legacy().unwrap().tracks[1].id.clone();let bank=doc.bank_mut(&track).unwrap();bank.slots[0]=None;bank.default_clip_id=None;
         let prepared=super::super::prepare(&doc,&path).unwrap();
         let r=scene_request(&prepared,0).unwrap();assert_eq!(r.track_mask,3);assert_eq!(r.kind,n::V3_TRACK_ACTIONS);
         assert_eq!((r.tracks[0].action,r.tracks[0].slot),(n::V3_LAUNCH,0));

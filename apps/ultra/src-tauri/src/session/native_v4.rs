@@ -96,7 +96,7 @@ impl Default for TrackV4 {
     }
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct SourceV4 {
     pub track: u32,
     pub kind: u32,
@@ -120,7 +120,7 @@ impl Default for SourceV4 {
     }
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct SlotV4 {
     pub track: u32,
     pub source: u32,
@@ -137,7 +137,7 @@ impl Default for SlotV4 {
     }
 }
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct PlacementV4 {
     pub track: u32,
     pub source: u32,

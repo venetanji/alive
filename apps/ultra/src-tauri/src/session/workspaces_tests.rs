@@ -303,7 +303,7 @@ fn prospective_migration_preserves_music_and_uses_length_prefixed_id_domains() {
     );
     assert_eq!(p.tracks[0].slots[0].as_ref().unwrap().id, "clip");
     assert_eq!(p.tracks[0].color, "#c77b61");
-    assert_eq!(p.tracks[0].devices().next().unwrap(), &old.tracks[0].device);
+    assert_eq!(p.tracks[0].devices().next().unwrap(), &old.legacy().unwrap().tracks[0].device);
     assert_eq!(p.placements[0].duration, 8.);
     assert!(p.placements[0].loop_enabled);
     assert_eq!(p.placements[0].start, 0.);
@@ -350,9 +350,9 @@ fn legacy_prospective_conversion_preserves_input_and_rejects_held_voice_excess()
     assert_eq!(a, b);
     assert_eq!(old, before);
     assert_eq!(prospective_from_legacy_text(&text, &path).unwrap(), a);
-    assert!(super::super::persistence::decode(&encode(&a).unwrap(), &path).is_err());
+    assert_eq!(super::super::persistence::decode(&encode(&a).unwrap(), &path).unwrap(), Document::WorkspacesV4(a.clone()));
     let mut invalid = old.clone();
-    invalid.tracks[0].notes = (0..5)
+    invalid.legacy_mut().unwrap().tracks[0].notes = (0..5)
         .map(|i| super::super::Note {
             beat: 0.,
             duration: 1.,

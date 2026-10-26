@@ -156,7 +156,7 @@ fn native_saved_clip_release_overhead() {
     let fixture_sha = format!("{:x}", Sha256::digest(std::fs::read(&fixture).unwrap()));
     let mut host = Host::default();
     let prepared = host.enable_clips(read(&fixture).unwrap()).unwrap();
-    assert!(prepared.document.is_clips() && prepared.document.loop_enabled);
+    assert!(prepared.document.is_clips() && prepared.document.loop_enabled());
     let count:usize=std::env::var("ALIVE_MEASUREMENT_SAMPLES").map(|value|value.parse().unwrap()).unwrap_or(5000);
     assert!((1000..=20000).contains(&count));
     let raw_output=std::env::var_os("ALIVE_MEASUREMENT_OUTPUT").map(PathBuf::from);

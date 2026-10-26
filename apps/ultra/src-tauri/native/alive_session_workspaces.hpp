@@ -74,14 +74,12 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
   std::array<unsigned, 8> notes{}, lanes{}, points{}, sources{};
   if (complete_midi && c.audio_buffer_count)
     return reject_v4(ALIVE_SESSION_V4_FEATURE_DISABLED, "MIDI preparation cannot admit audio.");
-  bool final_midi = complete_midi;
-#ifdef ULTRA_ALIVE_SESSION_V4_PROVISIONAL
-  final_midi = true;
+  const bool final_midi = true;
   bool unsupported = c.audio_buffer_count;
-#else
-  bool unsupported = c.profile != 1 || c.track_count != 1 || c.source_count != 1 ||
-                     !c.placement_count || c.placement_count > 8 || c.slot_count ||
-                     c.audio_buffer_count || c.loop_enabled;
+#ifndef ULTRA_ALIVE_SESSION_V4_PROVISIONAL
+  if (!complete_midi && c.profile != 1)
+    return reject_v4(ALIVE_SESSION_V4_FEATURE_DISABLED,
+                     "Workspace profile 2 has not passed measured deadline qualification.");
 #endif
   for (unsigned d = 0; d < c.device_count; ++d) {
     if (!validate_device(c.devices[d]))
@@ -118,9 +116,6 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
         continue;
       if (slot >= c.slot_count || c.slots[slot].track != t || ++slot_owners[slot] != 1)
         return reject_v4(ALIVE_SESSION_V4_BAD_OWNERSHIP, "Invalid slot ownership.");
-#ifndef ULTRA_ALIVE_SESSION_V4_PROVISIONAL
-      unsupported = true;
-#endif
     }
     if (tr.placement_begin > c.placement_count ||
         tr.placement_count > c.placement_count - tr.placement_begin)
@@ -141,9 +136,6 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
         return reject_v4(ALIVE_SESSION_V4_BAD_PLACEMENT, "Placement exceeds source suffix.");
       placement_owners[index] = true;
       endpoint = p.start_frame + p.duration_frames;
-#ifndef ULTRA_ALIVE_SESSION_V4_PROVISIONAL
-      unsupported |= p.loop_enabled != 0;
-#endif
     }
   }
   for (unsigned d = 0; d < c.device_count; ++d)
@@ -154,9 +146,6 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
       return reject_v4(ALIVE_SESSION_V4_BAD_PLACEMENT, "Unowned placement.");
   for (unsigned i = 0; i < c.slot_count; ++i) {
     const auto &slot = c.slots[i];
-#ifndef ULTRA_ALIVE_SESSION_V4_PROVISIONAL
-    unsupported |= slot.loop_enabled != 0;
-#endif
     if (slot_owners[i] != 1 || slot.track >= c.track_count || slot.source >= c.source_count ||
         c.sources[slot.source].track != slot.track || slot.reserved || !flag(slot.loop_enabled) ||
         slot.source_offset >= c.sources[slot.source].length_frames ||
@@ -254,7 +243,7 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
 #undef CHECK_UNUSED
   if (unsupported && !complete_midi)
     return reject_v4(ALIVE_SESSION_V4_FEATURE_DISABLED,
-                     "Configuration exceeds the provisional Arrangement subset.");
+                     "Audio workspace sources are not admitted.");
   return true;
 }
 struct BorrowedSource {
@@ -569,6 +558,9 @@ bool limits_v4(unsigned profile, AliveSessionLimitsV4 &out) const noexcept {
   out.struct_bytes = sizeof out;
   out.profile = profile;
   out.work_policy = profile;
+  // Only measured profile 1 is eligible; full candidate admission still applies.
+  out.features = profile == 1 ? ALIVE_SESSION_V4_FEATURE_ADMITTED |
+      ALIVE_SESSION_V4_FEATURE_ATOMIC_TRACK_ACTIONS | ALIVE_SESSION_V4_FEATURE_ARRANGEMENT : 0;
   out.max_tracks = old.max_tracks;
   out.max_devices = old.max_devices;
   out.max_sources = out.max_slots = profile == 1 ? 8 : 32;
@@ -630,9 +622,6 @@ bool validate_prepared_v4(const AliveSessionConfigV4 &c, const UltraCanvasGraph 
 }
 bool configure_v4(const AliveSessionConfigV4 &c, const AliveSessionAudioBufferV4 *audio,
                   unsigned audio_count, CanvasWorkspace &workspace) noexcept {
-#ifndef ULTRA_ALIVE_SESSION_V4_PROVISIONAL
-  return reject_v4(ALIVE_SESSION_V4_FEATURE_DISABLED, "Workspace capability is not admitted.");
-#endif
   if (!bounds_v4(c))
     return false;
   if (audio_count != c.audio_buffer_count || (audio_count && !audio))
@@ -767,24 +756,7 @@ bool configure_v4(const AliveSessionConfigV4 &c, const AliveSessionAudioBufferV4
 bool request_v4(const AliveSessionRequestV4 &r, AliveSessionReceiptV4 &out) noexcept {
   if (!header_v4(out.version, out.struct_bytes, sizeof out))
     return false;
-#ifdef ULTRA_ALIVE_SESSION_V4_PROVISIONAL
   return request_ingress(r, out, 4);
-#else
-  out = {};
-  out.version = 4;
-  out.struct_bytes = sizeof out;
-  out.status = ALIVE_SESSION_V4_REJECTED;
-  out.preparation_revision = r.preparation_revision;
-  out.request_serial = r.request_serial;
-  out.kind = r.kind;
-  out.track_mask = r.track_mask;
-  out.rejected_mask = r.track_mask;
-  out.observed_frame = out.target_frame = NoFrame;
-  out.error = !header_v4(r.version, r.struct_bytes, sizeof r) ? ALIVE_SESSION_V4_BAD_HEADER
-              : !request_fields_v4(r)                         ? ALIVE_SESSION_V4_BAD_FIELD
-                                                              : ALIVE_SESSION_V4_FEATURE_DISABLED;
-  return reject_v4(out.error, "Workspace capability is not admitted.");
-#endif
 }
 bool snapshot_v4(AliveSessionStateV4 &out) const noexcept {
   if (!header_v4(out.version, out.struct_bytes, sizeof out))

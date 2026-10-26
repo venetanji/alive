@@ -3,19 +3,49 @@ use super::{Session, Note, Lane};
 use serde::{Deserialize, Serialize};
 const MAX_BYTES: usize = 8 * 1024 * 1024;
 #[derive(Clone, Debug, PartialEq, Serialize)]
-pub(super) struct Projection { title:String, tempo:f64, length_beats:f64, loop_enabled:bool, tracks:Vec<MusicTrack>, banks:Vec<super::ClipBank> }
+pub(super) enum Projection { Legacy(LegacyMusic), Workspaces(WorkspaceMusic) }
+#[derive(Clone, Debug, PartialEq, Serialize)]
+pub(super) struct LegacyMusic { title:String, tempo:f64, length_beats:f64, loop_enabled:bool, tracks:Vec<MusicTrack>, banks:Vec<super::ClipBank> }
 #[derive(Clone, Debug, PartialEq, Serialize)]
 struct MusicTrack { id:String, name:String, notes:Vec<Note>, automation:Vec<Lane> }
+#[derive(Clone, Debug, PartialEq, Serialize)]
+pub(super) struct WorkspaceMusic { title:String, tempo:f64, length_beats:f64, loop_enabled:bool, loop_start_beats:f64, loop_end_beats:f64, tracks:Vec<WorkspaceTrackMusic>, sources:Vec<super::workspaces::SourceV4>, placements:Vec<super::workspaces::PlacementV4> }
+#[derive(Clone, Debug, PartialEq, Serialize)]
+struct WorkspaceTrackMusic { id:String, name:String, color:String, slots:[Option<super::workspaces::SlotV4>;4] }
 impl From<&Session> for Projection {
-    fn from(s:&Session)->Self { Self { title:s.title.clone(),tempo:s.tempo,length_beats:s.length_beats,loop_enabled:s.loop_enabled,
-        tracks:s.tracks.iter().map(|t|MusicTrack{id:t.id.clone(),name:t.name.clone(),notes:t.notes.clone(),automation:t.automation.clone()}).collect(),banks:s.banks().to_vec() } }
+    fn from(document:&Session)->Self {
+        match document {
+            super::Document::WorkspacesV4(s)=>Self::Workspaces(WorkspaceMusic {title:s.title.clone(),tempo:s.tempo,length_beats:s.length_beats,loop_enabled:s.loop_enabled,loop_start_beats:s.loop_start_beats,loop_end_beats:s.loop_end_beats,tracks:s.tracks.iter().map(|t|WorkspaceTrackMusic{id:t.id.clone(),name:t.name.clone(),color:t.color.clone(),slots:t.slots.clone()}).collect(),sources:s.sources.clone(),placements:s.placements.clone()}),
+            super::Document::LegacyV2(s)|super::Document::ClipsV3(super::clips::ClipDocument{common:s,..})=>Self::Legacy(LegacyMusic { title:s.title.clone(),tempo:s.tempo,length_beats:s.length_beats,loop_enabled:s.loop_enabled,
+                tracks:s.tracks.iter().map(|t|MusicTrack{id:t.id.clone(),name:t.name.clone(),notes:t.notes.clone(),automation:t.automation.clone()}).collect(),banks:document.banks().to_vec() })
+        }
+    }
 }
 impl Projection {
+    fn identities(&self)->std::collections::HashSet<String> {
+        match self {
+            Self::Legacy(p)=>p.banks.iter().flat_map(|b|b.slots.iter().flatten()).flat_map(|c|std::iter::once(c.id.clone()).chain(c.notes.iter().map(|n|n.id.clone()))).collect(),
+            Self::Workspaces(p)=>p.tracks.iter().map(|t|t.id.clone()).chain(p.tracks.iter().flat_map(|t|t.slots.iter().flatten().map(|s|s.id.clone()))).chain(p.sources.iter().map(|s|s.id().to_owned())).chain(p.sources.iter().flat_map(|s|match s {super::workspaces::SourceV4::Midi{notes,..}=>notes.iter().map(|n|n.id.clone()).collect::<Vec<_>>(),super::workspaces::SourceV4::Audio{..}=>vec![]})).chain(p.placements.iter().map(|p|p.id.clone())).collect()
+        }
+    }
     pub fn materialize(&self, live:&Session)->Result<Session,String> {
-        if self.tracks.len()!=live.tracks.len() || self.tracks.iter().zip(&live.tracks).any(|(a,b)|a.id!=b.id) { return Err("History belongs to another track scope".into()); }
-        let mut s=live.clone(); s.title=self.title.clone();s.tempo=self.tempo;s.length_beats=self.length_beats;s.loop_enabled=self.loop_enabled;
-        for (a,b) in self.tracks.iter().zip(&mut s.tracks) {b.name=a.name.clone();b.notes=a.notes.clone();b.automation=a.automation.clone();}
-        if let super::Document::ClipsV3(doc)=&mut s{doc.banks=self.banks.clone();} Ok(s)
+        let mut document=live.clone();
+        match (self,&mut document) {
+            (Self::Workspaces(p),super::Document::WorkspacesV4(s))=>{
+                if p.tracks.len()!=s.tracks.len()||p.tracks.iter().zip(&s.tracks).any(|(a,b)|a.id!=b.id){return Err("History belongs to another track scope".into());}
+                s.title=p.title.clone();s.tempo=p.tempo;s.length_beats=p.length_beats;s.loop_enabled=p.loop_enabled;s.loop_start_beats=p.loop_start_beats;s.loop_end_beats=p.loop_end_beats;s.sources=p.sources.clone();s.placements=p.placements.clone();
+                for (a,b) in p.tracks.iter().zip(&mut s.tracks){b.name=a.name.clone();b.color=a.color.clone();b.slots=a.slots.clone();}
+            },
+            (Self::Legacy(p),s)=>{
+                let common=s.legacy_mut()?;
+                if p.tracks.len()!=common.tracks.len() || p.tracks.iter().zip(&common.tracks).any(|(a,b)|a.id!=b.id) { return Err("History belongs to another track scope".into()); }
+                common.title=p.title.clone();common.tempo=p.tempo;common.length_beats=p.length_beats;common.loop_enabled=p.loop_enabled;
+                for (a,b) in p.tracks.iter().zip(&mut common.tracks) {b.name=a.name.clone();b.notes=a.notes.clone();b.automation=a.automation.clone();}
+                if let super::Document::ClipsV3(doc)=s{doc.banks=p.banks.clone();}
+            },
+            _=>return Err("History belongs to another document mode".into())
+        }
+        Ok(document)
     }
 }
 #[derive(Clone, Copy, Deserialize)]
@@ -28,7 +58,7 @@ struct Entry { before:Projection,after:Projection,label:String,bytes:usize }
 #[derive(Default)]
 pub(super) struct History { entries:Vec<Entry>,cursor:usize,bytes:usize }
 impl History {
-    pub fn identities(&self)->std::collections::HashSet<String>{self.entries.iter().flat_map(|e|[&e.before,&e.after]).flat_map(|p|p.banks.iter().flat_map(|b|b.slots.iter().flatten())).flat_map(|c|std::iter::once(c.id.clone()).chain(c.notes.iter().map(|n|n.id.clone()))).collect()}
+    pub fn identities(&self)->std::collections::HashSet<String>{self.entries.iter().flat_map(|e|[&e.before,&e.after]).flat_map(Projection::identities).collect()}
     pub fn clear(&mut self) { *self=Self::default(); }
     pub fn view(&self)->View { View {can_undo:self.cursor>0,can_redo:self.cursor<self.entries.len(),undo_label:self.cursor.checked_sub(1).map(|i|self.entries[i].label.clone()),redo_label:self.entries.get(self.cursor).map(|e|e.label.clone())} }
     pub fn record(&mut self,a:&Session,b:&Session,label:&str)->Result<bool,String> {
@@ -56,30 +86,30 @@ mod tests {
     #[test]
     fn musical_history_is_bounded_and_redo_is_transactional() {
         let mut h = History::default(); let mut a = score();
-        for i in 0..70 { let mut b=a.clone(); b.title=format!("Title {i}"); h.record(&a,&b,"Rename").unwrap(); a=b; }
+        for i in 0..70 { let mut b=a.clone(); b.legacy_mut().unwrap().title=format!("Title {i}"); h.record(&a,&b,"Rename").unwrap(); a=b; }
         assert_eq!(h.entries.len(),64);
-        let restored=h.target(Direction::Undo).unwrap(); assert_eq!(restored.title,"Title 68");
+        let restored=h.target(Direction::Undo).unwrap(); assert_eq!(restored.materialize(&a).unwrap().title(),"Title 68");
         h.advance(Direction::Undo); assert!(h.view().can_redo);
         h.record(&a,&a,"No-op").unwrap(); assert!(h.view().can_redo);
-        let mut b=a.clone(); b.tempo=123.; h.record(&a,&b,"Tempo").unwrap(); assert!(!h.view().can_redo);
+        let mut b=a.clone(); b.legacy_mut().unwrap().tempo=123.; h.record(&a,&b,"Tempo").unwrap(); assert!(!h.view().can_redo);
         assert!(h.record(&a,&b,"\n").is_err());
-        let mut huge=b.clone(); huge.title="x".repeat(MAX_BYTES); let count=h.entries.len();
+        let mut huge=b.clone(); huge.legacy_mut().unwrap().title="x".repeat(MAX_BYTES); let count=h.entries.len();
         assert!(h.record(&a,&huge,"Large").is_err()); assert_eq!(h.entries.len(),count);
     }
     #[test]
     fn projection_restores_music_onto_current_chain_without_live_fields() {
         let a=score(); let p=Projection::from(&a); let mut current=a.clone();
-        current.tracks[0].gain=0.2; current.tracks[0].device.parameters.insert("cutoff".into(),4321.);
-        current.tracks[0].device.path="relocated.ultra".into(); current.tempo=130.;
-        let restored=p.materialize(&current).unwrap(); assert_eq!(restored.tempo,a.tempo);
-        assert_eq!(restored.tracks[0].gain,0.2); assert_eq!(restored.tracks[0].device.parameters["cutoff"],4321.);
-        assert_eq!(restored.tracks[0].device.path,"relocated.ultra");
-        current.tracks.reverse(); assert!(p.materialize(&current).is_err());
+        current.legacy_mut().unwrap().tracks[0].gain=0.2; current.legacy_mut().unwrap().tracks[0].device.parameters.insert("cutoff".into(),4321.);
+        current.legacy_mut().unwrap().tracks[0].device.path="relocated.ultra".into(); current.legacy_mut().unwrap().tempo=130.;
+        let restored=p.materialize(&current).unwrap(); assert_eq!(restored.legacy().unwrap().tempo,a.legacy().unwrap().tempo);
+        assert_eq!(restored.legacy().unwrap().tracks[0].gain,0.2); assert_eq!(restored.legacy().unwrap().tracks[0].device.parameters["cutoff"],4321.);
+        assert_eq!(restored.legacy().unwrap().tracks[0].device.path,"relocated.ultra");
+        current.legacy_mut().unwrap().tracks.reverse(); assert!(p.materialize(&current).is_err());
     }
     #[test]
     fn byte_eviction_and_strict_directions_are_bounded() {
-        let mut h=History::default();let mut a=score();a.title="a".repeat(100_000);
-        for i in 0..64 {let mut b=a.clone();b.tempo=100.+i as f64;h.record(&a,&b,"Tempo").unwrap();a=b;}
+        let mut h=History::default();let mut a=score();a.legacy_mut().unwrap().title="a".repeat(100_000);
+        for i in 0..64 {let mut b=a.clone();b.legacy_mut().unwrap().tempo=100.+i as f64;h.record(&a,&b,"Tempo").unwrap();a=b;}
         assert!(h.entries.len()<64);assert!(h.bytes<=MAX_BYTES);
         assert!(serde_json::from_str::<Direction>("\"UNDO\"").is_err());
         assert!(serde_json::from_str::<Direction>("\"undo\"").is_ok());

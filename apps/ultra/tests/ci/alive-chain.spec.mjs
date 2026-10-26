@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 
 // Browser geometry and input coverage only. The native desktop journey qualifies hosting/audio.
-async function openSession(page,longNames=false,clipBank=false,trackCount=2){
+async function openSession(page,longNames=false,clipBank=false,trackCount=2,workspaces=false){
   const document=JSON.parse(readFileSync(new URL('../../../alive/examples/two-instruments.alive',import.meta.url))),patch=JSON.parse(readFileSync(new URL('../../examples/subtractive.ultra',import.meta.url)));
   document.format='alive-session-v2';const deviceInstances={},runtime=[];
   while(document.tracks.length<trackCount){const track=structuredClone(document.tracks[0]);track.id=`track-${document.tracks.length+1}`;track.name=`Track ${document.tracks.length+1}`;document.tracks.push(track);}
@@ -25,6 +25,11 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2){
     document.tracks.forEach(t=>{const c={id:`clip-${t.id}`,name:'Clip 1',lengthBeats:8,notes:t.notes.map((n,i)=>({...n,id:`note-${t.id}-${i}`})),automation:t.automation};t.slots=[c,null,null,null];t.defaultClipId=c.id;delete t.notes;delete t.automation;snapshot.preparedClips.push({trackId:t.id,clipId:c.id,name:c.name,slot:0,lengthFrames:'205714'});});
     snapshot.runtime={tracks:document.tracks.map(t=>({trackId:t.id,activeClipId:t.slots[0].id,phase:'0',epoch:'1',pendingAction:null,pendingClipId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'};
   }
+  if(workspaces){
+    document.format='alive-session-v4';document.loopStartBeats=0;document.loopEndBeats=document.lengthBeats;document.sources=[];document.placements=[];snapshot.mode='workspacesV4';snapshot.devices=[];snapshot.preparedClips=[];snapshot.trackChains=[];snapshot.preparedWorkspaces={preparationRevision:snapshot.preparationRevision,sources:[],slots:[],placements:[]};
+    document.tracks.forEach((t,i)=>{const clip=t.slots[0],sourceId=`source-${t.id}`;document.sources.push({kind:'midi',id:sourceId,trackId:t.id,name:clip.name,lengthBeats:clip.lengthBeats,notes:clip.notes,automation:clip.automation});t.color='#c77b61';t.chain={kind:'midi',instrument:t.device};delete t.device;delete t.defaultClipId;t.slots[0]={id:clip.id,name:clip.name,sourceId,sourceOffset:{kind:'beats',value:0},loopEnabled:true};snapshot.trackChains.push({trackId:t.id,kind:'midi',instrumentId:t.chain.instrument.instanceId,effectIds:t.effects.map(e=>e.instanceId)});snapshot.preparedWorkspaces.sources.push({trackId:t.id,sourceId,kind:'midi',name:clip.name,lengthFrames:'205714'});snapshot.preparedWorkspaces.slots.push({trackId:t.id,slotId:clip.id,slot:0,sourceId,name:clip.name,sourceOffsetFrames:'0',loopEnabled:true});});
+    snapshot.runtime.tracks=document.tracks.map(t=>({trackId:t.id,authority:'arrangement',activeSourceId:null,activePlacementId:null,activeSlotId:null,phase:null,epoch:'1',pendingAction:null,pendingAuthority:null,pendingSlotId:null,pendingSerial:null,pendingFrame:null}));
+  }
   await page.addInitScript(snapshot=>{
     window.sessionSnapshot=snapshot;
     window.removeTrack=async trackId=>{
@@ -36,6 +41,7 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2){
     window.calls=[];const undo=[],redo=[];window.__TAURI__={core:{invoke:async(name,args)=>{window.calls.push({name,args});if(name==='alive_current')return structuredClone(snapshot);if(name==='alive_edit'){undo.push(structuredClone(snapshot.draft??snapshot.document));redo.length=0;snapshot.draft=args.document;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return structuredClone(snapshot);}if(name==='alive_history'){const from=args.direction==='undo'?undo:redo,to=args.direction==='undo'?redo:undo;to.push(structuredClone(snapshot.draft??snapshot.document));snapshot.draft=from.pop();snapshot.draftRevision++;snapshot.history={canUndo:!!undo.length,canRedo:!!redo.length};return structuredClone(snapshot);}}}};
     const invoke=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=(name,args)=>name==='alive_device'&&args.action==='remove'?window.removeTrack(args.trackId):invoke(name,args);
     const previous=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=async(name,args)=>{
+      if(name==='alive_workspace_edit'){window.calls.push({name,args});const op=args.operation;if(op.kind!=='noteUpdate')throw Error('Fixture supports noteUpdate only');snapshot.draft??=structuredClone(snapshot.document);Object.assign(snapshot.draft.sources.find(s=>s.id===op.sourceId).notes.find(n=>n.id===op.noteId),{beat:op.beat,duration:op.duration,pitch:op.pitch,velocity:op.velocity});snapshot.draftRevision++;return{snapshot:structuredClone(snapshot),affected:{sourceId:op.sourceId,noteId:op.noteId}};}
       if(name==='alive_mixer'){window.calls.push({name,args});for(const document of [snapshot.document,snapshot.draft])if(document)Object.assign(document.tracks[args.track],{gain:args.gain,mute:args.mute,solo:args.solo});snapshot.dirty=true;return;}
       if(name==='alive_clip_edit'){window.calls.push({name,args});const op=args.operation;if(op.kind!=='create')throw Error('Fixture supports create only');snapshot.draft??=structuredClone(snapshot.document);const track=snapshot.draft.tracks.find(t=>t.id===op.trackId);if(track.slots[op.slot])throw Error('Slot already occupied');track.slots[op.slot]={id:`new-${track.id}-${op.slot}`,name:'New clip',lengthBeats:8,notes:[],automation:[]};snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return{snapshot:structuredClone(snapshot),affected:{trackId:track.id,slot:op.slot}};}
       return previous(name,args);
@@ -252,4 +258,24 @@ test('track name and metadata line boxes fit the fixed Session header without cl
   await page.setViewportSize({width:1280,height:800});await openSession(page,false,true,8);
   const headers=await page.locator('.track-name').evaluateAll(elements=>elements.map(e=>({height:e.clientHeight,content:e.scrollHeight,lines:[...e.children].map(child=>({height:child.clientHeight,content:child.scrollHeight}))})));
   for(const header of headers){expect(header.content).toBeLessThanOrEqual(header.height);for(const line of header.lines)expect(line.content).toBeLessThanOrEqual(line.height);}
+});
+
+for(const kind of ['gain','note'])test(`v4 navigation and polling preserve unfinished ${kind} without changing runtime authority`,async({page})=>{
+  await openSession(page,false,true,2,true);
+  if(kind==='note')await page.locator('.note-table>summary').click();
+  const input=page.getByLabel(kind==='gain'?'Pulse gain':'Note 1 pitch',{exact:true});
+  await input.fill(kind==='gain'?'0.83':'73');
+  for(let i=0;i<2;i++){await page.locator('#view-arrangement').click();await page.locator('#view-session').click();}
+  const before=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(before+2);
+  await expect(input).toHaveValue(kind==='gain'?'0.83':'73');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await page.locator('#session-workspace').focus();
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current').length)).toBe(1);
+  const committed=await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'));
+  expect(committed[0].name).toBe(kind==='gain'?'alive_mixer':'alive_workspace_edit');
+  if(kind==='note')expect(committed[0].args.operation).toMatchObject({kind:'noteUpdate',sourceId:'source-track-1',noteId:'note-track-1-0',pitch:73});
+  await page.keyboard.press('Tab');await expect(page.locator('#arrangement-workspace')).toBeVisible();await page.keyboard.press('Tab');await expect(page.locator('#session-workspace')).toBeVisible();
+  expect(await page.evaluate(()=>window.sessionSnapshot.runtime.tracks.every(t=>t.authority==='arrangement'&&t.activeSourceId===null))).toBe(true);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual(committed);
 });

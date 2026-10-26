@@ -465,7 +465,7 @@ int main(int argc, char **argv) {
     AliveSessionLimitsV4 limits{};
     limits.version = 4;
     limits.struct_bytes = sizeof limits;
-    assert(alive_session_limits_v4(profile, &limits) && limits.features == 0);
+    assert(alive_session_limits_v4(profile, &limits) && limits.features == (profile == 1 ? 7u : 0u));
   }
   ultra::alive_session_test_dispatch = trace_event;
   ultra::alive_session_test_placement_charge = trace_placement;

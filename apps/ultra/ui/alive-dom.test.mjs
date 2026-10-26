@@ -691,3 +691,71 @@ test('automation point indices also invalidate after a queued deletion',async()=
   const first=remove.fire('click');await settle();value.value='2300';const second=value.fire('change');release();await first;await second;await settle();
   assert.equal(native.calls.filter(c=>c.name==='alive_edit').length,1);view.dispose();
 });
+
+function workspaceState(){
+  const s=clipState();s.mode='workspacesV4';s.document.format='alive-session-v4';s.document.loopStartBeats=0;s.document.loopEndBeats=s.document.lengthBeats;s.document.sources=[];s.document.placements=[];s.devices=[];s.preparedClips=[];s.trackChains=[];s.preparedWorkspaces={preparationRevision:s.preparationRevision,sources:[],slots:[],placements:[]};
+  for(const [i,t] of s.document.tracks.entries()){
+    const c=t.slots[0],sourceId=`source-independent-${i}`,placementId=`placement-${i}`;
+    s.document.sources.push({kind:'midi',id:sourceId,trackId:t.id,name:c.name,lengthBeats:c.lengthBeats,notes:c.notes,automation:c.automation});
+    t.chain={kind:'midi',instrument:t.device};t.color=i?'#86a59c':'#c77b61';delete t.device;delete t.defaultClipId;
+    t.slots[0]={id:c.id,name:c.name,sourceId,sourceOffset:{kind:'beats',value:0},loopEnabled:true};
+    s.document.placements.push({id:placementId,trackId:t.id,sourceId,start:0,duration:s.document.lengthBeats,sourceOffset:{kind:'beats',value:0},loopEnabled:true});
+    s.trackChains.push({trackId:t.id,kind:'midi',instrumentId:t.chain.instrument.instanceId,effectIds:[]});
+    s.preparedWorkspaces.sources.push({trackId:t.id,sourceId,kind:'midi',name:c.name,lengthFrames:'205714'});
+    s.preparedWorkspaces.slots.push({trackId:t.id,slotId:c.id,slot:0,sourceId,name:c.name,sourceOffsetFrames:'0',loopEnabled:true});
+    s.preparedWorkspaces.placements.push({trackId:t.id,placementId,sourceId,startFrame:'0',durationFrames:'205714',sourceOffsetFrames:'0',loopEnabled:true});
+  }
+  s.runtime={tracks:s.document.tracks.map((t,i)=>({trackId:t.id,authority:'arrangement',activeSlotId:null,activePlacementId:`placement-${i}`,activeSourceId:`source-independent-${i}`,phase:'0',epoch:'1',pendingAction:null,pendingAuthority:null,pendingSlotId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'};
+  s.capabilities={clipBank:true,workspaces:true,arrangement:true,audioSources:false,workspaceConversionAvailable:false,maxTracks:2,maxDevices:6,maxSources:8,maxPlacements:16,atomicTrackActions:true};return s;
+}
+test('v4 Session reads sources and real chains without compatibility instruments or embedded clips',async()=>{
+  const initial=workspaceState(),page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  assert.ok(page.find('Note 1 pitch'));assert.equal(page.ids.get('tracks').children.length,2);assert.match(page.find('Pulse clip runtime').textContent,/Arrangement/i);
+  assert.ok(page.find('Return Pulse to Arrangement'));assert.ok(page.find('Make source independent'));assert.equal(page.find('Set Saved Default'),undefined);
+  await page.find('Launch Pulse Clip 1').fire('click');
+  assert.deepEqual(native.calls.find(c=>c.name==='alive_workspace_action').args,{generation:1,preparationRevision:'1',action:{kind:'launch',trackId:'track-1',slotId:'clip-track-1'}});
+  view.dispose();
+});
+test('v4 Play starts shared audio then sends Start with the original captured preparation',async()=>{
+  const initial=workspaceState();initial.state.playing=0;initial.audio.running=false;
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:async(name,args)=>{const result=await native.invoke(name,args);if(name==='alive_audio'){native.snapshot.generation=2;native.snapshot.preparationRevision='2';}return result;}});await settle();
+  await page.ids.get('start').fire('click');
+  assert.deepEqual(native.calls.filter(c=>['alive_audio','alive_workspace_action'].includes(c.name)),[{name:'alive_audio',args:{action:'start',generation:1}},{name:'alive_workspace_action',args:{action:{kind:'start'},generation:1,preparationRevision:'1'}}]);view.dispose();
+});
+test('v4 failed audio start never submits a runtime Start',async()=>{
+  const initial=workspaceState();initial.state.playing=0;const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:async(name,args)=>{if(name==='alive_audio')throw Error('Device failed');return native.invoke(name,args);}});await settle();await page.ids.get('start').fire('click');
+  assert.equal(native.calls.some(c=>c.name==='alive_workspace_action'),false);assert.match(page.ids.get('notice').textContent,/Device failed/);view.dispose();
+});
+
+test('v4 note edits address the source while draft-only slots cannot launch',async()=>{
+  const initial=workspaceState(),page=dom('./alive.html'),native=backend(initial);
+  initial.document.tracks[0].slots[1]={...initial.document.tracks[0].slots[0],id:'draft-only',name:'Draft slot'};
+  const view=mountAlive({...page,invoke:async(name,args)=>{if(name==='alive_workspace_edit'){native.calls.push({name,args});return{snapshot:structuredClone(native.snapshot),affected:{sourceId:args.operation.sourceId}};}return native.invoke(name,args);}});await settle();
+  const pitch=page.find('Note 1 pitch');pitch.value='64';await pitch.fire('change');const op=native.calls.find(c=>c.name==='alive_workspace_edit').args.operation;
+  assert.equal(op.kind,'noteUpdate');assert.equal(op.sourceId,'source-independent-0');assert.notEqual(op.sourceId,initial.document.tracks[0].slots[0].id);assert.equal(page.find('Launch Pulse Draft slot').disabled,true);view.dispose();
+});
+
+test('v4 queued automation cannot retarget a slot made independent by an earlier command',async()=>{
+  const initial=workspaceState(),page=dom('./alive.html'),native=backend(initial);let release;
+  const view=mountAlive({...page,invoke:async(name,args)=>{
+    if(name==='alive_workspace_edit'){native.calls.push({name,args});if(args.operation.kind==='sourceIndependent'){
+      await new Promise(resolve=>{release=resolve;});native.snapshot.draft=structuredClone(native.snapshot.document);const source=structuredClone(native.snapshot.draft.sources[0]);source.id='new-independent-source';source.notes.forEach(n=>n.id+='-new');native.snapshot.draft.sources.push(source);native.snapshot.draft.tracks[0].slots[0].sourceId=source.id;native.snapshot.draftRevision++;
+    }return{snapshot:structuredClone(native.snapshot),affected:{trackId:'track-1',slotId:'clip-track-1',sourceId:'new-independent-source'}};}return native.invoke(name,args);
+  }});await settle();
+  const first=page.find('Make source independent').fire('click');await settle();const enabled=page.find('Cutoff automation enabled');enabled.checked=!enabled.checked;const second=enabled.fire('change');release();await first;await second;await settle();
+  assert.equal(native.calls.filter(c=>c.name==='alive_workspace_edit').length,1);assert.match(page.ids.get('notice').textContent,/source.*changed/i);view.dispose();
+});
+
+for(const effectFirst of [false,true])test(`v4 unavailable audio chain has explicit optional instrument (${effectFirst?'effect first':'empty'})`,async()=>{
+  const initial=workspaceState(),track=initial.document.tracks[0],reference=track.chain.instrument;
+  track.chain={kind:'audio'};track.slots=[null,null,null,null];track.effects=effectFirst?[{...reference,instanceId:'audio-effect'}]:[];
+  initial.document.sources=initial.document.sources.filter(s=>s.trackId!==track.id);initial.document.placements=initial.document.placements.filter(p=>p.trackId!==track.id);
+  initial.trackChains[0]={trackId:track.id,kind:'audio',instrumentId:null,effectIds:effectFirst?['audio-effect']:[]};
+  if(effectFirst)initial.deviceInstances['audio-effect']=structuredClone(initial.deviceInstances[reference.instanceId]);
+  initial.runtime.tracks[0]={...initial.runtime.tracks[0],activeSourceId:null,activeSlotId:null,activePlacementId:null,phase:null};
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  assert.equal(page.ids.get('add-note').disabled,true);assert.equal(page.find('Create clip').disabled,true);
+  assert.equal(page.ids.get('notes').children.length,0);assert.equal(page.find('Note 1 pitch'),undefined);
+  if(effectFirst){const bypass=descendants(page.ids.get('chain')).find(e=>e.attrs['aria-label']?.startsWith('Bypass '));assert.equal(bypass.disabled,false);}
+  view.dispose();
+});

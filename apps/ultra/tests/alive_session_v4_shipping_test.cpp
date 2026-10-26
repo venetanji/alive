@@ -84,7 +84,7 @@ int main() {
     limits.version = 4;
     limits.struct_bytes = sizeof limits;
     assert(alive_session_limits_v4(profile, &limits));
-    assert(limits.features == 0 && limits.max_frame_events == 32 && limits.max_window_events == 64);
+    assert(limits.features == (profile == 1 ? 7u : 0u) && limits.max_frame_events == 32 && limits.max_window_events == 64);
     assert(limits.scheduled_frame.placement_steps == 64 &&
            limits.optional_frame.placement_steps == 2114);
   }
@@ -101,7 +101,7 @@ int main() {
   receipt.version = 4;
   receipt.struct_bytes = sizeof receipt;
   assert(!alive_session_request_v4(&request, &receipt));
-  assert(receipt.error == ALIVE_SESSION_V4_FEATURE_DISABLED);
+  assert(receipt.error == ALIVE_SESSION_V4_STALE_PREPARATION);
   AliveSessionStateV3 after{};
   after.version = 3;
   after.struct_bytes = sizeof after;
@@ -121,11 +121,27 @@ int main() {
   assert(!std::memcmp(&receipt, &receipt_canary, sizeof receipt));
   ultra_audio_stop();
   assert(alive_session_state_v3(&before));
-  assert(!alive_session_configure_v4(&config, nullptr, 0));
+  bad = config; bad.profile = bad.work_policy = 2;
+  assert(!alive_session_validate_prepared_v4(&bad, &graph, 1, nullptr, 0));
+  assert(!alive_session_configure_v4(&bad, nullptr, 0));
   assert(alive_session_state_v3(&after));
   assert(before.position == after.position &&
          before.preparation_revision == after.preparation_revision);
   assert(alive_session_reset());
+  assert(alive_session_configure_v4(&config, nullptr, 0));
+  AliveSessionStateV4 installed{};
+  installed.version = 4; installed.struct_bytes = sizeof installed;
+  assert(alive_session_state_v4(&installed));
+  assert(installed.profile == 1 && installed.preparation_revision == 2);
+  assert(ultra_external_start());
+  request.preparation_revision = 2; request.request_serial = 2;
+  receipt = {}; receipt.version = 4; receipt.struct_bytes = sizeof receipt;
+  assert(alive_session_request_v4(&request, &receipt));
+  assert(ultra_external_render(64, left, right));
+  assert(alive_session_state_v4(&installed) && installed.playing);
+  assert(installed.tracks[0].active_source == 0);
+  ultra_audio_stop();
+  assert(alive_session_reset());
   assert(ultra_canvas_close_document(0));
-  std::puts("PASS: v4 shipping admission remains disabled");
+  std::puts("PASS: measured v4 profile 1 admitted, profile 2 refused, v3 retained on refusal");
 }

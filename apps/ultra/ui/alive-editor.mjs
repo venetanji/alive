@@ -2,7 +2,7 @@ import {createNodeView,nodeConfiguration} from './canvas-node.mjs';
 import {nodeSpec,validatePatch} from './canvas-model.mjs';
 import {applyNodeAppearance} from './canvas-appearance-view.mjs';
 import {cablePath,cableBounds} from './canvas-cable-path.mjs';
-import {parameterReading} from './alive-model.mjs';
+import {parameterReading,actualDevices} from './alive-model.mjs';
 
 export function mountHostedEditor({doc=globalThis.document,win=globalThis.window,invoke=win?.__TAURI__?.core?.invoke}={}){
   const $=id=>doc.getElementById(id),make=(tag,cls,text)=>{const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
@@ -44,7 +44,7 @@ export function mountHostedEditor({doc=globalThis.document,win=globalThis.window
   function render(){
     if(!snapshot||!patch)return;
     const device=snapshot.deviceInstances[snapshot.instanceId].manifest,track=snapshot.document.tracks[snapshot.track],runtime=snapshot.state.devices[snapshot.deviceIndex];
-    $('hosted-title').textContent=`${track.name} / ${device.name}`;$('hosted-source').textContent=[track.device,...track.effects].find(d=>d.instanceId===snapshot.instanceId).path;doc.title=`${track.name} - Ultra Hosted Editor`;
+    $('hosted-title').textContent=`${track.name} / ${device.name}`;$('hosted-source').textContent=actualDevices(track).find(d=>d.instanceId===snapshot.instanceId).path;doc.title=`${track.name} - Ultra Hosted Editor`;
     const nextIdentity=JSON.stringify([snapshot.generation,snapshot.instanceId]);if(nextIdentity!==identity){identity=nextIdentity;path=[];buildControls();autoFit=true;}
     device.parameters.forEach((binding,index)=>{const view=controls.get(binding.key),reading=parameterReading(binding,runtime,index);if(doc.activeElement!==view.input)view.input.value=reading.base;view.output.textContent=`${reading.owner}: ${Number(reading.effective.toFixed(3))}${binding.unit?' '+binding.unit:''}`;view.group.classList.toggle('automated',reading.owner==='Automation');});
     const current=scope(),ids=new Set(current.nodes.map(n=>n.id));for(const[id,view]of views)if(!ids.has(id)){view.dispose();views.delete(id);}

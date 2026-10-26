@@ -441,7 +441,7 @@ void builder_validation() {
           sum += proof->contribution[t][which][m];
         assert(sum == (m == 5 ? proof->placement : proof->prepared.future[m])[which ? 1024 : 1]);
       }
-    assert(!owner->validate_v4(c));
+    assert(owner->validate_v4(c) == (tracks <= 2));
   }
   auto refused = [&](AliveSessionConfigV4 c, unsigned error) {
     assert(!owner->prepare_midi_envelopes_v4(c, *proof));
@@ -714,8 +714,9 @@ int main() {
   const auto c = sparse();
   auto proof = std::make_unique<ultra::workspace_admission::Proof>();
   assert(owner->prepare_midi_envelopes_v4(c, *proof));
-  assert(!owner->validate_v4(c));
+  assert(owner->validate_v4(c));
   assert(owner->prepare_midi_envelopes_v4(sparse(8), *proof));
+  assert(!owner->validate_v4(sparse(8)));
   std::printf("PASS: sources=%llu boundaries=%llu splices=%llu authority=%llu native=%llu accepted=%llu refused=%llu assertions=%llu\n",
               (unsigned long long)source_cases, (unsigned long long)boundary_cases,
               (unsigned long long)splice_cases, (unsigned long long)authority_cases,

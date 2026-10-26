@@ -807,7 +807,7 @@ fn checked_add(a: usize, b: usize) -> Result<usize, String> {
 /// Deterministic candidate only. Graph eligibility, manifest bindings and native
 /// preparation must succeed before a later controller may enable workspaces.
 pub fn prospective_from_document(document: &Document) -> Result<ProjectV4, String> {
-    let converted = document.map_to_clips();
+    let converted = document.map_to_clips()?;
     let Document::ClipsV3(clips) = &converted else {
         return Err("Expected prospective v3 clip document".into());
     };
@@ -834,17 +834,17 @@ pub fn prospective_from_document(document: &Document) -> Result<ProjectV4, Strin
     ];
     let mut project = ProjectV4 {
         format: "alive-session-v4".into(),
-        title: converted.title.clone(),
-        tempo: converted.tempo,
-        length_beats: converted.length_beats,
-        loop_enabled: converted.loop_enabled,
+        title: clips.common.title.clone(),
+        tempo: clips.common.tempo,
+        length_beats: clips.common.length_beats,
+        loop_enabled: clips.common.loop_enabled,
         loop_start_beats: 0.,
-        loop_end_beats: converted.length_beats,
+        loop_end_beats: clips.common.length_beats,
         tracks: vec![],
         sources: vec![],
         placements: vec![],
     };
-    for (index, track) in converted.tracks.iter().enumerate() {
+    for (index, track) in clips.common.tracks.iter().enumerate() {
         let bank = converted
             .bank(&track.id)
             .ok_or_else(|| format!("Missing bank for track '{}'", track.id))?;
@@ -883,7 +883,7 @@ pub fn prospective_from_document(document: &Document) -> Result<ProjectV4, Strin
                     track_id: track.id.clone(),
                     source_id,
                     start: 0.,
-                    duration: converted.length_beats,
+                    duration: clips.common.length_beats,
                     source_offset: SourceOffsetV4::Beats { value: 0. },
                     loop_enabled: true,
                 });
