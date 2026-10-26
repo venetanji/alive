@@ -243,8 +243,8 @@ function dom(file){
   const html=readFileSync(new URL(file,import.meta.url),'utf8');
   for(const[markup,tag,id]of html.matchAll(/<([\w-]+)\b[^>]*\bid="([^"]+)"[^>]*>/g)){const element=new Element(tag,doc);element.id=id;element.hidden=/\bhidden\b/.test(markup);const text=html.slice(html.indexOf(markup)+markup.length).match(/^[^<]+/);if(text)element.textContent=text[0];ids.set(id,element);}
   if(ids.has('master-meter'))ids.get('master-meter').append(doc.createElement('i'),doc.createElement('i'));
-  const timeouts=[],win={setTimeout:fn=>timeouts.push(fn),addEventListener(){},removeEventListener(){}};
-  return{doc,win,ids,find:label=>[...ids.values()].flatMap(e=>[e,...descendants(e)]).find(e=>e.attrs['aria-label']===label)};
+  const timeouts=[],win={setTimeout:(fn,delay)=>timeouts.push({fn,delay}),addEventListener(){},removeEventListener(){}};
+  return{doc,win,ids,timeouts,find:label=>[...ids.values()].flatMap(e=>[e,...descendants(e)]).find(e=>e.attrs['aria-label']===label)};
 }
 function state(editor=false){
   const document=JSON.parse(readFileSync(new URL('../../alive/examples/two-instruments.alive',import.meta.url),'utf8')),patch=JSON.parse(readFileSync(new URL('../examples/subtractive.ultra',import.meta.url),'utf8'));
@@ -287,6 +287,69 @@ function delayedBoundary(native,name,change,outcome='snapshot'){
     return outcome==='none'?null:structuredClone(native.snapshot);
   }};
 }
+
+const dependencyError='Dependency journey-utility.ultra changed. Restore the matching original, then Replace intended instances.';
+const snapshotError='Session state is temporarily unavailable';
+async function pollAlive(page){
+  const index=page.timeouts.findIndex(timer=>timer.delay===80);assert.notEqual(index,-1,'poll remains scheduled');
+  const [{fn}]=page.timeouts.splice(index,1);await fn();await settle();
+}
+for(const failFinalRefresh of [true,false])test(`file refusal survives ${failFinalRefresh?'rejected final refresh':'later periodic refresh failure'} and recovery`,async()=>{
+  const initial=clipState();initial.draft=structuredClone(initial.document);initial.draft.tracks[1].slots[0].notes[0].pitch=73;
+  initial.draftRevision=4;initial.history={canUndo:true,canRedo:false};
+  const page=dom('./alive.html'),native=backend(initial);let failSnapshot=false;
+  const invoke=async(name,args)=>{
+    if(name==='alive_file'){await native.invoke(name,args);failSnapshot=failFinalRefresh;throw Error(dependencyError);}
+    if(name==='alive_current'&&failSnapshot){await native.invoke(name,args);throw Error(snapshotError);}
+    return native.invoke(name,args);
+  };
+  const view=mountAlive({...page,invoke});await settle();await page.find('Select Harmony slot 1').fire('click');
+  const piano=page.ids.get('piano-roll'),note=descendants(piano).find(e=>e.attrs['data-note']==='0'&&e.attrs['data-part']==='body');
+  await piano.fire('pointerdown',{target:note,pointerId:4,clientX:10,clientY:15});await piano.fire('pointerup',{pointerId:4});
+  await page.ids.get('open').fire('click');
+  const status=page.ids.get('notice');
+  if(failFinalRefresh){assert.equal(status.textContent,`Error: ${dependencyError} Refresh delayed: Error: ${snapshotError}`);}
+  else assert.equal(status.textContent,`Error: ${dependencyError}`);
+  const pitch=page.find('Note 1 pitch');pitch.focus();pitch.value='74';failSnapshot=true;
+  await pollAlive(page);
+  assert.equal(status.textContent,`Error: ${dependencyError} Refresh delayed: Error: ${snapshotError}`);assert.equal(status.classList.contains('error'),true);
+  failSnapshot=false;native.snapshot.snapshotSequence='2';native.snapshot.state.absoluteFrame=4096;
+  native.snapshot.runtime.requests=[{preparationRevision:'1',requestSerial:'9',trackId:null,clipId:null,status:'applied',reason:0}];
+  await pollAlive(page);
+  assert.equal(status.textContent,`Error: ${dependencyError}`);assert.equal(status.classList.contains('error'),true);
+  assert.equal(view.model.snapshot().state.absoluteFrame,4096);assert.deepEqual(view.model.document(),initial.draft);
+  assert.equal(page.find('Select Harmony slot 1').attrs['aria-pressed'],'true');
+  assert.equal(page.ids.get('note-velocity').disabled,false,'selected note survives rejected file and polls');
+  assert.equal(page.find('Note 1 pitch'),pitch);assert.equal(pitch.value,'74');
+  assert.deepEqual(native.calls.filter(c=>c.name==='alive_file').map(c=>c.args),[{action:'open',generation:1,draftRevision:4}]);
+  assert.equal(native.calls.filter(c=>!['alive_file','alive_current'].includes(c.name)).length,0);view.dispose();
+});
+
+test('successful file keeps its result with failed refresh and clears only refresh health on recovery',async()=>{
+  const page=dom('./alive.html'),native=backend(state());let failSnapshot=false;
+  const invoke=async(name,args)=>{
+    const result=await native.invoke(name,args);
+    if(name==='alive_file'){failSnapshot=true;native.snapshot.dirty=false;}
+    if(name==='alive_current'&&failSnapshot)throw Error(snapshotError);
+    return result;
+  };
+  const view=mountAlive({...page,invoke});await settle();await page.ids.get('save').fire('click');
+  const status=page.ids.get('notice');assert.equal(status.textContent,`Session saved. Refresh delayed: Error: ${snapshotError}`);assert.equal(status.classList.contains('error'),true);
+  failSnapshot=false;await pollAlive(page);
+  assert.equal(status.textContent,'Session saved.');assert.equal(status.classList.contains('error'),false);
+  assert.equal(native.calls.filter(c=>c.name==='alive_file').length,1);view.dispose();
+});
+
+test('ordinary periodic refresh retains ready status and a later explicit file action replaces an old refusal',async()=>{
+  const page=dom('./alive.html'),native=backend(state());let refuse=true;
+  const invoke=async(name,args)=>{const result=await native.invoke(name,args);if(name==='alive_file'&&refuse)throw Error(dependencyError);return result;};
+  const view=mountAlive({...page,invoke});await settle();const status=page.ids.get('notice'),ready=status.textContent;
+  native.snapshot.state.absoluteFrame=4096;await pollAlive(page);assert.equal(view.model.snapshot().state.absoluteFrame,4096);assert.equal(status.textContent,ready);
+  await page.ids.get('open').fire('click');assert.equal(status.textContent,`Error: ${dependencyError}`);
+  refuse=false;await page.ids.get('save').fire('click');assert.equal(status.textContent,'Session saved.');assert.equal(status.classList.contains('error'),false);
+  await pollAlive(page);assert.equal(status.textContent,'Session saved.');
+  assert.deepEqual(native.calls.filter(c=>c.name==='alive_file').map(c=>c.args.action),['open','save']);view.dispose();
+});
 
 test('queued Add note cannot cross successful removal into a reused track index',async()=>{
   const initial=state();initial.state.playing=0;

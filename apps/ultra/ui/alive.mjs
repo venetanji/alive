@@ -9,8 +9,10 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   const workspace=mountWorkspace({doc,win});
   let selectedSlots=new Map(),selectionToken=0,activeEditClip=null,selectedNote=null,gesture=null,preview=null,pianoGeometry=null,velocityCanceled=false,listRevision=0,scopeRevision=0,transportRequestKey='';
   const trackViews=[],chainViews=[],parameterViews=new Map(),diagnostics=new Map();let audioSettings;
-  function notice(text,error=false){$('notice').textContent=String(text);$('notice').classList.toggle('error',error);}
-  function enqueue(work){const result=queue.then(work);queue=result.catch(error=>notice(error,true));return result;}
+  let operationText=$('notice').textContent,operationError=false,noticeOwner=null,refreshError='';
+  function renderNotice(){$('notice').textContent=[operationText,refreshError&&`Refresh delayed: ${refreshError}`].filter(Boolean).join(' ');$('notice').classList.toggle('error',operationError||!!refreshError);}
+  function notice(text,error=false,owner=null){operationText=String(text);operationError=error;noticeOwner=owner;renderNotice();}
+  function enqueue(work,background=false){const result=queue.then(work);queue=result.catch(error=>{if(!background)notice(error,true);});return result;}
   function generation(){return model.snapshot()?.generation;}
   function command(name,args={}){return invoke(name,{...args,generation:generation(),...(['alive_transport','alive_clip_action'].includes(name)?{preparationRevision:model.snapshot()?.preparationRevision}:{}),...(['alive_edit','alive_clip_edit','alive_enable_clips','alive_history','alive_apply','alive_discard','alive_file','alive_device'].includes(name)?{draftRevision:model.snapshot()?.draftRevision??0}:{})});}
   function commitFocused(){if(doc.activeElement?.matches('input'))doc.activeElement.blur();}
@@ -68,22 +70,29 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       preview=null;musicKey='';render();
     });
   }
+  async function current(){
+    try{const snapshot=await invoke('alive_current');refreshError='';renderNotice();return snapshot;}
+    catch(error){refreshError=String(error);renderNotice();throw error;}
+  }
   async function refresh(){
-    const snapshot=await invoke('alive_current');
+    const snapshot=await current();
     if(gesture&&(snapshot.generation!==gesture.generation||(snapshot.draftRevision??0)!==gesture.revision)){if(gesture.kind==='velocity')velocityCanceled=true;gesture=null;preview=null;selectedNote=null;musicKey='';}
     const before=model.snapshot();model.accept(snapshot);
     invalidateScope(before);
     render();return snapshot;
   }
   function file(action){commitFocused();cancelGesture();return enqueue(async()=>{
-    let result;
-    try{result=await command('alive_file',{action});}
-    finally{applySnapshot(await invoke('alive_current'));trackKey=musicKey=parameterKey='';selectedNote=null;render();}
+    let result,failure,failed=false,snapshot;
+    try{result=await command('alive_file',{action});}catch(error){failure=error;failed=true;}
+    // Reconcile inner accepted boundaries even when the outer file action fails.
+    try{snapshot=await current();}catch{}
+    if(snapshot){applySnapshot(snapshot);if(result){trackKey=musicKey=parameterKey='';selectedNote=null;}render();}
+    if(failed)throw failure;
     if(result)notice(action.startsWith('save')?'Session saved.':'Session ready.');
   });}
   function transport(action){return enqueue(async()=>{
     const result=await command('alive_transport',{action,beat:Number($('seek').value)});await refresh();
-    if(result?.requestSerial){const observed=observedRequest(result);notice(`Transport ${requestText(observed,model.snapshot())}`,observed.status==='rejected');}
+    if(result?.requestSerial){const observed=observedRequest(result);notice(`Transport ${requestText(observed,model.snapshot())}`,observed.status==='rejected','transport');}
     else notice(action==='start'?(model.pending()?'Playing the prepared schedule. Pending edits remain unapplied.':'Transport playing.'):action==='stop'?'Transport stop requested.':'Transport seek queued.');
   });}
   function paintPiano(svg,notes,length,detailed=false){
@@ -160,7 +169,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     const request=snapshot.runtime?.requests.filter(r=>r.trackId===null&&r.sceneSlot==null).at(-1);
     if(!request){transportRequestKey='';return;}
     const key=JSON.stringify(request);if(key===transportRequestKey)return;transportRequestKey=key;
-    notice(`Transport ${requestText(request,snapshot)}`,request.status==='rejected');
+    if(noticeOwner==='transport')notice(`Transport ${requestText(request,snapshot)}`,request.status==='rejected','transport');
   }
   function clipAction(action){return enqueue(async()=>{const result=await command('alive_clip_action',{action});await refresh();if(result){const observed=observedRequest(result);notice(requestText(observed,model.snapshot()),observed.status==='rejected');}});}
   const creatingSlots=new Set();
@@ -433,7 +442,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   let unlisten=null;
   if(win?.__TAURI__?.event?.listen)win.__TAURI__.event.listen('alive-close-requested',()=>{guard(()=>file('quit'))();}).then(fn=>{unlisten=fn;});
   win?.addEventListener('blur',cancelGesture);
-  async function poll(){if(disposed)return;try{await enqueue(refresh);}catch{}if(!disposed)win.setTimeout(poll,80);}
+  async function poll(){if(disposed)return;try{await enqueue(refresh,true);}catch{}if(!disposed)win.setTimeout(poll,80);}
   async function pollMeasurements(){
     if(disposed)return;
     if($('audio-details').open&&$('stream-measurements').open){
@@ -443,7 +452,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     if(!disposed)win.setTimeout(pollMeasurements,1000);
   }
   if(invoke)win.setTimeout(pollMeasurements,1000);
-  if(invoke){enqueue(refresh).then(()=>notice('Ready. Select a clip to edit notes or automation.')).catch(()=>{});win.setTimeout(poll,80);}else notice('Open the native app with bash apps/alive/run.sh. This page does not synthesize audio.',true);
+  if(invoke){enqueue(refresh,true).then(()=>notice('Ready. Select a clip to edit notes or automation.')).catch(()=>{});win.setTimeout(poll,80);}else notice('Open the native app with bash apps/alive/run.sh. This page does not synthesize audio.',true);
   return{model,refresh,dispose(){disposed=true;workspace.dispose();win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};
 }
 if(globalThis.document)mountAlive();
