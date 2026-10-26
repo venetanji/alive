@@ -807,8 +807,7 @@ fn checked_add(a: usize, b: usize) -> Result<usize, String> {
 /// Deterministic candidate only. Graph eligibility, manifest bindings and native
 /// preparation must succeed before a later controller may enable workspaces.
 pub fn prospective_from_document(document: &Document) -> Result<ProjectV4, String> {
-    let converted = document.to_clips()?;
-    converted.validate_clips()?;
+    let converted = document.map_to_clips();
     let Document::ClipsV3(clips) = &converted else {
         return Err("Expected prospective v3 clip document".into());
     };
@@ -849,6 +848,14 @@ pub fn prospective_from_document(document: &Document) -> Result<ProjectV4, Strin
         let bank = converted
             .bank(&track.id)
             .ok_or_else(|| format!("Missing bank for track '{}'", track.id))?;
+        if let Some(default) = &bank.default_clip_id {
+            if !bank.slots.iter().flatten().any(|clip| &clip.id == default) {
+                return Err(format!(
+                    "Saved default '{default}' must name a clip on track '{}'",
+                    track.id
+                ));
+            }
+        }
         let mut slots: [Option<SlotV4>; 4] = std::array::from_fn(|_| None);
         for (slot_number, clip) in bank.slots.iter().enumerate() {
             let Some(clip) = clip else {
@@ -902,14 +909,27 @@ pub fn prospective_from_document(document: &Document) -> Result<ProjectV4, Strin
     project.validate()?;
     Ok(project)
 }
-/// Uses the unchanged old decoder; v1 performs its existing strict source resolution.
+/// Shares strict v3 wire decoding without native admission; v1/v2 use the unchanged
+/// old decoder, including v1's existing strict source resolution.
 /// This does not open/install a v4 document or prove its runtime admission.
 pub fn prospective_from_legacy_text(
     text: &str,
     origin: &std::path::Path,
 ) -> Result<ProjectV4, String> {
     check_size(text.len())?;
-    prospective_from_document(&super::persistence::decode(text, origin)?)
+    // This header only selects the full decoder; it never replaces wire validation.
+    #[derive(Deserialize)]
+    struct Format {
+        format: String,
+    }
+    let format: Format =
+        serde_json::from_str(text).map_err(|e| format!("Invalid Alive session JSON: {e}"))?;
+    let document = if format.format == "alive-session-v3" {
+        super::clips::decode_v3_candidate(text)?
+    } else {
+        super::persistence::decode(text, origin)?
+    };
+    prospective_from_document(&document)
 }
 fn identity(prefix: &str, parts: &[&str]) -> String {
     use sha2::{Digest, Sha256};

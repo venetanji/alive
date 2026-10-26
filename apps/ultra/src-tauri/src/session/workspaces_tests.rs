@@ -796,3 +796,235 @@ fn occupied_slot_names_identity_and_delete_assign_mints_a_new_occurrence() {
         "source"
     );
 }
+
+fn legacy_v3_tracks(count: usize) -> Document {
+    let v = replicated(count);
+    let tracks: Vec<_> = v["tracks"].as_array().unwrap().iter().zip(v["sources"].as_array().unwrap()).map(|(track, source)| {
+        json!({"id":track["id"],"name":track["name"],"device":track["chain"]["instrument"],"effects":[],
+            "slots":[{"id":track["slots"][0]["id"],"name":"Clip","lengthBeats":4.,"notes":source["notes"],"automation":[]},null,null,null],
+            "defaultClipId":track["slots"][0]["id"],"gain":1.,"mute":false,"solo":false})
+    }).collect();
+    serde_json::from_value(json!({"format":"alive-session-v3","title":"Prospective","tempo":120.,"lengthBeats":8.,"loopEnabled":false,"tracks":tracks})).unwrap()
+}
+
+fn legacy_v2_tracks(count: usize) -> Document {
+    let Document::ClipsV3(clips) = legacy_v3_tracks(count) else {
+        panic!()
+    };
+    let mut common = clips.common;
+    common.format = "alive-session-v2".into();
+    for (track, bank) in common.tracks.iter_mut().zip(clips.banks) {
+        track.notes = bank.slots[0]
+            .as_ref()
+            .unwrap()
+            .notes
+            .iter()
+            .map(|note| super::super::Note {
+                beat: note.beat,
+                duration: note.duration,
+                pitch: note.pitch,
+                velocity: note.velocity,
+            })
+            .collect();
+    }
+    Document::LegacyV2(common)
+}
+
+#[cfg(target_os = "linux")]
+#[test]
+fn prospective_conversion_survives_unavailable_or_smaller_native_v3_admission() {
+    const TEST: &str = "session::workspaces::tests::prospective_conversion_survives_unavailable_or_smaller_native_v3_admission";
+    if let Ok(mode) = std::env::var("ALIVE_TEST_V3_ADMISSION") {
+        use super::super::native;
+        // Prove the preload intercepted the real ABI before testing candidate behavior.
+        assert!(native::clip_limits(native::V3_PROFILE_8X4).is_err());
+        if mode == "none" {
+            assert!(native::clip_capacity().is_err());
+        } else {
+            assert_eq!(mode, "small");
+            assert_eq!(native::clip_capacity().unwrap().max_tracks, 2);
+        }
+        println!("Native capability restriction verified: {mode}");
+        let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../alive/examples/two-instruments.alive");
+        let input = std::env::var("ALIVE_TEST_V3_INPUT").unwrap();
+        let candidate = match input.as_str() {
+            "v2-document" => {
+                let old = legacy_v2_tracks(4);
+                let before = old.clone();
+                let result = prospective_from_document(&old);
+                assert!(old.to_clips().is_err()); // Ordinary v3 upgrade retains its admission gate.
+                assert_eq!(old, before);
+                result.unwrap()
+            }
+            "v3-document" => {
+                let old = legacy_v3_tracks(4);
+                let before = old.clone();
+                let result = prospective_from_document(&old);
+                assert!(old.validate_clips().is_err());
+                assert_eq!(old, before);
+                result.unwrap()
+            }
+            "v2-text" => {
+                let text = serde_json::to_string(&legacy_v2_tracks(4)).unwrap();
+                let decoded = super::super::persistence::decode(&text, &path).unwrap();
+                assert!(!decoded.is_clips());
+                prospective_from_legacy_text(&text, &path).unwrap()
+            }
+            "v3-text" => {
+                let text = serde_json::to_string(&legacy_v3_tracks(4)).unwrap();
+                assert!(super::super::persistence::decode(&text, &path).is_err());
+                prospective_from_legacy_text(&text, &path).unwrap()
+            }
+            "v1-text" => {
+                let text = std::fs::read_to_string(&path).unwrap();
+                assert!(text.contains("alive-session-v1"));
+                assert!(super::super::persistence::decode(&text, &path).is_ok());
+                prospective_from_legacy_text(&text, &path).unwrap()
+            }
+            _ => panic!("Unexpected child input"),
+        };
+        assert_eq!(
+            candidate.tracks.len(),
+            if input == "v1-text" { 2 } else { 4 }
+        );
+        candidate.validate().unwrap();
+        println!("Capability refusal verified ({mode}); {input} prospective candidate succeeds");
+        return;
+    }
+    let folder =
+        std::env::temp_dir().join(format!("alive-v4-native-refusal-{}", std::process::id()));
+    std::fs::create_dir_all(&folder).unwrap();
+    let source = folder.join("refuse-v3-admission.c");
+    let library = folder.join("refuse-v3-admission.so");
+    // Only this query is interposed; every other symbol still uses the real engine.
+    std::fs::write(
+        &source,
+        r#"
+#define _GNU_SOURCE
+#include <dlfcn.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+int alive_session_limits_v3(uint32_t profile, void *limits) {
+    const char *mode = getenv("ALIVE_TEST_V3_ADMISSION");
+    if (mode && (!strcmp(mode, "none") || profile == 2)) return 0;
+    int (*real_query)(uint32_t, void *) = dlsym(RTLD_NEXT, "alive_session_limits_v3");
+    return real_query ? real_query(profile, limits) : 0;
+}
+"#,
+    )
+    .unwrap();
+    let compiled = std::process::Command::new("cc")
+        .args(["-shared", "-fPIC"])
+        .arg(&source)
+        .args(["-ldl", "-o"])
+        .arg(&library)
+        .output()
+        .unwrap();
+    assert!(
+        compiled.status.success(),
+        "{}",
+        String::from_utf8_lossy(&compiled.stderr)
+    );
+    println!(
+        "Interposer compile: cc -shared -fPIC {} -ldl -o {}",
+        source.display(),
+        library.display()
+    );
+    let preload = match std::env::var_os("LD_PRELOAD") {
+        Some(existing) => format!("{}:{}", library.display(), existing.to_string_lossy()),
+        None => library.display().to_string(),
+    };
+    let mut failures = Vec::new();
+    println!(
+        "Child executable: {} --exact {TEST} --nocapture; LD_PRELOAD={preload}",
+        std::env::current_exe().unwrap().display()
+    );
+    for mode in ["none", "small"] {
+        for input in [
+            "v2-document",
+            "v3-document",
+            "v1-text",
+            "v2-text",
+            "v3-text",
+        ] {
+            let output = std::process::Command::new(std::env::current_exe().unwrap())
+                .args(["--exact", TEST, "--nocapture"])
+                .env("LD_PRELOAD", &preload)
+                .env("ALIVE_TEST_V3_ADMISSION", mode)
+                .env("ALIVE_TEST_V3_INPUT", input)
+                .output()
+                .unwrap();
+            println!(
+                "Child ALIVE_TEST_V3_ADMISSION={mode} ALIVE_TEST_V3_INPUT={input}: {}",
+                String::from_utf8_lossy(&output.stdout)
+            );
+            if !output.status.success() {
+                failures.push(format!(
+                    "{mode}/{input}: {}\n{}",
+                    String::from_utf8_lossy(&output.stdout),
+                    String::from_utf8_lossy(&output.stderr)
+                ));
+            }
+        }
+    }
+    std::fs::remove_dir_all(folder).unwrap();
+    assert!(failures.is_empty(), "{}", failures.join("\n"));
+}
+
+#[test]
+fn prospective_conversion_keeps_pure_bank_default_and_strict_text_rejections() {
+    let original = legacy_v3_tracks(2);
+    for case in [
+        "missing-bank",
+        "duplicate-bank",
+        "unknown-bank",
+        "missing-default",
+        "cross-track-default",
+        "duplicate-identity",
+    ] {
+        let mut old = original.clone();
+        let Document::ClipsV3(clips) = &mut old else {
+            panic!()
+        };
+        match case {
+            "missing-bank" => {
+                clips.banks.pop();
+            }
+            "duplicate-bank" => clips.banks[1] = clips.banks[0].clone(),
+            "unknown-bank" => clips.banks[1].track_id = "absent".into(),
+            "missing-default" => clips.banks[0].default_clip_id = Some("absent".into()),
+            "cross-track-default" => {
+                clips.banks[0].default_clip_id = clips.banks[1].default_clip_id.clone()
+            }
+            "duplicate-identity" => {
+                clips.banks[0].slots[0].as_mut().unwrap().notes[0].id = "track-0".into()
+            }
+            _ => unreachable!(),
+        }
+        let before = old.clone();
+        assert!(prospective_from_document(&old).is_err(), "{case}");
+        assert_eq!(old, before);
+    }
+    let origin = std::path::Path::new("/unused.alive");
+    let wire = serde_json::to_string(&original).unwrap();
+    let duplicate = wire.replacen("\"cutoff\":500.0", "\"cutoff\":500.0,\"cutoff\":600.0", 1);
+    assert_ne!(duplicate, wire);
+    assert!(prospective_from_legacy_text(&duplicate, origin).is_err());
+    for field in ["defaultClipId", "slots", "gain"] {
+        let mut bad = serde_json::to_value(&original).unwrap();
+        bad["tracks"][0].as_object_mut().unwrap().remove(field);
+        assert!(
+            prospective_from_legacy_text(&bad.to_string(), origin).is_err(),
+            "{field}"
+        );
+    }
+    let mut bad = serde_json::to_value(&original).unwrap();
+    bad["tracks"][0]["unknown"] = json!(0);
+    assert!(prospective_from_legacy_text(&bad.to_string(), origin).is_err());
+    assert!(
+        prospective_from_legacy_text(&format!("{wire}{}", " ".repeat(1024 * 1024)), origin)
+            .is_err()
+    );
+}

@@ -60,13 +60,18 @@ impl Document {
     pub fn bank_mut(&mut self,id:&str)->Option<&mut ClipBank> {match self {Self::ClipsV3(s)=>s.banks.iter_mut().find(|b|b.track_id==id),_=>None}}
     pub fn to_clips(&self)->Result<Self,String> {
         if self.is_clips(){return Ok(self.clone());}
+        let document=self.map_to_clips();document.validate_clips()?;Ok(document)
+    }
+    // Shared deterministic mapping; callers apply their own model/admission checks.
+    pub(super) fn map_to_clips(&self)->Self {
+        if self.is_clips(){return self.clone();}
         let mut common=self.deref().clone();common.format="alive-session-v3".into();
         let banks=common.tracks.iter_mut().map(|t| {
             let id=identity("clip", &["alive-v2-v3-clip", &t.id]);
             let notes=t.notes.drain(..).enumerate().map(|(index,n)|ClipNote{id:identity("note", &["alive-v2-v3-note",&t.id,&index.to_string()]),beat:n.beat,duration:n.duration,pitch:n.pitch,velocity:n.velocity}).collect();
             ClipBank{track_id:t.id.clone(),slots:[Some(Clip{id:id.clone(),name:"Clip 1".into(),length_beats:self.length_beats,notes,automation:std::mem::take(&mut t.automation)}),None,None,None],default_clip_id:Some(id)}
         }).collect();
-        let document=Self::ClipsV3(ClipDocument{common,banks});document.validate_clips()?;Ok(document)
+        Self::ClipsV3(ClipDocument{common,banks})
     }
     pub fn validate_clips(&self)->Result<(),String> {
         if !self.is_clips(){return Ok(());}
@@ -154,9 +159,13 @@ pub(super) fn guard_identities(candidate:&Document,current:&Document)->Result<()
     }Ok(())
 }
 pub(super) fn decode_v3(text:&str)->Result<Document,String> {
+    let doc=decode_v3_candidate(text)?;doc.validate_clips()?;Ok(doc)
+}
+// Strict original-text decoding shared by old admission and prospective v4 conversion.
+pub(super) fn decode_v3_candidate(text:&str)->Result<Document,String> {
     reject_duplicates(text)?;
     let wire:Wire=serde_json::from_str(text).map_err(|e|format!("Invalid Alive v3 session JSON: {e}"))?;
-    let doc=Document::from_wire(wire);doc.validate_clips()?;Ok(doc)
+    Ok(Document::from_wire(wire))
 }
 // This pass runs only on v3, before a Value could discard duplicate map members.
 fn reject_duplicates(text:&str)->Result<(),String> {
