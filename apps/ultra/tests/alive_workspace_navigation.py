@@ -3,24 +3,24 @@ import re
 from gi.repository import Atspi
 
 
-def install(ui, windows, select_device, observe_replace=None, observe_editor=None):
+def install(ui, windows, select_device, activate_disclosure, observe_replace=None, observe_editor=None):
     click, text = ui.click, ui.text
     diagnostic = {'Audio backend', 'Audio device', 'Audio sample rate', 'Audio buffer frames',
                   'Audio callbacks', 'Audio stream errors', 'Audio failed', 'Audio status',
                   'Transport playing', 'Absolute frame', 'Rejected commands', 'Native generation',
                   'Stream diagnostics'}
 
-    def expand(name):
+    def expand(name, activate=click):
         control = ui.wait_for(name)
         if not control.get_state_set().contains(Atspi.StateType.EXPANDED):
-            click(name)
+            activate(name)
 
     def prepare(name):
         if windows.scope != 'Alive':
             return
         runtime = re.fullmatch(r'(.+) clip runtime', name)
         if runtime:
-            expand(runtime.group(1) + ' runtime details')
+            expand(runtime.group(1) + ' runtime details', activate_disclosure)
             return
         scene = re.fullmatch(r'(?:Scene (\d+) request|Prepared scene (\d+))', name)
         if scene:

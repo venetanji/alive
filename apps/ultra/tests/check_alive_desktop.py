@@ -27,6 +27,7 @@ from alive_workspace_navigation import install as install_workspace_navigation
 
 prepare_workspace_control = install_workspace_navigation(
     ui, windows, select_device=lambda name: select_device_click(name),
+    activate_disclosure=lambda name: native_control_click(name, 'disclosure', record_disclosure_input),
     observe_replace=lambda *args: observe_replace_input(*args),
     observe_editor=lambda *args: observe_editor_input(*args))
 timing = None
@@ -37,6 +38,7 @@ operations = []
 native_inputs = []
 editor_observation = None
 editor_observation_failures = []
+disclosure_observation_failures = []
 resource_sampler = None
 resource_groups = None
 resource_writer = None
@@ -144,6 +146,19 @@ def input_record(action, **fields):
     native_inputs.append(row)
     (ui.output / 'native-inputs.json').write_text(json.dumps(native_inputs, indent=2))
     return row
+
+
+def record_disclosure_input(action, **fields):
+    """Keep receipt failures outside native readiness and activation failures."""
+    try:
+        return input_record(action, **fields)
+    except Exception as error:
+        try:
+            if len(disclosure_observation_failures) < 3:
+                disclosure_observation_failures.append({'action': action, 'unavailable': True,
+                    'error_type': type(error).__name__, 'error': str(error)[:512]})
+        except Exception:
+            pass
 
 
 def window_property(window, name, kind):
@@ -383,8 +398,10 @@ def reorder_point(control):
     return [rect.x, rect.y, rect.width, rect.height], (rect.x + rect.width // 2, rect.y + rect.height // 2)
 
 
-def native_control_click(name, kind):
+def native_control_click(name, kind, record=None):
     """Dismiss native tooltip occlusion before one owned Alive pointer click."""
+    if record is None:
+        record = input_record
     prepare_workspace_control(name)
     assert windows.scope == MAIN, 'Native input is scoped to the Alive main frame'
     owner = owned_frame_window(); control = ui.wait_for(name)
@@ -409,14 +426,14 @@ def native_control_click(name, kind):
                 finally:
                     assert ui.t.XTestFakeButtonEvent(ui.display, 1, 0, 0)
                     ui.x.XFlush(ui.display)
-                return input_record(kind + ' click', name=name, owner=owner, samples=samples,
-                                    presses=1, releases=1, final_rect=rect)
+                return record(kind + ' click', name=name, owner=owner, samples=samples,
+                              presses=1, releases=1, final_rect=rect)
         except (StopIteration, LookupError, GLib.GError) as error:
             sample = {'unavailable': str(error)}
             if not samples or sample != samples[-1]:
                 samples.append(sample)
         time.sleep(.01)
-    input_record(kind + ' blocked', name=name, owner=owner, samples=samples, presses=0, releases=0)
+    record(kind + ' blocked', name=name, owner=owner, samples=samples, presses=0, releases=0)
     screenshot(kind.replace(' ', '-') + '-input-blocked.png')
     raise AssertionError('Native ' + kind + ' target remains occluded or unavailable: ' + name)
 

@@ -52,6 +52,19 @@ def saved(name):
     return path, json.loads(path.read_text())
 
 
+def launch_at_observable_phase(name):
+    """Leave most of the next native bar for the original pending observation."""
+    position = ui.wait_for('Transport position')
+    deadline = time.monotonic() + 8
+    while time.monotonic() < deadline:
+        beat = float(Atspi.Text.get_text(position, 0, -1).split()[0])
+        if .15 <= beat % 4 <= 1:
+            ui.click(name)
+            return beat
+        time.sleep(.01)
+    raise AssertionError('Transport did not reach an early bar phase for pending observation')
+
+
 def run():
     windows.focus(alive.MAIN)
     ui.wait_for('Select Pulse slot 4')
@@ -102,9 +115,10 @@ def run():
     alive.reorder_click('Launch Pulse Clip 1')
     alive.wait_value('Pulse clip runtime', lambda s: 'Cued Clip 1 /' in s and 'applied' in s)
     observed('Pulse clip runtime'); assert alive.value('Transport playing') == 'false'
-    alive.transport('start')
+    # Port discovery and linking must finish before the transient launch window.
     capture = alive.start_capture('clips-rendered')
-    ui.click('Launch Pulse Clip 1 copy')
+    alive.transport('start')
+    launch_at_observable_phase('Launch Pulse Clip 1 copy')
     alive.wait_value('Pulse clip runtime', lambda s: 'pending launch' in s)
     observed('Pulse clip runtime')
     alive.wait_value('Pulse clip runtime', lambda s: 'Playing Clip 1 copy' in s and 'applied' in s)

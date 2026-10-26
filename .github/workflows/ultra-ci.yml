@@ -178,6 +178,24 @@ jobs:
           path: apps/ultra/build/session-desktop-evidence/
           if-no-files-found: warn
           retention-days: 7
+      - name: Verify native clip observation boundaries and failure isolation
+        timeout-minutes: 4
+        env:
+          ULTRA_TEST_ALIVE: '1'
+          ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_clip_observation.py
+        run: |
+          bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/clip-observation-evidence/normal"
+          ALIVE_TEST_DISCLOSURE_WRITE_ERROR=1 bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/clip-observation-evidence/write-error"
+          ALIVE_TEST_DISCLOSURE_WRITE_ERROR=1 ALIVE_TEST_DISCLOSURE_BLOCKED=1 bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/clip-observation-evidence/blocked"
+          ALIVE_TEST_DISCLOSURE_INPUT_ERROR=1 bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/clip-observation-evidence/input-error"
+      - name: Save native clip observation boundary evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: alive-clip-observation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/clip-observation-evidence/
+          if-no-files-found: warn
+          retention-days: 7
       - name: Exercise saved clips, stream epochs and bounded measurements in Alive
         timeout-minutes: 5
         env:
