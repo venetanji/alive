@@ -1,0 +1,71 @@
+[
+  {
+    "name": "review-red",
+    "command": [
+      "xvfb-run",
+      "-a",
+      "python3",
+      "/tmp/alive-workspaces-chooser-ci-fix/fix-1/review-repro.py"
+    ],
+    "exit": 1
+  },
+  {
+    "name": "review-green",
+    "command": [
+      "xvfb-run",
+      "-a",
+      "python3",
+      "/tmp/alive-workspaces-chooser-ci-fix/fix-1/review-repro-green.py"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "default-handler",
+    "command": [
+      "xvfb-run",
+      "-a",
+      "python3",
+      "/tmp/alive-workspaces-chooser-ci-fix/fix-1/default-handler-repro.py"
+    ],
+    "exit": 1
+  },
+  {
+    "name": "native-red",
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-chooser-ci-fix/fix-1/native-red"
+    ],
+    "environment": {
+      "ULTRA_TEST_ALIVE": "1",
+      "ULTRA_TEST_SCRIPT": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_chooser_diagnostics.py"
+    },
+    "exit": 1
+  },
+  {
+    "name": "root-red",
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-chooser-ci-fix/fix-1/root-red"
+    ],
+    "environment": {
+      "ULTRA_TEST_ALIVE": "1",
+      "ULTRA_TEST_SCRIPT": "/tmp/alive-workspaces-chooser-ci-fix/fix-1/root-repro.py"
+    },
+    "exit": 1
+  },
+  {
+    "name": "native-green",
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-chooser-ci-fix/fix-1/native-green"
+    ],
+    "environment": {
+      "ULTRA_TEST_ALIVE": "1",
+      "ULTRA_TEST_SCRIPT": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_chooser_diagnostics.py"
+    },
+    "exit": 0
+  }
+]

@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: file refusal survives rejected final refresh and recovery
+not ok 1 - file refusal survives rejected final refresh and recovery
+  ---
+  duration_ms: 25.212857
+  type: 'test'
+  location: '/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-dom.test.mjs:297:44'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'Error: Session state is temporarily unavailable'
+    - 'Error: Dependency journey-utility.ultra changed. Restore the matching original, then Replace intended instances. Refresh delayed: Error: Session state is temporarily unavailable'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'Error: Dependency journey-utility.ultra changed. Restore the matching original, then Replace intended instances. Refresh delayed: Error: Session state is temporarily unavailable'
+  actual: 'Error: Session state is temporarily unavailable'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-dom.test.mjs:311:31)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: file refusal survives later periodic refresh failure and recovery
+not ok 2 - file refusal survives later periodic refresh failure and recovery
+  ---
+  duration_ms: 12.429865
+  type: 'test'
+  location: '/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-dom.test.mjs:297:44'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'Error: Session state is temporarily unavailable'
+    - 'Error: Dependency journey-utility.ultra changed. Restore the matching original, then Replace intended instances. Refresh delayed: Error: Session state is temporarily unavailable'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'Error: Dependency journey-utility.ultra changed. Restore the matching original, then Replace intended instances. Refresh delayed: Error: Session state is temporarily unavailable'
+  actual: 'Error: Session state is temporarily unavailable'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-dom.test.mjs:315:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: successful file keeps its result with failed refresh and clears only refresh health on recovery
+not ok 3 - successful file keeps its result with failed refresh and clears only refresh health on recovery
+  ---
+  duration_ms: 5.246881
+  type: 'test'
+  location: '/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-dom.test.mjs:327:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'Error: Session state is temporarily unavailable'
+    - 'Session saved. Refresh delayed: Error: Session state is temporarily unavailable'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'Session saved. Refresh delayed: Error: Session state is temporarily unavailable'
+  actual: 'Error: Session state is temporarily unavailable'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-dom.test.mjs:336:46)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ordinary periodic refresh retains ready status and a later explicit file action replaces an old refusal
+ok 4 - ordinary periodic refresh retains ready status and a later explicit file action replaces an old refusal
+  ---
+  duration_ms: 6.930297
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 1
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 136.181023

@@ -1,0 +1,27 @@
+{
+  "commit": "0d9ccd6e82e01d9144d1ed1e3d255d01d16af2f9",
+  "verified_artifacts": 120,
+  "source_binary_checks": {
+    "apps/ultra/tests/check_alive_desktop.py": "committed_blob",
+    "apps/ultra/tests/check_alive_chooser_diagnostics.py": "committed_blob",
+    "apps/ultra/tests/check_canvas_desktop.py": "committed_blob",
+    "apps/ultra/tests/alive_workspace_navigation.py": "committed_blob",
+    "apps/ultra/tests/check_alive_native_input.py": "committed_blob",
+    "apps/ultra/src-tauri/target/release/alive": "current_binary",
+    "apps/ultra/src-tauri/target/release/libultra_native.so": "current_binary",
+    "apps/ultra/tests/check_canvas_desktop.sh": "committed_blob",
+    "apps/ultra/ui/alive.mjs": "committed_blob",
+    "apps/ultra/ui/alive.css": "committed_blob",
+    "apps/ultra/ui/alive.html": "committed_blob",
+    "apps/ultra/ui/alive-workspace.mjs": "committed_blob"
+  },
+  "capture": {
+    "path": "/tmp/alive-workspaces-chooser-ci-fix/fix-1/full-original/native-walkthrough.f32",
+    "frames": 4204544,
+    "peak": 0.35335424542427063,
+    "unequal_stereo_frames": 0,
+    "sha256": "ac523871bbd8229c727cb68ed4e1b0305c5f4a65606067f28a3454f4059cb430"
+  },
+  "full_original_exit": 1,
+  "independent_review": "approved for diagnostic repair only; full native journey remains failed"
+}

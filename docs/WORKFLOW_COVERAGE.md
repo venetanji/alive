@@ -1,7 +1,7 @@
 # Current Alive / Ultra Workflow Coverage
 
 Updated 2026-10-27 against app product `6beb210`, test correction `cc7d541`
-and test-only finite MIDI authority runtime through `74d92d4`.
+and independently reviewed test-only MIDI runtime through `5981cfe`.
 This ledger distinguishes app features,
 test-only work and historical verification. It supplements the existing
 [workspace plan](superpowers/plans/alive-workspaces-20261026.md); it does not
@@ -15,7 +15,7 @@ and portable mixed project; P3 separately scoped general Ultra authoring.
 | Session MIDI editing | R1: empty-slot double-click creates clip; note add/move/resize/delete/undo changes and restores notes. R2: naming and duplication produce distinct clips. | Four playable slots, selection separate from launch, editable pitch/time/duration/velocity, focused history. | v3 app feature, including piano roll and stopped Apply. | N1 full journey; N2 unfinished-field regression. | Preserve; qualify current CI. P0/P1. |
 | Clip/scene launch and track Stop | R1: queued B leaves A playing until launch; queued track Stop leaves global transport running. | Quantized native requests/receipts, atomic scene launch, scoped Stop. | v3 app feature; corrected legacy scene disclosure and stale receipts. | N1 full journey; targeted legacy-to-v3 native transition at `6a8f644`. | Original-app atomic scene timing is not measured; Arrangement authority missing. P1. |
 | Shared views, tracks and details | R3: hide/restore details preserves values; selecting a second device then returning preserves independent values. R2: compact grid/browser/detail layout. | Tab changes view only; same tracks/devices/selection; usable at 1440x900 and 1280x800. | Session shell implemented; Arrangement visibly unavailable. | N1 both Session sizes; N2 focus and playing view-switch checks. | Two real views of the same project still missing. P1. |
-| MIDI Arrangement | R5: create/move/extend/undo occurrence; Session launch dims only its Arrangement track; scoped Stop keeps override; per-track/global Return restores Arrangement. | Create/place/select/drag/resize/undo/play MIDI, override one track, return at current position, save/Quit/reopen. | **Not an app feature.** Pure v4 model, independently reviewed complete envelopes and provisional finite multi-track native runtime; active Document remains v2/v3 and shipping v4 feature bits are zero. | N3 exact PCM, offsets/chase/Stop/partitions and shipping refusal. Preparation oracle at `c8f6522` passes 106,661,824 bounded assertions. `0606542` adds two-active-track PCM/dispatch/work/isolation and transactional refusal proofs; complete native CI passes in 157.49s. Reviewed authority actions through `74d92d4` add quantized Launch/Return/scoped Stop, unchanged-track PCM and pending-slot boundary coherence; full native CI passes in 171.14s. No deadline or GUI claim. | Source/song loops and Seek, 2D admission/readers, then MIDI timeline edits. P1. |
+| MIDI Arrangement | R5: create/move/extend/undo occurrence; Session launch dims only its Arrangement track; scoped Stop keeps override; per-track/global Return restores Arrangement. | Create/place/select/drag/resize/undo/play MIDI, override one track, return at current position, save/Quit/reopen. | **Not an app feature.** Pure v4 model, independently reviewed complete envelopes and provisional finite multi-track native runtime; active Document remains v2/v3 and shipping v4 feature bits are zero. | N3 exact PCM, offsets/chase/Stop/partitions and shipping refusal. Preparation oracle at `c8f6522` passes 106,661,824 bounded assertions. `0606542` adds two-active-track PCM/dispatch/work/isolation and transactional refusal proofs; complete native CI passes in 157.49s. Reviewed authority actions through `74d92d4` add quantized Launch/Return/scoped Stop, unchanged-track PCM and pending-slot boundary coherence; full native CI passes in 171.14s. Reviewed suffix loops/Arrangement-only Seek at `a0c34e3` preserve Session PCM and pending requests across refused Seek; full native CI passes in 175.99s. Song loops/coincident boundaries at `5981cfe` pass exact PCM/dispatch/work tests and independent review; full native CI passes in 180.70s. No deadline or GUI claim. | 2D measurement/admission/readers, then MIDI timeline edits. P1. |
 | Devices, effects and automation | R3: ordered effects; R1: stereo host connections and editor close/reopen with advancing transport. | Independent instances, explicit base/automation ownership, ordered effects, editor lifetime separate from DSP. | v3 app feature; instrument plus up to two effects, existing 8-track/16-instance bounds. | N5 full original journey passes after demonstrated native-tooltip test-input fix. | Exact-head remote CI still needed. P0. |
 | Persistence and recovery | R5 saves two Arrangement occurrences plus a Session clip; New then Open restores them stopped. Invalid filename preserves project. | Restore musical/device/mixer state; actionable transactional dependency errors; pending/dirty Quit handling. | v1/v2/v3 app feature; v4 only pure model tests. | N5 full original save/reopen, source rejection and pending/dirty Quit passes locally. | Real v4 save/Quit/reopen missing. R5 does not prove process-restart persistence, device state or missing-media recovery. P0 then P1. |
 | Imported WAV and mixed project | R3 shows empty Simpler/Sampler only; no sample import/playback observation. | Decode actual PCM, derive real peaks, play through shared effects, save portable mixed project. | **Not an app feature.** Proposed descriptors/ABI do not implement decoding or playback. | No imported-PCM native/app evidence. Rendered synth WAV output is a different operation. | Reference import/trim/loop/recovery; decoder, runtime, waveform and portability journey after MIDI. P2. |
@@ -43,10 +43,11 @@ and portable mixed project; P3 separately scoped general Ultra authoring.
   release assets; it does not qualify later commits.
 - N3: `experiments/alive-workspaces-20261026/task2a/`, `task2b/`,
   `task2b-fix1/`, `task2c-prep/`, `task2c-midi-preparation/`,
-  `task2c-authority-actions/` and `task2c-authority-actions-fix1/`. Pure model through
+  `task2c-authority-actions/`, `task2c-authority-actions-fix1/`,
+  `task2c-suffix-seek/`, and `task2c-song-loops/`. Pure model through
   `59c6076`, provisional lane through `db39ab0`, complete oracle through
   `c8f6522`, finite multi-track runtime through `0606542`, reviewed finite authority through
-  `74d92d4`;
+  `74d92d4`, suffix-loop/Seek through `a0c34e3`, song-loop closure through `5981cfe`;
   production v4 configure/request still refused.
 - N4: `experiments/ultra-instrument-20261024/`, with original source/build hashes.
 - N5: `experiments/alive-workspaces-20261026/cutoff-ci-fix/`, test source
@@ -66,8 +67,23 @@ Checkpoint `5abd9eb` CI `40338484521` passes UI/protocol and Chromium. The Linux
 job hits its 40-minute limit: Ubuntu dependency download takes 32m46s, native
 build/checks pass, Rust build is canceled and downstream native journeys skip.
 This is not a repeated cutoff-assertion failure. Packages `40338484480` pass
-Windows and both macOS targets; Linux is still running at this check. None of
+Windows and both macOS targets; Linux was canceled for the newer PR run. None of
 these results qualifies the later local native preparation commits.
+
+Checkpoint `65eb486` CI `40360213014` passes UI/Chromium, native/Rust and
+offline renders, then fails to observe the first Replace chooser. The original
+cause remains unconfirmed; local diagnostic runs pass the unchanged journey.
+Review found a new fatal BadWindow risk in diagnostic-only commit `0bbad18`;
+scoped correction `0d9ccd6` passes its native regressions. Its full original
+journey fails a later changed-source status assertion: a temporary snapshot
+error replaces the expected dependency guidance. Product repair `4470230`
+reproduces both masking paths in mounted-view tests and preserves operation errors
+alongside refresh health. Its 508 UI/18 browser tests and unchanged full native
+journey (193.11s, fresh build) pass, with independent approval. No native
+assertion is weakened. Packages `40360212684` pass
+all four targets, with tag publication skipped. Song-loop native commit
+`5981cfe` passes its full suite and independent review, but awaits measured
+shipping admission; it does not add an available Arrangement interface.
 
 ## Reference Gaps For The Next Increment
 

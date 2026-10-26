@@ -1,0 +1,29 @@
+{
+  "capture_supervision": {
+    "complete": true,
+    "reason": "requested_stop",
+    "group_id": 1959659,
+    "recorder_pid": 1959662,
+    "returncode": 1,
+    "wall_seconds": 87.75308503599808,
+    "audio_bytes": 33636352,
+    "stderr_bytes": 0,
+    "limits": {
+      "wall_seconds": 2700.0,
+      "audio_bytes": 1073741824,
+      "metadata_bytes": 67108864,
+      "stderr_bytes": 1048576,
+      "disk_reserve_bytes": 268435456
+    }
+  },
+  "owned_processes_still_present": {
+    "1959659": false,
+    "1959662": false
+  },
+  "frames": 4204544,
+  "seconds_at_48000": 87.59466666666667,
+  "finite": true,
+  "peak": 0.35335424542427063,
+  "unequal_stereo_frames": 0,
+  "sha256": "ac523871bbd8229c727cb68ed4e1b0305c5f4a65606067f28a3454f4059cb430"
+}

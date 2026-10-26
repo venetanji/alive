@@ -1,0 +1,30 @@
+{
+  "source": "a0c34e3006dc920632ec95609ff6e280a70769dd",
+  "rawArtifactsVerified": 151,
+  "sourcePinsVerified": 22,
+  "committedBlobsVerified": 5,
+  "pcm": {
+    "suffix-pcm.f32": {
+      "frames": 6000,
+      "finite": true,
+      "sha256": "38929dd8b90f6df1fbd5f00223860786c25919b66277500906827e16d7da642d"
+    },
+    "seek-gestures-pcm.f32": {
+      "frames": 10240,
+      "finite": true,
+      "sha256": "db3b9852e2a191c1d4dcdec46f316caca5c45741ab3b3ec25d561dd0136dc7e9"
+    },
+    "refused-seek-pcm.f32": {
+      "frames": 4099,
+      "finite": true,
+      "sha256": "b2df1e04d3f8e515ca75b1eb2123f4dbacbfe8c55a2325582eb9d5eb6dbcc442"
+    },
+    "refused-seek-control-pcm.f32": {
+      "frames": 4099,
+      "finite": true,
+      "sha256": "b2df1e04d3f8e515ca75b1eb2123f4dbacbfe8c55a2325582eb9d5eb6dbcc442"
+    }
+  },
+  "refusedSeekPcmEqualsControl": true,
+  "limit": "Deterministic offline verification, not native-app, deadline or endurance evidence. Independent review pending."
+}

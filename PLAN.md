@@ -134,6 +134,35 @@ queued action, with playing adjacent/gap boundaries and concurrent snapshots
 covered. Its focused tests and complete native suite (171.14 seconds) pass;
 independent scoped re-review approves with no new findings. Source suffix loops
 and Arrangement-only Seek are next. No existing launcher binary has been replaced.
+Reviewed checkpoint `65eb486` is now pushed with the authority implementation,
+fix and retained evidence; PR #6 is updated. Exact-head CI `40360213014` passes
+UI/browser, native/Rust and offline renders, then fails the actual desktop
+journey at `check_alive_desktop.py:723`: Replace Pulse device does not open a
+viewable Load Ultra Device chooser. Cause investigation is active; original
+assertions remain. Later clip/resource/CPAL gates skip. Packages `40360212684`
+pass all four targets, with tag publication skipped. Source suffix loops and Arrangement-only Seek are independently
+approved at `a0c34e3`: focused tests, the unchanged complete oracle and full
+native CI (175.99 seconds) pass, including pending-request preservation and
+exact Session PCM through refused seeks. Song-loop/coincident-boundary closure
+is independently approved at `5981cfe`: focused tests, the unchanged
+oracle and full native CI (180.70 seconds) pass, including Stop/resume exactly
+at the song end. Complete MIDI runtime measurement and desktop integration are
+next; shipping v4 remains disabled. Chooser diagnostics at `0bbad18` pass the complete original local
+journey (193.56 seconds), but independent review reproduces a disappearing-window
+BadWindow failure in the new observations; scoped correction is required before
+push. The original CI chooser cause remains unconfirmed, with no product fix
+claimed. Diagnostic correction `0d9ccd6` passes the disappearing-window native
+regressions and existing input helper. Its full original journey fails later
+at changed-source recovery: a temporary snapshot error masks the expected
+dependency message after earlier Save/reopen values and missing-source checks
+pass. Product fix `4470230` reproduces both final-refresh and background-poll
+masking in mounted-view tests and preserves primary errors alongside refresh
+health. All 508 UI and 18 browser tests pass; a fresh coherent native build
+passes the unchanged original journey in 193.11 seconds, including changed-source
+recovery and Quit. Independent spec and quality review approves; existing build/
+harness warnings remain disclosed. The existing launcher now
+uses the tested replacement; old binaries are retained. Task 2D MIDI measurement
+is active, with shipping v4 still disabled.
 
 Fresh private Arrangement study LOCAL-ARR-R1 observes occurrence creation,
 movement, source-loop extension/undo, two-track Session override, scoped Stop,

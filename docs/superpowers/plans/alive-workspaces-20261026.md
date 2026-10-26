@@ -86,7 +86,14 @@ Finite authority actions are independently approved through `74d92d4`, including
 a review correction for pending-slot projection across Arrangement boundaries.
 Focused and complete native suites pass; evidence is retained under
 `task2c-authority-actions/` and `task2c-authority-actions-fix1/` in the same
-experiment root. Source suffix loops/Seek, then partial song loops are next;
+experiment root. Source suffix loops and Arrangement-only Seek are independently approved at
+`a0c34e3`, with exact Session PCM continuity, pending-survives-refused-Seek and
+final-only candidate resolution proved. Full native CI passes in175.99seconds;
+evidence is retained in `task2c-suffix-seek/`. Partial song loops/coincident
+boundaries are independently approved at `5981cfe`: exact Session PCM continuity,
+reachable targets, retained work and Stop/resume at the song end pass. Complete
+native CI passes in 180.70 seconds; evidence is in `task2c-song-loops/`. This
+completes native Task 2C. Task 2D measurement and desktop admission remain next;
 shipping features remain zero.
 The accepted desktop interface supplement is
 `docs/superpowers/specs/2026-10-26-alive-workspaces-desktop-contract.md`.

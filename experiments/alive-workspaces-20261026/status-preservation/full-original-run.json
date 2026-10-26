@@ -1,0 +1,16 @@
+{
+  "command": [
+    "bash",
+    "apps/ultra/tests/check_canvas_desktop.sh",
+    "/tmp/alive-workspaces-status-preservation/full-original"
+  ],
+  "environment": {
+    "ULTRA_TEST_ALIVE": "1",
+    "ULTRA_TEST_SCRIPT": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py"
+  },
+  "start_utc": "2026-10-26T17:53:25.181691+00:00",
+  "start_monotonic": 56137.984320229,
+  "exit": 0,
+  "duration_seconds": 193.11207245200058,
+  "end_utc": "2026-10-26T17:56:38.293778+00:00"
+}

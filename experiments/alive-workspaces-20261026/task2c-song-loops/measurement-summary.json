@@ -1,0 +1,132 @@
+{
+  "pcm": {
+    "authority-pcm.f32": {
+      "frames": 145001,
+      "nonzero_scalar_samples": 290002,
+      "max_abs": 0.019296012818813324,
+      "sha256": "d33c7335cb3c14d8f6d34990770d645a5064958e08844948096152ed66c0bc11"
+    },
+    "song-gestures-control-pcm.f32": {
+      "frames": 20480,
+      "nonzero_scalar_samples": 28672,
+      "max_abs": 0.00036471133353188634,
+      "sha256": "0d7cd3cfcead0540a126385c2d69d79f13ef9d059bba117f42a15c401fa11888"
+    },
+    "song-gestures-pcm.f32": {
+      "frames": 20480,
+      "nonzero_scalar_samples": 28672,
+      "max_abs": 0.00036471133353188634,
+      "sha256": "0d7cd3cfcead0540a126385c2d69d79f13ef9d059bba117f42a15c401fa11888"
+    },
+    "song-session-control-pcm.f32": {
+      "frames": 10401,
+      "nonzero_scalar_samples": 20802,
+      "max_abs": 0.00036471133353188634,
+      "sha256": "1173cf0a17222bba91361b7c0c235ecbb4792271b6cdb23cfa7e1f149d1e732a"
+    },
+    "song-session-pcm.f32": {
+      "frames": 10401,
+      "nonzero_scalar_samples": 20802,
+      "max_abs": 0.00036471133353188634,
+      "sha256": "1173cf0a17222bba91361b7c0c235ecbb4792271b6cdb23cfa7e1f149d1e732a"
+    },
+    "song-pcm.f32": {
+      "frames": 10401,
+      "nonzero_scalar_samples": 20802,
+      "max_abs": 0.0006803426658734679,
+      "sha256": "4840a47ae199e2146c186e444f319e0b8f0ddbfcaaadc919d98856a76d19f4a0"
+    },
+    "seek-gestures-pcm.f32": {
+      "frames": 10240,
+      "nonzero_scalar_samples": 20480,
+      "max_abs": 0.00040161891956813633,
+      "sha256": "db3b9852e2a191c1d4dcdec46f316caca5c45741ab3b3ec25d561dd0136dc7e9"
+    },
+    "refused-seek-control-pcm.f32": {
+      "frames": 4099,
+      "nonzero_scalar_samples": 8198,
+      "max_abs": 0.001324951066635549,
+      "sha256": "b2df1e04d3f8e515ca75b1eb2123f4dbacbfe8c55a2325582eb9d5eb6dbcc442"
+    },
+    "refused-seek-pcm.f32": {
+      "frames": 4099,
+      "nonzero_scalar_samples": 8198,
+      "max_abs": 0.001324951066635549,
+      "sha256": "b2df1e04d3f8e515ca75b1eb2123f4dbacbfe8c55a2325582eb9d5eb6dbcc442"
+    },
+    "suffix-pcm.f32": {
+      "frames": 6000,
+      "nonzero_scalar_samples": 11200,
+      "max_abs": 0.0009872756199911237,
+      "sha256": "38929dd8b90f6df1fbd5f00223860786c25919b66277500906827e16d7da642d"
+    }
+  },
+  "song_work": {
+    "frames": 11000,
+    "columns": "scheduled5 optional5 emergency5 live5 placement_scheduled placement_optional probes_scheduled probes_optional",
+    "frame_max": [
+      2,
+      6,
+      2,
+      40,
+      0,
+      0,
+      6,
+      2,
+      40,
+      9252,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      2058,
+      3,
+      3
+    ],
+    "window1024_max": [
+      4,
+      12,
+      4,
+      80,
+      0,
+      0,
+      6,
+      2,
+      40,
+      9252,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      9,
+      2058,
+      4,
+      3
+    ]
+  },
+  "profile_refusals": {
+    "profile1_tracks2_roots6": {
+      "resource": "roots",
+      "observed": 30,
+      "limit": 18
+    },
+    "profile2_tracks8_roots16": {
+      "resource": "roots",
+      "observed": 52,
+      "limit": 48
+    }
+  }
+}

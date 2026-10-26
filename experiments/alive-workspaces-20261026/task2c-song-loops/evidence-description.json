@@ -1,0 +1,9 @@
+{
+  "pcm": "Little-endian float32 stereo, interleaved, 48000 Hz. All equality tests compare scalar samples exactly.",
+  "dispatch": "TSV absolute native frame relative to trace origin, source index, occurrence index, kind, pitch, value. NONE=4294967295.",
+  "song-work.tsv": "11000 rows. frame + scheduled5 + optional5 + emergency5 + live5 + scheduled placement + optional placement + scheduled probes + optional probes. Each cost is events, roots, scans, parameter-write charges, guards.",
+  "receipts.tsv": "preparation, serial, status, error, observed absolute frame, target absolute frame, pending/applied/superseded/canceled/rejected masks.",
+  "fixtures": "Raw AliveSessionConfigV4 C layout; refused song fixtures append AliveSessionDiagnosticV4. fixture-index.json decodes fixed config header.",
+  "verification": "JSON command records contain exact argv, cwd, child exit and elapsed seconds; matching logs preserve stdout/stderr.",
+  "limits": "No callback deadline/profile timing claim. Charges are conservative resource reservations; scans/probes additionally traced against their prior reservation."
+}
