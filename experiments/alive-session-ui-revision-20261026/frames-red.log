@@ -1,0 +1,15 @@
+E
+======================================================================
+ERROR: test_dialog_close_null_child_keeps_other_owned_frames (__main__.FrameEnumerationTest.test_dialog_close_null_child_keeps_other_owned_frames)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/test_desktop_frames.py", line 20, in test_dialog_close_null_child_keeps_other_owned_frames
+    self.assertEqual(namespace['app_frames'](), [frame])
+                     ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "<app_frames>", line 41, in app_frames
+AttributeError: 'NoneType' object has no attribute 'get_role_name'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.034s
+
+FAILED (errors=1)

@@ -1,0 +1,23 @@
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:44] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 1 test using 1 worker
+
+(node:1092436) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1092436) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:47] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:47] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:47] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:47] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:47] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:47] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:47] "GET /alive-piano.mjs HTTP/1.1" 200 -
+  ✓  1 apps/ultra/tests/ci/alive-chain.spec.mjs:56:1 › scene receipts leave the visual and accessibility tree in legacy mode and refresh on return (2.9s)
+
+  1 passed (4.1s)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report apps/ultra/tests/ci/playwright-report[39m
+[36m[39m

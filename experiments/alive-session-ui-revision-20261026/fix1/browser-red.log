@@ -1,0 +1,64 @@
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:22:59] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 1 test using 1 worker
+
+(node:1090237) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1090237) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:02] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:02] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:02] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:02] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:02] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:02] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:23:02] "GET /alive-model.mjs HTTP/1.1" 200 -
+  ✘  1 apps/ultra/tests/ci/alive-chain.spec.mjs:56:1 › scene receipts leave the visual and accessibility tree in legacy mode and refresh on return (7.6s)
+
+
+  1) apps/ultra/tests/ci/alive-chain.spec.mjs:56:1 › scene receipts leave the visual and accessibility tree in legacy mode and refresh on return 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeHidden[2m([22m[2m)[22m failed
+
+    Locator:  locator('.scene-history')
+    Expected: hidden
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeHidden" with timeout 5000ms[22m
+    [2m  - waiting for locator('.scene-history')[22m
+    [2m    9 × locator resolved to <details open="" id="scene-history" class="scene-history">…</details>[22m
+    [2m      - unexpected value "visible"[22m
+
+
+      67 |     snapshot.runtime=null;snapshot.preparedClips=[];
+      68 |   });
+    > 69 |   await expect(page.locator('#scene-controls')).toBeHidden();await expect(page.locator('.scene-history')).toBeHidden();
+         |                                                                                                           ^
+      70 |   const legacyTree=await page.locator('.scene-column').ariaSnapshot();expect(legacyTree).not.toContain('Scene receipts');expect(legacyTree).not.toContain('Old session clip');expect(legacyTree).not.toContain('request 13');
+      71 |   await page.evaluate(()=>{
+      72 |     const next=structuredClone(window.previousClipSnapshot);next.generation+=2;next.snapshotSequence='3';next.preparationRevision='9007199254740994';next.document.tracks[0].slots[0].name='Fresh session clip';next.preparedClips[0].name='Fresh session clip';
+        at /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:69:107
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../../tmp/alive-session-ui-revision-fix1-20261026/browser-red/alive-chain-scene-receipts-2e8a2--mode-and-refresh-on-return/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../../tmp/alive-session-ui-revision-fix1-20261026/browser-red/alive-chain-scene-receipts-2e8a2--mode-and-refresh-on-return/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../../tmp/alive-session-ui-revision-fix1-20261026/browser-red/alive-chain-scene-receipts-2e8a2--mode-and-refresh-on-return/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../../tmp/alive-session-ui-revision-fix1-20261026/browser-red/alive-chain-scene-receipts-2e8a2--mode-and-refresh-on-return/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    apps/ultra/tests/ci/alive-chain.spec.mjs:56:1 › scene receipts leave the visual and accessibility tree in legacy mode and refresh on return 
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report apps/ultra/tests/ci/playwright-report[39m
+[36m[39m

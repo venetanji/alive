@@ -1,0 +1,412 @@
+TAP version 13
+# Subtest: plain Tab navigates workspaces while controls and modified Tab keep native focus navigation
+ok 1 - plain Tab navigates workspaces while controls and modified Tab keep native focus navigation
+  ---
+  duration_ms: 65.16548
+  type: 'test'
+  ...
+# Subtest: repeated view navigation preserves playing pending receipts, draft, clip, instance and editor lifecycle
+ok 2 - repeated view navigation preserves playing pending receipts, draft, clip, instance and editor lifecycle
+  ---
+  duration_ms: 28.050708
+  type: 'test'
+  ...
+# Subtest: browser and Clip Devices detail toggle locally without rebuilding active controls
+ok 3 - browser and Clip Devices detail toggle locally without rebuilding active controls
+  ---
+  duration_ms: 13.246398
+  type: 'test'
+  ...
+# Subtest: detail resize supports keyboard and cancels pointer preview with Escape
+ok 4 - detail resize supports keyboard and cancels pointer preview with Escape
+  ---
+  duration_ms: 15.577897
+  type: 'test'
+  ...
+# Subtest: eight Session tracks expose four vertical slots and a mixer per column plus four scene rows
+ok 5 - eight Session tracks expose four vertical slots and a mixer per column plus four scene rows
+  ---
+  duration_ms: 20.008016
+  type: 'test'
+  ...
+# Subtest: compact clip states follow native identities independently of selection and draft names
+ok 6 - compact clip states follow native identities independently of selection and draft names
+  ---
+  duration_ms: 22.321593
+  type: 'test'
+  ...
+# Subtest: gain fader commits once, synchronizes numeric and snapshots, and preserves unfinished numeric input
+ok 7 - gain fader commits once, synchronizes numeric and snapshots, and preserves unfinished numeric input
+  ---
+  duration_ms: 23.469052
+  type: 'test'
+  ...
+# Subtest: empty body double-click creates once with no launch and late completion preserves newer selection
+ok 8 - empty body double-click creates once with no launch and late completion preserves newer selection
+  ---
+  duration_ms: 16.778988
+  type: 'test'
+  ...
+# Subtest: scene controls launch a prepared row once without selection or document edits
+ok 9 - scene controls launch a prepared row once without selection or document edits
+  ---
+  duration_ms: 19.2452
+  type: 'test'
+  ...
+# Subtest: scene receipt shows separate member outcomes and never presents it as transport success
+ok 10 - scene receipt shows separate member outcomes and never presents it as transport success
+  ---
+  duration_ms: 9.006946
+  type: 'test'
+  ...
+# Subtest: queued scene captures preparation at gesture and late result preserves newer selection and focus
+ok 11 - queued scene captures preparation at gesture and late result preserves newer selection and focus
+  ---
+  duration_ms: 17.832432
+  type: 'test'
+  ...
+# Subtest: track addition follows explicitly advertised capacity and retains the legacy fallback
+ok 12 - track addition follows explicitly advertised capacity and retains the legacy fallback
+  ---
+  duration_ms: 11.426642
+  type: 'test'
+  ...
+# Subtest: four slots separate selection, draft-only launch and prepared runtime identity
+ok 13 - four slots separate selection, draft-only launch and prepared runtime identity
+  ---
+  duration_ms: 11.807469
+  type: 'test'
+  ...
+# Subtest: asynchronous work refusal names the requested clip and preserves actionable runtime context
+ok 14 - asynchronous work refusal names the requested clip and preserves actionable runtime context
+  ---
+  duration_ms: 12.30234
+  type: 'test'
+  ...
+# Subtest: v3 start reports native refusal instead of transport success
+ok 15 - v3 start reports native refusal instead of transport success
+  ---
+  duration_ms: 6.792838
+  type: 'test'
+  ...
+# Subtest: v3 seek reports native refusal instead of transport success
+ok 16 - v3 seek reports native refusal instead of transport success
+  ---
+  duration_ms: 5.728645
+  type: 'test'
+  ...
+# Subtest: trackless transport receipts progress from queued to asynchronous refusal without automatic retry
+ok 17 - trackless transport receipts progress from queued to asynchronous refusal without automatic retry
+  ---
+  duration_ms: 6.849184
+  type: 'test'
+  ...
+# Subtest: immediate queued transport response cannot overwrite a matching applied publication
+ok 18 - immediate queued transport response cannot overwrite a matching applied publication
+  ---
+  duration_ms: 6.749146
+  type: 'test'
+  ...
+# Subtest: queued v3 note values keep originating clip and note IDs after selection changes
+ok 19 - queued v3 note values keep originating clip and note IDs after selection changes
+  ---
+  duration_ms: 28.292534
+  type: 'test'
+  ...
+# Subtest: late focused clip creation accepts score without stealing a newer track selection
+ok 20 - late focused clip creation accepts score without stealing a newer track selection
+  ---
+  duration_ms: 11.827417
+  type: 'test'
+  ...
+# Subtest: queued Add note cannot cross successful removal into a reused track index
+ok 21 - queued Add note cannot cross successful removal into a reused track index
+  ---
+  duration_ms: 13.544268
+  type: 'test'
+  ...
+# Subtest: queued tempo cannot cross successful new
+ok 22 - queued tempo cannot cross successful new
+  ---
+  duration_ms: 16.47728
+  type: 'test'
+  ...
+# Subtest: queued lengthBeats cannot cross successful open
+ok 23 - queued lengthBeats cannot cross successful open
+  ---
+  duration_ms: 8.003588
+  type: 'test'
+  ...
+# Subtest: queued loopEnabled cannot cross successful open
+ok 24 - queued loopEnabled cannot cross successful open
+  ---
+  duration_ms: 7.702781
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after apply with file outcome none
+ok 25 - queued global edits cancel after apply with file outcome none
+  ---
+  duration_ms: 8.657909
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after apply with file outcome error
+ok 26 - queued global edits cancel after apply with file outcome error
+  ---
+  duration_ms: 14.617889
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after discard with file outcome none
+ok 27 - queued global edits cancel after discard with file outcome none
+  ---
+  duration_ms: 9.793557
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after discard with file outcome error
+ok 28 - queued global edits cancel after discard with file outcome error
+  ---
+  duration_ms: 10.109051
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after relocate with file outcome snapshot
+ok 29 - queued global edits cancel after relocate with file outcome snapshot
+  ---
+  duration_ms: 6.71943
+  type: 'test'
+  ...
+# Subtest: file none without an accepted boundary preserves queued same-scope edits
+ok 30 - file none without an accepted boundary preserves queued same-scope edits
+  ---
+  duration_ms: 15.628111
+  type: 'test'
+  ...
+# Subtest: file error without an accepted boundary preserves queued same-scope edits
+ok 31 - file error without an accepted boundary preserves queued same-scope edits
+  ---
+  duration_ms: 9.509684
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after accepted apply
+ok 32 - queued global edits cancel after accepted apply
+  ---
+  duration_ms: 10.509595
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after accepted discard
+ok 33 - queued global edits cancel after accepted discard
+  ---
+  duration_ms: 14.941839
+  type: 'test'
+  ...
+# Subtest: queued global edits cancel after accepted undo
+ok 34 - queued global edits cancel after accepted undo
+  ---
+  duration_ms: 9.591878
+  type: 'test'
+  ...
+# Subtest: real musical fields retain drafts across polls and rejected Apply
+ok 35 - real musical fields retain drafts across polls and rejected Apply
+  ---
+  duration_ms: 11.097412
+  type: 'test'
+  ...
+# Subtest: Alive audio settings preserve drafts and route configuration through the session owner
+ok 36 - Alive audio settings preserve drafts and route configuration through the session owner
+  ---
+  duration_ms: 17.627445
+  type: 'test'
+  ...
+# Subtest: draft writes precede file actions and actual native metrics remain visible
+ok 37 - draft writes precede file actions and actual native metrics remain visible
+  ---
+  duration_ms: 10.30981
+  type: 'test'
+  ...
+# Subtest: automation base segments follow live controls without rebuilding unchanged poll frames
+ok 38 - automation base segments follow live controls without rebuilding unchanged poll frames
+  ---
+  duration_ms: 9.468907
+  type: 'test'
+  ...
+# Subtest: a rejected edit restores the authoritative score before a later save
+ok 39 - a rejected edit restores the authoritative score before a later save
+  ---
+  duration_ms: 9.439922
+  type: 'test'
+  ...
+# Subtest: hosted editor uses real patch objects and shared base command; close only releases UI
+ok 40 - hosted editor uses real patch objects and shared base command; close only releases UI
+  ---
+  duration_ms: 37.674606
+  type: 'test'
+  ...
+# Subtest: hosted zoom selection follows fitted and manually selected graph scale
+ok 41 - hosted zoom selection follows fitted and manually selected graph scale
+  ---
+  duration_ms: 15.958052
+  type: 'test'
+  ...
+# Subtest: an effect editor owns its own manifest patch state and instance command
+ok 42 - an effect editor owns its own manifest patch state and instance command
+  ---
+  duration_ms: 8.07402
+  type: 'test'
+  ...
+# Subtest: chain selection uses stable instance metadata without launching and live bypass retains transport
+ok 43 - chain selection uses stable instance metadata without launching and live bypass retains transport
+  ---
+  duration_ms: 15.576144
+  type: 'test'
+  ...
+# Subtest: metadata automation targets distinguish matching keys across instances and preserve original lanes
+ok 44 - metadata automation targets distinguish matching keys across instances and preserve original lanes
+  ---
+  duration_ms: 14.7301
+  type: 'test'
+  ...
+# Subtest: stopped reorder and editor commands retain instance identity and instrument removal names its track scope
+ok 45 - stopped reorder and editor commands retain instance identity and instrument removal names its track scope
+  ---
+  duration_ms: 14.222235
+  type: 'test'
+  ...
+# Subtest: selecting the current clip retains its separate device selection and rejected mutations preserve the chain
+ok 46 - selecting the current clip retains its separate device selection and rejected mutations preserve the chain
+  ---
+  duration_ms: 7.993629
+  type: 'test'
+  ...
+# Subtest: new automation points use the current live instance base after polling
+ok 47 - new automation points use the current live instance base after polling
+  ---
+  duration_ms: 13.878197
+  type: 'test'
+  ...
+# Subtest: piano selection is clean and keyboard edits use one authenticated transaction
+ok 48 - piano selection is clean and keyboard edits use one authenticated transaction
+  ---
+  duration_ms: 11.975004
+  type: 'test'
+  ...
+# Subtest: pointer previews commit once; cancel, Escape, scope actions and new revisions commit none
+ok 49 - pointer previews commit once; cancel, Escape, scope actions and new revisions commit none
+  ---
+  duration_ms: 36.588932
+  type: 'test'
+  ...
+# Subtest: velocity preview is one transaction and external live polls do not replace a drag
+ok 50 - velocity preview is one transaction and external live polls do not replace a drag
+  ---
+  duration_ms: 10.003953
+  type: 'test'
+  ...
+# Subtest: file cancellation after an accepted boundary refreshes authoritative revision and history
+ok 51 - file cancellation after an accepted boundary refreshes authoritative revision and history
+  ---
+  duration_ms: 8.623064
+  type: 'test'
+  ...
+# Subtest: queued numeric edits retain their originating track after a selection change
+ok 52 - queued numeric edits retain their originating track after a selection change
+  ---
+  duration_ms: 13.654596
+  type: 'test'
+  ...
+# Subtest: Escape cancels a velocity drag including late input and change events
+ok 53 - Escape cancels a velocity drag including late input and change events
+  ---
+  duration_ms: 8.280949
+  type: 'test'
+  ...
+# Subtest: rejected audio configuration reaches the audio panel error handler
+ok 54 - rejected audio configuration reaches the audio panel error handler
+  ---
+  duration_ms: 4.464114
+  type: 'test'
+  ...
+# Subtest: automation event rejection restores accepted score and the next edit recovers
+ok 55 - automation event rejection restores accepted score and the next edit recovers
+  ---
+  duration_ms: 8.285989
+  type: 'test'
+  ...
+# Subtest: a queued note index cannot target another note after a preceding deletion
+ok 56 - a queued note index cannot target another note after a preceding deletion
+  ---
+  duration_ms: 7.587445
+  type: 'test'
+  ...
+# Subtest: automation point indices also invalidate after a queued deletion
+ok 57 - automation point indices also invalidate after a queued deletion
+  ---
+  duration_ms: 13.918883
+  type: 'test'
+  ...
+# Subtest: polling preserves musical drafts and merges newer live base and mixer values
+ok 58 - polling preserves musical drafts and merges newer live base and mixer values
+  ---
+  duration_ms: 3.213059
+  type: 'test'
+  ...
+# Subtest: replacement invalidates old drafts only after generation changes
+ok 59 - replacement invalidates old drafts only after generation changes
+  ---
+  duration_ms: 0.826917
+  type: 'test'
+  ...
+# Subtest: automation ownership displays saved base separately from effective value
+ok 60 - automation ownership displays saved base separately from effective value
+  ---
+  duration_ms: 2.074154
+  type: 'test'
+  ...
+# Subtest: a resolved native file dialog adopts its authoritative retained or discarded draft
+ok 61 - a resolved native file dialog adopts its authoritative retained or discarded draft
+  ---
+  duration_ms: 1.331106
+  type: 'test'
+  ...
+# Subtest: independent same-source effects merge by instance identity while retaining chain order
+ok 62 - independent same-source effects merge by instance identity while retaining chain order
+  ---
+  duration_ms: 1.081316
+  type: 'test'
+  ...
+# Subtest: older polling responses cannot replace a newer authoritative musical revision
+ok 63 - older polling responses cannot replace a newer authoritative musical revision
+  ---
+  duration_ms: 0.992148
+  type: 'test'
+  ...
+# Subtest: native sequence and preparation strings reject late runtime snapshots beyond JS precision
+ok 64 - native sequence and preparation strings reject late runtime snapshots beyond JS precision
+  ---
+  duration_ms: 1.738413
+  type: 'test'
+  ...
+# Subtest: scroll-independent viewBox mapping and stable viewport geometry
+ok 65 - scroll-independent viewBox mapping and stable viewport geometry
+  ---
+  duration_ms: 2.408514
+  type: 'test'
+  ...
+# Subtest: move and resize snap displacement while preserving imported offsets
+ok 66 - move and resize snap displacement while preserving imported offsets
+  ---
+  duration_ms: 2.002891
+  type: 'test'
+  ...
+# Subtest: new notes use the fixed grid, velocity and duration and reject clipped placement
+ok 67 - new notes use the fixed grid, velocity and duration and reject clipped placement
+  ---
+  duration_ms: 0.612784
+  type: 'test'
+  ...
+1..67
+# tests 67
+# suites 0
+# pass 67
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1037.923428

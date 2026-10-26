@@ -1,0 +1,64 @@
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:30] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 2 tests using 1 worker
+
+(node:1058984) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1058984) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:35] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:35] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:35] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:35] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:35] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:35] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:35] "GET /alive-piano.mjs HTTP/1.1" 200 -
+  ✓  1 apps/ultra/tests/ci/alive-chain.spec.mjs:68:69 › two fixed track columns leave blank stage and expose piano roll at 1440x900 (2.7s)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:36] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:36] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:36] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:36] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:36] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:36] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 18:03:36] "GET /alive-model.mjs HTTP/1.1" 200 -
+  ✘  2 apps/ultra/tests/ci/alive-chain.spec.mjs:68:69 › two fixed track columns leave blank stage and expose piano roll at 1280x800 (662ms)
+
+
+  1) apps/ultra/tests/ci/alive-chain.spec.mjs:68:69 › two fixed track columns leave blank stage and expose piano roll at 1280x800 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m472[39m
+    Received:    [31m508.296875[39m
+
+      70 |   const geometry=await page.evaluate(()=>{const rect=e=>e.getBoundingClientRect().toJSON();return{track:[...document.querySelectorAll('.track')].map(rect),mixerControls:[...document.querySelectorAll('.mixer-toggle,.track-inspector')].map(rect),session:rect(document.querySelector('#session-workspace')),piano:rect(document.querySelector('#piano-roll')),detail:rect(document.querySelector('#detail-content')),scene:rect(document.querySelector('.scene-column'))};});
+      71 |   for(const track of geometry.track)expect(track.width).toBe(146);expect(geometry.scene.x-(geometry.track[1].x+geometry.track[1].width)).toBeGreaterThan(300);
+    > 72 |   for(const control of geometry.mixerControls)expect(control.bottom).toBeLessThanOrEqual(geometry.session.bottom);
+         |                                                                      ^
+      73 |   expect(geometry.piano.y).toBeLessThan(geometry.detail.y+65);expect(Math.min(geometry.piano.bottom,geometry.detail.bottom)-geometry.piano.y).toBeGreaterThan(150);
+      74 |   await page.screenshot({path:testInfo.outputPath(`two-tracks-${size.width}x${size.height}.png`)});
+      75 | });
+        at /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:72:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../../tmp/alive-session-ui-revision-20261026/mixer-red/alive-chain-two-fixed-trac-8f4d2-pose-piano-roll-at-1280x800/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../../tmp/alive-session-ui-revision-20261026/mixer-red/alive-chain-two-fixed-trac-8f4d2-pose-piano-roll-at-1280x800/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../../tmp/alive-session-ui-revision-20261026/mixer-red/alive-chain-two-fixed-trac-8f4d2-pose-piano-roll-at-1280x800/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../../tmp/alive-session-ui-revision-20261026/mixer-red/alive-chain-two-fixed-trac-8f4d2-pose-piano-roll-at-1280x800/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    apps/ultra/tests/ci/alive-chain.spec.mjs:68:69 › two fixed track columns leave blank stage and expose piano roll at 1280x800 
+  1 passed (6.5s)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report apps/ultra/tests/ci/playwright-report[39m
+[36m[39m

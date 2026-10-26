@@ -32,6 +32,43 @@ approves compliance and quality with no remaining finding. Pushed-commit CI
 remains required at the checkpoint; no Arrangement/audio or
 final integrated acceptance is inferred from this UI increment.
 
+User testing follow-up, 2026-10-26: the owner says the interface still differs
+too much from Live and requests more icons and clearer clip slots. They
+explicitly choose a denser Live-style grid first, retaining the current four
+playable slots per track. A fresh bounded Wine/Xvfb study of the identified
+Live 12.4.6 copy confirms compact colored clip bodies, separate left launch
+areas, neutral empty cells, fixed-width tracks, compact icons and vertical
+mixer organization. Reference evidence and limits:
+`experiments/alive-session-ui-reference-20261026/`.
+The focused revision is implemented at `e38676a`: original icons, four real
+28px slot rows, fixed 146px tracks, distinct native playback/selection states,
+existing gain/peaks presented vertically, guarded empty-slot double-click and
+a less crowded detail area. All 67 Alive Node tests and 17 focused Chromium
+checks pass; six affected checks pass again after the final CSS bounds fix.
+Actual release WebKit verifies both sizes, precise fader values, automation
+edit/undo, editor lifetime and the original clip/playback/save/reopen/Stop/Quit
+journey. The null AT-SPI-child failure after editor close is isolated in a
+regression and fixed in the test helper at `cd9fdd1`; original journey assertions
+remain intact. Parent verifies four committed UI blobs, six source/binary pins,
+144 raw artifacts and 1,461,760 finite stereo capture frames (30.453333 seconds).
+Final reported stream errors/rejected commands are zero. This is software
+PipeWire/CPAL at 48 kHz/512 frames, not physical audio or endurance.
+Evidence: `experiments/alive-session-ui-revision-20261026/`. Independent review
+found stale scene receipts after opening a supported legacy fallback. Fix
+`ad47d2a` hides the disclosure by mode and has failing/passing DOM/browser
+regressions; final Node 68/68, rendered transition, timing 10/10 and frames 1/1
+pass. CI now explicitly runs the frames regression. Targeted native test
+`6a8f644` passes legacy accessibility absence, fresh prepared identities and
+cleared/new request receipts on the final rebuilt binary. Its first driver run
+omitted restarting audio after Open; the corrected driver and original failure
+are retained separately. Scoped re-review approves compliance and quality with
+no blockers. The original full journey/screenshots retain `e38676a` attribution;
+final native validation covers the affected transition. Parent verifies all six
+final source/test/workflow blobs and UI/binary pins. The refreshed standalone
+launcher points to this tested final build.
+No new Arrangement or PCM admission follows; the larger goal remains paused
+while this focused testing follow-up is completed.
+
 The pure strict v4 source/placement model is implemented through `59c6076`,
 outside the active Document. Its strict wire, transactional focused edits,
 deterministic conversion, stable identities and exact endpoint timing pass
@@ -68,7 +105,8 @@ editing. The working v3 app and launcher stay usable throughout.
 
 The local **Alive (Test)** launcher remains installed and freshly validates.
 It runs the separate `alive` release executable through `apps/alive/run.sh`,
-without rebuilding on launch. Its pinned Session UI build (`97533b8`) passes a
+without rebuilding on launch. Its current Session UI build is `ad47d2a` / `6a8f644`,
+qualified in the revision evidence above. The prior pinned build (`97533b8`) passed a
 fresh saved two-device offline probe, including exact offsets 0, 1, 31, 63, 64
 and 127, partition equality, automation ownership, isolation, mute/solo,
 loop/seek/Stop, save/reopen and device removal. This does not enable Arrangement
@@ -155,9 +193,12 @@ precede 2C-prep's complete MIDI envelope/oracle proof and runtime widening.
 
 Foundation rechecked on 2026-10-26: the remote release integration still points
 to `31033483eb3baf15edab1734b966cc6d55c4b8c7` and remains an ancestor of this
-branch; the reviewed diagnostic/navigation checkpoint `1194faf` is pushed.
-Exact-head CI `40274695732` passes UI/Chromium with native work still running;
-packages `40274695726` are pending. These are not final passes. Historical checkpoint
+branch. The later diagnostic/navigation checkpoint `efa4280` passes complete
+CI `40276304022`, including UI/Chromium and Linux native/Rust/CPAL gates.
+Packages `40276304032` pass Linux, Windows, Intel macOS and ARM macOS;
+publishing is skipped. These outcomes qualify that checkpoint, not the
+subsequent Session UI revision, and do not explain earlier failed runs.
+Historical checkpoint
 `0e791ec28f2ecf89cb9bab31516d57668e361333` has CI
 `40089612067` passes browser, UI/contracts, native build/Rust and offline render,
 but fails the desktop journey opening `Pulse - Ultra Hosted Editor`; subsequent
