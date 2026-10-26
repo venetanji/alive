@@ -37,6 +37,9 @@ def app_frames():
         try:
             if root.get_process_id() != ui.pid: continue
             for node in [root.get_child_at_index(i) for i in range(root.get_child_count())]:
+                # Closing native dialogs can leave a null accessibility child for one scan.
+                if node is None:
+                    continue
                 try:
                     if node.get_role_name() in ('frame', 'dialog', 'file chooser', 'alert'):
                         if node not in frames:
