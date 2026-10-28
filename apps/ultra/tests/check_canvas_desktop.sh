@@ -2,6 +2,8 @@
 # Actual canvas UI + Rust CPAL, private display, bus and software audio server.
 set -euo pipefail
 ROOT=$(cd "$(dirname "$0")/../../.." && pwd)
+source "$ROOT/apps/ultra/tests/desktop_launch_config.sh"
+ultra_screen_size=$(desktop_screen_size)
 if [[ ${ULTRA_TEST_PRIVATE_SESSION:-} != 1 ]]; then
   if [[ ${1:-} == --software-audio ]]; then shift; fi
   for tool in dbus-run-session xvfb-run Xvfb python3 pipewire wireplumber pw-cat pw-link; do
@@ -64,7 +66,7 @@ if [[ ${ULTRA_TEST_PRIVATE_SESSION:-} != 1 ]]; then
     sleep .3
     kill -0 "$ultra_policy_pid"
   env -u WAYLAND_DISPLAY dbus-run-session -- xvfb-run -a \
-    -s '-screen 0 1280x840x24 -nolisten tcp' bash "$0"
+    -s "-screen 0 ${ultra_screen_size}x24 -nolisten tcp" bash "$0"
   exit
 fi
 if [[ ${DISPLAY:-} != :[0-9]* || -n ${WAYLAND_DISPLAY:-} || -z ${XAUTHORITY:-} ]]; then
@@ -141,9 +143,11 @@ target.write_text(json.dumps(session, indent=2) + '\n')
 PY
   ultra_launch_arguments=("$ultra_initial_session")
   ultra_launch_binary="${ULTRA_TEST_ALIVE_BINARY:-$ROOT/apps/ultra/src-tauri/target/release/alive}"
+  ultra_launch_binary=$(desktop_alive_binary "$ultra_launch_binary")
+  export ULTRA_TEST_ALIVE_BINARY="$ultra_launch_binary"
   if [[ ${ULTRA_TEST_ALIVE_DEFAULT:-0} == 1 ]]; then ultra_launch_arguments=(); fi
 fi
-if [[ -n ${ULTRA_TEST_ALIVE_BINARY:-} ]]; then
+if [[ ${ULTRA_TEST_ALIVE:-0} == 1 ]]; then
   env -u LD_LIBRARY_PATH "$ultra_launch_binary" "${ultra_launch_arguments[@]}" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
 else
   LD_LIBRARY_PATH="$ROOT/apps/ultra/src-tauri/target/release${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \

@@ -750,6 +750,13 @@ def piano_history_with_effect_editor():
     windows.focus(MAIN)
     ui.click('Audio details')  # Expose transport diagnostics before asserting Stop.
     transport('stop')
+    apply_control = ui.wait_for('Prepare / Apply')
+    apply_rect = Atspi.Component.get_extents(apply_control, Atspi.CoordType.SCREEN)
+    print('APPLY-DIAGNOSTIC', {'rect': (apply_rect.x, apply_rect.y, apply_rect.width, apply_rect.height),
+          'showing': apply_control.get_state_set().contains(Atspi.StateType.SHOWING),
+          'enabled': apply_control.get_state_set().contains(Atspi.StateType.ENABLED),
+          'windows': [(f.get_name(), f.get_state_set().contains(Atspi.StateType.SHOWING)) for f in windows.app_frames()]}, flush=True)
+    screenshot('before-apply.png')
     ui.click('Prepare / Apply'); time.sleep(.4)
     assert not any(frame.get_name() == 'Pulse - Ultra Hosted Editor' and
                    frame.get_state_set().contains(Atspi.StateType.SHOWING)
