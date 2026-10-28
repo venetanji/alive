@@ -72,6 +72,36 @@ void add(AliveSessionConfigV2& c,uint64_t frame,unsigned track,unsigned kind,uns
 void impulse(AliveSessionConfigV2& c,unsigned track=0){add(c,0,track,2,c.tracks[track].instrument,60,127);add(c,1,track,0,c.tracks[track].instrument,60,0);}
 void render(unsigned n){callback_guard::begin();const int ok=ultra_external_render(n,left.data(),right.data());callback_guard::end();assert(ok);}
 AliveSessionStateV2 state(){AliveSessionStateV2 s{};s.version=2;s.struct_bytes=sizeof s;assert(alive_session_state_v2(&s));return s;}
+void assert_score_unchanged(AliveSessionStateV2 before, AliveSessionStateV2 after) {
+  // The rejection counter is sampled independently of the published score.
+  before.rejected=after.rejected=0;
+  assert(std::memcmp(&before,&after,sizeof before)==0);
+}
+void master_rejection_freshness_v2() {
+  auto c=prepare();assert(alive_session_configure_v2(&c));
+  AliveSessionStateV2 score{};score.version=2;score.struct_bytes=sizeof score;
+  AliveMasterStateV1 master{};master.version=1;master.struct_bytes=sizeof master;
+  assert(alive_session_master_snapshot_v2(&score,&master)==ALIVE_MASTER_OK);
+  auto before=score;auto legacy_before=state();auto master_before=master;const auto base=score.rejected;
+  assert(!alive_session_validate_prepared_v2(&c,nullptr,0));
+  auto legacy_after=state();assert(legacy_after.rejected==base+1);
+  assert_score_unchanged(legacy_before,legacy_after);
+  assert(alive_session_master_snapshot_v2(&score,&master)==ALIVE_MASTER_OK);
+  assert(score.rejected==base+1);
+  assert_score_unchanged(before,score);
+  assert(std::memcmp(&master,&master_before,sizeof master)==0);
+  assert(alive_session_master_set(1,0.5,987654)==ALIVE_MASTER_OK);
+  assert(alive_session_master_snapshot_v2(&score,&master)==ALIVE_MASTER_OK);
+  assert(score.rejected==base+1);
+  before=score;legacy_before=state();master_before=master;
+  assert(!alive_session_validate_prepared_v2(&c,nullptr,0));
+  legacy_after=state();assert(legacy_after.rejected==base+2);
+  assert_score_unchanged(legacy_before,legacy_after);
+  assert(alive_session_master_snapshot_v2(&score,&master)==ALIVE_MASTER_OK);
+  assert(score.rejected==base+2);
+  assert_score_unchanged(before,score);
+  assert(std::memcmp(&master,&master_before,sizeof master)==0);
+}
 void start(const AliveSessionConfigV2& c){const int configured=alive_session_configure_v2(&c);if(!configured)std::fprintf(stderr,"v2 configure: %s (tracks=%u devices=%u events=%u)\n",alive_session_error(),c.track_count,c.device_count,c.event_count);assert(configured);assert(ultra_external_start());assert(alive_session_start());}
 std::vector<float> ordered(bool reverse,const std::vector<unsigned>& partitions){
  auto c=prepare(1,reverse);c.devices[0].parameters[0].automated=1;impulse(c);add(c,1,0,1,0,0,0);start(c);
@@ -213,4 +243,4 @@ void measured_six_device_paths(){
  std::printf("six-device dense 1024-frame callback mean_us=%.3f; six-device seek+one-frame mean_us=%.3f (wall clock, no deadline claim)\n",dense,reset);
 }
 }
-int main(){initial_snapshot();order_and_partitions();bypass_and_warm_state();endpoint_sum_and_short_chains();additional_input_readers();ownership_and_isolation();hard_resets();admission();legacy_admission_policy();measured_six_device_paths();cleanup();std::puts("PASS: v2 ordered chains, exact bypass/warm state, partitions, ownership, resets, admission, overload and callback guard");}
+int main(){initial_snapshot();master_rejection_freshness_v2();order_and_partitions();bypass_and_warm_state();endpoint_sum_and_short_chains();additional_input_readers();ownership_and_isolation();hard_resets();admission();legacy_admission_policy();measured_six_device_paths();cleanup();std::puts("PASS: v2 ordered chains, exact bypass/warm state, partitions, ownership, resets, admission, overload and callback guard");}

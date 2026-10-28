@@ -148,13 +148,14 @@ int main() {
     const int result=snapshot(&s,&m);assert(result==ALIVE_MASTER_OK||result==ALIVE_MASTER_BUSY);
     if(result==ALIVE_MASTER_OK){assert(s.tracks[0].gain==m.target_gain);assert(m.applied_frame==m.observation_start_frame && m.observation_end_frame==s.absolute_frame);
       const auto completed=m.applied_serial==72?0:(m.applied_serial-72)/63;
-      assert(s.rejected==rejected_base+completed);++reads;}
+      assert(s.rejected>=rejected_base+completed && s.rejected<=rejected_base+5000);++reads;}
   }});
   for(unsigned i=0;i<5000;++i){const double value=i%2?0.25:0.75;
     for(unsigned j=0;j<63;++j)assert(set(1,value,73+uint64_t(i)*63+j)==ALIVE_MASTER_OK);
     assert(alive_session_mixer(0,value,0,0));assert(!alive_session_mixer(0,value,0,0));assert(ultra_external_render(1,left,right));
   }
   done.store(true,std::memory_order_release);reader.join();assert(reads>0);
+  assert(snapshot(&score,&master)==ALIVE_MASTER_OK && score.rejected==rejected_base+5000);
   ultra_audio_stop();assert(alive_session_reset());assert(ultra_canvas_close_document(0));
   UltraCanvasGraph asymmetric{};asymmetric.revision=104;asymmetric.node_count=4;asymmetric.edge_count=2;
   asymmetric.nodes[0].id=1;asymmetric.nodes[0].kind=60;asymmetric.nodes[0].p0=4;

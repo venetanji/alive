@@ -425,6 +425,7 @@ class AliveSession {
    T value{};AliveMasterStateV1 observation{};std::memcpy(&value,words.data(),sizeof value);std::memcpy(&observation,mw.data(),sizeof observation);
    if(!value.configured)return ALIVE_MASTER_UNCONFIGURED;
    if(value.version!=version||value.struct_bytes!=sizeof value)return ALIVE_MASTER_UNSUPPORTED;
+   value.rejected=rejected_.load();
    score=value;master=observation;return ALIVE_MASTER_OK;
   }return ALIVE_MASTER_BUSY;
  }

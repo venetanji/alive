@@ -121,6 +121,80 @@ mod tests {
         assert!(resolve(std::ptr::null()).is_none());
         assert_eq!(resolve(anchor).is_some(),std::env::var_os("ALIVE_MASTER_EXPECT_UNAVAILABLE").is_none());
     }
+    #[cfg(target_os="windows")]
+    #[test]
+    fn production_capability_fresh_process_diagnostics() {
+        const NAME:&str="session::native_master::tests::production_capability_fresh_process_diagnostics";
+        if std::env::var_os("ALIVE_MASTER_DIAGNOSTIC_CHILD").is_none() {
+            let output=std::process::Command::new(std::env::current_exe().unwrap())
+                .args(["--exact",NAME,"--nocapture"]).env("ALIVE_MASTER_DIAGNOSTIC_CHILD","1").output().unwrap();
+            print!("{}",String::from_utf8_lossy(&output.stdout));
+            eprint!("{}",String::from_utf8_lossy(&output.stderr));
+            assert!(output.status.success(),"diagnostic child failed: {}",output.status);
+            return;
+        }
+        unsafe { windows_diagnostics("production",super::super::native::master_test_anchor()); }
+        unsafe { windows_diagnostics("direct",alive_session_state_v2 as *const () as *const c_void); }
+        let expected=std::env::var_os("ALIVE_MASTER_EXPECT_UNAVAILABLE").is_none();
+        let actual=super::super::native::master_capability().is_some();
+        println!("production capability={actual} expected={expected}");
+        assert_eq!(actual,expected);
+    }
+    #[cfg(target_os="windows")]
+    unsafe fn windows_diagnostics(label:&str, anchor:*const c_void) {
+        #[link(name="kernel32")]
+        extern "system" {
+            fn GetModuleHandleExW(flags:u32,name:*const u16,handle:*mut *mut c_void)->i32;
+            fn GetProcAddress(handle:*mut c_void,name:*const c_char)->*mut c_void;
+            fn GetModuleFileNameW(handle:*mut c_void,path:*mut u16,size:u32)->u32;
+            fn FreeLibrary(handle:*mut c_void)->i32;
+        }
+        println!("{label}: expectation_env={:?} anchor={anchor:p}",std::env::var_os("ALIVE_MASTER_EXPECT_UNAVAILABLE"));
+        let mut module=std::ptr::null_mut();
+        if anchor.is_null() {
+            println!("{label}: stage=anchor_module reason=null_anchor direct_resolve={}",resolve(anchor).is_some());return;
+        }
+        if GetModuleHandleExW(4,anchor.cast(),&mut module)==0 || module.is_null() {
+            let error=std::io::Error::last_os_error();
+            println!("{label}: stage=anchor_module error={error} direct_resolve={}",resolve(anchor).is_some());return;
+        }
+        let mut path=[0u16;32768];let len=GetModuleFileNameW(module,path.as_mut_ptr(),path.len() as u32) as usize;
+        println!("{label}: module={module:p} path={:?}",if len>0 && len<path.len(){String::from_utf16_lossy(&path[..len])}else{format!("unavailable: {}",std::io::Error::last_os_error())});
+        let anchor_export=GetProcAddress(module,b"alive_session_state_v2\0".as_ptr().cast());
+        println!("{label}: anchor_export={anchor_export:p}");
+        let mut stage="ok";
+        if anchor_export.is_null(){stage="anchor_export_missing";}
+        else {
+            let mut owner=std::ptr::null_mut();
+            if GetModuleHandleExW(4,anchor_export.cast(),&mut owner)==0 || owner.is_null(){stage="anchor_export_owner";}
+            else {if owner!=module {stage="anchor_export_other_module";} FreeLibrary(owner);}
+            if stage=="ok" && anchor_export!=anchor.cast_mut(){stage="anchor_mismatch";}
+        }
+        let names:[&[u8];6]=[b"alive_session_master_limits\0",b"alive_session_master_set\0",b"alive_session_master_reset_clip\0",b"alive_session_master_snapshot_v2\0",b"alive_session_master_snapshot_v3\0",b"alive_session_master_snapshot_v4\0"];
+        let mut limits_address=std::ptr::null_mut();
+        if stage=="ok" {
+            for (i,name) in names.iter().enumerate() {
+                let address=GetProcAddress(module,name.as_ptr().cast());
+                let mut owner=std::ptr::null_mut();
+                let owner_ok=!address.is_null() && GetModuleHandleExW(4,address.cast(),&mut owner)!=0 && !owner.is_null();
+                println!("{label}: symbol={} address={address:p} owner={owner:p}",String::from_utf8_lossy(&name[..name.len()-1]));
+                if address.is_null(){stage="symbol_missing";break;}
+                if !owner_ok {stage="symbol_owner";break;}
+                let same=owner==module;FreeLibrary(owner);
+                if !same {stage="symbol_other_module";break;}
+                if i==0 {limits_address=address;}
+            }
+        }
+        if stage=="ok" {
+            let limits:GetLimits=std::mem::transmute(limits_address);
+            let mut info=Limits{version:1,struct_bytes:std::mem::size_of::<Limits>() as u32,..Limits::default()};
+            let result=limits(&mut info);
+            println!("{label}: limits result={result} version={} bytes={} features={} ramp={} max_gain={}",info.version,info.struct_bytes,info.features,info.ramp_frames,info.max_gain);
+            if result!=1 || info.version!=1 || info.struct_bytes!=std::mem::size_of::<Limits>() as u32 || info.features!=7 || info.ramp_frames!=64 || info.max_gain!=4. {stage="limits";}
+        }
+        println!("{label}: stage={stage} direct_resolve={}",resolve(anchor).is_some());
+        FreeLibrary(module);
+    }
     #[test]
     fn reserves_a_pair_without_wrap_or_reuse() {
         let mut serials=Serials(u64::MAX-2);

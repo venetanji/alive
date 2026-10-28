@@ -9,6 +9,11 @@ pub(super) fn master_capability() -> Option<&'static super::native_master::Capab
     CAPABILITY.get_or_init(|| super::native_master::resolve(alive_session_state_v2 as *const () as *const std::ffi::c_void)).as_ref()
 }
 
+#[cfg(all(test, target_os="windows"))]
+pub(super) fn master_test_anchor() -> *const std::ffi::c_void {
+    alive_session_state_v2 as *const () as *const std::ffi::c_void
+}
+
 #[repr(C)]
 #[derive(Clone, Copy, Default)]
 pub struct Parameter {

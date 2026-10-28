@@ -92,6 +92,36 @@ void render(unsigned frames) {
   callback_guard::end();
   assert(ok);
 }
+void assert_score_unchanged(AliveSessionStateV4 before, AliveSessionStateV4 after) {
+  // The rejection counter is sampled independently of the published score.
+  before.rejected=after.rejected=0;
+  assert(std::memcmp(&before,&after,sizeof before)==0);
+}
+void master_rejection_freshness_v4() {
+  auto c=prepare();assert(alive_session_configure_v4(&c,nullptr,0));
+  AliveSessionStateV4 score{};score.version=4;score.struct_bytes=sizeof score;
+  AliveMasterStateV1 master{};master.version=1;master.struct_bytes=sizeof master;
+  assert(alive_session_master_snapshot_v4(&score,&master)==ALIVE_MASTER_OK);
+  auto before=score;auto legacy_before=state();auto master_before=master;const auto base=score.rejected;
+  assert(!alive_session_validate_prepared_v4(&c,nullptr,0,nullptr,0));
+  auto legacy_after=state();assert(legacy_after.rejected==base+1);
+  assert_score_unchanged(legacy_before,legacy_after);
+  assert(alive_session_master_snapshot_v4(&score,&master)==ALIVE_MASTER_OK);
+  assert(score.rejected==base+1);
+  assert_score_unchanged(before,score);
+  assert(std::memcmp(&master,&master_before,sizeof master)==0);
+  assert(alive_session_master_set(1,0.5,987654)==ALIVE_MASTER_OK);
+  assert(alive_session_master_snapshot_v4(&score,&master)==ALIVE_MASTER_OK);
+  assert(score.rejected==base+1);
+  before=score;legacy_before=state();master_before=master;
+  assert(!alive_session_validate_prepared_v4(&c,nullptr,0,nullptr,0));
+  legacy_after=state();assert(legacy_after.rejected==base+2);
+  assert_score_unchanged(legacy_before,legacy_after);
+  assert(alive_session_master_snapshot_v4(&score,&master)==ALIVE_MASTER_OK);
+  assert(score.rejected==base+2);
+  assert_score_unchanged(before,score);
+  assert(std::memcmp(&master,&master_before,sizeof master)==0);
+}
 void master_v4_fifo_and_publication() {
   auto c=prepare();assert(alive_session_configure_v4(&c,nullptr,0));
   assert(alive_session_master_set(1,0.5,1)==ALIVE_MASTER_OK);
@@ -110,12 +140,13 @@ void master_v4_fifo_and_publication() {
     AliveSessionStateV4 s{};s.version=4;s.struct_bytes=sizeof s;AliveMasterStateV1 m{};m.version=1;m.struct_bytes=sizeof m;
     const int result=alive_session_master_snapshot_v4(&s,&m);assert(result==ALIVE_MASTER_OK||result==ALIVE_MASTER_BUSY);
     if(result==ALIVE_MASTER_OK){assert(s.tracks[0].mixer.gain==m.target_gain);assert(m.applied_frame==m.observation_start_frame && m.observation_end_frame==s.absolute_frame);
-      const auto completed=m.applied_serial==3?0:(m.applied_serial-3)/63;assert(s.rejected==rejected_base+completed);++reads;}
+      const auto completed=m.applied_serial==3?0:(m.applied_serial-3)/63;assert(s.rejected>=rejected_base+completed && s.rejected<=rejected_base+2000);++reads;}
   }});
   for(unsigned i=0;i<2000;++i){const double value=i%2?0.25:0.75;
     for(unsigned j=0;j<63;++j)assert(alive_session_master_set(1,value,4+uint64_t(i)*63+j)==ALIVE_MASTER_OK);
     assert(alive_session_mixer(0,value,0,0));assert(!alive_session_mixer(0,value,0,0));render(1);}
   done=true;reader.join();assert(reads>0);
+  assert(alive_session_master_snapshot_v4(&score,&master)==ALIVE_MASTER_OK && score.rejected==rejected_base+2000);
   AliveSessionStateV3 wrong{};wrong.version=3;wrong.struct_bytes=sizeof wrong;wrong.absolute_frame=123;
   master.applied_serial=456;assert(alive_session_master_snapshot_v3(&wrong,&master)==ALIVE_MASTER_UNSUPPORTED);
   assert(wrong.absolute_frame==123&&master.applied_serial==456);
@@ -501,6 +532,7 @@ int main(int argc, char **argv) {
     return 0;
   }
 
+  master_rejection_freshness_v4();
   master_v4_fifo_and_publication();
   for (unsigned profile : {1u, 2u}) {
     AliveSessionLimitsV4 limits{};
