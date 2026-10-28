@@ -6,6 +6,8 @@ use std::{path::{Path, PathBuf}, sync::{Mutex, MutexGuard}, collections::BTreeMa
 use tauri::{Emitter, Manager, WebviewWindow};
 use tauri_plugin_dialog::{DialogExt, MessageDialogButtons, MessageDialogResult};
 
+fn trace_commands() -> bool { std::env::var_os("ALIVE_TRACE_COMMANDS").as_deref() == Some(std::ffi::OsStr::new("1")) }
+
 struct Control {
     host: Host,
     runtime: runtime::Runtime,
@@ -301,8 +303,17 @@ pub fn alive_discard(window:WebviewWindow,state:tauri::State<Desktop>,generation
 }
 #[tauri::command]
 pub fn alive_apply(window: WebviewWindow, state: tauri::State<Desktop>, generation: u64,draft_revision:u64) -> Result<Snapshot, String> {
-    main_only(window.label())?;let mut control=ui_lock(&state.0)?;control.version(generation,draft_revision)?;
-    control.apply_draft()?;close_stale_editors(window.app_handle(),control.generation);control.snapshot(window.label())
+    if trace_commands() { eprintln!("ALIVE_TRACE apply_begin requested_generation={generation} requested_draft={draft_revision}"); }
+    let result = (|| {
+        main_only(window.label())?;let mut control=ui_lock(&state.0)?;
+        if trace_commands() { eprintln!("ALIVE_TRACE apply_before generation={} draft={} preparation={}", control.generation, control.draft_revision, control.host.preparation_revision); }
+        control.version(generation,draft_revision)?;
+        control.apply_draft()?;
+        if trace_commands() { eprintln!("ALIVE_TRACE apply_installed generation={} draft={} preparation={}", control.generation, control.draft_revision, control.host.preparation_revision); }
+        close_stale_editors(window.app_handle(),control.generation);control.snapshot(window.label())
+    })();
+    if trace_commands() { eprintln!("ALIVE_TRACE apply_end result={}", if result.is_ok() { "ok" } else { "error" }); }
+    result
 }
 #[tauri::command]
 pub fn alive_base(window: WebviewWindow, state: tauri::State<Desktop>, instance_id: String, key: String, value: f64, generation: u64) -> Result<(), String> {
@@ -394,8 +405,10 @@ pub async fn alive_editor(window: WebviewWindow, state: tauri::State<'_, Desktop
 #[cfg(target_os = "linux")]
 fn install_editor_teardown(editor: &WebviewWindow) -> tauri::Result<()> {
     use gtk::{glib::{self, subclass::SignalId, translate::IntoGlib}, prelude::*};
-    editor.with_webview(|webview| {
-        webview.inner().connect_destroy(|view| {
+    let generation = editor.label().strip_prefix("alive-editor-").and_then(|s| s.split('-').next()).and_then(|s| s.parse::<u64>().ok());
+    editor.with_webview(move |webview| {
+        webview.inner().connect_destroy(move |view| {
+            if trace_commands() { eprintln!("ALIVE_TRACE editor_destroyed generation={}", generation.unwrap_or(0)); }
             let manager: glib::Object = view.property("user-content-manager");
             if let Some(signal) = SignalId::lookup("script-message-received", manager.type_()) {
                 // Wry 0.53.5's IPC closure strongly captures its WebView. Break
@@ -409,7 +422,11 @@ fn install_editor_teardown(editor: &WebviewWindow) -> tauri::Result<()> {
 }
 fn close_stale_editors(app: &tauri::AppHandle, generation: u64) {
     for (label, window) in app.webview_windows() {
-        if label.starts_with("alive-editor-") && !label.starts_with(&format!("alive-editor-{generation}-")) { let _ = window.close(); }
+        if label.starts_with("alive-editor-") && !label.starts_with(&format!("alive-editor-{generation}-")) {
+            let stale = label.strip_prefix("alive-editor-").and_then(|s| s.split('-').next()).and_then(|s| s.parse::<u64>().ok()).unwrap_or(0);
+            let result = window.close();
+            if trace_commands() { eprintln!("ALIVE_TRACE editor_close requested_generation={stale} installed_generation={generation} result={}", if result.is_ok() { "ok" } else { "error" }); }
+        }
     }
 }
 fn chosen(result: MessageDialogResult, name: &str, yes: bool) -> bool {

@@ -42,7 +42,7 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
             'Set Saved Default', 'Clear Saved Default',
             'Selected clip piano roll', 'Selected note velocity', 'Add note')
         track_action = re.fullmatch(r'(?:Open (.+) editor|Replace (.+) device|Remove (.+) track)', name)
-        surface = (name == 'Alive audio settings' or device or clip or track_action or
+        surface = (name in ('Alive audio settings', 'Prepare / Apply') or device or clip or track_action or
                    re.fullmatch(r'(?:Pulse|Harmony|Track \d+) (?:gain|mute|solo)', name))
         if not surface:
             return

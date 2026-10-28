@@ -719,6 +719,48 @@ def close_effect_editor():
     raise AssertionError('Effect editor Close did not destroy its native window')
 
 
+def apply_input_geometry():
+    control = ui.wait_for('Prepare / Apply')
+    rect = Atspi.Component.get_extents(control, Atspi.CoordType.SCREEN)
+    point = (rect.x + rect.width // 2, rect.y + rect.height // 2)
+    frame = next(f for f in windows.app_frames() if f.get_name().removeprefix('* ') == MAIN)
+    node = frame
+    path = []
+    for _ in range(32):
+        path.append({'name': node.get_name(), 'role': node.get_role_name()})
+        child = Atspi.Component.get_accessible_at_point(node, *point, Atspi.CoordType.SCREEN)
+        if child is None or child == node: break
+        node = child
+    web = next(item for item in ui.walk(frame) if item.get_role_name() == 'document web')
+    web_path = []
+    for _ in range(32):
+        web_path.append({'name': web.get_name(), 'role': web.get_role_name()})
+        child = Atspi.Component.get_accessible_at_point(web, *point, Atspi.CoordType.SCREEN)
+        if child is None or child == web: break
+        web = child
+    panel = ui.wait_for('Audio details')
+    panel_rect = Atspi.Component.get_extents(panel, Atspi.CoordType.SCREEN)
+    expanded = panel.get_state_set().contains(Atspi.StateType.EXPANDED)
+    root = ui.Gdk.get_default_root_window()
+    overlap = [max(rect.x, panel_rect.x), max(rect.y, panel_rect.y),
+               min(rect.x + rect.width, panel_rect.x + panel_rect.width),
+               min(rect.y + rect.height, panel_rect.y + panel_rect.height)]
+    summary_covers_point = (expanded and overlap[0] <= point[0] < overlap[2] and
+                            overlap[1] <= point[1] < overlap[3])
+    return {'rect': [rect.x, rect.y, rect.width, rect.height], 'point': point,
+            'screen': [root.get_width(), root.get_height()],
+            'showing': control.get_state_set().contains(Atspi.StateType.SHOWING),
+            'enabled': control.get_state_set().contains(Atspi.StateType.ENABLED),
+            'audio_details_expanded': expanded,
+            'audio_details_rect': [panel_rect.x, panel_rect.y, panel_rect.width, panel_rect.height],
+            'audio_summary_overlap_edges': overlap if expanded else None,
+            'audio_summary_covers_point': summary_covers_point,
+            'accessible_hit_path': path,
+            'web_hit_path': web_path,
+            'native_hit_path': native_hit_path(*point),
+            'frames': [{'name': f.get_name(), 'showing': f.get_state_set().contains(Atspi.StateType.SHOWING)} for f in windows.app_frames()]}
+
+
 def piano_history_with_effect_editor():
     # The effect editor stays alive while the main window edits pending music.
     windows.focus(MAIN)
@@ -750,10 +792,39 @@ def piano_history_with_effect_editor():
     windows.focus(MAIN)
     ui.click('Audio details')  # Expose transport diagnostics before asserting Stop.
     transport('stop')
-    ui.click('Prepare / Apply'); time.sleep(.4)
+    receipt = {'before_navigation': apply_input_geometry()}
+    screenshot('before-apply.png')
+    trace_path = ui.output / 'app.log'
+    trace_offset = trace_path.stat().st_size
+    if os.environ.get('ULTRA_TEST_APPLY_OCCLUDED') == '1':
+        px, py = receipt['before_navigation']['point']
+        assert ui.t.XTestFakeMotionEvent(ui.display, 0, px, py, 0)
+        assert ui.t.XTestFakeButtonEvent(ui.display, 1, 1, 0)
+        assert ui.t.XTestFakeButtonEvent(ui.display, 1, 0, 0)
+        ui.x.XFlush(ui.display)
+        receipt['queued'] = True
+    else:
+        prepare_workspace_control('Prepare / Apply')
+        receipt['after_navigation'] = apply_input_geometry()
+        ui.click('Prepare / Apply')
+        receipt['queued'] = True
+    deadline = time.monotonic() + (0.7 if os.environ.get('ULTRA_TEST_APPLY_OCCLUDED') == '1' else 5)
+    while True:
+        receipt['trace'] = trace_path.read_bytes()[trace_offset:].decode(errors='replace').splitlines()
+        if (any('ALIVE_TRACE editor_destroyed' in line for line in receipt['trace']) and
+                any('ALIVE_TRACE apply_end' in line for line in receipt['trace'])) or time.monotonic() >= deadline:
+            break
+        time.sleep(.1)
+    receipt['after_frames'] = [{'name': f.get_name(), 'showing': f.get_state_set().contains(Atspi.StateType.SHOWING)} for f in windows.app_frames()]
+    receipt['audio_details_after_click_expanded'] = ui.wait_for('Audio details').get_state_set().contains(Atspi.StateType.EXPANDED)
+    (ui.output / 'apply-receipt.json').write_text(json.dumps(receipt, indent=2))
     assert not any(frame.get_name() == 'Pulse - Ultra Hosted Editor' and
                    frame.get_state_set().contains(Atspi.StateType.SHOWING)
                    for frame in windows.app_frames()), 'Apply must close the old editor generation'
+    assert any('ALIVE_TRACE apply_begin' in line for line in receipt['trace']), 'Apply IPC must begin'
+    assert any('ALIVE_TRACE apply_end result=ok' in line for line in receipt['trace']), 'Apply IPC must complete'
+    assert any('ALIVE_TRACE editor_close' in line for line in receipt['trace']), 'Apply must request stale editor close'
+    assert any('ALIVE_TRACE editor_destroyed' in line for line in receipt['trace']), 'Apply must destroy stale editor'
     assert not ui.wait_for('Undo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
     assert value('Note 13 pitch') == '81'
     ui.click('Edit selected device in Ultra')

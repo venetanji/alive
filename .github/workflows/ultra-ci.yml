@@ -44,6 +44,9 @@ jobs:
         run: |
           python -m unittest discover -s apps/ultra/tests -p test_desktop_timing.py -v
           python -m unittest discover -s apps/ultra/tests -p test_desktop_frames.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_desktop_launch_config.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_alive_workspace_navigation.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_desktop_process_helpers.py -v
 
   browser:
     name: Chromium canvas editing smoke
@@ -102,7 +105,11 @@ jobs:
             libasound2-dev libpipewire-0.3-dev libspa-0.2-dev libclang-dev \
             libayatana-appindicator3-dev librsvg2-dev patchelf \
             pipewire-bin wireplumber dbus xvfb xauth python3-gi \
-            gir1.2-atspi-2.0 gir1.2-gtk-3.0 at-spi2-core libxtst6
+            gir1.2-atspi-2.0 gir1.2-gtk-3.0 at-spi2-core libxtst6 ffmpeg
+          ffmpeg -version | head -n 1
+          Xvfb -help 2>&1 | head -n 1 || true
+          pipewire --version
+          wireplumber --version
       - name: Cache downloaded, checksum-verified native dependencies
         uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
@@ -176,6 +183,24 @@ jobs:
         with:
           name: alive-desktop-${{ github.run_id }}-${{ github.run_attempt }}
           path: apps/ultra/build/session-desktop-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Exercise the real Alive Arrangement journey
+        if: ${{ !cancelled() }}
+        timeout-minutes: 8
+        env:
+          ULTRA_TEST_ALIVE: '1'
+          ULTRA_TEST_SCREEN_SIZE: 1600x1000
+          ULTRA_TEST_ALIVE_BINARY: ${{ github.workspace }}/apps/ultra/src-tauri/target/release/alive
+          ULTRA_TEST_ALIVE_SESSION: ${{ github.workspace }}/apps/alive/examples/midi-arrangement.alive
+          ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_arrangement.py
+        run: bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/arrangement-desktop-evidence"
+      - name: Save Arrangement evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: alive-arrangement-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/arrangement-desktop-evidence/
           if-no-files-found: warn
           retention-days: 7
       - name: Verify native clip observation boundaries and failure isolation
