@@ -1,0 +1,9 @@
+LIBRARY ultra_native
+EXPORTS
+    alive_session_state_v2
+    alive_session_master_limits
+    alive_session_master_set=master_forward_target.alive_session_master_set
+    alive_session_master_reset_clip
+    alive_session_master_snapshot_v2
+    alive_session_master_snapshot_v3
+    alive_session_master_snapshot_v4
