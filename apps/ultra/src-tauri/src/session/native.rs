@@ -167,6 +167,10 @@ extern "C" {
     pub fn alive_session_configure_v2(config: *const ConfigV2) -> i32;
     pub fn alive_session_base_v2(document: u32, revision: u64, parameter: u32, value: f64) -> i32;
     pub fn alive_session_bypass_v2(document: u32, revision: u64, bypassed: u32) -> i32;
+}
+// The resolver needs the address of the linked DLL export on Windows.
+#[cfg_attr(target_os="windows", link(name="ultra_native"))]
+extern "C" {
     pub fn alive_session_state_v2(state: *mut StateV2) -> i32;
 }
 

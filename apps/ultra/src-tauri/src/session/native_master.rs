@@ -201,6 +201,7 @@ mod tests {
         }
         let expected=std::env::var_os("ALIVE_MASTER_EXPECT_UNAVAILABLE").is_none();
         let actual=super::super::native::master_capability().is_some();
+        assert_eq!(super::super::native::master_capability().is_some(),actual,"cached capability changed");
         println!("production capability={actual} expected={expected}");
         unsafe { windows_diagnostics("production",super::super::native::master_test_anchor()); }
         unsafe { windows_diagnostics("direct",alive_session_state_v2 as *const () as *const c_void); }
