@@ -46,8 +46,11 @@ try {
     $remaining = [Math]::Max(0, 45000 - [int]$clock.ElapsedMilliseconds)
     if (!$process.WaitForExit($remaining)) { throw 'cmd timed out' }
     Write-Host "launcher-diagnostic cmd-exit=$($process.ExitCode) probe-exists=$(Test-Path -LiteralPath $Probe)"
+    if ($process.ExitCode -ne 0) { throw "probe compile failed: $($process.ExitCode)" }
+    if (!(Test-Path -LiteralPath $Probe -PathType Leaf)) { throw 'probe compile produced no output' }
 } catch {
     Write-Host "launcher-diagnostic error: $_"
+    throw
 } finally {
     if ($started -and !$process.HasExited) {
         try {

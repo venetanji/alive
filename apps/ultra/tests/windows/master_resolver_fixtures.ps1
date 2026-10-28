@@ -27,18 +27,7 @@ try {
     $rustc = (Get-Command rustc).Source
     $probe = Join-Path $results "master_resolver_probe.exe"
     $probeSource = Join-Path $sourceDir "master_resolver_probe.rs"
-    $command = "call `"$vcvars`" >nul && `"$rustc`" --edition=2021 -C opt-level=2 `"$probeSource`" -L `"native=$native`" -o `"$probe`""
-    & cmd.exe /d /s /c "`"$command`""
-    if ($LASTEXITCODE -ne 0) {
-        $originalExit = $LASTEXITCODE
-        Write-Host "original command=$command exit=$originalExit native-argument-passing=$PSNativeCommandArgumentPassing"
-        try {
-            & (Join-Path $sourceDir "master_resolver_launcher_diagnostic.ps1") $vcvars $rustc $probeSource $native $probe
-        } catch {
-            Write-Host "launcher diagnostic failed: $_"
-        }
-        throw "probe compile failed: $originalExit"
-    }
+    & (Join-Path $sourceDir "master_resolver_launcher_diagnostic.ps1") $vcvars $rustc $probeSource $native $probe
 
     $failed = @()
     foreach ($case in @("real", "full", "old", "partial", "forwarded", "bad_limits")) {
