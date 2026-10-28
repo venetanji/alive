@@ -13,3 +13,8 @@ desktop_screen_size() {
   printf '%dx%d\n' "$width" "$height"
 }
 desktop_alive_binary() { realpath -e -- "$1"; }
+desktop_startup_binary() {
+  local alive
+  alive=$(desktop_alive_binary "$1") || return
+  realpath -e -- "$(dirname "$alive")/ultra"
+}

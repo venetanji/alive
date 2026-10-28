@@ -37,4 +37,15 @@ class DesktopLaunchConfigTest(unittest.TestCase):
             self.assertEqual(actual.returncode, 0)
             self.assertEqual(actual.stdout.strip(), str(executable.resolve()))
 
+    def test_alive_override_selects_adjacent_ultra_for_startup_preflight(self):
+        with tempfile.TemporaryDirectory() as directory:
+            alive = Path(directory) / 'alive'
+            ultra = Path(directory) / 'ultra'
+            alive.write_text('alive'); ultra.write_text('ultra')
+            alias = Path(directory) / 'alive-alias'
+            alias.symlink_to(alive)
+            actual = run_function('desktop_startup_binary', str(alias))
+            self.assertEqual(actual.returncode, 0, actual.stderr)
+            self.assertEqual(actual.stdout.strip(), str(ultra.resolve()))
+
 if __name__ == '__main__': unittest.main()

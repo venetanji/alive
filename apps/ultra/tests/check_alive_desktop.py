@@ -19,6 +19,9 @@ import subprocess
 import time
 from stream_measurement import Recorder, ProcessSampler, ProcessGroups, JsonLines, PlayingIntervals
 from desktop_timing import TimingProbe
+from desktop_sustained import DesktopSustained
+from desktop_checkpoint import playing_dwell, project_pilot, qualify_epochs
+from desktop_process_helpers import process_identity
 
 import check_canvas_desktop as ui
 import check_documents_desktop as windows
@@ -45,6 +48,7 @@ resource_groups = None
 resource_writer = None
 playing = PlayingIntervals()
 control_action = 0
+sustained_driver = None
 
 
 def checkpoint(event, control=''):
@@ -463,11 +467,16 @@ def native_control_click(name, kind, record=None):
 
 
 def reorder_click(name):
+    if sustained_driver is not None:
+        return sustained_driver.observer.action(name, lambda: native_control_click(name, 'reorder'))
     return native_control_click(name, 'reorder')
 
 
 def select_device_click(name):
-    result = native_control_click(name, 'device selection')
+    if sustained_driver is not None:
+        result = sustained_driver.observer.action(name, lambda: native_control_click(name, 'device selection'))
+    else:
+        result = native_control_click(name, 'device selection')
     time.sleep(.15)  # Keep the original selector click's post-input allowance.
     return result
 
@@ -606,6 +615,8 @@ def start_capture(name):
     process = Recorder(path, [
         'pw-cat', '--record', *raw, '--rate=48000', '--format=f32', '--channels=2',
         '--target=0', '--properties={ node.name = Alive-Session-Capture }', '-'])
+    if sustained_driver is not None:
+        sustained_driver.capture = (process, path)
     for _ in range(50):
         if 'Alive-Session-Capture:input_FL' in subprocess.check_output(['pw-link', '-i'], text=True):
             break
@@ -617,8 +628,17 @@ def start_capture(name):
 
 
 def finish_capture(capture):
-    with timing.phase('capture-finalize ' + capture[1].name) if timing else nullcontext():
-        return measured_finish_capture(capture)
+    if sustained_driver is not None:
+        sustained_driver.finishing_capture = True
+    try:
+        with timing.phase('capture-finalize ' + capture[1].name) if timing else nullcontext():
+            result = measured_finish_capture(capture)
+    finally:
+        if sustained_driver is not None:
+            sustained_driver.finishing_capture = False
+    if sustained_driver is not None:
+        sustained_driver.capture = None
+    return result
 
 
 def measured_finish_capture(capture):
@@ -651,7 +671,8 @@ def process_sample():
     groups = resource_groups.sample()
     result = {**groups['app'], 'sampler_capture_overhead': groups['sampler_capture_overhead'],
               'private_audio_server': groups['private_audio_server']}
-    resource_writer.write(result)
+    with sustained_driver.lock if sustained_driver is not None else nullcontext():
+        resource_writer.write(result)
     return result
 
 
@@ -792,12 +813,17 @@ def piano_history_with_effect_editor():
     ui.click('Selected clip piano roll')
     px, py = ui.control_point('Selected clip piano roll', (32 + 2 / 8 * 608) / 640,
                               (21 + 5.5 * 191 / 39) / 218)
-    for _ in range(2):
-        ui.t.XTestFakeMotionEvent(ui.display, 0, px, py, 0)
-        ui.t.XTestFakeButtonEvent(ui.display, 1, 1, 0)
-        ui.t.XTestFakeButtonEvent(ui.display, 1, 0, 0)
-        ui.x.XFlush(ui.display)
-        time.sleep(.07)
+    def double_click_note():
+        for _ in range(2):
+            ui.t.XTestFakeMotionEvent(ui.display, 0, px, py, 0)
+            ui.t.XTestFakeButtonEvent(ui.display, 1, 1, 0)
+            ui.t.XTestFakeButtonEvent(ui.display, 1, 0, 0)
+            ui.x.XFlush(ui.display)
+            time.sleep(.07)
+    if sustained_driver is not None:
+        sustained_driver.observer.action('piano note double click', double_click_note)
+    else:
+        double_click_note()
     time.sleep(.3)
     assert value('Note 13 pitch') == '80'
     Atspi.Component.grab_focus(ui.wait_for('Selected clip piano roll'))
@@ -1006,7 +1032,7 @@ def check_audio_settings():
             'stop_audio_terminated_notes': True, 'restart_kept_transport_stopped': True}
 
 
-def run():
+def _run():
     windows.focus(MAIN)
     ui.wait_for('Start transport')
     entrypoints = check_separate_apps()
@@ -1147,10 +1173,14 @@ def run():
     # *playing* duration. Paused time is excluded conservatively from the receipt.
     required = float(os.environ.get('ALIVE_ENDURANCE_SECONDS', '0'))
     sustained, samples, cycles, played = None, [], 0, 0.
+    pilot_growth = None
     if required:
+        playing_baseline = sustained_driver.playing.seconds if sustained_driver is not None else 0.
         capture = start_capture('endurance')
         time.sleep(3)
         samples.append(process_sample())
+        if sustained_driver is not None:
+            cycle_begin = sustained_driver.growth(capture[1])
         while played < required:
             started = time.monotonic()
             frame_before = int(value('Absolute frame'))
@@ -1160,15 +1190,22 @@ def run():
             ui.click('Seek transport')
             if cycles % 4 == 0:
                 editor_edit(800 + cycles % 5 * 100)
-            playing.observe(time.monotonic(), value('Transport playing') == 'true', int(value('Absolute frame')), control_action)
-            segment_end = time.monotonic() + min(8, max(0, required - played))
+            if sustained_driver is not None:
+                wait_value('Transport playing', lambda s: s == 'true')
+                sustained_driver.observe()
+            else:
+                playing.observe(time.monotonic(), value('Transport playing') == 'true', int(value('Absolute frame')), control_action)
+            segment_end = time.monotonic() + playing_dwell(required, played)
             while time.monotonic() < segment_end:
                 time.sleep(min(1, max(0, segment_end-time.monotonic())))
-                playing.observe(time.monotonic(), value('Transport playing') == 'true', int(value('Absolute frame')), control_action)
+                if sustained_driver is not None:
+                    sustained_driver.observe()
+                else:
+                    playing.observe(time.monotonic(), value('Transport playing') == 'true', int(value('Absolute frame')), control_action)
                 samples.append(process_sample())
             wait_value('Transport playing', lambda s: s == 'true')
             assert int(value('Absolute frame')) > frame_before, 'Audio frame clock stopped advancing'
-            played = playing.seconds
+            played = sustained_driver.playing.seconds - playing_baseline if sustained_driver is not None else playing.seconds
             # Retained stream epochs survive Apply; capture each boundary as well.
             log(f'endurance cycle {cycles + 1} before Stop/possible Apply')
             transport('stop')
@@ -1183,7 +1220,14 @@ def run():
                 samples.append(process_sample()); log(f'endurance cycle {cycles}, playing seconds {played:.3f}')
             (ui.output / 'endurance-progress.json').write_text(json.dumps({'playing_seconds': played, 'cycles': cycles, 'required': required}, indent=2))
         samples.append(process_sample())
+        if sustained_driver is not None:
+            cycle_end = sustained_driver.growth(capture[1])
+            played = cycle_end['playing_seconds'] - playing_baseline
         sustained = finish_capture(capture)
+        if sustained_driver is not None:
+            capture_end = sustained_driver.growth(capture[1])
+            pilot_growth = {'cycle_begin': cycle_begin, 'cycle_end': cycle_end,
+                            'capture_end': capture_end}
         assert sustained['seconds'] >= required and sustained['peak'] > 1e-4
     with timing.phase('final-diagnostics') if timing else nullcontext():
         final = detail()
@@ -1247,27 +1291,98 @@ def run():
     ui.click('Audio details')
     wait_value('Transport playing', lambda s: s == 'true')
     report['pending_draft_quit_cancel_retained_edits_and_playback'] = True
-    checkpoint('final-quit-entry')
-    ui.click('Quit Alive')
-    windows.focus('Unsaved Alive Session')
-    ui.click('Discard')
-    deadline = time.monotonic() + 8
-    while time.monotonic() < deadline:
+    if sustained_driver is not None:
+        transport('stop')
+        ui.click('Audio details')
+        ui.click('Alive audio settings')
+        ui.click('Audio details')
+        ui.click('Stop Alive audio to edit settings')
+        wait_value('Transport playing', lambda s: s == 'false')
+        sustained_driver.retired()
         try:
-            state = Path(f'/proc/{ui.pid}/stat').read_text().split(') ', 1)[1].split()[0]
-            if state == 'Z':
+            epoch_rows = [row for line in sustained_driver.epoch_log.path.read_text().splitlines()
+                          if 'epoch_id' in (row := json.loads(line))]
+            qualification = qualify_epochs(epoch_rows)
+        except Exception as error:
+            (ui.output / 'sustained-epoch-qualification.json').write_text(json.dumps({'qualified': False, 'error': repr(error)}, indent=2))
+            raise
+        (ui.output / 'sustained-epoch-qualification.json').write_text(json.dumps(qualification, indent=2))
+        assert qualification['qualified'], qualification
+        report['epoch_qualification'] = qualification
+        ui.click('Close audio settings')
+        sustained_driver.stop_sampling()
+    checkpoint('final-quit-entry')
+    def terminal_quit():
+        ui.click('Quit Alive')
+        windows.focus('Unsaved Alive Session')
+        ui.click('Discard')
+        deadline = time.monotonic() + 8
+        while time.monotonic() < deadline:
+            try:
+                state = Path(f'/proc/{ui.pid}/stat').read_text().split(') ', 1)[1].split()[0]
+                if state == 'Z':
+                    break
+            except FileNotFoundError:
                 break
-        except FileNotFoundError:
-            break
-        time.sleep(.1)
+            time.sleep(.1)
+        else:
+            raise AssertionError('Alive Quit did not exit after Discard')
+    if sustained_driver is not None:
+        # After retirement the process is intentionally allowed to disappear.
+        time.sleep = sustained_driver.raw_sleep
+        for name, original in sustained_driver.originals.items():
+            setattr(ui, name, original)
+        sustained_driver.terminal.quit(terminal_quit)
+        report['stream_measurement'] = sustained_driver.manifest()
+        report['stream_measurement']['process_identity'] = sustained_driver.identity
+        final_growth = sustained_driver.growth(ui.output / 'endurance.f32')
+        begin, end, finished = (pilot_growth[k] for k in ('cycle_begin', 'cycle_end', 'capture_end'))
+        wall = sustained['supervision']['wall_seconds']
+        report['pilot_growth'] = {**pilot_growth, 'final': final_growth,
+                                  'cycles': cycles, 'playing_seconds': played,
+                                  'capture_reason': sustained['supervision']['reason'],
+                                  'projection_uncertainty': 'linear cycle growth; future pauses and per-action variability are not bounded'}
+        report['projection_1800'] = project_pilot(
+            playing_seconds=played, capture_wall_seconds=wall,
+            cycle_playing_seconds=end['playing_seconds'] - begin['playing_seconds'],
+            collector_wall_seconds=report['stream_measurement']['wall_seconds'],
+            audio_bytes=finished['audio_bytes'], metadata_bytes=final_growth['metadata_bytes'],
+            epoch_attempts=final_growth['epoch_attempts'],
+            fixed_wall_seconds=max(0, wall - (end['monotonic'] - begin['monotonic'])),
+            fixed_collector_wall_seconds=max(0, report['stream_measurement']['wall_seconds'] - (end['monotonic'] - begin['monotonic'])),
+            fixed_audio_bytes=begin['audio_bytes'] + finished['audio_bytes'] - end['audio_bytes'],
+            fixed_metadata_bytes=begin['metadata_bytes'] + final_growth['metadata_bytes'] - end['metadata_bytes'],
+            fixed_epoch_attempts=begin['epoch_attempts'] + final_growth['epoch_attempts'] - end['epoch_attempts'],
+            target_seconds=1800, variability=.1, minimum_headroom_fraction=.05)
     else:
-        raise AssertionError('Alive Quit did not exit after Discard')
+        terminal_quit()
     report['quit_discard_exited'] = True
     checkpoint('final-quit-exit')
     (ui.output / 'native-session-report.json').write_text(json.dumps(report, indent=2))
     checkpoint('report-write', 'final Quit assertions passed')
     print(json.dumps(report, indent=2), flush=True)
     checkpoint('journey-complete')
+
+
+def run():
+    global sustained_driver
+    if not float(os.environ.get('ALIVE_ENDURANCE_SECONDS', '0')):
+        return _run()
+    sustained_driver = DesktopSustained(ui, windows, Atspi, GLib)
+    with sustained_driver.measure.owned(sustained_driver.cleanup, sustained_driver.health):
+        windows.focus(MAIN)
+        ui.wait_for('Start transport')
+        sustained_driver.identity = process_identity(ui.pid)
+        details = ui.wait_for('Audio details')
+        if not details.get_state_set().contains(Atspi.StateType.EXPANDED):
+            ui.click('Audio details')
+        measurements = ui.wait_for('Stream measurements')
+        if not measurements.get_state_set().contains(Atspi.StateType.EXPANDED):
+            ui.click('Stream measurements')
+        sustained_driver.observe()
+        ui.click('Audio details')
+        sustained_driver.install()
+        return _run()
 
 
 if __name__ == '__main__':

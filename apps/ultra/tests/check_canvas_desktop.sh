@@ -106,6 +106,10 @@ export AT_SPI_BUS_ADDRESS
 "${ULTRA_TEST_REGISTRY_BIN:-/usr/lib/at-spi2-registryd}" >"$ULTRA_TEST_OUTPUT_DIR/registry.log" 2>&1 &
 ultra_registry_pid=$!
 cd "$ROOT"
+if [[ ${ULTRA_TEST_ALIVE:-0} == 1 && -n ${ULTRA_TEST_ALIVE_BINARY:-} ]]; then
+  export ULTRA_TEST_STARTUP_ULTRA_BINARY
+  ULTRA_TEST_STARTUP_ULTRA_BINARY=$(desktop_startup_binary "$ULTRA_TEST_ALIVE_BINARY")
+fi
 python3 "$ROOT/apps/ultra/tests/check_document_startup.py"
 if [[ ${ULTRA_TEST_STARTUP_ONLY:-0} == 1 ]]; then exit; fi
 if [[ ${ULTRA_TEST_PINCH_ONLY:-0} == 1 ]]; then

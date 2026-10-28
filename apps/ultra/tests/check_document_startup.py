@@ -10,7 +10,7 @@ import time
 assert os.environ.get('ULTRA_TEST_PRIVATE_SESSION') == '1'
 assert os.environ.get('XAUTHORITY') and not os.environ.get('WAYLAND_DISPLAY')
 
-binary = Path('apps/ultra/src-tauri/target/release/ultra').resolve()
+binary = Path(os.environ.get('ULTRA_TEST_STARTUP_ULTRA_BINARY', 'apps/ultra/src-tauri/target/release/ultra')).resolve()
 output = Path(os.environ['ULTRA_TEST_OUTPUT_DIR'])
 assert (binary.parent / 'libultra_native.so').is_file(), 'Build the adjacent native library first'
 env = {**os.environ, 'LD_LIBRARY_PATH': os.pathsep.join(filter(None,
