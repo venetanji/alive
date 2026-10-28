@@ -10,7 +10,9 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import time
+from desktop_process_helpers import process_identity, assert_same_identity, stop_recorder, cleanup_independently
 
 import check_alive_desktop as alive
 import check_alive_session_ui as presentation
@@ -119,8 +121,9 @@ def run():
     ui.wait_for('MIDI source')
     arrangement()
     capture_window(1440, 900, 'native-example-1440x900.png')
-    record('loaded', executable=str(Path(f'/proc/{ui.pid}/exe').resolve()),
-           native_mappings=[line for line in Path(f'/proc/{ui.pid}/maps').read_text().splitlines() if 'libultra_native' in line])
+    initial_identity = process_identity(ui.pid)
+    assert initial_identity['executable_path'] == os.environ['ULTRA_TEST_ALIVE_BINARY']
+    record('loaded', process_identity=initial_identity)
     video_log = (ui.output/'interaction-video.log').open('w')
     video = subprocess.Popen(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'x11grab', '-video_size', '1440x900', '-framerate', '12', '-i', os.environ['DISPLAY'], '-an', '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '24', '-pix_fmt', 'yuv420p', str(ui.output/'arrangement-interaction.mp4')], stdout=video_log, stderr=subprocess.STDOUT, stdin=subprocess.PIPE)
     tick, header = rect('Seek to beat 8'), rect('Select Pulse Arrangement track')
@@ -146,7 +149,7 @@ def run():
     assert alive.value('Placement start') == '9.5'
     assert alive.value('Placement duration') == '2.5'
     assert alive.value('Placement source offset') == '0.5'
-    video.communicate(b'q\n', timeout=10)
+    stop_recorder(video)
     assert video.returncode == 0
     video = None
     record('native create, note, place, move, right resize, fixed-end left trim', placement_id=first, video='arrangement-interaction.mp4', video_scope='UI interaction only; no audio or exact timing proof')
@@ -312,6 +315,9 @@ def run():
     windows.scope = 'Alive'
     windows.focus('Alive')
     ui.wait_for('MIDI source')
+    restarted_identity = process_identity(ui.pid)
+    record('restart identity', process_identity=restarted_identity)
+    assert_same_identity(initial_identity, restarted_identity)
     assert alive.value('Transport playing') == 'false'
     assert alive.value('Transport position') == '0.000 beats'
     assert observed(1, 'authority', lambda s: s == 'arrangement') == 'arrangement'
@@ -339,19 +345,26 @@ if __name__ == '__main__':
     try:
         run()
     except Exception as error:
-        record('failure', error=repr(error))
-        alive.screenshot('arrangement-failure.png')
+        cleanup_independently([lambda: record('failure', error=repr(error)),
+                               lambda: alive.screenshot('arrangement-failure.png')])
         raise
     finally:
-        if video is not None and video.poll() is None:
-            video.communicate(b'q\n', timeout=10)
-        if capture is not None:
+        had_failure = sys.exc_info()[0] is not None
+        def finish_audio():
             report['interrupted_audio'] = alive.finish_capture(capture)
             record('capture finalized after interrupted journey')
-        if restart is not None and restart.poll() is None:
+        def finish_restart():
             restart.terminate()
             try:
                 restart.wait(timeout=5)
             except subprocess.TimeoutExpired:
                 restart.kill()
                 restart.wait()
+        actions = []
+        if video is not None: actions.append(lambda: stop_recorder(video))
+        if capture is not None: actions.append(finish_audio)
+        if restart is not None and restart.poll() is None: actions.append(finish_restart)
+        errors = cleanup_independently(actions)
+        if errors:
+            print('Arrangement cleanup errors:', errors, file=sys.stderr, flush=True)
+            if not had_failure: raise RuntimeError(f'Arrangement cleanup errors: {errors}')

@@ -570,16 +570,17 @@ def run():
 
         # Real X input checks WebKit pointer capture and the native apply boundary.
         wiring = {'version': 1, 'profile': 'ultra-canvas-v1', 'nodes': [
-            {'id': 1, 'type': 'add', 'x': 80, 'y': 80, 'params': {'rhs': 0}},
+            {'id': 1, 'type': 'add', 'x': 80, 'y': 80, 'params': {'rhs': 0, 'numericmode': 0}},
             {'id': 2, 'type': 'number', 'x': 300, 'y': 240, 'params': {'value': 0}},
         ], 'edges': []}
         import_json()
         text('Patch JSON', json.dumps(wiring))
         click('Import JSON')
-        source = '+ 1, Outlet 0: Sum (control)'
+        source = '+ 1, Outlet 0: sum (control)'
         target = 'number.legacy 2, Inlet 0: Value (control)'
         drag_port(source, target, y_offset=9)
         connected = export()
+        print('WIRING-NODES', json.dumps({'imported': wiring['nodes'], 'after_drag': connected['nodes']}), flush=True)
         assert connected['edges'] == [{'from': 1, 'outlet': 0, 'to': 2, 'inlet': 0}], 'Native cord drag failed'
         assert connected['nodes'] == wiring['nodes'], 'Wiring moved the objects'
         keys('Control_L', 'z')

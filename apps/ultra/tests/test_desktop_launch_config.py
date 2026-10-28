@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import subprocess
 import unittest
+import tempfile
 
 HELPER = Path(__file__).with_name('desktop_launch_config.sh')
 
@@ -26,8 +27,14 @@ class DesktopLaunchConfigTest(unittest.TestCase):
                 self.assertNotEqual(run_function('desktop_screen_size', size=size).returncode, 0)
 
     def test_restart_binary_is_absolute_canonical_launch_identity(self):
-        actual = run_function('desktop_alive_binary', 'apps/ultra/src-tauri/target/release/alive')
-        self.assertEqual(actual.returncode, 0)
-        self.assertEqual(actual.stdout.strip(), str(Path('apps/ultra/src-tauri/target/release/alive').resolve()))
+        with tempfile.TemporaryDirectory() as directory:
+            executable = Path(directory) / 'alive'
+            executable.write_text('#!/bin/sh\nexit 0\n')
+            executable.chmod(0o755)
+            alias = Path(directory) / 'alias'
+            alias.symlink_to(executable)
+            actual = run_function('desktop_alive_binary', str(alias))
+            self.assertEqual(actual.returncode, 0)
+            self.assertEqual(actual.stdout.strip(), str(executable.resolve()))
 
 if __name__ == '__main__': unittest.main()

@@ -129,6 +129,7 @@ fi
 ultra_launch_arguments=("$ultra_initial_patch")
 ultra_launch_binary="$ROOT/apps/ultra/src-tauri/target/release/ultra"
 if [[ ${ULTRA_TEST_ALIVE:-0} == 1 ]]; then
+  export ALIVE_TRACE_COMMANDS=1
   ultra_initial_session="$ULTRA_TEST_OUTPUT_DIR/initial.alive"
   python3 - "${ULTRA_TEST_ALIVE_SESSION:-$ROOT/apps/alive/examples/two-instruments.alive}" "$ultra_initial_session" <<'PY'
 import json, sys
