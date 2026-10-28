@@ -7,6 +7,86 @@ to decide what to resume.
 
 ## Active Execution Checkpoint
 
+Recovered 2026-10-29 after compaction. Current integrated application source is
+`64fcacd2c454393e89526043fa57c6b2c8ec942f`; current pushed head remains
+`58be6dae637b7ffca740287ab64e03e4f5ffd3b4`. Current containing local head is
+`ece60909598ba4dcb26701e19e54b35592a06561` (Windows test diagnostics only).
+`66249c5` adds the reviewed optional
+cloud off/pilot/endurance dispatch to Ultra CI. `64fcacd` integrates the reviewed
+two-file mixer-baseline packet `a31ecfd` byte-identically. The exact requested
+`gpt-6.1-terra`/high model was accepted again for fresh reviewers in this recovery;
+do not infer unavailability from the advertised model list.
+
+The sole pre-correction endurance attempt is terminal exit 0: 1800.344707
+target playing seconds, 3287 valid credited intervals, nine contiguous finalized
+epochs, all eight observed error/budget/anomaly counters zero, stream retirement
+and actual Quit. Root independently reruns the raw audit, verifies all 28
+manifest entries including local-only PCM and decoded gzip hashes, and retains
+`checkpoint-q1/endurance-01/root-audit.log`. The 2374.365s collector and 773152768
+PCM bytes fit hard bounds. Both failed 5% planning projections remain explicit:
+pilot headroom 0.824%, actual-run forecast 4.63079%. The one-attempt waiver does
+not transfer to later source or cloud runs. This qualifies only f691/d507,
+not the later device-intent or CSS changes. Software PipeWire 48kHz/512 only;
+physical audio/underruns remain unmeasured. Observed app RSS grows 274980 KiB
+and FDs 52; sampling missed up to 20 cadences, so this is neither a leak finding
+nor a clean resource-growth claim.
+
+All old Task 9 native/build/GUI/audio/AT-SPI/recorder/sampler/artifact leases were
+explicitly released to root after teardown. Original f691 Alive/Ultra/module
+files are preserved and hash-verified in
+`.superpowers/sdd/2026-10-28-phase2-live-max/pre-final64-artifacts/`.
+Coherent final64 build exits 0 in 145.216s; receipt is in
+`checkpoint-q1/final64-build/`. Alive SHA-256 is
+`741cc7ede7f76257f9caec8a8052d42aaa2a484e7a60ea662ce26e5a8851d1a1`,
+Ultra `e793a74b6c2db82198f70de7c8a1c85fd72d5620969d2b5d42525739b48f2097`,
+and module remains `9fd07611...` with new inode 8395136. The existing
+`q1_checkpoint_integration` worker runs current root harness and exact binaries:
+Master, original desktop with endurance 0 and separate mixer geometry all exit 0.
+Root verifies initial/restarted executable and mapped module identities, complete
+v5 file equality/gain 0.5, both nonzero PCM hashes, actual Quit and identical
+collapsed/expanded/recovered geometry at both sizes. Evidence is curated under
+`checkpoint-q1/final64-native/` (89 original entries; PCM local only).
+The worker explicitly releases all runtime resources after teardown; root now
+owns them. No final64 pilot, endurance or physical output is qualified.
+
+Mixer correction: expanding one track's Device / track disclosure previously
+shortened only its fader. An upward action overlay now preserves mixer flow
+height. Four original rendered failures, four corrected cases and 12 integrated
+affected Chromium cases are retained under `checkpoint-q1/mixer64/` with source
+hashes and independent spec/quality approval. Minor remaining witness: sequential
+keyboard navigation remains untested. Native WebKit now confirms layout and
+close/recovery geometry; it does not prove pointer hits on covered controls.
+No new slots, device capacity or transport behavior is added.
+
+Exact pushed 58be6da CI `40776217076` is terminal success in all three jobs.
+Packages `40776217079` are terminal: Linux/both Mac pass, Windows fails, publication
+is skipped. Receipts and CI rendered log are retained in `master/cloud-58be6da/`.
+The Windows resolver fixture fails before any case executes. The original
+combined cmd invocation emits a path syntax error
+then `probe compile failed: 1`; this does not establish a production resolver
+defect. Raw terminal Windows evidence is in `master/windows-fixture58/`.
+A two-file failure-only launcher diagnostic is frozen in
+`master/windows-fixture58-fix/candidate.patch.gz`. Fresh independent review requests
+bounded stage/cleanup work; fix round 1 adds a shared 45s execution budget and
+finite 5s owned-tree cleanup wait. Scoped spec/quality re-review approves its
+source, retaining actual Windows timeout/tree/transcript gaps. It preserves the
+original failure and has no Windows runtime result. Root verifies the frozen
+patch and both resulting files byte-identically, then integrates as `ece6090`.
+Do not label that packet a fix or infer fixture/cached/full-host qualification.
+
+Fresh `git fetch origin` confirms protected release foundation `31033483` is
+unchanged and remains an ancestor; the read-only receipt is in final64-build.
+Alive (Test) still invokes this checkout's run.sh; launcher identity is recorded
+without changing any desktop or environment setting.
+
+Next: push the reviewed source/evidence checkpoint and obtain actual Windows
+diagnostic execution plus final-source cloud qualification. Final-source cloud endurance requires a
+new same-source/backend >=500-proven-second pilot, raw audit and unchanged
+10% variability/5% headroom policy. No old-source waiver transfers. Update draft
+PR #6 after the reviewed checkpoint; preserve release foundation and PR #2/#5.
+
+## Prior Checkpoint Detail
+
 Latest integrated source is `71e61085ab3d486e30db5b9ca7929f737a3b7317`;
 last audited cloud head is `58057f980afd3365e106433c7102cfc19450c130`.
 Read actual refs for the containing documentation checkpoint. Root has reviewed Task 9

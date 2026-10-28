@@ -1,0 +1,61 @@
+{
+  "head": "58be6dae637b7ffca740287ab64e03e4f5ffd3b4",
+  "captured_utc": "2026-10-28T22:38:46.172427+00:00",
+  "artifacts": [
+    {
+      "path": "ci-terminal.json",
+      "bytes": 10304,
+      "sha256": "12c43ed9036a78ca61c38ac578ae2d79ec3edacc638ba1a45c4bbe6fc3d45a15",
+      "command": [
+        "gh",
+        "run",
+        "view",
+        "40776217076",
+        "--json",
+        "headSha,status,conclusion,jobs,url,createdAt,updatedAt"
+      ]
+    },
+    {
+      "path": "packages-snapshot.json",
+      "bytes": 14440,
+      "sha256": "5ba698df4486a2888c5c783f8e81332ad415f4317044e08a3ad9ee315d7df3b7",
+      "command": [
+        "gh",
+        "run",
+        "view",
+        "40776217079",
+        "--json",
+        "headSha,status,conclusion,jobs,url,createdAt,updatedAt"
+      ]
+    },
+    {
+      "path": "ci-rendered.log.gz",
+      "bytes": 221343,
+      "sha256": "eabb146580a133b000711d7041debc898d34cecb41f0af8afe3e4a50b3fc21fd",
+      "encoding": "gzip",
+      "decoded_bytes": 2772345,
+      "decoded_sha256": "54b50ede32ce5c7c5fc382caf67c8a93fcb9d28b33a27ccad98dbc516ac32f96",
+      "representation": "gh rendered combined CI log; not raw provider job archive",
+      "command": [
+        "gh",
+        "run",
+        "view",
+        "40776217076",
+        "--log"
+      ]
+    },
+    {
+      "path": "packages-terminal.json",
+      "bytes": 14957,
+      "sha256": "6b30f96acd59168a9caf1405390c9e8f4cd70456ecc21113301922e7cf19a5f6",
+      "command": [
+        "gh",
+        "run",
+        "view",
+        "40776217079",
+        "--json",
+        "headSha,status,conclusion,jobs,url,createdAt,updatedAt"
+      ]
+    }
+  ]
+}

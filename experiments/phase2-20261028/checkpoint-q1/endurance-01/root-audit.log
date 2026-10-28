@@ -1,0 +1,256 @@
+{
+  "credited_rows": 3287,
+  "whole_journey_credited_seconds": 1802.5740398536748,
+  "target_reported_playing_seconds": 1800.3447065203416,
+  "cycle_window_credited_seconds": 1795.203373187008,
+  "cycle_boundary_sums_match": true,
+  "invalid_credit_rows": 0,
+  "crossed_gap_or_action_rows": 0,
+  "maximum_credited_interval": 2.178607241003192,
+  "gap_counts": {
+    "transport_read_shape": 553,
+    "transport_unavailable_or_invalid": 553,
+    "action_boundary": 355,
+    "diagnostics_unavailable_or_invalid": 30
+  },
+  "epochs": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9"
+  ],
+  "epoch_counter_totals": {
+    "native_render_failures": 0,
+    "invalid_callback_shape": 0,
+    "cpal_error_total": 0,
+    "cpal_xrun_reports": 0,
+    "cpal_non_xrun_reports": 0,
+    "over_buffer_budget_count": 0,
+    "counter_overflow": 0,
+    "clock_anomaly_count": 0
+  },
+  "raw_report_hashes_match": true,
+  "candidate_file_hashes_and_binary_diff_match": true,
+  "recorded_binary_hashes_match": true,
+  "reported_collector_headroom_fraction": 0.04630791948054139,
+  "reported_within_limits": false
+}
+{
+  "resource_summary": {
+    "rows": 2372,
+    "first_monotonic": 69835.985021865,
+    "last_monotonic": 72207.00767235,
+    "max_delay": 19.750909032998607,
+    "max_duration": 4.074120456993114,
+    "max_missed_cadences": 20,
+    "app": {
+      "rss_kib_observed": {
+        "first": 583548,
+        "last": 858528,
+        "peak": 1186048,
+        "growth": 274980,
+        "available_rows": 2372
+      },
+      "threads_observed": {
+        "first": 108,
+        "last": 110,
+        "peak": 147,
+        "growth": 2,
+        "available_rows": 2372
+      },
+      "fds_observed": {
+        "first": 126,
+        "last": 178,
+        "peak": 259,
+        "growth": 52,
+        "available_rows": 2372
+      },
+      "cpu_percent": {
+        "first": 58.846437045160734,
+        "last": 107.48724542342832,
+        "peak": 138.8022055436368,
+        "growth": 48.640808378267586,
+        "available_rows": 2371
+      },
+      "coverage_gap_rows": 26,
+      "enumeration_gap_rows": 11
+    },
+    "sampler_capture_overhead": {
+      "rss_kib_observed": {
+        "first": 46256,
+        "last": 111228,
+        "peak": 178960,
+        "growth": 64972,
+        "available_rows": 2372
+      },
+      "threads_observed": {
+        "first": 3,
+        "last": 10,
+        "peak": 19,
+        "growth": 7,
+        "available_rows": 2372
+      },
+      "fds_observed": {
+        "first": 9,
+        "last": 31,
+        "peak": 81,
+        "growth": 22,
+        "available_rows": 2372
+      },
+      "cpu_percent": {
+        "first": 19.97273037225734,
+        "last": 29.816615974369594,
+        "peak": 133.28869732892176,
+        "growth": 9.843885602112252,
+        "available_rows": 2371
+      },
+      "coverage_gap_rows": 88,
+      "enumeration_gap_rows": 19
+    },
+    "private_audio_server": {
+      "rss_kib_observed": {
+        "first": 7180,
+        "last": 8632,
+        "peak": 15712,
+        "growth": 1452,
+        "available_rows": 2372
+      },
+      "threads_observed": {
+        "first": 2,
+        "last": 2,
+        "peak": 2,
+        "growth": 0,
+        "available_rows": 2372
+      },
+      "fds_observed": {
+        "first": 26,
+        "last": 26,
+        "peak": 40,
+        "growth": 0,
+        "available_rows": 2372
+      },
+      "cpu_percent": {
+        "first": 0.0,
+        "last": 0.0,
+        "peak": 2.161501759104295,
+        "growth": 0.0,
+        "available_rows": 2371
+      },
+      "coverage_gap_rows": 1,
+      "enumeration_gap_rows": 69
+    }
+  },
+  "hardware": {
+    "system": "Linux",
+    "node": "prometheus",
+    "release": "7.2.8-10-omarchy",
+    "version": "#1 SMP PREEMPT_DYNAMIC Wed, 21 Oct 2026 10:51:38 +0000",
+    "machine": "x86_64",
+    "processor": ""
+  },
+  "audio_settings": {
+    "saved": {
+      "host": "default",
+      "device": "default",
+      "sample_rate": 48000,
+      "buffer_frames": 512
+    },
+    "unsupported_buffer_preserved_settings": true,
+    "stop_audio_terminated_notes": true,
+    "restart_kept_transport_stopped": true
+  },
+  "capture": {
+    "complete": true,
+    "reason": "requested_stop",
+    "group_id": 1020726,
+    "recorder_pid": 1020732,
+    "returncode": 1,
+    "wall_seconds": 2013.5732840679993,
+    "audio_bytes": 773152768,
+    "stderr_bytes": 0,
+    "limits": {
+      "wall_seconds": 2700.0,
+      "audio_bytes": 1073741824,
+      "metadata_bytes": 67108864,
+      "stderr_bytes": 1048576,
+      "disk_reserve_bytes": 268435456
+    }
+  },
+  "growth": {
+    "cycle_begin": {
+      "monotonic": 70112.251284544,
+      "audio_bytes": 1183744,
+      "metadata_bytes": 1852750,
+      "epoch_attempts": 5,
+      "playing_seconds": 6.207999999999999
+    },
+    "cycle_end": {
+      "monotonic": 72122.534985331,
+      "audio_bytes": 773132288,
+      "metadata_bytes": 31432154,
+      "epoch_attempts": 7,
+      "playing_seconds": 1801.4113731870082
+    },
+    "capture_end": {
+      "monotonic": 72150.614021295,
+      "audio_bytes": 773152768,
+      "metadata_bytes": 31468612,
+      "epoch_attempts": 7,
+      "playing_seconds": 1801.4113731870082
+    },
+    "final": {
+      "monotonic": 72208.311046847,
+      "audio_bytes": 773152768,
+      "metadata_bytes": 44966453,
+      "epoch_attempts": 9,
+      "playing_seconds": 1802.5740398536748
+    },
+    "cycles": 11,
+    "playing_seconds": 1800.3447065203416,
+    "capture_reason": "requested_stop",
+    "projection_uncertainty": "linear cycle growth; future pauses and per-action variability are not bounded"
+  },
+  "projection": {
+    "wall_seconds": 2214.177048388531,
+    "collector_wall_seconds": 2574.9686174025383,
+    "audio_bytes": 850184574,
+    "metadata_bytes": 47918146,
+    "epoch_attempts": 10,
+    "limits": {
+      "wall_seconds": 2700,
+      "collector_wall_seconds": 2700,
+      "audio_bytes": 1073741824,
+      "metadata_bytes": 67108864,
+      "epoch_attempts": 256
+    },
+    "headroom": {
+      "wall_seconds": 485.82295161146885,
+      "collector_wall_seconds": 125.03138259746174,
+      "audio_bytes": 223557250,
+      "metadata_bytes": 19190718,
+      "epoch_attempts": 246
+    },
+    "headroom_fraction": {
+      "wall_seconds": 0.17993442652276626,
+      "collector_wall_seconds": 0.04630791948054139,
+      "audio_bytes": 0.20820391364395618,
+      "metadata_bytes": 0.2859639823436737,
+      "epoch_attempts": 0.9609375
+    },
+    "exceeded_limits": [],
+    "below_required_headroom": [
+      "collector_wall_seconds"
+    ],
+    "within_limits": false,
+    "fixed_playing_seconds": 5.141333333333478,
+    "cycle_playing_seconds": 1795.203373187008,
+    "variability_fraction": 0.1,
+    "minimum_headroom_fraction": 0.05
+  }
+}
+Raw process aggregate sums, recorded limits and original PCM hash verified.

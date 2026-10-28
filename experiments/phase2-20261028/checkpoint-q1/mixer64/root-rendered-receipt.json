@@ -1,0 +1,16 @@
+{
+  "command": [
+    "./node_modules/.bin/playwright",
+    "test",
+    "alive-chain.spec.mjs",
+    "--grep",
+    "expanded inspector preserves shared mixer baseline|two fixed track columns|Add note queued behind track removal|eight-track|vertical Session faders|Master.*align|vertical gain fader",
+    "--output",
+    "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/q1-final-rendered/captures"
+  ],
+  "exit": 0,
+  "seconds": 8.084661446002428,
+  "base": "66249c5935e7ae3fc7fcd6e5d9dafeb84783daad",
+  "candidate": "a31ecfd366858d8599659478656d4b1345fce449",
+  "scope": "integrated affected Chromium cases only; native pending"
+}

@@ -7,92 +7,83 @@ execution checkpoint is `docs/PHASE2_HANDOFF.md`, and the single live ledger is
 
 ## Current Checkpoint
 
-Alive and Ultra remain separate applications. The tested Linux application
-source is `f69125c`: real shared native Master gain/ramp/meters, strict saved v5
-ownership, compact Session/Arrangement, four aligned clip/scene rows and original
-icons. Root's coherent build and exact executable/library hashes are pinned in
-`experiments/phase2-20261028/checkpoint-q1/root-build/`. Alive (Test) follows that
-build. Task 9's existing worker owns all local native/GUI/audio/recorder resources;
-root does source, evidence and cloud work only. Do not rebuild leased artifacts.
+Alive and Ultra remain separate applications. Current integrated Linux source is
+`64fcacd2c454393e89526043fa57c6b2c8ec942f`: shared native Master gain/ramp/meters,
+strict saved v5 ownership, compact Session/Arrangement, four aligned clip/scene
+rows, original icons and generation-fenced device actions. The coherent root
+build exits 0; exact Alive/Ultra/library identities are in
+`experiments/phase2-20261028/checkpoint-q1/final64-build/receipt.json`.
+The final64 native Master, original desktop with endurance 0 and separate mixer
+inspection all exit 0. Root audits restart/module identities, complete saved v5
+equality, PCM hashes and both-size geometry under `checkpoint-q1/final64-native/`.
+The worker releases all runtime resources after teardown; root now owns them.
 
-Reviewed harness `d507866` is integrated byte-identically as `85adb2e`. Its five
-review corrections address full collector versus recorder lifetime, matching
-cycle-only playback/resource denominators, GI-free CI coverage, per-epoch typed
-error qualification and resource sampling independent of long UI actions.
-Both scoped source and quality re-reviews have no blocking finding. Worker
-checks pass 44 focused tests and the three exact CI discovery commands. Root
-passes source/blob, Python AST, shell syntax and whitespace checks; these are
-static checks, not a second native run.
+The latest two-file correction keeps fader/M/S baselines aligned when just one
+track's Device / track disclosure is open. Reviewed `a31ecfd` is integrated
+byte-identically as `64fcacd`; all 12 affected integrated Chromium cases pass.
+Original four-case red/green, both-size captures, review and hashes are retained
+under `checkpoint-q1/mixer64/`. The action overlay covers its own lower mixer
+until closed. Native WebKit confirms layout and close/recovery geometry;
+sequential keyboard navigation remains untested. No extra slots or device
+capacity is added.
 
-The strengthened native Master journey passes at harness `3f555cc`, with
-unchanged Master bytes in `d507866`: both views/sizes, independent instances,
-non-unity Master, editor close/reopen, complete v5 equality after process restart,
-empty reopened history, matching executable/module identity and nonzero software
-replay. Root independently audits retained files, identities and PCM hashes in
-`checkpoint-q1/master-04/`. Original Arrangement, clips/epochs, hosted-editor
-resources and the separate original desktop journey also pass on the pinned
-pair. Final-head cloud and endurance remain separate gates.
+Reviewed Task 9 harness `d507866` is integrated as `85adb2e`; its typed stream
+error, action/frame credit, collector/recorder lifetime and sampling corrections
+retain original assertions. The earlier f691 build's Master, Arrangement,
+clips/epochs, editor-resource and original desktop journeys pass at their
+recorded scopes. Non-unity saved Master, empty reopened history, exact process
+restart identity and nonzero software replay are independently audited in
+`checkpoint-q1/master-04/`. These earlier runs do not qualify later UI bytes.
 
-Pilot 05 completes 270.007 proven seconds/four cycles but its original
-projection is refused. Corrected policy on that 90-second-dwell evidence
-exceeds the full collector limit. Pilot 06 on `d507866` completes 500.506 proven
-seconds/five cycles, seven contiguous final epochs, quiescent retirement and
-actual Quit. Root independently validates 913 credited intervals, gap/action
-exclusion, hashes and zero observed CPAL/render/shape/budget/anomaly counters.
-Both pilots are software PipeWire at 48 kHz/512 frames on Ryzen 9 5900HS;
-physical output and physical underruns remain unmeasured.
+The sole pre-correction endurance attempt now exits 0 with 1800.344707 target
+playing seconds, 3287 valid credited intervals and nine contiguous final epochs.
+All eight observed native/CPAL/budget/anomaly counters are zero; stream retirement
+and actual Quit complete. Root verifies retained raw credits, source/binary/PCM
+and decoded archive hashes under `checkpoint-q1/endurance-01/`. The 2374.365s
+collector and 773152768 PCM bytes fit unchanged hard bounds. Pilot-06's 0.824%
+and actual-run forecast's 4.63079% collector headroom both fail the 5% planning
+margin; the explicit waiver applies only to this completed f691/d507 attempt.
+Final-source cloud endurance requires a new same-source/backend >=500-second
+pilot, independent audit and unchanged 10% allowance/5% margin acceptance.
+The 180-second dwell preserves original operations; original 8/90-second pilots
+remain separate stress evidence. Resource labels are unsynchronized snapshots;
+driving-thread frame observations alone govern playback credit.
 
-The approved dwell is now 180 seconds between unchanged edit operations, with
-all original assertions and the 1800-proven-second target intact. Actual pilot
-edit density is 6.713 actions per proven minute; retain the earlier 8/90-second
-pilots as distinct stress evidence. Pilot 06's independently recomputed
-projection, including 10% variable-growth allowance, is 2677.751 collector
-seconds, 2343.586 recorder seconds and 899,872,495 PCM bytes. It fits hard
-limits but fails the additional 5% planning margin (collector headroom 0.824%).
-Root explicitly waives that extra margin for exactly one bounded measurement
-attempt, preserving `within_limits=false` and every hard limit. The unchanged
-`task9-endurance-01` run is active; no result, retry, further pacing change or
-endurance pass is inferred. A bounded failure requires a concrete next decision.
-Resource-row action/playing labels are unsynchronized best-effort snapshots;
-the separate driving-thread playing log is the credit authority.
+This is software PipeWire at 48 kHz/512 frames on Ryzen 9 5900HS. Physical output
+and physical underruns remain unmeasured. Observed app RSS grows 274980 KiB and
+FDs 52, with up to 20 missed sampler cadences: retain the growth and coverage
+limits without claiming a leak or clean resource behavior. Original f691 files
+are preserved in the plan workspace's `pre-final64-artifacts/` directory.
 
 ## Cloud And Windows
 
-Pushed checkpoint `58057f9` passes full CI `40769366285`. Packages `40769366396`
-are terminal: Linux and both Mac targets pass, Windows fails and publication
-is skipped. Terminal receipts and the rendered CI log are retained under
-`master/cloud-58057f9/`. All three prior `da7c6fb` CI jobs and its Linux/both Mac packages
-pass; Windows fails and publication is skipped. The latest older head with
-both full CI and all four package targets passing is `13d3061`. Retain exact
-head attribution; none of these results qualifies later local source.
+Latest pushed checkpoint `58be6da` passes all three jobs of CI `40776217076`.
+Packages `40776217079` are terminal: Linux and both Mac targets pass, Windows
+fails before any new resolver fixture executes, publication is skipped. Receipts
+and CI rendered log are retained under `master/cloud-58be6da/`. Earlier
+`58057f9`/`da7c6fb` Linux/both Mac packages pass while Windows fails; the last
+head with full CI and all four packages passing is `13d3061`. None qualifies
+later local source. Preserve terminal receipts before the next push.
 
-The actual Windows diagnostic at `58057f9` compiles, then records a fresh cache
-initializer using an executable-owned address without the required export,
-while later helper/direct addresses resolve in the native DLL. This establishes
-the instrumented observation, not instruction bytes or the earlier run's cause.
-Reviewed linkage candidate `3212065` is integrated as `fc320f5`: give only the
-Windows production anchor explicit DLL linkage metadata and check repeated
-cached observations. Owner/export/limits checks remain strict. Reviewed direct
-Windows resolver fixtures `8a83d13` are integrated as `210b37e`, covering real/full
-positive controls plus old, partial, forwarded-owner and bad-limits negatives.
-Windows execution of both packets remains pending. Direct negatives do not
-establish full-host/cached-path negative coverage. No leased binary is replaced.
+Windows diagnostic evidence justified explicit DLL-anchor linkage `fc320f5`;
+`210b37e` adds strict direct real/full/old/partial/forwarded/bad-limits fixtures.
+The new Windows step builds fixture DLLs, then its combined compiler launcher
+emits a path syntax error and `probe compile failed: 1`. No fixture case runs,
+so actual direct/cached/full-host acceptance remains pending. Original evidence
+is under `master/windows-fixture58/`; reviewed failure-only stage diagnostic
+`ece6090` preserves the original failure, bounds diagnostic work and retains
+vcvars/rustc evidence. Its source/reviews are in `master/windows-fixture58-fix/`;
+actual Windows execution remains pending. No production
+resolver defect or working Windows fix is inferred from this shell failure.
 
-The first-checkpoint integrated source review finds a project-safety defect:
-effect bypass and adjacent device commands can adopt a replacement project's
-generation when queued during Open. Reviewed candidate `d13f6e8` is integrated
-byte-identically as `71e6108`; delayed-Open regressions prove reused device/track
-IDs cannot redirect old intent, while failed Open retains valid commands.
-Independent scoped spec/quality reviews have no findings and root's 107 DOM
-tests pass. Evidence is under `reliability/q1-device-intent/`. The ongoing
-endurance run retains its original f69125c artifact attribution and cannot
-qualify changed UI bytes. Fresh final-artifact native qualification remains.
-
-Next: audit the single bounded run, retain exact source/artifact/resource/error
-results, require final pushed-head CI and all four packages, and update draft
-PR #6 with commands, original screenshots and honest limits. Fetch/reconcile
-release foundation `31033483` before final tests. No merge, tag, release,
-deployment, credential or persistent environment-setting changes.
+`66249c5` adds reviewed optional off/pilot/endurance manual CI dispatch; normal
+PR execution is unchanged. New cloud pilot/endurance runs remain gated as above.
+Next: push the reviewed source/evidence checkpoint, run the new cloud pilot and
+actual Windows diagnosis/correction, require final-head CI and all four packages,
+then update draft PR #6 with commands,
+original screenshots and honest limits. Fetch/reconcile release foundation
+`31033483` before final tests. No merge, tag, release, deployment, credential or
+persistent environment-setting changes.
 
 ## Phase 2 Direction: Live / Max Workflow Fidelity
 
