@@ -24,8 +24,11 @@ byte-identically as `64fcacd`; all 12 affected integrated Chromium cases pass.
 Original four-case red/green, both-size captures, review and hashes are retained
 under `checkpoint-q1/mixer64/`. The action overlay covers its own lower mixer
 until closed. Native WebKit confirms layout and close/recovery geometry;
-sequential keyboard navigation remains untested. No extra slots or device
-capacity is added.
+the additional bounded native keyboard witness now passes Tab/Shift+Tab,
+Return open/close and neighboring mute activation/restoration at both sizes.
+Post-close direct fader/mute activation and covered-control pointer hits remain
+unobserved. Evidence is in `checkpoint-q1/mixer-keyboard/`. No extra slots or
+device capacity is added.
 
 Reviewed Task 9 harness `d507866` is integrated as `85adb2e`; its typed stream
 error, action/frame credit, collector/recorder lifetime and sampling corrections
@@ -57,7 +60,25 @@ are preserved in the plan workspace's `pre-final64-artifacts/` directory.
 
 ## Cloud And Windows
 
-Latest pushed checkpoint `58be6da` passes all three jobs of CI `40776217076`.
+Current pushed checkpoint is `0f3776c`; draft PR #6 exact head/base/body/draft are
+verified. Default CI `40782901995`, packages `40782901980` and separately
+dispatched cloud pilot `40782963181` use that exact head. Default CI is terminal
+success in all three jobs. Packages are terminal: Linux and both Mac targets
+pass, Windows fails at the compiler launcher and publication is skipped. The
+manual cloud pilot's desktop artifact proves 501.149688 playing seconds, 824
+valid credits, five cycles and seven contiguous final epochs. Its unchanged
+10% projection exceeds the 2700-second recorder/collector caps (2766.802 /
+3478.125 seconds), and projected audio has only 1.055% headroom versus required
+5%. Ten processing-budget exceedances are observed; seven other counters are
+zero. This pilot does not admit endurance; software counters do not measure
+physical underruns. The overall manual workflow is terminal success in all
+three jobs. Terminal receipts, all 54 raw-file hashes, 15 retained/decoded gzip
+hashes and reproducible audits are verified under `master/cloud-0f3776c/`.
+Cloud aggregate app/children RSS rises 275004 KiB and FDs 30; Alive-only RSS
+rises 84864 KiB, with 15 app coverage-gap samples. These are observed growth,
+not a leak diagnosis or a clean resource claim.
+
+Earlier pushed checkpoint `58be6da` passes all three jobs of CI `40776217076`.
 Packages `40776217079` are terminal: Linux and both Mac targets pass, Windows
 fails before any new resolver fixture executes, publication is skipped. Receipts
 and CI rendered log are retained under `master/cloud-58be6da/`. Earlier
@@ -72,14 +93,28 @@ emits a path syntax error and `probe compile failed: 1`. No fixture case runs,
 so actual direct/cached/full-host acceptance remains pending. Original evidence
 is under `master/windows-fixture58/`; reviewed failure-only stage diagnostic
 `ece6090` preserves the original failure, bounds diagnostic work and retains
-vcvars/rustc evidence. Its source/reviews are in `master/windows-fixture58-fix/`;
-actual Windows execution remains pending. No production
-resolver defect or working Windows fix is inferred from this shell failure.
+vcvars/rustc evidence. Its source/reviews are in `master/windows-fixture58-fix/`.
+Actual `0f3776c` Windows evidence now confirms that the same-path stdin
+diagnostic compiles the probe with vcvars/rustc/cmd exits all zero, while the
+original launcher fails. The original failure is deliberately rethrown and no
+fixture case runs. Separate package Rust cached-capability tests pass. Root
+verifies the retained archive and decoded log hashes in `master/windows-0f3776c/`.
+The narrow two-script primary-launcher correction receives independent spec
+and quality approval and is integrated byte-identically as local `4326b0b`.
+Its source/reviews are in `master/windows-stdin-launcher/`; actual candidate
+Windows execution and full-host qualification remain pending. The Linux
+application, build inputs and test harness are unchanged.
 
 `66249c5` adds reviewed optional off/pilot/endurance manual CI dispatch; normal
 PR execution is unchanged. New cloud pilot/endurance runs remain gated as above.
-Next: push the reviewed source/evidence checkpoint, run the new cloud pilot and
-actual Windows diagnosis/correction, require final-head CI and all four packages,
+One new local final64 500-proven-second pilot now runs against the frozen
+artifacts and unchanged harness/pacing/limits, with the same 10% variability /
+5% admission policy. The old f691 waiver does not transfer. No automatic retry
+or full-endurance run is authorized. The sole local runtime lease belongs to
+`final64_local_pilot`; root and other workers perform source/cloud work only.
+Next: retain terminal cloud receipts and the local pilot audit, push the reviewed
+Windows correction for actual fixture execution,
+require final-head CI and all four packages,
 then update draft PR #6 with commands,
 original screenshots and honest limits. Fetch/reconcile release foundation
 `31033483` before final tests. No merge, tag, release, deployment, credential or

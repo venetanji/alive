@@ -1,0 +1,22 @@
+{
+  "base": "0f3776c87b79069e989c5e5be24312ed455ee3ce",
+  "candidate": "4fb8e3abfab7cba99cbb8e6b9f178b9733f5410c",
+  "diff_sha256": "e27c7389cb9bed14a798086e46250ccb43e4aca8e999c57a4a6560f0378a31fc",
+  "files": [
+    {
+      "path": "apps/ultra/tests/windows/master_resolver_fixtures.ps1",
+      "sha256": "3c64829e58d276b00e4f1d0a7addf245167905844a63773bca81d6be48e26fee",
+      "candidate_byte_identical": true
+    },
+    {
+      "path": "apps/ultra/tests/windows/master_resolver_launcher_diagnostic.ps1",
+      "sha256": "eca0b601286245135d1b746ccbbb0993e590d02d509c2f2d2f1822f5edff4dea",
+      "candidate_byte_identical": true
+    }
+  ],
+  "foundation": "31033483eb3baf15edab1734b966cc6d55c4b8c7",
+  "foundation_ancestor": true,
+  "static_whitespace_exit": 0,
+  "windows_execution": "pending; no local PowerShell",
+  "scope": "Windows test launcher only; current Linux application and artifacts unchanged"
+}

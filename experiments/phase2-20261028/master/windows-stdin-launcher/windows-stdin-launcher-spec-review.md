@@ -1,0 +1,9 @@
+# Windows stdin launcher specification review
+
+No actionable source-level specification finding. The candidate is approved for the narrow source review, subject to the runtime qualification gaps below; this is not a Windows acceptance or audio qualification.
+
+Reviewed base `0f3776c87b79069e989c5e5be24312ed455ee3ce` and candidate `4fb8e3abfab7cba99cbb8e6b9f178b9733f5410c`. The candidate is the clean worker HEAD, descends from the base, changes only the two leased Windows scripts, and its binary diff SHA-256 is `e27c7389cb9bed14a798086e46250ccb43e4aca8e999c57a4a6560f0378a31fc`, matching the frozen package and report. `git diff --check` passed.
+
+The fixture script invokes the stdin helper before the unchanged strict `real`, `full`, `old`, `partial`, `forwarded`, and `bad_limits` loop; its existing DLL hash checks and per-case failure aggregation remain intact. The helper reports stage exits, stops on a nonzero vcvars exit, propagates rustc through cmd's exit, and throws on a nonzero cmd exit or missing output. Start, input, wait, and other terminating errors are rethrown. The shared 45-second input/execution budget and separate bounded 5-second tree-termination wait remain in place. Cleanup errors are logged while the initiating error remains a failure, so they do not create a green result.
+
+The prior Windows run `40782901980` / job `123148786137` observed the same-path stdin diagnostic successfully compile a probe, but the original launcher failed and no fixture case ran. The candidate itself has not run on Windows. Actual stage failure propagation, six fixture cases, timeout and termination races, descendant cleanup, and stage output visibility in the transcript require Windows evidence. The process start and console output calls are not independently bounded; completion of `Kill(true)` does not establish that every descendant exited. These limitations are retained from the candidate report and do not establish a passing runtime result.

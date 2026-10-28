@@ -8,8 +8,8 @@ to decide what to resume.
 ## Active Execution Checkpoint
 
 Recovered 2026-10-29 after compaction. Current integrated application source is
-`64fcacd2c454393e89526043fa57c6b2c8ec942f`; current pushed head remains
-`58be6dae637b7ffca740287ab64e03e4f5ffd3b4`. Current containing local head is
+`64fcacd2c454393e89526043fa57c6b2c8ec942f`; current pushed checkpoint is
+`0f3776c87b79069e989c5e5be24312ed455ee3ce`. It contains source anchor
 `ece60909598ba4dcb26701e19e54b35592a06561` (Windows test diagnostics only).
 `66249c5` adds the reviewed optional
 cloud off/pilot/endurance dispatch to Ultra CI. `64fcacd` integrates the reviewed
@@ -53,9 +53,9 @@ Mixer correction: expanding one track's Device / track disclosure previously
 shortened only its fader. An upward action overlay now preserves mixer flow
 height. Four original rendered failures, four corrected cases and 12 integrated
 affected Chromium cases are retained under `checkpoint-q1/mixer64/` with source
-hashes and independent spec/quality approval. Minor remaining witness: sequential
-keyboard navigation remains untested. Native WebKit now confirms layout and
-close/recovery geometry; it does not prove pointer hits on covered controls.
+hashes and independent spec/quality approval. Native WebKit confirms layout and
+close/recovery geometry; the subsequent bounded keyboard witness described
+below also passes. It does not prove pointer hits on covered controls.
 No new slots, device capacity or transport behavior is added.
 
 Exact pushed 58be6da CI `40776217076` is terminal success in all three jobs.
@@ -79,11 +79,91 @@ unchanged and remains an ancestor; the read-only receipt is in final64-build.
 Alive (Test) still invokes this checkout's run.sh; launcher identity is recorded
 without changing any desktop or environment setting.
 
-Next: push the reviewed source/evidence checkpoint and obtain actual Windows
-diagnostic execution plus final-source cloud qualification. Final-source cloud endurance requires a
+The reviewed checkpoint is pushed normally. Draft PR #6 head/base/draft and exact
+body were re-read and verified, with new native screenshots, local commands,
+old/new source attribution, RSS/FD growth and failed planning margins explicit.
+Current-head default CI `40782901995`, packages `40782901980` and manually
+dispatched cloud pilot `40782963181` all use `0f3776c`. Default CI is terminal
+success in all three jobs; packages are terminal failure solely at the Windows
+compiler launcher (Linux and both Macs pass; publication skipped). The manual
+pilot and all later native journeys are terminal success in all three jobs.
+Fresh Terra `q1_cloud_receipts` completes and releases cloud receipt/raw-pilot
+collection and audit under `master/cloud-0f3776c/`. Root verifies the exact
+terminal statuses/heads, all 54 original files including local-only PCM and all
+15 retained/decoded gzip files. The raw artifact proves
+501.149688 playing seconds, 824 valid credits, five cycles, seven final epochs
+and zero invalid/gap-action-crossing credit. The unchanged 10% forecast is
+recorder 2766.802 seconds, collector 3478.125 seconds (both over hard 2700) and
+PCM 1062408861 bytes (only 1.055% margin versus required 5%). Ten processing-
+budget exceedances occur; seven other observed counters are zero. This pilot
+does not admit endurance and does not measure physical underruns. Full ZIP/PCM
+remain local/ignored; bounded raw logs, all-entry hashes and independent audits
+are retained. This is AMD EPYC 7763 / four vCPU software PipeWire at 48kHz/512.
+Observed aggregate app/children RSS grows 275004 KiB and FDs 30; Alive-only RSS
+grows 84864 KiB. There are 15 app coverage-gap samples, maximum one missed
+cadence, maximum sampler delay 0.154897s and duration 1.130722s. Keep sampled
+growth separate from causal/leak or clean-resource claims. Cloud evidence lease
+is released to root; no full-endurance dispatch occurs.
+
+Actual Windows diagnostic run `40782901980` / job `123148786137` preserves the
+original quoted launcher failure, then compiles the same probe through bounded
+stdin with vcvars/rustc/cmd exits zero and output present. No fixture case runs
+because the diagnostic correctly preserves the original failure. Separate
+Windows Rust cached-capability tests pass. Root verifies four published hashes,
+the ZIP report entry and decoded log hash in `master/windows-0f3776c/`.
+Fresh Terra's two-file primary stdin candidate is frozen as `4fb8e3a` in `2bb3`
+with independent spec and quality approval. Root verifies both files and diff
+byte-identically, passes whitespace checks and integrates locally as `4326b0b`.
+The old useful runs are now terminal and their receipts retained; this reviewed
+checkpoint is ready for normal feature-only push. Curated source/reviews are in
+`master/windows-stdin-launcher/`. Its brief/report/review package are
+`windows-stdin-launcher-*` in the canonical SDD workspace. No candidate runtime
+or interactive Windows host/audio pass is claimed.
+
+Next: obtain actual Windows diagnostic execution plus final-source cloud
+qualification. Final-source cloud endurance requires a
 new same-source/backend >=500-proven-second pilot, raw audit and unchanged
 10% variability/5% headroom policy. No old-source waiver transfers. Update draft
 PR #6 after the reviewed checkpoint; preserve release foundation and PR #2/#5.
+
+While cloud qualification ran, fresh Terra `task10_browser_reference` held the
+exclusive local Wine/private-reference-display lease for two previously unobserved
+Live browser/slot questions. This is reference preparation, not Task 10 source
+implementation or contract freeze. Canonical brief/report are
+`task10-browser-reference-{brief,report}.md` in the plan workspace. Attempt 1
+stops after 53s on an overbroad recovery-prompt reading, is retained with complete
+cleanup, and has Evidence ID
+`ev_7914a5e7349c80a314d269b6ea0a5093587415e50d04596b81d0e2ad22e0643d`.
+Root clarifies normal No in the disposable copy is already authorized by prior
+Master-study practice, and permits exactly one corrected attempt within the
+original remaining 20-minute window. No license/login workarounds or original
+file changes. Corrected attempt observes selection versus double-click load,
+no-match results, cell arrows/Escape and rename/duplicate results; Enter focus
+and occupied Enter launch remain unproven. REA's client timed out without a
+second Evidence ID; read-only retained-ledger recovery found only attempt 1.
+Do not attribute its Evidence ID to attempt 2. Scoped XTest receipts/private
+capture hashes and independent owned-process/source-preference cleanup are
+retained in the derived report under `preparation/browser-reference-20261029/`.
+The worker explicitly releases the reference lease. Fresh Terra
+`q1_mixer_keyboard_witness` completes one bounded native/private-Xvfb/software
+PipeWire run against unchanged final64 binaries, wrapper exit 0 and actual Quit.
+Root audits raw identity/geometry/state JSON and current artifact hashes. At
+both sizes sequential Tab/Shift+Tab/Return open/close and neighboring Harmony
+mute pointer activation/restoration work; fader/M/S geometry remains identical.
+Post-close direct fader/mute activation and covered-control pointer hits remain
+unobserved. Evidence is in `checkpoint-q1/mixer-keyboard/`. The worker releases
+all local runtime resources to root; no source or binary is changed.
+Fresh Terra `final64_local_pilot` now has the sole local runtime/GUI/audio/
+recorder/sampler lease for one new >=500-proven-second pilot on unchanged
+final64 artifacts/current harness, canonical `final64-local-pilot-brief.md`.
+Initial hashes/inodes match the build receipt; current source anchor is
+`4326b0b`, with only the reviewed Windows scripts differing from cloud0f.
+Same 180-second dwell, hard bounds and 10% allowance/5% headroom policy; no old
+waiver, automatic retry or full-endurance authorization. Root performs source/
+cloud/docs work only until teardown and release. This tests local software
+qualification, not physical output or a causal diagnosis of cloud timing.
+Private reference captures stay private; publish only derived action/result
+evidence. Tasks 1-8 remain accepted; Task 9 remains open.
 
 ## Prior Checkpoint Detail
 

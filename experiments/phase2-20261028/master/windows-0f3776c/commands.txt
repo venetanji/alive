@@ -1,0 +1,6 @@
+gh api --include repos/venetanji/alive/actions/jobs/123148786137 > job-response.http
+gh api --allow-escape-sequences repos/venetanji/alive/actions/jobs/123148786137/logs | gzip -n > job.log.gz
+gh api --include repos/venetanji/alive/actions/runs/40782901980/artifacts > artifacts-response.http
+gh api repos/venetanji/alive/actions/artifacts/12858992964/zip > windows-master-resolver-report.zip
+gzip -dc job.log.gz | sha256sum
+sha256sum job.log.gz windows-master-resolver-report.zip job-response.http artifacts-response.http
