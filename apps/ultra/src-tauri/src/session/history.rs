@@ -81,7 +81,7 @@ impl History {
 mod tests {
     use super::*;
     fn score() -> crate::session::Session {
-        crate::session::read(&std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive")).unwrap().document
+        crate::session::read(&std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive")).unwrap().saved.score
     }
     #[test]
     fn musical_history_is_bounded_and_redo_is_transactional() {

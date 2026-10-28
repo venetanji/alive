@@ -18,7 +18,7 @@ windows = alive.windows
 def save_chain(name):
     path = ui.output / name
     alive.choose_file('Save session as', 'Save Alive Session', path)
-    return json.loads(path.read_text())['tracks'][0]['effects']
+    return alive.file_score(json.loads(path.read_text()))['tracks'][0]['effects']
 
 
 def run():

@@ -49,7 +49,7 @@ def editor_exists():
 def saved(name):
     path = ui.output / name
     alive.choose_file('Save session as', 'Save Alive Session', path)
-    return path, json.loads(path.read_text())
+    return path, alive.file_score(json.loads(path.read_text()))
 
 
 def launch_at_observable_phase(name):
@@ -73,6 +73,7 @@ def run():
     ui.click('New session')
     windows.focus('Unsaved Alive Session'); ui.click('Discard'); windows.focus(alive.MAIN)
     initial_path, initial = saved('initial-v3.alive')
+    assert json.loads(initial_path.read_text())['format'] == 'alive-session-v5'
     assert initial['format'] == 'alive-session-v3'
     shared = ui.output / 'shared-utility.ultra'
     original = Path('apps/ultra/examples/utility.ultra').read_bytes()

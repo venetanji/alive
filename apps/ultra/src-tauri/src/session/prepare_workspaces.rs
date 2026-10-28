@@ -11,7 +11,7 @@ pub struct PreparedPlacement {pub id:String,pub descriptor:native::PlacementV4}
 #[derive(Clone, Debug)]
 pub struct PreparedWorkspaces {pub sources:Vec<PreparedSource>,pub slots:Vec<PreparedSlot>,pub placements:Vec<PreparedPlacement>}
 
-pub(super) fn prepare(project:&ProjectV4,path:&Path)->Result<PreparedSession,String> {
+pub(super) fn prepare(saved:&SavedSession,project:&ProjectV4,path:&Path)->Result<PreparedSession,String> {
     project.validate()?;
     midi_only(project)?;
     // Storage bounds are an early rejection only. Host admission proves all work.
@@ -22,12 +22,12 @@ pub(super) fn prepare(project:&ProjectV4,path:&Path)->Result<PreparedSession,Str
     super::prepare::check_sources(&document,path,None)?;
     let mut references:Vec<_>=project.tracks.iter().enumerate().flat_map(|(track,t)|t.devices().enumerate().map(move |(position,d)|(track,position,d))).collect();
     references.sort_by_key(|(_,_,d)|&d.instance_id);
-    let mut prepared=PreparedSession{origin:path.to_owned(),document,tracks:vec![],devices:vec![],events:vec![],length_frames:frame_at(project.length_beats,project.tempo)?,schedule:Schedule::Workspaces(PreparedWorkspaces{sources:vec![],slots:vec![],placements:vec![]}),notice:None};
+    let mut prepared=PreparedSession{origin:path.to_owned(),saved:saved.with_score(document),tracks:vec![],devices:vec![],events:vec![],length_frames:frame_at(project.length_beats,project.tempo)?,schedule:Schedule::Workspaces(PreparedWorkspaces{sources:vec![],slots:vec![],placements:vec![]}),notice:None};
     for (track,position,reference) in references {
         let device=super::prepare::prepare_device(reference,path,track).map_err(|e|format!("Track '{}' instance '{}': {e}",project.tracks[track].name,reference.instance_id))?;
         let expected=if position==0 {crate::canvas::device::DeviceKind::Instrument}else{crate::canvas::device::DeviceKind::AudioEffect};
         if device.manifest.kind!=expected || (position==0&&reference.bypassed) {return Err(format!("Track '{}' instance '{}' has incompatible instrument/effect role",project.tracks[track].name,reference.instance_id));}
-        prepared.document.device_mut(&reference.instance_id)?.parameters=device.manifest.parameters.iter().map(|p|(p.key.clone(),p.base)).collect();
+        prepared.saved.score.device_mut(&reference.instance_id)?.parameters=device.manifest.parameters.iter().map(|p|(p.key.clone(),p.base)).collect();
         prepared.devices.push(device);
     }
     compile(project,&mut prepared)?;

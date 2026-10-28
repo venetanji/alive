@@ -131,17 +131,7 @@ ultra_launch_binary="$ROOT/apps/ultra/src-tauri/target/release/ultra"
 if [[ ${ULTRA_TEST_ALIVE:-0} == 1 ]]; then
   export ALIVE_TRACE_COMMANDS=1
   ultra_initial_session="$ULTRA_TEST_OUTPUT_DIR/initial.alive"
-  python3 - "${ULTRA_TEST_ALIVE_SESSION:-$ROOT/apps/alive/examples/two-instruments.alive}" "$ultra_initial_session" <<'PY'
-import json, sys
-from pathlib import Path
-source, target = map(Path, sys.argv[1:])
-session = json.loads(source.read_text())
-for track in session['tracks']:
-    instrument = track.get('device') or track.get('chain', {}).get('instrument')
-    for device in ([instrument] if instrument else []) + track.get('effects', []):
-        device['path'] = str((source.parent / device['path']).resolve(strict=True))
-target.write_text(json.dumps(session, indent=2) + '\n')
-PY
+  python3 "$ROOT/apps/ultra/tests/stage_alive_session.py" "${ULTRA_TEST_ALIVE_SESSION:-$ROOT/apps/alive/examples/two-instruments.alive}" "$ultra_initial_session"
   ultra_launch_arguments=("$ultra_initial_session")
   ultra_launch_binary="${ULTRA_TEST_ALIVE_BINARY:-$ROOT/apps/ultra/src-tauri/target/release/alive}"
   ultra_launch_binary=$(desktop_alive_binary "$ultra_launch_binary")

@@ -2,6 +2,8 @@
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 mod prepare;
+mod master;
+pub use master::{MasterSettings, SaveWire, SavedSession};
 pub use prepare::{prepare, PreparedSession, Schedule};
 mod persistence;
 mod history;

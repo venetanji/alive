@@ -28,18 +28,167 @@ fn native_v3_layout_matches_fixed_c_interface() {
 }
 use std::path::Path;
 
+fn test_saved(score: Session) -> SavedSession {
+    SavedSession { score, master: MasterSettings { gain: 1. }, wire: SaveWire::LegacyScore }
+}
+fn prepare_score_fixture(score: &Session, path: &Path) -> Result<PreparedSession, String> {
+    super::prepare(&test_saved(score.clone()), path)
+}
+fn save_score_fixture(path: &Path, score: &Session, origin: &Path) -> Result<std::path::PathBuf, String> {
+    super::save(path, &test_saved(score.clone()), origin)
+}
+
 fn example_path() -> std::path::PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive")
 }
 fn example() -> Session {
-    read(&example_path()).unwrap().document
+    read(&example_path()).unwrap().saved.score
+}
+
+#[test]
+fn bare_legacy_parameter_maps_reject_escaped_duplicate_keys() {
+    let text = std::fs::read_to_string(example_path()).unwrap();
+    let duplicate = text.replacen("\"attack\": 10,", "\"attack\": 10, \"\\u0061ttack\": 11,", 1);
+    assert_ne!(text, duplicate);
+    assert!(persistence::decode(&duplicate, &example_path()).is_err());
+    let v2=serde_json::to_string_pretty(&example()).unwrap();
+    let duplicate=v2.replacen("\"attack\":", "\"attack\": 10, \"\\u0061ttack\":", 1);
+    assert_ne!(v2,duplicate);
+    assert!(persistence::decode(&duplicate,&example_path()).is_err());
+}
+
+#[test]
+fn v5_envelope_accepts_a_valid_score_and_master() {
+    let score = serde_json::to_string(&example()).unwrap();
+    let text = format!(r#"{{"format":"alive-session-v5","score":{score},"master":{{"gain":0.5}}}}"#);
+    assert!(persistence::decode(&text, &example_path()).is_ok());
+}
+
+fn master_fixture(name: &str) -> std::path::PathBuf {
+    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../docs/contracts/alive-master-v1-fixtures").join(name)
+}
+
+#[test]
+fn master_contract_raw_fixtures_decode_strictly() {
+    for (name, gain) in [("v5-v2.json",1.),("v5-v3.json",1.),("v5-v4.json",1.),
+        ("v5-v3-eight.json",1.),("gain-0.json",0.),("gain-0.5.json",0.5),
+        ("gain-1.json",1.),("gain-4.json",4.)] {
+        let path=master_fixture(name);
+        let saved=persistence::decode(&std::fs::read_to_string(&path).unwrap(),&path).unwrap();
+        assert_eq!(saved.master.gain,gain,"{name}");
+        assert_eq!(saved.wire,SaveWire::V5,"{name}");
+        if name=="v5-v3-eight.json" {assert_eq!(saved.score.tracks().len(),8);}
+    }
+    for name in ["legacy-v1.json","legacy-v2.json","legacy-v3.json","legacy-v4.json"] {
+        let path=master_fixture(name);
+        let saved=persistence::decode(&std::fs::read_to_string(&path).unwrap(),&path).unwrap();
+        assert_eq!(saved.master.gain,1.,"{name}");assert_eq!(saved.wire,SaveWire::LegacyScore,"{name}");
+    }
+    for name in ["invalid-duplicate-outer-master.json","invalid-duplicate-parameter-v4.json",
+        "invalid-duplicate-parameter-v3.json","invalid-duplicate-parameter-v2.json","invalid-nonfinite.json",
+        "invalid-malformed.json","invalid-trailing.json","invalid-duplicate-score.json",
+        "invalid-duplicate-master.json","invalid-duplicate-outer.json","invalid-over.json",
+        "invalid-negative.json","invalid-string.json","invalid-unknown.json","invalid-missing.json",
+        "invalid-nested-v5.json","invalid-nested-v1.json"] {
+        let path=master_fixture(name);
+        assert!(persistence::decode(&std::fs::read_to_string(&path).unwrap(),&path).is_err(),"{name}");
+    }
+}
+
+#[test]
+fn master_decode_enforces_complete_file_limit() {
+    let path=master_fixture("v5-v2.json");let mut text=std::fs::read_to_string(&path).unwrap();
+    text.push_str(&" ".repeat(1_048_576-text.len()));
+    assert!(persistence::decode(&text,&path).is_ok());
+    text.push(' ');assert!(persistence::decode(&text,&path).unwrap_err().contains("1 MiB"));
+}
+
+#[test]
+fn master_read_checks_byte_limit_before_utf8_decoding() {
+    let path=std::env::temp_dir().join(format!("alive-master-invalid-utf8-{}.alive",std::process::id()));
+    let mut bytes=vec![b' ';1_048_576];bytes.push(0xc3);
+    std::fs::write(&path,bytes).unwrap();
+    let error=read(&path).unwrap_err();std::fs::remove_file(path).unwrap();
+    assert!(error.contains("1 MiB"),"{error}");
+}
+
+#[test]
+fn master_serialization_limit_includes_final_newline() {
+    let mut saved=test_saved(example());saved.wire=SaveWire::V5;
+    saved.score.legacy_mut().unwrap().title.clear();
+    let base=persistence::serialize_saved(&saved).unwrap().len();
+    saved.score.legacy_mut().unwrap().title="x".repeat(1_048_576-base);
+    let bytes=persistence::serialize_saved(&saved).unwrap();
+    assert_eq!(bytes.len(),1_048_576);assert_eq!(bytes.last(),Some(&b'\n'));
+    saved.score.legacy_mut().unwrap().title.push('x');
+    assert!(persistence::serialize_saved(&saved).unwrap_err().contains("1 MiB"));
+}
+
+#[test]
+fn master_roundtrip_rebases_and_preserves_complete_wrapper() {
+    let origin=master_fixture("v5-v3.json");
+    let mut source=persistence::decode(&std::fs::read_to_string(&origin).unwrap(),&origin).unwrap();source.master.gain=0.5;
+    let root=std::env::temp_dir().join(format!("alive-master-save-{}",std::process::id()));
+    std::fs::create_dir_all(&root).unwrap();
+    let (path,saved)=persistence::save_document(&root.join("moved.alive"),&source,&origin).unwrap();
+    let reopened=persistence::decode(&std::fs::read_to_string(&path).unwrap(),&path).unwrap();
+    assert_eq!(reopened,saved);assert_eq!(saved.master,source.master);assert_eq!(saved.wire,SaveWire::V5);
+    assert_eq!(prepare::prepare_device(saved.score.tracks()[0].instrument().unwrap(),&path,0).unwrap().path,
+        prepare::prepare_device(source.score.tracks()[0].instrument().unwrap(),&origin,0).unwrap().path);
+    std::fs::remove_dir_all(root).unwrap();
+}
+
+#[test]
+fn master_roundtrips_every_score_variant_including_eight_tracks() {
+    let root=std::env::temp_dir().join(format!("alive-master-variants-{}",std::process::id()));
+    std::fs::create_dir_all(&root).unwrap();
+    for name in ["v5-v2.json","v5-v3.json","v5-v4.json","v5-v3-eight.json"] {
+        let origin=master_fixture(name);let mut saved=persistence::decode(&std::fs::read_to_string(&origin).unwrap(),&origin).unwrap();
+        saved.master.gain=4.;let path=root.join(name);
+        let (path,rebased)=persistence::save_document(&path,&saved,&origin).unwrap();
+        let reopened=persistence::decode(&std::fs::read_to_string(&path).unwrap(),&path).unwrap();
+        assert_eq!(reopened,rebased,"{name}");assert_eq!(reopened.score.tracks().len(),saved.score.tracks().len());
+    }
+    std::fs::remove_dir_all(root).unwrap();
+}
+
+#[test]
+fn master_nonunity_host_install_refuses_before_native_replacement() {
+    let original=read(&example_path()).unwrap();
+    let mut candidate=original.clone();candidate.saved.master.gain=0.5;candidate.saved.wire=SaveWire::V5;
+    let mut host=host::Host::default();host.prepared=Some(original.clone());
+    let revision=host.preparation_revision;
+    assert!(host.install(candidate).unwrap_err().contains("Master gain"));
+    assert_eq!(host.preparation_revision,revision);
+    assert_eq!(host.prepared.unwrap().saved,original.saved);
+}
+
+#[test]
+fn master_wire_save_and_failure_preserve_the_owner() {
+    let prepared=read(&example_path()).unwrap();
+    let root=std::env::temp_dir().join(format!("alive-master-wire-{}",std::process::id()));
+    std::fs::create_dir_all(&root).unwrap();
+    let old=prepared.saved.clone();
+    let (path,saved)=persistence::save_document(&root.join("old.alive"),&old,&prepared.origin).unwrap();
+    assert_eq!(saved.wire,SaveWire::LegacyScore);
+    assert_ne!(serde_json::from_str::<serde_json::Value>(&std::fs::read_to_string(&path).unwrap()).unwrap()["format"],"alive-session-v5");
+    let mut v5=old.clone();v5.wire=SaveWire::V5;
+    let (path,saved)=persistence::save_document(&root.join("new.alive"),&v5,&prepared.origin).unwrap();
+    assert_eq!(saved.wire,SaveWire::V5);
+    assert_eq!(persistence::decode(&std::fs::read_to_string(path).unwrap(),&root.join("new.alive")).unwrap().wire,SaveWire::V5);
+    let before=v5.clone();let mut invalid=v5.clone();invalid.master.gain=f64::NAN;
+    assert!(persistence::save_document(&root.join("invalid.alive"),&invalid,&prepared.origin).is_err());
+    let blocked=root.join("directory.alive");std::fs::create_dir(&blocked).unwrap();
+    assert!(persistence::save_document(&blocked,&v5,&prepared.origin).is_err());
+    assert_eq!(v5,before);assert!(blocked.is_dir());
+    std::fs::remove_dir_all(root).unwrap();
 }
 
 #[test]
 fn active_v4_decode_roundtrip_preserves_sources_and_occurrences() {
     let project = workspaces::prospective_from_document(&example()).unwrap();
     let text = workspaces::encode(&project).unwrap();
-    let document = persistence::decode(&text, &example_path()).unwrap();
+    let document = persistence::decode(&text, &example_path()).unwrap().score;
     assert_eq!(serde_json::to_value(&document).unwrap(), serde_json::to_value(&project).unwrap());
     let duplicate = text.replacen("\"tempo\":", "\"tempo\": 120, \"tempo\":", 1);
     assert!(persistence::decode(&duplicate, &example_path()).unwrap_err().contains("Duplicate"));
@@ -52,10 +201,10 @@ fn active_v4_preparation_compiles_shared_sources_once() {
     let mut shared = project.tracks[0].slots[0].clone().unwrap();
     shared.id = "shared-second-slot".into();
     project.tracks[0].slots[1] = Some(shared);
-    let base = prepare(&example(), &example_path()).unwrap();
-    let prepared = prepare(&Document::WorkspacesV4(project.clone()), &example_path()).unwrap();
+    let base = prepare_score_fixture(&example(), &example_path()).unwrap();
+    let prepared = prepare_score_fixture(&Document::WorkspacesV4(project.clone()), &example_path()).unwrap();
     assert_eq!(prepared.events.len(), base.events.len());
-    assert_eq!(prepared.document, Document::WorkspacesV4(project));
+    assert_eq!(prepared.saved.score, Document::WorkspacesV4(project));
     assert_eq!(prepared.tracks.len(), 2);
     assert_eq!(prepared.devices.len(), 2);
     let mut ordered=prepared.events.clone();
@@ -70,7 +219,7 @@ fn active_v4_preparation_rejects_audio_before_reading_dependencies() {
     let mut project = workspaces::prospective_from_document(&example()).unwrap();
     project.sources.clear();project.placements.clear();
     for track in &mut project.tracks {track.chain=workspaces::ChainV4::Audio{};track.effects.clear();track.slots=[None,None,None,None];}
-    let error=prepare(&Document::WorkspacesV4(project), &example_path()).unwrap_err();
+    let error=prepare_score_fixture(&Document::WorkspacesV4(project), &example_path()).unwrap_err();
     assert!(error.contains("Audio sources are unavailable"),"{error}");
 }
 
@@ -116,7 +265,7 @@ fn v3_eight_track_host_roundtrip_and_mixer() {
         return;
     }
     let document = capacity_document();
-    let prepared = prepare(&document, &example_path()).unwrap();
+    let prepared = prepare_score_fixture(&document, &example_path()).unwrap();
     assert_eq!((prepared.tracks.len(), prepared.devices.len(), prepared.events.len()), (8, 16, 32));
     let mut host = host::Host::default();
     host.install(prepared).unwrap();
@@ -139,16 +288,16 @@ fn v3_eight_track_host_roundtrip_and_mixer() {
     assert!(left[..31].iter().all(|sample| sample.is_finite()));
     let folder = std::env::temp_dir().join(format!("alive-capacity-host-{}", std::process::id()));
     std::fs::create_dir_all(&folder).unwrap();
-    let saved = save(&folder.join("eight.alive"), &host.prepared.as_ref().unwrap().document, &example_path()).unwrap();
+    let saved = super::save(&folder.join("eight.alive"), &host.prepared.as_ref().unwrap().saved, &example_path()).unwrap();
     let reopened = read(&saved).unwrap();
-    assert_eq!(reopened.document.legacy().unwrap().tracks[7].id, "capacity-track-7");
-    assert!(reopened.document.legacy().unwrap().tracks[3].mute && reopened.document.legacy().unwrap().tracks[7].solo);
-    assert_eq!(reopened.document.banks(), host.prepared.as_ref().unwrap().document.banks());
+    assert_eq!(reopened.saved.score.legacy().unwrap().tracks[7].id, "capacity-track-7");
+    assert!(reopened.saved.score.legacy().unwrap().tracks[3].mute && reopened.saved.score.legacy().unwrap().tracks[7].solo);
+    assert_eq!(reopened.saved.score.banks(), host.prepared.as_ref().unwrap().saved.score.banks());
     let mut excess = document.clone();
     let mut extra = excess.legacy().unwrap().tracks[0].effects[0].clone(); extra.instance_id = "seventeenth-root".into();
     excess.legacy_mut().unwrap().tracks[4].effects.push(extra);
     for track in &mut excess.legacy_mut().unwrap().tracks { for device in track.devices_mut() { device.path = "/missing-capacity-dependency.ultra".into(); } }
-    assert!(prepare(&excess, &example_path()).unwrap_err().contains("sixteen native roots"));
+    assert!(prepare_score_fixture(&excess, &example_path()).unwrap_err().contains("sixteen native roots"));
     unsafe { native::alive_session_stop_v3(); native::ultra_audio_stop(); native::alive_session_reset();
              for slot in 0..16 { crate::ultra_canvas_close_document(slot); } }
     std::fs::remove_dir_all(folder).unwrap();
@@ -167,7 +316,7 @@ fn v3_strict_wire_migration_and_roundtrip_preserve_score_identity() {
     assert_eq!(wire["tracks"][0]["slots"][0]["notes"][0]["id"], "note-b81cb31228756f6d8c9d9d538eceec38");
     assert_eq!(clips, legacy.to_clips().unwrap());
     let encoded = serde_json::to_string(&clips).unwrap();
-    assert_eq!(persistence::decode(&encoded, &example_path()).unwrap(), clips);
+    assert_eq!(persistence::decode(&encoded, &example_path()).unwrap().score, clips);
     for field in ["defaultClipId", "slots"] {
         let mut bad = wire.clone(); bad["tracks"][0].as_object_mut().unwrap().remove(field);
         assert!(persistence::decode(&bad.to_string(), &example_path()).is_err());
@@ -190,12 +339,12 @@ fn v3_compiles_independent_clip_ranges_and_empty_lane_ownership() {
     for n in &mut copied.notes{n.id=format!("copy-{}",n.id);}
     for lane in &mut copied.automation{lane.points.clear();}
     bank.slots[2]=Some(copied);bank.default_clip_id=None;
-    let prepared=prepare(&document,&example_path()).unwrap();
+    let prepared=prepare_score_fixture(&document,&example_path()).unwrap();
     let Schedule::Clips(clips)=&prepared.schedule else {panic!("expected clips")};
     assert_eq!(clips.len(),3);assert_eq!(clips[1].slot,2);assert_eq!(clips[1].id,"copy");
     assert_eq!(clips[1].length_frames,768000);assert!(clips[1].owned_masks.iter().any(|m|*m!=0));
     assert_eq!(clips[1].event_begin,clips[0].event_begin+clips[0].event_count);
-    assert_eq!(prepared.document,document);
+    assert_eq!(prepared.saved.score,document);
 }
 
 #[test]
@@ -218,9 +367,9 @@ fn v3_strict_ids_disabled_aggregate_and_source_free_range_rejections(){
 fn v3_save_as_preserves_bank_ids_beats_defaults_and_source_hashes(){
     let mut document=example().to_clips().unwrap();let id=document.legacy().unwrap().tracks[0].id.clone();document.bank_mut(&id).unwrap().slots[0].as_mut().unwrap().notes[0].beat=0.03125;document.legacy_mut().unwrap().tracks[0].gain=0.43;
     let folder=std::env::temp_dir().join(format!("alive-v3-roundtrip-{}",std::process::id()));std::fs::create_dir_all(folder.join("nested")).unwrap();
-    let (path,saved)=persistence::save_document(&folder.join("nested/session.alive"),&document,&example_path()).unwrap();let reopened=read(&path).unwrap();
-    assert!(reopened.document.is_clips());assert_eq!(saved.banks(),document.banks());assert_eq!(reopened.document.banks(),document.banks());
-    assert_eq!(saved.legacy().unwrap().tracks[0].device.source_sha256,document.legacy().unwrap().tracks[0].device.source_sha256);assert_eq!(saved.legacy().unwrap().tracks[0].device.parameters,document.legacy().unwrap().tracks[0].device.parameters);assert_eq!(saved.legacy().unwrap().tracks[0].gain,0.43);
+    let (path,saved)=persistence::save_document(&folder.join("nested/session.alive"),&test_saved(document.clone()),&example_path()).unwrap();let reopened=read(&path).unwrap();
+    assert!(reopened.saved.score.is_clips());assert_eq!(saved.score.banks(),document.banks());assert_eq!(reopened.saved.score.banks(),document.banks());
+    assert_eq!(saved.score.legacy().unwrap().tracks[0].device.source_sha256,document.legacy().unwrap().tracks[0].device.source_sha256);assert_eq!(saved.score.legacy().unwrap().tracks[0].device.parameters,document.legacy().unwrap().tracks[0].device.parameters);assert_eq!(saved.score.legacy().unwrap().tracks[0].gain,0.43);
     std::fs::remove_dir_all(folder).unwrap();
 }
 
@@ -230,7 +379,7 @@ fn saved_session_resolves_two_real_independent_device_references() {
     assert_eq!(session.legacy().unwrap().tracks.len(), 2);
     assert_ne!(session.legacy().unwrap().tracks[0].id, session.legacy().unwrap().tracks[1].id);
     assert_eq!(session.legacy().unwrap().tracks[0].device.path, session.legacy().unwrap().tracks[1].device.path);
-    let prepared = prepare(&session, &example_path()).unwrap();
+    let prepared = prepare_score_fixture(&session, &example_path()).unwrap();
     assert_eq!(prepared.devices[prepared.tracks[0].midi_instrument().unwrap()].manifest.id, "org.alive.subtractive");
     assert_ne!(prepared.devices[prepared.tracks[0].midi_instrument().unwrap()].manifest.parameters.last().unwrap().base,
         prepared.devices[prepared.tracks[1].midi_instrument().unwrap()].manifest.parameters.last().unwrap().base);
@@ -243,14 +392,14 @@ fn session_v1_rejects_effects_with_an_explicit_chain_runtime_error() {
     reference.path="../../ultra/examples/utility.ultra".into();reference.id="org.alive.utility".into();reference.version=2;
     reference.parameters.clear();
     reference.source_sha256 = prepare::fingerprint(&crate::documents::read_patch(&example_path().parent().unwrap().join(&reference.path)).unwrap().patch.unwrap()).unwrap();
-    let error=prepare(&session,&example_path()).unwrap_err();
+    let error=prepare_score_fixture(&session,&example_path()).unwrap_err();
     assert!(error.contains("instruments only")&&error.contains("chain runtime")&&error.contains("Pulse"),"{error}");
 }
 
 #[test]
 fn session_v1_accepts_version_two_instruments_and_checks_declared_version() {
     let mut session=example();
-    let original=prepare(&session,&example_path()).unwrap();
+    let original=prepare_score_fixture(&session,&example_path()).unwrap();
     let mut patch=original.devices[original.tracks[0].midi_instrument().unwrap()].patch.clone();
     let device=&mut patch["device"];device["version"]=serde_json::json!(2);device["kind"]=serde_json::json!("instrument");
     device["midi"]=serde_json::json!({"input":device["midi"].clone(),"output":null});
@@ -259,9 +408,9 @@ fn session_v1_accepts_version_two_instruments_and_checks_declared_version() {
     std::fs::write(&path,serde_json::to_vec(&patch).unwrap()).unwrap();
     session.legacy_mut().unwrap().tracks[0].device.path=path.to_string_lossy().into_owned();session.legacy_mut().unwrap().tracks[0].device.version=2;
     session.legacy_mut().unwrap().tracks[0].device.source_sha256 = prepare::fingerprint(&patch).unwrap();
-    assert!(prepare(&session,&example_path()).is_ok());
+    assert!(prepare_score_fixture(&session,&example_path()).is_ok());
     session.legacy_mut().unwrap().tracks[0].device.version=1;
-    assert!(prepare(&session,&example_path()).unwrap_err().contains("version mismatch"));
+    assert!(prepare_score_fixture(&session,&example_path()).unwrap_err().contains("version mismatch"));
     std::fs::remove_file(path).unwrap();
 }
 
@@ -276,7 +425,7 @@ fn frame_conversion_orders_off_automation_on_and_preserves_required_offsets() {
         Note { beat: 64. / 24000., duration: 64. / 24000., pitch: 60, velocity: 90 }];
     track.automation = vec![Lane { instance_id: track.device.instance_id.clone(), key: "cutoff".into(), enabled: true,
         points: [0, 1, 31, 63, 64, 127].iter().map(|&frame| Point { beat: frame as f64 / 24000., value: 1000. }).collect() }];
-    let prepared = prepare(&session, &example_path()).unwrap();
+    let prepared = prepare_score_fixture(&session, &example_path()).unwrap();
     let offsets: Vec<_> = prepared.events.iter().filter(|e| e.kind == 1).map(|e| e.frame).collect();
     assert_eq!(offsets, [0, 1, 31, 63, 64, 127]);
     assert_eq!(prepared.events.iter().filter(|e| e.frame == 64).map(|e| e.kind).collect::<Vec<_>>(), [0, 1, 2]);
@@ -288,17 +437,17 @@ fn frame_collision_voice_release_ambiguity_and_loop_seam_overload_are_rejected()
     let mut session = example();
     let duplicate = session.legacy().unwrap().tracks[0].notes[0].clone();
     session.legacy_mut().unwrap().tracks[0].notes.push(duplicate);
-    assert!(prepare(&session, &example_path()).unwrap_err().contains("Overlapping"));
+    assert!(prepare_score_fixture(&session, &example_path()).unwrap_err().contains("Overlapping"));
     let mut session = example();
     session.legacy_mut().unwrap().tracks[0].automation[0].points[1].beat = 0.00000001;
-    assert!(prepare(&session, &example_path()).unwrap_err().contains("distinct audio frames"));
+    assert!(prepare_score_fixture(&session, &example_path()).unwrap_err().contains("distinct audio frames"));
     let mut session = example();
     session.legacy_mut().unwrap().tempo = 240.;
     session.legacy_mut().unwrap().length_beats = 1. / 64.; // 188 frames, repeated six times per callback.
     session.legacy_mut().unwrap().tracks.truncate(1);
     session.legacy_mut().unwrap().tracks[0].automation.clear();
     session.legacy_mut().unwrap().tracks[0].notes = (0..8).map(|pitch| Note { beat: 0., duration: 0.005, pitch: 60 + pitch, velocity: 100 }).collect();
-    assert!(prepare(&session, &example_path()).unwrap_err().contains("overload"));
+    assert!(prepare_score_fixture(&session, &example_path()).unwrap_err().contains("overload"));
 }
 
 #[test]
@@ -310,7 +459,7 @@ fn session_roundtrip_preserves_notes_automation_and_mixer() {
     session.legacy_mut().unwrap().tracks[0].notes[0].duration = 0.375;
     let encoded = serde_json::to_vec(&session).unwrap();
     assert_eq!(serde_json::from_slice::<Session>(&encoded).unwrap(), session);
-    assert!(prepare(&session, &example_path()).is_ok());
+    assert!(prepare_score_fixture(&session, &example_path()).is_ok());
 }
 
 #[test]
@@ -318,12 +467,12 @@ fn missing_and_incompatible_devices_identify_track_and_preserve_input() {
     let mut missing = example();
     missing.legacy_mut().unwrap().tracks[1].device.path = "missing.ultra".into();
     let before = missing.clone();
-    let error = prepare(&missing, &example_path()).unwrap_err();
+    let error = prepare_score_fixture(&missing, &example_path()).unwrap_err();
     assert!(error.contains("Harmony") && error.contains("missing.ultra"), "{error}");
     assert_eq!(missing, before);
     let mut incompatible = example();
     incompatible.legacy_mut().unwrap().tracks[0].device.version = 2;
-    let error = prepare(&incompatible, &example_path()).unwrap_err();
+    let error = prepare_score_fixture(&incompatible, &example_path()).unwrap_err();
     assert!(error.contains("Pulse") && error.contains("version"), "{error}");
 }
 
@@ -339,7 +488,7 @@ fn rejects_invalid_schedule_and_parameter_binding_before_admission() {
     ] {
         let mut session = example();
         mutate(&mut session);
-        assert!(prepare(&session, &example_path()).is_err());
+        assert!(prepare_score_fixture(&session, &example_path()).is_err());
     }
 }
 
@@ -351,16 +500,16 @@ fn save_as_rebases_references_and_failed_save_retains_file() {
     let mut session = example();
     session.legacy_mut().unwrap().tracks[0].gain = 0.432;
     session.legacy_mut().unwrap().tracks[1].device.parameters.insert("cutoff".into(), 1999.);
-    save(&path, &session, &example_path()).unwrap();
+    save_score_fixture(&path, &session, &example_path()).unwrap();
     let loaded = read(&path).unwrap();
-    assert_eq!(loaded.document.legacy().unwrap().tracks[0].gain, 0.432);
-    assert_eq!(loaded.document.legacy().unwrap().tracks[1].device.parameters["cutoff"], 1999.);
-    assert_eq!(loaded.document.legacy().unwrap().tracks[0].notes, session.legacy().unwrap().tracks[0].notes);
-    assert_eq!(loaded.document.legacy().unwrap().tracks[1].automation, session.legacy().unwrap().tracks[1].automation);
-    assert_eq!(loaded.devices[loaded.tracks[0].midi_instrument().unwrap()].path, { let p = prepare(&session, &example_path()).unwrap(); p.devices[p.tracks[0].midi_instrument().unwrap()].path.clone() });
+    assert_eq!(loaded.saved.score.legacy().unwrap().tracks[0].gain, 0.432);
+    assert_eq!(loaded.saved.score.legacy().unwrap().tracks[1].device.parameters["cutoff"], 1999.);
+    assert_eq!(loaded.saved.score.legacy().unwrap().tracks[0].notes, session.legacy().unwrap().tracks[0].notes);
+    assert_eq!(loaded.saved.score.legacy().unwrap().tracks[1].automation, session.legacy().unwrap().tracks[1].automation);
+    assert_eq!(loaded.devices[loaded.tracks[0].midi_instrument().unwrap()].path, { let p = prepare_score_fixture(&session, &example_path()).unwrap(); p.devices[p.tracks[0].midi_instrument().unwrap()].path.clone() });
     let previous = std::fs::read(&path).unwrap();
     session.legacy_mut().unwrap().tracks[0].device.path = "missing.ultra".into();
-    assert!(save(&path, &session, &example_path()).is_err());
+    assert!(save_score_fixture(&path, &session, &example_path()).is_err());
     assert_eq!(std::fs::read(&path).unwrap(), previous);
     assert!(read(&path).is_ok());
     std::fs::remove_dir_all(folder).unwrap();
@@ -369,10 +518,10 @@ fn save_as_rebases_references_and_failed_save_retains_file() {
 #[test]
 fn save_cannot_replace_source_device_or_accept_oversized_file() {
     let session = example();
-    let prepared = prepare(&session, &example_path()).unwrap();
+    let prepared = prepare_score_fixture(&session, &example_path()).unwrap();
     let source = &prepared.devices[prepared.tracks[0].midi_instrument().unwrap()].path;
     let original = std::fs::read(source).unwrap();
-    assert!(save(source, &session, &example_path()).is_err());
+    assert!(save_score_fixture(source, &session, &example_path()).is_err());
     assert_eq!(std::fs::read(source).unwrap(), original);
     let oversized = std::env::temp_dir().join(format!("alive-oversized-{}.alive", std::process::id()));
     std::fs::write(&oversized, vec![b' '; 1024 * 1024 + 1]).unwrap();
@@ -388,10 +537,10 @@ fn saving_through_a_session_symlink_keeps_dependency_paths_relative_to_target() 
     let target_folder = folder.join("deep/target");
     std::fs::create_dir_all(&target_folder).unwrap();
     let target = target_folder.join("target.alive");
-    save(&target, &example(), &example_path()).unwrap();
+    save_score_fixture(&target, &example(), &example_path()).unwrap();
     let link = folder.join("linked.alive");
     symlink(&target, &link).unwrap();
-    save(&link, &example(), &example_path()).unwrap();
+    save_score_fixture(&link, &example(), &example_path()).unwrap();
     assert!(read(&target).is_ok(), "Saving through a link rebased devices against the link's folder");
     assert!(link.is_symlink());
     std::fs::remove_dir_all(folder).unwrap();
@@ -446,14 +595,14 @@ fn v3_scene_is_one_native_queue_entry_with_prepared_member_identities() {
         assert!(child.status.success(),"{}\n{}",String::from_utf8_lossy(&child.stdout),String::from_utf8_lossy(&child.stderr));return;
     }
     let mut host=host::Host::default();let p=host.enable_clips(read(&example_path()).unwrap()).unwrap();host.install(p).unwrap();
-    let before=serde_json::to_value(&host.prepared.as_ref().unwrap().document).unwrap();
+    let before=serde_json::to_value(&host.prepared.as_ref().unwrap().saved.score).unwrap();
     let mut runtime=runtime::Runtime::default();assert_eq!(unsafe{native::ultra_external_start()},1);
     for _ in 0..63 {assert_eq!(unsafe{native::alive_session_mixer(0,1.,0,0)},1);}
     let scene=runtime.scene(&host,0).unwrap();assert_eq!(scene.status,"queued");assert_eq!(scene.request_serial,"1");
     assert_eq!(scene.track_mask,3);assert_eq!(scene.scene_slot,Some(0));assert_eq!(scene.members.len(),2);
     for (index,member) in scene.members.iter().enumerate(){
-        let track=&host.prepared.as_ref().unwrap().document.legacy().unwrap().tracks[index];
-        assert_eq!(member.track_id,track.id);assert_eq!(member.clip_id,host.prepared.as_ref().unwrap().document.bank(&track.id).unwrap().default_clip_id);
+        let track=&host.prepared.as_ref().unwrap().saved.score.legacy().unwrap().tracks[index];
+        assert_eq!(member.track_id,track.id);assert_eq!(member.clip_id,host.prepared.as_ref().unwrap().saved.score.bank(&track.id).unwrap().default_clip_id);
         assert_eq!(member.action,"launch");assert_eq!(member.status,"queued");
     }
     let refused=runtime.scene(&host,3).unwrap();assert_eq!(refused.status,"rejected");assert_eq!(refused.reason,7);assert_eq!(refused.rejected_mask,3);
@@ -463,7 +612,7 @@ fn v3_scene_is_one_native_queue_entry_with_prepared_member_identities() {
     let empty=runtime.scene(&host,3).unwrap();assert_eq!(empty.members.iter().map(|m|m.action.as_str()).collect::<Vec<_>>(),vec!["stop","stop"]);
     assert_eq!(unsafe{native::ultra_external_render(64,left.as_mut_ptr(),right.as_mut_ptr())},1);
     let (_,view)=runtime.poll(&host).unwrap();let view=view.unwrap();let requests=view["requests"].as_array().unwrap();assert_eq!(requests.last().unwrap()["appliedMask"],3);
-    assert_eq!(serde_json::to_value(&host.prepared.as_ref().unwrap().document).unwrap(),before);
+    assert_eq!(serde_json::to_value(&host.prepared.as_ref().unwrap().saved.score).unwrap(),before);
     unsafe{native::ultra_audio_stop();native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
 }
 
@@ -474,8 +623,8 @@ fn v3_native_host_defaults_requests_and_graph_fallback_are_real() {
         let child=std::process::Command::new(std::env::current_exe().unwrap()).args(["--exact",NAME,"--nocapture"]).env("ALIVE_V3_HOST_CHILD","1").env_remove("DISPLAY").env_remove("WAYLAND_DISPLAY").output().unwrap();
         assert!(child.status.success(),"{}\n{}",String::from_utf8_lossy(&child.stdout),String::from_utf8_lossy(&child.stderr));return;
     }
-    let mut host=host::Host::default();let upgraded=host.enable_clips(read(&example_path()).unwrap()).unwrap();assert!(upgraded.document.is_clips(),"{:?}",upgraded.notice);
-    let default=upgraded.document.bank(&upgraded.document.legacy().unwrap().tracks[0].id).unwrap().default_clip_id.clone();host.install(upgraded).unwrap();
+    let mut host=host::Host::default();let upgraded=host.enable_clips(read(&example_path()).unwrap()).unwrap();assert!(upgraded.saved.score.is_clips(),"{:?}",upgraded.notice);
+    let default=upgraded.saved.score.bank(&upgraded.saved.score.legacy().unwrap().tracks[0].id).unwrap().default_clip_id.clone();host.install(upgraded).unwrap();
     let mut raw=native::StateV3::default();assert_eq!(unsafe{native::alive_session_state_v3(&mut raw)},1);assert_eq!(raw.playing,0);assert_eq!(raw.tracks[0].active_clip,0);assert_eq!(raw.tracks[0].phase,0);assert!(default.is_some());
     let mut runtime=runtime::Runtime::default();let mut request=native::RequestV3::default();request.kind=native::V3_START;
     assert_eq!(unsafe{native::ultra_external_start()},1);let receipt=runtime.request(&host,request,None,None).unwrap();assert_eq!(receipt.status,"queued");
@@ -488,15 +637,15 @@ fn v3_native_host_defaults_requests_and_graph_fallback_are_real() {
     for preset in patch["device"]["presets"].as_array_mut().unwrap(){preset["values"]["demo"]=serde_json::json!(0);}
     let path=folder.join("toggle-binding.ultra");std::fs::write(&path,serde_json::to_vec(&patch).unwrap()).unwrap();
     old.legacy_mut().unwrap().tracks[0].device.path=path.to_string_lossy().into_owned();old.legacy_mut().unwrap().tracks[0].device.source_sha256=prepare::fingerprint(&patch).unwrap();
-    let candidate=prepare(&old,&example_path()).unwrap();host.validate(&candidate).unwrap();
-    let mut explicit=candidate.clone();explicit.document=explicit.document.to_clips().unwrap();let doc=explicit.document.clone();prepare::compile_clips(&doc,&mut explicit).unwrap();
+    let candidate=prepare_score_fixture(&old,&example_path()).unwrap();host.validate(&candidate).unwrap();
+    let mut explicit=candidate.clone();explicit.saved.score=explicit.saved.score.to_clips().unwrap();let doc=explicit.saved.score.clone();prepare::compile_clips(&doc,&mut explicit).unwrap();
     assert_eq!(host.admit(&explicit).err().unwrap().code,native::V3_GRAPH_REJECTED);assert!(host.enable_clips(explicit).is_err());
-    let retained=host.enable_clips(candidate).unwrap();assert!(!retained.document.is_clips());assert!(retained.notice.as_ref().unwrap().contains("graph policy"));assert_eq!(retained.document.legacy().unwrap().tracks[0].notes,old.legacy().unwrap().tracks[0].notes);
+    let retained=host.enable_clips(candidate).unwrap();assert!(!retained.saved.score.is_clips());assert!(retained.notice.as_ref().unwrap().contains("graph policy"));assert_eq!(retained.saved.score.legacy().unwrap().tracks[0].notes,old.legacy().unwrap().tracks[0].notes);
     let mut dense=example();dense.legacy_mut().unwrap().tempo=120.;dense.legacy_mut().unwrap().length_beats=4.;
     for (i,t) in dense.legacy_mut().unwrap().tracks.iter_mut().enumerate(){t.automation.clear();t.notes=(40..60).map(|pitch|Note{beat:i as f64,duration:0.01,pitch,velocity:80}).collect();}
-    let density=host.enable_clips(prepare(&dense,&example_path()).unwrap()).unwrap();assert!(!density.document.is_clips(),"Expected conservative phase combination refusal");assert_eq!(density.document.legacy().unwrap().tracks[1].notes,dense.legacy().unwrap().tracks[1].notes);assert!(density.notice.as_ref().unwrap().contains("Conservative"));
+    let density=host.enable_clips(prepare_score_fixture(&dense,&example_path()).unwrap()).unwrap();assert!(!density.saved.score.is_clips(),"Expected conservative phase combination refusal");assert_eq!(density.saved.score.legacy().unwrap().tracks[1].notes,dense.legacy().unwrap().tracks[1].notes);assert!(density.notice.as_ref().unwrap().contains("Conservative"));
     host.install(retained).unwrap();assert_eq!(unsafe{native::ultra_external_start()},1);assert_eq!(unsafe{native::alive_session_start()},1);assert_eq!(unsafe{native::ultra_external_render(512,left.as_mut_ptr(),right.as_mut_ptr())},1);assert_eq!(native::state().unwrap().playing,1);
-    let p=host.prepared.as_ref().unwrap();let saved=save(&folder.join("retained.alive"),&p.document,&p.origin).unwrap();assert!(!read(&saved).unwrap().document.is_clips());
+    let p=host.prepared.as_ref().unwrap();let saved=super::save(&folder.join("retained.alive"),&p.saved,&p.origin).unwrap();assert!(!read(&saved).unwrap().saved.score.is_clips());
     unsafe{native::alive_session_stop();native::ultra_audio_stop();native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}std::fs::remove_dir_all(folder).unwrap();
 }
 
@@ -504,7 +653,7 @@ fn v3_native_host_defaults_requests_and_graph_fallback_are_real() {
 fn legacy_read_returns_canonical_v2_with_stable_instance_targets() {
     let first = read(&example_path()).unwrap();
     let second = read(&example_path()).unwrap();
-    let wire = serde_json::to_value(&first.document).unwrap();
+    let wire = serde_json::to_value(&first.saved.score).unwrap();
     assert_eq!(wire["format"], "alive-session-v2");
     assert_eq!(wire["tracks"][0]["effects"], serde_json::json!([]));
     let id = wire["tracks"][0]["device"]["instanceId"].as_str().unwrap();
@@ -512,7 +661,7 @@ fn legacy_read_returns_canonical_v2_with_stable_instance_targets() {
     assert_eq!(id.len(), 39);
     assert_eq!(wire["tracks"][0]["automation"][0]["instanceId"], id);
     assert_eq!(wire["tracks"][0]["device"]["sourceSha256"].as_str().unwrap().len(), 64);
-    assert_eq!(first.document, second.document);
+    assert_eq!(first.saved.score, second.saved.score);
 }
 
 #[test]
@@ -565,18 +714,18 @@ fn saved_effect_order_and_automation_resolve_by_instance_not_chain_index() {
     session.legacy_mut().unwrap().tracks[0].effects[1].parameters.insert("gain".into(), 0.8);
     session.legacy_mut().unwrap().tracks[0].effects[1].bypassed = true;
     session.legacy_mut().unwrap().tracks[0].automation.push(Lane { instance_id: "effect-z".into(), key: "gain".into(), enabled: true, points: vec![Point { beat: 0., value: 0.5 }] });
-    let first = prepare(&session, &example_path()).unwrap();
+    let first = prepare_score_fixture(&session, &example_path()).unwrap();
     let z = first.devices.iter().position(|d| d.instance_id == "effect-z").unwrap();
     assert_eq!(first.tracks[0].effects[0], z);
     assert_eq!(first.devices[z].manifest.parameters[0].base, 0.2);
     assert!(first.events.iter().any(|e| e.device == z as u32 && e.kind == 1 && e.value == 0.5));
     session.legacy_mut().unwrap().tracks[0].effects.reverse();
-    let second = prepare(&session, &example_path()).unwrap();
+    let second = prepare_score_fixture(&session, &example_path()).unwrap();
     assert_eq!(second.tracks[0].effects[1], z);
     assert_eq!(first.events.iter().map(|e| (e.frame,e.device,e.target,e.value)).collect::<Vec<_>>(), second.events.iter().map(|e| (e.frame,e.device,e.target,e.value)).collect::<Vec<_>>());
     let cross = session.legacy().unwrap().tracks[0].automation.last().unwrap().clone();
     session.legacy_mut().unwrap().tracks[1].automation.push(cross);
-    assert!(prepare(&session, &example_path()).unwrap_err().contains("cross-track"));
+    assert!(prepare_score_fixture(&session, &example_path()).unwrap_err().contains("cross-track"));
 }
 
 #[test]
@@ -591,8 +740,8 @@ fn hashes_cover_original_json_before_instance_bases_and_formatting_is_irrelevant
     std::fs::write(&path, serde_json::to_vec(&source).unwrap()).unwrap();
     session.legacy_mut().unwrap().tracks[0].device.path = path.to_string_lossy().into();
     session.legacy_mut().unwrap().tracks[0].device.parameters.insert("cutoff".into(), 1337.);
-    let prepared = prepare(&session, &example_path()).unwrap();
-    let saved = save(&folder.join("saved.alive"), &prepared.document, &example_path()).unwrap();
+    let prepared = prepare_score_fixture(&session, &example_path()).unwrap();
+    let saved = super::save(&folder.join("saved.alive"), &prepared.saved, &example_path()).unwrap();
     std::fs::write(&path, serde_json::to_vec_pretty(&source).unwrap()).unwrap();
     assert!(read(&saved).is_ok());
     let mut changed = source; changed["nodes"][0]["x"] = serde_json::json!(12345);
@@ -611,16 +760,16 @@ fn save_as_relocates_every_effect_and_cannot_overwrite_any_dependency() {
     session.legacy_mut().unwrap().tracks[0].effects = vec![effect("utility", "utility.ultra"),effect("filter", "stereo-lowpass.ultra")];
     let folder = std::env::temp_dir().join(format!("alive-chain-save-{}",std::process::id()));
     std::fs::create_dir_all(&folder).unwrap();
-    let path = save(&folder.join("chain.alive"), &session, &example_path()).unwrap();
+    let path = save_score_fixture(&folder.join("chain.alive"), &session, &example_path()).unwrap();
     let loaded = read(&path).unwrap();
     assert_eq!(loaded.devices.len(),4);
-    assert_eq!(loaded.document.legacy().unwrap().tracks[0].effects.iter().map(|d| (&d.instance_id,&d.source_sha256,d.bypassed)).collect::<Vec<_>>(),session.legacy().unwrap().tracks[0].effects.iter().map(|d| (&d.instance_id,&d.source_sha256,d.bypassed)).collect::<Vec<_>>());
-    for device in &loaded.devices { assert!(device.path.exists()); assert!(save(&device.path,&loaded.document,&path).is_err()); }
+    assert_eq!(loaded.saved.score.legacy().unwrap().tracks[0].effects.iter().map(|d| (&d.instance_id,&d.source_sha256,d.bypassed)).collect::<Vec<_>>(),session.legacy().unwrap().tracks[0].effects.iter().map(|d| (&d.instance_id,&d.source_sha256,d.bypassed)).collect::<Vec<_>>());
+    for device in &loaded.devices { assert!(device.path.exists()); assert!(super::save(&device.path,&loaded.saved,&path).is_err()); }
     let json_dependency=folder.join("effect-source.json");
     let source=std::fs::read(&session.legacy().unwrap().tracks[0].effects[0].path).unwrap();
     std::fs::write(&json_dependency,&source).unwrap();
     session.legacy_mut().unwrap().tracks[0].effects[0].path=json_dependency.to_string_lossy().into();
-    assert!(save(&json_dependency,&session,&example_path()).unwrap_err().contains("cannot replace"));
+    assert!(save_score_fixture(&json_dependency,&session,&example_path()).unwrap_err().contains("cannot replace"));
     assert_eq!(std::fs::read(&json_dependency).unwrap(),source);
     std::fs::remove_dir_all(folder).unwrap();
 }
@@ -630,9 +779,9 @@ fn global_root_and_chain_bounds_reject_before_dependency_reads() {
     let mut session=example();
     let mut reference=session.legacy().unwrap().tracks[0].device.clone();reference.path="must-not-be-read.ultra".into();
     session.legacy_mut().unwrap().tracks[0].effects=(0..15).map(|i| {let mut d=reference.clone();d.instance_id=format!("effect-{i}");d}).collect();
-    assert!(prepare(&session,&example_path()).unwrap_err().contains("sixteen"));
+    assert!(prepare_score_fixture(&session,&example_path()).unwrap_err().contains("sixteen"));
     session.legacy_mut().unwrap().tracks[0].effects.truncate(3);
-    assert!(prepare(&session,&example_path()).unwrap_err().contains("two effects"));
+    assert!(prepare_score_fixture(&session,&example_path()).unwrap_err().contains("two effects"));
     // Future eight-instrument/nine-effect input still hits the global root budget
     // before track-profile rejection, dependency reads or fixed-array indexing.
     let mut future=example(); future.legacy_mut().unwrap().tracks=(0..8).map(|i| {
@@ -641,7 +790,7 @@ fn global_root_and_chain_bounds_reject_before_dependency_reads() {
         let mut effect=track.device.clone();effect.instance_id=format!("effect-{i}");track.effects=vec![effect];track
     }).collect();
     let mut ninth=future.legacy().unwrap().tracks[0].effects[0].clone();ninth.instance_id="ninth-effect".into();future.legacy_mut().unwrap().tracks[0].effects.push(ninth);
-    assert!(prepare(&future,&example_path()).unwrap_err().contains("sixteen"));
+    assert!(prepare_score_fixture(&future,&example_path()).unwrap_err().contains("sixteen"));
 }
 
 #[test]
@@ -651,7 +800,7 @@ fn stable_parameter_keys_survive_explicit_source_manifest_reordering() {
     filter.parameters.insert("cutoff".into(),777.);
     session.legacy_mut().unwrap().tracks[0].effects.push(filter.clone());
     session.legacy_mut().unwrap().tracks[0].automation.push(Lane {instance_id:"filter".into(),key:"cutoff".into(),enabled:true,points:vec![Point {beat:0.,value:1234.}]});
-    let first=prepare(&session,&example_path()).unwrap();
+    let first=prepare_score_fixture(&session,&example_path()).unwrap();
     let before=first.events.iter().find(|e| e.kind==1&&first.devices[e.device as usize].instance_id=="filter").unwrap();
     let mut patch=crate::documents::read_patch(Path::new(&filter.path)).unwrap().patch.unwrap();
     patch["device"]["parameters"].as_array_mut().unwrap().reverse();
@@ -660,12 +809,12 @@ fn stable_parameter_keys_survive_explicit_source_manifest_reordering() {
     session.legacy_mut().unwrap().tracks[0].effects[0].path=path.to_string_lossy().into();
     // Explicit replacement captures the new authored source, preserving key targets.
     session.legacy_mut().unwrap().tracks[0].effects[0].source_sha256=prepare::fingerprint(&patch).unwrap();
-    let second=prepare(&session,&example_path()).unwrap();
+    let second=prepare_score_fixture(&session,&example_path()).unwrap();
     let after=second.events.iter().find(|e| e.kind==1&&second.devices[e.device as usize].instance_id=="filter").unwrap();
     assert_ne!(before.target,after.target);
     assert_eq!(second.devices[after.device as usize].manifest.parameters[after.target as usize].key,"cutoff");
     assert_eq!(after.value,1234.);
-    assert_eq!(second.document.legacy().unwrap().tracks[0].effects[0].parameters["cutoff"],777.);
+    assert_eq!(second.saved.score.legacy().unwrap().tracks[0].effects[0].parameters["cutoff"],777.);
     std::fs::remove_file(path).unwrap();
 }
 
@@ -690,16 +839,16 @@ fn v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal() {
         let child=std::process::Command::new(std::env::current_exe().unwrap()).args(["--exact",NAME,"--nocapture"]).env("ALIVE_WORKSPACE_HOST_CHILD","1").env_remove("DISPLAY").env_remove("WAYLAND_DISPLAY").output().unwrap();
         assert!(child.status.success(),"{}\n{}",String::from_utf8_lossy(&child.stdout),String::from_utf8_lossy(&child.stderr));return;
     }
-    let mut host=host::Host::default();host.install(prepare(&example().to_clips().unwrap(),&example_path()).unwrap()).unwrap();
+    let mut host=host::Host::default();host.install(prepare_score_fixture(&example().to_clips().unwrap(),&example_path()).unwrap()).unwrap();
     let mut runtime=runtime::Runtime::default();
     assert_eq!(unsafe{native::ultra_external_start()},1);
     let legacy=runtime.request(&host,native::RequestV3{kind:native::V3_START,..Default::default()},None,None).unwrap();assert_eq!(legacy.status,"queued");
     let mut first_left=[0f32;1];let mut first_right=[0f32;1];assert_eq!(unsafe{native::ultra_external_render(1,first_left.as_mut_ptr(),first_right.as_mut_ptr())},1);
     unsafe{native::alive_session_stop();native::ultra_audio_stop();}
-    let original=host.prepared.as_ref().unwrap().document.clone();
-    let original_candidate=prepare(&Document::WorkspacesV4(workspaces::prospective_from_document(&original).unwrap()),&example_path()).unwrap();
+    let original=host.prepared.as_ref().unwrap().saved.score.clone();
+    let original_candidate=prepare_score_fixture(&Document::WorkspacesV4(workspaces::prospective_from_document(&original).unwrap()),&example_path()).unwrap();
     assert!(host.validate(&original_candidate).unwrap_err().contains("observed 40, limit 32"));
-    assert_eq!(host.prepared.as_ref().unwrap().document,original);
+    assert_eq!(host.prepared.as_ref().unwrap().saved.score,original);
     let mut authored=example();
     for (index,track) in authored.legacy_mut().unwrap().tracks.iter_mut().enumerate(){
         track.notes.clear();track.automation.clear();
@@ -713,7 +862,7 @@ fn v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal() {
         Lane{instance_id:instrument,key:"level".into(),enabled:true,points:vec![Point{beat:0.,value:70.},Point{beat:4.,value:90.}]},
     ]);
     let project=workspaces::prospective_from_document(&authored).unwrap();
-    let candidate=prepare(&Document::WorkspacesV4(project.clone()),&example_path()).unwrap();
+    let candidate=prepare_score_fixture(&Document::WorkspacesV4(project.clone()),&example_path()).unwrap();
     host.validate(&candidate).unwrap();host.install(candidate).unwrap();
     assert!(host.view().unwrap().devices.is_empty());
     assert_eq!(unsafe{native::ultra_external_start()},1);
@@ -728,17 +877,17 @@ fn v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal() {
     let returned=runtime.workspace_request(&host,runtime_workspaces::Action::Return{track_ids:project.tracks.iter().map(|t|t.id.clone()).collect()}).unwrap();assert_eq!(returned.kind,"return");assert!(returned.track_id.is_none());
     for _ in 0..110 {assert_eq!(unsafe{native::ultra_external_render(1024,left.as_mut_ptr(),right.as_mut_ptr())},1);}
     let view=runtime.poll(&host).unwrap().1.unwrap();assert_eq!(view["tracks"][0]["authority"],"arrangement");assert!(view["tracks"][0]["activeSlotId"].is_null());
-    let before=host.prepared.as_ref().unwrap().document.clone();let revision=host.preparation_revision;
+    let before=host.prepared.as_ref().unwrap().saved.score.clone();let revision=host.preparation_revision;
     let mut larger=project.clone();let mut third=larger.tracks[0].clone();third.id="extra-track".into();third.slots=[None,None,None,None];third.effects.clear();if let workspaces::ChainV4::Midi{instrument}=&mut third.chain{instrument.instance_id="extra-instrument".into();}larger.tracks.push(third);
-    assert!(prepare(&Document::WorkspacesV4(larger),&example_path()).unwrap_err().contains("Profile 2"));assert_eq!(host.preparation_revision,revision);assert_eq!(host.prepared.as_ref().unwrap().document,before);
+    assert!(prepare_score_fixture(&Document::WorkspacesV4(larger),&example_path()).unwrap_err().contains("Profile 2"));assert_eq!(host.preparation_revision,revision);assert_eq!(host.prepared.as_ref().unwrap().saved.score,before);
     assert_eq!(unsafe{native::ultra_external_render(31,left.as_mut_ptr(),right.as_mut_ptr())},1);assert_eq!(runtime.poll(&host).unwrap().0["playing"],1);
     let epoch=unsafe{native::alive_session_stop_v4()};assert!(epoch>0);assert_eq!(unsafe{native::ultra_external_render(1,left.as_mut_ptr(),right.as_mut_ptr())},1);assert_eq!(runtime.poll(&host).unwrap().0["playing"],0);
     unsafe{native::ultra_audio_stop();}
     let root=std::env::temp_dir().join(format!("alive-v4-save-{}",std::process::id()));std::fs::create_dir_all(&root).unwrap();
-    let saved=save(&root.join("project.alive"),&before,&example_path()).unwrap();let reopened=read(&saved).unwrap();assert!(reopened.document.is_workspaces());host.install(reopened).unwrap();
+    let saved=save_score_fixture(&root.join("project.alive"),&before,&example_path()).unwrap();let reopened=read(&saved).unwrap();assert!(reopened.saved.score.is_workspaces());host.install(reopened).unwrap();
     let (_,view)=runtime.poll(&host).unwrap();assert_eq!(view.unwrap()["tracks"][0]["authority"],"arrangement");
-    if let Ok(output)=std::env::var("ALIVE_WORKSPACE_FIXTURE_OUT") {let output=std::path::PathBuf::from(output);std::fs::create_dir_all(&output).unwrap();save(&output.join("admitted-chord-progression-v3.alive"),&authored.to_clips().unwrap(),&example_path()).unwrap();save(&output.join("admitted-chord-progression-v4.alive"),&before,&example_path()).unwrap();}
-    host.install(prepare(&authored.to_clips().unwrap(),&example_path()).unwrap()).unwrap();
+    if let Ok(output)=std::env::var("ALIVE_WORKSPACE_FIXTURE_OUT") {let output=std::path::PathBuf::from(output);std::fs::create_dir_all(&output).unwrap();save_score_fixture(&output.join("admitted-chord-progression-v3.alive"),&authored.to_clips().unwrap(),&example_path()).unwrap();save_score_fixture(&output.join("admitted-chord-progression-v4.alive"),&before,&example_path()).unwrap();}
+    host.install(prepare_score_fixture(&authored.to_clips().unwrap(),&example_path()).unwrap()).unwrap();
     assert_eq!(unsafe{native::ultra_external_start()},1);
     let resumed=runtime.request(&host,native::RequestV3{kind:native::V3_START,..Default::default()},None,None).unwrap();assert_eq!(resumed.status,"queued");assert!(runtime::decimal(&resumed.request_serial).unwrap()>runtime::decimal(&returned.request_serial).unwrap());
     assert_eq!(unsafe{native::ultra_external_render(31,left.as_mut_ptr(),right.as_mut_ptr())},1);assert_eq!(runtime.poll(&host).unwrap().0["playing"],1);unsafe{native::ultra_audio_stop();}
@@ -753,7 +902,7 @@ fn v4_nested_duplicates_and_invalid_prepared_dependencies_are_transactional(){
     for case in ["missing","changed","role"] {
         let mut candidate=project.clone();let workspaces::ChainV4::Midi{instrument}=&mut candidate.tracks[0].chain else{unreachable!()};
         match case {"missing"=>instrument.path="/missing-workspace-instrument.ultra".into(),"changed"=>instrument.source_sha256="0".repeat(64),"role"=>{let id=instrument.instance_id.clone();*instrument=effect(&id,"utility.ultra");},_=>unreachable!()}
-        let document=Document::WorkspacesV4(candidate);let before=document.clone();let error=prepare(&document,&example_path()).unwrap_err();assert!(error.contains("Pulse")||error.contains("role"),"{case}: {error}");assert_eq!(document,before);
+        let document=Document::WorkspacesV4(candidate);let before=document.clone();let error=prepare_score_fixture(&document,&example_path()).unwrap_err();assert!(error.contains("Pulse")||error.contains("role"),"{case}: {error}");assert_eq!(document,before);
     }
 }
 
@@ -764,10 +913,10 @@ fn v4_source_compiler_checks_disabled_bindings_and_placement_endpoint_arithmetic
         let mut candidate=project.clone();let instance=candidate.tracks[0].devices().next().unwrap().instance_id.clone();
         let workspaces::SourceV4::Midi{automation,..}=&mut candidate.sources[0] else{unreachable!()};
         *automation=vec![Lane{instance_id:instance,key:key.into(),enabled:false,points:vec![Point{beat:0.,value}]}];
-        assert!(prepare(&Document::WorkspacesV4(candidate),&example_path()).is_err(),"{key}");
+        assert!(prepare_score_fixture(&Document::WorkspacesV4(candidate),&example_path()).is_err(),"{key}");
     }
     let mut candidate=project;candidate.tempo=137.;candidate.placements[0].start=0.03;candidate.placements[0].duration=0.03;
-    let prepared=prepare(&Document::WorkspacesV4(candidate.clone()),&example_path()).unwrap();let Schedule::Workspaces(w)=prepared.schedule else{unreachable!()};
+    let prepared=prepare_score_fixture(&Document::WorkspacesV4(candidate.clone()),&example_path()).unwrap();let Schedule::Workspaces(w)=prepared.schedule else{unreachable!()};
     let p=w.placements.iter().find(|p|p.id==candidate.placements[0].id).unwrap();
     assert_eq!(p.descriptor.duration_frames,workspaces::frame_at(0.06,137.).unwrap()-workspaces::frame_at(0.03,137.).unwrap());
 }

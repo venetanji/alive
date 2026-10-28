@@ -98,7 +98,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     try{snapshot=await current();}catch{}
     if(snapshot){applySnapshot(snapshot);if(result){trackKey=musicKey=parameterKey='';selectedNote=null;}render();}
     if(failed)throw failure;
-    if(result)notice(action.startsWith('save')?'Session saved.':'Session ready.');
+    if(result)notice(action.startsWith('save')?(result.notice?.includes('Saved in Alive session v5 format')?result.notice:'Session saved.'):'Session ready.');
   });}
   function transport(action){
     const intent={generation:generation(),preparationRevision:model.snapshot()?.preparationRevision},v4=isWorkspace(),beat=Number($('seek').value);
@@ -321,7 +321,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     }
     const key=JSON.stringify([enabled,track.id,slotOf(track),clip?.id,clip?.name,clip?.lengthBeats,track.defaultClipId,track.slots?.map(c=>c?.id),snapshot.generation]);if(key===clipControlsKey)return;clipControlsKey=key;container.replaceChildren();
     const button=(text,fn)=>{const b=make('button','',text);b.setAttribute('aria-label',text);b.addEventListener('click',guard(fn));container.append(b);return b;};
-    if(snapshot.capabilities?.workspaceConversionAvailable){const b=button('Enable MIDI workspaces',()=>enqueue(async()=>{applySnapshot(await command('alive_enable_workspaces'));trackKey=musicKey=clipControlsKey='';render();notice('MIDI workspaces prepared. Arrangement starts at zero; Save writes v4.');}));b.disabled=!!snapshot.state.playing||model.pending();b.title='Explicit stopped conversion. Complete native admission can refuse this project while preserving current playback.';}
+    if(snapshot.capabilities?.workspaceConversionAvailable){const b=button('Enable MIDI workspaces',()=>enqueue(async()=>{applySnapshot(await command('alive_enable_workspaces'));trackKey=musicKey=clipControlsKey='';render();notice('MIDI workspaces prepared. Arrangement starts at zero.');}));b.disabled=!!snapshot.state.playing||model.pending();b.title='Explicit stopped conversion. Complete native admission can refuse this project while preserving current playback.';}
     if(!enabled){const b=button('Enable clip bank',()=>enqueue(async()=>{applySnapshot(await command('alive_enable_clips'));trackKey=musicKey=clipControlsKey='';render();}));b.disabled=!!snapshot.state.playing||model.pending();return;}
     const trackId=track.id,slot=slotOf(track);
     if(!clip){button('Create clip',()=>clipEdit({kind:'create',trackId,slot}));container.append(make('span','muted',`Empty slot ${slot+1}`));return;}

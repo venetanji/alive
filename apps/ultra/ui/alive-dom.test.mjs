@@ -340,6 +340,19 @@ test('successful file keeps its result with failed refresh and clears only refre
   assert.equal(native.calls.filter(c=>c.name==='alive_file').length,1);view.dispose();
 });
 
+test('migrated save feedback remains visible when the follow-up refresh fails',async()=>{
+  const page=dom('./alive.html'),native=backend(state());let failSnapshot=false;
+  const invoke=async(name,args)=>{
+    if(name==='alive_current'&&failSnapshot)throw Error(snapshotError);
+    const result=await native.invoke(name,args);
+    if(name==='alive_file'){result.notice='Saved in Alive session v5 format';failSnapshot=true;}
+    return result;
+  };
+  const view=mountAlive({...page,invoke});await settle();await page.ids.get('save').fire('click');
+  assert.equal(page.ids.get('notice').textContent,`Saved in Alive session v5 format Refresh delayed: Error: ${snapshotError}`);
+  view.dispose();
+});
+
 test('ordinary periodic refresh retains ready status and a later explicit file action replaces an old refusal',async()=>{
   const page=dom('./alive.html'),native=backend(state());let refuse=true;
   const invoke=async(name,args)=>{const result=await native.invoke(name,args);if(name==='alive_file'&&refuse)throw Error(dependencyError);return result;};
@@ -349,6 +362,17 @@ test('ordinary periodic refresh retains ready status and a later explicit file a
   refuse=false;await page.ids.get('save').fire('click');assert.equal(status.textContent,'Session saved.');assert.equal(status.classList.contains('error'),false);
   await pollAlive(page);assert.equal(status.textContent,'Session saved.');
   assert.deepEqual(native.calls.filter(c=>c.name==='alive_file').map(c=>c.args.action),['open','save']);view.dispose();
+});
+
+test('workspace conversion feedback does not misidentify a v5 envelope as a v4 file',async()=>{
+  const initial=state();initial.state.playing=0;initial.capabilities={workspaceConversionAvailable:true,clipBank:false};
+  const page=dom('./alive.html'),native=backend(initial);
+  const invoke=async(name,args)=>name==='alive_enable_workspaces'?structuredClone(native.snapshot):native.invoke(name,args);
+  const view=mountAlive({...page,invoke});await settle();
+  await page.find('Enable MIDI workspaces').fire('click');
+  const status=page.ids.get('notice').textContent;
+  assert.match(status,/MIDI workspaces prepared/);assert.doesNotMatch(status,/Save writes v4/);
+  view.dispose();
 });
 
 test('queued Add note cannot cross successful removal into a reused track index',async()=>{

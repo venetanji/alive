@@ -343,14 +343,14 @@ fn legacy_prospective_conversion_preserves_input_and_rejects_held_voice_excess()
     let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../../alive/examples/two-instruments.alive");
     let text = std::fs::read_to_string(&path).unwrap();
-    let old = super::super::persistence::decode(&text, &path).unwrap();
+    let old = super::super::persistence::decode(&text, &path).unwrap().score;
     let before = old.clone();
     let a = prospective_from_document(&old).unwrap();
     let b = prospective_from_document(&old.to_clips().unwrap()).unwrap();
     assert_eq!(a, b);
     assert_eq!(old, before);
     assert_eq!(prospective_from_legacy_text(&text, &path).unwrap(), a);
-    assert_eq!(super::super::persistence::decode(&encode(&a).unwrap(), &path).unwrap(), Document::WorkspacesV4(a.clone()));
+    assert_eq!(super::super::persistence::decode(&encode(&a).unwrap(), &path).unwrap().score, Document::WorkspacesV4(a.clone()));
     let mut invalid = old.clone();
     invalid.legacy_mut().unwrap().tracks[0].notes = (0..5)
         .map(|i| super::super::Note {
@@ -867,7 +867,7 @@ fn prospective_conversion_survives_unavailable_or_smaller_native_v3_admission() 
             }
             "v2-text" => {
                 let text = serde_json::to_string(&legacy_v2_tracks(4)).unwrap();
-                let decoded = super::super::persistence::decode(&text, &path).unwrap();
+                let decoded = super::super::persistence::decode(&text, &path).unwrap().score;
                 assert!(!decoded.is_clips());
                 prospective_from_legacy_text(&text, &path).unwrap()
             }

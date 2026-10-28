@@ -7,14 +7,15 @@ pub fn read(path: &Path) -> Result<PreparedSession, String> {
     let path = fs::canonicalize(path).map_err(|e| format!("Cannot open session {}: {e}", path.display()))?;
     let file = fs::File::open(&path).map_err(|e| format!("Cannot read session: {e}"))?;
     if !file.metadata().map_err(|e| e.to_string())?.is_file() { return Err("Choose an Alive session file".into()); }
-    let mut text = String::new();
-    file.take(MAX_BYTES + 1).read_to_string(&mut text).map_err(|e| format!("Cannot read session as UTF-8: {e}"))?;
-    if text.len() as u64 > MAX_BYTES { return Err("Session exceeds the 1 MiB limit".into()); }
+    let mut bytes = Vec::new();
+    file.take(MAX_BYTES + 1).read_to_end(&mut bytes).map_err(|e| format!("Cannot read session: {e}"))?;
+    if bytes.len() as u64 > MAX_BYTES { return Err("Session exceeds the 1 MiB limit".into()); }
+    let text = String::from_utf8(bytes).map_err(|e| format!("Cannot read session as UTF-8: {e}"))?;
     let session = decode(&text, &path)?;
     prepare(&session, &path)
 }
-pub fn save(path: &Path, session: &Session, origin: &Path) -> Result<PathBuf, String> { save_document(path,session,origin).map(|(path,_)|path) }
-pub(super) fn save_document(path: &Path, session: &Session, origin: &Path) -> Result<(PathBuf,Session), String> {
+pub fn save(path: &Path, session: &SavedSession, origin: &Path) -> Result<PathBuf, String> { save_document(path,session,origin).map(|(path,_)|path) }
+pub(super) fn save_document(path: &Path, session: &SavedSession, origin: &Path) -> Result<(PathBuf,SavedSession), String> {
     let prepared = prepare(session, origin)?;
     let mut path = path.to_path_buf();
     if path.extension().is_none() { path.set_extension("alive"); }
@@ -28,14 +29,12 @@ pub(super) fn save_document(path: &Path, session: &Session, origin: &Path) -> Re
     // A session symlink may resolve to a different folder than the chosen name.
     let parent = path.parent().ok_or("Choose a session file name")?;
     if prepared.devices.iter().any(|device| device.path == path) { return Err("A session cannot replace its Ultra device file".into()); }
-    let mut document = prepared.document;
+    let mut saved = prepared.saved;
     // Preserve resolved identities when Save As moves a session to another folder.
     for device in &prepared.devices {
-        document.device_mut(&device.instance_id)?.path = relative_path(parent, &device.path).to_str().ok_or("Device path cannot be represented as UTF-8")?.to_owned();
+        saved.score.device_mut(&device.instance_id)?.path = relative_path(parent, &device.path).to_str().ok_or("Device path cannot be represented as UTF-8")?.to_owned();
     }
-    let mut bytes = serde_json::to_vec_pretty(&document).map_err(|e| e.to_string())?;
-    bytes.push(b'\n');
-    if bytes.len() as u64 > MAX_BYTES { return Err("Session exceeds the 1 MiB limit".into()); }
+    let bytes = serialize_saved(&saved)?;
     let temporary = parent.join(format!(".alive-save-{}-{}.tmp", std::process::id(), NEXT_TEMP.fetch_add(1, Ordering::Relaxed)));
     let result = (|| -> std::io::Result<()> {
         let mut file = OpenOptions::new().write(true).create_new(true).open(&temporary)?;
@@ -48,7 +47,21 @@ pub(super) fn save_document(path: &Path, session: &Session, origin: &Path) -> Re
         let _ = fs::remove_file(&temporary);
         return Err(format!("Session was not saved: {error}"));
     }
-    Ok((path,document))
+    Ok((path,saved))
+}
+
+pub(super) fn serialize_saved(saved: &SavedSession) -> Result<Vec<u8>, String> {
+    saved.validate_master()?;
+    #[derive(serde::Serialize)]
+    struct Envelope<'a> { format: &'static str, score: &'a Document, master: &'a MasterSettings }
+    let mut bytes = match saved.wire {
+        SaveWire::LegacyScore if saved.master.gain == 1. => serde_json::to_vec_pretty(&saved.score),
+        SaveWire::LegacyScore => return Err("Non-unity Master requires Alive session v5".into()),
+        SaveWire::V5 => serde_json::to_vec_pretty(&Envelope {format:"alive-session-v5",score:&saved.score,master:&saved.master}),
+    }.map_err(|e| e.to_string())?;
+    bytes.push(b'\n');
+    if bytes.len() as u64 > MAX_BYTES { return Err("Session exceeds the 1 MiB limit".into()); }
+    Ok(bytes)
 }
 
 fn relative_path(base: &Path, target: &Path) -> PathBuf {
@@ -74,14 +87,34 @@ struct ReferenceV1 { path: String, id: String, version: u32, parameters: std::co
 #[derive(serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 struct LaneV1 { key: String, enabled: bool, points: Vec<Point> }
-pub(super) fn decode(text: &str, origin: &Path) -> Result<Session, String> {
+#[derive(serde::Deserialize)]
+struct FormatHeader { format: String }
+pub(super) fn decode(text: &str, origin: &Path) -> Result<SavedSession, String> {
+    if text.len() as u64 > MAX_BYTES { return Err("Session exceeds the 1 MiB limit".into()); }
+    clips::reject_duplicates(text)?;
+    let header: FormatHeader = serde_json::from_str(text).map_err(|e| format!("Invalid Alive session JSON: {e}"))?;
+    if header.format == "alive-session-v5" {
+        #[derive(serde::Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct Envelope { format: String, score: Box<serde_json::value::RawValue>, master: MasterSettings }
+        let envelope: Envelope = serde_json::from_str(text).map_err(|e| format!("Invalid Alive v5 session JSON: {e}"))?;
+        if envelope.format != "alive-session-v5" { return Err("Unsupported Alive session format".into()); }
+        let score = decode_score(envelope.score.get(), origin, false)?;
+        let saved = SavedSession { score, master: envelope.master, wire: SaveWire::V5 };
+        saved.validate_master()?;
+        Ok(saved)
+    } else {
+        Ok(SavedSession {score:decode_score(text,origin,true)?,master:MasterSettings{gain:1.},wire:SaveWire::LegacyScore})
+    }
+}
+fn decode_score(text: &str, origin: &Path, allow_v1: bool) -> Result<Session, String> {
     use sha2::{Digest, Sha256};
-    let value: serde_json::Value = serde_json::from_str(text).map_err(|e| format!("Invalid Alive session JSON: {e}"))?;
-    match value["format"].as_str() {
-        Some("alive-session-v4") => workspaces::decode(text).map(Document::WorkspacesV4),
-        Some("alive-session-v3") => super::clips::decode_v3(text),
-        Some("alive-session-v2") => serde_json::from_str::<LegacySession>(text).map(Document::LegacyV2).map_err(|e| format!("Invalid Alive session JSON: {e}")),
-        Some("alive-session-v1") => {
+    let header: FormatHeader = serde_json::from_str(text).map_err(|e| format!("Invalid Alive session JSON: {e}"))?;
+    match header.format.as_str() {
+        "alive-session-v4" => workspaces::decode(text).map(Document::WorkspacesV4),
+        "alive-session-v3" => super::clips::decode_v3(text),
+        "alive-session-v2" => serde_json::from_str::<LegacySession>(text).map(Document::LegacyV2).map_err(|e| format!("Invalid Alive session JSON: {e}")),
+        "alive-session-v1" if allow_v1 => {
             let old: SessionV1 = serde_json::from_str(text).map_err(|e| format!("Invalid Alive v1 session JSON: {e}"))?;
             let _ = old.format;
             if old.tracks.len() > 16 { return Err("Session exceeds sixteen native roots".into()); }

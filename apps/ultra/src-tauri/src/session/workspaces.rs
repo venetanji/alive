@@ -917,6 +917,7 @@ pub fn prospective_from_legacy_text(
     origin: &std::path::Path,
 ) -> Result<ProjectV4, String> {
     check_size(text.len())?;
+    super::clips::reject_duplicates(text)?;
     // This header only selects the full decoder; it never replaces wire validation.
     #[derive(Deserialize)]
     struct Format {
@@ -926,8 +927,10 @@ pub fn prospective_from_legacy_text(
         serde_json::from_str(text).map_err(|e| format!("Invalid Alive session JSON: {e}"))?;
     let document = if format.format == "alive-session-v3" {
         super::clips::decode_v3_candidate(text)?
+    } else if format.format == "alive-session-v1" || format.format == "alive-session-v2" {
+        super::persistence::decode(text, origin)?.score
     } else {
-        super::persistence::decode(text, origin)?
+        return Err("Expected a bare legacy score for workspace conversion".into());
     };
     prospective_from_document(&document)
 }

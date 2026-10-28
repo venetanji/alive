@@ -18,8 +18,12 @@ pub struct View<'a> {
     pub devices: Vec<&'a crate::canvas::device::HostManifest>,
 }
 impl Host {
+    pub(super) fn preflight_master(prepared: &PreparedSession) -> Result<(), String> {
+        prepared.saved.validate_master()?;
+        if prepared.saved.master.gain != 1. { Err("Master gain is unavailable until native Master support is installed".into()) } else { Ok(()) }
+    }
     pub(super) fn configuration_workspaces(&self, prepared:&PreparedSession)->Result<(Box<native::ConfigV4>,Vec<crate::canvas::NativeGraph>),String> {
-        let (Document::WorkspacesV4(project),Schedule::Workspaces(workspace))=(&prepared.document,&prepared.schedule) else{return Err("Workspace document and schedule disagree".into())};
+        let (Document::WorkspacesV4(project),Schedule::Workspaces(workspace))=(&prepared.saved.score,&prepared.schedule) else{return Err("Workspace document and schedule disagree".into())};
         let (common,graphs)=self.configuration_common(prepared)?;
         let mut config=Box::<native::ConfigV4>::default();
         config.profile=native::V4_PROFILE_2X4;config.work_policy=native::V4_WORK_POLICY_1;
@@ -43,7 +47,7 @@ impl Host {
         Ok((config,graphs))
     }
     pub(super) fn check_schedule(prepared:&PreparedSession)->Result<(),String>{
-        match (&prepared.document,&prepared.schedule){(Document::LegacyV2(_),Schedule::Legacy)|(Document::ClipsV3(_),Schedule::Clips(_))|(Document::WorkspacesV4(_),Schedule::Workspaces(_))=>Ok(()),_=>Err("Document and prepared schedule disagree".into())}
+        match (&prepared.saved.score,&prepared.schedule){(Document::LegacyV2(_),Schedule::Legacy)|(Document::ClipsV3(_),Schedule::Clips(_))|(Document::WorkspacesV4(_),Schedule::Workspaces(_))=>Ok(()),_=>Err("Document and prepared schedule disagree".into())}
     }
     fn configuration_v3(&self,prepared:&PreparedSession)->Result<(Box<native::ConfigV3>,Vec<crate::canvas::NativeGraph>),String> {
         let profile=if prepared.tracks.len()<=2&&prepared.devices.len()<=6{native::V3_PROFILE_2X4}else{native::V3_PROFILE_8X4};
@@ -51,11 +55,11 @@ impl Host {
         if prepared.tracks.len()>limits.max_tracks as usize||prepared.devices.len()>limits.max_devices as usize{return Err("Prepared session exceeds its admitted native clip profile".into());}
         let (mut config,graphs)=self.configuration_common(prepared)?;
         config.profile=limits.profile;config.work_policy=limits.work_policy;config.preparation_revision=self.preparation_revision.checked_add(1).ok_or("Native preparation revision exhausted")?;
-        config.tempo_bpm=prepared.document.tempo();
+        config.tempo_bpm=prepared.saved.score.tempo();
         let Schedule::Clips(clips)=&prepared.schedule else{return Err("Not a clip bank".into())};config.clip_count=clips.len() as u32;
-        for (i,track) in prepared.document.tracks().into_iter().enumerate(){
+        for (i,track) in prepared.saved.score.tracks().into_iter().enumerate(){
             config.tracks[i].slots=[native::V3_NONE;4];config.tracks[i].initial_clip=native::V3_NONE;
-            let default=&prepared.document.bank(&track.id()).unwrap().default_clip_id;
+            let default=&prepared.saved.score.bank(&track.id()).unwrap().default_clip_id;
             for (index,clip) in clips.iter().enumerate().filter(|(_,c)|c.track==i){config.tracks[i].slots[clip.slot]=index as u32;if default.as_ref()==Some(&clip.id){config.tracks[i].initial_clip=index as u32;}}
         }
         for (index,clip) in clips.iter().enumerate(){config.clips[index]=native::ClipV3{track:clip.track as u32,event_begin:clip.event_begin as u32,event_count:clip.event_count as u32,lane_count:clip.lane_count,length_frames:clip.length_frames,owned_masks:clip.owned_masks};}
@@ -64,13 +68,13 @@ impl Host {
     /// Only a playable legacy candidate may fall back after stricter clip admission.
     pub fn enable_clips(&self,mut prepared:PreparedSession)->Result<PreparedSession,String> {
         self.validate(&prepared)?;
-        if prepared.document.is_clips()||prepared.document.is_workspaces(){return Ok(prepared);}
-        let attempt=(||{let mut candidate=prepared.clone();candidate.document=prepared.document.to_clips()?;let document=candidate.document.clone();prepare::compile_clips(&document,&mut candidate)?;self.admit(&candidate).map_err(|e|format!("{} (native reason {})",e.message,e.code))?;Ok::<_,String>(candidate)})();
-        match attempt {Ok(mut candidate)=>{candidate.notice=Some("Upgraded in memory; Save writes session v3".into());Ok(candidate)},Err(reason)=>{prepared.notice=Some(format!("Legacy session - clip-bank conversion unavailable: {reason}"));Ok(prepared)}}
+        if prepared.saved.score.is_clips()||prepared.saved.score.is_workspaces(){return Ok(prepared);}
+        let attempt=(||{let mut candidate=prepared.clone();candidate.saved.score=prepared.saved.score.to_clips()?;let document=candidate.saved.score.clone();prepare::compile_clips(&document,&mut candidate)?;self.admit(&candidate).map_err(|e|format!("{} (native reason {})",e.message,e.code))?;Ok::<_,String>(candidate)})();
+        match attempt {Ok(mut candidate)=>{candidate.notice=Some(match candidate.saved.wire {SaveWire::LegacyScore=>"Upgraded in memory; Save writes session v3",SaveWire::V5=>"Upgraded in memory; Save writes session v5 with a v3 score"}.into());Ok(candidate)},Err(reason)=>{prepared.notice=Some(format!("Legacy session - clip-bank conversion unavailable: {reason}"));Ok(prepared)}}
     }
     pub fn view(&self) -> Result<View<'_>, String> {
         let p = self.prepared.as_ref().ok_or("Create or open an Alive session")?;
-        Ok(View { document: &p.document, path: &p.origin, devices: if p.document.is_workspaces(){vec![]}else{p.tracks.iter().map(|t| Ok(&p.devices[t.midi_instrument()?].manifest)).collect::<Result<_,String>>()?} })
+        Ok(View { document: &p.saved.score, path: &p.origin, devices: if p.saved.score.is_workspaces(){vec![]}else{p.tracks.iter().map(|t| Ok(&p.devices[t.midi_instrument()?].manifest)).collect::<Result<_,String>>()?} })
     }
     fn configuration(&self, prepared: &PreparedSession) -> Result<(Box<native::ConfigV2>, Vec<crate::canvas::NativeGraph>),String> {
         let (common,graphs)=self.configuration_common(prepared)?;
@@ -86,11 +90,11 @@ impl Host {
         config.track_count = prepared.tracks.len() as u32;
         config.device_count = prepared.devices.len() as u32;
         config.event_count = prepared.events.len() as u32;
-        config.loop_enabled = prepared.document.loop_enabled() as u32;
+        config.loop_enabled = prepared.saved.score.loop_enabled() as u32;
         config.length_frames = prepared.length_frames;
         let mut graphs = Vec::with_capacity(prepared.devices.len());
         for (index, device) in prepared.devices.iter().enumerate() {
-            let model = &prepared.document.tracks()[device.track];
+            let model = &prepared.saved.score.tracks()[device.track];
             let reference = model.devices().find(|d| d.instance_id == device.instance_id).unwrap();
             let mut graph = device.graph.clone();
             graph.revision = self.revisions[index] + 1;
@@ -103,14 +107,14 @@ impl Host {
                 parameter_count: device.manifest.parameters.len() as u32, revision: graph.revision, bypassed: reference.bypassed as u32, ..Default::default() };
             for (slot, parameter) in device.manifest.parameters.iter().enumerate() {
                 native.parameters[slot] = native::Parameter { node: parameter.node, param: parameter.slot,
-                    automated: match &prepared.schedule {Schedule::Legacy=>match &prepared.document {Document::LegacyV2(s)=>s.tracks[device.track].automation.iter().any(|lane| lane.instance_id == device.instance_id && lane.key == parameter.key && lane.enabled),_=>false},Schedule::Clips(clips)=>clips.iter().any(|c|c.owned_masks[index]&(1<<slot)!=0),Schedule::Workspaces(w)=>w.sources.iter().any(|s|s.descriptor.owned_masks[index]&(1<<slot)!=0)} as u32,
+                    automated: match &prepared.schedule {Schedule::Legacy=>match &prepared.saved.score {Document::LegacyV2(s)=>s.tracks[device.track].automation.iter().any(|lane| lane.instance_id == device.instance_id && lane.key == parameter.key && lane.enabled),_=>false},Schedule::Clips(clips)=>clips.iter().any(|c|c.owned_masks[index]&(1<<slot)!=0),Schedule::Workspaces(w)=>w.sources.iter().any(|s|s.descriptor.owned_masks[index]&(1<<slot)!=0)} as u32,
                     base: parameter.base, minimum: parameter.min, maximum: parameter.max, reserved: 0 };
             }
             config.devices[index] = native;
             graphs.push(graph);
         }
         for (index, track) in prepared.tracks.iter().enumerate() {
-            let model = &prepared.document.tracks()[index];
+            let model = &prepared.saved.score.tracks()[index];
             let mut native = native::TrackV2 { instrument: track.midi_instrument()? as u32, effect_count: track.effects.len() as u32,
                 gain: model.mixer().0, mute: model.mixer().1 as u32, solo: model.mixer().2 as u32, ..Default::default() };
             for (slot, &device) in track.effects.iter().enumerate() { native.effects[slot] = device as u32; }
@@ -146,7 +150,7 @@ impl Host {
         for (index, graph) in graphs.iter().enumerate() {
             if unsafe { native::alive_session_validate_device_v2(&config.devices[index], graph) } == 0 {
                 let device = &prepared.devices[index];
-                let track = &prepared.document.tracks()[device.track];
+                let track = &prepared.saved.score.tracks()[device.track];
                 return Err(AdmissionError{code:native::V3_GRAPH_REJECTED,message:format!("Track '{}' instance '{}' ({}): {}", track.name(), device.instance_id, device.path.display(), native::error())});
             }
         }
@@ -159,6 +163,7 @@ impl Host {
     /// A failed open, stream=None, or musical Stop alone is insufficient.
     /// Headless probes have no CPAL closures and stop their renderer synchronously.
     pub fn install(&mut self, prepared: PreparedSession) -> Result<(), String> {
+        Self::preflight_master(&prepared)?;
         self.validate(&prepared)?;
         unsafe { native::ultra_audio_stop(); }
         if let Err(error) = self.apply(&prepared) {
@@ -208,7 +213,7 @@ impl Host {
         prepare::binding_value(parameter, value)?;
         if unsafe { native::alive_session_base_v2(index as u32, self.revisions[index], slot as u32, value) } == 0 { return Err(native::error()); }
         parameter.base = value;
-        prepared.document.device_mut(instance_id)?.parameters.insert(key.into(), value);
+        prepared.saved.score.device_mut(instance_id)?.parameters.insert(key.into(), value);
         prepare::edit_parameter(&mut device.patch, parameter.node, &parameter.param, value);
         // Keep the prepared snapshot ready for rollback without recompiling on a knob edit.
         let node = device.graph.nodes.iter_mut().find(|node| node.id == parameter.node).unwrap();
@@ -221,12 +226,12 @@ impl Host {
         let index = prepared.devices.iter().position(|d| d.instance_id == instance_id).ok_or("Unknown instance")?;
         if prepared.devices[index].manifest.kind != crate::canvas::device::DeviceKind::AudioEffect { return Err("Only effects can be bypassed".into()); }
         if unsafe { native::alive_session_bypass_v2(index as u32, self.revisions[index], bypassed as u32) } == 0 { return Err(native::error()); }
-        prepared.document.device_mut(instance_id)?.bypassed = bypassed;
+        prepared.saved.score.device_mut(instance_id)?.bypassed = bypassed;
         Ok(())
     }
     pub fn mixer(&mut self, track: usize, gain: f64, mute: bool, solo: bool) -> Result<(), String> {
         if !gain.is_finite() || !(0. ..=2.).contains(&gain) { return Err("Track gain must be 0..2".into()); }
-        let document=&mut self.prepared.as_mut().ok_or("No session")?.document;
+        let document=&mut self.prepared.as_mut().ok_or("No session")?.saved.score;
         let id=document.tracks().get(track).ok_or("Unknown track")?.id().to_owned();
         if unsafe { native::alive_session_mixer(track as u32, gain, mute as u32, solo as u32) } == 0 { return Err(native::error()); }
         document.set_mixer(&id,gain,mute,solo)?;
@@ -249,7 +254,7 @@ fn diagnostic(prepared:&PreparedSession)->AdmissionError {
     if unsafe{native::alive_session_diagnostic_v3(&mut d)}==0{return AdmissionError{code:native::V3_BAD_FIELD,message:native_message};}
     if d.error==native::V3_GRAPH_REJECTED{return AdmissionError{code:d.error,message:format!("V3 graph policy restriction: {native_message}. The source may remain valid for legacy playback")};}
     let resource=match d.resource{native::V3_RESOURCE_EVENTS=>"events",native::V3_RESOURCE_ROOT_CLEARS=>"root clears",native::V3_RESOURCE_EVENT_SCANS=>"event scans",native::V3_RESOURCE_PARAMETER_WRITES=>"parameter writes",native::V3_RESOURCE_GUARD_STEPS=>"guard steps",_=>"native admission"};
-    let contributors=prepared.document.tracks().into_iter().enumerate().filter(|(i,_)|d.track_mask&(1<<i)!=0).map(|(i,t)|{let clips=match &prepared.schedule {Schedule::Clips(clips)=>clips.iter().enumerate().filter(|(n,c)|c.track==i&&(d.clip[i]==native::V3_NONE||*n==d.clip[i] as usize)).map(|(_,c)|c.name.as_str()).collect::<Vec<_>>().join(", "),_=>String::new()};format!("{} [{}]: {}{}",t.name(),clips,if d.contribution[i]==u32::MAX{"at least "}else{""},d.contribution[i])}).collect::<Vec<_>>().join("; ");
+    let contributors=prepared.saved.score.tracks().into_iter().enumerate().filter(|(i,_)|d.track_mask&(1<<i)!=0).map(|(i,t)|{let clips=match &prepared.schedule {Schedule::Clips(clips)=>clips.iter().enumerate().filter(|(n,c)|c.track==i&&(d.clip[i]==native::V3_NONE||*n==d.clip[i] as usize)).map(|(_,c)|c.name.as_str()).collect::<Vec<_>>().join(", "),_=>String::new()};format!("{} [{}]: {}{}",t.name(),clips,if d.contribution[i]==u32::MAX{"at least "}else{""},d.contribution[i])}).collect::<Vec<_>>().join("; ");
     let envelope=d.conservative!=0||d.frame==native::V3_NO_FRAME||d.clip.iter().enumerate().any(|(i,c)|d.track_mask&(1<<i)!=0&&*c==native::V3_NONE);
     AdmissionError{code:d.error,message:format!("{} exceeds {resource}: {}{} / {}. {contributors}. {native_message}. Use fewer simultaneous notes/points, longer very short loops, or simpler chains",if envelope{"Conservative combination envelope"}else{"Prepared bank"},if d.observed==u64::MAX{"at least "}else{""},d.observed,d.limit)}
 }

@@ -222,7 +222,15 @@ latency declaration; Alive desktop uses CPAL and the tested native host profile.
 
 ## Persistence And Errors
 
-Admitted clip-bank saves use strict camelCase `alive-session-v3` JSON; legacy
+New sessions save an `alive-session-v5` envelope containing a strict v2, v3,
+or v4 score and `master: { "gain": 1.0 }`. Older files retain their bare score
+wire until an admitted Master change requires v5. The saved gain is bounded
+from 0 through 4; native Master control is currently unavailable, so opening a
+non-unity target is refused before retiring the current audio owner. Score
+snapshots remain the existing v2/v3/v4 shapes. See
+`docs/contracts/alive-master-v1.md` for the complete wire and ownership rules.
+
+Admitted clip-bank scores use strict camelCase `alive-session-v3` JSON; legacy
 fallback saves remain v2. `Track.device` is the
 instrument and `Track.effects` is its ordered effect list. Each instance has a
 persisted UUID-shaped `instanceId`, independent of reusable manifest `id`, source

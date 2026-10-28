@@ -38,7 +38,7 @@ mod tests {
     #[test]
     fn command_primary_ids_follow_the_operation_not_sorted_invalidation(){
         let path=std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive");
-        let document=super::super::read(&path).unwrap().document;
+        let document=super::super::read(&path).unwrap().saved.score;
         let original=prospective_from_document(&document).unwrap();let track=original.tracks[0].id.clone();let slot=original.tracks[0].slots[0].as_ref().unwrap().clone();let source=slot.source_id.clone();let placement=original.placements[0].id.clone();
         for operation in [
             WorkspaceEditV4::SlotDuplicate{track_id:track.clone(),slot_id:slot.id.clone(),destination_slot:1},

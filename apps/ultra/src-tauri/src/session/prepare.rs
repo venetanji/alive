@@ -28,7 +28,7 @@ pub enum Schedule { Legacy, Clips(Vec<PreparedClip>), Workspaces(super::prepare_
 #[derive(Clone, Debug)]
 pub struct PreparedSession {
     pub origin: PathBuf,
-    pub document: Session,
+    pub saved: SavedSession,
     pub tracks: Vec<PreparedTrack>,
     pub devices: Vec<PreparedDevice>,
     pub events: Vec<FrameEvent>,
@@ -46,22 +46,24 @@ pub(super) fn text(value: &str, limit: usize, label: &str) -> Result<(), String>
     } else { Ok(()) }
 }
 
-pub fn prepare(session: &Session, path: &Path) -> Result<PreparedSession, String> {
-    if let Document::WorkspacesV4(project)=session {return super::prepare_workspaces::prepare(project,path);}
+pub fn prepare(saved: &SavedSession, path: &Path) -> Result<PreparedSession, String> {
+    saved.validate_master()?;
+    let session = &saved.score;
+    if let Document::WorkspacesV4(project)=session {return super::prepare_workspaces::prepare(saved,project,path);}
     if session.is_clips() {
         session.validate_clips()?;
         let mut common=session.legacy()?.clone();common.format="alive-session-v2".into();
         let limits=native::clip_capacity()?;
-        let mut prepared=prepare_common(&common,path,limits.max_tracks as usize,limits.max_devices as usize)?;
+        let mut prepared=prepare_common(saved,&common,path,limits.max_tracks as usize,limits.max_devices as usize)?;
         let mut document=session.clone();
-        for (target,source) in document.legacy_mut()?.tracks.iter_mut().zip(&prepared.document.legacy()?.tracks) {
+        for (target,source) in document.legacy_mut()?.tracks.iter_mut().zip(&prepared.saved.score.legacy()?.tracks) {
             for (a,b) in target.devices_mut().zip(source.devices()) {a.parameters=b.parameters.clone();}
         }
-        prepared.document=document;compile_clips(session,&mut prepared)?;return Ok(prepared);
+        prepared.saved.score=document;compile_clips(session,&mut prepared)?;return Ok(prepared);
     }
-    prepare_common(session.legacy()?,path,2,6)
+    prepare_common(saved,session.legacy()?,path,2,6)
 }
-fn prepare_common(session:&LegacySession,path:&Path,max_tracks:usize,max_devices:usize)->Result<PreparedSession,String> {
+fn prepare_common(saved:&SavedSession,session:&LegacySession,path:&Path,max_tracks:usize,max_devices:usize)->Result<PreparedSession,String> {
     if session.format != "alive-session-v2" { return Err("Unsupported Alive session format; expected alive-session-v2".into()); }
     text(&session.title, 128, "Session title")?;
     bounded(session.tempo, 30., 240., "Tempo")?;
@@ -84,10 +86,10 @@ fn prepare_common(session:&LegacySession,path:&Path,max_tracks:usize,max_devices
     let frames_per_beat = 48_000. * 60. / session.tempo;
     let frame = |beat: f64| (beat * frames_per_beat).round() as u64;
     let length_frames = frame(session.length_beats);
-    let mut result = PreparedSession { origin: path.to_path_buf(), document: Document::LegacyV2(session.clone()), tracks: vec![], devices: vec![], events: vec![], length_frames, schedule:Schedule::Legacy, notice:None };
+    let mut result = PreparedSession { origin: path.to_path_buf(), saved: saved.with_score(Document::LegacyV2(session.clone())), tracks: vec![], devices: vec![], events: vec![], length_frames, schedule:Schedule::Legacy, notice:None };
     let mut references: Vec<_> = session.tracks.iter().enumerate().flat_map(|(track, t)| t.devices().enumerate().map(move |(position, d)| (track, position, d))).collect();
     references.sort_by_key(|(_, _, d)| &d.instance_id);
-    check_sources(&result.document,path,None)?;
+    check_sources(&result.saved.score,path,None)?;
     for (track, position, reference) in references {
         let context = |e| format!("Track '{}' instance '{}' ({}): {e}", session.tracks[track].name, reference.instance_id, reference.path);
         let device = prepare_device(reference, path, track).map_err(context)?;
@@ -97,7 +99,7 @@ fn prepare_common(session:&LegacySession,path:&Path,max_tracks:usize,max_devices
         result.devices.push(device);
     }
     compile_music(session, &mut result, false)?;
-    for track in &mut result.document.legacy_mut()?.tracks {
+    for track in &mut result.saved.score.legacy_mut()?.tracks {
         for reference in track.devices_mut() {
             let device = result.devices.iter().find(|d| d.instance_id == reference.instance_id).unwrap();
             reference.parameters = device.manifest.parameters.iter().map(|p| (p.key.clone(), p.base)).collect();

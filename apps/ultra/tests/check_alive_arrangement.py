@@ -81,7 +81,7 @@ def save(name, apply=False):
         alive.wait_value('Session status', lambda s: 'prepared and applied' in s)
     path = ui.output / name
     alive.choose_file('Save session as', 'Save Alive Session', path)
-    result = json.loads(path.read_text())
+    result = alive.file_score(json.loads(path.read_text()))
     record('saved', path=str(path))
     return path, result
 
@@ -200,7 +200,7 @@ def run():
     record('complete candidate refused without changing preparation or clearing pending history', refusal=refusal, native_generation=before_generation, prepared_placement=before_prepared)
     # A nonzero loop start adds a conservative prefix boundary. Explicitly trim
     # these occurrences into the brace; never change source music or policy.
-    initial = json.loads((ui.output/'initial.alive').read_text())
+    initial = alive.file_score(json.loads((ui.output/'initial.alive').read_text()))
     for original in initial['placements']:
         ui.click('Select placement '+original['id'])
         alive.numeric('Placement duration', 6)

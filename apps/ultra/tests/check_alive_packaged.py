@@ -18,7 +18,7 @@ def run():
     windows.focus('Alive')
     ui.wait_for('Packaged First Light - Alive')
     document = json.loads(source.read_text())
-    document['title'] = 'Packaged New Session'
+    alive.file_score(document)['title'] = 'Packaged New Session'
     source.write_text(json.dumps(document, indent=2) + '\n')
     ui.click('New session')
     ui.wait_for('* Packaged New Session - Alive')

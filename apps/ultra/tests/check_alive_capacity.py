@@ -106,7 +106,7 @@ try:
     saved = ui.output / 'capacity-saved.alive'
     disclosure('Audio details', False)
     alive.choose_file('Save session as', 'Save Alive Session', saved)
-    record = json.loads(saved.read_text())
+    record = alive.file_score(json.loads(saved.read_text()))
     assert len(record['tracks']) == 8 and sum(1 + len(t['effects']) for t in record['tracks']) == 16
     assert record['tracks'][0]['effects'][0]['parameters']['gain'] == .65
     assert record['tracks'][0]['device']['parameters']['cutoff'] == 1777

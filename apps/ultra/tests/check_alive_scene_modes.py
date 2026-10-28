@@ -22,12 +22,13 @@ def run():
     windows.focus(alive.MAIN)
     current = ui.output / 'initial-v3.alive'
     alive.choose_file('Save session as', 'Save Alive Session', current)
-    fresh = json.loads(current.read_text())
+    envelope = json.loads(current.read_text())
+    fresh = alive.file_score(envelope)
     assert fresh['format'] == 'alive-session-v3'
     fresh['title'] = 'Fresh scene identities'
     fresh['tracks'][0]['slots'][0]['name'] = 'Fresh scene clip'
     fresh_path = ui.output / 'fresh-v3.alive'
-    fresh_path.write_text(json.dumps(fresh, indent=2))
+    fresh_path.write_text(json.dumps(envelope, indent=2))
 
     # Same playable legacy / conservative clip-density refusal as the Rust regression.
     legacy = json.loads(Path('apps/alive/examples/two-instruments.alive').read_text())

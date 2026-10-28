@@ -42,7 +42,7 @@ fn digest(wave: &[f32]) -> String {
 }
 fn saved_device_boundaries(host: &mut Host, source: &super::PreparedSession, output: &Path) -> Result<Value, String> {
     let offsets = [0u64, 1, 31, 63, 64, 127];
-    let mut document = source.document.clone();
+    let mut document = source.saved.score.clone();
     document.legacy_mut()?.tempo = 120.; document.legacy_mut()?.length_beats = 1.; document.legacy_mut()?.loop_enabled = true;
     for (track, model) in document.legacy_mut()?.tracks.iter_mut().enumerate() {
         model.gain = 0.7; model.mute = false; model.solo = false;
@@ -58,7 +58,7 @@ fn saved_device_boundaries(host: &mut Host, source: &super::PreparedSession, out
             }).collect(),
         }).collect();
     }
-    let prepared = prepare(&document, &source.origin)?;
+    let prepared = prepare(&source.saved.with_score(document), &source.origin)?;
     unsafe { native::ultra_audio_stop(); }
     host.install(prepared.clone())?; start()?;
     let mut baseline = Vec::with_capacity(1024);
@@ -120,15 +120,15 @@ fn saved_chain_proof(host: &mut Host, source: &super::PreparedSession, output: &
             notes:vec![Note { beat:0., duration:1. / 24000., pitch:60, velocity:127 }], automation:vec![], gain:1., mute:false, solo:false }] };
     let origin = output.join("chain.alive");
     let document = super::Document::LegacyV2(document);
-    let saved = save(&origin,&document,&origin)?;
+    let saved = save(&origin,&source.saved.with_score(document.clone()),&origin)?;
     let prepared = read(&saved)?;
     unsafe { native::ultra_audio_stop(); }
     host.install(prepared.clone())?; start()?;
     let wet = render(256,&[1])?;
     require(wet[2] > 0., "Saved lowpass did not ring after the impulse")?;
-    let mut dry_document = prepared.document.clone(); dry_document.legacy_mut()?.tracks[0].effects[1].bypassed = true;
+    let mut dry_document = prepared.saved.score.clone(); dry_document.legacy_mut()?.tracks[0].effects[1].bypassed = true;
     unsafe { native::ultra_audio_stop(); }
-    host.install(prepare(&dry_document,&saved)?)?; start()?;
+    host.install(prepare(&prepared.saved.with_score(dry_document),&saved)?)?; start()?;
     let dry = render(256,&[31,1,63,127])?;
     require(dry[0] > 0. && dry[2..].iter().all(|&s| s == 0.),"Saved bypass did not emit the exact dry impulse")?;
     unsafe { native::ultra_audio_stop(); }
@@ -143,11 +143,11 @@ fn saved_chain_proof(host: &mut Host, source: &super::PreparedSession, output: &
 
     let mut ordered = document.clone();
     ordered.legacy_mut()?.tracks[0].automation.push(Lane { instance_id:"probe-utility".into(),key:"gain".into(),enabled:true,points:vec![Point { beat:1. / 24000.,value:0. }] });
-    let forward = prepare(&ordered,&saved)?;
+    let forward = prepare(&prepared.saved.with_score(ordered.clone()),&saved)?;
     unsafe { native::ultra_audio_stop(); } host.install(forward.clone())?; start()?;
     let ringing = render(128,&[31,63,1])?;
     ordered.legacy_mut()?.tracks[0].effects.reverse();
-    let reverse = prepare(&ordered,&saved)?;
+    let reverse = prepare(&prepared.saved.with_score(ordered.clone()),&saved)?;
     let target = |p: &super::PreparedSession| p.events.iter().find(|e| e.kind == 1).map(|e| p.devices[e.device as usize].instance_id.clone());
     require(target(&forward) == target(&reverse) && target(&reverse).as_deref() == Some("probe-utility"),"Reorder changed automation ownership")?;
     unsafe { native::ultra_audio_stop(); } host.install(reverse)?; start()?;
@@ -157,10 +157,10 @@ fn saved_chain_proof(host: &mut Host, source: &super::PreparedSession, output: &
     unsafe { native::ultra_audio_stop(); } host.install(prepared.clone())?; start()?;
     render(1,&[1])?;
     let before = native::state()?;
-    let previous = host.prepared.as_ref().unwrap().document.clone();
+    let previous = host.prepared.as_ref().unwrap().saved.score.clone();
     let mut invalid = prepared.clone(); invalid.devices[0].graph.node_count = 0;
     require(host.install(invalid).is_err(),"Invalid prospective graph unexpectedly installed")?;
-    require(host.prepared.as_ref().unwrap().document == previous,"Rejected candidate changed saved model")?;
+    require(host.prepared.as_ref().unwrap().saved.score == previous,"Rejected candidate changed saved model")?;
     let continued = render(1,&[1])?;
     require(continued == wet[2..4] && native::state()?.position == before.position+1,"Rejected candidate interrupted the active native session")?;
     let stale = native::state()?.devices[0];
@@ -168,15 +168,15 @@ fn saved_chain_proof(host: &mut Host, source: &super::PreparedSession, output: &
     for _ in 0..64 { host.base("probe-utility","gain",0.4)?; }
     require(host.base("probe-utility","gain",0.3).is_err(),"Saturated base queue did not reject")?;
     require(host.bypass("probe-filter",true).is_err(),"Saturated bypass queue did not reject")?;
-    let model = &host.prepared.as_ref().unwrap().document;
+    let model = &host.prepared.as_ref().unwrap().saved.score;
     require(model.legacy()?.tracks[0].effects[0].parameters["gain"] == 0.4 && !model.legacy()?.tracks[0].effects[1].bypassed,"Rejected live value leaked into saved state")?;
     unsafe { native::alive_session_stop(); }
     require(render(64,&[31,1,32])?.iter().all(|&s| s==0.) && native::state()?.playing==0,"Stop failed under saturated chain command queue")?;
     unsafe { native::ultra_audio_stop(); } host.install(prepared.clone())?;
     require(unsafe { native::alive_session_bypass_v2(stale.document,stale.revision,1) } == 0,"Reinstallation accepted a stale root handle")?;
-    let saved = save(&output.join("chain-reopened.alive"),&host.prepared.as_ref().unwrap().document,&saved)?;
+    let saved = save(&output.join("chain-reopened.alive"),&host.prepared.as_ref().unwrap().saved,&saved)?;
     let reopened = read(&saved)?;
-    require(reopened.document.legacy()?.tracks[0].effects.len()==2,"Reopen lost saved effects")?;
+    require(reopened.saved.score.legacy()?.tracks[0].effects.len()==2,"Reopen lost saved effects")?;
     host.install(reopened)?; start()?;
     require(render(256,&[127,1,64])? == wet,"Reopened saved chain changed audio")?;
     let mut two = document.clone();
@@ -185,7 +185,7 @@ fn saved_chain_proof(host: &mut Host, source: &super::PreparedSession, output: &
     other.effects[0].parameters.insert("gain".into(),0.5);
     other.effects[1].parameters.insert("cutoff".into(),700.);
     two.legacy_mut()?.tracks.push(other);
-    let six = prepare(&two,&saved)?;
+    let six = prepare(&prepared.saved.with_score(two.clone()),&saved)?;
     unsafe { native::ultra_audio_stop(); } host.install(six.clone())?; start()?;
     let combined = render(128,&[31,1,64])?;
     let state = native::state()?;
@@ -193,7 +193,7 @@ fn saved_chain_proof(host: &mut Host, source: &super::PreparedSession, output: &
     let other_filter = six.devices.iter().position(|d| d.instance_id=="probe-filter-other").unwrap();
     require(state.devices[first_filter].base[0]==2400. && state.devices[other_filter].base[0]==700.,"Identical source effects shared base state")?;
     let mut only_other = two.clone(); only_other.legacy_mut()?.tracks[0].mute = true;
-    unsafe { native::ultra_audio_stop(); } host.install(prepare(&only_other,&saved)?)?; start()?;
+    unsafe { native::ultra_audio_stop(); } host.install(prepare(&prepared.saved.with_score(only_other),&saved)?)?; start()?;
     let independent = render(128,&[1,127])?;
     require(combined.iter().zip(wet.iter().zip(&independent)).all(|(sum,(a,b))| (sum-a-b).abs()<1e-7),"Identical source effects shared filter tails or mixed a root twice")?;
     require(independent[2..].iter().zip(&wet[2..]).any(|(a,b)| a != b),"Distinct filter instances unexpectedly shared their tail")?;
@@ -212,7 +212,7 @@ pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
     let _shutdown = Shutdown;
     let prepared = read(path)?;
     require(prepared.tracks.len() == 2, "The session proof requires two saved device references")?;
-    require(prepared.document.legacy()?.loop_enabled, "The session proof requires an enabled loop")?;
+    require(prepared.saved.score.legacy()?.loop_enabled, "The session proof requires an enabled loop")?;
     let mut host = Host::default();
     host.install(prepared.clone())?;
     start()?;
@@ -242,8 +242,8 @@ pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
     let cutoff = prepared.devices[prepared.tracks[0].midi_instrument()?].manifest.parameters.iter().position(|p| p.key == "cutoff").ok_or("Proof requires cutoff binding")?;
     let level = prepared.devices[prepared.tracks[0].midi_instrument()?].manifest.parameters.iter().position(|p| p.key == "level").ok_or("Proof requires level binding")?;
     let before = native::state()?;
-    host.base(&prepared.document.legacy()?.tracks[0].device.instance_id, "cutoff", 1711.)?;
-    host.base(&prepared.document.legacy()?.tracks[0].device.instance_id, "level", 72.)?;
+    host.base(&prepared.saved.score.legacy()?.tracks[0].device.instance_id, "cutoff", 1711.)?;
+    host.base(&prepared.saved.score.legacy()?.tracks[0].device.instance_id, "level", 72.)?;
     render(1, &[1])?;
     let owned = native::state()?;
     require(owned.devices[prepared.tracks[0].midi_instrument()?].base[cutoff] == 1711. && owned.devices[prepared.tracks[0].midi_instrument()?].effective[cutoff] == before.devices[prepared.tracks[0].midi_instrument()?].effective[cutoff]
@@ -274,11 +274,11 @@ pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
         && sought.tracks.iter().all(|t| t.active_voices == 0), "Seek retained pre-seek notes or used the wrong frame/generation")?;
 
     let view = host.view()?;
-    let saved = save(&output.join("reopened.alive"), view.document, view.path)?;
+    let saved = save(&output.join("reopened.alive"), &host.prepared.as_ref().unwrap().saved, view.path)?;
     let reopened = read(&saved)?;
-    require(reopened.document.legacy()?.tracks[0].device.parameters["cutoff"] == 1711.
-        && reopened.document.legacy()?.tracks[0].device.parameters["level"] == 72.
-        && reopened.document.legacy()?.tracks[1].notes == prepared.document.legacy()?.tracks[1].notes, "Session reopen lost state")?;
+    require(reopened.saved.score.legacy()?.tracks[0].device.parameters["cutoff"] == 1711.
+        && reopened.saved.score.legacy()?.tracks[0].device.parameters["level"] == 72.
+        && reopened.saved.score.legacy()?.tracks[1].notes == prepared.saved.score.legacy()?.tracks[1].notes, "Session reopen lost state")?;
     unsafe { native::ultra_audio_stop(); }
     host.install(reopened)?;
     start()?;
@@ -286,7 +286,7 @@ pub fn run(path: &Path, output: &Path) -> Result<Value, String> {
     require(reopened_energy > 1e-9, "Reopened session did not play")?;
     let mut single = host.view()?.document.clone();
     single.legacy_mut()?.tracks.truncate(1);
-    let one = prepare(&single, &saved)?;
+    let one = prepare(&host.prepared.as_ref().unwrap().saved.with_score(single), &saved)?;
     unsafe { native::ultra_audio_stop(); }
     host.install(one)?;
     start()?;

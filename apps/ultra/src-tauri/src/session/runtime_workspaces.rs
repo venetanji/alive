@@ -63,7 +63,7 @@ impl Runtime {
     }
 }
 fn observations(p:&PreparedSession,w:&PreparedWorkspaces,raw:&n::StateV4)->Result<Vec<Track>,String>{
-    p.document.tracks().into_iter().enumerate().map(|(index,t)|{
+    p.saved.score.tracks().into_iter().enumerate().map(|(index,t)|{
         let r=&raw.tracks[index];
         let authority=match r.authority {n::V4_ARRANGEMENT_AUTHORITY=>"arrangement",n::V4_SESSION_AUTHORITY=>"session",_=>return Err("Invalid native workspace authority".into())};
         let source=if r.active_source==n::V4_NONE{None}else{Some(w.sources.get(r.active_source as usize).filter(|s|s.descriptor.track==index as u32).ok_or("Unmapped native workspace source")?.id.clone())};
@@ -74,12 +74,12 @@ fn observations(p:&PreparedSession,w:&PreparedWorkspaces,raw:&n::StateV4)->Resul
     }).collect()
 }
 fn request(p:&PreparedSession,action:Action)->Result<(n::RequestV4,RequestResult),String>{
-    let w=workspace(p)?;let tracks=p.document.tracks();
+    let w=workspace(p)?;let tracks=p.saved.score.tracks();
     let index=|id:&str|tracks.iter().position(|t|t.id()==id).ok_or_else(||format!("Unknown prepared track '{id}'"));
     let mut r=n::RequestV4::default();let mut result=RequestResult::default();
     match action {
         Action::Start{}=>{r.kind=n::V4_START;result.kind="start".into();},
-        Action::Seek{beat}=>{if !beat.is_finite()||beat<0.||beat>=p.document.length_beats(){return Err("Seek beat must be within the prepared song".into());}r.kind=n::V4_SEEK;r.position=super::workspaces::frame_at(beat,p.document.tempo())?;result.kind="seek".into();},
+        Action::Seek{beat}=>{if !beat.is_finite()||beat<0.||beat>=p.saved.score.length_beats(){return Err("Seek beat must be within the prepared song".into());}r.kind=n::V4_SEEK;r.position=super::workspaces::frame_at(beat,p.saved.score.tempo())?;result.kind="seek".into();},
         Action::Launch{track_id,slot_id}=>{let i=index(&track_id)?;let slot=w.slots.iter().find(|s|s.descriptor.track==i as u32&&s.id==slot_id).ok_or("Apply while stopped to launch this draft-only slot")?;r.kind=n::V4_TRACK_ACTIONS;r.track_mask=1<<i;r.tracks[i]=n::TrackActionV4{action:n::V4_LAUNCH,slot:slot.slot as u32};result.kind="launch".into();result.track_id=Some(track_id);result.slot_id=Some(slot_id);result.source_id=Some(w.sources[slot.descriptor.source as usize].id.clone());},
         Action::Stop{track_id}=>{let i=index(&track_id)?;r.kind=n::V4_TRACK_ACTIONS;r.track_mask=1<<i;r.tracks[i]=n::TrackActionV4{action:n::V4_TRACK_STOP,slot:n::V4_NONE};result.kind="stop".into();result.track_id=Some(track_id);},
         Action::Return{track_ids}=>{if track_ids.is_empty()||track_ids.len()>tracks.len(){return Err("Return requires one or more unique prepared track IDs".into());}r.kind=n::V4_TRACK_ACTIONS;result.kind="return".into();for id in track_ids{let i=index(&id)?;if r.track_mask&(1<<i)!=0{return Err("Duplicate Return track ID".into());}r.track_mask|=1<<i;r.tracks[i]=n::TrackActionV4{action:n::V4_RETURN,slot:n::V4_NONE};}},
@@ -90,7 +90,7 @@ fn request(p:&PreparedSession,action:Action)->Result<(n::RequestV4,RequestResult
 }
 
 pub fn prepared(host:&Host)->Result<Option<serde_json::Value>,String>{
-    let p=host.prepared.as_ref().ok_or("No session")?;if !p.document.is_workspaces(){return Ok(None);}let w=workspace(p)?;let tracks=p.document.tracks();
+    let p=host.prepared.as_ref().ok_or("No session")?;if !p.saved.score.is_workspaces(){return Ok(None);}let w=workspace(p)?;let tracks=p.saved.score.tracks();
     Ok(Some(serde_json::json!({"preparationRevision":host.preparation_revision.to_string(),
         "sources":w.sources.iter().map(|s|serde_json::json!({"trackId":tracks[s.descriptor.track as usize].id(),"sourceId":s.id,"kind":"midi","name":s.name,"lengthFrames":s.descriptor.length_frames.to_string()})).collect::<Vec<_>>(),
         "slots":w.slots.iter().map(|s|serde_json::json!({"trackId":tracks[s.descriptor.track as usize].id(),"slotId":s.id,"slot":s.slot,"sourceId":w.sources[s.descriptor.source as usize].id,"name":s.name,"sourceOffsetFrames":s.descriptor.source_offset.to_string(),"loopEnabled":s.descriptor.loop_enabled!=0})).collect::<Vec<_>>(),
@@ -103,8 +103,8 @@ mod tests {
     fn prepared()->PreparedSession {
         let path=std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive");
         let old=super::super::read(&path).unwrap();
-        let project=super::super::workspaces::prospective_from_document(&old.document).unwrap();
-        super::super::prepare(&super::super::Document::WorkspacesV4(project),&path).unwrap()
+        let project=super::super::workspaces::prospective_from_document(&old.saved.score).unwrap();
+        super::super::prepare(&old.saved.with_score(super::super::Document::WorkspacesV4(project)),&path).unwrap()
     }
     #[test]
     fn gaps_and_session_silence_keep_null_sources_and_pending_return_is_not_predicted(){
@@ -119,7 +119,7 @@ mod tests {
     }
     #[test]
     fn return_and_launch_use_prepared_identities_and_reject_draft_or_foreign_slots(){
-        let p=prepared();let w=workspace(&p).unwrap();let tracks=p.document.tracks();
+        let p=prepared();let w=workspace(&p).unwrap();let tracks=p.saved.score.tracks();
         let (raw,result)=request(&p,Action::Return{track_ids:tracks.iter().map(|t|t.id().into()).collect()}).unwrap();assert_eq!(raw.track_mask,3);assert_eq!(result.kind,"return");assert!(result.track_id.is_none());assert!(result.members.iter().all(|m|m.authority=="arrangement"));
         assert!(request(&p,Action::Return{track_ids:vec![tracks[0].id().into();2]}).is_err());
         assert!(request(&p,Action::Launch{track_id:tracks[0].id().into(),slot_id:"draft-only".into()}).is_err());
@@ -128,7 +128,7 @@ mod tests {
     }
     #[test]
     fn receipt_reconciliation_matches_revision_and_preserves_terminal_members(){
-        let p=prepared();let (_,mut result)=request(&p,Action::Return{track_ids:p.document.tracks().iter().map(|t|t.id().into()).collect()}).unwrap();result.preparation_revision="9".into();result.request_serial=u64::MAX.to_string();result.status="pending".into();result.members[0].status="applied".into();result.members[1].status="pending".into();
+        let p=prepared();let (_,mut result)=request(&p,Action::Return{track_ids:p.saved.score.tracks().iter().map(|t|t.id().into()).collect()}).unwrap();result.preparation_revision="9".into();result.request_serial=u64::MAX.to_string();result.status="pending".into();result.members[0].status="applied".into();result.members[1].status="pending".into();
         let mut runtime=Runtime{requests:vec![result],..Default::default()};let mut raw=n::StateV4::default();raw.last_consumed_request=u64::MAX;raw.receipts[0]=n::ReceiptV4{preparation_revision:8,request_serial:u64::MAX,status:n::V4_APPLIED,applied_mask:3,..Default::default()};
         runtime.reconcile(&raw);assert_eq!(runtime.requests[0].status,"unavailable");assert_eq!(runtime.requests[0].members[0].status,"applied");assert_eq!(runtime.requests[0].members[1].status,"unavailable");
         raw.receipts[0].preparation_revision=9;runtime.reconcile(&raw);assert_eq!(runtime.requests[0].status,"applied");assert!(runtime.requests[0].members.iter().all(|m|m.status=="applied"));

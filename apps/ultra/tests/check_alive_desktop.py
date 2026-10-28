@@ -76,6 +76,10 @@ def select_clip(track):
     ui.click(name)
 
 
+def file_score(session):
+    return session['score'] if session.get('format') == 'alive-session-v5' else session
+
+
 def score(track):
     return track['slots'][0] if 'slots' in track else track
 
@@ -1045,7 +1049,7 @@ def run():
     time.sleep(.5)
     before_reorder = ui.output / 'before-reorder.alive'
     choose_file('Save session as', 'Save Alive Session', before_reorder)
-    chain['prepared_instances'] = [d['instanceId'] for d in json.loads(before_reorder.read_text())['tracks'][0]['effects']]
+    chain['prepared_instances'] = [d['instanceId'] for d in file_score(json.loads(before_reorder.read_text()))['tracks'][0]['effects']]
     reorder_click('Move Pulse Stereo Utility effect 1 later')
     ui.wait_for('Select Pulse Stereo Utility effect 2')
     reorder_click('Move Pulse Stereo Utility effect 2 earlier')
@@ -1075,7 +1079,7 @@ def run():
     assert ui.wait_for('Redo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
     deadline = time.monotonic() + 5
     while time.monotonic() < deadline:
-        saved = json.loads(source.read_text())
+        saved = file_score(json.loads(source.read_text()))
         if saved['tempo'] == 116 and saved['tracks'][0]['device']['parameters'].get('cutoff') == 1333:
             break
         time.sleep(.1)
@@ -1112,7 +1116,7 @@ def run():
     # Prospective dependency failure must keep the active session and clock running.
     bad = ui.output / 'missing-device.alive'
     broken = json.loads(source.read_text())
-    broken['tracks'][0]['device']['path'] = 'missing-device.ultra'
+    file_score(broken)['tracks'][0]['device']['path'] = 'missing-device.ultra'
     bad.write_text(json.dumps(broken))
     before = int(value('Absolute frame'))
     ui.click('Audio details')

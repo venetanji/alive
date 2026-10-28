@@ -169,8 +169,8 @@ pub(super) fn decode_v3_candidate(text:&str)->Result<Document,String> {
     let wire:Wire=serde_json::from_str(text).map_err(|e|format!("Invalid Alive v3 session JSON: {e}"))?;
     Ok(Document::from_wire(wire))
 }
-// This pass runs only on v3, before a Value could discard duplicate map members.
-fn reject_duplicates(text:&str)->Result<(),String> {
+// Scan original JSON before any typed or Value parse can discard map members.
+pub(super) fn reject_duplicates(text:&str)->Result<(),String> {
     struct Unique;
     impl<'de> Deserialize<'de> for Unique {
         fn deserialize<D:Deserializer<'de>>(d:D)->Result<Self,D::Error>{
@@ -189,5 +189,5 @@ fn reject_duplicates(text:&str)->Result<(),String> {
             }d.deserialize_any(Visitor)
         }
     }
-    serde_json::from_str::<Unique>(text).map(|_|()).map_err(|e|format!("Invalid Alive v3 session JSON: {e}"))
+    serde_json::from_str::<Unique>(text).map(|_|()).map_err(|e|format!("Invalid Alive session JSON: {e}"))
 }
