@@ -5,8 +5,12 @@ Ultra remains the `ultra` patch-editor executable. Both share the native engine
 and Rust library; Alive hosts saved Ultra instruments and ordered stereo effect
 chains through versioned device manifests and the native Faust evaluator. Canonical
 New files use an `alive-session-v5` envelope around the score and saved Master
-gain. Existing bare scores remain readable. Native Master control is not yet
-available, so non-unity sessions cannot be installed. `alive-session-v3` scores
+gain. Existing bare scores remain readable. The Linux native host supports
+saved Master gain, 64-frame live ramps, coherent stereo peaks and an explicit
+digital-overload reset. Old or partial native libraries allow unity sessions
+and refuse non-unity before retiring the current owner. The full Master strip
+and closer Live-style layout are the next UI packet; see `PLAN.md` for exact
+build and acceptance status. `alive-session-v3` scores
 preserve four clip slots per track, stable clip/note IDs,
 saved defaults, instance IDs, original-source fingerprints, ordered effects,
 parameter bases, bypass and automation targets. Existing v1/v2 sessions upgrade

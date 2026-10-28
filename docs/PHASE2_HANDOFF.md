@@ -7,15 +7,20 @@ to decide what to resume.
 
 ## Active Execution Checkpoint
 
-Application source: `6f407a488478800b358228c53a73349c8cf72a0d`, containing
-accepted Task 6 owner `e716e4` and Node DTO/model `de30ca8` (root `ce84e2a`).
-Tasks 1-6 are complete at their recorded scopes; do not restart them. Root
-independently verifies all 33 owner and four Node files against reviewed bytes.
-Combined checks pass: 585 Node/component, 273 Ultra Rust with four ignored,
-one Alive and one staging test. Full pinned contracts pass in 219.253s.
+Application source: `c71b60805e0e877915fb2b9efaf83b479252d5e3`, integrating
+reviewed Task 7 native Master `81220d3` over accepted Task 6 owner `e716e4`
+and Node DTO/model `de30ca8`. Tasks 1-7 are complete at their recorded scopes;
+do not restart them. Root verifies all 25 native packet files byte-identically,
+runs the full pinned native suite (exit 0, 186.425s), 286 Ultra Rust tests with
+four ignored, and one Alive test. A focused loader trace proves the actual new
+native module. Exact compiler, library hashes, command and terminal receipts
+are under `task-7-root-validation-81220d3/` in the canonical workspace.
+
+Earlier Task 6 combined checks pass 585 Node/component, 273 Ultra Rust with four
+ignored, one Alive and one staging test. Its full pinned contracts pass in 219.253s.
 Reports/reviews, original failed and final logs and source hashes are under
 `experiments/phase2-20261028/master/`. Non-unity history/round-trip uses explicit
-model-only seams; production non-unity installation is refused until Task 7.
+model-only seams; production non-unity installation was refused before Task 7.
 
 Containing pushed checkpoint: `62a657a55e8f007408fa42abce18f60b3bf8cecb`.
 Full CI `40721716899` and all four package targets in `40721716535` pass on
@@ -25,17 +30,26 @@ checkpoint, not later Task 7 native Master source. These are not the earlier
 foundation runs.
 Fresh fetch confirms the release foundation remains `31033483`.
 
-Latest pushed evidence checkpoint is `49d68bb9fa7e7d1d07ddd26950a22f62a3ba89c6`.
-CI `40728696609` completes with native and UI/reference jobs passing and one
+Most recent fully CI-qualified checkpoint is `13d3061ced9df759aa65201c4d7361d831cefbd9`.
+It includes the reviewed browser correction and unchanged application source.
+Its full CI `40736406708` passes all three jobs, including native/Rust/software
+CPAL and Chromium. All four package targets in `40736407041` pass; publication
+is skipped. Both terminal receipts and their hashes are in the
+`cloud-browser49/integrated-13d3061/` evidence subdirectory.
+Previous `49d68bb` CI `40728696609`
+completes with native and UI/reference jobs passing and one
 Chromium Arrangement failure: the first blank-lane bounding box is null before
 pointer input. All four packages in `40728696620` pass; publication is skipped.
 The independently reviewed browser-only candidate `f035161` is applied to root
 byte-identically with syntax/whitespace checks passing. Its focused worker
-red/green and original-case runs pass; integrated full-browser/final-head CI
-remain pending while the native measurement lease is held. Original cloud
+red/green and original-case runs pass; fresh cloud Chromium now passes the
+integrated full suite. This qualifies 13d3061, not later Master source. Original cloud
 failure, controlled mechanism, reviews and terminal receipts are retained in
 `experiments/phase2-20261028/reliability/cloud-browser49/`. The induced detached
 handle mechanism does not establish the exact cloud trigger.
+
+New native application source `c71b608` has independent local qualification
+above; its containing pushed head still requires fresh cloud CI/packages.
 
 Full foundation CI `40710079202` and all four package targets `40710079013`
 pass at `3b3df87572722d2349d0725f4059cfc4afd467ae`; publication is skipped.
@@ -45,20 +59,55 @@ accepted, superseding its earlier split source-equivalence qualification.
 Original c6 chooser and c272 browser failures and reviewed corrections remain
 under the reliability checkpoint; none of the original assertions was removed.
 
-Task 7 is running: explicit fresh `gpt-6.1-terra` / high worker
-`/root/p21_native_master` owns `bb01` based on `6f407a4`, the sole host/native/runtime/
-resolver/IPC/test writer. It owns its build outputs and exclusive offline
-native measurement resource; root does not launch browsers, GUI/audio, builds
-or native deadline work during that lease. Frozen candidate
-`4b4687d612cbf3639f15c772b1ce664fd5a09183` includes spec fixes from `8072edf`
-and the exact-target ramp correction. Whole-packet spec/quality and fresh Terra
-delta reviews have no open source findings. Worker reports 285 Rust tests
-passing with four ignored, exact-source native CI and partial-library checks
-passing; final guarded/deadline/publication measurements and complete report
-remain pending. No UI-free native acceptance is claimed yet.
-The exact authorized brief and progress are in the canonical ledger
-workspace; read it before dispatching or using a resource. Task 7 must release
-owned processes/resources on handoff. Task 8 and Task 9 remain gated.
+Task 7 integrates candidate `81220d33348b2baa0890b0d74f1e517aa5474722`
+on `6f407a4` as root `c71b608`. Whole-packet and subsequent ramp, partition and owner-FULL spec
+and quality reviews have no blocking source finding. The final FULL retry
+asserts receipt/saved gain 0.5 and owner/receipt serial agreement. Two minor
+witness gaps remain for whole-branch triage: retry serial comparison with all
+intervening allocations and stored history contents beyond `History::view`.
+The worker reports 286 Rust tests passing with four ignored and one Alive test;
+the native suite and measured production inputs are source-equivalent across
+the later test-only changes. Independent evidence audit verifies the retained
+hashes, loader distinction and all 735 v4 manifest entries.
+
+The original integrated native suite exits 127 at the old resolver fixture
+under pinned Rust 1.85.1. Its standalone test executable borrowed Rust std
+symbols from the full native library, then lost them when substituting the old
+fixture. The narrow test-only `81220d3` correction links against the minimal
+anchor and rejects borrowed Rust symbols, retaining all four module cases.
+Both fresh Terra source reviews have no finding; the evidence addendum verifies
+hashes and distinguishes reconstructed fixture labels and worker-reported
+metadata. Root's independent final pinned native/Rust checks now pass with
+captured commands/exits/compiler/module identity. The original red remains in
+`experiments/phase2-20261028/master/native/root-original/`; correction evidence
+is in `resolver-fix/`. No production resolver relaxation or old launcher artifact
+overwrite was required. All native worker resources were explicitly released.
+
+Completed v3 capacity/scene timing at practical buffers reports 0/93,600
+observed overruns for two tracks, 0/36,000 for four tracks, and 4/52,800 for
+eight tracks. All four are consecutive `extended_dense_controls` samples at
+1024 frames: max 24.016ms versus 21.333ms period. Master-burst cases have zero
+observed overruns at 512/1024. Saved/maximal graph practical cases are below
+their periods; small synthetic 64-frame cases have excursions. These are
+software timing measurements, not physical underrun counts or causal evidence.
+V4 qualification completes all 15 commands. Shipping v4 profile 1 has zero
+observed overruns in 108,000 practical-buffer samples across 57 cases; the
+provisional, refused profile 2 has 1,176/79,200 and remains unshipped.
+The bounded identical-fixture B/C/B/C comparison completes four fresh-process
+1,200-sample runs with identical PCM hashes and no excursions. It does not
+recreate the preceding matrix process history or identify the original cause.
+Controller ruling permits the UI slice after integrated functional checks pass,
+while carrying this eight-track timing result to final qualification. No clean
+all-profile deadline pass is claimed, and no threshold, capacity or setting is
+changed. The working two-device profile remains the first checkpoint scope.
+The canonical ledger records the ruling and its possible rework cost. Those
+functional checks now pass; Task 8 is leased and Task 9 remains gated.
+
+Curated native reports, reviews, reproduction scripts, original red/green and
+raw software timing samples are under
+`experiments/phase2-20261028/master/native/`, with original/stored hash manifest.
+Binary/PCM/source-copy archives remain local and separately hash-pinned; omitted
+archives are explicitly identified. The partial interrupted timing log remains.
 
 Task 7 diagnosed a local test-loader discrepancy: Cargo selected the worker's
 old adjacent `target/release/libultra_native.so`, correctly reporting Master
@@ -70,9 +119,28 @@ Any measurement-driven source change requires a new immutable candidate and
 scoped review; earlier review does not automatically qualify later bytes.
 
 The Master v1 contract is frozen at `docs/contracts/alive-master-v1.md`.
-Read-only Task 7 native inventory and Task 8 visual preparations are complete
-in the canonical workspace. Task 8 has no UI lease until native proof passes.
-It must retain pure DTO validation and the explicit `alive-master.mjs` handoff.
+Fresh explicit `gpt-6.1-terra` / high worker `/root/p21_master_workspace_ui`
+owns Task 8 in `bb01` at `c71b608`. Its canonical `task-8-brief.md` activates
+the full Alive UI/focused tests and Alive-only design/surface documentation
+lease, including explicit `alive-master.mjs` producer handoff while preserving
+pure DTO exports. It owns build/cache plus serialized browser/native GUI and
+software-audio resources until release. Root performs docs/evidence/cloud work
+only, with no competing local build/browser/GUI/audio/native workload. No host,
+native, ABI, capacity, Ultra canvas or release-workflow change is leased.
+
+The UI worker's first partial producer report was not an acceptance candidate;
+root renewed the same lease to finish the full packet in place. No partial UI
+source has been integrated. Read the canonical ledger/current report rather
+than inferring completion from focused Node tests.
+
+Separately, fresh Terra worker `/root/q1_endurance_collector_fixtures` prepares
+only two new GI-free Python helper/test files in `27be` at `c71b608`. This uses
+the runbook's disjoint-fixture allowance while the UI owns runtime resources.
+The canonical `task9-collector-fixtures-brief.md` forbids driver/UI/native/CI
+edits, native/build/browser/GUI/audio/AT-SPI/recorder workloads and bound changes.
+It consumes existing epoch/playing contracts and must pass independent review
+before integration. This is test-support preparation, not a Task 9 native,
+pilot or endurance lease; Q1 qualification remains gated on accepted Task 8.
 The next user-testable checkpoint is a real saved native Master with closer
 Live Session/Arrangement composition, not another standalone instrument.
 
@@ -125,7 +193,7 @@ task/candidate/review records before dispatching anything after a restart.
 
 - Checkout: `/home/venetanji/.codex/worktrees/edd5/alive`.
 - Feature branch: `feat/alive-session-host`.
-- Accepted application source: `6f407a488478800b358228c53a73349c8cf72a0d`.
+- Accepted application source: `c71b60805e0e877915fb2b9efaf83b479252d5e3`.
 - CI/packages-qualified foundation: `3b3df87572722d2349d0725f4059cfc4afd467ae`.
 - Release foundation: `31033483eb3baf15edab1734b966cc6d55c4b8c7`.
 - Draft PR: #6, targeting `build/ultra-desktop-releases`.
@@ -141,10 +209,11 @@ paths, preserving user work and private reference material. No destructive clean
 
 ## First Runnable Work
 
-Read the canonical ledger and reconcile the live Task 7 worker; do not dispatch
-another native/host writer or restart accepted Tasks 1-6. Root's combined
-Task 6 Rust, Alive and pinned contracts commands are terminal exit 0, with
-receipts/logs under the accepted saved-owner evidence. The staging regression
+Read the canonical ledger and reconcile the live Task 8 UI worker; do not
+dispatch another UI writer or restart accepted Tasks 1-7. Root's final Task 7
+native/Rust/Alive checks and earlier Task 6 pinned contracts are terminal exit 0
+at their recorded source, with receipts under the native/saved-owner evidence.
+The staging regression
 is now an explicit CI step; v5 and legacy conversion notices reflect the actual
 wire and dirty detection uses the score transition, preserving saved notices.
 
@@ -153,11 +222,11 @@ work runs. Final qualification requires the final pushed head; the old full
 foundation CI/packages cannot qualify Task 6 or later native/UI source. Fetch
 and reconcile the release foundation again before final testing. No merges.
 
-On Task 7 report: freeze the exact candidate, independently review spec and
+On Task 8 report: freeze the exact candidate, independently review spec and
 quality, resolve findings, integrate byte-identically and run affected tests.
-Require native ramp/queue/clock/rollback/coherence/admission proof before Task 8.
-Then lease Task 8 UI with `task8-visual-preparation.md`, exact DTO ownership
-and current Impeccable craft floor. Task 9 owns the coherent local build, both
+Require bounded producer, actual Master/native action receipts and both-size
+WebKit/Chromium layout/fader proof; preserve the pure DTO/model contract and
+original history/Prepare/Apply/scoped Stop/Quit regressions. Task 9 owns the coherent local build, both
 sizes/native save/Quit/restart, launcher, 1800 proven playing seconds, final
 head CI/packages and reviewed draft checkpoint. Preserve evidence limitations
 and distinguish software-loopback from physical output.
@@ -170,6 +239,12 @@ that collection, action boundaries and final retirement, retaining original
 assertions. Use an exact-artifact short pilot to check the unchanged wall,
 audio, metadata and epoch bounds before the 1800-playing-second run; a pilot
 does not qualify endurance. No Task 9 implementation lease was granted.
+
+While the exclusive profiler runs, two fresh Terra workers completed read-only
+Task 10 browser and Task 12 authoring inventories. Hash-pinned reports are under
+`experiments/phase2-20261028/preparation/`. They identify future contract/source
+seams and unobserved Live/Max questions; they freeze no API and create no extra
+dependency on the first checkpoint. No reference runtime was relaunched.
 
 ## Contracts And Review Corrections To Preserve
 

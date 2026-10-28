@@ -1,0 +1,93 @@
+[
+  {
+    "name": "native-suite",
+    "command": [
+      "bash",
+      "apps/ultra/tests/ci/check-native.sh"
+    ],
+    "environmentOverrides": {},
+    "exit": 0,
+    "seconds": 186.425,
+    "log": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation-81220d3/native-suite.log",
+    "sha256": "d023067ca04e99d2235d0e8056455f5e787319eb3bb470b83aa3ab771e0ea74e"
+  },
+  {
+    "name": "ultra-compile",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "apps/ultra/src-tauri/Cargo.toml",
+      "--release",
+      "--locked",
+      "--no-run",
+      "--message-format=json-render-diagnostics",
+      "--lib"
+    ],
+    "environmentOverrides": {},
+    "exit": 0,
+    "seconds": 42.745,
+    "log": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation-81220d3/ultra-compile.log",
+    "sha256": "4764e6a2a3814b6b103052b8c408b6d1159691a4333a573f8e8551dca67b1474"
+  },
+  {
+    "name": "loader-proof",
+    "command": [
+      "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/deps/ultra_desktop-9e1feeb9c9029f98",
+      "--exact",
+      "session::native_master::tests::resolves_the_loaded_native_image",
+      "--test-threads=1"
+    ],
+    "environmentOverrides": {
+      "LD_DEBUG": "libs"
+    },
+    "exit": 0,
+    "seconds": 0.092,
+    "log": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation-81220d3/loader-proof.log",
+    "sha256": "2f6c21fc3671571a52948696fa949aa33ccb0945b2d3ead93a4e833515d1759a"
+  },
+  {
+    "name": "ultra-tests",
+    "command": [
+      "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/deps/ultra_desktop-9e1feeb9c9029f98",
+      "--test-threads=1"
+    ],
+    "environmentOverrides": {},
+    "exit": 0,
+    "seconds": 6.492,
+    "log": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation-81220d3/ultra-tests.log",
+    "sha256": "7c779e2252854f54305f1cc82a7c68c4130a3244518a9fa1f34302d47bf20f18"
+  },
+  {
+    "name": "alive-compile",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "apps/alive/src-tauri/Cargo.toml",
+      "--release",
+      "--locked",
+      "--no-run",
+      "--message-format=json-render-diagnostics",
+      "--target-dir",
+      "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target"
+    ],
+    "environmentOverrides": {},
+    "exit": 0,
+    "seconds": 70.227,
+    "log": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation-81220d3/alive-compile.log",
+    "sha256": "6b1268bb1d001f5c80bb8d97fe8fc9544e7b8fe2cb0657070cc735099cd5b82f"
+  },
+  {
+    "name": "alive-tests",
+    "command": [
+      "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/deps/alive-6887508c824dff39",
+      "--test-threads=1"
+    ],
+    "environmentOverrides": {},
+    "exit": 0,
+    "seconds": 0.073,
+    "log": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation-81220d3/alive-tests.log",
+    "sha256": "9d8e4fcce3ea9868c769f5782fb50fd9b71e2b96e12aa8f10c3f50ffae4e7b3a"
+  }
+]

@@ -1,13 +1,17 @@
 # Alive / Ultra Plan
 
-Current execution, 2026-10-29: Tasks 1-6 are accepted at their stated scope.
-Current application source is `6f407a4`: saved Master ownership/strict v5
-persistence plus the separately reviewed Node DTO/model consumer. Root's
-combined checks pass 585 Node/component tests, 273 Ultra Rust tests (four
-ignored), one Alive test and the staging regression; the full pinned contract
-suite passes in 219.253s. Actual native Master gain/meter/command admission and
-its fader are still pending. Legacy unity sessions remain playable; non-unity
-installation is explicitly refused until the native implementation passes.
+Current execution, 2026-10-29: Tasks 1-7 are accepted at their stated scope.
+Current application source is `c71b608`: real native Master gain/ramp/meters,
+bounded commands, coherent observations and installation/rollback, over the
+saved-owner/strict-v5 and reviewed Node DTO/model consumer. Root's final pinned
+native suite passes in 186.425s, with 286 Ultra Rust tests (four ignored), one
+Alive test and a focused loader trace proving the new module. The full UI is
+in progress; the launcher is still the earlier `b4b1a5c` build.
+
+Earlier Task 6 combined checks pass 585 Node/component tests, 273 Ultra Rust
+tests (four ignored), one Alive test and the staging regression; its full pinned
+contracts pass in 219.253s. Old/partial native modules remain usable for unity
+sessions and explicitly refuse non-unity without mutating the saved owner.
 
 The `3b3df87` foundation fully passes CI `40710079202` and all four package
 targets in `40710079013`, publication skipped. Those runs precede the Master
@@ -26,26 +30,51 @@ Read-only Task 9 preparation is retained at
 workload needs contiguous stream-epoch collection and final retirement in
 addition to conservative playing-time accounting. No endurance pass is claimed.
 
-Latest pushed `49d68bb` has passing native/UI-reference jobs but a failed
+Prior fully qualified checkpoint `13d3061` integrates the reviewed browser correction. Its
+CI40736406708 passes all three jobs, including native/Rust/software CPAL.
+Packages40736407041 passes all four targets, with publication skipped.
+Earlier `49d68bb` has passing native/UI-reference jobs but a failed
 Chromium blank-lane geometry read in CI `40728696609`; all four package targets
 pass in `40728696620`, publication skipped. Reviewed browser-only `f035161` is
-applied byte-identically with syntax checks; integrated full-browser and fresh
-final-head CI remain pending. Original cloud and induced-redraw red/green
+applied byte-identically with syntax checks; the fresh full Chromium suite now
+passes. These results qualify 13d3061, not later Master source. Original cloud and induced-redraw red/green
 evidence is retained under reliability/cloud-browser49; the original cloud
 trigger is unproven.
 
 ## Phase 2 Direction: Live / Max Workflow Fidelity, 2026-10-28
 
 Execution is active under `docs/PHASE2_HANDOFF.md`. The frozen Master contract
-is `docs/contracts/alive-master-v1.md`. Explicit `gpt-6.1-terra` worker
-`p21_native_master` owns Task 7 in isolated `bb01` based on the accepted source above:
-UI-free native gain/ramp/metering, bounded commands, coherent observations,
-capability resolution and installation/rollback proof. Candidate `4b4687d`
-has clean whole-packet and ramp-delta source reviews; worker reports exact
-native CI and partial-library checks passing. Final guarded/deadline/publication
-measurements and complete report remain pending. Root does not launch browsers,
-builds, GUI/audio or native performance workloads during that lease. Task 8 then adds
-the real Master/Live composition; Task 9 produces the first user checkpoint.
+is `docs/contracts/alive-master-v1.md`. Task 7 candidate `81220d3` includes
+native gain/ramp/metering, bounded commands, coherent observations, capability
+resolution and installation/rollback proof. Its independent source reviews
+have no blocking finding; two minor FULL-test witness gaps are retained.
+Worker final checks report 286 Rust tests passing, four ignored and one Alive
+test. Native/measurement production inputs remain unchanged after `4b4687d`;
+the changed native suite at `ad314e5` and all 15 v4 commands pass.
+
+Root verifies all 25 candidate files byte-identically and commits `c71b608`
+after the final pinned native/Rust/Alive checks pass. The original root native
+suite exposed a standalone resolver test borrowing Rust std symbols from the
+full native image before substitution of an old fixture. The narrow harness
+correction has reproduced loader/invariant reds, all four module-case greens
+and fresh independent source/evidence reviews; the original failure is retained.
+Fresh explicit `gpt-6.1-terra` / high worker `p21_master_workspace_ui` owns
+Task 8 in isolated `bb01` at `c71b608`, including the bounded producer handoff,
+full compact Live composition and both-size WebKit/Chromium action/geometry
+proof. Root launches no competing local browser/build/GUI/audio/native workload
+during that lease. Task 9 produces the coherent user-testable build, real
+save/Quit/restart and endurance checkpoint. Reports/reviews/raw evidence and hashes are curated
+under `experiments/phase2-20261028/master/native/`.
+Completed v3 profiling reports four consecutive deadline excursions in the
+largest eight-track dense-control case at 1024 frames; matched pre-Master and
+candidate repeats have identical PCM and no excursions, without establishing
+the original cause or recreating the preceding process history. Master bursts and two/four-track practical cases have
+none observed. V4 shipping profile 1 reports none in 108,000 practical-buffer
+samples; failed provisional profile 2 remains refused. These are software
+timing observations, not physical underruns or proof of Master causality.
+Controller permits the next UI slice after functional integration passes while
+retaining the eight-track timing result as an unresolved final-qualification
+item. No all-profile clean deadline pass, threshold or capacity change follows.
 Accepted Tasks 1-6 must not be redispatched. The live ledger is
 `.superpowers/sdd/2026-10-28-phase2-live-max/progress.md`.
 

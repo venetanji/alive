@@ -225,10 +225,32 @@ latency declaration; Alive desktop uses CPAL and the tested native host profile.
 New sessions save an `alive-session-v5` envelope containing a strict v2, v3,
 or v4 score and `master: { "gain": 1.0 }`. Older files retain their bare score
 wire until an admitted Master change requires v5. The saved gain is bounded
-from 0 through 4; native Master control is currently unavailable, so opening a
-non-unity target is refused before retiring the current audio owner. Score
+from 0 through 4. A capable Linux native host initializes the saved gain before
+the first output sample; a missing or partial capability permits unity sessions
+and refuses non-unity before retiring the current audio owner. Score
 snapshots remain the existing v2/v3/v4 shapes. See
 `docs/contracts/alive-master-v1.md` for the complete wire and ownership rules.
+
+Master is one output owner outside the musical track/solo/voice arrays. Its
+gain follows the track/effect/mixer stereo sum and precedes output conversion.
+Live commands enter the existing bounded FIFO, preserve the reserved Stop
+route, apply at an observed callback boundary and ramp from the current
+coefficient over exactly 64 output frames. Quiescent I/O-off initialization
+sets the saved coefficient directly without advancing the frame clock; stopped
+transport with running I/O uses the live path. Master adds no pipeline buffer
+or limiter and does not move the native Faust kernels into Clockwork.
+
+Gain/reset IPC authenticates the project generation. Saved gain changes only
+after admission; accepted serial and applied serial/frame remain distinct.
+Failed admission preserves saved gain, wire, dirty state, score draft and
+history. Score Apply/Undo/Redo/Discard preserve accepted live Master state.
+Post-gain L/R interval peaks, absolute interval boundaries and sticky digital
+overload bits share the score's native publication. Stop, seek and loop do not
+clear the latch; explicit reset or project installation does. An unavailable
+observation stays null/stale rather than becoming invented silence. This
+contract does not imply Master effects, mute/solo, automation or physical clip
+and underrun detection. The UI packet and final desktop/endurance qualification
+are tracked separately in `PLAN.md`.
 
 Admitted clip-bank scores use strict camelCase `alive-session-v3` JSON; legacy
 fallback saves remain v2. `Track.device` is the

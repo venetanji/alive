@@ -1,0 +1,260 @@
+[
+  {
+    "argv": [
+      "python3",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/source/tests/alive_session_v3_fixtures.py",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/source/tests/saved_graphs.hpp"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification",
+    "exit": 0,
+    "elapsed_seconds": 0.03917287800140912,
+    "log": "fixtures.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-c",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/source/src-tauri/native/backend.cpp",
+      "-o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing-backend.o"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification",
+    "exit": 0,
+    "elapsed_seconds": 17.06731690900051,
+    "log": "timing-backend.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/source/tests/alive_session_v4_measure.cpp",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing-backend.o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing-probe"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification",
+    "exit": 0,
+    "elapsed_seconds": 6.8512756419950165,
+    "log": "timing-build.log"
+  },
+  {
+    "argv": [
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing-probe",
+      "1200"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing",
+    "exit": 0,
+    "elapsed_seconds": 649.7589718999952,
+    "log": "timing.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "-DWORKSPACES_GUARDS",
+      "-c",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/source/src-tauri/native/backend.cpp",
+      "-o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards-backend.o"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification",
+    "exit": 0,
+    "elapsed_seconds": 16.924957260001975,
+    "log": "guards-backend.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "-DWORKSPACES_GUARDS",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/source/tests/alive_session_v4_measure.cpp",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards-backend.o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock",
+      "-o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards-probe"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification",
+    "exit": 0,
+    "elapsed_seconds": 7.013455125998007,
+    "log": "guards-build.log"
+  },
+  {
+    "argv": [
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards-probe",
+      "20"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards",
+    "exit": 0,
+    "elapsed_seconds": 17.10492620700097,
+    "log": "guards.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "-DWORKSPACES_GUARDS",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/source/tests/alive_session_v4_test.cpp",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards-backend.o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock",
+      "-o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/v4-test"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification",
+    "exit": 0,
+    "elapsed_seconds": 1.9220186790043954,
+    "log": "v4-build.log"
+  },
+  {
+    "argv": [
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/v4-test"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification",
+    "exit": 0,
+    "elapsed_seconds": 0.6004121599980863,
+    "log": "v4.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "-DWORKSPACES_GUARDS",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/source/tests/alive_session_v4_midi_test.cpp",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards-backend.o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock",
+      "-o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/v4_midi-test"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification",
+    "exit": 0,
+    "elapsed_seconds": 8.205587472999468,
+    "log": "v4_midi-build.log"
+  },
+  {
+    "argv": [
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/v4_midi-test"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification",
+    "exit": 0,
+    "elapsed_seconds": 3.262869115002104,
+    "log": "v4_midi.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "-DWORKSPACES_GUARDS",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/source/tests/alive_session_v4_authority_test.cpp",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards-backend.o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock",
+      "-o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/v4_authority-test"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification",
+    "exit": 0,
+    "elapsed_seconds": 13.047574162999808,
+    "log": "v4_authority-build.log"
+  },
+  {
+    "argv": [
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/v4_authority-test"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification",
+    "exit": 0,
+    "elapsed_seconds": 12.170819652004866,
+    "log": "v4_authority.log"
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/source/tests/alive_session_v4_shipping_test.cpp",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/source/src-tauri/native/backend.cpp",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/shipping-test"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification",
+    "exit": 0,
+    "elapsed_seconds": 17.556338201997278,
+    "log": "shipping-build.log"
+  },
+  {
+    "argv": [
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/shipping-test"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification",
+    "exit": 0,
+    "elapsed_seconds": 0.050880504997621756,
+    "log": "shipping.log"
+  }
+]
