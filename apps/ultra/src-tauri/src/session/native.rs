@@ -4,9 +4,37 @@ use crate::canvas::NativeGraph;
 use serde::Serialize;
 use std::ffi::{c_char, CStr};
 
+#[cfg(not(all(test, target_os="windows")))]
 pub(super) fn master_capability() -> Option<&'static super::native_master::Capability> {
     static CAPABILITY: std::sync::OnceLock<Option<super::native_master::Capability>> = std::sync::OnceLock::new();
     CAPABILITY.get_or_init(|| super::native_master::resolve(alive_session_state_v2 as *const () as *const std::ffi::c_void)).as_ref()
+}
+
+#[cfg(all(test, target_os="windows"))]
+pub(super) fn master_capability() -> Option<&'static super::native_master::Capability> {
+    static CAPABILITY: std::sync::OnceLock<Option<super::native_master::Capability>> = std::sync::OnceLock::new();
+    #[cfg(all(test, target_os="windows"))]
+    if std::env::var_os("ALIVE_MASTER_DIAGNOSTIC_CHILD").is_some() {
+        println!("cache: before={:?} thread={:?}",CAPABILITY.get().map(|value| value.is_some()),std::thread::current().id());
+    }
+    let result=CAPABILITY.get_or_init(|| {
+        let anchor=alive_session_state_v2 as *const () as *const std::ffi::c_void;
+        #[cfg(all(test, target_os="windows"))]
+        if std::env::var_os("ALIVE_MASTER_DIAGNOSTIC_CHILD").is_some() {
+            println!("cache: initializer_enter anchor={anchor:p} thread={:?}",std::thread::current().id());
+        }
+        let resolved=super::native_master::resolve(anchor);
+        #[cfg(all(test, target_os="windows"))]
+        if std::env::var_os("ALIVE_MASTER_DIAGNOSTIC_CHILD").is_some() {
+            println!("cache: initializer_result={}",resolved.is_some());
+        }
+        resolved
+    }).as_ref();
+    #[cfg(all(test, target_os="windows"))]
+    if std::env::var_os("ALIVE_MASTER_DIAGNOSTIC_CHILD").is_some() {
+        println!("cache: return={}",result.is_some());
+    }
+    result
 }
 
 #[cfg(all(test, target_os="windows"))]

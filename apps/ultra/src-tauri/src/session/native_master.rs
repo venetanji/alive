@@ -42,6 +42,17 @@ pub fn fresh_process(test_name:&str)->bool {
     true
 }
 
+#[cfg(all(test, target_os="windows"))]
+macro_rules! diagnostic {
+    ($($arg:tt)*) => {
+        #[cfg(all(test, target_os="windows"))]
+        if std::env::var_os("ALIVE_MASTER_DIAGNOSTIC_CHILD").is_some() {
+            println!($($arg)*);
+        }
+    };
+}
+
+#[cfg(not(all(test, target_os="windows")))]
 pub fn resolve(anchor: *const c_void) -> Option<Capability> {
     unsafe {
         let module=platform::Module::from_anchor(anchor)?;
@@ -51,6 +62,26 @@ pub fn resolve(anchor: *const c_void) -> Option<Capability> {
         let limits:GetLimits=std::mem::transmute(symbols[0]);
         let mut info=Limits {version:1,struct_bytes:std::mem::size_of::<Limits>() as u32,..Limits::default()};
         if limits(&mut info)!=1 || info.version!=1 || info.struct_bytes!=std::mem::size_of::<Limits>() as u32 || info.features!=7 || info.ramp_frames!=64 || info.max_gain!=4. { return None; }
+        Some(Capability {_module:module,set:std::mem::transmute(symbols[1]),reset:std::mem::transmute(symbols[2]),snapshot_v2:std::mem::transmute(symbols[3]),snapshot_v3:std::mem::transmute(symbols[4]),snapshot_v4:std::mem::transmute(symbols[5])})
+    }
+}
+
+#[cfg(all(test, target_os="windows"))]
+pub fn resolve(anchor: *const c_void) -> Option<Capability> {
+    unsafe {
+        diagnostic!("resolve: enter anchor={anchor:p} thread={:?}",std::thread::current().id());
+        let module=match platform::Module::from_anchor(anchor) { Some(module)=>module, None=>{diagnostic!("resolve: stage=anchor_module_or_export result=false");return None;} };
+        let mut symbols=[std::ptr::null_mut();6];
+        let names:[&[u8];6]=[b"alive_session_master_limits\0",b"alive_session_master_set\0",b"alive_session_master_reset_clip\0",b"alive_session_master_snapshot_v2\0",b"alive_session_master_snapshot_v3\0",b"alive_session_master_snapshot_v4\0"];
+        for (slot,name) in symbols.iter_mut().zip(names) {
+            *slot=match module.symbol(name) { Some(value)=>value, None=>{diagnostic!("resolve: stage=symbol name={} result=false",String::from_utf8_lossy(&name[..name.len()-1]));return None;} };
+        }
+        let limits:GetLimits=std::mem::transmute(symbols[0]);
+        let mut info=Limits {version:1,struct_bytes:std::mem::size_of::<Limits>() as u32,..Limits::default()};
+        let status=limits(&mut info);
+        diagnostic!("resolve: limits result={status} version={} bytes={} features={} ramp={} max_gain={}",info.version,info.struct_bytes,info.features,info.ramp_frames,info.max_gain);
+        if status!=1 || info.version!=1 || info.struct_bytes!=std::mem::size_of::<Limits>() as u32 || info.features!=7 || info.ramp_frames!=64 || info.max_gain!=4. { diagnostic!("resolve: stage=limits result=false");return None; }
+        diagnostic!("resolve: stage=ok result=true");
         Some(Capability {_module:module,set:std::mem::transmute(symbols[1]),reset:std::mem::transmute(symbols[2]),snapshot_v2:std::mem::transmute(symbols[3]),snapshot_v3:std::mem::transmute(symbols[4]),snapshot_v4:std::mem::transmute(symbols[5])})
     }
 }
@@ -89,7 +120,11 @@ mod platform {
     use super::*;
     #[link(name="kernel32")]
     extern "system" {fn GetModuleHandleExW(flags:u32,name:*const u16,handle:*mut *mut c_void)->i32;fn GetProcAddress(handle:*mut c_void,name:*const c_char)->*mut c_void;fn FreeLibrary(handle:*mut c_void)->i32;}
+    #[cfg(test)]
+    #[link(name="kernel32")]
+    extern "system" {fn GetModuleFileNameW(handle:*mut c_void,path:*mut u16,size:u32)->u32;}
     pub struct Module {handle:usize}
+    #[cfg(not(test))]
     impl Module {
         pub unsafe fn from_anchor(anchor:*const c_void)->Option<Self>{
             let mut handle=std::ptr::null_mut();
@@ -103,6 +138,37 @@ mod platform {
             let mut owner=std::ptr::null_mut();
             if GetModuleHandleExW(4,address.cast(),&mut owner)==0 || owner.is_null(){return None;}
             let same=owner as usize==self.handle;FreeLibrary(owner);
+            if same{Some(address)}else{None}
+        }
+    }
+    #[cfg(test)]
+    impl Module {
+        pub unsafe fn from_anchor(anchor:*const c_void)->Option<Self>{
+            let mut handle=std::ptr::null_mut();
+            if anchor.is_null() {diagnostic!("anchor: stage=null");return None;}
+            let status=GetModuleHandleExW(4,anchor.cast(),&mut handle);
+            if status==0 {let error=std::io::Error::last_os_error();diagnostic!("anchor: stage=module_lookup error={error}");return None;}
+            if handle.is_null(){diagnostic!("anchor: stage=module_null");return None;}
+            #[cfg(test)]
+            if std::env::var_os("ALIVE_MASTER_DIAGNOSTIC_CHILD").is_some() {
+                let mut path=[0u16;32768];let len=GetModuleFileNameW(handle,path.as_mut_ptr(),path.len() as u32) as usize;
+                println!("anchor: module={handle:p} path={:?}",if len>0 && len<path.len(){String::from_utf16_lossy(&path[..len])}else{format!("unavailable: {}",std::io::Error::last_os_error())});
+            }
+            let module=Self{handle:handle as usize};
+            let export=match module.symbol(b"alive_session_state_v2\0") {Some(value)=>value,None=>{diagnostic!("anchor: stage=export_lookup_or_owner");return None;}};
+            diagnostic!("anchor: export={export:p} equal={}",export==anchor.cast_mut());
+            if export != anchor.cast_mut(){diagnostic!("anchor: stage=mismatch");return None;}Some(module)
+        }
+        pub unsafe fn symbol(&self,name:&[u8])->Option<*mut c_void>{
+            let address=GetProcAddress(self.handle as *mut c_void,name.as_ptr().cast());
+            if address.is_null(){diagnostic!("symbol: name={} stage=missing",String::from_utf8_lossy(&name[..name.len()-1]));return None;}
+            let mut owner=std::ptr::null_mut();
+            let status=GetModuleHandleExW(4,address.cast(),&mut owner);
+            if status==0 {let error=std::io::Error::last_os_error();diagnostic!("symbol: name={} address={address:p} stage=owner_lookup error={error}",String::from_utf8_lossy(&name[..name.len()-1]));return None;}
+            if owner.is_null(){diagnostic!("symbol: name={} address={address:p} stage=owner_null",String::from_utf8_lossy(&name[..name.len()-1]));return None;}
+            let same=owner as usize==self.handle;
+            diagnostic!("symbol: name={} address={address:p} owner={owner:p} same={same}",String::from_utf8_lossy(&name[..name.len()-1]));
+            FreeLibrary(owner);
             if same{Some(address)}else{None}
         }
     }
@@ -133,11 +199,11 @@ mod tests {
             assert!(output.status.success(),"diagnostic child failed: {}",output.status);
             return;
         }
-        unsafe { windows_diagnostics("production",super::super::native::master_test_anchor()); }
-        unsafe { windows_diagnostics("direct",alive_session_state_v2 as *const () as *const c_void); }
         let expected=std::env::var_os("ALIVE_MASTER_EXPECT_UNAVAILABLE").is_none();
         let actual=super::super::native::master_capability().is_some();
         println!("production capability={actual} expected={expected}");
+        unsafe { windows_diagnostics("production",super::super::native::master_test_anchor()); }
+        unsafe { windows_diagnostics("direct",alive_session_state_v2 as *const () as *const c_void); }
         assert_eq!(actual,expected);
     }
     #[cfg(target_os="windows")]
