@@ -34,13 +34,35 @@ historical. Execution uses the canonical ledger at
   Source edits visibly refuse stale occurrence relationships, base edits keep
   their originating generation, loop-only brace updates and Duplicate bounds
   are corrected. The future Master generation test belongs to Tasks 6/8.
-- Task 5's first candidate `216f22c` is not accepted: review requires a
-  build-independent unit fixture, Apply input/IPC/revision receipts, actual
-  restarted executable/library identity and recorder timeout cleanup. Fix round
-  1 has a narrow additional `session/desktop.rs` tracing lease. Task 3 is still
-  implementing focused editor safety; no candidate is accepted yet.
+- Task 5 fix-round candidate `72e79ae` resolves the four first-review findings:
+  build-independent helper fixtures, correlated Apply input/IPC/install/editor
+  receipts, actual restarted executable/library identity and recorder cleanup.
+  Scoped specification re-review and independent quality review accept the fixes.
+  Full traced original Alive and Arrangement journeys pass on that candidate.
+  The deliberate occlusion run retains the original failure and attributes it
+  to input hitting Audio details instead of Apply. Integrated as `65dbf5a`;
+  root's 17 helper regressions pass. Candidate-native evidence is retained under
+  `experiments/phase2-20261028/r-d/`; combined-source native reruns remain open.
+- The full Ultra journey reaches an independently diagnosed optional installed
+  `slider.maxhelp` fixture mismatch: the converter now preserves five comments,
+  giving 21 nodes (16 executable) and ten edges. The old fixed native IDs also
+  drift. Independently reviewed fixture repair is integrated at `003024f`, with
+  exact total/comment/executable counts, original control roles/edge and numeric
+  assertions retained, and its two headless regressions included in CI. Preserve
+  the failed run and rerun the complete journey; no full Ultra pass is claimed.
+- Task 3 owns the native GUI lease after Task 5 cleanup. Its persistent focused
+  draft registry's focused native matrix passes on the worker build, including
+  disk/restart and real Quit Save/Discard/Cancel; frozen candidate/review is
+  pending. Source confirms
+  no Linux application Quit route, so its narrow menu lease now includes a real
+  File > Quit Ultra action through the existing coordinator and accelerator.
+  This enables the required Quit acceptance without a test-only trigger.
 - No Master implementation is accepted yet. Read live worker state and the
   ledger before redispatch; do not restart these tasks blindly.
+- Independent Terra Master preflight review found five contract gaps; the
+  scratch draft now specifies rollback serial reservation, ordinary quiescent
+  commands, structured retry errors, coherent rejection counts and unavailable
+  unity installation. It remains unfrozen until P2.0 passes.
 
 ## Owner Intent And Current Boundary
 

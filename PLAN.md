@@ -9,8 +9,16 @@ the original native Apply/editor assertion fails again; the focused probes
 reproduce the queued-edit, focused-save and metadata-loss defects. Task 1 accepts
 this known-bad baseline. Task 2's reviewed queue/generation/brace/Duplicate fix
 is integrated, with 107 Alive Node and six focused Chromium checks passing;
-native qualification remains pending. Independent isolated Terra workers own
-Tasks 3 and 5; no new Master capability is accepted yet. The durable
+native qualification remains pending. Task 5's fix-round candidate `72e79ae`
+passes the full traced original Alive and Arrangement native journeys; scoped
+specification re-review and quality review accept the four harness findings.
+That increment is integrated as `65dbf5a` with 17 root helper regressions passing.
+The optional installed-help fixture repair is reviewed and integrated at
+`003024f`, including its two regressions in CI; the full Ultra native rerun is
+still required. Task 3 owns focused-draft native qualification and adds a real Linux Quit
+menu action through the existing coordinator. No new Master capability is
+accepted yet. Independent Terra preflight review has tightened its draft
+contract; consumers remain gated on P2.0. The durable
 execution ledger is `.superpowers/sdd/2026-10-28-phase2-live-max/progress.md`.
 
 The owner prioritizes familiar Live/Max workflows and a much closer visual
@@ -34,8 +42,9 @@ instrument/effect/recording and compatibility cohorts; final integrated evidence
 The first new feature is Master, not another standalone instrument demo. It
 must include native gain/meters, persistence, history/live ownership and tests.
 
-This is a planning deliverable, with no Phase 2 application changes yet. The
-working MIDI Session/Arrangement and existing reusable-device host are retained.
+The reviewed planning documents define the active implementation work; the
+current execution checkpoint above supersedes their historical planning-only
+status. The working MIDI Session/Arrangement and reusable-device host are retained.
 The prior workspace plan remains the implementation record and detailed audio
 dependency. Stale statements in historical sections do not override current
 source or the dated review. Current CI at `1ebf216` fails the original
