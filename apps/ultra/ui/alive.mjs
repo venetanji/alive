@@ -386,10 +386,11 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       const meters=make('div','track-meter'),bar=make('div','stereo-meter vertical-meter'),readout=make('output');bar.append(make('i'),make('i'));bar.setAttribute('aria-label',`${track.name} stereo peak`);readout.setAttribute('aria-label',`${track.name} peak`);meters.append(bar,readout);
       const actions=make('div','track-actions');for(const[action,label]of [['editor','Editor'],['load','Replace'],['remove','Remove track']]){
         const button=make('button','',label);button.setAttribute('aria-label',action==='editor'?`Open ${track.name} editor`:action==='remove'?`Remove ${track.name} track`:`${label} ${track.name} device`);
-        button.disabled=action!=='remove'&&!instrumentOf(track);button.addEventListener('click',guard(()=>enqueue(async()=>{
+        button.disabled=action!=='remove'&&!instrumentOf(track);button.addEventListener('click',guard(()=>{const origin=generation();return enqueue(async()=>{
+          if(generation()!==origin)throw Error('The originating device session changed.');
           if(action!=='editor'){commitFocused();cancelGesture();selectedNote=null;}
           if(action==='editor')await command('alive_editor',{instanceId:instrumentOf(track)?.instanceId});else{const result=isWorkspace()&&action==='remove'?await command('alive_workspace_track',{operation:{kind:'remove',trackId:track.id}}):await command('alive_device',{trackId:track.id,instanceId:instrumentOf(track)?.instanceId,action});applySnapshot(result.snapshot??result);trackKey=musicKey=parameterKey='';render();notice('Device updated. Start transport when ready.');}
-        })));actions.append(button);
+        });}));actions.append(button);
       }
       row.dataset.trackId=track.id;row.style.setProperty('--track-color',track.color??['#efbb62','#88c5c7','#91b9ed','#d8a0a7','#b4c98b','#d3b48a','#a5b9ce','#c5b6cf'][index%8]);
       const mixer=make('div','track-mixer'),toggles=make('div','mixer-toggles'),inspector=make('details','track-inspector'),summary=make('summary','','Device / track');
@@ -402,8 +403,8 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   function instanceName(reference,index){const isInstrument=reference.instanceId===instrumentOf(model.document().tracks[selected])?.instanceId,effect=index+(instrumentOf(model.document().tracks[selected])?0:1);return `${instanceView(reference.instanceId)?.manifest.name??'Device'}${isInstrument?' instrument':` effect ${effect}`}`;}
   function structural(reference,action,beforeInstanceId){
     commitFocused();cancelGesture();selectedNote=null;
-    const trackId=model.document().tracks[selected].id,instanceId=reference?.instanceId;
-    return enqueue(async()=>{const snapshot=await command('alive_device',{trackId,instanceId,action,...(action==='reorder'?{beforeInstanceId}: {})});applySnapshot(snapshot);trackKey=musicKey=parameterKey=chainKey='';render();notice('Chain prepared. Start transport when ready.');});
+    const trackId=model.document().tracks[selected].id,instanceId=reference?.instanceId,origin=generation();
+    return enqueue(async()=>{if(generation()!==origin)throw Error('The originating device session changed.');const snapshot=await command('alive_device',{trackId,instanceId,action,...(action==='reorder'?{beforeInstanceId}: {})});applySnapshot(snapshot);trackKey=musicKey=parameterKey=chainKey='';render();notice('Chain prepared. Start transport when ready.');});
   }
   function buildChain(){
     const track=model.document().tracks[selected],devices=chainDevices(track);
@@ -412,7 +413,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       const name=instanceName(reference,index),context=`${track.name} ${name}`,row=make('div','chain-device'),choose=make('button','chain-select',name),bypass=make('button','','Bypass'),actions=[];
       choose.setAttribute('aria-label',`Select ${context}`);choose.addEventListener('click',()=>{selectedInstance=reference.instanceId;parameterKey='';render();});
       bypass.setAttribute('aria-label',`Bypass ${context}`);const isInstrument=reference.instanceId===instrumentOf(track)?.instanceId;bypass.disabled=isInstrument;bypass.title=isInstrument?'Only effects support bypass. Use track mute to silence this track.':'Live bypass keeps the device state warm; audio output stays open.';
-      bypass.addEventListener('click',guard(()=>{const instanceId=reference.instanceId,bypassed=!chainDevices().find(d=>d.instanceId===instanceId).bypassed;return enqueue(async()=>{await command('alive_bypass',{instanceId,bypassed});await refresh();});}));
+      bypass.addEventListener('click',guard(()=>{const instanceId=reference.instanceId,bypassed=!chainDevices().find(d=>d.instanceId===instanceId).bypassed,origin=generation();return enqueue(async()=>{if(generation()!==origin)throw Error('The originating device session changed.');await command('alive_bypass',{instanceId,bypassed});await refresh();});}));
       row.append(choose,bypass);
       const action=(label,aria,fn,blocked=false)=>{const button=make('button','',label);button.setAttribute('aria-label',aria);button.addEventListener('click',guard(fn));row.append(button);actions.push({button,blocked});};
       action('Replace...',`Replace ${context}`,()=>structural(reference,'replace'));
@@ -597,7 +598,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   bind('undo','Undo pending edit',()=>history('undo'));bind('redo','Redo pending edit',()=>history('redo'));
   bind('add-note','Add note',()=>{const trackId=model.document().tracks[selected].id;if(model.document().format==='alive-session-v3'||isWorkspace()){const c=isWorkspace()?sourceOf():selectedClip();if(!c)throw Error('Create a clip first.');let note=null;for(let beat=0;beat+.25<=c.lengthBeats&&!note;beat+=.25)for(let pitch=60;pitch<=127;pitch++)if(!c.notes.some(n=>n.pitch===pitch&&n.beat<beat+.25&&n.beat+n.duration>beat)){note={beat,pitch,duration:.25,velocity:100};break;}if(!note)throw Error('No room for a note.');return isWorkspace()?workspaceEdit({kind:'noteCreate',sourceId:c.id,...note}):clipEdit({kind:'noteCreate',trackId,clipId:c.id,...note});}return edit(document=>{const notes=trackById(document,trackId).notes;let note=null;for(let beat=0;beat+.25<=document.lengthBeats&&!note;beat+=.25)for(let pitch=60;pitch<=127;pitch++)if(!notes.some(n=>n.pitch===pitch&&n.beat<beat+.25&&n.beat+n.duration>beat)){note={beat,pitch,duration:.25,velocity:100};break;}if(!note)throw Error('No room for a note. Move or delete an existing note.');notes.push(note);if(model.document().tracks[selected].id===trackId)selectedNote=notes.length-1;},true,'Add note');});
   bind('add-effect','Add effect',()=>structural(null,'add'));
-  bind('edit-device','Edit selected device in Ultra',()=>{const instanceId=selectedInstance;return enqueue(()=>command('alive_editor',{instanceId}));});
+  bind('edit-device','Edit selected device in Ultra',()=>{const instanceId=selectedInstance,origin=generation();return enqueue(()=>{if(generation()!==origin)throw Error('The originating device session changed.');return command('alive_editor',{instanceId});});});
   bind('add-lane','Add automation lane',()=>{if(!$('automation-target').value)throw Error('Select a device parameter first.');const trackId=model.document().tracks[selected].id,[instanceId,key]=JSON.parse($('automation-target').value);return edit(document=>{const track=trackById(document,trackId);if(!track.automation.some(l=>l.instanceId===instanceId&&l.key===key))track.automation.push({instanceId,key,enabled:false,points:[]});});});
   bind('add-track','Add instrument track',()=>{cancelGesture();return enqueue(async()=>{const result=isWorkspace()?await command('alive_workspace_track',{operation:{kind:'addMidi',path:null}}):await command('alive_device',{trackId:`track-${Date.now()}`,action:'load'});applySnapshot(result.snapshot??result);trackKey=musicKey=parameterKey='';render();});});
   const keydown=guard(event=>{if(event.defaultPrevented)return;if(event.key==='Escape'&&!$('alive-audio-settings').hidden){event.preventDefault();closeAudioSettings();return;}if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();return file(event.shiftKey?'saveAs':'save');}if(event.code==='Space'&&!event.target.matches('input,select,button,summary')){event.preventDefault();return transport(model.snapshot()?.state.playing?'stop':'start');}});doc.addEventListener('keydown',keydown);

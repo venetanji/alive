@@ -932,3 +932,29 @@ test('Master controls use one native owner and display separate interval channel
   assert.ok(page.find('Master gain fader'));assert.ok(page.find('Master left peak'));assert.ok(page.find('Master right peak'));
   assert.match(page.find('Master right peak').textContent,/0\.800/);view.dispose();
 });
+
+for(const [label,commandName] of [
+  ['Bypass Pulse Stereo Utility effect 1','alive_bypass'],
+  ['Move Pulse Stereo Utility effect 1 later','alive_device'],
+  ['Remove Pulse track','alive_device'],
+  ['Replace Pulse device','alive_device'],
+  ['Open Pulse editor','alive_editor'],
+  ['Edit selected device in Ultra','alive_editor'],
+])for(const succeeds of [true,false])test(`queued ${label} ${succeeds?'cannot affect replacement':'survives failed Open'} with reused IDs`,async()=>{
+  const initial=withChain();initial.state.playing=commandName==='alive_bypass'?1:0;
+  const page=dom('./alive.html'),native=backend(initial);
+  const boundary=delayedBoundary(native,'alive_file',snapshot=>{if(succeeds){snapshot.generation++;snapshot.draftRevision++;snapshot.document.title='Replacement';}},succeeds?'snapshot':'error');
+  const invoke=async(name,args)=>{
+    if(name===commandName){
+      if(args.generation!==native.snapshot.generation){native.calls.push({name,args:structuredClone(args)});throw Error('Stale generation');}
+      if(name==='alive_device'){native.calls.push({name,args:structuredClone(args)});native.snapshot.document.title='Device mutation';return structuredClone(native.snapshot);}
+    }
+    return boundary.invoke(name,args);
+  };
+  const view=mountAlive({...page,invoke});await settle();
+  await page.ids.get('open').fire('click');await page.find(label).fire('click');boundary.release();await settle();await settle();
+  const calls=native.calls.filter(c=>c.name===commandName);
+  if(succeeds){assert.equal(native.snapshot.document.title,'Replacement');assert.equal(native.snapshot.document.tracks[0].effects[0].bypassed,false);assert.ok(calls.length===0||calls.every(c=>c.args.generation===1));}
+  else{assert.equal(calls.length,1);assert.equal(calls[0].args.generation,1);if(commandName==='alive_bypass'){assert.deepEqual(calls[0].args,{instanceId:'effect-0',bypassed:true,generation:1});assert.equal(native.snapshot.document.tracks[0].effects[0].bypassed,true);assert.equal(native.snapshot.state.playing,1);}if(commandName==='alive_device'){assert.equal(calls[0].args.trackId,'track-1');assert.equal(native.snapshot.document.title,'Device mutation');}if(commandName==='alive_editor')assert.equal(calls[0].args.instanceId,initial.document.tracks[0].device.instanceId);}
+  view.dispose();
+});
