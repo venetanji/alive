@@ -1,0 +1,178 @@
+{
+  "audioSha256": "8206dc3c9714505ab69af8952b5eaf2b132158cc65492a01e1ba19d8cf9a7ce9",
+  "checked": [
+    "real-device-dependencies",
+    "loop",
+    "arbitrary-partitions",
+    "automation-ownership",
+    "device-isolation",
+    "mute-solo",
+    "stop",
+    "seek",
+    "session-save-reopen",
+    "device-removal"
+  ],
+  "devices": [
+    {
+      "id": "org.alive.subtractive",
+      "output": {
+        "channels": 2,
+        "layout": "stereo"
+      },
+      "path": "/home/runner/work/alive/alive/apps/ultra/examples/subtractive.ultra"
+    },
+    {
+      "id": "org.alive.subtractive",
+      "output": {
+        "channels": 2,
+        "layout": "stereo"
+      },
+      "path": "/home/runner/work/alive/alive/apps/ultra/examples/subtractive.ultra"
+    }
+  ],
+  "editorWindowsCreated": 0,
+  "energy": {
+    "reopened": 0.003044379825933391,
+    "secondOnly": 0.0005530782065116521,
+    "twoDevices": 0.001687594431164146
+  },
+  "loopProof": {
+    "position": 1024,
+    "secondCycleEnergy": 0.0016853062337586324,
+    "wrapGenerations": 2
+  },
+  "masterChannels": 2,
+  "partitionSamplesIdentical": true,
+  "partitions": [
+    1,
+    31,
+    63,
+    64,
+    127,
+    1024,
+    17,
+    509
+  ],
+  "passed": true,
+  "renderedFramesPerComparison": 412452,
+  "sampleRate": 48000,
+  "savedChainProof": {
+    "drySha256": "a40b8aeaf2fd827c7a29515149eda4469e3372a41dea97f32ee0d33507f92f85",
+    "exactLiveDryAndWarmWet": true,
+    "fullProfileDevices": 6,
+    "independentSameSourceEffects": true,
+    "noncommutingOrderTail": true,
+    "queueRejectedModelPreserved": true,
+    "rejectedCandidatePreservedPlayback": true,
+    "reopenSamplesIdentical": true,
+    "reorderedAutomationIdentity": true,
+    "savedDevices": 3,
+    "staleRootRejected": true,
+    "stopSurvivedFullQueue": true,
+    "warmWetFrame": 64,
+    "wetSha256": "005b7781c71d05b4498f5496f2245da4867988f2e65f7e641b12e31ea55a48ed",
+    "wetToDryFrame": 31
+  },
+  "savedDeviceBoundaryProof": {
+    "audioSha256": "3ddb2de4165ce55b082bfa79d4e472b02532638addf8465804169eb2d538505a",
+    "energy": 0.0015170149237844048,
+    "observations": [
+      {
+        "effectiveCutoff": 700.0,
+        "effectiveLevel": 30.0,
+        "frame": 0,
+        "track": 0
+      },
+      {
+        "effectiveCutoff": 800.0,
+        "effectiveLevel": 35.0,
+        "frame": 0,
+        "track": 1
+      },
+      {
+        "effectiveCutoff": 1700.0,
+        "effectiveLevel": 40.0,
+        "frame": 1,
+        "track": 0
+      },
+      {
+        "effectiveCutoff": 1800.0,
+        "effectiveLevel": 45.0,
+        "frame": 1,
+        "track": 1
+      },
+      {
+        "effectiveCutoff": 2700.0,
+        "effectiveLevel": 50.0,
+        "frame": 31,
+        "track": 0
+      },
+      {
+        "effectiveCutoff": 2800.0,
+        "effectiveLevel": 55.0,
+        "frame": 31,
+        "track": 1
+      },
+      {
+        "effectiveCutoff": 3700.0,
+        "effectiveLevel": 60.0,
+        "frame": 63,
+        "track": 0
+      },
+      {
+        "effectiveCutoff": 3800.0,
+        "effectiveLevel": 65.0,
+        "frame": 63,
+        "track": 1
+      },
+      {
+        "effectiveCutoff": 4700.0,
+        "effectiveLevel": 70.0,
+        "frame": 64,
+        "track": 0
+      },
+      {
+        "effectiveCutoff": 4800.0,
+        "effectiveLevel": 75.0,
+        "frame": 64,
+        "track": 1
+      },
+      {
+        "effectiveCutoff": 5700.0,
+        "effectiveLevel": 80.0,
+        "frame": 127,
+        "track": 0
+      },
+      {
+        "effectiveCutoff": 5800.0,
+        "effectiveLevel": 85.0,
+        "frame": 127,
+        "track": 1
+      }
+    ],
+    "offsets": [
+      0,
+      1,
+      31,
+      63,
+      64,
+      127
+    ],
+    "partitionsIdentical": true
+  },
+  "scope": "real saved Alive session, native offline DSP; no physical audio or desktop claim",
+  "seekProof": {
+    "generationAdvanced": true,
+    "position": 18
+  },
+  "source": "/home/runner/work/alive/alive/apps/alive/examples/two-instruments.alive",
+  "timingBoundaryOffsets": [
+    0,
+    1,
+    31,
+    63,
+    64,
+    127
+  ],
+  "timingEvidence": "alive_session_test.cpp measures native sample at offset and legacy Clockwork sample at offset+64; the session profile rejects legacy Voice"
+}

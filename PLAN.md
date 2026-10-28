@@ -17,9 +17,11 @@ reports, original red/green logs, reviews and source hashes are in
 `experiments/phase2-20261028/master/`. Final-head CI/packages, native journeys
 and 1800 proven playing seconds remain separate gates.
 
-Checkpoint `62a657a` is pushed; its CI `40721716899` and packages `40721716535`
-are running, with UI/protocol and Chromium checks passed. Native completion and
-all four packages remain pending. Read-only Task 9 preparation is retained at
+Checkpoint `62a657a` passes full CI `40721716899`, including native journeys,
+and all four package targets in `40721716535`; publication is skipped. Terminal
+receipts are in `experiments/phase2-20261028/master/cloud-62a657a/`. These qualify
+the saved-owner checkpoint, not the moving Task 7 native Master source.
+Read-only Task 9 preparation is retained at
 `experiments/phase2-20261028/master/checkpoint-preparation.md`: the sustained
 workload needs contiguous stream-epoch collection and final retirement in
 addition to conservative playing-time accounting. No endurance pass is claimed.

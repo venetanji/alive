@@ -16,3 +16,10 @@ Task7 native Master implementation is in progress separately. These artifacts
 do not establish native gain, metering, serial/rollback, a fader, a new launcher
 build, endurance or physical audio. The fully qualified earlier foundation is
 `3b3df87`, with terminal CI/package receipts under `../reliability/`.
+
+The saved-owner checkpoint `62a657a` now also passes full CI `40721716899`
+and all four package targets in `40721716535`, with publication skipped.
+`cloud-62a657a/` retains their terminal receipts. That CI includes the original
+native Alive/editor, Arrangement, clip/stream-observation, editor-resource and
+software CPAL journeys. It does not qualify the subsequent native Master
+implementation, a refreshed local launcher, endurance or physical output.

@@ -1,0 +1,204 @@
+{
+  "observed_at_utc": "2026-10-28T16:40:05.134596+00:00",
+  "qualified_commit": "62a657a55e8f007408fa42abce18f60b3bf8cecb",
+  "application_source": "6f407a488478800b358228c53a73349c8cf72a0d",
+  "ci": {
+    "run": 40721716899,
+    "conclusion": "success"
+  },
+  "packages": {
+    "run": 40721716535,
+    "targets": 4,
+    "conclusion": "success",
+    "publication": "skipped"
+  },
+  "source_trees": {
+    "apps/alive": "2f87e86945f3325801ff8cfc474faa6beb3ad6ac",
+    "apps/ultra": "3b71222ceadab9c7b9ef025fbbd3493a5ad8a0e0",
+    ".github/workflows": "a29f44d9fa3e9261c342f00a2e040fef8b8cabf4"
+  },
+  "selected_artifacts": [
+    {
+      "path": "alive-desktop/native-session-report.json",
+      "bytes": 13163,
+      "sha256": "ea2db322f60453f41e8c7d4aeb5ef4d92ef17aae625aaba3fffdfb7f606a4a6a",
+      "artifact_id": 12832447095,
+      "zip_sha256": "cb844029983d9c5faebf2a82af56e60e5f440e8d84270c6718f41b27a739e08e",
+      "member": "native-session-report.json"
+    },
+    {
+      "path": "alive-desktop/apply-receipt.json",
+      "bytes": 2753,
+      "sha256": "9e09524ec5a9bc25923bf3f4a48f32e0b107903fbc6240e94da04952a15b38ac",
+      "artifact_id": 12832447095,
+      "zip_sha256": "cb844029983d9c5faebf2a82af56e60e5f440e8d84270c6718f41b27a739e08e",
+      "member": "apply-receipt.json"
+    },
+    {
+      "path": "alive-desktop/native-inputs.json",
+      "bytes": 21636,
+      "sha256": "cfe33c61b54cf0e8e024e48861d7d294e0b839373393760eb64020e4a4a085b4",
+      "artifact_id": 12832447095,
+      "zip_sha256": "cb844029983d9c5faebf2a82af56e60e5f440e8d84270c6718f41b27a739e08e",
+      "member": "native-inputs.json"
+    },
+    {
+      "path": "alive-desktop/journey-timing.json",
+      "bytes": 52782,
+      "sha256": "17ee3285c8876099f4fd99dc7ec62a7fa9af0c2de78cd865f7e347b02b307998",
+      "artifact_id": 12832447095,
+      "zip_sha256": "cb844029983d9c5faebf2a82af56e60e5f440e8d84270c6718f41b27a739e08e",
+      "member": "journey-timing.json"
+    },
+    {
+      "path": "arrangement/arrangement-report.json",
+      "bytes": 32851,
+      "sha256": "1b861d2626ec67395ca452c9c954ed3669d6ab844e6fb39620a9ee282548c0d3",
+      "artifact_id": 12831394286,
+      "zip_sha256": "17f7112f5a0bee2edc0783499f811181731fbf2dc533dc008a367b72c1e7782a",
+      "member": "arrangement-report.json"
+    },
+    {
+      "path": "arrangement/native-inputs.json",
+      "bytes": 12334,
+      "sha256": "5180e12cfbf953e621c26e1e752611ffb31d7e5a87366e6d4036f9cf551e3996",
+      "artifact_id": 12831394286,
+      "zip_sha256": "17f7112f5a0bee2edc0783499f811181731fbf2dc533dc008a367b72c1e7782a",
+      "member": "native-inputs.json"
+    },
+    {
+      "path": "arrangement/native-session-1280x800.png",
+      "bytes": 64318,
+      "sha256": "5af05906c852d889e92de33652d933157341615bd2ef93b1e6899c334e244954",
+      "artifact_id": 12831394286,
+      "zip_sha256": "17f7112f5a0bee2edc0783499f811181731fbf2dc533dc008a367b72c1e7782a",
+      "member": "native-session-1280x800.png"
+    },
+    {
+      "path": "arrangement/native-session-1440x900.png",
+      "bytes": 66716,
+      "sha256": "8433e6150f721a8f46895928ee61813c815603a0561662ecd7fdb6f36cc6d899",
+      "artifact_id": 12831394286,
+      "zip_sha256": "17f7112f5a0bee2edc0783499f811181731fbf2dc533dc008a367b72c1e7782a",
+      "member": "native-session-1440x900.png"
+    },
+    {
+      "path": "arrangement/native-arrangement-1280x800.png",
+      "bytes": 72962,
+      "sha256": "aa5a55690e8834c3413934c0646269c9535cca17d5cedf3de56b3e168acd4efb",
+      "artifact_id": 12831394286,
+      "zip_sha256": "17f7112f5a0bee2edc0783499f811181731fbf2dc533dc008a367b72c1e7782a",
+      "member": "native-arrangement-1280x800.png"
+    },
+    {
+      "path": "arrangement/native-arrangement-1440x900.png",
+      "bytes": 74732,
+      "sha256": "f2c9a8d59b7b4bc726f6883b69dd0f5ba289be16ea0c3e09719b683821fb68cb",
+      "artifact_id": 12831394286,
+      "zip_sha256": "17f7112f5a0bee2edc0783499f811181731fbf2dc533dc008a367b72c1e7782a",
+      "member": "native-arrangement-1440x900.png"
+    },
+    {
+      "path": "clips/observability-report.json",
+      "bytes": 7329,
+      "sha256": "a9553c0055b769bf264c34209e644e1974c36b48d9935affe2ec629a74ccad31",
+      "artifact_id": 12833535983,
+      "zip_sha256": "105eb105c922d9b4ab25502fada8db855eb09cf41ff1aeac7cb632a94159d174",
+      "member": "observability-report.json"
+    },
+    {
+      "path": "clips/observability-final.json",
+      "bytes": 63061,
+      "sha256": "bae257b446944e91a459bc21ac22b0801872b261038396f3e195c4dd9efe5a44",
+      "artifact_id": 12833535983,
+      "zip_sha256": "105eb105c922d9b4ab25502fada8db855eb09cf41ff1aeac7cb632a94159d174",
+      "member": "observability-final.json"
+    },
+    {
+      "path": "clips/observability-errors.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "artifact_id": 12833535983,
+      "zip_sha256": "105eb105c922d9b4ab25502fada8db855eb09cf41ff1aeac7cb632a94159d174",
+      "member": "observability-errors.json"
+    },
+    {
+      "path": "clips/native-clips-report.json",
+      "bytes": 10213,
+      "sha256": "5fae7fd702709c1b4f5e5ea27efe607ac78858d3516cc4914d21f59324cae84e",
+      "artifact_id": 12833535983,
+      "zip_sha256": "105eb105c922d9b4ab25502fada8db855eb09cf41ff1aeac7cb632a94159d174",
+      "member": "native-clips-report.json"
+    },
+    {
+      "path": "clips/observability-epochs.jsonl",
+      "bytes": 256442,
+      "sha256": "78c8d69227b4a497ed4867c1d1775895eef45b6b0002f4388a6d9d7fec1bdc10",
+      "artifact_id": 12833535983,
+      "zip_sha256": "105eb105c922d9b4ab25502fada8db855eb09cf41ff1aeac7cb632a94159d174",
+      "member": "observability-epochs.jsonl"
+    },
+    {
+      "path": "clips/observability-actions.jsonl",
+      "bytes": 5756,
+      "sha256": "7501208b99dc763e3a489d662c32d33388a27e96072e425efe42c72eb12d4433",
+      "artifact_id": 12833535983,
+      "zip_sha256": "105eb105c922d9b4ab25502fada8db855eb09cf41ff1aeac7cb632a94159d174",
+      "member": "observability-actions.jsonl"
+    },
+    {
+      "path": "clips/observability-resources.jsonl",
+      "bytes": 489327,
+      "sha256": "43994dce0f8c4524c55751f622affc5aa80dfb2b43b09844a7db80405df8ee01",
+      "artifact_id": 12833535983,
+      "zip_sha256": "105eb105c922d9b4ab25502fada8db855eb09cf41ff1aeac7cb632a94159d174",
+      "member": "observability-resources.jsonl"
+    },
+    {
+      "path": "editor-resources/editor-resources.json",
+      "bytes": 49928,
+      "sha256": "3b98c6e04e3f270ec43c0cc957c90eb362b7f677e8dc0ab0f493ec00aedb7b29",
+      "artifact_id": 12832668352,
+      "zip_sha256": "58008e6329eb04231d0882d471f841d9258bff90d4c8cb640278e367bfc1f831",
+      "member": "editor-resources.json"
+    },
+    {
+      "path": "cpal/result.json",
+      "bytes": 809,
+      "sha256": "2a95b9cde732dbaf46190d0ac7183033fba2e05120442dcdcc01623bc8a79d45",
+      "artifact_id": 12833641263,
+      "zip_sha256": "a2e77ae81d949704e9d2b5e82291e15e69415ea3bd5c7934a4af1891e9b70e88",
+      "member": "result.json"
+    },
+    {
+      "path": "session/report.json",
+      "bytes": 4202,
+      "sha256": "e9bf8c3f4d3840e57addb1060882beb003097b16c64d2d05226c92b9059c4e43",
+      "artifact_id": 12831733254,
+      "zip_sha256": "c65c8e3ae0e7f7725df569b2fc03151429453015ae6c6a8352fdaa08d2dad035",
+      "member": "report.json"
+    }
+  ],
+  "limits": [
+    "Task6 saved-owner source only; not moving Task7 native Master.",
+    "Raw downloaded ZIPs retained in canonical ignored workspace; selected metadata/screenshots only are curated here.",
+    "Reports retain original CI paths and hashes. PCM claims are CI-reported; root did not rerender or revalidate PCM for this receipt.",
+    "Private Xvfb/software PipeWire/CPAL at48kHz and512 requested frames; physical audio is unqualified.",
+    "Desktop endurance is0seconds; short clip observability proves7.223900574playingseconds and6completedepochs, not1800seconds.",
+    "No refreshed local launcher or new native Master UI qualification."
+  ],
+  "run_receipts": [
+    {
+      "path": "ci-terminal.json",
+      "sha256": "6611413b1428681e74d81c82a49f7b2216ddf43c27974d82f5df90ad7acc61f2"
+    },
+    {
+      "path": "packages-terminal.json",
+      "sha256": "c9037d74f5d1047f6009f456f5ed91060bd5a45b66465d7a61d087ab43a30658"
+    },
+    {
+      "path": "artifact-index.json",
+      "sha256": "f9a76a337761bd201b11f034c5a3b73ce69fb419abfc2197ab55d702829324c5"
+    }
+  ]
+}

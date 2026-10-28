@@ -18,9 +18,11 @@ Reports/reviews, original failed and final logs and source hashes are under
 model-only seams; production non-unity installation is refused until Task 7.
 
 Containing pushed checkpoint: `62a657a55e8f007408fa42abce18f60b3bf8cecb`.
-Fresh CI `40721716899` and packages `40721716535` are running on that exact
-head; UI/protocol and Chromium checks pass, while full native and four-target
-package completion remain pending. These are not the earlier foundation runs.
+Full CI `40721716899` and all four package targets in `40721716535` pass on
+that exact head; publication is skipped. Terminal receipts are under
+`experiments/phase2-20261028/master/cloud-62a657a/`. They qualify the saved-owner
+checkpoint, not later Task 7 native Master source. These are not the earlier
+foundation runs.
 Fresh fetch confirms the release foundation remains `31033483`.
 
 Full foundation CI `40710079202` and all four package targets `40710079013`
