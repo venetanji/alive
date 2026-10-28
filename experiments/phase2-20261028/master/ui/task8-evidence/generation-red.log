@@ -1,0 +1,53 @@
+(node:844636) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:28:43] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 1 test using 1 worker
+
+(node:844682) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:844682) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(node:844682) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:28:46] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:28:46] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:28:46] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:28:46] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:28:46] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:28:46] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:28:46] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:28:46] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:28:46] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:28:46] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✘  1 alive-chain.spec.mjs:1938:1 › generation change visibly cancels a pending Master intent and ignores its late receipt (6.9s)
+
+
+  1) alive-chain.spec.mjs:1938:1 › generation change visibly cancels a pending Master intent and ignores its late receipt 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: getByRole('status', { name: 'Session status' })
+    Expected substring: [32m"canceled"[39m
+    Received string:    [31m"Master gain pending admission."[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toContainText" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('status', { name: 'Session status' })[22m
+    [2m    9 × locator resolved to <p id="notice" role="status" aria-label="Session status">Master gain pending admission.</p>[22m
+    [2m      - unexpected value "Master gain pending admission."[22m
+
+
+      467 |   const root=page.locator('#master-session'),number=root.getByLabel('Master gain',{exact:true}),notice=page.getByRole('status',{name:'Session status'});
+      468 |   await number.fill('0.3');await number.press('Tab');await expect(notice).toContainText('pending');
+    > 469 |   await page.evaluate(()=>{window.sessionSnapshot.generation=2;window.sessionSnapshot.snapshotSequence='2';});await expect(notice).toContainText('canceled');
+          |                                                                                                                                    ^
+      470 |   await page.evaluate(()=>window.finishMaster({generation:1,acceptedGain:.3,acceptedSerial:'2',changed:true}));await expect(root.getByLabel('Master gain decibels')).toHaveText('0.0 dB');await expect(notice).toContainText('canceled');
+      471 | });
+      472 |
+        at /home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:469:132
+
+    Error Context: ../../../../../../../../../../tmp/alive-task8-generation-red/alive-chain-generation-cha-b728c-nd-ignores-its-late-receipt/error-context.md
+
+  1 failed
+    alive-chain.spec.mjs:1938:1 › generation change visibly cancels a pending Master intent and ignores its late receipt 

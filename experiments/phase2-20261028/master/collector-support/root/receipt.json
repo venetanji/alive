@@ -1,0 +1,45 @@
+{
+  "candidate": "07f1d9dacd70ac8a2ebcef10380e70ca035aa8b1",
+  "base": "c71b60805e0e877915fb2b9efaf83b479252d5e3",
+  "python": "3.14.8 (main, Oct  2 2026, 10:23:31) [GCC 16.2.1 20260810]",
+  "sourceFiles": {
+    "apps/ultra/tests/sustained_measurement.py": "c6263eb06a541ce119cf63800368f69c7ce498dac69a69023db334d98709917a",
+    "apps/ultra/tests/test_sustained_measurement.py": "51296304bf5ede034f51ada2b68b2a6ce6a66b10c071268f6aae98e131e8602d"
+  },
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "apps/ultra/tests",
+        "-p",
+        "test_sustained_measurement.py",
+        "-v"
+      ],
+      "cwd": "/home/venetanji/.codex/worktrees/edd5/alive",
+      "exit": 0,
+      "seconds": 0.09486100299545797,
+      "log": ".superpowers/sdd/2026-10-28-phase2-live-max/task9-collector-root-validation/command-0.log",
+      "sha256": "8d6d52159a8bd444b0a761b6b87146f5fb8019c542aeec85685107da11a79f48"
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-m",
+        "unittest",
+        "test_stream_measurement.MeasurementTests.test_only_observed_running_intervals_without_control_boundaries_count",
+        "test_stream_measurement.MeasurementTests.test_metadata_and_epoch_coverage_are_bounded",
+        "test_stream_measurement.MeasurementTests.test_collected_evicted_prefix_is_not_a_missing_epoch",
+        "test_stream_measurement.MeasurementTests.test_epoch_quality_and_attempt_limits_remain_fatal"
+      ],
+      "cwd": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests",
+      "exit": 0,
+      "seconds": 0.0827808649992221,
+      "log": ".superpowers/sdd/2026-10-28-phase2-live-max/task9-collector-root-validation/command-1.log",
+      "sha256": "d52cbb1058abf83e3acb402d1c2b8ee089749613d6075f5d973dd66c8ef09200"
+    }
+  ]
+}

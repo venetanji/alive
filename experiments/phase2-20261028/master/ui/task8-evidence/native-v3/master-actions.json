@@ -1,0 +1,118 @@
+{
+  "scope": "private Xvfb / software PipeWire, no physical audio claim",
+  "actions": [
+    {
+      "action": "capture",
+      "view": "session",
+      "width": 1440,
+      "height": 900,
+      "boxes": {
+        "Master gain fader": {
+          "x": 1328,
+          "y": 304,
+          "width": 25,
+          "height": 183
+        },
+        "Master gain": {
+          "x": 1319,
+          "y": 260,
+          "width": 115,
+          "height": 23
+        },
+        "Master left peak": {
+          "x": 1381,
+          "y": 468,
+          "width": 46,
+          "height": 10
+        },
+        "Master right peak": {
+          "x": 1381,
+          "y": 479,
+          "width": 46,
+          "height": 10
+        },
+        "Stop transport": {
+          "x": 43,
+          "y": 27,
+          "width": 29,
+          "height": 22
+        }
+      },
+      "status": "Saved target 0.0 dB; applied 0.0 dB (empty interval)."
+    },
+    {
+      "action": "capture",
+      "view": "session",
+      "width": 1280,
+      "height": 800,
+      "boxes": {
+        "Master gain fader": {
+          "x": 1168,
+          "y": 304,
+          "width": 25,
+          "height": 83
+        },
+        "Master gain": {
+          "x": 1159,
+          "y": 260,
+          "width": 115,
+          "height": 23
+        },
+        "Master left peak": {
+          "x": 1221,
+          "y": 368,
+          "width": 46,
+          "height": 10
+        },
+        "Master right peak": {
+          "x": 1221,
+          "y": 379,
+          "width": 46,
+          "height": 10
+        },
+        "Stop transport": {
+          "x": 43,
+          "y": 27,
+          "width": 29,
+          "height": 22
+        }
+      },
+      "status": "Saved target 0.0 dB; applied 0.0 dB (empty interval)."
+    },
+    {
+      "action": "vertical pointer",
+      "control": "Pulse gain fader",
+      "high": 1.637930989265442,
+      "low": 0.36206895112991333
+    },
+    {
+      "action": "vertical pointer",
+      "control": "Master gain fader",
+      "high": 3.0399999618530273,
+      "low": 0.019999999552965164
+    },
+    {
+      "action": "gain zero admitted and observed",
+      "status": "Saved target -inf; applied -inf (empty interval). Master gain admitted."
+    },
+    {
+      "action": "unity admitted and observed",
+      "status": "Saved target 0.0 dB; applied 0.0 dB (empty interval). Master gain admitted."
+    },
+    {
+      "action": "overload reset",
+      "status": "Saved target 0.0 dB; applied 0.0 dB (empty interval). Digital overload reset admitted."
+    },
+    {
+      "action": "session scroll right",
+      "track8": {
+        "x": 1047,
+        "width": 104
+      },
+      "master": {
+        "x": 1153,
+        "width": 127
+      }
+    }
+  ]
+}

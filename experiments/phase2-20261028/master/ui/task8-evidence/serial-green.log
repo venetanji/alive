@@ -1,0 +1,17 @@
+✔ one in flight, reset precedes superseding gain, and second reset is refused (9.346929ms)
+✔ busy retains final gain and one retry timer; generation cancels late work (1.101608ms)
+✔ retry preserves reset ordering and permanent failures never retry (1.62959ms)
+✔ ordinal exhaustion refuses intent without wrapping (0.342533ms)
+✔ malformed receipts are refused and unavailable generation cannot send (0.814379ms)
+✔ permanent gain refusal retains the requested value in visible status (0.467097ms)
+✔ permanent bridge codes do not retry, even if message mentions busy (0.646785ms)
+✔ generation change cancels pending retry and late failure cannot affect new generation (0.662694ms)
+✔ admission receipt must carry a nonzero native serial (0.455966ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 76.918744

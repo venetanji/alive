@@ -1,0 +1,43 @@
+(node:851509) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:34:57] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 1 test using 1 worker
+
+(node:851527) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:851527) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(node:851527) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:34:59] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:34:59] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:34:59] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:34:59] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:34:59] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:34:59] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:34:59] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:34:59] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:34:59] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:34:59] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✘  1 alive-chain.spec.mjs:1975:1 › Arrangement Master markings and meter remain separate in the right-hand control group (1.9s)
+
+
+  1) alive-chain.spec.mjs:1975:1 › Arrangement Master markings and meter remain separate in the right-hand control group 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1102[39m
+    Received:    [31m1112.671875[39m
+
+      474 |   await page.setViewportSize({width:1280,height:800});await openSession(page,false,true,2,true);await page.locator('#view-arrangement').click();
+      475 |   const boxes=await page.evaluate(()=>{const rect=e=>e.getBoundingClientRect();const root=document.querySelector('#master-arrangement');return {marks:rect(root.querySelector('.master-marks')).toJSON(),markLabel:rect(root.querySelector('.master-marks span:first-child')).toJSON(),meter:rect(root.querySelector('.master-bars')).toJSON(),root:rect(root).toJSON(),button:rect(root.querySelector('.master-actions button:last-child')).toJSON()};});
+    > 476 |   expect(boxes.marks.right).toBeLessThanOrEqual(boxes.meter.left);expect(boxes.markLabel.right).toBeLessThanOrEqual(boxes.meter.left);expect(boxes.meter.right).toBeLessThanOrEqual(boxes.root.right);expect(boxes.button.right).toBeLessThanOrEqual(boxes.root.right);
+          |                                                                                                 ^
+      477 | });
+      478 |
+        at /home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:476:97
+
+    Error Context: ../../../../../../../../../../tmp/alive-task8-arr-overlap-red2/alive-chain-Arrangement-Ma-76e9e-he-right-hand-control-group/error-context.md
+
+  1 failed
+    alive-chain.spec.mjs:1975:1 › Arrangement Master markings and meter remain separate in the right-hand control group 

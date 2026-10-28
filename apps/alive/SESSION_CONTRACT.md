@@ -249,8 +249,12 @@ overload bits share the score's native publication. Stop, seek and loop do not
 clear the latch; explicit reset or project installation does. An unavailable
 observation stays null/stale rather than becoming invented silence. This
 contract does not imply Master effects, mute/solo, automation or physical clip
-and underrun detection. The UI packet and final desktop/endurance qualification
-are tracked separately in `PLAN.md`.
+and underrun detection. Session's fixed-right Master strip and Arrangement's
+bottom output lane share one bounded gain/reset command producer, with pending
+intent, admission and observed application displayed separately. Selecting
+Master is local view state and preserves musical drafts and device bindings.
+Final root builds, complete desktop/save/Quit/restart, endurance and cloud
+qualification are tracked separately in `PLAN.md`.
 
 Admitted clip-bank scores use strict camelCase `alive-session-v3` JSON; legacy
 fallback saves remain v2. `Track.device` is the

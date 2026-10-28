@@ -1,0 +1,106 @@
+[
+  {
+    "name": "native-build",
+    "command": [
+      "bash",
+      "apps/ultra/build.sh",
+      "--native-only"
+    ],
+    "environmentOverrides": {},
+    "exit": 0,
+    "seconds": 21.294,
+    "log": "experiments/phase2-20261028/master/correction/root/native-build.log",
+    "sha256": "538d971f38a1c22132a6dd3296ef13d1430cd3e3c8b655467b40c271eebeff4b"
+  },
+  {
+    "name": "native-suite",
+    "command": [
+      "bash",
+      "apps/ultra/tests/ci/check-native.sh"
+    ],
+    "environmentOverrides": {},
+    "exit": 0,
+    "seconds": 187.411,
+    "log": "experiments/phase2-20261028/master/correction/root/native-suite.log",
+    "sha256": "104f3d8a0a7177664f75ecf2e9f5d3c0ef37e6dd6c4949154b1bfa441abbf266"
+  },
+  {
+    "name": "ultra-compile",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "apps/ultra/src-tauri/Cargo.toml",
+      "--release",
+      "--locked",
+      "--no-run",
+      "--message-format=json-render-diagnostics",
+      "--lib"
+    ],
+    "environmentOverrides": {},
+    "exit": 0,
+    "seconds": 19.946,
+    "log": "experiments/phase2-20261028/master/correction/root/ultra-compile.log",
+    "sha256": "b0d9988a17fd58ecc938cac148dc3bb8ad62d72521e2b255cd6df7bc7d1caeb0"
+  },
+  {
+    "name": "loader-proof",
+    "command": [
+      "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/deps/ultra_desktop-9e1feeb9c9029f98",
+      "--exact",
+      "session::native_master::tests::resolves_the_loaded_native_image",
+      "--test-threads=1"
+    ],
+    "environmentOverrides": {
+      "LD_DEBUG": "libs"
+    },
+    "exit": 0,
+    "seconds": 0.086,
+    "log": "experiments/phase2-20261028/master/correction/root/loader-proof.log",
+    "sha256": "092acb16ae229ab25aa9cb798013d75c9fc71a4e4f4ff7231ae098a1723b25e0"
+  },
+  {
+    "name": "ultra-tests",
+    "command": [
+      "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/deps/ultra_desktop-9e1feeb9c9029f98",
+      "--test-threads=1"
+    ],
+    "environmentOverrides": {},
+    "exit": 0,
+    "seconds": 6.522,
+    "log": "experiments/phase2-20261028/master/correction/root/ultra-tests.log",
+    "sha256": "0233123964c967f52f2daf0365cb6948f92094d8537b7d0a08fe3c98e545daae"
+  },
+  {
+    "name": "alive-compile",
+    "command": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "apps/alive/src-tauri/Cargo.toml",
+      "--release",
+      "--locked",
+      "--no-run",
+      "--message-format=json-render-diagnostics",
+      "--target-dir",
+      "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target"
+    ],
+    "environmentOverrides": {},
+    "exit": 0,
+    "seconds": 28.952,
+    "log": "experiments/phase2-20261028/master/correction/root/alive-compile.log",
+    "sha256": "08e5b69d50828127ef80bfb715b6ecc306882c90e4f9fb0705f602e139e8790d"
+  },
+  {
+    "name": "alive-tests",
+    "command": [
+      "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/deps/alive-6887508c824dff39",
+      "--test-threads=1"
+    ],
+    "environmentOverrides": {},
+    "exit": 0,
+    "seconds": 0.073,
+    "log": "experiments/phase2-20261028/master/correction/root/alive-tests.log",
+    "sha256": "9d8e4fcce3ea9868c769f5782fb50fd9b71e2b96e12aa8f10c3f50ffae4e7b3a"
+  }
+]

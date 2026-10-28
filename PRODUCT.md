@@ -34,6 +34,12 @@ instruments in a small, reopenable Alive session with clips, automation and a mi
   duration, metadata-selected instance/parameter automation, gain/mute/solo and
   stereo peak meters. Each selected-track chain exposes an instrument and up to
   two ordered stereo effects, live bases/effect bypass and optional instance editors.
+  A saved stereo Master follows the track sum, with live gain, interval L/R
+  peaks and explicit digital-overload reset. Session's fixed-right Master strip
+  and MIDI Arrangement's bottom output lane share that owner; compact headers,
+  four aligned slot/scene rows, original icons and a shared detail area retain
+  the current admitted musical profiles. The final local build, save/restart
+  and endurance checkpoint remains separate from the focused UI qualification.
   Canonical session-v3 files preserve four clip slots per track, stable score IDs,
   stopped saved defaults, independent instance IDs, original-source fingerprints,
   order, bases, bypass, musical data and mixer values. Existing v1/v2 sessions

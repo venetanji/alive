@@ -1,0 +1,267 @@
+{
+  "scope": "private Xvfb / software PipeWire, no physical audio claim",
+  "actions": [
+    {
+      "action": "identity",
+      "process": {
+        "executable_path": "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/src-tauri/target/release/alive",
+        "executable": {
+          "device": 53,
+          "inode": 8294563,
+          "sha256": "d1843df2def9231ec8062ba0564f7c3f4c922a617938852f5c86f902de2437f8"
+        },
+        "libraries": [
+          {
+            "path": "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+            "mapping_device": [
+              0,
+              29
+            ],
+            "mapping_inode": 8294564,
+            "device": 53,
+            "inode": 8294564,
+            "sha256": "3b031af38becf353fec0fa67722079a369beff30f315541e1204d6990709049b"
+          }
+        ]
+      }
+    },
+    {
+      "action": "capture",
+      "view": "session",
+      "width": 1440,
+      "height": 900,
+      "boxes": {
+        "Master gain fader": {
+          "x": 1322,
+          "y": 316,
+          "width": 24,
+          "height": 199
+        },
+        "Master stereo peak": {
+          "x": 1375,
+          "y": 314,
+          "width": 18,
+          "height": 175
+        },
+        "Master gain": {
+          "x": 1319,
+          "y": 286,
+          "width": 65,
+          "height": 23
+        },
+        "Master left peak": {
+          "x": 1375,
+          "y": 489,
+          "width": 58,
+          "height": 12
+        },
+        "Master right peak": {
+          "x": 1375,
+          "y": 501,
+          "width": 58,
+          "height": 12
+        },
+        "Stop transport": {
+          "x": 43,
+          "y": 27,
+          "width": 29,
+          "height": 22
+        },
+        "Pulse gain fader": {
+          "x": 238,
+          "y": 316,
+          "width": 24,
+          "height": 199
+        },
+        "Pulse stereo peak": {
+          "x": 300,
+          "y": 314,
+          "width": 19,
+          "height": 175
+        }
+      },
+      "status": "Saved target 0.0 dB; applied 0.0 dB (empty interval)."
+    },
+    {
+      "action": "capture",
+      "view": "session",
+      "width": 1280,
+      "height": 800,
+      "boxes": {
+        "Master gain fader": {
+          "x": 1162,
+          "y": 316,
+          "width": 24,
+          "height": 99
+        },
+        "Master stereo peak": {
+          "x": 1215,
+          "y": 314,
+          "width": 18,
+          "height": 75
+        },
+        "Master gain": {
+          "x": 1159,
+          "y": 286,
+          "width": 65,
+          "height": 23
+        },
+        "Master left peak": {
+          "x": 1215,
+          "y": 389,
+          "width": 58,
+          "height": 12
+        },
+        "Master right peak": {
+          "x": 1215,
+          "y": 401,
+          "width": 58,
+          "height": 12
+        },
+        "Stop transport": {
+          "x": 43,
+          "y": 27,
+          "width": 29,
+          "height": 22
+        },
+        "Pulse gain fader": {
+          "x": 238,
+          "y": 316,
+          "width": 24,
+          "height": 99
+        },
+        "Pulse stereo peak": {
+          "x": 300,
+          "y": 314,
+          "width": 19,
+          "height": 75
+        }
+      },
+      "status": "Saved target 0.0 dB; applied 0.0 dB (empty interval)."
+    },
+    {
+      "action": "vertical pointer",
+      "control": "Pulse gain fader",
+      "high": 1.6483516693115234,
+      "low": 0.35164836049079895
+    },
+    {
+      "action": "vertical pointer",
+      "control": "Master gain fader",
+      "high": 3.299999952316284,
+      "low": 0.699999988079071
+    },
+    {
+      "action": "gain zero admitted and observed",
+      "status": "Master gain admitted. Saved target -inf; applied -inf (empty interval)."
+    },
+    {
+      "action": "unity admitted and observed",
+      "status": "Master gain admitted. Saved target 0.0 dB; applied 0.0 dB (empty interval)."
+    },
+    {
+      "action": "overload reset",
+      "status": "Digital overload reset admitted. Saved target 0.0 dB; applied 0.0 dB (empty interval)."
+    },
+    {
+      "action": "capture",
+      "view": "arrangement",
+      "width": 1440,
+      "height": 900,
+      "boxes": {
+        "Master gain fader": {
+          "x": 1191,
+          "y": 488,
+          "width": 25,
+          "height": 60
+        },
+        "Master stereo peak": {
+          "x": 1244,
+          "y": 486,
+          "width": 19,
+          "height": 40
+        },
+        "Master gain": {
+          "x": 1086,
+          "y": 504,
+          "width": 65,
+          "height": 24
+        },
+        "Master left peak": {
+          "x": 1244,
+          "y": 526,
+          "width": 59,
+          "height": 12
+        },
+        "Master right peak": {
+          "x": 1244,
+          "y": 538,
+          "width": 59,
+          "height": 12
+        },
+        "Stop transport": {
+          "x": 43,
+          "y": 27,
+          "width": 29,
+          "height": 22
+        }
+      },
+      "status": "Digital overload reset admitted. Saved target 0.0 dB; applied 0.0 dB (empty interval)."
+    },
+    {
+      "action": "capture",
+      "view": "arrangement",
+      "width": 1280,
+      "height": 800,
+      "boxes": {
+        "Master gain fader": {
+          "x": 1031,
+          "y": 388,
+          "width": 25,
+          "height": 60
+        },
+        "Master stereo peak": {
+          "x": 1084,
+          "y": 386,
+          "width": 19,
+          "height": 40
+        },
+        "Master gain": {
+          "x": 926,
+          "y": 404,
+          "width": 65,
+          "height": 24
+        },
+        "Master left peak": {
+          "x": 1084,
+          "y": 426,
+          "width": 59,
+          "height": 12
+        },
+        "Master right peak": {
+          "x": 1084,
+          "y": 438,
+          "width": 59,
+          "height": 12
+        },
+        "Stop transport": {
+          "x": 43,
+          "y": 27,
+          "width": 29,
+          "height": 22
+        }
+      },
+      "status": "Digital overload reset admitted. Saved target 0.0 dB; applied 0.0 dB (empty interval)."
+    },
+    {
+      "action": "vertical pointer",
+      "control": "Master gain fader",
+      "high": 3.380000114440918,
+      "low": 0.6200000047683716
+    },
+    {
+      "action": "arrangement gain admitted and observed",
+      "status": "Master gain admitted. Saved target -6.0 dB; applied -6.0 dB (empty interval)."
+    }
+  ]
+}

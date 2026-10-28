@@ -1,0 +1,13 @@
+{
+  "integration_commit": "36b0b392e7f4d826e4f714487ca02944c2bfcf4d",
+  "worker_candidate": "5b10db9788d636ec2624fdc933293a1b9c8292e3",
+  "patch_sha256": "1c4496982c76467eb69687301ee8c43c4346be60af7cc6b00d98af4ca185e3b8",
+  "files_verified": 11,
+  "staged_hash_guard": {
+    "reported_mismatch": "e4d88d4a6d22a4bc99fc2784eedf5bb89940a4a807f14700fcff29964cca2b73",
+    "cause": "diff.mnemonicPrefix=true renders cached view as c/ and i/; explicit c/i rendering reproduces this digest exactly",
+    "corrective_verification": "committed git diff HEAD^ HEAD and all 11 committed file blob hashes equal frozen worker candidate; no source difference"
+  },
+  "root_tests": "130 passed, zero failed, exact command/exit/log hash in root-validation/receipt.json",
+  "limits": "No root application rebuild or launcher refresh, PCM, full persistence/Quit/restart, endurance or final-head cloud qualification claimed"
+}

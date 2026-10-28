@@ -1,0 +1,390 @@
+{
+  "candidate": "7ff950f4ab7eba8b6a354084e948f1a801618e6a",
+  "base": "d025c91a7b8341ad1ca4525b265cdc7ed147bd79",
+  "qualification": "reviewed and independently integrated Linux native/Rust/Alive/loader checks pass; Windows diagnostic pending actual runner; not final Q1",
+  "physical_audio": false,
+  "artifacts": [
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-brief.md",
+      "sha256": "9e9c72a0779f623764633b149aa43de3121543c1086f2331430dac8d40f2f574",
+      "bytes": 4530,
+      "stored": "master-cloud-correction-brief.md"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-report.md",
+      "sha256": "a21d45a2589427db2e538d03766c200aab314353b6724fcca9728b73802634df",
+      "bytes": 7955,
+      "stored": "master-cloud-correction-report.md"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-spec-review.md",
+      "sha256": "a2d5b9720dd41e3dcdfa7f4b2d5e74b4544270c61270935f05e7b8d7fd0595fb",
+      "bytes": 4823,
+      "stored": "master-cloud-correction-spec-review.md"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-preservation-rereview.md",
+      "sha256": "3006028d79b37d8bbee1d4a6d6b3cf3bd5e2c08d69e6058f54794aadeab86ff1",
+      "bytes": 1702,
+      "stored": "master-cloud-correction-preservation-rereview.md"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-arrangement-diagnosis-report.md",
+      "sha256": "d1683bcca1ba80cd655b2036bae2d26752db999454864502b52ad05ffea59995",
+      "bytes": 5221,
+      "stored": "cloud-arrangement-diagnosis-report.md"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-windows-diagnosis-report.md",
+      "sha256": "c722b15c0f7deaf58ed4a1e8939e746a612b1e68abfb51286e82ea3e54edb659",
+      "bytes": 6206,
+      "stored": "cloud-windows-diagnosis-report.md"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/windows-anchor-diagnostic-spec-review.md",
+      "sha256": "7407e50897de713fb722e9a6e6c3885d45ea6531c70922649637a345d15b5479",
+      "bytes": 2774,
+      "stored": "windows-anchor-diagnostic-spec-review.md"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-app-build.log",
+      "sha256": "ddd96f537f2a45d9a9e05463923528a33a029fd8fac645f3580ca66de937cf1f",
+      "bytes": 31027,
+      "stored": "worker/master-correction-app-build.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/a11y.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "worker/master-correction-arrangement/a11y.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/app.log",
+      "sha256": "145790b3225bb5dc677141d008b30e7bd65aae610654f972c7ae52163b87b95a",
+      "bytes": 832,
+      "stored": "worker/master-correction-arrangement/app.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/arrangement-interaction.mp4",
+      "sha256": "0a63cb0a152f7b49ff7c893aaaf319ea6abe97ac34da87fdefb27ba9730e95ab",
+      "bytes": 373354,
+      "stored": null,
+      "omission": "local original audio/video retained; not required for published source review"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/arrangement-report.json",
+      "sha256": "1f21b90447c35278a09c34be7322c1d61acbe42f688f85e57394a1d0b82f55e7",
+      "bytes": 31599,
+      "stored": "worker/master-correction-arrangement/arrangement-report.json"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/arrangement-roundtrip.alive",
+      "sha256": "dc42d37e56c51d76dca707479f7cd0bbf2fd03eed31bf0019cb1d3428b953f55",
+      "bytes": 8971,
+      "stored": "worker/master-correction-arrangement/arrangement-roundtrip.alive"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/authored.alive",
+      "sha256": "50983aff409de593e1b578d41a424c30434644c4b37edc5de0873696f46e23e5",
+      "bytes": 8969,
+      "stored": "worker/master-correction-arrangement/authored.alive"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/chooser-focus.jsonl",
+      "sha256": "a65406d16c4e08cc8089410e29a478f7860f9aa7012f44382e87c9820aba9535",
+      "bytes": 275,
+      "stored": "worker/master-correction-arrangement/chooser-focus.jsonl"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/initial.alive",
+      "sha256": "3583b22fdc1c1887b30e0be447e95bf0921ae2d76ed548be611de7e4fc7ee2b0",
+      "bytes": 7246,
+      "stored": "worker/master-correction-arrangement/initial.alive"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/initial.ultra",
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2",
+      "bytes": 64,
+      "stored": "worker/master-correction-arrangement/initial.ultra"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/interaction-video.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "worker/master-correction-arrangement/interaction-video.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/midi-arrangement-playback.capture.json",
+      "sha256": "839795393bb3af1d7398a9c6f60ef12c9b6cf181f9d5762087c4c20feccadc47",
+      "bytes": 334,
+      "stored": "worker/master-correction-arrangement/midi-arrangement-playback.capture.json"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/midi-arrangement-playback.f32",
+      "sha256": "de70c7c175e287cf38a0e92ea3295c06bc4acab61e3f7a282519570ee1f5352d",
+      "bytes": 18591744,
+      "stored": null,
+      "omission": "local original audio/video retained; not required for published source review"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/midi-arrangement-playback.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "worker/master-correction-arrangement/midi-arrangement-playback.stderr"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/native-arrangement-1280x800.png",
+      "sha256": "94666c4424149597ee93a34af4ab752f204c3aabf7313e019c50078f9571af7e",
+      "bytes": 69109,
+      "stored": "worker/master-correction-arrangement/native-arrangement-1280x800.png"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/native-arrangement-1440x900.png",
+      "sha256": "5fb021f2ebd0a0076e9dbe1b3312b52eacbf3d2b8a30d20d3b3da4ca04aa85cc",
+      "bytes": 71184,
+      "stored": "worker/master-correction-arrangement/native-arrangement-1440x900.png"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/native-example-1440x900.png",
+      "sha256": "58374125e78b7984a9b1e1115640fffef60538078f202acb1b792f8b37b52a5e",
+      "bytes": 76242,
+      "stored": "worker/master-correction-arrangement/native-example-1440x900.png"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/native-inputs.json",
+      "sha256": "27dc4dc9a4b9c24984468d136879366c62b946828393d91ac54fe16cb68b568e",
+      "bytes": 11853,
+      "stored": "worker/master-correction-arrangement/native-inputs.json"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/native-session-1280x800.png",
+      "sha256": "458acc21c2ff66a76022611609915dd9db9ebaef51251ece5882b50dce1ee842",
+      "bytes": 61203,
+      "stored": "worker/master-correction-arrangement/native-session-1280x800.png"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/native-session-1440x900.png",
+      "sha256": "572506d6c38e1f4e1324661ba18de59aad80b4ab2c5e107096805a2171dd0aab",
+      "bytes": 64087,
+      "stored": "worker/master-correction-arrangement/native-session-1440x900.png"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/pipewire.log",
+      "sha256": "808d90976081f75ffc92d181300ae6c0c3d6d361dfd4bb55f16327f56ded2de7",
+      "bytes": 171,
+      "stored": "worker/master-correction-arrangement/pipewire.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/policy.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "worker/master-correction-arrangement/policy.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/registry.log",
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae",
+      "bytes": 77,
+      "stored": "worker/master-correction-arrangement/registry.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/reopened-playback.capture.json",
+      "sha256": "4ef97a6e84551da3183dc4af695dd069b8e0731229b6b1d7a22ea8ad01e5e4d3",
+      "bytes": 334,
+      "stored": "worker/master-correction-arrangement/reopened-playback.capture.json"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/reopened-playback.f32",
+      "sha256": "216799e15aa00981f8c509e4c06d5cf01a77986bfc08721fbc84e1e226222a76",
+      "bytes": 1617920,
+      "stored": null,
+      "omission": "local original audio/video retained; not required for published source review"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/reopened-playback.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "worker/master-correction-arrangement/reopened-playback.stderr"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/reopened.alive",
+      "sha256": "dc42d37e56c51d76dca707479f7cd0bbf2fd03eed31bf0019cb1d3428b953f55",
+      "bytes": 8971,
+      "stored": "worker/master-correction-arrangement/reopened.alive"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/restarted-app.log",
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4",
+      "bytes": 140,
+      "stored": "worker/master-correction-arrangement/restarted-app.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/startup-app.log",
+      "sha256": "db9be990fc451d4e83fc60a0c9db765ab51a493af04724c7b36cb2328a9dab5c",
+      "bytes": 217,
+      "stored": "worker/master-correction-arrangement/startup-app.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement/startup-result.json",
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352",
+      "bytes": 375,
+      "stored": "worker/master-correction-arrangement/startup-result.json"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-arrangement.log",
+      "sha256": "32efe1b27c877f3b8d1d6ee3e17a6773bf037ade25b5af6c23c9f79ead30a039",
+      "bytes": 5248,
+      "stored": "worker/master-correction-arrangement.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-build.log",
+      "sha256": "8044591dea038b68c1641019171ff66b1b0e64b0b1a872ae07e2e0f1e2765e8e",
+      "bytes": 11171,
+      "stored": "worker/master-correction-build.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-green-build.log",
+      "sha256": "743fa87e851344ba0da0db42cbef8b76400851dacc8ec011bfa52eeec00c5e9f",
+      "bytes": 820,
+      "stored": "worker/master-correction-green-build.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-green-native.log",
+      "sha256": "af589ba95bf76b2bf1040e133fe22fcda1e5c324fd8a3f2580e6e63b94bfa14a",
+      "bytes": 17215,
+      "stored": "worker/master-correction-green-native.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/master-correction-rust.log",
+      "sha256": "4d79fef18f792fe43d0418de9f06c6bde9516de5581dd7c9b1b8c797fc2624a2",
+      "bytes": 13312,
+      "stored": "worker/master-correction-rust.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/preservation-commands.sh",
+      "sha256": "a2f735472e06dafb649a9aa03afd69c791e2bbb4867ea8269795f48c57a2e789",
+      "bytes": 1891,
+      "stored": "worker/preservation-commands.sh"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/preservation-mutation-red.log",
+      "sha256": "457a7a114d3edf97bfe065c669116d39f43a6a9d88ab7187f75d6f1650628735",
+      "bytes": 209,
+      "stored": "worker/preservation-mutation-red.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/preservation-v2.log",
+      "sha256": "594a59f9c4b453dbf30d23e59fa094134534ffb784e7b6783fe147450399a329",
+      "bytes": 248,
+      "stored": "worker/preservation-v2.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/preservation-v3.log",
+      "sha256": "a0d82534c1e56d2d6eb0edaef878f4b637f6481c837609253980a94aa9fd6490",
+      "bytes": 94,
+      "stored": "worker/preservation-v3.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/preservation-v4.log",
+      "sha256": "764b32e4d6083d17dd1246d5080c57678181b3941976d1df39bad040ed166201",
+      "bytes": 3284,
+      "stored": "worker/preservation-v4.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/red-v2.log",
+      "sha256": "f050d756ed1d0572baf5c850715cacf42ab658a1bbe1b818f4dafb6e979ad386",
+      "bytes": 145,
+      "stored": "worker/red-v2.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/red-v3.log",
+      "sha256": "4c8e76c98ace95ba17f14931f0880c61e065fe06fb5f6844d415553a02ccf1a6",
+      "bytes": 146,
+      "stored": "worker/red-v3.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-evidence/red-v4.log",
+      "sha256": "97948d6f7ead3e244a88556834ee7a44dfa17f493d7aff5354bd6e20194e3a3e",
+      "bytes": 146,
+      "stored": "worker/red-v4.log"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/master-cloud-correction-quality-review.md",
+      "stored": "master-cloud-correction-quality-review.md",
+      "bytes": 3744,
+      "sha256": "82aeadc4810b03ab7c5e5ad522cecbcb8bd7bced4ee7186a9dd126aea66dc02d"
+    },
+    {
+      "original": "experiments/phase2-20261028/master/correction/root/alive-compile.log",
+      "stored": "root/alive-compile.log",
+      "bytes": 604938,
+      "sha256": "08e5b69d50828127ef80bfb715b6ecc306882c90e4f9fb0705f602e139e8790d"
+    },
+    {
+      "original": "experiments/phase2-20261028/master/correction/root/alive-tests.log",
+      "stored": "root/alive-tests.log",
+      "bytes": 198,
+      "sha256": "9d8e4fcce3ea9868c769f5782fb50fd9b71e2b96e12aa8f10c3f50ffae4e7b3a"
+    },
+    {
+      "original": "experiments/phase2-20261028/master/correction/root/loader-proof.log",
+      "stored": "root/loader-proof.log",
+      "bytes": 103566,
+      "sha256": "092acb16ae229ab25aa9cb798013d75c9fc71a4e4f4ff7231ae098a1723b25e0"
+    },
+    {
+      "original": "experiments/phase2-20261028/master/correction/root/native-build.log",
+      "stored": "root/native-build.log",
+      "bytes": 820,
+      "sha256": "538d971f38a1c22132a6dd3296ef13d1430cd3e3c8b655467b40c271eebeff4b"
+    },
+    {
+      "original": "experiments/phase2-20261028/master/correction/root/native-suite.log",
+      "stored": "root/native-suite.log",
+      "bytes": 17215,
+      "sha256": "104f3d8a0a7177664f75ecf2e9f5d3c0ef37e6dd6c4949154b1bfa441abbf266"
+    },
+    {
+      "original": "experiments/phase2-20261028/master/correction/root/receipt.json",
+      "stored": "root/receipt.json",
+      "bytes": 3260,
+      "sha256": "c036dddbaa9d04bfe60c41b6d54d90ba487291f2d0ce1e611d796d8443267e14"
+    },
+    {
+      "original": "experiments/phase2-20261028/master/correction/root/toolchain.json",
+      "stored": "root/toolchain.json",
+      "bytes": 2950,
+      "sha256": "a646dca28d194d4b3ceac86b5e915ba6de72284666008f53297c535e8b5cfa56"
+    },
+    {
+      "original": "experiments/phase2-20261028/master/correction/root/ultra-compile.log",
+      "stored": "root/ultra-compile.log",
+      "bytes": 601218,
+      "sha256": "b0d9988a17fd58ecc938cac148dc3bb8ad62d72521e2b255cd6df7bc7d1caeb0"
+    },
+    {
+      "original": "experiments/phase2-20261028/master/correction/root/ultra-tests.log",
+      "stored": "root/ultra-tests.log",
+      "bytes": 27854,
+      "sha256": "0233123964c967f52f2daf0365cb6948f92094d8537b7d0a08fe3c98e545daae"
+    },
+    {
+      "original": ".superpowers/sdd/2026-10-28-phase2-live-max/root-correction-verification.py",
+      "stored": "root/verify.py",
+      "bytes": 3689,
+      "sha256": "f890aa53517ad0423b094caf2e1e88164bb4ccb44a1a2259a1ec62bc0a26bd40"
+    },
+    {
+      "original": "experiments/phase2-20261028/master/correction/README.md",
+      "stored": "README.md",
+      "bytes": 2517,
+      "sha256": "d4976718f11627d591c6404eb802d820d186a64bd0a206908e7504c7e2a4239a"
+    },
+    {
+      "original": "experiments/phase2-20261028/master/correction/integration.json",
+      "stored": "integration.json",
+      "bytes": 1526,
+      "sha256": "67f375c59c69831d25c44b0a6a4b05375569032fef03915f8f2f6e1a0642dd37"
+    }
+  ],
+  "integration_commit": "f69125cd289365424cd0661975291d8c12a96cac"
+}

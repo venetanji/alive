@@ -1,12 +1,18 @@
 # Alive / Ultra Plan
 
-Current execution, 2026-10-29: Tasks 1-7 are accepted at their stated scope.
-Current application source is `c71b608`: real native Master gain/ramp/meters,
-bounded commands, coherent observations and installation/rollback, over the
-saved-owner/strict-v5 and reviewed Node DTO/model consumer. Root's final pinned
-native suite passes in 186.425s, with 286 Ultra Rust tests (four ignored), one
-Alive test and a focused loader trace proving the new module. The full UI is
-in progress; the launcher is still the earlier `b4b1a5c` build.
+Current execution, 2026-10-29: Tasks 1-8 are accepted at their stated scope.
+Current application source is `f69125c`: shared Master controls, compact
+Session/Arrangement and original icons over `c71b608` native Master gain/ramp/
+meters, bounded commands, coherent observations and installation/rollback,
+saved-owner/strict-v5 and reviewed Node DTO/model consumer. The reviewed
+rejection-observation correction is integrated byte-identically. Root's new
+pinned native suite passes in 187.411s, with 286 Ultra Rust tests (four ignored),
+one Alive test and a focused loader trace proving the rebuilt module. The UI packet
+has independent source reviews, root 130 Node tests and audited worker 130
+Node/51 Chromium/both-size native v4/max-v3 proof. A coherent root build of both
+apps and their adjacent module now succeeds at `f69125c`; Alive (Test) follows
+that build. Prior artifacts are preserved. Task 9 owns actual native
+save/Quit/restart, pilot and endurance qualification on the pinned new pair.
 
 Earlier Task 6 combined checks pass 585 Node/component tests, 273 Ultra Rust
 tests (four ignored), one Alive test and the staging regression; its full pinned
@@ -20,6 +26,24 @@ changes. Terminal receipts are in
 reports, original red/green logs, reviews and source hashes are in
 `experiments/phase2-20261028/master/`. Final-head CI/packages, native journeys
 and 1800 proven playing seconds remain separate gates.
+
+The later pushed native checkpoint `f0f7871` is not cloud-qualified:
+CI `40751616984` fails the native Arrangement rejected-command increment
+assertion after native/Rust, offline renders and the original Alive desktop
+journey pass; Chromium and UI/reference jobs also pass. Packages `40751616882`
+fail eight Windows Master capability/owner tests while the direct resolver
+test passes; Linux and both macOS package targets pass and publication is
+skipped. Original failures and terminal receipts are retained under
+`experiments/phase2-20261028/master/cloud-f0f7871/`. Separate Terra source-only
+diagnoses led to reviewed native correction `7ff950f`: exact off-callback
+V2/V3/V4 freshness and observable-state preservation, plus a test-only Windows
+production-anchor diagnostic. Root integrates its seven files byte-identically
+as `f69125c` after pinned native/Rust/Alive/loader checks pass; actual Windows
+cause/fix remains pending runner evidence. The accepted
+GI-free sustained-collector helper is local `d025c91`; actual Task 9 driver
+integration is in progress. The worker now owns serialized native resources
+using root's exact new binaries; the pilot, endurance and terminal Quit remain
+unqualified. Root runs docs/evidence/cloud work only during this lease.
 
 Checkpoint `62a657a` passes full CI `40721716899`, including native journeys,
 and all four package targets in `40721716535`; publication is skipped. Terminal
@@ -58,11 +82,12 @@ suite exposed a standalone resolver test borrowing Rust std symbols from the
 full native image before substitution of an old fixture. The narrow harness
 correction has reproduced loader/invariant reds, all four module-case greens
 and fresh independent source/evidence reviews; the original failure is retained.
-Fresh explicit `gpt-6.1-terra` / high worker `p21_master_workspace_ui` owns
-Task 8 in isolated `bb01` at `c71b608`, including the bounded producer handoff,
+Task 8's explicit `gpt-6.1-terra` / high worker completed the bounded producer,
 full compact Live composition and both-size WebKit/Chromium action/geometry
-proof. Root launches no competing local browser/build/GUI/audio/native workload
-during that lease. Task 9 produces the coherent user-testable build, real
+proof as reviewed `5b10db9`, integrated `36b0b39`, then released all resources.
+Root owns integrated native/build correction checks; the existing Task 9
+worker in `bb01` prepares source and GI-free Python/mock tests only.
+Task 9 produces the coherent user-testable build, real
 save/Quit/restart and endurance checkpoint. Reports/reviews/raw evidence and hashes are curated
 under `experiments/phase2-20261028/master/native/`.
 Completed v3 profiling reports four consecutive deadline excursions in the

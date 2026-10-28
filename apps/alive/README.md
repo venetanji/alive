@@ -3,14 +3,19 @@
 Alive is a separate `alive` executable with a compact Rust/Tauri session UI.
 Ultra remains the `ultra` patch-editor executable. Both share the native engine
 and Rust library; Alive hosts saved Ultra instruments and ordered stereo effect
-chains through versioned device manifests and the native Faust evaluator. Canonical
+chains through versioned device manifests and the native Faust evaluator.
 New files use an `alive-session-v5` envelope around the score and saved Master
 gain. Existing bare scores remain readable. The Linux native host supports
 saved Master gain, 64-frame live ramps, coherent stereo peaks and an explicit
 digital-overload reset. Old or partial native libraries allow unity sessions
-and refuse non-unity before retiring the current owner. The full Master strip
-and closer Live-style layout are the next UI packet; see `PLAN.md` for exact
-build and acceptance status. `alive-session-v3` scores
+and refuse non-unity before retiring the current owner. Session now has a
+fixed-right Master strip and four aligned slot/scene rows; MIDI Arrangement
+has right-hand track controls and a bottom Master lane. Both views share gain,
+native stereo meters, unity and digital-overload reset controls. See `PLAN.md`
+for exact source, build and acceptance status. The current test launcher uses
+the coherent `f69125c` build; complete native save/restart and endurance
+qualification of this new checkpoint is in progress.
+`alive-session-v3` scores
 preserve four clip slots per track, stable clip/note IDs,
 saved defaults, instance IDs, original-source fingerprints, ordered effects,
 parameter bases, bypass and automation targets. Existing v1/v2 sessions upgrade

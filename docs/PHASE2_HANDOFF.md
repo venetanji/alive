@@ -7,14 +7,16 @@ to decide what to resume.
 
 ## Active Execution Checkpoint
 
-Application source: `c71b60805e0e877915fb2b9efaf83b479252d5e3`, integrating
-reviewed Task 7 native Master `81220d3` over accepted Task 6 owner `e716e4`
-and Node DTO/model `de30ca8`. Tasks 1-7 are complete at their recorded scopes;
-do not restart them. Root verifies all 25 native packet files byte-identically,
-runs the full pinned native suite (exit 0, 186.425s), 286 Ultra Rust tests with
-four ignored, and one Alive test. A focused loader trace proves the actual new
-native module. Exact compiler, library hashes, command and terminal receipts
-are under `task-7-root-validation-81220d3/` in the canonical workspace.
+Application source: `f69125cd289365424cd0661975291d8c12a96cac`, integrating
+reviewed rejection-observation/Windows-diagnostic packet `7ff950f` over
+`36b0b39` Task 8 UI and `c71b608` native Master. Tasks 1-8 are complete at their
+recorded scopes; do not restart them. Root verifies all seven correction files
+byte-identically, runs the full pinned native suite (exit 0, 187.411s), 286 Ultra
+Rust tests with four ignored, and one Alive test. A focused loader trace proves
+the corrected native module. Exact compiler, library hashes, commands and
+terminal receipts are in `experiments/phase2-20261028/master/correction/root/`.
+Earlier Task 7's 25-file audit and 186.425s native pass retain their separate
+identity under `master/native/root-final/`.
 
 Earlier Task 6 combined checks pass 585 Node/component, 273 Ultra Rust with four
 ignored, one Alive and one staging test. Its full pinned contracts pass in 219.253s.
@@ -49,7 +51,20 @@ failure, controlled mechanism, reviews and terminal receipts are retained in
 handle mechanism does not establish the exact cloud trigger.
 
 New native application source `c71b608` has independent local qualification
-above; its containing pushed head still requires fresh cloud CI/packages.
+above. Its containing pushed head is now
+`f0f7871fa9b917fe566483c4dde5018ebd5e28a9`: CI `40751616984` is terminal
+failure at the native Arrangement rejected-command increment assertion.
+Native build/Rust, offline renders, the original Alive desktop journey,
+Chromium and UI/reference tests pass; downstream native journeys skip.
+Package run `40751616882` is terminal failure with eight Windows Master
+capability/owner test failures although its direct resolver test passes.
+Linux and both macOS package targets pass; publication is skipped.
+Original logs and Arrangement failure artifacts are retained under
+`master/cloud-f0f7871/`. Fresh Terra workers own read-only source/artifact
+diagnoses of the two independent failures; neither has a source or local
+runtime/build lease. Task 8's unintegrated UI is not attributed as their cause.
+Draft PR #6 is updated and its head/base/body re-read and verified. Root keeps
+new documentation/evidence unpushed until the next reviewed source checkpoint.
 
 Full foundation CI `40710079202` and all four package targets `40710079013`
 pass at `3b3df87572722d2349d0725f4059cfc4afd467ae`; publication is skipped.
@@ -101,7 +116,45 @@ while carrying this eight-track timing result to final qualification. No clean
 all-profile deadline pass is claimed, and no threshold, capacity or setting is
 changed. The working two-device profile remains the first checkpoint scope.
 The canonical ledger records the ruling and its possible rework cost. Those
-functional checks now pass; Task 8 is leased and Task 9 remains gated.
+functional checks permitted Task 8; its final candidate is recorded next and
+Task 9 remains gated.
+
+Task 8's final UI candidate is now `5b10db9788d636ec2624fdc933293a1b9c8292e3`
+on `c71b608`. Independent source spec review, scoped readability re-review and
+fresh quality review find no actionable source issue. Root verifies all 11
+source and seven final native screenshot hashes and integrates the packet
+byte-identically as `36b0b39`; all 130 affected root Node tests pass. Worker final
+evidence records 130 Node and 51 Chromium cases, both-size native v4/max-v3
+layout/fader/admission/application checks and a separate playing observation;
+reports, original red/green, captures and root audit are curated under
+`master/ui/`. This is not a new root launcher, PCM, persistence, endurance or
+final-head cloud pass. The UI worker explicitly released its resources and
+source lease; do not redispatch its completed packet or overwrite the applied
+root UI files.
+
+Native correction candidate `7ff950f4ab7eba8b6a354084e948f1a801618e6a` on
+`d025c91` reproduces V2/V3/V4 rejection freshness failures before correction:
+each legacy getter exposes baseline+1 while the Master getter does not. Worker
+full-native, 122 Rust session tests and the unchanged native Arrangement
+journey pass. The preservation fix compares all returned legacy/combined score
+fields except rejection across both refusals; an intentional device-revision
+mutation fails the new assertion and restored V2/V3/V4 pass. Source spec,
+scoped preservation re-review and fresh explicit Terra quality review have no
+blocking finding. Root applies all seven files byte-identically, passes full
+pinned native/Rust/Alive/loader checks and commits `f69125c`. The worker releases
+all runtime resources. Correction evidence/reviews and hashes are under
+`experiments/phase2-20261028/master/correction/`.
+The Windows test-only production-anchor diagnostic includes its reviewed
+early-return correction; actual Windows compilation/output and an
+evidence-supported production fix remain pending.
+The frozen Master contract now explicitly amends the contradictory rejection
+tuple requirement: callback-owned score/Master fields remain coherent, while
+the independently updated rejection count is sampled once after that tuple,
+matching legacy semantics. Exact off-callback increments and unchanged musical
+state are required. The ledger records the ruling and rework cost. Root's
+integrated checks and complete app build pass. Task 9's existing worker now
+owns serialized native/GUI/audio/AT-SPI/recorder/sampler resources, using the
+root binaries pinned below; root performs source/docs/evidence/cloud work only.
 
 Curated native reports, reviews, reproduction scripts, original red/green and
 raw software timing samples are under
@@ -118,36 +171,44 @@ resolver or overwrite the old tested launcher artifacts for unit-test setup.
 Any measurement-driven source change requires a new immutable candidate and
 scoped review; earlier review does not automatically qualify later bytes.
 
-The Master v1 contract is frozen at `docs/contracts/alive-master-v1.md`.
-Fresh explicit `gpt-6.1-terra` / high worker `/root/p21_master_workspace_ui`
-owns Task 8 in `bb01` at `c71b608`. Its canonical `task-8-brief.md` activates
-the full Alive UI/focused tests and Alive-only design/surface documentation
-lease, including explicit `alive-master.mjs` producer handoff while preserving
-pure DTO exports. It owns build/cache plus serialized browser/native GUI and
-software-audio resources until release. Root performs docs/evidence/cloud work
-only, with no competing local build/browser/GUI/audio/native workload. No host,
-native, ABI, capacity, Ultra canvas or release-workflow change is leased.
+The Master v1 contract and dated rejection-observation amendment are at
+`docs/contracts/alive-master-v1.md`. Task 8 worker
+`/root/p21_master_workspace_ui` used explicit `gpt-6.1-terra` / high in
+`bb01`, handed off its final candidate and released all source/runtime
+resources. Its canonical brief/report and root audit govern the applied
+11-file packet. The native correction worker in `27be` and root have released
+runtime resources to Task 9. No competing local workload or artifact rebuild runs.
 
 The UI worker's first partial producer report was not an acceptance candidate;
-root renewed the same lease to finish the full packet in place. No partial UI
-source has been integrated. Read the canonical ledger/current report rather
-than inferring completion from focused Node tests.
+root renewed the same lease to finish the full packet in place. The final
+complete packet is integrated as `36b0b39`. Read the canonical ledger/current
+report rather than inferring completion from focused Node tests.
 
-Separately, fresh Terra worker `/root/q1_endurance_collector_fixtures` prepares
-only two new GI-free Python helper/test files in `27be` at `c71b608`. This uses
-the runbook's disjoint-fixture allowance while the UI owns runtime resources.
-The canonical `task9-collector-fixtures-brief.md` forbids driver/UI/native/CI
-edits, native/build/browser/GUI/audio/AT-SPI/recorder workloads and bound changes.
-It consumes existing epoch/playing contracts and must pass independent review
-before integration. This is test-support preparation, not a Task 9 native,
-pilot or endurance lease; Q1 qualification remains gated on accepted Task 8.
+The separate two-file sustained-measurement helper is accepted at GI-free scope as
+`d025c91a7b8341ad1ca4525b265cdc7ed147bd79`, integrating reviewed `07f1d9d`
+byte-identically. Original spec/quality findings and both fix rounds are retained;
+root independently passes 18 new/four selected existing tests. Evidence and
+source hashes are under `experiments/phase2-20261028/master/collector-support/`.
+Its caller must explicitly identify process disappearance and supply actual UI
+observations, bounded sampling/recorder cleanup and health checks. No existing
+driver or CI step changed in that packet. The existing Task 9 worker now prepares
+the actual driver/CI source and tests in `bb01` and has the explicit native
+runtime transfer. Pilot/endurance/terminal Quit remain unqualified. Do not redispatch the completed
+helper packet.
 The next user-testable checkpoint is a real saved native Master with closer
 Live Session/Arrangement composition, not another standalone instrument.
 
-The last completed local application build is still `b4b1a5c`; Task 6 unit
-tests are not a new launcher build. Rebuild/hash both binaries and their native
-library after the complete native/UI slice before refreshing the test launcher.
-Endurance and physical output are unqualified. Continue subsequent bounded
+The completed coherent root build is now `f69125c`, with exact commands/hashes/
+device/inode receipt in `experiments/phase2-20261028/checkpoint-q1/root-build/`.
+Alive SHA-256 is `2bfdfb4c260cf32d6ba6749bf0ded2165e2f8b0ca728777db804f49a8c4782b9`,
+adjacent Ultra is `9e95b66306b74ad015065bdbe1bfc93acad8b970ef7d091ad2e573320bf773d9`,
+and adjacent native module is `9fd076115b2a914fa2d156dab37b0a1d99676d40634e23f78ba2c50c110062c4`.
+The existing Alive (Test) entry is verified to run this checkout's run.sh;
+no launcher configuration changed. Previous artifacts are preserved under
+`.superpowers/sdd/2026-10-28-phase2-live-max/pre-q1-launcher-artifacts/`.
+Task 9 owns these fixed artifacts for its native/pilot/endurance work; do not
+rebuild or replace them while leased. Endurance and physical output remain
+unqualified. Continue subsequent bounded
 plan tasks after the first checkpoint without expanding its scope prematurely.
 
 ## Owner Intent And Current Boundary
@@ -193,7 +254,7 @@ task/candidate/review records before dispatching anything after a restart.
 
 - Checkout: `/home/venetanji/.codex/worktrees/edd5/alive`.
 - Feature branch: `feat/alive-session-host`.
-- Accepted application source: `c71b60805e0e877915fb2b9efaf83b479252d5e3`.
+- Accepted application source: `f69125cd289365424cd0661975291d8c12a96cac`.
 - CI/packages-qualified foundation: `3b3df87572722d2349d0725f4059cfc4afd467ae`.
 - Release foundation: `31033483eb3baf15edab1734b966cc6d55c4b8c7`.
 - Draft PR: #6, targeting `build/ultra-desktop-releases`.
@@ -202,15 +263,18 @@ task/candidate/review records before dispatching anything after a restart.
 Root is curating `PLAN.md`, this handoff, the reviewed browser-only test and
 `experiments/phase2-20261028/{master,reliability}/`; those changes are intentional. Check
 actual HEAD/upstream for the containing evidence checkpoint and fresh cloud
-statuses. Expected worker changes are confined to its isolated `bb01` lease;
-preserve its `.superpowers`, `r-u` and test-result evidence. Review/candidate
+statuses. Root has committed the exact reviewed UI packet; the explicit
+Master-contract amendment and seven-file correction are committed as `f69125c`;
+curated evidence/docs are still uncommitted. Preserve both workers' `.superpowers`, `r-u`
+and test-result evidence. Review/candidate
 ancestry is retained under local `agents/phase2-*` refs. Commit only intended
 paths, preserving user work and private reference material. No destructive cleanup.
 
 ## First Runnable Work
 
-Read the canonical ledger and reconcile the live Task 8 UI worker; do not
-dispatch another UI writer or restart accepted Tasks 1-7. Root's final Task 7
+Read the canonical ledger and reconcile the active Task 9 native worker;
+the final Task 8 packet is integrated as `36b0b39` with root affected tests green.
+Do not dispatch another UI writer or restart accepted Tasks 1-8. Root's final Task 7
 native/Rust/Alive checks and earlier Task 6 pinned contracts are terminal exit 0
 at their recorded source, with receipts under the native/saved-owner evidence.
 The staging regression
@@ -222,11 +286,13 @@ work runs. Final qualification requires the final pushed head; the old full
 foundation CI/packages cannot qualify Task 6 or later native/UI source. Fetch
 and reconcile the release foundation again before final testing. No merges.
 
-On Task 8 report: freeze the exact candidate, independently review spec and
-quality, resolve findings, integrate byte-identically and run affected tests.
-Require bounded producer, actual Master/native action receipts and both-size
-WebKit/Chromium layout/fader proof; preserve the pure DTO/model contract and
-original history/Prepare/Apply/scoped Stop/Quit regressions. Task 9 owns the coherent local build, both
+Task 8 source spec/quality and final worker evidence are audited and its exact
+packet is committed after affected integrated tests pass.
+Native correction `7ff950f` is reviewed, verified and integrated as `f69125c`.
+Push the containing evidence checkpoint for actual Windows diagnostics, which
+must run on the actual Windows runner
+before claiming a cause or production fix. Preserve the pure DTO/model contract
+and original history/Prepare/Apply/scoped Stop/Quit regressions. Task 9 owns the coherent local build, both
 sizes/native save/Quit/restart, launcher, 1800 proven playing seconds, final
 head CI/packages and reviewed draft checkpoint. Preserve evidence limitations
 and distinguish software-loopback from physical output.
@@ -238,7 +304,8 @@ observability journey's contiguous epoch collection. Task 9 must integrate
 that collection, action boundaries and final retirement, retaining original
 assertions. Use an exact-artifact short pilot to check the unchanged wall,
 audio, metadata and epoch bounds before the 1800-playing-second run; a pilot
-does not qualify endurance. No Task 9 implementation lease was granted.
+does not qualify endurance. Task 9 now has the explicit runtime transfer and
+exact root artifacts; inspect its current report before dispatching anything.
 
 While the exclusive profiler runs, two fresh Terra workers completed read-only
 Task 10 browser and Task 12 authoring inventories. Hash-pinned reports are under
@@ -271,12 +338,12 @@ dependency on the first checkpoint. No reference runtime was relaunched.
 
 ## Evidence, Builds And Local Resources
 
-The last completed local application build is `b4b1a5c`, before saved-owner
-changes. Unit-test binaries do not refresh the test launcher. Existing commands are `bash apps/alive/build.sh`,
+The completed coherent local build is `f69125c`, with exact artifact identities
+recorded above. Its native checkpoint qualification is in progress. Existing commands are `bash apps/alive/build.sh`,
 `bash apps/alive/run.sh apps/alive/examples/midi-arrangement.alive` and
 `bash apps/ultra/run.sh`. The Ultra desktop launcher points to another checkout;
-use the explicit current-checkout run command for qualification. Rebuild and
-hash both binaries and adjacent native library for implementation evidence.
+use the explicit current-checkout run command for qualification. Do not rebuild
+while Task 9 owns the pinned artifacts.
 
 Live's fresh Master/reference study is complete. Private root:
 `/home/venetanji/.cache/alive-phase2-master-reference-20261028/`.

@@ -1,0 +1,178 @@
+{
+  "scope": "private Xvfb / software PipeWire, no physical audio claim",
+  "actions": [
+    {
+      "action": "identity",
+      "process": {
+        "executable_path": "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/src-tauri/target/release/alive",
+        "executable": {
+          "device": 53,
+          "inode": 8294841,
+          "sha256": "7073b40333762042a15b9469658d23acea23fb56acf7a96850af72c4d9407ebc"
+        },
+        "libraries": [
+          {
+            "path": "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+            "mapping_device": [
+              0,
+              29
+            ],
+            "mapping_inode": 8294843,
+            "device": 53,
+            "inode": 8294843,
+            "sha256": "3b031af38becf353fec0fa67722079a369beff30f315541e1204d6990709049b"
+          }
+        ]
+      }
+    },
+    {
+      "action": "capture",
+      "view": "session",
+      "width": 1440,
+      "height": 900,
+      "boxes": {
+        "Master gain fader": {
+          "x": 1322,
+          "y": 291,
+          "width": 24,
+          "height": 224
+        },
+        "Master stereo peak": {
+          "x": 1375,
+          "y": 289,
+          "width": 18,
+          "height": 200
+        },
+        "Master gain": {
+          "x": 1319,
+          "y": 261,
+          "width": 65,
+          "height": 23
+        },
+        "Master left peak": {
+          "x": 1375,
+          "y": 489,
+          "width": 58,
+          "height": 12
+        },
+        "Master right peak": {
+          "x": 1375,
+          "y": 501,
+          "width": 58,
+          "height": 12
+        },
+        "Stop transport": {
+          "x": 43,
+          "y": 27,
+          "width": 29,
+          "height": 22
+        },
+        "Pulse gain fader": {
+          "x": 238,
+          "y": 291,
+          "width": 24,
+          "height": 224
+        },
+        "Pulse stereo peak": {
+          "x": 300,
+          "y": 289,
+          "width": 19,
+          "height": 200
+        }
+      },
+      "status": "Saved target 0.0 dB; applied 0.0 dB (empty interval)."
+    },
+    {
+      "action": "capture",
+      "view": "session",
+      "width": 1280,
+      "height": 800,
+      "boxes": {
+        "Master gain fader": {
+          "x": 1162,
+          "y": 291,
+          "width": 24,
+          "height": 124
+        },
+        "Master stereo peak": {
+          "x": 1215,
+          "y": 289,
+          "width": 18,
+          "height": 100
+        },
+        "Master gain": {
+          "x": 1159,
+          "y": 261,
+          "width": 65,
+          "height": 23
+        },
+        "Master left peak": {
+          "x": 1215,
+          "y": 389,
+          "width": 58,
+          "height": 12
+        },
+        "Master right peak": {
+          "x": 1215,
+          "y": 401,
+          "width": 58,
+          "height": 12
+        },
+        "Stop transport": {
+          "x": 43,
+          "y": 27,
+          "width": 29,
+          "height": 22
+        },
+        "Pulse gain fader": {
+          "x": 238,
+          "y": 291,
+          "width": 24,
+          "height": 124
+        },
+        "Pulse stereo peak": {
+          "x": 300,
+          "y": 289,
+          "width": 19,
+          "height": 100
+        }
+      },
+      "status": "Saved target 0.0 dB; applied 0.0 dB (empty interval)."
+    },
+    {
+      "action": "vertical pointer",
+      "control": "Pulse gain fader",
+      "high": 1.637930989265442,
+      "low": 0.36206895112991333
+    },
+    {
+      "action": "vertical pointer",
+      "control": "Master gain fader",
+      "high": 3.2799999713897705,
+      "low": 0.7200000286102295
+    },
+    {
+      "action": "gain zero admitted and observed",
+      "status": "Master gain admitted. Saved target -inf; applied -inf (empty interval)."
+    },
+    {
+      "action": "unity admitted and observed",
+      "status": "Master gain admitted. Saved target 0.0 dB; applied 0.0 dB (empty interval)."
+    },
+    {
+      "action": "overload reset",
+      "status": "Digital overload reset admitted. Saved target 0.0 dB; applied 0.0 dB (empty interval)."
+    },
+    {
+      "action": "session scroll right",
+      "track8": {
+        "x": 1047,
+        "width": 104
+      },
+      "master": {
+        "x": 1153,
+        "width": 127
+      }
+    }
+  ]
+}

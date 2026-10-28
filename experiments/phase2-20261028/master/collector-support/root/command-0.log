@@ -1,0 +1,23 @@
+test_body_cleanup_and_post_cleanup_health_errors_are_all_visible (test_sustained_measurement.SustainedTests.test_body_cleanup_and_post_cleanup_health_errors_are_all_visible) ... ok
+test_body_failure_and_post_cleanup_health_are_both_visible (test_sustained_measurement.SustainedTests.test_body_failure_and_post_cleanup_health_are_both_visible) ... ok
+test_cleanup_health_detects_recorder_limit (test_sustained_measurement.SustainedTests.test_cleanup_health_detects_recorder_limit) ... ok
+test_collector_rejections_remain_fatal_and_break_continuity (test_sustained_measurement.SustainedTests.test_collector_rejections_remain_fatal_and_break_continuity) ... ok
+test_diagnostics_gap_breaks_continuity_even_when_frames_advance (test_sustained_measurement.SustainedTests.test_diagnostics_gap_breaks_continuity_even_when_frames_advance) ... ok
+test_disappearance_is_fatal_even_if_later_observation_looks_valid (test_sustained_measurement.SustainedTests.test_disappearance_is_fatal_even_if_later_observation_looks_valid) ... ok
+test_empty_or_disappeared_process_cannot_finalize (test_sustained_measurement.SustainedTests.test_empty_or_disappeared_process_cannot_finalize) ... ok
+test_failed_health_poll_propagates_and_cleanup_runs (test_sustained_measurement.SustainedTests.test_failed_health_poll_propagates_and_cleanup_runs) ... ok
+test_finalization_requires_complete_inactive_observation_before_deadline (test_sustained_measurement.SustainedTests.test_finalization_requires_complete_inactive_observation_before_deadline) ... ok
+test_frame_native_u64_range_is_enforced (test_sustained_measurement.SustainedTests.test_frame_native_u64_range_is_enforced) ... ok
+test_invalid_transport_and_callback_failure_break_continuity (test_sustained_measurement.SustainedTests.test_invalid_transport_and_callback_failure_break_continuity) ... ok
+test_latched_disappearance_on_entry_still_cleans_up (test_sustained_measurement.SustainedTests.test_latched_disappearance_on_entry_still_cleans_up) ... ok
+test_metadata_limit_propagates_with_cleanup (test_sustained_measurement.SustainedTests.test_metadata_limit_propagates_with_cleanup) ... ok
+test_missing_last_epoch_cannot_finalize (test_sustained_measurement.SustainedTests.test_missing_last_epoch_cannot_finalize) ... ok
+test_nested_numeric_seek_and_apply_boundaries_never_accrue_action_time (test_sustained_measurement.SustainedTests.test_nested_numeric_seek_and_apply_boundaries_never_accrue_action_time) ... ok
+test_outer_health_failure_on_nested_entry_still_cleans_up (test_sustained_measurement.SustainedTests.test_outer_health_failure_on_nested_entry_still_cleans_up) ... ok
+test_oversized_frame_breaks_continuity_before_valid_read (test_sustained_measurement.SustainedTests.test_oversized_frame_breaks_continuity_before_valid_read) ... ok
+test_transient_gap_can_recover_and_finalize (test_sustained_measurement.SustainedTests.test_transient_gap_can_recover_and_finalize) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.011s
+
+OK
