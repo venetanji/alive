@@ -1,0 +1,132 @@
+{
+  "head": "70c356d54e846abb29e21be9e38dfefa14529c75",
+  "apps_source": "1ebf2161e0fa2a62484566fac65c7e940567f357",
+  "command": "ULTRA_TEST_ALIVE=1 ULTRA_TEST_SCRIPT=\"$PWD/apps/ultra/tests/check_alive_desktop.py\" bash apps/ultra/tests/check_canvas_desktop.sh \"$PWD/experiments/phase2-20261028/baseline/native-desktop\"",
+  "exit": 1,
+  "assertion": "Apply must close the old editor generation",
+  "apply_input_receipt": "unknown: original harness has no definitive Apply IPC receipt",
+  "scope": "private software PipeWire/CPAL, 48 kHz/512 requested frames; no physical or endurance claim",
+  "setup_failure": "native-wrong-driver: default Ultra driver against Alive; exit 1, not target baseline",
+  "files": {
+    "native-desktop/a11y.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-desktop/alive-audio-settings.png": {
+      "bytes": 124586,
+      "sha256": "dfe7c93e9954ed807732f42aa413edf07dd0f2be9b162114f5c2cb1bbeb3dac8"
+    },
+    "native-desktop/alongside-ultra.log": {
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    "native-desktop/alongside.ultra": {
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2"
+    },
+    "native-desktop/app.log": {
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4"
+    },
+    "native-desktop/automation-audit.png": {
+      "bytes": 65066,
+      "sha256": "ed63612c8df70324de0e4b8a764e9b382c35799049fa416afc47550cbdac0139"
+    },
+    "native-desktop/automation-draft-audit.png": {
+      "bytes": 62046,
+      "sha256": "8ae84b28def9910d718e72371c795cbe8f83d6efb995a540f09b7968bc13fa20"
+    },
+    "native-desktop/before-reorder.alive": {
+      "bytes": 9407,
+      "sha256": "1234e77cb23d50d129b944845a3def8d65790a68ebcec02ea302220848c3f453"
+    },
+    "native-desktop/chain-prepared-audit.png": {
+      "bytes": 76672,
+      "sha256": "7bbc220a96e7316a57d265bf9b794d0a4ad44f033e712073d63db6b7e36dafe2"
+    },
+    "native-desktop/chooser-focus.jsonl": {
+      "bytes": 2089,
+      "sha256": "60c5e3d667869b40d384eefdffb53672c43fbf5bbd9658fbd36b536aa3df31a8"
+    },
+    "native-desktop/effect-editor-audit.png": {
+      "bytes": 43468,
+      "sha256": "31ca588d20d2ec1ab3ad85d11f87c476e1b9fc64e04d59f8f1a186ecce720e7c"
+    },
+    "native-desktop/initial.alive": {
+      "bytes": 5523,
+      "sha256": "542ad41257effae9dc67927cb770ea4ea4dfab7723e9d68016c092c6cb73379b"
+    },
+    "native-desktop/initial.ultra": {
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2"
+    },
+    "native-desktop/journey-failure.json": {
+      "bytes": 53339,
+      "sha256": "dab399b5d83f0f49bd37458869cc31208e9f0dbc55b5a30a6019f7cdef55ca93"
+    },
+    "native-desktop/journey-failure.png": {
+      "bytes": 82895,
+      "sha256": "bcd02b56304816c478b09e751c4d0c5bc8c8d78b59bf1dab4d1e8fcef5d0f0c8"
+    },
+    "native-desktop/journey-lowpass.ultra": {
+      "bytes": 2021,
+      "sha256": "9ca4bca2d81552577636ee062d37195fd58fda8120e4efe925fb9ad0cde0f988"
+    },
+    "native-desktop/journey-timing.json": {
+      "bytes": 12712,
+      "sha256": "d3699bd88ce2c65f4d8fa7af4ae9a8f0c7e54fe909a7d5f8395b3fe574af42b2"
+    },
+    "native-desktop/journey-utility.ultra": {
+      "bytes": 2149,
+      "sha256": "b800a01bf8722b60206ea491181d3461f33f175fd8f5bd7ad4cb1a5889c6f107"
+    },
+    "native-desktop/native-inputs.json": {
+      "bytes": 7928,
+      "sha256": "74317920006b9e284e5be040ef6c79afce6e1732c2d4103e888d29c6fb91829e"
+    },
+    "native-desktop/native-walkthrough.capture.json": {
+      "bytes": 334,
+      "sha256": "e4cb9a460ceba2d591b02fde2156c69fd8b87c0044f1c6d4c9476f4d0f2b72a2"
+    },
+    "native-desktop/native-walkthrough.f32": {
+      "bytes": 9003008,
+      "sha256": "d464627cc0ae852c2af49c26726f83c118e4dc3a190790a10b9c99b4a1e1ae14"
+    },
+    "native-desktop/native-walkthrough.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-desktop/pipewire.log": {
+      "bytes": 171,
+      "sha256": "7d54bfd3ea65eed26a910174fe783ef7024b0117d0f0ef19b6c9065c85a51565"
+    },
+    "native-desktop/policy.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-desktop/registry.log": {
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae"
+    },
+    "native-desktop/reorder-covering-tooltip.png": {
+      "bytes": 84348,
+      "sha256": "7061300f84d4a463ad76e012ce389ecf9058196b52a6af3236335fa28c1707ef"
+    },
+    "native-desktop/session-ready.png": {
+      "bytes": 82698,
+      "sha256": "d850891a6d9e616286d57997a87043312e17cb296a040d53eb7877a63632d65b"
+    },
+    "native-desktop/startup-app.log": {
+      "bytes": 217,
+      "sha256": "ca1ca85a2598b00c888b407c12d1d6fa71c188bdf37c8186c7944ddad85b95f0"
+    },
+    "native-desktop/startup-result.json": {
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352"
+    },
+    "native-desktop/test.log": {
+      "bytes": 17122,
+      "sha256": "ae64ecd7919f7bfb93945220e0fe38cc9c2320d283602e9155a57113198f1d28"
+    }
+  }
+}

@@ -1,0 +1,207 @@
+CONFIRMED wrong source length {
+  "operations": [
+    {
+      "operation": {
+        "kind": "sourceIndependent",
+        "occurrence": {
+          "kind": "slot",
+          "trackId": "track-1",
+          "slotId": "clip-track-1"
+        }
+      },
+      "generation": 1,
+      "draftRevision": 0
+    },
+    {
+      "operation": {
+        "kind": "sourceLength",
+        "sourceId": "source-independent-0",
+        "lengthBeats": 16
+      },
+      "generation": 1,
+      "draftRevision": 1
+    }
+  ],
+  "slot": {
+    "id": "clip-track-1",
+    "name": "Clip 1",
+    "sourceId": "new-independent",
+    "sourceOffset": {
+      "kind": "beats",
+      "value": 0
+    },
+    "loopEnabled": true
+  },
+  "originalArrangementPlacement": {
+    "id": "placement-0",
+    "trackId": "track-1",
+    "sourceId": "source-independent-0",
+    "start": 0,
+    "duration": 8,
+    "sourceOffset": {
+      "kind": "beats",
+      "value": 0
+    },
+    "loopEnabled": true
+  },
+  "sources": [
+    {
+      "id": "source-independent-0",
+      "length": 16
+    },
+    {
+      "id": "source-independent-1",
+      "length": 8
+    },
+    {
+      "id": "new-independent",
+      "length": 8
+    }
+  ],
+  "notice": "Ready. Select a clip to edit notes or automation."
+}
+CONFIRMED stale loop brace {"before":{"enabled":true,"className":"timeline-brace"},"after":{"enabled":false,"className":"timeline-brace"}}
+CONFIRMED wrong source rename {
+  "operations": [
+    {
+      "operation": {
+        "kind": "sourceIndependent",
+        "occurrence": {
+          "kind": "placement",
+          "placementId": "placement-0"
+        }
+      },
+      "generation": 1,
+      "draftRevision": 0
+    },
+    {
+      "operation": {
+        "kind": "sourceRename",
+        "sourceId": "source-independent-0",
+        "name": "Edited independent source"
+      },
+      "generation": 1,
+      "draftRevision": 1
+    }
+  ],
+  "placement": {
+    "id": "placement-0",
+    "trackId": "track-1",
+    "sourceId": "independent-0",
+    "start": 0,
+    "duration": 8,
+    "sourceOffset": {
+      "kind": "beats",
+      "value": 0
+    },
+    "loopEnabled": true
+  },
+  "sessionSlot": {
+    "id": "clip-track-1",
+    "name": "Clip 1",
+    "sourceId": "source-independent-0",
+    "sourceOffset": {
+      "kind": "beats",
+      "value": 0
+    },
+    "loopEnabled": true
+  },
+  "sources": [
+    {
+      "id": "source-independent-0",
+      "name": "Edited independent source"
+    },
+    {
+      "id": "source-independent-1",
+      "name": "Clip 1"
+    },
+    {
+      "id": "independent-0",
+      "name": "Clip 1"
+    }
+  ],
+  "notice": "Ready. Select a clip to edit notes or automation."
+}
+CONFIRMED wrong source note creation {
+  "operations": [
+    {
+      "operation": {
+        "kind": "sourceIndependent",
+        "occurrence": {
+          "kind": "placement",
+          "placementId": "placement-0"
+        }
+      },
+      "generation": 1,
+      "draftRevision": 0
+    },
+    {
+      "operation": {
+        "kind": "noteCreate",
+        "sourceId": "source-independent-0",
+        "beat": 0,
+        "pitch": 61,
+        "duration": 0.25,
+        "velocity": 100
+      },
+      "generation": 1,
+      "draftRevision": 1
+    }
+  ],
+  "placement": {
+    "id": "placement-0",
+    "trackId": "track-1",
+    "sourceId": "independent-0",
+    "start": 0,
+    "duration": 8,
+    "sourceOffset": {
+      "kind": "beats",
+      "value": 0
+    },
+    "loopEnabled": true
+  },
+  "sessionSlot": {
+    "id": "clip-track-1",
+    "name": "Clip 1",
+    "sourceId": "source-independent-0",
+    "sourceOffset": {
+      "kind": "beats",
+      "value": 0
+    },
+    "loopEnabled": true
+  },
+  "sources": [
+    {
+      "id": "source-independent-0",
+      "noteCount": 13
+    },
+    {
+      "id": "source-independent-1",
+      "noteCount": 12
+    },
+    {
+      "id": "independent-0",
+      "noteCount": 12
+    }
+  ],
+  "notice": "Ready. Select a clip to edit notes or automation."
+}
+CONFIRMED base edit crosses Open {
+  "clickedInGeneration": 1,
+  "sent": {
+    "name": "alive_base",
+    "args": {
+      "instanceId": "legacy-90953515094fab847573782b7d46a84c",
+      "key": "cutoff",
+      "value": 1717,
+      "generation": 2
+    }
+  },
+  "replacement": {
+    "generation": 2,
+    "title": "Replacement session",
+    "instanceId": "legacy-90953515094fab847573782b7d46a84c",
+    "cutoff": 1717
+  },
+  "notice": "Session ready."
+}

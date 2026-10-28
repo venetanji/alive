@@ -1,0 +1,80 @@
+{
+  "head": "70c356d54e846abb29e21be9e38dfefa14529c75",
+  "branch": "feat/alive-session-host",
+  "local_upstream": "1ebf2161e0fa2a62484566fac65c7e940567f357",
+  "merge_base": "31033483eb3baf15edab1734b966cc6d55c4b8c7",
+  "tracked_dirty_at_start": false,
+  "untracked_at_start": [
+    "experiments/phase2-20261028/"
+  ],
+  "ref_freshness": "local refs; fetch prohibited by assigned read-only ref boundary",
+  "platform": "Linux-7.2.8-10-omarchy-x86_64-with-glibc2.44",
+  "node": "v26.12.1",
+  "binary_build": "historical review build at 1ebf216; app source unchanged; not rebuilt in this lane",
+  "binaries": {
+    "apps/ultra/src-tauri/target/release/alive": {
+      "sha256": "6ba32745b7fa16b915174d51c6b79f82252c6e26b2bcabaf1984315d187afcd2",
+      "bytes": 14554264
+    },
+    "apps/ultra/src-tauri/target/release/ultra": {
+      "sha256": "62383db8f6ea84db28ffe4702aabe8f7835ed793df67005aadacb63df0a13e44",
+      "bytes": 18381352
+    },
+    "apps/ultra/src-tauri/target/release/libultra_native.so": {
+      "sha256": "5ac56cce5977a12f8efa477bfe9b705b8b478f5b8c765bbf858ea1719b92acde",
+      "bytes": 12981880
+    },
+    "apps/ultra/build/libultra_native.so": {
+      "sha256": "5ac56cce5977a12f8efa477bfe9b705b8b478f5b8c765bbf858ea1719b92acde",
+      "bytes": 12981880
+    }
+  },
+  "reproducers": [
+    {
+      "command": "node /home/venetanji/.codex/worktrees/edd5/alive/experiments/development-review-20261028/repro-ui-queues.mjs",
+      "exit": 0,
+      "interpretation": "known defect reproduced; not a passing regression",
+      "script_sha256": "f2df8fbb16a399bedd84ae2b144b518547215b218c748b75f625d9c1dbba09d6",
+      "log": "repro-ui-queues.log",
+      "log_sha256": "8a8b6900b196d865004bbbd389a8aa4de3d417349108313c063976183a58738e"
+    },
+    {
+      "command": "node /home/venetanji/.codex/worktrees/edd5/alive/experiments/development-review-20261028/ultra-focused-save-repro.mjs",
+      "exit": 0,
+      "interpretation": "known defect reproduced; not a passing regression",
+      "script_sha256": "794187695d6437e964c89854b54fcde556868445d7ce851c99dad8b9902f9915",
+      "log": "ultra-focused-save-repro.log",
+      "log_sha256": "a23a79ccdf90e9a53a26387991fb0dbb369915ba26cad9dbc7c7ec5dffffdb5a"
+    },
+    {
+      "command": "node /home/venetanji/.codex/worktrees/edd5/alive/experiments/development-review-20261028/ultra-repackage-repro.mjs",
+      "exit": 0,
+      "interpretation": "known defect reproduced; not a passing regression",
+      "script_sha256": "d671a13ecc3be054e1d6822de8f66e1d527e22b51b8964055ce895b5ce393812",
+      "log": "ultra-repackage-repro.log",
+      "log_sha256": "eeb14a0b13d261c2e80bfc6f1abddceaba0c9f1d81c701b040ab2a3f7ff2783b"
+    }
+  ],
+  "historical_ci": {
+    "id": 40421472750,
+    "head": "1ebf2161e0fa2a62484566fac65c7e940567f357",
+    "conclusion": "failure",
+    "failed_job": 121923054226,
+    "failed_step": "Exercise the actual Alive desktop session and hosted editor",
+    "later_native_gates": "skipped"
+  },
+  "historical_packages": {
+    "id": 40421472639,
+    "head": "1ebf2161e0fa2a62484566fac65c7e940567f357",
+    "conclusion": "success",
+    "targets": [
+      "aarch64-apple-darwin",
+      "x86_64-pc-windows-msvc",
+      "x86_64-unknown-linux-gnu",
+      "x86_64-apple-darwin"
+    ],
+    "publication": "skipped"
+  },
+  "native_apply_input_receipt": "unknown; independent current desktop run owned by controller",
+  "coverage": "Synthetic/mock UI and direct packaging only; no native save, physical audio, or lifecycle attribution"
+}

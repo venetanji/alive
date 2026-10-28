@@ -1,0 +1,23 @@
+{
+  "evidenceType": "Direct production packaging function; UI handler at canvas-device-panel.mjs:99-101 calls this function for already packaged instruments",
+  "steps": [
+    "Open supplied subtractive instrument",
+    "Open Perform",
+    "Enter a new Instrument name",
+    "Press Package instrument"
+  ],
+  "before": {
+    "name": "Subtractive",
+    "presets": [
+      "Init",
+      "Soft",
+      "Pluck"
+    ]
+  },
+  "after": {
+    "name": "Renamed synth",
+    "presets": [
+      "Init"
+    ]
+  }
+}

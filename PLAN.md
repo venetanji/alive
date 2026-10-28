@@ -2,6 +2,15 @@
 
 ## Phase 2 Direction: Live / Max Workflow Fidelity, 2026-10-28
 
+Execution is active under `docs/PHASE2_HANDOFF.md`. The reviewed plan and original
+reproducers are checkpointed at `70c356d`, with no application changes from
+`1ebf216`. Fresh baseline evidence is in `experiments/phase2-20261028/baseline/`:
+the original native Apply/editor assertion fails again; the focused probes
+reproduce the queued-edit, focused-save and metadata-loss defects. Task 1 accepts
+this known-bad baseline. Independent isolated Terra workers now own Tasks 2, 3
+and 5; no application fix or new Master capability is accepted yet. The durable
+execution ledger is `.superpowers/sdd/2026-10-28-phase2-live-max/progress.md`.
+
 The owner prioritizes familiar Live/Max workflows and a much closer visual
 composition before general Live Set/Max-file compatibility. They explicitly
 identify the missing Master channel. The proposed Phase 2 design and work
