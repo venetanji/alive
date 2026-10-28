@@ -1,79 +1,42 @@
 # Alive / Ultra Plan
 
-Current execution: G0 foundation is accepted on 2026-10-28 using the successful
-c272c4a native job plus successful 3b3df87 UI/reference and Chromium jobs, with
-application/native-harness equality verified across the browser-only correction.
-The full new CI run `40710079202` and packages `40710079013` are still running;
-this is not their completion claim. The reviewed Master v1 contract is now
-frozen in `docs/contracts/alive-master-v1.md`. Task 6 saved ownership is next,
-followed serially by Task 7 native proof and Task 8 Master/Live composition.
-Accepted Tasks 1-5 must not be restarted. Final-head native/CI/packages,
-1800 playing seconds and physical audio remain separate gates. Durable G0
-receipt: `experiments/phase2-20261028/reliability/cloud-3b3df87-g0/`.
+Current execution, 2026-10-28: Tasks 1-6 are accepted at their stated scope.
+Current application source is `6f407a4`: saved Master ownership/strict v5
+persistence plus the separately reviewed Node DTO/model consumer. Root's
+combined checks pass 585 Node/component tests, 273 Ultra Rust tests (four
+ignored), one Alive test and the staging regression; the full pinned contract
+suite passes in 219.253s. Actual native Master gain/meter/command admission and
+its fader are still pending. Legacy unity sessions remain playable; non-unity
+installation is explicitly refused until the native implementation passes.
+
+The `3b3df87` foundation fully passes CI `40710079202` and all four package
+targets in `40710079013`, publication skipped. Those runs precede the Master
+changes. Terminal receipts are in
+`experiments/phase2-20261028/reliability/cloud-3b3df87-g0/`; accepted Task 6
+reports, original red/green logs, reviews and source hashes are in
+`experiments/phase2-20261028/master/`. Final-head CI/packages, native journeys
+and 1800 proven playing seconds remain separate gates.
 
 ## Phase 2 Direction: Live / Max Workflow Fidelity, 2026-10-28
 
-Execution is active under `docs/PHASE2_HANDOFF.md`. The reviewed plan and original
-reproducers are checkpointed at `70c356d`, with no application changes from
-`1ebf216`. Fresh baseline evidence is in `experiments/phase2-20261028/baseline/`:
-the original native Apply/editor assertion fails again; the focused probes
-reproduce the queued-edit, focused-save and metadata-loss defects. Task 1 accepts
-this known-bad baseline. Task 2's reviewed queue/generation/brace/Duplicate fix
-is integrated, with 107 Alive Node and six focused Chromium checks passing;
-native qualification remains pending. Task 5's fix-round candidate `72e79ae`
-passes the full traced original Alive and Arrangement native journeys; scoped
-specification re-review and quality review accept the four harness findings.
-That increment is integrated as `65dbf5a` with 17 root helper regressions passing.
-The optional installed-help fixture repair is reviewed and integrated at
-`003024f`, including its two regressions in CI; the combined full Ultra native
-rerun now passes. Pushed checkpoint `5b464e7` passes CI `40686059005` and all four
-package targets in `40686058990`, with publication skipped. Its headless
-contracts include 543 UI/component tests plus existing schema/reference/native
-graph gates; 19 desktop helper regressions pass. These results are attributed
-to that earlier commit. Task 3's independently reviewed candidate `5663956`
-is integrated as `9997589`: focused drafts, bounded owner-wide Save preflight,
-picker/write reservation, lost-release reconciliation and real Linux Quit.
-The final affected native smokes pass; the ten-case matrix predates the final
-lifetime changes, and Save-only note-off has deterministic IPC coverage rather
-than rendered PCM evidence. Task 4's reviewed `a2fdc98` is integrated as
-`b4b1a5c`, preserving validated device metadata/presets while repackaging and
-supporting effect rename. Native worker save/reopen and two independent hosted
-Tone controls pass; hosted preset recall is not implemented or claimed.
-Root's combined Node/component suite records 572 passing tests and eight
-focused Chromium checks. A fresh `b4b1a5c` rebuild exits 0, and all four serial
-combined native journeys pass: Alive 197.710s, Arrangement 118.157s, Ultra
-canvas/documents 166.320s and instrument authoring 139.502s. The instrument has
-18 edit cycles over 62.833s; 26 captures contain 10,873,472 finite stereo frames.
-This is private software PipeWire/CPAL at 48 kHz/512, not physical audio or the
-required 1800-playing-second endurance qualification. Reports, commands, hashes
-and both-size screenshots are retained in
-`experiments/phase2-20261028/reliability/`. Fresh full pinned headless contracts
-exit 0 in 212.257s on the integrated source, including all 572 UI/component
-tests plus schema/reference/native C++ suites. Final pushed-head CI/packages remain
-separate gates. Exact-checkpoint CI `40695723200` now fails late in the Alive
-native walkthrough: Replace Harmony device does not produce a viewable chooser.
-Its UI/reference and Chromium jobs pass. Original failure artifacts are retained;
-reviewed candidate `490ec16` adds bounded focus/geometry/planned-hit diagnostics
-and repairs an observer fixture regression, with 23 root helper tests passing.
-Local full/targeted native runs pass at their separately recorded revisions,
-but historical cloud causality remains unproven. Root's complete final-harness
-native run at pushed `c272c4a` passes in 197.813s. CI `40704978908` UI/reference
-passes, but Chromium fails one Arrangement test at a null placement bounding
-box after visibility passed. Reviewed test-only candidate `c7f12ea` removes the
-detached-handle geometry read; controlled red/green covers both sizes, all 14
-worker Arrangement checks pass, and root's two focused checks pass. The full
-c272 native CI job now succeeds, with application/native-harness source equality
-verified across the browser-only correction. The next push requires fresh
-combined-head UI/browser qualification; its complete CI/packages remain final
-gates. New cloud qualification is required
-before P2.0 promotion. Package run `40695723144` passes all four targets
-on `c6df81f`, with publication skipped; it does not qualify newer changes.
-The concrete Master packet `6638858` has clean
-scoped reviews and locally compiled C/Rust ABI witnesses, but remains unfrozen
-until this gate is resolved. No new Master capability is
-accepted yet. Independent Terra preflight review has tightened its draft
-contract; consumers remain gated on P2.0. The durable
-execution ledger is `.superpowers/sdd/2026-10-28-phase2-live-max/progress.md`.
+Execution is active under `docs/PHASE2_HANDOFF.md`. The frozen Master contract
+is `docs/contracts/alive-master-v1.md`. Explicit `gpt-6.1-terra` worker
+`p21_native_master` owns Task 7 in isolated `bb01` at the accepted source above:
+UI-free native gain/ramp/metering, bounded commands, coherent observations,
+capability resolution and installation/rollback proof. Root does not launch
+GUI/audio or native performance workloads during that lease. Task 8 then adds
+the real Master/Live composition; Task 9 produces the first user checkpoint.
+Accepted Tasks 1-6 must not be redispatched. The live ledger is
+`.superpowers/sdd/2026-10-28-phase2-live-max/progress.md`.
+
+P2.0 fixed queued edit authority, focused Save/close/Quit ownership and device
+metadata preservation, and qualified the original native/Arrangement journeys.
+The original Apply failure was attributed to occluded input; its assertion is
+retained. Later cloud chooser and browser failures, controlled reproductions,
+reviewed diagnostics/correction and terminal qualification are preserved under
+`experiments/phase2-20261028/reliability/`. Save-only note-off has deterministic
+IPC evidence, not rendered native PCM; hosted preset recall remains unavailable.
+Do not convert those evidence limits into broader runtime claims.
 
 The owner prioritizes familiar Live/Max workflows and a much closer visual
 composition before general Live Set/Max-file compatibility. They explicitly

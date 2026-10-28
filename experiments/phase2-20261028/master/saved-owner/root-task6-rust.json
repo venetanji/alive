@@ -1,0 +1,39 @@
+{
+  "baseHead": "ce84e2a8c6521a88d809ae5a6a6bd18140e49330",
+  "ownerCandidate": "e716e43406cb6b15a9fcd90dc9471d853ef93c74",
+  "nodeCandidate": "de30ca8c3f80a4be2ca346839c27a5f4a7974450",
+  "results": [
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "apps/ultra/src-tauri/Cargo.toml",
+        "--release",
+        "--locked",
+        "--",
+        "--test-threads=1"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 111.925,
+      "log": ".superpowers/sdd/2026-10-28-phase2-live-max/root-task6-rust-0.log",
+      "sha256": "b4b4ddbc62c11a39ac5bf0b33bec770245e18e84ece9739eb7cc35f342a44c72"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "apps/alive/src-tauri/Cargo.toml",
+        "--release",
+        "--locked",
+        "--",
+        "--test-threads=1"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 73.742,
+      "log": ".superpowers/sdd/2026-10-28-phase2-live-max/root-task6-rust-1.log",
+      "sha256": "8408bbb255315cd8dbb3de43014f4217cafef27e2178907cb08844ac1241b964"
+    }
+  ]
+}

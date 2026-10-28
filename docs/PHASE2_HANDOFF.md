@@ -7,170 +7,45 @@ to decide what to resume.
 
 ## Active Execution Checkpoint
 
-G0 foundation is accepted on 2026-10-28: native run `40704978908` passes at
-`c272c4a`, and fresh UI/reference plus Chromium jobs in `40710079202` pass at
-`3b3df87572722d2349d0725f4059cfc4afd467ae`. Application/native-harness source
-equality is verified except the independently reviewed browser test. Receipt:
-`experiments/phase2-20261028/reliability/cloud-3b3df87-g0/`. The complete new
-native job and packages `40710079013` remain live at this sample; a later native
-failure reopens G0. Prior c272 packages `40704979041` were cancelled after three
-target successes and do not establish four-target qualification.
+Application source: `6f407a488478800b358228c53a73349c8cf72a0d`, containing
+accepted Task 6 owner `e716e4` and Node DTO/model `de30ca8` (root `ce84e2a`).
+Tasks 1-6 are complete at their recorded scopes; do not restart them. Root
+independently verifies all 33 owner and four Node files against reviewed bytes.
+Combined checks pass: 585 Node/component, 273 Ultra Rust with four ignored,
+one Alive and one staging test. Full pinned contracts pass in 219.253s.
+Reports/reviews, original failed and final logs and source hashes are under
+`experiments/phase2-20261028/master/`. Non-unity history/round-trip uses explicit
+model-only seams; production non-unity installation is refused until Task 7.
 
-The Master packet `6638858` is integrated byte-for-byte before status-only
-freeze edits. Its fixture checker and C11/C++17/Rust layouts pass again in root;
-a fresh explicit `gpt-6.1-terra` audit finds no new load-bearing gap. The frozen
-contract is `docs/contracts/alive-master-v1.md`; consumers still require serial
-task leases. Next: Task 6 saved owner, Task 7 UI-free native proof, Task 8 real
-Master and Live shell, Task 9 user-testable checkpoint. No Master application
-implementation is accepted yet. Root owns the free GUI/audio lease. Read the
-canonical ledger for the current worker/base before dispatching. The earlier
-paragraphs below retain the preceding checkpoint and its original evidence.
+Full foundation CI `40710079202` and all four package targets `40710079013`
+pass at `3b3df87572722d2349d0725f4059cfc4afd467ae`; publication is skipped.
+These results do not qualify later Master source. Terminal receipts are in
+`experiments/phase2-20261028/reliability/cloud-3b3df87-g0/`. G0 is fully
+accepted, superseding its earlier split source-equivalence qualification.
+Original c6 chooser and c272 browser failures and reviewed corrections remain
+under the reliability checkpoint; none of the original assertions was removed.
 
-Native-qualified foundation is `c272c4a6ac350372e990cad1e5fe3289bba86f9a`;
-reviewed browser correction is integrated at `422d608` with lossless evidence
-archives at `0b23f9b`. Check actual HEAD/remote for the containing checkpoint.
-Root's complete final-harness Alive native run exits 0 in 197.813s, using the
-unchanged hash-verified application binaries and no endurance workload. Root
-owns the free native GUI/audio lease; cleanup sample finds no current-root app.
-Cloud CI `40704978908` UI/reference job passes, but Chromium fails one of 138
-checks at `alive-chain.spec.mjs:308`: a placement bounding box is null after
-visibility passed. The full native cloud job is now terminal success, including
-Rust, all native journeys/resources and CPAL loopback. Packages `40704979041`
-last sampled three targets successful and Intel Mac live.
-Terra browser candidate `c7f12ea` has clean independent spec/quality reviews and
-is integrated byte-for-byte. A controlled real redraw reproduces the detached
-handle error; its exact role in the original cloud failure remains qualified.
-The worker's full Arrangement cohort passes 14 tests; root's focused pointer
-tests pass both sizes in 5.4s. Original trace, reviews and reproduction are in
-reliability/cloud-arrangement-browser; root's final native evidence is in
-cloud-chooser-diagnostics/root-c272c4a. Terminal cloud-native receipts and
-production/native-harness source equality are in reliability/cloud-c272c4a-native.
-The next push carries the corrected browser test; require fresh combined-head
-UI/browser qualification before accepting G0. Its native source is identical to
-the fully passed c272 job, and the fresh complete run remains a separate final
-gate. All workers are complete; no Master consumer authorization yet.
+Task 7 is running: explicit fresh `gpt-6.1-terra` / high worker
+`/root/p21_native_master` owns `bb01` at `6f407a4`, the sole host/native/runtime/
+resolver/IPC/test writer. It owns its build outputs and exclusive offline
+native measurement resource; root does not launch GUI/audio or native deadline
+work during that lease. No native Master candidate or UI-free proof is accepted
+yet. The exact authorized brief and progress are in the canonical ledger
+workspace; read it before dispatching or using a resource. Task 7 must release
+owned processes/resources on handoff. Task 8 and Task 9 remain gated.
 
-Previous resumption: exact-checkpoint CI `40695723200` failed in the Alive native
-walkthrough at `check_alive_desktop.py:1175`: Replace Harmony device did not
-produce a viewable Load Ultra Device chooser. UI/reference and Chromium jobs
-succeeded. Original failed logs and the complete Alive artifact are retained
-under the canonical workspace's `cloud-c6df81f/` and durably under the reliability
-checkpoint. Terra diagnostic candidate `490ec16` passed scoped spec/quality
-reviews and is integrated byte-for-byte, with 23 root helper tests passing.
-It adds bounded planned-hit/geometry observations, not a causal correction.
-Native full journey belongs to predecessor `4c1f19b`; final targeted native
-editor/chooser diagnostics pass. Original failure, controlled probes, candidate
-reports and reviews are under reliability/cloud-chooser-diagnostics. Worker
-`p20_cloud_chooser_fix` has released the native GUI/audio lease to root. New
-cloud qualification remains required; do not weaken or skip original assertions.
-Master packet `6638858` has clean scoped spec/quality re-reviews and root's
-fresh fixture/C11/C++17/Rust ABI compilation, but remains unfrozen pending G0.
-`p21_saved_owner_preparation` is read-only preparation, not a production lease.
-Package run `40695723144` is terminal success on all four targets, with release
-publication skipped. This qualifies packaging at `c6df81f` only. Read actual
-statuses and the live ledger before dispatching.
+The Master v1 contract is frozen at `docs/contracts/alive-master-v1.md`.
+Read-only Task 7 native inventory and Task 8 visual preparations are complete
+in the canonical workspace. Task 8 has no UI lease until native proof passes.
+It must retain pure DTO validation and the explicit `alive-master.mjs` handoff.
+The next user-testable checkpoint is a real saved native Master with closer
+Live Session/Arrangement composition, not another standalone instrument.
 
-The owner has now set this handoff as the active implementation goal. The
-planning-only boundary and old goal observations later in this document are
-historical. Execution uses the canonical ledger at
-`.superpowers/sdd/2026-10-28-phase2-live-max/progress.md`.
-
-- Reviewed planning/reproducer checkpoint: `70c356d`; its application tree
-  matches `1ebf216`. Release foundation remains `31033483`; PR #6 remains draft.
-- Current application source is `b4b1a5c`, including reviewed Task 3 and Task 4
-  integrations. Earlier checkpoint `5b464e7`: CI `40686059005` and
-  packages `40686058990` both completed successfully on that commit, including
-  all four package targets; publication was skipped. These results do not
-  qualify the newer source commits. This checkpoint adds only documentation
-  and original evidence to `b4b1a5c`; consult actual HEAD/remote refs for its
-  containing commit. PR #6 remains draft.
-- Root's integrated Node/component suite records 572 passing tests and eight
-  focused Chromium checks. A fresh rebuild at `b4b1a5c` exits 0; the command,
-  exact executable/library hashes and build-log hash are in the canonical
-  workspace's `checkpoint-build-b4b1a5c.json`, retained durably as
-  `experiments/phase2-20261028/reliability/root/build.json`. All four combined
-  native journeys exit 0 on that source: Alive 197.710s, Arrangement 118.157s,
-  Ultra canvas/documents 166.320s and instrument authoring 139.502s. Durable
-  commands, reports, log hashes and both-size screenshots are in
-  `experiments/phase2-20261028/reliability/native/`. The instrument journey has
-  18 edit cycles over 62.833s; 26 local captures contain 10,873,472 finite stereo
-  frames. This is not the required 1800-playing-second endurance pass.
-- Fresh full pinned headless contracts exit 0 in 212.257s on `b4b1a5c`,
-  including all 572 UI/component tests, schemas, recorded-reference checks and
-  C++ graph/object suites. Durable command/log receipts are in the reliability
-  checkpoint's `root/contracts.json` and `root/contracts.log`. The command's
-  own generated arithmetic build receipt was retained and restored to its
-  prior bytes; no unrelated source was reverted.
-- Task 1 is complete as a known-bad baseline. Three focused reproducers expose
-  five Alive defects and two Ultra defects. Independent Terra spec and quality
-  reviews found no metadata findings. Root's fresh explicit Alive native driver
-  exits 1 at the original Apply/editor-generation assertion. Apply input receipt
-  remains unknown, as permitted for this baseline; Task 5 owns attribution.
-- Evidence: `experiments/phase2-20261028/baseline/README.md`, `manifest.json`
-  and `native-result.json`. Raw software-loopback PCM is retained locally and
-  hash-pinned; no physical audio or endurance pass is claimed.
-- Isolated implementation uses explicit `gpt-6.1-terra` / high / fresh context.
-  A fresh `checkpoint_evidence_review` dispatch succeeds with that exact model
-  ID in this resumed session. Tasks 2/3/4/5 are complete; do not restart their
-  implementation. Task 4 explicitly released the native GUI/audio/build lease
-  to root after confirming its processes exited. Root now owns serial G0.
-  Preserve the worker workspaces at `27be`, `bb01` and `2f1a` until their original
-  evidence is retained; their existence does not imply an active writer.
-- Task 2 candidate `f98d8dc` has passed independent spec and quality review and
-  is integrated file-by-file. Root's affected verification passes 107 Alive
-  Node tests and six focused Chromium checks; evidence is in
-  `experiments/phase2-20261028/r-a/`. Combined-source Alive and Arrangement
-  journeys now pass, as do the remaining combined native G0 journeys. Final-head
-  cloud and later-feature acceptance remain separate gates.
-  Source edits visibly refuse stale occurrence relationships, base edits keep
-  their originating generation, loop-only brace updates and Duplicate bounds
-  are corrected. The future Master generation test belongs to Tasks 6/8.
-- Task 5 fix-round candidate `72e79ae` resolves the four first-review findings:
-  build-independent helper fixtures, correlated Apply input/IPC/install/editor
-  receipts, actual restarted executable/library identity and recorder cleanup.
-  Scoped specification re-review and independent quality review accept the fixes.
-  Full traced original Alive and Arrangement journeys pass on that candidate.
-  The deliberate occlusion run retains the original failure and attributes it
-  to input hitting Audio details instead of Apply. Integrated as `65dbf5a`;
-  root's 17 helper regressions pass. Candidate-native evidence is retained under
-  `experiments/phase2-20261028/r-d/`; combined-source Alive and Arrangement
-  reruns now pass. Full Ultra and instrument journeys also pass on the combined
-  source; final pushed-head CI/packages remain separate gates.
-- The full Ultra journey reaches an independently diagnosed optional installed
-  `slider.maxhelp` fixture mismatch: the converter now preserves five comments,
-  giving 21 nodes (16 executable) and ten edges. The old fixed native IDs also
-  drift. Independently reviewed fixture repair is integrated at `003024f`, with
-  exact total/comment/executable counts, original control roles/edge and numeric
-  assertions retained, and its two headless regressions included in CI. The
-  complete combined-source Ultra journey now passes, including that optional
-  local fixture. Preserve the old failure and exclude licensed derived graphs
-  and screenshots from published evidence.
-- Task 3 candidate `5663956` passed specification re-review and fresh quality
-  review; it is integrated as `9997589`. Focused drafts survive reconstruction,
-  and owner-wide Save flushes/refuses linked views before snapshot. The bounded
-  token-fenced reservation survives picker/write, reconciles lost releases and
-  resumes fenced Quit. A real Linux File > Quit Ultra action uses the existing
-  coordinator. Root's integration checks pass 568 Node/component and four
-  Chromium checks. The ten-case native protocol matrix predates final lifetime
-  changes; four affected final-build native smokes cover invalid peer refusal,
-  OS close Save, Quit Cancel/Save/process exit, and editing during the picker.
-  Save-only note-off permission is covered by deterministic IPC fixtures, not
-  rendered native PCM. Preserve these attribution limits in later reports.
-- Task 4 candidate `a2fdc98` passed independent spec/quality review and is
-  integrated as `b4b1a5c`. Repackaging validates an existing manifest before
-  mutation and preserves bindings, ranges, presets and version while renaming.
-  Perform supports renaming an existing effect. Four meaningful red tests become
-  98 focused green tests; root's combined suite reaches 572. Native worker runs
-  save/reopen the complete custom manifest and host the same saved file twice
-  with independent Tone values 1200/3400. Hosted preset recall is not implemented
-  or claimed. The native instrument driver now clicks the actual Package device
-  label, with all surrounding assertions retained and scoped review accepted.
-- No Master implementation is accepted yet. Read live worker state and the
-  ledger before redispatch; do not restart these tasks blindly.
-- Independent Terra Master preflight review found five contract gaps; the
-  scratch draft now specifies rollback serial reservation, ordinary quiescent
-  commands, structured retry errors, coherent rejection counts and unavailable
-  unity installation. It remains unfrozen until P2.0 passes.
+The last completed local application build is still `b4b1a5c`; Task 6 unit
+tests are not a new launcher build. Rebuild/hash both binaries and their native
+library after the complete native/UI slice before refreshing the test launcher.
+Endurance and physical output are unqualified. Continue subsequent bounded
+plan tasks after the first checkpoint without expanding its scope prematurely.
 
 ## Owner Intent And Current Boundary
 
@@ -182,7 +57,7 @@ use normal source tools and tests for Alive/Ultra.
 
 The owner accepted the Phase 2 direction and requested implementation using
 multiple Terra agents. The active goal now names this handoff and authorizes
-execution. Its planning-only boundary is historical; accepted Tasks 1-5 must
+execution. Its planning-only boundary is historical; accepted Tasks 1-6 must
 not be redispatched after compaction.
 
 The exact requested model is **`gpt-6.1-terra`**. The collaboration tool accepted
@@ -215,55 +90,42 @@ task/candidate/review records before dispatching anything after a restart.
 
 - Checkout: `/home/venetanji/.codex/worktrees/edd5/alive`.
 - Feature branch: `feat/alive-session-host`.
-- Current application HEAD: `b4b1a5c526830026321e3c3c02db24d7c9a76d3c`.
-- Prior CI-qualified checkpoint: `5b464e796016052e1f1cfda2c30d00ee77b77a21`.
+- Accepted application source: `6f407a488478800b358228c53a73349c8cf72a0d`.
+- CI/packages-qualified foundation: `3b3df87572722d2349d0725f4059cfc4afd467ae`.
 - Release foundation: `31033483eb3baf15edab1734b966cc6d55c4b8c7`.
 - Draft PR: #6, targeting `build/ultra-desktop-releases`.
 - Do not edit/merge active release branches, PR #2 or PR #5.
 
-Expected tracked changes while this checkpoint is being curated:
-
-```text
- M PLAN.md
- M docs/PHASE2_HANDOFF.md
-?? experiments/phase2-20261028/reliability/
-```
-
-These are intentional progress updates from this conversation. The earlier
-planning documents and baseline evidence are committed. Check actual status
-and refs at resume; unexpected other-actor edits require stopping to ask.
-Fresh origin fetch confirms the release foundation remains `31033483`.
-Reconcile it before final testing. Commit only explicitly reviewed intended
-paths, including curated original evidence; do not stage arbitrary user files
-or private reference artifacts. Do not use destructive cleanup.
+Root is curating `PLAN.md`, this handoff, terminal foundation receipts and
+`experiments/phase2-20261028/master/`; those changes are intentional. Check
+actual HEAD/upstream for the containing evidence checkpoint and fresh cloud
+statuses. Expected worker changes are confined to its isolated `bb01` lease;
+preserve its `.superpowers`, `r-u` and test-result evidence. Review/candidate
+ancestry is retained under local `agents/phase2-*` refs. Commit only intended
+paths, preserving user work and private reference material. No destructive cleanup.
 
 ## First Runnable Work
 
-Read the canonical ledger and curated reliability checkpoint first. Tasks 1-5
-are accepted at their stated scope. Combined native run `42462` is complete:
-all four journeys exit 0 on the rebuilt `b4b1a5c` binaries. Do not restart those
-completed journeys or their workers without a new relevant source change.
-Root's full pinned headless contracts run `23016` also exits 0. Local P2.0
-verification is complete at this scope. Read the current exact-head cloud
-statuses before promoting the checkpoint; final pushed-head CI/packages remain
-open until their runs complete. No root app/case-path processes remain at the
-recorded cleanup sample. Check actual resources before starting another driver.
+Read the canonical ledger and reconcile the live Task 7 worker; do not dispatch
+another native/host writer or restart accepted Tasks 1-6. Root's combined
+Task 6 Rust, Alive and pinned contracts commands are terminal exit 0, with
+receipts/logs under the accepted saved-owner evidence. The staging regression
+is now an explicit CI step; v5 and legacy conversion notices reflect the actual
+wire and dirty detection uses the score transition, preserving saved notices.
 
-The Oct28 known-bad reproducers are historical failure witnesses, not green
-regressions. Ordinary corrected tests now cover those defects. Task 5 attributed
-the original Apply/editor assertion to input occluded by Audio details and
-preserved its full generation/lifetime assertions. Arrangement screen sizing,
-ffmpeg dependency and exact restart binary/library checks are implemented in
-the checked-in harness/CI. The strict optional installed-slider fixture repair
-is integrated and its full local Ultra rerun passes.
+Root may update docs/evidence/draft PR and inspect cloud statuses while native
+work runs. Final qualification requires the final pushed head; the old full
+foundation CI/packages cannot qualify Task 6 or later native/UI source. Fetch
+and reconcile the release foundation again before final testing. No merges.
 
-After P2.0 is accepted: freeze Master contracts (the existing unfrozen proposal
-and preflight reviews are retained under the reliability checkpoint's
-`proposals/`), Task 6 saved ownership, Task 7
-UI-free native gain/meter/command proof, Task 8 real Master/Live shell, Task 9
-user-testable checkpoint. First new feature is Master, not a standalone synth.
-Continue subsequent bounded tasks in dependency order; do not delay that first
-checkpoint with broad sampler, recording or file-format expansion.
+On Task 7 report: freeze the exact candidate, independently review spec and
+quality, resolve findings, integrate byte-identically and run affected tests.
+Require native ramp/queue/clock/rollback/coherence/admission proof before Task 8.
+Then lease Task 8 UI with `task8-visual-preparation.md`, exact DTO ownership
+and current Impeccable craft floor. Task 9 owns the coherent local build, both
+sizes/native save/Quit/restart, launcher, 1800 proven playing seconds, final
+head CI/packages and reviewed draft checkpoint. Preserve evidence limitations
+and distinguish software-loopback from physical output.
 
 ## Contracts And Review Corrections To Preserve
 
@@ -290,8 +152,8 @@ checkpoint with broad sampler, recording or file-format expansion.
 
 ## Evidence, Builds And Local Resources
 
-The review built separate Alive/Ultra binaries at the source above. Existing
-local commands are `bash apps/alive/build.sh`,
+The last completed local application build is `b4b1a5c`, before saved-owner
+changes. Unit-test binaries do not refresh the test launcher. Existing commands are `bash apps/alive/build.sh`,
 `bash apps/alive/run.sh apps/alive/examples/midi-arrangement.alive` and
 `bash apps/ultra/run.sh`. The Ultra desktop launcher points to another checkout;
 use the explicit current-checkout run command for qualification. Rebuild and
