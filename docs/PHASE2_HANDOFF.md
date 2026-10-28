@@ -7,6 +7,25 @@ to decide what to resume.
 
 ## Active Execution Checkpoint
 
+G0 foundation is accepted on 2026-10-28: native run `40704978908` passes at
+`c272c4a`, and fresh UI/reference plus Chromium jobs in `40710079202` pass at
+`3b3df87572722d2349d0725f4059cfc4afd467ae`. Application/native-harness source
+equality is verified except the independently reviewed browser test. Receipt:
+`experiments/phase2-20261028/reliability/cloud-3b3df87-g0/`. The complete new
+native job and packages `40710079013` remain live at this sample; a later native
+failure reopens G0. Prior c272 packages `40704979041` were cancelled after three
+target successes and do not establish four-target qualification.
+
+The Master packet `6638858` is integrated byte-for-byte before status-only
+freeze edits. Its fixture checker and C11/C++17/Rust layouts pass again in root;
+a fresh explicit `gpt-6.1-terra` audit finds no new load-bearing gap. The frozen
+contract is `docs/contracts/alive-master-v1.md`; consumers still require serial
+task leases. Next: Task 6 saved owner, Task 7 UI-free native proof, Task 8 real
+Master and Live shell, Task 9 user-testable checkpoint. No Master application
+implementation is accepted yet. Root owns the free GUI/audio lease. Read the
+canonical ledger for the current worker/base before dispatching. The earlier
+paragraphs below retain the preceding checkpoint and its original evidence.
+
 Native-qualified foundation is `c272c4a6ac350372e990cad1e5fe3289bba86f9a`;
 reviewed browser correction is integrated at `422d608` with lossless evidence
 archives at `0b23f9b`. Check actual HEAD/remote for the containing checkpoint.

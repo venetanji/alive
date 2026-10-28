@@ -1,5 +1,16 @@
 # Alive / Ultra Plan
 
+Current execution: G0 foundation is accepted on 2026-10-28 using the successful
+c272c4a native job plus successful 3b3df87 UI/reference and Chromium jobs, with
+application/native-harness equality verified across the browser-only correction.
+The full new CI run `40710079202` and packages `40710079013` are still running;
+this is not their completion claim. The reviewed Master v1 contract is now
+frozen in `docs/contracts/alive-master-v1.md`. Task 6 saved ownership is next,
+followed serially by Task 7 native proof and Task 8 Master/Live composition.
+Accepted Tasks 1-5 must not be restarted. Final-head native/CI/packages,
+1800 playing seconds and physical audio remain separate gates. Durable G0
+receipt: `experiments/phase2-20261028/reliability/cloud-3b3df87-g0/`.
+
 ## Phase 2 Direction: Live / Max Workflow Fidelity, 2026-10-28
 
 Execution is active under `docs/PHASE2_HANDOFF.md`. The reviewed plan and original

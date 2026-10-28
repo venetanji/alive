@@ -1,0 +1,275 @@
+{
+  "format": "alive-session-v1",
+  "title": "First Light",
+  "tempo": 112,
+  "lengthBeats": 8,
+  "loopEnabled": true,
+  "tracks": [
+    {
+      "id": "track-1",
+      "name": "Pulse",
+      "device": {
+        "path": "../../../apps/ultra/examples/subtractive.ultra",
+        "id": "org.alive.subtractive",
+        "version": 1,
+        "parameters": {
+          "attack": 10,
+          "decay": 150,
+          "sustain": 0.65,
+          "release": 300,
+          "cutoff": 2400,
+          "resonance": 0.7,
+          "level": 55
+        }
+      },
+      "notes": [
+        {
+          "beat": 0,
+          "duration": 1.75,
+          "pitch": 60,
+          "velocity": 90
+        },
+        {
+          "beat": 0,
+          "duration": 1.75,
+          "pitch": 64,
+          "velocity": 90
+        },
+        {
+          "beat": 0,
+          "duration": 1.75,
+          "pitch": 67,
+          "velocity": 90
+        },
+        {
+          "beat": 2,
+          "duration": 1.75,
+          "pitch": 57,
+          "velocity": 90
+        },
+        {
+          "beat": 2,
+          "duration": 1.75,
+          "pitch": 60,
+          "velocity": 90
+        },
+        {
+          "beat": 2,
+          "duration": 1.75,
+          "pitch": 64,
+          "velocity": 90
+        },
+        {
+          "beat": 4,
+          "duration": 1.75,
+          "pitch": 53,
+          "velocity": 90
+        },
+        {
+          "beat": 4,
+          "duration": 1.75,
+          "pitch": 57,
+          "velocity": 90
+        },
+        {
+          "beat": 4,
+          "duration": 1.75,
+          "pitch": 60,
+          "velocity": 90
+        },
+        {
+          "beat": 6,
+          "duration": 1.75,
+          "pitch": 55,
+          "velocity": 90
+        },
+        {
+          "beat": 6,
+          "duration": 1.75,
+          "pitch": 59,
+          "velocity": 90
+        },
+        {
+          "beat": 6,
+          "duration": 1.75,
+          "pitch": 62,
+          "velocity": 90
+        }
+      ],
+      "automation": [
+        {
+          "key": "cutoff",
+          "enabled": true,
+          "points": [
+            {
+              "beat": 0,
+              "value": 900
+            },
+            {
+              "beat": 2,
+              "value": 2200
+            },
+            {
+              "beat": 4,
+              "value": 700
+            },
+            {
+              "beat": 6,
+              "value": 3600
+            }
+          ]
+        },
+        {
+          "key": "level",
+          "enabled": true,
+          "points": [
+            {
+              "beat": 0,
+              "value": 55
+            },
+            {
+              "beat": 4,
+              "value": 48
+            }
+          ]
+        }
+      ],
+      "gain": 0.7,
+      "mute": false,
+      "solo": false
+    },
+    {
+      "id": "track-2",
+      "name": "Harmony",
+      "device": {
+        "path": "../../../apps/ultra/examples/subtractive.ultra",
+        "id": "org.alive.subtractive",
+        "version": 1,
+        "parameters": {
+          "attack": 10,
+          "decay": 150,
+          "sustain": 0.65,
+          "release": 300,
+          "cutoff": 2400,
+          "resonance": 0.7,
+          "level": 43
+        }
+      },
+      "notes": [
+        {
+          "beat": 0,
+          "duration": 1.75,
+          "pitch": 72,
+          "velocity": 65
+        },
+        {
+          "beat": 0,
+          "duration": 1.75,
+          "pitch": 76,
+          "velocity": 65
+        },
+        {
+          "beat": 0,
+          "duration": 1.75,
+          "pitch": 79,
+          "velocity": 65
+        },
+        {
+          "beat": 2,
+          "duration": 1.75,
+          "pitch": 69,
+          "velocity": 65
+        },
+        {
+          "beat": 2,
+          "duration": 1.75,
+          "pitch": 72,
+          "velocity": 65
+        },
+        {
+          "beat": 2,
+          "duration": 1.75,
+          "pitch": 76,
+          "velocity": 65
+        },
+        {
+          "beat": 4,
+          "duration": 1.75,
+          "pitch": 65,
+          "velocity": 65
+        },
+        {
+          "beat": 4,
+          "duration": 1.75,
+          "pitch": 69,
+          "velocity": 65
+        },
+        {
+          "beat": 4,
+          "duration": 1.75,
+          "pitch": 72,
+          "velocity": 65
+        },
+        {
+          "beat": 6,
+          "duration": 1.75,
+          "pitch": 67,
+          "velocity": 65
+        },
+        {
+          "beat": 6,
+          "duration": 1.75,
+          "pitch": 71,
+          "velocity": 65
+        },
+        {
+          "beat": 6,
+          "duration": 1.75,
+          "pitch": 74,
+          "velocity": 65
+        }
+      ],
+      "automation": [
+        {
+          "key": "cutoff",
+          "enabled": true,
+          "points": [
+            {
+              "beat": 0,
+              "value": 1300
+            },
+            {
+              "beat": 2,
+              "value": 2200
+            },
+            {
+              "beat": 4,
+              "value": 700
+            },
+            {
+              "beat": 6,
+              "value": 3600
+            }
+          ]
+        },
+        {
+          "key": "level",
+          "enabled": true,
+          "points": [
+            {
+              "beat": 0,
+              "value": 45
+            },
+            {
+              "beat": 4,
+              "value": 38
+            }
+          ]
+        }
+      ],
+      "gain": 0.7,
+      "mute": false,
+      "solo": false
+    }
+  ]
+}

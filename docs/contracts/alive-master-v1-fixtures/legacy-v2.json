@@ -1,0 +1,293 @@
+{
+  "format": "alive-session-v2",
+  "title": "First Light",
+  "tempo": 116.0,
+  "lengthBeats": 8.0,
+  "loopEnabled": true,
+  "tracks": [
+    {
+      "id": "track-1",
+      "name": "Pulse",
+      "device": {
+        "instanceId": "49d6d436-e268-423c-ac28-f9c4806e178f",
+        "sourceSha256": "723822d4ca7b721b5495b76644ca4a06e9c4ebdf7074086542fd35ed2aa004d7",
+        "bypassed": false,
+        "path": "../../../apps/ultra/examples/subtractive.ultra",
+        "id": "org.alive.subtractive",
+        "version": 1,
+        "parameters": {
+          "attack": 10.0,
+          "cutoff": 1333.0,
+          "decay": 150.0,
+          "level": 90.0,
+          "release": 300.0,
+          "resonance": 0.7,
+          "sustain": 0.65
+        }
+      },
+      "effects": [
+        {
+          "instanceId": "500be439-cca0-4314-ae21-d551412a3203",
+          "sourceSha256": "a1d4a9c5e3c474979108ca42e53bc5fe1c58c28c8c18ad3681f5652dc1de30f8",
+          "bypassed": true,
+          "path": "../../../apps/ultra/examples/utility.ultra",
+          "id": "org.alive.utility",
+          "version": 2,
+          "parameters": {
+            "gain": 0.65
+          }
+        },
+        {
+          "instanceId": "c888f2ea-6991-44a8-a8e8-2718f89ad51d",
+          "sourceSha256": "582bcdd1db059cf142acb963fc4124aca594a22d00c52d1251681714720bf787",
+          "bypassed": false,
+          "path": "../../../apps/ultra/examples/stereo-lowpass.ultra",
+          "id": "org.alive.stereo-lowpass",
+          "version": 2,
+          "parameters": {
+            "cutoff": 2000.0,
+            "resonance": 0.9
+          }
+        }
+      ],
+      "notes": [
+        {
+          "beat": 0.0,
+          "duration": 0.75,
+          "pitch": 60,
+          "velocity": 83
+        },
+        {
+          "beat": 0.0,
+          "duration": 1.75,
+          "pitch": 64,
+          "velocity": 90
+        },
+        {
+          "beat": 0.0,
+          "duration": 1.75,
+          "pitch": 67,
+          "velocity": 90
+        },
+        {
+          "beat": 2.0,
+          "duration": 1.75,
+          "pitch": 57,
+          "velocity": 90
+        },
+        {
+          "beat": 2.0,
+          "duration": 1.75,
+          "pitch": 60,
+          "velocity": 90
+        },
+        {
+          "beat": 2.0,
+          "duration": 1.75,
+          "pitch": 64,
+          "velocity": 90
+        },
+        {
+          "beat": 4.0,
+          "duration": 1.75,
+          "pitch": 53,
+          "velocity": 90
+        },
+        {
+          "beat": 4.0,
+          "duration": 1.75,
+          "pitch": 57,
+          "velocity": 90
+        },
+        {
+          "beat": 4.0,
+          "duration": 1.75,
+          "pitch": 60,
+          "velocity": 90
+        },
+        {
+          "beat": 6.0,
+          "duration": 1.75,
+          "pitch": 55,
+          "velocity": 90
+        },
+        {
+          "beat": 6.0,
+          "duration": 1.75,
+          "pitch": 59,
+          "velocity": 90
+        },
+        {
+          "beat": 6.0,
+          "duration": 1.75,
+          "pitch": 62,
+          "velocity": 90
+        },
+        {
+          "beat": 2.25,
+          "duration": 0.25,
+          "pitch": 81,
+          "velocity": 100
+        }
+      ],
+      "automation": [
+        {
+          "instanceId": "c888f2ea-6991-44a8-a8e8-2718f89ad51d",
+          "key": "cutoff",
+          "enabled": true,
+          "points": [
+            {
+              "beat": 0.0,
+              "value": 1200.0
+            }
+          ]
+        },
+        {
+          "instanceId": "49d6d436-e268-423c-ac28-f9c4806e178f",
+          "key": "cutoff",
+          "enabled": true,
+          "points": [
+            {
+              "beat": 0.0,
+              "value": 900.0
+            },
+            {
+              "beat": 4.0,
+              "value": 3400.0
+            }
+          ]
+        },
+        {
+          "instanceId": "49d6d436-e268-423c-ac28-f9c4806e178f",
+          "key": "level",
+          "enabled": true,
+          "points": [
+            {
+              "beat": 0.0,
+              "value": 62.0
+            },
+            {
+              "beat": 4.0,
+              "value": 78.0
+            }
+          ]
+        }
+      ],
+      "gain": 0.55,
+      "mute": false,
+      "solo": false
+    },
+    {
+      "id": "track-2",
+      "name": "Harmony",
+      "device": {
+        "instanceId": "40fe61d6-09ff-4c6e-a487-c0c1c4e1d4d0",
+        "sourceSha256": "723822d4ca7b721b5495b76644ca4a06e9c4ebdf7074086542fd35ed2aa004d7",
+        "bypassed": false,
+        "path": "../../../apps/ultra/examples/subtractive.ultra",
+        "id": "org.alive.subtractive",
+        "version": 1,
+        "parameters": {
+          "attack": 10.0,
+          "cutoff": 2400.0,
+          "decay": 150.0,
+          "level": 90.0,
+          "release": 300.0,
+          "resonance": 0.7,
+          "sustain": 0.65
+        }
+      },
+      "effects": [
+        {
+          "instanceId": "12a70e44-005a-47cf-a616-e020448348c3",
+          "sourceSha256": "a1d4a9c5e3c474979108ca42e53bc5fe1c58c28c8c18ad3681f5652dc1de30f8",
+          "bypassed": false,
+          "path": "../../../apps/ultra/examples/utility.ultra",
+          "id": "org.alive.utility",
+          "version": 2,
+          "parameters": {
+            "gain": 0.85
+          }
+        }
+      ],
+      "notes": [
+        {
+          "beat": 0.0,
+          "duration": 1.75,
+          "pitch": 72,
+          "velocity": 65
+        },
+        {
+          "beat": 0.0,
+          "duration": 1.75,
+          "pitch": 76,
+          "velocity": 65
+        },
+        {
+          "beat": 0.0,
+          "duration": 1.75,
+          "pitch": 79,
+          "velocity": 65
+        },
+        {
+          "beat": 2.0,
+          "duration": 1.75,
+          "pitch": 69,
+          "velocity": 65
+        },
+        {
+          "beat": 2.0,
+          "duration": 1.75,
+          "pitch": 72,
+          "velocity": 65
+        },
+        {
+          "beat": 2.0,
+          "duration": 1.75,
+          "pitch": 76,
+          "velocity": 65
+        },
+        {
+          "beat": 4.0,
+          "duration": 1.75,
+          "pitch": 65,
+          "velocity": 65
+        },
+        {
+          "beat": 4.0,
+          "duration": 1.75,
+          "pitch": 69,
+          "velocity": 65
+        },
+        {
+          "beat": 4.0,
+          "duration": 1.75,
+          "pitch": 72,
+          "velocity": 65
+        },
+        {
+          "beat": 6.0,
+          "duration": 1.75,
+          "pitch": 67,
+          "velocity": 65
+        },
+        {
+          "beat": 6.0,
+          "duration": 1.75,
+          "pitch": 71,
+          "velocity": 65
+        },
+        {
+          "beat": 6.0,
+          "duration": 1.75,
+          "pitch": 74,
+          "velocity": 65
+        }
+      ],
+      "automation": [],
+      "gain": 0.7,
+      "mute": false,
+      "solo": false
+    }
+  ]
+}
