@@ -5,6 +5,10 @@ https://github.com/venetanji/alive/actions/runs/40704978908. Chromium passes
 137 tests and fails the 1440px Arrangement pointer test when `boundingBox()`
 returns null after visibility passed. The original case trace, screenshot,
 context and completed-job log are preserved and hash-pinned.
+The original cloud job and controlled-red logs are stored as deterministic
+gzip archives to retain their terminal formatting and trailing spaces exactly;
+`gzip -dc <file.log.gz>` restores the original bytes. The manifest records both
+archive and original-content hashes.
 
 Candidate `c7f12ea2f5d23cd0ef8984621de9f0f9cfcb9a8a` changes only that test's
 initial placement geometry read. Timeline redraws replace placement nodes.
