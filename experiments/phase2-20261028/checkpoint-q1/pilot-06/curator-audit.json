@@ -1,0 +1,40 @@
+{
+  "credited_rows": 913,
+  "whole_journey_credited_seconds": 502.7409273456089,
+  "target_reported_playing_seconds": 500.5060183116138,
+  "cycle_window_credited_seconds": 495.34603856560483,
+  "cycle_boundary_sums_match": true,
+  "invalid_credit_rows": 0,
+  "crossed_gap_or_action_rows": 0,
+  "maximum_credited_interval": 2.1607699949963717,
+  "gap_counts": {
+    "transport_read_shape": 445,
+    "transport_unavailable_or_invalid": 445,
+    "action_boundary": 291,
+    "diagnostics_unavailable_or_invalid": 26
+  },
+  "epochs": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7"
+  ],
+  "epoch_counter_totals": {
+    "native_render_failures": 0,
+    "invalid_callback_shape": 0,
+    "cpal_error_total": 0,
+    "cpal_xrun_reports": 0,
+    "cpal_non_xrun_reports": 0,
+    "over_buffer_budget_count": 0,
+    "counter_overflow": 0,
+    "clock_anomaly_count": 0
+  },
+  "raw_report_hashes_match": true,
+  "candidate_file_hashes_and_binary_diff_match": true,
+  "pinned_binary_hashes_match": true,
+  "reported_collector_headroom_fraction": 0.008240498886950297,
+  "reported_within_limits": false
+}

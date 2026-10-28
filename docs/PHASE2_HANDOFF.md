@@ -7,35 +7,102 @@ to decide what to resume.
 
 ## Active Execution Checkpoint
 
-Latest diagnostic checkpoint is `3ca670d572aea40061b9d054f3fca48a3f661f1d`;
-upstream at this evidence sample is `da7c6fb30c14a42502461a2ef2f4297b075b34ec`.
-The new two-file Windows diagnostic
-has source spec/error re-review/fresh Terra quality approval and root static
-parse/body/blob checks; it is not compiled on Windows or pushed yet. Root is
-retaining useful da7 package results before the next push. Full da7 CI is now
-terminal success in all three jobs, including original native journeys and
-software CPAL; Linux and both Mac package targets pass, Windows fails and
-publication is skipped. All jobs are terminal, so the reviewed diagnostic may
-now be pushed without cancelling useful prior jobs. Exact CI/package receipts
-and lossless original logs are curated in
-`master/cloud-da7c6fb/`. Non-test bodies
-and all pinned root app/library inodes/hashes remain unchanged. Task 9's existing
-worker owns runtime; do not rebuild the binaries or start another native job.
-The canonical ledger/current worker reports govern live pilot state.
+Latest integrated source is `71e61085ab3d486e30db5b9ca7929f737a3b7317`;
+last audited cloud head is `58057f980afd3365e106433c7102cfc19450c130`.
+Read actual refs for the containing documentation checkpoint. Root has reviewed Task 9
+harness `d507866` integrated as `85adb2e`, Windows anchor metadata `3212065`
+integrated as `fc320f5`, and Windows direct-resolver fixtures `8a83d13`
+integrated as `210b37e`. All packets have independent spec/quality reviews,
+exact blob checks and stated static validation. Windows runtime is pending.
+Do not confuse source approval with complete Task 9 qualification.
 
-Task 9's frozen candidate is `289c7789e2a13378780906f32d6335691179ec81`
-on `f69125c`, with its 11 file hashes and complete review diff in the canonical
-workspace. Explicit `gpt-6.1-terra` fresh source and quality reviewers succeeded;
-both request changes. The five consolidated findings concern collector versus
-recorder lifetime, fixed versus cycle-only playing denominators, omitted
-GI-free CI suites, epoch error qualification and the sampler's shared UI lock.
-The existing implementer owns a single fix round after unchanged pilot 05
-finishes. That pilot uses the explicitly approved 90-second observed dwell,
-retains all original actions per cycle and reduces edit density; the original
-eight-second pilot remains separate evidence. A new immutable corrected
-candidate, scoped reviews and an attributed at-least-270-proven-second,
-three-cycle pilot with conservative projection are required before the full
-1800-second run. No endurance authorization has been given.
+The coherent Linux Alive/Ultra/module build remains pinned at `f69125c`, with
+hashes/inodes below and in `checkpoint-q1/root-build/`. The existing
+`q1_checkpoint_integration` worker in `bb01` owns exclusive native/GUI/audio/
+recorder/sampler resources and the unchanged artifacts. Root performs only
+source/docs/evidence/cloud work. Do not rebuild, replace binaries or start a
+competing native job.
+
+Task 9's original Master, Arrangement and clips/epoch journeys pass. Strengthened
+Master-04 on `3f555cc` also passes: both views/sizes, complete v5 file equality,
+non-unity gain, empty reopened history, exact initial/restarted identity and
+nonzero software replay. Later `d507866` changes only dwell/test in that path.
+Root verifies the retained identities/files/PCM hashes; original captures are
+in `checkpoint-q1/master-04/`. Original editor-resource and standalone desktop
+journeys now also exit 0 on the pinned pair.
+
+Pilot 05 on `289c778` completes 270.007 proven seconds/four cycles, but its
+projection is refused. Its 14 retained artifacts and omitted PCM hash are in
+`checkpoint-q1/pilot-05/`; raw source is retained as local
+`agents/phase2-task9-pilot05-289c778`. Five consolidated source findings are
+fixed and both scoped re-reviews accept `d507866`; root applies all 11 files
+byte-identically as `85adb2e`. Worker 44 focused tests and three exact CI
+commands pass; root static AST/shell/whitespace/blob checks pass.
+
+Pilot 06 on `d507866` completes 500.506 proven seconds/five cycles, 913 valid
+credited intervals, seven contiguous final epochs, quiescent retirement and
+actual terminal Quit. Root verifies raw hashes, advancing frames/same action/
+running states, <=2.5s gaps with no crossed recorded gap/action, all eight
+error/budget/anomaly counters zero and exact projected quantities. Actual
+edit density is 6.713 actions per proven minute. The approved 180-second dwell
+preserves every original operation/assertion and all hard limits; it further
+reduces edit frequency, so keep 8/90-second pilots separate. Resource action/
+playing labels are unsynchronized best-effort snapshots, not causal labels;
+the driving-thread log alone governs credit.
+
+The pilot's forecast with 10% variable allowance is 2677.751 collector seconds,
+2343.586 recorder seconds, 899,872,495 PCM bytes, 39,193,202 metadata bytes and
+10 epochs. No hard projected limit is exceeded, but the extra 5% planning margin
+fails (collector headroom 0.824%): `within_limits=false` stays explicit.
+Root Ruling: waive that extra margin for exactly ONE bounded unchanged-source
+1800-proven-second measurement attempt. Hard 2700s/1GiB/64MiB/256-epoch and
+credit bounds remain; no threshold/pacing change or automatic retry. Cost if
+wrong is a bounded failed run and lost time; retain the failure and require a
+concrete next decision. `task9-endurance-01` is now running on frozen `d507866`
+and root artifacts. No endurance result is inferred. The canonical ledger and
+current `task-9-report.md` govern live state.
+
+Pushed `58057f9` CI `40769366285` passes all three jobs. Its packages
+`40769366396` are terminal: Linux and both Mac targets pass, Windows fails and
+publication is skipped. Terminal receipts and rendered CI logs are retained at
+`master/cloud-58057f9/`. Prior `da7c6fb` full CI and Linux/both Mac packages pass;
+Windows fails and publication is skipped. Preserve terminal receipts before
+next push; no later-source cloud pass is implied. Draft PR #6 remains draft
+against `build/ultra-desktop-releases`; body/head were verified after the push.
+
+The actual `58057f9` Windows initializer diagnostic compiles and runs, then
+fails 275 passed/9 failed/4 ignored: fresh empty cache uses a test-EXE-owned
+address without the anchor export, while later helper/direct pointers belong
+to the DLL and pass ownership/limits checks. This is instrumented evidence,
+not proven instruction bytes or the prior unobserved cause. The reviewed
+Windows-only explicit anchor DLL metadata and six-case direct fixtures are
+local and await actual Windows CI. Direct fixture negatives are not cached-path
+or full-host negatives. No owner/export/limits check is relaxed.
+
+Fresh integrated source review on `1ebf216..210b37e` finds P1: effect bypass
+captures its instance ID at click time but substitutes the post-Open generation
+at queue execution, allowing an old click to alter a new project with reused
+IDs. The adjacent structural chain helper has the same substitution. Fresh
+Terra fixes only `alive.mjs`/`alive-dom.test.mjs` in candidate `d13f6e8`, covering
+bypass, chain structure, track replace/remove/editor and selected editor.
+Six successful-Open cases fail before correction; all 12 successful/failed-Open
+cases pass afterward, retaining valid same-generation intent and live bypass.
+Independent scoped spec/quality reviews have no findings. Root verifies both
+files byte-identical and passes all 107 DOM tests, then integrates as `71e6108`.
+Evidence is curated under `reliability/q1-device-intent/`. Workspace removal
+shares the guarded branch but has no separate new regression; same-generation
+revision changes also lack a dedicated new queue case. All native/build/browser
+resources remain with endurance-01; no artifact is replaced. The changed UI
+requires final artifact/native attribution, and the ongoing old-source run
+cannot qualify it. Report/brief and recovery ledger entries remain canonical.
+
+Completed pilot-06 and Windows source-review/diagnostic evidence is now curated
+under `checkpoint-q1/pilot-06/` and `master/windows-anchor/`, with independent
+Terra hash/source/credit audits. Root verifies all stored manifest entries and
+decoded gzip hashes. Master-04 and pilot-05 retained manifests also verify.
+Neither evidence bundle adds a native or Windows runtime result.
+
+## Accepted Source And Earlier Evidence
 
 Application source: `f69125cd289365424cd0661975291d8c12a96cac`, integrating
 reviewed rejection-observation/Windows-diagnostic packet `7ff950f` over

@@ -1,0 +1,66 @@
+# Review package: 58057f980afd3365e106433c7102cfc19450c130..3212065c4b47c068c69e60e8f7a098966f65be4f
+
+## Commits
+3212065 Associate Windows Master anchor with native DLL
+
+## Files changed
+ apps/ultra/src-tauri/src/session/native.rs        | 4 ++++
+ apps/ultra/src-tauri/src/session/native_master.rs | 1 +
+ 2 files changed, 5 insertions(+)
+
+## Diff
+diff --git a/apps/ultra/src-tauri/src/session/native.rs b/apps/ultra/src-tauri/src/session/native.rs
+index 3b03bc9..4ea501d 100644
+--- a/apps/ultra/src-tauri/src/session/native.rs
++++ b/apps/ultra/src-tauri/src/session/native.rs
+@@ -160,20 +160,24 @@ impl Default for StateV2 {
+     fn default() -> Self { Self { version: 2, struct_bytes: std::mem::size_of::<Self>() as u32, absolute_frame: 0, position: 0, generation: 0, rejected: 0,
+         configured: 0, playing: 0, track_count: 0, device_count: 0, peak_left: 0., peak_right: 0., tracks: [TrackStateV2::default(); 2], devices: [DeviceStateV2::default(); 6] } }
+ }
+ extern "C" {
+     pub fn alive_session_validate_v2(config: *const ConfigV2) -> i32;
+     pub fn alive_session_validate_device_v2(device: *const DeviceV2, graph: *const NativeGraph) -> i32;
+     pub fn alive_session_validate_prepared_v2(config: *const ConfigV2, graphs: *const NativeGraph, count: u32) -> i32;
+     pub fn alive_session_configure_v2(config: *const ConfigV2) -> i32;
+     pub fn alive_session_base_v2(document: u32, revision: u64, parameter: u32, value: f64) -> i32;
+     pub fn alive_session_bypass_v2(document: u32, revision: u64, bypassed: u32) -> i32;
++}
++// The resolver needs the address of the linked DLL export on Windows.
++#[cfg_attr(target_os="windows", link(name="ultra_native"))]
++extern "C" {
+     pub fn alive_session_state_v2(state: *mut StateV2) -> i32;
+ }
+ 
+ // Fixed v3 ABI. Desktop activation and saved-format migration are separate.
+ pub const V3_VERSION: u32 = 3;
+ pub const V3_TRACKS: u32 = 8;
+ pub const V3_DEVICES: u32 = 16;
+ pub const V3_CLIPS: u32 = 32;
+ pub const V3_SLOTS: u32 = 4;
+ pub const V3_RECEIPTS: u32 = 128;
+diff --git a/apps/ultra/src-tauri/src/session/native_master.rs b/apps/ultra/src-tauri/src/session/native_master.rs
+index 4997d45..58a2aa1 100644
+--- a/apps/ultra/src-tauri/src/session/native_master.rs
++++ b/apps/ultra/src-tauri/src/session/native_master.rs
+@@ -194,20 +194,21 @@ mod tests {
+         if std::env::var_os("ALIVE_MASTER_DIAGNOSTIC_CHILD").is_none() {
+             let output=std::process::Command::new(std::env::current_exe().unwrap())
+                 .args(["--exact",NAME,"--nocapture"]).env("ALIVE_MASTER_DIAGNOSTIC_CHILD","1").output().unwrap();
+             print!("{}",String::from_utf8_lossy(&output.stdout));
+             eprint!("{}",String::from_utf8_lossy(&output.stderr));
+             assert!(output.status.success(),"diagnostic child failed: {}",output.status);
+             return;
+         }
+         let expected=std::env::var_os("ALIVE_MASTER_EXPECT_UNAVAILABLE").is_none();
+         let actual=super::super::native::master_capability().is_some();
++        assert_eq!(super::super::native::master_capability().is_some(),actual,"cached capability changed");
+         println!("production capability={actual} expected={expected}");
+         unsafe { windows_diagnostics("production",super::super::native::master_test_anchor()); }
+         unsafe { windows_diagnostics("direct",alive_session_state_v2 as *const () as *const c_void); }
+         assert_eq!(actual,expected);
+     }
+     #[cfg(target_os="windows")]
+     unsafe fn windows_diagnostics(label:&str, anchor:*const c_void) {
+         #[link(name="kernel32")]
+         extern "system" {
+             fn GetModuleHandleExW(flags:u32,name:*const u16,handle:*mut *mut c_void)->i32;

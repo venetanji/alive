@@ -1,0 +1,125 @@
+{
+  "candidate": "d5078669b923f481fc6b84ce3ab34819109199f6",
+  "scope": "independent retained-data and projection audit; not1800orphysicalqualification",
+  "playing_seconds": 500.5060183116138,
+  "whole_journey_credited_seconds": 502.7409273456089,
+  "credited_rows": 913,
+  "invalid_credited_rows": 0,
+  "maximum_credited_gap_seconds": 2.1607699949963717,
+  "recorded_gaps": {
+    "transport_read_shape": 445,
+    "transport_unavailable_or_invalid": 445,
+    "action_boundary": 291,
+    "diagnostics_unavailable_or_invalid": 26
+  },
+  "cycles": 5,
+  "cycle_actions": 56,
+  "actions_per_proven_minute": 6.713205989679174,
+  "cycle_window_playing_seconds": 495.34603856560483,
+  "fixed_window_playing_seconds": 5.159979746008958,
+  "collector_wall_seconds": 924.6314768379962,
+  "capture_wall_seconds": 590.4673018089961,
+  "audio_bytes": 226680832,
+  "capture_complete": true,
+  "capture_reason": "requested_stop",
+  "completed_epochs": 7,
+  "failure_and_budget_counters": {
+    "cpal_error_total": 0,
+    "cpal_xrun_reports": 0,
+    "cpal_non_xrun_reports": 0,
+    "invalid_callback_shape": 0,
+    "native_render_failures": 0,
+    "over_buffer_budget_count": 0,
+    "counter_overflow": 0,
+    "clock_anomaly_count": 0
+  },
+  "terminal_quit": true,
+  "physical_audio": false,
+  "physical_underruns": null,
+  "resource_samples": 923,
+  "max_sampling_delay": 5.631973173003644,
+  "max_missed_cadences": 6,
+  "resource_labels": "Action/playing labels are unsynchronized best-effort; no exact event/causality claims. Driving-thread log is credit authority.",
+  "independently_recomputed_projection": {
+    "wall_seconds": 2343.586477976234,
+    "collector_wall_seconds": 2677.750653005234,
+    "audio_bytes": 899872495,
+    "metadata_bytes": 39193202,
+    "epoch_attempts": 10
+  },
+  "reported_projection": {
+    "wall_seconds": 2343.586477976234,
+    "collector_wall_seconds": 2677.750653005234,
+    "audio_bytes": 899872495,
+    "metadata_bytes": 39193202,
+    "epoch_attempts": 10,
+    "limits": {
+      "wall_seconds": 2700,
+      "collector_wall_seconds": 2700,
+      "audio_bytes": 1073741824,
+      "metadata_bytes": 67108864,
+      "epoch_attempts": 256
+    },
+    "headroom": {
+      "wall_seconds": 356.41352202376584,
+      "collector_wall_seconds": 22.2493469947658,
+      "audio_bytes": 173869329,
+      "metadata_bytes": 27915662,
+      "epoch_attempts": 246
+    },
+    "headroom_fraction": {
+      "wall_seconds": 0.13200500815695032,
+      "collector_wall_seconds": 0.008240498886950297,
+      "audio_bytes": 0.16192843113094568,
+      "metadata_bytes": 0.41597577929496765,
+      "epoch_attempts": 0.9609375
+    },
+    "exceeded_limits": [],
+    "below_required_headroom": [
+      "collector_wall_seconds"
+    ],
+    "within_limits": false,
+    "fixed_playing_seconds": 5.159979746008958,
+    "cycle_playing_seconds": 495.34603856560483,
+    "variability_fraction": 0.1,
+    "minimum_headroom_fraction": 0.05
+  },
+  "fixed_components": {
+    "wall_seconds": 3.3046471849957015,
+    "collector_wall_seconds": 337.46882221399574,
+    "audio_bytes": 1212416,
+    "metadata_bytes": 5847421,
+    "epoch_attempts": 6
+  },
+  "fixed_and_cycle_denominators_validated": true,
+  "planning_margin_pass": false,
+  "hard_projected_limits_exceeded": false,
+  "report_sha256": "cf346a7c2d54de648ff55932015b4345c1c153983dfeea301db2f90eea771850",
+  "manifest_inputs": {
+    "epochs": {
+      "path": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-pilot-06/sustained-epochs.jsonl",
+      "bytes": 3141937,
+      "sha256": "931d8557b1f4d3fb56a28fef383aa3e8663b55884fc2fe787aed544d555d360e"
+    },
+    "gaps": {
+      "path": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-pilot-06/sustained-gaps.jsonl",
+      "bytes": 115783,
+      "sha256": "267b7a561fbe337d8754132bdd3b7b2035569885124ad234a10eb70767078f4e"
+    },
+    "actions": {
+      "path": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-pilot-06/sustained-actions.jsonl",
+      "bytes": 21997,
+      "sha256": "047185717f500d84a0b5fd905798f5cedff3038882ae292e921ed9030365ba05"
+    },
+    "resources": {
+      "path": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-pilot-06/sustained-resources.jsonl",
+      "bytes": 4708719,
+      "sha256": "11c86e6b149c9e44d4c897d8b47b5f809850d986228387b54c850b5f22e1a628"
+    },
+    "playing": {
+      "path": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-pilot-06/sustained-playing.jsonl",
+      "bytes": 284828,
+      "sha256": "b97903ba2c122ffc397cc81f08d4e95660e12c09ad78c3f77a3ffccae1fd76ae"
+    }
+  }
+}

@@ -1,208 +1,127 @@
 # Alive / Ultra Plan
 
-Current execution, 2026-10-29: Tasks 1-8 are accepted at their stated scope.
-Current application source is `f69125c`: shared Master controls, compact
-Session/Arrangement and original icons over `c71b608` native Master gain/ramp/
-meters, bounded commands, coherent observations and installation/rollback,
-saved-owner/strict-v5 and reviewed Node DTO/model consumer. The reviewed
-rejection-observation correction is integrated byte-identically. Root's new
-pinned native suite passes in 187.411s, with 286 Ultra Rust tests (four ignored),
-one Alive test and a focused loader trace proving the rebuilt module. The UI packet
-has independent source reviews, root 130 Node tests and audited worker 130
-Node/51 Chromium/both-size native v4/max-v3 proof. A coherent root build of both
-apps and their adjacent module now succeeds at `f69125c`; Alive (Test) follows
-that build. Prior artifacts are preserved. Task 9 owns actual native
-save/Quit/restart, pilot and endurance qualification on the pinned new pair.
-
-Earlier Task 6 combined checks pass 585 Node/component tests, 273 Ultra Rust
-tests (four ignored), one Alive test and the staging regression; its full pinned
-contracts pass in 219.253s. Old/partial native modules remain usable for unity
-sessions and explicitly refuse non-unity without mutating the saved owner.
-
-The `3b3df87` foundation fully passes CI `40710079202` and all four package
-targets in `40710079013`, publication skipped. Those runs precede the Master
-changes. Terminal receipts are in
-`experiments/phase2-20261028/reliability/cloud-3b3df87-g0/`; accepted Task 6
-reports, original red/green logs, reviews and source hashes are in
-`experiments/phase2-20261028/master/`. Final-head CI/packages, native journeys
-and 1800 proven playing seconds remain separate gates.
-
-The later pushed native checkpoint `f0f7871` is not cloud-qualified:
-CI `40751616984` fails the native Arrangement rejected-command increment
-assertion after native/Rust, offline renders and the original Alive desktop
-journey pass; Chromium and UI/reference jobs also pass. Packages `40751616882`
-fail eight Windows Master capability/owner tests while the direct resolver
-test passes; Linux and both macOS package targets pass and publication is
-skipped. Original failures and terminal receipts are retained under
-`experiments/phase2-20261028/master/cloud-f0f7871/`. Separate Terra source-only
-diagnoses led to reviewed native correction `7ff950f`: exact off-callback
-V2/V3/V4 freshness and observable-state preservation, plus a test-only Windows
-production-anchor diagnostic. Root integrates its seven files byte-identically
-as `f69125c` after pinned native/Rust/Alive/loader checks pass; actual Windows
-cause/fix remains pending runner evidence. The accepted
-GI-free sustained-collector helper is local `d025c91`; actual Task 9 driver
-integration is in progress. The worker now owns serialized native resources
-using root's exact new binaries; the pilot, endurance and terminal Quit remain
-unqualified. Root runs docs/evidence/cloud work only during this lease.
-
-New pushed checkpoint `da7c6fb` runs CI `40762558922` and packages `40762558971`.
-Full CI passes all three jobs, including Chromium, protocol/reference, original
-native Alive/Arrangement/clip/editor-resource journeys and software CPAL.
-Linux and both Mac package targets pass; publication is skipped. Windows
-fails 275 passed/9 failed/4 ignored. Its diagnostic child
-resolves both measured anchors and validates all exports/limits, yet the cached
-production capability is false. The actual initializer was not measured by
-that helper. Reviewed test-only diagnostic `d6acf731`, integrated locally as
-`3ca670d`, traces that initializer before independent calls. Non-test bodies
-and leased root artifacts are unchanged; Windows compilation/runtime of the
-new diagnostic and any evidence-supported production fix remain pending.
-Original output is retained under `master/cloud-da7c6fb/`, the source/reviews/
-static proof under `master/windows-initializer/`. No Windows fix is claimed.
-
-Task 9's first native Master journey passes on the pinned root pair: both views/
-sizes, independent devices, saved non-unity Master, editor close/reopen, actual
-Quit/restart with matching identities and nonzero software-loopback audio.
-Stronger reopened-wire/history assertions need their own repeat. Initial
-collector pilots retain observer overhead, hidden diagnostics and gesture
-interference failures; bounded harness fixes preserve all original assertions,
-operations and limits. The next pilot is not endurance. A complete pilot,
-conservative resource projection and frozen-source review precede the 1800
-proven-playing-second run. Task 9 remains incomplete.
-
-Task 9's frozen harness candidate `289c778` is under independent explicit
-`gpt-6.1-terra` source and quality review. Both reviews request changes: project
-the complete collector lifetime separately from recorder time, match scalable
-resources to cycle-only proven playback, add the missing GI-free CI suites,
-assess retained epoch error categories and keep resource sampling independent
-of long UI actions. Pilot 05 continues unchanged for evidence; one consolidated
-fix round follows. The revised 90-second dwell retains all operations per cycle
-and lowers edit density; the original eight-second pilot is retained separately.
-The full run stays held until a source-attributed 270-proven-second, at least
-three-cycle pilot, conservative projection and clean re-reviews. No app binary
-is rebuilt or replaced during the worker's runtime lease.
-
-Checkpoint `62a657a` passes full CI `40721716899`, including native journeys,
-and all four package targets in `40721716535`; publication is skipped. Terminal
-receipts are in `experiments/phase2-20261028/master/cloud-62a657a/`. These qualify
-the saved-owner checkpoint, not Task 7 native Master source.
-Read-only Task 9 preparation is retained at
-`experiments/phase2-20261028/master/checkpoint-preparation.md`: the sustained
-workload needs contiguous stream-epoch collection and final retirement in
-addition to conservative playing-time accounting. No endurance pass is claimed.
-
-Prior fully qualified checkpoint `13d3061` integrates the reviewed browser correction. Its
-CI40736406708 passes all three jobs, including native/Rust/software CPAL.
-Packages40736407041 passes all four targets, with publication skipped.
-Earlier `49d68bb` has passing native/UI-reference jobs but a failed
-Chromium blank-lane geometry read in CI `40728696609`; all four package targets
-pass in `40728696620`, publication skipped. Reviewed browser-only `f035161` is
-applied byte-identically with syntax checks; the fresh full Chromium suite now
-passes. These results qualify 13d3061, not later Master source. Original cloud and induced-redraw red/green
-evidence is retained under reliability/cloud-browser49; the original cloud
-trigger is unproven.
-
-## Phase 2 Direction: Live / Max Workflow Fidelity, 2026-10-28
-
-Execution is active under `docs/PHASE2_HANDOFF.md`. The frozen Master contract
-is `docs/contracts/alive-master-v1.md`. Task 7 candidate `81220d3` includes
-native gain/ramp/metering, bounded commands, coherent observations, capability
-resolution and installation/rollback proof. Its independent source reviews
-have no blocking finding; two minor FULL-test witness gaps are retained.
-Worker final checks report 286 Rust tests passing, four ignored and one Alive
-test. Native/measurement production inputs remain unchanged after `4b4687d`;
-the changed native suite at `ad314e5` and all 15 v4 commands pass.
-
-Root verifies all 25 candidate files byte-identically and commits `c71b608`
-after the final pinned native/Rust/Alive checks pass. The original root native
-suite exposed a standalone resolver test borrowing Rust std symbols from the
-full native image before substitution of an old fixture. The narrow harness
-correction has reproduced loader/invariant reds, all four module-case greens
-and fresh independent source/evidence reviews; the original failure is retained.
-Task 8's explicit `gpt-6.1-terra` / high worker completed the bounded producer,
-full compact Live composition and both-size WebKit/Chromium action/geometry
-proof as reviewed `5b10db9`, integrated `36b0b39`, then released all resources.
-Root owns integrated native/build correction checks; the existing Task 9
-worker in `bb01` prepares source and GI-free Python/mock tests only.
-Task 9 produces the coherent user-testable build, real
-save/Quit/restart and endurance checkpoint. Reports/reviews/raw evidence and hashes are curated
-under `experiments/phase2-20261028/master/native/`.
-Completed v3 profiling reports four consecutive deadline excursions in the
-largest eight-track dense-control case at 1024 frames; matched pre-Master and
-candidate repeats have identical PCM and no excursions, without establishing
-the original cause or recreating the preceding process history. Master bursts and two/four-track practical cases have
-none observed. V4 shipping profile 1 reports none in 108,000 practical-buffer
-samples; failed provisional profile 2 remains refused. These are software
-timing observations, not physical underruns or proof of Master causality.
-Controller permits the next UI slice after functional integration passes while
-retaining the eight-track timing result as an unresolved final-qualification
-item. No all-profile clean deadline pass, threshold or capacity change follows.
-Accepted Tasks 1-6 must not be redispatched. The live ledger is
+Current execution, 2026-10-29: Phase 2 Tasks 1-8 are accepted at their recorded
+scopes. Resume Phase 2 Task 9; do not restart completed work. The canonical
+execution checkpoint is `docs/PHASE2_HANDOFF.md`, and the single live ledger is
 `.superpowers/sdd/2026-10-28-phase2-live-max/progress.md`.
 
-P2.0 fixed queued edit authority, focused Save/close/Quit ownership and device
-metadata preservation, and qualified the original native/Arrangement journeys.
-The original Apply failure was attributed to occluded input; its assertion is
-retained. Later cloud chooser and browser failures, controlled reproductions,
-reviewed diagnostics/correction and terminal qualification are preserved under
-`experiments/phase2-20261028/reliability/`. Save-only note-off has deterministic
-IPC evidence, not rendered native PCM; hosted preset recall remains unavailable.
-Do not convert those evidence limits into broader runtime claims.
+## Current Checkpoint
 
-The owner prioritizes familiar Live/Max workflows and a much closer visual
-composition before general Live Set/Max-file compatibility. They explicitly
-identify the missing Master channel. The proposed Phase 2 design and work
-sequence are now the primary planning entry points:
+Alive and Ultra remain separate applications. The tested Linux application
+source is `f69125c`: real shared native Master gain/ramp/meters, strict saved v5
+ownership, compact Session/Arrangement, four aligned clip/scene rows and original
+icons. Root's coherent build and exact executable/library hashes are pinned in
+`experiments/phase2-20261028/checkpoint-q1/root-build/`. Alive (Test) follows that
+build. Task 9's existing worker owns all local native/GUI/audio/recorder resources;
+root does source, evidence and cloud work only. Do not rebuild leased artifacts.
 
-- Design: `docs/superpowers/specs/2026-10-28-phase2-live-max-design.md`.
-- Plan: `docs/superpowers/plans/2026-10-28-phase2-live-max.md`.
-- Multi-agent execution: `docs/superpowers/plans/2026-10-28-phase2-multi-agent-execution.md`.
-- Compaction/resume and goal text: `docs/PHASE2_HANDOFF.md`.
-- Fresh Live output-channel reference: `docs/PHASE2_REFERENCE_20261028.md`.
-- Source/reproducer baseline: `docs/DEVELOPMENT_REVIEW_20261028.md`.
+Reviewed harness `d507866` is integrated byte-identically as `85adb2e`. Its five
+review corrections address full collector versus recorder lifetime, matching
+cycle-only playback/resource denominators, GI-free CI coverage, per-epoch typed
+error qualification and resource sampling independent of long UI actions.
+Both scoped source and quality re-reviews have no blocking finding. Worker
+checks pass 44 focused tests and the three exact CI discovery commands. Root
+passes source/blob, Python AST, shell syntax and whitespace checks; these are
+static checks, not a second native run.
 
-Proposed sequence: P2.0 state-loss fixes and reproducible native/Arrangement CI;
-P2.1 a real saved native stereo Master, fixed-right Session output strip and
-bottom Arrangement lane, compact Live-style composition and both-size native
-qualification; P2.2 direct clip/automation/device editing and Max graph authoring;
-P2.3 genuine WAV/portable projects and general device metadata; separately gated
-instrument/effect/recording and compatibility cohorts; final integrated evidence.
-The first new feature is Master, not another standalone instrument demo. It
-must include native gain/meters, persistence, history/live ownership and tests.
+The strengthened native Master journey passes at harness `3f555cc`, with
+unchanged Master bytes in `d507866`: both views/sizes, independent instances,
+non-unity Master, editor close/reopen, complete v5 equality after process restart,
+empty reopened history, matching executable/module identity and nonzero software
+replay. Root independently audits retained files, identities and PCM hashes in
+`checkpoint-q1/master-04/`. Original Arrangement, clips/epochs, hosted-editor
+resources and the separate original desktop journey also pass on the pinned
+pair. Final-head cloud and endurance remain separate gates.
 
-The reviewed planning documents define the active implementation work; the
-current execution checkpoint above supersedes their historical planning-only
-status. The working MIDI Session/Arrangement and reusable-device host are retained.
-The prior workspace plan remains the implementation record and detailed audio
-dependency. Stale statements in historical sections do not override current
-source or the dated review. Historical baseline CI at `1ebf216` failed the
-original Apply/editor-close assertion. The later harness diagnosis/fix and
-current combined native qualification are recorded at the top of this file;
-the assertion remains intact. Physical audio and final endurance are separate
-gates from native software-loopback journeys and four-platform packaging.
+Pilot 05 completes 270.007 proven seconds/four cycles but its original
+projection is refused. Corrected policy on that 90-second-dwell evidence
+exceeds the full collector limit. Pilot 06 on `d507866` completes 500.506 proven
+seconds/five cycles, seven contiguous final epochs, quiescent retirement and
+actual Quit. Root independently validates 913 credited intervals, gap/action
+exclusion, hashes and zero observed CPAL/render/shape/budget/anomaly counters.
+Both pilots are software PipeWire at 48 kHz/512 frames on Ryzen 9 5900HS;
+physical output and physical underruns remain unmeasured.
 
-Three GPT-6.1 Sol exploration agents assessed Alive, Ultra and delivery. REA was
-used for a fresh bounded Live 12.4.6 Master-layout/fader study in disposable
-Wine/Xvfb; UI action evidence and process lifecycle are distinguished. Max
-reference evidence is reused, not represented as a fresh run. Cloud workers
-consume original contracts/fixtures; installed-app study and physical acceptance
-remain local. Original/source Wine preferences are verified unchanged.
+The approved dwell is now 180 seconds between unchanged edit operations, with
+all original assertions and the 1800-proven-second target intact. Actual pilot
+edit density is 6.713 actions per proven minute; retain the earlier 8/90-second
+pilots as distinct stress evidence. Pilot 06's independently recomputed
+projection, including 10% variable-growth allowance, is 2677.751 collector
+seconds, 2343.586 recorder seconds and 899,872,495 PCM bytes. It fits hard
+limits but fails the additional 5% planning margin (collector headroom 0.824%).
+Root explicitly waives that extra margin for exactly one bounded measurement
+attempt, preserving `within_limits=false` and every hard limit. The unchanged
+`task9-endurance-01` run is active; no result, retry, further pacing change or
+endurance pass is inferred. A bounded failure requires a concrete next decision.
+Resource-row action/playing labels are unsynchronized best-effort snapshots;
+the separate driving-thread playing log is the credit authority.
 
-Execution follow-up: the owner requests multiple `gpt-6.1-terra` subagents and
-plans to compact before setting the implementation goal. That exact model ID
-successfully dispatched two planning reviewers; `terra-6.1` was the rejected
-spelling, and the advertised model list was incomplete. The runbook fixes a
-controller-plus-three-child schedule, exclusive file/resource ownership,
-contract freezes and fresh spec/quality reviews. The durable handoff preserves
-expected dirty work, baseline failures and next runnable packets. The active
-goal now authorizes implementation; this paragraph records the earlier
-planning provenance. Fresh resumed dispatch again accepts `gpt-6.1-terra`.
+## Cloud And Windows
 
-2026-10-28 review/build checkpoint: upstream is fast-forwarded to `1ebf216`.
-Both local binaries build. The current source review reproduces queued
-source/generation mistakes in Alive and pending-input/preset preservation
-problems in Ultra. Resolve these before expanding the unfinished WAV workflow.
-Findings, runnable reproducers, native qualification status and the proposed
-cloud/local handoff are in `docs/DEVELOPMENT_REVIEW_20261028.md`.
+Pushed checkpoint `58057f9` passes full CI `40769366285`. Packages `40769366396`
+are terminal: Linux and both Mac targets pass, Windows fails and publication
+is skipped. Terminal receipts and the rendered CI log are retained under
+`master/cloud-58057f9/`. All three prior `da7c6fb` CI jobs and its Linux/both Mac packages
+pass; Windows fails and publication is skipped. The latest older head with
+both full CI and all four package targets passing is `13d3061`. Retain exact
+head attribution; none of these results qualifies later local source.
+
+The actual Windows diagnostic at `58057f9` compiles, then records a fresh cache
+initializer using an executable-owned address without the required export,
+while later helper/direct addresses resolve in the native DLL. This establishes
+the instrumented observation, not instruction bytes or the earlier run's cause.
+Reviewed linkage candidate `3212065` is integrated as `fc320f5`: give only the
+Windows production anchor explicit DLL linkage metadata and check repeated
+cached observations. Owner/export/limits checks remain strict. Reviewed direct
+Windows resolver fixtures `8a83d13` are integrated as `210b37e`, covering real/full
+positive controls plus old, partial, forwarded-owner and bad-limits negatives.
+Windows execution of both packets remains pending. Direct negatives do not
+establish full-host/cached-path negative coverage. No leased binary is replaced.
+
+The first-checkpoint integrated source review finds a project-safety defect:
+effect bypass and adjacent device commands can adopt a replacement project's
+generation when queued during Open. Reviewed candidate `d13f6e8` is integrated
+byte-identically as `71e6108`; delayed-Open regressions prove reused device/track
+IDs cannot redirect old intent, while failed Open retains valid commands.
+Independent scoped spec/quality reviews have no findings and root's 107 DOM
+tests pass. Evidence is under `reliability/q1-device-intent/`. The ongoing
+endurance run retains its original f69125c artifact attribution and cannot
+qualify changed UI bytes. Fresh final-artifact native qualification remains.
+
+Next: audit the single bounded run, retain exact source/artifact/resource/error
+results, require final pushed-head CI and all four packages, and update draft
+PR #6 with commands, original screenshots and honest limits. Fetch/reconcile
+release foundation `31033483` before final tests. No merge, tag, release,
+deployment, credential or persistent environment-setting changes.
+
+## Phase 2 Direction: Live / Max Workflow Fidelity
+
+The owner prioritizes familiar Live/Max workflows and closer visual composition
+before general file compatibility. Primary design, implementation and delegation
+contracts are `docs/superpowers/specs/2026-10-28-phase2-live-max-design.md`,
+`docs/superpowers/plans/2026-10-28-phase2-live-max.md` and
+`docs/superpowers/plans/2026-10-28-phase2-multi-agent-execution.md`. Use explicit
+`gpt-6.1-terra` / high, fresh implementers and independent reviews, one writer
+per shared surface and a controller plus at most three children. The exact
+model ID works despite its omission from the advertised list.
+
+After the complete P2.1 checkpoint, proceed through bounded Session/browser,
+clip/automation/device and Max authoring slices, then genuine WAV/portable
+projects and general device metadata. Instruments/effects/recording and file
+compatibility retain separate gates. Current notes, pending history, scoped
+Stop, application Quit and package notices remain regressions. Use REA for
+installed Live/Max in disposable private Wine/Xvfb, normal source tools for
+Alive/Ultra. No proprietary reference assets enter the repository.
+
+Native Faust remains outside Clockwork. Measured native placement is zero
+versus the deliberate legacy 64-frame path; Master adds no pipeline buffer.
+Retain the four observed eight-track/1024 dense timing excursions and refused
+provisional v4 profile 2; shipping profile 1's practical measurements remain
+separate. No all-profile deadline or physical-underrun claim follows. Native
+commands, offsets/partition/isolation/admission/termination tests, raw timing,
+reviews and earlier cloud failure chains remain in `experiments/phase2-20261028/`
+and the handoff. Historical sections below preserve earlier evidence; they do
+not override this checkpoint or authorize repeating completed Phase 2 tasks.
 
 ## Active Direction: Arrangement And Session, 2026-10-26
 

@@ -1,0 +1,22 @@
+{
+  "base": "58057f980afd3365e106433c7102cfc19450c130",
+  "candidate": "3212065c4b47c068c69e60e8f7a098966f65be4f",
+  "root_parent": "85adb2e8f15bd820a93f9096ff190f699807c2c5",
+  "integration_commit": "fc320f5bb4e50db6f72f87f121849e95c14b9098",
+  "canonical_patch_sha256": "567f53ea2e776f041b90d5eb992ce2affa7f165f01b0a01853cbba6e28b5e658",
+  "files": {
+    "apps/ultra/src-tauri/src/session/native.rs": "e82811d579db3e29120632edfbb90aff8004161eb7fef2429cecb98d864f627b",
+    "apps/ultra/src-tauri/src/session/native_master.rs": "b8ed4b43b427e44cd867c7f8fa316b2d5f96b61b5a7110ef48fed2222509cec7"
+  },
+  "checks": [
+    {
+      "file": "apps/ultra/src-tauri/src/session/native.rs",
+      "rustfmt_parse_exit": 0
+    },
+    {
+      "file": "apps/ultra/src-tauri/src/session/native_master.rs",
+      "rustfmt_parse_exit": 0
+    }
+  ],
+  "qualification": "Source/spec+quality approved, byte-identical static integration; Windows compilation/cache behavior/package result pending actual runner. NonWindows DLL metadata unchanged; root pinned artifacts not rebuilt."
+}

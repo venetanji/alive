@@ -1,0 +1,96 @@
+{
+  "reviewed_base": "210b37e9ca6900c13bfb6c45f7ee8a050914311a",
+  "producer": "d13f6e804b7679c8238c8dddc9e7ca10865d0e5e",
+  "integration": "71e61085ab3d486e30db5b9ca7929f737a3b7317",
+  "file_sha256": {
+    "apps/ultra/ui/alive.mjs": {
+      "d13f6e804b7679c8238c8dddc9e7ca10865d0e5e": "9c1659438d8b2acc016cce5c1020bc573f4c26003567adab20b362aebfe71656",
+      "71e61085ab3d486e30db5b9ca7929f737a3b7317": "9c1659438d8b2acc016cce5c1020bc573f4c26003567adab20b362aebfe71656"
+    },
+    "apps/ultra/ui/alive-dom.test.mjs": {
+      "d13f6e804b7679c8238c8dddc9e7ca10865d0e5e": "c5a34f7e06e00b6654a8bbc2abc64d13619a682d127c9c150e4bdca00bb1f5a4",
+      "71e61085ab3d486e30db5b9ca7929f737a3b7317": "c5a34f7e06e00b6654a8bbc2abc64d13619a682d127c9c150e4bdca00bb1f5a4"
+    }
+  },
+  "scope": "Reviewed source correction and GI-free behavioral regression; final native artifacts and endurance for changed UI remain pending.",
+  "artifacts": [
+    {
+      "path": "q1-whole-review-brief.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/q1-whole-review-brief.md",
+      "bytes": 1805,
+      "sha256": "9cfb6d3e1ca32733daad8636b5f9f020341b14d06d0d5091b678f6ee1157bf6b"
+    },
+    {
+      "path": "q1-whole-source-review.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/q1-whole-source-review.md",
+      "bytes": 1951,
+      "sha256": "3b19489709239381f2b723dcf966bf5d455cfb437609098d0daa4d59f59ce568"
+    },
+    {
+      "path": "q1-device-intent-fix-brief.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/q1-device-intent-fix-brief.md",
+      "bytes": 2028,
+      "sha256": "f25a18f360a58d1f005ef6637d14aefd678bc5e508e4f718ff840e59e9257571"
+    },
+    {
+      "path": "q1-device-intent-fix-report.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/q1-device-intent-fix-report.md",
+      "bytes": 2715,
+      "sha256": "a0c1f07a80e1cbaf81aef41e29815d37044a27c0539eb5e6cbb72996e2d4359c"
+    },
+    {
+      "path": "q1-device-intent-spec-review.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/q1-device-intent-spec-review.md",
+      "bytes": 1757,
+      "sha256": "e109f5d4edd389a79322232d39afc2c749866d862018fa3240b97e82b38c0d4e"
+    },
+    {
+      "path": "q1-device-intent-quality-review.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/q1-device-intent-quality-review.md",
+      "bytes": 1542,
+      "sha256": "eeb23be5d671d1e46c44ef4ce6df9f8a32e55c0ee5e85b04c293d6416245d40a"
+    },
+    {
+      "path": "q1-device-intent-red.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/q1-device-intent-red.log",
+      "bytes": 922,
+      "sha256": "4d0d70862f580232b2f6f815ac66a2ca762beb0caeba0fb35f0e62508082af19",
+      "encoding": "gzip",
+      "decoded_bytes": 5477,
+      "decoded_sha256": "39b7d9fc176b7400da514aa2a404d9796779abbe5608232406b924a62274f46a"
+    },
+    {
+      "path": "q1-device-intent-green.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/q1-device-intent-green.log",
+      "bytes": 363,
+      "sha256": "4c751d9c469122386bc9ce39c233d73176d209a6226a74a120f2e431c09fa502",
+      "encoding": "gzip",
+      "decoded_bytes": 1212,
+      "decoded_sha256": "2fdb42bcf29a8f767e509a05c03d97a2a630d84afe8be963813a2c781f4c35d6"
+    },
+    {
+      "path": "q1-device-intent-full.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/q1-device-intent-full.log",
+      "bytes": 3564,
+      "sha256": "53406baafad571c4face82cb8b3b32dc5f7496c3943e421a5093866a1c779b0d",
+      "encoding": "gzip",
+      "decoded_bytes": 9984,
+      "decoded_sha256": "0f9f4c3aca11d516764aef37f1fced11a68b8c95479e81d4d2fabfd01dc78e29"
+    },
+    {
+      "path": "q1-device-intent-root-node.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/q1-device-intent-root-node.log",
+      "bytes": 3552,
+      "sha256": "0556db95167940848083c35b9e83111605330d22edb6b6529f48df927825a893",
+      "encoding": "gzip",
+      "decoded_bytes": 9986,
+      "decoded_sha256": "4af8b65baa1a1b498a0f5ea396b937f86e3e8c10b572965386126f4a96cefa3f"
+    },
+    {
+      "path": "q1-device-intent-root-integration.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/q1-device-intent-root-integration.json",
+      "bytes": 662,
+      "sha256": "34fc347409e4c4e3e8da70cb7e1457da056dae8ec83686fabfa205362616fd81"
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "credited_rows": 913,
+  "invalid_credited_rows": 0,
+  "max_credited_gap": 2.1607699949963717,
+  "playing_target_total": 500.5060183116138,
+  "cycle_window_playing": 495.34603856560483,
+  "fixed_playing": 5.159979746008958,
+  "cycles": 5,
+  "cycle_actions": 56,
+  "actions_per_proven_minute": 6.713205989679174,
+  "action_categories": {
+    "text: Cutoff base": 5,
+    "keys: Tab": 18,
+    "text: Pulse gain": 5,
+    "text: Seek beat": 5,
+    "click: Seek transport": 5,
+    "click: Open Pulse editor": 2,
+    "text: Hosted Cutoff base": 2,
+    "click: Close hosted editor": 2,
+    "click: Stop transport": 5,
+    "text: Cutoff point 2 value": 1,
+    "click: Prepare / Apply": 1,
+    "click: Start transport": 5
+  },
+  "gap_counts": {
+    "transport_read_shape": 445,
+    "transport_unavailable_or_invalid": 445,
+    "action_boundary": 291,
+    "diagnostics_unavailable_or_invalid": 26
+  },
+  "epoch_totals": {
+    "native_render_failures": 0,
+    "invalid_callback_shape": 0,
+    "cpal_error_total": 0,
+    "cpal_xrun_reports": 0,
+    "cpal_non_xrun_reports": 0,
+    "over_buffer_budget_count": 0
+  },
+  "epoch_count": 7,
+  "capture": {
+    "complete": true,
+    "reason": "requested_stop",
+    "group_id": 993455,
+    "recorder_pid": 993458,
+    "returncode": 1,
+    "wall_seconds": 590.4673018089961,
+    "audio_bytes": 226680832,
+    "stderr_bytes": 0,
+    "limits": {
+      "wall_seconds": 2700.0,
+      "audio_bytes": 1073741824,
+      "metadata_bytes": 67108864,
+      "stderr_bytes": 1048576,
+      "disk_reserve_bytes": 268435456
+    }
+  },
+  "collector_wall": 924.6314768379962,
+  "setup_tail_wall": 337.46882221399574,
+  "cycle_wall": 587.1626546240004,
+  "growth": {
+    "cycle_begin": {
+      "monotonic": 68729.115465756,
+      "audio_bytes": 1183744,
+      "metadata_bytes": 1842096,
+      "epoch_attempts": 5,
+      "playing_seconds": 6.237313079342324
+    },
+    "cycle_end": {
+      "monotonic": 69316.27812038,
+      "audio_bytes": 226652160,
+      "metadata_bytes": 10208352,
+      "epoch_attempts": 6,
+      "playing_seconds": 501.58335164494713
+    },
+    "capture_end": {
+      "monotonic": 69324.349421865,
+      "audio_bytes": 226680832,
+      "metadata_bytes": 10218604,
+      "epoch_attempts": 6,
+      "playing_seconds": 501.58335164494713
+    },
+    "final": {
+      "monotonic": 69376.237126013,
+      "audio_bytes": 226680832,
+      "metadata_bytes": 14213677,
+      "epoch_attempts": 7,
+      "playing_seconds": 502.7409273456089
+    },
+    "cycles": 5,
+    "playing_seconds": 500.5060183116138,
+    "capture_reason": "requested_stop",
+    "projection_uncertainty": "linear cycle growth; future pauses and per-action variability are not bounded"
+  },
+  "independent_projection": {
+    "wall_seconds": 2343.5864779762337,
+    "collector_wall_seconds": 2677.7506530052337,
+    "audio_bytes": 899872495,
+    "metadata_bytes": 39193202,
+    "epoch_attempts": 10
+  },
+  "reported_projection": {
+    "wall_seconds": 2343.586477976234,
+    "collector_wall_seconds": 2677.750653005234,
+    "audio_bytes": 899872495,
+    "metadata_bytes": 39193202,
+    "epoch_attempts": 10,
+    "limits": {
+      "wall_seconds": 2700,
+      "collector_wall_seconds": 2700,
+      "audio_bytes": 1073741824,
+      "metadata_bytes": 67108864,
+      "epoch_attempts": 256
+    },
+    "headroom": {
+      "wall_seconds": 356.41352202376584,
+      "collector_wall_seconds": 22.2493469947658,
+      "audio_bytes": 173869329,
+      "metadata_bytes": 27915662,
+      "epoch_attempts": 246
+    },
+    "headroom_fraction": {
+      "wall_seconds": 0.13200500815695032,
+      "collector_wall_seconds": 0.008240498886950297,
+      "audio_bytes": 0.16192843113094568,
+      "metadata_bytes": 0.41597577929496765,
+      "epoch_attempts": 0.9609375
+    },
+    "exceeded_limits": [],
+    "below_required_headroom": [
+      "collector_wall_seconds"
+    ],
+    "within_limits": false,
+    "fixed_playing_seconds": 5.159979746008958,
+    "cycle_playing_seconds": 495.34603856560483,
+    "variability_fraction": 0.1,
+    "minimum_headroom_fraction": 0.05
+  },
+  "resource_rows": 923,
+  "maximum_sample_delay": 5.631973173003644,
+  "maximum_sample_duration": 3.831104552009492,
+  "maximum_missed_cadences": 6,
+  "resource_label_limit": "action ordinal and playing seconds are unsynchronized best-effort labels; no exact event causality is claimed",
+  "physical_underruns": null
+}

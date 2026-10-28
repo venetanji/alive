@@ -1,0 +1,82 @@
+{
+  "candidate": "289c7789e2a13378780906f32d6335691179ec81",
+  "scope": "independent retained-data audit, not corrected-candidate or endurance approval",
+  "playing_target": 270,
+  "playing_seconds": 270.00664293992486,
+  "whole_journey_credited_seconds": 272.565198578611,
+  "credited_rows": 497,
+  "invalid_credited_rows": 0,
+  "maximum_credited_gap_seconds": 2.211252074004733,
+  "recorded_gaps": {
+    "transport_read_shape": 422,
+    "transport_unavailable_or_invalid": 422,
+    "action_boundary": 278,
+    "diagnostics_unavailable_or_invalid": 26
+  },
+  "cycles": 4,
+  "cycle_actions": 43,
+  "actions_per_proven_minute": 9.555320461408193,
+  "cycle_window_playing_seconds": 264.81746868259097,
+  "fixed_window_playing_seconds": 5.189174257333889,
+  "collector_wall_seconds": 679.755005301995,
+  "capture_wall_seconds": 341.2272282960039,
+  "audio_bytes": 130969600,
+  "capture_complete": true,
+  "capture_reason": "requested_stop",
+  "completed_epochs": 7,
+  "failure_and_budget_counters": {
+    "cpal_error_total": 0,
+    "cpal_xrun_reports": 0,
+    "cpal_non_xrun_reports": 0,
+    "invalid_callback_shape": 0,
+    "native_render_failures": 0,
+    "over_buffer_budget_count": 0,
+    "counter_overflow": 0,
+    "clock_anomaly_count": 0
+  },
+  "terminal_quit": true,
+  "hardware": {
+    "system": "Linux",
+    "node": "prometheus",
+    "release": "7.2.8-10-omarchy",
+    "version": "#1 SMP PREEMPT_DYNAMIC Wed, 21 Oct 2026 10:51:38 +0000",
+    "machine": "x86_64",
+    "processor": ""
+  },
+  "cpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  16\nOn-line CPU(s) list:                     0-15\nVendor ID:                               AuthenticAMD\nModel name:                              AMD Ryzen 9 5900HS with Radeon Graphics\nCPU family:                              25\nModel:                                   80\nThread(s) per core:                      2\nCore(s) per socket:                      8\nSocket(s):                               1\nStepping:                                0\nMicrocode version:                       0xa500012\nFrequency boost:                         enabled\nCPU(s) scaling MHz:                      69%\nCPU max MHz:                             3301.0000\nCPU min MHz:                             423.2060\nBogoMIPS:                                6588.09\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local user_shstk clzero irperf xsaveerptr rdpru wbnoinvd cppc arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm debug_swap\nVirtualization:                          AMD-V\nL1d cache:                               256 KiB (8 instances)\nL1i cache:                               256 KiB (8 instances)\nL2 cache:                                4 MiB (8 instances)\nL3 cache:                                16 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-15\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Mitigation; Safe RET\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Mitigation; Clear CPU buffers\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace\n",
+  "physical_audio": false,
+  "physical_underruns": "typed CPAL Xrun reports are available through stream diagnostics; physical underruns unmeasured",
+  "resource_samples": 678,
+  "resource_sample_time_gap_seconds": 3.9397798189893365,
+  "resource_sample_lock_caveat": "Original candidate shared UI lock can delay sampling; timestamps precede lock; corrected source and fresh pilot required.",
+  "report_sha256": "190c2949d50d74c2aac33767f2658c1556156c72d075bcbf73fb48755a2a0463",
+  "manifest_inputs": {
+    "epochs": {
+      "path": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-pilot-05/sustained-epochs.jsonl",
+      "bytes": 1806233,
+      "sha256": "bfebc02d121402b8a24330583702dbc89d96dd206d2e31468ba4840f7ff30832"
+    },
+    "gaps": {
+      "path": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-pilot-05/sustained-gaps.jsonl",
+      "bytes": 110119,
+      "sha256": "232d66e46a4361ad5bd78421ed912b2f70965338c672aad3d31ea35fdbd0fa07"
+    },
+    "actions": {
+      "path": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-pilot-05/sustained-actions.jsonl",
+      "bytes": 21062,
+      "sha256": "89c35d80a05a0b735e2c349c56197df3cc8c5c4d22500d8cf05e437c06bd0fdb"
+    },
+    "resources": {
+      "path": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-pilot-05/sustained-resources.jsonl",
+      "bytes": 3377456,
+      "sha256": "4bc73cc7ce2a1c5ea3f6907dd007b01c8c54c44601cb644dcdbde755d7e2a836"
+    },
+    "playing": {
+      "path": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-pilot-05/sustained-playing.jsonl",
+      "bytes": 168498,
+      "sha256": "83693952b59e6af6f378543e5b8eae6d0d7f0e62666e4513cce2542e30b05bad"
+    }
+  },
+  "projection_acceptance": false,
+  "projection_reason": "Original projection omits collector fixed lifetime and uses unmatched playback denominator; independent source reviews request changes."
+}

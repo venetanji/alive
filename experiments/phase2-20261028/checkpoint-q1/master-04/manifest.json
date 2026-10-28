@@ -1,0 +1,135 @@
+{
+  "harness_candidate": "3f555cc52919004ad628ea69c2c57e58b16fdc88",
+  "later_candidate": "d507866 changes only dwell policy and its test; Master journey bytes unchanged",
+  "application_source": "f69125cd289365424cd0661975291d8c12a96cac",
+  "scope": "native controls/hosted editor/shared Master/cross-view/save/Quit/process restart/replay; no endurance or physicalaudio",
+  "source_exit_attribution": "Worker master04 terminalexit0; root retained-data/hash audit only",
+  "root_checks": {
+    "whole_saved_reopened_v5_equal": true,
+    "master_gain": 0.5,
+    "identities_all_three_equal": true,
+    "actual_report_complete": true,
+    "viewports": [
+      [
+        "session",
+        1440,
+        900
+      ],
+      [
+        "session",
+        1280,
+        800
+      ],
+      [
+        "arrangement",
+        1440,
+        900
+      ],
+      [
+        "arrangement",
+        1280,
+        800
+      ]
+    ],
+    "pcm_hashes_match": true
+  },
+  "local_only_pcm": [
+    {
+      "path": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-master-04/master-before-restart.f32",
+      "bytes": 9035776,
+      "sha256": "2c0a9eaa1c6718ffa4ec851cbf8be4f1d7a644090647d4739c91ea68defe72eb",
+      "peak": 0.14162153005599976,
+      "frames": 1129472
+    },
+    {
+      "path": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-master-04/master-reopened-playback.f32",
+      "bytes": 1368064,
+      "sha256": "7337d84a15a210d4fdc8cc3da13dfdb4d257817caf0917e456a08df2f0388f27",
+      "peak": 0.08348129689693451,
+      "frames": 171008
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "master-report.json",
+      "bytes": 5624,
+      "sha256": "a259d2b09d2f1cff73c1730f2336f19f779c65975279ebbc3b1a9be09f77b47a",
+      "source": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-master-04/master-report.json"
+    },
+    {
+      "path": "master-roundtrip.alive",
+      "bytes": 7801,
+      "sha256": "6577a9718a55b90d95cf2583a882371e87a913816db74f72c915692fb77bb649",
+      "source": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-master-04/master-roundtrip.alive"
+    },
+    {
+      "path": "master-reopened.alive",
+      "bytes": 7801,
+      "sha256": "6577a9718a55b90d95cf2583a882371e87a913816db74f72c915692fb77bb649",
+      "source": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-master-04/master-reopened.alive"
+    },
+    {
+      "path": "master-before-restart.capture.json",
+      "bytes": 335,
+      "sha256": "73abdbd795247e3d0ab4bf355dd2f5a378ed7eb0002f41b0e992122fc6d5d10c",
+      "source": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-master-04/master-before-restart.capture.json"
+    },
+    {
+      "path": "master-reopened-playback.capture.json",
+      "bytes": 334,
+      "sha256": "f5b2484bf92de6b26dd4943754db97a0776558fcab616e6f63f4ef87435a1771",
+      "source": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-master-04/master-reopened-playback.capture.json"
+    },
+    {
+      "path": "startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352",
+      "source": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-master-04/startup-result.json"
+    },
+    {
+      "path": "native-inputs.json",
+      "bytes": 10097,
+      "sha256": "f9f9b8600522994efe16cd1835aa1ecf04b9907287ea4f21b6b5827dd18f6f49",
+      "source": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-master-04/native-inputs.json"
+    },
+    {
+      "path": "hosted-editor.png",
+      "bytes": 77316,
+      "sha256": "9e27bc19a6743224ed8aa43a06f8060860e193fc6fd649d0bf221190afd317c7",
+      "source": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-master-04/hosted-editor.png"
+    },
+    {
+      "path": "master-session-1440x900.png",
+      "bytes": 81487,
+      "sha256": "876512300ff9ebe83db9445645a4961678d0363466cbae1666c765494bd6b78e",
+      "source": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-master-04/master-session-1440x900.png"
+    },
+    {
+      "path": "master-session-1280x800.png",
+      "bytes": 76904,
+      "sha256": "8b125e8c8c46fa27f7cbef381fa798b70d443be067b05b037468dddecb565978",
+      "source": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-master-04/master-session-1280x800.png"
+    },
+    {
+      "path": "master-arrangement-1440x900.png",
+      "bytes": 80964,
+      "sha256": "9ccd4a276193bbaaf0d49719ed2227f7a7eff2ba6c7684a0775d9405a0786baf",
+      "source": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-master-04/master-arrangement-1440x900.png"
+    },
+    {
+      "path": "master-arrangement-1280x800.png",
+      "bytes": 78048,
+      "sha256": "aa03ab76d22b3f023116cfd6db33e7eb108db2fcac067a78a64d716782b41ada",
+      "source": "/home/venetanji/.codex/worktrees/bb01/alive/test-results/task9-master-04/master-arrangement-1280x800.png"
+    },
+    {
+      "path": "master-04.log.gz",
+      "bytes": 725,
+      "sha256": "975a44f9c4f51606ea9e53a16a3c2b30d1b7d06675693fb16c04ed0621bff094",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task9-evidence/master-04.log",
+      "encoding": "gzip",
+      "decoded_bytes": 5202,
+      "decoded_sha256": "c138f94434f524cda0e73b9d72c1e14ab079bd7131a8330c16bfcdb273701430"
+    }
+  ]
+}
