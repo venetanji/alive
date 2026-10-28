@@ -5,6 +5,16 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      alive_endurance:
+        description: 'Optional Alive sustained desktop journey'
+        type: choice
+        required: true
+        default: 'off'
+        options:
+          - 'off'
+          - pilot
+          - endurance
 
 # Fork PRs execute untrusted source without secrets or repository write access.
 permissions:
@@ -92,13 +102,22 @@ jobs:
   native:
     name: Linux native build, Rust bridge, and CPAL loopback
     runs-on: ubuntu-24.04
-    timeout-minutes: 40
+    timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && (inputs.alive_endurance == 'pilot' || inputs.alive_endurance == 'endurance') && 120 || 40 }}
     env:
       JOBS: '2'
       CARGO_BUILD_JOBS: '2'
       CARGO_NET_RETRY: '2'
       CARGO_HTTP_TIMEOUT: '60'
     steps:
+      - name: Validate Alive endurance selection
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          ALIVE_ENDURANCE_MODE: ${{ inputs.alive_endurance }}
+        run: |
+          case "$ALIVE_ENDURANCE_MODE" in
+            ''|off|pilot|endurance) ;;
+            *) echo "Invalid Alive endurance mode: $ALIVE_ENDURANCE_MODE" >&2; exit 1 ;;
+          esac
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
@@ -176,12 +195,34 @@ jobs:
           path: apps/ultra/build/session-evidence/
           if-no-files-found: warn
           retention-days: 7
+      - name: Record sustained source and build identities
+        if: ${{ github.event_name == 'workflow_dispatch' && (inputs.alive_endurance == 'pilot' || inputs.alive_endurance == 'endurance') }}
+        env:
+          ALIVE_ENDURANCE_MODE: ${{ inputs.alive_endurance }}
+          ALIVE_ENDURANCE_TARGET: ${{ inputs.alive_endurance == 'pilot' && '500' || '1800' }}
+        run: |
+          evidence=apps/ultra/build/session-desktop-evidence
+          mkdir -p "$evidence"
+          git rev-parse HEAD > "$evidence/source-commit.txt"
+          sha256sum apps/ultra/src-tauri/target/release/alive \
+            apps/ultra/src-tauri/target/release/ultra \
+            apps/ultra/src-tauri/target/release/libultra_native.so \
+            > "$evidence/build-sha256.txt"
+          {
+            printf 'mode=%s\ntarget_playing_seconds=%s\n' "$ALIVE_ENDURANCE_MODE" "$ALIVE_ENDURANCE_TARGET"
+            printf 'runner_os=%s\nrunner_arch=%s\nimage_os=%s\nimage_version=%s\n' "$RUNNER_OS" "$RUNNER_ARCH" "${ImageOS:-unknown}" "${ImageVersion:-unknown}"
+            printf 'backend=private software-only CPAL PipeWire at 48 kHz / 512 frames\n'
+            uname -a
+            lscpu
+            pipewire --version
+          } > "$evidence/sustained-context.txt"
       - name: Exercise the actual Alive desktop session and hosted editor
         # Provisional diagnostic allowance; runner phase/query evidence must set the permanent bound.
-        timeout-minutes: 8
+        timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && (inputs.alive_endurance == 'pilot' || inputs.alive_endurance == 'endurance') && 60 || 8 }}
         env:
           ULTRA_TEST_ALIVE: '1'
           ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_desktop.py
+          ALIVE_ENDURANCE_SECONDS: ${{ github.event_name == 'workflow_dispatch' && inputs.alive_endurance == 'pilot' && '500' || github.event_name == 'workflow_dispatch' && inputs.alive_endurance == 'endurance' && '1800' || '0' }}
         run: bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/session-desktop-evidence"
       - name: Save actual Alive desktop evidence
         if: always()
