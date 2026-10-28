@@ -7,6 +7,20 @@ to decide what to resume.
 
 ## Active Execution Checkpoint
 
+Latest resumption: exact-checkpoint CI `40695723200` failed in the Alive native
+walkthrough at `check_alive_desktop.py:1175`: Replace Harmony device did not
+produce a viewable Load Ultra Device chooser. UI/reference and Chromium jobs
+succeeded. Original failed logs and the complete Alive artifact are retained
+under the canonical workspace's `cloud-c6df81f/`. Fresh Terra worker
+`p20_cloud_chooser_fix` owns the narrow harness/navigation and native GUI/audio
+lease in `27be`; root must await its explicit resource release before launching
+native tests. Diagnose from the original evidence; do not weaken assertions.
+Master packet `6638858` has clean scoped spec/quality re-reviews and root's
+fresh fixture/C11/C++17/Rust ABI compilation, but remains unfrozen pending G0.
+`p21_saved_owner_preparation` is read-only preparation, not a production lease.
+Package run `40695723144` last sampled Linux/Apple ARM/Windows success and Intel
+Mac in progress. Read actual statuses and the live ledger before dispatching.
+
 The owner has now set this handoff as the active implementation goal. The
 planning-only boundary and old goal observations later in this document are
 historical. Execution uses the canonical ledger at

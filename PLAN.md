@@ -39,7 +39,13 @@ and both-size screenshots are retained in
 `experiments/phase2-20261028/reliability/`. Fresh full pinned headless contracts
 exit 0 in 212.257s on the integrated source, including all 572 UI/component
 tests plus schema/reference/native C++ suites. Final pushed-head CI/packages remain
-separate gates. No new Master capability is
+separate gates. Exact-checkpoint CI `40695723200` now fails late in the Alive
+native walkthrough: Replace Harmony device does not produce a viewable chooser.
+Its UI/reference and Chromium jobs pass. The original failure artifacts are
+retained and a narrow Terra diagnosis is active; P2.0 is not promoted on the
+strength of the local pass. The concrete Master packet `6638858` has clean
+scoped reviews and locally compiled C/Rust ABI witnesses, but remains unfrozen
+until this gate is resolved. No new Master capability is
 accepted yet. Independent Terra preflight review has tightened its draft
 contract; consumers remain gated on P2.0. The durable
 execution ledger is `.superpowers/sdd/2026-10-28-phase2-live-max/progress.md`.
