@@ -154,7 +154,7 @@ def run():
     assert len(authored['edges']) == len(edges), authored['edges']
     screenshot('authored-canvas.png')
     ui.click('Perform instrument')
-    ui.click('Package instrument')
+    ui.click('Package device')
     ui.wait_for('Cutoff value')
     numeric('Cutoff', 1200); numeric('Attack', 35)
     ui.text('New preset name', 'Warm'); ui.click('Store preset')

@@ -1,7 +1,12 @@
 import {makeNode,validatePatch} from './canvas-model.mjs';
 import {deviceValues} from './canvas-device.mjs';
 
-export function packageInstrument(patch,{id='org.alive.instrument',name='Subtractive instrument'}={}){
+export function packageInstrument(patch,{id=patch.device?.id??'org.alive.instrument',name=patch.device?.name??'Subtractive instrument'}={}){
+  if(Object.hasOwn(patch,'device')){
+    // Validate the existing interface against the graph before changing its identity.
+    validatePatch(patch);
+    return validatePatch({...patch,device:{...patch.device,id,name}});
+  }
   const all=scope=>scope.nodes.flatMap(node=>[node,...(node.type==='patcher'?all(node.patcher):[])]);
   const nodes=all(patch),find=type=>{
     const matches=nodes.filter(node=>node.type===type);

@@ -3,6 +3,7 @@ import {test} from 'node:test';
 import {readFileSync} from 'node:fs';
 import {OBJECTS} from './canvas-catalog.mjs';
 import {CanvasDocument,makeNode} from './canvas-model.mjs';
+import {subtractivePatch} from './canvas-instrument.mjs';
 
 // This executes the real page module with a small DOM adapter. It does not prove rendered geometry or native sound.
 class Element {
@@ -40,6 +41,17 @@ async function mount(native=false,{documentCurrent=null,tauri,observeInvoke=()=>
   const {mountCanvas}=await import('./canvas.mjs');const page=mountCanvas({document,window,invoke});await page.ready;await page.controller.flush();await settle();
   return{...page,ids,calls,timeouts,navigations,previews,observed,consoleRecords,popupSnapshots,windowEvents,documentEvents,document,all:id=>descendants(ids.get(id))};
 }
+test('Perform renames a device without replacing authored controls or presets',async()=>{
+  const p=await mount(true),patch=subtractivePatch();
+  patch.device.parameters[4]={...patch.device.parameters[4],key:'tone',label:'Tone',min:100,max:9000};
+  for(const preset of patch.device.presets){preset.values.tone=preset.values.cutoff;delete preset.values.cutoff;}
+  p.controller.load(patch);await p.controller.flush();await p.ids.get('show-instrument').fire('click');
+  p.ids.get('instrument-name').value='Renamed';await p.ids.get('instrument-package').fire('click');
+  const after=p.controller.getState().document;
+  assert.equal(after.device.name,'Renamed');assert.deepEqual(after.device.parameters,patch.device.parameters);assert.deepEqual(after.device.presets,patch.device.presets);
+  assert.ok(p.all('instrument-controls').some(e=>e.attrs['aria-label']==='Tone'));
+  await p.dispose();
+});
 test('effect panel exposes live parameters and presets without a keyboard claim',async()=>{
   const p=await mount(true);
   const patch={version:1,profile:'ultra-canvas-v1',nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
@@ -51,6 +63,8 @@ test('effect panel exposes live parameters and presets without a keyboard claim'
   assert.equal(p.ids.get('instrument-keyboard').hidden,true);
   assert.equal(p.ids.get('instrument-release').hidden,true);
   assert.match(p.ids.get('instrument-keyboard-note').textContent,/host.*audio/i);
+  p.ids.get('instrument-name').value='Renamed effect';await p.ids.get('instrument-package').fire('click');
+  assert.deepEqual(p.controller.getState().document.device,{...patch.device,name:'Renamed effect'});
   const control=p.all('instrument-controls').find(e=>e.tagName==='INPUT'&&e.type==='number');
   control.value='0.5';await control.fire('change');await p.controller.flush();
   assert.equal(p.controller.getState().document.nodes.find(n=>n.id===2).params.value,.5);

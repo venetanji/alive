@@ -70,7 +70,7 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{},dr
     $('instrument-package').disabled=state.closing||state.applying;
     if(!device)return;
     $('instrument-keyboard').hidden=!midi;$('instrument-release').hidden=!midi;
-    $('instrument-package').disabled=state.closing||state.applying||device.kind==='audioEffect';
+    $('instrument-package').disabled=state.closing||state.applying;
     const values=deviceValues(patch);
     for(const binding of bindings){
       const {range,numeric}=inputs.get(binding.key),value=values[binding.key];
@@ -111,7 +111,7 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{},dr
   $('show-instrument').addEventListener('click',()=>opened?close():open());
   $('instrument-close').addEventListener('click',close);
   $('instrument-package').addEventListener('click',guard(async()=>{
-    await controller.flush();const patch=current(),name=$('instrument-name').value.trim()||'Subtractive instrument';
+    await controller.flush();const patch=current(),name=$('instrument-name').value.trim()||patch.device?.name||'Subtractive instrument';
     controller.load(packageInstrument(patch,{name,id:patch.device?.id??'org.alive.instrument'}));await controller.flush();open();
   }));
   $('instrument-recall').addEventListener('click',guard(async()=>{

@@ -4,6 +4,7 @@ import {makeNode, nodeSpec, validatePatch, CanvasDocument} from './canvas-model.
 import {parseObjectText, objectText} from './canvas-catalog.mjs';
 import {readFileSync} from 'node:fs';
 import {deviceValues,presetParameters} from './canvas-device.mjs';
+import {packageInstrument,subtractivePatch} from './canvas-instrument.mjs';
 
 const manifest=()=>({version:1,id:'org.alive.test',name:'Test synth',midi:{node:1,inlet:0},
   audio:{inputs:0,outputs:2,layout:'stereo'},parameters:[{key:'cutoff',label:'Cutoff',node:3,param:'cutoff',min:20,max:20000,unit:'Hz'}],
@@ -16,6 +17,33 @@ const graph = () => ({version:1,profile:'ultra-canvas-v1',nodes:[
 ],edges:[[1,0,2,0],[2,0,3,0],[1,1,4,0],[3,0,5,0],[4,0,5,1],
   [5,0,6,0],[6,0,7,0],[7,0,8,0],[7,0,8,1],[8,0,9,0]]
   .map(([from,outlet,to,inlet])=>({from,outlet,to,inlet}))});
+
+test('repackaging retains authored bindings, ranges, presets and interfaces',()=>{
+  const before=subtractivePatch();
+  before.device.parameters[4]={...before.device.parameters[4],key:'tone',label:'Tone',min:100,max:9000,unit:'Hz'};
+  for(const preset of before.device.presets){preset.values.tone=preset.values.cutoff;delete preset.values.cutoff;}
+  const after=packageInstrument(before,{id:before.device.id,name:'Renamed'});
+  assert.deepEqual(after.device.presets,before.device.presets);
+  assert.deepEqual(after.device.parameters,before.device.parameters);
+  assert.deepEqual(after.device.midi,before.device.midi);
+  assert.deepEqual(after.device.audio,before.device.audio);
+  assert.equal(after.device.name,'Renamed');
+  assert.deepEqual(before,subtractivePatchWithTone());
+});
+function subtractivePatchWithTone(){
+  const patch=subtractivePatch();patch.device.parameters[4]={...patch.device.parameters[4],key:'tone',label:'Tone',min:100,max:9000,unit:'Hz'};
+  for(const preset of patch.device.presets){preset.values.tone=preset.values.cutoff;delete preset.values.cutoff;}return patch;
+}
+test('repackaging rejects incompatible saved bindings without changing the input',()=>{
+  const before=subtractivePatch();before.device.parameters[0].node=999;const snapshot=structuredClone(before);
+  assert.throws(()=>packageInstrument(before,{id:before.device.id,name:'Renamed'}),/binding.*attack/i);
+  assert.deepEqual(before,snapshot);
+});
+test('repackaging accepts a valid non-template version 2 device',()=>{
+  const before={...graph(),device:{...manifest(),version:2,kind:'instrument',midi:{input:{node:1,inlet:0},output:null},audio:{input:null,output:{channels:2,layout:'stereo'}}}};
+  const after=packageInstrument(before,{id:before.device.id,name:'Renamed'});
+  assert.deepEqual(after.device,{...before.device,name:'Renamed'});
+});
 
 test('a subtractive voice graph connects through an explicit four-lane mixdown to stereo',()=>{
   const patch=validatePatch(graph());
