@@ -543,6 +543,18 @@ def print_popup_scenario():
 
 
 
+def slider_help_targets(converted):
+    nodes, edges = converted['nodes'], converted['edges']
+    comments = [node for node in nodes if node['type'] == 'comment']
+    executable = [node for node in nodes if node['type'] != 'comment']
+    assert len(nodes) == 21 and len(comments) == 5 and len(executable) == 16 and len(edges) == 10
+    slider, number = executable[3], executable[8]
+    assert slider['type'] == 'slider' and number['type'] == 'number_int'
+    assert any(edge['from'] == slider['id'] and edge['outlet'] == 0 and
+               edge['to'] == number['id'] and edge['inlet'] == 0 for edge in edges)
+    return slider['id'], number['id']
+
+
 def run():
     try:
         wait_for('Start audio')
@@ -685,17 +697,25 @@ def run():
             click('Allow partial import with the listed omissions and behavior differences')
             click('Import supported portion')
             converted = export()
-            assert len(converted['nodes']) == 16 and len(converted['edges']) == 10
+            comment_count = sum(node['type'] == 'comment' for node in converted['nodes'])
+            print('SLIDER-HELP-COUNTS', json.dumps({'nodes': len(converted['nodes']),
+                  'comments': comment_count, 'executable': len(converted['nodes']) - comment_count,
+                  'edges': len(converted['edges'])}), flush=True)
+            slider_id, number_id = slider_help_targets(converted)
             Atspi.Component.grab_focus(wait_for('Editable patch canvas'))
             keys('Control_L', 'e')
-            drag_control('slider value, object 4', (.1, .5), (.75, .5))
-            first = numeric_value('number value, object 9')
+            drag_control(f'slider value, object {slider_id}', (.1, .5), (.75, .5))
+            first = numeric_value(f'number value, object {number_id}')
             assert 80 < first < 110, 'Imported installed slider branch did not run through Tauri'
-            drag_control('slider value, object 4', (.75, .5), (.2, .5))
-            second = numeric_value('number value, object 9')
+            drag_control(f'slider value, object {slider_id}', (.75, .5), (.2, .5))
+            second = numeric_value(f'number value, object {number_id}')
             assert 15 < second < 40, 'Imported installed slider branch did not update'
             imported_help = {'tested': True, 'source': str(max_help), 'partial': True,
-                             'selected_tab': 'basic', 'imported_nodes': 16, 'imported_edges': 10,
+                             'selected_tab': 'basic', 'imported_nodes': len(converted['nodes']),
+                             'imported_comments': comment_count,
+                             'imported_executable_nodes': len(converted['nodes']) - comment_count,
+                             'imported_edges': len(converted['edges']),
+                             'slider_id': slider_id, 'number_id': number_id,
                              'native_downstream_values': [first, second],
                              'whole_help_executed': False}
             (output/'imported-slider.ultra.json').write_text(json.dumps(converted, indent=2)+'\n')
