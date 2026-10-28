@@ -103,18 +103,22 @@ def click(name, observer=None):
         image = Gdk.pixbuf_get_from_window(root, 0, 0, root.get_width(), root.get_height())
         image.savev(str(output/'native-action-failure.png'), 'png', [], [])
         raise AssertionError(name + ' is disabled')
+    if observer is not None:
+        observer('pre-focus', name, None, control)
     Atspi.Component.grab_focus(control)
     rect = Atspi.Component.get_extents(control, Atspi.CoordType.SCREEN)
     assert rect.width > 0 and rect.height > 0, name
     if observer is not None:
-        observer('before', name, rect)
+        observer('before', name, rect, control)
     assert t.XTestFakeMotionEvent(display, 0, rect.x+rect.width//2, rect.y+rect.height//2, 0)
     assert t.XTestFakeButtonEvent(display, 1, 1, 0)
     assert t.XTestFakeButtonEvent(display, 1, 0, 0)
     x.XFlush(display)
     if observer is not None:
-        observer('queued', name, rect)
+        observer('queued', name, rect, control)
     time.sleep(.15)
+    if observer is not None:
+        observer('settled', name, rect, control)
 
 
 def text(name, value):

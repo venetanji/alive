@@ -28,6 +28,9 @@ def check_unavailable_observations():
         assert len(alive.editor_observation_failures) == 3
         assert all(row['unavailable'] and len(row['error']) <= 512
                    for row in alive.editor_observation_failures)
+        assert [(row['observer'], row['error_type']) for row in alive.editor_observation_failures] == [
+            ('observe_editor_input', 'AttributeError'), ('observe_editor_window', 'KeyError'),
+            ('observe_editor_input', 'AttributeError')], alive.editor_observation_failures
         # A broken fallback collector must not escape the observation boundary.
         alive.editor_observation_failures = None
         alive.editor_observation = None
@@ -119,10 +122,12 @@ def run():
                and window['pid'] == [ui.pid] for window in result['root_windows']), result
     assert all(row['observation_seconds'] >= 0 for row in rows)
     # Repeated diagnostics are bounded without sending another activation.
+    failures_before = list(alive.editor_observation_failures)
     alive.observe_editor_input('before', before['name'], alive.Atspi.Component.get_extents(
         ui.wait_for(before['name']), alive.Atspi.CoordType.SCREEN))
     alive.observe_editor_window(True)
     assert [row for row in alive.native_inputs if row['action'].startswith('editor ')] == rows
+    assert alive.editor_observation_failures == failures_before
     alive.transport('stop')
     ui.click('Quit Alive')
     windows.focus('Unsaved Alive Session'); ui.click('Discard')

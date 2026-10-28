@@ -24,6 +24,7 @@ import check_canvas_desktop as ui
 import check_documents_desktop as windows
 from gi.repository import Atspi, GLib
 from alive_workspace_navigation import install as install_workspace_navigation
+from chooser_observation import find_web_ancestor, planned_hit_path
 
 prepare_workspace_control = install_workspace_navigation(
     ui, windows, select_device=lambda name: select_device_click(name),
@@ -279,27 +280,46 @@ def native_window_record(window):
     return row
 
 
-def observe_replace_input(phase, name, rect):
+def observe_replace_input(phase, name, rect, control):
     """Observe the original input batch; never retry, refocus or move its target."""
     started = time.monotonic()
     row = {'action': 'chooser input ' + phase, 'monotonic': started, 'name': name,
-           'scope': windows.scope, 'rect': [rect.x, rect.y, rect.width, rect.height],
-           'point': [rect.x + rect.width // 2, rect.y + rect.height // 2]}
+           'scope': windows.scope}
+    if phase == 'queued':
+        row.update(motions=1, presses=1, releases=1)
+    if phase == 'before':
+        row['planned_accessible_hit'] = {'status': 'unknown', 'reason': 'observation_unavailable', 'path': []}
+    if rect is not None:
+        row.update(rect=[rect.x, rect.y, rect.width, rect.height],
+                   point=[rect.x + rect.width // 2, rect.y + rect.height // 2])
     try:
+        current = Atspi.Component.get_extents(control, Atspi.CoordType.SCREEN)
+        row['current_rect'] = [current.x, current.y, current.width, current.height]
+        states = control.get_state_set()
+        row['showing'] = states.contains(Atspi.StateType.SHOWING)
+        row['visible'] = states.contains(Atspi.StateType.VISIBLE)
         if phase == 'before':
             with native_observation_errors() as errors:
                 row['x_errors'] = errors
                 row['hit_path'] = native_hit_path(*row['point'])
             row['windows'] = [native_window_record(window) for window in row['hit_path']]
-        else:
-            # Reached only after the original three XTest assertions and flush.
-            row.update(motions=1, presses=1, releases=1)
+            web, ancestry = find_web_ancestor(control)
+            row['web_ancestor'] = ancestry
+            if web is None:
+                row['planned_accessible_hit'] = {'status': 'unknown', 'reason': 'web_ancestor_unavailable', 'path': []}
+            else:
+                row['planned_accessible_hit'] = planned_hit_path(
+                    web, lambda node: Atspi.Component.get_accessible_at_point(
+                        node, *row['point'], Atspi.CoordType.SCREEN))
     except Exception as error:
         row['observation_error'] = repr(error)
     row['observation_seconds'] = time.monotonic() - started
     native_inputs.append(row)
-    if phase == 'queued':
-        (ui.output / 'native-inputs.json').write_text(json.dumps(native_inputs, indent=2))
+    if phase in ('queued', 'settled'):
+        try:
+            (ui.output / 'native-inputs.json').write_text(json.dumps(native_inputs, indent=2))
+        except Exception as error:
+            print('Chooser input observation error:', repr(error), flush=True)
 
 
 def isolate_editor_observation(observe):
@@ -321,7 +341,7 @@ def isolate_editor_observation(observe):
 
 
 @isolate_editor_observation
-def observe_editor_input(phase, name, rect):
+def observe_editor_input(phase, name, rect, control=None):
     """Buffer one original activation's receipts without changing its input."""
     global editor_observation
     if phase == 'before':

@@ -41,9 +41,14 @@ exit 0 in 212.257s on the integrated source, including all 572 UI/component
 tests plus schema/reference/native C++ suites. Final pushed-head CI/packages remain
 separate gates. Exact-checkpoint CI `40695723200` now fails late in the Alive
 native walkthrough: Replace Harmony device does not produce a viewable chooser.
-Its UI/reference and Chromium jobs pass. The original failure artifacts are
-retained and a narrow Terra diagnosis is active; P2.0 is not promoted on the
-strength of the local pass. The concrete Master packet `6638858` has clean
+Its UI/reference and Chromium jobs pass. Original failure artifacts are retained;
+reviewed candidate `490ec16` adds bounded focus/geometry/planned-hit diagnostics
+and repairs an observer fixture regression, with 23 root helper tests passing.
+Local full/targeted native runs pass at their separately recorded revisions,
+but historical cloud causality remains unproven. New cloud qualification is
+required before P2.0 promotion. Package run `40695723144` passes all four targets
+on `c6df81f`, with publication skipped; it does not qualify newer changes.
+The concrete Master packet `6638858` has clean
 scoped reviews and locally compiled C/Rust ABI witnesses, but remains unfrozen
 until this gate is resolved. No new Master capability is
 accepted yet. Independent Terra preflight review has tightened its draft

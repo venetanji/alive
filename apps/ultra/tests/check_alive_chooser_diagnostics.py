@@ -133,7 +133,14 @@ def run():
     alive.choose_file('Replace Pulse device', 'Load Ultra Device', alive.DEVICE)
     before = next(row for row in alive.native_inputs if row['action'] == 'chooser input before')
     queued = next(row for row in alive.native_inputs if row['action'] == 'chooser input queued')
+    pre_focus = next(row for row in alive.native_inputs if row['action'] == 'chooser input pre-focus')
+    settled = next(row for row in alive.native_inputs if row['action'] == 'chooser input settled')
     assert before['name'] == queued['name'] == 'Replace Pulse device'
+    assert pre_focus['name'] == settled['name'] == before['name']
+    assert all(len(row['current_rect']) == 4 for row in (pre_focus, before, queued, settled))
+    assert before['showing'] and before['visible']
+    hit = before['planned_accessible_hit']
+    assert hit['status'] == 'complete' and hit['path'][-1]['name'] == before['name']
     assert before['rect'] == queued['rect'] and before['point'] == queued['point']
     assert any(window['title'] == alive.MAIN and window['pid'] == [alive.ui.pid]
                for window in before['windows'])
