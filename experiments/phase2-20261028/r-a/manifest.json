@@ -1,0 +1,66 @@
+{
+  "integration_base": "0c142e317965f02e0dea0167cb7609ee1f22f233",
+  "worker_base": "70c356d54e846abb29e21be9e38dfefa14529c75",
+  "worker_candidate": "f98d8dc524154e7a0571c53f95e01b8237fb500f",
+  "review_verdicts": "spec: no findings; quality: no findings",
+  "integration_commands": [
+    {
+      "command": "node --test apps/ultra/ui/alive*.test.mjs",
+      "exit": 0,
+      "passed": 107
+    },
+    {
+      "command": "ULTRA_TEST_NO_CAPTURES=1 ./node_modules/.bin/playwright test --config=playwright.config.mjs alive-chain.spec.mjs --grep 'Arrangement (pointer edits|creates separate source|selection opens|gain preserves)' --reporter=line",
+      "cwd": "apps/ultra/tests/ci",
+      "exit": 0,
+      "passed": 6
+    }
+  ],
+  "limits": "No native qualification from these Node/Chromium checks. Master generation regression deferred to Tasks6/8. Direct Session-slot source-length/note race test is a residual coverage gap.",
+  "files": {
+    "worker-report.md": {
+      "bytes": 3166,
+      "sha256": "dce7c4bd44968adc960ac5cd4d1f6ff859daf80404d2ca82e10a72fea3441ed1"
+    },
+    "alive-task2-corrected-red.log": {
+      "bytes": 10534,
+      "sha256": "e7d0aceb3ed0b283c331c5bf3f20eb2ba413bf6cfcfb00b20e74582b56d3e40c"
+    },
+    "alive-task2-final-browser.log": {
+      "bytes": 7281,
+      "sha256": "55b2bd82e982b5c148f503dde3185165ad15ebe2f7950c86775853d2269c48da"
+    },
+    "alive-task2-final-dom.log": {
+      "bytes": 8608,
+      "sha256": "f8ca40b9232e4a0a50085b6ec8e9e8324390bc95bd3f3fb992e8c12f33d82edd"
+    },
+    "alive-task2-final-node.log": {
+      "bytes": 10021,
+      "sha256": "582f45033039dbdd3f6972cc1897689f491e4115383ca2a7ccca86cd50bb9eea"
+    },
+    "alive-task2-note-red.log": {
+      "bytes": 841,
+      "sha256": "ecc39200399c121df95e6e0c7369dfcf9e6e336d4be9a4c768a0fe68d376d590"
+    },
+    "alive-task2-red.log": {
+      "bytes": 11815,
+      "sha256": "0af775f1f6bb184d26f1c1c1450c6870a83d587fad503c6ca3795610b53a5c0d"
+    },
+    "integrated-node.log": {
+      "bytes": 10017,
+      "sha256": "3eda23e1bb598700c43ea5042d16c021c11048e30d21196bb01e653baec87752"
+    },
+    "integrated-browser.log": {
+      "bytes": 7254,
+      "sha256": "a73cc416291b624eecd687f77ccbcbea505b396278d3c56243c210bf184b04a8"
+    },
+    "spec-review.md": {
+      "bytes": 1427,
+      "sha256": "43d96046a61e6b9ea0296bd9ffa84c90f0425fc85f51b43bd3447bef0ede4802"
+    },
+    "quality-review.md": {
+      "bytes": 1264,
+      "sha256": "9c5f69dd2042f64c389a5f26aec4803e243baf7c357987671b7de7080c350d16"
+    }
+  }
+}

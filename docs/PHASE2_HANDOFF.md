@@ -27,8 +27,20 @@ historical. Execution uses the canonical ledger at
   `/home/venetanji/.codex/worktrees/bb01/alive`; Task 5 at
   `/home/venetanji/.codex/worktrees/2f1a/alive`. Each starts from `70c356d` and
   owns only its brief's files/resources. The root retains integration ownership.
-- No application fix or Master implementation is accepted yet. Read live worker
-  state and the ledger before redispatch; do not restart these tasks blindly.
+- Task 2 candidate `f98d8dc` has passed independent spec and quality review and
+  is integrated file-by-file. Root's affected verification passes 107 Alive
+  Node tests and six focused Chromium checks; evidence is in
+  `experiments/phase2-20261028/r-a/`. Native qualification remains pending.
+  Source edits visibly refuse stale occurrence relationships, base edits keep
+  their originating generation, loop-only brace updates and Duplicate bounds
+  are corrected. The future Master generation test belongs to Tasks 6/8.
+- Task 5's first candidate `216f22c` is not accepted: review requires a
+  build-independent unit fixture, Apply input/IPC/revision receipts, actual
+  restarted executable/library identity and recorder timeout cleanup. Fix round
+  1 has a narrow additional `session/desktop.rs` tracing lease. Task 3 is still
+  implementing focused editor safety; no candidate is accepted yet.
+- No Master implementation is accepted yet. Read live worker state and the
+  ledger before redispatch; do not restart these tasks blindly.
 
 ## Owner Intent And Current Boundary
 

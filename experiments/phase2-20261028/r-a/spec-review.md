@@ -1,0 +1,7 @@
+# Task 2 spec review: f98d8dc
+
+Verdict: no findings.
+
+Reviewed the task lease, candidate diff, production queue and timeline code, relevant existing and new DOM tests, worker report, and retained red/green logs. The implementation captures the source occurrence and generation at enqueue, visibly refuses a rewired or deleted occurrence, preserves independently valid queued sibling edits, captures the originating generation for live base edits, invalidates the loop brace on loop-only changes, and validates duplicate placement against current bounds and overlap before submission. Selection changes do not become the queued edit's authority. Existing history and file-boundary tests cover accepted Undo and Open behavior.
+
+Coverage limitations: the new delayed independence regressions exercise a placement, while equivalent source-length and note-creation regressions for a Session slot are not present; existing slot rewire/delete tests cover slot fields and automation. The duplicate regression covers out-of-song refusal and existing tests exercise a valid duplicate, but the added test does not enumerate every boundary. The future Master fixture is absent and its cross-generation regression is explicitly deferred by the controller to Tasks 6/8. Verification is based on the worker's recorded logs (107 Alive Node tests and 6 focused Chromium tests passed); this review did not launch the application or rerun tests.

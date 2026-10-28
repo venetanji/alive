@@ -7,8 +7,10 @@ reproducers are checkpointed at `70c356d`, with no application changes from
 `1ebf216`. Fresh baseline evidence is in `experiments/phase2-20261028/baseline/`:
 the original native Apply/editor assertion fails again; the focused probes
 reproduce the queued-edit, focused-save and metadata-loss defects. Task 1 accepts
-this known-bad baseline. Independent isolated Terra workers now own Tasks 2, 3
-and 5; no application fix or new Master capability is accepted yet. The durable
+this known-bad baseline. Task 2's reviewed queue/generation/brace/Duplicate fix
+is integrated, with 107 Alive Node and six focused Chromium checks passing;
+native qualification remains pending. Independent isolated Terra workers own
+Tasks 3 and 5; no new Master capability is accepted yet. The durable
 execution ledger is `.superpowers/sdd/2026-10-28-phase2-live-max/progress.md`.
 
 The owner prioritizes familiar Live/Max workflows and a much closer visual

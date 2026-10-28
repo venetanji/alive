@@ -812,12 +812,37 @@ function timelineBackend(initial=workspaceState()){
     else if(op.kind==='sourceIndependent'){const p=document.placements.find(p=>p.id===op.occurrence.placementId),source=structuredClone(document.sources.find(s=>s.id===p.sourceId));source.id=`independent-${initial.draftRevision}`;source.notes.forEach(n=>n.id+='-copy');document.sources.push(source);p.sourceId=source.id;Object.assign(affected,{trackId:p.trackId,sourceId:source.id,placementId:p.id});}
     else if(op.kind==='noteUpdate'){const source=document.sources.find(s=>s.id===op.sourceId),note=source.notes.find(n=>n.id===op.noteId);Object.assign(note,{beat:op.beat,duration:op.duration,pitch:op.pitch,velocity:op.velocity});affected.trackId=source.trackId;affected.noteId=note.id;}
     else if(op.kind==='sourceRename'){const source=document.sources.find(s=>s.id===op.sourceId);source.name=op.name;affected.trackId=source.trackId;}
+    else if(op.kind==='sourceLength'){const source=document.sources.find(s=>s.id===op.sourceId);source.lengthBeats=op.lengthBeats;affected.trackId=source.trackId;}
     else if(op.kind==='slotAssign'){const t=document.tracks.find(t=>t.id===op.trackId);affected.slotId=`assigned-${initial.draftRevision}`;t.slots[op.slot]={id:affected.slotId,name:op.name,sourceId:op.sourceId,sourceOffset:op.sourceOffset,loopEnabled:op.loopEnabled};}
     else if(op.kind==='transportRange'){const {kind,...values}=op;Object.assign(document,values);}
     else throw Error(`Unsupported test operation ${op.kind}`);
     history.push(structuredClone(initial.draft??initial.document));future.length=0;initial.draft=document;initial.draftRevision++;initial.history={canUndo:true,canRedo:false};return{snapshot:structuredClone(initial),affected};
   };return{...native,invoke};
 }
+for(const field of ['MIDI source length','Arrangement source name','Add note'])test(`queued ${field} refuses a source rewired by independence`,async()=>{
+  const initial=workspaceState(),page=dom('./alive.html'),native=timelineBackend(initial);let release,held=true;
+  const view=mountAlive({...page,invoke:async(name,args)=>{if(name==='alive_workspace_edit'&&held){held=false;await new Promise(resolve=>release=resolve);}return native.invoke(name,args);}});await settle();
+  await page.find('Select placement placement-0').fire('click');const input=page.find(field),originalId=initial.document.sources[0].id;
+  await page.find('Make placement independent').fire('click');if(field==='Add note')await input.fire('click');else{input.value=field.includes('length')?'16':'Changed';await input.fire('change');}await page.find('Select Harmony slot 1').fire('click');release();await settle();await settle();
+  const document=view.model.document(),independentId=document.placements[0].sourceId;
+  assert.notEqual(independentId,originalId);assert.equal(document.sources.find(s=>s.id===originalId).lengthBeats,8);assert.equal(document.sources.find(s=>s.id===originalId).name,initial.document.sources[0].name);
+  assert.equal(document.sources.find(s=>s.id===originalId).notes.length,initial.document.sources[0].notes.length);
+  assert.equal(native.calls.filter(c=>c.name==='alive_workspace_edit').length,1);assert.match(page.ids.get('notice').textContent,/source.*changed/i);view.dispose();
+});
+test('queued base edit retains its generation across Open with a reused instance',async()=>{
+  const page=dom('./alive.html'),native=backend(state()),boundary=delayedBoundary(native,'alive_file',snapshot=>{snapshot.generation++;snapshot.draftRevision++;}),view=mountAlive({...page,invoke:boundary.invoke});await settle();
+  await page.ids.get('open').fire('click');const input=page.find('Cutoff base');input.value='3200';await input.fire('change');boundary.release();await settle();await settle();
+  assert.equal(native.snapshot.document.tracks[0].device.parameters.cutoff,2400);const call=native.calls.find(c=>c.name==='alive_base');assert.ok(!call||call.args.generation===1);view.dispose();
+});
+test('loop-only edit updates the Arrangement brace disabled state',async()=>{
+  const page=dom('./alive.html'),native=timelineBackend(),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const loop=page.ids.get('loop');loop.checked=false;await loop.fire('change');
+  assert.equal(page.find('Song loop brace').classList.contains('disabled'),!view.model.document().loopEnabled);view.dispose();
+});
+test('duplicate refuses an out-of-song destination without changing placements',async()=>{
+  const page=dom('./alive.html'),native=timelineBackend(),view=mountAlive({...page,invoke:native.invoke});await settle();await page.find('Select placement placement-0').fire('click');
+  await page.find('Duplicate placement').fire('click');assert.equal(view.model.document().placements.length,2);assert.equal(native.calls.filter(c=>c.name==='alive_workspace_edit').length,0);assert.match(page.ids.get('notice').textContent,/fit inside the song/i);view.dispose();
+});
 test('Arrangement creates an accessible unplaced source then a separate placement and source note',async()=>{
   const initial=workspaceState();initial.document.placements=[];const page=dom('./alive.html'),native=timelineBackend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
   await page.find('Create MIDI source').fire('click');assert.equal(view.model.document().sources.length,3);assert.equal(view.model.document().placements.length,0);

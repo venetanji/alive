@@ -198,8 +198,11 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     return enqueue(async()=>{const result=await invoke(v4?'alive_workspace_action':'alive_clip_action',{action,...intent});await refresh();if(result){const observed=observedRequest(result);notice(requestText(observed,model.snapshot()),observed.status==='rejected');}});
   }
   function workspaceEdit(operation,selectResult=false){
-    const scope=scopeRevision,token=selectionToken;
-    return enqueue(async()=>{if(scope!==scopeRevision)throw Error('The source scope changed. Select it and try again.');const resolved=typeof operation==='function'?operation():operation;const result=await command('alive_workspace_edit',{operation:resolved});if(!model.applied(result.snapshot))return result;listRevision++;
+    const scope=scopeRevision,token=selectionToken,origin=generation();
+    const sourceTarget=typeof operation!=='function'&&['sourceRename','sourceLength','noteCreate'].includes(operation.kind)?{sourceId:operation.sourceId,trackId:model.document().tracks[selected].id,slotId:selectedClip()?.id,placementId:sourceSelection?.occurrence?.placementId}:null;
+    return enqueue(async()=>{if(scope!==scopeRevision||origin!==generation())throw Error('The source scope changed. Select it and try again.');
+      if(sourceTarget){const d=model.document(),actual=sourceTarget.placementId?d.placements.find(p=>p.id===sourceTarget.placementId&&p.trackId===sourceTarget.trackId)?.sourceId:sourceTarget.slotId?d.tracks.find(t=>t.id===sourceTarget.trackId)?.slots.find(s=>s?.id===sourceTarget.slotId)?.sourceId:d.sources.find(s=>s.id===sourceTarget.sourceId&&s.trackId===sourceTarget.trackId)?.id;if(actual!==sourceTarget.sourceId)throw Error('The originating source changed. Select it and try again.');}
+      const resolved=typeof operation==='function'?operation():operation;const result=await command('alive_workspace_edit',{operation:resolved});if(!model.applied(result.snapshot))return result;listRevision++;
       if(token===selectionToken){const a=result.affected,track=model.document().tracks.find(t=>t.id===a.trackId);if(selectResult&&track&&a.sourceId&&(a.placementId||!sourceSelection||resolved.kind==='sourceCreateMidi'))sourceSelection={trackId:a.trackId,sourceId:a.sourceId,occurrence:a.placementId?{kind:'placement',placementId:a.placementId}:null};if(sourceSelection?.occurrence?.placementId){const p=model.document().placements.find(p=>p.id===sourceSelection.occurrence.placementId);sourceSelection={...sourceSelection,sourceId:p?.sourceId??sourceSelection.sourceId,occurrence:p?sourceSelection.occurrence:null};}if(a.slotId&&track){const slot=track.slots.findIndex(s=>s?.id===a.slotId);if(slot>=0)selectedSlots.set(a.trackId,slot);}selectedNote=a.noteId??null;}
       musicKey=clipControlsKey=trackKey='';render();return result;});
   }
@@ -439,7 +442,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       output.setAttribute('aria-label',`${binding.label} effective ownership`);base.append(number,unit);section.append(label,range,base,output);$('parameters').append(section);parameterViews.set(binding.key,{section,number,range,output});
     }
   }
-  function setBase(instanceId,key,value){return enqueue(async()=>{await command('alive_base',{instanceId,key,value});await refresh();});}
+  function setBase(instanceId,key,value){const origin=generation();return enqueue(async()=>{if(generation()!==origin)throw Error('The originating device session changed.');await invoke('alive_base',{instanceId,key,value,generation:origin});await refresh();});}
   const piano=$('piano-roll'),velocity=$('note-velocity');
   function context(){return {sourceId:sourceOf()?.id,occurrence:sourceSelection?.occurrence,trackId:model.document().tracks[selected].id,clipId:selectedClip()?.id??null,noteId:typeof selectedNote==='string'?selectedNote:null,scope:scopeRevision,generation:generation(),revision:model.snapshot()?.draftRevision??0};}
   function paintSelection(){paintPiano(piano,preview??editorDocument().tracks[selected].notes,editorDocument().lengthBeats,true);render();}
