@@ -28,3 +28,21 @@ identify the copied current root binaries, not unavailable historical CI
 binaries. Observations use private Xvfb/software PipeWire, not physical audio
 or a new endurance pass. Raw PCM remains local and is hash-pinned in its capture
 receipt. Original reports/logs and selected metadata are pinned by `manifest.json`.
+
+## Root Final Harness Run
+
+After integration and push, root ran the entire original Alive journey at
+`c272c4a6ac350372e990cad1e5fe3289bba86f9a`: exit 0 in 197.813 seconds. Exact
+command, overrides, executable/library hashes and log hash are in
+`root-c272c4a/execution.json`. Original report, planned-input observations and
+timing log are retained; `outputs-manifest.json` also pins local-only captures
+and screenshots. The cleanup sample finds no process using either current-root
+application executable.
+
+Playback uses software PipeWire/CPAL at 48 kHz/512 frames; final diagnostics
+report stream errors 0 and audio failed false. The run explicitly sets endurance
+seconds to 0, so it claims no sustained playing duration, resource growth result
+or physical underrun measurement. Native removal, pending edits, original
+Save/Quit and chooser assertions all reach successful journey completion.
+Cloud qualification remains separate: the c272 Chromium job subsequently fails
+at an Arrangement bounding-box read and is being diagnosed; no G0 pass follows.

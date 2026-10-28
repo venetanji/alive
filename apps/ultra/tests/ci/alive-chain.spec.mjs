@@ -305,7 +305,8 @@ async function dragTimeline(page,locator,from,to,{cancel=false,hide=false}={}){
 for(const size of [{width:1440,height:900},{width:1280,height:800}]){
   test(`Arrangement pointer edits, cancellation and local view controls at ${size.width}`,async({page})=>{
     await openArrangement(page,size);const p=page.getByRole('button',{name:'Select placement p-0',exact:true});
-    const box=await p.boundingBox();await page.mouse.move(box.x+30,box.y+12);await page.mouse.down();await page.mouse.move(box.x+126,box.y+12,{steps:5});expect(await workspaceEdits(page)).toHaveLength(0);await page.mouse.up();
+    // Read the current placement and its geometry together; timeline redraws replace its nodes.
+    const box=await page.evaluate(()=>{const element=document.querySelector('[data-placement-id="p-0"]'),rect=element?.getBoundingClientRect();return rect&&rect.width&&rect.height?{x:rect.x,y:rect.y}:null;});expect(box).not.toBeNull();await page.mouse.move(box.x+30,box.y+12);await page.mouse.down();await page.mouse.move(box.x+126,box.y+12,{steps:5});expect(await workspaceEdits(page)).toHaveLength(0);await page.mouse.up();
     await expect(page.getByLabel('Placement start',{exact:true})).toHaveValue('2');expect(await workspaceEdits(page)).toHaveLength(1);
     await dragTimeline(page,p,[30,12],[78,12],{cancel:true});expect(await workspaceEdits(page)).toHaveLength(1);await expect(page.getByLabel('Placement start',{exact:true})).toHaveValue('2');
     await dragTimeline(page,p.locator('.timeline-edge.right'),[3,15],[51,15]);await expect(page.getByLabel('Placement duration',{exact:true})).toHaveValue('5');

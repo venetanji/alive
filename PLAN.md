@@ -45,8 +45,15 @@ Its UI/reference and Chromium jobs pass. Original failure artifacts are retained
 reviewed candidate `490ec16` adds bounded focus/geometry/planned-hit diagnostics
 and repairs an observer fixture regression, with 23 root helper tests passing.
 Local full/targeted native runs pass at their separately recorded revisions,
-but historical cloud causality remains unproven. New cloud qualification is
-required before P2.0 promotion. Package run `40695723144` passes all four targets
+but historical cloud causality remains unproven. Root's complete final-harness
+native run at pushed `c272c4a` passes in 197.813s. CI `40704978908` UI/reference
+passes, but Chromium fails one Arrangement test at a null placement bounding
+box after visibility passed. Reviewed test-only candidate `c7f12ea` removes the
+detached-handle geometry read; controlled red/green covers both sizes, all 14
+worker Arrangement checks pass, and root's two focused checks pass. Native
+cloud and packages remain live; the next push preserves that running evidence
+first. New cloud qualification is required
+before P2.0 promotion. Package run `40695723144` passes all four targets
 on `c6df81f`, with publication skipped; it does not qualify newer changes.
 The concrete Master packet `6638858` has clean
 scoped reviews and locally compiled C/Rust ABI witnesses, but remains unfrozen

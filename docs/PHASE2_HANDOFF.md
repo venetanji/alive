@@ -7,7 +7,25 @@ to decide what to resume.
 
 ## Active Execution Checkpoint
 
-Latest resumption: exact-checkpoint CI `40695723200` failed in the Alive native
+Latest pushed checkpoint is `c272c4a6ac350372e990cad1e5fe3289bba86f9a`.
+Root's complete final-harness Alive native run exits 0 in 197.813s, using the
+unchanged hash-verified application binaries and no endurance workload. Root
+owns the free native GUI/audio lease; cleanup sample finds no current-root app.
+Cloud CI `40704978908` UI/reference job passes, but Chromium fails one of 138
+checks at `alive-chain.spec.mjs:308`: a placement bounding box is null after
+visibility passed. Native cloud job and packages `40704979041` remain live.
+Terra browser candidate `c7f12ea` has clean independent spec/quality reviews and
+is integrated byte-for-byte. A controlled real redraw reproduces the detached
+handle error; its exact role in the original cloud failure remains qualified.
+The worker's full Arrangement cohort passes 14 tests; root's focused pointer
+tests pass both sizes in 5.4s. Original trace, reviews and reproduction are in
+reliability/cloud-arrangement-browser; root's final native evidence is in
+cloud-chooser-diagnostics/root-c272c4a. The next push is held briefly so CI's
+currently running native Alive/editor journey can finish instead of being
+cancelled by workflow concurrency. All workers are complete; no G0 acceptance
+or Master consumer authorization. Read the live ledger before redispatch.
+
+Previous resumption: exact-checkpoint CI `40695723200` failed in the Alive native
 walkthrough at `check_alive_desktop.py:1175`: Replace Harmony device did not
 produce a viewable Load Ultra Device chooser. UI/reference and Chromium jobs
 succeeded. Original failed logs and the complete Alive artifact are retained
