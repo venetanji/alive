@@ -1,0 +1,363 @@
+✖ Perform renames a device without replacing authored controls or presets (69.174038ms)
+✔ effect panel exposes live parameters and presets without a keyboard claim (14.954351ms)
+✔ saving a focused Perform value commits it before the snapshot (8.617056ms)
+✔ rebuilding Perform controls captures their focused value (14.098336ms)
+✔ help shell hosts Basic while question/reference navigation preserves the native runtime (14.870002ms)
+✔ Basic cable feedback validates the complete help shell like the committed edit (13.501832ms)
+✔ help reference replies cannot attach to a replacement shell and unavailable states stay readable (8.257568ms)
+✔ importing a help shell waits for native admission before requesting local reference text (8.508562ms)
+✔ console reveal closes the reference pane in a real bound Basic child (6.473492ms)
+✔ a native Basic tab can open an independently bound window without changing its hosted scope (5.065085ms)
+✔ live Print bubbles expose safe text and expire independently of console visibility (6.760033ms)
+✔ comment callout geometry follows appearance and resets without native graph work (11.040337ms)
+✔ console displays native messages safely, filters severity, selects source and clears (10.736264ms)
+✔ console source links reveal descendant objects from the root view (8.098428ms)
+✔ browser page mounts editable palette, honest preview, and exclusively top/bottom typed ports (4.595299ms)
+✔ audio settings save requested device buffer without starting sound, then lock edits during playback (15.457992ms)
+✔ audio settings browser preview never invents devices or invokes a native host (2.57052ms)
+✔ real page adds, wires, selects, disconnects, deletes and undoes objects (19.715984ms)
+✔ actual numeric, bang, toggle and message controls emit native events; drag is layout-only (15.612433ms)
+✔ message editing validates before replacement and bad ports leave last valid document intact (15.751836ms)
+✔ focus and visibility preserve the running graph; navigation disposes only its document (7.645363ms)
+✔ pagehide handles an already-closed native graph without an unhandled rejection (4.746253ms)
+✔ status polls retain cable elements while selection and endpoint changes redraw them (10.121985ms)
+✔ a bang flash still clears on the next unchanged observation (7.128368ms)
+✔ advancing diagnostics stay current without rewriting the canvas and faults remain visible (7.951931ms)
+✔ hidden windows poll less often and restore immediately without stopping audio (11.585526ms)
+✔ import replacing a reused node ID rebuilds its type-specific controls and ports (2.509414ms)
+✔ consecutive palette objects are placed without overlapping headers or ports (3.929223ms)
+✔ keyboard creation rejects unknown objects and Escape cancels without mutating the patch (7.751604ms)
+✔ lock protects structure while unlocked UI clicks select instead of triggering (9.83785ms)
+✔ inlet and outlet context information separates accepted messages from emitted data (5.77248ms)
+✔ number display follows native observations without changing saved parameters (8.034136ms)
+✔ saving a focused number commits its draft before taking the snapshot (10.576131ms)
+✔ rebuilding the node container captures the focused draft first (4.523854ms)
+✔ saving an invalid focused number refuses the snapshot until cancelled (4.563118ms)
+✔ a parked invalid number blocks Save and close after focus moves (4.498507ms)
+✔ parked invalid number survives container reconstruction (4.292278ms)
+✔ preflight commits valid parked drafts and rejects another invalid draft (4.651475ms)
+✔ an out-of-range number draft is not clamped by Enter (3.939421ms)
+✔ saving a focused inspector field commits its draft (4.523804ms)
+✔ changing selection captures a focused inspector draft before rebuilding (12.314912ms)
+✔ saving a focused appearance value commits its draft (4.978812ms)
+✔ saving an open object entry commits its draft (5.253631ms)
+✔ saving through a toolbar commits the open object entry after focus moves (5.017456ms)
+✔ controls can return a live observed value to the saved value without duplicate native events (11.509763ms)
+✔ Escape stops notes from focused ordinary inputs but entry Escape only cancels (11.959552ms)
+✔ locked inspector rejects structural parameters while keeping live controls available (9.316306ms)
+✔ camera pan, zoom and reset never send native graph or audio commands (7.231212ms)
+✔ locking cancels an in-flight move and examples open independently (5.179291ms)
+✔ new variadic objects rebuild node-aware ports after configuration changes (4.252733ms)
+✔ MSP channel configuration uses text, rebuilds ports and stays locked during performance (4.139509ms)
+✔ locked flonum and slider emit hot native events with audio off, physical Tab is a UI action and observations display (11.572322ms)
+✔ flonum Tab commits pending text before the native second-outlet event (4.552648ms)
+✔ integer UI entry truncates either sign and silent runtime values display without changing the document (4.923218ms)
+✔ slider pointer values remain raw and offset/multiplier apply only to the output readout (4.701379ms)
+✔ line Help opens its own runnable native example without starting audio or sending events (4.722028ms)
+✔ native startup applies only its own document and file controls preserve the current graph (4.008723ms)
+✔ searchable library opens a new example window and focuses existing native windows (14.141388ms)
+✔ receive binding edits rebuild inlet DOM and remain structural while locked (3.671897ms)
+✔ native menu, close-save and error events reach only their targeted document window (15.106899ms)
+✔ native child boot attaches to its owner snapshot and closing the view leaves execution running (3.944021ms)
+✔ native patcher headers request a child window while retaining the parent view (6.22328ms)
+✔ console reveal preserves its source revision across pending edits and native routing (6.231085ms)
+✔ target windows reject stale reveal descriptors and events with a reused node ID (3.039294ms)
+✔ target reveal adopts an authoritative descriptor ahead of its last broadcast (2.793821ms)
+✔ native reveal waits for shared controller adoption during startup (2.7243ms)
+✔ native owner broadcast arriving during initial adoption cannot leave a child on an older snapshot (2.884291ms)
+✔ native readiness waits for the close-flush event subscription to finish (4.561956ms)
+✔ a close request arriving before initial native adoption binds to the shared controller (2.625813ms)
+✔ unchanged stopped status polls preserve cable paths while cable inputs invalidate them (20.398652ms)
+✔ close flush acknowledges only after the focused shared edit reaches its owner (4.069778ms)
+✔ owner Save waits for a linked focused draft and its delayed native admission (10.774967ms)
+✔ close flush reports a focused invalid draft without admitting or acknowledging success (3.73159ms)
+✔ close acknowledgement waits for delayed owner admission and advances exactly one revision (3.913473ms)
+✔ cancelled Save As retains the committed focused draft in the owner (3.675393ms)
+✔ number preserves a rejected undo draft through blur and retries Enter (4.726347ms)
+✔ number preserves a rejected redo draft through blur and retries Enter (4.731446ms)
+✔ number_int preserves a rejected undo draft through blur and retries Enter (4.297186ms)
+✔ number_int preserves a rejected redo draft through blur and retries Enter (4.541448ms)
+✔ flonum preserves a rejected undo draft through blur and retries Enter (4.260057ms)
+✔ flonum preserves a rejected redo draft through blur and retries Enter (10.579088ms)
+✔ drag rejected during undo restores preview and accepts a later gesture (5.284029ms)
+✔ drag rejected during redo restores preview and accepts a later gesture (5.121943ms)
+✔ a typed draft matching the pre-Undo display still requires admission (4.00727ms)
+✔ native save-before-close events retain their Quit generation through the page listener (4.770119ms)
+✔ range thumb reflects the admitted endpoint in the same pointer dispatch (3.475477ms)
+✖ repackaging retains authored bindings, ranges, presets and interfaces (6.444027ms)
+✖ repackaging rejects incompatible saved bindings without changing the input (1.788785ms)
+✖ repackaging accepts a valid non-template version 2 device (2.355363ms)
+✔ a subtractive voice graph connects through an explicit four-lane mixdown to stereo (0.564495ms)
+✔ voice lanes cannot silently become mono or accept a mono oscillator (0.661828ms)
+✔ voice dependency cycles and a second allocator are rejected (0.443626ms)
+✔ all six objects are keyboard-authorable and live parameter edits retain their bounds (2.508994ms)
+✔ device bindings and presets survive serialization and metadata edits are undoable (0.947578ms)
+✔ malformed device interfaces, duplicate bindings and out-of-range presets fail admission (2.509634ms)
+✔ version 2 instruments retain authored MIDI with explicit stereo output (2.216011ms)
+✔ version 2 effects bind stereo audio input and live filter parameters without MIDI (2.259002ms)
+✔ saved stereo effects retain authored routes, stable parameter keys and working presets (2.087598ms)
+ℹ tests 98
+ℹ suites 0
+ℹ pass 94
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 789.776661
+
+✖ failing tests:
+
+test at apps/ultra/ui/canvas-dom.test.mjs:44:1
+✖ Perform renames a device without replacing authored controls or presets (69.174038ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      {
+        key: 'attack',
+        label: 'Attack',
+        max: 10000,
+  ...
+      {
+  +     key: 'cutoff',
+  +     label: 'Cutoff',
+  +     max: 20000,
+  +     min: 20,
+  -     key: 'tone',
+  -     label: 'Tone',
+  -     max: 9000,
+  -     min: 100,
+        node: 4,
+        param: 'cutoff',
+        unit: 'Hz'
+      },
+      {
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/ui/canvas-dom.test.mjs:51:52)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { key: 'attack', label: 'Attack', node: 5, param: 'attack', min: 1, max: 10000, unit: 'ms' }, { key: 'decay', label: 'Decay', node: 5, param: 'decay', min: 1, max: 10000, unit: 'ms' }, { key: 'sustain', label: 'Sustain', node: 5, param: 'sustain', min: 0, max: 1, unit: '' }, { key: 'release', label: 'Release', node: 5, param: 'release', min: 1, max: 10000, unit: 'ms' }, { key: 'cutoff', label: 'Cutoff', node: 4, param: 'cutoff', min: 20, max: 20000, unit: 'Hz' }, { key: 'resonance', label: 'Resonance', node: 4, param: 'resonance', min: 0.1, max: 20, unit: 'Q' }, { key: 'level', label: 'Level', node: 9, param: 'value', min: 0, max: 127, unit: 'raw' } ],
+    expected: [ { key: 'attack', label: 'Attack', node: 5, param: 'attack', min: 1, max: 10000, unit: 'ms' }, { key: 'decay', label: 'Decay', node: 5, param: 'decay', min: 1, max: 10000, unit: 'ms' }, { key: 'sustain', label: 'Sustain', node: 5, param: 'sustain', min: 0, max: 1, unit: '' }, { key: 'release', label: 'Release', node: 5, param: 'release', min: 1, max: 10000, unit: 'ms' }, { key: 'tone', label: 'Tone', node: 4, param: 'cutoff', min: 100, max: 9000, unit: 'Hz' }, { key: 'resonance', label: 'Resonance', node: 4, param: 'resonance', min: 0.1, max: 20, unit: 'Q' }, { key: 'level', label: 'Level', node: 9, param: 'value', min: 0, max: 127, unit: 'raw' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at apps/ultra/ui/canvas-instrument.test.mjs:21:1
+✖ repackaging retains authored bindings, ranges, presets and interfaces (6.444027ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+        name: 'Init',
+        values: {
+          attack: 10,
+  +       cutoff: 2400,
+          decay: 150,
+          level: 90,
+          release: 300,
+          resonance: 0.7,
+          sustain: 0.65,
+  -       tone: 2400
+        }
+      },
+  -   {
+  -     name: 'Soft',
+  -     values: {
+  -       attack: 80,
+  -       decay: 450,
+  -       level: 80,
+  -       release: 800,
+  -       resonance: 0.8,
+  -       sustain: 0.5,
+  -       tone: 700
+  -     }
+  -   },
+  -   {
+  -     name: 'Pluck',
+  -     values: {
+  -       attack: 2,
+  -       decay: 170,
+  -       level: 85,
+  -       release: 120,
+  -       resonance: 2.5,
+  -       sustain: 0.12,
+  -       tone: 4200
+  -     }
+  -   }
+    ]
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/ui/canvas-instrument.test.mjs:26:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { name: 'Init', values: [Object] } ],
+    expected: [ { name: 'Init', values: [Object] }, { name: 'Soft', values: [Object] }, { name: 'Pluck', values: [Object] } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at apps/ultra/ui/canvas-instrument.test.mjs:37:1
+✖ repackaging rejects incompatible saved bindings without changing the input (1.788785ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/ui/canvas-instrument.test.mjs:39:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /binding.*attack/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at apps/ultra/ui/canvas-instrument.test.mjs:42:1
+✖ repackaging accepts a valid non-template version 2 device (2.355363ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      audio: {
+  +     inputs: 0,
+  +     layout: 'stereo',
+  +     outputs: 2
+  -     input: null,
+  -     output: {
+  -       channels: 2,
+  -       layout: 'stereo'
+  -     }
+      },
+      id: 'org.alive.test',
+  -   kind: 'instrument',
+      midi: {
+  +     inlet: 0,
+  +     node: 1
+  -     input: {
+  -       inlet: 0,
+  -       node: 1
+  -     },
+  -     output: null
+      },
+      name: 'Renamed',
+      parameters: [
+        {
+  +       key: 'attack',
+  +       label: 'Attack',
+  +       max: 10000,
+  +       min: 1,
+  +       node: 4,
+  +       param: 'attack',
+  +       unit: 'ms'
+  +     },
+  +     {
+  +       key: 'decay',
+  +       label: 'Decay',
+  +       max: 10000,
+  +       min: 1,
+  +       node: 4,
+  +       param: 'decay',
+  +       unit: 'ms'
+  +     },
+  +     {
+  +       key: 'sustain',
+  +       label: 'Sustain',
+  +       max: 1,
+  +       min: 0,
+  +       node: 4,
+  +       param: 'sustain',
+  +       unit: ''
+  +     },
+  +     {
+  +       key: 'release',
+  +       label: 'Release',
+  +       max: 10000,
+  +       min: 1,
+  +       node: 4,
+  +       param: 'release',
+  +       unit: 'ms'
+  +     },
+  +     {
+          key: 'cutoff',
+          label: 'Cutoff',
+          max: 20000,
+          min: 20,
+          node: 3,
+  ...
+        },
+  +     {
+  +       key: 'resonance',
+  +       label: 'Resonance',
+  +       max: 20,
+  +       min: 0.1,
+  +       node: 3,
+  +       param: 'resonance',
+  +       unit: 'Q'
+  +     },
+  +     {
+  +       key: 'level',
+  +       label: 'Level',
+  +       max: 127,
+  +       min: 0,
+  +       node: 7,
+  +       param: 'value',
+  +       unit: 'raw'
+  +     }
+      ],
+      presets: [
+        {
+  +       name: 'Init',
+  -       name: 'Soft',
+          values: {
+  +         attack: 10,
+  +         cutoff: 2400,
+  +         decay: 150,
+  +         level: 90,
+  +         release: 300,
+  +         resonance: 0.7,
+  +         sustain: 0.65
+  -         cutoff: 350
+          }
+        }
+      ],
+  +   version: 1
+  -   version: 2
+    }
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/ui/canvas-instrument.test.mjs:45:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: {
+      version: 1,
+      id: 'org.alive.test',
+      name: 'Renamed',
+      midi: { node: 1, inlet: 0 },
+      audio: { inputs: 0, outputs: 2, layout: 'stereo' },
+      parameters: [
+        [Object], [Object],
+        [Object], [Object],
+        [Object], [Object],
+        [Object]
+      ],
+      presets: [ [Object] ]
+    },
+    expected: { version: 2, id: 'org.alive.test', name: 'Renamed', midi: { input: [Object], output: null }, audio: { input: null, output: [Object] }, parameters: [ [Object] ], presets: [ [Object] ], kind: 'instrument' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

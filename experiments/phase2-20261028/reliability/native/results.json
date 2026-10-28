@@ -1,0 +1,82 @@
+[
+  {
+    "name": "alive",
+    "source_head": "b4b1a5c526830026321e3c3c02db24d7c9a76d3c",
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "--software-audio",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/g0-native-b4b1a5c/alive"
+    ],
+    "environment": {
+      "ULTRA_TEST_ALIVE": "1",
+      "ULTRA_TEST_ALIVE_BINARY": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive",
+      "ULTRA_TEST_SCRIPT": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py"
+    },
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_seconds": 197.71,
+    "log": ".superpowers/sdd/2026-10-28-phase2-live-max/g0-native-b4b1a5c/alive.log",
+    "log_sha256": "cd17eb3cd5f6791c5c617ea5ed9458e6b409ce80880042cb4f7a1589e5a8dc2d",
+    "output": ".superpowers/sdd/2026-10-28-phase2-live-max/g0-native-b4b1a5c/alive"
+  },
+  {
+    "name": "arrangement",
+    "source_head": "b4b1a5c526830026321e3c3c02db24d7c9a76d3c",
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "--software-audio",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/g0-native-b4b1a5c/arrangement"
+    ],
+    "environment": {
+      "ULTRA_TEST_ALIVE": "1",
+      "ULTRA_TEST_SCREEN_SIZE": "1600x1000",
+      "ULTRA_TEST_ALIVE_BINARY": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive",
+      "ULTRA_TEST_ALIVE_SESSION": "/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/examples/midi-arrangement.alive",
+      "ULTRA_TEST_SCRIPT": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_arrangement.py"
+    },
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_seconds": 118.157,
+    "log": ".superpowers/sdd/2026-10-28-phase2-live-max/g0-native-b4b1a5c/arrangement.log",
+    "log_sha256": "87d82119b0fa067eb31da2870c56dabfde855712c40a54150b0932064adfd6e2",
+    "output": ".superpowers/sdd/2026-10-28-phase2-live-max/g0-native-b4b1a5c/arrangement"
+  },
+  {
+    "name": "ultra",
+    "source_head": "b4b1a5c526830026321e3c3c02db24d7c9a76d3c",
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "--software-audio",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/g0-native-b4b1a5c/ultra"
+    ],
+    "environment": {},
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_seconds": 166.32,
+    "log": ".superpowers/sdd/2026-10-28-phase2-live-max/g0-native-b4b1a5c/ultra.log",
+    "log_sha256": "67b1151a45f3d75481bd5b1126b610c50c9b319175c58eb9b3a19e487badc2a7",
+    "output": ".superpowers/sdd/2026-10-28-phase2-live-max/g0-native-b4b1a5c/ultra"
+  },
+  {
+    "name": "instrument",
+    "source_head": "b4b1a5c526830026321e3c3c02db24d7c9a76d3c",
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "--software-audio",
+      "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/g0-native-b4b1a5c/instrument"
+    ],
+    "environment": {
+      "ULTRA_TEST_SCRIPT": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_instrument_desktop.py"
+    },
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_seconds": 139.502,
+    "log": ".superpowers/sdd/2026-10-28-phase2-live-max/g0-native-b4b1a5c/instrument.log",
+    "log_sha256": "91eae798698378f5f007afafea195564a43e8c70f69f3b42533dbf1c97c2b826",
+    "output": ".superpowers/sdd/2026-10-28-phase2-live-max/g0-native-b4b1a5c/instrument"
+  }
+]

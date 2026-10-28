@@ -1,8 +1,9 @@
 # Phase 2 Implementation Handoff
 
-Updated 2026-10-28. Read this before resuming after compaction or creating the
-implementation goal. This file records planning state; it is not evidence that
-any Phase 2 feature has been implemented.
+Updated 2026-10-28. Read this before resuming after compaction. The implementation
+goal is active; this file records accepted work, evidence limits and the next
+incomplete gate. Use the execution checkpoint, not historical planning text,
+to decide what to resume.
 
 ## Active Execution Checkpoint
 
@@ -11,9 +12,32 @@ planning-only boundary and old goal observations later in this document are
 historical. Execution uses the canonical ledger at
 `.superpowers/sdd/2026-10-28-phase2-live-max/progress.md`.
 
-- Reviewed planning/reproducer checkpoint: `70c356d`; application source is
-  unchanged from `1ebf216`. Origin fetch succeeded; feature upstream remains
-  `1ebf216` and release foundation remains `31033483`. PR #6 remains draft.
+- Reviewed planning/reproducer checkpoint: `70c356d`; its application tree
+  matches `1ebf216`. Release foundation remains `31033483`; PR #6 remains draft.
+- Current application source is `b4b1a5c`, including reviewed Task 3 and Task 4
+  integrations. Earlier checkpoint `5b464e7`: CI `40686059005` and
+  packages `40686058990` both completed successfully on that commit, including
+  all four package targets; publication was skipped. These results do not
+  qualify the newer source commits. This checkpoint adds only documentation
+  and original evidence to `b4b1a5c`; consult actual HEAD/remote refs for its
+  containing commit. PR #6 remains draft.
+- Root's integrated Node/component suite records 572 passing tests and eight
+  focused Chromium checks. A fresh rebuild at `b4b1a5c` exits 0; the command,
+  exact executable/library hashes and build-log hash are in the canonical
+  workspace's `checkpoint-build-b4b1a5c.json`, retained durably as
+  `experiments/phase2-20261028/reliability/root/build.json`. All four combined
+  native journeys exit 0 on that source: Alive 197.710s, Arrangement 118.157s,
+  Ultra canvas/documents 166.320s and instrument authoring 139.502s. Durable
+  commands, reports, log hashes and both-size screenshots are in
+  `experiments/phase2-20261028/reliability/native/`. The instrument journey has
+  18 edit cycles over 62.833s; 26 local captures contain 10,873,472 finite stereo
+  frames. This is not the required 1800-playing-second endurance pass.
+- Fresh full pinned headless contracts exit 0 in 212.257s on `b4b1a5c`,
+  including all 572 UI/component tests, schemas, recorded-reference checks and
+  C++ graph/object suites. Durable command/log receipts are in the reliability
+  checkpoint's `root/contracts.json` and `root/contracts.log`. The command's
+  own generated arithmetic build receipt was retained and restored to its
+  prior bytes; no unrelated source was reverted.
 - Task 1 is complete as a known-bad baseline. Three focused reproducers expose
   five Alive defects and two Ultra defects. Independent Terra spec and quality
   reviews found no metadata findings. Root's fresh explicit Alive native driver
@@ -22,15 +46,19 @@ historical. Execution uses the canonical ledger at
 - Evidence: `experiments/phase2-20261028/baseline/README.md`, `manifest.json`
   and `native-result.json`. Raw software-loopback PCM is retained locally and
   hash-pinned; no physical audio or endurance pass is claimed.
-- Active isolated workers, all explicitly `gpt-6.1-terra` / high / fresh context:
-  Task 2 at `/home/venetanji/.codex/worktrees/27be/alive`; Task 3 at
-  `/home/venetanji/.codex/worktrees/bb01/alive`; Task 5 at
-  `/home/venetanji/.codex/worktrees/2f1a/alive`. Each starts from `70c356d` and
-  owns only its brief's files/resources. The root retains integration ownership.
+- Isolated implementation uses explicit `gpt-6.1-terra` / high / fresh context.
+  A fresh `checkpoint_evidence_review` dispatch succeeds with that exact model
+  ID in this resumed session. Tasks 2/3/4/5 are complete; do not restart their
+  implementation. Task 4 explicitly released the native GUI/audio/build lease
+  to root after confirming its processes exited. Root now owns serial G0.
+  Preserve the worker workspaces at `27be`, `bb01` and `2f1a` until their original
+  evidence is retained; their existence does not imply an active writer.
 - Task 2 candidate `f98d8dc` has passed independent spec and quality review and
   is integrated file-by-file. Root's affected verification passes 107 Alive
   Node tests and six focused Chromium checks; evidence is in
-  `experiments/phase2-20261028/r-a/`. Native qualification remains pending.
+  `experiments/phase2-20261028/r-a/`. Combined-source Alive and Arrangement
+  journeys now pass, as do the remaining combined native G0 journeys. Final-head
+  cloud and later-feature acceptance remain separate gates.
   Source edits visibly refuse stale occurrence relationships, base edits keep
   their originating generation, loop-only brace updates and Duplicate bounds
   are corrected. The future Master generation test belongs to Tasks 6/8.
@@ -42,21 +70,38 @@ historical. Execution uses the canonical ledger at
   The deliberate occlusion run retains the original failure and attributes it
   to input hitting Audio details instead of Apply. Integrated as `65dbf5a`;
   root's 17 helper regressions pass. Candidate-native evidence is retained under
-  `experiments/phase2-20261028/r-d/`; combined-source native reruns remain open.
+  `experiments/phase2-20261028/r-d/`; combined-source Alive and Arrangement
+  reruns now pass. Full Ultra and instrument journeys also pass on the combined
+  source; final pushed-head CI/packages remain separate gates.
 - The full Ultra journey reaches an independently diagnosed optional installed
   `slider.maxhelp` fixture mismatch: the converter now preserves five comments,
   giving 21 nodes (16 executable) and ten edges. The old fixed native IDs also
   drift. Independently reviewed fixture repair is integrated at `003024f`, with
   exact total/comment/executable counts, original control roles/edge and numeric
-  assertions retained, and its two headless regressions included in CI. Preserve
-  the failed run and rerun the complete journey; no full Ultra pass is claimed.
-- Task 3 owns the native GUI lease after Task 5 cleanup. Its persistent focused
-  draft registry's focused native matrix passes on the worker build, including
-  disk/restart and real Quit Save/Discard/Cancel; frozen candidate/review is
-  pending. Source confirms
-  no Linux application Quit route, so its narrow menu lease now includes a real
-  File > Quit Ultra action through the existing coordinator and accelerator.
-  This enables the required Quit acceptance without a test-only trigger.
+  assertions retained, and its two headless regressions included in CI. The
+  complete combined-source Ultra journey now passes, including that optional
+  local fixture. Preserve the old failure and exclude licensed derived graphs
+  and screenshots from published evidence.
+- Task 3 candidate `5663956` passed specification re-review and fresh quality
+  review; it is integrated as `9997589`. Focused drafts survive reconstruction,
+  and owner-wide Save flushes/refuses linked views before snapshot. The bounded
+  token-fenced reservation survives picker/write, reconciles lost releases and
+  resumes fenced Quit. A real Linux File > Quit Ultra action uses the existing
+  coordinator. Root's integration checks pass 568 Node/component and four
+  Chromium checks. The ten-case native protocol matrix predates final lifetime
+  changes; four affected final-build native smokes cover invalid peer refusal,
+  OS close Save, Quit Cancel/Save/process exit, and editing during the picker.
+  Save-only note-off permission is covered by deterministic IPC fixtures, not
+  rendered native PCM. Preserve these attribution limits in later reports.
+- Task 4 candidate `a2fdc98` passed independent spec/quality review and is
+  integrated as `b4b1a5c`. Repackaging validates an existing manifest before
+  mutation and preserves bindings, ranges, presets and version while renaming.
+  Perform supports renaming an existing effect. Four meaningful red tests become
+  98 focused green tests; root's combined suite reaches 572. Native worker runs
+  save/reopen the complete custom manifest and host the same saved file twice
+  with independent Tone values 1200/3400. Hosted preset recall is not implemented
+  or claimed. The native instrument driver now clicks the actual Package device
+  label, with all surrounding assertions retained and scoped review accepted.
 - No Master implementation is accepted yet. Read live worker state and the
   ledger before redispatch; do not restart these tasks blindly.
 - Independent Terra Master preflight review found five contract gaps; the
@@ -72,10 +117,10 @@ The owner explicitly wants a real Master channel and closer Live composition.
 File interchange is a separate measured lane. Use REA for installed Live/Max;
 use normal source tools and tests for Alive/Ultra.
 
-The owner accepted the Phase 2 direction and asked to specify implementation
-using multiple Terra agents. They then asked to compact, set an implementation
-goal and let it run. **This planning turn does not start application work or
-create/resume a goal.** On resumption, the new user goal authorizes execution.
+The owner accepted the Phase 2 direction and requested implementation using
+multiple Terra agents. The active goal now names this handoff and authorizes
+execution. Its planning-only boundary is historical; accepted Tasks 1-5 must
+not be redispatched after compaction.
 
 The exact requested model is **`gpt-6.1-terra`**. The collaboration tool accepted
 two planning-review agents using that exact ID. `terra-6.1` was rejected; the
@@ -107,61 +152,51 @@ task/candidate/review records before dispatching anything after a restart.
 
 - Checkout: `/home/venetanji/.codex/worktrees/edd5/alive`.
 - Feature branch: `feat/alive-session-host`.
-- Planning source HEAD: `1ebf2161e0fa2a62484566fac65c7e940567f357`.
+- Current application HEAD: `b4b1a5c526830026321e3c3c02db24d7c9a76d3c`.
+- Prior CI-qualified checkpoint: `5b464e796016052e1f1cfda2c30d00ee77b77a21`.
 - Release foundation: `31033483eb3baf15edab1734b966cc6d55c4b8c7`.
 - Draft PR: #6, targeting `build/ultra-desktop-releases`.
 - Do not edit/merge active release branches, PR #2 or PR #5.
 
-Expected local planning/review changes at this handoff:
+Expected tracked changes while this checkpoint is being curated:
 
 ```text
-M  PLAN.md
-?? docs/DEVELOPMENT_REVIEW_20261028.md
-?? docs/PHASE2_REFERENCE_20261028.md
-?? docs/PHASE2_HANDOFF.md
-?? docs/superpowers/plans/2026-10-28-phase2-live-max.md
-?? docs/superpowers/plans/2026-10-28-phase2-multi-agent-execution.md
-?? docs/superpowers/specs/2026-10-28-phase2-live-max-design.md
-?? experiments/development-review-20261028/
+ M PLAN.md
+ M docs/PHASE2_HANDOFF.md
+?? experiments/phase2-20261028/reliability/
 ```
 
-These are intentional work from this conversation. Preserve them. Check actual
-status/refs at resume; unexpected other-actor edits require stopping to ask.
-Fetch refs and identify the foundation again before implementation. Do not
-wait indefinitely for release integration; reconcile it before final testing.
-Commit only explicitly reviewed intended paths to make plans/reproducers
-available to isolated workers; a HEAD-only worker otherwise misses untracked
-inputs. Do not stage arbitrary user files or use destructive cleanup.
+These are intentional progress updates from this conversation. The earlier
+planning documents and baseline evidence are committed. Check actual status
+and refs at resume; unexpected other-actor edits require stopping to ask.
+Fresh origin fetch confirms the release foundation remains `31033483`.
+Reconcile it before final testing. Commit only explicitly reviewed intended
+paths, including curated original evidence; do not stage arbitrary user files
+or private reference artifacts. Do not use destructive cleanup.
 
 ## First Runnable Work
 
-No Phase 2 implementation packet has started. Start primary Task 1: establish
-the current source/dirty/evidence baseline and reproduce the unchanged native
-Apply/editor failure. Then dispatch the bounded independent Task 2 / Task 3 /
-Task 5 lanes under the runbook's ownership and resource rules. Task 4 follows
-Task 3 because they share the Perform panel and DOM tests.
+Read the canonical ledger and curated reliability checkpoint first. Tasks 1-5
+are accepted at their stated scope. Combined native run `42462` is complete:
+all four journeys exit 0 on the rebuilt `b4b1a5c` binaries. Do not restart those
+completed journeys or their workers without a new relevant source change.
+Root's full pinned headless contracts run `23016` also exits 0. Local P2.0
+verification is complete at this scope. Read the current exact-head cloud
+statuses before promoting the checkpoint; final pushed-head CI/packages remain
+open until their runs complete. No root app/case-path processes remain at the
+recorded cleanup sample. Check actual resources before starting another driver.
 
-Task 1 accepts a reproduced known-bad baseline. It may record Apply receipt as
-unknown when the old harness cannot observe it; Task 5 supplies instrumentation
-and must resolve attribution before P2.0. Do not turn missing diagnostics into
-a circular prerequisite for starting the diagnostic worker.
+The Oct28 known-bad reproducers are historical failure witnesses, not green
+regressions. Ordinary corrected tests now cover those defects. Task 5 attributed
+the original Apply/editor assertion to input occluded by Audio details and
+preserved its full generation/lifetime assertions. Arrangement screen sizing,
+ffmpeg dependency and exact restart binary/library checks are implemented in
+the checked-in harness/CI. The strict optional installed-slider fixture repair
+is integrated and its full local Ultra rerun passes.
 
-All three bug reproducers currently demonstrate defective outcomes even when
-their commands exit 0; convert them into corrected failing/passing regressions:
-
-- Alive Make Independent + queued note/name/length edits can mutate old source.
-- Alive queued device-base edits can cross Open into a replacement project.
-- Ultra focused numeric text can be omitted by Save and close preflight.
-- Ultra repackaging can discard presets and custom parameter metadata.
-- Loop-only state can leave a stale brace; Duplicate destination/copy need repair.
-
-CI `40421472750` at `1ebf216` failed the original assertion, "Apply must close
-the old editor generation", also reproduced locally. Cause is unresolved: input
-delivery/visibility versus actual lifecycle needs receipts. Preserve assertions.
-Arrangement CI also needs checked-in screen sizing, ffmpeg and exact restart
-binary handling. Package run `40421472639` passed all four targets independently.
-
-After P2.0 is accepted: freeze Master contracts, Task 6 saved ownership, Task 7
+After P2.0 is accepted: freeze Master contracts (the existing unfrozen proposal
+and preflight reviews are retained under the reliability checkpoint's
+`proposals/`), Task 6 saved ownership, Task 7
 UI-free native gain/meter/command proof, Task 8 real Master/Live shell, Task 9
 user-testable checkpoint. First new feature is Master, not a standalone synth.
 Continue subsequent bounded tasks in dependency order; do not delay that first
@@ -227,12 +262,11 @@ from physical audio; leave unobservable physical/underrun gates open.
 
 ## Goal State And Suggested New Goal
 
-The existing thread goal was observed as **blocked**, with an older objective
-pointing to a pasted attachment. It was not resumed, completed or replaced in
-this planning turn. After compaction, use the normal goal interface to set the
-new implementation objective. Do not falsely complete the old goal to bypass
-a tool restriction; if direct goal creation rejects an unfinished goal, report
-that concrete restriction and use the user's goal interface.
+The current thread goal is **active**, with objective `docs/PHASE2_HANDOFF.md`.
+Do not create a duplicate goal, mark this work complete before its gates pass,
+or infer a pause from compaction. No token/time budget was requested. The
+following expanded objective records the authorized scope for a new session
+only if it needs to be transferred through the normal goal interface.
 
 Suggested goal text:
 
@@ -264,11 +298,12 @@ No token/time budget was requested; do not invent one. Update this file and the
 primary ledger at each accepted checkpoint so another compacted session can
 resume from the next incomplete packet.
 
-## Planning Validation
+## Historical Planning Validation
 
 Fresh Terra spec review found no actionable omission. Fresh Terra quality
 review found the baseline/diagnostics circular gate; it was corrected in the
 primary plan, runbook and this handoff, and scoped re-review confirmed the fix.
 Document/fence/whitespace and embedded shell/JavaScript syntax checks pass.
-No application test/build/CI pass or Phase 2 feature completion is claimed by
-these documentation checks. The planning source HEAD is unchanged.
+Those documentation checks did not qualify application behavior. The active
+execution checkpoint at the top records subsequent implementation and keeps
+candidate-native, integrated-native and exact-pushed-head evidence distinct.

@@ -1,0 +1,87 @@
+{
+  "source_head": "b4b1a5c526830026321e3c3c02db24d7c9a76d3c",
+  "backend": "private software PipeWire / CPAL",
+  "rate_hz": 48000,
+  "buffer_frames": 512,
+  "kernel": "7.2.8-10-omarchy",
+  "architecture": "x86_64",
+  "native_runs": [
+    {
+      "name": "alive",
+      "exit_code": 0,
+      "elapsed_seconds": 197.71
+    },
+    {
+      "name": "arrangement",
+      "exit_code": 0,
+      "elapsed_seconds": 118.157
+    },
+    {
+      "name": "ultra",
+      "exit_code": 0,
+      "elapsed_seconds": 166.32
+    },
+    {
+      "name": "instrument",
+      "exit_code": 0,
+      "elapsed_seconds": 139.502
+    }
+  ],
+  "alive_final_audio": {
+    "Audio backend": "PipeWire",
+    "Audio device": "default_output",
+    "Audio sample rate": "48000",
+    "Audio buffer frames": "512",
+    "Audio callbacks": "2736",
+    "Audio stream errors": "0",
+    "Audio failed": "false",
+    "Audio status": "Audio output is running.",
+    "Transport playing": "true",
+    "Absolute frame": "4691968",
+    "Rejected commands": "0",
+    "Native generation": "43",
+    "Track 1 active voices": "3",
+    "Track 2 active voices": "3"
+  },
+  "arrangement_active_metrics": {
+    "cpal_error_total": "0",
+    "cpal_xrun_reports": "0",
+    "cpal_non_xrun_reports": "0",
+    "native_render_failures": "0",
+    "over_buffer_budget_count": "0",
+    "clock_anomaly_count": "0",
+    "buffer_frames_min": "512",
+    "buffer_frames_max": "512"
+  },
+  "arrangement_before_restart_rejected_commands": "1",
+  "arrangement_final_reopened_audio": {
+    "Audio backend": "PipeWire",
+    "Audio device": "default_output",
+    "Audio sample rate": "48000",
+    "Audio buffer frames": "512",
+    "Audio callbacks": "493",
+    "Audio stream errors": "0",
+    "Audio failed": "false",
+    "Audio status": "Audio output is running.",
+    "Transport playing": "false",
+    "Absolute frame": "305664",
+    "Rejected commands": "0",
+    "Native generation": "7",
+    "Track 1 active voices": "0",
+    "Track 2 active voices": "0"
+  },
+  "instrument_stream_errors": 0,
+  "instrument_edit_cycles": 18,
+  "instrument_editing_seconds": 62.83252818699839,
+  "physical_audio": false,
+  "resource_growth_qualified": false,
+  "endurance_gate_qualified": false,
+  "limits": [
+    "Finite capture duration is not proven playing time.",
+    "These short journeys do not qualify the required 1800 playing seconds.",
+    "No physical audio, MIDI or analog latency measurement.",
+    "The instrument driver historical limit about absent Alive hosting refers to that driver scope; Alive is separately exercised by the complete Alive and Arrangement journeys.",
+    "The Arrangement pre-restart rejected command is the journey deliberate refusal; the original report is retained.",
+    "Existing Xvfb/Mesa, accessibility and desktop-portal warnings remain in raw logs."
+  ]
+}

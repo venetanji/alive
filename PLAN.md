@@ -14,9 +14,32 @@ passes the full traced original Alive and Arrangement native journeys; scoped
 specification re-review and quality review accept the four harness findings.
 That increment is integrated as `65dbf5a` with 17 root helper regressions passing.
 The optional installed-help fixture repair is reviewed and integrated at
-`003024f`, including its two regressions in CI; the full Ultra native rerun is
-still required. Task 3 owns focused-draft native qualification and adds a real Linux Quit
-menu action through the existing coordinator. No new Master capability is
+`003024f`, including its two regressions in CI; the combined full Ultra native
+rerun now passes. Pushed checkpoint `5b464e7` passes CI `40686059005` and all four
+package targets in `40686058990`, with publication skipped. Its headless
+contracts include 543 UI/component tests plus existing schema/reference/native
+graph gates; 19 desktop helper regressions pass. These results are attributed
+to that earlier commit. Task 3's independently reviewed candidate `5663956`
+is integrated as `9997589`: focused drafts, bounded owner-wide Save preflight,
+picker/write reservation, lost-release reconciliation and real Linux Quit.
+The final affected native smokes pass; the ten-case matrix predates the final
+lifetime changes, and Save-only note-off has deterministic IPC coverage rather
+than rendered PCM evidence. Task 4's reviewed `a2fdc98` is integrated as
+`b4b1a5c`, preserving validated device metadata/presets while repackaging and
+supporting effect rename. Native worker save/reopen and two independent hosted
+Tone controls pass; hosted preset recall is not implemented or claimed.
+Root's combined Node/component suite records 572 passing tests and eight
+focused Chromium checks. A fresh `b4b1a5c` rebuild exits 0, and all four serial
+combined native journeys pass: Alive 197.710s, Arrangement 118.157s, Ultra
+canvas/documents 166.320s and instrument authoring 139.502s. The instrument has
+18 edit cycles over 62.833s; 26 captures contain 10,873,472 finite stereo frames.
+This is private software PipeWire/CPAL at 48 kHz/512, not physical audio or the
+required 1800-playing-second endurance qualification. Reports, commands, hashes
+and both-size screenshots are retained in
+`experiments/phase2-20261028/reliability/`. Fresh full pinned headless contracts
+exit 0 in 212.257s on the integrated source, including all 572 UI/component
+tests plus schema/reference/native C++ suites. Final pushed-head CI/packages remain
+separate gates. No new Master capability is
 accepted yet. Independent Terra preflight review has tightened its draft
 contract; consumers remain gated on P2.0. The durable
 execution ledger is `.superpowers/sdd/2026-10-28-phase2-live-max/progress.md`.
@@ -47,10 +70,11 @@ current execution checkpoint above supersedes their historical planning-only
 status. The working MIDI Session/Arrangement and reusable-device host are retained.
 The prior workspace plan remains the implementation record and detailed audio
 dependency. Stale statements in historical sections do not override current
-source or the dated review. Current CI at `1ebf216` fails the original
-Apply/editor-close assertion; it must be attributed and fixed without weakening
-the assertion before this checkpoint is qualified. Four-platform packaging
-passes independently. Physical audio and final endurance are separate gates.
+source or the dated review. Historical baseline CI at `1ebf216` failed the
+original Apply/editor-close assertion. The later harness diagnosis/fix and
+current combined native qualification are recorded at the top of this file;
+the assertion remains intact. Physical audio and final endurance are separate
+gates from native software-loopback journeys and four-platform packaging.
 
 Three GPT-6.1 Sol exploration agents assessed Alive, Ultra and delivery. REA was
 used for a fresh bounded Live 12.4.6 Master-layout/fader study in disposable
@@ -65,8 +89,9 @@ successfully dispatched two planning reviewers; `terra-6.1` was the rejected
 spelling, and the advertised model list was incomplete. The runbook fixes a
 controller-plus-three-child schedule, exclusive file/resource ownership,
 contract freezes and fresh spec/quality reviews. The durable handoff preserves
-expected dirty work, baseline failures and next runnable packets. Application
-implementation and a replacement goal have not been started by this update.
+expected dirty work, baseline failures and next runnable packets. The active
+goal now authorizes implementation; this paragraph records the earlier
+planning provenance. Fresh resumed dispatch again accepts `gpt-6.1-terra`.
 
 2026-10-28 review/build checkpoint: upstream is fast-forwarded to `1ebf216`.
 Both local binaries build. The current source review reproduces queued

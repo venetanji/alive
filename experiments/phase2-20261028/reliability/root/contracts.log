@@ -1,0 +1,758 @@
+✔ plain Tab navigates workspaces while controls and modified Tab keep native focus navigation (54.0374ms)
+✔ repeated view navigation preserves playing pending receipts, draft, clip, instance and editor lifecycle (30.615015ms)
+✔ browser and Clip Devices detail toggle locally without rebuilding active controls (6.495308ms)
+✔ detail resize supports keyboard and cancels pointer preview with Escape (11.171649ms)
+✔ eight Session tracks expose four vertical slots and a mixer per column plus four scene rows (23.166123ms)
+✔ compact clip states follow native identities independently of selection and draft names (14.344803ms)
+✔ gain fader commits once, synchronizes numeric and snapshots, and preserves unfinished numeric input (21.889804ms)
+✔ empty body double-click creates once with no launch and late completion preserves newer selection (24.56874ms)
+✔ scene controls launch a prepared row once without selection or document edits (12.681146ms)
+✔ scene receipt shows separate member outcomes and never presents it as transport success (7.030405ms)
+✔ scene receipts hide through legacy fallback and refresh identities when clip-bank mode returns (16.472231ms)
+✔ queued scene captures preparation at gesture and late result preserves newer selection and focus (21.289967ms)
+✔ track addition follows explicitly advertised capacity and retains the legacy fallback (7.698961ms)
+✔ four slots separate selection, draft-only launch and prepared runtime identity (23.889643ms)
+✔ asynchronous work refusal names the requested clip and preserves actionable runtime context (9.655619ms)
+✔ v3 start reports native refusal instead of transport success (6.510818ms)
+✔ v3 seek reports native refusal instead of transport success (5.20314ms)
+✔ trackless transport receipts progress from queued to asynchronous refusal without automatic retry (17.863977ms)
+✔ immediate queued transport response cannot overwrite a matching applied publication (5.689684ms)
+✔ queued v3 note values keep originating clip and note IDs after selection changes (19.749351ms)
+✔ late focused clip creation accepts score without stealing a newer track selection (28.238738ms)
+✔ file refusal survives rejected final refresh and recovery (31.147435ms)
+✔ file refusal survives later periodic refresh failure and recovery (19.258118ms)
+✔ successful file keeps its result with failed refresh and clears only refresh health on recovery (5.801395ms)
+✔ ordinary periodic refresh retains ready status and a later explicit file action replaces an old refusal (8.68265ms)
+✔ queued Add note cannot cross successful removal into a reused track index (7.67711ms)
+✔ queued tempo cannot cross successful new (8.168774ms)
+✔ queued lengthBeats cannot cross successful open (5.886053ms)
+✔ queued loopEnabled cannot cross successful open (6.855997ms)
+✔ queued global edits cancel after apply with file outcome none (10.158724ms)
+✔ queued global edits cancel after apply with file outcome error (14.461752ms)
+✔ queued global edits cancel after discard with file outcome none (6.292838ms)
+✔ queued global edits cancel after discard with file outcome error (8.83167ms)
+✔ queued global edits cancel after relocate with file outcome snapshot (7.842521ms)
+✔ file none without an accepted boundary preserves queued same-scope edits (7.581811ms)
+✔ file error without an accepted boundary preserves queued same-scope edits (6.603071ms)
+✔ queued global edits cancel after accepted apply (13.547515ms)
+✔ queued global edits cancel after accepted discard (4.148518ms)
+✔ queued global edits cancel after accepted undo (4.450826ms)
+✔ real musical fields retain drafts across polls and rejected Apply (5.345317ms)
+✔ Alive audio settings preserve drafts and route configuration through the session owner (4.982034ms)
+✔ draft writes precede file actions and actual native metrics remain visible (8.888056ms)
+✔ automation base segments follow live controls without rebuilding unchanged poll frames (5.71886ms)
+✔ a rejected edit restores the authoritative score before a later save (5.110806ms)
+✔ hosted editor uses real patch objects and shared base command; close only releases UI (20.459807ms)
+✔ hosted zoom selection follows fitted and manually selected graph scale (3.737485ms)
+✔ an effect editor owns its own manifest patch state and instance command (4.78827ms)
+✔ chain selection uses stable instance metadata without launching and live bypass retains transport (7.106067ms)
+✔ metadata automation targets distinguish matching keys across instances and preserve original lanes (4.834977ms)
+✔ stopped reorder and editor commands retain instance identity and instrument removal names its track scope (3.873881ms)
+✔ selecting the current clip retains its separate device selection and rejected mutations preserve the chain (3.582393ms)
+✔ new automation points use the current live instance base after polling (3.508234ms)
+✔ piano selection is clean and keyboard edits use one authenticated transaction (9.318675ms)
+✔ pointer previews commit once; cancel, Escape, scope actions and new revisions commit none (11.110203ms)
+✔ velocity preview is one transaction and external live polls do not replace a drag (5.27235ms)
+✔ file cancellation after an accepted boundary refreshes authoritative revision and history (3.992404ms)
+✔ queued numeric edits retain their originating track after a selection change (4.623931ms)
+✔ Escape cancels a velocity drag including late input and change events (7.863641ms)
+✔ rejected audio configuration reaches the audio panel error handler (2.212349ms)
+✔ automation event rejection restores accepted score and the next edit recovers (3.536417ms)
+✔ a queued note index cannot target another note after a preceding deletion (3.684706ms)
+✔ automation point indices also invalidate after a queued deletion (3.235622ms)
+✔ v4 Session reads sources and real chains without compatibility instruments or embedded clips (7.242162ms)
+✔ v4 Play starts shared audio then sends Start with the original captured preparation (3.812806ms)
+✔ v4 failed audio start never submits a runtime Start (2.356559ms)
+✔ v4 note edits address the source while draft-only slots cannot launch (4.178244ms)
+✔ v4 queued automation cannot retarget a slot made independent by an earlier command (11.27875ms)
+✔ v4 unavailable audio chain has explicit optional instrument (empty) (2.709933ms)
+✔ v4 unavailable audio chain has explicit optional instrument (effect first) (2.402396ms)
+✔ v4 queued slot name edit preserves the other accepted field (5.854935ms)
+✔ v4 queued slot offset edit preserves the other accepted field (5.068186ms)
+✔ v4 queued slot name refuses an earlier rewire (4.366488ms)
+✔ v4 queued slot name refuses an earlier delete (3.656342ms)
+✔ v4 queued slot offset refuses an earlier rewire (12.769812ms)
+✔ v4 queued slot offset refuses an earlier delete (9.231873ms)
+✔ queued MIDI source length refuses a source rewired by independence (8.884259ms)
+✔ queued Arrangement source name refuses a source rewired by independence (6.460984ms)
+✔ queued Add note refuses a source rewired by independence (6.25154ms)
+✔ queued base edit retains its generation across Open with a reused instance (4.00616ms)
+✔ loop-only edit updates the Arrangement brace disabled state (4.107791ms)
+✔ duplicate refuses an out-of-song destination without changing placements (4.87345ms)
+✔ Arrangement creates an accessible unplaced source then a separate placement and source note (12.693579ms)
+✔ refused Arrangement placement keeps the created source selected and discoverable (5.105547ms)
+✔ queued placement start resolves unchanged sibling fields at execution (7.800922ms)
+✔ queued placement offset resolves unchanged sibling fields at execution (6.925427ms)
+✔ queued placement offset refuses earlier delete without retargeting (10.394077ms)
+✔ queued placement offset refuses earlier independent without retargeting (5.17167ms)
+✔ placement sharing, independent copy and occurrence history preserve Session source membership (13.538547ms)
+✔ late placement creation cannot steal a newer track/source selection (5.33107ms)
+✔ Arrangement observes mixed/silent authority and Return members without optimistic updates (2.963711ms)
+✔ v4 pending Return and selected placement/source/device survive repeated view navigation (8.190064ms)
+✔ Arrangement gain uses shared mixer state and retains queued track identity (4.598053ms)
+✔ polling preserves musical drafts and merges newer live base and mixer values (8.527909ms)
+✔ replacement invalidates old drafts only after generation changes (0.762153ms)
+✔ automation ownership displays saved base separately from effective value (1.342463ms)
+✔ a resolved native file dialog adopts its authoritative retained or discarded draft (1.109245ms)
+✔ independent same-source effects merge by instance identity while retaining chain order (0.867891ms)
+✔ older polling responses cannot replace a newer authoritative musical revision (0.482617ms)
+✔ native sequence and preparation strings reject late runtime snapshots beyond JS precision (1.419678ms)
+✔ v4 live polls preserve placement/source drafts and immutable prepared labels (0.773754ms)
+✔ scroll-independent viewBox mapping and stable viewport geometry (1.492786ms)
+✔ move and resize snap displacement while preserving imported offsets (3.635193ms)
+✔ new notes use the fixed grid, velocity and duration and reject clipped placement (0.377049ms)
+✔ timeline geometry shares scale and scroll, snapping to quarter beats (1.692091ms)
+✔ fixed-end trim preserves notes, resize preserves offset and move stays on track (0.57988ms)
+✔ half-open adjacency is valid, overlap and invalid suffixes refuse without cropping (0.75516ms)
+✔ MIDI marks repeat only the offset suffix and clip to occurrence and viewport (6.050332ms)
+✔ all audio ports describe a bus, including one-channel mono (4.193633ms)
+✔ constructor clones and deeply freezes JSON-serializable metadata only (1.477117ms)
+✔ channel counts must be integers in the bounded 1–64 range (0.917385ms)
+✔ mono and stereo layouts reject contradictory channel counts (0.611449ms)
+✔ bus and layout shapes reject missing, unknown and non-data properties (0.846912ms)
+✔ full 3D ambisonic orders derive exactly (order + 1) squared channels (1.402426ms)
+✔ ambisonic validation rejects incomplete fields and contradictory conventions (3.411272ms)
+✔ circular 2D metadata matches the measured Faust unit circular basis (2.350878ms)
+✔ circular profiles reject bad orders, counts and mixed 2D/3D conventions (0.825682ms)
+✔ circular fields never connect implicitly to 3D, discrete or mono even at equal width (0.981826ms)
+✔ circular routing metadata cannot act as an encoder, decoder or 3D conversion (1.303319ms)
+✔ direct connections require exact count AND semantic layout (1.813259ms)
+✔ joining mono A/B into stereo is an explicit ordered operation, not summing (0.676001ms)
+✔ joining never drops, duplicates or zero-pads undeclared channels (0.811756ms)
+✔ splitting exhaustively partitions channels, preserving their order (0.918266ms)
+✔ explicit maps describe selections, reorders and duplication, never a mix (1.137107ms)
+✔ routing descriptors cannot masquerade as ambisonic encoders or decoders (1.496784ms)
+✔ native adapter distinguishes logical devices from stereo channels and DSP capability (0.853675ms)
+✔ Refresh preserves an explicit unsaved output and buffer selection (3.397295ms)
+✔ Refresh retains a disconnected selection and blocks save/start until another output is chosen (5.823295ms)
+✔ Unavailable saved host retains its identity, lists recovery alternatives and exposes the diagnostic (1.589308ms)
+✔ optional display style round-trips without changing the required legacy document fields (4.985461ms)
+✔ JS consumes the shared valid and invalid appearance cases used by Rust preparation (6.215964ms)
+✔ comment callout appearance survives save and undo without persisting omitted defaults (2.396384ms)
+✔ appearance metadata exposes applicable Max attributes and immutable constraints (2.575651ms)
+✔ style validation rejects nonfinite numbers and clones RGBA input rather than retaining caller state (1.365036ms)
+✔ document styles are atomic undoable overrides, including individual and whole resets (1.844027ms)
+✔ configure preserves shared styles and filters only attributes unavailable on the new type (1.443643ms)
+✔ controller style edits and history retain native revisions observations and queued events without IPC (5.970994ms)
+✔ styles changed while apply is pending do not create a second graph or discard the style (1.33014ms)
+✔ styling leaves accepted native events in flight and in the queue (2.441259ms)
+✔ original arithmetic examples expose direct console output and explicit numeric modes (7.653295ms)
+✔ new addition and multiplication library demos use explicit typed arithmetic (42.557442ms)
+✔ saved rhs-only arithmetic and English legacy text retain existing defaults (6.704612ms)
+✔ typed creation retains whole float spelling and bare edits reset operand and mode (3.887206ms)
+✔ qualified decimal modulo and abs creation retain float mode without exponent aliases (2.391204ms)
+✔ integer saved operands validate atomically across flat and nested patches (6.717497ms)
+✔ mode changes and their undo redo reapply standalone graphs while rhs stays live (5.881635ms)
+✔ new arithmetic reuses generic faces and exposes fixed type in help and creation hints (2.715024ms)
+✔ Max import uses typed symbols and refuses Ultra-only legacy spellings (7.446667ms)
+✔ qualified arithmetic set cables import and ignored reverse set is described accurately (4.460564ms)
+✔ midpoints preserve empty arrays repeated vertices fractional coordinates and exact bounds (2.146334ms)
+✔ midpoints reject malformed arrays nonnumbers nonfinite coordinates and excess without coercion (5.213881ms)
+✔ translation carries only equally moved endpoint pairs and never mutates its inputs (0.882359ms)
+✔ fractional group movement tolerates subtraction roundoff but preserves genuinely different endpoint moves (0.413868ms)
+✔ translation removes only floating point boundary drift and rejects genuine overflow (0.469352ms)
+✔ saved cable corners are rounded while joining actual ports vertically (2.405762ms)
+✔ stale endpoint x coordinates render against current ports without rewriting source (2.040075ms)
+✔ single and repeated saved points render an endpoint-aligned dogleg (0.456207ms)
+✔ short segments limit corner rounding without overshoot (0.261882ms)
+✔ coincident ports and collinear or reversing points never produce invalid curves (0.333577ms)
+✔ unrouted and explicitly empty cables keep automatic curves (0.395353ms)
+✔ camera bounds include every saved bend and ignore automatic routes (0.545244ms)
+✔ typed names and arguments build the supported profile without approximating Max classes (6.870985ms)
+✔ every supported object has round-trippable creation text and directional port help (14.664594ms)
+✔ autocomplete ranks exact names before prefixes, and never invents unsupported objects (2.886906ms)
+✔ comment creation text round-trips multiline whitespace and the full annotation limit (1.785066ms)
+✔ named creation parameters share the positional validator and preserve unspecified edit values (1.760669ms)
+✔ creation and text replacement are atomic, undoable and preserve identity and valid cords (2.267673ms)
+✔ group movement and deletion each have one undo step, preserving internal wires (1.673276ms)
+✔ callouts reserve fifteen pixels on the selected side without expanding the saved box (3.078266ms)
+✔ normalized callout points move toward each end of the selected side (3.028282ms)
+✔ minimum dimensions and point extremes keep the entire contour and padding bounded (5.374101ms)
+✔ empty object text has no implicit completion (3.264526ms)
+✔ object completion exposes syntax and argument guidance from the validated profile (2.498457ms)
+✔ option and value completion follows the caret and retains text after the current token (1.39926ms)
+✔ legacy zl names use the selected mode instead of completing to the first zl object (1.196369ms)
+✔ arithmetic completion retains the authored legacy defaults and decimal semantics (0.770318ms)
+✔ print is a typed native sink with a bounded label and live severity (6.458149ms)
+✔ console retains ordered native records across polls and graph edits, clears without replay (10.746279ms)
+✔ Clear discards an older status reply already in flight (1.386957ms)
+✔ two input sources holding the same key release only after both let go (3.847091ms)
+✔ lost focus releases held keys and a rejected note-off invokes the out-of-band Stop (6.975972ms)
+✔ press and release retain order while native admission is pending (0.713741ms)
+✔ save flush waits for the local barrier and suppresses a late acknowledgement after release (3.773102ms)
+✔ invalid save flush reports an error to the owner preflight (0.928004ms)
+✔ a lost release event reconciles and unfreezes the live save barrier (1.10117ms)
+✔ native document boot adopts its patch before marking it clean and tracks undo back to the saved content (1.848124ms)
+✔ saving preserves edits made while the native dialog is pending and cancelled Save As stays dirty (2.884461ms)
+✔ opening and creating native documents never replace the invoking document (4.470703ms)
+✔ save-before-close confirms the close only after a successful save (1.327745ms)
+✔ edits during a native save reassert native dirty after the save acknowledges clean (1.263615ms)
+✔ Max source documents adopt an empty graph before showing compatibility analysis (1.666462ms)
+✔ shared document boot adopts its native descriptor and uses the owner dirty baseline (1.720343ms)
+✔ shared save flushes pending authoring before capturing the complete owner and accepts native dirty state (0.955276ms)
+✔ owner descriptor broadcasts update all view metadata and ignore older authoring revisions (0.549233ms)
+✔ native OS close acknowledges a view only after its queued authoring has flushed (0.596421ms)
+✔ failed authoring flush cancels native close instead of leaving an unanswered request (1.898999ms)
+✔ late responses cannot replace newer save metadata at the same authoring revision (0.641265ms)
+✔ a cancelled close does not acknowledge its obsolete flush (0.700326ms)
+✔ a real shared-controller admission rejection sends a failed native close acknowledgement (24.858855ms)
+✔ save-before-close cancels the native transaction on preflight (0.810173ms)
+✔ save-before-close cancels the native transaction on save (0.450747ms)
+✔ save-before-close cancels the native transaction on cancelled (0.332345ms)
+✔ save-before-close cancels the native transaction on dirty (0.345369ms)
+✔ save-before-close cancels the native transaction on confirmation (0.61711ms)
+✔ successful save-before-close confirms once without cancelling the native transaction (0.622079ms)
+✔ save-before-close preserves the Quit generation when confirmation is true (0.552288ms)
+✔ save-before-close preserves the Quit generation when confirmation is false (2.385944ms)
+✔ save-before-close retains the Quit generation when frontend preflight fails (0.743658ms)
+✔ Perform renames a device without replacing authored controls or presets (184.14315ms)
+✔ effect panel exposes live parameters and presets without a keyboard claim (52.524486ms)
+✔ saving a focused Perform value commits it before the snapshot (31.62903ms)
+✔ rebuilding Perform controls captures their focused value (13.971631ms)
+✔ help shell hosts Basic while question/reference navigation preserves the native runtime (35.700794ms)
+✔ Basic cable feedback validates the complete help shell like the committed edit (25.608053ms)
+✔ help reference replies cannot attach to a replacement shell and unavailable states stay readable (19.653492ms)
+✔ importing a help shell waits for native admission before requesting local reference text (9.727595ms)
+✔ console reveal closes the reference pane in a real bound Basic child (8.913905ms)
+✔ a native Basic tab can open an independently bound window without changing its hosted scope (10.066912ms)
+✔ live Print bubbles expose safe text and expire independently of console visibility (9.458528ms)
+✔ comment callout geometry follows appearance and resets without native graph work (16.633846ms)
+✔ console displays native messages safely, filters severity, selects source and clears (9.574908ms)
+✔ console source links reveal descendant objects from the root view (9.422591ms)
+✔ browser page mounts editable palette, honest preview, and exclusively top/bottom typed ports (11.104021ms)
+✔ audio settings save requested device buffer without starting sound, then lock edits during playback (13.551551ms)
+✔ audio settings browser preview never invents devices or invokes a native host (3.111719ms)
+✔ real page adds, wires, selects, disconnects, deletes and undoes objects (31.275346ms)
+✔ actual numeric, bang, toggle and message controls emit native events; drag is layout-only (17.631992ms)
+✔ message editing validates before replacement and bad ports leave last valid document intact (22.22749ms)
+✔ focus and visibility preserve the running graph; navigation disposes only its document (9.093753ms)
+✔ pagehide handles an already-closed native graph without an unhandled rejection (6.322915ms)
+✔ status polls retain cable elements while selection and endpoint changes redraw them (12.07165ms)
+✔ a bang flash still clears on the next unchanged observation (7.569938ms)
+✔ advancing diagnostics stay current without rewriting the canvas and faults remain visible (8.051534ms)
+✔ hidden windows poll less often and restore immediately without stopping audio (12.154155ms)
+✔ import replacing a reused node ID rebuilds its type-specific controls and ports (3.066995ms)
+✔ consecutive palette objects are placed without overlapping headers or ports (3.696108ms)
+✔ keyboard creation rejects unknown objects and Escape cancels without mutating the patch (7.507882ms)
+✔ lock protects structure while unlocked UI clicks select instead of triggering (10.488584ms)
+✔ inlet and outlet context information separates accepted messages from emitted data (7.396513ms)
+✔ number display follows native observations without changing saved parameters (10.777067ms)
+✔ saving a focused number commits its draft before taking the snapshot (12.266296ms)
+✔ rebuilding the node container captures the focused draft first (4.732094ms)
+✔ saving an invalid focused number refuses the snapshot until cancelled (5.536416ms)
+✔ a parked invalid number blocks Save and close after focus moves (4.933994ms)
+✔ parked invalid number survives container reconstruction (5.033932ms)
+✔ preflight commits valid parked drafts and rejects another invalid draft (5.706566ms)
+✔ an out-of-range number draft is not clamped by Enter (4.388579ms)
+✔ saving a focused inspector field commits its draft (6.674626ms)
+✔ changing selection captures a focused inspector draft before rebuilding (14.185793ms)
+✔ saving a focused appearance value commits its draft (5.846329ms)
+✔ saving an open object entry commits its draft (5.759756ms)
+✔ saving through a toolbar commits the open object entry after focus moves (7.090648ms)
+✔ controls can return a live observed value to the saved value without duplicate native events (13.113028ms)
+✔ Escape stops notes from focused ordinary inputs but entry Escape only cancels (12.95994ms)
+✔ locked inspector rejects structural parameters while keeping live controls available (10.662712ms)
+✔ camera pan, zoom and reset never send native graph or audio commands (7.637716ms)
+✔ locking cancels an in-flight move and examples open independently (6.060481ms)
+✔ new variadic objects rebuild node-aware ports after configuration changes (4.46339ms)
+✔ MSP channel configuration uses text, rebuilds ports and stays locked during performance (4.526408ms)
+✔ locked flonum and slider emit hot native events with audio off, physical Tab is a UI action and observations display (13.495787ms)
+✔ flonum Tab commits pending text before the native second-outlet event (4.966265ms)
+✔ integer UI entry truncates either sign and silent runtime values display without changing the document (5.236523ms)
+✔ slider pointer values remain raw and offset/multiplier apply only to the output readout (5.334547ms)
+✔ line Help opens its own runnable native example without starting audio or sending events (4.523131ms)
+✔ native startup applies only its own document and file controls preserve the current graph (3.832043ms)
+✔ searchable library opens a new example window and focuses existing native windows (13.41238ms)
+✔ receive binding edits rebuild inlet DOM and remain structural while locked (3.792379ms)
+✔ native menu, close-save and error events reach only their targeted document window (15.835815ms)
+✔ native child boot attaches to its owner snapshot and closing the view leaves execution running (4.002984ms)
+✔ native patcher headers request a child window while retaining the parent view (6.165459ms)
+✔ console reveal preserves its source revision across pending edits and native routing (5.888689ms)
+✔ target windows reject stale reveal descriptors and events with a reused node ID (3.33035ms)
+✔ target reveal adopts an authoritative descriptor ahead of its last broadcast (2.848394ms)
+✔ native reveal waits for shared controller adoption during startup (2.799683ms)
+✔ native owner broadcast arriving during initial adoption cannot leave a child on an older snapshot (3.106308ms)
+✔ native readiness waits for the close-flush event subscription to finish (4.76186ms)
+✔ a close request arriving before initial native adoption binds to the shared controller (2.90492ms)
+✔ unchanged stopped status polls preserve cable paths while cable inputs invalidate them (21.147199ms)
+✔ close flush acknowledges only after the focused shared edit reaches its owner (4.72966ms)
+✔ owner Save waits for a linked focused draft and its delayed native admission (12.397633ms)
+✔ close flush reports a focused invalid draft without admitting or acknowledging success (3.27705ms)
+✔ close acknowledgement waits for delayed owner admission and advances exactly one revision (3.824258ms)
+✔ cancelled Save As retains the committed focused draft in the owner (3.61246ms)
+✔ number preserves a rejected undo draft through blur and retries Enter (5.095938ms)
+✔ number preserves a rejected redo draft through blur and retries Enter (4.784473ms)
+✔ number_int preserves a rejected undo draft through blur and retries Enter (4.326913ms)
+✔ number_int preserves a rejected redo draft through blur and retries Enter (5.431339ms)
+✔ flonum preserves a rejected undo draft through blur and retries Enter (5.116778ms)
+✔ flonum preserves a rejected redo draft through blur and retries Enter (10.444231ms)
+✔ drag rejected during undo restores preview and accepts a later gesture (5.420839ms)
+✔ drag rejected during redo restores preview and accepts a later gesture (5.289052ms)
+✔ a typed draft matching the pre-Undo display still requires admission (4.071983ms)
+✔ native save-before-close events retain their Quit generation through the page listener (5.037429ms)
+✔ range thumb reflects the admitted endpoint in the same pointer dispatch (3.563127ms)
+✔ synthetic times admission retains the complete tree and selected adapter (38.519452ms)
+✔ synthetic plus admission retains the complete tree and selected adapter (20.372192ms)
+✔ synthetic minus admission retains the complete tree and selected adapter (14.243973ms)
+✔ arithmetic recognition refuses crossed profiles, unknown objects and wrong source pins (1.15447ms)
+✔ the probe snapshots its verified native response before asynchronous hashing (19.144094ms)
+✔ arithmetic tokens cannot be forged, serialized, reused on changed text or supplied digest facts (23.821976ms)
+✔ role-specific argument and whole starter hashes remain mandatory even after a native response (37.436897ms)
+✔ wrong digest outcomes and caller-provided profile overrides cannot authorize arithmetic helpers (5.45826ms)
+✔ a wrong whole starter digest refuses otherwise matching arithmetic helper facts (4.828065ms)
+✔ unavailable or failing WebCrypto cannot mint an arithmetic admission token (3.027241ms)
+✔ helper hashing refuses oversized values even when a caller supplies matching digest outcomes (6.303739ms)
+✔ arithmetic helpers require exact anchors, filenames, saved attributes, ports and isolated routes (109.029936ms)
+✔ additional script boxes anywhere cannot be admitted as arithmetic shell content (30.754647ms)
+✔ serialized help shells accept exact arithmetic policy pairs and refuse crossed or symbolic identities (7.622738ms)
+✔ a native-probed whole help shell retains all helpers and source maps without script execution (21.125899ms)
+✔ unprobed, changed, object-valued and forged input cannot select the native helper adapter (10.892785ms)
+✔ recognized input still independently checks helper arguments, ports, shape and cable isolation (15.369448ms)
+✔ file reading preserves exact UTF-8 BOM bytes and refuses invalid encoding or oversized input (1.263736ms)
+✔ original help shell schema corpus agrees with strict native admission (47.229143ms)
+✔ times accepts only its exact safe Reference response identity (2.730462ms)
+✔ times shell opens and renders its Reference as plain text (17.284087ms)
+✔ plus accepts only its exact safe Reference response identity (0.502083ms)
+✔ plus shell opens and renders its Reference as plain text (4.041146ms)
+✔ minus accepts only its exact safe Reference response identity (0.391375ms)
+✔ minus shell opens and renders its Reference as plain text (2.003235ms)
+✔ safe arithmetic related links navigate while symbolic, path and unknown aliases remain disabled (3.972817ms)
+✔ arithmetic Reference admission retains response bounds and plain-text field checks (0.749639ms)
+✔ a delayed reference response preserves keyboard focus in the open menu (2.801465ms)
+✔ refreshing the menu preserves the selected related item (3.707318ms)
+✔ a delayed menu refresh does not steal focus from outside the menu (1.934015ms)
+✔ status polling preserves a helper drag preview until committed geometry arrives (1.147647ms)
+✔ resetting helper appearance clears an explicit width and permits restoring it (1.123642ms)
+✔ question arrow navigation does not bubble into canvas object movement (3.024595ms)
+✔ v2 hierarchy round trips the complete tree and preserves v1 strictness (11.531565ms)
+✔ hierarchy midpoints stay in their source scope and are stripped explicitly from native lowering (11.474988ms)
+✔ global IDs and authoring scopes are checked before flattening (1.707099ms)
+✔ virtual objects reject explicitly invalid styles like native leaves (3.977186ms)
+✔ nested execution validates control and signal cycles through boundaries (3.138109ms)
+✔ execution limits count leaves and relays, omitting containers and comments (3.138269ms)
+✔ view navigation keeps a single root history and complete serialization (3.575571ms)
+✔ voice allocation considers the complete owner tree (2.826122ms)
+✔ moving and removing boundaries preserves cable identity in one undo transaction (3.309581ms)
+✔ controller navigation neither installs a graph nor loses live descendant observations (5.28834ms)
+✔ comment edits and boundary-preserving moves do not reinstall the runtime (3.311855ms)
+✔ loading replacement values installs them even when topology is unchanged (2.091421ms)
+✔ object text changes install numeric arguments while metadata edits keep execution (6.100356ms)
+✔ near-limit authoring documents round trip their readable exported representation (27.055955ms)
+✔ comment Inspector swatches and opacity edits use the visible inherited callout colors (5.300503ms)
+✔ repackaging retains authored bindings, ranges, presets and interfaces (16.177859ms)
+✔ repackaging rejects incompatible saved bindings without changing the input (4.673524ms)
+✔ repackaging accepts a valid non-template version 2 device (1.92052ms)
+✔ a subtractive voice graph connects through an explicit four-lane mixdown to stereo (1.274426ms)
+✔ voice lanes cannot silently become mono or accept a mono oscillator (1.030948ms)
+✔ voice dependency cycles and a second allocator are rejected (0.76623ms)
+✔ all six objects are keyboard-authorable and live parameter edits retain their bounds (4.739669ms)
+✔ device bindings and presets survive serialization and metadata edits are undoable (1.497094ms)
+✔ malformed device interfaces, duplicate bindings and out-of-range presets fail admission (5.697379ms)
+✔ version 2 instruments retain authored MIDI with explicit stereo output (2.347683ms)
+✔ version 2 effects bind stereo audio input and live filter parameters without MIDI (4.892386ms)
+✔ saved stereo effects retain authored routes, stable parameter keys and working presets (5.094566ms)
+✔ every supported object has searchable original help and an executable example containing that object (167.349344ms)
+✔ native help manifest and browser library contain the same runnable patches (55.816164ms)
+✔ library search finds aliases, topic words and an empty result without changing its entries (1.898448ms)
+✔ list object creation preserves typed argument spelling and fixed saved topology (7.521668ms)
+✔ optional retained lists and bare prepend may be explicitly empty without weakening existing argument validation (2.710184ms)
+✔ legacy fixed zl modes normalize to dotted names while unsupported modes and execution options are refused (4.77737ms)
+✔ list help documents active and inactive ports and includes original runnable examples (7.832011ms)
+✔ Max list imports retain both saved zl ports and admit typed data selectors (15.365131ms)
+✔ unsupported list execution attributes and modes never become an approved Max box (2.722377ms)
+✔ Max runtime mode and capacity messages remain explicit gaps while ordinary selector data reaches fixed zl modes (10.628037ms)
+✔ native recognition prefers the complete root and import uses that exact probed source (24.519608ms)
+✔ editing, closing and newer inspection invalidate late native probe replies (5.912423ms)
+✔ browser import keeps ordinary helper diagnostics and cannot infer native recognition (6.75165ms)
+✔ CRLF textarea normalization preserves exact probed source through final import (10.634178ms)
+✔ file reads are invalidated by edits, close, reset, new files and new inspections (10.884188ms)
+✔ late file failures cannot replace a newer inspection or its status (7.117418ms)
+✔ file inspection stages Max and ordinary Ultra JSON and reports current failures (17.066499ms)
+✔ print imports as a console sink and accepts arbitrary literal selectors (14.39608ms)
+✔ imports named embedded patchers and keeps explicit source selection (7.291856ms)
+✔ imports recursive inline boundaries with globally unique IDs and retained comments (12.312212ms)
+✔ flat Max comments retain callout appearance and source identity in a version 2 document (2.978679ms)
+✔ invalid comment callout values are omitted individually without clamping or dropping the annotation (1.474251ms)
+✔ comments snapshot the nearest valid patcher font size in whole imports and selected fragments (7.0863ms)
+✔ inherited comment font size leaves unresolved font and named-style dependencies visible (1.394831ms)
+✔ reports descendant failures in their owner scope and requires explicit partial import (6.882496ms)
+✔ diagnoses unsupported patcher arguments and does not relabel bpatcher as an embedded p (2.56431ms)
+✔ retains standalone inlet/outlet fragments as v2 without restoring saved execution attributes (2.827565ms)
+✔ counts executable hierarchy limits across descendants without charging comments or containers (17.10486ms)
+✔ does not reroute a parent cable to a different child when a boundary is omitted (1.875836ms)
+✔ preserves mixed signal boundaries and refuses cables that escape a child scope (15.645788ms)
+✔ keeps source maps distinct when a literal root box ID resembles a descendant path (7.445645ms)
+✔ preserves coordinates, inlet/outlet indices and explicit Max fanout order (5.335078ms)
+✔ requires explicit partial import and diagnoses every unknown box and boundary cable (1.991343ms)
+✔ does not reinterpret Max counter arguments or Max-only classes as native namesakes (1.672483ms)
+✔ retains integer Tab and message cold cables while surfacing the remaining metro gap (2.578997ms)
+✔ preserves the lexical output mode of Max line creation arguments (1.425249ms)
+✔ surfaces toggle value coercion and unsupported saved behavioral attributes (1.541838ms)
+✔ refuses argument placeholders that Max pack treats as literal symbols (0.880745ms)
+✔ surfaces ambiguous cable order instead of certifying fanout parity (1.008586ms)
+✔ preserves approved native Max appearance attributes and saved dimensions (0.872339ms)
+✔ reports invalid or unmapped appearance without clamping or hiding executable objects (2.676361ms)
+✔ rejects unsupported message syntax and unsupported receiving selectors explicitly (1.152166ms)
+✔ does not repair cycles or truncate graphs to the native limits (6.338494ms)
+✔ rejects malformed, duplicate, oversized and recursive inputs within analysis bounds (1.830531ms)
+✔ does not certify mismatched saved port shapes even when the absent port is unused (0.812487ms)
+✔ rejects endpoints beyond the saved Max ports even when the native object has extra ports (0.602432ms)
+✔ does not activate disabled saved cables or silently ignore their attributes (1.312427ms)
+✔ imports bounded cable midpoints losslessly and isolates invalid geometry from executable cable admission (5.658747ms)
+✔ installed toggle.maxhelp basic tab imports an explicitly partial native graph (70.975597ms)
+✔ installed button.maxhelp basic tab imports an explicitly partial native graph (18.1098ms)
+✔ installed number.maxhelp basic tab imports an explicitly partial native graph (33.771588ms)
+✔ installed flonum.maxhelp basic tab imports an explicitly partial native graph (20.602415ms)
+✔ installed slider.maxhelp basic tab imports an explicitly partial native graph (16.090524ms)
+✔ installed int.maxhelp basic tab imports an explicitly partial native graph (9.931367ms)
+✔ installed float.maxhelp basic tab imports an explicitly partial native graph (12.045191ms)
+✔ installed pack.maxhelp basic tab imports an explicitly partial native graph (15.409474ms)
+✔ installed unpack.maxhelp basic tab imports an explicitly partial native graph (17.571297ms)
+✔ installed select.maxhelp basic tab imports an explicitly partial native graph (11.8056ms)
+✔ installed route.maxhelp basic tab imports an explicitly partial native graph (20.263638ms)
+✔ installed trigger.maxhelp basic tab imports an explicitly partial native graph (33.501199ms)
+✔ installed line.maxhelp basic tab imports an explicitly partial native graph (24.03122ms)
+✔ Message templates admit empty, typed literals and only complete $1/$2 references (2.434677ms)
+✔ new Message authoring has two inlets and preserves saved legacy literals (3.962729ms)
+✔ display cache preserves empty templates, refuses stale serials and keeps non-consuming snapshots (1.833366ms)
+✔ standalone Message text edit and history precede hot input without graph replacement (8.236632ms)
+✔ shared Message same-text restore carries explicit CAS hint and serial-gates all views (7.392926ms)
+✔ standalone Message edits preserve interleaved text / trigger order (3.763905ms)
+✔ rejected standalone text admission preserves saved text and history and blocks dependent edits (6.092832ms)
+✔ both controllers admit replacement placeholders only for MessageBox cold/set input (3.621657ms)
+✔ Stop cancels queued text edits and settles already-admitted text without losing saved state (2.181751ms)
+✔ registry exposes exclusively top inlet / bottom outlet descriptors (2.000981ms)
+✔ starter is a valid real editable graph, including independent MIDI voice and explicit stereo join (8.663144ms)
+✔ add/delete/connect/disconnect and layout retain stable IDs and explicit fan-out order (5.454162ms)
+✔ strict validation rejects malformed, unknown, oversized, duplicate and cyclic edits atomically (6.204051ms)
+✔ audio supports missing paths, mono fan-in and parallel gains while rejecting duplicate devices (3.824759ms)
+✔ parameter edit and undo round trip without mutating past snapshots; message is structural (2.550524ms)
+✔ preview can edit and export but never invents runtime execution (11.08178ms)
+✔ standalone help hosting initializes Basic and navigation preserves runtime and saved content (18.667648ms)
+✔ standalone load and history reconcile shell identity and helper-only history never sends parameters (21.479172ms)
+✔ message-text history admission also reconciles appearance of a shell with the same executable graph (9.609392ms)
+✔ prepare precedes audio; actual events include revision and own hot number inlet (7.108471ms)
+✔ starting audio leaves continuous DSP running without requiring a control event (1.135033ms)
+✔ parameter dragging uses bounded latest-wins native admission and never stops/reapplies graph (89.587651ms)
+✔ structural apply prevents stale actions, resets observations, and retains valid graph on native rejection (2.440878ms)
+✔ latest structural graph wins while earlier apply is pending; intermediate controls never send (5.509316ms)
+✔ native observations, stop, panic and awaited navigation cleanup use native commands (3.674527ms)
+✔ MIDI channel and voice device edits are structural safety boundaries (2.460956ms)
+✔ failed native startup never claims audio ready and reports backend reason (1.675319ms)
+✔ event queue overflow fails closed instead of dropping a possible note termination (7.084547ms)
+✔ dispose while startup is pending cancels startup and stops only its document (1.527882ms)
+✔ missing known parameters normalize to protocol defaults but unknown parameters still reject (0.597192ms)
+✔ Panic cancels a pending startup and cannot be overwritten by an apply result (1.392908ms)
+✔ undo and redo of numeric parameters remain live, while topology undo reapplies (3.860556ms)
+✔ native audio fault retains the backend reason and recovery instruction (1.130314ms)
+✔ flat authoring retains valid midpoint arrays and refuses invalid geometry without weakening cable schema (1.777391ms)
+✔ movement keeps absolute bends for one endpoint and translates equal endpoint moves atomically with history (1.00576ms)
+✔ moving routed cables and undo redo preserve standalone native admission and live observations (2.498336ms)
+✔ Max number authoring uses an integer box while saved legacy numbers round-trip unchanged (7.492723ms)
+✔ Max integer bounds and Tab cables import without a number semantic or port warning (6.795402ms)
+✔ plain numeric send methods import but unresolved destination scope stays an error (5.413786ms)
+✔ integer bound messages outside the qualified integral profile keep an import error (1.845068ms)
+✔ physical Tab is a separate queued action after numeric commit and selector tab stays data (5.186579ms)
+✔ shared numeric Tab waits for atomic hot admission and close barriers cancel it (24.620908ms)
+✔ appended control objects preserve protocol order and typed authoring aliases (9.915657ms)
+✔ variadic objects round-trip typed configuration and validate per-node port shapes atomically (6.431108ms)
+✔ literal typed messages retain legacy numeric arrays and reject unsupported syntax (1.070923ms)
+✔ numeric configuration options and variadic guidance appear in completion (4.132167ms)
+✔ control-only native graphs accept typed events while DSP is stopped and dynamic inlets enforce bounds (7.113621ms)
+✔ parameter edits admitted during Stop cannot send a delayed hot event (4.699132ms)
+✔ Tab waits for a pending value commit and retains its admission epoch across Stop (5.18685ms)
+✔ bundled control examples match editable source files and retain valid node-aware graphs (30.926771ms)
+✔ visibility changes keep a single poll and resume immediately (2.185598ms)
+✔ an in-flight poll does not overlap after restoring or reschedule after disposal (0.620066ms)
+✔ Print popup defaults off and round-trips strict @popup authoring (8.566663ms)
+✔ Max popup Print creation and saved values retain every ordinary message cable (10.173342ms)
+✔ independent popup deadlines use frame age and cannot extend or resurrect on polling (1.363422ms)
+✔ popup disable and reenable do not restore a previous receipt (0.850429ms)
+✔ popup snapshots are non-consuming, revision-bound and retain local expiry on unavailable reads (1.268444ms)
+✔ malformed popup snapshots cannot replace an accepted display (0.624624ms)
+✔ both controllers project live Print values without changing authoring or opening console (10.675086ms)
+✔ standalone lifecycle operations cannot resurrect an expired Print receipt (14.090314ms)
+✔ send and receive authoring preserves names, aliases, and creation-dependent ports (11.087129ms)
+✔ bus names remain bounded ASCII symbols and send requires a nonempty name (3.159519ms)
+✔ name edits and their undo reapply the document instead of numeric parameter commands (4.810952ms)
+✔ Max import admits named and unbound receives, send aliases, and set as bus payload (11.167661ms)
+✔ disposing a document stops only its own graph and leaves global audio running (4.60203ms)
+✔ Max message #0 expansion cannot become a literal runtime receive binding (1.479521ms)
+✔ document disposal during pending canvas_apply cancels its startup without stopping global audio (20.496806ms)
+✔ document disposal during pending audio_start cancels its startup without stopping global audio (2.221605ms)
+✔ failed document stop rejects disposal and allows cleanup to be retried (2.063659ms)
+✔ shared controller is available (2.639621ms)
+✔ device bindings address the root tree while retaining the current child view (28.597643ms)
+✔ shared root and child modes commit structurally while operands retain live admission (17.844691ms)
+✔ opening root and child adopts one owner graph and child scope without resetting it (2.005279ms)
+✔ optimistic edits serialize and stale disjoint edits rebase without overwriting the owner (6.439864ms)
+✔ overlapping root and child authoring settles before the child close barrier completes (18.667568ms)
+✔ simultaneous changes to one field retain the canonical tree and report conflict (6.619061ms)
+✔ broadcasts during admission preserve later local edits and ignore older descriptors (7.302115ms)
+✔ numeric hot edits use one native admission and queued events wait for admission (2.920429ms)
+✔ native owner history includes edits from another child and continuous history groups (4.579408ms)
+✔ admission rejection restores the authoritative root and cancels dependent events (2.673786ms)
+✔ flush returns canonical descriptor for whole-owner save and layout preserves runtime revision (2.411493ms)
+✔ observations cover descendants and each view retains its own native console cursor (3.425619ms)
+✔ recursive model validation is atomic and detach never stops the owner graph (2.897796ms)
+✔ structural child edits publish a fresh runtime revision before events and never reinstall through legacy IPC (3.822144ms)
+✔ simultaneous additions cannot overwrite the other view when both allocate the same ID (4.078316ms)
+✔ a stale owner undo retains newer native changes and asks the caller to try again (3.281919ms)
+✔ same-node edits to independent fields rebase and history remains native (3.432842ms)
+✔ hot numeric admission restores a live value to unchanged saved state exactly once (2.502253ms)
+✔ whole-document loads keep a surviving native child view anchored to its descriptor path (2.680197ms)
+✔ native descriptors restore their view path after local navigation and repair removed paths (1.830952ms)
+✔ late descriptors cannot regress a runtime reapply at the same authoring revision (2.085069ms)
+✔ close flush reports a real pending admission failure and allows retry after cancellation (3.579919ms)
+✔ an acknowledged view blocks new authoring until every matching close barrier releases (2.853333ms)
+✔ Save preflight allows held device note release without stopping the patch (2.337243ms)
+✔ a genuine close barrier retains the existing device release Stop fallback (1.182472ms)
+✔ a pending undo rejected by owner CAS cancels the close flush (2.377178ms)
+✔ help root hosts Basic locally while a real Basic child keeps its native binding (6.266789ms)
+✔ help hosting survives optimistic edits CAS publications save descriptors and rejected edit recovery (9.313195ms)
+✔ shell import into adopted owner and history reconcile identity and restore local Basic (12.301782ms)
+✔ pending shell import keeps hosting across older publications and rejected import restores ordinary state (14.37503ms)
+✔ local Basic navigation preserves numeric Message and Print observations and independent views (3.701478ms)
+✔ Panic then global Stop Audio recovers even when scoped stop rejects the fault state (1.541968ms)
+✔ continuous edits retain bounded snapshots and their native undo boundary (86.286536ms)
+✔ coalescing cannot cross an event or discrete undo boundary and backlog rejects atomically (68.750184ms)
+✔ Stop and Panic run immediately after in-flight admission ahead of queued edits in request order (2.852231ms)
+✔ queued event dispatch uses the admitted tree before a later deletion (2.086942ms)
+✔ pending native history blocks authoring until its canonical base arrives (4.597882ms)
+✔ signal authoring follows Max positional syntax and observed defaults (7.109303ms)
+✔ signal text edits preserve saved inspector settings without treating them as positional Max arguments (4.61798ms)
+✔ signal completion explains frequency and phase units and channel limitations (1.884522ms)
+✔ sig values and output channels are bounded numeric creation lists with dynamic ports (1.640934ms)
+✔ mono fan-in sums and independent legacy gain branches remain valid signal paths (1.593575ms)
+✔ separate signal and control cycles reject zero-delay feedback but permit snapshot boundaries (1.067887ms)
+✔ signal dac channel edits rebuild graphs and undo restores their ports (3.711867ms)
+✔ mixed signal inlets accept direct control events through the native controller (1.482306ms)
+✔ Max signal import preserves mono topology and mixed message connections (3.904809ms)
+✔ unsupported Max signal attributes and runtime methods remain explicit import gaps (6.111157ms)
+✔ Max signal literal admission checks supported data shape for each inlet (13.537796ms)
+✔ signal help explains accepted port messages without promising arbitrary selectors (1.517633ms)
+✔ each signal help patch is original, runnable and matches its installed example (15.913021ms)
+✔ browser page mounts all controls, draws validated buses, and does not fake playback (29.695536ms)
+✔ native page wires Start, Run, pointer release, focus cleanup, and stopped backlink (22.562158ms)
+✔ chord math matches native zero-based triad / octave / clamp formula (2.758645ms)
+✔ audio start applies fixed routes first, then both devices’ parameters, with transport disarmed (3.062487ms)
+✔ opening the lab accepts the fixed routes and stops an inherited transport (1.056506ms)
+✔ opening from every disconnected patcher mask accepts routes before route-sensitive release events (3.066845ms)
+✔ native disarm reconciles the Run button after an enabled state was observed (1.008676ms)
+✔ parameter edits during startup survive the in-flight parameter snapshot (0.898048ms)
+✔ unexpected control rejection requests a native panic, not only a UI fault (0.79286ms)
+✔ failed note-off requests Panic and Stop still recovers if Panic IPC also fails (1.333206ms)
+✔ Run is explicit and configuration changes stop until another Run (0.972228ms)
+✔ pending Run cannot revive transport after focus loss (1.04816ms)
+✔ manual keyboard uses B, deduplicates pitches, and always releases (0.859976ms)
+✔ release during pending note-on cannot leave a held voice (0.703312ms)
+✔ rapid committed controls coalesce to a bounded latest-value queue (0.815683ms)
+✔ Panic latches locally and only Stop then Start allows Run again (0.761892ms)
+✔ browser preview rejects playback without fake processing (0.28226ms)
+✔ invalid UI control data is not transmitted (0.716427ms)
+✔ presets validate the complete fixed patch before mutating controls and never autorun (2.004338ms)
+✔ page contract includes accessible native controls and safe navigation, not a JS note clock (0.997645ms)
+✔ state is bounded, finite, typed and JSON round-trippable (4.195286ms)
+✔ message protocol does not pretend to implement Max parsing (1.144451ms)
+✔ object commit and escape preserve focus-safe editing (1.677674ms)
+✔ message edits never output until explicitly activated (0.678075ms)
+✔ numeric editing clamps and ignores empty/non-finite values (0.760039ms)
+✔ slider previews are separate from its one commit (0.576824ms)
+✔ bang, toggle and ports use native activation with clear contracts (1.254057ms)
+✔ disabled controls block mutation and output but accept silent host updates (2.163356ms)
+✔ meter is passive, updates are silent, state snapshots cannot mutate component (0.762744ms)
+✔ state rejects null, malformed versions, unsafe integers and unknown fields (0.796307ms)
+✔ numeric text does not accept alternate JS literal syntax (0.37762ms)
+✔ IME Enter does not prematurely commit, message activation commits pending edit (0.331804ms)
+✔ state updates are atomic, silent and immutable in identity; disposal is idempotent (0.615246ms)
+✔ lab wiring updates a passive meter and serializes/reset/disables controls (2.678916ms)
+✔ slider canonical state quantizes to valid step positions including uneven bounds (0.310934ms)
+✔ range bounds are configured before browser value sanitization (0.378372ms)
+PASS: pending patch edits preserve releases and latest gains; reconnect avoids inactive-device resets.
+PASS: unaffected presses survive edits; removed/reconnecting routes wait for latest acceptance.
+✔ apps/ultra/ui/events.test.mjs (95.979696ms)
+PASS: complete/incomplete/disconnected routes, cross-device and duplicate rejection, file validation, IPC payload.
+✔ apps/ultra/ui/graph.test.mjs (67.594221ms)
+ℹ tests 572
+ℹ suites 0
+ℹ pass 572
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1259.39506
+..........
+----------------------------------------------------------------------
+Ran 10 tests in 7.465s
+
+OK
+✔ probe: numeric input rejected by history remains retryable (61.51672ms)
+✔ probe: drag during history fails without uncaught error and restores preview (12.531675ms)
+✔ probe: object entry retains typed work across history rejection (14.784771ms)
+✔ probe: history barrier rejects every authoring method atomically then admits after Undo and Redo (12.487973ms)
+✔ probe: admitted event survives later deletion but Stop and Panic invalidate it (10.726142ms)
+✔ probe: stopped status cache invalidates for hierarchy document switching and reuses thereafter (17.144796ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 218.830336
+✔ resource verification binds exact bytes and all helper hashes before recognition (9.106878ms)
+✔ full production import retains original synthetic helpers, empty Message and scoped anchors (12.023781ms)
+✔ private bundle output is new, exclusive and outside the source worktree (3.108843ms)
+✔ portable fixture resources bind exact source and helper bytes without a local catalog (2.381025ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 105.777155
+✔ arithmetic intake refuses legacy names, symbols and path input before reading resources (364.923403ms)
+✔ safe arithmetic names use only their fixed source routes and reject changed bytes (170.832207ms)
+✔ CLI refuses missing or extra arguments without any import output (208.508355ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 808.269745
+...............
+----------------------------------------------------------------------
+Ran 15 tests in 3.538s
+
+OK
+.................
+----------------------------------------------------------------------
+Ran 17 tests in 0.529s
+
+OK
+..........................
+----------------------------------------------------------------------
+Ran 26 tests in 0.714s
+
+OK
+........................................s.................................................
+----------------------------------------------------------------------
+Ran 90 tests in 23.043s
+
+OK (skipped=1)
+arithmetic helpers: typed dispatch, strict geometry/getters, six-owner automatic-close monitor pass
+capture004 plus: four exact geometry gates and three diagnostic-only probes pass
+{"fix1IdentityCases":12,"fix1GeometryCases":8,"invalidCasesWithCalls":0,"directCasesWithObservations":0,"serializedCasesWithObservations":0}
+{"trace006":"ordered private phases and preserved capabilities","refusalRows":1710,"longestRows":1740,"longestBytes":644956,"polls":80,"capabilityCalls":420,"maxLineBytes":947}
+{"scheduledFailureCases":10,"casesWithPostFailureActivity":0,"casesWithChangedAck":0,"casesWithUnexpectedQueue":0}
+{"completed007":["plus007_preflight_suppresses_capabilities","plus007_current_capability_refusal","plus007_fresh_cohort_bind_reuse","plus007_result_ownership_lifetime","plus007_both_independent_revisions","plus007_old_fixture_refusal","plus007_v8_complete_diagnostics","plus007_v8_incomplete_suppression","plus007_v8_recognition_is_not_admission","plus007_fix1_v8_root_source_class_binding"],"failures007":[]}
+{"completed008":["plus008_full_readback_and_fresh_close","plus008_honest_diagnostics_and_no_external_authority","plus008_metadata_preflight","plus008_capability_shapes","plus008_last_getter_and_retention_currentness","plus008_inventory_preflight_and_retention","plus008_original_close_and_endpoint_identity","plus008_binding_read_snapshots_and_failure_prefix","plus008_controller_coexistence","plus008_fix1_final_binding_read_install","plus008_fix1_final_binding_read_close"],"failures008":[],"unavailable008":[],"oracleStatus":"LOCAL_TESTS_EXECUTED"}
+{"completed009":["minus009_once_only_strict_refusal","minus009_canonical_source_hash","minus009_source_request_owner_schema_suppression","minus009_complete_hierarchy_suppression","minus009_all_classified_outcomes","minus009_stable_lookup_and_invocation_failures_continue","minus009_single_lookup_and_trusted_receiver_bridge","minus009_lookup_mutation_suppresses_invocation","minus009_unsupported_intrinsic_stops_without_fallback","minus009_returned_classification_failure_retains_prefix","minus009_invocation_mutations_and_partial_pairs","minus009_final_host_read_mutation","minus009_later_hierarchy_and_terminal_arrays","minus009_terminal_throw_and_export_immutability","minus009_request_and_queued_callback_ownership","minus009_stopped_batch_keeps_first_failure"],"failures009":[]}
+{"work010":"stable","counts":{"canonical":{"command":1,"definition":1,"configuration":1,"owner":1},"source":1,"geometry":63,"rectangles":20820,"filepaths":159,"samples":89}}
+{"work010":"ineligible","counts":{"canonical":{"command":1,"definition":1,"configuration":1,"owner":1},"source":1,"geometry":43,"rectangles":19040,"filepaths":70,"samples":70}}
+{"readOracle010":{"samples":89,"readsPerSample":274,"orderedDigest":"bd9606c23777bcc7bce36c56f688eaea22d3314bf88b55110394d03059fbfea6"}}
+{"fix1010":{"form":"object","phase":"lookup","calls":0,"serializationCalls":0,"stale":true}}
+{"fix1010":{"form":"object","phase":"outcome","calls":1,"serializationCalls":0,"stale":true}}
+{"fix1010":{"form":"object","phase":"later","calls":6,"serializationCalls":0,"stale":true}}
+{"fix1010":{"form":"array","phase":"lookup","calls":0,"serializationCalls":0,"stale":true}}
+{"fix1010":{"form":"array","phase":"outcome","calls":1,"serializationCalls":0,"stale":true}}
+{"fix1010":{"form":"array","phase":"later","calls":6,"serializationCalls":0,"stale":true}}
+{"completed010":["minus010_stable_work_budget","minus010_ineligible_source_cache","minus010_complete_ordered_read_oracle","minus010_complete_plain_mutations_after_cache","minus010_object_order_and_finite_numeric_equivalence","minus010_post_source_validation_equality","minus010_binding_change_and_invalid_eligibility_codes","minus010_fix1_inherited_hook_object_lookup","minus010_fix1_inherited_hook_object_outcome","minus010_fix1_inherited_hook_object_later","minus010_fix1_inherited_hook_array_lookup","minus010_fix1_inherited_hook_array_outcome","minus010_fix1_inherited_hook_array_later","minus010_fix1_plain_cross_realm_and_null_prototype"],"failures010":[]}
+{"work011":"stable","work":{"canonical":{"command":1,"definition":1,"configuration":1,"owner":1},"source":1,"geometry":63,"rectangles":20820,"filepaths":159,"samples":89},"progressCounts":{"lookup_attempts":6,"invocation_attempts":6,"outcomes_retained":6,"completed_pairs":3}}
+{"completed011":["minus011_terminal_root_parent_progress","minus011_stable_progress_and_work","minus011_ownership_subconditions_and_skipped_reads","minus011_hostile_ownership_throws_and_skipped_reads","minus011_initial_input_and_source_boundaries","minus011_diagnostic_gate_boundaries","minus011_malformed_owned_path_stays_primitive","minus011_sample_property_throw_phases","minus011_explicit_sample_rejections","minus011_unattempted_first_guard_retains_collection_stop","minus011_partial_lookup_invocation_and_classification_counts","minus011_later_and_terminal_stale_boundaries","minus011_owned_host_free_repeated_export","minus011_nonminus_and_queued_callback_boundaries"],"failures011":[]}
+✔ experiments/max-reference/arithmetic-roots-runtime-20261022/test_helpers.cjs (91179.93587ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 91188.749498
+test_amxd_is_not_decoded (test_max_subset.ImportTests.test_amxd_is_not_decoded) ... ok
+test_catalog_is_documentation_only (test_max_subset.ImportTests.test_catalog_is_documentation_only) ... ok
+test_dependency_inventory_no_resolution (test_max_subset.ImportTests.test_dependency_inventory_no_resolution) ... ok
+test_empty_is_inventory_never_executable (test_max_subset.ImportTests.test_empty_is_inventory_never_executable) ... ok
+test_json_keys_are_bounded_valid_strings (test_max_subset.ImportTests.test_json_keys_are_bounded_valid_strings) ... ok
+test_manifest_schema_and_negative_controls (test_max_subset.ImportTests.test_manifest_schema_and_negative_controls) ... ok
+test_non_json_duplicate_keys_nonfinite_and_limits (test_max_subset.ImportTests.test_non_json_duplicate_keys_nonfinite_and_limits) ... ok
+test_object_path_refused_but_division_allowed (test_max_subset.ImportTests.test_object_path_refused_but_division_allowed) ... ok
+test_outlettype_validation (test_max_subset.ImportTests.test_outlettype_validation) ... ok
+test_refused_families_and_embedded (test_max_subset.ImportTests.test_refused_families_and_embedded) ... ok
+test_root_and_patchline_unknown_fields_diagnosed (test_max_subset.ImportTests.test_root_and_patchline_unknown_fields_diagnosed) ... ok
+test_string_braces_do_not_trigger_depth_limit (test_max_subset.ImportTests.test_string_braces_do_not_trigger_depth_limit) ... ok
+test_structural_rejections (test_max_subset.ImportTests.test_structural_rejections) ... ok
+test_synthetic_golden (test_max_subset.ImportTests.test_synthetic_golden) ... ok
+test_unknown_preserved_and_diagnosed (test_max_subset.ImportTests.test_unknown_preserved_and_diagnosed) ... ok
+test_unsafe_dependency_paths_rejected (test_max_subset.ImportTests.test_unsafe_dependency_paths_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.122s
+
+OK
+test_delayed_output_keeps_latest_input_separate_from_unmeasured_causality (test_normalize.AnnotationTests.test_delayed_output_keeps_latest_input_separate_from_unmeasured_causality) ... ok
+test_initialization_has_no_latest_input (test_normalize.AnnotationTests.test_initialization_has_no_latest_input) ... ok
+test_shared_logger_inlet_retains_both_sources_without_selecting_one (test_normalize.AnnotationTests.test_shared_logger_inlet_retains_both_sources_without_selecting_one) ... ok
+test_unique_trigger_outlet_remains_identifiable (test_normalize.AnnotationTests.test_unique_trigger_outlet_remains_identifiable) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.043s
+
+OK
+{"status": "verified", "patch_graphs": 44, "complete_Max_traces": 20, "schema_valid_manifests": 32, "hashed_artifacts": 150, "dsp_frames": 1920, "dsp_fresh_process_repeat_identical": true}
+Verified 6 original Max fixtures, 716 scored inputs, 2048 raw rows, 714 retained native matches, 2 explicit feedback exclusions
+{"compared": 714, "passed": 714, "mismatches": 0, "skipped": 2}
+{"status": "verified", "manifest_files": 37, "message_rows": 1604, "stimuli": 309, "sample_files": 14}
+{"compared_cases": 197, "compared_values": 114560, "passed_cases": 197, "failed_cases": 0, "absolute_tolerance": 2e-07}
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.006s
+
+OK
+{"status": "UNAVAILABLE", "oracle_executed": false, "reason": "Optional local hierarchy oracle bundle is not published; no comparison performed."}
+{"status": "verified", "schema": "urn:alive:max-reference-manifest:v1", "hashed_artifacts": 14, "scope": "recorded UI evidence only; no Max execution or compatibility certification"}
+test_bad_json_is_reported_not_passed (test_inventory.InventoryTests.test_bad_json_is_reported_not_passed) ... ok
+test_namespaces_nested_patchers_and_dependency_paths (test_inventory.InventoryTests.test_namespaces_nested_patchers_and_dependency_paths) ... ok
+test_nested_attribute_metadata_is_not_an_object_attribute (test_inventory.InventoryTests.test_nested_attribute_metadata_is_not_an_object_attribute) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.002s
+
+OK
+................
+----------------------------------------------------------------------
+Ran 16 tests in 0.112s
+
+OK
+PASS build replaces native library atomically; existing mapping stays intact
+test_installer_advertises_file_opening_and_original_extensions (__main__.PatchFileLaunch.test_installer_advertises_file_opening_and_original_extensions) ... ok
+test_relative_paths_with_spaces_and_shell_characters_reach_native_app (__main__.PatchFileLaunch.test_relative_paths_with_spaces_and_shell_characters_reach_native_app) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.109s
+
+OK
+PASS isolated runner selects the checked release binary and native library, preserving its PID
+PASS normal launcher prefers the release build and retains standalone bundle support
+PASS: native sequencer chord maths, million-frame partition invariance, rational metro, gate/stop/reconfigure, MIDI Start/Continue/Stop/clock, clock-loss release and rejection safety
+PASS: native canvas validation, actual routing plans, depth-first messages/math, MIDI, stale events, million-step bounded timers, partition invariance, live params, stop and rejection safety
+PASS: native mapped object parsing, scalar state, dynamic ports, list coercion, outlet order, routing and ramps
+PASS: bounded typed list objects, state, atomic overflow and synchronous global outlet order
+PASS: native signal topology, arithmetic, fan-in, gains, oscillators, ramps, snapshots and document stop/resume
+PASS: authored four-voice Faust graph, exact channel types, live filter/envelope/level, sustain, bounded release, stealing and document isolation
+PASS: stereo input separation, silent ordinary roots, Faust impulse tail/reset and live cutoff/resonance
+PASS: transparent hierarchy relays, original 11-channel boundaries, typed messages, ordering, multiplicity and separate domain cycles
+PASS: independent documents, typed global messages, receive retarget, bounded cycles and device ownership
+help-root trace contracts passed
+help-root transport contracts passed
+contextual Message replacement contracts passed
+admitted/runtime parameter separation contracts passed
+compiled-out observer equivalence passed
+numeric UI contracts passed
+arithmetic contracts passed
+{"native_input_deliveries": 291, "status_counts": {"compared-pass": 287, "explicit-local-refusal": 4, "outside-qualified-creation": 9}, "failures": 0}
+message UI oracle contracts passed
+print popup contracts passed
