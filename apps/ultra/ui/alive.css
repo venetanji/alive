@@ -76,6 +76,7 @@ footer{flex-shrink:0;background:var(--chrome);border-top:1px solid var(--line);p
 .master-heading[aria-pressed=true]{background:#756039;box-shadow:inset 0 -3px var(--selection)}
 /* Align both mixer faces; detailed output state remains in Master detail. */
 .track-mixer{padding-left:6px;padding-right:6px}.track-gain{gap:2px}.track-gain input{width:80px}
+.track-inspector{position:relative}.track-inspector[open] .track-actions{position:absolute;left:0;right:0;bottom:100%;padding:6px 8px;background:var(--chrome);border:1px solid var(--line);z-index:5}
 #master-session .master-controls{display:grid;grid-template-rows:23px minmax(67px,1fr) 25px;gap:5px;padding:7px 6px;min-height:140px}
 .master-gain-top{display:flex;align-items:center;gap:3px;min-width:0}.master-controls .master-gain-top input.master-number{width:65px;flex:0 0 65px}.master-gain-top .master-db{white-space:nowrap}
 #master-session .master-fader-area{height:100%;min-height:0}.master-controls input.master-fader{height:100%;min-height:0}.master-meter-area{height:100%;gap:0}.master-meter-area .master-bars{min-height:0}

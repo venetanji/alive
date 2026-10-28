@@ -117,6 +117,27 @@ for(const size of [{width:1440,height:900},{width:1280,height:800}])test(`two fi
   await page.screenshot({path:testInfo.outputPath(`two-tracks-${size.width}x${size.height}.png`)});
 });
 
+for(const size of [{width:1440,height:900},{width:1280,height:800}])for(const fixture of [{name:'v4 two-track',count:2,v4:true},{name:'v3 eight-track',count:8,v4:false}])test(`expanded inspector preserves shared mixer baseline in ${fixture.name} at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page,false,true,fixture.count,fixture.v4);
+  const tracks=page.locator('.track'),inspector=tracks.first().locator('.track-inspector'),summary=inspector.locator('summary');
+  const geometry=()=>tracks.evaluateAll(elements=>elements.slice(0,2).map(track=>{
+    const box=selector=>{const r=track.querySelector(selector).getBoundingClientRect();return {top:r.top,bottom:r.bottom};};
+    return {fader:box('.gain-fader'),mute:box('.mixer-toggle:first-child'),solo:box('.mixer-toggle:last-child')};
+  }));
+  const before=await geometry();await summary.focus();await summary.press('Enter');await expect(inspector).toHaveAttribute('open','');
+  const after=await geometry();await page.screenshot({path:testInfo.outputPath(`expanded-${fixture.name.replaceAll(' ','-')}-${size.width}x${size.height}.png`)});
+  for(const control of ['fader','mute','solo'])for(const edge of ['top','bottom']){
+    expect(Math.abs(before[0][control][edge]-before[1][control][edge]),`collapsed ${control} ${edge}`).toBeLessThanOrEqual(2);
+    expect(Math.abs(after[0][control][edge]-after[1][control][edge]),`expanded ${control} ${edge}`).toBeLessThanOrEqual(2);
+    expect(Math.abs(after[0][control][edge]-before[0][control][edge]),`stable ${control} ${edge}`).toBeLessThanOrEqual(2);
+  }
+  for(const name of ['Open Pulse editor','Replace Pulse device','Remove Pulse track']){
+    const action=page.getByRole('button',{name,exact:true});await expect(action).toBeVisible();await action.focus();await expect(action).toBeFocused();await action.click({trial:true});
+  }
+  await page.locator('#stop').click({trial:true});await page.locator('#master-session').getByLabel('Master gain fader').click({trial:true});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(size.width);
+});
+
 test('Add note queued behind track removal never edits the surviving track',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:1100,height:800});await openSession(page);
   await page.locator('.track-inspector summary').first().click();
