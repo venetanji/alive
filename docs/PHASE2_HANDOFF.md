@@ -17,6 +17,12 @@ Reports/reviews, original failed and final logs and source hashes are under
 `experiments/phase2-20261028/master/`. Non-unity history/round-trip uses explicit
 model-only seams; production non-unity installation is refused until Task 7.
 
+Containing pushed checkpoint: `62a657a55e8f007408fa42abce18f60b3bf8cecb`.
+Fresh CI `40721716899` and packages `40721716535` are running on that exact
+head; UI/protocol and Chromium checks pass, while full native and four-target
+package completion remain pending. These are not the earlier foundation runs.
+Fresh fetch confirms the release foundation remains `31033483`.
+
 Full foundation CI `40710079202` and all four package targets `40710079013`
 pass at `3b3df87572722d2349d0725f4059cfc4afd467ae`; publication is skipped.
 These results do not qualify later Master source. Terminal receipts are in
@@ -33,6 +39,14 @@ work during that lease. No native Master candidate or UI-free proof is accepted
 yet. The exact authorized brief and progress are in the canonical ledger
 workspace; read it before dispatching or using a resource. Task 7 must release
 owned processes/resources on handoff. Task 8 and Task 9 remain gated.
+
+Task 7 diagnosed a local test-loader discrepancy: Cargo selected the worker's
+old adjacent `target/release/libultra_native.so`, correctly reporting Master
+unavailable; direct execution of the same test binary against the new build
+module resolves successfully. Preserve the old/new identities and failed
+loader evidence, and pin the mapped module in final tests. Do not weaken the
+resolver or overwrite the old tested launcher artifacts for unit-test setup.
+Native source and host/IPC integration are still moving, not a frozen candidate.
 
 The Master v1 contract is frozen at `docs/contracts/alive-master-v1.md`.
 Read-only Task 7 native inventory and Task 8 visual preparations are complete
@@ -126,6 +140,15 @@ and current Impeccable craft floor. Task 9 owns the coherent local build, both
 sizes/native save/Quit/restart, launcher, 1800 proven playing seconds, final
 head CI/packages and reviewed draft checkpoint. Preserve evidence limitations
 and distinguish software-loopback from physical output.
+
+Read-only Task 9 preparation is retained at
+`experiments/phase2-20261028/master/checkpoint-preparation.md`. The existing long
+desktop workload counts conservative playing time but lacks the short stream
+observability journey's contiguous epoch collection. Task 9 must integrate
+that collection, action boundaries and final retirement, retaining original
+assertions. Use an exact-artifact short pilot to check the unchanged wall,
+audio, metadata and epoch bounds before the 1800-playing-second run; a pilot
+does not qualify endurance. No Task 9 implementation lease was granted.
 
 ## Contracts And Review Corrections To Preserve
 
