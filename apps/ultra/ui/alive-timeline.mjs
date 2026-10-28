@@ -55,7 +55,7 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
         container.append(field('Start',fields.start),field('Duration',fields.duration),field('Offset',fields.offset),field('Loop suffix',fields.loop),field('Copy to',fields.destination),button('Duplicate placement',()=>{const value=destination.value,start=Number(value);return edit(()=>{const current=state().document,original=current.placements.find(q=>q.id===p.id&&q.trackId===p.trackId);if(!original||original.sourceId!==p.sourceId)throw Error('The originating placement or source changed.');const error=value===''||!Number.isFinite(start)?'Enter a valid duplicate start.':placementError({...original,id:null,start},current.sources.find(q=>q.id===original.sourceId),current.placements,current.lengthBeats);if(error)throw Error(error);return{kind:'placementDuplicate',placementId:p.id,start};});}),button('Make placement independent',()=>edit({kind:'sourceIndependent',occurrence:{kind:'placement',placementId:p.id}})),button('Delete placement',()=>edit({kind:'placementDelete',placementId:p.id})));
       }else container.append(make('span','muted','Select an occurrence to edit its timing. Source notes stay in Clip detail.'));
     }
-    updateInput(fields.gain,track.gain);if(fields.name)updateInput(fields.name,source.name);
+    updateInput(fields.gain,Number(track.gain.toFixed(3)));fields.gain.title=`${track.name} track gain: ${track.gain}`;if(fields.name)updateInput(fields.name,source.name);
     if(p){updateInput(fields.start,p.start);updateInput(fields.duration,p.duration);updateInput(fields.offset,p.sourceOffset.value);if(doc.activeElement!==fields.loop&&!preserves(fields.loop))fields.loop.checked=p.loopEnabled;}
     updateInput($('song-loop-start'),s.document.loopStartBeats);updateInput($('song-loop-end'),s.document.loopEndBeats);
     const receipts=s.snapshot.runtime?.requests.filter(r=>r.kind==='return')??[];
@@ -66,22 +66,22 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
     root.hidden=!enabled;$('arrangement-placeholder').hidden=!!enabled;if(!enabled)return;
     if(gesture&&(gesture.generation!==snapshot.generation||gesture.revision!==snapshot.draftRevision||gesture.token!==s.token)){cancel();return;}
     inspector(s);const r=getRange();$('timeline-range').textContent=`Range ${r.start} - ${r.start+r.duration} beats`;
-    const width=document.lengthBeats*scale,visibleLeft=(scroll.scrollLeft??0)/scale,visibleRight=visibleLeft+(scroll.clientWidth||1000)/scale;
+    const width=document.lengthBeats*scale,laneWidth=Math.max(width,(scroll.clientWidth||1000)-176),visibleLeft=(scroll.scrollLeft??0)/scale,visibleRight=visibleLeft+(scroll.clientWidth||1000)/scale;
     const next=JSON.stringify([snapshot.generation,document.tracks.map(t=>[t.id,t.name,t.color]),document.sources,document.placements,document.lengthBeats,document.loopEnabled,document.loopStartBeats,document.loopEndBeats,scale,range,preview,s.selection,visibleLeft,visibleRight]);
-    if(next!==key){key=next;canvas.replaceChildren();canvas.style.width=`${width+176}px`;canvas.style.minHeight=`${48+64*document.tracks.length}px`;
-      const ruler=make('div','timeline-ruler');ruler.style.width=`${width}px`;ruler.style.marginLeft='176px';
+    if(next!==key){key=next;canvas.replaceChildren();canvas.style.width=`${laneWidth+176}px`;canvas.style.minHeight=`${48+64*document.tracks.length}px`;
+      const ruler=make('div','timeline-ruler');ruler.style.width=`${laneWidth}px`;ruler.style.marginLeft='0px';
       for(let beat=0;beat<=document.lengthBeats;beat+=Math.max(1,Math.ceil(40/scale))){const tick=button(`${Math.floor(beat/4)+1}.${beat%4+1}`,()=>action({kind:'seek',beat}),'timeline-tick');tick.setAttribute('aria-label',`Seek to beat ${beat}`);tick.style.left=`${beat*scale}px`;ruler.append(tick);}canvas.append(ruler);
       const brace=make('div','timeline-brace'),start=preview?.loopStartBeats??document.loopStartBeats,end=preview?.loopEndBeats??document.loopEndBeats;
-      brace.setAttribute('aria-label','Song loop brace');brace.style.left=`${176+start*scale}px`;brace.style.width=`${(end-start)*scale}px`;brace.textContent=`Song loop ${start} - ${end}`;brace.classList.toggle('disabled',!document.loopEnabled);
+      brace.setAttribute('aria-label','Song loop brace');brace.style.left=`${start*scale}px`;brace.style.width=`${(end-start)*scale}px`;brace.textContent=`Song loop ${start} - ${end}`;brace.classList.toggle('disabled',!document.loopEnabled);
       for(const side of ['left','right']){const handle=make('span','timeline-edge '+side);handle.dataset.braceEdge=side;brace.append(handle);}canvas.append(brace);
       document.tracks.forEach(t=>{
-        const row=make('div','timeline-row');row.dataset.trackId=t.id;row.style.setProperty('--track-color',t.color);row.style.width=`${width+176}px`;
+        const row=make('div','timeline-row');row.dataset.trackId=t.id;row.style.setProperty('--track-color',t.color);row.style.width=`${laneWidth+176}px`;
         const header=make('div','timeline-header'),name=button(t.name,()=>select(t.id,null),'timeline-track-name');name.setAttribute('aria-label',`Select ${t.name} Arrangement track`);name.title=t.name;header.append(name);
         const authority=make('output','timeline-authority');authority.setAttribute('aria-label',`${t.name} Arrangement authority`);
         const back=button(`Return ${t.name}`,()=>action({kind:'return',trackIds:[t.id]}),'timeline-return');back.textContent='Return';back.title=`Return ${t.name} to Arrangement`;
         const mute=button(`${t.name} Arrangement mute`,()=>mix(t.id,{mute:!state().document.tracks.find(q=>q.id===t.id).mute}),'timeline-mute'),solo=button(`${t.name} Arrangement solo`,()=>mix(t.id,{solo:!state().document.tracks.find(q=>q.id===t.id).solo}),'timeline-solo');mute.textContent='M';solo.textContent='S';
-        header.append(mute,solo,authority,back);row.append(header);
-        const lane=make('div','timeline-lane');lane.dataset.trackId=t.id;lane.style.width=`${width}px`;lane.style.backgroundSize=`${4*scale}px 100%`;
+        header.append(mute,solo,authority,back);
+        const lane=make('div','timeline-lane');lane.dataset.trackId=t.id;lane.style.width=`${laneWidth}px`;lane.style.backgroundSize=`${4*scale}px 100%`;
         if(r.trackId===t.id){const selected=make('div','timeline-range');selected.style.left=`${r.start*scale}px`;selected.style.width=`${r.duration*scale}px`;lane.append(selected);}
         for(const installed of snapshot.document.placements.filter(p=>p.trackId===t.id)){
           const draft=document.placements.find(p=>p.id===installed.id);if(JSON.stringify(draft)===JSON.stringify(installed))continue;
@@ -97,7 +97,7 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
           const marks=doc.createElementNS('http://www.w3.org/2000/svg','svg');marks.setAttribute('viewBox',`0 0 ${p.duration*scale} 30`);marks.setAttribute('preserveAspectRatio','none');
           if(source?.kind==='midi')for(const m of midiMarks(source,p,visibleLeft,visibleRight,scale)){const line=doc.createElementNS('http://www.w3.org/2000/svg','rect');for(const [k,v]of Object.entries({x:(m.start-p.start)*scale,y:26-Math.max(0,Math.min(1,(m.pitch-36)/60))*24,width:Math.max(1,(m.end-m.start)*scale),height:2}))line.setAttribute(k,String(v));marks.append(line);}occurrence.append(marks);
           for(const side of ['left','right']){const handle=make('span','timeline-edge '+side);handle.dataset.edge=side;occurrence.append(handle);}lane.append(occurrence);
-        }row.append(lane);canvas.append(row);
+        }row.append(lane,header);canvas.append(row);
       });const playhead=make('div','timeline-playhead');canvas.append(playhead);
     }
     for(const row of canvas.children){if(!row.dataset.trackId)continue;const observation=snapshot.runtime?.tracks.find(t=>t.trackId===row.dataset.trackId),authority=observation?.authority;
@@ -105,7 +105,7 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
       row.classList.toggle('session-override',authority==='session');const output=row.querySelector('.timeline-authority');output.textContent=authority==='session'?(observation.activeSourceId?'Session override':'Session silence'):authority==='arrangement'?(observation.activeSourceId?'Arrangement':'Arrangement gap'):'Unavailable';if(observation?.pendingAction)output.textContent+=` / pending ${observation.pendingAction}`;output.title=output.textContent;
       const lane=row.querySelector('.timeline-lane');for(const item of lane.children){if(item.dataset.placementId)item.classList.toggle('playing',!!snapshot.state.playing&&observation?.activePlacementId===item.dataset.placementId&&observation.activeSourceId===document.placements.find(p=>p.id===item.dataset.placementId)?.sourceId);if(item.dataset.preparedId)item.classList.toggle('playing',!!snapshot.state.playing&&observation?.activePlacementId===item.dataset.preparedId);}
     }
-    const playhead=canvas.querySelector('.timeline-playhead');if(playhead){const value=snapshot.state.position,frames=BigInt(value??0),beat=Number(frames*1000000n/48000n)/1000000*snapshot.document.tempo/60;playhead.style.left=`${176+beat*scale}px`;}
+    const playhead=canvas.querySelector('.timeline-playhead');if(playhead){const value=snapshot.state.position,frames=BigInt(value??0),beat=Number(frames*1000000n/48000n)/1000000*snapshot.document.tempo/60;playhead.style.left=`${beat*scale}px`;}
   }
   canvas.addEventListener('pointerdown',guard(event=>{
     if(event.button!==0||event.target.closest?.('.timeline-header,.timeline-ruler'))return;
@@ -131,8 +131,9 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
   canvas.addEventListener('pointercancel',cancel);canvas.addEventListener('lostpointercapture',cancel);
   const escape=event=>{if(event.key==='Escape')cancel();if(!event.defaultPrevented&&(event.key==='Delete'||event.key==='Backspace')&&!root.hidden&&!$('arrangement-workspace').hidden&&event.target.closest?.('#arrangement-workspace')&&!event.target.closest?.('input,select,textarea,button,[contenteditable],[role]')){const p=state().selection?.occurrence?.placementId;if(p){event.preventDefault();guard(()=>edit({kind:'placementDelete',placementId:p}))();}}};doc.addEventListener('keydown',escape);win?.addEventListener('blur',cancel);
   scroll.addEventListener('scroll',()=>render());
+  const resizeObserver=win?.ResizeObserver?new win.ResizeObserver(()=>{key='';render();}):null;resizeObserver?.observe(scroll);
   for(const [id,factor] of [['timeline-zoom-in',1.5],['timeline-zoom-out',1/1.5]])$(id).addEventListener('click',()=>{cancel();scale=Math.max(1,Math.min(192,scale*factor));key='';render();});
   $('timeline-fit').addEventListener('click',()=>{cancel();scale=Math.max(1,Math.min(192,((scroll.clientWidth||1000)-176)/last.document.lengthBeats));scroll.scrollLeft=0;key='';render();});
   for(const [id,key]of [['song-loop-start','loopStartBeats'],['song-loop-end','loopEndBeats']])$(id).addEventListener('change',guard(()=>{if($(id).value===''||!Number.isFinite(Number($(id).value)))throw Error('Enter a valid song loop beat.');return transportRange({[key]:Number($(id).value)});}));
-  return{render,cancel,getRange,dispose(){doc.removeEventListener('keydown',escape);win?.removeEventListener('blur',cancel);}};
+  return{render,cancel,getRange,dispose(){resizeObserver?.disconnect();doc.removeEventListener('keydown',escape);win?.removeEventListener('blur',cancel);}};
 }

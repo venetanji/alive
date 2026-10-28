@@ -19,7 +19,7 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2,work
     document.tracks[0].effects.push({instanceId,id:device.id,path:`${file}.ultra`,parameters:{},bypassed:false});
     deviceInstances[instanceId]={track:0,index:runtime.length,manifest};runtime.push({effective:manifest.parameters.map(p=>p.base),owned:manifest.parameters.map(()=>0)});
   }
-  const snapshot={generation:1,draftRevision:0,capabilities:{maxTracks:8,maxDevices:16,atomicTrackActions:true},history:{canUndo:false,canRedo:false},document,deviceInstances,dirty:false,draft:null,state:{playing:0,position:0,absoluteFrame:0,rejected:0,generation:1,peakLeft:0,peakRight:0,devices:runtime,tracks:document.tracks.map(()=>({peakLeft:0,peakRight:0,activeVoices:0}))},audio:{config:{host:'default',device:'default',sample_rate:48000},observed_buffer_frames:0,callbacks:0,stream_errors:0,failed:false,message:'Browser fixture'}};
+  const snapshot={master:{gain:1,acceptedSerial:'1',available:true,unavailableReason:null,observationStale:false,observation:{targetGain:1,currentGain:1,peakLeft:.2,peakRight:1.2,clipMask:2,appliedSerial:'1',appliedFrame:'64',observationStartFrame:'0',observationEndFrame:'64'}},generation:1,draftRevision:0,capabilities:{maxTracks:8,maxDevices:16,atomicTrackActions:true},history:{canUndo:false,canRedo:false},document,deviceInstances,dirty:false,draft:null,state:{playing:0,position:0,absoluteFrame:0,rejected:0,generation:1,peakLeft:0,peakRight:0,devices:runtime,tracks:document.tracks.map(()=>({peakLeft:0,peakRight:0,activeVoices:0}))},audio:{config:{host:'default',device:'default',sample_rate:48000},observed_buffer_frames:0,callbacks:0,stream_errors:0,failed:false,message:'Browser fixture'}};
   if(clipBank){
     document.format='alive-session-v3';snapshot.mode='clipsV3';snapshot.preparationRevision='9007199254740993';snapshot.snapshotSequence='1';snapshot.preparedClips=[];
     document.tracks.forEach(t=>{const c={id:`clip-${t.id}`,name:'Clip 1',lengthBeats:8,notes:t.notes.map((n,i)=>({...n,id:`note-${t.id}-${i}`})),automation:t.automation};t.slots=[c,null,null,null];t.defaultClipId=c.id;delete t.notes;delete t.automation;snapshot.preparedClips.push({trackId:t.id,clipId:c.id,name:c.name,slot:0,lengthFrames:'205714'});});
@@ -54,6 +54,7 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2,work
         else throw Error('Unsupported fixture edit '+op.kind);
         undo.push(structuredClone(snapshot.draft??snapshot.document));redo.length=0;snapshot.draft=draft;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return{snapshot:structuredClone(snapshot),affected};
       }
+      if(name==='alive_master'||name==='alive_master_reset_clip'){window.calls.push({name,args});if(window.masterGate)return window.masterGate(name,args);if(args.generation!==snapshot.generation)throw {code:'STALE_GENERATION',message:'stale generation'};const serial=String(BigInt(snapshot.master.acceptedSerial)+1n);snapshot.master.acceptedSerial=serial;snapshot.master.observation.appliedSerial=serial;if(name==='alive_master'){snapshot.master.gain=args.gain;snapshot.master.observation.targetGain=args.gain;snapshot.master.observation.currentGain=args.gain;return {generation:args.generation,acceptedGain:args.gain,acceptedSerial:serial,changed:true};}snapshot.master.observation.clipMask=0;return {generation:args.generation,acceptedSerial:serial};}
       if(name==='alive_mixer'){window.calls.push({name,args});for(const document of [snapshot.document,snapshot.draft])if(document)Object.assign(document.tracks[args.track],{gain:args.gain,mute:args.mute,solo:args.solo});snapshot.dirty=true;return;}
       if(name==='alive_clip_edit'){window.calls.push({name,args});const op=args.operation;if(op.kind!=='create')throw Error('Fixture supports create only');snapshot.draft??=structuredClone(snapshot.document);const track=snapshot.draft.tracks.find(t=>t.id===op.trackId);if(track.slots[op.slot])throw Error('Slot already occupied');track.slots[op.slot]={id:`new-${track.id}-${op.slot}`,name:'New clip',lengthBeats:8,notes:[],automation:[]};snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return{snapshot:structuredClone(snapshot),affected:{trackId:track.id,slot:op.slot}};}
       return previous(name,args);
@@ -110,7 +111,7 @@ test('vertical gain fader sends one bounded change and reflects external snapsho
 for(const size of [{width:1440,height:900},{width:1280,height:800}])test(`two fixed track columns leave blank stage and expose piano roll at ${size.width}x${size.height}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page,false,true);
   const geometry=await page.evaluate(()=>{const rect=e=>e.getBoundingClientRect().toJSON();return{track:[...document.querySelectorAll('.track')].map(rect),mixerControls:[...document.querySelectorAll('.mixer-toggle,.track-inspector')].map(rect),session:rect(document.querySelector('#session-workspace')),piano:rect(document.querySelector('#piano-roll')),detail:rect(document.querySelector('#detail-content')),scene:rect(document.querySelector('.scene-column'))};});
-  for(const track of geometry.track)expect(track.width).toBe(146);expect(geometry.scene.x-(geometry.track[1].x+geometry.track[1].width)).toBeGreaterThan(300);
+  for(const track of geometry.track)expect(track.width).toBe(128);expect(geometry.scene.x-(geometry.track[1].x+geometry.track[1].width)).toBeGreaterThan(300);
   for(const control of geometry.mixerControls)expect(control.bottom).toBeLessThanOrEqual(geometry.session.bottom);
   expect(geometry.piano.y).toBeLessThan(geometry.detail.y+65);expect(Math.min(geometry.piano.bottom,geometry.detail.bottom)-geometry.piano.y).toBeGreaterThan(150);
   await page.screenshot({path:testInfo.outputPath(`two-tracks-${size.width}x${size.height}.png`)});
@@ -368,4 +369,116 @@ for(const size of [{width:1440,height:900},{width:1280,height:800}])test(`Arrang
   await gain.focus();await gain.press('Tab');await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_mixer').length)).toBe(1);
   expect(await page.evaluate(()=>window.calls.find(c=>c.name==='alive_mixer').args)).toMatchObject({track:0,gain:.713});await expect(page.locator('#arrangement-workspace')).toBeVisible();
   await page.locator('#view-session').click();await expect(page.getByLabel('Pulse gain',{exact:true})).toHaveValue('0.713');
+});
+
+for(const size of [{width:1440,height:900},{width:1280,height:800}])for(const profile of ['v4','v3'])test(`Master and compact workspace geometry ${profile} ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page,false,true,profile==='v4'?2:8,profile==='v4');
+  const geometry=await page.evaluate(()=>{const box=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom,right:r.right};};return {chrome:box(document.querySelector('.workspace-tools')).bottom, browser:box(document.querySelector('#workspace-browser')),header:box(document.querySelector('.track-name')),slots:[...document.querySelectorAll('.track:first-child .clip-slot')].map(box),scenes:[...document.querySelectorAll('.scene-row')].map(box),master:box(document.querySelector('.scene-column')),masterMixer:box(document.querySelector('#master-session .master-controls')),masterRail:box(document.querySelector('#master-session .master-fader')),masterMeter:box(document.querySelector('#master-session .master-bars')),trackRail:box(document.querySelector('.track .gain-fader')),trackMeter:box(document.querySelector('.track .vertical-meter')),trackMixer:box(document.querySelector('.track-mixer')),workspace:box(document.querySelector('#session-workspace')),stop:box(document.querySelector('#stop')),scrollWidth:document.documentElement.scrollWidth,innerWidth:innerWidth};});
+  expect(geometry.chrome).toBeLessThanOrEqual(80);expect(geometry.browser.width).toBe(220);expect(geometry.header.height).toBe(28);expect(geometry.master.width).toBe(128);expect(geometry.masterMixer.y).toBe(geometry.trackMixer.y);expect(geometry.masterMixer.bottom).toBe(geometry.trackMixer.bottom);expect(Math.abs(geometry.masterRail.y-geometry.trackRail.y)).toBeLessThanOrEqual(2);expect(Math.abs(geometry.masterRail.bottom-geometry.trackRail.bottom)).toBeLessThanOrEqual(2);expect(Math.abs(geometry.masterMeter.y-geometry.trackMeter.y)).toBeLessThanOrEqual(2);expect(Math.abs(geometry.masterMeter.bottom-geometry.trackMeter.bottom)).toBeLessThanOrEqual(3);expect(geometry.slots).toHaveLength(4);expect(geometry.scenes).toHaveLength(4);
+  for(let i=0;i<4;i++){expect(geometry.slots[i].height).toBe(24);expect(geometry.scenes[i].y).toBe(geometry.slots[i].y);}expect(geometry.scrollWidth).toBe(geometry.innerWidth);expect(geometry.stop.right).toBeLessThan(size.width);
+  for(const x of [0,99999]){await page.locator('#session-workspace').evaluate((e,x)=>e.scrollLeft=x,x);await expect(page.locator('#master-select-session')).toBeInViewport();}
+  await page.locator('#session-workspace').evaluate(e=>e.scrollLeft=0);await page.mouse.move(500,10);await page.waitForTimeout(700);await page.screenshot({path:testInfo.outputPath(`master-session-${profile}-${size.width}.png`)});
+  if(profile==='v4'){await page.locator('#view-arrangement').click();const pos=await page.evaluate(()=>{const lane=document.querySelector('.timeline-lane').getBoundingClientRect(),header=document.querySelector('.timeline-header').getBoundingClientRect(),master=document.querySelector('#master-arrangement-lane').getBoundingClientRect();return {laneRight:lane.right,headerLeft:header.left,headerRight:header.right,viewportRight:document.querySelector('#timeline-scroll').getBoundingClientRect().right,masterY:master.y};});expect(pos.headerLeft).toBeGreaterThanOrEqual(pos.laneRight-1);expect(Math.abs(pos.headerRight-pos.viewportRight)).toBeLessThanOrEqual(1);expect(pos.masterY).toBeGreaterThan(0);await page.mouse.move(500,10);await page.waitForTimeout(700);await page.screenshot({path:testInfo.outputPath(`master-arrangement-${size.width}.png`)});}
+});
+
+test('both Master views share native gain, interval peaks, overload reset and local selection',async({page})=>{
+  await page.setViewportSize({width:1440,height:900});await openSession(page,false,true,2,true);
+  const session=page.locator('#master-session'),arrangement=page.locator('#master-arrangement');
+  await expect(session.getByLabel('Master left peak')).toHaveText('L 0.200');await expect(session.getByLabel('Master right peak')).toHaveText('R 1.200 !');
+  const calls=()=>page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'));
+  await page.locator('#master-select-session').click();await expect(page.locator('#master-detail')).toBeVisible();expect(await calls()).toEqual([]);
+  const number=session.getByLabel('Master gain',{exact:true});await number.fill('0');await number.press('Tab');await expect(session.getByLabel('Master gain decibels')).toHaveText('-inf');await expect.poll(async()=>(await calls()).filter(c=>c.name==='alive_master').length).toBe(1);
+  await session.getByRole('button',{name:'Reset Master gain to unity'}).click();await expect.poll(async()=>Number(await number.inputValue())).toBe(1);
+  await session.getByRole('button',{name:'Reset Master digital overload'}).click();await expect(session.getByLabel('Master right peak')).toHaveText('R 1.200');
+  await page.locator('#view-arrangement').click();await expect(arrangement.getByLabel('Master gain decibels')).toHaveText('0.0 dB');await expect(arrangement.getByLabel('Master left peak')).toHaveText('L 0.200');
+  const fader=arrangement.getByLabel('Master gain fader');await fader.focus();await fader.press('ArrowUp');await expect.poll(async()=>(await calls()).filter(c=>c.name==='alive_master').length).toBe(3);
+  const sends=await calls();expect(sends.filter(c=>c.name==='alive_master').map(c=>c.args.gain)).toEqual([0,1,1.01]);expect(sends.filter(c=>c.name==='alive_master_reset_clip')).toHaveLength(1);
+});
+
+test('vertical Session faders respond to real upward and downward pointer drags',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true,2,true);
+  for(const [label,container] of [['Pulse gain fader',page.locator('#session-workspace')],['Master gain fader',page.locator('#master-session')]]){
+    const fader=container.getByLabel(label,{exact:true}),box=await fader.boundingBox();expect(box.height).toBeGreaterThan(45);
+    await page.mouse.move(box.x+box.width/2,box.y+box.height*.8);await page.mouse.down();await page.mouse.move(box.x+box.width/2,box.y+box.height*.2,{steps:8});await page.mouse.up();const high=Number(await fader.inputValue());
+    await page.mouse.move(box.x+box.width/2,box.y+box.height*.2);await page.mouse.down();await page.mouse.move(box.x+box.width/2,box.y+box.height*.8,{steps:8});await page.mouse.up();const low=Number(await fader.inputValue());expect(high).toBeGreaterThan(low);
+  }
+});
+
+test('Master pressure retains the final intent and reports reset refusal without claiming it saved',async({page})=>{
+  await page.setViewportSize({width:1440,height:900});await openSession(page,false,true,2,true);
+  await page.evaluate(()=>{window.masterPending=[];window.masterGate=(name,args)=>new Promise((resolve,reject)=>window.masterPending.push({name,args,resolve,reject}));});
+  const root=page.locator('#master-session'),number=root.getByLabel('Master gain',{exact:true}),reset=root.getByRole('button',{name:'Reset Master digital overload'}),status=root.getByLabel('Master output status');
+  await number.fill('0.2');await number.press('Tab');await expect(status).toContainText('pending intent');await expect(status).toContainText('Saved target 0.0 dB');
+  await reset.click();await number.fill('0.8');await number.press('Tab');await reset.click();await expect(status).toContainText('already pending');
+  expect(await page.evaluate(()=>window.masterPending.map(p=>p.name))).toEqual(['alive_master']);
+  await page.evaluate(()=>window.masterPending[0].resolve({generation:1,acceptedGain:.2,acceptedSerial:'2',changed:true}));await expect.poll(()=>page.evaluate(()=>window.masterPending.length)).toBe(2);
+  expect(await page.evaluate(()=>window.masterPending[1].name)).toBe('alive_master_reset_clip');await page.evaluate(()=>window.masterPending[1].resolve({generation:1,acceptedSerial:'3'}));await expect.poll(()=>page.evaluate(()=>window.masterPending.length)).toBe(3);
+  expect(await page.evaluate(()=>window.masterPending[2].args.gain)).toBe(.8);await page.evaluate(()=>window.masterPending[2].resolve({generation:1,acceptedGain:.8,acceptedSerial:'4',changed:true}));await expect(status).toContainText('admitted');
+  await page.evaluate(()=>{const m=window.sessionSnapshot.master;m.gain=.8;m.acceptedSerial='4';m.observation.appliedSerial='4';m.observation.currentGain=.8;m.observation.targetGain=.8;});await expect(status).toContainText('applied -1.9 dB');
+});
+
+test('Master unavailable and stale observations remain explicit',async({page})=>{
+  await openSession(page,false,true,2,true);const root=page.locator('#master-session'),status=root.getByLabel('Master output status');
+  await page.evaluate(()=>{const m=window.sessionSnapshot.master;m.observationStale=true;m.observation.observationStartFrame=m.observation.observationEndFrame;});await expect(status).toContainText('stale observation');await expect(status).toContainText('empty interval');
+  await page.evaluate(()=>{const m=window.sessionSnapshot.master;m.available=false;m.unavailableReason='Library lacks Master';m.observation=null;m.acceptedSerial='0';});await expect(status).toContainText('Library lacks Master');await expect(root.getByLabel('Master gain fader')).toBeDisabled();await expect(root.getByLabel('Master left peak')).toHaveText('L unavailable');
+});
+
+test('Master selection parks unfinished clip text and caret without a native edit',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true,2,true);
+  const input=page.getByLabel('Clip name',{exact:true});await input.fill('Unfinished clip');await input.evaluate(e=>e.setSelectionRange(3,7));
+  await page.locator('#master-select-session').click();await expect(page.locator('#master-detail')).toBeVisible();await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).click();
+  await expect(input).toHaveValue('Unfinished clip');expect(await input.evaluate(e=>[e.selectionStart,e.selectionEnd])).toEqual([3,7]);expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('browser and column widths resize locally and Master selection preserves device binding',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,true,true,2,true);
+  await page.locator('#detail-devices').click();const parameter=page.getByLabel('Cutoff base',{exact:true});await parameter.fill('1777');
+  await page.locator('#master-select-session').click();await expect(page.locator('#master-select-session')).toHaveAttribute('aria-pressed','true');await expect(page.locator('#master-detail')).toBeVisible();
+  const separator=page.getByRole('separator',{name:'Resize browser'});await separator.focus();await page.keyboard.press('End');await expect(separator).toHaveAttribute('aria-valuenow','280');expect(await page.locator('#workspace-browser').evaluate(e=>e.getBoundingClientRect().width)).toBe(280);
+  await separator.press('Home');expect(await page.locator('#workspace-browser').evaluate(e=>e.getBoundingClientRect().width)).toBe(180);
+  await page.locator('#track-width').fill('180');expect(await page.locator('.track').first().evaluate(e=>e.getBoundingClientRect().width)).toBe(180);
+  await page.getByRole('button',{name:'Select Pulse track',exact:true}).click();await expect(page.locator('#device-detail')).toBeVisible();await expect(parameter).toHaveValue('1777');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('Master numeric validation and double-click unity use the same admission path',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true,2,true);
+  const root=page.locator('#master-session'),number=root.getByLabel('Master gain',{exact:true}),fader=root.getByLabel('Master gain fader');
+  await number.fill('5');await number.press('Tab');await expect(page.getByRole('status',{name:'Session status'})).toContainText('between 0 and 4');expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_master'))).toHaveLength(0);
+  await number.fill('0.25');await number.press('Tab');await expect(root.getByLabel('Master gain decibels')).toHaveText('-12.0 dB');
+  await fader.dblclick();await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_master').at(-1)?.args.gain)).toBe(1);await expect(root.getByLabel('Master gain decibels')).toHaveText('0.0 dB');
+});
+
+test('Arrangement Master aligns with right track controls and source fields have visible context',async({page})=>{
+  await page.setViewportSize({width:1440,height:900});await openSession(page,false,true,2,true);await page.locator('#view-arrangement').click();
+  const boxes=await page.evaluate(()=>{const rect=e=>e.getBoundingClientRect();const header=rect(document.querySelector('.timeline-header')),master=rect(document.querySelector('#master-arrangement-lane .master-heading')),controls=rect(document.querySelector('#master-arrangement'));return {headerLeft:header.left,masterLeft:master.left,controlsRight:controls.right,workspaceRight:rect(document.querySelector('#arrangement-workspace')).right};});
+  expect(boxes.masterLeft).toBeGreaterThan(boxes.headerLeft-250);expect(Math.abs(boxes.controlsRight-boxes.workspaceRight)).toBeLessThanOrEqual(1);
+  const detail=page.locator('#clip-controls');await expect(detail.getByText('Clip name',{exact:true})).toBeVisible();await expect(detail.getByText('Source length',{exact:true})).toBeVisible();await expect(detail.getByText('Offset',{exact:true})).toBeVisible();await expect(detail.getByText('beats',{exact:true}).first()).toBeVisible();
+});
+
+test('returning from Master to the same Arrangement occurrence retains parked text',async({page})=>{
+  await openArrangement(page,{width:1440,height:900});const placement=page.getByRole('button',{name:'Select placement p-0',exact:true});await placement.click();
+  const name=page.getByLabel('MIDI source name',{exact:true});await name.fill('Unfinished source');await name.evaluate(e=>e.setSelectionRange(3,7));
+  await page.locator('#master-select-arrangement').click();await placement.click();await expect(name).toHaveValue('Unfinished source');expect(await name.evaluate(e=>[e.selectionStart,e.selectionEnd])).toEqual([3,7]);expect(await workspaceEdits(page)).toHaveLength(0);
+});
+
+test('generation change visibly cancels a pending Master intent and ignores its late receipt',async({page})=>{
+  await openSession(page,false,true,2,true);await page.evaluate(()=>{window.masterGate=(name,args)=>new Promise(resolve=>{window.finishMaster=resolve;});});
+  const root=page.locator('#master-session'),number=root.getByLabel('Master gain',{exact:true}),notice=page.getByRole('status',{name:'Session status'});
+  await number.fill('0.3');await number.press('Tab');await expect(notice).toContainText('pending');
+  await page.evaluate(()=>{window.sessionSnapshot.generation=2;window.sessionSnapshot.snapshotSequence='2';});await expect(notice).toContainText('canceled');
+  await page.evaluate(()=>window.finishMaster({generation:1,acceptedGain:.3,acceptedSerial:'2',changed:true}));await expect(root.getByLabel('Master gain decibels')).toHaveText('0.0 dB');await expect(notice).toContainText('canceled');
+});
+
+test('Arrangement Master markings and meter remain separate in the right-hand control group',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true,2,true);await page.locator('#view-arrangement').click();
+  const boxes=await page.evaluate(()=>{const rect=e=>e.getBoundingClientRect();const root=document.querySelector('#master-arrangement');return {marks:rect(root.querySelector('.master-marks')).toJSON(),markLabel:rect(root.querySelector('.master-marks span:first-child')).toJSON(),meter:rect(root.querySelector('.master-bars')).toJSON(),root:rect(root).toJSON(),button:rect(root.querySelector('.master-actions button:last-child')).toJSON()};});
+  expect(boxes.marks.right).toBeLessThanOrEqual(boxes.meter.left);expect(boxes.markLabel.right).toBeLessThanOrEqual(boxes.meter.left);expect(boxes.meter.right).toBeLessThanOrEqual(boxes.root.right);expect(boxes.button.right).toBeLessThanOrEqual(boxes.root.right);
+});
+
+test('pointer-derived track gain remains readable in both mixer and Arrangement detail',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true,2,true);
+  const slider=page.getByLabel('Pulse gain fader',{exact:true}),number=page.getByLabel('Pulse gain',{exact:true});const box=await slider.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height*.77);await page.mouse.down();await page.mouse.move(box.x+box.width/2,box.y+box.height*.68);await page.mouse.up();await page.locator('#view-arrangement').click();
+  const gain=page.getByLabel('Pulse Arrangement gain',{exact:true}),text=await gain.inputValue(),actual=await page.evaluate(()=>window.sessionSnapshot.document.tracks[0].gain);expect(text.length).toBeLessThanOrEqual(5);expect(Math.abs(Number(text)-actual)).toBeLessThanOrEqual(.0005);
+  await page.locator('#view-session').click();const shown=await number.inputValue();expect(shown.length).toBeLessThanOrEqual(5);expect(Math.abs(Number(shown)-actual)).toBeLessThanOrEqual(.0005);
 });

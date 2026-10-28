@@ -329,6 +329,24 @@ Basic dismisses the reference and selects its object locally. Native child
 windows keep their bound scope and independent overlays. Saves include helper
 roles and geometry, with reference text and navigation state kept out of patches.
 
+## Alive Workspaces
+
+Alive uses the same compact charcoal and Liberation Sans language, with a
+separate Session and Arrangement workspace. Its browser defaults to 220px and
+resizes from 180 to 280px. Session columns default to 128px and can be adjusted
+from 112 to 180px. One-line 28px headers and four 24px slots align with the four
+scene actions in the fixed-right Master column. Empty workspace remains empty;
+it does not imply unsupported tracks, sends or clips.
+
+Master is an output selection, not a musical track. Both views use the same
+native gain owner and publication: the Session column and Arrangement bottom
+lane expose gain, dB, separate interval peaks, digital overload and explicit
+reset. Pending intent, admitted saved target and applied observation remain
+separate; unavailable and stale observations are named rather than synthesized.
+The Arrangement track controls sit to the right of the musical lanes, and source
+and placement edits live in selected Clip detail. Browser and detail changes,
+selection and Tab navigation stay local and preserve parked input and bindings.
+
 ## Do's and Don'ts
 
 ### Do:

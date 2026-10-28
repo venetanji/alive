@@ -6,20 +6,25 @@ owner PR comment 6383966857. Reuse the existing Liberation Sans, charcoal,
 amber selection and thin original controls. Earlier two-track/no-scenes
 exclusions are stale; runtime capacities still come from native capabilities.
 
-Session opens as fixed-width track columns with four compact, flat slots,
-aligned scene launch rows at right, and each column's mixer below. Occupied
+Session opens with 128px track columns adjustable from 112 to 180px, four
+24px flat slots and 28px single-line headers. Four scene launch rows sit above
+the mixer in a fixed-right 128px Master column. Occupied
 cells carry the track color; launch triangles stay separate from selection.
 Empty cells are real available slots, not decorative capacity. Original SVG
 icons and vertical gain/native peak controls follow the observed Live density;
 runtime receipts remain inspectable. Eight tracks use internal horizontal
 scrolling. A compact top transport, collapsible left browser,
-resizable bottom Clip/Devices detail and status footer stay shared. Numerical
+resizable bottom Clip/Devices/Master detail and status footer stay shared.
+The browser defaults to 220px and resizes from 180 to 280px. Numerical
 notes, automation, device structure and diagnostics remain secondary inspectors.
 No decorative entrance motion; focus and selection remain explicit.
 
-Task 1 provides the working v3 Session and presentation shell. Arrangement is
-visibly unavailable until the placement/audio model and native runtime exist.
-Do not show invented placements or waveforms. Navigation preserves native
+Arrangement presents admitted MIDI placements with track controls on the right
+and one Master lane below; source and placement fields sit in selected detail.
+No audio clips, fabricated waveforms or unsupported Master automation appear.
+Master gain, reset and coherent native stereo interval observations share one
+owner across views. Pending, admitted, applied, stale and unavailable states
+remain explicit; digital overload is not a physical clipping claim. Navigation preserves native
 commands, receipt labels, selected identities, editor lifecycle and drafts.
 Plain Tab switches only outside interactive controls; modified Tab preserves
 normal focus navigation. Detail resize supports keyboard and cancel.

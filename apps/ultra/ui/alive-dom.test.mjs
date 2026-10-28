@@ -925,3 +925,10 @@ test('Arrangement gain uses shared mixer state and retains queued track identity
   assert.equal(view.model.document().tracks[0].gain,.713);assert.equal(Number(page.find('Pulse gain').value),.713);assert.equal(page.ids.get('arrangement-workspace').hidden,false);
   assert.equal(native.calls.filter(c=>c.name==='alive_mixer').length,1);assert.equal(native.calls.find(c=>c.name==='alive_mixer').args.track,0);assert.ok(page.find('Harmony Arrangement gain'));view.dispose();
 });
+
+test('Master controls use one native owner and display separate interval channels',async()=>{
+  const initial=clipState();initial.master={gain:1,acceptedSerial:'3',available:true,unavailableReason:null,observationStale:false,observation:{targetGain:1,currentGain:1,peakLeft:.2,peakRight:.8,clipMask:2,appliedSerial:'3',appliedFrame:'64',observationStartFrame:'0',observationEndFrame:'64'}};
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  assert.ok(page.find('Master gain fader'));assert.ok(page.find('Master left peak'));assert.ok(page.find('Master right peak'));
+  assert.match(page.find('Master right peak').textContent,/0\.800/);view.dispose();
+});
