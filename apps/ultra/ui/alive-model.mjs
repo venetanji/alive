@@ -1,10 +1,15 @@
-export function nativeInteger(value){if(typeof value!=='string'||! /^(0|[1-9][0-9]*)$/.test(value))throw Error('Native identity requires a canonical decimal string.');const result=BigInt(value);if(result>18446744073709551615n)throw Error('Native identity exceeds u64.');return result;}
+import {nativeInteger,validateMaster} from './alive-master.mjs';
+export {nativeInteger} from './alive-master.mjs';
 export function instrumentOf(track){return track?.chain?(track.chain.kind==='midi'?track.chain.instrument:null):track?.device??null;}
 export function actualDevices(track){return [instrumentOf(track),...(track?.effects??[])].filter(Boolean);}
 export function createAliveModel(){
   let current=null,draft=null;
   const clone=value=>structuredClone(value);
   function fresh(snapshot){
+    // Once a stream supplies these fields, an older mock cannot downgrade it.
+    if(current)for(const key of ['master','snapshotSequence','preparationRevision'])if(current[key]!==undefined&&snapshot[key]===undefined)return false;
+    // Older mock snapshots may omit Master; present DTOs must be complete.
+    if(Object.hasOwn(snapshot,'master'))validateMaster(snapshot.master);
     for(const key of ['generation','draftRevision'])if(snapshot[key]!==undefined&&(!Number.isSafeInteger(snapshot[key])||snapshot[key]<0))throw Error('Invalid desktop revision.');
     for(const key of ['preparationRevision','snapshotSequence'])if(snapshot[key]!==undefined)nativeInteger(snapshot[key]);
     if(!current)return true;
