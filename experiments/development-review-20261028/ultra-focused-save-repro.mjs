@@ -1,0 +1,23 @@
+import fs from 'node:fs';
+import {pathToFileURL,fileURLToPath} from 'node:url';
+const root=fileURLToPath(new URL('../../',import.meta.url)).replace(/\/$/,'');
+const fixture=root+'/apps/ultra/ui/canvas-dom.test.mjs';
+let helper=fs.readFileSync(fixture,'utf8').split("test('effect panel")[0];
+helper=helper.replaceAll('import.meta.url',JSON.stringify(pathToFileURL(fixture).href));
+for(const name of ['canvas-catalog.mjs','canvas-model.mjs','canvas.mjs'])helper=helper.replaceAll(JSON.stringify('./'+name).replaceAll('"',"'"),JSON.stringify(pathToFileURL(root+'/apps/ultra/ui/'+name).href));
+const {mount}=await import('data:text/javascript;base64,'+Buffer.from(helper+'\nexport {mount};').toString('base64'));
+const {makeNode}=await import(pathToFileURL(root+'/apps/ultra/ui/canvas-model.mjs'));
+const patch={version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number_int',1,20,20,{value:10})],edges:[]};
+const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Saved.ultra',kind:'patch',patch,dirty:false,viewPath:[],authoringRevision:0,runtimeRevision:1,descriptorRevision:1};
+const p=await mount(true,{documentCurrent:descriptor,invokeOverride:(name,args,fallback)=>name==='document_save'?fallback(name,args).then(()=>descriptor):fallback(name,args)});
+await p.ids.get('lock-patch').fire('click');
+const input=p.all('objects').find(e=>e.dataset.parameter==='value');
+p.document.activeElement=input;input.value='42';await input.fire('input');
+// This is the window handler reached by the actual input's bubbling Ctrl+S.
+await p.windowEvents.fire('keydown',{target:input,key:'s',ctrlKey:true});
+await p.controller.flush();
+const save=p.calls.find(c=>c.name==='document_save');
+const beforeClose={visibleInput:input.value,saveSnapshot:save?.args.patch.nodes[0].params.value,authoritativeValue:p.controller.getState().document.nodes[0].params.value,commitRequests:p.calls.filter(c=>c.name==='document_commit').length,ownerDirty:p.documents.session.dirty};
+await p.documents.session.flushBeforeClose({requestLabel:'main',token:1});
+console.log(JSON.stringify({evidenceType:'Actual mounted UI modules with existing synthetic DOM adapter and mocked native IPC; no native window, disk save or audio claim',steps:['Open shared saved document containing number_int value 10','Lock canvas','Focus number input, type 42, emit input; do not blur/Enter/Tab','Press Ctrl+S in the same focused input','Request existing flush-before-close callback'],beforeClose,closeAcknowledgement:p.calls.find(c=>c.name==='document_close_flushed'),afterCloseFlush:{visibleInput:input.value,authoritativeValue:p.controller.getState().document.nodes[0].params.value,commitRequests:p.calls.filter(c=>c.name==='document_commit').length}},null,2));
+await p.dispose();

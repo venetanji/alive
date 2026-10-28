@@ -1,5 +1,60 @@
 # Alive / Ultra Plan
 
+## Phase 2 Direction: Live / Max Workflow Fidelity, 2026-10-28
+
+The owner prioritizes familiar Live/Max workflows and a much closer visual
+composition before general Live Set/Max-file compatibility. They explicitly
+identify the missing Master channel. The proposed Phase 2 design and work
+sequence are now the primary planning entry points:
+
+- Design: `docs/superpowers/specs/2026-10-28-phase2-live-max-design.md`.
+- Plan: `docs/superpowers/plans/2026-10-28-phase2-live-max.md`.
+- Multi-agent execution: `docs/superpowers/plans/2026-10-28-phase2-multi-agent-execution.md`.
+- Compaction/resume and goal text: `docs/PHASE2_HANDOFF.md`.
+- Fresh Live output-channel reference: `docs/PHASE2_REFERENCE_20261028.md`.
+- Source/reproducer baseline: `docs/DEVELOPMENT_REVIEW_20261028.md`.
+
+Proposed sequence: P2.0 state-loss fixes and reproducible native/Arrangement CI;
+P2.1 a real saved native stereo Master, fixed-right Session output strip and
+bottom Arrangement lane, compact Live-style composition and both-size native
+qualification; P2.2 direct clip/automation/device editing and Max graph authoring;
+P2.3 genuine WAV/portable projects and general device metadata; separately gated
+instrument/effect/recording and compatibility cohorts; final integrated evidence.
+The first new feature is Master, not another standalone instrument demo. It
+must include native gain/meters, persistence, history/live ownership and tests.
+
+This is a planning deliverable, with no Phase 2 application changes yet. The
+working MIDI Session/Arrangement and existing reusable-device host are retained.
+The prior workspace plan remains the implementation record and detailed audio
+dependency. Stale statements in historical sections do not override current
+source or the dated review. Current CI at `1ebf216` fails the original
+Apply/editor-close assertion; it must be attributed and fixed without weakening
+the assertion before this checkpoint is qualified. Four-platform packaging
+passes independently. Physical audio and final endurance are separate gates.
+
+Three GPT-6.1 Sol exploration agents assessed Alive, Ultra and delivery. REA was
+used for a fresh bounded Live 12.4.6 Master-layout/fader study in disposable
+Wine/Xvfb; UI action evidence and process lifecycle are distinguished. Max
+reference evidence is reused, not represented as a fresh run. Cloud workers
+consume original contracts/fixtures; installed-app study and physical acceptance
+remain local. Original/source Wine preferences are verified unchanged.
+
+Execution follow-up: the owner requests multiple `gpt-6.1-terra` subagents and
+plans to compact before setting the implementation goal. That exact model ID
+successfully dispatched two planning reviewers; `terra-6.1` was the rejected
+spelling, and the advertised model list was incomplete. The runbook fixes a
+controller-plus-three-child schedule, exclusive file/resource ownership,
+contract freezes and fresh spec/quality reviews. The durable handoff preserves
+expected dirty work, baseline failures and next runnable packets. Application
+implementation and a replacement goal have not been started by this update.
+
+2026-10-28 review/build checkpoint: upstream is fast-forwarded to `1ebf216`.
+Both local binaries build. The current source review reproduces queued
+source/generation mistakes in Alive and pending-input/preset preservation
+problems in Ultra. Resolve these before expanding the unfinished WAV workflow.
+Findings, runnable reproducers, native qualification status and the proposed
+cloud/local handoff are in `docs/DEVELOPMENT_REVIEW_20261028.md`.
+
 ## Active Direction: Arrangement And Session, 2026-10-26
 
 Current handoff: the pushed `ea8e401` checkpoint includes the implemented MIDI
