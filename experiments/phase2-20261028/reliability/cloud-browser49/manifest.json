@@ -1,0 +1,115 @@
+{
+  "base": "49d68bb9fa7e7d1d07ddd26950a22f62a3ba89c6",
+  "candidate": "f03516116de0d0823851d9e789f5078e1cecb3f4",
+  "diffSha256": "8d169aa793473b581fede2f7eb396f340be194082d04af8de1511bf696a1a034",
+  "sourceSha256": "a46a92c187f7321ae1d4d36c293dd2df065b6f8dc0c2522a27e0c45d7eb2ec8d",
+  "source": "apps/ultra/tests/ci/alive-chain.spec.mjs",
+  "limits": [
+    "Induced detached-handle mechanism; original cloud trigger unproven.",
+    "Root source byte equality and syntax only so far; integrated browser and final-head CI pending.",
+    "No local browser/native workload run while native worker owns measurement resource."
+  ],
+  "files": [
+    {
+      "path": "browser-49-fix-report.md",
+      "sha256": "8cb02aeb080672b7215d8538e193766621db7727040080d9c7fbbe3a2f9a4f35",
+      "bytes": 4113,
+      "originalSha256": "8cb02aeb080672b7215d8538e193766621db7727040080d9c7fbbe3a2f9a4f35",
+      "originalBytes": 4113
+    },
+    {
+      "path": "browser-49-spec-review.md",
+      "sha256": "b795b3125e56c6192261eadcd8f86355cf3403b53668a83a3586b4761885328c",
+      "bytes": 2114,
+      "originalSha256": "b795b3125e56c6192261eadcd8f86355cf3403b53668a83a3586b4761885328c",
+      "originalBytes": 2114
+    },
+    {
+      "path": "browser-49-quality-review.md",
+      "sha256": "5f658de915aba0fa996c4b3a212c00c15e7c60376238c2430d8f2f2ea614a8bc",
+      "bytes": 2210,
+      "originalSha256": "5f658de915aba0fa996c4b3a212c00c15e7c60376238c2430d8f2f2ea614a8bc",
+      "originalBytes": 2210
+    },
+    {
+      "path": "controlled/control.log.gz",
+      "sha256": "239a328655c56b4a6196c868a8c53babedf8295ab54cccac469bba86f4179ee5",
+      "bytes": 635,
+      "originalSha256": "6c48e4fc6a677427da3b2e854b687916cf69aed0389eae37726052317b779ee8",
+      "originalBytes": 2524
+    },
+    {
+      "path": "controlled/forced.log.gz",
+      "sha256": "402d44ab77e573dd574d410c1b66745c3bad7207caa0704b7f47542746a88831",
+      "bytes": 1190,
+      "originalSha256": "e9586baf81b0d77ce439c38d484c5c8d3e149308776c67a3a98046fe5e822082",
+      "originalBytes": 3959
+    },
+    {
+      "path": "controlled/RED.log.gz",
+      "sha256": "9c58553d6cd48fc0a15cb641af61feb3aa741e2ac75ac317011a53007d67f760",
+      "bytes": 1030,
+      "originalSha256": "f502c21935869ec7537d3ae12a9afab33c9d611199758f022f6a9b2de285bcff",
+      "originalBytes": 3484
+    },
+    {
+      "path": "controlled/GREEN.log.gz",
+      "sha256": "29b70ae9c96826a875bed1aa4483c2c0f7511b445045f6e0de3848f24cedb5ec",
+      "bytes": 498,
+      "originalSha256": "c666c01bda80c8dc5ead0425e713fc39b0a1bf77de20b639f7bdf932e1a3c468",
+      "originalBytes": 1988
+    },
+    {
+      "path": "controlled/SCENARIO.log.gz",
+      "sha256": "d07be80efc8b55446632a864286ec192422c08d0ca3aae91f90994a8a9e32d4a",
+      "bytes": 522,
+      "originalSha256": "6aebea320821b4dcfb2a55c4af7bb6c78bbe3c906d06a477f182159660016e6c",
+      "originalBytes": 2032
+    },
+    {
+      "path": "controlled/switch.py",
+      "sha256": "a63c35d91e738eaa7cc6e3ad4a9c37d4da4b6ced65fc31424f8ecff5bf4042b0",
+      "bytes": 841,
+      "originalSha256": "a63c35d91e738eaa7cc6e3ad4a9c37d4da4b6ced65fc31424f8ecff5bf4042b0",
+      "originalBytes": 841
+    },
+    {
+      "path": "original-cloud/job.log.gz",
+      "sha256": "c6cce2d7b7173dd2cf7866537bc8b55363e8c03fa7e241e38b3e7bf9ca9835ec",
+      "bytes": 58927,
+      "originalSha256": "4d5547fa55b65bcf903e06d4a4765a9f0eca6157a48c34f28910fc8ff0919589",
+      "originalBytes": 594649
+    },
+    {
+      "path": "original-cloud/trace.zip",
+      "sha256": "0f77e37014603406a580ec5f3657403296ca045021daf8bac187186d38305779",
+      "bytes": 406766,
+      "originalSha256": "0f77e37014603406a580ec5f3657403296ca045021daf8bac187186d38305779",
+      "originalBytes": 406766
+    },
+    {
+      "path": "original-cloud/error-context.md",
+      "sha256": "5cb7482dbb586c3df27924dd879a0f66c2f38a175d7809f52efa3d1792599a4e",
+      "bytes": 10663,
+      "originalSha256": "5cb7482dbb586c3df27924dd879a0f66c2f38a175d7809f52efa3d1792599a4e",
+      "originalBytes": 10663
+    },
+    {
+      "path": "original-cloud/test-failed-1.png",
+      "sha256": "e6a987234f2b6313882e20885b529f3c4afbb51d6ad0c526e7ce2dbce06a8032",
+      "bytes": 82289,
+      "originalSha256": "e6a987234f2b6313882e20885b529f3c4afbb51d6ad0c526e7ce2dbce06a8032",
+      "originalBytes": 82289
+    },
+    {
+      "path": "ci-terminal.json",
+      "sha256": "72afbd0cd9e3abaa8f42e34a148ead93141b94b6363071b8e9caa54000417a13",
+      "bytes": 9898
+    },
+    {
+      "path": "packages-terminal.json",
+      "sha256": "823124025244e41251bcdfa211445f6ffe9ef7025c655a5198162e12ef826124",
+      "bytes": 13496
+    }
+  ]
+}

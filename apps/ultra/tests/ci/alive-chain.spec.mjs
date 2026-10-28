@@ -298,9 +298,13 @@ async function openArrangement(page,size){
   await page.locator('#view-arrangement').click();await expect(page.getByRole('button',{name:'Select placement p-0',exact:true})).toBeVisible();
 }
 const workspaceEdits=page=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit'));
-async function dragTimeline(page,locator,from,to,{cancel=false,hide=false}={}){
-  const box=await locator.boundingBox();await page.mouse.move(box.x+from[0],box.y+from[1]);await page.mouse.down();await page.mouse.move(box.x+to[0],box.y+to[1],{steps:6});
+async function dragTimeline(page,locator,from,to,{cancel=false,hide=false,box=null}={}){
+  box??=await locator.boundingBox();await page.mouse.move(box.x+from[0],box.y+from[1]);await page.mouse.down();await page.mouse.move(box.x+to[0],box.y+to[1],{steps:6});
   if(cancel)await page.keyboard.press('Escape');if(hide)await page.locator('#view-session').click();await page.mouse.up();
+}
+async function dragBlankLaneRange(page,lane){
+  const box=await page.evaluate(()=>{const element=document.querySelector('.timeline-lane'),rect=element?.getBoundingClientRect();return rect&&rect.width&&rect.height?{x:rect.x,y:rect.y}:null;});
+  expect(box).not.toBeNull();await dragTimeline(page,lane,[384,35],[480,35],{box});
 }
 for(const size of [{width:1440,height:900},{width:1280,height:800}]){
   test(`Arrangement pointer edits, cancellation and local view controls at ${size.width}`,async({page})=>{
@@ -327,10 +331,21 @@ for(const size of [{width:1440,height:900},{width:1280,height:800}]){
   });
 }
 test('Arrangement creates separate source and occurrence history and cancels stale gestures and brace previews',async({page})=>{
-  await openArrangement(page,{width:1280,height:800});const lane=page.locator('.timeline-lane').first();await dragTimeline(page,lane,[384,35],[480,35]);await page.getByRole('button',{name:'Create MIDI source',exact:true}).click();await expect(page.getByLabel('MIDI source',{exact:true})).toHaveValue('new-source-1');await page.getByRole('button',{name:'Place source in range',exact:true}).click();expect((await workspaceEdits(page)).map(c=>c.args.operation.kind)).toEqual(['sourceCreateMidi','placementCreate']);
+  await openArrangement(page,{width:1280,height:800});const lane=page.locator('.timeline-lane').first();await dragBlankLaneRange(page,lane);await page.getByRole('button',{name:'Create MIDI source',exact:true}).click();await expect(page.getByLabel('MIDI source',{exact:true})).toHaveValue('new-source-1');await page.getByRole('button',{name:'Place source in range',exact:true}).click();expect((await workspaceEdits(page)).map(c=>c.args.operation.kind)).toEqual(['sourceCreateMidi','placementCreate']);
   const p=page.getByRole('button',{name:'Select placement new-placement-2',exact:true});const b=await p.boundingBox();await page.mouse.move(b.x+30,b.y+15);await page.mouse.down();await page.mouse.move(b.x+78,b.y+15);const polls=await page.evaluate(()=>{window.sessionSnapshot.draftRevision++;return window.calls.filter(c=>c.name==='alive_current').length;});await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(polls+1);await page.mouse.up();expect(await workspaceEdits(page)).toHaveLength(2);
   await dragTimeline(page,page.locator('.timeline-brace .right'),[3,8],[-93,8],{cancel:true});expect(await workspaceEdits(page)).toHaveLength(2);
   await dragTimeline(page,page.locator('.timeline-brace .right'),[3,8],[-93,8]);await expect(page.getByLabel('Song loop end',{exact:true})).toHaveValue('6');expect((await workspaceEdits(page)).at(-1).args.operation.kind).toBe('transportRange');
+});
+test('Arrangement blank-lane drag selects the range after a timeline redraw',async({page})=>{
+  await openArrangement(page,{width:1280,height:800});const lane=page.locator('.timeline-lane').first();
+  const redraw=async()=>{await page.getByRole('button',{name:'Zoom timeline in',exact:true}).click();await page.getByRole('button',{name:'Zoom timeline out',exact:true}).click();};
+  await page.evaluate(()=>{window.previousLane=document.querySelector('.timeline-lane');});await redraw();
+  expect(await page.evaluate(()=>!window.previousLane.isConnected&&window.previousLane!==document.querySelector('.timeline-lane'))).toBe(true);
+  // A handle-based geometry read must survive an actual redraw at its resolution boundary.
+  const withElement=lane._withElement.bind(lane);lane._withElement=(task,options)=>withElement(async handle=>{await redraw();return task(handle);},options);
+  await dragBlankLaneRange(page,lane);await expect(page.locator('#timeline-range')).toHaveText('Range 8 - 10 beats');
+  await page.getByRole('button',{name:'Create MIDI source',exact:true}).click();await expect(page.getByLabel('MIDI source',{exact:true})).toHaveValue('new-source-1');
+  expect((await workspaceEdits(page)).map(c=>c.args.operation.kind)).toEqual(['sourceCreateMidi']);
 });
 for(const size of [{width:1440,height:900},{width:1280,height:800}])test(`Arrangement eight-track scrolling, long names and expanded detail stay bounded at ${size.width}`,async({page})=>{
   await page.setViewportSize(size);await openSession(page,true,true,8,true);await page.evaluate(()=>{const s=window.sessionSnapshot;s.document.lengthBeats=128;s.document.tracks[0].name='Long track name '.repeat(8);s.document.placements=[{id:'long',trackId:s.document.tracks[0].id,sourceId:s.document.sources[0].id,start:0,duration:4,sourceOffset:{kind:'beats',value:0},loopEnabled:true}];s.document.sources[0].name='Long MIDI source name '.repeat(5);s.draftRevision++;});

@@ -1,6 +1,6 @@
 # Phase 2 Implementation Handoff
 
-Updated 2026-10-28. Read this before resuming after compaction. The implementation
+Updated 2026-10-29. Read this before resuming after compaction. The implementation
 goal is active; this file records accepted work, evidence limits and the next
 incomplete gate. Use the execution checkpoint, not historical planning text,
 to decide what to resume.
@@ -25,6 +25,18 @@ checkpoint, not later Task 7 native Master source. These are not the earlier
 foundation runs.
 Fresh fetch confirms the release foundation remains `31033483`.
 
+Latest pushed evidence checkpoint is `49d68bb9fa7e7d1d07ddd26950a22f62a3ba89c6`.
+CI `40728696609` completes with native and UI/reference jobs passing and one
+Chromium Arrangement failure: the first blank-lane bounding box is null before
+pointer input. All four packages in `40728696620` pass; publication is skipped.
+The independently reviewed browser-only candidate `f035161` is applied to root
+byte-identically with syntax/whitespace checks passing. Its focused worker
+red/green and original-case runs pass; integrated full-browser/final-head CI
+remain pending while the native measurement lease is held. Original cloud
+failure, controlled mechanism, reviews and terminal receipts are retained in
+`experiments/phase2-20261028/reliability/cloud-browser49/`. The induced detached
+handle mechanism does not establish the exact cloud trigger.
+
 Full foundation CI `40710079202` and all four package targets `40710079013`
 pass at `3b3df87572722d2349d0725f4059cfc4afd467ae`; publication is skipped.
 These results do not qualify later Master source. Terminal receipts are in
@@ -34,11 +46,17 @@ Original c6 chooser and c272 browser failures and reviewed corrections remain
 under the reliability checkpoint; none of the original assertions was removed.
 
 Task 7 is running: explicit fresh `gpt-6.1-terra` / high worker
-`/root/p21_native_master` owns `bb01` at `6f407a4`, the sole host/native/runtime/
+`/root/p21_native_master` owns `bb01` based on `6f407a4`, the sole host/native/runtime/
 resolver/IPC/test writer. It owns its build outputs and exclusive offline
-native measurement resource; root does not launch GUI/audio or native deadline
-work during that lease. No native Master candidate or UI-free proof is accepted
-yet. The exact authorized brief and progress are in the canonical ledger
+native measurement resource; root does not launch browsers, GUI/audio, builds
+or native deadline work during that lease. Frozen candidate
+`4b4687d612cbf3639f15c772b1ce664fd5a09183` includes spec fixes from `8072edf`
+and the exact-target ramp correction. Whole-packet spec/quality and fresh Terra
+delta reviews have no open source findings. Worker reports 285 Rust tests
+passing with four ignored, exact-source native CI and partial-library checks
+passing; final guarded/deadline/publication measurements and complete report
+remain pending. No UI-free native acceptance is claimed yet.
+The exact authorized brief and progress are in the canonical ledger
 workspace; read it before dispatching or using a resource. Task 7 must release
 owned processes/resources on handoff. Task 8 and Task 9 remain gated.
 
@@ -48,7 +66,8 @@ unavailable; direct execution of the same test binary against the new build
 module resolves successfully. Preserve the old/new identities and failed
 loader evidence, and pin the mapped module in final tests. Do not weaken the
 resolver or overwrite the old tested launcher artifacts for unit-test setup.
-Native source and host/IPC integration are still moving, not a frozen candidate.
+Any measurement-driven source change requires a new immutable candidate and
+scoped review; earlier review does not automatically qualify later bytes.
 
 The Master v1 contract is frozen at `docs/contracts/alive-master-v1.md`.
 Read-only Task 7 native inventory and Task 8 visual preparations are complete
@@ -112,8 +131,8 @@ task/candidate/review records before dispatching anything after a restart.
 - Draft PR: #6, targeting `build/ultra-desktop-releases`.
 - Do not edit/merge active release branches, PR #2 or PR #5.
 
-Root is curating `PLAN.md`, this handoff, terminal foundation receipts and
-`experiments/phase2-20261028/master/`; those changes are intentional. Check
+Root is curating `PLAN.md`, this handoff, the reviewed browser-only test and
+`experiments/phase2-20261028/{master,reliability}/`; those changes are intentional. Check
 actual HEAD/upstream for the containing evidence checkpoint and fresh cloud
 statuses. Expected worker changes are confined to its isolated `bb01` lease;
 preserve its `.superpowers`, `r-u` and test-result evidence. Review/candidate

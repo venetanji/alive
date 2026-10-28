@@ -1,6 +1,6 @@
 # Alive / Ultra Plan
 
-Current execution, 2026-10-28: Tasks 1-6 are accepted at their stated scope.
+Current execution, 2026-10-29: Tasks 1-6 are accepted at their stated scope.
 Current application source is `6f407a4`: saved Master ownership/strict v5
 persistence plus the separately reviewed Node DTO/model consumer. Root's
 combined checks pass 585 Node/component tests, 273 Ultra Rust tests (four
@@ -20,20 +20,31 @@ and 1800 proven playing seconds remain separate gates.
 Checkpoint `62a657a` passes full CI `40721716899`, including native journeys,
 and all four package targets in `40721716535`; publication is skipped. Terminal
 receipts are in `experiments/phase2-20261028/master/cloud-62a657a/`. These qualify
-the saved-owner checkpoint, not the moving Task 7 native Master source.
+the saved-owner checkpoint, not Task 7 native Master source.
 Read-only Task 9 preparation is retained at
 `experiments/phase2-20261028/master/checkpoint-preparation.md`: the sustained
 workload needs contiguous stream-epoch collection and final retirement in
 addition to conservative playing-time accounting. No endurance pass is claimed.
 
+Latest pushed `49d68bb` has passing native/UI-reference jobs but a failed
+Chromium blank-lane geometry read in CI `40728696609`; all four package targets
+pass in `40728696620`, publication skipped. Reviewed browser-only `f035161` is
+applied byte-identically with syntax checks; integrated full-browser and fresh
+final-head CI remain pending. Original cloud and induced-redraw red/green
+evidence is retained under reliability/cloud-browser49; the original cloud
+trigger is unproven.
+
 ## Phase 2 Direction: Live / Max Workflow Fidelity, 2026-10-28
 
 Execution is active under `docs/PHASE2_HANDOFF.md`. The frozen Master contract
 is `docs/contracts/alive-master-v1.md`. Explicit `gpt-6.1-terra` worker
-`p21_native_master` owns Task 7 in isolated `bb01` at the accepted source above:
+`p21_native_master` owns Task 7 in isolated `bb01` based on the accepted source above:
 UI-free native gain/ramp/metering, bounded commands, coherent observations,
-capability resolution and installation/rollback proof. Root does not launch
-GUI/audio or native performance workloads during that lease. Task 8 then adds
+capability resolution and installation/rollback proof. Candidate `4b4687d`
+has clean whole-packet and ramp-delta source reviews; worker reports exact
+native CI and partial-library checks passing. Final guarded/deadline/publication
+measurements and complete report remain pending. Root does not launch browsers,
+builds, GUI/audio or native performance workloads during that lease. Task 8 then adds
 the real Master/Live composition; Task 9 produces the first user checkpoint.
 Accepted Tasks 1-6 must not be redispatched. The live ledger is
 `.superpowers/sdd/2026-10-28-phase2-live-max/progress.md`.
