@@ -48,7 +48,7 @@ unqualified. Root runs docs/evidence/cloud work only during this lease.
 New pushed checkpoint `da7c6fb` runs CI `40762558922` and packages `40762558971`.
 Full CI passes all three jobs, including Chromium, protocol/reference, original
 native Alive/Arrangement/clip/editor-resource journeys and software CPAL.
-Linux and Apple ARM packaging pass; Intel Mac remains nonterminal. Windows
+Linux and both Mac package targets pass; publication is skipped. Windows
 fails 275 passed/9 failed/4 ignored. Its diagnostic child
 resolves both measured anchors and validates all exports/limits, yet the cached
 production capability is false. The actual initializer was not measured by

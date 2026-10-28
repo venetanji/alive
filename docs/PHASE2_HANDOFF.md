@@ -14,8 +14,10 @@ has source spec/error re-review/fresh Terra quality approval and root static
 parse/body/blob checks; it is not compiled on Windows or pushed yet. Root is
 retaining useful da7 package results before the next push. Full da7 CI is now
 terminal success in all three jobs, including original native journeys and
-software CPAL; Linux and Apple ARM packages pass, Windows fails and Intel Mac
-is still running. Exact CI receipts and lossless original logs are curated in
+software CPAL; Linux and both Mac package targets pass, Windows fails and
+publication is skipped. All jobs are terminal, so the reviewed diagnostic may
+now be pushed without cancelling useful prior jobs. Exact CI/package receipts
+and lossless original logs are curated in
 `master/cloud-da7c6fb/`. Non-test bodies
 and all pinned root app/library inodes/hashes remain unchanged. Task 9's existing
 worker owns runtime; do not rebuild the binaries or start another native job.

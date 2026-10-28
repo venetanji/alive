@@ -5,7 +5,7 @@
   "package_run": 40762558971,
   "windows_job": 123078046233,
   "windows_status": "completed failure;275 passed,9 failed,4 ignored",
-  "other_jobs": "Full CI completed success (all three jobs); Linux and Apple ARM packages success; Intel Mac package remains running; no aggregate package pass.",
+  "other_jobs": "Full CI completed success (all three jobs); Linux and both Mac package targets success; Windows failure; publication skipped.",
   "cause": "direct/helper anchors resolve but cached production capability false; actual initializer unobserved",
   "artifacts": [
     {
@@ -74,6 +74,11 @@
       "path": "ci-receipt.json",
       "bytes": 848,
       "sha256": "3c090ed87d1bd292d425e78dc92669d0c3d6ac7b337d64ecbbb08c00b2854c87"
+    },
+    {
+      "path": "packages-terminal.json",
+      "bytes": 19721,
+      "sha256": "cdfc8ef9a2cc4c98ee95469680573972762c64749a2724396fa2a7fe19185130"
     }
   ]
 }

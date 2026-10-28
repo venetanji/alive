@@ -22,8 +22,8 @@ Those results do not establish complete endurance or physical audio.
 
 `cloud-da7c6fb/` retains exact-head full CI success, including the original
 native journeys and CPAL loopback, alongside the separate Windows package
-failure. Linux and Apple ARM packages pass; Intel Mac remains running at this
-checkpoint. The Windows diagnostic finds explicit valid anchors but a false
+failure. Linux and both Mac package targets pass; publication is skipped.
+The Windows diagnostic finds explicit valid anchors but a false
 cached capability; it does not observe the initializer. The reviewed test-only
 `3ca670d` initializer diagnostic, its source reviews and static checks are in
 `windows-initializer/`. Windows execution and a production fix remain pending.
