@@ -4,11 +4,12 @@ import {createDevicePlayer} from './canvas-device-player.mjs';
 import {REGISTRY} from './canvas-model.mjs';
 import {treeNodes} from './canvas-hierarchy.mjs';
 
-export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{}}){
+export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{},drafts}){
   const $=id=>doc.querySelector('#'+id),panel=$('instrument-panel');
   const make=(tag,className,text)=>{const node=doc.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node;};
   const guard=fn=>(...args)=>{try{return Promise.resolve(fn(...args)).catch(error=>controller.notice(error));}catch(error){controller.notice(error);return Promise.resolve();}};
   const current=()=>controller.getState().document??controller.getState().patch;
+  const deviceIdentity=state=>{const device=(state.document??state.patch).device;return JSON.stringify(device?{id:device.id,midi:device.midi,parameters:device.parameters}:null);};
   let identity='',presetsKey='',bindings=[],midi=null,opened=false;
   const inputs=new Map(),keys=new Map();
   const player=createDevicePlayer({
@@ -41,13 +42,26 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{}}){
       };
       range.addEventListener('input',guard(()=>{numeric.value=range.value;write(Number(range.value),!editing);editing=true;}));
       for(const name of ['change','pointerup','pointercancel','blur'])range.addEventListener(name,()=>{editing=false;});
-      numeric.addEventListener('change',guard(()=>write(Number(numeric.value))));
+      let numericDirty=false,original='';
+      numeric.addEventListener('input',()=>{if(!numericDirty)original=range.value;numericDirty=true;});
+      numeric.commitDraft=()=>{
+        if(!numericDirty)return true;
+        const value=numeric.value===''?NaN:Number(numeric.value);
+        if(!Number.isFinite(value)||value<binding.min||value>binding.max)return false;
+        numericDirty=false;
+        try{write(value);return true;}catch(error){numericDirty=true;controller.notice(error);return false;}
+      };
+      numeric.cancelDraft=()=>{numericDirty=false;numeric.value=original;};
+      numeric.hasDraft=()=>numericDirty;drafts?.watch(numeric,()=>numericDirty);
+      numeric.addEventListener('change',()=>{if(!numericDirty)numericDirty=true;if(!numeric.commitDraft())numeric.focus();});
+      numeric.addEventListener('blur',()=>{if(!numeric.commitDraft())numeric.focus();});
+      numeric.addEventListener('keydown',e=>{if(e.key==='Escape'&&numericDirty){e.preventDefault();e.stopPropagation();numeric.cancelDraft();}else if(['Enter','Tab'].includes(e.key)&&!numeric.commitDraft())e.preventDefault();});
       row.append(label,range,numeric,unit);$('instrument-controls').append(row);inputs.set(binding.key,{range,numeric});
     }
   }
   function update(state){
     const patch=state.document??state.patch,device=patch.device;
-    const next=JSON.stringify(device?{id:device.id,midi:device.midi,parameters:device.parameters}:null);
+    const next=deviceIdentity(state);
     if(identity!==next){release();identity=next;build(device);presetsKey='';}
     if(!opened)return;
     $('instrument-title').textContent=device?.name??'Instrument';
@@ -61,7 +75,7 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{}}){
     for(const binding of bindings){
       const {range,numeric}=inputs.get(binding.key),value=values[binding.key];
       if(range.value!==String(value))range.value=String(value);
-      if(doc.activeElement!==numeric)numeric.value=String(Number(value.toFixed(4)));
+      if(doc.activeElement!==numeric&&!numeric.hasDraft?.())numeric.value=String(Number(value.toFixed(4)));
       range.disabled=numeric.disabled=!!state.closing||state.faulted;
     }
     const newPresets=JSON.stringify(device.presets.map(preset=>preset.name));
@@ -112,5 +126,5 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{}}){
   }));
   $('instrument-instance').addEventListener('click',guard(async()=>{await controller.flush();await invoke('document_instantiate');}));
   $('instrument-release').addEventListener('click',guard(async()=>{await player.releaseAll();await controller.stop();}));
-  return{open,close,update,isOpen:()=>opened,dispose(){release();win.removeEventListener?.('keyup',keyup);win.removeEventListener?.('blur',release);doc.removeEventListener?.('visibilitychange',visibility);}};
+  return{open,close,update,wouldRebuild:state=>identity!==deviceIdentity(state),isOpen:()=>opened,dispose(){release();win.removeEventListener?.('keyup',keyup);win.removeEventListener?.('blur',release);doc.removeEventListener?.('visibilitychange',visibility);}};
 }

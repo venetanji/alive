@@ -17,6 +17,7 @@ import {cableBounds,cablePath} from './canvas-cable-path.mjs';
 import {translatedMidpoints} from './canvas-cable-geometry.mjs';
 import {canvasRenderKey,createCanvasPoller} from './canvas-poll.mjs';
 import {mountDevicePanel} from './canvas-device-panel.mjs';
+import {createFocusedDrafts} from './canvas-focused-drafts.mjs';
 
 export function mountCanvas({document:doc=globalThis.document,window:win=globalThis.window,invoke=win?.__TAURI__?.core?.invoke}={}) {
   const $=id=>doc.querySelector('#'+id),make=(tag,className,text)=>{const e=doc.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;};
@@ -43,7 +44,8 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   const maxDialog=mountMaxImportDialog({doc,invoke});
   const consoleView=mountConsole({doc,controller,select:source=>guard(()=>revealSource(source))()});
   const guard=fn=>(...args)=>{try{return Promise.resolve(fn(...args)).catch(error=>controller.notice(error));}catch(error){controller.notice(error);}};
-  const devicePanel=mountDevicePanel({doc,win,controller,invoke,beforeOpen:()=>{panel=null;applyPanel();}});
+  const drafts=createFocusedDrafts({onCancel:()=>{if(initialized)render(controller.getState());}});
+  const devicePanel=mountDevicePanel({doc,win,controller,invoke,drafts,beforeOpen:()=>{panel=null;applyPanel();}});
   helpView=mountHelpShell({doc,win,invoke,onChange:()=>{if(initialized)render(controller.getState());},beforeRead:()=>controller.flush(),
     beforeNavigate:async()=>{finishDrag();entry.close();closeMenus();cancelWire(false);for(const view of views.values())view.cancelInteraction?.();await controller.flush();},
     hostBasic:()=>controller.hostHelpBasic()});
@@ -64,7 +66,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     const size=node?views.get(node.id)?.element.getBoundingClientRect():null;
     entry.open({text,nodeId:node?.id,x:p.x,y:p.y,clientX:rect.left+p.x*zoom,clientY:rect.top+p.y*zoom,width:size?.width??100*zoom,height:24*zoom,fontSize:(node?.style?.fontsize??12)*zoom});
   }
-  const entry=createObjectEntry({document:doc,window:win,onClose:()=>{$('workspace').focus();},commit:(text,context)=>{
+  const entry=createObjectEntry({document:doc,window:win,drafts,onClose:()=>{$('workspace').focus();},commit:(text,context)=>{
     if(locked)throw Error('Unlock the patch before editing.');
     const parsed=parseObjectText(text,context.nodeId?getNode(context.nodeId):null);
     if(context.nodeId)controller.configure(context.nodeId,parsed.type,parsed.params);
@@ -380,17 +382,17 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
         const helper=n.type==='help_helper',spec=helper?{name:'Help annotation',summary:`${n.params.role} layout for ${helpView.object}.`,params:{}}:OBJECTS[n.type];
         area.append(make('h2','',spec.name),make('p','',selected.size>1?`${selected.size} selected. Drag or delete the group.`:spec.summary));
         for(const [key,p] of Object.entries(spec.params)){
-          const {label,input}=createParameterField({doc,node:n,key,definition:p,change:value=>parameter(n.id,key,value)});
+          const {label,input}=createParameterField({doc,node:n,key,definition:p,drafts,change:value=>parameter(n.id,key,value)});
           fields.set(key,input);area.append(label);
         }
         area.append(make('p','panel-note',helper?'This annotation is part of the help layout. Reference text comes from the local Max installation.':n.type==='message_box'?'Text edits replace this message silently. Incoming messages change the live display; saved text stays here.':isArithmetic(n.type)?'Numeric mode is structural: unlock to change it and reset this runtime. The stored right operand updates live.':'Parameters update live. Object text and connection edits stop timers and clear notes.'));
-        appearanceInspector=mountAppearanceFields({doc,area,node:n,change:guard((key,value)=>controller.style(n.id,key,value)),reset:guard(()=>controller.style(n.id,null))});
+        appearanceInspector=mountAppearanceFields({doc,area,node:n,drafts,change:(key,value)=>{try{controller.style(n.id,key,value);return true;}catch(error){controller.notice(error);return false;}},reset:guard(()=>controller.style(n.id,null))});
         const b=make('button','panel-action',helper?'Reference':`Help for ${spec.name}`);b.addEventListener('click',guard(()=>helper?helpView.openReference(helpView.object):documents.openHelp(`help:${n.type}`)));area.append(b);
       } else if(selection?.kind==='edge') {
         const edge=state.patch.edges[selection.index];if(edge)area.append(make('h2','','Patch cord'),make('p','',`Object ${edge.from} outlet ${edge.outlet} to object ${edge.to} inlet ${edge.inlet}. Fan-out follows saved cable order.`));
       } else area.append(make('p','','Select an object to inspect its parameters. Right-click a port for accepted messages or emitted data.'));
     }
-    if(n)for(const [key,input] of fields){input.disabled=locked&&structuralParameter(n.type,key);if(doc.activeElement!==input)input.value=String(n.params[key]);}
+    if(n)for(const [key,input] of fields){input.disabled=locked&&structuralParameter(n.type,key);if(doc.activeElement!==input&&!input.hasDraft?.())input.value=String(n.params[key]);}
     if(n)appearanceInspector?.update(n,locked);
     $('edit-object').disabled=!n||locked||n.type==='help_helper';$('delete-selection').disabled=!selection||locked;
     const observation=n?state.observations[n.id]:null;
@@ -423,7 +425,21 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     }
     area.append(make('p','panel-note',s.help),make('p','panel-note','Original Ultra help. Similar names do not imply Max semantics. Native observations summarize a node; they are not a scope or message history.'));
   }
+  let capturingRender=false;
   function render(state) {
+    if(capturingRender)return;
+    const container=$('objects');
+    const rebuild=state.patch.nodes.length!==container.children.length||state.patch.nodes.some((node,index)=>{
+      const view=views.get(node.id),configuration=node.type==='help_helper'?JSON.stringify(node.params):nodeConfiguration(node);
+      return !view||view.type!==node.type||view.configuration!==configuration||container.children[index]!==view.element;
+    });
+    const inspected=currentNode(),nextInspectorKey=selection?.kind==='edge'?`edge/${selection.index}`:inspected?`${inspected.id}/${inspected.type}/${inspected.params.numericmode??''}/${selected.size}`:'none';
+    const within=(element,root)=>{while(element&&element!==root)element=element.parentElement;return element===root;};
+    const replaces=input=>rebuild&&within(input,container)||nextInspectorKey!==inspectorKey&&within(input,$('inspector'))||devicePanel.wouldRebuild(state)&&within(input,$('instrument-controls'));
+    const previousDraftSerial=drafts.serial;capturingRender=true;let accepted;
+    try{accepted=drafts.commitWhere(replaces);}finally{capturingRender=false;}
+    if(!accepted)return;
+    if(drafts.serial!==previousDraftSerial)state=controller.getState();
     documents?.update();
     helpView.update(state);
     renderPatcherPath(state);
@@ -451,12 +467,12 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
       const configuration=node.type==='help_helper'?JSON.stringify(node.params):nodeConfiguration(node);
       if(!views.has(node.id)||views.get(node.id).type!==node.type||views.get(node.id).configuration!==configuration){
         views.get(node.id)?.dispose?.();
-        const v=node.type==='help_helper'?createHelpHelperView(node,{doc,select:selectNode,dragStart}):createNodeView(node,{doc,select:selectNode,dragStart,edit:id=>{if(getNode(id)?.type==='patcher')guard(()=>navigatePatcher(id))();else if(locked&&getNode(id)?.type==='print')consoleView.open();else editNode(id);},portClick,portDown,hover:hoverPort,unhover,context:contextMenu,operate,parameter,resize:guard((id,size)=>controller.resize(id,size)),getZoom:()=>zoom,resized:()=>drawCables(controller.getState().patch),tab:id=>guard(()=>controller.tab(id))()});
+        const v=node.type==='help_helper'?createHelpHelperView(node,{doc,select:selectNode,dragStart}):createNodeView(node,{doc,drafts,select:selectNode,dragStart,edit:id=>{if(getNode(id)?.type==='patcher')guard(()=>navigatePatcher(id))();else if(locked&&getNode(id)?.type==='print')consoleView.open();else editNode(id);},portClick,portDown,hover:hoverPort,unhover,context:contextMenu,operate,parameter,resize:guard((id,size)=>controller.resize(id,size)),getZoom:()=>zoom,resized:()=>drawCables(controller.getState().patch),tab:id=>guard(()=>controller.tab(id))()});
         for(const target of [v.element,v.header]){target.addEventListener('pointermove',dragMove);target.addEventListener('pointerup',finishDrag);target.addEventListener('pointercancel',finishDrag);target.addEventListener('lostpointercapture',finishDrag);}views.set(node.id,v);
       }
       const view=views.get(node.id);view.update(node,state,{selected:selected.has(node.id),locked,pending,moving:!!drag&&selected.has(node.id),reference:helpView.reference,object:helpView.object});applyNodeAppearance(view,node,doc);children.push(view.element);
     }
-    const container=$('objects');if(container.children.length!==children.length||children.some((e,i)=>container.children[i]!==e))container.replaceChildren(...children);
+    if(container.children.length!==children.length||children.some((e,i)=>container.children[i]!==e))container.replaceChildren(...children);
     const bounds=cableBounds(state.patch.edges);
     const width=Math.max(760,(bounds?.right??0)+35,...state.patch.nodes.map(n=>n.x+Math.max(350,n.style?.width??0))),height=Math.max(740,(bounds?.bottom??0)+35,...state.patch.nodes.map(n=>n.y+Math.max(160,n.style?.height??0)));
     $('canvas').style.width=`${width}px`;$('canvas').style.height=`${height}px`;$('canvas').style.transform=`translate(${panX}px, ${panY}px) scale(${zoom})`;
@@ -565,7 +581,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     if($('patch-dialog').open||documents?.isOpen())return;
     if(e.key==='Escape'&&helpView.dismiss()){e.preventDefault();e.stopPropagation();return;}
     if(e.target?.closest?.('#help-reference-pane, #help-reference-menu'))return;
-    if(entry.isOpen()){if(e.key==='Escape'){e.preventDefault();entry.close();}return;}
+    if(entry.isOpen()&&!((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s')){if(e.key==='Escape'){e.preventDefault();entry.close();}return;}
     if(e.key==='Escape'){e.preventDefault();for(const view of views.values())view.cancelInteraction?.();cancelWire();closeMenus();releaseNavigation();render(controller.getState());return controller.stop();}
     const command=e.ctrlKey||e.metaKey,key=e.key.toLowerCase();
     if(command&&key==='s'){e.preventDefault();return documents.action(e.shiftKey?'save-as':'save');}
@@ -598,7 +614,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   win.addEventListener('blur',()=>{for(const view of views.values())view.cancelInteraction?.();cancelWire();releaseNavigation();finishDrag();});
   doc.addEventListener('visibilitychange',()=>{poller.visibilityChanged();if(doc.hidden){for(const view of views.values())view.cancelInteraction?.();cancelWire();releaseNavigation();finishDrag();}});
   win.addEventListener('pagehide',()=>{
-    leaving=true;poller.stop();devicePanel.dispose();documents?.dispose();
+    leaving=true;poller.stop();devicePanel.dispose();documents?.dispose();drafts.clear();
     // Native close may already have removed this document's graph.
     controller.disposeDocument?.().catch(()=>{});
   });
@@ -628,8 +644,14 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     }
     controller.adoptDescriptor(descriptor);
   }
-  documents=mountDocuments({doc,win,invoke,getPatch:()=>controller.getState().document,adopt:adoptDocument,beforeSave:()=>controller.flush(),
-    beforeClose:request=>controller.flushBeforeClose?.(request)??controller.flush(),onCloseCancelled:request=>controller.cancelClose?.(request),
+  function captureFocusedDraft(){
+    capturingRender=true;let accepted;
+    try{accepted=drafts.commitWhere();}finally{capturingRender=false;}
+    render(controller.getState());
+    if(!accepted)throw Error('Finish or cancel the invalid focused edit before saving or closing.');
+  }
+  documents=mountDocuments({doc,win,invoke,getPatch:()=>controller.getState().document,adopt:adoptDocument,beforeSave:()=>{captureFocusedDraft();return controller.flush();},
+    beforeClose:request=>{captureFocusedDraft();return controller.flushBeforeClose?.(request)??controller.flush();},onCloseCancelled:request=>controller.cancelClose?.(request),
     onDescriptor:descriptor=>controller.acceptDescriptor?.(descriptor),onReveal:acceptReveal,
     notice:error=>controller.notice(error),inspect:(source,name)=>{dialog('open');$('patch-json').value=source;return maxDialog.inspect(source,name);}});
   $('object-profile-note').textContent=`${Object.keys(OBJECTS).length} supported objects. Names and arguments belong to Ultra's bounded profile.`;
@@ -643,6 +665,6 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     if(!leaving)poller.start();
   }).catch(error=>{controller.notice(error);controller.prepare();if(!leaving)poller.start();});
   win.addEventListener('resize',()=>{closeMenus();entry.close();drawCables(controller.getState().patch);});
-  return{controller,render,ready,documents,devicePanel,dispose:async()=>{leaving=true;devicePanel.dispose();helpView.dispose();documents.dispose();poller.stop();for(const view of views.values())view.dispose?.();await controller.dispose();}};
+  return{controller,render,ready,documents,devicePanel,dispose:async()=>{leaving=true;devicePanel.dispose();helpView.dispose();documents.dispose();poller.stop();for(const view of views.values())view.dispose?.();drafts.clear();await controller.dispose();}};
 }
 if(typeof document!=='undefined'&&typeof window!=='undefined')mountCanvas();

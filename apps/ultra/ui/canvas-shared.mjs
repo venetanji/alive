@@ -194,7 +194,10 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     return edit((...args)=>root?document.parameterRoot(...args):document.parameter(...args),[id,key,value,{history}],{history,parameter,messageText});
   }
   function event(node,inlet=0,value=null,action,root=false) {
-    if(disposed||detaching||closeBarriers.size||!descriptor)return Promise.resolve(false);
+    const releasingDeviceNote=closeBarriers.size&&root&&inlet===0&&Array.isArray(value)&&value.length===2&&value[1]===0&&
+      treeNodes(document.document).some(target=>target.id===node&&target.type==='poly_note');
+    if(disposed||detaching||!descriptor||closeBarriers.size&&
+      (!releasingDeviceNote||[...closeBarriers.values()].some(barrier=>barrier.purpose!=='save')))return Promise.resolve(false);
     const target=(root?treeNodes(document.document):document.patch.nodes).find(item=>item.id===node),port=target&&nodeSpec(target).inlets[inlet];
     if(!port||!(port.accepts??[port.type]).includes('control'))throw Error('Events require an inlet that accepts control messages.');
     if(typeof value==='string'){
@@ -244,7 +247,7 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
   }
   async function flushBeforeClose(request) {
     const existing=closeBarriers.get(request.requestLabel);
-    if(!existing||existing.token!==request.token)closeBarriers.set(request.requestLabel,{token:request.token,error:null});
+    if(!existing||existing.token!==request.token)closeBarriers.set(request.requestLabel,{token:request.token,purpose:request.purpose,error:null});
     emit();await flush();
     const barrier=closeBarriers.get(request.requestLabel);
     if(barrier?.token===request.token&&barrier.error)throw barrier.error;

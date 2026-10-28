@@ -920,6 +920,8 @@ pub fn run_ultra(context: fn() -> tauri::Context<tauri::Wry>) {
             document_windows::commands::document_history,
             document_windows::commands::document_open_patcher,
             document_windows::commands::document_close_flushed,
+            document_windows::commands::document_save_flushed,
+            document_windows::commands::document_save_barrier_active,
             document_windows::document_new,
             document_windows::document_instantiate,
             document_windows::document_open,

@@ -1,9 +1,26 @@
 const copy=value=>JSON.parse(JSON.stringify(value));
 const fingerprint=value=>JSON.stringify(value,(_,item)=>item&&typeof item==='object'&&!Array.isArray(item)?Object.fromEntries(Object.keys(item).sort().map(key=>[key,item[key]])):item);
 
-export function createDocumentSession({invoke,getPatch,adopt,beforeSave=async()=>{},beforeClose=beforeSave,metadata=()=>{},notice=()=>{},inspect=()=>{},browser={}}){
+export function createDocumentSession({invoke,getPatch,adopt,beforeSave=async()=>{},beforeClose=beforeSave,metadata=()=>{},notice=()=>{},inspect=()=>{},browser={},setTimer,clearTimer,onSaveReleased=()=>{}}){
   let descriptor={title:'Untitled patch',kind:'patch'},baseline=null,dirty=false,active=false,reported=null,notifications=Promise.resolve(),saving=null;
-  const closing=new Map();
+  const closing=new Map(),saveFlushes=new Map(),releasedSaves=new Map();
+  function scheduleSaveCheck(owner,pending){
+    if(!setTimer||!invoke)return;
+    pending.timer=setTimer(async()=>{
+      if(saveFlushes.get(owner)!==pending)return;
+      try{
+        if(await invoke('document_save_barrier_active',{owner,token:pending.token})===false){
+          const barrier=releaseSave({owner,token:pending.token});if(barrier)onSaveReleased(barrier);return;
+        }
+      }catch{/* A later check can recover a transient IPC failure. */}
+      if(saveFlushes.get(owner)===pending)scheduleSaveCheck(owner,pending);
+    },1000);
+  }
+  function releaseSave(request){
+    releasedSaves.set(request.owner,Math.max(releasedSaves.get(request.owner)??0,request.token));
+    const pending=saveFlushes.get(request.owner);
+    if(pending?.token===request.token){saveFlushes.delete(request.owner);if(pending.timer!==undefined)clearTimer?.(pending.timer);return pending.barrier;}
+  }
   const publish=()=>metadata({...descriptor,dirty});
   function acceptDescriptor(value){
     if(!value||typeof value!=='object')return false;
@@ -59,6 +76,16 @@ export function createDocumentSession({invoke,getPatch,adopt,beforeSave=async()=
       if(invoke)await invoke('document_close_flushed',request);
     },
     cancelClose(request){if(closing.get(request.requestLabel)?.token===request.token)closing.delete(request.requestLabel);},
+    async flushBeforeSave(request){
+      if((releasedSaves.get(request.owner)??0)>=request.token)return;
+      const barrier={requestLabel:`save/${request.owner}`,token:request.token,purpose:'save'},pending={token:request.token,barrier};
+      saveFlushes.set(request.owner,pending);scheduleSaveCheck(request.owner,pending);let error;
+      try{await beforeClose(barrier);}catch(reason){error=String(reason?.message||reason);}
+      if(saveFlushes.get(request.owner)!==pending)return;
+      if(invoke)await invoke('document_save_flushed',{owner:request.owner,token:request.token,error});
+    },
+    releaseSave,
+    dispose(){for(const pending of saveFlushes.values())if(pending.timer!==undefined)clearTimer?.(pending.timer);saveFlushes.clear();},
     async saveBeforeClose(request){
       const args=request?.quitToken===undefined?undefined:{quitToken:request.quitToken};
       let confirmed=false;

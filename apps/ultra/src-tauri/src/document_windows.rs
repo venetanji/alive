@@ -70,6 +70,10 @@ impl QuitSession {
     fn can_exit(&self, registry: &Registry) -> bool {
         self.saves == 0 && (registry.list().is_empty() || (self.committed && self.owners == owner_labels(registry)))
     }
+    fn resume_after_save(&self) -> Option<(String, u64)> {
+        if self.saves != 0 { return None; }
+        self.current().map(|label| (label.to_owned(), self.generation))
+    }
 }
 
 fn owner_labels(registry: &Registry) -> Vec<String> {
@@ -210,8 +214,10 @@ pub fn document_current(window: WebviewWindow, state: tauri::State<Documents>, a
     })?;
     registry.set_reveal(window.label(), None, None)?;
     let flushes = registry.mark_ready(window.label())?;
+    let save_flush = registry.mark_save_ready(window.label())?;
     drop(registry);
     for notice in flushes { commands::request_close_flush(window.app_handle(), notice); }
+    if let Some(notice) = save_flush { commands::request_save_flush(window.app_handle(), &notice); }
     Ok(document)
 }
 
@@ -258,16 +264,39 @@ pub async fn document_save(window: WebviewWindow, save_as: bool) -> Result<Optio
     let app = window.app_handle().clone();
     let label = window.label().to_owned();
     let save_quit_token = quit_token_for(&app, &label);
-    {
+    let (wake, receiver) = std::sync::mpsc::sync_channel(1);
+    let notice = {
         let state = app.state::<Documents>();
-        let registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
+        let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
         registry.get_open(&label)?;
-        state.1.lock().map_err(|_| "Quit lock poisoned")?.saves += 1;
-    }
-    let result = tauri::async_runtime::spawn_blocking(move || {
+        let mut quit = state.1.lock().map_err(|_| "Quit lock poisoned")?;
+        let notice = registry.begin_save(&label, wake)?;
+        quit.saves += 1;notice
+    };
+    let lease=SaveLease { app:app.clone(), owner:notice.owner.clone(), token:notice.token, label, quit_token:save_quit_token, clean:false };
+    commands::request_save_flush(&app, &notice);
+    tauri::async_runtime::spawn_blocking(move || {
+      let mut lease=lease;
+      let result: Result<Option<Document>, String> = (|| {
         let app = window.app_handle();
         let state = app.state::<Documents>();
-        let current = state.0.lock().map_err(|_| "Document lock poisoned")?.get_open(window.label())?.clone();
+        let deadline = std::time::Instant::now() + std::time::Duration::from_secs(15);
+        let current = loop {
+            let timeout = receiver.recv_timeout(deadline.saturating_duration_since(std::time::Instant::now())).is_err();
+            let completed = state.0.lock().map_err(|_| "Document lock poisoned")?.finish_save_preflight(&notice.owner, notice.token, timeout)?;
+            if let Some(completed) = completed {
+                commands::release_save_flush(app, completed.notice);
+                if completed.document.is_err() {
+                    if let Ok(registry) = state.0.lock() {
+                        if let Ok(document) = registry.descriptor(window.label()) { commands::trace_document("save_refused", &document, notice.token, 0); }
+                    }
+                }
+                break completed.document?;
+            }
+        };
+        let mut view = state.0.lock().map_err(|_| "Document lock poisoned")?.descriptor(window.label())?;
+        view.authoring_revision = current.authoring_revision;
+        commands::trace_document("save_begin", &view, 0, u8::from(save_as));
         let patch = current.patch.clone().ok_or("Patch is not ready to save")?;
         let direct = !save_as && current.kind == Kind::Patch && current.source.is_none();
         let path = if direct { current.path.clone() } else { None };
@@ -278,7 +307,7 @@ pub async fn document_save(window: WebviewWindow, save_as: bool) -> Result<Optio
                 let mut picker = window.dialog().file().set_parent(&window).set_title("Save Ultra Patch")
                     .add_filter("Ultra patch", &["ultra"]).set_file_name(format!("{name}.ultra"));
                 if let Some(parent) = current.path.as_ref().and_then(|p| p.parent()) { picker = picker.set_directory(parent); }
-                let Some(path) = picker.blocking_save_file() else { return Ok(None); };
+                let Some(path) = picker.blocking_save_file() else { commands::trace_document("save_cancel", &view, 0, u8::from(save_as)); return Ok(None); };
                 path.into_path().map_err(|e| format!("Choose a local save location: {e}"))?
             }
         };
@@ -287,14 +316,30 @@ pub async fn document_save(window: WebviewWindow, save_as: bool) -> Result<Optio
         registry.check_save_path(window.label(), &path)?;
         let path = documents::save_patch(&path, &patch)?;
         let document = registry.saved(window.label(), path, patch)?;
+        commands::trace_document("save_done", &document, 0, u8::from(save_as));
         drop(registry);
         let registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
         commands::broadcast(app, &registry, &document.owner_label);
         Ok(Some(document))
-    }).await.map_err(|e| format!("Save task failed: {e}")).and_then(|result| result);
-    if let Ok(mut quit) = app.state::<Documents>().1.lock() { quit.saves = quit.saves.saturating_sub(1); }
-    if !matches!(&result, Ok(Some(document)) if !document.dirty) { cancel_quit_for(&app, &label, save_quit_token); }
-    result
+      })();
+      lease.clean=matches!(&result, Ok(Some(document)) if !document.dirty);
+      result
+    }).await.map_err(|e| format!("Save task failed: {e}"))?
+}
+
+struct SaveLease { app: AppHandle, owner: String, token: u64, label: String, quit_token: Option<u64>, clean: bool }
+impl Drop for SaveLease {
+    fn drop(&mut self) {
+        if let Ok(registry) = self.app.state::<Documents>().0.lock() {
+            if let Ok(document) = registry.descriptor(&self.label) { commands::trace_document("save_cleanup", &document, self.token, u8::from(self.clean)); }
+        }
+        let cleanup = self.app.state::<Documents>().0.lock().ok().and_then(|mut registry| registry.end_save(&self.owner, self.token).ok().flatten());
+        if let Some(notice) = cleanup { commands::release_save_flush(&self.app, notice); }
+        if let Ok(mut quit) = self.app.state::<Documents>().1.lock() { quit.saves = quit.saves.saturating_sub(1); }
+        if !self.clean { cancel_quit_for(&self.app, &self.label, self.quit_token); }
+        let resume = self.app.state::<Documents>().1.lock().ok().and_then(|quit| quit.resume_after_save());
+        if let Some((label, token)) = resume { queue_quit_prepare(&self.app, label, token); }
+    }
 }
 
 #[tauri::command]
@@ -339,6 +384,9 @@ pub fn document_open_help(app: AppHandle, key: String) -> Result<Document, Strin
 
 #[tauri::command]
 pub fn document_close_confirmed(window: WebviewWindow, state: tauri::State<Documents>, quit_token: Option<u64>) -> Result<bool, String> {
+    if let Ok(registry) = state.0.lock() {
+        if let Ok(document) = registry.descriptor(window.label()) { commands::trace_document("close_confirm", &document, quit_token.unwrap_or(0), 0); }
+    }
     if !valid_quit_token(window.app_handle(), window.label(), quit_token) { return Ok(false); }
     if let Some(token) = quit_token {
         let registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
@@ -393,6 +441,7 @@ fn prepare_quit_owner(app: &AppHandle, label: &str, token: u64) {
     let (Ok(mut registry), Ok(quit)) = (state.0.lock(), state.1.lock()) else { return; };
     if quit.current() != Some(label) || quit.generation != token || quit.saves != 0 { return; }
     let Ok(document) = registry.get(label) else { drop(quit); drop(registry); cancel_quit(app); return; };
+    commands::trace_document("quit_prepare", document, token, 0);
     if document.close_pending { return; }
     let gate = registry.begin_close(label);
     match gate {
@@ -687,7 +736,11 @@ fn document_menu(app: &AppHandle, label: &str) -> tauri::Result<tauri::menu::Men
     use tauri::menu::{MenuBuilder, SubmenuBuilder};
     let id = |action| format!("doc:{label}:{action}");
     let file = SubmenuBuilder::new(app, "File").text(id("new"), "New Patch").text(id("open"), "Open...")
-        .separator().text(id("save"), "Save").text(id("save-as"), "Save As...").separator().text(id("close"), "Close Window").build()?;
+        .separator().text(id("save"), "Save").text(id("save-as"), "Save As...").separator().text(id("close"), "Close Window");
+    #[cfg(not(target_os = "macos"))]
+    let file = file.separator().item(&tauri::menu::MenuItemBuilder::with_id("ultra-quit", "Quit Ultra")
+        .accelerator("CmdOrCtrl+Q").build(app)?);
+    let file = file.build()?;
     let help = SubmenuBuilder::new(app, "Help").text(id("library"), "Help & Examples").build()?;
     let menu = MenuBuilder::new(app);
     #[cfg(target_os = "macos")]
@@ -768,6 +821,28 @@ mod lifecycle_tests {
         assert_eq!(quit.approve("a"), QuitStep::Prepare("b".into()));
         assert_eq!(quit.approve("a"), QuitStep::Waiting);
         assert_eq!(quit.approve("b"), QuitStep::Commit);
+    }
+
+    #[test]
+    fn last_unrelated_save_resumes_the_current_quit_generation() {
+        let mut quit=QuitSession::default();
+        assert_eq!(quit.start(vec!["a".into(),"b".into()]),QuitStep::Prepare("a".into()));
+        let generation=quit.generation;quit.saves=2;
+        assert_eq!(quit.resume_after_save(),None);quit.saves-=1;assert_eq!(quit.resume_after_save(),None);
+        quit.saves-=1;assert_eq!(quit.resume_after_save(),Some(("a".into(),generation)));
+        assert_eq!(quit.approve("a"),QuitStep::Prepare("b".into()));
+        assert_eq!(quit.resume_after_save(),Some(("b".into(),generation)));
+        quit.active=false;assert_eq!(quit.resume_after_save(),None);
+    }
+
+    #[test]
+    fn worker_owns_and_drops_the_complete_save_lease_after_marking_clean() {
+        use std::sync::{Arc, atomic::{AtomicU8, Ordering}};
+        struct Lease { clean: bool, receipt: Arc<AtomicU8> }
+        impl Drop for Lease { fn drop(&mut self) { self.receipt.store(if self.clean { 1 } else { 2 }, Ordering::SeqCst); } }
+        let receipt=Arc::new(AtomicU8::new(0));let lease=Lease { clean:false,receipt:receipt.clone() };
+        std::thread::spawn(move || { let mut lease=lease;lease.clean=true; }).join().unwrap();
+        assert_eq!(receipt.load(Ordering::SeqCst),1);
     }
 
     #[test]

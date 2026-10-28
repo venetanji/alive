@@ -2,7 +2,7 @@ import {OBJECTS, objectText, portHelp} from './canvas-catalog.mjs';
 import {nodeSpec} from './canvas-model.mjs';
 import {printPopupText} from './canvas-print-ui.mjs';
 
-export function createNodeView(node,{doc,select,dragStart,edit,portClick,portDown,hover,unhover,context,operate,parameter,tab,resize,resized,getZoom=()=>1}) {
+export function createNodeView(node,{doc,select,dragStart,edit,portClick,portDown,hover,unhover,context,operate,parameter,tab,resize,resized,drafts,getZoom=()=>1}) {
   const s={...OBJECTS[node.type],...nodeSpec(node)},make=(tag,className,text)=>{const e=doc.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;};
   const message=['message','message_box'].includes(node.type);
   const portCount=Math.max(s.inlets.length,s.outlets.length),minimumWidth=node.type==='gain'?30:portCount>1?portCount*18:12;
@@ -138,13 +138,20 @@ export function createNodeView(node,{doc,select,dragStart,edit,portClick,portDow
     const input=make('input',node.type==='gain'?'gain-input':node.type==='slider'?'slider-input':'number-input');input.type=ranged?'range':'number';
     const p=s.params.value;input.min=p.min;input.max=p.max;input.step=p.integer?'1':'any';input.value=node.params.value;input.dataset.parameter='value';
     input.setAttribute('aria-label',`${s.name} value, object ${node.id}`);
+    input.commitDraft=()=>{
+      if(!dirty)return true;
+      const value=input.value===''?NaN:Number(input.value),{min,max}=bounds();
+      if(!Number.isFinite(value)||value<min||value>max)return false;
+      setValue(value);return !dirty;
+    };
+    input.cancelDraft=()=>{dirty=false;input.value=String(displayedValue);};
     input.addEventListener('input',()=>{if(!ranged){dirty=true;return;}if(isLocked)setValue(Number(input.value),!keyContinuous);});
-    input.addEventListener('change',()=>{if(canOperate({})||!input.readOnly)setValue(Number(input.value));});
+    input.addEventListener('change',()=>{if(canOperate({})||!input.readOnly){if(!dirty)dirty=true;if(!input.commitDraft())input.focus();}});
     input.addEventListener('keydown',e=>{
+      if(e.key==='Escape'&&dirty){e.preventDefault();e.stopPropagation();input.cancelDraft();return;}
       if(!canOperate(e)&&input.readOnly){if(e.key!=='Tab')e.preventDefault();return;}
       if(e.key==='Tab'||e.key==='Enter'){
-        if(dirty)setValue(input.value===''?NaN:Number(input.value));
-        if(dirty){if(e.key==='Enter')e.preventDefault();return;}
+        if(!input.commitDraft()){e.preventDefault();return;}
         if(['flonum','number_int'].includes(node.type)&&e.key==='Tab')tab(node.id);
         if(e.key==='Enter'){e.preventDefault();input.select();}return;
       }
@@ -155,7 +162,8 @@ export function createNodeView(node,{doc,select,dragStart,edit,portClick,portDow
       }
     });
     input.addEventListener('keyup',()=>{keyContinuous=false;});
-    input.addEventListener('blur',()=>{if(dirty)setValue(input.value===''?NaN:Number(input.value));finishControl();});
+    input.addEventListener('blur',()=>{if(!input.commitDraft()){input.focus();return;}finishControl();});
+    drafts?.watch(input,()=>dirty);
     inputs.set('value',input);body.append(input);
     if(node.type==='gain'){level=make('span','gain-value',String(node.params.value));body.append(level);}
     if(node.type==='slider'){level=make('span','slider-value',String(node.params.value));body.append(level);}
@@ -236,7 +244,7 @@ export function createNodeView(node,{doc,select,dragStart,edit,portClick,portDow
     }
     for(const direction of ['in','out'])portElements[direction].forEach((b,i)=>{b.tabIndex=locked&&control?-1:0;b.classList.toggle('pending',pending?.id===current.id&&pending.direction===direction&&pending.index===i);});
   }
-  return{type:node.type,configuration:nodeConfiguration(node),element,header,inputs,ports:portElements,minimumWidth,update,get resizePreview(){return sizing?{width:sizing.width,height:sizing.height}:null;},cancelInteraction,dispose(){cancelInteraction();doc.defaultView?.removeEventListener('blur',windowBlur);}};
+  return{type:node.type,configuration:nodeConfiguration(node),element,header,inputs,ports:portElements,minimumWidth,update,get resizePreview(){return sizing?{width:sizing.width,height:sizing.height}:null;},cancelInteraction,dispose(){for(const input of inputs.values())drafts?.forget(input);cancelInteraction();doc.defaultView?.removeEventListener('blur',windowBlur);}};
 }
 
 export const nodeConfiguration=node=>JSON.stringify([node.params.args,node.params.name,node.params.channels,node.patcher?.nodes.filter(child=>['inlet','outlet'].includes(child.type)).map(child=>[child.id,child.type,child.x])]);

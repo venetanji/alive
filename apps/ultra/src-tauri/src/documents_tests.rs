@@ -377,6 +377,74 @@ fn flush_request(gate: CloseGate) -> (u64, Vec<String>) {
 }
 
 #[test]
+fn save_preflight_waits_for_all_views_and_rejects_stale_or_foreign_acknowledgements() {
+    let mut registry = Registry::default();
+    let root = registry.add("Owner".into(), Kind::Patch, Some(hierarchy()), None, None).unwrap();
+    let child = registry.open_view(&root.label, 1).unwrap().0;
+    let other = registry.add("Other".into(), Kind::Patch, Some(empty_patch()), None, None).unwrap();
+    for label in [&root.label, &child.label, &other.label] { registry.mark_ready(label).unwrap(); }
+    let (wake, receiver) = std::sync::mpsc::sync_channel(1);
+    let notice = registry.begin_save(&child.label, wake).unwrap();
+    assert_eq!(notice.views, vec![root.label.clone(), child.label.clone()]);
+    assert!(registry.begin_save(&root.label, std::sync::mpsc::sync_channel(1).0).is_err());
+    assert!(registry.acknowledge_save(&other.label, &root.label, notice.token, None).is_err());
+    assert!(registry.acknowledge_save(&child.label, &root.label, notice.token + 1, None).is_err());
+    registry.acknowledge_save(&root.label, &root.label, notice.token, None).unwrap();
+    assert!(receiver.try_recv().is_err());assert!(registry.finish_save_preflight(&root.label, notice.token, false).unwrap().is_none());
+    registry.acknowledge_save(&child.label, &root.label, notice.token, None).unwrap();receiver.try_recv().unwrap();
+    let snapshot=registry.finish_save_preflight(&root.label, notice.token, false).unwrap().unwrap();
+    assert_eq!(snapshot.notice.views, vec![root.label.clone(), child.label.clone()]);assert!(snapshot.document.is_ok());
+    assert!(!registry.save_barrier_active(&root.label,&root.label,notice.token).unwrap());
+    assert!(registry.begin_save(&child.label, std::sync::mpsc::sync_channel(1).0).is_err(), "reservation survives snapshot while picker or write runs");
+    assert!(registry.end_save(&root.label,notice.token+1).is_err());
+    registry.end_save(&root.label, notice.token).unwrap();
+    assert!(registry.acknowledge_save(&child.label, &root.label, notice.token, None).is_err());
+}
+
+#[test]
+fn aborted_save_releases_members_and_stale_tokens_cannot_affect_the_next_request() {
+    let mut registry=Registry::default();let root=registry.add("Owner".into(),Kind::Patch,Some(hierarchy()),None,None).unwrap();
+    let child=registry.open_view(&root.label,1).unwrap().0;registry.mark_ready(&root.label).unwrap();registry.mark_ready(&child.label).unwrap();
+    let first=registry.begin_save(&root.label,std::sync::mpsc::sync_channel(1).0).unwrap();
+    let released=registry.end_save(&root.label,first.token).unwrap().unwrap();assert_eq!(released.views,vec![root.label.clone(),child.label.clone()]);
+    let next=registry.begin_save(&child.label,std::sync::mpsc::sync_channel(1).0).unwrap();assert!(next.token>first.token);
+    assert!(registry.acknowledge_save(&child.label,&root.label,first.token,None).is_err());
+    assert!(registry.end_save(&root.label,first.token).is_err());
+    assert!(registry.save_barrier_active(&child.label,&root.label,next.token).unwrap());
+    registry.end_save(&root.label,next.token).unwrap();
+}
+
+#[test]
+fn save_preflight_includes_newly_ready_views_and_refuses_disappearing_or_invalid_peers() {
+    let mut registry = Registry::default();
+    let root = registry.add("Owner".into(), Kind::Patch, Some(hierarchy()), None, None).unwrap();
+    let child = registry.open_view(&root.label, 1).unwrap().0;registry.mark_ready(&root.label).unwrap();
+    let (wake, receiver)=std::sync::mpsc::sync_channel(1);let notice=registry.begin_save(&root.label,wake).unwrap();
+    registry.acknowledge_save(&root.label,&root.label,notice.token,None).unwrap();receiver.try_recv().unwrap();
+    registry.mark_ready(&child.label).unwrap();let late=registry.mark_save_ready(&child.label).unwrap().unwrap();assert_eq!(late.token,notice.token);
+    assert!(registry.finish_save_preflight(&root.label,notice.token,false).unwrap().is_none());
+    registry.acknowledge_save(&child.label,&root.label,notice.token,Some("invalid".into())).unwrap();receiver.try_recv().unwrap();
+    assert!(registry.finish_save_preflight(&root.label,notice.token,false).unwrap().unwrap().document.is_err());
+    registry.end_save(&root.label,notice.token).unwrap();
+    let (wake, receiver)=std::sync::mpsc::sync_channel(1);let next=registry.begin_save(&root.label,wake).unwrap();
+    registry.remove(&child.label);receiver.try_recv().unwrap();
+    assert!(registry.finish_save_preflight(&root.label,next.token,false).unwrap().unwrap().document.is_err());
+}
+
+#[test]
+fn save_snapshot_keeps_later_owner_edits_dirty_during_picker() {
+    let mut registry=Registry::default();
+    let root=registry.add("Owner".into(),Kind::Patch,Some(hierarchy()),None,None).unwrap();registry.mark_ready(&root.label).unwrap();
+    let (wake,receiver)=std::sync::mpsc::sync_channel(1);let notice=registry.begin_save(&root.label,wake).unwrap();
+    registry.acknowledge_save(&root.label,&root.label,notice.token,None).unwrap();receiver.try_recv().unwrap();
+    let snapshot=registry.finish_save_preflight(&root.label,notice.token,false).unwrap().unwrap().document.unwrap();
+    let mut changed=snapshot.patch.clone().unwrap();changed["nodes"][0]["x"]=serde_json::json!(321);
+    let result=registry.commit(&root.label,snapshot.authoring_revision,changed.clone(),true,|_,_|Ok(1.into())).unwrap();assert!(result.accepted);
+    let saved=registry.saved(&root.label,std::path::PathBuf::from("/tmp/snapshot.ultra"),snapshot.patch.unwrap()).unwrap();
+    assert!(saved.dirty);assert_eq!(saved.patch.unwrap(),changed);registry.end_save(&root.label,notice.token).unwrap();
+}
+
+#[test]
 fn owner_close_waits_for_all_ready_views_and_rejects_stale_or_forged_acknowledgements() {
     let mut registry = Registry::default();
     let root = registry.add("Owner".into(), Kind::Patch, Some(hierarchy()), None, None).unwrap();

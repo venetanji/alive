@@ -8,7 +8,10 @@ pub const MAX_DOCUMENTS: usize = 16;
 mod shared;
 #[path = "documents_close.rs"]
 mod close;
+#[path = "documents_save.rs"]
+mod save;
 pub use close::{CloseGate, CloseNotice};
+pub use save::{SaveNotice, SaveSnapshot};
 const MAX_IMPORT_BYTES: u64 = 8 * 1024 * 1024;
 static NEXT_TEMP: AtomicU64 = AtomicU64::new(1);
 
@@ -66,6 +69,7 @@ pub struct Registry {
     views: BTreeMap<String, View>,
     consoles: BTreeMap<String, ConsoleCache>,
     close: close::CloseState,
+    save: save::SaveState,
     serial: u64,
 }
 #[derive(Default)]
@@ -114,6 +118,7 @@ impl Registry {
         self.entries.get_mut(&owner).ok_or_else(|| "This patch window is closed".into())
     }
     pub fn remove(&mut self, label: &str) -> Option<Document> {
+        self.detach_save(label);
         self.detach_close(label);
         if let Some(view) = self.views.remove(label) {
             if let Some(cache) = self.consoles.get_mut(&view.owner) { cache.cursors.remove(label); }

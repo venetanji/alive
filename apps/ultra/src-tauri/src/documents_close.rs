@@ -18,6 +18,9 @@ pub(super) struct CloseState {
 }
 
 impl Registry {
+    pub(super) fn ready_owner_views(&self, label: &str) -> Result<Vec<String>, String> {
+        Ok(self.owner_views(label)?.into_iter().filter(|view| self.close.ready.contains(view)).collect())
+    }
     pub fn mark_ready(&mut self, label: &str) -> Result<Vec<CloseNotice>, String> {
         let owner = self.get_open(label)?.label.clone();
         if !self.close.ready.insert(label.into()) { return Ok(vec![]); }

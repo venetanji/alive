@@ -12,8 +12,25 @@ function inheritedColor(node,key){
 }
 const toHex=rgba=>'#'+rgba.slice(0,3).map(value=>Math.round(value*255).toString(16).padStart(2,'0')).join('');
 const fromHex=value=>[1,3,5].map(offset=>parseInt(value.slice(offset,offset+2),16)/255);
+function appearanceDraft(input,apply,valid,drafts){
+  let dirty=false,original=input.value;
+  input.addEventListener('focus',()=>{if(!dirty)original=input.value;});
+  input.addEventListener('input',()=>{dirty=true;});
+  input.commitDraft=()=>{
+    if(!dirty)return true;
+    if(!valid())return false;
+    dirty=false;
+    try{if(apply()===false){dirty=true;return false;}return true;}
+    catch{dirty=true;return false;}
+  };
+  input.cancelDraft=()=>{dirty=false;input.value=original;};
+  input.hasDraft=()=>dirty;drafts?.watch(input,()=>dirty);
+  input.addEventListener('change',()=>{dirty=true;if(!input.commitDraft())input.focus();});
+  input.addEventListener('blur',()=>{if(!input.commitDraft())input.focus();});
+  input.addEventListener('keydown',e=>{if(e.key==='Escape'&&dirty){e.preventDefault();e.stopPropagation();input.cancelDraft();}else if(['Enter','Tab'].includes(e.key)&&!input.commitDraft())e.preventDefault();});
+}
 
-export function createParameterField({doc,node,key,definition,change}){
+export function createParameterField({doc,node,key,definition,change,drafts}){
   const label=doc.createElement('label');label.className='field';
   const name=doc.createElement('span');name.className='field-name';
   const sliderLabels={value:'Value',size:'Range Size',min:'Output Minimum',mult:'Output Multiplier',floatoutput:'Output Mode'};
@@ -29,7 +46,22 @@ export function createParameterField({doc,node,key,definition,change}){
     input.type=textual?'text':'number';
     if(textual)input.maxLength=node.type==='patcher'?127:31;else{input.min=definition.min;input.max=definition.max;input.step=definition.integer||(key==='rhs'&&node.params.numericmode===1)?1:'any';}
   }
-  input.value=String(node.params[key]);input.addEventListener('change',()=>change(textual?input.value:Number(input.value)));
+  input.value=String(node.params[key]);let dirty=false,original=input.value;
+  input.addEventListener('focus',()=>{if(!dirty)original=input.value;});
+  input.addEventListener('input',()=>{dirty=true;});
+  input.commitDraft=()=>{
+    if(!dirty)return true;
+    const value=textual?input.value:Number(input.value);
+    if(!textual&&(input.value===''||!Number.isFinite(value)||value<definition.min||value>definition.max))return false;
+    dirty=false;
+    if(change(value)===false){dirty=true;return false;}
+    original=input.value;return true;
+  };
+  input.cancelDraft=()=>{dirty=false;input.value=original;};
+  input.hasDraft=()=>dirty;drafts?.watch(input,()=>dirty);
+  input.addEventListener('change',()=>{if(!dirty)dirty=true;input.commitDraft();});
+  input.addEventListener('blur',()=>{if(!input.commitDraft())input.focus();});
+  input.addEventListener('keydown',e=>{if(e.key==='Escape'&&dirty){e.preventDefault();e.stopPropagation();input.cancelDraft();}else if(['Enter','Tab'].includes(e.key)&&!input.commitDraft())e.preventDefault();});
   label.append(name,input);return{label,input};
 }
 
@@ -38,7 +70,7 @@ function sliderOutputDescription(node){
   return `${floatoutput?'Float':'Integer'} output: ${format(min)} to ${format(min+(size-1)*mult)}. Output = position * multiplier + minimum. Position runs from 0 to ${size-1}.`;
 }
 
-export function mountAppearanceFields({doc,area,node,change,reset}) {
+export function mountAppearanceFields({doc,area,node,change,reset,drafts}) {
   const make=(tag,className,text)=>{const element=doc.createElement(tag);if(className)element.className=className;if(text!==undefined)element.textContent=text;return element;};
   const controls=new Map();let current=node,outputRange=null;
   if(node.type==='slider'){
@@ -54,14 +86,14 @@ export function mountAppearanceFields({doc,area,node,change,reset}) {
       alpha.type='number';alpha.min=0;alpha.max=1;alpha.step=0.05;alpha.dataset.styleAlpha=field.key;
       alpha.setAttribute('aria-label',`${field.label} opacity, selected object ${node.id}`);
       input.addEventListener('change',()=>change(field.key,[...fromHex(input.value),(current.style?.[field.key]??inheritedColor(current,field.key))[3]]));
-      alpha.addEventListener('change',()=>change(field.key,[...(current.style?.[field.key]??inheritedColor(current,field.key)).slice(0,3),Number(alpha.value)]));
+      appearanceDraft(alpha,()=>change(field.key,[...(current.style?.[field.key]??inheritedColor(current,field.key)).slice(0,3),Number(alpha.value)]),()=>alpha.value!==''&&Number.isFinite(Number(alpha.value))&&Number(alpha.value)>=0&&Number(alpha.value)<=1,drafts);
       group.append(input,alpha);label.append(group);controls.set(field.key,{input,alpha,field});
     }else{
       if(field.kind==='enum'){
         const automatic=make('option','','Default');automatic.value='';input.append(automatic);
         for(const choice of field.options){const option=make('option','',choice.label);option.value=String(choice.value);input.append(option);}
       }else{input.type='number';input.min=field.min;input.max=field.max;input.step=field.step??'any';input.placeholder='Auto';}
-      input.addEventListener('change',()=>change(field.key,input.value===''?null:Number(input.value)));
+      appearanceDraft(input,()=>change(field.key,input.value===''?null:Number(input.value)),()=>field.kind==='enum'||input.value===''||(Number.isFinite(Number(input.value))&&Number(input.value)>=field.min&&Number(input.value)<=field.max),drafts);
       label.append(input);controls.set(field.key,{input,field});
     }
     area.append(label);
@@ -76,8 +108,8 @@ export function mountAppearanceFields({doc,area,node,change,reset}) {
       if(field.kind==='color'){
         const rgba=current.style?.[key]??inheritedColor(current,key);
         if(doc.activeElement!==input)input.value=toHex(rgba);
-        if(doc.activeElement!==alpha)alpha.value=String(rgba[3]);
-      }else if(doc.activeElement!==input)input.value=String(current.style?.[key]??'');
+        if(doc.activeElement!==alpha&&!alpha.hasDraft?.())alpha.value=String(rgba[3]);
+      }else if(doc.activeElement!==input&&!input.hasDraft?.())input.value=String(current.style?.[key]??'');
     }
     clear.disabled=locked||!current.style;
   }};

@@ -64,6 +64,29 @@ test('effect panel exposes live parameters and presets without a keyboard claim'
   assert.ok(p.calls.some(c=>c.name==='canvas_event'&&c.args.node===1&&c.args.inlet===0));
   await p.dispose();
 });
+test('saving a focused Perform value commits it before the snapshot',async()=>{
+  const p=await mount(true);
+  const patch={version:1,profile:'ultra-canvas-v1',nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
+    device:{version:2,kind:'audioEffect',id:'org.alive.test.utility',name:'Utility',midi:{input:null,output:null},
+      audio:{input:{node:1,bundle:{channels:2,layout:'stereo'}},output:{channels:2,layout:'stereo'}},
+      parameters:[{key:'gain',label:'Gain',node:2,param:'value',min:0,max:2}],presets:[]}};
+  p.controller.load(patch);await p.controller.flush();await p.ids.get('show-instrument').fire('click');
+  const input=p.all('instrument-controls').find(e=>e.type==='number');p.document.activeElement=input;
+  input.value='0.5';await input.fire('input');await p.documents.action('save');
+  assert.equal(p.calls.filter(c=>c.name==='document_save').at(-1).args.patch.nodes.find(n=>n.id===2).params.value,.5);
+  await p.dispose();
+});
+test('rebuilding Perform controls captures their focused value',async()=>{
+  const p=await mount(true);
+  const patch={version:1,profile:'ultra-canvas-v1',nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
+    device:{version:2,kind:'audioEffect',id:'org.alive.test.utility',name:'Utility',midi:{input:null,output:null},
+      audio:{input:{node:1,bundle:{channels:2,layout:'stereo'}},output:{channels:2,layout:'stereo'}},
+      parameters:[{key:'gain',label:'Gain',node:2,param:'value',min:0,max:2}],presets:[]}};
+  p.controller.load(patch);await p.controller.flush();await p.ids.get('show-instrument').fire('click');
+  const input=p.all('instrument-controls').find(e=>e.type==='number');p.document.activeElement=input;input.value='0.5';await input.fire('input');
+  const changed=structuredClone(patch);changed.device.parameters[0].label='Level';p.controller.load(changed);await p.controller.flush();
+  assert.equal(p.controller.getState().document.nodes.find(n=>n.id===2).params.value,.5);await p.dispose();
+});
 test('help shell hosts Basic while question/reference navigation preserves the native runtime',async()=>{
   const patch=helpPatch(),descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Help.ultra',kind:'patch',patch,dirty:false,viewPath:[],authoringRevision:1,runtimeRevision:9};
   const p=await mount(true,{documentCurrent:descriptor,helpReference:async name=>reference(name)});
@@ -391,6 +414,125 @@ test('number display follows native observations without changing saved paramete
   const element=p.all('objects').find(e=>Number(e.dataset.node)===15),input=descendants(element).find(e=>e.dataset.parameter==='value');
   p.render({...state,observations:{15:{value:72,pulses:1}}});
   assert.equal(input.value,'72');assert.equal(node.params.value,150);
+});
+test('saving a focused number commits its draft before taking the snapshot',async()=>{
+  const p=await mount(true);
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});
+  await p.controller.flush();await p.ids.get('lock-patch').fire('click');
+  const input=p.all('objects').find(e=>e.dataset.parameter==='value');
+  p.document.activeElement=input;input.value='42';await input.fire('input');
+  await p.windowEvents.fire('keydown',{key:'s',ctrlKey:true,target:input});
+  const saved=p.calls.filter(c=>c.name==='document_save').at(-1);
+  assert.equal(saved.args.patch.nodes[0].params.value,42);
+  assert.equal(p.controller.getState().document.nodes[0].params.value,42);
+  await p.dispose();
+});
+test('rebuilding the node container captures the focused draft first',async()=>{
+  const p=await mount(true);
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});await p.controller.flush();
+  await p.ids.get('lock-patch').fire('click');
+  const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
+  input.value='42';await input.fire('input');p.controller.add('bang',100,100);await p.controller.flush();
+  assert.equal(p.controller.getState().document.nodes.find(n=>n.id===1).params.value,42);
+  await p.dispose();
+});
+test('saving an invalid focused number refuses the snapshot until cancelled',async()=>{
+  const p=await mount(true);
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});
+  await p.controller.flush();await p.ids.get('lock-patch').fire('click');
+  const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
+  input.value='';await input.fire('input');
+  await p.windowEvents.fire('keydown',{key:'s',ctrlKey:true,target:input});
+  assert.equal(p.calls.filter(c=>c.name==='document_save').length,0);
+  await input.fire('keydown',{key:'Escape'});
+  assert.equal(input.value,'10');
+  await p.windowEvents.fire('keydown',{key:'s',ctrlKey:true,target:input});
+  assert.equal(p.calls.filter(c=>c.name==='document_save').length,1);
+  await p.dispose();
+});
+test('a parked invalid number blocks Save and close after focus moves',async()=>{
+  const p=await mountHistoryControl();await p.ids.get('lock-patch').fire('click');
+  const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
+  input.value='';await input.fire('input');await input.fire('blur');p.document.activeElement=p.ids.get('document-save');
+  await p.documents.action('save').catch(()=>{});
+  assert.equal(p.operations.filter(c=>c.name==='document_save').length,0);
+  await assert.rejects(p.documents.session.flushBeforeClose({requestLabel:'owner',token:55}),/invalid focused edit/);
+  assert.equal(p.operations.find(c=>c.name==='document_close_flushed').args.token,55);
+  assert.match(p.operations.find(c=>c.name==='document_close_flushed').args.error,/invalid focused edit/);
+  assert.equal(input.value,'');await p.dispose();
+});
+test('parked invalid number survives container reconstruction',async()=>{
+  const p=await mount(true);p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});await p.controller.flush();
+  await p.ids.get('lock-patch').fire('click');const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
+  input.value='';await input.fire('input');await input.fire('blur');p.document.activeElement=p.ids.get('document-save');
+  p.controller.add('bang',100,100);await p.controller.flush();
+  assert.equal(p.ids.get('objects').children.length,1);assert.equal(p.all('objects').find(e=>e.dataset.parameter==='value'),input);assert.equal(input.value,'');
+  await input.fire('keydown',{key:'Escape'});assert.equal(p.ids.get('objects').children.length,2);await p.dispose();
+});
+test('preflight commits valid parked drafts and rejects another invalid draft',async()=>{
+  const p=await mount(true);p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10}),makeNode('number',2,100,0,{value:20})],edges:[]});await p.controller.flush();
+  await p.ids.get('lock-patch').fire('click');const inputs=p.all('objects').filter(e=>e.dataset.parameter==='value');
+  p.document.activeElement=inputs[0];inputs[0].value='42';await inputs[0].fire('input');
+  p.document.activeElement=inputs[1];inputs[1].value='';await inputs[1].fire('input');p.document.activeElement=p.ids.get('document-save');
+  await p.documents.action('save').catch(()=>{});assert.equal(p.calls.filter(c=>c.name==='document_save').length,0);
+  assert.equal(p.controller.getState().document.nodes[0].params.value,42);assert.equal(inputs[1].value,'');await p.dispose();
+});
+test('an out-of-range number draft is not clamped by Enter',async()=>{
+  const p=await mount(true);
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});
+  await p.controller.flush();await p.ids.get('lock-patch').fire('click');
+  const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
+  input.value=String(Number(input.max)+1);await input.fire('input');await input.fire('keydown',{key:'Enter'});
+  assert.equal(p.controller.getState().document.nodes[0].params.value,10);
+  assert.equal(input.value,String(Number(input.max)+1));
+  await p.dispose();
+});
+test('saving a focused inspector field commits its draft',async()=>{
+  const p=await mount(true);
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});
+  await p.controller.flush();
+  const node=p.all('objects').find(e=>e.dataset.node==='1');await descendants(node).find(e=>e.dataset.drag).fire('click');
+  const input=p.all('inspector').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
+  input.value='42';await input.fire('input');
+  await p.windowEvents.fire('keydown',{key:'s',ctrlKey:true,target:input});
+  assert.equal(p.calls.filter(c=>c.name==='document_save').at(-1).args.patch.nodes[0].params.value,42);
+  await p.dispose();
+});
+test('changing selection captures a focused inspector draft before rebuilding',async()=>{
+  const p=await mount(true);
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10}),makeNode('bang',2)],edges:[]});await p.controller.flush();
+  const select=id=>descendants(p.all('objects').find(e=>e.dataset.node===String(id))).find(e=>e.dataset.drag).fire('click');
+  await select(1);const input=p.all('inspector').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
+  input.value='42';await input.fire('input');await select(2);await p.controller.flush();
+  assert.equal(p.controller.getState().document.nodes.find(n=>n.id===1).params.value,42);
+  await p.dispose();
+});
+test('saving a focused appearance value commits its draft',async()=>{
+  const p=await mount(true);
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});await p.controller.flush();
+  const node=p.all('objects').find(e=>e.dataset.node==='1');await descendants(node).find(e=>e.dataset.drag).fire('click');
+  const input=p.all('inspector').find(e=>e.dataset.style==='fontsize');assert.ok(input);p.document.activeElement=input;
+  input.value='24';await input.fire('input');await p.documents.action('save');
+  assert.equal(p.calls.filter(c=>c.name==='document_save').at(-1).args.patch.nodes[0].style.fontsize,24);
+  await p.dispose();
+});
+test('saving an open object entry commits its draft',async()=>{
+  const p=await mount(true);
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});await p.controller.flush();
+  await p.windowEvents.fire('keydown',{key:'n'});
+  const input=p.ids.get('object-text');p.document.activeElement=input;input.value='number 42';await input.fire('input');
+  await p.documents.action('save');
+  assert.equal(p.calls.filter(c=>c.name==='document_save').at(-1).args.patch.nodes[0].params.value,42);
+  await p.dispose();
+});
+test('saving through a toolbar commits the open object entry after focus moves',async()=>{
+  const p=await mount(true);
+  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});await p.controller.flush();
+  await p.windowEvents.fire('keydown',{key:'n'});
+  const input=p.ids.get('object-text');input.value='number 42';await input.fire('input');
+  p.document.activeElement=p.ids.get('document-save');await p.ids.get('document-save').fire('click');
+  assert.equal(p.calls.filter(c=>c.name==='document_save').at(-1).args.patch.nodes[0].params.value,42);
+  await p.dispose();
 });
 test('controls can return a live observed value to the saved value without duplicate native events',async()=>{
   for(const type of ['number','flonum','slider']){
@@ -771,12 +913,14 @@ test('unchanged stopped status polls preserve cable paths while cable inputs inv
 // Delayed history still runs through the real shared controller and node views.
 async function mountHistoryControl(type='number') {
   let patch=new CanvasDocument({version:2,profile:'ultra-patcher-v2',nodes:[makeNode(type,1,40,50,{value:150})],edges:[]}).document;
-  let revision=1,hold=false,release;
-  const past=[],future=[],descriptor=()=>({shared:true,id:1,label:'owner',ownerLabel:'owner',title:'Numeric',kind:'patch',viewPath:[],
+  let revision=1,hold=false,release,holdCommit=false,releaseCommit,cancelSave=false;
+  const operations=[],past=[],future=[],descriptor=()=>({shared:true,id:1,label:'owner',ownerLabel:'owner',title:'Numeric',kind:'patch',viewPath:[],
     patch:structuredClone(patch),authoringRevision:revision,runtimeRevision:revision,canUndo:past.length>0,canRedo:future.length>0});
   const p=await mount(true,{documentCurrent:descriptor(),invokeOverride:async(name,args,fallback)=>{
+    operations.push({name,args});
     if(name==='document_current')return descriptor();
     if(name==='document_commit'){
+      if(holdCommit)await new Promise(resolve=>releaseCommit=resolve);
       assert.equal(args.baseRevision,revision);past.push(structuredClone(patch));future.length=0;
       patch=new CanvasDocument(args.patch).document;revision++;
       return{accepted:true,document:descriptor()};
@@ -789,14 +933,87 @@ async function mountHistoryControl(type='number') {
       return{accepted:true,document:descriptor()};
     }
     if(name==='canvas_status')return{revision,active:true,nodes:[],console:[]};
+    if(name==='document_save'&&cancelSave)return null;
     return fallback(name,args);
   }});
   p.controller.parameter(1,'value',20);await p.controller.flush();
-  return{...p,get canonical(){return patch;},async holdHistory(direction){
+  return{...p,operations,get canonical(){return patch;},get ownerRevision(){return revision;},pauseCommit(){holdCommit=true;return()=>{holdCommit=false;releaseCommit();};},cancelNextSave(){cancelSave=true;},async holdHistory(direction){
     hold=true;const promise=p.controller[direction]();await settle();
     return{promise,release(){hold=false;release();}};
   }};
 }
+
+test('close flush acknowledges only after the focused shared edit reaches its owner',async()=>{
+  const p=await mountHistoryControl();await p.ids.get('lock-patch').fire('click');
+  const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
+  input.value='42';await input.fire('input');const start=p.operations.length;
+  await p.documents.session.flushBeforeClose({requestLabel:'owner',token:31});
+  assert.equal(p.canonical.nodes[0].params.value,42);
+  const calls=p.operations.slice(start),commit=calls.findIndex(c=>c.name==='document_commit'),ack=calls.findIndex(c=>c.name==='document_close_flushed');
+  assert.ok(commit>=0&&ack>commit);assert.equal(calls.filter(c=>c.name==='document_commit').length,1);
+  assert.equal(calls[ack].args.error,undefined);
+  await p.dispose();
+});
+test('owner Save waits for a linked focused draft and its delayed native admission',async()=>{
+  let patch=new CanvasDocument({version:2,profile:'ultra-patcher-v2',nodes:[makeNode('number',1,0,0,{value:10}),
+    {...makeNode('patcher',3),patcher:{nodes:[makeNode('number',13,0,0,{value:10})],edges:[]}}],edges:[]}).document;
+  let revision=1,release;const calls=[],listeners=new Map();
+  const descriptor=label=>({shared:true,id:1,label,ownerLabel:'owner',title:'Shared',kind:'patch',viewPath:label==='child'?[3]:[],patch:structuredClone(patch),authoringRevision:revision,runtimeRevision:1,dirty:false});
+  const tauri=label=>({event:{listen:async(name,handler)=>{listeners.set(`${label}/${name}`,handler);return()=>{};}},webviewWindow:{getCurrentWebviewWindow:()=>({label})}});
+  const invokeOverride=label=>async(name,args,fallback)=>{
+    calls.push({label,name,args});
+    if(name==='document_current')return descriptor(label);
+    if(name==='document_commit'){
+      assert.equal(args.baseRevision,revision);await new Promise(resolve=>release=resolve);
+      patch=new CanvasDocument(args.patch).document;revision++;return{accepted:true,document:descriptor(label)};
+    }
+    if(name==='document_save'){
+      await listeners.get('child/document-flush-before-save')({payload:{owner:'owner',token:7}});
+      calls.push({name:'snapshot',patch:structuredClone(patch)});
+      await listeners.get('child/document-save-flush-released')({payload:{owner:'owner',token:7}});
+      return descriptor(label);
+    }
+    if(name==='document_save_flushed')return true;
+    if(name==='canvas_status')return{revision:1,active:true,nodes:[],console:[]};
+    return fallback(name,args);
+  };
+  const owner=await mount(true,{documentCurrent:descriptor('owner'),tauri:tauri('owner'),invokeOverride:invokeOverride('owner')});
+  const child=await mount(true,{documentCurrent:descriptor('child'),tauri:tauri('child'),invokeOverride:invokeOverride('child')});
+  await child.ids.get('lock-patch').fire('click');const input=child.all('objects').find(e=>e.dataset.parameter==='value');
+  child.document.activeElement=input;input.value='73';await input.fire('input');
+  const saving=owner.documents.action('save');await settle();assert.equal(typeof release,'function');
+  assert.equal(calls.some(call=>call.name==='snapshot'||call.name==='document_save_flushed'),false);
+  release();assert.equal(await saving,true);
+  const commit=calls.findIndex(call=>call.name==='document_commit'),ack=calls.findIndex(call=>call.name==='document_save_flushed'),snapshot=calls.findIndex(call=>call.name==='snapshot');
+  assert.ok(commit>=0&&commit<ack&&ack<snapshot);assert.equal(calls.filter(call=>call.name==='document_commit').length,1);
+  assert.equal(calls[snapshot].patch.nodes[1].patcher.nodes[0].params.value,73);assert.equal(revision,2);
+  await child.dispose();await owner.dispose();
+});
+test('close flush reports a focused invalid draft without admitting or acknowledging success',async()=>{
+  const p=await mountHistoryControl();await p.ids.get('lock-patch').fire('click');
+  const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
+  input.value='';await input.fire('input');const start=p.operations.length;
+  await assert.rejects(p.documents.session.flushBeforeClose({requestLabel:'owner',token:32}),/invalid focused edit/);
+  const calls=p.operations.slice(start);assert.equal(calls.filter(c=>c.name==='document_commit').length,0);
+  assert.match(calls.find(c=>c.name==='document_close_flushed').args.error,/invalid focused edit/);
+  assert.equal(p.canonical.nodes[0].params.value,20);await p.dispose();
+});
+test('close acknowledgement waits for delayed owner admission and advances exactly one revision',async()=>{
+  const p=await mountHistoryControl();await p.ids.get('lock-patch').fire('click');
+  const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;input.value='42';await input.fire('input');
+  const before=p.ownerRevision,release=p.pauseCommit(),start=p.operations.length,closing=p.documents.session.flushBeforeClose({requestLabel:'owner',token:33});
+  await settle();assert.equal(p.ownerRevision,before);assert.equal(p.operations.slice(start).some(c=>c.name==='document_close_flushed'),false);
+  release();await closing;assert.equal(p.ownerRevision,before+1);assert.equal(p.canonical.nodes[0].params.value,42);
+  const calls=p.operations.slice(start);assert.equal(calls.filter(c=>c.name==='document_commit').length,1);
+  assert.ok(calls.findIndex(c=>c.name==='document_commit')<calls.findIndex(c=>c.name==='document_close_flushed'));await p.dispose();
+});
+test('cancelled Save As retains the committed focused draft in the owner',async()=>{
+  const p=await mountHistoryControl();await p.ids.get('lock-patch').fire('click');
+  const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;input.value='42';await input.fire('input');
+  const before=p.ownerRevision;p.cancelNextSave();assert.equal(await p.documents.action('save-as'),false);
+  assert.equal(p.ownerRevision,before+1);assert.equal(p.canonical.nodes[0].params.value,42);
+  assert.equal(p.operations.filter(c=>c.name==='document_save').at(-1).args.saveAs,true);await p.dispose();
+});
 
 for(const type of ['number','number_int','flonum'])for(const direction of ['undo','redo']) {
   test(`${type} preserves a rejected ${direction} draft through blur and retries Enter`,async()=>{

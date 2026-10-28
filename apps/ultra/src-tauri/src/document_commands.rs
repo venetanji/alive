@@ -14,6 +14,13 @@ pub struct Parameter { pub node: u32, pub key: String, pub value: f64, #[serde(d
 #[serde(deny_unknown_fields)]
 pub struct MessageText { pub node: u32, pub text: String }
 
+pub(crate) fn trace_document(event: &str, document: &Document, token: u64, code: u8) {
+    if std::env::var_os("ULTRA_TRACE_DOCUMENT_COMMANDS").is_some() {
+        eprintln!("ultra-document-trace event={event} owner={} revision={} scope={} depth={} token={token} code={code}",
+            document.id, document.authoring_revision, document.view_path.last().copied().unwrap_or(0), document.view_path.len());
+    }
+}
+
 pub(crate) fn canvas_parameter(registry: &mut Registry, audio: &mut crate::AudioControl,
     io: &mut crate::audio::Driver, label: &str, revision: u64, parameter: Parameter) -> Result<CommitResult, String> {
     let owner = registry.get_open(label)?;
@@ -129,6 +136,9 @@ pub fn close_cancelled(app: &AppHandle, notice: Option<documents::CloseNotice>) 
 pub fn request_close_flush(app: &AppHandle, notice: documents::CloseNotice) {
     let payload = serde_json::json!({"requestLabel":notice.request_label,"token":notice.token});
     for label in notice.views {
+        if let Ok(registry) = app.state::<Documents>().0.lock() {
+            if let Ok(document) = registry.descriptor(&label) { trace_document("close_flush", &document, notice.token, 0); }
+        }
         let sent = app.get_webview_window(&label).ok_or_else(|| "Editor window is unavailable".to_string())
             .and_then(|target| target.emit_to(tauri::EventTarget::webview_window(&label), "document-flush-before-close", &payload).map_err(|e| e.to_string()));
         if let Err(error) = sent {
@@ -141,9 +151,43 @@ pub fn request_close_flush(app: &AppHandle, notice: documents::CloseNotice) {
     }
 }
 
+pub fn request_save_flush(app: &AppHandle, notice: &documents::SaveNotice) {
+    let payload = serde_json::json!({"owner":notice.owner,"token":notice.token});
+    for label in &notice.views {
+        let sent = app.get_webview_window(label).ok_or_else(|| "Editor window is unavailable".to_string())
+            .and_then(|target| target.emit_to(tauri::EventTarget::webview_window(label), "document-flush-before-save", &payload).map_err(|e| e.to_string()));
+        if sent.is_err() {
+            if let Ok(mut registry) = app.state::<Documents>().0.lock() {
+                let _ = registry.acknowledge_save(label, &notice.owner, notice.token, Some("Editor window is unavailable".into()));
+            }
+        }
+    }
+}
+
+pub fn release_save_flush(app: &AppHandle, notice: documents::SaveNotice) {
+    let payload = serde_json::json!({"owner":notice.owner,"token":notice.token});
+    for label in notice.views { let _ = app.emit_to(tauri::EventTarget::webview_window(label), "document-save-flush-released", &payload); }
+}
+
+#[tauri::command]
+pub fn document_save_flushed(window: WebviewWindow, state: tauri::State<Documents>, owner: String, token: u64, error: Option<String>) -> Result<(), String> {
+    let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
+    let document = registry.descriptor(window.label())?;
+    let accepted = u8::from(error.is_none());
+    registry.acknowledge_save(window.label(), &owner, token, error)?;
+    trace_document("save_ack", &document, token, accepted);
+    Ok(())
+}
+
+#[tauri::command]
+pub fn document_save_barrier_active(window: WebviewWindow, state: tauri::State<Documents>, owner: String, token: u64) -> Result<bool, String> {
+    state.0.lock().map_err(|_| "Document lock poisoned")?.save_barrier_active(window.label(), &owner, token)
+}
+
 #[tauri::command]
 pub fn document_close_flushed(window: WebviewWindow, state: tauri::State<Documents>, request_label: String, token: u64, error: Option<String>) -> Result<bool, String> {
     let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
+    if let Ok(document) = registry.descriptor(window.label()) { trace_document("close_ack", &document, token, u8::from(error.is_none())); }
     if let Some(error) = error {
         let cancelled = registry.reject_close(window.label(), &request_label, token)?;
         drop(registry);
@@ -173,6 +217,7 @@ pub fn document_commit(window: WebviewWindow, state: tauri::State<Documents>, au
     let result = registry.commit(window.label(), base_revision, patch, history.unwrap_or(true), |owner, patch| {
         admit_owned(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, parameter.as_ref(), message_text.as_ref(), force.unwrap_or(false))
     })?;
+    trace_document("commit", &result.document, base_revision, u8::from(result.accepted));
     drop(io);
     drop(audio);
     let obsolete = if result.accepted { changed(window.app_handle(), &mut registry, &result.document.owner_label) } else { vec![] };
