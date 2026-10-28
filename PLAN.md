@@ -45,6 +45,42 @@ integration is in progress. The worker now owns serialized native resources
 using root's exact new binaries; the pilot, endurance and terminal Quit remain
 unqualified. Root runs docs/evidence/cloud work only during this lease.
 
+New pushed checkpoint `da7c6fb` runs CI `40762558922` and packages `40762558971`.
+Full CI passes all three jobs, including Chromium, protocol/reference, original
+native Alive/Arrangement/clip/editor-resource journeys and software CPAL.
+Linux and Apple ARM packaging pass; Intel Mac remains nonterminal. Windows
+fails 275 passed/9 failed/4 ignored. Its diagnostic child
+resolves both measured anchors and validates all exports/limits, yet the cached
+production capability is false. The actual initializer was not measured by
+that helper. Reviewed test-only diagnostic `d6acf731`, integrated locally as
+`3ca670d`, traces that initializer before independent calls. Non-test bodies
+and leased root artifacts are unchanged; Windows compilation/runtime of the
+new diagnostic and any evidence-supported production fix remain pending.
+Original output is retained under `master/cloud-da7c6fb/`, the source/reviews/
+static proof under `master/windows-initializer/`. No Windows fix is claimed.
+
+Task 9's first native Master journey passes on the pinned root pair: both views/
+sizes, independent devices, saved non-unity Master, editor close/reopen, actual
+Quit/restart with matching identities and nonzero software-loopback audio.
+Stronger reopened-wire/history assertions need their own repeat. Initial
+collector pilots retain observer overhead, hidden diagnostics and gesture
+interference failures; bounded harness fixes preserve all original assertions,
+operations and limits. The next pilot is not endurance. A complete pilot,
+conservative resource projection and frozen-source review precede the 1800
+proven-playing-second run. Task 9 remains incomplete.
+
+Task 9's frozen harness candidate `289c778` is under independent explicit
+`gpt-6.1-terra` source and quality review. Both reviews request changes: project
+the complete collector lifetime separately from recorder time, match scalable
+resources to cycle-only proven playback, add the missing GI-free CI suites,
+assess retained epoch error categories and keep resource sampling independent
+of long UI actions. Pilot 05 continues unchanged for evidence; one consolidated
+fix round follows. The revised 90-second dwell retains all operations per cycle
+and lowers edit density; the original eight-second pilot is retained separately.
+The full run stays held until a source-attributed 270-proven-second, at least
+three-cycle pilot, conservative projection and clean re-reviews. No app binary
+is rebuilt or replaced during the worker's runtime lease.
+
 Checkpoint `62a657a` passes full CI `40721716899`, including native journeys,
 and all four package targets in `40721716535`; publication is skipped. Terminal
 receipts are in `experiments/phase2-20261028/master/cloud-62a657a/`. These qualify

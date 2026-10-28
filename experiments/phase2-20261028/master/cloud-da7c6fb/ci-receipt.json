@@ -1,0 +1,24 @@
+{
+  "head": "da7c6fb30c14a42502461a2ef2f4297b075b34ec",
+  "ci_run": 40762558922,
+  "ci_status": "completed success",
+  "jobs": [
+    {
+      "name": "Chromium canvas editing smoke",
+      "conclusion": "success"
+    },
+    {
+      "name": "UI, protocol, and reference tests",
+      "conclusion": "success"
+    },
+    {
+      "name": "Linux native build, Rust bridge, and CPAL loopback",
+      "conclusion": "success"
+    }
+  ],
+  "raw_log_bytes": 2778894,
+  "raw_log_sha256": "f9e51920751ce8f639b96dfbbc4bbd3b880af3e6fde881056111fca59cf120a4",
+  "stored_log_bytes": 223726,
+  "stored_log_sha256": "1f58e06531812a27541ebf615dffc270d9867878717bbc1c99594f896987e774",
+  "qualification": "Exact da7 CI only; Task9 additional Master/sustained integration not included. Windows packaging remains separately failed; no final-head or endurance success."
+}

@@ -7,6 +7,34 @@ to decide what to resume.
 
 ## Active Execution Checkpoint
 
+Latest diagnostic checkpoint is `3ca670d572aea40061b9d054f3fca48a3f661f1d`;
+upstream at this evidence sample is `da7c6fb30c14a42502461a2ef2f4297b075b34ec`.
+The new two-file Windows diagnostic
+has source spec/error re-review/fresh Terra quality approval and root static
+parse/body/blob checks; it is not compiled on Windows or pushed yet. Root is
+retaining useful da7 package results before the next push. Full da7 CI is now
+terminal success in all three jobs, including original native journeys and
+software CPAL; Linux and Apple ARM packages pass, Windows fails and Intel Mac
+is still running. Exact CI receipts and lossless original logs are curated in
+`master/cloud-da7c6fb/`. Non-test bodies
+and all pinned root app/library inodes/hashes remain unchanged. Task 9's existing
+worker owns runtime; do not rebuild the binaries or start another native job.
+The canonical ledger/current worker reports govern live pilot state.
+
+Task 9's frozen candidate is `289c7789e2a13378780906f32d6335691179ec81`
+on `f69125c`, with its 11 file hashes and complete review diff in the canonical
+workspace. Explicit `gpt-6.1-terra` fresh source and quality reviewers succeeded;
+both request changes. The five consolidated findings concern collector versus
+recorder lifetime, fixed versus cycle-only playing denominators, omitted
+GI-free CI suites, epoch error qualification and the sampler's shared UI lock.
+The existing implementer owns a single fix round after unchanged pilot 05
+finishes. That pilot uses the explicitly approved 90-second observed dwell,
+retains all original actions per cycle and reduces edit density; the original
+eight-second pilot remains separate evidence. A new immutable corrected
+candidate, scoped reviews and an attributed at-least-270-proven-second,
+three-cycle pilot with conservative projection are required before the full
+1800-second run. No endurance authorization has been given.
+
 Application source: `f69125cd289365424cd0661975291d8c12a96cac`, integrating
 reviewed rejection-observation/Windows-diagnostic packet `7ff950f` over
 `36b0b39` Task 8 UI and `c71b608` native Master. Tasks 1-8 are complete at their
@@ -145,8 +173,11 @@ pinned native/Rust/Alive/loader checks and commits `f69125c`. The worker release
 all runtime resources. Correction evidence/reviews and hashes are under
 `experiments/phase2-20261028/master/correction/`.
 The Windows test-only production-anchor diagnostic includes its reviewed
-early-return correction; actual Windows compilation/output and an
-evidence-supported production fix remain pending.
+early-return correction. Actual da7 Windows output proves both measured anchors
+resolve to valid DLL exports while the cached capability is false; it does not
+measure the actual initializer. The newer local `3ca670d` diagnostic traces
+that missing path. Its Windows compilation/output and an evidence-supported
+production fix remain pending.
 The frozen Master contract now explicitly amends the contradictory rejection
 tuple requirement: callback-owned score/Master fields remain coherent, while
 the independently updated rejection count is sampled once after that tuple,
