@@ -701,6 +701,7 @@ bool configure_v4(const AliveSessionConfigV4 &c, const AliveSessionAudioBufferV4
   state_.preparation_revision = c.preparation_revision;
   head_ = 0;
   tail_ = 0;
+  clear_master();
   applied_stop_ = stop_epoch_.load();
   state_.requested_stop_epoch = state_.applied_stop_epoch = applied_stop_;
   reservations_ = {};

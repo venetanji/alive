@@ -10,6 +10,7 @@
 #include <cstdio>
 #include <cstring>
 #include <memory>
+#include <thread>
 #include <vector>
 
 namespace {
@@ -141,6 +142,34 @@ void stop_snapshot_preserves_later_commands(){
  }
  interleaved_session=nullptr;
 }
+void invalid_track_sample_does_not_poison_meter(){
+ auto workspace=std::make_unique<ultra::CanvasWorkspace>();auto session=std::make_unique<ultra::AliveSession>();
+ const auto graph=instrument();ultra::CanvasPlan plan{};assert(ultra::compile_canvas(graph,plan));
+ auto discard=[](alive::Event){return true;};assert(workspace->install(0,plan,0,discard));
+ AliveSessionConfig config{};config.version=1;config.track_count=1;config.length_frames=256;
+ auto& track=config.tracks[0];track.document=0;track.revision=graph.revision;track.note_node=1;track.output_channels=2;track.output_layout=2;track.gain=1;
+ assert(session->configure(config,*workspace));assert(session->start());session->begin(*workspace);
+ const auto out=session->mix(0,{std::numeric_limits<double>::infinity(),2.});assert(std::isinf(out[0])&&out[1]==2.);
+ session->publish(*workspace);AliveSessionState observed{};assert(session->snapshot(observed));
+ assert(observed.tracks[0].peak_left==0.&&observed.tracks[0].peak_right==2.);
+}
+#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+std::atomic<bool> publication_entered{false},publication_release{false};
+void hold_publication()noexcept{publication_entered.store(true);while(!publication_release.load())std::this_thread::yield();}
+void master_snapshot_busy_is_bounded_and_does_not_write(){
+ auto workspace=std::make_unique<ultra::CanvasWorkspace>();auto session=std::make_unique<ultra::AliveSession>();
+ const auto graph=instrument();ultra::CanvasPlan plan{};assert(ultra::compile_canvas(graph,plan));
+ auto discard=[](alive::Event){return true;};assert(workspace->install(0,plan,0,discard));
+ AliveSessionConfig config{};config.version=1;config.track_count=1;config.length_frames=256;
+ auto& track=config.tracks[0];track.document=0;track.revision=graph.revision;track.note_node=1;track.output_channels=2;track.output_layout=2;track.gain=1;
+ assert(session->configure(config,*workspace));publication_entered=false;publication_release=false;ultra::alive_session_test_publication=hold_publication;
+ std::thread writer([&]{session->publish(*workspace);});while(!publication_entered.load())std::this_thread::yield();
+ AliveSessionStateV2 score{};score.version=2;score.struct_bytes=sizeof score;score.absolute_frame=123;
+ AliveMasterStateV1 master{};master.version=1;master.struct_bytes=sizeof master;master.applied_serial=456;
+ assert(session->master_snapshot(score,master)==ALIVE_MASTER_BUSY);assert(score.absolute_frame==123&&master.applied_serial==456);
+ publication_release=true;writer.join();ultra::alive_session_test_publication=nullptr;
+}
+#endif
 void chase_disable_remove(){
  auto c=prepare();add(c,31,0,1,0,64);add(c,31,0,2,60,127);
  assert(alive_session_configure(&c));assert(ultra_external_start());assert(alive_session_seek(10));assert(alive_session_start());render(1);
@@ -164,4 +193,8 @@ void measured_paths(){
  }
 }
 }
-int main(){const auto expected=score({1});assert(score({32,64,127,1024})==expected);ownership_and_stop();isolation_loop_mixer();admission();shared_frame_and_sustain();live_base_preserves_structural_constraints();stop_snapshot_preserves_later_commands();chase_disable_remove();measured_paths();ultra_audio_stop();assert(alive_session_reset());std::puts("PASS: Alive exact frames, partitions, ownership, overload Stop, seek, loop, isolation, mono join, mixer and callback guard");}
+int main(){const auto expected=score({1});assert(score({32,64,127,1024})==expected);ownership_and_stop();isolation_loop_mixer();admission();shared_frame_and_sustain();live_base_preserves_structural_constraints();stop_snapshot_preserves_later_commands();invalid_track_sample_does_not_poison_meter();
+#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+master_snapshot_busy_is_bounded_and_does_not_write();
+#endif
+chase_disable_remove();measured_paths();ultra_audio_stop();assert(alive_session_reset());std::puts("PASS: Alive exact frames, partitions, ownership, overload Stop, seek, loop, isolation, mono join, mixer and callback guard");}

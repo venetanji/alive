@@ -18,6 +18,7 @@ pub use clips::{Document, ClipBank};
 pub type Session = Document;
 pub use persistence::{read, save};
 pub mod native;
+mod native_master;
 pub mod host;
 pub mod probe;
 pub mod desktop;

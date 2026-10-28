@@ -153,12 +153,48 @@ fn master_roundtrips_every_score_variant_including_eight_tracks() {
 }
 
 #[test]
+fn master_preflight_accepts_nonunity_with_native_capability() {
+    let mut candidate=read(&example_path()).unwrap();
+    candidate.saved.master.gain=0.5;
+    assert!(native::master_capability().is_some());
+    assert!(host::Host::preflight_master(&candidate).is_ok());
+}
+
+#[test]
+fn master_host_install_publishes_saved_gain_before_audio() {
+    if native_master::fresh_process("session::tests::master_host_install_publishes_saved_gain_before_audio"){return;}
+    let _native_guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut candidate=read(&example_path()).unwrap();candidate.saved.master.gain=0.5;
+    let mut host=host::Host::default();host.install(candidate).unwrap();
+    let capability=native::master_capability().unwrap();let mut score=native::StateV2::default();
+    let mut master=native_master::State::output();
+    assert_eq!(unsafe{(capability.snapshot_v2)((&mut score as *mut native::StateV2).cast(),&mut master)},1);
+    assert_eq!(master.current_gain,0.5);assert_eq!(master.target_gain,0.5);assert_ne!(master.applied_serial,0);
+    assert_eq!(master.applied_frame,score.absolute_frame);
+    unsafe{native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
+}
+
+#[test]
+fn master_old_library_unity_install_and_nonunity_preflight() {
+    if std::env::var_os("ALIVE_MASTER_EXPECT_UNAVAILABLE").is_none(){return;}
+    if native_master::fresh_process("session::tests::master_old_library_unity_install_and_nonunity_preflight"){return;}
+    let _native_guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    assert!(native::master_capability().is_none());
+    let candidate=read(&example_path()).unwrap();let mut host=host::Host::default();
+    assert_eq!(host.install(candidate.clone()).unwrap(),0);assert_eq!(native::state().unwrap().configured,1);
+    let mut nonunity=candidate;nonunity.saved.master.gain=0.5;
+    let revision=host.preparation_revision;
+    assert!(host.install(nonunity).unwrap_err().contains("Master gain"));assert_eq!(host.preparation_revision,revision);
+    unsafe{native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
+}
+
+#[test]
 fn master_nonunity_host_install_refuses_before_native_replacement() {
     let original=read(&example_path()).unwrap();
     let mut candidate=original.clone();candidate.saved.master.gain=0.5;candidate.saved.wire=SaveWire::V5;
     let mut host=host::Host::default();host.prepared=Some(original.clone());
     let revision=host.preparation_revision;
-    assert!(host.install(candidate).unwrap_err().contains("Master gain"));
+    assert!(host::Host::preflight_master_with_capability(&candidate,false).unwrap_err().contains("Master gain"));
     assert_eq!(host.preparation_revision,revision);
     assert_eq!(host.prepared.unwrap().saved,original.saved);
 }

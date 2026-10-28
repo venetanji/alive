@@ -12,6 +12,7 @@ struct Control {
     host: Host,
     runtime: runtime::Runtime,
     snapshot_sequence: u64,
+    accepted_serial: u64,
     driver: crate::audio::Driver,
     generation: u64,
     dirty: bool,
@@ -70,12 +71,26 @@ pub struct Snapshot {
 #[serde(rename_all = "camelCase")]
 struct MasterSnapshot {
     gain: f64,
-    accepted_serial: &'static str,
+    accepted_serial: String,
     available: bool,
-    unavailable_reason: &'static str,
+    unavailable_reason: Option<&'static str>,
     observation: Option<serde_json::Value>,
     observation_stale: bool,
 }
+#[derive(Debug,Serialize)]
+pub struct MasterError { code:&'static str, message:String }
+#[derive(Debug,Serialize)]
+#[serde(rename_all="camelCase")]
+pub struct MasterReceipt { generation:u64, accepted_gain:f64, accepted_serial:String, changed:bool }
+#[derive(Serialize)]
+#[serde(rename_all="camelCase")]
+pub struct MasterResetReceipt { generation:u64, accepted_serial:String }
+fn master_error(code:&'static str,message:impl Into<String>)->MasterError{MasterError{code,message:message.into()}}
+fn master_native_error(code:i32)->MasterError {match code {
+    -2=>master_error("FULL","Native command queue is full; retry."),-3=>master_error("BUSY","Native state is busy; retry."),
+    -1=>master_error("UNSUPPORTED","Native Master support is unavailable; upgrade or reinstall."),-4=>master_error("UNCONFIGURED","Open a session first."),
+    -5=>master_error("EXHAUSTED","Master serial exhausted."),0=>master_error("INVALID","Invalid Master request."),_=>master_error("INTERNAL","Native Master request failed.")
+}}
 fn main_only(label: &str) -> Result<(), String> {
     if label == "main" { Ok(()) } else { Err("This action belongs to the Alive session window".into()) }
 }
@@ -114,6 +129,31 @@ fn musical_draft(mut draft: Session, live: &Session) -> Result<Session, String> 
     Ok(draft)
 }
 impl Control {
+    fn master_auth(&mut self,label:&str,generation:u64)->Result<&'static super::native_master::Capability,MasterError>{
+        if label!="main"{return Err(master_error("INVALID","This action belongs to the Alive session window."));}
+        if generation>9007199254740991{return Err(master_error("INVALID","Invalid desktop generation."));}
+        if self.generation!=generation{return Err(master_error("STALE_GENERATION","Session changed; refresh and retry."));}
+        let capability=native::master_capability().ok_or_else(||master_error("UNSUPPORTED","Native Master support is unavailable; upgrade or reinstall."))?;
+        if self.host.prepared.is_none(){return Err(master_error("UNCONFIGURED","Open a session first."));}
+        self.driver.reject_retiring().map_err(|message|master_error("BUSY",message))?;
+        Ok(capability)
+    }
+    fn master_gain(&mut self,label:&str,generation:u64,gain:f64)->Result<MasterReceipt,MasterError>{
+        if !gain.is_finite()||!(0. ..=4.).contains(&gain){return Err(master_error("INVALID","Master gain must be finite and between 0 and 4."));}
+        let capability=self.master_auth(label,generation)?;
+        let prepared=self.host.prepared.as_mut().unwrap();
+        if gain==prepared.saved.master.gain{return Ok(MasterReceipt{generation,accepted_gain:gain,accepted_serial:self.accepted_serial.to_string(),changed:false});}
+        let serial=super::native_master::next_serial().ok_or_else(||master_error("EXHAUSTED","Master serial exhausted."))?;
+        let result=unsafe{(capability.set)(1,gain,serial)};if result!=1{return Err(master_native_error(result));}
+        prepared.saved.master.gain=gain;prepared.saved.wire=SaveWire::V5;self.dirty=true;self.accepted_serial=serial;
+        Ok(MasterReceipt{generation,accepted_gain:gain,accepted_serial:serial.to_string(),changed:true})
+    }
+    fn master_reset(&mut self,label:&str,generation:u64)->Result<MasterResetReceipt,MasterError>{
+        let capability=self.master_auth(label,generation)?;
+        let serial=super::native_master::next_serial().ok_or_else(||master_error("EXHAUSTED","Master serial exhausted."))?;
+        let result=unsafe{(capability.reset)(1,serial)};if result!=1{return Err(master_native_error(result));}
+        self.accepted_serial=serial;Ok(MasterResetReceipt{generation,accepted_serial:serial.to_string()})
+    }
     fn workspace_edit(&mut self,label:&str,operation:workspaces::WorkspaceEditV4,generation:u64,revision:u64)->Result<workspace_edits::Affected,String>{
         main_only(label)?;self.version(generation,revision)?;
         let prepared=self.host.prepared.as_ref().ok_or("No session")?;
@@ -214,7 +254,9 @@ impl Control {
         let track = device_index.map(|i| prepared.devices[i].track);
         let workspace=prepared.saved.score.is_workspaces();
         let limits=if workspace{Some(host::workspace_limits()?)}else{None};
-        Ok(Snapshot { document: prepared.saved.score.clone(), master: MasterSnapshot { gain:prepared.saved.master.gain, accepted_serial:"0", available:false, unavailable_reason:"Native Master support is unavailable; use a unity-gain session until it is installed.", observation:None, observation_stale:false }, path: self.saved_path.clone(),
+        let available=native::master_capability().is_some();
+        let observation=self.runtime.master_observation.map(|m|serde_json::json!({"targetGain":m.target_gain,"currentGain":m.current_gain,"peakLeft":m.peak_left,"peakRight":m.peak_right,"clipMask":m.clip_mask,"appliedSerial":m.applied_serial.to_string(),"appliedFrame":m.applied_frame.to_string(),"observationStartFrame":m.observation_start_frame.to_string(),"observationEndFrame":m.observation_end_frame.to_string()}));
+        Ok(Snapshot { document: prepared.saved.score.clone(), master: MasterSnapshot { gain:prepared.saved.master.gain, accepted_serial:self.accepted_serial.to_string(), available, unavailable_reason:(!available).then_some("Native Master support is unavailable; upgrade or reinstall the native library."), observation, observation_stale:false }, path: self.saved_path.clone(),
             capabilities: Capabilities { clip_bank: prepared.saved.score.is_clips()||workspace, max_tracks, max_devices, slots_per_track: if prepared.saved.score.is_clips()||workspace{4}else{1}, max_clips, atomic_track_actions: if let Some(l)=&limits{l.features&native::V4_FEATURE_ATOMIC_TRACK_ACTIONS!=0}else{runtime::scenes_available(prepared)?},workspaces:workspace,arrangement:workspace,audio_sources:false,max_sources:limits.as_ref().map_or(0,|l|l.max_sources as usize),max_placements:limits.as_ref().map_or(0,|l|l.max_placements as usize),workspace_conversion_available:!workspace&&host::workspace_limits().is_ok() },
             track_chains:if workspace{prepared.saved.score.tracks().into_iter().map(|t|serde_json::json!({"trackId":t.id(),"kind":if t.instrument().is_some(){"midi"}else{"audio"},"instrumentId":t.instrument().map(|d|&d.instance_id),"effectIds":t.effects().iter().map(|d|&d.instance_id).collect::<Vec<_>>() })).collect()}else{vec![]},prepared_workspaces:runtime_workspaces::prepared(&self.host)?,
             devices: if prepared.saved.score.is_workspaces(){vec![]}else{prepared.tracks.iter().map(|t| Ok(prepared.devices[t.midi_instrument()?].manifest.clone())).collect::<Result<_,String>>()?}, generation: self.generation,
@@ -236,8 +278,10 @@ impl Control {
         Host::preflight_master(&prepared)?;
         self.stopped()?;
         self.host.validate(&prepared)?;
+        let serials=if native::master_capability().is_some(){Some(super::native_master::reserve_pair().ok_or("Master serial exhausted")?)}else{None};
         self.driver.stop()?;
-        self.host.install(prepared)?;
+        if let Err(failure)=self.host.install_reserved(prepared,serials){if let Some(serial)=failure.rollback_serial{self.accepted_serial=serial;}return Err(failure.message);}
+        self.accepted_serial=serials.map_or(0,|s|s.0);
         self.generation += 1; self.editors.clear(); self.dirty = true; self.clear_scope()?;
         Ok(())
     }
@@ -253,6 +297,16 @@ impl Control {
 #[tauri::command]
 pub fn alive_current(window: WebviewWindow, state: tauri::State<Desktop>) -> Result<Snapshot, String> {
     ui_lock(&state.0)?.snapshot(window.label())
+}
+#[tauri::command]
+pub fn alive_master(window:WebviewWindow,state:tauri::State<Desktop>,generation:u64,gain:f64)->Result<MasterReceipt,MasterError>{
+    let mut control=ui_lock(&state.0).map_err(|message|master_error("BUSY",message))?;
+    control.master_gain(window.label(),generation,gain)
+}
+#[tauri::command]
+pub fn alive_master_reset_clip(window:WebviewWindow,state:tauri::State<Desktop>,generation:u64)->Result<MasterResetReceipt,MasterError>{
+    let mut control=ui_lock(&state.0).map_err(|message|master_error("BUSY",message))?;
+    control.master_reset(window.label(),generation)
 }
 #[tauri::command]
 pub fn alive_enable_workspaces(window:WebviewWindow,state:tauri::State<Desktop>,generation:u64,draft_revision:u64)->Result<Snapshot,String>{
@@ -744,14 +798,14 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
                 .map_err(std::io::Error::other)?;
             let saved_path = path.as_ref().map(|_| prepared.origin.clone());
             let saved_wire = path.as_ref().map(|_| prepared.saved.wire);
-            let mut host = Host::default(); let (prepared,upgraded)=enable_clips_for_load(&host,prepared).map_err(std::io::Error::other)?;host.install(prepared).map_err(std::io::Error::other)?;
-            app.manage(Desktop(Mutex::new(Control { host, runtime:runtime::Runtime::default(),snapshot_sequence:0, driver: crate::audio::Driver::load(app.path().app_data_dir()?.join("audio-settings.json")), generation: 1,
+            let mut host = Host::default(); let (prepared,upgraded)=enable_clips_for_load(&host,prepared).map_err(std::io::Error::other)?;let accepted_serial=host.install(prepared).map_err(std::io::Error::other)?;
+            app.manage(Desktop(Mutex::new(Control { host, runtime:runtime::Runtime::default(),snapshot_sequence:0, accepted_serial, driver: crate::audio::Driver::load(app.path().app_data_dir()?.join("audio-settings.json")), generation: 1,
                 dirty: upgraded, saved_path, saved_wire, save_feedback:None, draft: None, draft_revision:0,history:History::default(), closing: false, allow_exit: false, editors: BTreeMap::new() })));
             tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::App("alive.html".into()))
                 .title("Alive").inner_size(1200., 800.).min_inner_size(900., 660.).build()?;
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![alive_current, alive_enable_workspaces, alive_workspace_action, alive_workspace_edit, alive_workspace_track, alive_clip_edit, alive_clip_action, alive_launch_scene, alive_enable_clips, alive_edit, alive_history, alive_discard, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio_diagnostics, alive_audio, alive_editor, alive_file, alive_device])
+        .invoke_handler(tauri::generate_handler![alive_current, alive_master, alive_master_reset_clip, alive_enable_workspaces, alive_workspace_action, alive_workspace_edit, alive_workspace_track, alive_clip_edit, alive_clip_action, alive_launch_scene, alive_enable_clips, alive_edit, alive_history, alive_discard, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio_diagnostics, alive_audio, alive_editor, alive_file, alive_device])
         .on_window_event(|window,event| { if window.label() == "main" { if let tauri::WindowEvent::CloseRequested { api, .. } = event { api.prevent_close(); request_close(window.app_handle()); } } })
         .build(context).expect("Unable to start Alive")
         .run(|app,event| match event {
@@ -859,7 +913,7 @@ mod tests {
     }
     #[test]
     fn actual_registered_window_binding_authenticates_instance_and_generation() {
-        let mut control=Control { host:Host::default(),runtime:runtime::Runtime::default(),snapshot_sequence:0, driver:crate::audio::Driver::load(PathBuf::from("/nonexistent/alive-test.json")), generation:7,
+        let mut control=Control { host:Host::default(),runtime:runtime::Runtime::default(),snapshot_sequence:0, accepted_serial:0, driver:crate::audio::Driver::load(PathBuf::from("/nonexistent/alive-test.json")), generation:7,
             dirty:false,saved_path:None,saved_wire:None,save_feedback:None,draft:None,draft_revision:0,history:History::default(),closing:false,allow_exit:false,editors:BTreeMap::new() };
         let label=editor_label(7,"effect-a");
         assert!(control.authorize_instance(&label,"effect-a").is_err());
@@ -898,8 +952,130 @@ mod tests {
     fn musical_control()->Control {
         let prepared=read(&Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive")).unwrap();
         let mut host=Host::default();host.prepared=Some(prepared);
-        Control {host,runtime:runtime::Runtime::default(),snapshot_sequence:0,driver:crate::audio::Driver::load(PathBuf::from("/nonexistent/alive-test.json")),generation:7,
+        Control {host,runtime:runtime::Runtime::default(),snapshot_sequence:0,accepted_serial:0,driver:crate::audio::Driver::load(PathBuf::from("/nonexistent/alive-test.json")),generation:7,
             dirty:false,saved_path:None,saved_wire:None,save_feedback:None,draft:None,draft_revision:0,history:History::default(),closing:false,allow_exit:false,editors:BTreeMap::new()}
+    }
+    #[test]
+    fn master_stale_generation_refuses_without_owner_mutation() {
+        let mut control=musical_control();let before=control.host.prepared.as_ref().unwrap().saved.clone();
+        let error=control.master_gain("main",8,0.5).unwrap_err();
+        assert_eq!(error.code,"STALE_GENERATION");assert_eq!(control.host.prepared.as_ref().unwrap().saved,before);
+        assert_eq!(control.accepted_serial,0);assert!(!control.dirty);
+    }
+    #[test]
+    fn master_failed_install_rolls_back_gain_and_receipt() {
+        if super::super::native_master::fresh_process("session::desktop::tests::master_failed_install_rolls_back_gain_and_receipt"){return;}
+        let _native_guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        let mut c=musical_control();let mut original=c.host.prepared.clone().unwrap();original.saved.master.gain=0.5;original.saved.wire=SaveWire::V5;
+        let ids=original.saved.score.tracks().iter().map(|track|track.id().to_owned()).collect::<Vec<_>>();
+        original.saved.score.set_mixer(&ids[0],1.,false,false).unwrap();original.saved.score.set_mixer(&ids[1],1.,true,false).unwrap();
+        original.events.clear();original.devices[0].manifest.parameters.clear();
+        let note=original.devices[0].manifest.note_node.unwrap();let mut graph=crate::canvas::NativeGraph::default();
+        graph.node_count=3;graph.edge_count=2;graph.nodes[0].id=note;graph.nodes[0].kind=60;graph.nodes[0].p0=4.;
+        graph.nodes[1].id=100001;graph.nodes[1].kind=38;graph.nodes[1].text[..4].copy_from_slice(b"0.25");
+        graph.nodes[2].id=100002;graph.nodes[2].kind=49;graph.nodes[2].text[..3].copy_from_slice(b"1 2");
+        graph.edges[0]=crate::canvas::NativeEdge{from:100001,outlet:0,to:100002,inlet:0};graph.edges[1]=crate::canvas::NativeEdge{from:100001,outlet:0,to:100002,inlet:1};
+        original.devices[0].graph=graph;
+        c.accepted_serial=c.host.install(original.clone()).unwrap();let first=c.accepted_serial;
+        let mut before_left=[0f32;512];let mut before_right=[0f32;512];
+        unsafe{assert_eq!(native::ultra_external_start(),1);assert_eq!(native::alive_session_start(),1);assert_eq!(native::ultra_external_render(512,before_left.as_mut_ptr(),before_right.as_mut_ptr()),1);native::ultra_audio_stop();}
+        assert_eq!(before_left[0],0.125);assert_eq!(before_right[0],0.125);
+        let mut candidate=original.clone();candidate.saved.master.gain=0.75;
+        super::super::native_master::set_serial_for_test(u64::MAX-2);
+        host::test_fail_after_reset(1);
+        assert!(c.install(candidate).unwrap_err().contains("prior session retained"));
+        assert_eq!(c.host.prepared.as_ref().unwrap().saved,original.saved);assert_eq!(c.generation,7);assert!(!c.dirty);
+        assert!(c.accepted_serial>first);assert_eq!(c.accepted_serial,u64::MAX);
+        let mut score=native::StateV2::default();let mut master=super::super::native_master::State::output();
+        assert_eq!(unsafe{(native::master_capability().unwrap().snapshot_v2)((&mut score as *mut native::StateV2).cast(),&mut master)},1);
+        assert_eq!(master.applied_serial,c.accepted_serial);
+        let mut after_left=[0f32;512];let mut after_right=[0f32;512];
+        unsafe{assert_eq!(native::ultra_external_start(),1);assert_eq!(native::alive_session_start(),1);assert_eq!(native::ultra_external_render(512,after_left.as_mut_ptr(),after_right.as_mut_ptr()),1);native::ultra_audio_stop();}
+        assert_eq!(after_left[0],0.125);assert_eq!(after_right[0],0.125);
+        assert_eq!(master.target_gain,original.saved.master.gain);assert_eq!(master.current_gain,original.saved.master.gain);
+        assert_eq!(before_left,after_left);assert_eq!(before_right,after_right);
+        unsafe{native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
+    }
+    #[test]
+    fn master_gain_admission_promotes_only_on_change() {
+        if super::super::native_master::fresh_process("session::desktop::tests::master_gain_admission_promotes_only_on_change"){return;}
+        let _native_guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        let mut c=musical_control();let original=c.host.prepared.clone().unwrap();
+        c.accepted_serial=c.host.install(original).unwrap();let install=c.accepted_serial;
+        let no_op=c.master_gain("main",7,1.).unwrap();assert!(!no_op.changed);assert_eq!(c.accepted_serial,install);assert!(!c.dirty);
+        assert_eq!(c.host.prepared.as_ref().unwrap().saved.wire,SaveWire::LegacyScore);
+        let changed=c.master_gain("main",7,0.5).unwrap();assert!(changed.changed);assert!(c.accepted_serial>install);assert!(c.dirty);
+        assert_eq!(c.host.prepared.as_ref().unwrap().saved.wire,SaveWire::V5);
+        let accepted=c.accepted_serial;let error=c.master_gain("main",7,f64::NAN).unwrap_err();assert_eq!(error.code,"INVALID");assert_eq!(c.accepted_serial,accepted);
+        c.master_gain("main",7,1.).unwrap();assert_eq!(c.host.prepared.as_ref().unwrap().saved.wire,SaveWire::V5);
+        c.dirty=false;c.master_reset("main",7).unwrap();assert!(!c.dirty);assert_eq!(c.host.prepared.as_ref().unwrap().saved.master.gain,1.);
+        unsafe{native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
+    }
+    #[test]
+    fn master_queue_full_preserves_owner_and_allows_retry() {
+        if super::super::native_master::fresh_process("session::desktop::tests::master_queue_full_preserves_owner_and_allows_retry"){return;}
+        let _native_guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        let mut c=musical_control();let original=c.host.prepared.clone().unwrap();
+        c.accepted_serial=c.host.install(original).unwrap();let accepted=c.accepted_serial;
+        let before=c.host.prepared.as_ref().unwrap().saved.clone();let mut draft=before.score.clone();draft.legacy_mut().unwrap().tempo=130.;
+        c.edit(draft,"Pending tempo",7,0).unwrap();let draft=c.draft.clone();let revision=c.draft_revision;let history=serde_json::to_value(c.history.view()).unwrap();
+        unsafe{assert_eq!(native::ultra_external_start(),1);}
+        let capability=native::master_capability().unwrap();
+        for index in 0..64 {let serial=super::super::native_master::next_serial().unwrap();if index==0{assert_eq!(serial,accepted+2);}assert_eq!(unsafe{(capability.set)(1,1.,serial)},1);}
+        let error=c.master_gain("main",7,0.5).unwrap_err();assert_eq!(error.code,"FULL");
+        let wire=serde_json::to_value(&error).unwrap();assert_eq!(wire["code"],"FULL");assert!(wire["message"].as_str().is_some_and(|message|!message.is_empty()));
+        assert!(matches!(c.master_reset("main",7),Err(MasterError{code:"FULL",..})));
+        assert_eq!(c.accepted_serial,accepted);assert!(!c.dirty);assert_eq!(c.host.prepared.as_ref().unwrap().saved,before);
+        assert_eq!(c.draft,draft);assert_eq!(c.draft_revision,revision);assert_eq!(serde_json::to_value(c.history.view()).unwrap(),history);
+        unsafe{native::ultra_audio_stop();}
+        let receipt=c.master_gain("main",7,0.5).unwrap();assert!(receipt.changed);assert_eq!(receipt.accepted_gain,0.5);
+        assert!(c.accepted_serial>accepted);assert_eq!(receipt.accepted_serial,c.accepted_serial.to_string());assert!(c.dirty);assert_eq!(c.draft,draft);
+        assert_eq!(c.host.prepared.as_ref().unwrap().saved.master.gain,0.5);assert_eq!(c.host.prepared.as_ref().unwrap().saved.wire,SaveWire::V5);
+        unsafe{native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
+    }
+    #[test]
+    fn master_failed_rollback_does_not_claim_receipt() {
+        if super::super::native_master::fresh_process("session::desktop::tests::master_failed_rollback_does_not_claim_receipt"){return;}
+        let _native_guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        let mut c=musical_control();let original=c.host.prepared.clone().unwrap();
+        c.accepted_serial=c.host.install(original.clone()).unwrap();let accepted=c.accepted_serial;
+        let mut candidate=original.clone();candidate.saved.master.gain=0.5;
+        host::test_fail_after_reset(2);
+        assert!(c.install(candidate).unwrap_err().contains("audio restoration failed"));
+        assert_eq!(c.accepted_serial,accepted);assert_eq!(c.generation,7);assert_eq!(c.host.prepared.as_ref().unwrap().saved,original.saved);
+        unsafe{native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
+    }
+    #[test]
+    fn master_pending_retirement_burns_pair_without_replacement() {
+        if super::super::native_master::fresh_process("session::desktop::tests::master_pending_retirement_burns_pair_without_replacement"){return;}
+        let _native_guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        let mut c=musical_control();let original=c.host.prepared.clone().unwrap();
+        c.accepted_serial=c.host.install(original.clone()).unwrap();let accepted=c.accepted_serial;
+        let previous=super::super::native_master::current_serial();let preparation=c.host.preparation_revision;
+        let owner=crate::audio::tests::hold_retiring(&mut c.driver);
+        assert_eq!(c.master_gain("main",7,0.5).unwrap_err().code,"BUSY");
+        assert!(matches!(c.master_reset("main",7),Err(MasterError{code:"BUSY",..})));
+        assert_eq!(super::super::native_master::current_serial(),previous);assert_eq!(c.accepted_serial,accepted);
+        let mut candidate=original.clone();candidate.saved.master.gain=0.5;
+        assert!(c.install(candidate.clone()).unwrap_err().starts_with("retirement_pending"));
+        assert_eq!(super::super::native_master::current_serial(),previous+2);
+        assert_eq!(c.host.preparation_revision,preparation);assert_eq!(c.accepted_serial,accepted);assert_eq!(c.generation,7);
+        assert_eq!(c.host.prepared.as_ref().unwrap().saved,original.saved);
+        drop(owner);c.driver.stop().unwrap();c.install(candidate).unwrap();assert!(c.accepted_serial>previous+2);
+        unsafe{native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
+    }
+    #[test]
+    fn master_install_refuses_serial_exhaustion_before_retirement() {
+        if super::super::native_master::fresh_process("session::desktop::tests::master_install_refuses_serial_exhaustion_before_retirement"){return;}
+        let _native_guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        let mut c=musical_control();let original=c.host.prepared.clone().unwrap();c.accepted_serial=c.host.install(original.clone()).unwrap();
+        let accepted=c.accepted_serial;let preparation=c.host.preparation_revision;let before=native::state().unwrap();
+        super::super::native_master::set_serial_for_test(u64::MAX-1);
+        let mut candidate=original.clone();candidate.saved.master.gain=0.5;
+        assert!(c.install(candidate).unwrap_err().contains("serial exhausted"));
+        let after=native::state().unwrap();assert_eq!(after.absolute_frame,before.absolute_frame);assert_eq!(after.generation,before.generation);
+        assert_eq!(c.accepted_serial,accepted);assert_eq!(c.host.preparation_revision,preparation);assert_eq!(c.generation,7);assert_eq!(c.host.prepared.as_ref().unwrap().saved,original.saved);
+        unsafe{native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
     }
     #[test]
     fn new_session_explicitly_starts_with_unity_v5() {
@@ -921,7 +1097,7 @@ mod tests {
         c.history(Direction::Redo,7,2).unwrap();
         assert_eq!(c.host.prepared.as_ref().unwrap().saved,before);
         let draft=c.draft.clone();let revision=c.draft_revision;
-        assert!(c.apply_draft().unwrap_err().contains("Master gain"));
+        assert!(Host::preflight_master_with_capability(c.host.prepared.as_ref().unwrap(),false).unwrap_err().contains("Master gain"));
         assert_eq!(c.host.prepared.as_ref().unwrap().saved,before);
         assert_eq!(c.draft,draft);assert_eq!(c.draft_revision,revision);
         c.clear_scope().unwrap();assert_eq!(c.host.prepared.as_ref().unwrap().saved,before);
@@ -934,11 +1110,21 @@ mod tests {
     }
     #[test]
     fn unavailable_master_snapshot_is_explicit() {
-        let dto=MasterSnapshot{gain:0.5,accepted_serial:"0",available:false,unavailable_reason:"Native Master support is unavailable",observation:None,observation_stale:false};
+        let dto=MasterSnapshot{gain:0.5,accepted_serial:"0".into(),available:false,unavailable_reason:Some("Native Master support is unavailable"),observation:None,observation_stale:false};
         let value=serde_json::to_value(dto).unwrap();
         assert_eq!(value["gain"],0.5);assert_eq!(value["acceptedSerial"],"0");
         assert_eq!(value["available"],false);assert!(value["observation"].is_null());
         assert_eq!(value["observationStale"],false);assert!(value["unavailableReason"].as_str().unwrap().contains("unavailable"));
+    }
+    #[test]
+    fn master_old_library_snapshot_exposes_no_observation() {
+        if std::env::var_os("ALIVE_MASTER_EXPECT_UNAVAILABLE").is_none(){return;}
+        if super::super::native_master::fresh_process("session::desktop::tests::master_old_library_snapshot_exposes_no_observation"){return;}
+        let _native_guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        let mut c=musical_control();let prepared=c.host.prepared.clone().unwrap();c.accepted_serial=c.host.install(prepared).unwrap();
+        let snapshot=c.snapshot("main").unwrap();assert!(!snapshot.master.available);assert_eq!(snapshot.master.accepted_serial,"0");
+        assert!(snapshot.master.observation.is_none());assert!(snapshot.master.unavailable_reason.is_some());
+        unsafe{native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
     }
     #[test]
     fn master_save_commit_follows_rename_and_reports_migration() {

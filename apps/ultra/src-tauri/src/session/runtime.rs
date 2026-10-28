@@ -44,7 +44,7 @@ pub struct View {pub tracks:Vec<Track>,pub requests:Vec<RequestResult>,pub reque
 #[serde(rename_all="camelCase")]
 pub struct PreparedClip {track_id:String,clip_id:String,name:String,slot:usize,length_frames:String}
 #[derive(Default)]
-pub struct Runtime {revision:u64,serial:u64,requests:Vec<RequestResult>,pub workspace:super::runtime_workspaces::Runtime}
+pub struct Runtime {revision:u64,serial:u64,requests:Vec<RequestResult>,pub workspace:super::runtime_workspaces::Runtime,pub master_observation:Option<super::native_master::State>}
 fn status(value:u32)->&'static str{match value{n::V3_QUEUED=>"queued",n::V3_PENDING=>"pending",n::V3_APPLIED=>"applied",n::V3_REJECTED=>"rejected",n::V3_SUPERSEDED=>"superseded",n::V3_CANCELED=>"canceled",n::V3_MIXED=>"mixed",_=>"unavailable"}}
 fn frame(value:u64)->Option<String>{(value!=n::V3_NO_FRAME).then(||value.to_string())}
 impl Runtime {
@@ -55,9 +55,14 @@ impl Runtime {
     pub fn poll(&mut self,host:&Host)->Result<(serde_json::Value,Option<serde_json::Value>),String>{
         let p=host.prepared.as_ref().ok_or("No session")?;
         super::host::Host::check_schedule(p)?;
-        if p.saved.score.is_workspaces(){return self.workspace.poll(host);}
-        if !p.saved.score.is_clips(){return Ok((serde_json::to_value(n::state()?).map_err(|e|e.to_string())?,None));}
-        let mut raw=Box::<n::StateV3>::default();if unsafe{n::alive_session_state_v3(&mut *raw)}==0{return Err("Session state is temporarily unavailable".into());}
+        if p.saved.score.is_workspaces(){let result=self.workspace.poll(host)?;self.master_observation=self.workspace.master_observation;return Ok(result);}
+        if !p.saved.score.is_clips(){
+            let raw=if let Some(capability)=n::master_capability(){let mut raw=n::StateV2::default();let mut master=super::native_master::State::output();if unsafe{(capability.snapshot_v2)((&mut raw as *mut n::StateV2).cast(),&mut master)}!=1{return Err("Session state is temporarily unavailable".into());}self.master_observation=Some(master);raw}else{self.master_observation=None;n::state()?};
+            return Ok((serde_json::to_value(raw).map_err(|e|e.to_string())?,None));
+        }
+        let mut raw=Box::<n::StateV3>::default();
+        if let Some(capability)=n::master_capability(){let mut master=super::native_master::State::output();if unsafe{(capability.snapshot_v3)((&mut *raw as *mut n::StateV3).cast(),&mut master)}!=1{return Err("Session state is temporarily unavailable".into());}self.master_observation=Some(master);}
+        else {self.master_observation=None;if unsafe{n::alive_session_state_v3(&mut *raw)}==0{return Err("Session state is temporarily unavailable".into());}}
         if raw.preparation_revision!=host.preparation_revision{return Err("Native preparation publication is temporarily unavailable".into());}
         if self.revision!=host.preparation_revision{self.requests.clear();self.revision=host.preparation_revision;}
         self.reconcile(&raw);

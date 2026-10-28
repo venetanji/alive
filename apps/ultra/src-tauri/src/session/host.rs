@@ -10,6 +10,11 @@ pub struct Host {
     owned_roots: [bool; 16],
     pub preparation_revision: u64,
 }
+pub(super) struct InstallFailure { pub message:String, pub rollback_serial:Option<u64> }
+#[cfg(test)]
+thread_local! { static TEST_FAIL_AFTER_RESET:std::cell::Cell<u32> = const { std::cell::Cell::new(0) }; }
+#[cfg(test)]
+pub(super) fn test_fail_after_reset(count:u32) { TEST_FAIL_AFTER_RESET.with(|remaining|remaining.set(count)); }
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct View<'a> {
@@ -19,8 +24,11 @@ pub struct View<'a> {
 }
 impl Host {
     pub(super) fn preflight_master(prepared: &PreparedSession) -> Result<(), String> {
+        Self::preflight_master_with_capability(prepared,native::master_capability().is_some())
+    }
+    pub(super) fn preflight_master_with_capability(prepared: &PreparedSession,available:bool) -> Result<(), String> {
         prepared.saved.validate_master()?;
-        if prepared.saved.master.gain != 1. { Err("Master gain is unavailable until native Master support is installed".into()) } else { Ok(()) }
+        if !available && prepared.saved.master.gain != 1. { Err("Master gain is unavailable until native Master support is installed".into()) } else { Ok(()) }
     }
     pub(super) fn configuration_workspaces(&self, prepared:&PreparedSession)->Result<(Box<native::ConfigV4>,Vec<crate::canvas::NativeGraph>),String> {
         let (Document::WorkspacesV4(project),Schedule::Workspaces(workspace))=(&prepared.saved.score,&prepared.schedule) else{return Err("Workspace document and schedule disagree".into())};
@@ -162,22 +170,39 @@ impl Host {
     /// Caller must witness both CPAL closures destroyed through Driver::stop.
     /// A failed open, stream=None, or musical Stop alone is insufficient.
     /// Headless probes have no CPAL closures and stop their renderer synchronously.
-    pub fn install(&mut self, prepared: PreparedSession) -> Result<(), String> {
+    pub fn install(&mut self, prepared: PreparedSession) -> Result<u64, String> {
         Self::preflight_master(&prepared)?;
         self.validate(&prepared)?;
+        let serials=if native::master_capability().is_some(){Some(super::native_master::reserve_pair().ok_or("Master serial exhausted")?)}else{None};
+        self.install_reserved(prepared,serials).map_err(|failure|failure.message)?;
+        Ok(serials.map_or(0,|s|s.0))
+    }
+    pub(super) fn install_reserved(&mut self,prepared:PreparedSession,serials:Option<(u64,u64)>)->Result<(),InstallFailure> {
         unsafe { native::ultra_audio_stop(); }
-        if let Err(error) = self.apply(&prepared) {
+        let mut replaced=false;
+        let result=self.apply(&prepared,&mut replaced).and_then(|()|Self::initialize_master(prepared.saved.master.gain,serials.map(|s|s.0)));
+        if let Err(error) = result {
+            if !replaced{return Err(InstallFailure{message:format!("Session apply failed; prior session retained: {error}"),rollback_serial:None});}
             if let Some(previous) = self.prepared.clone() {
-                if let Err(rollback) = self.apply(&previous) {
-                    return Err(format!("Session apply failed: {error}; prior session remains saved in memory but audio restoration failed: {rollback}"));
+                let mut rollback_replaced=false;
+                if let Err(rollback) = self.apply(&previous,&mut rollback_replaced).and_then(|()|Self::initialize_master(previous.saved.master.gain,serials.map(|s|s.1))) {
+                    return Err(InstallFailure{message:format!("Session apply failed: {error}; prior session remains saved in memory but audio restoration failed: {rollback}"),rollback_serial:None});
                 }
+                return Err(InstallFailure{message:format!("Session apply failed; prior session retained: {error}"),rollback_serial:serials.map(|s|s.1)});
             }
-            return Err(format!("Session apply failed; prior session retained: {error}"));
+            return Err(InstallFailure{message:format!("Session apply failed; prior session retained: {error}"),rollback_serial:None});
         }
         self.prepared = Some(prepared);
         Ok(())
     }
-    fn apply(&mut self, prepared: &PreparedSession) -> Result<(), String> {
+    fn initialize_master(gain:f64,serial:Option<u64>)->Result<(),String>{
+        if let Some(serial)=serial {
+            let capability=native::master_capability().ok_or("Native Master support is unavailable")?;
+            if unsafe{(capability.set)(1,gain,serial)}!=1{return Err("Native Master initialization failed".into());}
+        }
+        Ok(())
+    }
+    fn apply(&mut self, prepared: &PreparedSession, replaced:&mut bool) -> Result<(), String> {
         if self.revisions.iter().any(|r|*r==u64::MAX)||self.preparation_revision==u64::MAX{return Err("Native revision exhausted".into());}
         Self::check_schedule(prepared)?;
         let (legacy,clips,workspaces,graphs)=match &prepared.schedule {
@@ -188,6 +213,9 @@ impl Host {
         self.preparation_revision=self.preparation_revision.checked_add(1).ok_or("Native preparation revision exhausted")?;
         unsafe {
             if native::alive_session_reset() == 0 { return Err("Stop device I/O before applying a session".into()); }
+            *replaced=true;
+            #[cfg(test)]
+            if TEST_FAIL_AFTER_RESET.with(|remaining|{let count=remaining.get();if count>0{remaining.set(count-1);true}else{false}}){return Err("Injected failure after native reset".into());}
             for slot in 0..16 {
                 if self.owned_roots[slot] {
                     if crate::ultra_canvas_close_document(slot as u32) == 0 { return Err(format!("Native root {slot} could not be closed")); }

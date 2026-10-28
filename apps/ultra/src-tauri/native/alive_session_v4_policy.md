@@ -31,6 +31,10 @@ Direct base commands have their existing separate fixed queue allowance of up
 to 64 parameter writes. They are counted in addition to, and separately from,
 the scheduled/optional/emergency writes. Failed expensive optional checks retain
 their guard/placement charge; Stop does not reset rolling history.
+Master set and latch reset consume the same 64 queue slots; trace family 3
+records their bounded reducer steps. The separate `master_burst64` cases add
+one combined v4/Master read to the timed render, including the largest snapshot
+copy. Results for those cases require the Task 7 measurement receipt.
 
 ## What The Runner Measures
 

@@ -394,6 +394,7 @@ void scene_timing(unsigned tracks, unsigned devices, unsigned count) {
     });
 }
 void timing(unsigned tracks, unsigned devices, unsigned count, bool scenes = false) {
+  uint64_t master_serial=0;
   if (!scenes) for (bool extended : {false, true}) {
     for (auto music : {Music::Sustain, Music::EmptyShort, Music::PopulatedShort, Music::Dense}) {
       Fixture f(tracks, devices, music, extended);
@@ -417,6 +418,9 @@ void timing(unsigned tracks, unsigned devices, unsigned count, bool scenes = fal
           assert(alive_session_mixer(i % tracks, .125, 0, 0));
           request(f, 2, 32767);
         });
+        measure("master_burst64", f, frames, count, [&](unsigned i) {
+          for(unsigned j=0;j<64;++j)assert(alive_session_master_set(1,(i+j)%2?0.5:4.,++master_serial)==ALIVE_MASTER_OK);
+        }, []{AliveSessionStateV3 score{};score.version=3;score.struct_bytes=sizeof score;AliveMasterStateV1 master{};master.version=1;master.struct_bytes=sizeof master;assert(alive_session_master_snapshot_v3(&score,&master)==ALIVE_MASTER_OK);});
       }
       if (music == Music::Dense) {
         measure(extended ? "extended_full_queue_stop" : "saved_full_queue_stop", f, 64, count, [&](unsigned) {

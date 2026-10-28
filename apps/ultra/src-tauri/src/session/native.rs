@@ -4,6 +4,11 @@ use crate::canvas::NativeGraph;
 use serde::Serialize;
 use std::ffi::{c_char, CStr};
 
+pub(super) fn master_capability() -> Option<&'static super::native_master::Capability> {
+    static CAPABILITY: std::sync::OnceLock<Option<super::native_master::Capability>> = std::sync::OnceLock::new();
+    CAPABILITY.get_or_init(|| super::native_master::resolve(alive_session_state_v2 as *const () as *const std::ffi::c_void)).as_ref()
+}
+
 #[repr(C)]
 #[derive(Clone, Copy, Default)]
 pub struct Parameter {

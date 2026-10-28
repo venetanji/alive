@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <cstring>
 #include <vector>
+#include <thread>
 namespace {
 struct Dispatch {
   uint64_t frame;
@@ -25,6 +26,10 @@ void trace_placement(unsigned, uint64_t amount) noexcept { placement_steps += am
 
 uint64_t preparation = 0, serial = 0, revision = 90000;
 std::array<float, 1024> left{}, right{};
+#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+std::atomic<bool> master_publication_entered{false},master_publication_release{false};
+void hold_master_publication()noexcept{master_publication_entered=true;while(!master_publication_release.load())std::this_thread::yield();}
+#endif
 AliveSessionConfigV4 prepare(unsigned effects = 0) {
   ultra_audio_stop();
   assert(alive_session_reset());
@@ -86,6 +91,41 @@ void render(unsigned frames) {
   const int ok = ultra_external_render(frames, left.data(), right.data());
   callback_guard::end();
   assert(ok);
+}
+void master_v4_fifo_and_publication() {
+  auto c=prepare();assert(alive_session_configure_v4(&c,nullptr,0));
+  assert(alive_session_master_set(1,0.5,1)==ALIVE_MASTER_OK);
+  AliveSessionStateV4 score{};score.version=4;score.struct_bytes=sizeof score;
+  AliveMasterStateV1 master{};master.version=1;master.struct_bytes=sizeof master;
+  assert(alive_session_master_snapshot_v4(&score,&master)==ALIVE_MASTER_OK);
+  assert(master.current_gain==0.5&&master.applied_serial==1&&master.applied_frame==score.absolute_frame);
+  assert(ultra_external_start());assert(alive_session_master_set(1,1.,2)==ALIVE_MASTER_OK);
+  assert(alive_session_master_reset_clip(1,3)==ALIVE_MASTER_OK);render(64);
+  assert(alive_session_master_snapshot_v4(&score,&master)==ALIVE_MASTER_OK);
+  assert(!score.playing&&master.current_gain==1.&&master.applied_serial==3);
+  assert(master.applied_frame+64==score.absolute_frame);
+  const auto rejected_base=score.rejected;
+  std::atomic<bool> done{false};std::atomic<unsigned> reads{0};
+  std::thread reader([&]{while(!done.load()){
+    AliveSessionStateV4 s{};s.version=4;s.struct_bytes=sizeof s;AliveMasterStateV1 m{};m.version=1;m.struct_bytes=sizeof m;
+    const int result=alive_session_master_snapshot_v4(&s,&m);assert(result==ALIVE_MASTER_OK||result==ALIVE_MASTER_BUSY);
+    if(result==ALIVE_MASTER_OK){assert(s.tracks[0].mixer.gain==m.target_gain);assert(m.applied_frame==m.observation_start_frame && m.observation_end_frame==s.absolute_frame);
+      const auto completed=m.applied_serial==3?0:(m.applied_serial-3)/63;assert(s.rejected==rejected_base+completed);++reads;}
+  }});
+  for(unsigned i=0;i<2000;++i){const double value=i%2?0.25:0.75;
+    for(unsigned j=0;j<63;++j)assert(alive_session_master_set(1,value,4+uint64_t(i)*63+j)==ALIVE_MASTER_OK);
+    assert(alive_session_mixer(0,value,0,0));assert(!alive_session_mixer(0,value,0,0));render(1);}
+  done=true;reader.join();assert(reads>0);
+  AliveSessionStateV3 wrong{};wrong.version=3;wrong.struct_bytes=sizeof wrong;wrong.absolute_frame=123;
+  master.applied_serial=456;assert(alive_session_master_snapshot_v3(&wrong,&master)==ALIVE_MASTER_UNSUPPORTED);
+  assert(wrong.absolute_frame==123&&master.applied_serial==456);
+#ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
+  master_publication_entered=false;master_publication_release=false;ultra::alive_session_test_publication=hold_master_publication;
+  std::thread writer([]{render(1);});while(!master_publication_entered.load())std::this_thread::yield();
+  score.absolute_frame=123;master.applied_serial=456;
+  assert(alive_session_master_snapshot_v4(&score,&master)==ALIVE_MASTER_BUSY);assert(score.absolute_frame==123&&master.applied_serial==456);
+  master_publication_release=true;writer.join();ultra::alive_session_test_publication=nullptr;
+#endif
 }
 AliveSessionReceiptV4 request(unsigned kind = ALIVE_SESSION_V4_START, bool expected = true) {
   AliveSessionRequestV4 r{};
@@ -461,6 +501,7 @@ int main(int argc, char **argv) {
     return 0;
   }
 
+  master_v4_fifo_and_publication();
   for (unsigned profile : {1u, 2u}) {
     AliveSessionLimitsV4 limits{};
     limits.version = 4;

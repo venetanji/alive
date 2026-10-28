@@ -22,7 +22,7 @@ pub struct Track {pub track_id:String,pub authority:Option<String>,pub active_sl
 #[serde(rename_all="camelCase")]
 pub struct View {pub tracks:Vec<Track>,pub requests:Vec<RequestResult>,pub requested_stop_epoch:String,pub applied_stop_epoch:String}
 #[derive(Default)]
-pub struct Runtime {revision:u64,requests:Vec<RequestResult>}
+pub struct Runtime {revision:u64,requests:Vec<RequestResult>,pub master_observation:Option<super::native_master::State>}
 fn frame(value:u64)->Option<String>{(value!=n::V4_NO_FRAME).then(||value.to_string())}
 fn status(value:u32)->&'static str{match value{n::V4_QUEUED=>"queued",n::V4_PENDING=>"pending",n::V4_APPLIED=>"applied",n::V4_REJECTED=>"rejected",n::V4_SUPERSEDED=>"superseded",n::V4_CANCELED=>"canceled",n::V4_MIXED=>"mixed",_=>"unavailable"}}
 fn workspace(p:&PreparedSession)->Result<&PreparedWorkspaces,String>{Host::check_schedule(p)?;match &p.schedule {Schedule::Workspaces(w)=>Ok(w),_=>Err("Enable MIDI workspaces first".into())}}
@@ -42,7 +42,9 @@ impl Runtime {
     }
     pub fn poll(&mut self,host:&Host)->Result<(serde_json::Value,Option<serde_json::Value>),String>{
         let p=host.prepared.as_ref().ok_or("No session")?;let w=workspace(p)?;
-        let mut raw=Box::<n::StateV4>::default();if unsafe{n::alive_session_state_v4(&mut *raw)}==0{return Err("Workspace state is temporarily unavailable".into());}
+        let mut raw=Box::<n::StateV4>::default();
+        if let Some(capability)=n::master_capability(){let mut master=super::native_master::State::output();if unsafe{(capability.snapshot_v4)((&mut *raw as *mut n::StateV4).cast(),&mut master)}!=1{return Err("Workspace state is temporarily unavailable".into());}self.master_observation=Some(master);}
+        else {self.master_observation=None;if unsafe{n::alive_session_state_v4(&mut *raw)}==0{return Err("Workspace state is temporarily unavailable".into());}}
         if raw.preparation_revision!=host.preparation_revision{return Err("Native workspace preparation publication is temporarily unavailable".into());}
         if self.revision!=host.preparation_revision {self.requests.clear();self.revision=host.preparation_revision;}
         self.reconcile(&raw);

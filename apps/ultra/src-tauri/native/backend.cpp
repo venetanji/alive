@@ -2,6 +2,7 @@
 #include "sequence.hpp"
 #include "canvas_workspace.hpp"
 #include "alive_session.hpp"
+#include "alive-master-v1.h"
 #include "../../core/engine.hpp"
 #include <atomic>
 #include <array>
@@ -430,7 +431,7 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
    if(canvas.failed()||!std::isfinite(left)||!std::isfinite(right)||std::abs(left)>std::numeric_limits<float>::max()||std::abs(right)>std::numeric_limits<float>::max()){
     engine.panic();break;
    }
-   l[frame]=float(left);r[frame]=float(right);
+   session.observe_master(hosted);l[frame]=float(left);r[frame]=float(right);
    session.advance(canvas,left,right);
   }else {sequence.sample(frame,emit);session.advance(canvas,0,0);}
  }
@@ -462,6 +463,25 @@ void put16(FILE*f,uint16_t n){unsigned char b[]={static_cast<unsigned char>(n),s
 void put32(FILE*f,uint32_t n){put16(f,n);put16(f,n>>16);}
 }
 extern "C" {
+int alive_session_master_limits(AliveMasterLimitsV1* out){
+ if(!out)return ALIVE_MASTER_INVALID;
+ if(out->version!=ALIVE_MASTER_V1||out->struct_bytes!=sizeof(*out))return ALIVE_MASTER_UNSUPPORTED;
+ *out={ALIVE_MASTER_V1,sizeof(*out),ALIVE_MASTER_FEATURE_GAIN|ALIVE_MASTER_FEATURE_METER|ALIVE_MASTER_FEATURE_RESET,64,4.};
+ return ALIVE_MASTER_OK;
+}
+int alive_session_master_set(uint32_t version,double gain,uint64_t serial){return session.master_command(version,gain,serial,false,!running.load()&&!engine.status().ready,canvas);}
+int alive_session_master_reset_clip(uint32_t version,uint64_t serial){return session.master_command(version,0,serial,true,!running.load()&&!engine.status().ready,canvas);}
+#define MASTER_SNAPSHOT(N) \
+int alive_session_master_snapshot_v##N(AliveSessionStateV##N* score,AliveMasterStateV1* master){ \
+ if(!score||!master)return ALIVE_MASTER_INVALID; \
+ if(master->version!=ALIVE_MASTER_V1||master->struct_bytes!=sizeof(*master)||score->version!=N||score->struct_bytes!=sizeof(*score))return ALIVE_MASTER_UNSUPPORTED; \
+ if(master->reserved)return ALIVE_MASTER_INVALID; \
+ return session.master_snapshot(*score,*master); \
+}
+MASTER_SNAPSHOT(2)
+MASTER_SNAPSHOT(3)
+MASTER_SNAPSHOT(4)
+#undef MASTER_SNAPSHOT
 int alive_session_validate_v2(const AliveSessionConfigV2* config){return config&&session.validate_v2(*config);}
 int alive_session_validate_device_v2(const AliveSessionDeviceV2* device,const UltraCanvasGraph* graph){return device&&graph&&session.validate_device_v2(*device,*graph);}
 int alive_session_validate_prepared_v2(const AliveSessionConfigV2* config,const UltraCanvasGraph* graphs,uint32_t count){return config&&session.validate_prepared_v2(*config,graphs,count);}

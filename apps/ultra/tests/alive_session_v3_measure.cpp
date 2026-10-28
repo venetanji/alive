@@ -299,6 +299,11 @@ template <class Before> void measure(const char *name, unsigned frames, unsigned
     const auto previews = ultra::alive_session_test_preview_reads;
     const auto begin = std::chrono::steady_clock::now();
     render(frames);
+    if(std::strstr(name,"master_burst64")){
+      AliveSessionStateV3 score{};score.version=3;score.struct_bytes=sizeof score;
+      AliveMasterStateV1 master{};master.version=1;master.struct_bytes=sizeof master;
+      assert(alive_session_master_snapshot_v3(&score,&master)==ALIVE_MASTER_OK);
+    }
     const auto end = std::chrono::steady_clock::now();
     times.push_back(std::chrono::duration<double, std::micro>(end - begin).count());
     assert(!state().fault);
@@ -421,8 +426,13 @@ int main(int argc, char **argv) {
   }
   for (bool maximal : {false, true}) {
     auto c = fixture(maximal, 48000, true);
+    uint64_t master_serial=0;
     for (unsigned frames : {1u, 31u, 64u, 128u, 256u, 512u, 1024u})
       measure(maximal ? "max_graph_sustain" : "saved_graph_sustain", frames, 1200, [](unsigned) {});
+    for (unsigned frames : {1u, 31u, 64u, 128u, 256u, 512u, 1024u})
+      measure(maximal ? "max_master_burst64" : "saved_master_burst64", frames, 1200, [&](unsigned i) {
+        for(unsigned j=0;j<64;++j)assert(alive_session_master_set(1,(i+j)%2?0.5:4.,++master_serial)==ALIVE_MASTER_OK);
+      });
     c = fixture(maximal, 188, false);
     for (unsigned frames : {64u, 256u, 1024u})
       measure(maximal ? "max_short_empty" : "saved_short_empty", frames, 1200, [](unsigned) {});

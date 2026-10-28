@@ -643,6 +643,7 @@ bool configure_v3(const AliveSessionConfigV3 &c, CanvasWorkspace &workspace) noe
   state_.preparation_revision = c.preparation_revision;
   head_ = 0;
   tail_ = 0;
+  clear_master();
   applied_stop_ = stop_epoch_.load();
   state_.requested_stop_epoch = state_.applied_stop_epoch = applied_stop_;
   reservations_ = {};
@@ -948,6 +949,7 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
   for (unsigned budget = 0; tail != end && budget < 64; ++budget) {
     const auto &c = commands_[tail];
     tail = (tail + 1) % 65;
+    if (c.kind == 7 || c.kind == 8) { trace_charge(3, Cost{0, 0, 0, 0, 1}); apply_master(c); continue; }
     if (c.kind == 3) {
       trace_charge(3, Cost{0, 0, 0, 1, 0});
       auto &ds = state_.devices[c.track];

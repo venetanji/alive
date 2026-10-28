@@ -29,6 +29,9 @@ The actual single strict-prefix scan can do fewer scans/writes. Track-local
 clears never reset another track. Already-accepted base/bypass/mixer commands
 have a separate fixed allowance of 64 commands per callback, including up to
 64 direct parameter applications even when a seek is rejected.
+Master set and latch reset share those same 64 slots. Their bounded reducer
+steps are recorded in trace family 3, and the Master burst qualification
+measures those steps, per-frame gain/meter work and combined publication reads.
 
 The minimum period is 188 frames. A 1024-frame interval has at most six
 quantization boundaries and seven positive-length segments. Across those

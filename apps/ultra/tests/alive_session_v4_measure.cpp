@@ -16,6 +16,7 @@ using Charge = std::array<uint64_t, 6>;
 std::array<float, 1024> left{}, right{};
 std::array<Charge, 4> charged{};
 uint64_t serial = 1000000, dispatched = 0;
+uint64_t master_serial = 0;
 std::array<uint64_t, 2> probes{};
 const Charge *synthetic_charge = nullptr;
 volatile uint64_t sink = 0;
@@ -256,6 +257,10 @@ void matrix(unsigned count) {
         const std::string label = std::string(extended ? "extended_" : "saved_") + shape;
         for (unsigned n : {1u,31u,64u,128u,256u,512u,1024u})
           measure(label.c_str(), f, n, count, [](unsigned){}, []{});
+        for (unsigned n : {1u,31u,64u,128u,256u,512u,1024u})
+          measure("master_burst64", f, n, count, [&](unsigned i){
+            for(unsigned j=0;j<64;++j)assert(alive_session_master_set(1,(i+j)%2?0.5:4.,++master_serial)==ALIVE_MASTER_OK);
+          }, []{AliveSessionStateV4 score{};score.version=4;score.struct_bytes=sizeof score;AliveMasterStateV1 master{};master.version=1;master.struct_bytes=sizeof master;assert(alive_session_master_snapshot_v4(&score,&master)==ALIVE_MASTER_OK);});
       }
     }
     Fixture controls(profile, profile == 1 ? 3 : 10, true, "arrangement");
