@@ -1,9 +1,34 @@
 # Alive / Ultra Plan
 
-Paused for power-off at the user's request on 2026-10-29. Tasks 1-8 remain
-accepted; Task 9/Q1 is open. The current shutdown/restart instructions are at
-the top of `docs/PHASE2_HANDOFF.md`; historical running/lease descriptions do
-not authorize background local work during this pause.
+Paused for power-off at the user's request on 2026-10-30. Tasks 1-8 remain
+accepted; Task 9/Q1 is open and Task 10 has not started. Current evidence and
+restart instructions are at the top of `docs/PHASE2_HANDOFF.md`. All workers
+are finished and local runtime/artifact leases are released.
+
+Exact pushed `a8ffe03` packages `40820226339` pass all four targets, but CI
+`40820226354` fails the original Arrangement journey's Audio details pointer
+check before seek9.6. Original desktop and Master steps pass; later clip,
+resource and CPAL gates are skipped. All 30 retained cloud manifest entries,
+seven decoded logs, Windows report and extracted failure diagnostics are
+independently verified. No production source correction has begun; no
+same-head retry is authorized. The shared-sampler pilot was interrupted during
+setup across reboot: 3.968420997 whole-journey credited seconds, no target loop,
+final exit/report/forecast or Quit. Preserve partial evidence; no automatic
+retry. The bounded observational Arrangement diagnostic finished with exit 1
+at the later Session transition (line 226), after playback/seek succeeded.
+Root verifies 32px summary movement, owned hits and two costly lookups leaving
+no stable click opportunity; the content-wrapping mechanism still needs a
+rendered regression. Native pointer/deadline checks remain unchanged. Retained
+report/timing/screenshots and root audit are in
+`checkpoint-q1/arrangement-disclosure-diagnostic/` under the experiments root.
+
+After resume, first reproduce the disclosure geometry with real rendered
+active-ID/gap content at both supported sizes, then make the smallest reviewed
+UI correction, rebuild and rerun original native journeys. Reassess sampler
+admission separately; interrupted credit cannot be topped up. No automatic
+retry, full attempt, transferred waiver or Task 10 implementation is activated.
+
+The following earlier checkpoint details remain source-attributed history:
 
 Exact `eb4f704` CI `40816670974` passes all three jobs and packages
 `40816670989` passes all four targets, including Intel Mac artifact upload.
@@ -26,10 +51,10 @@ The previous final64 pilot's 500.397271484 proven seconds, 888 valid credits,
 seven final epochs, actual Quit, 41 budget observations and failed collector
 forecast 2811.565578530s versus hard 2700s remain authoritative for that run.
 Interrupted 1792.759948-second endurance remains partial and cannot be topped
-up. After resume, audit the unstarted corrected-harness pilot and its unchanged
-forecast before considering a fresh full attempt. No waiver or automatic retry
-transfers. Complete Q1 before activating Task 10, and collect CI/packages on
-the containing final pushed head separately from older green results.
+up. The later corrected-harness pilot was interrupted during setup as recorded
+above; it has no admission result. No waiver or automatic retry transfers.
+Complete Q1 before activating Task 10, and collect CI/packages on the containing
+final pushed head separately from older green results.
 
 Do not restart accepted Tasks 1-8. The canonical
 execution checkpoint is `docs/PHASE2_HANDOFF.md`, and the single live ledger is

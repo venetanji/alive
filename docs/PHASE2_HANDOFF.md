@@ -1,6 +1,119 @@
 # Phase 2 Implementation Handoff
 
-## Shutdown Checkpoint, 2026-10-29
+## Shutdown Checkpoint, 2026-10-30
+
+The user requested a clean restart before powering off. Keep the goal paused
+until they resume. Tasks 1-8 remain accepted at their recorded scopes; Task
+9/Q1 is open and Task 10 has not started. This section supersedes all older
+running, lease and restart instructions below.
+
+- Feature source before this documentation/evidence checkpoint is pushed
+  `a8ffe03066ae658a69facaa6cf27f714f1dc5308`. PR #6 stays a draft against
+  `build/ultra-desktop-releases`; last fetched release foundation is `31033483`.
+  No production source changed during recovery or shutdown cleanup.
+- Exact `a8ffe03` packages `40820226339` pass all four targets; CI
+  `40820226354` fails the original Arrangement Audio details click before
+  seek(9.6), at line 222. Original desktop/Master, UI/reference and Chromium
+  pass; later clip/resource/CPAL steps are skipped. All 30 retained cloud
+  entries, seven decoded logs and the Windows ZIP member are verified again.
+  Packet: `experiments/phase2-20261028/master/cloud-a8ffe03/`.
+- The single bounded native diagnostic finished with exit 1 at the later
+  Session transition, line 226, after playback and seek succeeded. Root audits
+  attempt 5: summary y=544 -> y=576, both hits in the owned window, two in-loop
+  finds taking 1.025s and 1.073s, zero presses/releases. Movement and lookup
+  cost exhausted the stable-point opportunity. Content-dependent wrapping
+  remains a hypothesis; neither native-window occlusion nor identical CI
+  causality is established. Wrapper overhead is unquantified. Original native
+  ownership, stability and deadline checks remain unchanged.
+- Diagnostic report, probe, timing, inputs, logs, screenshots and root audit
+  are retained in `checkpoint-q1/arrangement-disclosure-diagnostic/` under the
+  experiments root. All 27 original entries are attributed; 22 are retained.
+  PCM/video/staged musical content stay in ignored SDD. This is diagnostic
+  evidence, not an Arrangement or endurance pass.
+- The corrected shared-sampler pilot remains interrupted during setup across
+  reboot: 71 playing rows, 3.968420997 whole-journey credited seconds, 480
+  resource rows, no target loop, terminal report, forecast or Quit. Root
+  verifies all 32 originals and 27 retained payloads again in
+  `checkpoint-q1/shared-sampler-interrupted/`. No automatic retry or inherited
+  waiver is authorized. The earlier completed pilot's failed collector forecast
+  (2811.565578530s > 2700s) and 41 budget observations remain historical evidence.
+- All workers are finished and runtime/artifact leases released. Shutdown
+  process inspection finds no owned app/test/Xvfb/recorder process. Current boot
+  is `fd503527`; diagnostic boot was `5e8667ce`. All three local artifacts still
+  match final64 hashes, sizes and inodes. Current `st_dev` is 54 versus the
+  historical receipt's 53 after reboot; do not claim an unchanged device tuple.
+  Separate Alive/Ultra binaries and the existing Alive (Test) launcher remain
+  usable; no rebuild or launcher change was needed for this checkpoint.
+
+After the user resumes:
+
+1. Read this section, `git status --short --branch`, `git log -3 --oneline`
+   and the canonical SDD progress ledger. Recheck current refs, artifact hashes
+   and boot/backend; never treat historical leases/PIDs as live. Retain any new
+   exact-head cloud results before a superseding push.
+2. Start the narrow Audio details fix: prove or reject the wrapping/anchoring
+   mechanism with a rendered regression using long active source/placement IDs
+   versus gap `-`, at 1440x900 and 1280x800 and relevant v3/v4 layouts. Likely
+   files are `apps/ultra/ui/alive.css` and
+   `apps/ultra/tests/ci/alive-chain.spec.mjs`. No implementation has begun.
+   Read Impeccable's craft floor before editing; preserve readable diagnostics,
+   focus, scrolling, close/reopen behavior and the compact design language.
+3. Stabilize geometry only after a meaningful red case. Use the approved
+   `gpt-6.1-terra`/high workflow with isolated implementation and independent
+   spec/quality reviews. Worker worktree `bb01/alive` is detached at `a8ffe03`,
+   tracked-clean with historical untracked evidence; no lease is active.
+   Preserve it. Do not increase the harness deadline, bypass pointer checks,
+   substitute keyboard input or weaken assertions to hide the failure.
+4. Integrate the reviewed candidate, run affected tests and Impeccable detector,
+   coherently rebuild changed app assets, then run the original native journeys.
+   Reassess a fresh sampler pilot/endurance with current artifacts/backend and
+   an explicit controller ruling. Interrupted credit cannot be topped up.
+5. Complete Q1 and exact final-head CI/packages before Task 10. Preserve PR #6
+   as a draft; no release-branch/PR #2/#5 edits, merges, tags or deployments.
+
+## Historical Recovery, 2026-10-29
+
+The user reactivated the goal after the shutdown checkpoint. Tasks 1-8 remain
+accepted; Task 9/Q1 is open. This section supersedes historical pause/lease
+descriptions below. Recovery starts from pushed `a8ffe03`, clean tracked files,
+unchanged fetched release foundation `31033483`, and verified final64 binaries.
+
+- Exact `a8ffe03` packages `40820226339` pass all four targets, publication
+  skipped. CI `40820226354` fails only its Linux native job: the original
+  Arrangement journey cannot close Audio details before `seek(9.6)`. Original
+  desktop and Master save/Quit/restart steps pass; later clip/resource/CPAL
+  gates are skipped. UI/reference and Chromium pass. Root verifies all 30
+  retained manifest entries, seven decoded logs, the Windows report member
+  and original extracted failure diagnostics under `master/cloud-a8ffe03/`.
+  No same-head retry is authorized or aggregate CI pass inferred.
+- Recovery at 15:55 UTC confirms a new boot (`5e8667ce`, previously `d13882c4`)
+  and no surviving native processes or old workers. The shared-sampler pilot
+  stopped during setup: 71 playing rows total 3.968420997 seconds across the
+  whole journey, with 480 resource rows. The target loop/capture never started;
+  no terminal exit receipt, final report, forecast, retirement or Quit survives.
+  Preserve this as partial evidence and do not retry automatically. Original
+  source/staged identities matched before launch; application stays `64fcacd`.
+- `arrangement_disclosure_native` held all local native/private-display/
+  software-audio/recorder/frozen-artifact resources for one bounded diagnostic
+  using the prepared observational wrapper and original Arrangement journey.
+  Its new output/report are `arrangement-disclosure-native-01/` and
+  `arrangement-disclosure-native-report.md` in SDD. No source changes, rebuilds,
+  competing GUI/audio, sampler retry or full endurance during that lease.
+  The run has finished and all leases are released; see the current checkpoint.
+- Independent source/evidence triage finds both failed hit paths belong to the
+  Alive window, with the summary moving between y=555 and y=585. Geometry
+  changes and costly AT-SPI traversal remain competing explanations until a
+  bounded observational probe. The prepared scratch-only wrapper has no
+  production-source changes; its newly leased run follows verified absence of
+  old runtime after reboot. Do not weaken the original
+  pointer/ownership/deadline checks or infer an app fix from screenshots.
+- Root owns docs/evidence/refs/PR. Cloud collection is complete and released.
+  No full endurance, automatic retry, inherited waiver or Task 10 source work
+  is authorized. Audit the corrected sampler pilot and unchanged admission
+  forecast, resolve the attributed Arrangement failure, then qualify the
+  containing final pushed source and complete Q1.
+
+## Historical Shutdown Checkpoint, 2026-10-29
 
 The user explicitly requested a pause for power-off. Keep the goal paused until
 they resume. Tasks 1-8 remain accepted at their recorded scopes; Task 9/Q1 is
@@ -870,8 +983,8 @@ from physical audio; leave unobservable physical/underrun gates open.
 
 ## Goal State And Suggested New Goal
 
-The current thread goal is **paused at the user's request**, with objective
-`docs/PHASE2_HANDOFF.md`. Resume only when the user asks to continue.
+The current thread goal is **active after the user's resume**, with objective
+`docs/PHASE2_HANDOFF.md`. The top checkpoint owns current leases and next work.
 Do not create a duplicate goal, mark this work complete before its gates pass,
 or infer a pause from compaction. No token/time budget was requested. The
 following expanded objective records the authorized scope for a new session

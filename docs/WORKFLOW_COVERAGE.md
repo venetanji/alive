@@ -1,6 +1,6 @@
 # Current Alive / Ultra Workflow Coverage
 
-Updated 2026-10-29 for the user's power-off pause. Phase 2 Tasks 1-8 are accepted
+Updated 2026-10-30 for the user's power-off pause. Phase 2 Tasks 1-8 are accepted
 at their recorded scopes; Task 9 qualification remains open. The current
 execution record is [the Phase 2 handoff](PHASE2_HANDOFF.md) and the active
 plan is [Phase 2](superpowers/plans/2026-10-28-phase2-live-max.md). The older
@@ -12,22 +12,33 @@ private; this ledger does not expand architecture or admission bounds.
 Current application build is `64fcacd`, with the separate Alive/Ultra/module
 identities in `experiments/phase2-20261028/checkpoint-q1/final64-build/receipt.json`.
 It includes the shared saved stereo Master, compact Session/Arrangement and
-reviewed mixer-baseline correction. Latest completed cloud qualification is
-`eb4f704`, including reviewed package diagnostics and resumed pilot evidence.
-Later committed sampler correction `03d7962` passes 66 scoped tests and both
-independent re-reviews; its native pilot never launched after a preflight path
-typo. Compiled Linux inputs are unchanged. The containing shutdown checkpoint
-needs its own exact-head cloud qualification after push. All runtime leases
-are released; resume the unstarted pilot only after the user resumes the goal.
-The existing Alive (Test) launcher still invokes this checkout's Alive binary.
+reviewed mixer-baseline correction. Exact pushed `a8ffe03` includes reviewed
+sampler correction `03d7962`; its packages pass all four targets, while CI fails
+the original Arrangement Audio details click before seek9.6. Later clip/resource/
+CPAL gates are skipped. Root verifies all 30 retained cloud entries. Earlier
+`eb4f704` is the latest completely green CI/package checkpoint.
+
+The corrected shared-sampler pilot was interrupted across reboot during setup,
+before its target loop; partial only, with no new admission. The bounded native
+Arrangement diagnostic finished with exit 1 at the later Session transition,
+after playback and seek succeeded. Root verifies 32px disclosure movement,
+owned hits, two costly in-loop lookups and zero presses/releases. Wrapping
+remains a hypothesis pending a rendered regression; no production fix is
+claimed. Diagnostic evidence is in `checkpoint-q1/arrangement-disclosure-diagnostic/`.
+All workers are finished and local runtime/artifact leases released. Application
+hashes, sizes and inodes still match final64; the filesystem device number has
+changed across reboot. No app source/rebuild or launcher change was needed.
+Resume from the handoff after the user reactivates the goal.
 
 | Gate | Current evidence | Remaining work |
 | --- | --- | --- |
 | Source CI | Exact `0f1deae`, [40789537429](https://github.com/venetanji/alive/actions/runs/40789537429): all three jobs pass, including native/Rust/offline/software CPAL journeys | Require CI again on the final pushed checkpoint |
 | New qualification | Exact `eb4f704`, [CI 40816670974](https://github.com/venetanji/alive/actions/runs/40816670974) passes all three jobs; [packages 40816670989](https://github.com/venetanji/alive/actions/runs/40816670989) passes all four targets. Root verifies all 19 retained manifest entries | Later sampler/shutdown checkpoint needs separate exact-head CI/packages; green package builds do not qualify native endurance |
+| Current pushed checkpoint | Exact `a8ffe03`, packages `40820226339` pass all four targets; CI `40820226354` fails Arrangement Audio details input, while original desktop/Master, UI/reference and Chromium pass | Resolve attributed pointer failure; later clip/resource/CPAL steps were skipped. Sampler pilot interrupted before target loop; no admission |
+| Arrangement diagnostic | One instrumented native run exits 1 at line 226 after playback/seek; root audits movement, owned hits, lookup timing and zero presses/releases | Prove geometry mechanism with rendered regression, preserve native checks, implement/review/rebuild and rerun unchanged journeys |
 | Native Master and original desktop | Final64 actual Quit/restart, complete saved v5 equality, nonzero software replay, both views/sizes; original pending/dirty Quit assertions and mixer keyboard/geometry follow-up pass | Keep exact artifact attribution and original assertions |
 | Packages | Exact `eb4f704`, all four targets pass and Intel Mac artifact uploads; publication skipped. Earlier `0f1deae` upload/DMG-eject failures remain retained separately | Prior busy-device cause is unproven; no interactive Windows/Mac host/audio qualification inferred |
-| Final64 endurance | Interrupted full attempt stays partial at 1792.759948s. New current-boot pilot exits 0 at 500.397271484s with 888 audited credits, seven final epochs, 41 processing-budget events and seven other counters zero | Admission fails: collector forecast 2811.565578530s exceeds 2700s. No new full run or automatic retry; diagnose from retained raw evidence |
+| Final64 endurance | Interrupted full attempt stays partial at 1792.759948s. Earlier completed pilot exits 0 at 500.397271484s with 888 audited credits, seven final epochs, 41 processing-budget events and seven other counters zero | Admission fails: collector forecast 2811.565578530s exceeds 2700s. Corrected-sampler pilot interrupted during setup; no new full run or automatic retry |
 | Earlier endurance | f691/d507 completes 1800.344707 proven playing seconds and nine final epochs | Does not qualify later final64 bytes |
 
 Priority: complete Q1 endurance and package delivery, then freeze Task 10's

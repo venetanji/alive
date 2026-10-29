@@ -1,0 +1,3 @@
+# Interrupted shared-sampler setup evidence
+
+This is a bounded, partial setup packet, not a completed pilot or admission. `manifest.json` inventories every original input with SHA-256 and records stored and decoded hashes for retained evidence. Text and JSON are losslessly gzip-compressed; screenshots are unchanged. Five session/device inputs are hash-only. There is no PCM here. No terminal exit, final report, actual Quit, or final forecast survived. The independent audit and limitations are in `.superpowers/sdd/2026-10-28-phase2-live-max/shared-sampler-interrupted-curation-report.md` in the working session.
