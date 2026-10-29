@@ -66,6 +66,9 @@ jobs:
         run: |
           python apps/ultra/scripts/test_release.py
           python apps/ultra/scripts/test_notices.py
+          if [[ "$RUNNER_OS" == macOS ]]; then
+            python apps/ultra/scripts/test_diagnose_dmg.py
+          fi
           if [[ "$EVENT" == push ]]; then
             python apps/ultra/scripts/release.py check-version --tag "$RELEASE_TAG"
             git merge-base --is-ancestor HEAD origin/main
@@ -91,11 +94,23 @@ jobs:
             libasound2-dev libpipewire-0.3-dev libspa-0.2-dev libclang-dev \
             libayatana-appindicator3-dev librsvg2-dev patchelf libfuse2t64
       - name: Build unsigned or ad-hoc test packages
+        id: unsigned_build
         if: github.event_name != 'push' || runner.os != 'macOS'
         env:
           APPLE_SIGNING_IDENTITY: '-'
           APPIMAGE_EXTRACT_AND_RUN: '1'
         run: python apps/ultra/scripts/release.py build --target '${{ matrix.target }}'
+      - name: Diagnose failed macOS DMG build
+        if: ${{ failure() && runner.os == 'macOS' && github.event_name != 'push' && steps.unsigned_build.outcome == 'failure' }}
+        run: python apps/ultra/scripts/diagnose_dmg.py --target '${{ matrix.target }}' --output test-results/dmg-diagnostic/report.txt
+      - name: Retain failed macOS DMG diagnostic
+        if: ${{ failure() && runner.os == 'macOS' && github.event_name != 'push' && steps.unsigned_build.outcome == 'failure' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: dmg-failure-diagnostic-${{ matrix.target }}
+          path: test-results/dmg-diagnostic/report.txt
+          if-no-files-found: warn
+          retention-days: 7
       - name: Build signed and notarized macOS release packages
         if: github.event_name == 'push' && runner.os == 'macOS'
         env:
