@@ -1,6 +1,63 @@
 # Phase 2 Implementation Handoff
 
-## Paused Checkpoint, 2026-10-29
+## Resumed Checkpoint, 2026-10-29
+
+The active goal has resumed after shutdown. Tasks 1-8 remain accepted;
+Task 9 is open. Resume from this section; pause/running descriptions below
+are historical observations, not current process state.
+
+- Recovery began at local `e8c0d53`, a documentation checkpoint over `0f1deae`.
+  A fresh origin fetch confirms release foundation `31033483` is unchanged
+  and remains an ancestor. No protected refs were changed.
+- All three local binary hashes and device/inodes still match
+  `checkpoint-q1/final64-build/receipt.json`. Application source remains
+  `64fcacd`; later Windows test scripts and package diagnostics change no
+  compiled application inputs.
+- Package attempt 2 is terminal **failure**, not pending. Intel Mac job
+  `123186152452` builds/signs Ultra, then DMG bundling fails after three
+  `hdiutil` eject attempts report `Resource busy`. The holding process is
+  unproven. This differs from attempt 1's artifact-service upload timeout.
+  Other three successes are carried forward; no Intel artifact is delivered.
+  Immutable terminal receipts/log/manifest are in
+  `experiments/phase2-20261028/master/cloud-0f1deae/attempt-2-terminal/`.
+  No further same-head retry is authorized. The next normal feature push
+  qualifies the reviewed diagnostic revision through the existing workflows.
+- Reviewed local `c301d0d` adds bounded unsigned-Mac-build-failure diagnostics
+  and macOS fixture execution to the existing package workflow. Independent
+  spec/quality fix-round reviews pass; root verifies 8 diagnostic, 18 release
+  and 4 notices tests. This is not a busy-eject fix or Mac runtime proof.
+  Source/review/test evidence is in `checkpoint-q1/dmg-failure-diagnostic/`;
+  it changes no application or pilot inputs. Its normal feature push includes
+  the resumed pilot evidence; inspect current refs for the containing head.
+- Interrupted final64 endurance stays partial at 1792.759948 seconds; it
+  cannot be topped up. The fresh current-boot pilot exits 0 with
+  **500.397271484 target proven seconds**, 888 valid credits, five cycles,
+  seven contiguous finalized epochs, actual Quit and quiescent retirement.
+  Independent operator/Terra audits agree: 41 processing-budget exceedances,
+  seven other counters zero; no physical-underrun claim follows.
+- New admission FAILS: unchanged 10% forecast collector 2811.565578530s
+  exceeds hard 2700s by 111.565578530s, with -4.132058% headroom versus 5%.
+  Recorder 2416.468s, PCM 927872831 bytes, metadata 39599110 bytes and ten
+  epochs fit their projections. Actual collector is 1005.634s, recorder
+  610.536s. No new full attempt, margin exception or automatic pilot retry is
+  authorized. All runtime/artifact leases are released to root after teardown.
+  Evidence is under `checkpoint-q1/resume-final64-pilot/`; original PCM stays
+  in ignored SDD. App RSS grows 234036 KiB and FDs 52, with up to ten missed
+  sampler cadences; this proves neither a leak nor clean resource behavior.
+- Next: retain exact-head cloud results for the diagnostic revision and
+  investigate the pilot's fixed/cycle overhead and budget observations from
+  existing raw evidence before proposing a bounded correction or measurement.
+  `pilot_regression_triage` has source/evidence-only ownership of its report;
+  no runtime lease. Complete Q1 before Task 10 freeze/implementation.
+  Existing separate binaries and the Alive (Test) launcher need no change.
+
+Existing pilot resource triage in `checkpoint-q1/resume-20261029/` separates
+transient cohort changes from persistent Alive/WebKit growth. Last-only
+processes explain 16 of the 52 extra FDs; the persistent Alive parent adds
+36 FDs, whose targets are not captured. No concrete leak or clean-resource
+claim is established; no resource diagnostic run has been authorized.
+
+## Historical Shutdown Checkpoint, 2026-10-29
 
 The user explicitly paused the goal. Stop here until the user resumes; the
 active/running descriptions below are the preceding checkpoint, not live state.
@@ -25,7 +82,7 @@ The local checkpoint is intentionally not pushed because a push could cancel
 that same-branch job. No app source or binary changed. Task 9 remains open;
 no Task 10 implementation or contract freeze is activated.
 
-## Restart After Shutdown
+## Historical Restart Checklist
 
 1. Keep the goal paused until the user resumes. Start in this worktree on
    `feat/alive-session-host`; read `git status --short --branch` and

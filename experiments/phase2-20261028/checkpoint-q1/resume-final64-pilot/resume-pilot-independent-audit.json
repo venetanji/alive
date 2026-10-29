@@ -1,0 +1,503 @@
+{
+  "admission_recommendation": "fail: projected collector exceeds hard limit and required 5% margin",
+  "credit": {
+    "positive_rows": 888,
+    "invalid_rows": [],
+    "gap_or_action_crossings": [],
+    "max_credited_interval": 1.0962040970000544,
+    "whole": 502.1186399689961,
+    "checkpoints_raw": {
+      "cycle_begin": 4.190864823000023,
+      "cycle_end": 501.58013630699605,
+      "capture_end": 501.58013630699605,
+      "final": 502.1186399689961
+    },
+    "checkpoints_reported": {
+      "cycle_begin": 4.190864823000023,
+      "cycle_end": 501.58013630699605,
+      "capture_end": 501.58013630699605,
+      "final": 502.1186399689961
+    },
+    "target_baseline": 1.1828648230000454,
+    "target": 500.397271483996,
+    "cycle": 497.389271483996,
+    "fixed": 3.0079999999999814,
+    "cycle_count": 5,
+    "cycle_actions": 56,
+    "cycle_action_categories": {
+      "text: Cutoff base": 5,
+      "keys: Tab": 18,
+      "text: Pulse gain": 5,
+      "text: Seek beat": 5,
+      "click: Seek transport": 5,
+      "click: Open Pulse editor": 2,
+      "text: Hosted Cutoff base": 2,
+      "click: Close hosted editor": 2,
+      "click: Stop transport": 5,
+      "text: Cutoff point 2 value": 1,
+      "click: Prepare / Apply": 1,
+      "click: Start transport": 5
+    },
+    "gap_kinds": {
+      "transport_read_shape": 451,
+      "observation_gap": 774
+    }
+  },
+  "epochs": {
+    "ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "all_finalized_unfailed": true,
+    "per_epoch": {
+      "1": {
+        "native_render_failures": 0,
+        "invalid_callback_shape": 0,
+        "cpal_error_total": 0,
+        "cpal_xrun_reports": 0,
+        "cpal_non_xrun_reports": 0,
+        "over_buffer_budget_count": 0,
+        "counter_overflow": 0,
+        "clock_anomaly_count": 0
+      },
+      "2": {
+        "native_render_failures": 0,
+        "invalid_callback_shape": 0,
+        "cpal_error_total": 0,
+        "cpal_xrun_reports": 0,
+        "cpal_non_xrun_reports": 0,
+        "over_buffer_budget_count": 0,
+        "counter_overflow": 0,
+        "clock_anomaly_count": 0
+      },
+      "3": {
+        "native_render_failures": 0,
+        "invalid_callback_shape": 0,
+        "cpal_error_total": 0,
+        "cpal_xrun_reports": 0,
+        "cpal_non_xrun_reports": 0,
+        "over_buffer_budget_count": 0,
+        "counter_overflow": 0,
+        "clock_anomaly_count": 0
+      },
+      "4": {
+        "native_render_failures": 0,
+        "invalid_callback_shape": 0,
+        "cpal_error_total": 0,
+        "cpal_xrun_reports": 0,
+        "cpal_non_xrun_reports": 0,
+        "over_buffer_budget_count": 22,
+        "counter_overflow": 0,
+        "clock_anomaly_count": 0
+      },
+      "5": {
+        "native_render_failures": 0,
+        "invalid_callback_shape": 0,
+        "cpal_error_total": 0,
+        "cpal_xrun_reports": 0,
+        "cpal_non_xrun_reports": 0,
+        "over_buffer_budget_count": 5,
+        "counter_overflow": 0,
+        "clock_anomaly_count": 0
+      },
+      "6": {
+        "native_render_failures": 0,
+        "invalid_callback_shape": 0,
+        "cpal_error_total": 0,
+        "cpal_xrun_reports": 0,
+        "cpal_non_xrun_reports": 0,
+        "over_buffer_budget_count": 14,
+        "counter_overflow": 0,
+        "clock_anomaly_count": 0
+      },
+      "7": {
+        "native_render_failures": 0,
+        "invalid_callback_shape": 0,
+        "cpal_error_total": 0,
+        "cpal_xrun_reports": 0,
+        "cpal_non_xrun_reports": 0,
+        "over_buffer_budget_count": 0,
+        "counter_overflow": 0,
+        "clock_anomaly_count": 0
+      }
+    },
+    "totals": {
+      "native_render_failures": 0,
+      "invalid_callback_shape": 0,
+      "cpal_error_total": 0,
+      "cpal_xrun_reports": 0,
+      "cpal_non_xrun_reports": 0,
+      "over_buffer_budget_count": 41,
+      "counter_overflow": 0,
+      "clock_anomaly_count": 0
+    },
+    "buffers": {
+      "1": [
+        "512",
+        "512"
+      ],
+      "2": [
+        "512",
+        "512"
+      ],
+      "3": [
+        "512",
+        "512"
+      ],
+      "4": [
+        "512",
+        "512"
+      ],
+      "5": [
+        "512",
+        "512"
+      ],
+      "6": [
+        "512",
+        "512"
+      ],
+      "7": [
+        "512",
+        "512"
+      ]
+    }
+  },
+  "projection": {
+    "cycle_wall": 607.212912579,
+    "scale_with_variability": 3.974133165563468,
+    "actual": {
+      "recorder": 610.5357154049999,
+      "collector": 1005.63351667,
+      "audio_bytes": 234373120,
+      "metadata_bytes": 14527949,
+      "epoch_attempts": 7
+    },
+    "calculated": {
+      "wall_seconds": 2416.4677772645946,
+      "collector_wall_seconds": 2811.5655785295944,
+      "audio_bytes": 927872831,
+      "metadata_bytes": 39599110,
+      "epoch_attempts": 10
+    },
+    "hard_limits": {
+      "wall_seconds": 2700,
+      "collector_wall_seconds": 2700,
+      "audio_bytes": 1073741824,
+      "metadata_bytes": 67108864,
+      "epoch_attempts": 256
+    },
+    "headroom": {
+      "wall_seconds": 283.5322227354054,
+      "collector_wall_seconds": -111.5655785295944,
+      "audio_bytes": 145868993,
+      "metadata_bytes": 27509754,
+      "epoch_attempts": 246
+    },
+    "headroom_fraction": {
+      "wall_seconds": 0.10501193434644644,
+      "collector_wall_seconds": -0.04132058464059052,
+      "audio_bytes": 0.1358510861173272,
+      "metadata_bytes": 0.40992727875709534,
+      "epoch_attempts": 0.9609375
+    },
+    "reported_matches": {
+      "wall_seconds": true,
+      "collector_wall_seconds": true,
+      "audio_bytes": true,
+      "metadata_bytes": true,
+      "epoch_attempts": true
+    }
+  },
+  "streams": {
+    "epochs": {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/resume-final64-pilot/sustained-epochs.jsonl",
+      "bytes": 3176241,
+      "sha256": "b7ae2ca8f8e175d377f2829bf0031caccec2a24baea1e574610dc89cf0a84632",
+      "matches_reference": true
+    },
+    "gaps": {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/resume-final64-pilot/sustained-gaps.jsonl",
+      "bytes": 115768,
+      "sha256": "a9c9328f1c1d71298f9c518592faf34287d2e9f8f1b3a928f7989bef7126cc63",
+      "matches_reference": true
+    },
+    "actions": {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/resume-final64-pilot/sustained-actions.jsonl",
+      "bytes": 21498,
+      "sha256": "790a9a64e410bd3f9a9e690834195c9a312f47ba0a137328611f2a401f27b4a0",
+      "matches_reference": true
+    },
+    "resources": {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/resume-final64-pilot/sustained-resources.jsonl",
+      "bytes": 5020505,
+      "sha256": "20df0b7dc671d48b730a38130fa8f74ecdf55560197f196a742a605490229e06",
+      "matches_reference": true
+    },
+    "playing": {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/.superpowers/sdd/2026-10-28-phase2-live-max/resume-final64-pilot/sustained-playing.jsonl",
+      "bytes": 280923,
+      "sha256": "9a67c9eb36161f61c18c2d5496a5550d3660349631876f5e3cd2072cd9f73071",
+      "matches_reference": true
+    }
+  },
+  "pcm": {
+    "walkthrough": {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/resume-final64-pilot/native-walkthrough.f32",
+      "bytes": 69472256,
+      "sha256": "5f619c2a71bb0ae780cae7ea3b5ab7455cf50df6e1be0b9983b834a4da9c5e61",
+      "matches_reference": true,
+      "supervision": {
+        "complete": true,
+        "reason": "requested_stop",
+        "group_id": 20482,
+        "recorder_pid": 20485,
+        "returncode": 1,
+        "wall_seconds": 181.09022117300003,
+        "audio_bytes": 69472256,
+        "stderr_bytes": 0,
+        "limits": {
+          "wall_seconds": 2700.0,
+          "audio_bytes": 1073741824,
+          "metadata_bytes": 67108864,
+          "stderr_bytes": 1048576,
+          "disk_reserve_bytes": 268435456
+        }
+      }
+    },
+    "endurance": {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/resume-final64-pilot/endurance.f32",
+      "bytes": 234373120,
+      "sha256": "cb27b2a233c1fda306ec4aeafc3b29deb2a7f492617125e5d3dff2ef965d8f2c",
+      "matches_reference": true,
+      "supervision": {
+        "complete": true,
+        "reason": "requested_stop",
+        "group_id": 25756,
+        "recorder_pid": 25759,
+        "returncode": 1,
+        "wall_seconds": 610.5357154049999,
+        "audio_bytes": 234373120,
+        "stderr_bytes": 0,
+        "limits": {
+          "wall_seconds": 2700.0,
+          "audio_bytes": 1073741824,
+          "metadata_bytes": 67108864,
+          "stderr_bytes": 1048576,
+          "disk_reserve_bytes": 268435456
+        }
+      }
+    }
+  },
+  "resources": {
+    "app": {
+      "rss_kib": {
+        "first": 597636,
+        "last": 831672,
+        "max": 1180132
+      },
+      "pss_kib": {
+        "first": 329760,
+        "last": 541918,
+        "max": 714514
+      },
+      "fds": {
+        "first": 99,
+        "last": 151,
+        "max": 191
+      },
+      "threads": {
+        "first": 124,
+        "last": 126,
+        "max": 179
+      }
+    },
+    "sampler_capture_overhead": {
+      "rss_kib": {
+        "first": 46368,
+        "last": 88136,
+        "max": 160808
+      },
+      "pss_kib": {
+        "first": 26570,
+        "last": 57344,
+        "max": 85599
+      },
+      "fds": {
+        "first": 9,
+        "last": 31,
+        "max": 81
+      },
+      "threads": {
+        "first": 3,
+        "last": 11,
+        "max": 19
+      }
+    },
+    "private_audio_server": {
+      "rss_kib": {
+        "first": 7216,
+        "last": 8916,
+        "max": 15996
+      },
+      "pss_kib": {
+        "first": 1678,
+        "last": 2941,
+        "max": 9695
+      },
+      "fds": {
+        "first": 26,
+        "last": 26,
+        "max": 40
+      },
+      "threads": {
+        "first": 2,
+        "last": 2,
+        "max": 2
+      }
+    },
+    "samples": 1004,
+    "max_delay": 9.733767082999975,
+    "max_duration": 6.122189220999871,
+    "max_missed_cadences": 10,
+    "max_between_samples": 7.048873459999868,
+    "coverage_gap_counts": {
+      "app": 24,
+      "sampler_capture_overhead": 54,
+      "private_audio_server": 1
+    }
+  },
+  "process_identity_live": {
+    "executable_path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive",
+    "executable": {
+      "device": 53,
+      "inode": 8395135,
+      "sha256": "741cc7ede7f76257f9caec8a8052d42aaa2a484e7a60ea662ce26e5a8851d1a1"
+    },
+    "libraries": [
+      {
+        "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+        "mapping_device": [
+          0,
+          29
+        ],
+        "mapping_inode": 8395136,
+        "device": 53,
+        "inode": 8395136,
+        "sha256": "9fd076115b2a914fa2d156dab37b0a1d99676d40634e23f78ba2c50c110062c4"
+      }
+    ]
+  },
+  "current_artifacts": {
+    "alive": {
+      "bytes": 14521336,
+      "device": 53,
+      "inode": 8395135,
+      "sha256": "741cc7ede7f76257f9caec8a8052d42aaa2a484e7a60ea662ce26e5a8851d1a1",
+      "matches_build_receipt": true
+    },
+    "ultra": {
+      "bytes": 18435280,
+      "device": 53,
+      "inode": 8395063,
+      "sha256": "e793a74b6c2db82198f70de7c8a1c85fd72d5620969d2b5d42525739b48f2097",
+      "matches_build_receipt": true
+    },
+    "libultra_native.so": {
+      "bytes": 12990840,
+      "device": 53,
+      "inode": 8395136,
+      "sha256": "9fd076115b2a914fa2d156dab37b0a1d99676d40634e23f78ba2c50c110062c4",
+      "matches_build_receipt": true
+    }
+  },
+  "quit_events": [
+    {
+      "event": "final-quit-entry",
+      "control": "",
+      "utc": "2026-10-29T04:08:17.561952+00:00",
+      "monotonic": 1545.892025113
+    },
+    {
+      "event": "final-quit-exit",
+      "control": "",
+      "utc": "2026-10-29T04:08:18.093502+00:00",
+      "monotonic": 1546.423575279
+    },
+    {
+      "event": "journey-complete",
+      "control": "",
+      "utc": "2026-10-29T04:08:18.146569+00:00",
+      "monotonic": 1546.476655946
+    },
+    {
+      "event": "observer-stop",
+      "control": "",
+      "utc": "2026-10-29T04:08:18.153147+00:00",
+      "monotonic": 1546.483230702
+    }
+  ],
+  "quiescent": true,
+  "complete": true,
+  "quit_discard_exited": true,
+  "source_commit": "64fcacd2c454393e89526043fa57c6b2c8ec942f",
+  "limitations": [
+    "Live and initial identities and teardown depend on retained observations and operator receipt; current hashes do not reconstruct build environment.",
+    "Resource samples can miss transients and peaks; action/playing labels are unsynchronized.",
+    "Software PipeWire; physical playback and underruns unmeasured. Processing budget events are not physical underruns.",
+    "Linear forecast with 10 percent variability does not bound future pauses."
+  ],
+  "supporting_file_hashes": {
+    "native-session-report.json": {
+      "bytes": 3687770,
+      "sha256": "38fb10971fb30860a99b326a3ca78d75e875b3349ac6c9b18282149bc2793a85"
+    },
+    "journey-timing.json": {
+      "bytes": 147616,
+      "sha256": "fcffff36fb92aa338af224a33b3d6f06ebf651c0da4b438ab30902cc34ba4364"
+    },
+    "operations.json": {
+      "bytes": 5763,
+      "sha256": "4db7b1a690700bf67f6908a565baf7a59ce3720af21550c5dbdf2d1aaa9fe9f4"
+    },
+    "endurance.capture.json": {
+      "bytes": 334,
+      "sha256": "92ea343a8e19f999c8de8e36b76684027bdc50d02c0259c1c6377eab9b382dc7"
+    },
+    "native-walkthrough.capture.json": {
+      "bytes": 334,
+      "sha256": "62b7823f7644336fcfa770cbb2d456ef241fe0dca4ce0bebd57189cfec52a48e"
+    },
+    "endurance.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-walkthrough.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "app.log": {
+      "bytes": 1370,
+      "sha256": "2a270952127213bb1af1db0b758d4a83c5c748425edc90ef3d4674cfa731c272"
+    },
+    "resource-samples.jsonl": {
+      "bytes": 2136569,
+      "sha256": "fb147a4d6f534ba44731d8310c0666d3d6517049db872fcee78975841443a245"
+    },
+    "resume-final64-pilot.log": {
+      "bytes": 3824641,
+      "sha256": "51cc7c1af2519cd449eec711c0c0a4a155d112d3b706c8f658af7e74e44398b2"
+    }
+  },
+  "teardown_receipt": {
+    "source": "resume-final64-pilot-report.md",
+    "operator_reports": "wrapper, app, WebKit, driver, private PipeWire, Xvfb and both recorders absent; recorder groups 20482 and 25756 empty; all owned runtime and artifact leases released",
+    "independent_process_check": false
+  },
+  "initial_identity_source": "operator preflight report; build receipt and current device/inode/hash independently matched; live app/module identity recorded in native-session-report",
+  "wrapper_exit": "operator reports 0; shell exit not independently captured by auditor"
+}

@@ -1,0 +1,45 @@
+{
+  "at_utc": "2026-10-29T04:01:24.743901+00:00",
+  "base": "e8c0d53112a523f8bb97a4dc95c3a0da2fb0fb3f",
+  "files": {
+    ".github/workflows/ultra-desktop.yml": "63a520757831a73074015adff66f961675861943cf4bf68d6ed7def5bf184dfe",
+    "apps/ultra/scripts/diagnose_dmg.py": "56077365510b6af0502c82389580d152bdc52186445bf9d9533628d860ee047f",
+    "apps/ultra/scripts/test_diagnose_dmg.py": "7597151bc80731502a7d20c747df114e6f2567faf1af54bc797b915cce682b11"
+  },
+  "checks": [
+    {
+      "name": "diagnostic",
+      "cmd": [
+        "python3",
+        "apps/ultra/scripts/test_diagnose_dmg.py"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "release",
+      "cmd": [
+        "python3",
+        "apps/ultra/scripts/test_release.py"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "notices",
+      "cmd": [
+        "python3",
+        "apps/ultra/scripts/test_notices.py"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "whitespace",
+      "cmd": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 0
+    }
+  ],
+  "scope": "Linux focused fixtures, existing release/notices only; no macOS runtime or contention fix proof"
+}

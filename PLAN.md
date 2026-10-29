@@ -1,19 +1,26 @@
 # Alive / Ultra Plan
 
-Paused by the user on 2026-10-29. Only bounded shutdown cleanup was authorized;
-no implementation, polling or retries are active. The sole final64 local
-endurance attempt was interrupted at
-1792.759948 target seconds / ten cycles, wrapper exit 130; this is partial
-evidence, with no full-endurance or terminal Quit pass. All local runtime and
-artifact leases are released. Intel Mac package attempt 2 was left running on
-GitHub; its last observed state was building, final outcome unknown. Read the
-paused checkpoint in `docs/PHASE2_HANDOFF.md` before resuming. The running-state
-details below are historical and do not authorize restarting either job.
-The local shutdown checkpoint preserves bounded evidence and a restart checklist;
-it stays unpushed while the useful Intel Mac cloud job runs. Existing separate
-Alive/Ultra binaries and the Alive (Test) launcher are unchanged. The interrupted
-measurement cannot be topped up after reboot; review its evidence and admission
-before any new complete attempt. Task 9 remains open.
+Resumed on 2026-10-29 after shutdown. Task 9 remains open; Tasks 1-8 stay
+accepted. Current recovery state is the top of `docs/PHASE2_HANDOFF.md`;
+running/pending descriptions below are historical. Recovery began at `e8c0d53`
+over pushed `0f1deae`, with unchanged final64 application artifacts and launcher.
+Fresh fetch preserves foundation `31033483`. Reviewed local `c301d0d` adds
+bounded failure-only unsigned-Mac diagnostics, with 8 diagnostic, 18 release
+and 4 notices tests passing; this is not a busy-eject fix or Mac runtime proof.
+Intel Mac package attempt 2 is terminal failure in DMG bundling: three
+`hdiutil` eject attempts report `Resource busy`; the holder is unproven.
+Terminal attempt-specific evidence is retained under
+`master/cloud-0f1deae/attempt-2-terminal/`. The next normal feature push qualifies
+the diagnostic revision; no further same-head retry is authorized.
+Interrupted 1792.759948-second endurance remains partial. A new current-boot
+pilot exits 0 at 500.397271484 target seconds with 888 valid credits, five
+cycles, seven final epochs and actual Quit. Its independent audit records
+41 processing-budget exceedances and seven other counters zero. Collector
+forecast 2811.565578530s exceeds hard 2700s; admission FAILS. All runtime and
+artifact leases are released; no full run or automatic retry is authorized.
+Evidence is in `checkpoint-q1/resume-final64-pilot/`. Source/evidence triage
+of fixed/cycle overhead and budget observations is the next local action;
+complete Q1 before activating Task 10.
 
 Current execution, 2026-10-29: Phase 2 Tasks 1-8 are accepted at their recorded
 scopes. Resume Phase 2 Task 9; do not restart completed work. The canonical

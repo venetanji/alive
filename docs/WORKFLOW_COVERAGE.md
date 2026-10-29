@@ -1,31 +1,35 @@
 # Current Alive / Ultra Workflow Coverage
 
-Updated 2026-10-27. Pushed checkpoint `e38c87b` passes all CI jobs and native
-regression gates. All four package targets pass, with tag publication skipped. MIDI v4 desktop source is independently approved through
-`ee83d30`; timeline source `91cb9d1` passes its complete native MIDI journey and
-is independently approved. The installed Alive (Test) launcher uses its
-coherent tested Alive/Ultra/native library triple. Profile 2 and audio sources remain unavailable.
-This ledger distinguishes app features,
-test-only work and historical verification. It supplements the existing
-[workspace plan](superpowers/plans/alive-workspaces-20261026.md); it does not
-change the architecture or admission bounds. New reference captures stay private.
+Updated 2026-10-29 after resuming from shutdown. Phase 2 Tasks 1-8 are accepted
+at their recorded scopes; Task 9 qualification remains open. The current
+execution record is [the Phase 2 handoff](PHASE2_HANDOFF.md) and the active
+plan is [Phase 2](superpowers/plans/2026-10-28-phase2-live-max.md). The older
+workflow rows below remain source-pinned evidence. New reference captures stay
+private; this ledger does not expand architecture or admission bounds.
 
 ## Current checkpoint and next actions
 
-Review checkpoint `ea8e4010f0d46f8294148825089908a4fa4922c3` includes the MIDI timeline. Its
-[packages](https://github.com/venetanji/alive/actions/runs/40405424298) passed all
-four targets. Its [CI](https://github.com/venetanji/alive/actions/runs/40405424319)
-passed UI/protocol and Chromium, but the native job was cancelled during Ubuntu
-dependency installation before product build/tests. The cancellation log does
-not establish its cause. Do not carry the older cutoff assertion failure forward
-as this checkpoint's result, or treat the earlier green `e38c87b` as proof for
-this timeline head. Follow subsequent exact-head runs in PR #6.
+Current application build is `64fcacd`, with the separate Alive/Ultra/module
+identities in `experiments/phase2-20261028/checkpoint-q1/final64-build/receipt.json`.
+It includes the shared saved stereo Master, compact Session/Arrangement and
+reviewed mixer-baseline correction. Current pushed head is `0f1deae`; local
+`e8c0d53` adds shutdown docs/evidence only. Later Linux inputs are unchanged.
+The existing Alive (Test) launcher still invokes this checkout's Alive binary.
 
-Priority: P0 complete native CI qualification without weakening gates; P1 retain
-and regression-test the implemented MIDI journey, including the nonblocking
-Duplicate destination issue; P2 imported WAV and portable mixed project;
-P3 separately scoped general Ultra authoring. A documentation cleanup is not a
-new native test or implementation result.
+| Gate | Current evidence | Remaining work |
+| --- | --- | --- |
+| Source CI | Exact `0f1deae`, [40789537429](https://github.com/venetanji/alive/actions/runs/40789537429): all three jobs pass, including native/Rust/offline/software CPAL journeys | Require CI again on the final pushed checkpoint |
+| Native Master and original desktop | Final64 actual Quit/restart, complete saved v5 equality, nonzero software replay, both views/sizes; original pending/dirty Quit assertions and mixer keyboard/geometry follow-up pass | Keep exact artifact attribution and original assertions |
+| Packages | Exact `0f1deae`, [40789537264](https://github.com/venetanji/alive/actions/runs/40789537264): Linux, Windows and Apple Silicon pass in attempt 1; Intel attempt 1 upload times out, attempt 2 DMG eject fails with `Resource busy` | Diagnose holder; no Intel artifact or all-target pass. Attempt-specific terminal receipts are retained |
+| Final64 endurance | Interrupted full attempt stays partial at 1792.759948s. New current-boot pilot exits 0 at 500.397271484s with 888 audited credits, seven final epochs, 41 processing-budget events and seven other counters zero | Admission fails: collector forecast 2811.565578530s exceeds 2700s. No new full run or automatic retry; diagnose from retained raw evidence |
+| Earlier endurance | f691/d507 completes 1800.344707 proven playing seconds and nine final epochs | Does not qualify later final64 bytes |
+
+Priority: complete Q1 endurance and package delivery, then freeze Task 10's
+browser/session contracts and implement that slice. General clip/automation
+editing, Max authoring, WAV/portable projects and compatibility remain later
+Phase 2 tasks. Native evidence uses private software PipeWire at 48 kHz/512
+frames; physical playback and physical underruns remain unmeasured. Sampled
+RSS/FD growth and observation gaps remain explicit in the handoff.
 
 Current bounds: v3 Session supports up to eight instrument tracks; admitted v4
 MIDI profile 1 supports two tracks, subject to complete event/work admission.
@@ -35,29 +39,18 @@ Stopped Prepare / Apply remains required for musical/structural edits. Audio
 sources, physical MIDI ingress and general-purpose Ultra device packaging are
 not qualified by this MIDI checkpoint.
 
-### Source-review follow-ups (not runtime-reproduced)
+### Earlier Review Follow-Ups
 
-1. `apps/ultra/ui/alive-timeline.mjs` includes loop start/end in its render-cache
-   key but omits `document.loopEnabled`. The loop-brace disabled class is updated
-   only on a cache rebuild. Add a loop-only DOM regression and include the enabled
-   state in invalidation (or update that class outside the cached rebuild).
-2. `apps/ultra/tests/check_alive_arrangement.py` captures 1440x900, whereas
-   `check_canvas_desktop.sh` starts Xvfb at 1280x840. The retained successful
-   journey used a private 1600x1000 wrapper, as recorded in its implementation
-   report. Provide a validated, checked-in screen-size option or dedicated
-   Arrangement wrapper, document a repository-only command, and qualify it before
-   adding the Arrangement journey to CI. Existing green native CI must not be
-   described as running this new journey unless the workflow actually invokes it.
-3. The existing independent review records a nonblocking Duplicate destination
-   suggestion that can overlap or exceed the song. Backend refusal preserves
-   music; improve the suggestion without weakening admission.
-
-These are follow-up fixes, not changes made by the documentation cleanup.
-Preserve stopped Apply, capacity bounds and original tests. First make the current
-MIDI checkpoint reproducibly testable; do not start WAV work as part of cleanup.
+The previous loop-brace invalidation, validated native screen-size and duplicate
+destination follow-ups have source implementations in the accepted Phase 2
+checkpoint. `alive-timeline.mjs` includes `document.loopEnabled` in its cache
+key and validates candidate duplicate destinations; `desktop_launch_config.sh`
+validates `ULTRA_TEST_SCREEN_SIZE`. Current native CI explicitly invokes the
+Arrangement journey at 1600x1000. These are existing changes, not new
+implementation or runtime results from this ledger update.
 
 The historical evidence below remains source-pinned. A stage's refusal or
-missing-feature statement does not override later N6/N7 implementation.
+missing-feature statement does not override later N6/N7 or Phase 2 implementation.
 
 | Workflow | Reference action and result | Expected behavior | Current implementation | Native verification | Gap / priority |
 | --- | --- | --- | --- | --- | --- |
