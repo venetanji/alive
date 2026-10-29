@@ -1,5 +1,20 @@
 # Alive / Ultra Plan
 
+Paused by the user on 2026-10-29. Only bounded shutdown cleanup was authorized;
+no implementation, polling or retries are active. The sole final64 local
+endurance attempt was interrupted at
+1792.759948 target seconds / ten cycles, wrapper exit 130; this is partial
+evidence, with no full-endurance or terminal Quit pass. All local runtime and
+artifact leases are released. Intel Mac package attempt 2 was left running on
+GitHub; its last observed state was building, final outcome unknown. Read the
+paused checkpoint in `docs/PHASE2_HANDOFF.md` before resuming. The running-state
+details below are historical and do not authorize restarting either job.
+The local shutdown checkpoint preserves bounded evidence and a restart checklist;
+it stays unpushed while the useful Intel Mac cloud job runs. Existing separate
+Alive/Ultra binaries and the Alive (Test) launcher are unchanged. The interrupted
+measurement cannot be topped up after reboot; review its evidence and admission
+before any new complete attempt. Task 9 remains open.
+
 Current execution, 2026-10-29: Phase 2 Tasks 1-8 are accepted at their recorded
 scopes. Resume Phase 2 Task 9; do not restart completed work. The canonical
 execution checkpoint is `docs/PHASE2_HANDOFF.md`, and the single live ledger is
@@ -60,8 +75,19 @@ are preserved in the plan workspace's `pre-final64-artifacts/` directory.
 
 ## Cloud And Windows
 
-Current pushed checkpoint is `0f3776c`; draft PR #6 exact head/base/body/draft are
-verified. Default CI `40782901995`, packages `40782901980` and separately
+Current pushed checkpoint is `0f1deae`; draft PR #6 exact head/base/body/draft are
+verified after its normal feature-only push. Default CI `40789537429` is
+terminal success in all three jobs on that exact head. Packages `40789537264`
+attempt 1 fail solely at Intel Mac's artifact upload: compilation, package
+validation and checksum collection succeed, but CreateArtifact requests time
+out after five attempts. Linux, Windows and Apple Silicon Mac pass; publication
+is skipped. Root verifies all 11 stored/decoded/ZIP receipt entries before
+authorizing exactly one failed-job rerun on the same head. Attempt 2 is queued
+as Intel Mac job `123186152452`; the cloud worker retains distinct attempt-2
+receipts without overwriting attempt 1. No further automatic retry or aggregate
+package pass is inferred. Preserve the useful rerun before another push.
+
+Previous checkpoint `0f3776c`: default CI `40782901995`, packages `40782901980` and separately
 dispatched cloud pilot `40782963181` use that exact head. Default CI is terminal
 success in all three jobs. Packages are terminal: Linux and both Mac targets
 pass, Windows fails at the compiler launcher and publication is skipped. The
@@ -100,20 +126,34 @@ original launcher fails. The original failure is deliberately rethrown and no
 fixture case runs. Separate package Rust cached-capability tests pass. Root
 verifies the retained archive and decoded log hashes in `master/windows-0f3776c/`.
 The narrow two-script primary-launcher correction receives independent spec
-and quality approval and is integrated byte-identically as local `4326b0b`.
-Its source/reviews are in `master/windows-stdin-launcher/`; actual candidate
-Windows execution and full-host qualification remain pending. The Linux
-application, build inputs and test harness are unchanged.
+and quality approval and is integrated byte-identically as `4326b0b`, contained
+in pushed `0f1deae`.
+Its source/reviews are in `master/windows-stdin-launcher/`. Exact-head Windows
+job `123171010686` now passes: the retained transcript has vcvars/rustc/cmd
+exits zero and probe output present, all six direct resolver fixtures pass,
+and the separate Rust run is 284 passed / 0 failed / 4 ignored. These qualify
+the exercised launcher, direct fixtures and cached-capability tests, not an
+interactive Windows host/audio journey or timeout/tree-cleanup failure paths.
+The Linux application, build inputs and test harness are unchanged.
 
 `66249c5` adds reviewed optional off/pilot/endurance manual CI dispatch; normal
 PR execution is unchanged. New cloud pilot/endurance runs remain gated as above.
-One new local final64 500-proven-second pilot now runs against the frozen
-artifacts and unchanged harness/pacing/limits, with the same 10% variability /
-5% admission policy. The old f691 waiver does not transfer. No automatic retry
-or full-endurance run is authorized. The sole local runtime lease belongs to
-`final64_local_pilot`; root and other workers perform source/cloud work only.
-Next: retain terminal cloud receipts and the local pilot audit, push the reviewed
-Windows correction for actual fixture execution,
+The new local final64 pilot exits 0 with 500.004730442 target playing seconds,
+908 valid credits, four cycles, seven finalized epochs, all eight counters zero
+and actual Quit. Root and independent Terra verify hashes/credit/input equality.
+The unchanged 10% forecast fits all hard caps, but collector 2606.020260509
+seconds has only 3.480731% margin: the extra 5% policy still FAILS.
+Root explicitly waives ONLY that extra planning margin for exactly ONE new
+local final64/current-driver 1800-playing-second measurement. This is a fresh
+bounded decision, not transfer of the old f691 waiver; `within_limits=false`
+stays explicit. Hard 2700s/1GiB/64MiB/256-epoch/credit/action/disk/liveness limits,
+original operations/assertions and 180-second dwell remain unchanged. Cost if
+wrong is one bounded failed run and lost time; no automatic retry or future
+waiver. The attempt is running under `final64-local-endurance-01-brief.md`.
+The sole local runtime/artifact lease belongs to `final64_local_pilot`; root and
+other workers perform source/cloud work only. Physical output remains unmeasured.
+Next: retain terminal exact-head cloud receipts and this one full local attempt,
+verify actual Windows fixture execution,
 require final-head CI and all four packages,
 then update draft PR #6 with commands,
 original screenshots and honest limits. Fetch/reconcile release foundation

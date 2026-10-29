@@ -1,16 +1,75 @@
 # Phase 2 Implementation Handoff
 
+## Paused Checkpoint, 2026-10-29
+
+The user explicitly paused the goal. Stop here until the user resumes; the
+active/running descriptions below are the preceding checkpoint, not live state.
+Local final64 endurance was interrupted immediately by SIGINT: last completed
+milestone 1792.759948156938 target seconds / ten cycles, wrapper exit 130.
+Preserve it as partial evidence with no full-endurance, actual Quit or terminal
+retirement pass. Recorder supervision reports requested_stop, 2010.001480597
+seconds and 771764224 PCM bytes; all owned local processes are gone and all
+native/GUI/audio/recorder/sampler/artifact leases are explicitly released.
+Artifacts remain unchanged. Canonical interruption report is
+`final64-local-endurance-01-report.md` in SDD; no retry was started.
+
+Cloud polling stopped and its lease is released. Attempt-1 receipts remain
+immutable. Already-submitted package attempt 2 was not cancelled: the single
+shutdown check still has exact `0f1deae`, Intel Mac job `123186152452` building,
+other three targets successful; final outcome unknown. Partial attempt-2
+snapshots/hashes and `cloud-0f1deae-attempt2-report.md` are retained. CI on
+`0f1deae` is terminal success in all three jobs. The user then authorized a
+bounded shutdown cleanup while keeping the goal paused: preserve evidence,
+save a local documentation checkpoint and leave the useful cloud job running.
+The local checkpoint is intentionally not pushed because a push could cancel
+that same-branch job. No app source or binary changed. Task 9 remains open;
+no Task 10 implementation or contract freeze is activated.
+
+## Restart After Shutdown
+
+1. Keep the goal paused until the user resumes. Start in this worktree on
+   `feat/alive-session-host`; read `git status --short --branch` and
+   `git log -3 --oneline`. The local shutdown checkpoint contains notes/evidence
+   over pushed `0f1deae`, whose application inputs remain source `64fcacd`.
+2. Once resumed, read GitHub run `40789537264` attempt 2 and retain its terminal
+   receipt before any push. Attempt 1 failed only at Intel Mac artifact upload;
+   no automatic further retry is authorized. Publication remains tag-only and
+   outside scope. Final-head CI is already green at `0f1deae`.
+3. All local leases are released and all old test PIDs are stale. Verify the
+   existing binaries against `checkpoint-q1/final64-build/receipt.json` before
+   choosing whether to reuse or rebuild. Alive (Test) already invokes this
+   checkout's `apps/alive/run.sh`; no launcher/settings change is needed.
+4. Review the interrupted attempt before deciding a fresh full measurement.
+   Its 1792.759948 seconds cannot be topped up across a reboot or promoted to a
+   completed thirty-minute run. The prior one-attempt planning exception is
+   exhausted; preserve the failed 3.480731% pilot margin and all hard bounds.
+   A new attempt requires an explicit controller ruling and current-backend
+   admission, not an automatic retry or an 8-second continuation.
+5. Complete Task 9's remaining qualification/delivery gate before activating
+   Task 10. Unfrozen browser contracts and proposed decisions are preserved in
+   `experiments/phase2-20261028/preparation/task10-contract-20261029/`.
+   Use exact `gpt-6.1-terra` / high / fresh for future children; that ID has
+   repeatedly succeeded despite omission from the advertised model list.
+
+The interrupted run's 47 original files, including local-only PCM, are hashed
+in `checkpoint-q1/final64-local-endurance-interrupted/manifest.json`; bounded
+logs/JSON are retained losslessly compressed there. Original large audio stays
+in ignored SDD and is not committed. New source review, pilot and cloud receipts
+are also included in the local shutdown checkpoint. No background local job
+needs to survive power-off.
+
 Updated 2026-10-29. Read this before resuming after compaction. The implementation
-goal is active; this file records accepted work, evidence limits and the next
-incomplete gate. Use the execution checkpoint, not historical planning text,
-to decide what to resume.
+goal was active before the pause; this file records accepted work, evidence
+limits and the next incomplete gate. Use the execution checkpoint, not
+historical planning text, to decide what to resume.
 
 ## Active Execution Checkpoint
 
 Recovered 2026-10-29 after compaction. Current integrated application source is
 `64fcacd2c454393e89526043fa57c6b2c8ec942f`; current pushed checkpoint is
-`0f3776c87b79069e989c5e5be24312ed455ee3ce`. It contains source anchor
-`ece60909598ba4dcb26701e19e54b35592a06561` (Windows test diagnostics only).
+`0f1deaecc34e8a54bc9b1ec136876831ebb132e5`. It contains Windows launcher
+correction `4326b0bd6ba439566964761e47a7dbc09704a4f8` over diagnostic
+`ece60909598ba4dcb26701e19e54b35592a06561`; Linux application inputs are unchanged.
 `66249c5` adds the reviewed optional
 cloud off/pilot/endurance dispatch to Ultra CI. `64fcacd` integrates the reviewed
 two-file mixer-baseline packet `a31ecfd` byte-identically. The exact requested
@@ -82,7 +141,21 @@ without changing any desktop or environment setting.
 The reviewed checkpoint is pushed normally. Draft PR #6 head/base/draft and exact
 body were re-read and verified, with new native screenshots, local commands,
 old/new source attribution, RSS/FD growth and failed planning margins explicit.
-Current-head default CI `40782901995`, packages `40782901980` and manually
+Latest exact-head CI `40789537429` is terminal success in all three jobs on
+`0f1deae`. Packages `40789537264` attempt 1 fail only at Intel Mac artifact
+upload, after successful compilation/package/checksum collection. Five
+CreateArtifact requests time out; no Intel Mac artifact is delivered. Linux,
+Windows and Apple Silicon Mac pass; publication is skipped. Root verifies all
+11 stored/decoded/ZIP entries before authorizing exactly one same-head failed-job
+rerun. Attempt 2 is queued as Intel Mac job `123186152452`. `q1_cloud_receipts`
+owns its separate bounded attempt-2 collection/report under `master/cloud-0f1deae/`;
+all attempt-1 files/report remain frozen. No additional automatic retry or
+aggregate package pass is inferred; preserve the useful rerun before another
+push. PR body hash is
+`2e9a1b45dcc5e5d3fc16ebef7181c29dee0931c1c1b4b93efa0b7236acd18355`
+after adding the local pilot refusal and new one-attempt exception. The exact
+body/verification receipt is `pr6-0f1deae-endurance-running*` in canonical SDD.
+Previous-head default CI `40782901995`, packages `40782901980` and manually
 dispatched cloud pilot `40782963181` all use `0f3776c`. Default CI is terminal
 success in all three jobs; packages are terminal failure solely at the Windows
 compiler launcher (Linux and both Macs pass; publication skipped). The manual
@@ -114,14 +187,22 @@ the ZIP report entry and decoded log hash in `master/windows-0f3776c/`.
 Fresh Terra's two-file primary stdin candidate is frozen as `4fb8e3a` in `2bb3`
 with independent spec and quality approval. Root verifies both files and diff
 byte-identically, passes whitespace checks and integrates locally as `4326b0b`.
-The old useful runs are now terminal and their receipts retained; this reviewed
-checkpoint is ready for normal feature-only push. Curated source/reviews are in
+The old useful runs were terminal and their receipts retained before the normal
+feature-only push as containing head `0f1deae`. Root verified all 65 selected
+retained/decoded manifest entries and staged whitespace/Python AST. Curated source/reviews are in
 `master/windows-stdin-launcher/`. Its brief/report/review package are
 `windows-stdin-launcher-*` in the canonical SDD workspace. No candidate runtime
 or interactive Windows host/audio pass is claimed.
 
-Next: obtain actual Windows diagnostic execution plus final-source cloud
-qualification. Final-source cloud endurance requires a
+Actual exact-head Windows job `123171010686` now succeeds: retained compiler
+transcript has vcvars/rustc/cmd exits zero and probe output present, all six
+direct resolver cases pass, and separate Rust tests are 284 passed / 0 failed /
+4 ignored, including cached capability. These results do not establish an
+interactive Windows host/audio pass or timeout/tree-cleanup failure behavior.
+Full receipt collection remains with the cloud worker until Intel Mac finishes.
+
+Next: retain the complete exact-head cloud/package receipts and the sole local
+final64 full attempt. Final-source cloud endurance requires a
 new same-source/backend >=500-proven-second pilot, raw audit and unchanged
 10% variability/5% headroom policy. No old-source waiver transfers. Update draft
 PR #6 after the reviewed checkpoint; preserve release foundation and PR #2/#5.
@@ -153,17 +234,51 @@ mute pointer activation/restoration work; fader/M/S geometry remains identical.
 Post-close direct fader/mute activation and covered-control pointer hits remain
 unobserved. Evidence is in `checkpoint-q1/mixer-keyboard/`. The worker releases
 all local runtime resources to root; no source or binary is changed.
-Fresh Terra `final64_local_pilot` now has the sole local runtime/GUI/audio/
-recorder/sampler lease for one new >=500-proven-second pilot on unchanged
-final64 artifacts/current harness, canonical `final64-local-pilot-brief.md`.
-Initial hashes/inodes match the build receipt; current source anchor is
-`4326b0b`, with only the reviewed Windows scripts differing from cloud0f.
-Same 180-second dwell, hard bounds and 10% allowance/5% headroom policy; no old
-waiver, automatic retry or full-endurance authorization. Root performs source/
-cloud/docs work only until teardown and release. This tests local software
-qualification, not physical output or a causal diagnosis of cloud timing.
+Fresh Terra `final64_local_pilot` completes the new local pilot with wrapper
+exit 0, 500.004730442 target seconds, 908 valid credits/no crossed gaps/actions,
+four cycles, seven contiguous final epochs, all eight counters zero and actual
+Quit. Root and fresh independent Terra audit hashes, current binary/module
+identity and input equality. The 10% forecast is collector 2606.020260509s,
+recorder 2272.023010172s, PCM 872407728 bytes, metadata 38834176 bytes and ten
+epochs: all hard projections fit, but 3.480731% collector headroom FAILS the
+extra 5% policy. `within_limits=false` is retained. App-tree RSS grows 261080
+KiB and FDs 52; max missed cadences five. Keep sampling/causality limits.
+
+NEW Ruling: root waives ONLY that extra planning margin for exactly ONE actual
+final64/local/current-driver 1800-proven-playing-second measurement after the
+fresh pilot and independent audit. This is not transfer of the old f691 waiver.
+Cost if wrong is one bounded failed run and lost time; hard 2700s/1GiB/64MiB/
+256-epoch/credit/action/disk/liveness bounds, original operations/assertions and
+180-second dwell remain unchanged. No automatic retry, source/pacing/threshold
+change or future waiver. Canonical `final64-local-endurance-01-brief.md` and
+report govern. The same operator now runs that sole attempt, initial HEAD
+`0f1deae`, all frozen build/harness/example hashes and inodes reverified. It
+owns all local native/GUI/Xvfb/software-PipeWire/audio/AT-SPI/recorder/sampler/
+artifact resources until explicit teardown/release. Root and other workers
+perform only source/docs/cloud work. No actual full result or physical audio
+qualification is inferred. Fresh `task10_contract_preparation` owns only a
+read-only child-contract proposal incorporating new bounded reference facts;
+Task 10 implementation and contract freeze remain gated on Q1.
+The proposal is complete as `task10-child-contract-proposal.md` (184 lines),
+with current Master ownership, corrected reference facts, atomic v4 create/assign
+proposal and four routine contract decisions still unruled. This is preparation
+only; do not dispatch Task 10 implementation while Task 9 gates are open.
 Private reference captures stay private; publish only derived action/result
 evidence. Tasks 1-8 remain accepted; Task 9 remains open.
+
+Fresh final Q1 source integration review establishes no actionable finding in
+the inspected `1ebf216..0f1deae` paths; it retains direct FULL/history witness and
+runtime qualification limits. Root verifies the complete wrapper and inner diff
+hashes and curates the report/triage under `checkpoint-q1/final-source-review/`.
+Another exact `gpt-6.1-terra` / high / fresh dispatch succeeds for read-only
+`task10_resource_contract`. Its report favors a verified durable per-user store
+of the three original bundled sources using existing path/fingerprint wire,
+avoiding AppImage mount paths without a v6 expansion. This is preparation only,
+with storage integrity, trusted New-template rebinding and package/native restart
+gates explicit. Current Tauri docs confirm resource maps merge keywise; the
+release overlay alone does not prove effects missing from actual packages.
+`task10-controller-decisions.md` records proposed controller choices in canonical
+SDD; no Task 10 contract is frozen or implementation activated before Q1.
 
 ## Prior Checkpoint Detail
 
