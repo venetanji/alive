@@ -663,6 +663,12 @@ def measured_finish_capture(capture):
 
 def process_sample():
     global resource_sampler, resource_writer, resource_groups
+    if sustained_driver is not None:
+        request_monotonic = time.monotonic()
+        from desktop_sustained import write_legacy_sample
+        if resource_writer is None:
+            resource_writer = JsonLines(ui.output/'resource-samples.jsonl')
+        return write_legacy_sample(sustained_driver, resource_writer, request_monotonic)
     if resource_sampler is None:
         resource_sampler = ProcessSampler(ui.pid)
         resource_groups = ProcessGroups(app=resource_sampler, sampler_capture_overhead=ProcessSampler(os.getpid()),

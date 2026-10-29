@@ -1,5 +1,6 @@
 """Driving-thread epoch observation and owned sampling for the desktop journey."""
 import json
+import copy
 import os
 from pathlib import Path
 import threading
@@ -8,6 +9,20 @@ import time
 from desktop_checkpoint import AuditedPlayingIntervals, DesktopCheckpoint, DrivingObserver
 from stream_measurement import EpochCollector, JsonLines, MAX_WALL, ProcessGroups, ProcessSampler
 from sustained_measurement import ProcessDisappeared, SustainedMeasurement
+
+
+def write_legacy_sample(driver, writer, request_monotonic=None):
+    request, publication = driver.process_publication(request_monotonic)
+    groups = publication['groups']
+    result = {**groups['app'], 'sampler_capture_overhead': groups['sampler_capture_overhead'],
+              'private_audio_server': groups['private_audio_server'],
+              'provenance': {'source_id': publication['source_id'], 'request_monotonic': request,
+                  'sampling_started': publication['sampling_started'],
+                  'sampling_completed': publication['sampling_completed'],
+                  'age_at_request_seconds': request - publication['sampling_started']}}
+    with driver.lock:
+        writer.write(result)
+    return result
 
 
 class LockedJsonLines:
@@ -29,6 +44,10 @@ class DesktopSustained:
         self.ui, self.windows, self.atspi, self.glib = ui, windows, atspi, glib
         self.lock = threading.RLock()
         self.stop = threading.Event()
+        self.condition = threading.Condition()
+        self.latest_publication = None
+        self.source_id = 0
+        self.stopped = False
         self.errors = []
         self.start = time.monotonic()
         self.raw_sleep = time.sleep
@@ -112,16 +131,47 @@ class DesktopSustained:
                 now = time.monotonic()
                 if now - self.start > MAX_WALL:
                     raise RuntimeError('wall_limit')
+                self.source_id += 1
                 self.resource_log.write({'monotonic': now, 'sampling_started': started,
                     'scheduled_monotonic': deadline, 'sampling_delay': max(0, started - deadline),
                     'sampling_duration': now - started, 'action': self.measure.action_ordinal,
                     'playing_seconds_proven': self.playing.seconds,
-                    'missed_cadences': max(0, int(now - deadline)), **observation})
+                    'missed_cadences': max(0, int(now - deadline)), 'source_id': self.source_id, **observation})
+                with self.condition:
+                    self.latest_publication = copy.deepcopy({'source_id': self.source_id,
+                        'sampling_started': started, 'sampling_completed': now, 'groups': observation})
+                    self.condition.notify_all()
                 deadline += 1
                 self.stop.wait(max(0, deadline - time.monotonic()))
         except BaseException as error:
-            self.errors.append(error)
-            self.stop.set()
+            with self.condition:
+                self.errors.append(error)
+                self.stop.set()
+                self.condition.notify_all()
+
+    def process_publication(self, request_monotonic=None):
+        request = time.monotonic() if request_monotonic is None else request_monotonic
+        deadline = min(request + 5, self.start + MAX_WALL)
+        with self.condition:
+            while True:
+                if self.errors:
+                    raise RuntimeError('resource sampler failed') from self.errors[0]
+                if self.stopped:
+                    raise RuntimeError('resource sampler stopped')
+                now = time.monotonic()
+                if now > self.start + MAX_WALL:
+                    raise RuntimeError('wall_limit')
+                if now > deadline:
+                    raise RuntimeError('resource sampler timeout')
+                publication = self.latest_publication
+                if publication is not None and request - publication['sampling_started'] <= 2:
+                    return request, copy.deepcopy(publication)
+                remaining = deadline - now
+                if remaining <= 0:
+                    if deadline == self.start + MAX_WALL:
+                        raise RuntimeError('wall_limit')
+                    raise RuntimeError('resource sampler timeout')
+                self.condition.wait(remaining)
 
     def health(self):
         if self.errors:
@@ -177,10 +227,15 @@ class DesktopSustained:
         if failures: raise BaseExceptionGroup('sustained cleanup failures', failures)
 
     def stop_sampling(self):
-        self.stop.set()
+        with self.condition:
+            self.stopped = True
+            self.stop.set()
+            self.condition.notify_all()
         if self.thread is not None:
             self.thread.join(timeout=5)
             if self.thread.is_alive(): raise RuntimeError('resource sampler did not stop')
+        if self.errors:
+            raise RuntimeError('resource sampler failed') from self.errors[0]
 
     def retired(self):
         return self.terminal.retire(lambda: self.measure.finalize(self.read, 15, self.raw_sleep))
