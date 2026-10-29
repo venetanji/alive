@@ -1,10 +1,75 @@
 # Phase 2 Implementation Handoff
 
-## Resumed Checkpoint, 2026-10-29
+## Shutdown Checkpoint, 2026-10-29
+
+The user explicitly requested a pause for power-off. Keep the goal paused until
+they resume. Tasks 1-8 remain accepted at their recorded scopes; Task 9/Q1 is
+open. This section supersedes all running/lease descriptions below.
+
+- Reviewed harness correction `03d79622dafc7626878085a98a143f5fb8f1ab8e`
+  shares the one-second resource collector with the original legacy requests,
+  preserving original request times and recording source provenance/reuse.
+  Both independent scoped re-reviews pass. Root reruns the 66 scoped tests at
+  shutdown: all pass. Original journey/fallback AST checks are recorded in the
+  accepted receipt. This is a harness change, with no measured performance or
+  processing-budget improvement yet.
+- Latest completed cloud qualification is exact `eb4f704`: CI `40816670974`
+  passes all three jobs and packages `40816670989` passes all four targets,
+  including the Intel Mac artifact upload. Publication/signing/notarization are
+  skipped. Root independently checks terminal APIs, all 19 manifest entries,
+  seven decoded logs and the Windows resolver ZIP member. Retained packet:
+  `experiments/phase2-20261028/master/cloud-eb4f704/`. These results do not
+  qualify the later sampler correction or this containing shutdown checkpoint;
+  inspect the next exact-head cloud runs after restart.
+- The shared-sampler native pilot **never launched**. Its read-only preflight
+  stopped on a guessed nonexistent example path. No new output directory,
+  playback credit or native measurement exists; the original bounded single
+  attempt remains unstarted and deferred until resume. All children are
+  finished and all runtime/artifact leases are released. A shutdown process
+  check finds no owned app/test/Xvfb/private-audio process; ordinary desktop
+  PipeWire stays untouched.
+- Application source remains `64fcacd`. All three binaries/library still match
+  the hashes, sizes and device/inodes in `checkpoint-q1/final64-build/receipt.json`.
+  Alive (Test) and the separate Alive/Ultra commands need no launcher change.
+- Source/review/test receipts, the original preflight failure and the corrected
+  input attribution are retained in `checkpoint-q1/shared-sampler-checkpoint/`.
+  The wrapper default is `apps/alive/examples/two-instruments.alive` (source SHA
+  `2fac165677f2fabec83f87131d93aedfc9e80d89ac529be70874dd2fb24c349b`).
+  Root restages it outside the app and proves byte equality with the previous
+  pilot's `initial.alive`, SHA
+  `542ad41257effae9dc67927cb770ea4ea4dfab7723e9d68016c092c6cb73379b`.
+  `native-inputs.json` contains UI action records, not staged-file identities.
+  The MIDI Arrangement example is a separate manual workflow input.
+
+After the user resumes:
+
+1. Read status/log, this section and the canonical SDD ledger. Retain the next
+   exact-head CI/package results before any superseding push. Recheck fetched
+   release foundation and artifact identities; old PIDs/boot IDs are stale.
+2. Correct the preflight path in the operator's self-contained brief and resume
+   the original **unstarted** single 500-proven-second pilot using the unchanged
+   command in `shared-sampler-pilot-brief.md`. Verify its actual staged input;
+   do not substitute the MIDI example or transfer an old waiver.
+3. Independently audit credits, all eight counters, epochs, actual Quit,
+   identities, legacy/sustained provenance equality and reuse, and the unchanged
+   10% variability / 5% headroom forecast. Only then consider a fresh complete
+   1800-second attempt. The previous collector forecast fails at
+   2811.565578530s against hard 2700s and retains all 41 budget observations.
+4. Finish Q1 before freezing or implementing Task 10. Preserve PR #6 as a draft
+   against `build/ultra-desktop-releases`; do not edit release branches or
+   PR #2/#5. Use the already-approved Terra agent workflow when resumed.
+
+## Historical Resumed Checkpoint, 2026-10-29
 
 The active goal has resumed after shutdown. Tasks 1-8 remain accepted;
 Task 9 is open. Resume from this section; pause/running descriptions below
 are historical observations, not current process state.
+
+Pushed checkpoint was `eb4f704e7e775333f949ce6c846cfc9bfb9e6b9c`.
+Its CI `40816670974` and packages `40816670989` subsequently completed
+successfully. The later reviewed sampler correction is committed as `03d7962`;
+its first native pilot stopped during preflight before launch. See the current
+shutdown checkpoint for source attribution and restart instructions.
 
 - Recovery began at local `e8c0d53`, a documentation checkpoint over `0f1deae`.
   A fresh origin fetch confirms release foundation `31033483` is unchanged
@@ -20,15 +85,15 @@ are historical observations, not current process state.
   Other three successes are carried forward; no Intel artifact is delivered.
   Immutable terminal receipts/log/manifest are in
   `experiments/phase2-20261028/master/cloud-0f1deae/attempt-2-terminal/`.
-  No further same-head retry is authorized. The next normal feature push
+  No further same-head retry is authorized. Normal feature push `eb4f704`
   qualifies the reviewed diagnostic revision through the existing workflows.
 - Reviewed local `c301d0d` adds bounded unsigned-Mac-build-failure diagnostics
   and macOS fixture execution to the existing package workflow. Independent
   spec/quality fix-round reviews pass; root verifies 8 diagnostic, 18 release
   and 4 notices tests. This is not a busy-eject fix or Mac runtime proof.
   Source/review/test evidence is in `checkpoint-q1/dmg-failure-diagnostic/`;
-  it changes no application or pilot inputs. Its normal feature push includes
-  the resumed pilot evidence; inspect current refs for the containing head.
+  it changes no application or pilot inputs. Pushed `eb4f704` includes it and
+  the resumed pilot evidence.
 - Interrupted final64 endurance stays partial at 1792.759948 seconds; it
   cannot be topped up. The fresh current-boot pilot exits 0 with
   **500.397271484 target proven seconds**, 888 valid credits, five cycles,
@@ -805,7 +870,8 @@ from physical audio; leave unobservable physical/underrun gates open.
 
 ## Goal State And Suggested New Goal
 
-The current thread goal is **active**, with objective `docs/PHASE2_HANDOFF.md`.
+The current thread goal is **paused at the user's request**, with objective
+`docs/PHASE2_HANDOFF.md`. Resume only when the user asks to continue.
 Do not create a duplicate goal, mark this work complete before its gates pass,
 or infer a pause from compaction. No token/time budget was requested. The
 following expanded objective records the authorized scope for a new session

@@ -1,0 +1,26 @@
+{
+  "at_utc": "2026-10-29T04:42:49.737728+00:00",
+  "base": "eb4f704e7e775333f949ce6c846cfc9bfb9e6b9c",
+  "files": {
+    "apps/ultra/tests/desktop_sustained.py": "dbfaa176743caf850d568fec3e8f3350639fbbf51d569b21f49216ee3058b167",
+    "apps/ultra/tests/check_alive_desktop.py": "59d8ceb8d0062b97b7e50f933eb60961400608b5f89ebd0b3db8c8d01d722f83",
+    "apps/ultra/tests/test_desktop_sustained_integration.py": "b7eccb1b380a55bfc1918cf0306d9c6334b8c6bff0024d22a47a37628301db36"
+  },
+  "tests_command": [
+    "python3",
+    "-m",
+    "unittest",
+    "test_desktop_checkpoint",
+    "test_desktop_sustained_integration",
+    "test_sustained_measurement",
+    "test_stream_measurement.MeasurementTests.test_complex_comm_non100hz_pid_reuse_and_exit_are_not_zero_cpu",
+    "test_stream_measurement.MeasurementTests.test_metadata_and_epoch_coverage_are_bounded",
+    "test_stream_measurement.MeasurementTests.test_group_union_limits_preserve_separate_cpu_reports",
+    "test_stream_measurement.ResourceFixtureTests"
+  ],
+  "tests_exit": 0,
+  "unchanged_ast_outside_process_sample": true,
+  "unchanged_independent_fallback_ast": true,
+  "frozen_three_artifact_hashes_inodes_match": true,
+  "runtime_qualification": "not yet run; no admission or budget-event causal claim"
+}
