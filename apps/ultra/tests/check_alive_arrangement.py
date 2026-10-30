@@ -119,6 +119,7 @@ def run():
     global restart, video, capture
     windows.focus('Alive')
     ui.wait_for('MIDI source')
+    assert alive.value('Transport position beats') == '0.000 beats'
     arrangement()
     capture_window(1440, 900, 'native-example-1440x900.png')
     initial_identity = process_identity(ui.pid)
@@ -250,7 +251,7 @@ def run():
     record('Return into Arrangement gap while Harmony retains Session', pulse_source=gap_source, absolute_frame=alive.value('Absolute frame'))
     seek(15.5)
     time.sleep(.8)
-    assert float(alive.value('Transport position').split()[0]) < 5
+    assert float(alive.value('Transport position beats').split()[0]) < 5
     assert observed(2, 'authority', lambda s: s == 'session') == 'session'
     arrangement()
     alive.reorder_click('Return all tracks to Arrangement')
@@ -319,7 +320,7 @@ def run():
     record('restart identity', process_identity=restarted_identity)
     assert_same_identity(initial_identity, restarted_identity)
     assert alive.value('Transport playing') == 'false'
-    assert alive.value('Transport position') == '0.000 beats'
+    assert alive.value('Transport position beats') == '0.000 beats'
     assert observed(1, 'authority', lambda s: s == 'arrangement') == 'arrangement'
     _, reopened = save('reopened.alive')
     assert reopened == saved

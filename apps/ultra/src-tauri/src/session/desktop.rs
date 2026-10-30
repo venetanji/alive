@@ -30,7 +30,7 @@ struct Control {
 struct EditorBinding { generation: u64, instance_id: String }
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
-struct DeviceView { index: usize, track: usize, manifest: crate::canvas::device::HostManifest }
+struct DeviceView { index: usize, track: usize, path: PathBuf, manifest: crate::canvas::device::HostManifest }
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 struct Capabilities { clip_bank: bool, max_tracks: usize, max_devices: usize, slots_per_track: usize, max_clips: usize, atomic_track_actions: bool,workspaces:bool,arrangement:bool,audio_sources:bool,max_sources:usize,max_placements:usize,workspace_conversion_available:bool }
@@ -260,7 +260,7 @@ impl Control {
             capabilities: Capabilities { clip_bank: prepared.saved.score.is_clips()||workspace, max_tracks, max_devices, slots_per_track: if prepared.saved.score.is_clips()||workspace{4}else{1}, max_clips, atomic_track_actions: if let Some(l)=&limits{l.features&native::V4_FEATURE_ATOMIC_TRACK_ACTIONS!=0}else{runtime::scenes_available(prepared)?},workspaces:workspace,arrangement:workspace,audio_sources:false,max_sources:limits.as_ref().map_or(0,|l|l.max_sources as usize),max_placements:limits.as_ref().map_or(0,|l|l.max_placements as usize),workspace_conversion_available:!workspace&&host::workspace_limits().is_ok() },
             track_chains:if workspace{prepared.saved.score.tracks().into_iter().map(|t|serde_json::json!({"trackId":t.id(),"kind":if t.instrument().is_some(){"midi"}else{"audio"},"instrumentId":t.instrument().map(|d|&d.instance_id),"effectIds":t.effects().iter().map(|d|&d.instance_id).collect::<Vec<_>>() })).collect()}else{vec![]},prepared_workspaces:runtime_workspaces::prepared(&self.host)?,
             devices: if prepared.saved.score.is_workspaces(){vec![]}else{prepared.tracks.iter().map(|t| Ok(prepared.devices[t.midi_instrument()?].manifest.clone())).collect::<Result<_,String>>()?}, generation: self.generation,
-            device_instances: prepared.devices.iter().enumerate().map(|(index, device)| (device.instance_id.clone(), DeviceView { index, track: device.track, manifest: device.manifest.clone() })).collect(),
+            device_instances: prepared.devices.iter().enumerate().map(|(index, device)| (device.instance_id.clone(), DeviceView { index, track: device.track, path: device.path.clone(), manifest: device.manifest.clone() })).collect(),
             dirty: self.dirty || self.draft.is_some(), draft: self.draft.clone(), draft_revision:self.draft_revision,history:self.history.view(), state: native_state,mode:if workspace{"workspacesV4"}else if prepared.saved.score.is_clips(){"clipsV3"}else{"legacyV2"}.into(),notice:match (&prepared.notice,&self.save_feedback) {(Some(a),Some(b))=>Some(format!("{a} {b}")),(Some(a),None)=>Some(a.clone()),(None,Some(b))=>Some(b.clone()),_=>None},preparation_revision:self.host.preparation_revision.to_string(),snapshot_sequence:sequence.to_string(),prepared_clips:runtime::prepared(&self.host),runtime,
             audio: self.driver.snapshot(), patch: device_index.map(|i| prepared.devices[i].patch.clone()), track, instance_id, device_index })
     }
@@ -555,6 +555,23 @@ fn example_path(resources: &Path, executable_dir: &Path, source: &Path) -> PathB
     if companion.is_file() { return companion; }
     source.join("../../alive/examples/two-instruments.alive")
 }
+#[derive(Serialize)]
+pub struct BrowserDevice {
+    id: &'static str,
+    name: &'static str,
+    kind: &'static str,
+    path: PathBuf,
+}
+#[tauri::command]
+pub async fn alive_browser_catalog(window: WebviewWindow) -> Result<Vec<BrowserDevice>, String> {
+    main_only(window.label())?;
+    tauri::async_runtime::spawn_blocking(move || {
+        let resources = window.app_handle().path().resource_dir().map_err(|e| e.to_string())?;
+        let executable = std::env::current_exe().map_err(|e| e.to_string())?;
+        let devices = browser::catalog(&resources, executable.parent().ok_or("Missing executable directory")?, Path::new(env!("CARGO_MANIFEST_DIR")))?;
+        Ok(devices.into_iter().map(|device| BrowserDevice { id: device.id, name: device.name, kind: device.kind, path: device.path }).collect())
+    }).await.map_err(|e| e.to_string())?
+}
 fn example(app: &tauri::AppHandle) -> Result<PreparedSession, String> {
     let resources = app.path().resource_dir().map_err(|e| e.to_string())?;
     let executable = std::env::current_exe().map_err(|e| e.to_string())?;
@@ -802,10 +819,10 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
             app.manage(Desktop(Mutex::new(Control { host, runtime:runtime::Runtime::default(),snapshot_sequence:0, accepted_serial, driver: crate::audio::Driver::load(app.path().app_data_dir()?.join("audio-settings.json")), generation: 1,
                 dirty: upgraded, saved_path, saved_wire, save_feedback:None, draft: None, draft_revision:0,history:History::default(), closing: false, allow_exit: false, editors: BTreeMap::new() })));
             tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::App("alive.html".into()))
-                .title("Alive").inner_size(1200., 800.).min_inner_size(900., 660.).build()?;
+                .title("Alive").inner_size(1200., 800.).min_inner_size(800., 600.).build()?;
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![alive_current, alive_master, alive_master_reset_clip, alive_enable_workspaces, alive_workspace_action, alive_workspace_edit, alive_workspace_track, alive_clip_edit, alive_clip_action, alive_launch_scene, alive_enable_clips, alive_edit, alive_history, alive_discard, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio_diagnostics, alive_audio, alive_editor, alive_file, alive_device])
+        .invoke_handler(tauri::generate_handler![alive_current, alive_browser_catalog, alive_master, alive_master_reset_clip, alive_enable_workspaces, alive_workspace_action, alive_workspace_edit, alive_workspace_track, alive_clip_edit, alive_clip_action, alive_launch_scene, alive_enable_clips, alive_edit, alive_history, alive_discard, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio_diagnostics, alive_audio, alive_editor, alive_file, alive_device])
         .on_window_event(|window,event| { if window.label() == "main" { if let tauri::WindowEvent::CloseRequested { api, .. } = event { api.prevent_close(); request_close(window.app_handle()); } } })
         .build(context).expect("Unable to start Alive")
         .run(|app,event| match event {

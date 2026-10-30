@@ -54,7 +54,7 @@ def saved(name):
 
 def launch_at_observable_phase(name):
     """Leave most of the next native bar for the original pending observation."""
-    position = ui.wait_for('Transport position')
+    position = ui.wait_for('Transport position beats')
     deadline = time.monotonic() + 8
     while time.monotonic() < deadline:
         beat = float(Atspi.Text.get_text(position, 0, -1).split()[0])

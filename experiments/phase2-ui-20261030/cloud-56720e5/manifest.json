@@ -1,0 +1,125 @@
+{
+  "headSha": "56720e5e109c41dff76d2372a819c04de1c5b62b",
+  "collectedAt": "2026-10-30T16:23:46.929641+00:00",
+  "files": [
+    {
+      "path": "40916601585-run.json",
+      "bytes": 10622,
+      "sha256": "0ea84c3f300c52ae603e1a0d94d9575a800a85e2d2ed57525c628ab03f8f85d8"
+    },
+    {
+      "path": "40916601585-artifacts.json",
+      "bytes": 4278,
+      "sha256": "9618b4a5e41b3875f81eef2a75007c88cade3795fa5cea3347732e000e810cd0"
+    },
+    {
+      "path": "123598373054.log.gz",
+      "bytes": 62646,
+      "sha256": "286167e58fb114027fb041db11598f4ed17340c0944fe614cbce6b024443cda2",
+      "decodedBytes": 843015,
+      "decodedSha256": "1cc5a28c7d1eef30d0b23a225cd92df4d0569658d1eb10f0f4279fd467188495"
+    },
+    {
+      "path": "123598373318.log.gz",
+      "bytes": 81372,
+      "sha256": "75aa2141b991520ec282114dc8d91456a7f0d4ea531beb607e40a444b4476a87",
+      "decodedBytes": 660299,
+      "decodedSha256": "e4887ab55c857c37e87fe255e6bdbb8d95b8395e5d87d028fdf5e98d89f4882c"
+    },
+    {
+      "path": "123598373444.log.gz",
+      "bytes": 65267,
+      "sha256": "6451cfa1fd43ea4d556233b76d2a7d63fde996482e65a51a6efb6771cef7660f",
+      "decodedBytes": 516397,
+      "decodedSha256": "6e2c4ac96786f78f3d85741a92f67b08a0fcca4aee62687d02fb06f74ca24087"
+    },
+    {
+      "path": "40916601575-run.json",
+      "bytes": 16321,
+      "sha256": "b5e65353fc1ebcd5086af74594d1601cde7097b5faa9581f07cbdca19307112c"
+    },
+    {
+      "path": "40916601575-artifacts.json",
+      "bytes": 3574,
+      "sha256": "d275b838bc9492c28bf2b4206d8ec1b6366e64410a0d7d1902b4bd9852730cbb"
+    },
+    {
+      "path": "123598372535.log.gz",
+      "bytes": 53399,
+      "sha256": "0d02a03320f7a070df7399dddc67aadec305f153e55b98e278f26dd5789ae552",
+      "decodedBytes": 338763,
+      "decodedSha256": "5cd86ed8b8ae021ed5c9fbbe820d4b07ca201bcfd4ad61dd35973208b35c3edd"
+    },
+    {
+      "path": "123598372963.log.gz",
+      "bytes": 139445,
+      "sha256": "d97e7dea5c1a56e7edddc3bfeac32bc4ece16b0a86a20de4429dae5ad38226f2",
+      "decodedBytes": 1712187,
+      "decodedSha256": "31b7a003aa1530c02d1fe57b7e0c22e14f87ae2af001a936596e4ca520435fd0"
+    },
+    {
+      "path": "123598373010.log.gz",
+      "bytes": 53456,
+      "sha256": "e5a6aaf06422832c19e5ecb69f4dc01b857444230eac8e293b2f913784032cf7",
+      "decodedBytes": 355782,
+      "decodedSha256": "d37d9fef35888c6fe207f0d948d57e4a4d4458f31fd5d19ea38dd0e86e61b8bd"
+    },
+    {
+      "path": "123598373032.log.gz",
+      "bytes": 51815,
+      "sha256": "a3da82411494f562be3a4238a2e08594965c1de74e108e8a824805de1affded4",
+      "decodedBytes": 335334,
+      "decodedSha256": "2957fc10c460bce9b5f8cac8b6ddc070f5fff59cb7832a57da7754303b2e1c9a"
+    }
+  ],
+  "jobs": [
+    {
+      "run": "40916601585",
+      "name": "Chromium canvas editing smoke",
+      "job": 123598373054,
+      "conclusion": "success"
+    },
+    {
+      "run": "40916601585",
+      "name": "Linux native build, Rust bridge, and CPAL loopback",
+      "job": 123598373318,
+      "conclusion": "failure"
+    },
+    {
+      "run": "40916601585",
+      "name": "UI, protocol, and reference tests",
+      "job": 123598373444,
+      "conclusion": "success"
+    },
+    {
+      "run": "40916601575",
+      "name": "Package x86_64-apple-darwin",
+      "job": 123598372535,
+      "conclusion": "success"
+    },
+    {
+      "run": "40916601575",
+      "name": "Package x86_64-unknown-linux-gnu",
+      "job": 123598372963,
+      "conclusion": "success"
+    },
+    {
+      "run": "40916601575",
+      "name": "Package x86_64-pc-windows-msvc",
+      "job": 123598373010,
+      "conclusion": "success"
+    },
+    {
+      "run": "40916601575",
+      "name": "Package aarch64-apple-darwin",
+      "job": 123598373032,
+      "conclusion": "success"
+    },
+    {
+      "run": "40916601575",
+      "name": "Publish complete tag release",
+      "job": 123627600251,
+      "conclusion": "skipped"
+    }
+  ]
+}

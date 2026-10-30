@@ -1,5 +1,41 @@
 # Phase 2 Implementation Handoff
 
+## Accepted UI Pass And Resumed Authoring, 2026-10-31
+
+The user resumed work, accepted the launched UI preview, and authorized pushing
+the UI fixes to existing draft PR #6. This supersedes the older paused-task and
+"UI correction has not begun" instructions below. Q1 and final Phase 2
+qualification remain open; the UI acceptance is a bounded result.
+
+- UI worktree: `/home/venetanji/.codex/worktrees/phase2-ui/alive`, branch
+  `feat/phase2-ui-fidelity`, based on `56720e5`. Publish by fast-forward to
+  PR #6's `feat/alive-session-host`; retain the draft/base branch. Preserve
+  baseline artifacts and the existing launcher in the `edd5` worktree.
+- The accepted pass covers the compact musical toolbar, searchable real bundled
+  devices/project clips, piano keyboard/ruler/velocity/navigation and resizing
+  at 1440x900, 1280x800, 1024x768 and 800x600. Evidence and exact commands:
+  `experiments/phase2-ui-20261030/README.md`.
+- Final source checks: 159 Node, 64 Chromium, 291 Rust library tests (4 ignored),
+  5 catalog and 2 navigation-helper tests; development build and standalone
+  native UI/catalog journey pass. The extended native Arrangement journey
+  fails the unchanged three-second Return-gap observation and does not reach
+  its final restart checks. Preserve its receipt and assertion.
+- Newly retained exact `56720e5` cloud results:
+  `experiments/phase2-ui-20261030/cloud-56720e5/`. All four package targets
+  pass; Linux CI fails the Master journey's hosted Cutoff automation-ownership
+  assertion (`Base: 1333 Hz`), while UI/reference and Chromium jobs pass.
+  This failure differs from both the earlier `a8ffe03` disclosure failure and
+  the UI worktree's local Return-gap failure. No aggregate CI pass is implied.
+- Next user priority: create distinct MIDI/audio tracks, launch different clips
+  with configurable quantization, and include live audio recording now.
+  Existing v4 audio schema/ABI reservations are not working audio playback.
+  Continue the accepted WAV/native ownership contracts and design real input
+  selection, arming, monitoring, clock mapping, bounded capture and recoverable
+  take finalization before recording UI. This request does not admit profile 2
+  or permit bypassing native work/capacity checks.
+- No merges, tags, releases, deployments or PR #2/#5 changes are authorized by
+  this update. Keep full qualification failures visible as authoring proceeds.
+
 ## Shutdown Checkpoint, 2026-10-30
 
 The user requested a clean restart before powering off. Keep the goal paused

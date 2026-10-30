@@ -14,6 +14,7 @@ pub mod workspaces;
 mod runtime;
 mod runtime_workspaces;
 mod workspace_edits;
+mod browser;
 pub use clips::{Document, ClipBank};
 pub type Session = Document;
 pub use persistence::{read, save};

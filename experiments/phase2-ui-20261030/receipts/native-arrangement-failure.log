@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/tests/check_alive_ui_fidelity.py", line 50, in <module>
+  File "<frozen runpy>", line 294, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/tests/check_alive_arrangement.py", line 347, in <module>
+    run()
+    ~~~^^
+  File "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/tests/check_alive_arrangement.py", line 249, in run
+    gap_source = observed(1, 'active source', lambda s: s == '-', seconds=3)
+  File "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/tests/check_alive_arrangement.py", line 97, in observed
+    return alive.wait_value(f'Track {track} {field}', predicate, seconds)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/tests/check_alive_desktop.py", line 105, in wait_value
+    raise AssertionError(f'{name}: unexpected value {current!r}')
+AssertionError: Track 1 active source: unexpected value 'source-c14c8a2f75fe0bac19a1b7a73302e9e6'

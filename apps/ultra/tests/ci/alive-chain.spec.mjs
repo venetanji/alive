@@ -1,6 +1,92 @@
 import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 
+test('musical toolbar and open session adapt to live window resizing without issuing commands',async({page},testInfo)=>{
+  await openSession(page,false,true,8);
+  const score=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
+  for(const size of [{width:1920,height:1080},{width:1440,height:900},{width:1280,height:800},{width:1024,height:768},{width:800,height:600}]){
+    await page.setViewportSize(size);
+    await expect(page.locator('#stop')).toBeInViewport();
+    await expect(page.locator('#master-select-session')).toBeInViewport();
+    const bounds=await page.evaluate(()=>({width:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight,toolbar:document.querySelector('.transport').getBoundingClientRect().bottom,stop:document.querySelector('#stop').getBoundingClientRect().toJSON()}));
+    expect(bounds.width).toBeLessThanOrEqual(size.width);
+    expect(bounds.height).toBeLessThanOrEqual(size.height);
+    expect(bounds.toolbar).toBeLessThanOrEqual(80);
+    await page.screenshot({path:testInfo.outputPath(`responsive-${size.width}x${size.height}.png`)});
+  }
+  expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document))).toBe(score);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('transport options retain precise controls without crowding the musical toolbar',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page,false,true);
+  await expect(page.locator('#position')).toHaveText('1.1.1');
+  await expect(page.locator('#position-beats')).toHaveText('0.000 beats');
+  await expect(page.locator('#seek')).toBeHidden();
+  await page.getByRole('button',{name:'Transport and view options',exact:true}).click();
+  await expect(page.locator('#seek')).toBeVisible();
+  await expect(page.locator('#length')).toBeVisible();
+  await page.locator('#seek').fill('3.25');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#seek')).toBeHidden();
+  await expect(page.locator('#stop')).toBeInViewport();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('Arrangement resizing keeps transport and Master usable with a wide browser',async({page},testInfo)=>{
+  await page.setViewportSize({width:1440,height:900});await openSession(page,false,true,2,true);
+  const separator=page.getByRole('separator',{name:'Resize browser'});await separator.focus();await separator.press('End');
+  await page.locator('#view-arrangement').click();
+  for(const size of [{width:1440,height:900},{width:1024,height:768},{width:800,height:600}]){
+    await page.setViewportSize(size);await expect(page.locator('#stop')).toBeInViewport();
+    await expect(page.locator('#master-select-arrangement')).toBeInViewport();
+    await expect(page.locator('#master-arrangement').getByLabel('Master gain',{exact:true})).toBeInViewport();
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
+    await page.screenshot({path:testInfo.outputPath(`arrangement-responsive-${size.width}x${size.height}.png`)});
+  }
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('expanded audio diagnostics keep their summary anchored as active identifiers change',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true,2,true);
+  const details=page.locator('#audio-details'),summary=details.locator(':scope>summary');
+  await summary.click();const before=await summary.boundingBox();
+  await page.evaluate(()=>{window.sessionSnapshot.runtime.tracks[0].activeSourceId='source-with-a-long-stable-identity-'.repeat(5);window.sessionSnapshot.runtime.tracks[0].activePlacementId='placement-with-a-long-stable-identity-'.repeat(5);});
+  await expect(page.getByLabel('Track 1 active source',{exact:true})).toContainText('source-with-a-long');
+  const after=await summary.boundingBox();expect(after.y).toBe(before.y);
+  await page.setViewportSize({width:800,height:600});await expect(summary).toBeInViewport();
+  await summary.click();await expect(details).not.toHaveAttribute('open');
+});
+
+test('browser search and keyboard selection never launch or change the score',async({page},testInfo)=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true,2,true);
+  const before=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot));
+  await page.getByRole('button',{name:'Browse Project Clips',exact:true}).click();
+  const option=page.getByRole('option',{name:'Clip 1',exact:true}).first();await option.click();
+  await page.getByRole('listbox',{name:'Browser results'}).press('ArrowDown');
+  expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot))).toBe(before);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await page.getByRole('button',{name:'Open Clip',exact:true}).click();
+  await expect(page.locator('#clip-title')).toHaveText('Harmony / Clip 1');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  const search=page.getByRole('searchbox',{name:'Search browser'});await search.fill('no-matching-device');
+  await expect(page.locator('.browser-empty')).toHaveText('No results. Try another search.');
+  await search.press('Escape');await expect(search).toHaveValue('');
+  await page.screenshot({path:testInfo.outputPath('browser-project-clips.png')});
+});
+
+test('browser device double-click requests one validated load and reports native refusal',async({page})=>{
+  await openSession(page,false,true);
+  await page.getByRole('option',{name:'Subtractive',exact:true}).click();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await page.evaluate(()=>{window.browserLoadError='Device capacity reached';});
+  await page.getByRole('option',{name:'Subtractive',exact:true}).dblclick();
+  await expect(page.locator('.browser-status')).toContainText('Device capacity reached');
+  const calls=await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'));
+  expect(calls).toHaveLength(1);expect(calls[0]).toMatchObject({name:'alive_device',args:{action:'load',path:'../../ultra/examples/subtractive.ultra',generation:1,draftRevision:0}});
+  await expect(page.locator('.track')).toHaveCount(2);await expect(page.locator('#start')).toBeEnabled();
+});
+
 // Browser geometry and input coverage only. The native desktop journey qualifies hosting/audio.
 async function openSession(page,longNames=false,clipBank=false,trackCount=2,workspaces=false){
   const document=JSON.parse(readFileSync(new URL('../../../alive/examples/two-instruments.alive',import.meta.url))),patch=JSON.parse(readFileSync(new URL('../../examples/subtractive.ultra',import.meta.url)));
@@ -41,6 +127,7 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2,work
     window.calls=[];const undo=[],redo=[];window.__TAURI__={core:{invoke:async(name,args)=>{window.calls.push({name,args});if(name==='alive_current')return structuredClone(snapshot);if(name==='alive_edit'){undo.push(structuredClone(snapshot.draft??snapshot.document));redo.length=0;snapshot.draft=args.document;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return structuredClone(snapshot);}if(name==='alive_history'){const from=args.direction==='undo'?undo:redo,to=args.direction==='undo'?redo:undo;to.push(structuredClone(snapshot.draft??snapshot.document));snapshot.draft=from.pop();snapshot.draftRevision++;snapshot.history={canUndo:!!undo.length,canRedo:!!redo.length};return structuredClone(snapshot);}}}};
     const invoke=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=(name,args)=>name==='alive_device'&&args.action==='remove'?window.removeTrack(args.trackId):invoke(name,args);
     const previous=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=async(name,args)=>{
+      if(name==='alive_device'&&args.action==='load'){window.calls.push({name,args});if(window.browserLoadError)throw Error(window.browserLoadError);return structuredClone(snapshot);}
       if(name==='alive_workspace_edit'){
         window.calls.push({name,args});const op=args.operation;if(args.draftRevision!==snapshot.draftRevision)throw Error('Stale draft');const draft=structuredClone(snapshot.draft??snapshot.document),affected={trackId:op.trackId??null,sourceId:op.sourceId??null,placementId:null,slotId:null,noteId:op.noteId??null};
         if(op.kind==='noteUpdate')Object.assign(draft.sources.find(s=>s.id===op.sourceId).notes.find(n=>n.id===op.noteId),{beat:op.beat,duration:op.duration,pitch:op.pitch,velocity:op.velocity});
@@ -113,7 +200,7 @@ for(const size of [{width:1440,height:900},{width:1280,height:800}])test(`two fi
   const geometry=await page.evaluate(()=>{const rect=e=>e.getBoundingClientRect().toJSON();return{track:[...document.querySelectorAll('.track')].map(rect),mixerControls:[...document.querySelectorAll('.mixer-toggle,.track-inspector')].map(rect),session:rect(document.querySelector('#session-workspace')),piano:rect(document.querySelector('#piano-roll')),detail:rect(document.querySelector('#detail-content')),scene:rect(document.querySelector('.scene-column'))};});
   for(const track of geometry.track)expect(track.width).toBe(128);expect(geometry.scene.x-(geometry.track[1].x+geometry.track[1].width)).toBeGreaterThan(300);
   for(const control of geometry.mixerControls)expect(control.bottom).toBeLessThanOrEqual(geometry.session.bottom);
-  expect(geometry.piano.y).toBeLessThan(geometry.detail.y+65);expect(Math.min(geometry.piano.bottom,geometry.detail.bottom)-geometry.piano.y).toBeGreaterThan(150);
+  expect(geometry.piano.y).toBeLessThan(geometry.detail.y+110);expect(Math.min(geometry.piano.bottom,geometry.detail.bottom)-geometry.piano.y).toBeGreaterThan(150);
   await page.screenshot({path:testInfo.outputPath(`two-tracks-${size.width}x${size.height}.png`)});
 });
 
@@ -176,22 +263,89 @@ test('piano body, resize, velocity, cancellation and keyboard gestures are bound
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:1100,height:800});await openSession(page);
   const piano=page.locator('#piano-roll'),edits=()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_edit'));
   await piano.scrollIntoViewIfNeeded();
-  const box=await piano.boundingBox(),x=beat=>box.x+(32+beat/8*608)*box.width/640,y=pitch=>box.y+(21+(85-pitch+.5)*191/39)*box.height/218;
+  for(let i=0;i<6;i++)await page.getByRole('button',{name:'Scroll pitch up',exact:true}).click();
+  const box=await piano.boundingBox(),viewport=await piano.evaluate(e=>({...e.dataset}));
+  const pixelsPerBeat=(box.width-Number(viewport.keyboardWidth))/Number(viewport.beatSpan);
+  const x=beat=>box.x+Number(viewport.keyboardWidth)+(beat-Number(viewport.beatStart))*pixelsPerBeat;
+  const y=pitch=>box.y+Number(viewport.rulerHeight)+(Number(viewport.pitchMax)-pitch+.5)*Number(viewport.rowHeight);
   await page.mouse.dblclick(x(2),y(80));await expect.poll(async()=>(await edits()).length).toBe(1);
   expect((await edits())[0].args.document.tracks[0].notes.at(-1)).toEqual({beat:2,pitch:80,duration:.25,velocity:100});
   const index=(await edits())[0].args.document.tracks[0].notes.length-1;
   const body=piano.locator(`[data-note="${index}"][data-part="body"]`),edge=piano.locator(`[data-note="${index}"][data-part="resize"]`);
-  let b=await body.boundingBox();await page.mouse.move(b.x+.5,b.y+b.height/2);await page.mouse.down();await page.mouse.move(b.x+.5+(608/8*.5)*box.width/640,b.y+b.height/2,{steps:5});
+  let b=await body.boundingBox();await page.mouse.move(b.x+2,b.y+b.height/2);await page.mouse.down();await page.mouse.move(b.x+2+pixelsPerBeat*.5,b.y+b.height/2,{steps:5});
   expect((await edits()).length).toBe(1);await page.mouse.up();await expect.poll(async()=>(await edits()).length).toBe(2);
   expect((await edits())[1].args.document.tracks[0].notes[index].beat).toBe(2.5);
-  b=await edge.boundingBox();await page.mouse.move(b.x+b.width/2,b.y+b.height/2);await page.mouse.down();await page.mouse.move(b.x+b.width/2+(608/8*.5)*box.width/640,b.y+b.height/2,{steps:5});await page.mouse.up();await expect.poll(async()=>(await edits()).length).toBe(3);
+  b=await edge.boundingBox();await page.mouse.move(b.x+b.width/2,b.y+b.height/2);await page.mouse.down();await page.mouse.move(b.x+b.width/2+pixelsPerBeat*.5,b.y+b.height/2,{steps:5});await page.mouse.up();await expect.poll(async()=>(await edits()).length).toBe(3);
   expect((await edits())[2].args.document.tracks[0].notes[index].duration).toBe(.75);
   b=await body.boundingBox();await page.mouse.move(b.x+2,b.y+b.height/2);await page.mouse.down();await page.mouse.move(b.x+30,b.y+b.height/2);await page.keyboard.press('Escape');await page.mouse.up();expect((await edits()).length).toBe(3);
   await piano.focus();await page.keyboard.press('ArrowUp');await expect.poll(async()=>(await edits()).length).toBe(4);
   expect((await edits())[3].args.document.tracks[0].notes[index].pitch).toBe(81);
   const velocity=page.getByLabel('Selected note velocity',{exact:true});await velocity.scrollIntoViewIfNeeded();const v=await velocity.boundingBox();await page.mouse.move(v.x+v.width*.4,v.y+v.height/2);await page.mouse.down();await page.mouse.move(v.x+v.width*.7,v.y+v.height/2,{steps:8});await page.mouse.up();await expect.poll(async()=>(await edits()).length).toBe(5);
+  const stem=page.locator(`.piano-velocity-lane [data-note="${index}"]`);b=await stem.boundingBox();
+  await page.mouse.move(b.x+b.width/2,b.y+b.height/2);await page.mouse.down();await page.mouse.move(b.x+b.width/2,b.y+b.height/2+8,{steps:4});
+  expect((await edits()).length).toBe(5);await page.mouse.up();await expect.poll(async()=>(await edits()).length).toBe(6);
+  expect((await edits())[5].args.document.tracks[0].notes[index].velocity).toBeLessThan((await edits())[4].args.document.tracks[0].notes[index].velocity);
   await piano.focus();await page.keyboard.press('Control+z');await expect(page.locator('#redo')).toBeEnabled();
   await page.screenshot({path:testInfo.outputPath('piano-selected-history.png')});expect(errors).toEqual([]);
+});
+
+test('piano navigation and live resize preserve the score and recompute editing geometry',async({page})=>{
+  await page.setViewportSize({width:1440,height:900});await openSession(page);
+  const piano=page.locator('#piano-roll'),initial=await piano.evaluate(e=>({...e.dataset}));
+  expect(Number(initial.rowHeight)).toBeGreaterThanOrEqual(10);
+  await page.getByRole('button',{name:'Zoom in time',exact:true}).click();
+  await page.getByRole('button',{name:'Scroll time later',exact:true}).click();
+  const time=await piano.evaluate(e=>({...e.dataset}));
+  expect(Number(time.beatSpan)).toBeLessThan(Number(initial.beatSpan));expect(Number(time.beatStart)).toBeGreaterThan(0);
+  await page.getByRole('button',{name:'Zoom in pitch',exact:true}).click();
+  await page.getByRole('button',{name:'Scroll pitch down',exact:true}).click();
+  const pitch=await piano.evaluate(e=>({...e.dataset}));
+  expect(Number(pitch.rowHeight)).toBeGreaterThan(Number(time.rowHeight));expect(pitch.beatSpan).toBe(time.beatSpan);
+  await page.setViewportSize({width:800,height:600});
+  await expect.poll(()=>piano.evaluate(e=>Number(e.getAttribute('viewBox').split(' ')[2]))).toBeCloseTo((await piano.boundingBox()).width,0);
+  expect(await piano.getAttribute('data-row-height')).toBe(pitch.rowHeight);
+  await page.getByRole('button',{name:'Fit notes',exact:true}).click();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  const frame=await piano.evaluate(e=>({max:Number(e.dataset.pitchMax),row:Number(e.dataset.rowHeight),top:Number(e.dataset.rulerHeight),height:e.getBoundingClientRect().height}));
+  const notes=JSON.parse(readFileSync(new URL('../../../alive/examples/two-instruments.alive',import.meta.url))).tracks[0].notes;
+  for(const note of notes){expect(frame.max).toBeGreaterThanOrEqual(note.pitch);expect(frame.top+(frame.max-note.pitch+1)*frame.row).toBeLessThanOrEqual(frame.height+1);}
+});
+
+test('a chord velocity drag edits the selected note when markers overlap',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  await page.getByRole('button',{name:'Fit notes',exact:true}).click();
+  await page.locator('#piano-roll [data-note="0"][data-part="body"]').click({position:{x:8,y:3}});
+  const marker=page.locator('.piano-velocity-lane [data-note="0"]');await marker.scrollIntoViewIfNeeded();const b=await marker.boundingBox();
+  await page.mouse.move(b.x+b.width-1,b.y+b.height/2);await page.mouse.down();await page.mouse.move(b.x+b.width-1,b.y+b.height/2+6,{steps:4});await page.mouse.up();
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_edit').length)).toBe(1);
+  const notes=await page.evaluate(()=>window.calls.find(c=>c.name==='alive_edit').args.document.tracks[0].notes);
+  expect(notes[0].velocity).toBeLessThan(90);expect(notes[1].velocity).toBe(90);expect(notes[2].velocity).toBe(90);
+});
+
+test('browser selection and transport dismissal preserve unfinished musical fields',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true,2,true);
+  const tempo=page.locator('#tempo');await tempo.fill('130');
+  await page.getByRole('option',{name:'Subtractive',exact:true}).click();
+  await expect(tempo).toHaveValue('130');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await page.locator('#save').click();await expect(page.locator('#notice')).toContainText('Finish Tempo');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await tempo.focus();await tempo.press('Tab');
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit').length)).toBe(1);
+  await page.evaluate(()=>window.calls=[]);
+  await page.locator('#transport-options-toggle').click();const length=page.locator('#length');await length.fill('32');await length.press('Escape');
+  await expect(page.locator('#transport-options')).toBeHidden();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await page.locator('#transport-options-toggle').click();await expect(length).toHaveValue('32');
+  await length.focus();await length.press('Tab');
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit').length)).toBe(1);
+  await tempo.fill('133');await page.getByRole('option',{name:'Subtractive',exact:true}).click();
+  await page.evaluate(()=>{const s=window.sessionSnapshot;s.generation++;s.draft=null;s.draftRevision=0;s.document.tempo=90;window.calls=[];});
+  await expect(tempo).toHaveValue('90');
+  await tempo.focus();await tempo.press('Tab');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  const search=page.getByRole('searchbox',{name:'Search browser'});await search.fill('sub');await page.getByRole('option',{name:'Subtractive',exact:true}).click();
+  await page.locator('#save').click();await expect(page.locator('#notice')).not.toContainText('Finish Search');
 });
 
 
@@ -455,9 +609,9 @@ test('browser and column widths resize locally and Master selection preserves de
   await page.setViewportSize({width:1280,height:800});await openSession(page,true,true,2,true);
   await page.locator('#detail-devices').click();const parameter=page.getByLabel('Cutoff base',{exact:true});await parameter.fill('1777');
   await page.locator('#master-select-session').click();await expect(page.locator('#master-select-session')).toHaveAttribute('aria-pressed','true');await expect(page.locator('#master-detail')).toBeVisible();
-  const separator=page.getByRole('separator',{name:'Resize browser'});await separator.focus();await page.keyboard.press('End');await expect(separator).toHaveAttribute('aria-valuenow','280');expect(await page.locator('#workspace-browser').evaluate(e=>e.getBoundingClientRect().width)).toBe(280);
+  const separator=page.getByRole('separator',{name:'Resize browser'});await separator.focus();await page.keyboard.press('End');await expect(separator).toHaveAttribute('aria-valuenow','420');expect(await page.locator('#workspace-browser').evaluate(e=>e.getBoundingClientRect().width)).toBe(420);
   await separator.press('Home');expect(await page.locator('#workspace-browser').evaluate(e=>e.getBoundingClientRect().width)).toBe(180);
-  await page.locator('#track-width').fill('180');expect(await page.locator('.track').first().evaluate(e=>e.getBoundingClientRect().width)).toBe(180);
+  await page.locator('#transport-options-toggle').click();await page.locator('#track-width').fill('180');expect(await page.locator('.track').first().evaluate(e=>e.getBoundingClientRect().width)).toBe(180);await page.keyboard.press('Escape');
   await page.getByRole('button',{name:'Select Pulse track',exact:true}).click();await expect(page.locator('#device-detail')).toBeVisible();await expect(parameter).toHaveValue('1777');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });

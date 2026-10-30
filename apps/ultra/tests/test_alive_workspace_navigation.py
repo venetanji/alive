@@ -11,6 +11,17 @@ import alive_workspace_navigation as navigation
 
 
 class NavigationTest(unittest.TestCase):
+    def test_seek_opens_transport_options_before_the_existing_action(self):
+        calls = []
+        class Control:
+            def get_state_set(self): return self
+            def contains(self, state): return False
+        ui = types.SimpleNamespace(click=lambda name: calls.append(name), text=lambda *args: None,
+                                   wait_for=lambda name: Control())
+        navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, None)
+        ui.click('Seek transport')
+        self.assertEqual(calls, ['Transport and view options', 'Seek transport'])
+
     def test_apply_closes_expanded_audio_details_before_click(self):
         calls = []
         class Control:

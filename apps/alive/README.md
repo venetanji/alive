@@ -108,6 +108,29 @@ Home or End. Browser and Detail toggle those areas without changing playback.
 Device / track, Note inspector, Automation inspector and Audio details expose
 the secondary structural, numerical and diagnostic controls.
 
+The compact top bar shows bars, beats and sixteenths in fixed 4/4. Open
+**Transport and view options** at its right for precise seek, transport length
+and track width. The window supports 800x600 through larger desktop sizes;
+browser, Session tracks and detail editors scroll within their own regions.
+Drag the browser divider from 180 to 420px. Small windows use icon buttons for
+workspace navigation and scroll the detail contents to reach secondary fields.
+
+The Library browser searches real bundled instruments/effects and project MIDI
+clips. Choose Instruments or Audio Effects to read the bundled catalog; Search
+also loads it. Arrow keys select a result; Enter or double-click activates it.
+Single selection does not load a device or launch a clip. Add Track and Add
+Effect use existing native admission, and Open Clip selects its source for
+editing. Open instrument / Open effect retain the native file-picker fallback.
+Missing library files and native refusals appear in the browser.
+
+The piano toolbar provides independent time and pitch navigation and Fit notes.
+Wheel scrolls pitches; Shift+wheel scrolls time; Ctrl/Cmd+wheel zooms time;
+Alt+wheel zooms pitch. These controls change only the viewport. Drag a velocity
+marker to edit one note; select its body first when chord markers overlap.
+Keyboard note editing and the numeric inspector remain available. Browser
+navigation and closing Transport options preserve unfinished numeric fields;
+return to the field and press Tab to accept it before using file actions.
+
 Session and Arrangement buttons, or plain Tab outside controls, change only the
 workspace. Tab within inputs/buttons and modified Tab keep normal focus
 navigation. The existing Session view stays usable in both v3 and admitted MIDI

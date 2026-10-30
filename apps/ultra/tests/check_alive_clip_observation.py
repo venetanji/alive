@@ -111,7 +111,7 @@ def run():
     ui.click('Prepare / Apply')
     settings = alive.check_audio_settings()
     alive.value('Pulse clip runtime')
-    position = ui.wait_for('Transport position')
+    position = ui.wait_for('Transport position beats')
     alive.transport('start')
     deadline = time.monotonic() + 8
     while time.monotonic() < deadline:

@@ -18,6 +18,9 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
     def prepare(name):
         if windows.scope != 'Alive':
             return
+        if name in ('Seek beat', 'Seek transport', 'Transport length beats', 'Track column width'):
+            expand('Transport and view options')
+            return
         runtime = re.fullmatch(r'(.+) clip runtime', name)
         if runtime:
             expand(runtime.group(1) + ' runtime details', activate_disclosure)
