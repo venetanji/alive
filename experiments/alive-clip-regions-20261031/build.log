@@ -1,0 +1,170 @@
+warning: unused import: `SaveSnapshot`
+  --> /home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/src/documents.rs:14:28
+   |
+14 | pub use save::{SaveNotice, SaveSnapshot};
+   |                            ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `reserve_native` is never used
+  --> /home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/src/document_windows.rs:47:8
+   |
+36 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+47 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `record` is never used
+  --> /home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/src/session/history.rs:89:12
+   |
+74 | impl History {
+   | ------------ method in this implementation
+...
+89 |     pub fn record(&mut self,a:&Session,b:&Session,label:&str)->Result<bool,String> {
+   |            ^^^^^^
+
+warning: method `format` is never used
+  --> /home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/src/session/document.rs:19:12
+   |
+16 | impl Document {
+   | ------------- method in this implementation
+...
+19 |     pub fn format(&self) -> &str {match self {Self::LegacyV2(s)=>&s.format,Self::ClipsV3(s)=>&s.common.format,Self::WorkspacesV4(s)=...
+   |            ^^^^^^
+
+warning: function `encode` is never used
+   --> /home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/src/session/workspaces.rs:306:8
+    |
+306 | pub fn encode(project: &ProjectV4) -> Result<String, String> {
+    |        ^^^^^^
+
+warning: function `decode_edit` is never used
+   --> /home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/src/session/workspaces.rs:312:8
+    |
+312 | pub fn decode_edit(text: &str) -> Result<WorkspaceEditV4, String> {
+    |        ^^^^^^^^^^^
+
+warning: function `prospective_from_legacy_text` is never used
+   --> /home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/src/session/workspaces.rs:957:8
+    |
+957 | pub fn prospective_from_legacy_text(
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: field `submit` is never read
+  --> /home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/src/session/native_midi.rs:21:56
+   |
+21 | pub struct Capability {_module:Module,limits:GetLimits,submit:Submit,audition:Audition,release:Release,observe:Observe}
+   |            ---------- field in this struct             ^^^^^^
+
+warning: method `edit` is never used
+  --> /home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/src/session/native_midi.rs:38:12
+   |
+35 | impl Capability {
+   | --------------- method in this implementation
+...
+38 |     pub fn edit(&self,request:&Edit)->Result<(),String>{if unsafe{(self.submit)(request)}!=1{return Err(n::error())}Ok(())}
+   |            ^^^^
+
+warning: suspicious definition of the runtime `write` symbol used by the standard library
+   --> /home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/src/audio.rs:420:13
+    |
+420 |             fn write(fd: i32, buf: *const u8, len: usize) -> isize;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected `unsafe extern "C" fn(i32, *const std::ffi::c_void, usize) -> isize` (for the current target)
+            found    `unsafe extern "C" fn(i32, *const u8, usize) -> isize`
+    = help: either fix the signature or remove any attributes like `#[unsafe(no_mangle)]`, `#[unsafe(export_name = "write")]`, or `#[link_name = "write"]`
+    = help: allow this lint if the signature is compatible
+    = note: `#[warn(suspicious_runtime_symbol_definitions)]` on by default
+
+warning: `ultra` (lib) generated 10 warnings (run `cargo fix --lib -p ultra` to apply 1 suggestion)
+   Compiling alive v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/alive/src-tauri)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.67s
+warning: unused import: `SaveSnapshot`
+  --> src/documents.rs:14:28
+   |
+14 | pub use save::{SaveNotice, SaveSnapshot};
+   |                            ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `reserve_native` is never used
+  --> src/document_windows.rs:47:8
+   |
+36 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+47 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `record` is never used
+  --> src/session/history.rs:89:12
+   |
+74 | impl History {
+   | ------------ method in this implementation
+...
+89 |     pub fn record(&mut self,a:&Session,b:&Session,label:&str)->Result<bool,String> {
+   |            ^^^^^^
+
+warning: method `format` is never used
+  --> src/session/document.rs:19:12
+   |
+16 | impl Document {
+   | ------------- method in this implementation
+...
+19 |     pub fn format(&self) -> &str {match self {Self::LegacyV2(s)=>&s.format,Self::ClipsV3(s)=>&s.common.format,Self::WorkspacesV4(s)=...
+   |            ^^^^^^
+
+warning: function `encode` is never used
+   --> src/session/workspaces.rs:306:8
+    |
+306 | pub fn encode(project: &ProjectV4) -> Result<String, String> {
+    |        ^^^^^^
+
+warning: function `decode_edit` is never used
+   --> src/session/workspaces.rs:312:8
+    |
+312 | pub fn decode_edit(text: &str) -> Result<WorkspaceEditV4, String> {
+    |        ^^^^^^^^^^^
+
+warning: function `prospective_from_legacy_text` is never used
+   --> src/session/workspaces.rs:957:8
+    |
+957 | pub fn prospective_from_legacy_text(
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: field `submit` is never read
+  --> src/session/native_midi.rs:21:56
+   |
+21 | pub struct Capability {_module:Module,limits:GetLimits,submit:Submit,audition:Audition,release:Release,observe:Observe}
+   |            ---------- field in this struct             ^^^^^^
+
+warning: method `edit` is never used
+  --> src/session/native_midi.rs:38:12
+   |
+35 | impl Capability {
+   | --------------- method in this implementation
+...
+38 |     pub fn edit(&self,request:&Edit)->Result<(),String>{if unsafe{(self.submit)(request)}!=1{return Err(n::error())}Ok(())}
+   |            ^^^^
+
+warning: suspicious definition of the runtime `write` symbol used by the standard library
+   --> src/audio.rs:420:13
+    |
+420 |             fn write(fd: i32, buf: *const u8, len: usize) -> isize;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected `unsafe extern "C" fn(i32, *const std::ffi::c_void, usize) -> isize` (for the current target)
+            found    `unsafe extern "C" fn(i32, *const u8, usize) -> isize`
+    = help: either fix the signature or remove any attributes like `#[unsafe(no_mangle)]`, `#[unsafe(export_name = "write")]`, or `#[link_name = "write"]`
+    = help: allow this lint if the signature is compatible
+    = note: `#[warn(suspicious_runtime_symbol_definitions)]` on by default
+
+warning: `ultra` (lib) generated 10 warnings (run `cargo fix --lib -p ultra` to apply 1 suggestion)
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.40s

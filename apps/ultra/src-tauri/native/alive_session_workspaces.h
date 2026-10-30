@@ -67,11 +67,12 @@ typedef struct AliveSessionSourceV4 {
 } AliveSessionSourceV4;
 typedef struct AliveSessionSlotV4 {
  uint32_t track,source,loop_enabled,reserved;
- uint64_t source_offset;
+ uint64_t start_marker,end_marker,loop_start,loop_end;
 } AliveSessionSlotV4;
 typedef struct AliveSessionPlacementV4 {
  uint32_t track,source,loop_enabled,reserved;
- uint64_t start_frame,duration_frames,source_offset;
+ uint64_t start_frame,duration_frames;
+ uint64_t start_marker,end_marker,loop_start,loop_end;
 } AliveSessionPlacementV4;
 typedef struct AliveSessionAudioBufferV4 {
  uint32_t version,struct_bytes,channels,sample_rate;
@@ -144,7 +145,19 @@ typedef struct AliveSessionStateV4 {
  AliveSessionTrackStateV4 tracks[8];
  AliveSessionDeviceStateV2 devices[16];
  AliveSessionReceiptV4 receipts[128];
+ uint64_t bank_revision;
 } AliveSessionStateV4;
+
+typedef struct AliveSessionPublicationV4 {
+ uint32_t version,struct_bytes,changed_tracks,reserved;
+ uint64_t preparation_revision,bank_revision,serial,stop_epoch;
+ /* Old preparation-local indices map to new indices; NONE denotes removal. */
+ uint32_t tracks[8],sources[32],slots[32],placements[64];
+} AliveSessionPublicationV4;
+typedef struct AliveSessionPublicationStateV4 {
+ uint32_t version,struct_bytes,status,error;
+ uint64_t preparation_revision,serial,bank_revision,applied_frame,stop_epoch,retired_serial;
+} AliveSessionPublicationStateV4;
 
 int alive_session_limits_v4(uint32_t profile, AliveSessionLimitsV4*);
 int alive_session_validate_v4(const AliveSessionConfigV4*);
@@ -153,6 +166,9 @@ int alive_session_validate_prepared_v4(const AliveSessionConfigV4*,
  const AliveSessionAudioBufferV4*,uint32_t audio_count);
 int alive_session_configure_v4(const AliveSessionConfigV4*,
  const AliveSessionAudioBufferV4*,uint32_t audio_count);
+int alive_session_publish_v4(const AliveSessionConfigV4*,
+ const AliveSessionAudioBufferV4*,uint32_t audio_count,const AliveSessionPublicationV4*);
+int alive_session_publication_state_v4(AliveSessionPublicationStateV4*);
 int alive_session_request_v4(const AliveSessionRequestV4*,
  AliveSessionReceiptV4* immediate);
 uint64_t alive_session_stop_v4(void);

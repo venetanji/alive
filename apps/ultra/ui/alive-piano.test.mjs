@@ -81,3 +81,19 @@ test('new notes use the fixed grid, velocity and duration and reject clipped pla
   assert.deepEqual(addNote(.38,60,8),{beat:.5,pitch:60,duration:.25,velocity:100});
   assert.equal(addNote(7.99,60,8),null);
 });
+test('range selection snaps both directions and Ctrl+L preserves the independent End marker',()=>{
+  assert.equal(typeof piano.timeSelection,'function');
+  const region={start:0,end:16,loopStart:0,loopEnd:16,loopEnabled:false};
+  const selection=piano.timeSelection(7.89,2.12,16);
+  assert.deepEqual(selection,{start:2,end:8});
+  assert.deepEqual(piano.loopSelection(region,selection),{start:2,end:16,loopStart:2,loopEnd:8,loopEnabled:true});
+  assert.deepEqual(region,{start:0,end:16,loopStart:0,loopEnd:16,loopEnabled:false});
+});
+test('Start and End marker gestures leave loop bounds intact; brace movement retains its length',()=>{
+  assert.equal(typeof piano.transformRegion,'function');
+  const region={start:2,end:16,loopStart:2,loopEnd:8,loopEnabled:true};
+  assert.deepEqual(piano.transformRegion(region,'start',-2,16),{...region,start:0});
+  assert.deepEqual(piano.transformRegion(region,'end',-4,16),{...region,end:12});
+  assert.deepEqual(piano.transformRegion(region,'loopMove',20,16),{...region,loopStart:10,loopEnd:16});
+  assert.deepEqual(piano.transformRegion(region,'loopLeft',1,16),{...region,loopStart:3});
+});

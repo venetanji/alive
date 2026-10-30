@@ -2,6 +2,7 @@ import {nativeInteger,validateMaster} from './alive-master.mjs';
 export {nativeInteger} from './alive-master.mjs';
 export function instrumentOf(track){return track?.chain?(track.chain.kind==='midi'?track.chain.instrument:null):track?.device??null;}
 export function actualDevices(track){return [instrumentOf(track),...(track?.effects??[])].filter(Boolean);}
+export function sourceLength(source){return source?.kind==='audio'?Number(source.file.frames)/source.file.sampleRate*source.sourceTempo/60:source?.lengthBeats??0;}
 export function createAliveModel(){
   let current=null,draft=null;
   const clone=value=>structuredClone(value);

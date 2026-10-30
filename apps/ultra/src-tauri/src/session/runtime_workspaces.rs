@@ -33,6 +33,16 @@ impl RequestResult {
     }
 }
 impl Runtime {
+    pub(super) fn remap_tracks(&mut self,before:&super::Session,after:&super::Session){
+        let old=before.tracks();let new=after.tracks();
+        let mask=|value:u32|old.iter().enumerate().filter(|(i,_)|value&(1<<i)!=0).filter_map(|(_,t)|new.iter().position(|n|n.id()==t.id())).fold(0,|bits,i|bits|(1<<i));
+        for request in &mut self.requests {
+            request.track_mask=mask(request.track_mask);request.pending_mask=mask(request.pending_mask);
+            request.applied_mask=mask(request.applied_mask);request.superseded_mask=mask(request.superseded_mask);
+            request.canceled_mask=mask(request.canceled_mask);request.rejected_mask=mask(request.rejected_mask);
+            request.members.retain_mut(|member|match new.iter().position(|t|t.id()==member.track_id){Some(i)=>{member.track_index=i;true},None=>false});
+        }
+    }
     fn reconcile(&mut self,raw:&n::StateV4){
         for request in &mut self.requests {
             let serial=super::runtime::decimal(&request.request_serial).unwrap();let revision=super::runtime::decimal(&request.preparation_revision).unwrap();
@@ -46,6 +56,7 @@ impl Runtime {
         if let Some(capability)=n::master_capability(){let mut master=super::native_master::State::output();if unsafe{(capability.snapshot_v4)((&mut *raw as *mut n::StateV4).cast(),&mut master)}!=1{return Err("Workspace state is temporarily unavailable".into());}self.master_observation=Some(master);}
         else {self.master_observation=None;if unsafe{n::alive_session_state_v4(&mut *raw)}==0{return Err("Workspace state is temporarily unavailable".into());}}
         if raw.preparation_revision!=host.preparation_revision{return Err("Native workspace preparation publication is temporarily unavailable".into());}
+        if raw.bank_revision!=host.bank_revision{return Err("Native music publication is awaiting document acknowledgment".into());}
         if self.revision!=host.preparation_revision {self.requests.clear();self.revision=host.preparation_revision;}
         self.reconcile(&raw);
         let tracks=observations(p,w,&raw)?;
@@ -84,7 +95,7 @@ fn request(p:&PreparedSession,action:Action)->Result<(n::RequestV4,RequestResult
     match action {
         Action::Start{}=>{r.kind=n::V4_START;result.kind="start".into();},
         Action::Seek{beat}=>{if !beat.is_finite()||beat<0.||beat>=p.saved.score.length_beats(){return Err("Seek beat must be within the prepared song".into());}r.kind=n::V4_SEEK;r.position=super::workspaces::frame_at(beat,p.saved.score.tempo())?;result.kind="seek".into();},
-        Action::Launch{track_id,slot_id}=>{let i=index(&track_id)?;let slot=w.slots.iter().find(|s|s.descriptor.track==i as u32&&s.id==slot_id).ok_or("Apply while stopped to launch this draft-only slot")?;r.kind=n::V4_TRACK_ACTIONS;r.track_mask=1<<i;r.tracks[i]=n::TrackActionV4{action:n::V4_LAUNCH,slot:slot.slot as u32};result.kind="launch".into();result.track_id=Some(track_id);result.slot_id=Some(slot_id);result.source_id=Some(w.sources[slot.descriptor.source as usize].id.clone());},
+        Action::Launch{track_id,slot_id}=>{let i=index(&track_id)?;let slot=w.slots.iter().find(|s|s.descriptor.track==i as u32&&s.id==slot_id).ok_or("Clip is not available in the current playback schedule")?;r.kind=n::V4_TRACK_ACTIONS;r.track_mask=1<<i;r.tracks[i]=n::TrackActionV4{action:n::V4_LAUNCH,slot:slot.slot as u32};result.kind="launch".into();result.track_id=Some(track_id);result.slot_id=Some(slot_id);result.source_id=Some(w.sources[slot.descriptor.source as usize].id.clone());},
         Action::Stop{track_id}=>{let i=index(&track_id)?;r.kind=n::V4_TRACK_ACTIONS;r.track_mask=1<<i;r.tracks[i]=n::TrackActionV4{action:n::V4_TRACK_STOP,slot:n::V4_NONE};result.kind="stop".into();result.track_id=Some(track_id);},
         Action::Return{track_ids}=>{if track_ids.is_empty()||track_ids.len()>tracks.len(){return Err("Return requires one or more unique prepared track IDs".into());}r.kind=n::V4_TRACK_ACTIONS;result.kind="return".into();for id in track_ids{let i=index(&id)?;if r.track_mask&(1<<i)!=0{return Err("Duplicate Return track ID".into());}r.track_mask|=1<<i;r.tracks[i]=n::TrackActionV4{action:n::V4_RETURN,slot:n::V4_NONE};}},
         Action::Scene{slot}=>{if slot>=4{return Err("Scene slot must be 0 through 3".into());}if super::host::workspace_limits()?.features&n::V4_FEATURE_ATOMIC_TRACK_ACTIONS==0{return Err("Atomic workspace scenes are unavailable".into());}r.kind=n::V4_TRACK_ACTIONS;r.track_mask=(1<<tracks.len())-1;result.kind="scene".into();result.scene_slot=Some(slot);for i in 0..tracks.len(){r.tracks[i]=if w.slots.iter().any(|s|s.descriptor.track==i as u32&&s.slot==slot){n::TrackActionV4{action:n::V4_LAUNCH,slot:slot as u32}}else{n::TrackActionV4{action:n::V4_TRACK_STOP,slot:n::V4_NONE}};}},
@@ -96,9 +107,9 @@ fn request(p:&PreparedSession,action:Action)->Result<(n::RequestV4,RequestResult
 pub fn prepared(host:&Host)->Result<Option<serde_json::Value>,String>{
     let p=host.prepared.as_ref().ok_or("No session")?;if !p.saved.score.is_workspaces(){return Ok(None);}let w=workspace(p)?;let tracks=p.saved.score.tracks();
     Ok(Some(serde_json::json!({"preparationRevision":host.preparation_revision.to_string(),
-        "sources":w.sources.iter().map(|s|serde_json::json!({"trackId":tracks[s.descriptor.track as usize].id(),"sourceId":s.id,"kind":"midi","name":s.name,"lengthFrames":s.descriptor.length_frames.to_string()})).collect::<Vec<_>>(),
-        "slots":w.slots.iter().map(|s|serde_json::json!({"trackId":tracks[s.descriptor.track as usize].id(),"slotId":s.id,"slot":s.slot,"sourceId":w.sources[s.descriptor.source as usize].id,"name":s.name,"sourceOffsetFrames":s.descriptor.source_offset.to_string(),"loopEnabled":s.descriptor.loop_enabled!=0})).collect::<Vec<_>>(),
-        "placements":w.placements.iter().map(|p|serde_json::json!({"trackId":tracks[p.descriptor.track as usize].id(),"placementId":p.id,"sourceId":w.sources[p.descriptor.source as usize].id,"startFrame":p.descriptor.start_frame.to_string(),"durationFrames":p.descriptor.duration_frames.to_string(),"sourceOffsetFrames":p.descriptor.source_offset.to_string(),"loopEnabled":p.descriptor.loop_enabled!=0})).collect::<Vec<_>>() })))
+        "sources":w.sources.iter().map(|s|serde_json::json!({"trackId":tracks[s.descriptor.track as usize].id(),"sourceId":s.id,"kind":if s.descriptor.kind==n::V4_AUDIO{"audio"}else{"midi"},"name":s.name,"lengthFrames":s.descriptor.length_frames.to_string(),"waveformPeaks":w.audio.iter().find(|a|a.source_id==s.id).map(|a|&a.waveform_peaks)})).collect::<Vec<_>>(),
+        "slots":w.slots.iter().map(|s|serde_json::json!({"trackId":tracks[s.descriptor.track as usize].id(),"slotId":s.id,"slot":s.slot,"sourceId":w.sources[s.descriptor.source as usize].id,"name":s.name,"region":{"startFrame":s.descriptor.start_marker.to_string(),"endFrame":s.descriptor.end_marker.to_string(),"loopStartFrame":s.descriptor.loop_start.to_string(),"loopEndFrame":s.descriptor.loop_end.to_string(),"loopEnabled":s.descriptor.loop_enabled!=0}})).collect::<Vec<_>>(),
+        "placements":w.placements.iter().map(|p|serde_json::json!({"trackId":tracks[p.descriptor.track as usize].id(),"placementId":p.id,"sourceId":w.sources[p.descriptor.source as usize].id,"startFrame":p.descriptor.start_frame.to_string(),"durationFrames":p.descriptor.duration_frames.to_string(),"region":{"startFrame":p.descriptor.start_marker.to_string(),"endFrame":p.descriptor.end_marker.to_string(),"loopStartFrame":p.descriptor.loop_start.to_string(),"loopEndFrame":p.descriptor.loop_end.to_string(),"loopEnabled":p.descriptor.loop_enabled!=0}})).collect::<Vec<_>>() })))
 }
 
 #[cfg(test)]

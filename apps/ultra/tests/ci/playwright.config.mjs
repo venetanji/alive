@@ -6,7 +6,7 @@ if(!Number.isInteger(port)||port<1024||port>65535)throw Error('ALIVE_TEST_PORT m
 
 export default defineConfig({
   testDir: '.',
-  testMatch: ['alive-chain.spec.mjs', 'canvas-browser.spec.mjs', 'canvas-controls.spec.mjs', 'canvas-compat.spec.mjs', 'canvas-console.spec.mjs', 'canvas-documents.spec.mjs','canvas-hierarchy.spec.mjs','canvas-help-shell.spec.mjs','canvas-comment-entry.spec.mjs','canvas-arithmetic.spec.mjs','canvas-instrument.spec.mjs'],
+  testMatch: ['alive-clip-regions.spec.mjs', 'alive-chain.spec.mjs', 'canvas-browser.spec.mjs', 'canvas-controls.spec.mjs', 'canvas-compat.spec.mjs', 'canvas-console.spec.mjs', 'canvas-documents.spec.mjs','canvas-hierarchy.spec.mjs','canvas-help-shell.spec.mjs','canvas-comment-entry.spec.mjs','canvas-arithmetic.spec.mjs','canvas-instrument.spec.mjs'],
   fullyParallel: false,
   workers: 1,
   retries: 0,

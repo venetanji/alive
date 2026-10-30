@@ -60,8 +60,7 @@ inline bool pulse_envelope(const Pulse *p, unsigned n, uint64_t period, bool loo
   return true;
 }
 
-// Prefix and loop maxima are summed for first-entry crossing windows. This is
-// deliberately conservative, including at width one, but independent of song length.
+// Only windows spanning the nearest prefix/cycle points need both maxima.
 inline bool song_points(const uint64_t *points, unsigned count, uint64_t length,
                         bool loop, uint64_t begin, uint64_t end, Envelope &out,
                         unsigned width = Window) noexcept {
@@ -82,8 +81,10 @@ inline bool song_points(const uint64_t *points, unsigned count, uint64_t length,
   if (!pulse_envelope(prefix.data(), np, length, false, a, width) ||
       (loop && !pulse_envelope(cycle.data(), nc, end - begin, true, b, width)))
     return false;
+  const uint64_t separation=np&&nc?begin+cycle[0].frame-prefix[np-1].frame:UINT64_MAX;
   for (unsigned w = 0; w <= width; ++w)
-    if (!plus(a[w], b[w], out[w]))
+    if(w<=separation)out[w]=std::max(a[w],b[w]);
+    else if (!plus(a[w], b[w], out[w]))
       return false;
   return true;
 }
@@ -101,28 +102,36 @@ inline unsigned held_bound(const AliveSessionConfigV4 &c, unsigned source) noexc
   return peak;
 }
 
-inline bool source_profile(const AliveSessionConfigV4 &c, unsigned source, uint64_t offset,
+inline bool source_segment(const AliveSessionConfigV4 &c, unsigned source, uint64_t begin,
+                           uint64_t end, bool loop, const Charge &reset, Curves &out,
+                           unsigned width) noexcept {
+  const auto &s = c.sources[source];
+  if(begin>=end||end>s.length_frames)return false;
+  const uint64_t period=end-begin;
+  std::array<Pulse,1026> pulses{};
+  for(unsigned m=0;m<6;++m){
+    unsigned n=0;pulses[n++]={0,reset[m]};
+    for(unsigned i=0;i<s.event_count;++i){const auto &e=c.events[s.event_begin+i];
+      if(e.frame>=begin&&e.frame<end)pulses[n++]={e.frame-begin,m==0?1u:(m==3&&e.kind==ALIVE_SESSION_AUTOMATION?1u:0u)};
+    }
+    if(!loop)pulses[n++]={period,m==0?0:reset[m]};
+    if(!pulse_envelope(pulses.data(),n,period,loop,out[m],width))return false;
+  }
+  return true;
+}
+inline bool source_profile(const AliveSessionConfigV4 &c, unsigned source, uint64_t start,
+                           uint64_t end,uint64_t loop_start,uint64_t loop_end,
                            bool loop, const Charge &reset, Curves &out,
                            unsigned width = Window) noexcept {
-  const auto &s = c.sources[source];
-  if (offset >= s.length_frames || s.event_count > 1024 ||
-      s.event_begin > c.event_count || s.event_count > c.event_count - s.event_begin)
-    return false;
-  const uint64_t period = s.length_frames - offset;
-  std::array<Pulse, 1026> pulses{};
-  for (unsigned m = 0; m < 6; ++m) {
-    unsigned n = 0;
-    pulses[n++] = {0, reset[m]};
-    for (unsigned i = 0; i < s.event_count; ++i) {
-      const auto &e = c.events[s.event_begin + i];
-      if (e.frame >= offset)
-        pulses[n++] = {e.frame - offset,
-                        m == 0 ? 1u : (m == 3 && e.kind == ALIVE_SESSION_AUTOMATION ? 1u : 0u)};
-    }
-    if (!loop)
-      pulses[n++] = {period, m == 0 ? 0 : reset[m]};
-    if (!pulse_envelope(pulses.data(), n, period, loop, out[m], width))
-      return false;
+  const auto &s=c.sources[source];
+  if(s.event_count>1024||s.event_begin>c.event_count||s.event_count>c.event_count-s.event_begin)return false;
+  if(!loop)return source_segment(c,source,start,end,false,reset,out,width);
+  if(!source_segment(c,source,loop_start,loop_end,true,reset,out,width))return false;
+  if(start<loop_start){
+    auto prefix=std::make_unique<Curves>();
+    if(!source_segment(c,source,start,loop_start,false,reset,*prefix,width))return false;
+    for(unsigned m=0;m<6;++m)for(unsigned w=0;w<=width;++w)
+      if(!plus(out[m][w],(*prefix)[m][w],out[m][w]))return false;
   }
   return true;
 }
@@ -192,25 +201,25 @@ inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out, bool quan
     return false;
   };
   auto overflow = [&]() { return fail(ALIVE_SESSION_V4_WORK_LIMIT, 0, Window, UINT64_MAX, 0, 8); };
-  struct Use { unsigned source; uint64_t offset; bool finite, cyclic; };
+  struct Use { unsigned source; uint64_t start,end,loop_start,loop_end; bool finite,cyclic; };
   std::array<Use, 96> uses{};
-  auto use = [&](unsigned s, uint64_t o, bool loop) {
+  auto use = [&](unsigned s, uint64_t start,uint64_t end,uint64_t loop_start,uint64_t loop_end,bool loop) {
     unsigned i = 0;
-    while (i < out.uses && (uses[i].source != s || uses[i].offset != o))
+    while (i < out.uses && (uses[i].source!=s||uses[i].start!=start||uses[i].end!=end||uses[i].loop_start!=loop_start||uses[i].loop_end!=loop_end))
       ++i;
     if (i == out.uses) {
       if (out.uses == uses.size())
         return false;
-      uses[out.uses++] = {s, o, false, false};
+      uses[out.uses++] = {s,start,end,loop_start,loop_end,false,false};
     }
     (loop ? uses[i].cyclic : uses[i].finite) = true;
     return true;
   };
   for (unsigned i = 0; i < c.slot_count; ++i)
-    if (!use(c.slots[i].source, c.slots[i].source_offset, c.slots[i].loop_enabled))
+    if (!use(c.slots[i].source, c.slots[i].start_marker,c.slots[i].end_marker,c.slots[i].loop_start,c.slots[i].loop_end,c.slots[i].loop_enabled))
       return overflow();
   for (unsigned i = 0; i < c.placement_count; ++i)
-    if (!use(c.placements[i].source, c.placements[i].source_offset, c.placements[i].loop_enabled))
+    if (!use(c.placements[i].source, c.placements[i].start_marker,c.placements[i].end_marker,c.placements[i].loop_start,c.placements[i].loop_end,c.placements[i].loop_enabled))
       return overflow();
   for (unsigned k = 0; k <= 64; ++k) {
     const uint64_t frame = uint64_t(std::round((4. * k) * 48000 * 60 / c.tempo_bpm));
@@ -268,9 +277,9 @@ inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out, bool quan
   for (unsigned t = 0; t < c.track_count; ++t) {
     const auto &tr = c.tracks[t];
     auto &reset = out.prepared.reset[t];
-    reset[1] = 1 + tr.effect_count;
+    reset[1] = (tr.instrument!=ALIVE_SESSION_V4_NONE) + tr.effect_count;
     unsigned chase = 0;
-    for (unsigned m = 0; m <= tr.effect_count; ++m)
+    for (unsigned m = tr.instrument==ALIVE_SESSION_V4_NONE?1:0; m <= tr.effect_count; ++m)
       reset[3] += 2 * c.devices[m ? tr.effects[m - 1] : tr.instrument].parameter_count;
     for (unsigned s = 0; s < c.source_count; ++s)
       if (c.sources[s].track == t) {
@@ -279,6 +288,8 @@ inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out, bool quan
       }
     // Without placements, Return is constant silence; Launch needs only the
     // slot and source descriptors. No binary search is performed on that track.
+    bool has_source=false;for(unsigned s=0;s<c.source_count;++s)has_source|=c.sources[s].track==t;
+    if(!has_source&&!reset[1])continue;
     Charge transition{chase, reset[1], reset[2], reset[3], 0, tr.placement_count ? 4u : 2u};
     scratch->maximum = {};
     for (unsigned u = 0; u < out.uses; ++u) {
@@ -291,7 +302,7 @@ inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out, bool quan
       for (bool loop : {false, true}) {
         if (!(loop ? a.cyclic : a.finite))
           continue;
-        if (!source_profile(c, a.source, a.offset, loop, pulse, scratch->one))
+        if (!source_profile(c, a.source,a.start,a.end,a.loop_start,a.loop_end,loop,pulse, scratch->one))
           return overflow();
         for (unsigned m = 0; m < 6; ++m)
           for (unsigned w = 1; w <= Window; ++w)

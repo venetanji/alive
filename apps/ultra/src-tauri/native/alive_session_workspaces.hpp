@@ -47,15 +47,20 @@ template <class T> static bool zero_record(const T &value) noexcept {
       return false;
   return true;
 }
+template <class Region> static bool valid_region_v4(const Region& region,uint64_t length,uint64_t minimum)noexcept {
+  return region.start_marker<region.end_marker&&region.end_marker<=length&&
+      region.loop_start<region.loop_end&&region.loop_end<=length&&
+      (!region.loop_enabled||(region.start_marker<region.loop_end&&region.loop_end-region.loop_start>=minimum));
+}
 bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexcept {
+  (void)complete_midi;
   if (!header_v4(c.version, c.struct_bytes, sizeof c))
     return reject_v4(ALIVE_SESSION_V4_BAD_HEADER, "Invalid v4 configuration header.");
   if ((c.profile != 1 && c.profile != 2) || c.work_policy != c.profile)
     return reject_v4(ALIVE_SESSION_V4_BAD_PROFILE, "Unknown workspace policy.");
-  const unsigned max_tracks = c.profile == 1 ? 2 : 8, max_devices = c.profile == 1 ? 6 : 16;
+  const unsigned max_tracks = 8, max_devices = c.profile == 1 ? 6 : 16;
   if (!c.track_count || c.track_count > max_tracks || c.device_count > max_devices ||
-      c.source_count > (c.profile == 1 ? 8u : 32u) || c.slot_count > (c.profile == 1 ? 8u : 32u) ||
-      c.placement_count > (c.profile == 1 ? 16u : 64u) || c.event_count > 1024 ||
+      c.source_count > 32 || c.slot_count > 32 || c.placement_count > 64 || c.event_count > 1024 ||
       c.audio_buffer_count > 8 || !flag(c.loop_enabled) || !c.preparation_revision ||
       !std::isfinite(c.tempo_bpm) || c.tempo_bpm < 30 || c.tempo_bpm > 240)
     return reject_v4(ALIVE_SESSION_V4_BAD_FIELD, "Invalid workspace counts or tempo.");
@@ -71,11 +76,8 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
   std::array<unsigned, 32> slot_owners{};
   std::array<bool, 64> placement_owners{};
   std::array<bool, 1024> covered{};
+  std::array<bool,8> audio_owners{};
   std::array<unsigned, 8> notes{}, lanes{}, points{}, sources{};
-  if (complete_midi && c.audio_buffer_count)
-    return reject_v4(ALIVE_SESSION_V4_FEATURE_DISABLED, "MIDI preparation cannot admit audio.");
-  const bool final_midi = true;
-  bool unsupported = c.audio_buffer_count;
 #ifndef ULTRA_ALIVE_SESSION_V4_PROVISIONAL
   if (!complete_midi && c.profile != 1)
     return reject_v4(ALIVE_SESSION_V4_FEATURE_DISABLED,
@@ -99,10 +101,9 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
     if ((tr.kind != 1 && tr.kind != 2) || tr.reserved || tr.effect_count > 2 || !gain(tr.gain) ||
         !flag(tr.mute) || !flag(tr.solo) || (tr.kind == 2 && tr.instrument != None))
       return reject_v4(ALIVE_SESSION_V4_BAD_FIELD, "Invalid workspace track.");
-    unsupported |= tr.kind != 1;
-    if (final_midi && (tr.kind != 1 || tr.gain > 2 || tr.placement_count > 8))
-      return reject_v4(ALIVE_SESSION_V4_BAD_FIELD, "Invalid final MIDI track shape.");
-    for (unsigned member = tr.kind == 1 ? 0 : 1; member <= tr.effect_count; ++member) {
+    if (tr.gain > 2 || tr.placement_count > 8)
+      return reject_v4(ALIVE_SESSION_V4_BAD_FIELD, "Invalid workspace track shape.");
+    for (unsigned member = tr.instrument == None ? 1 : 0; member <= tr.effect_count; ++member) {
       const unsigned d = member ? tr.effects[member - 1] : tr.instrument;
       if (d >= c.device_count || owner[d] >= 0 || c.devices[d].kind != (member ? 2u : 1u))
         return reject_v4(ALIVE_SESSION_V4_BAD_OWNERSHIP, "Invalid chain ownership.");
@@ -130,10 +131,9 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
           p.duration_frames > c.length_frames - p.start_frame || (i && p.start_frame < endpoint))
         return reject_v4(ALIVE_SESSION_V4_BAD_PLACEMENT, "Overlapping or invalid placement.");
       const auto &source = c.sources[p.source];
-      if (p.source_offset >= source.length_frames ||
-          (!p.loop_enabled && p.duration_frames > source.length_frames - p.source_offset) ||
-          (final_midi && p.loop_enabled && source.length_frames - p.source_offset < minimum))
-        return reject_v4(ALIVE_SESSION_V4_BAD_PLACEMENT, "Placement exceeds source suffix.");
+      if (!valid_region_v4(p,source.length_frames,minimum) ||
+          (!p.loop_enabled && p.duration_frames > p.end_marker-p.start_marker))
+        return reject_v4(ALIVE_SESSION_V4_BAD_PLACEMENT, "Placement exceeds clip region.");
       placement_owners[index] = true;
       endpoint = p.start_frame + p.duration_frames;
     }
@@ -148,9 +148,7 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
     const auto &slot = c.slots[i];
     if (slot_owners[i] != 1 || slot.track >= c.track_count || slot.source >= c.source_count ||
         c.sources[slot.source].track != slot.track || slot.reserved || !flag(slot.loop_enabled) ||
-        slot.source_offset >= c.sources[slot.source].length_frames ||
-        (final_midi && slot.loop_enabled &&
-         c.sources[slot.source].length_frames - slot.source_offset < minimum))
+        !valid_region_v4(slot,c.sources[slot.source].length_frames,minimum))
       return reject_v4(ALIVE_SESSION_V4_BAD_SOURCE, "Invalid slot source.");
   }
   for (unsigned s = 0; s < c.source_count; ++s) {
@@ -162,8 +160,9 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
         (source.kind == 1 ? source.audio_buffer != None
                           : source.audio_buffer >= c.audio_buffer_count))
       return reject_v4(ALIVE_SESSION_V4_BAD_SOURCE, "Invalid source fields or range.");
-    if (final_midi && ++sources[source.track] > 4)
+    if (++sources[source.track] > 4)
       return reject_v4(ALIVE_SESSION_V4_BAD_SOURCE, "More than four sources per track.");
+    if(source.kind==ALIVE_SESSION_V4_AUDIO)audio_owners[source.audio_buffer]=true;
     unsigned enabled = 0;
     for (unsigned d = 0; d < 16; ++d) {
       const unsigned mask = source.owned_masks[d];
@@ -225,6 +224,8 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
   for (unsigned i = 0; i < c.event_count; ++i)
     if (!covered[i])
       return reject_v4(ALIVE_SESSION_V4_BAD_OWNERSHIP, "Unowned source event.");
+  for(unsigned i=0;i<c.audio_buffer_count;++i)if(!audio_owners[i])
+    return reject_v4(ALIVE_SESSION_V4_BAD_SOURCE,"Unowned audio buffer.");
   for (unsigned d = 0; d < c.device_count; ++d)
     for (unsigned p = 0; p < c.devices[d].parameter_count; ++p)
       if (bool(unions[d] & (1u << p)) != bool(c.devices[d].parameters[p].automated))
@@ -241,9 +242,6 @@ bool bounds_v4(const AliveSessionConfigV4 &c, bool complete_midi = false) noexce
   CHECK_UNUSED(placements, placement_count);
   CHECK_UNUSED(events, event_count);
 #undef CHECK_UNUSED
-  if (unsupported && !complete_midi)
-    return reject_v4(ALIVE_SESSION_V4_FEATURE_DISABLED,
-                     "Audio workspace sources are not admitted.");
   return true;
 }
 struct BorrowedSource {
@@ -256,7 +254,7 @@ BorrowedSource source(unsigned index) const noexcept {
     const auto &s = midi_source(index);
     return {s.event_begin, s.event_count, s.length_frames, s.owned_masks};
   }
-  const auto &s = config_.clips[index];
+  const auto &s = config().clips[index];
   return {s.event_begin, s.event_count, s.length_frames, s.owned_masks};
 }
 struct ResolvedCursor {
@@ -289,21 +287,28 @@ struct PlacementLedger {
   }
 } placement_scheduled_{}, placement_optional_{};
 clip_admission::Envelope placement_future_{};
-void placement_cursor_v4(ResolvedCursor &out, unsigned index, uint64_t frame) const noexcept {
-  const auto &p = config_.placements[index];
+uint64_t slot_boundary_v4(unsigned slot)const noexcept {
+  const auto &region=config().slots[slot];
+  return region.loop_enabled?region.loop_end:region.end_marker;
+}
+void placement_cursor_v4(ResolvedCursor &out, unsigned index, uint64_t frame,const Config* view=nullptr) const noexcept {
+  const auto &p = (view?*view:config()).placements[index];
   const auto elapsed = frame - p.start_frame;
-  const auto period = source(p.source).length_frames - p.source_offset;
   out.source = p.source;
   out.occurrence = index;
-  out.phase = p.source_offset + (p.loop_enabled ? elapsed % period : elapsed);
+  const auto first=p.loop_enabled?p.loop_end-p.start_marker:p.end_marker-p.start_marker;
+  out.phase=p.start_marker+elapsed;
+  if(p.loop_enabled&&elapsed>=first)
+    out.phase=p.loop_start+(elapsed-first)%(p.loop_end-p.loop_start);
   out.occurrence_end = out.next_boundary = p.start_frame + p.duration_frames;
   if (p.loop_enabled)
-    out.next_boundary = frame + std::min(period - elapsed % period, out.occurrence_end - frame);
+    out.next_boundary=frame+std::min(p.loop_end-out.phase,out.occurrence_end-frame);
 }
 ResolvedCursor resolve_arrangement(unsigned track, uint64_t frame,
-                                   unsigned &probes, unsigned family = 1) const noexcept {
+                                   unsigned &probes, unsigned family = 1,const Config* view=nullptr) const noexcept {
   (void)family;
-  const unsigned begin = config_.placement_begin[track], count = config_.placement_size[track];
+  const auto& cfg=view?*view:config();
+  const unsigned begin = cfg.placement_begin[track], count = cfg.placement_size[track];
   unsigned lo = 0, hi = count;
   while (lo < hi) {
 #ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
@@ -312,7 +317,7 @@ ResolvedCursor resolve_arrangement(unsigned track, uint64_t frame,
 #endif
     ++probes;
     const unsigned mid = (lo + hi) / 2;
-    if (config_.placements[begin + mid].start_frame <= frame)
+    if (cfg.placements[begin + mid].start_frame <= frame)
       lo = mid + 1;
     else
       hi = mid;
@@ -321,14 +326,14 @@ ResolvedCursor resolve_arrangement(unsigned track, uint64_t frame,
   out.next_placement = begin + lo;
   if (lo) {
     const unsigned index = begin + lo - 1;
-    const auto &p = config_.placements[index];
+    const auto &p = cfg.placements[index];
     if (frame - p.start_frame < p.duration_frames) {
-      placement_cursor_v4(out, index, frame);
+      placement_cursor_v4(out, index, frame,view);
       return out;
     }
   }
   if (lo < count)
-    out.next_boundary = config_.placements[begin + lo].start_frame;
+    out.next_boundary = cfg.placements[begin + lo].start_frame;
   return out;
 }
 ResolvedCursor next_arrangement(unsigned track, uint64_t frame,
@@ -343,7 +348,7 @@ ResolvedCursor next_arrangement(unsigned track, uint64_t frame,
     placement_cursor_v4(out, previous.occurrence, frame);
     return out;
   }
-  const unsigned end = config_.placement_begin[track] + config_.placement_size[track];
+  const unsigned end = config().placement_begin[track] + config().placement_size[track];
   if (out.next_placement < end) {
 #ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
     if (alive_session_test_placement_probe)
@@ -351,7 +356,7 @@ ResolvedCursor next_arrangement(unsigned track, uint64_t frame,
 #endif
     (void)optional;
     const unsigned index = out.next_placement;
-    const auto &p = config_.placements[index];
+    const auto &p = config().placements[index];
     if (frame >= p.start_frame) {
       placement_cursor_v4(out, index, frame);
       ++out.next_placement;
@@ -366,10 +371,10 @@ void cue_v4(ResolvedCursor &cursor, unsigned action, unsigned slot) const noexce
     return;
   cursor.authority = ALIVE_SESSION_V4_SESSION_AUTHORITY;
   if (action == ALIVE_SESSION_V4_LAUNCH) {
-    const auto &descriptor = config_.slots[slot];
+    const auto &descriptor = config().slots[slot];
     cursor.active_slot = cursor.remembered_slot = slot;
     cursor.source = descriptor.source;
-    cursor.phase = descriptor.source_offset;
+    cursor.phase = descriptor.start_marker;
   }
 }
 static void project_cursor_v4(AliveSessionTrackStateV3 &track,
@@ -388,13 +393,14 @@ bool transition_v4(const AliveSessionTrackStateV3 *tracks,
   out.cursors = cursors;
   out.changed = changed;
   out.placement = 0;
-  const bool wrap = playing && config_.loop_enabled && position >= config_.loop_end;
-  out.position = position = wrap ? config_.loop_start : position;
-  if (!playing || position >= config_.length_frames)
+  const bool wrap = playing && config().loop_enabled && position >= config().loop_end;
+  out.position = position = wrap ? config().loop_start : position;
+  if (!playing || position >= config().length_frames)
     return true;
-  for (unsigned t = 0; t < config_.track_count; ++t) {
+  for (unsigned t = 0; t < config().track_count; ++t) {
     const auto &ts = tracks[t];
     const auto &cursor = cursors[t];
+    if(cursor.authority==ALIVE_SESSION_V4_SESSION_AUTHORITY&&cursor.source!=None&&cursor.active_slot>=config().slot_count)return false;
     const bool due = ts.pending_action && ts.pending_frame <= state_.absolute_frame;
     if ((due && ts.pending_action == ALIVE_SESSION_V4_RETURN) ||
         (!due && wrap && cursor.authority == ALIVE_SESSION_V4_ARRANGEMENT_AUTHORITY))
@@ -403,13 +409,13 @@ bool transition_v4(const AliveSessionTrackStateV3 *tracks,
              position >= cursor.next_boundary)
       out.placement += cursor.next_boundary < cursor.occurrence_end ? 1 : 4;
     else if (!due && cursor.authority == ALIVE_SESSION_V4_SESSION_AUTHORITY &&
-             cursor.source != None && ts.phase >= source(cursor.source).length_frames)
+             cursor.source != None && ts.phase >= slot_boundary_v4(cursor.active_slot))
       ++out.placement;
   }
   if (out.placement && !(optional ? reserve_optional_placement(out.placement)
                                  : reserve_scheduled_placement(out.placement)))
     return false;
-  for (unsigned t = 0; t < config_.track_count; ++t) {
+  for (unsigned t = 0; t < config().track_count; ++t) {
     auto &ts = out.tracks[t];
     auto &cursor = out.cursors[t];
     if (ts.pending_action && ts.pending_frame <= state_.absolute_frame) {
@@ -428,14 +434,14 @@ bool transition_v4(const AliveSessionTrackStateV3 *tracks,
         cursor = next_arrangement(t, position, cursor, optional);
         out.changed |= 1u << t;
       }
-    } else if (cursor.source != None && ts.phase >= source(cursor.source).length_frames) {
-      const auto &slot = config_.slots[cursor.active_slot];
+    } else if (cursor.source != None && ts.phase >= slot_boundary_v4(cursor.active_slot)) {
+      const auto &slot = config().slots[cursor.active_slot];
 #ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
       if (alive_session_test_placement_probe)
         alive_session_test_placement_probe(optional ? 1 : 0);
 #endif
       if (slot.loop_enabled)
-        cursor.phase = slot.source_offset;
+        cursor.phase=slot.loop_start+(ts.phase-slot.loop_end)%(slot.loop_end-slot.loop_start);
       else {
         cursor.ended = true;
         cursor.ended_phase = ts.phase;
@@ -451,7 +457,7 @@ bool transition_v4(const AliveSessionTrackStateV3 *tracks,
   return true;
 }
 unsigned chain_member(unsigned track, unsigned member) const noexcept {
-  const auto &chain = config_.tracks[track];
+  const auto &chain = config().tracks[track];
   return member ? chain.effects[member - 1] : chain.instrument;
 }
 bool envelopes_v4(const AliveSessionConfigV4 &c, clip_admission::Prepared &out,
@@ -490,9 +496,11 @@ AliveSessionStateV4 project_v4() const noexcept {
   COPY_STATE(peak_left);
   COPY_STATE(peak_right);
 #undef COPY_STATE
-  out.source_count = config_.source_count;
-  out.slot_count = config_.slot_count;
-  out.placement_count = config_.placement_count;
+  out.audio_buffer_count=config().audio_buffer_count;
+  out.bank_revision=publication_state_.bank_revision;
+  out.source_count = config().source_count;
+  out.slot_count = config().slot_count;
+  out.placement_count = config().placement_count;
   for (unsigned t = 0; t < 8; ++t) {
     auto &tr = out.tracks[t];
     const auto &old = state_.tracks[t];
@@ -534,6 +542,45 @@ AliveSessionStateV4 project_v4() const noexcept {
 }
 
 public:
+bool audio_bounds_v4(const AliveSessionConfigV4& c,const AliveSessionAudioBufferV4* audio,unsigned count)noexcept {
+  if(count!=c.audio_buffer_count||(count&&!audio))
+    return reject_v4(ALIVE_SESSION_V4_AUDIO_BOUNDS,"Audio descriptor count mismatch.");
+  uint64_t bytes=0;
+  for(unsigned i=0;i<count;++i){const auto &a=audio[i];
+    if(!header_v4(a.version,a.struct_bytes,sizeof a)||a.reserved||a.channels!=2||a.sample_rate!=48000||
+       !a.frames||a.frames>2880000||a.sample_count!=a.frames*2||!a.samples||
+       a.sample_count>(67108864-bytes)/sizeof(float))
+      return reject_v4(ALIVE_SESSION_V4_AUDIO_BOUNDS,"Invalid immutable stereo PCM descriptor.");
+    bytes+=a.sample_count*sizeof(float);
+    for(uint64_t sample=0;sample<a.sample_count;++sample)
+      if(!std::isfinite(a.samples[sample])||a.samples[sample]<-1||a.samples[sample]>1)
+        return reject_v4(ALIVE_SESSION_V4_AUDIO_BOUNDS,"PCM samples must be finite and normalized.");
+  }
+  for(unsigned s=0;s<c.source_count;++s)
+    if(c.sources[s].kind==ALIVE_SESSION_V4_AUDIO&&c.sources[s].length_frames>audio[c.sources[s].audio_buffer].frames)
+      return reject_v4(ALIVE_SESSION_V4_AUDIO_BOUNDS,"Audio source exceeds prepared PCM.");
+  return true;
+}
+private:
+static void normalize_v4(const AliveSessionConfigV4& c,const AliveSessionAudioBufferV4* audio,unsigned audio_count,Config& out)noexcept {
+  out={};out.track_count=c.track_count;out.device_count=c.device_count;out.event_count=c.event_count;
+  out.source_count=c.source_count;out.slot_count=c.slot_count;out.placement_count=c.placement_count;
+  out.loop_enabled=c.loop_enabled;out.length_frames=c.length_frames;out.loop_start=c.loop_start;out.loop_end=c.loop_end;
+  out.preparation_revision=c.preparation_revision;out.tempo_bpm=c.tempo_bpm;out.profile=c.profile;out.work_policy=c.work_policy;
+  out.audio_buffer_count=audio_count;
+  std::copy_n(c.devices,16,out.devices);std::copy_n(c.events,1024,out.events);
+  std::copy_n(c.sources,32,out.sources);std::copy_n(c.slots,32,out.slots);std::copy_n(c.placements,64,out.placements);
+  if(audio_count)std::copy_n(audio,audio_count,out.audio);
+  for(auto& map:out.source_map)map.fill(None);
+  for(auto& map:out.slot_map)map.fill(None);
+  for(unsigned s=0;s<c.source_count;++s){const auto t=c.sources[s].track;out.source_map[t][out.source_size[t]++]=s;}
+  for(unsigned t=0;t<c.track_count;++t){const auto &tr=c.tracks[t];auto& chain=out.tracks[t];
+    out.track_kinds[t]=tr.kind;chain.instrument=tr.instrument;chain.effect_count=tr.effect_count;
+    std::copy_n(tr.effects,2,chain.effects);chain.gain=tr.gain;chain.mute=tr.mute;chain.solo=tr.solo;
+    std::copy_n(tr.slots,4,out.slot_map[t].begin());out.placement_begin[t]=tr.placement_begin;out.placement_size[t]=tr.placement_count;
+  }
+}
+public:
 // Off-callback complete proof, also consumed by finite MIDI configuration.
 // Preparation alone does not enable the future authority or loop actions.
 bool prepare_midi_envelopes_v4(const AliveSessionConfigV4 &c,
@@ -560,11 +607,11 @@ bool limits_v4(unsigned profile, AliveSessionLimitsV4 &out) const noexcept {
   out.work_policy = profile;
   // Only measured profile 1 is eligible; full candidate admission still applies.
   out.features = profile == 1 ? ALIVE_SESSION_V4_FEATURE_ADMITTED |
-      ALIVE_SESSION_V4_FEATURE_ATOMIC_TRACK_ACTIONS | ALIVE_SESSION_V4_FEATURE_ARRANGEMENT : 0;
-  out.max_tracks = old.max_tracks;
+      ALIVE_SESSION_V4_FEATURE_ATOMIC_TRACK_ACTIONS | ALIVE_SESSION_V4_FEATURE_ARRANGEMENT | ALIVE_SESSION_V4_FEATURE_AUDIO : 0;
+  out.max_tracks = 8;
   out.max_devices = old.max_devices;
-  out.max_sources = out.max_slots = profile == 1 ? 8 : 32;
-  out.max_placements = profile == 1 ? 16 : 64;
+  out.max_sources = out.max_slots = 32;
+  out.max_placements = 64;
   out.max_audio_buffers = 8;
   out.max_events = 1024;
   out.max_frame_events = 32;
@@ -611,8 +658,7 @@ bool validate_prepared_v4(const AliveSessionConfigV4 &c, const UltraCanvasGraph 
     return false;
   if (count != c.device_count || (count && !graphs))
     return reject_v4(ALIVE_SESSION_V4_GRAPH_REJECTED, "Prepared workspace graph count mismatch.");
-  if (audio_count != c.audio_buffer_count || (audio_count && !audio))
-    return reject_v4(ALIVE_SESSION_V4_AUDIO_BOUNDS, "Prepared workspace audio count mismatch.");
+  if(!audio_bounds_v4(c,audio,audio_count))return false;
   for (unsigned d = 0; d < count; ++d)
     if (!measured_graph(
             c.devices[d], d, c.events, c.event_count, graphs[d],
@@ -624,8 +670,7 @@ bool configure_v4(const AliveSessionConfigV4 &c, const AliveSessionAudioBufferV4
                   unsigned audio_count, CanvasWorkspace &workspace) noexcept {
   if (!bounds_v4(c))
     return false;
-  if (audio_count != c.audio_buffer_count || (audio_count && !audio))
-    return reject_v4(ALIVE_SESSION_V4_AUDIO_BOUNDS, "Audio descriptor count mismatch.");
+  if(!audio_bounds_v4(c,audio,audio_count))return false;
   if (c.preparation_revision <= last_preparation_)
     return reject_v4(ALIVE_SESSION_V4_STALE_PREPARATION, "Preparation identity must increase.");
   auto scratch = std::make_unique<clip_admission::Prepared>();
@@ -666,34 +711,8 @@ bool configure_v4(const AliveSessionConfigV4 &c, const AliveSessionAudioBufferV4
   document_devices_ = documents;
   mode_ = Mode::Workspaces;
   last_preparation_ = c.preparation_revision;
-  config_ = {};
-  config_.track_count = c.track_count;
-  config_.device_count = c.device_count;
-  config_.event_count = c.event_count;
-  config_.source_count = c.source_count;
-  config_.slot_count = c.slot_count;
-  config_.loop_enabled = c.loop_enabled;
-  config_.placement_count = c.placement_count;
-  config_.length_frames = c.length_frames;
-  config_.loop_start = c.loop_start;
-  config_.loop_end = c.loop_end;
-  config_.preparation_revision = c.preparation_revision;
-  config_.tempo_bpm = c.tempo_bpm;
-  config_.profile = c.profile;
-  config_.work_policy = c.work_policy;
-  std::copy_n(c.devices, 16, config_.devices);
-  std::copy_n(c.events, 1024, config_.events);
-  std::copy_n(c.sources, 32, config_.sources);
-  std::copy_n(c.slots, 32, config_.slots);
-  for (auto &map : config_.source_map)
-    map.fill(None);
-  for (auto &map : config_.slot_map)
-    map.fill(None);
-  for (unsigned s = 0; s < c.source_count; ++s) {
-    const unsigned t = c.sources[s].track;
-    config_.source_map[t][config_.source_size[t]++] = s;
-  }
-  std::copy_n(c.placements, 64, config_.placements);
+  active_config_=&config_storage_;
+  normalize_v4(c,audio,audio_count,config());
   const auto absolute = state_.absolute_frame, generation = state_.generation;
   state_ = {};
   state_.absolute_frame = absolute;
@@ -724,16 +743,16 @@ bool configure_v4(const AliveSessionConfigV4 &c, const AliveSessionAudioBufferV4
   }
   for (unsigned t = 0; t < c.track_count; ++t) {
     const auto &tr = c.tracks[t];
-    auto &chain = config_.tracks[t];
+    auto &chain = config().tracks[t];
     chain.instrument = tr.instrument;
     chain.effect_count = tr.effect_count;
     std::copy_n(tr.effects, 2, chain.effects);
     chain.gain = tr.gain;
     chain.mute = tr.mute;
     chain.solo = tr.solo;
-    std::copy_n(tr.slots, 4, config_.slot_map[t].begin());
-    config_.placement_begin[t] = tr.placement_begin;
-    config_.placement_size[t] = tr.placement_count;
+    std::copy_n(tr.slots, 4, config().slot_map[t].begin());
+    config().placement_begin[t] = tr.placement_begin;
+    config().placement_size[t] = tr.placement_count;
     unsigned probes = 0;
     resolved_[t] = resolve_arrangement(t, 0, probes);
     auto &ts = state_.tracks[t];

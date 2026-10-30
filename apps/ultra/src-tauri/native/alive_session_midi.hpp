@@ -4,14 +4,19 @@ private:
 static constexpr unsigned MidiAllowance=10, MidiWindow=1024;
 struct MidiBank {
   AliveSessionConfigV4 config{};
+  Config runtime{};
   clip_admission::Prepared regular{},launch{};
+  clip_admission::Prepared base_regular{},base_launch{};
+  clip_admission::Envelope placement{},launch_placement{};
+  uint32_t changed_sources=0;
+  bool launch_admitted=false,preview_admitted=false;
 };
 struct MidiData {
   std::array<MidiBank,2> banks{};
   std::atomic<unsigned> active{0},pending{2};
   std::atomic<uint64_t> submitted{0},release{0};
   uint64_t ingress=0,preview_ingress=0;
-  bool admitted=false;
+  std::atomic<bool> admitted{false};
 };
 std::unique_ptr<MidiData> midi_;
 unsigned midi_bank_=0;
@@ -24,34 +29,48 @@ clip_admission::Ledger midi_events_{};
 AliveMidiPreviewV1 midi_preview_pending_{};
 
 const AliveSessionEventV2& scheduled_event(unsigned index)const noexcept {
-  return mode_==Mode::Workspaces&&midi_enabled_?midi_->banks[midi_bank_].config.events[index]:config_.events[index];
+  return mode_==Mode::Workspaces&&midi_enabled_?midi_->banks[midi_bank_].config.events[index]:config().events[index];
 }
 const AliveSessionSourceV4& midi_source(unsigned index)const noexcept {
-  return midi_enabled_?midi_->banks[midi_bank_].config.sources[index]:config_.sources[index];
+  return midi_enabled_?midi_->banks[midi_bank_].config.sources[index]:config().sources[index];
 }
 const clip_admission::Prepared& midi_proof(bool launch=false)const noexcept {
-  if(mode_==Mode::Workspaces&&midi_enabled_)return launch?midi_->banks[midi_bank_].launch:midi_->banks[midi_bank_].regular;
+  if(mode_==Mode::Workspaces&&midi_){const auto& bank=midi_->banks[midi_bank_];
+    if(midi_enabled_&&bank.preview_admitted)return launch?bank.launch:bank.regular;
+    return launch?bank.base_launch:bank.base_regular;
+  }
   return launch?launch_prepared_:prepared_;
 }
-bool midi_prove(MidiBank& bank)noexcept {
+const clip_admission::Envelope& placement_proof(bool launch=false)const noexcept {
+  if(mode_==Mode::Workspaces&&midi_)return launch?midi_->banks[midi_bank_].launch_placement:midi_->banks[midi_bank_].placement;
+  return launch?launch_placement_:placement_future_;
+}
+bool midi_prove(MidiBank& bank,bool require_preview=true)noexcept {
   auto proof=std::make_unique<workspace_admission::Proof>();
   if(!bounds_v4(bank.config,true)||!workspace_admission::build_validated(bank.config,*proof))return false;
-  bank.regular=proof->prepared;
-  if(!workspace_admission::build_validated(bank.config,*proof,true))return false;
-  bank.launch=proof->prepared;
+  bank.regular=bank.base_regular=proof->prepared;
+  bank.placement=proof->placement;
+  bank.launch_admitted=workspace_admission::build_validated(bank.config,*proof,true);
+  bank.launch=bank.base_launch=proof->prepared;
+  bank.launch_placement=proof->placement;
+  bank.preview_admitted=bank.launch_admitted;
+  for(const auto* prepared:{&bank.regular,&bank.launch})
+    if(prepared->future[0][1]+MidiAllowance>32||prepared->future[0][MidiWindow]+MidiAllowance>64)bank.preview_admitted=false;
+  if(!bank.preview_admitted)return !require_preview;
   for(auto* prepared:{&bank.regular,&bank.launch}){
     for(unsigned w=1;w<=MidiWindow;++w)prepared->future[0][w]+=MidiAllowance;
-    if(prepared->future[0][1]>32||prepared->future[0][MidiWindow]>64)return false;
   }
   return true;
 }
 void midi_configure(const AliveSessionConfigV4& config)noexcept {
   midi_=std::make_unique<MidiData>();midi_->banks[0].config=config;
+  midi_->banks[0].runtime=this->config();
   const auto diagnostic=diagnostic4_;const auto error=error_;
-  midi_->admitted=midi_prove(midi_->banks[0]);diagnostic4_=diagnostic;error_=error;
+  midi_prove(midi_->banks[0],false);midi_->admitted=midi_->banks[0].preview_admitted;diagnostic4_=diagnostic;error_=error;
   midi_bank_=0;midi_enabled_=midi_ready_=midi_done_=false;midi_epoch_=midi_release_seen_=midi_tail_=0;
   midi_state_={};midi_state_.version=1;midi_state_.struct_bytes=sizeof midi_state_;midi_state_.preparation_revision=config.preparation_revision;
   midi_held_={};midi_events_={};midi_preview_pending_={};
+  publication_configure(config);
 }
 void midi_publish()noexcept {
   for(unsigned i=0;i<midi_published_.size();++i){uint64_t word;std::memcpy(&word,reinterpret_cast<const char*>(&midi_state_)+i*8,8);midi_published_[i].store(word,std::memory_order_relaxed);}
@@ -73,8 +92,9 @@ void midi_dispatch(CanvasWorkspace& workspace,const AliveSessionEventV2& event)n
   dispatch_event_raw(workspace,event);
 }
 void midi_note(CanvasWorkspace& workspace,unsigned track,unsigned pitch,unsigned velocity)noexcept {
+  if(track>=config().track_count||config().tracks[track].instrument>=config().device_count){midi_state_.preview_error=ALIVE_MIDI_INVALID;return;}
   if(velocity)clear_[track]=false;
-  const AliveSessionEventV2 event{state_.tracks[track].phase,track,velocity?ALIVE_SESSION_NOTE_ON:ALIVE_SESSION_NOTE_OFF,config_.tracks[track].instrument,pitch,double(velocity)};
+  const AliveSessionEventV2 event{state_.tracks[track].phase,track,velocity?ALIVE_SESSION_NOTE_ON:ALIVE_SESSION_NOTE_OFF,config().tracks[track].instrument,pitch,double(velocity)};
   dispatch_event_raw(workspace,event);
 }
 void midi_charge(unsigned count)noexcept {
@@ -87,14 +107,14 @@ void midi_release_note(CanvasWorkspace& workspace)noexcept {
   midi_state_.preview_active=0;midi_state_.preview_expiry=0;midi_tail_=state_.absolute_frame+24000;
 }
 bool midi_reserve_work(unsigned scans)noexcept {
-  const auto limits=clip_admission::policy(config_.profile);
+  const auto limits=clip_admission::policy(config().profile);
   const Cost cost{0,0,scans,0,clip_admission::HorizonSteps};
   const auto allowance=clip_admission::cost(limits.optional_window);
   for(unsigned m=1;m<5;++m)if(optional_.total[m]+cost[m]>allowance[m])return false;
   optional_.charge(state_.absolute_frame,cost);trace_charge(1,cost);return true;
 }
 bool midi_horizon(const clip_admission::Prepared& proof,unsigned notes)noexcept {
-  const auto limits=clip_admission::policy(config_.profile);
+  const auto limits=clip_admission::policy(config().profile);
   const auto frame=clip_admission::cost(limits.scheduled_frame),window=clip_admission::cost(limits.scheduled_window);
   const auto current=unsigned(state_.absolute_frame%MidiWindow);
   // Keep one future note-off available for every accepted Preview owner.
@@ -141,6 +161,8 @@ void midi_apply_edit(CanvasWorkspace& workspace)noexcept {
   midi_state_.status=error?ALIVE_MIDI_REJECTED:ALIVE_MIDI_APPLIED;midi_state_.error=error;
   if(!error){
     midi_bank_=next;midi_enabled_=true;++midi_state_.source_revision;
+    active_config_.store(&bank.runtime,std::memory_order_release);
+    publication_note_applied();
     if(state_.playing&&state_.tracks[track].active_clip==source){
       midi_charge(count);
       for(unsigned pitch=0;pitch<128;++pitch)if(midi_held_[track][pitch]&&!desired[pitch]){midi_held_[track][pitch]=0;if(!midi_owns(track,pitch))midi_note(workspace,track,pitch,0);}
@@ -158,8 +180,11 @@ void midi_sample(CanvasWorkspace& workspace)noexcept {
   if(release>midi_release_seen_){midi_release_seen_=release;if(midi_state_.preview_serial<=release)midi_release_note(workspace);}
   if(midi_state_.preview_active&&state_.absolute_frame>=midi_state_.preview_expiry)midi_release_note(workspace);
   midi_apply_edit(workspace);
+  publication_sample(workspace);
   const auto request=midi_preview_pending_;midi_preview_pending_={};if(!request.serial)return;
   midi_state_.preview_error=0;
+  if(!midi_->admitted){midi_state_.preview_error=ALIVE_MIDI_UNAVAILABLE;return;}
+  if(request.track>=config().track_count||config().track_kinds[request.track]!=ALIVE_SESSION_V4_MIDI||config().tracks[request.track].instrument>=config().device_count){midi_state_.preview_error=ALIVE_MIDI_INVALID;return;}
   if(request.serial<=release||midi_preview_epoch_!=applied_stop_){midi_state_.preview_error=ALIVE_MIDI_STOPPED;return;}
   const bool same=midi_state_.preview_active&&request.track==midi_state_.preview_track&&request.pitch==midi_state_.preview_pitch;
   const unsigned release_count=midi_state_.preview_active&&!same&&!midi_held_[midi_state_.preview_track][midi_state_.preview_pitch]?1:0;
@@ -177,7 +202,7 @@ uint64_t midi_preview_epoch_=0;
 public:
 bool midi_limits(AliveMidiLimitsV1& out)const noexcept {
   if(out.version!=1||out.struct_bytes!=sizeof out)return false;
-  out={1,sizeof out,unsigned(mode_==Mode::Workspaces&&midi_&&midi_->admitted),MidiAllowance,1024,0,config_.preparation_revision};return true;
+  out={1,sizeof out,unsigned(mode_==Mode::Workspaces&&midi_&&midi_->admitted),MidiAllowance,1024,0,config().preparation_revision};return true;
 }
 bool midi_snapshot(AliveMidiStateV1& out)const noexcept {
   if(out.version!=1||out.struct_bytes!=sizeof out)return false;
@@ -191,7 +216,7 @@ bool midi_snapshot(AliveMidiStateV1& out)const noexcept {
 bool midi_edit(const AliveMidiEditV1& request)noexcept {
   if(request.version!=1||request.struct_bytes!=sizeof request||!request.serial||request.event_count>1024)return reject("Invalid MIDI source edit.");
   if(mode_!=Mode::Workspaces||!midi_||!midi_->admitted)return reject("Live MIDI editing exceeds this preparation's optional work allowance.");
-  if(request.preparation_revision!=config_.preparation_revision||request.serial<=midi_->ingress)return reject("Stale MIDI edit identity.");
+  if(request.preparation_revision!=config().preparation_revision||request.serial<=midi_->ingress)return reject("Stale MIDI edit identity.");
   if(midi_->pending.load(std::memory_order_acquire)!=2)return reject("A MIDI edit is awaiting native application.");
   AliveMidiStateV1 observed{};observed.version=1;observed.struct_bytes=sizeof observed;if(!midi_snapshot(observed)||request.source_revision!=observed.source_revision)return reject("Stale MIDI source revision.");
   const auto active=midi_->active.load(std::memory_order_acquire),next=1-active;
@@ -209,6 +234,8 @@ bool midi_edit(const AliveMidiEditV1& request)noexcept {
   candidate.event_count=count;
   std::fill(candidate.events+count,std::end(candidate.events),AliveSessionEventV2{});
   if(!midi_prove(bank))return reject("Live MIDI candidate exceeds the complete source/Preview work envelope.");
+  const auto& runtime=midi_->banks[active].runtime;
+  normalize_v4(candidate,runtime.audio,runtime.audio_buffer_count,bank.runtime);
   Command command{};command.kind=9;command.track=request.source;command.param=next;command.frame=request.serial;
   midi_->pending.store(next,std::memory_order_release);
   if(!enqueue(command)){midi_->pending.store(2,std::memory_order_release);return false;}
@@ -217,12 +244,14 @@ bool midi_edit(const AliveMidiEditV1& request)noexcept {
 bool midi_preview(const AliveMidiPreviewV1& request)noexcept {
   if(request.version!=1||request.struct_bytes!=sizeof request||request.reserved||!request.serial||request.pitch>127||!request.velocity||request.velocity>127)return reject("Invalid MIDI Preview request.");
   if(mode_!=Mode::Workspaces||!midi_||!midi_->admitted)return reject("MIDI Preview exceeds this preparation's optional work allowance.");
-  if(request.preparation_revision!=config_.preparation_revision||request.track>=config_.track_count||request.serial<=midi_->preview_ingress)return reject("Stale MIDI Preview identity.");
+  if(publication_track_inflight_.load(std::memory_order_acquire))return reject("A musical publication is changing Preview track identities.");
+  if(request.preparation_revision!=config().preparation_revision||request.track>=config().track_count||request.serial<=midi_->preview_ingress)return reject("Stale MIDI Preview identity.");
+  if(config().track_kinds[request.track]!=ALIVE_SESSION_V4_MIDI||config().tracks[request.track].instrument==None)return reject("MIDI Preview requires a MIDI instrument.");
   Command command{};command.kind=10;command.track=request.track;command.param=request.pitch;command.value=request.velocity;command.frame=request.serial;
   if(!enqueue(command))return false;
   midi_->preview_ingress=request.serial;return true;
 }
 bool midi_release(uint64_t preparation,uint64_t serial)noexcept {
-  if(!midi_||mode_!=Mode::Workspaces||preparation!=config_.preparation_revision||!serial||serial>midi_->preview_ingress)return false;
+  if(!midi_||mode_!=Mode::Workspaces||preparation!=config().preparation_revision||!serial||serial>midi_->preview_ingress)return false;
   const auto old=midi_->release.load(std::memory_order_relaxed);if(serial>old)midi_->release.store(serial,std::memory_order_release);return true;
 }

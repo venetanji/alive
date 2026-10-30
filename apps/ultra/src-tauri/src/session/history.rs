@@ -11,11 +11,20 @@ struct MusicTrack { id:String, name:String, notes:Vec<Note>, automation:Vec<Lane
 #[derive(Clone, Debug, PartialEq, Serialize)]
 pub(super) struct WorkspaceMusic { title:String, tempo:f64, length_beats:f64, loop_enabled:bool, loop_start_beats:f64, loop_end_beats:f64, tracks:Vec<WorkspaceTrackMusic>, sources:Vec<super::workspaces::SourceV4>, placements:Vec<super::workspaces::PlacementV4> }
 #[derive(Clone, Debug, PartialEq, Serialize)]
-struct WorkspaceTrackMusic { id:String, name:String, color:String, slots:[Option<super::workspaces::SlotV4>;4] }
+struct WorkspaceTrackMusic { id:String, name:String, color:String, slots:[Option<super::workspaces::SlotV4>;4], chain:super::workspaces::ChainV4,effects:Vec<super::DeviceInstance> }
+fn music_device(device:&super::DeviceInstance)->super::DeviceInstance {
+    let mut device=device.clone();device.parameters.clear();device.bypassed=false;device
+}
+fn workspace_track(track:&super::workspaces::TrackV4)->WorkspaceTrackMusic {
+    use super::workspaces::ChainV4;
+    WorkspaceTrackMusic{id:track.id.clone(),name:track.name.clone(),color:track.color.clone(),slots:track.slots.clone(),
+        chain:match &track.chain{ChainV4::Midi{instrument}=>ChainV4::Midi{instrument:instrument.as_ref().map(music_device)},ChainV4::Audio{}=>ChainV4::Audio{}},
+        effects:track.effects.iter().map(music_device).collect()}
+}
 impl From<&Session> for Projection {
     fn from(document:&Session)->Self {
         match document {
-            super::Document::WorkspacesV4(s)=>Self::Workspaces(WorkspaceMusic {title:s.title.clone(),tempo:s.tempo,length_beats:s.length_beats,loop_enabled:s.loop_enabled,loop_start_beats:s.loop_start_beats,loop_end_beats:s.loop_end_beats,tracks:s.tracks.iter().map(|t|WorkspaceTrackMusic{id:t.id.clone(),name:t.name.clone(),color:t.color.clone(),slots:t.slots.clone()}).collect(),sources:s.sources.clone(),placements:s.placements.clone()}),
+            super::Document::WorkspacesV4(s)=>Self::Workspaces(WorkspaceMusic {title:s.title.clone(),tempo:s.tempo,length_beats:s.length_beats,loop_enabled:s.loop_enabled,loop_start_beats:s.loop_start_beats,loop_end_beats:s.loop_end_beats,tracks:s.tracks.iter().map(workspace_track).collect(),sources:s.sources.clone(),placements:s.placements.clone()}),
             super::Document::LegacyV2(s)|super::Document::ClipsV3(super::clips::ClipDocument{common:s,..})=>Self::Legacy(LegacyMusic { title:s.title.clone(),tempo:s.tempo,length_beats:s.length_beats,loop_enabled:s.loop_enabled,
                 tracks:s.tracks.iter().map(|t|MusicTrack{id:t.id.clone(),name:t.name.clone(),notes:t.notes.clone(),automation:t.automation.clone()}).collect(),banks:document.banks().to_vec() })
         }
@@ -32,9 +41,13 @@ impl Projection {
         let mut document=live.clone();
         match (self,&mut document) {
             (Self::Workspaces(p),super::Document::WorkspacesV4(s))=>{
-                if p.tracks.len()!=s.tracks.len()||p.tracks.iter().zip(&s.tracks).any(|(a,b)|a.id!=b.id){return Err("History belongs to another track scope".into());}
                 s.title=p.title.clone();s.tempo=p.tempo;s.length_beats=p.length_beats;s.loop_enabled=p.loop_enabled;s.loop_start_beats=p.loop_start_beats;s.loop_end_beats=p.loop_end_beats;s.sources=p.sources.clone();s.placements=p.placements.clone();
-                for (a,b) in p.tracks.iter().zip(&mut s.tracks){b.name=a.name.clone();b.color=a.color.clone();b.slots=a.slots.clone();}
+                s.tracks=p.tracks.iter().map(|target|{
+                    let mut track=s.tracks.iter().find(|t|t.id==target.id).cloned().unwrap_or_else(||super::workspaces::TrackV4{
+                        id:target.id.clone(),name:target.name.clone(),color:target.color.clone(),chain:target.chain.clone(),effects:target.effects.clone(),
+                        slots:target.slots.clone(),gain:1.,mute:false,solo:false});
+                    track.name=target.name.clone();track.color=target.color.clone();track.slots=target.slots.clone();track
+                }).collect();
             },
             (Self::Legacy(p),s)=>{
                 let common=s.legacy_mut()?;
@@ -59,6 +72,17 @@ struct Entry { before:Projection,after:Projection,before_launch:super::launch::L
 #[derive(Default,Clone)]
 pub(super) struct History { entries:Vec<Entry>,cursor:usize,bytes:usize }
 impl History {
+    pub fn rebase_audio_paths(&mut self,origin:&std::path::Path,destination:&std::path::Path){
+        let old=origin.parent().unwrap_or(std::path::Path::new("."));let new=destination.parent().unwrap_or(std::path::Path::new("."));
+        for entry in &mut self.entries {for projection in [&mut entry.before,&mut entry.after] {
+            if let Projection::Workspaces(project)=projection {for source in &mut project.sources {
+                if let super::workspaces::SourceV4::Audio{file,..}=source {
+                    let resolved=old.join(&file.path);let resolved=std::fs::canonicalize(&resolved).unwrap_or(resolved);
+                    if let Some(path)=super::persistence::relative_path(new,&resolved).to_str(){file.path=path.to_owned();}
+                }
+            }}
+        }}
+    }
     pub fn identities(&self)->std::collections::HashSet<String>{self.entries.iter().flat_map(|e|[&e.before,&e.after]).flat_map(Projection::identities).collect()}
     pub fn clear(&mut self) { *self=Self::default(); }
     pub fn view(&self)->View { View {can_undo:self.cursor>0,can_redo:self.cursor<self.entries.len(),undo_label:self.cursor.checked_sub(1).map(|i|self.entries[i].label.clone()),redo_label:self.entries.get(self.cursor).map(|e|e.label.clone())} }
@@ -87,6 +111,32 @@ impl History {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn workspace_track_history_preserves_live_values_by_identity() {
+        let project=crate::session::workspaces::prospective_from_document(&score()).unwrap();
+        let original=Session::WorkspacesV4(project.clone());
+        let mut changed=project.clone();
+        let mut inserted=changed.tracks[0].clone();
+        inserted.id="fresh-track".into();inserted.name="New MIDI".into();
+        inserted.chain=crate::session::workspaces::ChainV4::Midi{instrument:None};
+        inserted.effects.clear();inserted.slots=[None,None,None,None];
+        changed.tracks.insert(0,inserted);
+        let target=Projection::from(&Session::WorkspacesV4(changed));
+        let mut live=original.clone();
+        let Session::WorkspacesV4(current)=&mut live else{unreachable!()};
+        current.tracks[0].gain=0.23;current.tracks[0].mute=true;
+        let instance=current.tracks[0].devices().next().unwrap().instance_id.clone();
+        live.device_mut(&instance).unwrap().parameters.insert("cutoff".into(),4321.);
+        let restored=target.materialize(&live).unwrap();
+        let Session::WorkspacesV4(result)=&restored else{unreachable!()};
+        assert_eq!(result.tracks[1].id,project.tracks[0].id);
+        assert_eq!(result.tracks[1].gain,0.23);assert!(result.tracks[1].mute);
+        assert_eq!(result.tracks[1].devices().next().unwrap().parameters["cutoff"],4321.);
+        let undone=Projection::from(&original).materialize(&restored).unwrap();
+        let Session::WorkspacesV4(undone)=undone else{unreachable!()};
+        assert_eq!(undone.tracks.len(),project.tracks.len());
+        assert_eq!(undone.tracks[0].gain,0.23);
+    }
     fn score() -> crate::session::Session {
         crate::session::read(&std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive")).unwrap().saved.score
     }

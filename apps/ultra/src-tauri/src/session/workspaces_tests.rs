@@ -9,15 +9,93 @@ fn wire() -> Value {
             "chain":{"kind":"midi","instrument":{"instanceId":"instrument","sourceSha256":"a".repeat(64),
                 "bypassed":false,"path":"missing.ultra","id":"org.alive.instrument","version":1,"parameters":{"cutoff":500.}}},
             "effects":[],"slots":[{"id":"slot","name":"Slot","sourceId":"source",
-                "sourceOffset":{"kind":"beats","value":0.},"loopEnabled":true},null,null,null],
+                "region":{"start":0.,"end":4.,"loopStart":0.,"loopEnd":4.,"loopEnabled":true}},null,null,null],
             "gain":1.,"mute":false,"solo":false}],
         "sources":[{"kind":"midi","id":"source","trackId":"track","name":"Source","lengthBeats":4.,
             "notes":[{"id":"note","beat":0.,"duration":1.,"pitch":60,"velocity":90}],"automation":[]}],
         "placements":[{"id":"placement","trackId":"track","sourceId":"source","start":0.,"duration":4.,
-            "sourceOffset":{"kind":"beats","value":0.},"loopEnabled":false}]})
+            "region":{"start":0.,"end":4.,"loopStart":0.,"loopEnd":4.,"loopEnabled":false}}]})
 }
 fn project() -> ProjectV4 {
     decode(&wire().to_string()).unwrap()
+}
+
+#[test]
+fn independent_region_markers_and_empty_midi_instrument_decode() {
+    let mut v = wire();
+    v["tracks"][0]["chain"]["instrument"] = Value::Null;
+    for occurrence in [&mut v["tracks"][0]["slots"][0]] {
+        occurrence.as_object_mut().unwrap().remove("sourceOffset");
+        occurrence.as_object_mut().unwrap().remove("loopEnabled");
+        occurrence["region"] =
+            json!({"start":0.,"end":4.,"loopStart":1.,"loopEnd":3.,"loopEnabled":true});
+    }
+    v["placements"][0]
+        .as_object_mut()
+        .unwrap()
+        .remove("sourceOffset");
+    v["placements"][0]
+        .as_object_mut()
+        .unwrap()
+        .remove("loopEnabled");
+    v["placements"][0]["region"] =
+        json!({"start":0.,"end":4.,"loopStart":1.,"loopEnd":3.,"loopEnabled":true});
+    assert!(decode(&v.to_string()).is_ok());
+}
+
+#[test]
+fn midi_clip_creation_is_atomic_and_region_edit_preserves_content() {
+    let p = project();
+    let created = edit(
+        &p,
+        json!({"kind":"midiClipCreate","trackId":"track","slot":1,"name":"New clip"}),
+    )
+    .unwrap();
+    let slot = created.project.tracks[0].slots[1].as_ref().unwrap();
+    let slot_id = slot.id.clone();
+    let source_id = slot.source_id.clone();
+    let extended = edit(
+        &created.project,
+        json!({"kind":"regionSet","occurrence":{"kind":"slot","trackId":"track","slotId":slot_id},
+        "region":{"start":0.,"end":8.,"loopStart":1.,"loopEnd":3.,"loopEnabled":true}}),
+    )
+    .unwrap();
+    let source = extended
+        .project
+        .sources
+        .iter()
+        .find(|s| s.id() == source_id)
+        .unwrap();
+    let saved = serde_json::to_value(source).unwrap();
+    assert_eq!(saved["lengthBeats"], json!(8.));
+    assert!(edit(
+        &p,
+        json!({"kind":"midiClipCreate","trackId":"track","slot":0,"name":"Occupied"})
+    )
+    .is_err());
+    assert_eq!(p.sources.len(), 1);
+    let shortened = edit(
+        &p,
+        json!({"kind":"regionSet","occurrence":{"kind":"slot","trackId":"track","slotId":"slot"},
+        "region":{"start":0.,"end":0.5,"loopStart":0.,"loopEnd":0.5,"loopEnabled":true}}),
+    )
+    .unwrap();
+    assert_eq!(shortened.project.sources[0], p.sources[0]);
+    assert_eq!(shortened.project.placements[0], p.placements[0]);
+}
+
+#[test]
+fn arrangement_clip_creation_uses_the_selected_span_atomically() {
+    let p = project();
+    let created=edit(&p,json!({"kind":"midiPlacementCreate","trackId":"track","start":4.,"duration":2.,"name":"Range"})).unwrap();
+    let source = created.project.sources.last().unwrap();
+    let placement = created.project.placements.last().unwrap();
+    assert_eq!(source.length_beats(), 2.);
+    assert_eq!(placement.start, 4.);
+    assert_eq!(placement.duration, 2.);
+    assert_eq!(placement.source_id, source.id());
+    assert!(edit(&p,json!({"kind":"midiPlacementCreate","trackId":"track","start":2.,"duration":2.,"name":"Overlap"})).is_err());
+    assert_eq!(p.sources.len(), 1);
 }
 fn edit(p: &ProjectV4, value: Value) -> Result<EditResultV4, String> {
     let operation = decode_edit(&value.to_string())?;
@@ -32,12 +110,54 @@ fn audio_wire() -> Value {
     v["tracks"][0]["chain"] = json!({"kind":"audio"});
     v["sources"][0] = json!({"kind":"audio","id":"source","trackId":"track","name":"PCM",
         "file":{"path":"missing.wav","sourceSha256":"b".repeat(64),"encoding":"wavPcm","channels":2,
-            "sampleRate":48000,"bitsPerSample":24,"frames":"96000"},"automation":[]});
-    for occurrence in [&mut v["tracks"][0]["slots"][0]] {
-        occurrence["sourceOffset"] = json!({"kind":"frames","value":"0"});
-    }
-    v["placements"][0]["sourceOffset"] = json!({"kind":"frames","value":"0"});
+            "sampleRate":48000,"bitsPerSample":24,"frames":"96000"},"sourceTempo":120.,"warpMode":"repitch","automation":[]});
     v
+}
+
+#[test]
+fn audio_import_creates_source_and_occurrence_with_independent_beat_markers() {
+    let p = decode(&audio_wire().to_string()).unwrap();
+    let created = edit(
+        &p,
+        json!({"kind":"audioClipImport","trackId":"track","slot":1,"name":"Imported",
+        "file":audio_wire()["sources"][0]["file"],"sourceTempo":120.,"warpMode":"repitch"}),
+    )
+    .unwrap();
+    let slot = created.project.tracks[0].slots[1].as_ref().unwrap();
+    assert_eq!(slot.region, ClipRegionV4::full(4.));
+    assert_eq!(created.project.sources.len(), 2);
+    let changed = edit(
+        &created.project,
+        json!({"kind":"regionSet","occurrence":{"kind":"slot","trackId":"track","slotId":slot.id},
+        "region":{"start":1.,"end":4.,"loopStart":2.,"loopEnd":3.,"loopEnabled":true}}),
+    )
+    .unwrap();
+    assert_eq!(changed.project.sources, created.project.sources);
+    assert_eq!(changed.project.tracks[0].slots[0], p.tracks[0].slots[0]);
+    assert!(edit(
+        &created.project,
+        json!({"kind":"regionSet","occurrence":{"kind":"slot","trackId":"track","slotId":slot.id},
+        "region":{"start":0.,"end":5.,"loopStart":0.,"loopEnd":4.,"loopEnabled":true}})
+    )
+    .is_err());
+}
+
+#[test]
+fn region_validation_rejects_nonfinite_and_collapsed_loop_markers() {
+    for (field, value) in [
+        ("start", 4.),
+        ("end", 0.),
+        ("loopStart", 4.),
+        ("loopEnd", 0.),
+        ("loopEnd", 0.001),
+    ] {
+        let mut v = wire();
+        v["tracks"][0]["slots"][0]["region"][field] = json!(value);
+        assert!(decode(&v.to_string()).is_err(), "{field}: {value}");
+    }
+    let mut p = project();
+    p.tracks[0].slots[0].as_mut().unwrap().region.loop_start = f64::NAN;
+    assert!(p.validate().is_err());
 }
 
 #[test]
@@ -167,17 +287,17 @@ fn finite_bounds_and_loop_brace_apply_even_when_disabled() {
 }
 
 #[test]
-fn offsets_suffix_bounds_and_touching_occurrences_use_endpoint_frames() {
+fn independent_starts_and_touching_occurrences_use_endpoint_frames() {
     let mut v = wire();
-    v["placements"][0]["sourceOffset"]["value"] = json!(1.);
+    v["placements"][0]["region"]["start"] = json!(1.);
     assert!(decode(&v.to_string()).unwrap_err().contains("placement"));
     v["placements"][0]["duration"] = json!(3.);
     assert!(decode(&v.to_string()).is_ok());
-    v["placements"][0]["loopEnabled"] = json!(true);
+    v["placements"][0]["region"]["loopEnabled"] = json!(true);
     v["placements"][0]["duration"] = json!(8.);
     assert!(decode(&v.to_string()).is_ok());
-    v["placements"][0]["sourceOffset"]["value"] = json!(3.999);
-    assert!(decode(&v.to_string()).is_err());
+    v["placements"][0]["region"]["start"] = json!(3.999);
+    assert!(decode(&v.to_string()).is_ok());
     let p = project();
     let r = edit(
         &p,
@@ -204,7 +324,7 @@ fn offsets_suffix_bounds_and_touching_occurrences_use_endpoint_frames() {
 }
 
 #[test]
-fn tempo_and_source_shrink_fail_transactionally_with_referring_ids() {
+fn repitch_tempo_changes_preserve_audio_beats_and_source_shrink_is_transactional() {
     let p = decode(&audio_wire().to_string()).unwrap();
     let before = p.clone();
     let e = edit(
@@ -212,8 +332,8 @@ fn tempo_and_source_shrink_fail_transactionally_with_referring_ids() {
         json!({"kind":"transportRange","tempo":60.,"lengthBeats":8.,"loopEnabled":false,
         "loopStartBeats":0.,"loopEndBeats":8.}),
     )
-    .unwrap_err();
-    assert!(e.contains("placement"), "{e}");
+    .unwrap();
+    assert_eq!(e.project.sources, p.sources);
     assert_eq!(p, before);
     let p = project();
     let before = p.clone();
@@ -303,9 +423,12 @@ fn prospective_migration_preserves_music_and_uses_length_prefixed_id_domains() {
     );
     assert_eq!(p.tracks[0].slots[0].as_ref().unwrap().id, "clip");
     assert_eq!(p.tracks[0].color, "#c77b61");
-    assert_eq!(p.tracks[0].devices().next().unwrap(), &old.legacy().unwrap().tracks[0].device);
+    assert_eq!(
+        p.tracks[0].devices().next().unwrap(),
+        &old.legacy().unwrap().tracks[0].device
+    );
     assert_eq!(p.placements[0].duration, 8.);
-    assert!(p.placements[0].loop_enabled);
+    assert!(p.placements[0].region.loop_enabled);
     assert_eq!(p.placements[0].start, 0.);
     assert_eq!(p.loop_start_beats, 0.);
     assert_eq!(p.loop_end_beats, 8.);
@@ -343,14 +466,21 @@ fn legacy_prospective_conversion_preserves_input_and_rejects_held_voice_excess()
     let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../../alive/examples/two-instruments.alive");
     let text = std::fs::read_to_string(&path).unwrap();
-    let old = super::super::persistence::decode(&text, &path).unwrap().score;
+    let old = super::super::persistence::decode(&text, &path)
+        .unwrap()
+        .score;
     let before = old.clone();
     let a = prospective_from_document(&old).unwrap();
     let b = prospective_from_document(&old.to_clips().unwrap()).unwrap();
     assert_eq!(a, b);
     assert_eq!(old, before);
     assert_eq!(prospective_from_legacy_text(&text, &path).unwrap(), a);
-    assert_eq!(super::super::persistence::decode(&encode(&a).unwrap(), &path).unwrap().score, Document::WorkspacesV4(a.clone()));
+    assert_eq!(
+        super::super::persistence::decode(&encode(&a).unwrap(), &path)
+            .unwrap()
+            .score,
+        Document::WorkspacesV4(a.clone())
+    );
     let mut invalid = old.clone();
     invalid.legacy_mut().unwrap().tracks[0].notes = (0..5)
         .map(|i| super::super::Note {
@@ -399,6 +529,9 @@ fn replicated(count: usize) -> Value {
         source["id"] = json!(source_id);
         source["trackId"] = json!(track_id);
         source["notes"][0]["id"] = json!(format!("note-{index}"));
+        if index >= 6 {
+            track["chain"]["instrument"] = Value::Null;
+        }
         result["tracks"].as_array_mut().unwrap().push(track);
         result["sources"].as_array_mut().unwrap().push(source);
     }
@@ -440,18 +573,18 @@ fn per_track_and_global_bounds_include_disabled_automation() {
     for placements in [8, 9] {
         let mut v = wire();
         v["placements"]=json!((0..placements).map(|i|json!({"id":format!("p-{i}"),"trackId":"track","sourceId":"source","start":i as f64/2.,"duration":0.5,
-            "sourceOffset":{"kind":"beats","value":0.},"loopEnabled":false})).collect::<Vec<_>>());
+            "region":{"start":0.,"end":4.,"loopStart":0.,"loopEnd":4.,"loopEnabled":false}})).collect::<Vec<_>>());
         assert_eq!(decode(&v.to_string()).is_ok(), placements == 8);
     }
-    let mut v = replicated(8);
-    for index in 0..8 {
+    let mut v = replicated(3);
+    for index in 0..3 {
         let mut effect = v["tracks"][index]["chain"]["instrument"].clone();
         effect["instanceId"] = json!(format!("effect-{index}"));
         v["tracks"][index]["effects"] = json!([effect]);
     }
     assert!(decode(&v.to_string()).is_ok());
     let mut extra = v["tracks"][0]["effects"][0].clone();
-    extra["instanceId"] = json!("root-17");
+    extra["instanceId"] = json!("root-7");
     v["tracks"][0]["effects"]
         .as_array_mut()
         .unwrap()
@@ -503,20 +636,20 @@ fn notes_reject_overlap_and_five_held_voices_but_allow_touching_ends() {
 #[test]
 fn audio_suffix_descriptors_and_automation_retain_exact_frames() {
     let mut v = audio_wire();
-    v["placements"][0]["sourceOffset"]["value"] = json!("1");
+    v["placements"][0]["region"]["start"] = json!(1. / 24000.);
     assert!(decode(&v.to_string()).is_err());
     v["placements"][0]["duration"] = json!(95999. / 24000.);
     assert!(decode(&v.to_string()).is_ok());
-    v["placements"][0]["sourceOffset"]["value"] = json!("95999");
+    v["placements"][0]["region"]["start"] = json!(95999. / 24000.);
     v["placements"][0]["duration"] = json!(1. / 24000.);
     assert!(decode(&v.to_string()).is_ok());
-    v["placements"][0]["loopEnabled"] = json!(true);
-    assert!(decode(&v.to_string()).is_err());
+    v["placements"][0]["region"]["loopEnabled"] = json!(true);
+    assert!(decode(&v.to_string()).is_ok());
     for (field, value) in [
         ("frames", json!("0")),
         ("channels", json!(3)),
-        ("sampleRate", json!(44100)),
-        ("bitsPerSample", json!(32)),
+        ("sampleRate", json!(0)),
+        ("bitsPerSample", json!(12)),
         ("encoding", json!("mp3")),
         ("sourceSha256", json!("B".repeat(64))),
     ] {
@@ -557,11 +690,11 @@ fn source_slot_note_placement_lifecycle_returns_stable_affected_ids() {
     .unwrap();
     assert!(created.affected_ids.contains(&"source-fresh-1".into()));
     let assigned=edit(&created.project,json!({"kind":"slotAssign","trackId":"track","slot":2,"sourceId":"source-fresh-1","name":"New slot",
-        "sourceOffset":{"kind":"beats","value":0.5},"loopEnabled":true})).unwrap();
+        "region":{"start":0.5,"end":2.,"loopStart":0.5,"loopEnd":2.,"loopEnabled":true}})).unwrap();
     let updated = edit(
         &assigned.project,
         json!({"kind":"slotUpdate","trackId":"track","slotId":"slot-fresh-1","name":"Edited",
-        "sourceOffset":{"kind":"beats","value":1.},"loopEnabled":false}),
+        "region":{"start":1.,"end":4.,"loopStart":1.,"loopEnd":4.,"loopEnabled":false}}),
     )
     .unwrap();
     assert_eq!(
@@ -581,11 +714,11 @@ fn source_slot_note_placement_lifecycle_returns_stable_affected_ids() {
     .unwrap();
     assert_eq!(deleted.project, p);
     let added=edit(&p,json!({"kind":"placementCreate","trackId":"track","sourceId":"source","start":4.,"duration":2.,
-        "sourceOffset":{"kind":"beats","value":1.},"loopEnabled":false})).unwrap();
+        "region":{"start":1.,"end":4.,"loopStart":1.,"loopEnd":4.,"loopEnabled":false}})).unwrap();
     let updated = edit(
         &added.project,
         json!({"kind":"placementUpdate","placementId":"placement-fresh-1","start":5.,"duration":1.,
-        "sourceOffset":{"kind":"beats","value":2.},"loopEnabled":false}),
+        "region":{"start":2.,"end":4.,"loopStart":2.,"loopEnd":4.,"loopEnabled":false}}),
     )
     .unwrap();
     assert_eq!(updated.project.placements[1].id, "placement-fresh-1");
@@ -654,7 +787,7 @@ fn real_cross_track_references_and_duplicate_lane_targets_reject() {
 #[test]
 fn endpoint_difference_controls_duration_and_beats_still_detect_subframe_overlap() {
     let mut v = audio_wire();
-    v["placements"][0]["sourceOffset"]["value"] = json!("95999");
+    v["placements"][0]["region"]["start"] = json!(95999. / 24000.);
     v["placements"][0]["start"] = json!(0.49 / 24000.);
     v["placements"][0]["duration"] = json!(1.02 / 24000.);
     assert!(decode(&v.to_string()).is_err()); // Endpoints span two frames; rounded duration alone is one.
@@ -691,8 +824,7 @@ fn byte_limits_unicode_controls_and_document_size_are_enforced() {
     let mut v = audio_wire();
     v["sources"][0]["file"]["channels"] = json!(1);
     v["sources"][0]["file"]["frames"] = json!("18446744073709551615");
-    let p = decode(&v.to_string()).unwrap();
-    assert!(encode(&p).unwrap().contains("18446744073709551615"));
+    assert!(decode(&v.to_string()).is_err());
     v["sources"][0]["file"]["channels"] = json!(2);
     assert!(decode(&v.to_string()).is_err());
 }
@@ -711,7 +843,7 @@ fn every_nested_wire_record_rejects_missing_or_unknown_fields() {
                 "/tracks/0/chain",
                 "/tracks/0/chain/instrument",
                 "/tracks/0/slots/0",
-                "/tracks/0/slots/0/sourceOffset",
+                "/tracks/0/slots/0/region",
                 "/sources/0",
                 "/sources/0/notes/0",
                 "/sources/0/automation/0",
@@ -725,13 +857,16 @@ fn every_nested_wire_record_rejects_missing_or_unknown_fields() {
                 "/tracks/0/chain",
                 "/sources/0",
                 "/sources/0/file",
-                "/placements/0/sourceOffset",
+                "/placements/0/region",
             ],
         ),
     ] {
         for path in paths {
             let record = v.pointer(path).unwrap().as_object().unwrap();
-            for key in record.keys() {
+            for key in record
+                .keys()
+                .filter(|key| path != "/tracks/0/chain" || key.as_str() != "instrument")
+            {
                 let mut bad = v.clone();
                 bad.pointer_mut(path)
                     .unwrap()
@@ -756,7 +891,7 @@ fn invalid_id_generators_and_occupied_targets_leave_input_unchanged() {
     assert!(apply_edit_with(&p, op, &HashSet::new(), |_| "note".into()).is_err());
     for op in [
         json!({"kind":"slotAssign","trackId":"track","slot":0,"sourceId":"source","name":"Occupied",
-        "sourceOffset":{"kind":"beats","value":0.},"loopEnabled":true}),
+        "region":{"start":0.,"end":4.,"loopStart":0.,"loopEnd":4.,"loopEnabled":true}}),
         json!({"kind":"slotDuplicate","trackId":"track","slotId":"slot","destinationSlot":4}),
         json!({"kind":"noteUpdate","sourceId":"source","noteId":"absent","beat":0.,"duration":1.,"pitch":60,"velocity":90}),
         json!({"kind":"sourceRename","sourceId":"absent","name":"Name"}),
@@ -771,7 +906,7 @@ fn occupied_slot_names_identity_and_delete_assign_mints_a_new_occurrence() {
     let p = project();
     let before = p.clone();
     let op = json!({"kind":"slotAssign","trackId":"track","slot":0,"sourceId":"source","name":"Reassigned",
-        "sourceOffset":{"kind":"beats","value":0.},"loopEnabled":true});
+        "region":{"start":0.,"end":4.,"loopStart":0.,"loopEnd":4.,"loopEnabled":true}});
     let err = edit(&p, op.clone()).unwrap_err();
     assert!(
         err.contains("'slot'") && err.contains("delete") && err.contains("assign"),
@@ -867,7 +1002,9 @@ fn prospective_conversion_survives_unavailable_or_smaller_native_v3_admission() 
             }
             "v2-text" => {
                 let text = serde_json::to_string(&legacy_v2_tracks(4)).unwrap();
-                let decoded = super::super::persistence::decode(&text, &path).unwrap().score;
+                let decoded = super::super::persistence::decode(&text, &path)
+                    .unwrap()
+                    .score;
                 assert!(!decoded.is_clips());
                 prospective_from_legacy_text(&text, &path).unwrap()
             }

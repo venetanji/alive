@@ -1,3 +1,4 @@
+#include "alive_session_suffix_fixture.hpp"
 #include "../src-tauri/native/alive_session.hpp"
 #include "../src-tauri/native/backend.h"
 #include "canvas_callback_guard.hpp"
@@ -57,8 +58,8 @@ AliveSessionConfigV4 prepare(unsigned effects = 0) {
   c.events[1] = {1500, 0, ALIVE_SESSION_NOTE_OFF, 0, 60, 0};
   c.events[2] = {2000, 0, ALIVE_SESSION_NOTE_ON, 0, 64, 100};
   c.events[3] = {3000, 0, ALIVE_SESSION_NOTE_OFF, 0, 64, 0};
-  c.placements[0] = {0, 0, 0, 0, 512, 2048, 0};
-  c.placements[1] = {0, 0, 0, 0, 4096, 2048, 1024};
+  c.placements[0] = {0, 0, 0, 0, 512, 2048, 0,0,0,0};
+  c.placements[1] = {0, 0, 0, 0, 4096, 2048, 1024,0,0,0};
   return c;
 }
 AliveSessionStateV4 state() {
@@ -105,15 +106,15 @@ void grid_onset(unsigned grid,double tempo,unsigned partition,bool loop) {
   c.length_frames=uint64_t(std::round(256.*48000.*60./tempo));
   c.loop_end=c.length_frames;c.placement_count=c.tracks[0].placement_count=0;
   std::fill_n(c.placements,64,AliveSessionPlacementV4{});
-  c.slot_count=1;c.tracks[0].slots[0]=0;c.slots[0]={0,0,1,0,0};
+  c.slot_count=1;c.tracks[0].slots[0]=0;c.slots[0]={0,0,1,0,0,0,0,0};
   const double beats[]={.125,.125,.25,.5,1,2,4,8,16,32};
   const auto boundary=uint64_t(std::round(beats[grid]*48000.*60./tempo));
   if(loop) {c.loop_enabled=1;c.loop_start=boundary-100;c.loop_end=boundary+600;}
-  if(!alive_session_configure_v4(&c,nullptr,0)){std::fprintf(stderr,"grid configure: %s\n",alive_session_error());std::abort();}
+  if(!configure_suffix_fixture(&c,nullptr,0)){std::fprintf(stderr,"grid configure: %s\n",alive_session_error());std::abort();}
   AliveLaunchLimitsV1 limits{};limits.version=1;limits.struct_bytes=sizeof limits;
   assert(alive_launch_limits_v1(&limits)&&limits.admitted);
   auto proof=std::make_unique<ultra::workspace_admission::Proof>();
-  assert(ultra::workspace_admission::build_validated(c,*proof,true));
+  assert(ultra::workspace_admission::build_validated(suffix_region_fixture(c),*proof,true));
   assert(ultra_external_start());
   AliveSessionRequestV4 seek{};seek.version=4;seek.struct_bytes=sizeof seek;
   seek.kind=2;seek.position=boundary-1025;seek.preparation_revision=preparation;seek.request_serial=++serial;
@@ -166,15 +167,15 @@ void dense_old_admission() {
   for(unsigned spacing=32;spacing<=80&&!found;++spacing) {
     auto c=prepare();c.length_frames=c.loop_end=960000;
     c.placement_count=c.tracks[0].placement_count=0;std::fill_n(c.placements,64,AliveSessionPlacementV4{});
-    c.slot_count=1;c.tracks[0].slots[0]=0;c.slots[0]={0,0,1,0,0};
+    c.slot_count=1;c.tracks[0].slots[0]=0;c.slots[0]={0,0,1,0,0,0,0,0};
     c.sources[0].length_frames=64*spacing;c.sources[0].event_count=c.event_count=128;
     for(unsigned i=0;i<64;++i) {c.events[2*i]={i*spacing,0,ALIVE_SESSION_NOTE_ON,0,60,100};c.events[2*i+1]={i*spacing+spacing/2,0,ALIVE_SESSION_NOTE_OFF,0,60,0};}
-    if(!alive_session_configure_v4(&c,nullptr,0))continue;
+    if(!configure_suffix_fixture(&c,nullptr,0))continue;
     AliveLaunchLimitsV1 limits{};limits.version=1;limits.struct_bytes=sizeof limits;
     assert(alive_launch_limits_v1(&limits));if(limits.admitted)continue;
     auto proof=std::make_unique<ultra::workspace_admission::Proof>();
-    assert(ultra::workspace_admission::build_validated(c,*proof));
-    assert(!ultra::workspace_admission::build_validated(c,*proof,true));
+    assert(ultra::workspace_admission::build_validated(suffix_region_fixture(c),*proof));
+    assert(!ultra::workspace_admission::build_validated(suffix_region_fixture(c),*proof,true));
     found=true;std::printf("old-only dense admission spacing=%u\n",spacing);
     AliveLaunchRequestV1 r{};r.version=1;r.struct_bytes=sizeof r;r.kind=3;r.track_mask=1;
     r.preparation_revision=preparation;r.request_serial=++serial;r.quantization=1;r.tracks[0]={1,0};
@@ -189,13 +190,13 @@ void mixed_batches() {
   auto c=prepare();c.length_frames=c.loop_end=960000;
   c.placement_count=c.tracks[0].placement_count=0;std::fill_n(c.placements,64,AliveSessionPlacementV4{});
   c.track_count=c.device_count=c.source_count=2;c.slot_count=2;c.event_count=8;
-  c.tracks[0].slots[0]=0;c.slots[0]={0,0,1,0,0};
+  c.tracks[0].slots[0]=0;c.slots[0]={0,0,1,0,0,0,0,0};
   c.tracks[1]=c.tracks[0];c.tracks[1].instrument=1;c.tracks[1].slots[0]=1;
-  c.slots[1]={1,1,1,0,0};c.sources[1]=c.sources[0];c.sources[1].track=1;c.sources[1].event_begin=4;
+  c.slots[1]={1,1,1,0,0,0,0,0};c.sources[1]=c.sources[0];c.sources[1].track=1;c.sources[1].event_begin=4;
   for(unsigned i=0;i<4;++i){c.events[i+4]=c.events[i];c.events[i+4].track=c.events[i+4].device=1;}
   UltraCanvasGraph graph{};saved_0(graph,c.devices[1]);graph.revision=++revision;
   c.devices[1].revision=revision;c.devices[1].document=1;assert(ultra_canvas_install_document(1,&graph));
-  assert(alive_session_configure_v4(&c,nullptr,0));assert(ultra_external_start());request();render(1024);
+  assert(configure_suffix_fixture(&c,nullptr,0));assert(ultra_external_start());request();render(1024);
   auto submit=[&](unsigned grid,unsigned mask,unsigned action0,unsigned action1) {
     AliveLaunchRequestV1 r{};r.version=1;r.struct_bytes=sizeof r;r.kind=3;r.track_mask=mask;
     r.preparation_revision=preparation;r.request_serial=++serial;r.quantization=grid;
@@ -273,8 +274,8 @@ int main() {
   c.placement_count=c.tracks[0].placement_count=0;
   std::fill_n(c.placements,64,AliveSessionPlacementV4{});
   c.slot_count=1;c.tracks[0].slots[0]=0;
-  c.slots[0]={0,0,1,0,0};
-  if (!alive_session_configure_v4(&c,nullptr,0)) {std::fprintf(stderr,"configure: %s\n",alive_session_error());std::abort();}
+  c.slots[0]={0,0,1,0,0,0,0,0};
+  if (!configure_suffix_fixture(&c,nullptr,0)) {std::fprintf(stderr,"configure: %s\n",alive_session_error());std::abort();}
   AliveLaunchLimitsV1 limits{};limits.version=1;limits.struct_bytes=sizeof limits;
   assert(alive_launch_limits_v1(&limits));
   assert(limits.admitted && limits.quantization_mask==1023 && limits.window_frames==1024);

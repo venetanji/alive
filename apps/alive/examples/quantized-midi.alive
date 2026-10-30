@@ -51,21 +51,25 @@
             "id": "clip-8254b7a92a82cb008365518183971131",
             "name": "Clip 1",
             "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
-            "sourceOffset": {
-              "kind": "beats",
-              "value": 0.0
-            },
-            "loopEnabled": true
+            "region": {
+              "start": 0.0,
+              "end": 8.0,
+              "loopStart": 0.0,
+              "loopEnd": 8.0,
+              "loopEnabled": true
+            }
           },
           {
             "id": "quantized-slot-2",
             "name": "Sixteenths",
             "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
-            "sourceOffset": {
-              "kind": "beats",
-              "value": 0.0
-            },
-            "loopEnabled": true
+            "region": {
+              "start": 0.0,
+              "end": 8.0,
+              "loopStart": 0.0,
+              "loopEnd": 8.0,
+              "loopEnabled": true
+            }
           },
           null,
           null
@@ -196,11 +200,13 @@
         "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
         "start": 0.0,
         "duration": 8.0,
-        "sourceOffset": {
-          "kind": "beats",
-          "value": 0.0
-        },
-        "loopEnabled": true
+        "region": {
+          "start": 0.0,
+          "end": 8.0,
+          "loopStart": 0.0,
+          "loopEnd": 8.0,
+          "loopEnabled": true
+        }
       }
     ]
   },

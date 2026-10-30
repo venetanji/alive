@@ -1,3 +1,4 @@
+#include "alive_session_suffix_fixture.hpp"
 #include "../src-tauri/native/alive_session.h"
 #include "../src-tauri/native/backend.h"
 #include <algorithm>
@@ -25,24 +26,24 @@ int main() {
   config.sources[0].length_frames = 4096;
   config.sources[0].event_count = config.event_count = 1;
   config.events[0] = {0, 0, ALIVE_SESSION_NOTE_ON, 0, 60, 100};
-  config.placements[0] = {0, 0, 0, 0, 0, 4096, 0};
+  config.placements[0] = {0, 0, 0, 0, 0, 4096, 0,0,0,0};
   UltraCanvasGraph graph{};
   saved_0(graph, config.devices[0]);
   graph.revision = config.devices[0].revision = 70001;
-  assert(alive_session_validate_v4(&config));
-  assert(alive_session_validate_prepared_v4(&config, &graph, 1, nullptr, 0));
-  assert(!alive_session_validate_prepared_v4(&config, nullptr, 1, nullptr, 0));
-  assert(!alive_session_validate_prepared_v4(&config, &graph, 1, nullptr, 1));
+  assert(validate_suffix_fixture(&config));
+  assert(validate_prepared_suffix_fixture(&config, &graph, 1, nullptr, 0));
+  assert(!validate_prepared_suffix_fixture(&config, nullptr, 1, nullptr, 0));
+  assert(!validate_prepared_suffix_fixture(&config, &graph, 1, nullptr, 1));
   auto bad = config;
   bad.struct_bytes--;
-  assert(!alive_session_validate_v4(&bad));
+  assert(!validate_suffix_fixture(&bad));
   bad = config;
   bad.sources[0].reserved0 = 1;
-  assert(!alive_session_validate_v4(&bad));
+  assert(!validate_suffix_fixture(&bad));
   bad = config;
   bad.devices[0].parameters[bad.devices[0].parameter_count].node = 123;
-  assert(!alive_session_validate_v4(&bad));
-  assert(!alive_session_validate_v4(nullptr));
+  assert(!validate_suffix_fixture(&bad));
+  assert(!validate_suffix_fixture(nullptr));
   assert(ultra_canvas_install_document(0, &graph));
   AliveSessionConfigV3 legacy{};
   legacy.version = 3;
@@ -77,14 +78,14 @@ int main() {
   before.struct_bytes = sizeof before;
   assert(alive_session_state_v3(&before));
   assert(before.playing);
-  assert(!alive_session_configure_v4(&config, nullptr, 0));
+  assert(!configure_suffix_fixture(&config, nullptr, 0));
 
   for (unsigned profile : {1u, 2u}) {
     AliveSessionLimitsV4 limits{};
     limits.version = 4;
     limits.struct_bytes = sizeof limits;
     assert(alive_session_limits_v4(profile, &limits));
-    assert(limits.features == (profile == 1 ? 7u : 0u) && limits.max_frame_events == 32 && limits.max_window_events == 64);
+    assert(limits.features == (profile == 1 ? 15u : 0u) && limits.max_frame_events == 32 && limits.max_window_events == 64);
     assert(limits.scheduled_frame.placement_steps == 64 &&
            limits.optional_frame.placement_steps == 2114);
   }
@@ -122,13 +123,13 @@ int main() {
   ultra_audio_stop();
   assert(alive_session_state_v3(&before));
   bad = config; bad.profile = bad.work_policy = 2;
-  assert(!alive_session_validate_prepared_v4(&bad, &graph, 1, nullptr, 0));
-  assert(!alive_session_configure_v4(&bad, nullptr, 0));
+  assert(!validate_prepared_suffix_fixture(&bad, &graph, 1, nullptr, 0));
+  assert(!configure_suffix_fixture(&bad, nullptr, 0));
   assert(alive_session_state_v3(&after));
   assert(before.position == after.position &&
          before.preparation_revision == after.preparation_revision);
   assert(alive_session_reset());
-  assert(alive_session_configure_v4(&config, nullptr, 0));
+  assert(configure_suffix_fixture(&config, nullptr, 0));
   AliveSessionStateV4 installed{};
   installed.version = 4; installed.struct_bytes = sizeof installed;
   assert(alive_session_state_v4(&installed));

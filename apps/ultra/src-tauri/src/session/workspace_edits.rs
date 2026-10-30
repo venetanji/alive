@@ -20,13 +20,13 @@ pub fn primary(before:&ProjectV4,after:&ProjectV4,operation:&WorkspaceEditV4)->R
                 NoteCreate{..}=>{let old=before.identities();let Some(SourceV4::Midi{notes,..})=after.sources.iter().find(|s|s.id()==source_id)else{return Err("Missing MIDI source".into())};result.note_id=Some(notes.iter().find(|n|!old.contains(&n.id)).ok_or("Missing created note")?.id.clone());},_=>{}
             }
         },
-        SourceIndependent{occurrence}=>match occurrence {
+        SourceIndependent{occurrence}|RegionSet{occurrence,..}=>match occurrence {
             OccurrenceV4::Slot{track_id,slot_id}=>{let s=slot(after,track_id,slot_id)?;result.track_id=Some(track_id.clone());result.source_id=Some(s.source_id);result.slot_id=Some(slot_id.clone());},
             OccurrenceV4::Placement{placement_id}=>{let p=after.placements.iter().find(|p|&p.id==placement_id).ok_or("Missing independent placement")?;result.track_id=Some(p.track_id.clone());result.source_id=Some(p.source_id.clone());result.placement_id=Some(placement_id.clone());}
         },
-        SlotAssign{track_id,slot:cell,..}|SlotDuplicate{track_id,destination_slot:cell,..}=>{let s=after.tracks.iter().find(|t|&t.id==track_id).and_then(|t|t.slots.get(*cell as usize)).and_then(Option::as_ref).ok_or("Missing created slot")?;result.track_id=Some(track_id.clone());result.source_id=Some(s.source_id.clone());result.slot_id=Some(s.id.clone());},
+        MidiClipCreate{track_id,slot:cell,..}|AudioClipImport{track_id,slot:cell,..}|SlotAssign{track_id,slot:cell,..}|SlotDuplicate{track_id,destination_slot:cell,..}=>{let s=after.tracks.iter().find(|t|&t.id==track_id).and_then(|t|t.slots.get(*cell as usize)).and_then(Option::as_ref).ok_or("Missing created slot")?;result.track_id=Some(track_id.clone());result.source_id=Some(s.source_id.clone());result.slot_id=Some(s.id.clone());},
         SlotUpdate{track_id,slot_id,..}|SlotDelete{track_id,slot_id}=>{let s=slot(before,track_id,slot_id)?;result.track_id=Some(track_id.clone());result.source_id=Some(s.source_id);result.slot_id=Some(slot_id.clone());},
-        PlacementCreate{..}|PlacementDuplicate{..}=>{let p=after.placements.iter().find(|p|!before.placements.iter().any(|old|old.id==p.id)).ok_or("Missing created placement")?;result.track_id=Some(p.track_id.clone());result.source_id=Some(p.source_id.clone());result.placement_id=Some(p.id.clone());},
+        MidiPlacementCreate{..}|PlacementCreate{..}|PlacementDuplicate{..}=>{let p=after.placements.iter().find(|p|!before.placements.iter().any(|old|old.id==p.id)).ok_or("Missing created placement")?;result.track_id=Some(p.track_id.clone());result.source_id=Some(p.source_id.clone());result.placement_id=Some(p.id.clone());},
         PlacementUpdate{placement_id,..}|PlacementDelete{placement_id}=>{let p=placement(placement_id)?;result.track_id=Some(p.track_id.clone());result.source_id=Some(p.source_id.clone());result.placement_id=Some(p.id.clone());},
         TrackPresentation{track_id,..}=>result.track_id=Some(track_id.clone()),TransportRange{..}=>{}
     }Ok(result)

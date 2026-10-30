@@ -7,8 +7,9 @@ export function workspaceMusicEdit(before,after){
   if(!changed.length)return null;
   if(changed.length!==1)throw Error('A MIDI gesture must edit one source.');
   const source=changed[0],old=before.sources.find(s=>s.id===source.id),sourceId=source.id;
-  if(!old||source.kind!=='midi')throw Error('Select an existing MIDI source.');
+  if(!old)throw Error('Select an existing source.');
   if(!same(old.automation,source.automation))return{kind:'automationSet',sourceId,lanes:source.automation};
+  if(source.kind!=='midi')throw Error('Select an existing MIDI source.');
   const removed=old.notes.filter(n=>!source.notes.some(next=>next.id===n.id));
   if(removed.length===1&&source.notes.length===old.notes.length-1)return{kind:'noteDelete',sourceId,noteId:removed[0].id};
   const notes=source.notes.filter(n=>!same(n,old.notes.find(prior=>prior.id===n.id)));

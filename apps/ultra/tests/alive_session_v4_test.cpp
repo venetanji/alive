@@ -1,3 +1,4 @@
+#include "alive_session_suffix_fixture.hpp"
 #include "../src-tauri/native/alive_session.hpp"
 #include "../src-tauri/native/backend.h"
 #include "canvas_callback_guard.hpp"
@@ -75,8 +76,8 @@ AliveSessionConfigV4 prepare(unsigned effects = 0) {
   c.events[1] = {1500, 0, ALIVE_SESSION_NOTE_OFF, 0, 60, 0};
   c.events[2] = {2000, 0, ALIVE_SESSION_NOTE_ON, 0, 64, 100};
   c.events[3] = {3000, 0, ALIVE_SESSION_NOTE_OFF, 0, 64, 0};
-  c.placements[0] = {0, 0, 0, 0, 512, 2048, 0};
-  c.placements[1] = {0, 0, 0, 0, 4096, 2048, 1024};
+  c.placements[0] = {0, 0, 0, 0, 512, 2048, 0,0,0,0};
+  c.placements[1] = {0, 0, 0, 0, 4096, 2048, 1024,0,0,0};
   return c;
 }
 AliveSessionStateV4 state() {
@@ -98,12 +99,12 @@ void assert_score_unchanged(AliveSessionStateV4 before, AliveSessionStateV4 afte
   assert(std::memcmp(&before,&after,sizeof before)==0);
 }
 void master_rejection_freshness_v4() {
-  auto c=prepare();assert(alive_session_configure_v4(&c,nullptr,0));
+  auto c=prepare();assert(configure_suffix_fixture(&c,nullptr,0));
   AliveSessionStateV4 score{};score.version=4;score.struct_bytes=sizeof score;
   AliveMasterStateV1 master{};master.version=1;master.struct_bytes=sizeof master;
   assert(alive_session_master_snapshot_v4(&score,&master)==ALIVE_MASTER_OK);
   auto before=score;auto legacy_before=state();auto master_before=master;const auto base=score.rejected;
-  assert(!alive_session_validate_prepared_v4(&c,nullptr,0,nullptr,0));
+  assert(!validate_prepared_suffix_fixture(&c,nullptr,0,nullptr,0));
   auto legacy_after=state();assert(legacy_after.rejected==base+1);
   assert_score_unchanged(legacy_before,legacy_after);
   assert(alive_session_master_snapshot_v4(&score,&master)==ALIVE_MASTER_OK);
@@ -114,7 +115,7 @@ void master_rejection_freshness_v4() {
   assert(alive_session_master_snapshot_v4(&score,&master)==ALIVE_MASTER_OK);
   assert(score.rejected==base+1);
   before=score;legacy_before=state();master_before=master;
-  assert(!alive_session_validate_prepared_v4(&c,nullptr,0,nullptr,0));
+  assert(!validate_prepared_suffix_fixture(&c,nullptr,0,nullptr,0));
   legacy_after=state();assert(legacy_after.rejected==base+2);
   assert_score_unchanged(legacy_before,legacy_after);
   assert(alive_session_master_snapshot_v4(&score,&master)==ALIVE_MASTER_OK);
@@ -123,7 +124,7 @@ void master_rejection_freshness_v4() {
   assert(std::memcmp(&master,&master_before,sizeof master)==0);
 }
 void master_v4_fifo_and_publication() {
-  auto c=prepare();assert(alive_session_configure_v4(&c,nullptr,0));
+  auto c=prepare();assert(configure_suffix_fixture(&c,nullptr,0));
   assert(alive_session_master_set(1,0.5,1)==ALIVE_MASTER_OK);
   AliveSessionStateV4 score{};score.version=4;score.struct_bytes=sizeof score;
   AliveMasterStateV1 master{};master.version=1;master.struct_bytes=sizeof master;
@@ -177,8 +178,8 @@ AliveSessionReceiptV4 request(unsigned kind = ALIVE_SESSION_V4_START, bool expec
 }
 std::vector<float> play(unsigned partition, unsigned effects = 0) {
   auto c = prepare(effects);
-  assert(alive_session_validate_v4(&c));
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(validate_suffix_fixture(&c));
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   assert(!alive_session_start());
   assert(!alive_session_seek(0));
   assert(!alive_session_base(0, 0, 1));
@@ -232,8 +233,8 @@ void boundary_cases() {
   // At O=1000: 64 stays held, 61 ends, and ordinary 60 follows chased 64.
   auto c = prepare(2);
   c.placement_count = c.tracks[0].placement_count = 2;
-  c.placements[0] = {0, 0, 0, 0, 512, 1024, 1000};
-  c.placements[1] = {0, 0, 0, 0, 1536, 1024, 1000};
+  c.placements[0] = {0, 0, 0, 0, 512, 1024, 1000,0,0,0};
+  c.placements[1] = {0, 0, 0, 0, 1536, 1024, 1000,0,0,0};
   c.events[0] = {0, 0, ALIVE_SESSION_NOTE_ON, 0, 61, 100};
   c.events[1] = {0, 0, ALIVE_SESSION_NOTE_ON, 0, 64, 100};
   c.events[2] = {500, 0, ALIVE_SESSION_AUTOMATION, 0, 0, 1000};
@@ -244,7 +245,7 @@ void boundary_cases() {
   c.sources[0].lane_count = 1;
   c.sources[0].owned_masks[0] = 1;
   c.devices[0].parameters[0].automated = 1;
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   trace_origin = state().absolute_frame;
   dispatch_count = 0;
   assert(ultra_external_start());
@@ -288,7 +289,7 @@ void refusals_and_receipts() {
   auto c = prepare();
   auto bad = c;
   bad.placements[1].start_frame = 1000;
-  assert(!alive_session_validate_v4(&bad));
+  assert(!validate_suffix_fixture(&bad));
   AliveSessionDiagnosticV4 diagnostic{};
   diagnostic.version = 4;
   diagnostic.struct_bytes = sizeof diagnostic;
@@ -296,28 +297,28 @@ void refusals_and_receipts() {
          diagnostic.error == ALIVE_SESSION_V4_BAD_PLACEMENT);
   bad = c;
   bad.placements[0].duration_frames = UINT64_MAX;
-  assert(!alive_session_validate_v4(&bad));
+  assert(!validate_suffix_fixture(&bad));
   bad = c;
-  bad.placements[0].source_offset = 4096;
-  assert(!alive_session_validate_v4(&bad));
+  bad.placements[0].start_marker = 4096;
+  assert(!validate_suffix_fixture(&bad));
   bad = c;
   bad.placements[0].loop_enabled = 1;
-  assert(alive_session_validate_v4(&bad));
+  assert(validate_suffix_fixture(&bad));
   bad = c;
   bad.event_count = bad.sources[0].event_count = 5;
   for (unsigned i = 0; i < 5; ++i)
     bad.events[i] = {0, 0, ALIVE_SESSION_NOTE_ON, 0, 60 + i, 100};
-  assert(!alive_session_validate_v4(&bad));
+  assert(!validate_suffix_fixture(&bad));
   assert(alive_session_diagnostic_v4(&diagnostic) &&
          diagnostic.error == ALIVE_SESSION_V4_BAD_SOURCE);
   bad = c;
   bad.placement_count = bad.tracks[0].placement_count = 8;
   for (unsigned i = 0; i < 8; ++i)
-    bad.placements[i] = {0, 0, 0, 0, i * 10u, 10, 0};
-  assert(!alive_session_validate_v4(&bad));
+    bad.placements[i] = {0, 0, 0, 0, i * 10u, 10, 0,0,0,0};
+  assert(!validate_suffix_fixture(&bad));
   assert(alive_session_diagnostic_v4(&diagnostic) &&
          diagnostic.error == ALIVE_SESSION_V4_WORK_LIMIT);
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   assert(ultra_external_start());
   AliveSessionStateV2 old_state{};
   old_state.version = 2;
@@ -403,8 +404,8 @@ void refusals_and_receipts() {
   before = state();
   bad = c;
   bad.preparation_revision = ++preparation;
-  bad.placements[0].source_offset = UINT64_MAX;
-  assert(!alive_session_configure_v4(&bad, nullptr, 0));
+  bad.placements[0].start_marker = UINT64_MAX;
+  assert(!configure_suffix_fixture(&bad, nullptr, 0));
   after = state();
   assert(before.preparation_revision == after.preparation_revision &&
          before.position == after.position);
@@ -413,12 +414,12 @@ void refusals_and_receipts() {
 void source_end_and_authenticated_edits() {
   auto c = prepare(2);
   c.placement_count = c.tracks[0].placement_count = 1;
-  c.placements[0] = {0, 0, 0, 0, 0, 4096, 0};
+  c.placements[0] = {0, 0, 0, 0, 0, 4096, 0,0,0,0};
   c.placements[1] = {};
   c.event_count = c.sources[0].event_count = 1;
   for (unsigned i = 1; i < 4; ++i)
     c.events[i] = {};
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   assert(ultra_external_start());
   request();
   render(1024);
@@ -444,8 +445,8 @@ void source_end_and_authenticated_edits() {
 }
 void rejected_candidate_identity() {
   auto c = prepare();
-  c.placements[0] = {0, 0, 0, 0, 0, 188, 0};
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  c.placements[0] = {0, 0, 0, 0, 0, 188, 0,0,0,0};
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   assert(ultra_external_start());
   request();
   render(188);
@@ -468,12 +469,12 @@ void rejected_start_lookup_preserves_natural_end() {
   auto c = prepare();
   c.length_frames = c.loop_end = c.sources[0].length_frames = 375;
   c.placement_count = c.tracks[0].placement_count = 1;
-  c.placements[0] = {0, 0, 0, 0, 0, 375, 0};
+  c.placements[0] = {0, 0, 0, 0, 0, 375, 0,0,0,0};
   c.placements[1] = {};
   c.event_count = c.sources[0].event_count = 1;
   for (unsigned i = 1; i < 4; ++i)
     c.events[i] = {};
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   assert(ultra_external_start());
   placement_steps = 0;
   dispatch_count = 0;
@@ -538,7 +539,7 @@ int main(int argc, char **argv) {
     AliveSessionLimitsV4 limits{};
     limits.version = 4;
     limits.struct_bytes = sizeof limits;
-    assert(alive_session_limits_v4(profile, &limits) && limits.features == (profile == 1 ? 7u : 0u));
+    assert(alive_session_limits_v4(profile, &limits) && limits.features == (profile == 1 ? 15u : 0u));
   }
   ultra::alive_session_test_dispatch = trace_event;
   ultra::alive_session_test_placement_charge = trace_placement;
@@ -547,7 +548,7 @@ int main(int argc, char **argv) {
     assert(play(partition) == reference);
   play(31, 2);
   auto c = prepare();
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   assert(ultra_external_start());
   request();
   render(1024);

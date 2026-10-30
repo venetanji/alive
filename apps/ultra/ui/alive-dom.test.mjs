@@ -11,6 +11,7 @@ class Element{
     this.classList={contains:name=>this.className.split(' ').includes(name),add:name=>{if(!this.classList.contains(name))this.className+=' '+name;},remove:name=>{this.className=this.className.split(' ').filter(n=>n!==name).join(' ');},toggle:(name,on)=>{if(on??!this.classList.contains(name))this.classList.add(name);else this.classList.remove(name);}};
   }
   append(...children){for(const child of children){child.parentElement=this;this.children.push(child);}}
+  insertBefore(child,before){child.parentElement=this;const at=this.children.indexOf(before);this.children.splice(at<0?this.children.length:at,0,child);}
   replaceChildren(...children){this.children=[];this.append(...children);}
   setAttribute(key,value){this.attrs[key]=String(value);if(key==='class')this.className=String(value);}
   getAttribute(key){return this.attrs[key]??null;}
@@ -310,6 +311,7 @@ function dom(file){
   const ids=new Map(),doc=new Element('document',null);doc.doc=doc;doc.activeElement=null;doc.createElement=tag=>new Element(tag,doc);doc.createElementNS=(_,tag)=>new Element(tag,doc);doc.createTextNode=text=>{const e=new Element('text',doc);e.textContent=text;return e;};doc.getElementById=id=>ids.get(id);
   const html=readFileSync(new URL(file,import.meta.url),'utf8');
   for(const[markup,tag,id]of html.matchAll(/<([\w-]+)\b[^>]*\bid="([^"]+)"[^>]*>/g)){const element=new Element(tag,doc);element.id=id;element.hidden=/\bhidden\b/.test(markup);const text=html.slice(html.indexOf(markup)+markup.length).match(/^[^<]+/);if(text)element.textContent=text[0];ids.set(id,element);}
+  if(ids.has('piano-roll')){const area=doc.createElement('div');area.append(ids.get('piano-roll'));ids.set('piano-test-area',area);}
   if(ids.has('master-meter'))ids.get('master-meter').append(doc.createElement('i'),doc.createElement('i'));
   const timeouts=[],win={setTimeout:(fn,delay)=>timeouts.push({fn,delay}),addEventListener(){},removeEventListener(){}};
   return{doc,win,ids,timeouts,find:label=>[...ids.values()].flatMap(e=>[e,...descendants(e)]).find(e=>e.attrs['aria-label']===label)};
@@ -790,8 +792,8 @@ function workspaceState(){
     const c=t.slots[0],sourceId=`source-independent-${i}`,placementId=`placement-${i}`;
     s.document.sources.push({kind:'midi',id:sourceId,trackId:t.id,name:c.name,lengthBeats:c.lengthBeats,notes:c.notes,automation:c.automation});
     t.chain={kind:'midi',instrument:t.device};t.color=i?'#86a59c':'#c77b61';delete t.device;delete t.defaultClipId;
-    t.slots[0]={id:c.id,name:c.name,sourceId,sourceOffset:{kind:'beats',value:0},loopEnabled:true};
-    s.document.placements.push({id:placementId,trackId:t.id,sourceId,start:0,duration:s.document.lengthBeats,sourceOffset:{kind:'beats',value:0},loopEnabled:true});
+    t.slots[0]={id:c.id,name:c.name,sourceId,region:{start:0,end:8,loopStart:0,loopEnd:8,loopEnabled:true}};
+    s.document.placements.push({id:placementId,trackId:t.id,sourceId,start:0,duration:s.document.lengthBeats,region:{start:0,end:8,loopStart:0,loopEnd:8,loopEnabled:true}});
     s.trackChains.push({trackId:t.id,kind:'midi',instrumentId:t.chain.instrument.instanceId,effectIds:[]});
     s.preparedWorkspaces.sources.push({trackId:t.id,sourceId,kind:'midi',name:c.name,lengthFrames:'205714'});
     s.preparedWorkspaces.slots.push({trackId:t.id,slotId:c.id,slot:0,sourceId,name:c.name,sourceOffsetFrames:'0',loopEnabled:true});
@@ -808,7 +810,7 @@ test('piano Preview is set-wide, initially off, and sends held keys to native wi
   const view=mountAlive({...page,invoke});await settle();const toggle=page.find('MIDI note Preview');
   assert.equal(toggle.attrs['aria-pressed'],'false');assert.equal(toggle.disabled,false);
   await toggle.fire('click');assert.equal(toggle.attrs['aria-pressed'],'true');
-  const piano=page.ids.get('piano-roll');await piano.fire('pointerdown',{pointerId:70,clientX:5,clientY:25});await settle();
+  const piano=page.ids.get('piano-roll');piano.getBoundingClientRect=()=>({left:0,top:0,width:100,height:100});await piano.fire('wheel',{deltaX:0,deltaY:0,clientX:5,clientY:80});await piano.fire('pointerdown',{pointerId:70,clientX:5,clientY:80});await settle();
   assert.equal(previewCalls.length,1);assert.equal(previewCalls[0].action,'note');assert.equal(previewCalls[0].trackId,'track-1');
   await piano.fire('pointerup',{pointerId:70});await settle();assert.equal(previewCalls.at(-1).action,'release');
   await page.find('Select Harmony slot 1').fire('click');assert.equal(toggle.attrs['aria-pressed'],'true');
@@ -868,28 +870,19 @@ for(const effectFirst of [false,true])test(`v4 unavailable audio chain has expli
   if(effectFirst)initial.deviceInstances['audio-effect']=structuredClone(initial.deviceInstances[reference.instanceId]);
   initial.runtime.tracks[0]={...initial.runtime.tracks[0],activeSourceId:null,activeSlotId:null,activePlacementId:null,phase:null};
   const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
-  assert.equal(page.ids.get('add-note').disabled,true);assert.equal(page.find('Create clip').disabled,true);
+  assert.equal(page.ids.get('add-note').disabled,true);assert.equal(page.find('Import WAV...').disabled,undefined);
   assert.equal(page.ids.get('notes').children.length,0);assert.equal(page.find('Note 1 pitch'),undefined);
   if(effectFirst){const bypass=descendants(page.ids.get('chain')).find(e=>e.attrs['aria-label']?.startsWith('Bypass '));assert.equal(bypass.disabled,false);}
   view.dispose();
 });
 
-for(const firstField of ['name','offset'])test(`v4 queued slot ${firstField} edit preserves the other accepted field`,async()=>{
-  const initial=workspaceState(),page=dom('./alive.html'),native=backend(initial);let release;
-  const view=mountAlive({...page,invoke:async(name,args)=>{
-    if(name!=='alive_workspace_edit')return native.invoke(name,args);
-    native.calls.push({name,args});if(!release)await new Promise(resolve=>{release=resolve;});
-    native.snapshot.draft??=structuredClone(native.snapshot.document);const op=args.operation;
-    const slot=native.snapshot.draft.tracks.find(t=>t.id===op.trackId).slots.find(s=>s?.id===op.slotId);
-    Object.assign(slot,{name:op.name,sourceOffset:op.sourceOffset,loopEnabled:op.loopEnabled});native.snapshot.draftRevision++;
-    return{snapshot:structuredClone(native.snapshot),affected:{trackId:op.trackId,slotId:op.slotId,sourceId:slot.sourceId,noteId:null,placementId:null}};
-  }});await settle();
-  const name=page.find('Clip name'),offset=page.find('Slot source offset');name.value='Renamed slot';offset.value='0.25';
-  await(firstField==='name'?name:offset).fire('change');await(firstField==='name'?offset:name).fire('change');
-  assert.equal(native.calls.filter(c=>c.name==='alive_workspace_edit').length,1);release();await settle();await settle();await settle();
+for(const firstField of ['name','start'])test(`v4 queued slot ${firstField} edit preserves the other accepted field`,async()=>{
+  const initial=workspaceState(),page=dom('./alive.html'),native=timelineBackend(initial);let release,held=true;
+  const view=mountAlive({...page,invoke:async(name,args)=>{if(name==='alive_workspace_edit'&&held){held=false;await new Promise(resolve=>release=resolve);}return native.invoke(name,args);}});await settle();
+  const name=page.find('Clip name'),start=page.find('Clip Start');name.value='Renamed slot';start.value='.25';
+  await(firstField==='name'?name:start).fire('change');await(firstField==='name'?start:name).fire('change');release();await settle();await settle();await settle();
   const edits=native.calls.filter(c=>c.name==='alive_workspace_edit');assert.deepEqual(edits.map(c=>c.args.draftRevision),[0,1]);
-  assert.deepEqual(edits[1].args.operation,{kind:'slotUpdate',trackId:'track-1',slotId:'clip-track-1',name:'Renamed slot',sourceOffset:{kind:'beats',value:0.25},loopEnabled:true});
-  assert.deepEqual(view.model.document().tracks[0].slots[0],{...initial.document.tracks[0].slots[0],name:'Renamed slot',sourceOffset:{kind:'beats',value:0.25}});view.dispose();
+  const slot=view.model.document().tracks[0].slots[0];assert.equal(slot.name,'Renamed slot');assert.equal(slot.region.start,.25);assert.equal(slot.region.loopStart,0);view.dispose();
 });
 
 for(const field of ['name','offset'])for(const boundary of ['rewire','delete'])test(`v4 queued slot ${field} refuses an earlier ${boundary}`,async()=>{
@@ -903,7 +896,7 @@ for(const field of ['name','offset'])for(const boundary of ['rewire','delete'])t
     native.snapshot.draftRevision++;
     return{snapshot:structuredClone(native.snapshot),affected:{trackId:'track-1',slotId:slot.id,sourceId:slot.sourceId,noteId:null,placementId:null}};
   }});await settle();
-  const input=page.find(field==='name'?'Clip name':'Slot source offset');
+  const input=page.find(field==='name'?'Clip name':'Clip Start');
   await page.find(boundary==='rewire'?'Make source independent':'Delete clip').fire('click');input.value=field==='name'?'Stale name':'0.25';await input.fire('change');
   release();await settle();await settle();await settle();
   assert.equal(native.calls.filter(c=>c.name==='alive_workspace_edit').length,1);assert.match(page.ids.get('notice').textContent,/slot or source changed/);view.dispose();
@@ -919,7 +912,7 @@ function timelineBackend(initial=workspaceState()){
     native.calls.push({name,args});const op=args.operation,document=structuredClone(initial.draft??initial.document),affected={trackId:op.trackId??null,sourceId:op.sourceId??null,slotId:null,placementId:null,noteId:null};
     if(op.kind==='sourceCreateMidi'){affected.sourceId=`source-created-${initial.draftRevision}`;document.sources.push({id:affected.sourceId,kind:'midi',trackId:op.trackId,name:op.name,lengthBeats:op.lengthBeats,notes:[],automation:[]});}
     else if(op.kind==='placementCreate'){if(document.placements.some(p=>p.trackId===op.trackId&&op.start<p.start+p.duration&&op.start+op.duration>p.start))throw Error('Placement overlap');affected.placementId=`placement-created-${initial.draftRevision}`;const {kind,...p}=op;document.placements.push({id:affected.placementId,...p});}
-    else if(op.kind==='placementUpdate'){const p=document.placements.find(p=>p.id===op.placementId);affected.trackId=p.trackId;affected.sourceId=p.sourceId;affected.placementId=p.id;Object.assign(p,{start:op.start,duration:op.duration,sourceOffset:op.sourceOffset,loopEnabled:op.loopEnabled});}
+    else if(op.kind==='placementUpdate'){const p=document.placements.find(p=>p.id===op.placementId);affected.trackId=p.trackId;affected.sourceId=p.sourceId;affected.placementId=p.id;Object.assign(p,{start:op.start,duration:op.duration,region:op.region});}
     else if(op.kind==='noteCreate'){const s=document.sources.find(s=>s.id===op.sourceId),{kind,sourceId,...note}=op;affected.trackId=s.trackId;affected.noteId=`note-created-${initial.draftRevision}`;s.notes.push({id:affected.noteId,...note});}
     else if(op.kind==='placementDuplicate'){const p=document.placements.find(p=>p.id===op.placementId);affected.trackId=p.trackId;affected.sourceId=p.sourceId;affected.placementId=`placement-copy-${initial.draftRevision}`;document.placements.push({...structuredClone(p),id:affected.placementId,start:op.start});}
     else if(op.kind==='placementDelete'){const p=document.placements.find(p=>p.id===op.placementId);affected.trackId=p.trackId;affected.sourceId=p.sourceId;affected.placementId=p.id;document.placements=document.placements.filter(p=>p.id!==op.placementId);}
@@ -927,7 +920,10 @@ function timelineBackend(initial=workspaceState()){
     else if(op.kind==='noteUpdate'){const source=document.sources.find(s=>s.id===op.sourceId),note=source.notes.find(n=>n.id===op.noteId);Object.assign(note,{beat:op.beat,duration:op.duration,pitch:op.pitch,velocity:op.velocity});affected.trackId=source.trackId;affected.noteId=note.id;}
     else if(op.kind==='sourceRename'){const source=document.sources.find(s=>s.id===op.sourceId);source.name=op.name;affected.trackId=source.trackId;}
     else if(op.kind==='sourceLength'){const source=document.sources.find(s=>s.id===op.sourceId);source.lengthBeats=op.lengthBeats;affected.trackId=source.trackId;}
-    else if(op.kind==='slotAssign'){const t=document.tracks.find(t=>t.id===op.trackId);affected.slotId=`assigned-${initial.draftRevision}`;t.slots[op.slot]={id:affected.slotId,name:op.name,sourceId:op.sourceId,sourceOffset:op.sourceOffset,loopEnabled:op.loopEnabled};}
+    else if(op.kind==='slotAssign'){const t=document.tracks.find(t=>t.id===op.trackId);affected.slotId=`assigned-${initial.draftRevision}`;t.slots[op.slot]={id:affected.slotId,name:op.name,sourceId:op.sourceId,region:op.region};}
+    else if(op.kind==='slotUpdate'){const slot=document.tracks.find(t=>t.id===op.trackId).slots.find(s=>s?.id===op.slotId);Object.assign(slot,{name:op.name,region:op.region});Object.assign(affected,{slotId:slot.id,sourceId:slot.sourceId});}
+    else if(op.kind==='regionSet'){const o=op.occurrence,p=o.kind==='slot'?document.tracks.find(t=>t.id===o.trackId).slots.find(s=>s?.id===o.slotId):document.placements.find(p=>p.id===o.placementId);p.region=op.region;Object.assign(affected,{trackId:o.trackId??p.trackId,sourceId:p.sourceId,slotId:o.slotId??null,placementId:o.placementId??null});}
+    else if(op.kind==='midiClipCreate'||op.kind==='midiPlacementCreate'){const t=document.tracks.find(t=>t.id===op.trackId);affected.sourceId=`created-source-${initial.draftRevision}`;const length=op.duration??4;document.sources.push({kind:'midi',id:affected.sourceId,trackId:t.id,name:op.name,lengthBeats:length,notes:[],automation:[]});const region={start:0,end:length,loopStart:0,loopEnd:length,loopEnabled:true};if(op.kind==='midiClipCreate'){affected.slotId=`created-slot-${initial.draftRevision}`;t.slots[op.slot]={id:affected.slotId,name:op.name,sourceId:affected.sourceId,region};}else{affected.placementId=`created-placement-${initial.draftRevision}`;document.placements.push({id:affected.placementId,trackId:t.id,sourceId:affected.sourceId,start:op.start,duration:op.duration,region});}}
     else if(op.kind==='transportRange'){const {kind,...values}=op;Object.assign(document,values);}
     else throw Error(`Unsupported test operation ${op.kind}`);
     history.push(structuredClone(initial.draft??initial.document));future.length=0;initial.draft=document;initial.draftRevision++;initial.history={canUndo:true,canRedo:false};return{snapshot:structuredClone(initial),affected};
@@ -975,12 +971,12 @@ for(const first of ['start','offset'])test(`queued placement ${first} resolves u
   const page=dom('./alive.html'),native=timelineBackend(initial);let release,held=true;
   const view=mountAlive({...page,invoke:async(name,args)=>{if(name==='alive_workspace_edit'&&held){held=false;await new Promise(resolve=>release=resolve);}return native.invoke(name,args);}});await settle();
   await page.find('Select placement placement-0').fire('click');
-  const a=page.find(first==='start'?'Placement start':'Placement source offset'),b=page.find(first==='start'?'Placement source offset':'Placement start');a.value=first==='start'?'2':'.5';await a.fire('change');b.value=first==='start'?'.5':'2';await b.fire('change');release();await settle();await settle();
-  const operations=native.calls.filter(c=>c.name==='alive_workspace_edit');assert.equal(operations.length,2);assert.equal(operations[1].args.draftRevision,1);const p=view.model.document().placements[0];assert.equal(p.start,2);assert.equal(p.sourceOffset.value,.5);view.dispose();
+  const a=page.find(first==='start'?'Placement start':'Placement source Start'),b=page.find(first==='start'?'Placement source Start':'Placement start');a.value=first==='start'?'2':'.5';await a.fire('change');b.value=first==='start'?'.5':'2';await b.fire('change');release();await settle();await settle();
+  const operations=native.calls.filter(c=>c.name==='alive_workspace_edit');assert.equal(operations.length,2);assert.equal(operations[1].args.draftRevision,1);const p=view.model.document().placements[0];assert.equal(p.start,2);assert.equal(p.region.start,.5);view.dispose();
 });
 for(const boundary of ['delete','independent'])test(`queued placement offset refuses earlier ${boundary} without retargeting`,async()=>{
   const initial=workspaceState(),page=dom('./alive.html'),native=timelineBackend(initial);let release,held=true;
-  const view=mountAlive({...page,invoke:async(name,args)=>{if(name==='alive_workspace_edit'&&held){held=false;await new Promise(resolve=>release=resolve);}return native.invoke(name,args);}});await settle();await page.find('Select placement placement-0').fire('click');const offset=page.find('Placement source offset');
+  const view=mountAlive({...page,invoke:async(name,args)=>{if(name==='alive_workspace_edit'&&held){held=false;await new Promise(resolve=>release=resolve);}return native.invoke(name,args);}});await settle();await page.find('Select placement placement-0').fire('click');const offset=page.find('Placement source Start');
   await page.find(boundary==='delete'?'Delete placement':'Make placement independent').fire('click');offset.value='.5';await offset.fire('change');release();await settle();await settle();
   assert.equal(native.calls.filter(c=>c.name==='alive_workspace_edit').length,1);assert.match(page.ids.get('notice').textContent,/placement or source changed/);view.dispose();
 });
@@ -1097,4 +1093,139 @@ test('focused launch selector restores accepted intent after refusal and generat
   const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:async(name,args)=>{if(name==='alive_launch_settings')throw Error('Prepared launch scope changed');return native.invoke(name,args);}});await settle();
   const select=page.ids.get('launch-quantization');select.focus();select.value='eighth';await select.fire('change');assert.equal(select.value,'bar1');
   native.snapshot.generation++;native.snapshot.snapshotSequence='2';native.snapshot.launch.globalQuantization='bar4';await view.refresh();assert.equal(select.value,'bar4');view.dispose();
+});
+
+
+test('empty MIDI slot creation is one immediate command and opens its one-bar editor while rolling',async()=>{
+  const page=dom('./alive.html'),native=timelineBackend(),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const cell=page.find('Select Pulse slot 2');await cell.fire('click');await cell.fire('dblclick');
+  const operations=native.calls.filter(c=>c.name==='alive_workspace_edit').map(c=>c.args.operation);
+  assert.deepEqual(operations,[{kind:'midiClipCreate',trackId:'track-1',slot:1,name:'Clip 2'}]);
+  assert.equal(view.model.document().sources.at(-1).lengthBeats,4);assert.equal(view.model.snapshot().state.playing,1);assert.ok(page.find('Clip Start'));view.dispose();
+});
+test('track creation shortcuts insert typed empty tracks after selection and ignore text editing',async()=>{
+  const initial=workspaceState();initial.capabilities.maxTracks=8;const page=dom('./alive.html'),native=backend(initial);
+  const view=mountAlive({...page,invoke:async(name,args)=>{if(name!=='alive_workspace_track')return native.invoke(name,args);native.calls.push({name,args});return{snapshot:structuredClone(initial),affected:{trackId:null}};}});await settle();
+  for(const shiftKey of [false,true])await page.doc.fire('keydown',{target:page.ids.get('session-workspace'),key:'t',ctrlKey:true,shiftKey});
+  await page.doc.fire('keydown',{target:page.doc.createElement('input'),key:'t',ctrlKey:true});
+  const commands=native.calls.filter(c=>c.name==='alive_workspace_track');assert.deepEqual(commands.map(c=>c.args.operation),[{kind:'addAudio',afterTrackId:'track-1'},{kind:'addMidi',afterTrackId:'track-1'}]);
+  assert.ok(page.find('Insert Audio Track'));assert.ok(page.find('Insert MIDI Track'));view.dispose();
+});
+test('late track insertion preserves a newer selection by track identity',async()=>{
+  const initial=workspaceState();initial.capabilities.maxTracks=8;
+  const page=dom('./alive.html'),native=backend(initial);let release;
+  const view=mountAlive({...page,invoke:async(name,args)=>{
+    if(name!=='alive_workspace_track')return native.invoke(name,args);
+    await new Promise(resolve=>release=resolve);
+    const track={id:'inserted-audio',name:'Inserted Audio',color:'#91b9ed',chain:{kind:'audio'},effects:[],gain:1,mute:false,solo:false,slots:[null,null,null,null]};
+    native.snapshot.document.tracks.splice(1,0,track);native.snapshot.draftRevision++;
+    return{snapshot:structuredClone(native.snapshot),affected:{trackId:track.id}};
+  }});await settle();
+  await page.find('Insert Audio Track').fire('click');await page.find('Select Harmony slot 1').fire('click');
+  release();await settle();await settle();
+  assert.match(page.ids.get('clip-title').textContent,/Harmony/);assert.equal(page.find('Select Harmony slot 1').attrs['aria-pressed'],'true');view.dispose();
+});
+for(const operation of ['track','import'])test(`queued ${operation} creation cannot cross Open with reused track IDs`,async()=>{
+  const initial=workspaceState();initial.capabilities.maxTracks=8;
+  if(operation==='import'){initial.document.tracks[0].chain={kind:'audio'};initial.document.tracks[0].slots=[null,null,null,null];}
+  const page=dom('./alive.html'),native=backend(initial),boundary=delayedBoundary(native,'alive_file',snapshot=>{snapshot.generation++;snapshot.draftRevision++;snapshot.document.title='Replacement';});
+  const view=mountAlive({...page,invoke:boundary.invoke});await settle();await page.ids.get('open').fire('click');
+  if(operation==='track')await page.find('Insert Audio Track').fire('click');else await page.find('Select Pulse slot 1').fire('dblclick');
+  boundary.release();await settle();await settle();
+  assert.equal(native.calls.filter(c=>c.name===`alive_${operation==='track'?'workspace_track':'audio_import'}`).length,0);view.dispose();
+});
+test('browser instrument loading retains the existing empty MIDI track selection',async()=>{
+  const initial=workspaceState(),instrument=initial.document.tracks[0].chain.instrument;
+  initial.state.playing=0;initial.capabilities.maxTracks=8;initial.document.tracks[0].chain.instrument=null;
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:async(name,args)=>{
+    if(name!=='alive_device')return native.invoke(name,args);
+    native.calls.push({name,args});initial.document.tracks[0].chain.instrument=instrument;initial.generation++;initial.draftRevision++;return structuredClone(initial);
+  }});await settle();
+  const row=descendants(page.ids.get('browser-library')).find(e=>e.className==='browser-result'&&e.getAttribute('data-entry')?.startsWith('device:'));
+  assert.ok(row);await row.fire('dblclick');await settle();
+  assert.equal(native.calls.find(c=>c.name==='alive_device').args.trackId,'track-1');assert.match(page.ids.get('clip-title').textContent,/Pulse/);view.dispose();
+});
+test('queued browser instrument load fills its originating rootless track and preserves newer selection',async()=>{
+  const initial=workspaceState(),instrument=initial.document.tracks[0].chain.instrument;
+  initial.state.playing=0;initial.capabilities.maxTracks=8;initial.document.tracks[0].chain.instrument=null;
+  const page=dom('./alive.html'),native=backend(initial),boundary=delayedBoundary(native,'alive_mixer',()=>{});
+  const view=mountAlive({...page,invoke:async(name,args)=>{
+    if(name!=='alive_device')return boundary.invoke(name,args);
+    native.calls.push({name,args});initial.document.tracks.find(t=>t.id===args.trackId).chain.instrument=instrument;
+    initial.generation++;initial.draftRevision++;return structuredClone(initial);
+  }});await settle();
+  const gain=page.find('Pulse gain');gain.value='.713';await gain.fire('change');
+  const row=descendants(page.ids.get('browser-library')).find(e=>e.className==='browser-result'&&e.getAttribute('data-entry')?.startsWith('device:'));
+  assert.ok(row);await row.fire('dblclick');await page.find('Select Harmony slot 1').fire('click');
+  boundary.release();await settle();await settle();
+  assert.deepEqual(native.calls.filter(c=>c.name==='alive_workspace_track'),[]);
+  assert.equal(native.calls.find(c=>c.name==='alive_device')?.args.trackId,'track-1');
+  assert.equal(view.model.document().tracks[0].chain.instrument.instanceId,instrument.instanceId);
+  assert.match(page.ids.get('clip-title').textContent,/Harmony/);assert.equal(page.find('Select Harmony slot 1').attrs['aria-pressed'],'true');view.dispose();
+});
+test('browser can fill a rootless MIDI track at eight logical tracks while enforcing device capacity',async()=>{
+  const initial=workspaceState();initial.state.playing=0;initial.capabilities.maxTracks=8;initial.capabilities.maxDevices=16;
+  initial.document.tracks[0].chain.instrument=null;
+  for(let i=3;i<=8;i++)initial.document.tracks.push({id:`track-${i}`,name:`Audio ${i}`,color:'#91b9ed',chain:{kind:'audio'},effects:[],gain:1,mute:false,solo:false,slots:[null,null,null,null]});
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const row=descendants(page.ids.get('browser-library')).find(e=>e.className==='browser-result'&&e.getAttribute('data-entry')?.startsWith('device:'));
+  assert.ok(row);await row.fire('click');const load=descendants(page.ids.get('browser-library')).find(e=>e.className==='browser-load');
+  assert.equal(page.ids.get('add-track').disabled,false);assert.equal(load.disabled,false);
+  assert.equal(page.ids.get('insert-audio-track').disabled,true);assert.equal(page.ids.get('insert-midi-track').disabled,true);
+  await load.fire('click');assert.equal(native.calls.find(c=>c.name==='alive_device')?.args.trackId,'track-1');assert.deepEqual(native.calls.filter(c=>c.name==='alive_workspace_track'),[]);
+  await page.find('Select Harmony slot 1').fire('click');assert.equal(page.ids.get('add-track').disabled,true);assert.equal(load.disabled,true);
+  await page.find('Select Pulse slot 1').fire('click');assert.equal(load.disabled,false);
+  native.snapshot.capabilities.maxDevices=1;native.snapshot.snapshotSequence='2';await view.refresh();
+  assert.equal(page.ids.get('add-track').disabled,true);assert.equal(load.disabled,true);view.dispose();
+});
+test('blank MIDI time drag then Ctrl+L sets independent occurrence loop and preserves source and End',async()=>{
+  const initial=workspaceState(),original=structuredClone(initial.document.sources[0]),page=dom('./alive.html'),native=timelineBackend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const piano=page.ids.get('piano-roll');piano.getBoundingClientRect=()=>({left:0,top:0,width:640,height:218});
+  await piano.fire('wheel',{deltaY:0,deltaX:0,clientX:100,clientY:90});const g={pad:48,width:640,length:8},x=beat=>g.pad+beat/g.length*(g.width-g.pad);
+  await piano.fire('pointerdown',{pointerId:41,clientX:x(2),clientY:190});await piano.fire('pointermove',{pointerId:41,clientX:x(6),clientY:190});await piano.fire('pointerup',{pointerId:41});
+  await piano.fire('keydown',{key:'l',ctrlKey:true});
+  const op=native.calls.find(c=>c.args.operation?.kind==='regionSet')?.args.operation;assert.ok(op);
+  assert.deepEqual(op.region,{start:2,end:8,loopStart:2,loopEnd:6,loopEnabled:true});assert.deepEqual(view.model.document().sources[0],original);view.dispose();
+});
+test('audio empty slot opens real import command and shares waveform loop controls',async()=>{
+  const initial=workspaceState();initial.document.tracks[0].chain={kind:'audio'};initial.document.tracks[0].slots=[null,null,null,null];
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:async(name,args)=>{if(name!=='alive_audio_import')return native.invoke(name,args);native.calls.push({name,args});return null;}});await settle();
+  const cell=page.find('Select Pulse slot 2');await cell.fire('click');await cell.fire('dblclick');
+  assert.equal(native.calls.filter(c=>c.name==='alive_audio_import').length,1);assert.equal(native.calls.filter(c=>c.name==='alive_workspace_edit').length,0);view.dispose();
+});
+
+test('workspace queue waits for APPLIED before selecting created clip and sending the next edit',async()=>{
+  const initial=workspaceState(),page=dom('./alive.html'),native=timelineBackend(initial);let candidate=null,ready=false;
+  initial.midi={pending:false,publication:{status:3,serial:'0',error:0}};
+  const invoke=async(name,args)=>{
+    if(name==='alive_workspace_edit'&&!candidate){candidate=args;initial.midi={pending:true,publication:{status:1,serial:'1',error:0}};return{snapshot:structuredClone(initial),affected:{trackId:'track-1',sourceId:'created-source-0',slotId:'created-slot-0'}};}
+    if(name==='alive_current'&&candidate&&ready){ready=false;await native.invoke('alive_workspace_edit',candidate);initial.midi={pending:false,publication:{status:3,serial:'1',error:0}};}
+    return native.invoke(name,args);
+  };
+  const view=mountAlive({...page,invoke});await settle();const cell=page.find('Select Pulse slot 2');await cell.fire('click');await cell.fire('dblclick');
+  assert.equal(view.model.document().tracks[0].slots[1],null);assert.match(page.ids.get('draft-status').textContent,/Updating playback/);
+  const tempo=page.ids.get('tempo');tempo.value='120';await tempo.fire('change');assert.equal(native.calls.filter(c=>c.name==='alive_workspace_edit').length,0);
+  ready=true;await new Promise(resolve=>setTimeout(resolve,60));await settle();
+  assert.equal(view.model.document().tracks[0].slots[1].id,'created-slot-0');assert.equal(view.model.document().tempo,120);
+  assert.deepEqual(native.calls.filter(c=>c.name==='alive_workspace_edit').map(c=>c.args.operation.kind),['midiClipCreate','transportRange']);assert.equal(page.find('Select Pulse slot 2').attrs['aria-pressed'],'true');view.dispose();
+});
+
+test('MIDI source preservation also holds when an audio waveform time range becomes its loop',async()=>{
+  const initial=workspaceState(),t=initial.document.tracks[0],id=t.slots[0].sourceId;
+  t.chain={kind:'audio'};initial.document.sources[0]={kind:'audio',id,trackId:t.id,name:'Owned WAV',file:{frames:'192000',sampleRate:48000,channels:2},sourceTempo:120,warpMode:'repitch',automation:[]};
+  initial.preparedWorkspaces.sources[0]={sourceId:id,kind:'audio',waveformPeaks:[[-.8,.5],[-.3,.7]]};
+  const original=structuredClone(initial.document.sources[0]),page=dom('./alive.html'),native=timelineBackend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();const piano=page.ids.get('piano-roll');piano.getBoundingClientRect=()=>({left:0,top:0,width:640,height:218});await piano.fire('wheel',{deltaX:0,deltaY:0,clientX:100,clientY:150});
+  const x=beat=>48+beat/8*(640-48);await piano.fire('pointerdown',{pointerId:90,clientX:x(2),clientY:180});await piano.fire('pointermove',{pointerId:90,clientX:x(6),clientY:180});await piano.fire('pointerup',{pointerId:90});await piano.fire('keydown',{key:'l',ctrlKey:true});
+  assert.deepEqual(view.model.document().tracks[0].slots[0].region,{start:2,end:8,loopStart:2,loopEnd:6,loopEnabled:true});assert.deepEqual(view.model.document().sources[0],original);assert.ok(descendants(piano).some(e=>e.attrs.class==='audio-waveform'));view.dispose();
+});
+
+test('Stop can cancel an outstanding musical publication without waiting behind it',async()=>{
+  const initial=workspaceState(),page=dom('./alive.html'),native=backend(initial);initial.midi={pending:false,publication:{status:3,serial:'0',error:0}};
+  const invoke=async(name,args)=>{
+    if(name==='alive_workspace_edit'){initial.midi={pending:true,publication:{status:1,serial:'1',error:0}};return{snapshot:structuredClone(initial),affected:{trackId:'track-1'}};}
+    if(name==='alive_transport'&&args.action==='stop'){native.calls.push({name,args});initial.state.playing=0;initial.midi={pending:false,publication:{status:6,serial:'1',error:13}};return;}
+    return native.invoke(name,args);
+  };
+  const view=mountAlive({...page,invoke});await settle();const cell=page.find('Select Pulse slot 2');await cell.fire('click');await cell.fire('dblclick');await page.ids.get('stop').fire('click');
+  const stopped=native.calls.some(c=>c.name==='alive_transport'&&c.args.action==='stop');initial.midi.pending=false;await new Promise(resolve=>setTimeout(resolve,30));assert.equal(stopped,true);view.dispose();
 });

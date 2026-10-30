@@ -34,7 +34,7 @@ Alive uses application identifier `org.alive.session`, separate from Ultra's
 `org.alive.ultra.research`. The old `ultra --alive` entry remains compatible.
 
 Starting without a file, or choosing **New session**, opens the bundled
-`empty-workspaces.alive`: one MIDI instrument track with empty slots and a
+`empty-workspaces.alive`: one empty MIDI track with empty slots and a
 working Arrangement timeline. The populated examples remain available through
 Open. New sessions do not need an explicit format conversion.
 
@@ -42,7 +42,7 @@ On the local test machine, open **Alive (Test)** from the desktop app launcher.
 Its desktop entry selects a versioned, locally verified build; it does not
 rebuild on launch. Existing windows keep their original executable and project.
 
-## MIDI Editing And Detail Size
+## Clips, Tracks And Detail Size
 
 Completed note gestures update admitted MIDI sources in native playback without
 Prepare / Apply or a transport restart. Undo/Redo uses the same publication path.
@@ -51,10 +51,35 @@ note selection, creation or pitch movement through the selected instrument and
 effects. Preview can sound while transport is stopped. It starts Audio when
 needed, while ordinary note editing does not.
 
-Structural, tempo and automation changes still use the pending-edit workflow.
-If a source already has incompatible pending edits, its notes remain pending
-until Apply. Dense schedules can refuse live editing/Preview within the current
-native work limits; the UI shows the capability or refusal reason.
+Workspace clips, regions, tempo, automation and empty tracks use the same
+immediate publication workflow. The document and Undo history change only when
+playback acknowledges the edit. No edit confirmation or stopped Apply is needed.
+Dense schedules can refuse an edit within the current native work limits; a
+refusal retains the installed music and history. Device graph installation still
+requires stopped transport. Preview has its own workload admission.
+
+Use **+ Audio Track** or Ctrl+T, and **+ MIDI Track** or Ctrl+Shift+T. A new track
+appears immediately after the selected track while transport continues. New
+MIDI tracks are empty; use **Load instrument** when you want sound. Double-click
+an empty MIDI Session slot, or select it and press Ctrl+Shift+M, to create a
+one-bar looping clip in one Undo step. In Arrangement, Ctrl+Shift+M creates a
+MIDI clip over the selected time span.
+
+Drag blank time in either MIDI or audio Clip View, then press Ctrl+L or
+**Loop Selection**. This enables the selected loop and moves clip Start to the
+selection start, preserving clip End and the source contents. Drag Start
+independently for an introduction before the loop. Start, End, Loop Position
+and Loop Length also have numeric controls; drag the brace or its edges to
+move/resize the loop. In Arrangement, Ctrl+L sets the song loop from its time
+selection. Song loop, occurrence markers and source content are separate.
+
+Double-click an empty audio slot to import a WAV. Audio clips show the prepared
+waveform and share the same selection/marker controls. The initial Warp mode is
+**Re-Pitch**: changing set tempo changes playback speed and pitch together.
+Supported files are mono/stereo PCM 8/16/24/32-bit or float 32/64-bit WAV,
+8-192 kHz, up to 24 MiB and 60 seconds per file. Preparation is stereo 48 kHz,
+bounded to 60 seconds per source and 64 MiB total PCM. Recording, input routing,
+monitoring and arm remain upcoming work.
 
 Drag the separator above **Clip / Devices** upward for a larger bottom panel.
 Double-click it, or use **Maximize detail**, to give the editor the working area;
@@ -85,15 +110,12 @@ bundled session from outside the repository, using the bundled Ultra device.
 Platform builds still require their native runners; Linux results do not qualify
 the Windows or macOS artifacts.
 
-The default First Light session contains Pulse and Harmony instrument tracks,
-an eight-beat C / Am / F / G progression, and cutoff/level automation. New
-creates a fresh copy of this template. Replace loads a saved `.ultra` device
-on a stopped track; Remove track and Add instrument support one to eight tracks
-in clip-bank sessions, with sixteen devices total. Select a track to see its instrument followed by up to two
-stereo effects. Add effect loads a saved `.ultra` effect such as the bundled
-Stereo Utility or Stereo Lowpass. Earlier / Later changes the effect order.
-Selection changes the visible controls without starting playback. The first
-profile requires at least one instrument track.
+The populated examples contain instrument tracks and saved effect chains. Select
+an instance to edit its manifest-bound controls. **Load instrument** fills an
+empty MIDI track; **Add effect** loads a stereo effect. Graph loading, removal,
+replacement and effect reordering require stopped transport. Musical clip edits
+and rootless track insertion do not.
+
 Audio uses the shared CPAL driver at 48 kHz, with its own application settings
 directory and system-default output on first launch. Open Audio settings in the
 footer to choose the output host/device and Automatic or a requested buffer.
@@ -102,16 +124,12 @@ notes. Save & start audio opens the output while leaving musical transport
 stopped. The panel reports the observed callback size separately from the
 requested buffer. Refresh retains disconnected selections so you can explicitly
 choose a replacement; rejected settings preserve the previous saved values.
-The unchanged 2-track / 6-device policy uses observed buffers of at least 256
-frames as practical guidance. Larger clip-bank sessions use the separate
-8-track / 16-device policy: use at least 512 observed frames and prefer 1024
-near its admitted graph/work bounds. Eight instruments leave room for eight
-effects total, distributed with at most two on any track. Event limits still
-apply across tracks: eight simultaneous triads plus two automation events each
-are 40 events and exceed the 32/frame cap. Very short loops can also exceed the
-64-events/1024-frame envelope, including possible clip switches.
-Smaller buffers remain diagnostic choices; admission is not a physical audio
-underrun guarantee. This guidance does not change saved audio settings.
+The active workspace profile permits up to eight logical MIDI/audio tracks with
+at most six hosted DSP roots, up to two effects per track, and four voices per
+instrument. Event limits remain 32 events/frame and 64 events/1024 frames.
+Use observed buffers of at least 256 frames as practical guidance; smaller
+buffers remain diagnostic choices. Admission does not guarantee physical-device
+underrun behavior, and it does not change saved audio settings.
 
 ## Perform And Edit
 
@@ -131,7 +149,7 @@ browser, Session tracks and detail editors scroll within their own regions.
 Drag the browser divider from 180 to 420px. Small windows use icon buttons for
 workspace navigation and scroll the detail contents to reach secondary fields.
 
-The Library browser searches real bundled instruments/effects and project MIDI
+The Library browser searches real bundled instruments/effects and project
 clips. Choose Instruments or Audio Effects to read the bundled catalog; Search
 also loads it. Arrow keys select a result; Enter or double-click activates it.
 Single selection does not load a device or launch a clip. Add Track and Add
@@ -147,121 +165,52 @@ Keyboard note editing and the numeric inspector remain available. Browser
 navigation and closing Transport options preserve unfinished numeric fields;
 return to the field and press Tab to accept it before using file actions.
 
-Session and Arrangement buttons, or plain Tab outside controls, change only the
-workspace. Tab within inputs/buttons and modified Tab keep normal focus
-navigation. The existing Session view stays usable in both v3 and admitted MIDI
-workspaces. Older projects expose **Enable Arrangement** directly in Arrangement,
-and **Enable MIDI workspaces** in Clip detail. This explicit stopped conversion
-validates the entire project before installing v4,
-and refuses without trimming music or replacing the playable v3 project.
-Only measured profile 1 (two tracks) is currently admitted. The unchanged
-`two-instruments.alive` example exceeds its event envelope; its conversion
-refusal is expected. The empty default session fits the measured profile.
-Open `apps/alive/examples/midi-arrangement.alive` for the admitted two-instrument
-Arrangement starting project, or launch it directly:
-
-```sh
-bash apps/alive/run.sh apps/alive/examples/midi-arrangement.alive
-```
+Session and Arrangement buttons, or plain Tab outside controls, switch the
+workspace. Tab within controls keeps normal focus navigation. Both views share
+tracks, device chains, clips and the bottom editor. Open
+`apps/alive/examples/midi-arrangement.alive` for a populated Arrangement, or
+`apps/alive/examples/quantized-midi.alive` for sparse launch-quantization work.
 
 The toolbar's **Launch** setting supports None, 1/32 through 1/2 notes, and
 1, 2, 4 or 8 Bars in fixed 4/4. An occupied Session clip can use Global or its
-own grid in Clip detail. Scenes, track Stop and Return use Global; global Stop
-stays immediate. Settings changes affect future requests, and queued targets
-keep their captured grid. Edited launch settings save in the strict
-`alive-session-v6` score/Master/launch envelope; older projects retain 1 Bar.
+own grid. Settings affect future requests; queued targets retain their captured
+grid. Scenes, track Stop and Return use Global; global Stop is immediate.
+Fine quantization has a separate workload proof and shares the Start/Seek
+allowance. Unsupported requests refuse without changing the music.
 
-For grids other than 1 Bar, at most one native batch is accepted per 1024 audio
-frames (about 21.3 ms at 48 kHz), sharing the Start/Seek allowance. Refused
-requests are not retried automatically. The full MIDI Arrangement example
-exceeds this additional workload proof (72 events per window, limit 64) while
-its original 1 Bar playback remains admitted. Open
-`apps/alive/examples/quantized-midi.alive` for a separate sparse example with
-Global=1/8 and a 1/16 occurrence override. When the library or workload cannot
-support finer grids, saved intent stays visible; explicitly choose 1 Bar and
-change any clip overrides to recover supported launches.
+Session launch overrides that track's Arrangement. Track Stop retains a silent
+override; **Return** or **Return all** resumes Arrangement at its current
+position. Scenes launch their occupied slots atomically and stop tracks whose
+scene slot is empty. Selection and saved defaults do not launch clips. Reopen
+starts stopped with saved defaults cued.
 
-The timeline shares tracks, devices and Clip detail with Session. Create a MIDI
-source in Clip detail, edit its notes, drag a blank lane to choose a range, and
-use **Place source in range**. Move a placement by dragging its body; drag its
-edges to trim or resize. The inspector exposes Start, Duration, Offset and
-suffix looping, an explicit duplicate destination and Make Independent.
-Source edits affect every reference until you make an independent copy.
-Stopped **Prepare / Apply** installs musical edits for playback; dashed draft
-geometry and prepared outlines distinguish the two states.
+Drag a blank Arrangement lane to select time, create a MIDI clip with
+Ctrl+Shift+M, or use **Place source in range** to reuse the selected source.
+Move a placement by dragging its body; trim/resize with its edges. Placement
+span and the source occurrence's Start/End/loop markers remain independent.
+Source edits affect every reference until **Make source independent** is used.
+Loop edits never crop the source.
 
-Session launch overrides that track; track Stop retains a silent override.
-Use its **Return** button or **Return all** to resume Arrangement at the current
-position. The ruler seeks explicitly; changing views, zooming and scrolling
-does not change playback authority. Arrangement exposes gain for the selected
-track and mute/solo in each header. Audio-file tracks remain unavailable.
+Double-click the MIDI grid to add a note. Drag notes or their right edges to
+move/resize; arrows move and Shift+Left/Right resizes. Delete/Backspace removes
+the selected note. Velocity editing commits once per gesture. Escape or pointer
+cancellation restores committed state. The 1/16-note grid preserves imported
+off-grid offsets. Undo/Redo applies musical edits through the same acknowledged
+publication path, with at most 64 entries and 8 MiB of musical history.
 
-- Start/Stop share one native audio frame clock. Seek uses beats within the
-  global transport region, and Loop repeats its length. Space works outside
-  focused controls. Meters show post-mixer callback peaks, including the master.
-- Each track has four fixed slots. Select chooses the score to edit; Launch
-  cues it at phase zero while stopped or queues a switch at the captured
-  launch grid while playing (1 Bar by default). Track Stop stops only that track; global Stop
-  clears pending actions and silences every track. Runtime text distinguishes
-  queued/pending, applied, rejected and unavailable observations. A queued
-  request is not proof that it played.
-- Launch scene 1 through 4 launches that prepared slot across every track in one
-  atomic request. Empty slots stop their tracks, including an entirely empty
-  row. With transport stopped, the row is cued without starting playback; audio
-  must already be running. Each row displays its prepared members and native
-  per-track outcomes. A later individual launch can supersede one member while
-  the rest apply at the original target. Selection, pending edits, editors and
-  saved defaults remain independent. Save/reopen restores saved defaults.
-- Create, Duplicate, Delete, Name, Clip length and Set Saved Default affect the
-  selected clip through pending history. Duplicate copies notes and automation
-  with new score IDs but shares the track's existing device chain. Clip length
-  is independent of Transport length. Reopen starts stopped with saved defaults
-  cued at phase zero. Selection and last playback are not saved defaults.
-  Draft-only clips cannot launch; an edited prepared clip launches its prepared
-  version until stopped Apply. Deleting a draft clip does not stop its prepared
-  version. Legacy mode offers an explicit stopped Enable clip bank retry.
-- Select a clip for its interactive piano roll and precise numeric note fields.
-  Double-click empty grid to add a velocity-100, quarter-beat note. Select a note,
-  drag its body to move or its right edge to resize, or use arrows (Shift plus
-  Left/Right resizes). Delete/Backspace removes the selected note while the roll
-  has focus. The selected velocity slider commits once per gesture. Escape or
-  pointer cancellation restores the committed score. The fixed 1/16-note grid is
-  0.25 quarter-note beat; movement preserves imported off-grid offsets.
-- Tempo, length, looping, notes and step automation share Rust-owned pending-edit
-  history. Undo pending edit / Redo pending edit, or Ctrl/Cmd+Z while the roll has
-  focus, affect this musical scope only. History retains at most 64 entries and
-  8 MiB of combined musical payload; it excludes live bases, bypass and mixer.
-  Drafting works during playback. Stop, then choose Prepare / Apply; this begins
-  a new history scope. Discard, successful New/Open and structural changes also
-  clear the scope. Failed preparation retains the accepted draft and history.
-  Length reductions that truncate notes/automation and rounded-frame same-pitch
-  overlaps reject with a recovery message. Existing Ultra editor undo is separate.
-- Gain, mute, solo, device base values and effect bypass operate live. Bypass
-  preserves warm device state and leaves audio I/O running. Parameter controls
-  come from each selected instance's manifest; identical reusable devices retain
-  independent bases and state. Enabled automation owns
-  effective values during playback. Changing a base stores it for Stop or for
-  playback without that lane; it does not override automation. Both are shown.
-  The automation Target selector names an instance and its declared parameter.
-  Add lane exposes a step lane alongside the original instrument cutoff/level
-  lanes. Schedule edits remain drafts until stopped Prepare / Apply; playing
-  continues to use the prepared schedule, including its ownership state.
-- Edit in Ultra opens an optional graph view of the selected hosted instance.
-  The track-row Editor shortcut opens that track's instrument.
-  Manifest-bound controls and graph fields edit the same instance bases.
-  Closing or reopening this view preserves DSP and playback. Unbound graph
-  structure is read-only: stop Alive, edit and save the source in Ultra, then
-  Replace to validate and load it. Add, remove, reorder and replacement require
-  stopped transport and resolved schedule drafts. Remove deletes only its
-  effect and lanes; replacing an instance clears only its lanes. Reordering
-  retains instance identity, lanes, bases and bypass. Remove track explicitly
-  deletes its whole instrument/effect chain, keeping at least one track.
-  Apply/structural preparation invalidates stale editors. Draft edits, history,
-  selection, launch, Stop and Save As retain hosted editor bindings.
-- Save/Save As persist tracks, instrument/effect references, fingerprints, bases,
-  order, bypass, notes, automation and mixer values. File actions explicitly resolve pending schedule edits,
-  then unsaved changes. Missing/incompatible device errors identify the track
-  and reference; failed Open preserves the working session.
+Gain, mute, solo, device bases and bypass work live. Enabled automation owns
+effective parameter values during playback. A base value is stored for Stop or
+for times without an owning lane. Recompiling music preserves the current
+mixer, bases, bypass and warm device state. Global Stop can cancel an edit still
+awaiting a playback boundary.
+
+**Edit in Ultra** opens the selected hosted instance without changing playback.
+Manifest-bound controls share the same bases. Unbound graph structure is
+read-only; stop Alive, edit/save the device in Ultra, then Replace. Save/Save As
+persists the current document, stable identities, external references and launch
+settings. WAV paths rebase on Save As; sample bytes are not copied or overwritten.
+Failed Open retains the current working session. Unsaved file actions retain
+their normal project confirmation; creating or editing a clip requires none.
 
 Source hashes remain strict. If several instances reference an externally changed
 file, replacing only one cannot install while another still expects the original
@@ -313,42 +262,19 @@ on GTK destruction to release its strong view/message-manager reference cycle.
 
 ## Supported Profile
 
-One to eight instrument tracks, up to two stereo effects per track and sixteen hosted
-instances total; four voices per instrument, 48 kHz, explicit mono/stereo channel
-bundles, declared stereo device/master output, four slots per track and thirty-two
-stored clips total. Across all stored clips on each track, at most 128 notes,
-16 automation lanes and 256 points are retained, including disabled lanes.
-Transport and clip lengths are independently at most 256 beats / 512 seconds.
-Both admitted native profiles apply conservative density/work and graph-family limits;
-refusals identify contributors and recovery choices without trimming the score.
-Scheduled events,
-command queues and per-callback work are bounded. Structural changes require
-stopped transport and preparation outside the callback.
+The current workspace profile supports up to eight logical MIDI/audio tracks,
+six hosted DSP roots, two effects per track, four voices per instrument and
+stereo 48 kHz output. Each track has four Session slots. Sources can also be
+referenced by Arrangement placements. Empty MIDI tracks have no instrument and
+produce no sound until an instrument is loaded.
 
-The authored AOT Faust kernels run in Ultra's native evaluator, alongside
-Clockwork. The legacy Clockwork Voice path adds 64 samples and is rejected by
-this hosted profile; native hosted alignment delay is zero. Wider speaker
-layouts, arbitrary Faust/JIT devices, external MIDI, unrestricted live graph
-editing and Arrangement remain outside this currently shipped v3 profile.
-MIDI v4 integration at `4b9a88b` has local native conversion, authority,
-editor-lifetime and Save/Quit/restart evidence. Independent review approves
-the integration after queued slot field fix `ee83d30`; its 85 UI and two
-focused browser checks pass. Broad native evidence remains pinned to `4b9a88b`.
-Its practical device-buffer recommendation is at least 256 frames, without
-changing audio settings or imposing a new native callback minimum. Profile 2
-remains unavailable. Timeline source `91cb9d1` passes 101 UI tests, all 32 browser
-checks plus 14 affected checks after adding gain, the native MIDI roundtrip,
-and the original Session regression. Independent review approves; the Alive (Test) launcher uses the coherent tested
-build. Genuine WAV tracks and final integrated qualification remain open.
-See `docs/WORKFLOW_COVERAGE.md` and the existing workspace plan from
-the repository root for current workflow evidence and gaps.
+Across stored sources per track, the bounds include 128 notes, 16 automation
+lanes and 256 points, including disabled lanes. Transport and MIDI source lengths
+are bounded to 256 beats / 512 seconds. PCM bounds are documented above. Native
+schedule admission retains the measured graph/event limits; profile 2 remains
+unavailable. Refusal preserves the document and history rather than trimming
+music or opening an edit-confirmation workflow.
 
-See `SESSION_CONTRACT.md` for timing, ownership, admission and persistence rules,
-and `PLAN.md` at the repository root for foundation and acceptance evidence.
-
-Stream ownership, retained typed timing records, shutdown and finite-run CPU/
-capture bounds are documented in [STREAM_OBSERVABILITY.md](STREAM_OBSERVABILITY.md).
-The Stream measurements disclosure under Audio details is optional; regular
-session snapshots remain compact. CPAL xrun reports, processing overruns and
-software capture observations are separate evidence, and none measures physical
-underruns on its own.
+Recording/input routing, external MIDI, unrestricted live graph editing, wider
+speaker layouts, additional Warp modes and the shared video engine remain open.
+See `PLAN.md` for active priorities and the dated evidence under `experiments/`.

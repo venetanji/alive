@@ -1,3 +1,4 @@
+#include "alive_session_suffix_fixture.hpp"
 #include "../src-tauri/native/alive-midi-edit-v1.h"
 #include "../src-tauri/native/backend.h"
 #include "../src-tauri/native/alive_session.hpp"
@@ -39,13 +40,13 @@ AliveSessionConfigV4 setup(unsigned variants=0,bool optional=true) {
   UltraCanvasGraph graph{};saved_0(graph,c.devices[0]);graph.revision=++revision;c.devices[0].revision=revision;
   assert(ultra_canvas_install_document(0,&graph));
   c.sources[0].kind=1;c.sources[0].audio_buffer=ALIVE_SESSION_V4_NONE;c.sources[0].length_frames=8192;c.sources[0].event_count=2;
-  c.slots[0]={0,0,1,0,0};c.placement_count=1;c.placements[0]={0,0,1,0,0,16384,0};
+  c.slots[0]={0,0,1,0,0,0,0,0};c.placement_count=1;c.placements[0]={0,0,1,0,0,16384,0,0,0,0};
   c.event_count=2;c.events[0]={0,0,ALIVE_SESSION_NOTE_ON,0,60,100};c.events[1]={4096,0,ALIVE_SESSION_NOTE_OFF,0,60,0};
   if(variants&1){c.sources[0].event_count=c.event_count=4;c.events[1]={0,0,ALIVE_SESSION_NOTE_ON,0,64,80};c.events[2]={4096,0,ALIVE_SESSION_NOTE_OFF,0,60,0};c.events[3]={4096,0,ALIVE_SESSION_NOTE_OFF,0,64,0};}
-  if(variants&2){c.slot_count=2;tr.slots[1]=1;c.slots[1]={0,0,1,0,1024};}
+  if(variants&2){c.slot_count=2;tr.slots[1]=1;c.slots[1]={0,0,1,0,1024,0,0,0};}
   if(variants&4){c.sources[0].event_count=c.event_count=8;for(unsigned i=0;i<4;++i){c.events[i]={i*16,0,ALIVE_SESSION_NOTE_ON,0,60+i,100};c.events[i+4]={4096+i*16,0,ALIVE_SESSION_NOTE_OFF,0,60+i,0};}}
-  if(variants&8){c.source_count=c.slot_count=2;tr.slots[1]=1;c.slots[1]={0,1,1,0,0};c.sources[1]=c.sources[0];c.sources[1].event_begin=2;c.event_count=4;c.events[2]={0,0,ALIVE_SESSION_NOTE_ON,0,72,100};c.events[3]={4096,0,ALIVE_SESSION_NOTE_OFF,0,72,0};}
-  assert(alive_session_configure_v4(&c,nullptr,0));
+  if(variants&8){c.source_count=c.slot_count=2;tr.slots[1]=1;c.slots[1]={0,1,1,0,0,0,0,0};c.sources[1]=c.sources[0];c.sources[1].event_begin=2;c.event_count=4;c.events[2]={0,0,ALIVE_SESSION_NOTE_ON,0,72,100};c.events[3]={4096,0,ALIVE_SESSION_NOTE_OFF,0,72,0};}
+  assert(configure_suffix_fixture(&c,nullptr,0));
   AliveMidiLimitsV1 l{};l.version=1;l.struct_bytes=sizeof l;assert(alive_midi_limits_v1(&l));
   assert(bool(l.available)==optional);
   assert(ultra_external_start());dispatched.clear();return c;
@@ -190,10 +191,26 @@ void measure_reconciliation_callback() {
   }
   std::sort(micros.begin(),micros.end());std::printf("MIDI measured256-frame reconciliation: median %.1f us, p95 %.1f us, max %.1f us; deadline5333.3 us (32 samples, one instrument)\n",micros[16],micros[30],micros[31]);
 }
+void dense_playback_keeps_its_capabilities_when_adding_an_empty_track() {
+  auto c=setup(4,false);start();
+  AliveLaunchLimitsV1 launch{};launch.version=1;launch.struct_bytes=sizeof launch;assert(alive_launch_limits_v1(&launch));const auto fine=launch.admitted;
+  auto candidate=suffix_region_fixture(c);candidate.track_count=2;candidate.tracks[1].kind=ALIVE_SESSION_V4_AUDIO;
+  candidate.tracks[1].instrument=ALIVE_SESSION_V4_NONE;candidate.tracks[1].gain=1;std::fill_n(candidate.tracks[1].slots,4,ALIVE_SESSION_V4_NONE);
+  AliveSessionPublicationStateV4 observed{};observed.version=4;observed.struct_bytes=sizeof observed;assert(alive_session_publication_state_v4(&observed));
+  AliveSessionPublicationV4 request{};request.version=4;request.struct_bytes=sizeof request;request.preparation_revision=preparation;
+  request.serial=++serial;request.bank_revision=observed.bank_revision;request.stop_epoch=observed.stop_epoch;
+  std::fill_n(request.tracks,8,ALIVE_SESSION_V4_NONE);std::fill_n(request.sources,32,ALIVE_SESSION_V4_NONE);
+  std::fill_n(request.slots,32,ALIVE_SESSION_V4_NONE);std::fill_n(request.placements,64,ALIVE_SESSION_V4_NONE);
+  request.tracks[0]=request.sources[0]=request.slots[0]=request.placements[0]=0;
+  assert(alive_session_publish_v4(&candidate,nullptr,0,&request));render(1);assert(alive_session_publication_state_v4(&observed));
+  assert(observed.status==ALIVE_SESSION_V4_APPLIED&&state().playing&&!state().fault&&state().track_count==2);
+  AliveMidiLimitsV1 limits{};limits.version=1;limits.struct_bytes=sizeof limits;assert(alive_midi_limits_v1(&limits)&&!limits.available);
+  assert(alive_launch_limits_v1(&launch)&&launch.admitted==fine);
+}
 }
 int main() {
   dispatched.reserve(4096);ultra::alive_session_test_dispatch=trace;ultra::alive_session_test_charge=charge;
-  measure_reconciliation_callback();audio_stop_resolves_pending_source_receipt();dense_source_refuses_optional_capability_but_keeps_normal_playback();shrinking_source_event_count_clears_unused_storage();held_edit_preserves_transport_and_roots();stopped_preview_is_real_audio_and_releases();
+  dense_playback_keeps_its_capabilities_when_adding_an_empty_track();measure_reconciliation_callback();audio_stop_resolves_pending_source_receipt();dense_source_refuses_optional_capability_but_keeps_normal_playback();shrinking_source_event_count_clears_unused_storage();held_edit_preserves_transport_and_roots();stopped_preview_is_real_audio_and_releases();
   inactive_source_edit_leaves_playing_source_until_launch();velocity_edit_changes_future_note_on_without_retrigger();scheduled_pitch_collision_never_retriggers_or_releases_music();busy_stale_and_recent_work_refusal_preserve_source();
   expiry_and_stop_release_preview_without_frontend_timer();exact_note_off_phase_does_not_chase_an_ended_note();stopped_source_edits_need_no_reconstruction_guard();loop_boundary_and_exact_note_on_dispatch_once();saturated_preview_retains_release_and_event_ceilings();unchanged_held_pitch_survives_without_root_clear_or_retrigger();source_swap_preserves_pending_shared_slot_target_and_offset();ultra_audio_stop();
   std::puts("MIDI: source reconciliation, real stopped Preview, collisions, expiry, Stop, exact phase and refusal pass");

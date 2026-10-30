@@ -1,12 +1,30 @@
 // All gesture math uses the pointer-down viewport and original note.
 export const GRID=.25;
 const clamp=(value,min,max)=>Math.max(min,Math.min(max,value));
+const snap=value=>Math.round(value/GRID)*GRID;
+export function timeSelection(a,b,length){
+  a=clamp(snap(a),0,length);b=clamp(snap(b),0,length);
+  const start=Math.min(a,b),end=Math.max(a,b);
+  return end>start?{start,end}:null;
+}
+export const loopSelection=(region,selection)=>({...region,start:selection.start,loopStart:selection.start,loopEnd:selection.end,loopEnabled:true});
+export function transformRegion(region,kind,delta,length){
+  delta=snap(delta);const next={...region},minimum=1/64;
+  if(kind==='loopMove'){
+    delta=clamp(delta,-region.loopStart,length-region.loopEnd);
+    next.loopStart+=delta;next.loopEnd+=delta;
+  }else if(kind==='loopLeft')next.loopStart=clamp(region.loopStart+delta,0,region.loopEnd-minimum);
+  else if(kind==='loopRight')next.loopEnd=clamp(region.loopEnd+delta,region.loopStart+minimum,length);
+  else if(kind==='start')next.start=clamp(region.start+delta,0,Math.min(region.end,region.loopEnabled?region.loopEnd:Infinity)-minimum);
+  else if(kind==='end')next.end=clamp(region.end+delta,region.start+minimum,length);
+  return next;
+}
 export function initialViewport(notes,length){
   const pitches=notes.map(n=>n.pitch),center=pitches.length?(Math.min(...pitches)+Math.max(...pitches))/2:60;
   return {beatStart:0,beatSpan:length,pitchTop:Math.round(center)+6,pitchHeight:12};
 }
 export function geometry(notes,length,viewport={},size={}){
-  const v={...initialViewport(notes,length),...viewport},width=Math.max(64,size.width??640),height=Math.max(34,size.height??218),pad=48,top=22;
+  const v={...initialViewport(notes,length),...viewport},width=Math.max(64,size.width??640),height=Math.max(34,size.height??218),pad=48,top=size.top??22;
   const pitchHeight=clamp(v.pitchHeight,1,36),rows=Math.min(128,Math.ceil((height-top)/pitchHeight));
   const max=clamp(Math.round(v.pitchTop),rows-1,127),min=Math.max(0,max-rows+1);
   const beatSpan=clamp(v.beatSpan,Math.min(GRID,length),length),beatStart=clamp(v.beatStart,0,length-beatSpan);

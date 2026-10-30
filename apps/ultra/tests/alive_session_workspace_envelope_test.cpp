@@ -1,3 +1,4 @@
+#include "alive_session_suffix_fixture.hpp"
 #include "../src-tauri/native/alive_session.hpp"
 #include <cassert>
 #include <cstdio>
@@ -84,7 +85,7 @@ AliveSessionConfigV4 abstract_source(unsigned length, unsigned start, unsigned e
     return a.frame < b.frame || (a.frame == b.frame && a.kind < b.kind);
   });
   c.sources[0].event_count = c.event_count;
-  return c;
+  return suffix_region_fixture(c);
 }
 
 void source_oracle(const AliveSessionConfigV4 &c, unsigned offset, bool loop, unsigned width) {
@@ -94,7 +95,7 @@ void source_oracle(const AliveSessionConfigV4 &c, unsigned offset, bool loop, un
   Curves profile{}, composed{};
   Envelope no_cuts{};
   unsigned calls = 0;
-  assert(wa::source_profile(c, 0, offset, loop, pulse, profile, width));
+  assert(wa::source_profile(c,0,offset,c.sources[0].length_frames,offset,c.sources[0].length_frames,loop, pulse, profile, width));
   Charge entry = pulse;
   entry[5] = 4;
   assert(wa::compose(profile, no_cuts, entry, composed, calls, width));
@@ -146,16 +147,35 @@ void exhaustive_sources() {
   Curves finite{}, cyclic{};
   const Charge clear{0, 2, 0, 4, 0, 1};
   const auto empty = abstract_source(5, 0, 0, 5);
-  assert(wa::source_profile(empty, 0, 0, false, clear, finite));
-  assert(wa::source_profile(empty, 0, 0, true, clear, cyclic));
+  assert(wa::source_profile(empty,0,0,empty.sources[0].length_frames,0,empty.sources[0].length_frames,false, clear, finite));
+  assert(wa::source_profile(empty,0,0,empty.sources[0].length_frames,0,empty.sources[0].length_frames,true, clear, cyclic));
   assert(finite[1][1] == 2 && finite[1][5] == 2 && finite[1][6] == 4);
   assert(finite[1][1024] == 4 && cyclic[1][1024] == 410);
   // Everything before O is reconstruction-only; it never appears as ordinary
   // suffix events. The only event pulse left here is the held-note chase.
   const auto prefix = abstract_source(7, 0, 7, 1);
   const Charge chase{1, 1, 2, 2, 0, 1};
-  assert(wa::source_profile(prefix, 0, 3, true, chase, cyclic));
+  assert(wa::source_profile(prefix,0,3,prefix.sources[0].length_frames,3,prefix.sources[0].length_frames,true, chase, cyclic));
   assert(cyclic[0][4] == 1 && cyclic[0][8] == 2 && cyclic[3][4] == 2);
+}
+
+void independent_start_and_loop_oracle() {
+  const auto c=abstract_source(9,0,4,2);
+  const Charge pulse{1,2,c.event_count,4,0,1},entry{1,2,c.event_count,4,0,4};
+  for(unsigned end=2;end<=9;++end)for(unsigned loop_start=0;loop_start<end;++loop_start)
+    for(unsigned start=0;start<end;++start){
+      Curves profile{},bound{};Envelope no_cuts{};unsigned calls=0;
+      assert(wa::source_profile(c,0,start,9,loop_start,end,true,pulse,profile,8));
+      assert(wa::compose(profile,no_cuts,entry,bound,calls,8));
+      std::array<Charge,48> samples{};unsigned phase=start;
+      for(unsigned frame=0;frame<samples.size();++frame){
+        if(!frame||phase==end){if(frame)phase=loop_start;samples[frame]=enter(c,0,phase,2,2,frame?1:4);}
+        accumulate(samples[frame],ordinary(c,0,phase));++phase;
+      }
+      for(unsigned anchor=0;anchor<32;++anchor){Charge actual{};
+        for(unsigned w=1;w<=8;++w){accumulate(actual,samples[anchor+w-1]);covered(actual,bound,w);}
+      }
+    }
 }
 
 void exhaustive_boundaries() {
@@ -195,6 +215,26 @@ void exhaustive_boundaries() {
   uint64_t result;
   assert(!wa::plus(UINT64_MAX, 1, result));
   assert(!wa::times(UINT64_MAX, 2, result));
+}
+
+void separated_song_prefix_and_cycle_share_one_window_maximum() {
+  const uint64_t points[]{0, 192000, 288000};
+  Envelope bound{};
+  assert(wa::song_points(points,3,384000,true,216000,312000,bound));
+  for(unsigned width=1;width<=1024;++width){assert(bound[width]==1);++assertions;}
+  const uint64_t touching_window[]{8,12};
+  assert(wa::song_points(touching_window,2,30,true,10,20,bound,8));
+  assert(bound[4]==1&&bound[5]==2);assertions+=2;
+  assert(wa::song_points(nullptr,0,30,true,0,20,bound,8));
+  assert(bound[8]==0);
+  const uint64_t cycle_only[]{3};
+  assert(wa::song_points(cycle_only,1,30,true,0,20,bound,8));
+  assert(bound[8]==1);
+  assert(wa::song_points(cycle_only,1,30,true,10,20,bound,8));
+  assert(bound[8]==1);
+  const uint64_t far[]{UINT64_MAX-20,UINT64_MAX-3};
+  assert(wa::song_points(far,2,UINT64_MAX,true,UINT64_MAX-10,UINT64_MAX,bound,8));
+  assert(bound[8]==1);assertions+=4;
 }
 
 // Enumerate each concrete cut, stream choice and starting phase independently.
@@ -276,7 +316,7 @@ AliveSessionConfigV4 sparse(unsigned tracks = 2) {
     c.sources[t].length_frames = 4096;
     c.slots[t].track = c.slots[t].source = t;
   }
-  return c;
+  return suffix_region_fixture(c);
 }
 
 struct ScalarTrack {
@@ -298,7 +338,7 @@ Charge scalar_frame(const AliveSessionConfigV4 &c, unsigned t, ScalarTrack &stat
     if (action == 1) {
       state.session = true;
       state.silent = false;
-      state.phase = c.slots[state.slot].source_offset;
+      state.phase = c.slots[state.slot].start_marker;
       probes = 2;
     } else if (action == 2) {
       state.session = state.silent = true;
@@ -315,7 +355,7 @@ Charge scalar_frame(const AliveSessionConfigV4 &c, unsigned t, ScalarTrack &stat
     if (!state.silent && state.phase >= src.length_frames) {
       seam = true;
       if (slot.loop_enabled)
-        state.phase = slot.source_offset;
+        state.phase = slot.start_marker;
       else
         state.silent = true;
     }
@@ -330,8 +370,8 @@ Charge scalar_frame(const AliveSessionConfigV4 &c, unsigned t, ScalarTrack &stat
         state.source = p.source;
         state.occurrence = index;
         const auto elapsed = song - p.start_frame;
-        const auto period = c.sources[p.source].length_frames - p.source_offset;
-        state.phase = p.source_offset + (p.loop_enabled ? elapsed % period : elapsed);
+        const auto period = c.sources[p.source].length_frames - p.start_marker;
+        state.phase = p.start_marker + (p.loop_enabled ? elapsed % period : elapsed);
         if (!first && old_occurrence == index && state.phase <= old_phase)
           seam = true;
       }
@@ -372,15 +412,15 @@ void exhaustive_authority() {
       c.loop_start = 3;
       c.loop_end = 17;
       c.tracks[0].placement_count = 2;
-      c.placements[0] = {0, 0, 0, 0, 0, 4, 0};
-      c.placements[1] = {0, same_source ? 0u : 1u, 1, 0, gap ? 5u : 4u, gap ? 15u : 16u, 2};
-      c.slots[0] = {0, 1, 1, 0, 2};
+      c.placements[0] = {0, 0, 0, 0, 0, 4, 0,0,0,0};
+      c.placements[1] = {0, same_source ? 0u : 1u, 1, 0, gap ? 5u : 4u, gap ? 15u : 16u, 2,0,0,0};
+      c.slots[0] = {0, 1, 1, 0, 2,0,0,0};
       Curves maximum{}, profile{}, bound{};
       const Charge pulse{1, 2, 3, 4, 0, 1}, transition{1, 2, 3, 4, 0, 4};
       for (unsigned source = 0; source < 2; ++source)
         for (unsigned offset : {0u, 2u})
           for (bool loop : {false, true}) {
-            assert(wa::source_profile(c, source, offset, loop, pulse, profile, 8));
+            assert(wa::source_profile(c,source,offset,c.sources[source].length_frames,offset,c.sources[source].length_frames,loop, pulse, profile, 8));
             for (unsigned m = 0; m < 6; ++m)
               for (unsigned w = 1; w <= 8; ++w)
                 maximum[m][w] = std::max(maximum[m][w], profile[m][w]);
@@ -430,7 +470,7 @@ void builder_validation() {
   auto proof = std::make_unique<wa::Proof>();
   for (unsigned tracks : {1u, 2u, 3u, 8u}) {
     auto c = sparse(tracks);
-    assert(owner->prepare_midi_envelopes_v4(c, *proof));
+    assert(owner->prepare_midi_envelopes_v4(suffix_region_fixture(c), *proof));
     assert(proof->uses == tracks && proof->segment_calls == tracks * 6);
     for (unsigned t = 0; t < tracks; ++t)
       assert(proof->prepared.reset[t][0] == 0);
@@ -441,10 +481,10 @@ void builder_validation() {
           sum += proof->contribution[t][which][m];
         assert(sum == (m == 5 ? proof->placement : proof->prepared.future[m])[which ? 1024 : 1]);
       }
-    assert(owner->validate_v4(c) == (tracks <= 2));
+    assert(owner->validate_v4(suffix_region_fixture(c)) == (tracks <= 2));
   }
   auto refused = [&](AliveSessionConfigV4 c, unsigned error) {
-    assert(!owner->prepare_midi_envelopes_v4(c, *proof));
+    assert(!owner->prepare_midi_envelopes_v4(suffix_region_fixture(c), *proof));
     assert(proof->diagnostic.error == error);
     assert(proof->segment_calls == 0);
   };
@@ -488,12 +528,12 @@ void builder_validation() {
   // separated occurrence makes eight. All tracks are checked before any DP.
   c = sparse(2);
   c.placement_count = c.tracks[1].placement_count = 2;
-  c.placements[0] = {1, 1, 0, 0, 100, 100, 0};
-  c.placements[1] = {1, 1, 0, 0, 300, 100, 0};
-  assert(owner->prepare_midi_envelopes_v4(c, *proof));
+  c.placements[0] = {1, 1, 0, 0, 100, 100, 0,0,0,0};
+  c.placements[1] = {1, 1, 0, 0, 300, 100, 0,0,0,0};
+  assert(owner->prepare_midi_envelopes_v4(suffix_region_fixture(c), *proof));
   assert(proof->boundaries[1][1024] == 6);
   c.placement_count = c.tracks[1].placement_count = 3;
-  c.placements[2] = {1, 1, 0, 0, 500, 100, 0};
+  c.placements[2] = {1, 1, 0, 0, 500, 100, 0,0,0,0};
   refused(c, ALIVE_SESSION_V4_WORK_LIMIT);
   assert(proof->diagnostic.limit == 6 && proof->diagnostic.observed == 8);
   assert(proof->diagnostic.track_mask == 2 && proof->diagnostic.source[1] == 1);
@@ -508,9 +548,9 @@ void builder_validation() {
     c.tempo_bpm = tempo;
     const unsigned minimum = tempo == 120 ? 375 : 188;
     c.slots[0].loop_enabled = 1;
-    c.slots[0].source_offset = 4096 - minimum;
-    assert(owner->prepare_midi_envelopes_v4(c, *proof));
-    ++c.slots[0].source_offset;
+    c.slots[0].start_marker = 4096 - minimum;
+    assert(owner->prepare_midi_envelopes_v4(suffix_region_fixture(c), *proof));
+    ++c.slots[0].start_marker;
     refused(c, ALIVE_SESSION_V4_BAD_SOURCE);
   }
   c = sparse(1);
@@ -518,7 +558,7 @@ void builder_validation() {
   refused(c, ALIVE_SESSION_V4_BAD_FIELD);
   c = sparse(1);
   c.placement_count = c.tracks[0].placement_count = 1;
-  c.placements[0] = {0, 0, 1, 0, 0, 8192, 4096 - 374};
+  c.placements[0] = {0, 0, 1, 0, 0, 8192, 4096 - 374,0,0,0};
   refused(c, ALIVE_SESSION_V4_BAD_PLACEMENT);
   c = sparse(1);
   c.sources[0].owned_masks[0] = 1;
@@ -542,13 +582,13 @@ void builder_validation() {
       c.sources[t * 4 + s].track = t;
       c.sources[t * 4 + s].length_frames = 4096;
       c.sources[t * 4 + s].audio_buffer = ALIVE_SESSION_V4_NONE;
-      c.slots[t * 4 + s] = {t, t * 4 + s, 0, 0, s};
+      c.slots[t * 4 + s] = {t, t * 4 + s, 0, 0, s,0,0,0};
       c.tracks[t].slots[s] = t * 4 + s;
     }
     for (unsigned p = 0; p < 8; ++p)
-      c.placements[t * 8 + p] = {t, t * 4 + p % 4, 0, 0, p * 2048, 1024, p + 4};
+      c.placements[t * 8 + p] = {t, t * 4 + p % 4, 0, 0, p * 2048, 1024, p + 4,0,0,0};
   }
-  assert(!owner->prepare_midi_envelopes_v4(c, *proof));
+  assert(!owner->prepare_midi_envelopes_v4(suffix_region_fixture(c), *proof));
   assert(proof->uses == 96 && proof->segment_calls == 48);
   assert(proof->diagnostic.resource == ALIVE_SESSION_V4_RESOURCE_PLACEMENT_STEPS);
   assert(proof->diagnostic.window_frames == 1 && proof->diagnostic.limit == 64);
@@ -558,7 +598,7 @@ void builder_validation() {
   c.slots[1] = c.slots[0];
   c.slots[1].loop_enabled = 1;
   c.tracks[0].slots[0] = 1;
-  assert(owner->prepare_midi_envelopes_v4(c, *proof));
+  assert(owner->prepare_midi_envelopes_v4(suffix_region_fixture(c), *proof));
   assert(proof->uses == 1);
 }
 
@@ -575,7 +615,7 @@ void native_timelines() {
         c.loop_end = 4000;
         for (unsigned t = 0; t < tracks; ++t) {
           c.sources[t].length_frames = 100 + period;
-          c.slots[t].source_offset = 100;
+          c.slots[t].start_marker = 100;
           c.slots[t].loop_enabled = !finite_session;
           if (tracks < 8) {
             c.sources[t].event_begin = t;
@@ -583,10 +623,10 @@ void native_timelines() {
             c.events[c.event_count++] = {0, t, ALIVE_SESSION_NOTE_ON, t, 60 + t, 100};
             c.tracks[t].placement_begin = t;
             c.tracks[t].placement_count = 1;
-            c.placements[c.placement_count++] = {t, t, 1, 0, 0, 8192, 100};
+            c.placements[c.placement_count++] = {t, t, 1, 0, 0, 8192, 100,0,0,0};
           }
         }
-        const bool accepted = owner->prepare_midi_envelopes_v4(c, *proof);
+        const bool accepted = owner->prepare_midi_envelopes_v4(suffix_region_fixture(c), *proof);
         if (accepted)
           ++native_accepted;
         else
@@ -636,7 +676,7 @@ void native_timelines() {
     for (unsigned pitch = 0; pitch < 4; ++pitch)
       dense.events[dense.event_count++] = {187, t, ALIVE_SESSION_NOTE_OFF, t, 60 + pitch, 0};
   }
-  assert(!owner->prepare_midi_envelopes_v4(dense, *proof));
+  assert(!owner->prepare_midi_envelopes_v4(suffix_region_fixture(dense), *proof));
   assert(proof->diagnostic.conservative && proof->diagnostic.resource == 1);
   assert(proof->diagnostic.track_mask == 255);
   ++native_refused;
@@ -666,16 +706,16 @@ void native_automation_chain() {
   c.events[3] = {100, 0, ALIVE_SESSION_AUTOMATION, 0, 0, .75};
   c.events[4] = {200, 0, ALIVE_SESSION_NOTE_OFF, 0, 60, 0};
   c.events[5] = {1000, 0, ALIVE_SESSION_NOTE_ON, 0, 64, 100};
-  c.slots[0].source_offset = 100;
+  c.slots[0].start_marker = 100;
   c.slots[0].loop_enabled = 1;
   c.tracks[0].placement_count = c.placement_count = 1;
-  c.placements[0] = {0, 0, 1, 0, 0, 8192, 100};
+  c.placements[0] = {0, 0, 1, 0, 0, 8192, 100,0,0,0};
   c.loop_enabled = 1;
   c.loop_start = 2400;
   c.loop_end = 4000;
   auto owner = std::make_unique<ultra::AliveSession>();
   auto proof = std::make_unique<wa::Proof>();
-  assert(owner->prepare_midi_envelopes_v4(c, *proof));
+  assert(owner->prepare_midi_envelopes_v4(suffix_region_fixture(c), *proof));
   assert(proof->prepared.reset[0] == ultra::clip_admission::Cost({0, 2, 6, 4, 0}));
   Curves bound{};
   std::copy(proof->prepared.future.begin(), proof->prepared.future.end(), bound.begin());
@@ -698,7 +738,7 @@ void native_automation_chain() {
       }
   ++native_accepted;
   c.sources[0].owned_masks[1] = 0;
-  assert(!owner->prepare_midi_envelopes_v4(c, *proof));
+  assert(!owner->prepare_midi_envelopes_v4(suffix_region_fixture(c), *proof));
   assert(proof->diagnostic.error == ALIVE_SESSION_V4_BAD_OWNERSHIP);
 }
 
@@ -717,15 +757,15 @@ void two_transition_authority() {
       c.loop_start = 3;
       c.loop_end = 17;
       c.tracks[0].placement_count = 2;
-      c.placements[0] = {0, 0, 0, 0, 0, 4, 0};
-      c.placements[1] = {0, same_source ? 0u : 1u, 1, 0, gap ? 5u : 4u, gap ? 15u : 16u, 2};
-      c.slots[0] = {0, 1, 1, 0, 2};
+      c.placements[0] = {0, 0, 0, 0, 0, 4, 0,0,0,0};
+      c.placements[1] = {0, same_source ? 0u : 1u, 1, 0, gap ? 5u : 4u, gap ? 15u : 16u, 2,0,0,0};
+      c.slots[0] = {0, 1, 1, 0, 2,0,0,0};
       Curves maximum{}, profile{}, bound{};
       const Charge pulse{1, 2, 3, 4, 0, 1}, transition{1, 2, 3, 4, 0, 4};
       for (unsigned source = 0; source < 2; ++source)
         for (unsigned offset : {0u, 2u})
           for (bool loop : {false, true}) {
-            assert(wa::source_profile(c, source, offset, loop, pulse, profile, 8));
+            assert(wa::source_profile(c,source,offset,c.sources[source].length_frames,offset,c.sources[source].length_frames,loop, pulse, profile, 8));
             for (unsigned m = 0; m < 6; ++m)
               for (unsigned w = 1; w <= 8; ++w)
                 maximum[m][w] = std::max(maximum[m][w], profile[m][w]);
@@ -774,6 +814,8 @@ void two_transition_authority() {
 
 
 int main() {
+  separated_song_prefix_and_cycle_share_one_window_maximum();
+  independent_start_and_loop_oracle();
   two_transition_authority();
   exhaustive_sources();
   exhaustive_boundaries();
@@ -785,8 +827,8 @@ int main() {
   auto owner = std::make_unique<ultra::AliveSession>();
   const auto c = sparse();
   auto proof = std::make_unique<ultra::workspace_admission::Proof>();
-  assert(owner->prepare_midi_envelopes_v4(c, *proof));
-  assert(owner->validate_v4(c));
+  assert(owner->prepare_midi_envelopes_v4(suffix_region_fixture(c), *proof));
+  assert(owner->validate_v4(suffix_region_fixture(c)));
   assert(owner->prepare_midi_envelopes_v4(sparse(8), *proof));
   assert(!owner->validate_v4(sparse(8)));
   std::printf("PASS: sources=%llu boundaries=%llu splices=%llu authority=%llu native=%llu accepted=%llu refused=%llu assertions=%llu\n",

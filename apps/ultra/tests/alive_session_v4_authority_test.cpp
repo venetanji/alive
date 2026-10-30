@@ -1,3 +1,4 @@
+#include "alive_session_suffix_fixture.hpp"
 #include "../src-tauri/native/alive_session.hpp"
 #include "../src-tauri/native/backend.h"
 #include "canvas_callback_guard.hpp"
@@ -91,8 +92,8 @@ AliveSessionConfigV4 prepare(unsigned effects = 0) {
   c.events[1] = {1500, 0, ALIVE_SESSION_NOTE_OFF, 0, 60, 0};
   c.events[2] = {2000, 0, ALIVE_SESSION_NOTE_ON, 0, 64, 100};
   c.events[3] = {3000, 0, ALIVE_SESSION_NOTE_OFF, 0, 64, 0};
-  c.placements[0] = {0, 0, 0, 0, 512, 2048, 0};
-  c.placements[1] = {0, 0, 0, 0, 4096, 2048, 1024};
+  c.placements[0] = {0, 0, 0, 0, 512, 2048, 0,0,0,0};
+  c.placements[1] = {0, 0, 0, 0, 4096, 2048, 1024,0,0,0};
   return c;
 }
 AliveSessionStateV4 state() {
@@ -187,7 +188,7 @@ AliveSessionConfigV4 multi(unsigned tracks, unsigned effects = 0) {
       }
       const unsigned slot = t * 4 + local;
       tr.slots[local] = slot;
-      c.slots[slot] = {t, t * 2 + local % 2, 0, 0, local * 100u};
+      c.slots[slot] = {t, t * 2 + local % 2, 0, 0, local * 100u,0,0,0};
     }
     tr.placement_begin = c.placement_count;
     // The complete proof can conservatively refuse many simultaneous lanes.
@@ -196,11 +197,11 @@ AliveSessionConfigV4 multi(unsigned tracks, unsigned effects = 0) {
       continue;
     tr.placement_count = t == 0 ? 3 : 1;
     if (t == 0) {
-      c.placements[c.placement_count++] = {t, 0, 0, 0, 512, 2048, 100};
-      c.placements[c.placement_count++] = {t, 0, 0, 0, 2560, 2048, 200};
-      c.placements[c.placement_count++] = {t, 1, 0, 0, 6144, 2048, 300};
+      c.placements[c.placement_count++] = {t, 0, 0, 0, 512, 2048, 100,0,0,0};
+      c.placements[c.placement_count++] = {t, 0, 0, 0, 2560, 2048, 200,0,0,0};
+      c.placements[c.placement_count++] = {t, 1, 0, 0, 6144, 2048, 300,0,0,0};
     } else
-      c.placements[c.placement_count++] = {t, 2, 0, 0, 0, 12000, 700};
+      c.placements[c.placement_count++] = {t, 2, 0, 0, 0, 12000, 700,0,0,0};
   }
   return c;
 }
@@ -227,7 +228,7 @@ AliveSessionReceiptV4 actions(unsigned mask, unsigned action0,
 }
 void stopped_authority() {
   auto c = multi(2);
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   assert(ultra_external_start());
   const auto cue = actions(2, 0, 0, ALIVE_SESSION_V4_LAUNCH, 3);
   render(1);
@@ -250,20 +251,20 @@ AliveSessionConfigV4 authority_fixture(unsigned effects = 0) {
   c.tempo_bpm = 240;
   c.length_frames = c.loop_end = 160000;
   c.slot_count = 6;
-  c.slots[4] = {1, 2, 0, 0, 0};
-  c.slots[5] = {1, 3, 0, 0, 1000};
+  c.slots[4] = {1, 2, 0, 0, 0,0,0,0};
+  c.slots[5] = {1, 3, 0, 0, 1000,0,0,0};
   c.slots[6] = c.slots[7] = {};
   c.tracks[1].slots[0] = 4;
   c.tracks[1].slots[1] = c.tracks[1].slots[2] = NONE;
   c.tracks[1].slots[3] = 5;
-  c.slots[0] = {0, 1, 0, 0, 1000};
-  c.slots[1] = {0, 1, 0, 0, 2000};
-  c.slots[2] = {0, 0, 0, 0, 1000};
-  c.slots[3] = {0, 0, 0, 0, 2000};
-  c.placements[0] = {0, 0, 0, 0, 0, 48000, 0};
-  c.placements[1] = {0, 0, 0, 0, 48000, 72000, 1000};
-  c.placements[2] = {0, 0, 0, 0, 144000, 16000, 0};
-  c.placements[3] = {1, 2, 0, 0, 0, 160000, 0};
+  c.slots[0] = {0, 1, 0, 0, 1000,0,0,0};
+  c.slots[1] = {0, 1, 0, 0, 2000,0,0,0};
+  c.slots[2] = {0, 0, 0, 0, 1000,0,0,0};
+  c.slots[3] = {0, 0, 0, 0, 2000,0,0,0};
+  c.placements[0] = {0, 0, 0, 0, 0, 48000, 0,0,0,0};
+  c.placements[1] = {0, 0, 0, 0, 48000, 72000, 1000,0,0,0};
+  c.placements[2] = {0, 0, 0, 0, 144000, 16000, 0,0,0,0};
+  c.placements[3] = {1, 2, 0, 0, 0, 160000, 0,0,0,0};
   c.event_count = 0;
   std::fill_n(c.events, 1024, AliveSessionEventV2{});
   for (unsigned i = 0; i < 4; ++i) {
@@ -280,13 +281,13 @@ AliveSessionConfigV4 pending_boundary_fixture() {
   auto c = authority_fixture();
   c.placement_count = 6;
   c.tracks[1].placement_count = 3;
-  c.placements[3] = {1, 2, 0, 0, 0, 10000, 0};
-  c.placements[4] = {1, 2, 0, 0, 10000, 10000, 1000};
-  c.placements[5] = {1, 2, 0, 0, 30000, 130000, 0};
+  c.placements[3] = {1, 2, 0, 0, 0, 10000, 0,0,0,0};
+  c.placements[4] = {1, 2, 0, 0, 10000, 10000, 1000,0,0,0};
+  c.placements[5] = {1, 2, 0, 0, 30000, 130000, 0,0,0,0};
   return c;
 }
 void install(const AliveSessionConfigV4 &c) {
-  if (!alive_session_configure_v4(&c, nullptr, 0)) {
+  if (!configure_suffix_fixture(&c, nullptr, 0)) {
     AliveSessionDiagnosticV4 d{};
     d.version = 4;
     d.struct_bytes = sizeof d;
@@ -746,7 +747,7 @@ void work_curves() {
   auto c = authority_fixture(2);
   auto owner = std::make_unique<ultra::AliveSession>();
   auto proof = std::make_unique<ultra::workspace_admission::Proof>();
-  assert(owner->prepare_midi_envelopes_v4(c, *proof));
+  assert(owner->prepare_midi_envelopes_v4(suffix_region_fixture(c), *proof));
   install(c);
   request();
   const auto policy = ultra::clip_admission::policy(c.profile);
@@ -875,7 +876,7 @@ void saturation_and_first_sample() {
       ultra::CanvasPlan plan{};
       assert(ultra::compile_canvas(graph, plan) && workspace->install(d, plan, 0, emit));
     }
-    assert(owner->configure_v4(c, nullptr, 0, *workspace));
+    assert(owner->configure_v4(suffix_region_fixture(c), nullptr, 0, *workspace));
     AliveSessionRequestV4 r{};
     r.version = 4;
     r.struct_bytes = sizeof r;
@@ -1177,9 +1178,9 @@ void sparse_eight_and_denied_density() {
   for (unsigned t = 2; t < 8; ++t)
     for (unsigned i = 0; i < 4; ++i) {
       c.tracks[t].slots[i] = t * 4 + i;
-      c.slots[t * 4 + i] = {t, t * 2 + i % 2, 0, 0, i * 100u};
+      c.slots[t * 4 + i] = {t, t * 2 + i % 2, 0, 0, i * 100u,0,0,0};
     }
-  assert(!alive_session_validate_v4(&c));
+  assert(!validate_suffix_fixture(&c));
   AliveSessionDiagnosticV4 d{};
   d.version = 4;
   d.struct_bytes = sizeof d;
@@ -1219,7 +1220,7 @@ void exact_combined_batch() {
       ultra::CanvasPlan plan{};
       assert(ultra::compile_canvas(graph, plan) && workspace->install(d, plan, 0, emit));
     }
-    assert(owner->configure_v4(c, nullptr, 0, *workspace));
+    assert(owner->configure_v4(suffix_region_fixture(c), nullptr, 0, *workspace));
     AliveSessionRequestV4 r{};
     r.version = 4;
     r.struct_bytes = sizeof r;
@@ -1298,9 +1299,9 @@ AliveSessionConfigV4 suffix_fixture(unsigned effects = 0) {
   c.events[7] = {900, 0, ALIVE_SESSION_NOTE_OFF, 0, 60, 0};
   c.slot_count = 1;
   c.tracks[0].slots[3] = 0;
-  c.slots[0] = {0, 0, 1, 0, 400};
-  c.placements[0] = {0, 0, 1, 0, 0, 3500, 400};
-  c.placements[1] = {0, 0, 1, 0, 3500, 2100, 400};
+  c.slots[0] = {0, 0, 1, 0, 400,0,0,0};
+  c.placements[0] = {0, 0, 1, 0, 0, 3500, 400,0,0,0};
+  c.placements[1] = {0, 0, 1, 0, 3500, 2100, 400,0,0,0};
   return c;
 }
 AudioRun suffix_playback(unsigned partition, unsigned effects = 0, bool session = false) {
@@ -1347,11 +1348,11 @@ AudioRun seek_continuity(unsigned partition, unsigned effects, bool change, bool
     for (unsigned s = 0; s < 4; ++s)
       c.sources[s].length_frames = s < 2 ? 2000 : 2301;
     for (unsigned i = 0; i < c.slot_count; ++i) {
-      c.slots[i].source_offset = 400;
+      c.slots[i].start_marker = 400;
       c.slots[i].loop_enabled = 1;
     }
     for (unsigned i = 0; i < c.placement_count; ++i) {
-      c.placements[i].source_offset = 400;
+      c.placements[i].start_marker = 400;
       c.placements[i].loop_enabled = 1;
     }
   }
@@ -1422,7 +1423,7 @@ void minimum_suffixes() {
     std::fill(c.events + 1, c.events + 1024, AliveSessionEventV2{});
     auto bad = c;
     --bad.sources[0].length_frames;
-    assert(!alive_session_validate_v4(&bad));
+    assert(!validate_suffix_fixture(&bad));
     if (const auto dir = std::getenv("ALIVE_AUTHORITY_EVIDENCE")) {
       const auto path = std::string(dir) + "/refused-suffix-" + std::to_string(tempo) + ".bin";
       FILE *file = std::fopen(path.c_str(), "wb");
@@ -1508,7 +1509,7 @@ void suffix_work_curves() {
   auto c = suffix_fixture(2);
   auto owner = std::make_unique<ultra::AliveSession>();
   auto proof = std::make_unique<ultra::workspace_admission::Proof>();
-  assert(owner->prepare_midi_envelopes_v4(c, *proof));
+  assert(owner->prepare_midi_envelopes_v4(suffix_region_fixture(c), *proof));
   install(c);
   request();
   std::vector<Work> observed(10000);
@@ -1591,7 +1592,7 @@ AudioRun refused_seek_pending(bool refuse) {
     ultra::CanvasPlan plan{};
     assert(ultra::compile_canvas(graph, plan) && workspace->install(d, plan, 0, emit));
   }
-  assert(owner->configure_v4(c, nullptr, 0, *workspace));
+  assert(owner->configure_v4(suffix_region_fixture(c), nullptr, 0, *workspace));
   AliveSessionRequestV4 r{};
   r.version = 4;
   r.struct_bytes = sizeof r;
@@ -1714,7 +1715,7 @@ void suffix_pending() {
   auto c = authority_fixture();
   c.sources[2].length_frames = 2301;
   c.placements[3].loop_enabled = 1;
-  c.placements[3].source_offset = 400;
+  c.placements[3].start_marker = 400;
   install(c);
   request();
   frames(2048);
@@ -1800,13 +1801,13 @@ AliveSessionConfigV4 song_fixture(unsigned effects = 0, bool gap = false) {
   for (unsigned s = 0; s < c.source_count; ++s)
     c.sources[s].length_frames = 2301;
   for (unsigned i = 0; i < c.slot_count; ++i) {
-    c.slots[i].source_offset = 400;
+    c.slots[i].start_marker = 400;
     c.slots[i].loop_enabled = 1;
   }
-  c.placements[0] = {0, 0, 1, 0, 0, 1000, 400};
-  c.placements[1] = {0, 0, 1, 0, gap ? 2800u : 1600u, gap ? 1200u : 2400u, 400};
-  c.placements[2] = {0, 1, 1, 0, 4000, 2000, 400};
-  c.placements[3] = {1, 2, 1, 0, 0, 8192, 400};
+  c.placements[0] = {0, 0, 1, 0, 0, 1000, 400,0,0,0};
+  c.placements[1] = {0, 0, 1, 0, gap ? 2800u : 1600u, gap ? 1200u : 2400u, 400,0,0,0};
+  c.placements[2] = {0, 1, 1, 0, 4000, 2000, 400,0,0,0};
+  c.placements[3] = {1, 2, 1, 0, 0, 8192, 400,0,0,0};
   return c;
 }
 AudioRun song_playback(unsigned partition, unsigned effects, bool looping = true,
@@ -1966,7 +1967,7 @@ void song_work_curves() {
   auto c = song_fixture(2);
   auto owner = std::make_unique<ultra::AliveSession>();
   auto proof = std::make_unique<ultra::workspace_admission::Proof>();
-  assert(owner->prepare_midi_envelopes_v4(c, *proof));
+  assert(owner->prepare_midi_envelopes_v4(suffix_region_fixture(c), *proof));
   install(c);
   request();
   std::vector<Work> observed(11000);
@@ -2069,8 +2070,8 @@ void song_profiles() {
     std::fill_n(c.placements, 64, AliveSessionPlacementV4{});
     std::fill_n(c.slots, 32, AliveSessionSlotV4{});
     c.slot_count = c.placement_count = 1;
-    c.slots[0] = {0, 1, 1, 0, 400};
-    c.placements[0] = {0, 0, 1, 0, 0, 8192, 400};
+    c.slots[0] = {0, 1, 1, 0, 400,0,0,0};
+    c.placements[0] = {0, 0, 1, 0, 0, 8192, 400,0,0,0};
     for (unsigned t = 0; t < 8; ++t) {
       c.tracks[t].placement_begin = t ? 1 : 0;
       c.tracks[t].placement_count = t ? 0 : 1;
@@ -2079,7 +2080,7 @@ void song_profiles() {
     c.tracks[0].slots[0] = 0;
     for (unsigned s = 0; s < c.source_count; ++s) c.sources[s].length_frames = 2301;
     if (effects) {
-      assert(!alive_session_validate_v4(&c));
+      assert(!validate_suffix_fixture(&c));
       AliveSessionDiagnosticV4 d{};
       d.version = 4;
       d.struct_bytes = sizeof d;
@@ -2114,7 +2115,7 @@ void song_profiles() {
   }
   auto c = song_fixture(2);
   c.profile = c.work_policy = 1;
-  assert(!alive_session_validate_v4(&c));
+  assert(!validate_suffix_fixture(&c));
   AliveSessionDiagnosticV4 d{};
   d.version = 4;
   d.struct_bytes = sizeof d;
@@ -2164,7 +2165,7 @@ void song_first_sample() {
     ultra::CanvasPlan plan{};
     assert(ultra::compile_canvas(graph, plan) && workspace->install(d, plan, 0, emit));
   }
-  assert(owner->configure_v4(c, nullptr, 0, *workspace));
+  assert(owner->configure_v4(suffix_region_fixture(c), nullptr, 0, *workspace));
   AliveSessionRequestV4 r{};
   r.version = 4;
   r.struct_bytes = sizeof r;

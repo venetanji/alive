@@ -251,12 +251,13 @@ fn active_v4_preparation_compiles_shared_sources_once() {
 }
 
 #[test]
-fn active_v4_preparation_rejects_audio_before_reading_dependencies() {
+fn active_v4_preparation_accepts_empty_audio_tracks_without_dependencies() {
     let mut project = workspaces::prospective_from_document(&example()).unwrap();
     project.sources.clear();project.placements.clear();
     for track in &mut project.tracks {track.chain=workspaces::ChainV4::Audio{};track.effects.clear();track.slots=[None,None,None,None];}
-    let error=prepare_score_fixture(&Document::WorkspacesV4(project), &example_path()).unwrap_err();
-    assert!(error.contains("Audio sources are unavailable"),"{error}");
+    let prepared=prepare_score_fixture(&Document::WorkspacesV4(project), &example_path()).unwrap();
+    assert!(prepared.devices.is_empty());assert!(prepared.events.is_empty());
+    assert!(prepared.tracks.iter().all(|t|matches!(t.input,prepare::PreparedTrackInput::Audio)));
 }
 
 fn capacity_document() -> Session {
@@ -914,8 +915,9 @@ fn v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal() {
     for _ in 0..110 {assert_eq!(unsafe{native::ultra_external_render(1024,left.as_mut_ptr(),right.as_mut_ptr())},1);}
     let view=runtime.poll(&host).unwrap().1.unwrap();assert_eq!(view["tracks"][0]["authority"],"arrangement");assert!(view["tracks"][0]["activeSlotId"].is_null());
     let before=host.prepared.as_ref().unwrap().saved.score.clone();let revision=host.preparation_revision;
-    let mut larger=project.clone();let mut third=larger.tracks[0].clone();third.id="extra-track".into();third.slots=[None,None,None,None];third.effects.clear();if let workspaces::ChainV4::Midi{instrument}=&mut third.chain{instrument.instance_id="extra-instrument".into();}larger.tracks.push(third);
-    assert!(prepare_score_fixture(&Document::WorkspacesV4(larger),&example_path()).unwrap_err().contains("Profile 2"));assert_eq!(host.preparation_revision,revision);assert_eq!(host.prepared.as_ref().unwrap().saved.score,before);
+    let mut larger=project.clone();let mut third=larger.tracks[0].clone();third.id="extra-track".into();third.slots=[None,None,None,None];third.effects.clear();if let workspaces::ChainV4::Midi{instrument:Some(instrument)}=&mut third.chain{instrument.instance_id="extra-instrument".into();}larger.tracks.push(third);
+    for i in 3..9 {let mut extra=larger.tracks[2].clone();extra.id=format!("extra-track-{i}");extra.chain=workspaces::ChainV4::Midi{instrument:None};larger.tracks.push(extra);}
+    assert!(prepare_score_fixture(&Document::WorkspacesV4(larger),&example_path()).unwrap_err().contains("eight"));assert_eq!(host.preparation_revision,revision);assert_eq!(host.prepared.as_ref().unwrap().saved.score,before);
     assert_eq!(unsafe{native::ultra_external_render(31,left.as_mut_ptr(),right.as_mut_ptr())},1);assert_eq!(runtime.poll(&host).unwrap().0["playing"],1);
     let epoch=unsafe{native::alive_session_stop_v4()};assert!(epoch>0);assert_eq!(unsafe{native::ultra_external_render(1,left.as_mut_ptr(),right.as_mut_ptr())},1);assert_eq!(runtime.poll(&host).unwrap().0["playing"],0);
     unsafe{native::ultra_audio_stop();}
@@ -936,7 +938,7 @@ fn v4_nested_duplicates_and_invalid_prepared_dependencies_are_transactional(){
     let text=workspaces::encode(&project).unwrap();let duplicate=text.replacen("\"cutoff\":", "\"cutoff\": 120, \"cutoff\":",1);
     assert_ne!(text,duplicate);assert!(serde_json::from_str::<Document>(&duplicate).is_err());assert!(persistence::decode(&duplicate,&example_path()).is_err());
     for case in ["missing","changed","role"] {
-        let mut candidate=project.clone();let workspaces::ChainV4::Midi{instrument}=&mut candidate.tracks[0].chain else{unreachable!()};
+        let mut candidate=project.clone();let workspaces::ChainV4::Midi{instrument:Some(instrument)}=&mut candidate.tracks[0].chain else{unreachable!()};
         match case {"missing"=>instrument.path="/missing-workspace-instrument.ultra".into(),"changed"=>instrument.source_sha256="0".repeat(64),"role"=>{let id=instrument.instance_id.clone();*instrument=effect(&id,"utility.ultra");},_=>unreachable!()}
         let document=Document::WorkspacesV4(candidate);let before=document.clone();let error=prepare_score_fixture(&document,&example_path()).unwrap_err();assert!(error.contains("Pulse")||error.contains("role"),"{case}: {error}");assert_eq!(document,before);
     }

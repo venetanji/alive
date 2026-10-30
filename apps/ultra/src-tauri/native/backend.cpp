@@ -386,17 +386,18 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
  }
  // Merge external clock/transport and musical events on the audio timeline.
  // At most 1024 samples and 128 MIDI records, never an unbounded catch-up loop.
+ const bool render_canvas=callback_canvas||session.configured();
  std::array<float,alive::DocumentDevices> voice_frame{};
  std::array<float*,alive::DocumentDevices> voice_buses{};
  for(unsigned d=0;d<voice_buses.size();++d)voice_buses[d]=&voice_frame[d];
- if(callback_canvas){std::fill(l,l+n,0.f);std::fill(r,r+n,0.f);}
+ if(render_canvas){std::fill(l,l+n,0.f);std::fill(r,r+n,0.f);}
  unsigned next=0;
  for(unsigned frame=0;frame<n&&!engine.status().fault;frame++){
-  if(callback_canvas)engine_frame=frame;
+  if(render_canvas)engine_frame=frame;
   session.sample(canvas);
   while(next<admitted&&input[next].time==frame){
    const auto& e=input[next++];const auto status=e.data[0];
-   if(callback_canvas){
+   if(render_canvas){
     const unsigned channel=(status&15)+1,cmd=status&0xf0;
     if(e.size==3&&(cmd==0x90||cmd==0x80)){
      if(e.data[1]>127||e.data[2]>127){engine.panic();break;}
@@ -413,7 +414,7 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
    else continue;
    if(e.data[1]>127||e.data[2]>127){engine.panic();break;}manual(event);
   }
-  if(callback_canvas){
+  if(render_canvas){
    if(!canvas.sample(frame,emit)){engine.panic();break;}
    engine.render_devices({voice_buses.data(),unsigned(voice_buses.size())},nullptr,1);
    // Signal observations can emit controls for the next engine input sample.
@@ -435,7 +436,7 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
    session.advance(canvas,left,right);
   }else {sequence.sample(frame,emit);session.advance(canvas,0,0);}
  }
- if(callback_canvas){
+ if(render_canvas){
   if(engine.status().fault){std::fill(l,l+n,0.f);std::fill(r,r+n,0.f);}
  }else{
   float* channels[]={l,r};engine.render_bus({channels,2},nullptr,n);
@@ -518,6 +519,12 @@ int alive_session_configure_v4(const AliveSessionConfigV4* config,const AliveSes
  if(!config||running.load()||engine.status().ready)return 0;
  const int result=session.configure_v4(*config,audio,count,canvas);publish_canvas();return result;
 }
+int alive_session_publish_v4(const AliveSessionConfigV4* config,const AliveSessionAudioBufferV4* audio,uint32_t count,const AliveSessionPublicationV4* request){
+ const int result=config&&request&&session.publication(*config,audio,count,*request,canvas);
+ if(result&&!running.load()&&!engine.status().ready){session.publication_pump(canvas);publish_canvas();}
+ return result;
+}
+int alive_session_publication_state_v4(AliveSessionPublicationStateV4* state){return state&&session.publication_snapshot(*state);}
 int alive_session_request_v4(const AliveSessionRequestV4* request,AliveSessionReceiptV4* immediate){const AliveSessionRequestV4 invalid{};return immediate&&session.request_v4(request?*request:invalid,*immediate);}
 uint64_t alive_session_stop_v4(){return alive_session_stop_v3();}
 int alive_session_state_v4(AliveSessionStateV4* state){return state&&session.snapshot_v4(*state);}

@@ -90,6 +90,13 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
   -ldl -lrt -o "$TEST_DIR/alive-v4-midi-test"
 "$TEST_DIR/alive-v4-midi-test"
 c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
+  -DULTRA_ALIVE_SESSION_TEST_TRACE -I"$TEST_DIR" \
+  apps/ultra/tests/alive_session_publication_test.cpp "$TEST_DIR/alive-v3-backend.o" \
+  "$NATIVE_BUILD/core/libultra_core_bundle.a" \
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+  -ldl -lrt -o "$TEST_DIR/alive-publication-test"
+"$TEST_DIR/alive-publication-test"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
   -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -I"$TEST_DIR" \
   apps/ultra/tests/alive_session_v4_authority_test.cpp "$TEST_DIR/alive-v4-backend.o" \
   "$NATIVE_BUILD/core/libultra_core_bundle.a" \

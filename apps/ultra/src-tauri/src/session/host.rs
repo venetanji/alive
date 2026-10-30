@@ -9,6 +9,7 @@ pub struct Host {
     revisions: [u64; 16],
     owned_roots: [bool; 16],
     pub preparation_revision: u64,
+    pub bank_revision: u64,
 }
 pub(super) struct InstallFailure { pub message:String, pub rollback_serial:Option<u64> }
 #[cfg(test)]
@@ -23,6 +24,29 @@ pub struct View<'a> {
     pub devices: Vec<&'a crate::canvas::device::HostManifest>,
 }
 impl Host {
+    pub(super) fn workspace_candidate(&self,document:Session,launch:launch::LaunchSettings)->Result<PreparedSession,String>{
+        let current=self.prepared.as_ref().ok_or("No session")?;
+        let Document::WorkspacesV4(project)=&document else{return Err("Workspace editing requires a workspace project".into())};
+        let mut candidate=current.clone();
+        let mut expected=std::collections::HashSet::new();
+        for (track_index,track) in project.tracks.iter().enumerate(){for reference in track.devices(){
+            let device=candidate.devices.iter_mut().find(|d|d.instance_id==reference.instance_id).ok_or("Load devices using the stopped device controls")?;
+            let original=current.saved.score.tracks().into_iter().flat_map(|t|t.devices().collect::<Vec<_>>()).find(|d|d.instance_id==reference.instance_id).ok_or("Prepared device identity changed")?;
+            if reference.id!=original.id||reference.version!=original.version||reference.path!=original.path||reference.source_sha256!=original.source_sha256{return Err("Replace devices using the stopped device controls".into())}
+            device.track=track_index;expected.insert(reference.instance_id.as_str());
+        }}
+        if candidate.devices.iter().any(|d|!expected.contains(d.instance_id.as_str())){return Err("Remove device-bearing tracks using the stopped device controls".into())}
+        prepare_workspaces::compile(project,&mut candidate)?;
+        candidate.saved=current.saved.with_score(document);candidate.saved.launch=launch;candidate.saved.wire=SaveWire::V6;
+        super::persistence::serialize_saved(&candidate.saved)?;
+        Ok(candidate)
+    }
+    pub(super) fn publication_config(&self,candidate:&PreparedSession)->Result<Box<native::ConfigV4>,String>{
+        let (mut config,_)=self.configuration_workspaces(candidate)?;
+        config.preparation_revision=self.preparation_revision;
+        for (i,device) in config.devices[..config.device_count as usize].iter_mut().enumerate(){device.revision=self.revisions[i];}
+        Ok(config)
+    }
     pub(super) fn preflight_master(prepared: &PreparedSession) -> Result<(), String> {
         Self::preflight_master_with_capability(prepared,native::master_capability().is_some())
     }
@@ -41,13 +65,15 @@ impl Host {
         config.length_frames=prepared.length_frames;config.tempo_bpm=project.tempo;
         config.loop_start=workspaces::frame_at(project.loop_start_beats,project.tempo)?;config.loop_end=workspaces::frame_at(project.loop_end_beats,project.tempo)?;
         config.source_count=workspace.sources.len() as u32;config.slot_count=workspace.slots.len() as u32;config.placement_count=workspace.placements.len() as u32;
+        config.audio_buffer_count=workspace.audio_descriptors().len() as u32;
         for (i,source) in workspace.sources.iter().enumerate(){config.sources[i]=source.descriptor;}
         for (i,slot) in workspace.slots.iter().enumerate(){config.slots[i]=slot.descriptor;}
         for (i,placement) in workspace.placements.iter().enumerate(){config.placements[i]=placement.descriptor;}
         let mut placement_begin=0;
         for (i,track) in prepared.tracks.iter().enumerate(){
             let chain=common.tracks[i].chain;
-            let mut native=native::TrackV4{kind:native::V4_MIDI,instrument:track.midi_instrument()? as u32,effect_count:chain.effect_count,effects:chain.effects,gain:chain.gain,mute:chain.mute,solo:chain.solo,placement_begin,..Default::default()};
+            let kind=match track.input {prepare::PreparedTrackInput::Midi{..}=>native::V4_MIDI,prepare::PreparedTrackInput::Audio=>native::V4_AUDIO};
+            let mut native=native::TrackV4{kind,instrument:track.optional_midi_instrument().map_or(native::V4_NONE,|i|i as u32),effect_count:chain.effect_count,effects:chain.effects,gain:chain.gain,mute:chain.mute,solo:chain.solo,placement_begin,..Default::default()};
             for (index,slot) in workspace.slots.iter().enumerate().filter(|(_,s)|s.descriptor.track==i as u32){native.slots[slot.slot]=index as u32;}
             native.placement_count=workspace.placements.iter().filter(|p|p.descriptor.track==i as u32).count() as u32;
             placement_begin+=native.placement_count;config.tracks[i]=native;
@@ -123,7 +149,7 @@ impl Host {
         }
         for (index, track) in prepared.tracks.iter().enumerate() {
             let model = &prepared.saved.score.tracks()[index];
-            let mut native = native::TrackV2 { instrument: track.midi_instrument()? as u32, effect_count: track.effects.len() as u32,
+            let mut native = native::TrackV2 { instrument: track.optional_midi_instrument().map_or(native::V4_NONE,|i|i as u32), effect_count: track.effects.len() as u32,
                 gain: model.mixer().0, mute: model.mixer().1 as u32, solo: model.mixer().2 as u32, ..Default::default() };
             for (slot, &device) in track.effects.iter().enumerate() { native.effects[slot] = device as u32; }
             config.tracks[index].chain = native;
@@ -144,7 +170,8 @@ impl Host {
         if matches!(prepared.schedule,Schedule::Workspaces(_)) {
             workspace_limits().map_err(|message|AdmissionError{code:native::V4_FEATURE_DISABLED,message})?;
             let (config,graphs)=self.configuration_workspaces(prepared).map_err(|message|AdmissionError{code:native::V4_BAD_FIELD,message})?;
-            if unsafe{native::alive_session_validate_prepared_v4(&*config,graphs.as_ptr(),graphs.len() as u32,std::ptr::null(),0)}==0 {
+            let Schedule::Workspaces(workspace)=&prepared.schedule else{unreachable!()};let audio=workspace.audio_descriptors();
+            if unsafe{native::alive_session_validate_prepared_v4(&*config,graphs.as_ptr(),graphs.len() as u32,audio.as_ptr(),audio.len() as u32)}==0 {
                 let mut d=native::DiagnosticV4::default();unsafe{native::alive_session_diagnostic_v4(&mut d);}
                 return Err(AdmissionError{code:d.error,message:format!("Measured workspace profile 1 refused the complete candidate: {} (resource {}, observed {}, limit {}). Keep the current playable project, reduce simultaneous music or simplify chains. Profile 2 is not admitted.",native::error(),d.resource,d.observed,d.limit)});
             }return Ok(());
@@ -193,6 +220,7 @@ impl Host {
             return Err(InstallFailure{message:format!("Session apply failed; prior session retained: {error}"),rollback_serial:None});
         }
         self.prepared = Some(prepared);
+        self.bank_revision = 0;
         Ok(())
     }
     fn initialize_master(gain:f64,serial:Option<u64>)->Result<(),String>{
@@ -227,9 +255,10 @@ impl Host {
                 if crate::ultra_canvas_install_document(slot as u32, graph) == 0 { return Err(format!("Native device {} installation failed", slot + 1)); }
                 self.owned_roots[slot] = true;
             }
-            let accepted=if let Some(config)=workspaces {native::alive_session_configure_v4(&*config,std::ptr::null(),0)}else{match clips {Some(config)=>native::alive_session_configure_v3(&*config),None=>native::alive_session_configure_v2(&**legacy.as_ref().unwrap())}};
+            let accepted=if let Some(config)=workspaces {let Schedule::Workspaces(workspace)=&prepared.schedule else{unreachable!()};let audio=workspace.audio_descriptors();native::alive_session_configure_v4(&*config,audio.as_ptr(),audio.len() as u32)}else{match clips {Some(config)=>native::alive_session_configure_v3(&*config),None=>native::alive_session_configure_v2(&**legacy.as_ref().unwrap())}};
             if accepted == 0 { return Err(native::error()); }
         }
+        self.bank_revision=0;
         Ok(())
     }
     pub fn base(&mut self, instance_id: &str, key: &str, value: f64) -> Result<(), String> {

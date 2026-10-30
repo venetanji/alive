@@ -7,7 +7,7 @@ impl<'a> TrackRef<'a> {
     pub fn id(self) -> &'a str { match self { Self::Legacy(t)=>&t.id, Self::Workspace(t)=>&t.id } }
     pub fn name(self) -> &'a str { match self { Self::Legacy(t)=>&t.name, Self::Workspace(t)=>&t.name } }
     pub fn instrument(self) -> Option<&'a DeviceInstance> {
-        match self { Self::Legacy(t)=>Some(&t.device), Self::Workspace(t)=>match &t.chain {ChainV4::Midi{instrument}=>Some(instrument),ChainV4::Audio{}=>None} }
+        match self { Self::Legacy(t)=>Some(&t.device), Self::Workspace(t)=>match &t.chain {ChainV4::Midi{instrument}=>instrument.as_ref(),ChainV4::Audio{}=>None} }
     }
     pub fn effects(self) -> &'a [DeviceInstance] { match self { Self::Legacy(t)=>&t.effects, Self::Workspace(t)=>&t.effects } }
     pub fn devices(self) -> impl Iterator<Item=&'a DeviceInstance> { self.instrument().into_iter().chain(self.effects()) }
@@ -24,7 +24,7 @@ impl Document {
     pub fn is_workspaces(&self) -> bool {matches!(self,Self::WorkspacesV4(_))}
     pub fn tracks(&self) -> Vec<TrackRef<'_>> {match self {Self::LegacyV2(s)=>s.tracks.iter().map(TrackRef::Legacy).collect(),Self::ClipsV3(s)=>s.common.tracks.iter().map(TrackRef::Legacy).collect(),Self::WorkspacesV4(s)=>s.tracks.iter().map(TrackRef::Workspace).collect()}}
     pub fn device_mut(&mut self, id:&str) -> Result<&mut DeviceInstance,String> {
-        let found=match self {Self::LegacyV2(s)=>s.tracks.iter_mut().flat_map(Track::devices_mut).find(|d|d.instance_id==id),Self::ClipsV3(s)=>s.common.tracks.iter_mut().flat_map(Track::devices_mut).find(|d|d.instance_id==id),Self::WorkspacesV4(s)=>s.tracks.iter_mut().flat_map(|t|{let instrument=match &mut t.chain {ChainV4::Midi{instrument}=>Some(instrument),ChainV4::Audio{}=>None};instrument.into_iter().chain(&mut t.effects)}).find(|d|d.instance_id==id)};
+        let found=match self {Self::LegacyV2(s)=>s.tracks.iter_mut().flat_map(Track::devices_mut).find(|d|d.instance_id==id),Self::ClipsV3(s)=>s.common.tracks.iter_mut().flat_map(Track::devices_mut).find(|d|d.instance_id==id),Self::WorkspacesV4(s)=>s.tracks.iter_mut().flat_map(|t|{let instrument=match &mut t.chain {ChainV4::Midi{instrument}=>instrument.as_mut(),ChainV4::Audio{}=>None};instrument.into_iter().chain(&mut t.effects)}).find(|d|d.instance_id==id)};
         found.ok_or_else(||format!("Unknown device instance: {id}"))
     }
     pub fn set_mixer(&mut self, id:&str, gain:f64, mute:bool, solo:bool) -> Result<(),String> {

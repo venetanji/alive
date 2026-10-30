@@ -1,36 +1,53 @@
+import {sourceLength} from './alive-model.mjs';
 export const snap=beat=>Math.round(beat*4)/4;
 export const beatToX=(beat,scale,scroll=0)=>beat*scale-scroll;
 export const xToBeat=(x,scale,scroll=0)=>(x+scroll)/scale;
 export function transformPlacement(p,kind,delta){
   delta=snap(delta);
-  if(kind==='trim')return{...p,start:p.start+delta,duration:p.duration-delta,sourceOffset:{kind:'beats',value:p.sourceOffset.value+delta}};
+  if(kind==='trim'){
+    let start=p.region.start+delta;
+    if(p.region.loopEnabled&&start>=p.region.loopEnd)start=p.region.loopStart+(start-p.region.loopEnd)%(p.region.loopEnd-p.region.loopStart);
+    return{...p,start:p.start+delta,duration:p.duration-delta,region:{...p.region,start}};
+  }
   return{...p,...(kind==='resize'?{duration:p.duration+delta}:{start:p.start+delta})};
 }
 export function placementError(p,source,placements,length){
-  if(!source||source.kind&&source.kind!=='midi')return 'Choose a MIDI source on this track.';
-  if(p.sourceOffset.value<0||p.sourceOffset.value>=source.lengthBeats)return 'Source offset must stay inside the source.';
+  if(!source)return 'Choose a source on this track.';
+  const r=p.region,extent=sourceLength(source);
+  if(!r||[r.start,r.end,r.loopStart,r.loopEnd].some(value=>!Number.isFinite(value)||value<0)||r.end<=r.start||r.loopEnd<=r.loopStart||r.end>extent||r.loopEnd>extent||r.loopEnabled&&r.start>=r.loopEnd)return 'Start, End and loop markers must fit inside the source.';
   if(p.start<0||p.duration<1/64||p.start+p.duration>length)return 'Placement must fit inside the song. Extend Transport length or choose a shorter range.';
-  if(!p.loopEnabled&&p.duration>source.lengthBeats-p.sourceOffset.value)return 'Nonlooping duration exceeds the source suffix. Enable Loop or shorten the placement.';
+  if(!r.loopEnabled&&p.duration>r.end-r.start)return 'Nonlooping duration exceeds the clip End. Enable Loop or shorten the placement.';
   if(placements.some(q=>q.id!==p.id&&q.trackId===p.trackId&&p.start<q.start+q.duration&&p.start+p.duration>q.start))return 'Placement overlaps another occurrence. Choose a free range on this track.';
   return null;
 }
 export function midiMarks(source,p,left,right,scale){
-  const offset=p.sourceOffset.value,period=source.lengthBeats-offset,from=Math.max(left,p.start),to=Math.min(right,p.start+p.duration),marks=[];
-  if(!(period>0)||from>=to)return marks;
-  const first=p.loopEnabled?Math.max(0,Math.floor((from-p.start)/period)):0,last=p.loopEnabled?Math.floor((to-p.start)/period):0;
-  // At subpixel periods, one representative repetition per pixel is sufficient.
-  const stride=Math.max(1,Math.ceil(1/(period*scale))),limit=Math.min(4096,Math.ceil((to-from)*scale)*Math.max(1,source.notes.length));
-  for(let repeat=first;repeat<=last&&marks.length<limit;repeat+=stride)for(const n of source.notes){
-    const start=Math.max(offset,n.beat),end=Math.min(source.lengthBeats,n.beat+n.duration);
-    if(start>=end)continue;const a=Math.max(from,p.start+repeat*period+start-offset),b=Math.min(to,p.start+repeat*period+end-offset);
-    if(a<b)marks.push({start:a,end:b,pitch:n.pitch});if(marks.length>=limit)break;
+  const r=p.region,from=Math.max(left,p.start),to=Math.min(right,p.start+p.duration),marks=[];
+  if(!r||from>=to)return marks;
+  const period=r.loopEnd-r.loopStart,intro=(r.loopEnabled?r.loopEnd:r.end)-r.start;
+  const limit=Math.min(4096,Math.ceil((to-from)*scale)*Math.max(1,source.notes.length));
+  function segment(localStart,localEnd,songStart){
+    for(const n of source.notes){
+      const start=Math.max(localStart,n.beat),end=Math.min(localEnd,n.beat+n.duration);
+      const a=Math.max(from,songStart+start-localStart),b=Math.min(to,songStart+end-localStart);
+      if(a<b&&marks.length<limit)marks.push({start:a,end:b,pitch:n.pitch});
+    }
+  }
+  segment(r.start,r.loopEnabled?r.loopEnd:r.end,p.start);
+  if(r.loopEnabled&&period>0){
+    const origin=p.start+intro,first=Math.max(0,Math.floor((from-origin)/period)),last=Math.floor((to-origin)/period),stride=Math.max(1,Math.ceil(1/(period*scale)));
+    for(let repeat=first;repeat<=last&&marks.length<limit;repeat+=stride)segment(r.loopStart,r.loopEnd,origin+repeat*period);
   }
   return marks;
+}
+export function waveformMarks(source,p,peaks,left,right,scale){
+  const length=sourceLength(source),notes=peaks.map((peak,index)=>({beat:index*length/peaks.length,duration:length/peaks.length,pitch:peak}));
+  return midiMarks({notes},p,left,right,scale).map(({pitch,...mark})=>({...mark,min:pitch[0],max:pitch[1]}));
 }
 
 // Geometry and previews are local; the owner supplies authenticated edits and selection.
 export function mountTimeline({doc,win,state,choose,edit,placementEdit,transportRange,action,mix,preserves,notice,guard}){
   const $=id=>doc.getElementById(id),root=$('timeline'),scroll=$('timeline-scroll'),canvas=$('timeline-canvas');
+  canvas.setAttribute('tabindex','0');canvas.setAttribute('aria-label','Arrangement timeline');
   const make=(tag,cls,text)=>{const e=doc.createElement(tag);e.className=cls??'';if(text!==undefined)e.textContent=text;return e;};
   let scale=48,range=null,gesture=null,preview=null,key='',last=null,inspectorKey='',fields={};
   const button=(label,fn,cls='')=>{const e=make('button',cls,label);e.setAttribute('aria-label',label);e.addEventListener('click',guard(fn));return e;};
@@ -48,15 +65,15 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
       if(source){const name=make('input');name.value=source.name;name.maxLength=64;name.setAttribute('aria-label','Arrangement source name');name.addEventListener('change',guard(()=>edit({kind:'sourceRename',sourceId:source.id,name:name.value})));fields.name=name;container.append(field('Source',name));}
       if(p){
         const change=changes=>placementEdit(p.trackId,p.id,p.sourceId,changes);
-        fields.start=number('Placement start',p.start,start=>change({start}));fields.duration=number('Placement duration',p.duration,duration=>change({duration}));fields.offset=number('Placement source offset',p.sourceOffset.value,value=>change({sourceOffset:{kind:'beats',value}}));
-        fields.loop=make('input');fields.loop.type='checkbox';fields.loop.checked=p.loopEnabled;fields.loop.setAttribute('aria-label','Loop source suffix');const loop=fields.loop;loop.addEventListener('change',guard(()=>change({loopEnabled:loop.checked})));
+        fields.start=number('Placement start',p.start,start=>change({start}));fields.duration=number('Placement duration',p.duration,duration=>change({duration}));fields.offset=number('Placement source Start',p.region.start,start=>change(current=>({region:{...current.region,start}})));
+        fields.loop=make('input');fields.loop.type='checkbox';fields.loop.checked=p.region.loopEnabled;fields.loop.setAttribute('aria-label','Placement Loop');const loop=fields.loop;loop.addEventListener('change',guard(()=>change(current=>({region:{...current.region,loopEnabled:loop.checked}}))));
         const candidates=[p.start+p.duration,0,...s.document.placements.filter(q=>q.trackId===p.trackId).map(q=>q.start+q.duration)];
         fields.destination=number('Duplicate placement start',candidates.find(start=>!placementError({...p,id:null,start},source,s.document.placements,s.document.lengthBeats))??p.start+p.duration,()=>{});const destination=fields.destination;
-        container.append(field('Start',fields.start),field('Duration',fields.duration),field('Offset',fields.offset),field('Loop suffix',fields.loop),field('Copy to',fields.destination),button('Duplicate placement',()=>{const value=destination.value,start=Number(value);return edit(()=>{const current=state().document,original=current.placements.find(q=>q.id===p.id&&q.trackId===p.trackId);if(!original||original.sourceId!==p.sourceId)throw Error('The originating placement or source changed.');const error=value===''||!Number.isFinite(start)?'Enter a valid duplicate start.':placementError({...original,id:null,start},current.sources.find(q=>q.id===original.sourceId),current.placements,current.lengthBeats);if(error)throw Error(error);return{kind:'placementDuplicate',placementId:p.id,start};});}),button('Make placement independent',()=>edit({kind:'sourceIndependent',occurrence:{kind:'placement',placementId:p.id}})),button('Delete placement',()=>edit({kind:'placementDelete',placementId:p.id})));
+        container.append(field('Position',fields.start),field('Duration',fields.duration),field('Source Start',fields.offset),field('Loop',fields.loop),field('Copy to',fields.destination),button('Duplicate placement',()=>{const value=destination.value,start=Number(value);return edit(()=>{const current=state().document,original=current.placements.find(q=>q.id===p.id&&q.trackId===p.trackId);if(!original||original.sourceId!==p.sourceId)throw Error('The originating placement or source changed.');const error=value===''||!Number.isFinite(start)?'Enter a valid duplicate start.':placementError({...original,id:null,start},current.sources.find(q=>q.id===original.sourceId),current.placements,current.lengthBeats);if(error)throw Error(error);return{kind:'placementDuplicate',placementId:p.id,start};});}),button('Make placement independent',()=>edit({kind:'sourceIndependent',occurrence:{kind:'placement',placementId:p.id}})),button('Delete placement',()=>edit({kind:'placementDelete',placementId:p.id})));
       }else container.append(make('span','muted','Select an occurrence to edit its timing. Source notes stay in Clip detail.'));
     }
     updateInput(fields.gain,Number(track.gain.toFixed(3)));fields.gain.title=`${track.name} track gain: ${track.gain}`;if(fields.name)updateInput(fields.name,source.name);
-    if(p){updateInput(fields.start,p.start);updateInput(fields.duration,p.duration);updateInput(fields.offset,p.sourceOffset.value);if(doc.activeElement!==fields.loop&&!preserves(fields.loop))fields.loop.checked=p.loopEnabled;}
+    if(p){updateInput(fields.start,p.start);updateInput(fields.duration,p.duration);updateInput(fields.offset,p.region.start);if(doc.activeElement!==fields.loop&&!preserves(fields.loop))fields.loop.checked=p.region.loopEnabled;}
     updateInput($('song-loop-start'),s.document.loopStartBeats);updateInput($('song-loop-end'),s.document.loopEndBeats);
     const receipts=s.snapshot.runtime?.requests.filter(r=>r.kind==='return')??[];
     $('return-receipts').textContent=receipts.slice(-4).map(r=>`Return ${r.requestSerial}: ${r.status}. ${(r.members??[]).map(m=>`${s.snapshot.document.tracks.find(t=>t.id===m.trackId)?.name??m.trackId}: ${m.status}`).join(' / ')}. Applied ${r.appliedMask}, pending ${r.pendingMask}, superseded ${r.supersededMask}, rejected ${r.rejectedMask}.`).join('\n')||'No Return requests in this preparation.';
@@ -65,7 +82,7 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
     const s=state();if(!s?.snapshot)return;last=s;const {snapshot,document}=s,enabled=snapshot.mode==='workspacesV4'&&snapshot.capabilities?.arrangement;
     root.hidden=!enabled;$('arrangement-placeholder').hidden=!!enabled;if(!enabled)return;
     if(gesture&&(gesture.generation!==snapshot.generation||gesture.revision!==snapshot.draftRevision||gesture.token!==s.token)){cancel();return;}
-    inspector(s);const r=getRange();$('timeline-range').textContent=`Range ${r.start} - ${r.start+r.duration} beats`;
+    inspector(s);$('timeline-loop-selection').disabled=!range;const r=getRange();$('timeline-range').textContent=`Range ${r.start} - ${r.start+r.duration} beats`;
     const width=document.lengthBeats*scale,laneWidth=Math.max(width,(scroll.clientWidth||1000)-176),visibleLeft=(scroll.scrollLeft??0)/scale,visibleRight=visibleLeft+(scroll.clientWidth||1000)/scale;
     const next=JSON.stringify([snapshot.generation,document.tracks.map(t=>[t.id,t.name,t.color]),document.sources,document.placements,document.lengthBeats,document.loopEnabled,document.loopStartBeats,document.loopEndBeats,scale,range,preview,s.selection,visibleLeft,visibleRight]);
     if(next!==key){key=next;canvas.replaceChildren();canvas.style.width=`${laneWidth+176}px`;canvas.style.minHeight=`${48+64*document.tracks.length}px`;
@@ -81,12 +98,12 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
         const back=button(`Return ${t.name}`,()=>action({kind:'return',trackIds:[t.id]}),'timeline-return');back.textContent='Return';back.title=`Return ${t.name} to Arrangement`;
         const mute=button(`${t.name} Arrangement mute`,()=>mix(t.id,{mute:!state().document.tracks.find(q=>q.id===t.id).mute}),'timeline-mute'),solo=button(`${t.name} Arrangement solo`,()=>mix(t.id,{solo:!state().document.tracks.find(q=>q.id===t.id).solo}),'timeline-solo');mute.textContent='M';solo.textContent='S';
         header.append(mute,solo,authority,back);
-        const lane=make('div','timeline-lane');lane.dataset.trackId=t.id;lane.style.width=`${laneWidth}px`;lane.style.backgroundSize=`${4*scale}px 100%`;
+        const lane=make('div','timeline-lane');lane.setAttribute('role','group');lane.setAttribute('aria-label',`${t.name} timeline lane`);lane.dataset.trackId=t.id;lane.style.width=`${laneWidth}px`;lane.style.backgroundSize=`${4*scale}px 100%`;
         if(r.trackId===t.id){const selected=make('div','timeline-range');selected.style.left=`${r.start*scale}px`;selected.style.width=`${r.duration*scale}px`;lane.append(selected);}
         for(const installed of snapshot.document.placements.filter(p=>p.trackId===t.id)){
           const draft=document.placements.find(p=>p.id===installed.id);if(JSON.stringify(draft)===JSON.stringify(installed))continue;
           const label=snapshot.preparedWorkspaces?.sources.find(s=>s.sourceId===installed.sourceId)?.name??'Prepared source',outline=make('div','timeline-prepared',`Prepared: ${label}`);
-          outline.dataset.preparedId=installed.id;outline.style.left=`${installed.start*scale}px`;outline.style.width=`${installed.duration*scale}px`;outline.title=`Prepared ${label}: ${installed.start} - ${installed.start+installed.duration}. Apply stopped to replace this schedule.`;lane.append(outline);
+          outline.dataset.preparedId=installed.id;outline.style.left=`${installed.start*scale}px`;outline.style.width=`${installed.duration*scale}px`;outline.title=`Prepared ${label}: ${installed.start} - ${installed.start+installed.duration}. Updating at the next playback boundary.`;lane.append(outline);
         }
         for(const original of document.placements.filter(p=>p.trackId===t.id)){
           const p=preview?.id===original.id?preview:original,source=document.sources.find(s=>s.id===p.sourceId),occurrence=button(source?.name??'Missing source',()=>select(t.id,p.sourceId,p.id),'timeline-placement');
@@ -95,7 +112,8 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
           occurrence.classList.toggle('draft-only',!prepared||JSON.stringify(installed)!==JSON.stringify(original)||JSON.stringify(snapshot.document.sources.find(q=>q.id===p.sourceId))!==JSON.stringify(source));
           occurrence.classList.toggle('selected',s.selection?.occurrence?.placementId===p.id);occurrence.classList.toggle('invalid',!!preview&&preview.id===p.id&&!!placementError(p,source,document.placements,document.lengthBeats));
           const marks=doc.createElementNS('http://www.w3.org/2000/svg','svg');marks.setAttribute('viewBox',`0 0 ${p.duration*scale} 30`);marks.setAttribute('preserveAspectRatio','none');
-          if(source?.kind==='midi')for(const m of midiMarks(source,p,visibleLeft,visibleRight,scale)){const line=doc.createElementNS('http://www.w3.org/2000/svg','rect');for(const [k,v]of Object.entries({x:(m.start-p.start)*scale,y:26-Math.max(0,Math.min(1,(m.pitch-36)/60))*24,width:Math.max(1,(m.end-m.start)*scale),height:2}))line.setAttribute(k,String(v));marks.append(line);}occurrence.append(marks);
+          if(source?.kind==='midi')for(const m of midiMarks(source,p,visibleLeft,visibleRight,scale)){const line=doc.createElementNS('http://www.w3.org/2000/svg','rect');for(const [k,v]of Object.entries({x:(m.start-p.start)*scale,y:26-Math.max(0,Math.min(1,(m.pitch-36)/60))*24,width:Math.max(1,(m.end-m.start)*scale),height:2}))line.setAttribute(k,String(v));marks.append(line);}
+          if(source?.kind==='audio')for(const m of waveformMarks(source,p,snapshot.preparedWorkspaces?.sources.find(s=>s.sourceId===source.id)?.waveformPeaks??[],visibleLeft,visibleRight,scale)){const bar=doc.createElementNS('http://www.w3.org/2000/svg','rect');for(const [k,v]of Object.entries({x:(m.start-p.start)*scale,y:15-m.max*12,width:Math.max(.5,(m.end-m.start)*scale),height:Math.max(1,(m.max-m.min)*12)}))bar.setAttribute(k,String(v));marks.append(bar);}occurrence.append(marks);
           for(const side of ['left','right']){const handle=make('span','timeline-edge '+side);handle.dataset.edge=side;occurrence.append(handle);}lane.append(occurrence);
         }row.append(lane,header);canvas.append(row);
       });const playhead=make('div','timeline-playhead');canvas.append(playhead);
@@ -109,6 +127,7 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
   }
   canvas.addEventListener('pointerdown',guard(event=>{
     if(event.button!==0||event.target.closest?.('.timeline-header,.timeline-ruler'))return;
+    canvas.focus();
     const brace=event.target.closest?.('.timeline-brace');if(brace){const s=state(),side=event.target.dataset.braceEdge;gesture={id:event.pointerId,x:event.clientX,scale,generation:s.snapshot.generation,revision:s.snapshot.draftRevision,token:s.token,kind:side==='left'?'loopLeft':side==='right'?'loopRight':'loopMove',start:s.document.loopStartBeats,end:s.document.loopEndBeats};canvas.setPointerCapture?.(event.pointerId);event.preventDefault();return;}
     const hit=event.target.closest?.('[data-placement-id]'),lane=event.target.closest?.('.timeline-lane');if(!lane)return;
     const bounds=lane.getBoundingClientRect(),s=state(),p=s.document.placements.find(p=>p.id===hit?.dataset.placementId);if(p)select(p.trackId,p.sourceId,p.id);else select(lane.dataset.trackId,s.trackId===lane.dataset.trackId?s.selection?.sourceId:null);
@@ -126,14 +145,16 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
     if(g.kind.startsWith('loop')){if(p.loopStartBeats===g.start&&p.loopEndBeats===g.end)return;if(p.loopStartBeats<0||p.loopEndBeats>state().document.lengthBeats||p.loopEndBeats-p.loopStartBeats<1/64)throw Error('Song loop must fit inside the transport range.');return edit(()=>{validate();const d=state().document;return{kind:'transportRange',tempo:d.tempo,lengthBeats:d.lengthBeats,loopEnabled:d.loopEnabled,...p};});}
     if(JSON.stringify(p)===JSON.stringify(g.placement))return;
     const error=placementError(p,s.document.sources.find(s=>s.id===p.sourceId),s.document.placements,s.document.lengthBeats);if(error)throw Error(error);
-    return edit(()=>{validate();return{kind:'placementUpdate',placementId:p.id,start:p.start,duration:p.duration,sourceOffset:p.sourceOffset,loopEnabled:p.loopEnabled};});
+    return edit(()=>{validate();return{kind:'placementUpdate',placementId:p.id,start:p.start,duration:p.duration,region:p.region};});
   }));
   canvas.addEventListener('pointercancel',cancel);canvas.addEventListener('lostpointercapture',cancel);
-  const escape=event=>{if(event.key==='Escape')cancel();if(!event.defaultPrevented&&(event.key==='Delete'||event.key==='Backspace')&&!root.hidden&&!$('arrangement-workspace').hidden&&event.target.closest?.('#arrangement-workspace')&&!event.target.closest?.('input,select,textarea,button,[contenteditable],[role]')){const p=state().selection?.occurrence?.placementId;if(p){event.preventDefault();guard(()=>edit({kind:'placementDelete',placementId:p}))();}}};doc.addEventListener('keydown',escape);win?.addEventListener('blur',cancel);
+  const escape=event=>{if(event.key==='Escape')cancel();if(!event.defaultPrevented&&(event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='l'&&event.target.closest?.('#arrangement-workspace')&&!event.target.closest?.('input,select,textarea,[contenteditable]')){event.preventDefault();guard(loopSelection)();return;}if(!event.defaultPrevented&&(event.key==='Delete'||event.key==='Backspace')&&!root.hidden&&!$('arrangement-workspace').hidden&&event.target.closest?.('#arrangement-workspace')&&!event.target.closest?.('input,select,textarea,button,[contenteditable],[role]')){const p=state().selection?.occurrence?.placementId;if(p){event.preventDefault();guard(()=>edit({kind:'placementDelete',placementId:p}))();}}};doc.addEventListener('keydown',escape);win?.addEventListener('blur',cancel);
   scroll.addEventListener('scroll',()=>render());
   const resizeObserver=win?.ResizeObserver?new win.ResizeObserver(()=>{key='';render();}):null;resizeObserver?.observe(scroll);
   for(const [id,factor] of [['timeline-zoom-in',1.5],['timeline-zoom-out',1/1.5]])$(id).addEventListener('click',()=>{cancel();scale=Math.max(1,Math.min(192,scale*factor));key='';render();});
   $('timeline-fit').addEventListener('click',()=>{cancel();scale=Math.max(1,Math.min(192,((scroll.clientWidth||1000)-176)/last.document.lengthBeats));scroll.scrollLeft=0;key='';render();});
   for(const [id,key]of [['song-loop-start','loopStartBeats'],['song-loop-end','loopEndBeats']])$(id).addEventListener('change',guard(()=>{if($(id).value===''||!Number.isFinite(Number($(id).value)))throw Error('Enter a valid song loop beat.');return transportRange({[key]:Number($(id).value)});}));
-  return{render,cancel,getRange,dispose(){resizeObserver?.disconnect();doc.removeEventListener('keydown',escape);win?.removeEventListener('blur',cancel);}};
+  $('timeline-loop-selection').addEventListener('click',guard(()=>loopSelection()));
+  function loopSelection(){if(!range)throw Error('Drag a time range in Arrangement first.');return transportRange({loopStartBeats:range.start,loopEndBeats:range.start+range.duration,loopEnabled:true});}
+  return{render,cancel,getRange,loopSelection,dispose(){resizeObserver?.disconnect();doc.removeEventListener('keydown',escape);win?.removeEventListener('blur',cancel);}};
 }

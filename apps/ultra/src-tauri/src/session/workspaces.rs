@@ -65,7 +65,7 @@ pub struct TrackV4 {
     deny_unknown_fields
 )]
 pub enum ChainV4 {
-    Midi { instrument: DeviceInstance },
+    Midi { instrument: Option<DeviceInstance> },
     Audio {},
 }
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
@@ -89,6 +89,8 @@ pub enum SourceV4 {
         track_id: String,
         name: String,
         file: AudioFileV4,
+        source_tempo: f64,
+        warp_mode: String,
         automation: Vec<Lane>,
     },
 }
@@ -104,15 +106,24 @@ pub struct AudioFileV4 {
     pub frames: DecimalU64,
 }
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
-#[serde(
-    tag = "kind",
-    rename_all = "camelCase",
-    rename_all_fields = "camelCase",
-    deny_unknown_fields
-)]
-pub enum SourceOffsetV4 {
-    Beats { value: f64 },
-    Frames { value: DecimalU64 },
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct ClipRegionV4 {
+    pub start: f64,
+    pub end: f64,
+    pub loop_start: f64,
+    pub loop_end: f64,
+    pub loop_enabled: bool,
+}
+impl ClipRegionV4 {
+    pub fn full(length: f64) -> Self {
+        Self {
+            start: 0.,
+            end: length,
+            loop_start: 0.,
+            loop_end: length,
+            loop_enabled: true,
+        }
+    }
 }
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -120,8 +131,7 @@ pub struct SlotV4 {
     pub id: String,
     pub name: String,
     pub source_id: String,
-    pub source_offset: SourceOffsetV4,
-    pub loop_enabled: bool,
+    pub region: ClipRegionV4,
 }
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -131,8 +141,7 @@ pub struct PlacementV4 {
     pub source_id: String,
     pub start: f64,
     pub duration: f64,
-    pub source_offset: SourceOffsetV4,
-    pub loop_enabled: bool,
+    pub region: ClipRegionV4,
 }
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(
@@ -153,6 +162,29 @@ pub enum OccurrenceV4 {
     deny_unknown_fields
 )]
 pub enum WorkspaceEditV4 {
+    MidiClipCreate {
+        track_id: String,
+        slot: u32,
+        name: String,
+    },
+    MidiPlacementCreate {
+        track_id: String,
+        start: f64,
+        duration: f64,
+        name: String,
+    },
+    AudioClipImport {
+        track_id: String,
+        slot: u32,
+        name: String,
+        file: AudioFileV4,
+        source_tempo: f64,
+        warp_mode: String,
+    },
+    RegionSet {
+        occurrence: OccurrenceV4,
+        region: ClipRegionV4,
+    },
     SourceCreateMidi {
         track_id: String,
         name: String,
@@ -201,15 +233,13 @@ pub enum WorkspaceEditV4 {
         slot: u32,
         source_id: String,
         name: String,
-        source_offset: SourceOffsetV4,
-        loop_enabled: bool,
+        region: ClipRegionV4,
     },
     SlotUpdate {
         track_id: String,
         slot_id: String,
         name: String,
-        source_offset: SourceOffsetV4,
-        loop_enabled: bool,
+        region: ClipRegionV4,
     },
     SlotDuplicate {
         track_id: String,
@@ -225,15 +255,13 @@ pub enum WorkspaceEditV4 {
         source_id: String,
         start: f64,
         duration: f64,
-        source_offset: SourceOffsetV4,
-        loop_enabled: bool,
+        region: ClipRegionV4,
     },
     PlacementUpdate {
         placement_id: String,
         start: f64,
         duration: f64,
-        source_offset: SourceOffsetV4,
-        loop_enabled: bool,
+        region: ClipRegionV4,
     },
     PlacementDuplicate {
         placement_id: String,
@@ -364,12 +392,14 @@ fn strict_decode<T: serde::de::DeserializeOwned>(text: &str) -> Result<T, String
 }
 
 impl TrackV4 {
-    pub fn devices(&self) -> impl Iterator<Item = &DeviceInstance> {
-        let instrument = match &self.chain {
-            ChainV4::Midi { instrument } => Some(instrument),
+    pub fn instrument(&self) -> Option<&DeviceInstance> {
+        match &self.chain {
+            ChainV4::Midi { instrument } => instrument.as_ref(),
             ChainV4::Audio {} => None,
-        };
-        instrument.into_iter().chain(&self.effects)
+        }
+    }
+    pub fn devices(&self) -> impl Iterator<Item = &DeviceInstance> {
+        self.instrument().into_iter().chain(&self.effects)
     }
 }
 impl SourceV4 {
@@ -388,11 +418,16 @@ impl SourceV4 {
             Self::Midi { automation, .. } | Self::Audio { automation, .. } => automation,
         }
     }
-    pub fn length_frames(&self, tempo: f64) -> Result<u64, String> {
+    pub fn length_beats(&self) -> f64 {
         match self {
-            Self::Midi { length_beats, .. } => frame_at(*length_beats, tempo),
-            Self::Audio { file, .. } => Ok(file.frames.0),
+            Self::Midi { length_beats, .. } => *length_beats,
+            Self::Audio {
+                file, source_tempo, ..
+            } => file.frames.0 as f64 / f64::from(file.sample_rate) * *source_tempo / 60.,
         }
+    }
+    pub fn length_frames(&self, tempo: f64) -> Result<u64, String> {
+        frame_at(self.length_beats(), tempo)
     }
 }
 
@@ -430,9 +465,9 @@ impl ProjectV4 {
             .iter()
             .map(|t| t.devices().count())
             .sum::<usize>()
-            > 16
+            > 6
         {
-            return Err("Workspace exceeds sixteen roots".into());
+            return Err("Workspace exceeds six device roots".into());
         }
         let mut ids = HashSet::new();
         let mut counts = BTreeMap::<&str, TrackCounts>::new();
@@ -462,7 +497,8 @@ impl ProjectV4 {
                     }
                 }
             }
-            if matches!(&track.chain, ChainV4::Midi { instrument } if instrument.bypassed) {
+            if matches!(&track.chain, ChainV4::Midi { instrument: Some(instrument) } if instrument.bypassed)
+            {
                 return Err(format!(
                     "Track '{}' instrument cannot be bypassed",
                     track.id
@@ -536,7 +572,14 @@ impl ProjectV4 {
                         intervals.push((note.pitch, start, end));
                         edges.push((start, 1i32));
                         edges.push((end, -1i32));
-                        events = checked_add(events, if end < length { 2 } else { 1 })?;
+                        if matches!(
+                            track.chain,
+                            ChainV4::Midi {
+                                instrument: Some(_)
+                            }
+                        ) {
+                            events = checked_add(events, if end < length { 2 } else { 1 })?;
+                        }
                     }
                     edges.sort_unstable();
                     let mut held = 0;
@@ -549,27 +592,29 @@ impl ProjectV4 {
                         }
                     }
                 }
-                SourceV4::Audio { name, file, .. } => {
+                SourceV4::Audio {
+                    name,
+                    file,
+                    source_tempo,
+                    warp_mode,
+                    ..
+                } => {
                     if !matches!(track.chain, ChainV4::Audio {}) {
                         return Err(context("Audio source requires its audio track".into()));
                     }
                     text(name, 64, "Source name").map_err(context)?;
                     text(&file.path, 4096, "Audio path").map_err(context)?;
                     fingerprint(&file.source_sha256).map_err(context)?;
-                    if file.encoding != "wavPcm"
-                        || !matches!(file.channels, 1 | 2)
-                        || file.sample_rate != 48000
-                        || !matches!(file.bits_per_sample, 16 | 24)
-                        || length == 0
-                    {
+                    bounded(*source_tempo, 30., 240., "Audio source tempo").map_err(context)?;
+                    if warp_mode != "repitch" {
+                        return Err(context("Only explicit Re-Pitch Warp is supported".into()));
+                    }
+                    super::wav::validate_descriptor(file).map_err(context)?;
+                    if length == 0 {
                         return Err(context(
-                            "Expected nonempty 48 kHz mono/stereo 16/24-bit wavPcm descriptor"
-                                .into(),
+                            "Audio source must occupy at least one output frame".into(),
                         ));
                     }
-                    length
-                        .checked_mul(u64::from(file.channels))
-                        .ok_or_else(|| context("Audio sample count overflow".into()))?;
                 }
             }
             count.lanes = checked_add(count.lanes, source.automation().len())?;
@@ -613,13 +658,8 @@ impl ProjectV4 {
         }
         for track in &self.tracks {
             for slot in track.slots.iter().flatten() {
-                self.suffix(
-                    &track.id,
-                    &slot.source_id,
-                    &slot.source_offset,
-                    slot.loop_enabled,
-                )
-                .map_err(|e| format!("Slot '{}' source '{}': {e}", slot.id, slot.source_id))?;
+                self.region_length(&track.id, &slot.source_id, &slot.region)
+                    .map_err(|e| format!("Slot '{}' source '{}': {e}", slot.id, slot.source_id))?;
             }
         }
         let mut ranges: BTreeMap<&str, Vec<(&PlacementV4, u64, u64)>> = BTreeMap::new();
@@ -656,14 +696,9 @@ impl ProjectV4 {
                 ));
             }
             let period = self
-                .suffix(
-                    &placement.track_id,
-                    &placement.source_id,
-                    &placement.source_offset,
-                    placement.loop_enabled,
-                )
+                .region_length(&placement.track_id, &placement.source_id, &placement.region)
                 .map_err(context)?;
-            if !placement.loop_enabled && end - start > period {
+            if !placement.region.loop_enabled && end - start > period {
                 return Err(context(
                     "Nonlooping placement exceeds remaining source suffix".into(),
                 ));
@@ -728,36 +763,45 @@ impl ProjectV4 {
             .find(|s| s.id() == id)
             .ok_or_else(|| format!("Unknown source '{id}'"))
     }
-    fn suffix(
+    fn region_length(
         &self,
         track_id: &str,
         source_id: &str,
-        offset: &SourceOffsetV4,
-        looping: bool,
+        region: &ClipRegionV4,
     ) -> Result<u64, String> {
         let source = self.source(source_id)?;
         if source.track_id() != track_id {
             return Err("Cross-track source reference".into());
         }
-        let length = source.length_frames(self.tempo)?;
-        let offset = match (source, offset) {
-            (SourceV4::Midi { length_beats, .. }, SourceOffsetV4::Beats { value }) => {
-                if value >= length_beats {
-                    return Err("Source offset must precede MIDI source end".into());
-                }
-                frame_at(*value, self.tempo)?
-            }
-            (SourceV4::Audio { .. }, SourceOffsetV4::Frames { value }) => value.0,
-            _ => return Err("Source offset kind must match source kind".into()),
-        };
-        let period = length
-            .checked_sub(offset)
-            .filter(|p| *p > 0)
-            .ok_or("Source offset must precede source end")?;
-        if looping && period < frame_at(MIN_BEATS, self.tempo)? {
-            return Err("Loop suffix is shorter than 1/64 beat".into());
+        let length = source.length_beats();
+        for (value, label) in [
+            (region.start, "Clip start"),
+            (region.end, "Clip end"),
+            (region.loop_start, "Clip loop start"),
+            (region.loop_end, "Clip loop end"),
+        ] {
+            super::prepare::bounded(value, 0., length, label)?;
         }
-        Ok(period)
+        let start = frame_at(region.start, self.tempo)?;
+        let end = frame_at(region.end, self.tempo)?;
+        let loop_start = frame_at(region.loop_start, self.tempo)?;
+        let loop_end = frame_at(region.loop_end, self.tempo)?;
+        if region.start >= region.end
+            || start >= end
+            || region.loop_start >= region.loop_end
+            || loop_start >= loop_end
+        {
+            return Err(
+                "Clip markers and loop markers must have ordered, distinct output frames".into(),
+            );
+        }
+        if region.loop_enabled
+            && (region.start >= region.loop_end
+                || loop_end - loop_start < frame_at(MIN_BEATS, self.tempo)?)
+        {
+            return Err("Loop must follow the clip start and contain at least 1/64 beat".into());
+        }
+        Ok(end - start)
     }
 }
 fn unique(ids: &mut HashSet<String>, id: &str) -> Result<(), String> {
@@ -874,8 +918,7 @@ pub fn prospective_from_document(document: &Document) -> Result<ProjectV4, Strin
                 id: clip.id.clone(),
                 name: clip.name.clone(),
                 source_id: source_id.clone(),
-                source_offset: SourceOffsetV4::Beats { value: 0. },
-                loop_enabled: true,
+                region: ClipRegionV4::full(clip.length_beats),
             });
             if bank.default_clip_id.as_ref() == Some(&clip.id) {
                 project.placements.push(PlacementV4 {
@@ -884,8 +927,7 @@ pub fn prospective_from_document(document: &Document) -> Result<ProjectV4, Strin
                     source_id,
                     start: 0.,
                     duration: clips.common.length_beats,
-                    source_offset: SourceOffsetV4::Beats { value: 0. },
-                    loop_enabled: true,
+                    region: ClipRegionV4::full(clip.length_beats),
                 });
             }
         }
@@ -897,7 +939,7 @@ pub fn prospective_from_document(document: &Document) -> Result<ProjectV4, Strin
                 .ok_or("Workspace exceeds eight tracks")?
                 .to_string(),
             chain: ChainV4::Midi {
-                instrument: track.device.clone(),
+                instrument: Some(track.device.clone()),
             },
             effects: track.effects.clone(),
             slots,
@@ -1021,6 +1063,19 @@ impl ProjectV4 {
             )),
         }
     }
+    fn extend_region_source(
+        &mut self,
+        source_id: &str,
+        region: &ClipRegionV4,
+    ) -> Result<(), String> {
+        if let SourceV4::Midi { length_beats, .. } = self.source_mut(source_id)? {
+            for value in [region.start, region.end, region.loop_start, region.loop_end] {
+                super::prepare::bounded(value, 0., 256., "MIDI region marker")?;
+                *length_beats = length_beats.max(value);
+            }
+        }
+        Ok(())
+    }
     fn edit(
         &mut self,
         edit: WorkspaceEditV4,
@@ -1028,6 +1083,124 @@ impl ProjectV4 {
     ) -> Result<(), String> {
         use WorkspaceEditV4::*;
         match edit {
+            MidiPlacementCreate {
+                track_id,
+                start,
+                duration,
+                name,
+            } => {
+                if !matches!(self.track(&track_id)?.chain, ChainV4::Midi { .. }) {
+                    return Err(format!("Track '{track_id}' is audio"));
+                }
+                let source_id = fresh("source")?;
+                let placement_id = fresh("placement")?;
+                self.sources.push(SourceV4::Midi {
+                    id: source_id.clone(),
+                    track_id: track_id.clone(),
+                    name,
+                    length_beats: duration,
+                    notes: vec![],
+                    automation: vec![],
+                });
+                self.placements.push(PlacementV4 {
+                    id: placement_id,
+                    track_id,
+                    source_id,
+                    start,
+                    duration,
+                    region: ClipRegionV4::full(duration),
+                });
+            }
+            MidiClipCreate {
+                track_id,
+                slot,
+                name,
+            } => {
+                if !matches!(self.track(&track_id)?.chain, ChainV4::Midi { .. }) {
+                    return Err(format!("Track '{track_id}' is audio"));
+                }
+                let source_id = fresh("source")?;
+                let slot_id = fresh("slot")?;
+                let destination = self
+                    .track_mut(&track_id)?
+                    .slots
+                    .get_mut(slot as usize)
+                    .ok_or("Slot must be 0..3")?;
+                if destination.is_some() {
+                    return Err("Clip destination is occupied".into());
+                }
+                *destination = Some(SlotV4 {
+                    id: slot_id,
+                    name: name.clone(),
+                    source_id: source_id.clone(),
+                    region: ClipRegionV4::full(4.),
+                });
+                self.sources.push(SourceV4::Midi {
+                    id: source_id,
+                    track_id,
+                    name,
+                    length_beats: 4.,
+                    notes: vec![],
+                    automation: vec![],
+                });
+            }
+            AudioClipImport {
+                track_id,
+                slot,
+                name,
+                file,
+                source_tempo,
+                warp_mode,
+            } => {
+                if !matches!(self.track(&track_id)?.chain, ChainV4::Audio {}) {
+                    return Err(format!("Track '{track_id}' is MIDI"));
+                }
+                let source = SourceV4::Audio {
+                    id: fresh("source")?,
+                    track_id: track_id.clone(),
+                    name: name.clone(),
+                    file,
+                    source_tempo,
+                    warp_mode,
+                    automation: vec![],
+                };
+                let region = ClipRegionV4::full(source.length_beats());
+                let slot_id = fresh("slot")?;
+                let destination = self
+                    .track_mut(&track_id)?
+                    .slots
+                    .get_mut(slot as usize)
+                    .ok_or("Slot must be 0..3")?;
+                if destination.is_some() {
+                    return Err("Clip destination is occupied".into());
+                }
+                *destination = Some(SlotV4 {
+                    id: slot_id,
+                    name,
+                    source_id: source.id().into(),
+                    region,
+                });
+                self.sources.push(source);
+            }
+            RegionSet { occurrence, region } => {
+                let source_id = match &occurrence {
+                    OccurrenceV4::Slot { track_id, slot_id } => {
+                        self.slot_mut(track_id, slot_id)?.source_id.clone()
+                    }
+                    OccurrenceV4::Placement { placement_id } => {
+                        self.placement_mut(placement_id)?.source_id.clone()
+                    }
+                };
+                self.extend_region_source(&source_id, &region)?;
+                match occurrence {
+                    OccurrenceV4::Slot { track_id, slot_id } => {
+                        self.slot_mut(&track_id, &slot_id)?.region = region
+                    }
+                    OccurrenceV4::Placement { placement_id } => {
+                        self.placement_mut(&placement_id)?.region = region
+                    }
+                }
+            }
             SourceCreateMidi {
                 track_id,
                 name,
@@ -1156,9 +1329,9 @@ impl ProjectV4 {
                 slot,
                 source_id,
                 name,
-                source_offset,
-                loop_enabled,
+                region,
             } => {
+                self.extend_region_source(&source_id, &region)?;
                 let destination = self
                     .track_mut(&track_id)?
                     .slots
@@ -1171,21 +1344,20 @@ impl ProjectV4 {
                     id: fresh("slot")?,
                     name,
                     source_id,
-                    source_offset,
-                    loop_enabled,
+                    region,
                 });
             }
             SlotUpdate {
                 track_id,
                 slot_id,
                 name,
-                source_offset,
-                loop_enabled,
+                region,
             } => {
+                let source_id = self.slot_mut(&track_id, &slot_id)?.source_id.clone();
+                self.extend_region_source(&source_id, &region)?;
                 let slot = self.slot_mut(&track_id, &slot_id)?;
                 slot.name = name;
-                slot.source_offset = source_offset;
-                slot.loop_enabled = loop_enabled;
+                slot.region = region;
             }
             SlotDuplicate {
                 track_id,
@@ -1220,31 +1392,30 @@ impl ProjectV4 {
                 source_id,
                 start,
                 duration,
-                source_offset,
-                loop_enabled,
+                region,
             } => {
+                self.extend_region_source(&source_id, &region)?;
                 self.placements.push(PlacementV4 {
                     id: fresh("placement")?,
                     track_id,
                     source_id,
                     start,
                     duration,
-                    source_offset,
-                    loop_enabled,
+                    region,
                 });
             }
             PlacementUpdate {
                 placement_id,
                 start,
                 duration,
-                source_offset,
-                loop_enabled,
+                region,
             } => {
+                let source_id = self.placement_mut(&placement_id)?.source_id.clone();
+                self.extend_region_source(&source_id, &region)?;
                 let placement = self.placement_mut(&placement_id)?;
                 placement.start = start;
                 placement.duration = duration;
-                placement.source_offset = source_offset;
-                placement.loop_enabled = loop_enabled;
+                placement.region = region;
             }
             PlacementDuplicate {
                 placement_id,

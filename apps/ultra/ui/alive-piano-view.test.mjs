@@ -69,3 +69,17 @@ test('fit frames all notes, preserves their identities, and a source change rese
   assert.equal(p.geometry().beatStart,0);assert.equal(p.geometry().beatSpan,32);
   p.view.dispose();
 });
+test('clip editor renders separate Start, End and loop handles above a persistent time selection',async()=>{
+  const p=await mount(),region={start:0,end:16,loopStart:2,loopEnd:8,loopEnabled:true};
+  p.view.render({notes:p.notes,length:16,scope:'source-a',region,timeSelection:{start:2,end:8}});
+  for(const kind of ['start','end','loopMove','loopLeft','loopRight'])assert.ok(descendants(p.svg).some(e=>e.attrs['data-region']===kind),kind);
+  assert.ok(p.find('Clip Start'));assert.ok(p.find('Clip End'));assert.ok(p.find('Loop Position'));assert.ok(p.find('Loop Length'));
+  assert.ok(descendants(p.svg).some(e=>e.attrs.class==='clip-time-selection'));
+  assert.ok(p.geometry().top>=48);p.view.dispose();
+});
+test('audio editor draws actual waveform peaks and keeps the shared beat and region controls',async()=>{
+  const p=await mount();
+  p.view.render({notes:[],length:8,scope:'audio',kind:'audio',waveformPeaks:[[-.5,.75],[-.25,.5]],region:{start:0,end:8,loopStart:0,loopEnd:8,loopEnabled:true}});
+  const waveform=descendants(p.svg).find(e=>e.attrs.class==='audio-waveform');assert.ok(waveform);assert.ok(waveform.attrs.d.includes('L'));
+  assert.equal(p.view.velocityLane.hidden,true);assert.ok(p.find('Loop Selection'));p.view.dispose();
+});

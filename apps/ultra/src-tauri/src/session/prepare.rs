@@ -17,10 +17,13 @@ pub struct PreparedDevice {
     pub manifest: canvas::device::HostManifest,
 }
 #[derive(Clone, Debug)]
-pub enum PreparedTrackInput { Midi { instrument: usize }, Audio }
+pub enum PreparedTrackInput { Midi { instrument: Option<usize> }, Audio }
 #[derive(Clone, Debug)]
 pub struct PreparedTrack { pub input: PreparedTrackInput, pub effects: Vec<usize> }
-impl PreparedTrack {pub fn midi_instrument(&self)->Result<usize,String>{match self.input {PreparedTrackInput::Midi{instrument}=>Ok(instrument),PreparedTrackInput::Audio=>Err("This operation requires a MIDI instrument track".into())}}}
+impl PreparedTrack {
+    pub fn optional_midi_instrument(&self)->Option<usize> { match self.input {PreparedTrackInput::Midi{instrument}=>instrument,PreparedTrackInput::Audio=>None} }
+    pub fn midi_instrument(&self)->Result<usize,String> { self.optional_midi_instrument().ok_or_else(||"This track has no MIDI instrument".into()) }
+}
 #[derive(Clone, Debug)]
 pub struct PreparedClip { pub id:String, pub name:String, pub track:usize, pub slot:usize, pub event_begin:usize, pub event_count:usize, pub lane_count:u32, pub length_frames:u64, pub owned_masks:[u32;16] }
 #[derive(Clone, Debug)]
@@ -192,7 +195,7 @@ fn compile_music(session: &LegacySession, result: &mut PreparedSession, clips:bo
                 if lane.enabled { result.events.push(FrameEvent { frame: at, track: index as u32, kind: 1, device: device as u32, target: parameter as u32, value: point.value }); }
             }
         }
-        result.tracks.push(PreparedTrack { input:PreparedTrackInput::Midi{instrument}, effects });
+        result.tracks.push(PreparedTrack { input:PreparedTrackInput::Midi{instrument:Some(instrument)}, effects });
     }
     Ok(())
 }
@@ -222,7 +225,7 @@ pub(super) fn compile_clips(session:&Session,result:&mut PreparedSession)->Resul
     }
     if result.events.len()>1024{return Err("Stored clips exceed 1024 compiled events".into());}
     // Empty banks still own their chain; compilation must not depend on a clip existing.
-    result.tracks=common.tracks.iter().map(|t|PreparedTrack{input:PreparedTrackInput::Midi{instrument:result.devices.iter().position(|d|d.instance_id==t.device.instance_id).unwrap()},effects:t.effects.iter().map(|e|result.devices.iter().position(|d|d.instance_id==e.instance_id).unwrap()).collect()}).collect();
+    result.tracks=common.tracks.iter().map(|t|PreparedTrack{input:PreparedTrackInput::Midi{instrument:Some(result.devices.iter().position(|d|d.instance_id==t.device.instance_id).unwrap())},effects:t.effects.iter().map(|e|result.devices.iter().position(|d|d.instance_id==e.instance_id).unwrap()).collect()}).collect();
     result.length_frames=(common.length_beats*48_000.*60./common.tempo).round() as u64;
     result.schedule=Schedule::Clips(clips);Ok(())
 }

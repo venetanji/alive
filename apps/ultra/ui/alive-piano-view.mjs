@@ -3,7 +3,7 @@ import {GRID,geometry,initialViewport,navigateViewport,fitViewport,rulerTicks,be
 const blackKeys=new Set([1,3,6,8,10]);
 const pitchName=pitch=>`${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][pitch%12]}${Math.floor(pitch/12)-1}`;
 
-export function mountPianoView({doc,win,svg,onNavigate=()=>{},onGeometry=()=>{},onPreview=()=>{}}){
+export function mountPianoView({doc,win,svg,onNavigate=()=>{},onGeometry=()=>{},onPreview=()=>{},onRegion=()=>{},onLoopSelection=()=>{},onError=()=>{}}){
   const make=(tag,attrs={},text)=>{
     const element=tag==='svg'||['rect','line','text','g','defs','clipPath','path','title'].includes(tag)
       ?doc.createElementNS('http://www.w3.org/2000/svg',tag):doc.createElement(tag);
@@ -37,7 +37,16 @@ export function mountPianoView({doc,win,svg,onNavigate=()=>{},onGeometry=()=>{},
   time.append(make('span',{},'Time'),button('Scroll time earlier','<',()=>({type:'timePan',beats:-g.beatSpan/4})),button('Scroll time later','>',()=>({type:'timePan',beats:g.beatSpan/4})),button('Zoom out time','-',{type:'timeZoom',factor:1/1.5}),button('Zoom in time','+',{type:'timeZoom',factor:2}));
   pitch.append(make('span',{},'Pitch'),button('Scroll pitch down','v',{type:'pitchPan',pitches:-3}),button('Scroll pitch up','^',{type:'pitchPan',pitches:3}),button('Zoom out pitch','-',{type:'pitchZoom',factor:1/1.25}),button('Zoom in pitch','+',{type:'pitchZoom',factor:1.25}));
   toolbar.append(previewButton,time,pitch,button('Fit notes','Fit',{type:'fit'}),range);
+  const regionTools=make('div',{class:'clip-region-tools',role:'toolbar','aria-label':'Clip markers and loop'}),regionInputs={};
+  for(const [key,label]of [['start','Start'],['end','End'],['loopStart','Loop Position'],['loopLength','Loop Length']]){
+    const holder=make('label',{},label),input=make('input',{type:'number',step:'.25',min:0,'aria-label':key==='start'?'Clip Start':key==='end'?'Clip End':label,title:`${label} in source beats (0 is 1.1.1)`});
+    input.addEventListener('change',()=>{const value=Number(input.value);if(input.value===''||!Number.isFinite(value)){onError(`${label} requires a number.`);return;}onRegion(key,value);});
+    regionInputs[key]=input;holder.append(input);regionTools.append(holder);
+  }
+  const loopLabel=make('label',{class:'clip-loop-toggle'}),loopToggle=make('input',{type:'checkbox','aria-label':'Clip Loop'});loopToggle.addEventListener('change',()=>onRegion('loopEnabled',loopToggle.checked));loopLabel.append(loopToggle,make('span',{},'Loop'));regionTools.append(loopLabel);
+  const loopSelection=make('button',{type:'button','aria-label':'Loop Selection',title:'Set loop and Start from the time selection (Ctrl+L)'},'Loop Selection');loopSelection.addEventListener('click',onLoopSelection);regionTools.append(loopSelection,make('span',{class:'muted'},'beats'));
   if(area){area.insertBefore(toolbar,svg);area.insertBefore(velocityLane,svg.nextSibling??null);}
+  if(area)area.insertBefore(regionTools,svg);
 
   function text(parent,x,y,value,attrs={}){
     parent.append(make('text',{x,y,fill:'#b4b4b0',stroke:'none','font-size':10,...attrs},value));
@@ -49,7 +58,7 @@ export function mountPianoView({doc,win,svg,onNavigate=()=>{},onGeometry=()=>{},
   function draw(){
     if(!last||disposed)return;
     const rect=svg.getBoundingClientRect();
-    g=last.frozenGeometry??geometry(last.notes,last.length,viewport,{width:rect.width||640,height:rect.height||156});
+    g=last.frozenGeometry??geometry(last.notes,last.length,viewport,{width:rect.width||640,height:rect.height||156,top:last.region?52:22});
     onGeometry(g);
     const {width,height,pad,top,pitchHeight}=g;
     svg.setAttribute('viewBox',`0 0 ${width} ${height}`);
@@ -58,7 +67,9 @@ export function mountPianoView({doc,win,svg,onNavigate=()=>{},onGeometry=()=>{},
     svg.replaceChildren();
     svg.append(make('rect',{x:0,y:0,width,height,fill:'#313131',stroke:'none'}));
     const grid=clip(svg,'piano-note-grid',pad,top,width-pad,height-top);
-    for(let pitch=g.min;pitch<=g.max;pitch++){
+    const audio=last.kind==='audio';
+    pitch.hidden=audio;previewButton.hidden=audio;velocityLane.hidden=audio;velocityLane.style.display=audio?'none':'';
+    for(let pitch=g.min;!audio&&pitch<=g.max;pitch++){
       const y=top+(g.max-pitch)*pitchHeight,black=blackKeys.has(pitch%12);
       grid.append(make('rect',{x:pad,y,width:width-pad,height:pitchHeight,fill:black?'#292929':'#343434',stroke:'#3d3d3d','stroke-width':.5}));
       svg.append(make('rect',{x:0,y,width:pad,height:pitchHeight,fill:'#a8a8a3',stroke:'#666661','stroke-width':.5,'data-key':pitch}));
@@ -69,9 +80,30 @@ export function mountPianoView({doc,win,svg,onNavigate=()=>{},onGeometry=()=>{},
     for(let beat=Math.ceil(g.beatStart/step)*step,count=0;beat<=g.beatStart+g.beatSpan&&count<600;beat+=step,count++){
       const x=beatX(beat,g);grid.append(make('line',{x1:x,x2:x,y1:top,y2:height,stroke:beat%4===0?'#686868':Number.isInteger(beat)?'#4a4a4a':'#3c3c3c','stroke-width':beat%4===0?1:.5}));
     }
+    if(last.timeSelection){const selection=last.timeSelection;grid.append(make('rect',{class:'clip-time-selection',x:beatX(selection.start,g),y:top,width:(selection.end-selection.start)*g.pixelsPerBeat,height:height-top,fill:'#91b9ed','fill-opacity':.19,'pointer-events':'none'}));}
+    if(audio){
+      const peaks=last.waveformPeaks??[],middle=top+(height-top)/2,amplitude=Math.max(1,(height-top)/2-12);let d='';
+      peaks.forEach((peak,index)=>{const x=beatX((index+.5)/peaks.length*last.length,g);d+=`M${x} ${middle-Math.min(1,peak[1])*amplitude}L${x} ${middle-Math.max(-1,peak[0])*amplitude}`;});
+      grid.append(make('path',{class:'audio-waveform',d,fill:'none',stroke:'#c8ae74','stroke-width':Math.max(1,last.length*g.pixelsPerBeat/Math.max(1,peaks.length)),'pointer-events':'none'}));
+      text(svg,7,middle,'Audio',{'font-size':10});
+    }
     svg.append(make('rect',{x:0,y:0,width,height:top,fill:'#303030',stroke:'none'}));
     text(svg,8,14,'4/4');
     for(const tick of ticks){const x=beatX(tick.beat,g);text(svg,x+4,14,tick.label,{'data-ruler-beat':tick.beat,fill:tick.major?'#eeeeec':'#a4a4a0'});}
+    regionTools.hidden=!last.region;
+    if(last.region){
+      const region=last.region,loopStart=beatX(region.loopStart,g),loopEnd=beatX(region.loopEnd,g);
+      for(const [key,input]of Object.entries(regionInputs))if(doc.activeElement!==input)input.value=String(key==='loopLength'?region.loopEnd-region.loopStart:region[key]);
+      loopToggle.checked=region.loopEnabled;loopSelection.disabled=!last.timeSelection;
+      const color=region.loopEnabled?'#c8ae74':'#898983',brace=clip(svg,'piano-clip-markers',pad-1,17,width-pad+2,35);
+      brace.append(make('rect',{x:loopStart,y:21,width:Math.max(1,loopEnd-loopStart),height:10,fill:color,'data-region':'loopMove','aria-label':'Clip loop brace'}));
+      for(const [kind,x]of [['loopLeft',loopStart],['loopRight',loopEnd]])brace.append(make('rect',{x:x-4,y:19,width:8,height:15,fill:color,'data-region':kind,'aria-label':kind==='loopLeft'?'Loop start handle':'Loop end handle'}));
+      for(const [kind,beat]of [['start',region.start],['end',region.end]]){
+        const x=beatX(beat,g),side=kind==='start'?1:-1;
+        brace.append(make('path',{d:`M${x} 36L${x+side*9} 36L${x} 48Z`,fill:'#eeeeec','data-region':kind,'aria-label':kind==='start'?'Clip Start marker':'Clip End marker'}));
+        grid.append(make('line',{x1:x,x2:x,y1:top,y2:height,stroke:'#c4c4bf','stroke-dasharray':'3 3','pointer-events':'none'}));
+      }
+    }
     svg.append(make('line',{x1:pad,x2:width,y1:top,y2:top,stroke:'#666'}));
     const notes=clip(svg,'piano-note-bodies',pad,top,width-pad,height-top);
     last.notes.forEach((note,index)=>{
@@ -81,8 +113,8 @@ export function mountPianoView({doc,win,svg,onNavigate=()=>{},onGeometry=()=>{},
       if(w>33&&h>=10)text(notes,x+4,y+Math.min(h-1,10),pitchName(note.pitch),{fill:'#302a1f','pointer-events':'none'});
     });
     notes.append(make('line',{class:'playhead',x1:pad,x2:pad,y1:top,y2:height,stroke:'#eeeeec','stroke-width':1,'pointer-events':'none'}));
-    drawVelocity();
-    range.textContent=`${pitchName(g.min)} - ${pitchName(g.max)} / 1/16`;
+    if(!audio)drawVelocity();
+    range.textContent=audio?'Warp / Re-Pitch / beats':`${pitchName(g.min)} - ${pitchName(g.max)} / 1/16`;
   }
   function drawVelocity(){
     const height=40,bottom=36,top=8;

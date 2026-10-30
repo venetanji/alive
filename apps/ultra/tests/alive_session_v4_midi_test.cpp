@@ -1,3 +1,4 @@
+#include "alive_session_suffix_fixture.hpp"
 #include "../src-tauri/native/alive_session.hpp"
 #include "../src-tauri/native/backend.h"
 #include "canvas_callback_guard.hpp"
@@ -85,8 +86,8 @@ AliveSessionConfigV4 prepare(unsigned effects = 0) {
   c.events[1] = {1500, 0, ALIVE_SESSION_NOTE_OFF, 0, 60, 0};
   c.events[2] = {2000, 0, ALIVE_SESSION_NOTE_ON, 0, 64, 100};
   c.events[3] = {3000, 0, ALIVE_SESSION_NOTE_OFF, 0, 64, 0};
-  c.placements[0] = {0, 0, 0, 0, 512, 2048, 0};
-  c.placements[1] = {0, 0, 0, 0, 4096, 2048, 1024};
+  c.placements[0] = {0, 0, 0, 0, 512, 2048, 0,0,0,0};
+  c.placements[1] = {0, 0, 0, 0, 4096, 2048, 1024,0,0,0};
   return c;
 }
 AliveSessionStateV4 state() {
@@ -175,7 +176,7 @@ AliveSessionConfigV4 multi(unsigned tracks, unsigned effects = 0) {
       }
       const unsigned slot = t * 4 + local;
       tr.slots[local] = slot;
-      c.slots[slot] = {t, t * 2 + local % 2, 0, 0, local * 100u};
+      c.slots[slot] = {t, t * 2 + local % 2, 0, 0, local * 100u,0,0,0};
     }
     tr.placement_begin = c.placement_count;
     // The complete proof can conservatively refuse many simultaneous lanes.
@@ -183,10 +184,10 @@ AliveSessionConfigV4 multi(unsigned tracks, unsigned effects = 0) {
     if (t >= 2 || (tracks == 8 && t == 1)) continue;
     tr.placement_count = t == 0 ? 3 : 1;
     if (t == 0) {
-      c.placements[c.placement_count++] = {t, 0, 0, 0, 512, 2048, 100};
-      c.placements[c.placement_count++] = {t, 0, 0, 0, 2560, 2048, 200};
-      c.placements[c.placement_count++] = {t, 1, 0, 0, 6144, 2048, 300};
-    } else c.placements[c.placement_count++] = {t, 2, 0, 0, 0, 12000, 700};
+      c.placements[c.placement_count++] = {t, 0, 0, 0, 512, 2048, 100,0,0,0};
+      c.placements[c.placement_count++] = {t, 0, 0, 0, 2560, 2048, 200,0,0,0};
+      c.placements[c.placement_count++] = {t, 1, 0, 0, 6144, 2048, 300,0,0,0};
+    } else c.placements[c.placement_count++] = {t, 2, 0, 0, 0, 12000, 700,0,0,0};
   }
   return c;
 }
@@ -208,7 +209,7 @@ Run run(unsigned tracks, unsigned effects, unsigned partition, bool mute_first =
     c.tracks[1].placement_begin = 0;
     for (unsigned t = 2; t < tracks; ++t) c.tracks[t].placement_begin = 1;
   }
-  const bool valid = alive_session_validate_v4(&c);
+  const bool valid = validate_suffix_fixture(&c);
   if (!valid) {
     AliveSessionDiagnosticV4 d{};
     d.version = 4;
@@ -219,7 +220,7 @@ Run run(unsigned tracks, unsigned effects, unsigned partition, bool mute_first =
                 static_cast<unsigned long long>(d.limit), d.error);
   }
   assert(valid);
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   auto s = state();
   assert(s.track_count == tracks && s.source_count == tracks * 2 && s.slot_count == c.slot_count);
   assert(s.placement_count == c.placement_count && s.preparation_revision == c.preparation_revision);
@@ -311,8 +312,8 @@ void work_limits(unsigned tracks, unsigned effects) {
   auto c = multi(tracks, effects);
   auto owner = std::make_unique<ultra::AliveSession>();
   auto proof = std::make_unique<ultra::workspace_admission::Proof>();
-  assert(owner->prepare_midi_envelopes_v4(c, *proof));
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(owner->prepare_midi_envelopes_v4(suffix_region_fixture(c), *proof));
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   assert(ultra_external_start());
   request();
   const auto policy = ultra::clip_admission::policy(c.profile);
@@ -387,9 +388,9 @@ void bounded_lookups() {
     c.tracks[t].placement_begin = t * 8;
     c.tracks[t].placement_count = 8;
     for (unsigned i = 0; i < 8; ++i)
-      c.placements[t * 8 + i] = {t, t * 2, 0, 0, 1000 + i * 1800u, 100, 100};
+      c.placements[t * 8 + i] = {t, t * 2, 0, 0, 1000 + i * 1800u, 100, 100,0,0,0};
   }
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   assert(ultra_external_start());
   Work measured{};
   work = &measured;
@@ -404,7 +405,7 @@ void bounded_lookups() {
 
 void refusals() {
   auto c = multi(2);
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   assert(ultra_external_start());
   request();
   render(1024);
@@ -412,8 +413,8 @@ void refusals() {
   auto reject = [&](AliveSessionConfigV4 bad) {
     const auto before = state();
     bad.preparation_revision = preparation + 1;
-    assert(!alive_session_validate_v4(&bad));
-    assert(!alive_session_configure_v4(&bad, nullptr, 0));
+    assert(!validate_suffix_fixture(&bad));
+    assert(!configure_suffix_fixture(&bad, nullptr, 0));
     const auto after = state();
     assert(after.playing && after.preparation_revision == before.preparation_revision &&
            after.position == before.position && after.generation == before.generation);
@@ -434,10 +435,10 @@ void refusals() {
   bad = c; bad.slots[4].source = 0; reject(bad);
   bad = c; bad.tracks[0].slots[1] = 0; reject(bad);
   bad = c; bad.tracks[1].slots[3] = ALIVE_SESSION_V4_NONE; reject(bad);
-  bad = c; bad.slots[7].source_offset = 16384; reject(bad);
+  bad = c; bad.slots[7].start_marker = 16384; reject(bad);
   bad = c; bad.placements[3].source = 0; reject(bad);
   bad = c; bad.placements[1].start_frame = 1024; reject(bad);
-  bad = c; bad.placements[0].source_offset = UINT64_MAX; reject(bad);
+  bad = c; bad.placements[0].start_marker = UINT64_MAX; reject(bad);
   bad = c; bad.placements[0].duration_frames = UINT64_MAX; reject(bad);
   bad = c; bad.tracks[0].placement_count = 9; reject(bad);
   bad = c; bad.source_count = 7;
@@ -455,9 +456,9 @@ void refusals() {
   bad = c; bad.profile = bad.work_policy = 3; reject(bad);
   bad = c; bad.devices[0].output_layout = 1; reject(bad);
   bad = c; bad.tracks[0].gain = 2.01; reject(bad);
-  bad = c; bad.loop_enabled = 1; assert(alive_session_validate_v4(&bad));
-  bad = c; bad.placements[0].loop_enabled = 1; assert(alive_session_validate_v4(&bad));
-  bad = c; bad.slots[7].loop_enabled = 1; assert(alive_session_validate_v4(&bad));
+  bad = c; bad.loop_enabled = 1; assert(validate_suffix_fixture(&bad));
+  bad = c; bad.placements[0].loop_enabled = 1; assert(validate_suffix_fixture(&bad));
+  bad = c; bad.slots[7].loop_enabled = 1; assert(validate_suffix_fixture(&bad));
   bad = c; bad.audio_buffer_count = 1; reject(bad);
   for (unsigned action : {ALIVE_SESSION_V4_LAUNCH, ALIVE_SESSION_V4_TRACK_STOP,
                           ALIVE_SESSION_V4_RETURN}) {
@@ -486,16 +487,16 @@ void refusals() {
     c.sources[i].event_count = 0;
   }
   c.slots[7].source = 7;
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   assert(state().source_count == 8 && state().slot_count == 8);
   c = multi(8);
   c.slot_count = 32;
   for (unsigned t = 2; t < 8; ++t)
     for (unsigned i = 0; i < 4; ++i) {
       c.tracks[t].slots[i] = t * 4 + i;
-      c.slots[t * 4 + i] = {t, t * 2 + i % 2, 0, 0, i * 100u};
+      c.slots[t * 4 + i] = {t, t * 2 + i % 2, 0, 0, i * 100u,0,0,0};
     }
-  assert(!alive_session_validate_v4(&c));
+  assert(!validate_suffix_fixture(&c));
   AliveSessionDiagnosticV4 d{}; d.version = 4; d.struct_bytes = sizeof d;
   assert(alive_session_diagnostic_v4(&d) && d.resource == 6 && d.limit == 64);
   std::printf("shape-valid eight-track/four-slot refusal placement=%llu/64 width=%u PASS\n",
@@ -503,7 +504,7 @@ void refusals() {
 }
 void removed_configuration() {
   auto c = multi(2, 2);
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   assert(ultra_external_start()); request(); render(1024);
   ultra_audio_stop();
   assert(alive_session_reset());
@@ -517,8 +518,8 @@ void removed_configuration() {
 
 void adjacent_automation() {
   auto c = multi(2, 2);
-  c.placements[0] = {0, 0, 0, 0, 512, 1024, 1000};
-  c.placements[1] = {0, 0, 0, 0, 1536, 1024, 1000};
+  c.placements[0] = {0, 0, 0, 0, 512, 1024, 1000,0,0,0};
+  c.placements[1] = {0, 0, 0, 0, 1536, 1024, 1000,0,0,0};
   for (unsigned i = 1; i < 4; ++i) {
     c.events[5 + i] = c.events[i];
     c.sources[i].event_begin = 5 + i;
@@ -533,7 +534,7 @@ void adjacent_automation() {
   c.sources[0].event_count = 6;
   c.sources[0].lane_count = c.sources[0].owned_masks[0] = 1;
   c.devices[0].parameters[0].automated = 1;
-  assert(alive_session_configure_v4(&c, nullptr, 0));
+  assert(configure_suffix_fixture(&c, nullptr, 0));
   assert(ultra_external_start());
   trace_origin = state().absolute_frame; dispatch_count = 0;
   request(); render(512);
@@ -602,7 +603,7 @@ void direct_transaction() {
       assert(owner->request_v3(r, receipt));
     } else {
       c.preparation_revision += 2; bad.preparation_revision = c.preparation_revision + 1;
-      assert(owner->configure_v4(c, nullptr, 0, *workspace));
+      assert(owner->configure_v4(suffix_region_fixture(c), nullptr, 0, *workspace));
       AliveSessionRequestV4 r{}; r.version = 4; r.struct_bytes = sizeof r;
       r.kind = 1; r.preparation_revision = c.preparation_revision; r.request_serial = 2;
       AliveSessionReceiptV4 receipt{}; receipt.version = 4; receipt.struct_bytes = sizeof receipt;
@@ -620,7 +621,7 @@ void direct_transaction() {
         if (failure == 1) rejected.devices[1].parameters[0].node = UINT32_MAX;
         if (failure == 2)
           for (unsigned i = 0; i < 3; ++i)
-            rejected.placements[i] = {0, 0, 0, 0, 10 + i * 20u, 10, 0};
+            rejected.placements[i] = {0, 0, 0, 0, 10 + i * 20u, 10, 0,0,0,0};
         assert(!owner->configure_v4(rejected, nullptr, 0, *workspace));
         assert((owner.get()->*read)(snapshot));
         assert(snapshot.rejected > before.rejected);

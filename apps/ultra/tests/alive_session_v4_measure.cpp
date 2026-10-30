@@ -1,3 +1,4 @@
+#include "alive_session_suffix_fixture.hpp"
 #include "alive_session_capacity_fixture.hpp"
 #ifdef WORKSPACES_GUARDS
 #include "canvas_callback_guard.hpp"
@@ -82,7 +83,7 @@ struct Fixture {
         }
         if (!idle && (t == 0 || dense || storage)) {
           tr.slots[local] = c.slot_count;
-          c.slots[c.slot_count++] = {t, s, suffix || session ? 1u : 0u, 0, suffix ? 400u : 0u};
+          c.slots[c.slot_count++] = {t, s, suffix || session ? 1u : 0u, 0, suffix ? 400u : 0u,0,0,0};
         }
       }
       tr.placement_begin = c.placement_count;
@@ -92,24 +93,24 @@ struct Fixture {
         for (unsigned p = 0; p < countp; ++p)
           c.placements[c.placement_count++] = {t, t * count, suffix ? 1u : 0u, 0,
               storage ? uint64_t(p * 20000) : 0, storage ? 10000u : c.length_frames,
-              suffix ? 400u : 100u};
+              suffix ? 400u : 100u,0,0,0};
       }
     }
     if (song) {
       c.length_frames = 8192; c.loop_enabled = 1; c.loop_start = 2400; c.loop_end = 4000;
       c.placement_count = 0; std::fill_n(c.placements, 64, AliveSessionPlacementV4{});
       for (unsigned s = 0; s < c.source_count; ++s) c.sources[s].length_frames = s ? 2301 : 2800;
-      for (unsigned s = 0; s < c.slot_count; ++s) { c.slots[s].loop_enabled = 1; c.slots[s].source_offset = 400; }
+      for (unsigned s = 0; s < c.slot_count; ++s) { c.slots[s].loop_enabled = 1; c.slots[s].start_marker = 400; }
       for (unsigned t = 0; t < c.track_count; ++t) {
         auto &tr = c.tracks[t]; tr.placement_begin = c.placement_count; tr.placement_count = 0;
         if (t == 0) {
           tr.placement_count = 3;
-          c.placements[c.placement_count++] = {t, t, 1, 0, 0, 1000, 400};
-          c.placements[c.placement_count++] = {t, t, 1, 0, 1600, 2400, 400};
-          c.placements[c.placement_count++] = {t, t, 1, 0, 4000, 2000, 400};
+          c.placements[c.placement_count++] = {t, t, 1, 0, 0, 1000, 400,0,0,0};
+          c.placements[c.placement_count++] = {t, t, 1, 0, 1600, 2400, 400,0,0,0};
+          c.placements[c.placement_count++] = {t, t, 1, 0, 4000, 2000, 400,0,0,0};
         } else if (dense) {
           tr.placement_count = 1;
-          c.placements[c.placement_count++] = {t, t, 1, 0, 0, 8192, 400};
+          c.placements[c.placement_count++] = {t, t, 1, 0, 0, 8192, 400,0,0,0};
         }
       }
     }
@@ -139,7 +140,7 @@ struct Fixture {
       assert(ultra_canvas_install_document(d, &saved.graphs[d]));
     }
     const auto begin = Clock::now();
-    const bool ok = alive_session_validate_prepared_v4(&c, saved.graphs.data(), c.device_count, nullptr, 0);
+    const bool ok = validate_prepared_suffix_fixture(&c, saved.graphs.data(), c.device_count, nullptr, 0);
     const double ms = std::chrono::duration<double, std::milli>(Clock::now() - begin).count();
     AliveSessionDiagnosticV4 d{}; d.version = 4; d.struct_bytes = sizeof d;
     assert(alive_session_diagnostic_v4(&d));
@@ -154,7 +155,7 @@ struct Fixture {
     assert(std::fwrite(saved.graphs.data(), sizeof(UltraCanvasGraph), c.device_count, out) == c.device_count);
     assert(std::fclose(out) == 0);
     if (!ok) { if (expected) std::fprintf(stderr, "%s\n", alive_session_error()); return false; }
-    assert(ultra::workspace_admission::build_validated(c, proof));
+    assert(ultra::workspace_admission::build_validated(suffix_region_fixture(c), proof));
     out = std::fopen((file + "-envelope.csv").c_str(), "w"); assert(out);
     std::fprintf(out, "width,events,roots,scans,writes,guards,placement\n");
     for (unsigned w = 1; w <= 1024; ++w) {
@@ -165,7 +166,7 @@ struct Fixture {
     }
     assert(std::fclose(out) == 0);
     const auto configure_begin = Clock::now();
-    assert(alive_session_configure_v4(&c, nullptr, 0));
+    assert(configure_suffix_fixture(&c, nullptr, 0));
     rusage usage{}; assert(getrusage(RUSAGE_SELF, &usage) == 0);
     std::printf("PREPARATION fixture=%s configure_ms=%.6f peak_rss_kib=%ld\n", file.c_str(),
       std::chrono::duration<double, std::milli>(Clock::now() - configure_begin).count(), usage.ru_maxrss);

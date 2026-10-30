@@ -126,7 +126,10 @@ pub struct SlotV4 {
     pub source: u32,
     pub loop_enabled: u32,
     pub reserved: u32,
-    pub source_offset: u64,
+    pub start_marker: u64,
+    pub end_marker: u64,
+    pub loop_start: u64,
+    pub loop_end: u64,
 }
 impl Default for SlotV4 {
     fn default() -> Self {
@@ -145,7 +148,10 @@ pub struct PlacementV4 {
     pub reserved: u32,
     pub start_frame: u64,
     pub duration_frames: u64,
-    pub source_offset: u64,
+    pub start_marker: u64,
+    pub end_marker: u64,
+    pub loop_start: u64,
+    pub loop_end: u64,
 }
 impl Default for PlacementV4 {
     fn default() -> Self {
@@ -440,6 +446,7 @@ pub struct StateV4 {
     pub tracks: [TrackStateV4; 8],
     pub devices: [DeviceStateV2; 16],
     pub receipts: [ReceiptV4; 128],
+    pub bank_revision: u64,
 }
 impl Default for StateV4 {
     fn default() -> Self {
@@ -508,21 +515,21 @@ mod tests {
         assert_eq!(align_of::<SourceV4>(), 8);
         assert_eq!(offset_of!(SourceV4, length_frames), 32);
         assert_eq!(offset_of!(SourceV4, owned_masks), 40);
-        assert_eq!(size_of::<SlotV4>(), 24);
+        assert_eq!(size_of::<SlotV4>(), 48);
         assert_eq!(align_of::<SlotV4>(), 8);
-        assert_eq!(offset_of!(SlotV4, source_offset), 16);
-        assert_eq!(size_of::<PlacementV4>(), 40);
+        assert_eq!(offset_of!(SlotV4, start_marker), 16);
+        assert_eq!(size_of::<PlacementV4>(), 64);
         assert_eq!(align_of::<PlacementV4>(), 8);
         assert_eq!(offset_of!(PlacementV4, start_frame), 16);
         assert_eq!(offset_of!(PlacementV4, duration_frames), 24);
-        assert_eq!(offset_of!(PlacementV4, source_offset), 32);
+        assert_eq!(offset_of!(PlacementV4, start_marker), 32);
         assert_eq!(size_of::<AudioBufferV4>(), 48);
         assert_eq!(align_of::<AudioBufferV4>(), 8);
         assert_eq!(offset_of!(AudioBufferV4, frames), 16);
         assert_eq!(offset_of!(AudioBufferV4, sample_count), 24);
         assert_eq!(offset_of!(AudioBufferV4, samples), 32);
         assert_eq!(offset_of!(AudioBufferV4, reserved), 40);
-        assert_eq!(size_of::<ConfigV4>(), 51160);
+        assert_eq!(size_of::<ConfigV4>(), 53464);
         assert_eq!(align_of::<ConfigV4>(), 8);
         assert_eq!(offset_of!(ConfigV4, preparation_revision), 48);
         assert_eq!(offset_of!(ConfigV4, tempo_bpm), 80);
@@ -530,8 +537,8 @@ mod tests {
         assert_eq!(offset_of!(ConfigV4, devices), 600);
         assert_eq!(offset_of!(ConfigV4, sources), 11736);
         assert_eq!(offset_of!(ConfigV4, slots), 15064);
-        assert_eq!(offset_of!(ConfigV4, placements), 15832);
-        assert_eq!(offset_of!(ConfigV4, events), 18392);
+        assert_eq!(offset_of!(ConfigV4, placements), 16600);
+        assert_eq!(offset_of!(ConfigV4, events), 20696);
         assert_eq!(size_of::<TrackActionV4>(), 8);
         assert_eq!(align_of::<TrackActionV4>(), 4);
         assert_eq!(offset_of!(TrackActionV4, slot), 4);
@@ -565,7 +572,8 @@ mod tests {
         assert_eq!(offset_of!(TrackStateV4, authority), 40);
         assert_eq!(offset_of!(TrackStateV4, pending_action), 56);
         assert_eq!(offset_of!(TrackStateV4, phase), 72);
-        assert_eq!(size_of::<StateV4>(), 16736);
+        assert_eq!(size_of::<StateV4>(), 16744);
+        assert_eq!(offset_of!(StateV4, bank_revision), 16736);
         assert_eq!(align_of::<StateV4>(), 8);
         assert_eq!(offset_of!(StateV4, absolute_frame), 64);
         assert_eq!(offset_of!(StateV4, peak_left), 144);
