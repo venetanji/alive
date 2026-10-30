@@ -14,7 +14,7 @@ pub enum Action { Launch{track_id:String,clip_id:String}, Stop{track_id:String} 
 pub struct RequestResult {
     pub preparation_revision:String,pub request_serial:String,pub status:String,pub reason:u32,
     pub track_id:Option<String>,pub clip_id:Option<String>,pub target_frame:Option<String>,
-    pub scene_slot:Option<usize>,pub track_mask:u32,pub pending_mask:u32,pub applied_mask:u32,
+    pub quantization:Option<super::launch::Quantization>,pub scene_slot:Option<usize>,pub track_mask:u32,pub pending_mask:u32,pub applied_mask:u32,
     pub superseded_mask:u32,pub canceled_mask:u32,pub rejected_mask:u32,pub members:Vec<Member>,
 }
 #[derive(Clone,Serialize)]
@@ -103,8 +103,10 @@ impl Runtime {
         // Terminal observations can be summarized; native alone owns receipt reservation.
         while self.requests.len()>=128 {if let Some(i)=self.requests.iter().position(|r|!matches!(r.status.as_str(),"queued"|"pending")){self.requests.remove(i);}else{return Err("128 requests remain outstanding. Let audio advance before retrying.".into());}}
         self.serial=self.serial.checked_add(1).ok_or("Request identity exhausted")?;request.request_serial=self.serial;request.preparation_revision=host.preparation_revision;
-        let mut receipt=n::ReceiptV3::default();unsafe{n::alive_session_request_v3(&request,&mut receipt);}
-        let mut result=RequestResult{preparation_revision:host.preparation_revision.to_string(),request_serial:self.serial.to_string(),track_id:track,clip_id:clip,scene_slot,members,..Default::default()};
+        let quantization=(request.kind==n::V3_TRACK_ACTIONS).then(||p.saved.launch.effective(if scene_slot.is_some(){None}else{clip.as_deref()}));
+        let mut receipt=n::ReceiptV3::default();
+        if let Some(q)=quantization {super::native_launch::submit_v3(&request,q,&mut receipt)?;}else{unsafe{n::alive_session_request_v3(&request,&mut receipt);}}
+        let mut result=RequestResult{preparation_revision:host.preparation_revision.to_string(),request_serial:self.serial.to_string(),track_id:track,clip_id:clip,quantization,scene_slot,members,..Default::default()};
         result.observe(&receipt);
         self.requests.push(result.clone());Ok(result)
     }
@@ -128,6 +130,45 @@ pub fn prepared(host:&Host)->Vec<PreparedClip>{let Some(p)=&host.prepared else{r
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn saved_grids_cross_real_native_v3_and_v4_requests() {
+        if super::super::native_master::fresh_process("session::runtime::tests::saved_grids_cross_real_native_v3_and_v4_requests"){return;}
+        let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        use super::super::{launch::{Quantization as Q,ClipQuantization as CQ,Override},runtime_workspaces::Action as W,Document,SaveWire};
+        fn render(mut frames:usize){let mut l=[0f32;1024];let mut r=l;while frames>0{let count=frames.min(1024);assert_eq!(unsafe{n::ultra_external_render(count as u32,l.as_mut_ptr(),r.as_mut_ptr())},1);frames-=count;}}
+        fn observed(runtime:&mut Runtime,host:&Host,serial:&str,grid:&str,target:&str){
+            render(1);let (state,view)=runtime.poll(host).unwrap();assert_eq!(state["playing"],1);
+            let view=view.unwrap();let receipt=view["requests"].as_array().unwrap().iter().find(|r|r["requestSerial"]==serial).unwrap();
+            assert_eq!(receipt["status"],"pending");assert_eq!(receipt["quantization"],grid);assert_eq!(receipt["targetFrame"],target);
+        }
+        let mut host=Host::default();let mut runtime=Runtime::default();
+        for workspace in [false,true] {
+            let path=std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join(if workspace{"../../alive/examples/quantized-midi.alive"}else{"../../alive/examples/two-instruments.alive"});
+            let mut p=super::super::read(&path).unwrap();
+            if !workspace {let mut doc=p.saved.score.to_clips().unwrap();doc.legacy_mut().unwrap().tempo=120.;let track=doc.tracks()[1].id().to_owned();let bank=doc.bank_mut(&track).unwrap();bank.slots[0]=None;bank.default_clip_id=None;p=super::super::prepare(&p.saved.with_score(doc),&path).unwrap();}
+            let track=p.saved.score.tracks()[0].id().to_owned();let id=match &p.saved.score{Document::WorkspacesV4(p)=>p.tracks[0].slots[0].as_ref().unwrap().id.clone(),_=>p.saved.score.banks()[0].slots[0].as_ref().unwrap().id.clone()};
+            p.saved.wire=SaveWire::V6;p.saved.launch.global_quantization=Q::Eighth;p.saved.launch.clip_quantization=vec![Override{occurrence_id:id.clone(),quantization:CQ::Sixteenth}];
+            host.install(p).unwrap();assert!(super::super::native_launch::available(host.preparation_revision));assert_eq!(unsafe{n::ultra_external_start()},1);
+            if workspace{runtime.workspace_request(&host,W::Start{}).unwrap();}else{runtime.request(&host,n::RequestV3{kind:n::V3_START,..Default::default()},None,None).unwrap();}
+            render(1025);
+            let state=runtime.poll(&host).unwrap().0;let origin=decimal(state["absoluteFrame"].as_str().unwrap()).unwrap()-decimal(state["position"].as_str().unwrap()).unwrap();
+            let launch=if workspace{serde_json::to_value(runtime.workspace_request(&host,W::Launch{track_id:track.clone(),slot_id:id.clone()}).unwrap()).unwrap()}else{
+                let mut r=n::RequestV3{kind:n::V3_TRACK_ACTIONS,track_mask:1,..Default::default()};r.tracks[0]=n::TrackActionV3{action:n::V3_LAUNCH,slot:0};serde_json::to_value(runtime.request(&host,r,Some(track.clone()),Some(id)).unwrap()).unwrap()
+            };
+            observed(&mut runtime,&host,launch["requestSerial"].as_str().unwrap(),"sixteenth",&(origin+6000).to_string());render(5974);
+            let scene=if workspace{serde_json::to_value(runtime.workspace_request(&host,W::Scene{slot:3}).unwrap()).unwrap()}else{serde_json::to_value(runtime.scene(&host,0).unwrap()).unwrap()};
+            assert!(scene["members"].as_array().unwrap().iter().any(|m|m["action"]=="stop"));
+            // This edit occurs after Rust acceptance but before native consumption.
+            host.prepared.as_mut().unwrap().saved.launch.global_quantization=Q::Quarter;
+            observed(&mut runtime,&host,scene["requestSerial"].as_str().unwrap(),"eighth",&(origin+12000).to_string());render(5999);
+            let stop=if workspace{serde_json::to_value(runtime.workspace_request(&host,W::Stop{track_id:track.clone()}).unwrap()).unwrap()}else{
+                let mut r=n::RequestV3{kind:n::V3_TRACK_ACTIONS,track_mask:1,..Default::default()};r.tracks[0]=n::TrackActionV3{action:n::V3_TRACK_STOP,slot:n::V3_NONE};serde_json::to_value(runtime.request(&host,r,Some(track.clone()),None).unwrap()).unwrap()
+            };
+            observed(&mut runtime,&host,stop["requestSerial"].as_str().unwrap(),"quarter",&(origin+24000).to_string());render(11999);
+            if workspace{let returned=runtime.workspace_request(&host,W::Return{track_ids:vec![track]}).unwrap();observed(&mut runtime,&host,&returned.request_serial,"quarter",&(origin+48000).to_string());}
+            unsafe{n::alive_session_stop();}render(1);unsafe{n::ultra_audio_stop();}
+        }
+    }
     #[test]
     fn scene_projection_retains_authoritative_member_masks() {
         let mut runtime = Runtime::default();

@@ -29,7 +29,7 @@ fn native_v3_layout_matches_fixed_c_interface() {
 use std::path::Path;
 
 fn test_saved(score: Session) -> SavedSession {
-    SavedSession { score, master: MasterSettings { gain: 1. }, wire: SaveWire::LegacyScore }
+    SavedSession { score, master: MasterSettings { gain: 1. }, launch:Default::default(), wire: SaveWire::LegacyScore }
 }
 fn prepare_score_fixture(score: &Session, path: &Path) -> Result<PreparedSession, String> {
     super::prepare(&test_saved(score.clone()), path)
@@ -955,4 +955,23 @@ fn v4_source_compiler_checks_disabled_bindings_and_placement_endpoint_arithmetic
     let prepared=prepare_score_fixture(&Document::WorkspacesV4(candidate.clone()),&example_path()).unwrap();let Schedule::Workspaces(w)=prepared.schedule else{unreachable!()};
     let p=w.placements.iter().find(|p|p.id==candidate.placements[0].id).unwrap();
     assert_eq!(p.descriptor.duration_frames,workspaces::frame_at(0.06,137.).unwrap()-workspaces::frame_at(0.03,137.).unwrap());
+}
+
+#[test]
+fn launch_v6_strict_roundtrip_and_legacy_preservation() {
+    let old=read(&example_path()).unwrap();
+    let score=old.saved.score.to_clips().unwrap();
+    let clip=&score.banks()[0].slots[0].as_ref().unwrap().id;
+    let wire=serde_json::json!({"format":"alive-session-v6","score":score,"master":{"gain":0.5},
+        "launch":{"globalQuantization":"sixteenth","clipQuantization":[{"occurrenceId":clip,"quantization":"none"}]}});
+    let saved=persistence::decode(&wire.to_string(),&example_path()).unwrap();
+    assert_eq!(persistence::decode(&String::from_utf8(persistence::serialize_saved(&saved).unwrap()).unwrap(),&example_path()).unwrap(),saved);
+    for field in ["score","master","launch"] {let mut bad=wire.clone();bad.as_object_mut().unwrap().remove(field);assert!(persistence::decode(&bad.to_string(),&example_path()).is_err());}
+    for value in ["wrong","global","0.25"] {let mut bad=wire.clone();bad["launch"]["globalQuantization"]=value.into();assert!(persistence::decode(&bad.to_string(),&example_path()).is_err());}
+    let mut bad=wire.clone();bad["launch"]["clipQuantization"][0]["occurrenceId"]="foreign".into();assert!(persistence::decode(&bad.to_string(),&example_path()).is_err());
+    let mut bad=wire.clone();let entry=bad["launch"]["clipQuantization"][0].clone();bad["launch"]["clipQuantization"].as_array_mut().unwrap().push(entry);assert!(persistence::decode(&bad.to_string(),&example_path()).is_err());
+    let mut bad=wire.clone();bad["launch"]["unknown"]=true.into();assert!(persistence::decode(&bad.to_string(),&example_path()).is_err());
+    let mut v5=wire.clone();v5["format"]="alive-session-v5".into();assert!(persistence::decode(&v5.to_string(),&example_path()).is_err());
+    assert_eq!(old.saved.wire,SaveWire::LegacyScore);
+    assert_eq!(serde_json::from_slice::<serde_json::Value>(&persistence::serialize_saved(&old.saved).unwrap()).unwrap()["format"],old.saved.score.format());
 }

@@ -48,6 +48,7 @@ pub(super) fn text(value: &str, limit: usize, label: &str) -> Result<(), String>
 
 pub fn prepare(saved: &SavedSession, path: &Path) -> Result<PreparedSession, String> {
     saved.validate_master()?;
+    saved.launch.validate(&saved.score)?;
     let session = &saved.score;
     if let Document::WorkspacesV4(project)=session {return super::prepare_workspaces::prepare(saved,project,path);}
     if session.is_clips() {

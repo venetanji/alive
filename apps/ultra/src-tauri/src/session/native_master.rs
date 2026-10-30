@@ -87,7 +87,7 @@ pub fn resolve(anchor: *const c_void) -> Option<Capability> {
 }
 
 #[cfg(any(target_os="linux",target_os="macos"))]
-mod platform {
+pub(super) mod platform {
     use super::*;
     #[repr(C)] struct DlInfo { name:*const c_char, base:*mut c_void, symbol:*const c_char, address:*mut c_void }
     #[cfg_attr(target_os="linux",link(name="dl"))]
@@ -116,7 +116,7 @@ mod platform {
 }
 
 #[cfg(target_os="windows")]
-mod platform {
+pub(super) mod platform {
     use super::*;
     #[link(name="kernel32")]
     extern "system" {fn GetModuleHandleExW(flags:u32,name:*const u16,handle:*mut *mut c_void)->i32;fn GetProcAddress(handle:*mut c_void,name:*const c_char)->*mut c_void;fn FreeLibrary(handle:*mut c_void)->i32;}

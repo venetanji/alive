@@ -20,6 +20,7 @@ struct Control {
     saved_wire: Option<SaveWire>,
     save_feedback: Option<String>,
     draft: Option<Session>,
+    draft_launch: Option<launch::LaunchSettings>,
     draft_revision: u64,
     history: History,
     closing: bool,
@@ -33,7 +34,7 @@ struct EditorBinding { generation: u64, instance_id: String }
 struct DeviceView { index: usize, track: usize, path: PathBuf, manifest: crate::canvas::device::HostManifest }
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
-struct Capabilities { clip_bank: bool, max_tracks: usize, max_devices: usize, slots_per_track: usize, max_clips: usize, atomic_track_actions: bool,workspaces:bool,arrangement:bool,audio_sources:bool,max_sources:usize,max_placements:usize,workspace_conversion_available:bool }
+struct Capabilities { launch_quantization: bool, launch_unavailable_reason:Option<String>, launch_window_frames:u32, clip_bank: bool, max_tracks: usize, max_devices: usize, slots_per_track: usize, max_clips: usize, atomic_track_actions: bool,workspaces:bool,arrangement:bool,audio_sources:bool,max_sources:usize,max_placements:usize,workspace_conversion_available:bool }
 pub struct Desktop(Mutex<Control>);
 fn ui_lock<T>(mutex: &Mutex<T>) -> Result<MutexGuard<'_, T>, String> {
     mutex.try_lock().map_err(|_| "Finish the current session dialog before using this control".into())
@@ -43,6 +44,7 @@ fn ui_lock<T>(mutex: &Mutex<T>) -> Result<MutexGuard<'_, T>, String> {
 pub struct Snapshot {
     document: Session,
     master: MasterSnapshot,
+    launch: launch::LaunchSettings,
     path: Option<PathBuf>,
     devices: Vec<crate::canvas::device::HostManifest>,
     generation: u64,
@@ -129,6 +131,44 @@ fn musical_draft(mut draft: Session, live: &Session) -> Result<Session, String> 
     Ok(draft)
 }
 impl Control {
+    fn current_launch(&self)->launch::LaunchSettings {
+        self.draft_launch.as_ref().unwrap_or(&self.host.prepared.as_ref().unwrap().saved.launch).clone()
+    }
+    fn retain_launch(&mut self,document:Session,launch:launch::LaunchSettings) {
+        self.retain(document.clone());
+        let prepared=self.host.prepared.as_mut().unwrap();
+        let visible=launch::LaunchSettings::occurrences(&document);
+        let live=launch::LaunchSettings::occurrences(&prepared.saved.score);
+        let mut accepted=prepared.saved.launch.clone();
+        accepted.global_quantization=launch.global_quantization;
+        // Pending deletion retains prepared intent until Apply. Existing IDs
+        // receive live settings immediately; draft-only copies stay in the draft.
+        accepted.clip_quantization.retain(|o|!visible.contains(o.occurrence_id.as_str()));
+        accepted.clip_quantization.extend(launch.clip_quantization.iter().filter(|o|live.contains(o.occurrence_id.as_str())).cloned());
+        if accepted!=prepared.saved.launch {prepared.saved.launch=accepted;prepared.saved.wire=SaveWire::V6;self.dirty=true;}
+        self.draft_launch=self.draft.as_ref().map(|_|launch);
+    }
+    fn launch_settings(&mut self,label:&str,generation:u64,preparation_revision:&str,revision:u64,edit:launch::Edit)->Result<(),String> {
+        main_only(label)?;self.version(generation,revision)?;
+        if runtime::decimal(preparation_revision)?!=self.host.preparation_revision {return Err("Prepared launch scope changed; refresh before editing".into());}
+        let prepared=self.host.prepared.as_ref().ok_or("No session")?;
+        let document=self.draft.as_ref().unwrap_or(&prepared.saved.score).clone();
+        let before=self.current_launch();let mut after=before.clone();
+        // Explicit recovery to the original ABI remains available when a
+        // loaded project's finer intent cannot be admitted by this library.
+        let supported=match &edit {
+            launch::Edit::Global{quantization}=>*quantization==launch::Quantization::Bar1,
+            launch::Edit::Clip{quantization,..}=>*quantization==launch::ClipQuantization::Bar1 || (*quantization==launch::ClipQuantization::Global && before.global_quantization==launch::Quantization::Bar1),
+        };
+        if !supported {super::native_launch::require(self.host.preparation_revision)?;}
+        after.edit(&document,edit)?;
+        let mut candidate=prepared.saved.with_score(document.clone());candidate.launch=after.clone();candidate.wire=SaveWire::V6;
+        super::persistence::serialize_saved(&candidate)?;
+        if self.history.record_with_launch(&document,&document,&before,&after,"Launch quantization")? {
+            self.retain_launch(document,after);self.draft_revision+=1;
+        }
+        Ok(())
+    }
     fn master_auth(&mut self,label:&str,generation:u64)->Result<&'static super::native_master::Capability,MasterError>{
         if label!="main"{return Err(master_error("INVALID","This action belongs to the Alive session window."));}
         if generation>9007199254740991{return Err(master_error("INVALID","Invalid desktop generation."));}
@@ -145,7 +185,7 @@ impl Control {
         if gain==prepared.saved.master.gain{return Ok(MasterReceipt{generation,accepted_gain:gain,accepted_serial:self.accepted_serial.to_string(),changed:false});}
         let serial=super::native_master::next_serial().ok_or_else(||master_error("EXHAUSTED","Master serial exhausted."))?;
         let result=unsafe{(capability.set)(1,gain,serial)};if result!=1{return Err(master_native_error(result));}
-        prepared.saved.master.gain=gain;prepared.saved.wire=SaveWire::V5;self.dirty=true;self.accepted_serial=serial;
+        prepared.saved.master.gain=gain;if prepared.saved.wire!=SaveWire::V6 {prepared.saved.wire=SaveWire::V5;}self.dirty=true;self.accepted_serial=serial;
         Ok(MasterReceipt{generation,accepted_gain:gain,accepted_serial:serial.to_string(),changed:true})
     }
     fn master_reset(&mut self,label:&str,generation:u64)->Result<MasterResetReceipt,MasterError>{
@@ -161,11 +201,15 @@ impl Control {
         let Document::WorkspacesV4(project)=before else{return Err("Enable MIDI workspaces first".into())};
         let mut reserved=self.history.identities();
         if let Document::WorkspacesV4(p)=&prepared.saved.score {reserved.extend(p.identities());}
+        let before_launch=self.current_launch();let mut after_launch=before_launch.clone();
+        let copied=match &operation {workspaces::WorkspaceEditV4::SlotDuplicate{slot_id,..}=>Some(slot_id.clone()),_=>None};
         let edited=workspaces::apply_edit(project,operation.clone(),&reserved)?;
         let affected=workspace_edits::primary(project,&edited.project,&operation)?;
         let mut document=Document::WorkspacesV4(edited.project);
         merge_live(&mut document,&prepared.saved.score);prepare::validate_musical(&document,prepared)?;
-        if self.history.record(before,&document,"Workspace edit")?{self.retain(document);self.draft_revision+=1;}Ok(affected)
+        if let (Some(from),Some(to))=(copied.as_deref(),affected.slot_id.as_deref()){after_launch.copy_override(from,to);}
+        after_launch.retain_owned(&document);after_launch.validate(&document)?;
+        if self.history.record_with_launch(before,&document,&before_launch,&after_launch,"Workspace edit")?{self.retain_launch(document,after_launch);self.draft_revision+=1;}Ok(affected)
     }
     fn workspace_action(&mut self,label:&str,generation:u64,preparation_revision:&str,action:runtime_workspaces::Action)->Result<runtime_workspaces::RequestResult,String>{
         main_only(label)?;check_generation(self.generation,generation)?;
@@ -182,7 +226,7 @@ impl Control {
         if current.saved.score.is_workspaces(){return Err("MIDI workspaces are already enabled".into());}
         let project=workspaces::prospective_from_document(&current.saved.score)?;
         let mut candidate=prepare(&current.saved.with_score(Document::WorkspacesV4(project)),&current.origin)?;
-        let wire_notice=match candidate.saved.wire {SaveWire::LegacyScore=>"Save writes v4.",SaveWire::V5=>"Save writes session v5 with a v4 score."};
+        let wire_notice=match candidate.saved.wire {SaveWire::LegacyScore=>"Save writes v4.",SaveWire::V5=>"Save writes session v5 with a v4 score.",SaveWire::V6=>"Save writes session v6 with launch settings."};
         candidate.notice=Some(format!("MIDI workspaces enabled: stopped Arrangement at zero. Profile 1 is measured for practical device buffers of at least 256 frames; delivered periods may differ. Audio settings were not changed. {wire_notice}"));
         self.install(candidate)
     }
@@ -200,7 +244,7 @@ impl Control {
         check_generation(self.generation,generation)?;
         if self.draft_revision!=revision {return Err("Pending edits changed. Refresh the session and try again.".into());} Ok(())
     }
-    fn clear_scope(&mut self)->Result<(),String> {ensure_counter(self.draft_revision)?;self.draft=None;self.history.clear();self.draft_revision+=1;Ok(())}
+    fn clear_scope(&mut self)->Result<(),String> {ensure_counter(self.draft_revision)?;self.draft=None;self.draft_launch=None;self.history.clear();self.draft_revision+=1;Ok(())}
     fn retain(&mut self,document:Session) {
         let live=&self.host.prepared.as_ref().unwrap().saved.score;
         self.draft=if Projection::from(&document)==Projection::from(live) {None}else{Some(document)};
@@ -212,7 +256,8 @@ impl Control {
         let document=musical_draft(document,&prepared.saved.score)?;
         prepare::validate_musical(&document,prepared)?;
         let before=self.draft.as_ref().unwrap_or(&prepared.saved.score);
-        if self.history.record(before,&document,label)? {self.retain(document);self.draft_revision+=1;} Ok(())
+        let before_launch=self.current_launch();let mut after_launch=before_launch.clone();after_launch.retain_owned(&document);
+        if self.history.record_with_launch(before,&document,&before_launch,&after_launch,label)? {self.retain_launch(document,after_launch);self.draft_revision+=1;} Ok(())
     }
     fn clip_edit(&mut self,operation:clips::Edit,generation:u64,revision:u64)->Result<clips::Affected,String>{
         self.version(generation,revision)?;
@@ -222,16 +267,21 @@ impl Control {
         for clip in prepared.saved.score.banks().iter().flat_map(|bank|bank.slots.iter().flatten()) {
             identities.insert(clip.id.clone());identities.extend(clip.notes.iter().map(|note|note.id.clone()));
         }
+        let before_launch=self.current_launch();let mut after_launch=before_launch.clone();
+        let copied=match &operation {clips::Edit::Duplicate{clip_id,..}=>Some(clip_id.clone()),_=>None};
         let affected=clips::apply_edit(&mut document,operation,identities)?;
         merge_live(&mut document,&prepared.saved.score);prepare::validate_musical(&document,prepared)?;
-        if self.history.record(before,&document,"Clip edit")?{self.retain(document);self.draft_revision+=1;}Ok(affected)
+        if let (Some(from),Some(to))=(copied.as_deref(),affected.clip_id.as_deref()){after_launch.copy_override(from,to);}
+        after_launch.retain_owned(&document);after_launch.validate(&document)?;
+        if self.history.record_with_launch(before,&document,&before_launch,&after_launch,"Clip edit")?{self.retain_launch(document,after_launch);self.draft_revision+=1;}Ok(affected)
     }
     fn history(&mut self,direction:Direction,generation:u64,revision:u64)->Result<(),String> {
         self.version(generation,revision)?;
         let prepared=self.host.prepared.as_ref().ok_or("No session")?;
         let mut document=self.history.target(direction)?.materialize(&prepared.saved.score)?;
         merge_live(&mut document,&prepared.saved.score);prepare::validate_musical(&document,prepared)?;
-        self.history.advance(direction);self.retain(document);self.draft_revision+=1;Ok(())
+        let launch=self.history.target_launch(direction)?;launch.validate(&document)?;
+        self.history.advance(direction);self.retain_launch(document,launch);self.draft_revision+=1;Ok(())
     }
     fn editor_instance(&self, label: &str) -> Result<Option<&str>, String> {
         if label == "main" { return Ok(None); }
@@ -256,8 +306,8 @@ impl Control {
         let limits=if workspace{Some(host::workspace_limits()?)}else{None};
         let available=native::master_capability().is_some();
         let observation=self.runtime.master_observation.map(|m|serde_json::json!({"targetGain":m.target_gain,"currentGain":m.current_gain,"peakLeft":m.peak_left,"peakRight":m.peak_right,"clipMask":m.clip_mask,"appliedSerial":m.applied_serial.to_string(),"appliedFrame":m.applied_frame.to_string(),"observationStartFrame":m.observation_start_frame.to_string(),"observationEndFrame":m.observation_end_frame.to_string()}));
-        Ok(Snapshot { document: prepared.saved.score.clone(), master: MasterSnapshot { gain:prepared.saved.master.gain, accepted_serial:self.accepted_serial.to_string(), available, unavailable_reason:(!available).then_some("Native Master support is unavailable; upgrade or reinstall the native library."), observation, observation_stale:false }, path: self.saved_path.clone(),
-            capabilities: Capabilities { clip_bank: prepared.saved.score.is_clips()||workspace, max_tracks, max_devices, slots_per_track: if prepared.saved.score.is_clips()||workspace{4}else{1}, max_clips, atomic_track_actions: if let Some(l)=&limits{l.features&native::V4_FEATURE_ATOMIC_TRACK_ACTIONS!=0}else{runtime::scenes_available(prepared)?},workspaces:workspace,arrangement:workspace,audio_sources:false,max_sources:limits.as_ref().map_or(0,|l|l.max_sources as usize),max_placements:limits.as_ref().map_or(0,|l|l.max_placements as usize),workspace_conversion_available:!workspace&&host::workspace_limits().is_ok() },
+        Ok(Snapshot { document: prepared.saved.score.clone(), launch:self.current_launch(), master: MasterSnapshot { gain:prepared.saved.master.gain, accepted_serial:self.accepted_serial.to_string(), available, unavailable_reason:(!available).then_some("Native Master support is unavailable; upgrade or reinstall the native library."), observation, observation_stale:false }, path: self.saved_path.clone(),
+            capabilities: Capabilities { launch_quantization:super::native_launch::available(self.host.preparation_revision),launch_unavailable_reason:super::native_launch::require(self.host.preparation_revision).err(),launch_window_frames:1024,clip_bank: prepared.saved.score.is_clips()||workspace, max_tracks, max_devices, slots_per_track: if prepared.saved.score.is_clips()||workspace{4}else{1}, max_clips, atomic_track_actions: if let Some(l)=&limits{l.features&native::V4_FEATURE_ATOMIC_TRACK_ACTIONS!=0}else{runtime::scenes_available(prepared)?},workspaces:workspace,arrangement:workspace,audio_sources:false,max_sources:limits.as_ref().map_or(0,|l|l.max_sources as usize),max_placements:limits.as_ref().map_or(0,|l|l.max_placements as usize),workspace_conversion_available:!workspace&&host::workspace_limits().is_ok() },
             track_chains:if workspace{prepared.saved.score.tracks().into_iter().map(|t|serde_json::json!({"trackId":t.id(),"kind":if t.instrument().is_some(){"midi"}else{"audio"},"instrumentId":t.instrument().map(|d|&d.instance_id),"effectIds":t.effects().iter().map(|d|&d.instance_id).collect::<Vec<_>>() })).collect()}else{vec![]},prepared_workspaces:runtime_workspaces::prepared(&self.host)?,
             devices: if prepared.saved.score.is_workspaces(){vec![]}else{prepared.tracks.iter().map(|t| Ok(prepared.devices[t.midi_instrument()?].manifest.clone())).collect::<Result<_,String>>()?}, generation: self.generation,
             device_instances: prepared.devices.iter().enumerate().map(|(index, device)| (device.instance_id.clone(), DeviceView { index, track: device.track, path: device.path.clone(), manifest: device.manifest.clone() })).collect(),
@@ -289,7 +339,9 @@ impl Control {
         let Some(mut document) = self.draft.clone() else { self.clear_scope()?; return Ok(()); };
         let current = self.host.prepared.as_ref().ok_or("No session")?;
         merge_live(&mut document, &current.saved.score);
-        let prepared = prepare(&current.saved.with_score(document), &current.origin)?;
+        let mut saved=current.saved.with_score(document);saved.launch=self.current_launch();
+        if saved.launch!=launch::LaunchSettings::default(){saved.wire=SaveWire::V6;}
+        let prepared = prepare(&saved, &current.origin)?;
         self.install(prepared)
     }
 }
@@ -297,6 +349,10 @@ impl Control {
 #[tauri::command]
 pub fn alive_current(window: WebviewWindow, state: tauri::State<Desktop>) -> Result<Snapshot, String> {
     ui_lock(&state.0)?.snapshot(window.label())
+}
+#[tauri::command]
+pub fn alive_launch_settings(window:WebviewWindow,state:tauri::State<Desktop>,generation:u64,preparation_revision:String,draft_revision:u64,edit:launch::Edit)->Result<Snapshot,String>{
+    let mut c=ui_lock(&state.0)?;c.launch_settings(window.label(),generation,&preparation_revision,draft_revision,edit)?;c.snapshot(window.label())
 }
 #[tauri::command]
 pub fn alive_master(window:WebviewWindow,state:tauri::State<Desktop>,generation:u64,gain:f64)->Result<MasterReceipt,MasterError>{
@@ -320,13 +376,13 @@ pub fn alive_workspace_action(window:WebviewWindow,state:tauri::State<Desktop>,a
 pub struct WorkspaceEditResult {snapshot:Snapshot,affected:workspace_edits::Affected}
 #[tauri::command]
 pub fn alive_workspace_edit(window:WebviewWindow,state:tauri::State<Desktop>,operation:workspaces::WorkspaceEditV4,generation:u64,draft_revision:u64)->Result<WorkspaceEditResult,String>{
-    main_only(window.label())?;let mut c=ui_lock(&state.0)?;let mut snapshot=c.snapshot(window.label())?;let affected=c.workspace_edit(window.label(),operation,generation,draft_revision)?;snapshot.draft=c.draft.clone();snapshot.draft_revision=c.draft_revision;snapshot.history=c.history.view();snapshot.dirty=c.dirty||c.draft.is_some();Ok(WorkspaceEditResult{snapshot,affected})
+    main_only(window.label())?;let mut c=ui_lock(&state.0)?;let mut snapshot=c.snapshot(window.label())?;let affected=c.workspace_edit(window.label(),operation,generation,draft_revision)?;snapshot.launch=c.current_launch();snapshot.draft=c.draft.clone();snapshot.draft_revision=c.draft_revision;snapshot.history=c.history.view();snapshot.dirty=c.dirty||c.draft.is_some();Ok(WorkspaceEditResult{snapshot,affected})
 }
 #[derive(Serialize)]
 pub struct ClipEditResult{snapshot:Snapshot,affected:clips::Affected}
 #[tauri::command]
 pub fn alive_clip_edit(window:WebviewWindow,state:tauri::State<Desktop>,operation:clips::Edit,generation:u64,draft_revision:u64)->Result<ClipEditResult,String>{
-    main_only(window.label())?;let mut c=ui_lock(&state.0)?;let mut snapshot=c.snapshot(window.label())?;let affected=c.clip_edit(operation,generation,draft_revision)?;snapshot.draft=c.draft.clone();snapshot.draft_revision=c.draft_revision;snapshot.history=c.history.view();snapshot.dirty=c.dirty||c.draft.is_some();Ok(ClipEditResult{snapshot,affected})
+    main_only(window.label())?;let mut c=ui_lock(&state.0)?;let mut snapshot=c.snapshot(window.label())?;let affected=c.clip_edit(operation,generation,draft_revision)?;snapshot.launch=c.current_launch();snapshot.draft=c.draft.clone();snapshot.draft_revision=c.draft_revision;snapshot.history=c.history.view();snapshot.dirty=c.dirty||c.draft.is_some();Ok(ClipEditResult{snapshot,affected})
 }
 #[tauri::command]
 pub fn alive_enable_clips(window:WebviewWindow,state:tauri::State<Desktop>,generation:u64,draft_revision:u64)->Result<Snapshot,String>{
@@ -357,18 +413,18 @@ pub fn alive_edit(window:WebviewWindow,state:tauri::State<Desktop>,document:Sess
     main_only(window.label())?;let mut control=ui_lock(&state.0)?;
     let mut snapshot=control.snapshot(window.label())?;
     control.edit(document,&label,generation,draft_revision)?;
-    snapshot.draft=control.draft.clone();snapshot.draft_revision=control.draft_revision;snapshot.history=control.history.view();snapshot.dirty=control.dirty||control.draft.is_some();Ok(snapshot)
+    snapshot.launch=control.current_launch();snapshot.draft=control.draft.clone();snapshot.draft_revision=control.draft_revision;snapshot.history=control.history.view();snapshot.dirty=control.dirty||control.draft.is_some();Ok(snapshot)
 }
 #[tauri::command]
 pub fn alive_history(window:WebviewWindow,state:tauri::State<Desktop>,direction:Direction,generation:u64,draft_revision:u64)->Result<Snapshot,String> {
     main_only(window.label())?;let mut control=ui_lock(&state.0)?;
     let mut snapshot=control.snapshot(window.label())?;control.history(direction,generation,draft_revision)?;
-    snapshot.draft=control.draft.clone();snapshot.draft_revision=control.draft_revision;snapshot.history=control.history.view();snapshot.dirty=control.dirty||control.draft.is_some();Ok(snapshot)
+    snapshot.launch=control.current_launch();snapshot.draft=control.draft.clone();snapshot.draft_revision=control.draft_revision;snapshot.history=control.history.view();snapshot.dirty=control.dirty||control.draft.is_some();Ok(snapshot)
 }
 #[tauri::command]
 pub fn alive_discard(window:WebviewWindow,state:tauri::State<Desktop>,generation:u64,draft_revision:u64)->Result<Snapshot,String> {
     main_only(window.label())?;let mut control=ui_lock(&state.0)?;control.version(generation,draft_revision)?;
-    let mut snapshot=control.snapshot(window.label())?;control.clear_scope()?;snapshot.draft=None;snapshot.draft_revision=control.draft_revision;snapshot.history=control.history.view();snapshot.dirty=control.dirty;Ok(snapshot)
+    let mut snapshot=control.snapshot(window.label())?;control.clear_scope()?;snapshot.launch=control.current_launch();snapshot.draft=None;snapshot.draft_revision=control.draft_revision;snapshot.history=control.history.view();snapshot.dirty=control.dirty;Ok(snapshot)
 }
 #[tauri::command]
 pub fn alive_apply(window: WebviewWindow, state: tauri::State<Desktop>, generation: u64,draft_revision:u64) -> Result<Snapshot, String> {
@@ -668,6 +724,11 @@ fn addition_capacity(document:&Session,track_id:&str,action:&str)->Result<(),Str
         return Err(format!("The admitted {devices}-device capacity is reached; no dependency was opened"));
     }Ok(())
 }
+fn structural_saved(current:&SavedSession,document:Session)->SavedSession {
+    let mut saved=current.with_score(document);
+    saved.launch.retain_owned(&saved.score);
+    saved
+}
 fn change_device(document: &mut Session, track_id: &str, action: &str, instance_id: Option<&str>, before: Option<&str>, reference: Option<DeviceInstance>) -> Result<(), String> {
     addition_capacity(document,track_id,action)?;
     if let Document::WorkspacesV4(project)=document{return change_workspace_device(project,track_id,action,instance_id,before,reference);}
@@ -760,7 +821,7 @@ pub async fn alive_workspace_track(window:WebviewWindow,operation:WorkspaceTrack
             },
             WorkspaceTrackOperation::Remove{track_id}=>{if candidate.tracks.len()==1{return Err("Keep at least one track".into());}let index=candidate.tracks.iter().position(|t|t.id==track_id).ok_or("Unknown workspace track")?;candidate.tracks.remove(index);candidate.sources.retain(|s|s.track_id()!=track_id);candidate.placements.retain(|p|p.track_id!=track_id);track_id}
         };
-        let prepared=prepare(&current.saved.with_score(Document::WorkspacesV4(candidate)),&current.origin)?;c.install(prepared)?;close_stale_editors(window.app_handle(),c.generation);
+        let prepared=prepare(&structural_saved(&current.saved,Document::WorkspacesV4(candidate)),&current.origin)?;c.install(prepared)?;close_stale_editors(window.app_handle(),c.generation);
         Ok(WorkspaceEditResult{snapshot:c.snapshot(window.label())?,affected:workspace_edits::Affected{track_id:Some(track_id),..Default::default()}})
     }).await.map_err(|e|e.to_string())?
 }
@@ -792,7 +853,7 @@ pub async fn alive_device(window: WebviewWindow, track_id: String, action: Strin
         } else { None };
         change_device(&mut document, &track_id, &action, instance_id.as_deref(), before_instance_id.as_deref(), reference)?;
         prepare::check_sources(&document,&current.origin,Some(&current.saved.score))?;
-        let prepared = prepare(&current.saved.with_score(document), &current.origin)?; control.install(prepared)?;
+        let prepared = prepare(&structural_saved(&current.saved,document), &current.origin)?; control.install(prepared)?;
         close_stale_editors(window.app_handle(), control.generation);
         control.snapshot(window.label())
     }).await.map_err(|e| e.to_string())?
@@ -817,12 +878,12 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
             let saved_wire = path.as_ref().map(|_| prepared.saved.wire);
             let mut host = Host::default(); let (prepared,upgraded)=enable_clips_for_load(&host,prepared).map_err(std::io::Error::other)?;let accepted_serial=host.install(prepared).map_err(std::io::Error::other)?;
             app.manage(Desktop(Mutex::new(Control { host, runtime:runtime::Runtime::default(),snapshot_sequence:0, accepted_serial, driver: crate::audio::Driver::load(app.path().app_data_dir()?.join("audio-settings.json")), generation: 1,
-                dirty: upgraded, saved_path, saved_wire, save_feedback:None, draft: None, draft_revision:0,history:History::default(), closing: false, allow_exit: false, editors: BTreeMap::new() })));
+                dirty: upgraded, saved_path, saved_wire, save_feedback:None, draft: None, draft_launch:None, draft_revision:0,history:History::default(), closing: false, allow_exit: false, editors: BTreeMap::new() })));
             tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::App("alive.html".into()))
                 .title("Alive").inner_size(1200., 800.).min_inner_size(800., 600.).build()?;
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![alive_current, alive_browser_catalog, alive_master, alive_master_reset_clip, alive_enable_workspaces, alive_workspace_action, alive_workspace_edit, alive_workspace_track, alive_clip_edit, alive_clip_action, alive_launch_scene, alive_enable_clips, alive_edit, alive_history, alive_discard, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio_diagnostics, alive_audio, alive_editor, alive_file, alive_device])
+        .invoke_handler(tauri::generate_handler![alive_current, alive_launch_settings, alive_browser_catalog, alive_master, alive_master_reset_clip, alive_enable_workspaces, alive_workspace_action, alive_workspace_edit, alive_workspace_track, alive_clip_edit, alive_clip_action, alive_launch_scene, alive_enable_clips, alive_edit, alive_history, alive_discard, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio_diagnostics, alive_audio, alive_editor, alive_file, alive_device])
         .on_window_event(|window,event| { if window.label() == "main" { if let tauri::WindowEvent::CloseRequested { api, .. } = event { api.prevent_close(); request_close(window.app_handle()); } } })
         .build(context).expect("Unable to start Alive")
         .run(|app,event| match event {
@@ -931,7 +992,7 @@ mod tests {
     #[test]
     fn actual_registered_window_binding_authenticates_instance_and_generation() {
         let mut control=Control { host:Host::default(),runtime:runtime::Runtime::default(),snapshot_sequence:0, accepted_serial:0, driver:crate::audio::Driver::load(PathBuf::from("/nonexistent/alive-test.json")), generation:7,
-            dirty:false,saved_path:None,saved_wire:None,save_feedback:None,draft:None,draft_revision:0,history:History::default(),closing:false,allow_exit:false,editors:BTreeMap::new() };
+            dirty:false,saved_path:None,saved_wire:None,save_feedback:None,draft:None,draft_launch:None,draft_revision:0,history:History::default(),closing:false,allow_exit:false,editors:BTreeMap::new() };
         let label=editor_label(7,"effect-a");
         assert!(control.authorize_instance(&label,"effect-a").is_err());
         control.editors.insert(label.clone(),EditorBinding {generation:7,instance_id:"effect-a".into()});
@@ -970,7 +1031,7 @@ mod tests {
         let prepared=read(&Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive")).unwrap();
         let mut host=Host::default();host.prepared=Some(prepared);
         Control {host,runtime:runtime::Runtime::default(),snapshot_sequence:0,accepted_serial:0,driver:crate::audio::Driver::load(PathBuf::from("/nonexistent/alive-test.json")),generation:7,
-            dirty:false,saved_path:None,saved_wire:None,save_feedback:None,draft:None,draft_revision:0,history:History::default(),closing:false,allow_exit:false,editors:BTreeMap::new()}
+            dirty:false,saved_path:None,saved_wire:None,save_feedback:None,draft:None,draft_launch:None,draft_revision:0,history:History::default(),closing:false,allow_exit:false,editors:BTreeMap::new()}
     }
     #[test]
     fn master_stale_generation_refuses_without_owner_mutation() {
@@ -1369,6 +1430,108 @@ mod tests {
             c.workspace_edit("main",workspaces::WorkspaceEditV4::AutomationSet{source_id:source,lanes:old.automation.clone()},8,c.draft_revision).unwrap();
         }
         let draft=c.draft.clone();let revision=c.draft_revision;let ids=c.history.identities();assert!(c.apply_draft().unwrap_err().contains("observed 40, limit 32"));assert_eq!(c.host.preparation_revision,preparation);assert_eq!(c.host.prepared.as_ref().unwrap().saved.score,accepted);assert_eq!(c.draft,draft);assert_eq!(c.draft_revision,revision);assert_eq!(c.history.identities(),ids);assert!(c.history.view().can_undo);
+    }
+
+    #[test]
+    fn launch_settings_and_history_preserve_preparation_and_live_fields() {
+        if super::super::native_master::fresh_process("session::desktop::tests::launch_settings_and_history_preserve_preparation_and_live_fields"){return;}
+        let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        let mut c=musical_control();let p=c.host.prepared.as_ref().unwrap();
+        let prepared=prepare(&p.saved.with_score(p.saved.score.to_clips().unwrap()),&p.origin).unwrap();
+        c.host.install(prepared).unwrap();
+        let generation=c.generation;let preparation=c.host.preparation_revision;
+        let ids=c.host.prepared.as_ref().unwrap().devices.iter().map(|d|d.instance_id.clone()).collect::<Vec<_>>();
+        c.launch_settings("main",generation,&preparation.to_string(),0,launch::Edit::Global{quantization:launch::Quantization::Sixteenth}).unwrap();
+        assert!(c.draft.is_none());assert_eq!(c.host.preparation_revision,preparation);assert_eq!(c.generation,generation);
+        let p=c.host.prepared.as_mut().unwrap();p.saved.master.gain=0.5;p.saved.score.legacy_mut().unwrap().tracks[0].gain=0.25;
+        c.history(Direction::Undo,generation,1).unwrap();
+        assert_eq!(c.host.prepared.as_ref().unwrap().saved.launch.global_quantization,launch::Quantization::Bar1);
+        assert_eq!(c.host.prepared.as_ref().unwrap().saved.master.gain,0.5);
+        assert_eq!(c.host.prepared.as_ref().unwrap().saved.score.tracks()[0].mixer().0,0.25);
+        c.history(Direction::Redo,generation,2).unwrap();
+        assert_eq!(c.host.prepared.as_ref().unwrap().saved.launch.global_quantization,launch::Quantization::Sixteenth);
+        assert_eq!(c.host.preparation_revision,preparation);
+        assert_eq!(ids,c.host.prepared.as_ref().unwrap().devices.iter().map(|d|d.instance_id.clone()).collect::<Vec<_>>());
+        assert!(c.launch_settings("main",generation+1,&preparation.to_string(),3,launch::Edit::Global{quantization:launch::Quantization::None}).is_err());
+    }
+
+    #[test]
+    fn launch_metadata_follows_clip_copy_delete_history_and_pending_music() {
+        if super::super::native_master::fresh_process("session::desktop::tests::launch_metadata_follows_clip_copy_delete_history_and_pending_music"){return;}
+        let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        let mut c=musical_control();
+        for workspace in [false,true] {
+            c.clear_scope().unwrap();c.draft_revision=0;c.generation=7;
+            let p=if workspace {read(&Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/midi-arrangement.alive")).unwrap()}else{c.host.prepared.clone().unwrap()};
+            let mut doc=if workspace{p.saved.score.clone()}else{p.saved.score.to_clips().unwrap()};
+            if let Document::WorkspacesV4(project)=&mut doc {
+                // Ownership/history needs a sparse admitted fixture; the full
+                // two-track example intentionally retains its work refusal.
+                let track=project.tracks[0].id.clone();project.tracks.truncate(1);
+                project.sources.retain(|s|s.track_id()==track);project.placements.retain(|p|p.track_id==track);
+            }
+            c.host.install(prepare(&p.saved.with_score(doc),&p.origin).unwrap()).unwrap();
+            let scope=c.host.preparation_revision.to_string();let before=c.host.prepared.as_ref().unwrap().saved.score.clone();
+            let track=before.tracks()[0].id().to_string();
+            let id=match &before {Document::WorkspacesV4(p)=>p.tracks[0].slots[0].as_ref().unwrap().id.clone(),_=>before.banks()[0].slots[0].as_ref().unwrap().id.clone()};
+            c.launch_settings("main",7,&scope,0,launch::Edit::Clip{occurrence_id:id.clone(),quantization:launch::ClipQuantization::None}).unwrap();
+            let copied=if workspace {
+                c.workspace_edit("main",workspaces::WorkspaceEditV4::SlotDuplicate{track_id:track.clone(),slot_id:id.clone(),destination_slot:1},7,1).unwrap().slot_id.unwrap()
+            }else{c.clip_edit(clips::Edit::Duplicate{track_id:track.clone(),clip_id:id.clone(),destination_slot:1},7,1).unwrap().clip_id.unwrap()};
+            assert_eq!(c.current_launch().effective(Some(&copied)),launch::Quantization::None);
+            c.launch_settings("main",7,&scope,2,launch::Edit::Global{quantization:launch::Quantization::Eighth}).unwrap();
+            assert!(c.draft.is_some());assert_eq!(c.host.preparation_revision.to_string(),scope);
+            c.history(Direction::Undo,7,3).unwrap();assert_eq!(c.current_launch().global_quantization,launch::Quantization::Bar1);
+            if workspace{c.workspace_edit("main",workspaces::WorkspaceEditV4::SlotDelete{track_id:track.clone(),slot_id:id.clone()},7,4).unwrap();}
+            else{c.clip_edit(clips::Edit::Delete{track_id:track.clone(),clip_id:id.clone()},7,4).unwrap();}
+            assert!(!c.current_launch().clip_quantization.iter().any(|o|o.occurrence_id==id));
+            c.history(Direction::Undo,7,5).unwrap();assert_eq!(c.current_launch().effective(Some(&id)),launch::Quantization::None);
+            c.history(Direction::Undo,7,6).unwrap();assert!(c.draft.is_none());
+            c.history(Direction::Redo,7,7).unwrap();assert!(launch::LaunchSettings::occurrences(c.draft.as_ref().unwrap()).contains(copied.as_str()));
+            c.apply_draft().unwrap();
+            let saved=&c.host.prepared.as_ref().unwrap().saved;
+            assert_eq!(saved.wire,SaveWire::V6);assert_eq!(saved.launch.effective(Some(&copied)),launch::Quantization::None);
+            saved.launch.validate(&saved.score).unwrap();
+        }
+    }
+
+    #[test]
+    fn unavailable_launch_settings_allow_explicit_supported_recovery() {
+        if super::super::native_master::fresh_process("session::desktop::tests::unavailable_launch_settings_allow_explicit_supported_recovery"){return;}
+        let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        let mut c=musical_control();
+        let mut p=read(&Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/midi-arrangement.alive")).unwrap();
+        let id=if let Document::WorkspacesV4(p)=&p.saved.score{p.tracks[0].slots[0].as_ref().unwrap().id.clone()}else{panic!()};
+        p.saved.wire=SaveWire::V6;p.saved.launch.global_quantization=launch::Quantization::Eighth;
+        p.saved.launch.clip_quantization.push(launch::Override{occurrence_id:id.clone(),quantization:launch::ClipQuantization::Sixteenth});
+        c.host.install(p).unwrap();let generation=c.generation;let preparation=c.host.preparation_revision.to_string();
+        assert!(!super::super::native_launch::available(c.host.preparation_revision));
+        assert!(c.launch_settings("main",generation,&preparation,0,launch::Edit::Global{quantization:launch::Quantization::None}).is_err());
+        assert_eq!(c.current_launch().global_quantization,launch::Quantization::Eighth);
+        c.launch_settings("main",generation,&preparation,0,launch::Edit::Global{quantization:launch::Quantization::Bar1}).unwrap();
+        assert_eq!(c.current_launch().effective(Some(&id)),launch::Quantization::Sixteenth);
+        assert!(super::super::native_launch::submit_v4(&native::RequestV4{preparation_revision:c.host.preparation_revision,..Default::default()},c.current_launch().effective(Some(&id)),&mut native::ReceiptV4::default()).is_err());
+        c.launch_settings("main",generation,&preparation,1,launch::Edit::Clip{occurrence_id:id,quantization:launch::ClipQuantization::Global}).unwrap();
+        assert_eq!(c.current_launch(),launch::LaunchSettings::default());
+        assert_eq!(c.host.preparation_revision.to_string(),preparation);assert!(c.draft.is_none());
+        c.history(Direction::Undo,generation,2).unwrap();assert_eq!(c.current_launch().clip_quantization.len(),1);
+    }
+
+    #[test]
+    fn track_removal_prunes_only_owned_launch_overrides() {
+        for workspace in [false,true] {
+            let p=read(&Path::new(env!("CARGO_MANIFEST_DIR")).join(if workspace{"../../alive/examples/midi-arrangement.alive"}else{"../../alive/examples/two-instruments.alive"})).unwrap();
+            let doc=if workspace{p.saved.score.clone()}else{p.saved.score.to_clips().unwrap()};
+            let mut saved=p.saved.with_score(doc);saved.wire=SaveWire::V6;saved.launch.global_quantization=launch::Quantization::Eighth;
+            for id in launch::LaunchSettings::occurrences(&saved.score){saved.launch.clip_quantization.push(launch::Override{occurrence_id:id.into(),quantization:launch::ClipQuantization::None});}
+            let original=saved.clone();let mut candidate=saved.score.clone();let removed=candidate.tracks()[0].id().to_owned();
+            if let Document::WorkspacesV4(project)=&mut candidate {project.tracks.remove(0);project.sources.retain(|s|s.track_id()!=removed);project.placements.retain(|p|p.track_id!=removed);}
+            else {change_device(&mut candidate,&removed,"remove",None,None,None).unwrap();}
+            let edited=structural_saved(&saved,candidate);
+            edited.launch.validate(&edited.score).unwrap();assert_eq!(edited.launch.clip_quantization.len(),1);
+            assert_eq!(edited.launch.global_quantization,launch::Quantization::Eighth);assert_eq!(edited.wire,SaveWire::V6);
+            prepare(&edited,&p.origin).unwrap();assert_eq!(saved,original);
+        }
     }
 
 }

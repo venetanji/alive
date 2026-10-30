@@ -54,7 +54,7 @@ pub enum Direction { Undo, Redo }
 #[derive(Serialize)]
 #[serde(rename_all="camelCase")]
 pub(super) struct View { pub can_undo:bool,pub can_redo:bool,undo_label:Option<String>,redo_label:Option<String> }
-struct Entry { before:Projection,after:Projection,label:String,bytes:usize }
+struct Entry { before:Projection,after:Projection,before_launch:super::launch::LaunchSettings,after_launch:super::launch::LaunchSettings,label:String,bytes:usize }
 #[derive(Default)]
 pub(super) struct History { entries:Vec<Entry>,cursor:usize,bytes:usize }
 impl History {
@@ -62,18 +62,24 @@ impl History {
     pub fn clear(&mut self) { *self=Self::default(); }
     pub fn view(&self)->View { View {can_undo:self.cursor>0,can_redo:self.cursor<self.entries.len(),undo_label:self.cursor.checked_sub(1).map(|i|self.entries[i].label.clone()),redo_label:self.entries.get(self.cursor).map(|e|e.label.clone())} }
     pub fn record(&mut self,a:&Session,b:&Session,label:&str)->Result<bool,String> {
+        self.record_with_launch(a,b,&Default::default(),&Default::default(),label)
+    }
+    pub fn record_with_launch(&mut self,a:&Session,b:&Session,before_launch:&super::launch::LaunchSettings,after_launch:&super::launch::LaunchSettings,label:&str)->Result<bool,String> {
         if label.chars().any(char::is_control) {return Err("Edit label cannot contain control characters".into());} let label=label.trim(); if label.is_empty()||label.len()>64 {return Err("Edit label requires 1..64 bytes without control characters".into());}
-        let before=Projection::from(a);let after=Projection::from(b);if before==after{return Ok(false);}
-        let bytes=serde_json::to_vec(&before).map_err(|e|e.to_string())?.len()+serde_json::to_vec(&after).map_err(|e|e.to_string())?.len()+label.len();
+        let before=Projection::from(a);let after=Projection::from(b);if before==after && before_launch==after_launch{return Ok(false);}
+        let bytes=serde_json::to_vec(&before).map_err(|e|e.to_string())?.len()+serde_json::to_vec(&after).map_err(|e|e.to_string())?.len()+serde_json::to_vec(&(before_launch,after_launch)).map_err(|e|e.to_string())?.len()+label.len();
         if bytes>MAX_BYTES { return Err("This edit exceeds the 8 MiB pending history limit".into()); }
         self.entries.truncate(self.cursor);self.bytes=self.entries.iter().map(|e|e.bytes).sum();
         while !self.entries.is_empty()&&(self.entries.len()>=64||self.bytes+bytes>MAX_BYTES) {self.bytes-=self.entries.remove(0).bytes;}
-        self.entries.push(Entry{before,after,label:label.into(),bytes});self.bytes+=bytes;self.cursor=self.entries.len();Ok(true)
+        self.entries.push(Entry{before,after,before_launch:before_launch.clone(),after_launch:after_launch.clone(),label:label.into(),bytes});self.bytes+=bytes;self.cursor=self.entries.len();Ok(true)
     }
     pub fn target(&self,d:Direction)->Result<Projection,String> { match d {
         Direction::Undo=>self.cursor.checked_sub(1).map(|i|self.entries[i].before.clone()),
         Direction::Redo=>self.entries.get(self.cursor).map(|e|e.after.clone())
     }.ok_or_else(||"No pending edit to undo or redo".into()) }
+    pub fn target_launch(&self,d:Direction)->Result<super::launch::LaunchSettings,String> {
+        match d {Direction::Undo=>self.cursor.checked_sub(1).map(|i|self.entries[i].before_launch.clone()),Direction::Redo=>self.entries.get(self.cursor).map(|e|e.after_launch.clone())}.ok_or_else(||"No pending edit to undo or redo".into())
+    }
     pub fn advance(&mut self,d:Direction) {match d {Direction::Undo=>self.cursor-=1,Direction::Redo=>self.cursor+=1}}
 }
 
@@ -113,6 +119,21 @@ mod tests {
         assert!(h.entries.len()<64);assert!(h.bytes<=MAX_BYTES);
         assert!(serde_json::from_str::<Direction>("\"UNDO\"").is_err());
         assert!(serde_json::from_str::<Direction>("\"undo\"").is_ok());
+    }
+
+    #[test]
+    fn launch_history_tracks_metadata_without_replacing_live_mix() {
+        let a=score().to_clips().unwrap();let mut b=a.clone();
+        let id=a.banks()[0].slots[0].as_ref().unwrap().id.clone();
+        let before=super::super::launch::LaunchSettings::default();let mut after=before.clone();
+        after.edit(&a,super::super::launch::Edit::Clip{occurrence_id:id,quantization:super::super::launch::ClipQuantization::None}).unwrap();
+        let mut history=History::default();
+        assert!(history.record_with_launch(&a,&a,&before,&after,"Launch quantization").unwrap());
+        b.legacy_mut().unwrap().tracks[0].gain=0.25;
+        assert_eq!(history.target(Direction::Undo).unwrap().materialize(&b).unwrap().tracks()[0].mixer().0,0.25);
+        assert_eq!(history.target_launch(Direction::Undo).unwrap(),before);
+        history.advance(Direction::Undo);
+        assert_eq!(history.target_launch(Direction::Redo).unwrap(),after);
     }
 
 }

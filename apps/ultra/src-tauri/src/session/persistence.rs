@@ -52,11 +52,16 @@ pub(super) fn save_document(path: &Path, session: &SavedSession, origin: &Path) 
 
 pub(super) fn serialize_saved(saved: &SavedSession) -> Result<Vec<u8>, String> {
     saved.validate_master()?;
+    saved.launch.validate(&saved.score)?;
+    if saved.wire != SaveWire::V6 && saved.launch != super::launch::LaunchSettings::default() {return Err("Launch settings require Alive session v6".into());}
     #[derive(serde::Serialize)]
     struct Envelope<'a> { format: &'static str, score: &'a Document, master: &'a MasterSettings }
+    #[derive(serde::Serialize)]
+    struct EnvelopeV6<'a> { format: &'static str, score: &'a Document, master: &'a MasterSettings, launch: &'a super::launch::LaunchSettings }
     let mut bytes = match saved.wire {
         SaveWire::LegacyScore if saved.master.gain == 1. => serde_json::to_vec_pretty(&saved.score),
         SaveWire::LegacyScore => return Err("Non-unity Master requires Alive session v5".into()),
+        SaveWire::V6 => serde_json::to_vec_pretty(&EnvelopeV6 {format:"alive-session-v6",score:&saved.score,master:&saved.master,launch:&saved.launch}),
         SaveWire::V5 => serde_json::to_vec_pretty(&Envelope {format:"alive-session-v5",score:&saved.score,master:&saved.master}),
     }.map_err(|e| e.to_string())?;
     bytes.push(b'\n');
@@ -93,18 +98,26 @@ pub(super) fn decode(text: &str, origin: &Path) -> Result<SavedSession, String> 
     if text.len() as u64 > MAX_BYTES { return Err("Session exceeds the 1 MiB limit".into()); }
     clips::reject_duplicates(text)?;
     let header: FormatHeader = serde_json::from_str(text).map_err(|e| format!("Invalid Alive session JSON: {e}"))?;
-    if header.format == "alive-session-v5" {
+    if header.format == "alive-session-v6" {
+        #[derive(serde::Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct Envelope { format:String, score:Box<serde_json::value::RawValue>, master:MasterSettings, launch:super::launch::LaunchSettings }
+        let envelope:Envelope=serde_json::from_str(text).map_err(|e|format!("Invalid Alive v6 session JSON: {e}"))?;
+        if envelope.format!="alive-session-v6" {return Err("Unsupported Alive session format".into());}
+        let saved=SavedSession{score:decode_score(envelope.score.get(),origin,false)?,master:envelope.master,launch:envelope.launch,wire:SaveWire::V6};
+        saved.validate_master()?;saved.launch.validate(&saved.score)?;Ok(saved)
+    } else if header.format == "alive-session-v5" {
         #[derive(serde::Deserialize)]
         #[serde(deny_unknown_fields)]
         struct Envelope { format: String, score: Box<serde_json::value::RawValue>, master: MasterSettings }
         let envelope: Envelope = serde_json::from_str(text).map_err(|e| format!("Invalid Alive v5 session JSON: {e}"))?;
         if envelope.format != "alive-session-v5" { return Err("Unsupported Alive session format".into()); }
         let score = decode_score(envelope.score.get(), origin, false)?;
-        let saved = SavedSession { score, master: envelope.master, wire: SaveWire::V5 };
+        let saved = SavedSession { score, master: envelope.master, launch:Default::default(), wire: SaveWire::V5 };
         saved.validate_master()?;
         Ok(saved)
     } else {
-        Ok(SavedSession {score:decode_score(text,origin,true)?,master:MasterSettings{gain:1.},wire:SaveWire::LegacyScore})
+        Ok(SavedSession {score:decode_score(text,origin,true)?,master:MasterSettings{gain:1.},launch:Default::default(),wire:SaveWire::LegacyScore})
     }
 }
 fn decode_score(text: &str, origin: &Path, allow_v1: bool) -> Result<Session, String> {

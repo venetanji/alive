@@ -78,7 +78,7 @@ impl Host {
         self.validate(&prepared)?;
         if prepared.saved.score.is_clips()||prepared.saved.score.is_workspaces(){return Ok(prepared);}
         let attempt=(||{let mut candidate=prepared.clone();candidate.saved.score=prepared.saved.score.to_clips()?;let document=candidate.saved.score.clone();prepare::compile_clips(&document,&mut candidate)?;self.admit(&candidate).map_err(|e|format!("{} (native reason {})",e.message,e.code))?;Ok::<_,String>(candidate)})();
-        match attempt {Ok(mut candidate)=>{candidate.notice=Some(match candidate.saved.wire {SaveWire::LegacyScore=>"Upgraded in memory; Save writes session v3",SaveWire::V5=>"Upgraded in memory; Save writes session v5 with a v3 score"}.into());Ok(candidate)},Err(reason)=>{prepared.notice=Some(format!("Legacy session - clip-bank conversion unavailable: {reason}"));Ok(prepared)}}
+        match attempt {Ok(mut candidate)=>{candidate.notice=Some(match candidate.saved.wire {SaveWire::LegacyScore=>"Upgraded in memory; Save writes session v3",SaveWire::V5=>"Upgraded in memory; Save writes session v5 with a v3 score",SaveWire::V6=>"Upgraded in memory; Save writes session v6 with launch settings"}.into());Ok(candidate)},Err(reason)=>{prepared.notice=Some(format!("Legacy session - clip-bank conversion unavailable: {reason}"));Ok(prepared)}}
     }
     pub fn view(&self) -> Result<View<'_>, String> {
         let p = self.prepared.as_ref().ok_or("Create or open an Alive session")?;

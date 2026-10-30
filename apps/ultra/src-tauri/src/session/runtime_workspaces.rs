@@ -9,7 +9,7 @@ pub enum Action {Launch{track_id:String,slot_id:String},Stop{track_id:String},Re
 #[serde(rename_all="camelCase")]
 pub struct RequestResult {
     pub kind:String,pub preparation_revision:String,pub request_serial:String,pub status:String,pub reason:u32,
-    pub track_id:Option<String>,pub slot_id:Option<String>,pub source_id:Option<String>,pub scene_slot:Option<usize>,pub target_frame:Option<String>,
+    pub quantization:Option<super::launch::Quantization>,pub track_id:Option<String>,pub slot_id:Option<String>,pub source_id:Option<String>,pub scene_slot:Option<usize>,pub target_frame:Option<String>,
     pub track_mask:u32,pub pending_mask:u32,pub applied_mask:u32,pub superseded_mask:u32,pub canceled_mask:u32,pub rejected_mask:u32,pub members:Vec<Member>,
 }
 #[derive(Clone,Serialize)]
@@ -60,7 +60,9 @@ impl Runtime {
         while self.requests.len()>=128 {if let Some(i)=self.requests.iter().position(|r|!matches!(r.status.as_str(),"queued"|"pending")){self.requests.remove(i);}else{return Err("128 workspace requests remain outstanding. Let audio advance before retrying.".into());}}
         *serial=serial.checked_add(1).ok_or("Request identity exhausted")?;
         request.request_serial=*serial;request.preparation_revision=host.preparation_revision;
-        let mut receipt=n::ReceiptV4::default();unsafe{n::alive_session_request_v4(&request,&mut receipt);}
+        result.quantization=(request.kind==n::V4_TRACK_ACTIONS).then(||p.saved.launch.effective(if result.kind=="launch"{result.slot_id.as_deref()}else{None}));
+        let mut receipt=n::ReceiptV4::default();
+        if let Some(q)=result.quantization {super::native_launch::submit_v4(&request,q,&mut receipt)?;}else{unsafe{n::alive_session_request_v4(&request,&mut receipt);}}
         result.preparation_revision=host.preparation_revision.to_string();result.request_serial=serial.to_string();result.observe(&receipt);self.requests.push(result.clone());Ok(result)
     }
 }
