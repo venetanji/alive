@@ -22,7 +22,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   function notice(text,error=false,owner=null){operationText=String(text);operationError=error;noticeOwner=owner;renderNotice();}
   function enqueue(work,background=false){const result=queue.then(work);queue=result.catch(error=>{if(!background)notice(error,true);});return result;}
   function generation(){return model.snapshot()?.generation;}
-  function command(name,args={}){return invoke(name,{...args,generation:generation(),...(['alive_transport','alive_clip_action','alive_workspace_action'].includes(name)?{preparationRevision:model.snapshot()?.preparationRevision}:{}),...(['alive_edit','alive_clip_edit','alive_enable_clips','alive_enable_workspaces','alive_workspace_edit','alive_workspace_track','alive_history','alive_apply','alive_discard','alive_file','alive_device'].includes(name)?{draftRevision:model.snapshot()?.draftRevision??0}:{})});}
+  function command(name,args={}){return invoke(name,{...args,generation:generation(),...(['alive_transport','alive_clip_action','alive_workspace_action','alive_launch_settings'].includes(name)?{preparationRevision:model.snapshot()?.preparationRevision}:{}),...(['alive_edit','alive_clip_edit','alive_enable_clips','alive_enable_workspaces','alive_workspace_edit','alive_workspace_track','alive_history','alive_launch_settings','alive_apply','alive_discard','alive_file','alive_device'].includes(name)?{draftRevision:model.snapshot()?.draftRevision??0}:{})});}
   function commitFocused(){if(doc.activeElement?.matches('input'))doc.activeElement.blur();}
   const guard=work=>(...args)=>{try{Promise.resolve(work(...args)).catch(error=>notice(error,true));}catch(error){notice(error,true);}};
   const browser=mountBrowser({doc,root:$('browser-library'),onNavigate:workspace.preserveFocused,onLoad:loadBrowserEntry,onSource:openBrowserSource,onCatalog:()=>invoke?invoke('alive_browser_catalog'):Promise.reject('Open the native Alive app to browse bundled devices')});
@@ -40,6 +40,43 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   function decorate(button,kind,label,{only=false}={}){button.replaceChildren(icon(kind),make('span',only?'sr-only':'',label));button.title=button.getAttribute('aria-label')??label;}
   for(const[id,kind]of Object.entries({'toggle-browser':'browser','view-session':'session','view-arrangement':'arrangement','detail-clip':'clip','detail-devices':'devices','toggle-detail':'detail','add-track':'instrument','add-effect':'effect','new':'file','open':'file','save':'save','save-as':'save','edit-device':'edit','undo':'undo','redo':'redo'}))decorate($(id),kind,$(id).textContent);
   for(const[id,kind]of [['start','play'],['stop','stop']])decorate($(id),kind,id==='start'?'Start':'Stop',{only:true});
+  const quantizations=[['none','None'],['thirtySecond','1/32'],['sixteenth','1/16'],['eighth','1/8'],['quarter','1/4'],['half','1/2'],['bar1','1 Bar'],['bar2','2 Bars'],['bar4','4 Bars'],['bar8','8 Bars']];
+  const gridLabel=value=>quantizations.find(([key])=>key===value)?.[1]??'1 Bar';
+  const effectiveGrid=id=>model.snapshot()?.launch?.clipQuantization?.find(o=>o.occurrenceId===id&&o.quantization!=='global')?.quantization??model.snapshot()?.launch?.globalQuantization??'bar1';
+  for(const id of ['launch-quantization','clip-quantization']) {
+    const select=$(id),options=id==='clip-quantization'?[['global','Global'],...quantizations]:quantizations;
+    for(const[value,label]of options){const option=make('option','',label);option.value=value;select.append(option);}
+    select.addEventListener('change',guard(()=>launchSetting(id==='launch-quantization'?{kind:'global',quantization:select.value}:{kind:'clip',occurrenceId:selectedClip()?.id,quantization:select.value})));
+  }
+  function launchSetting(edit){
+    const origin=generation(),preparation=model.snapshot()?.preparationRevision;
+    return enqueue(async()=>{
+      if(origin!==generation()||preparation!==model.snapshot()?.preparationRevision)throw Error('The launch scope changed. Refresh and try again.');
+      try{model.applied(await command('alive_launch_settings',{edit}));}catch(error){await refresh();throw error;}
+      render();
+    });
+  }
+  function renderLaunchSettings(snapshot){
+    const available=!!snapshot.capabilities?.launchQuantization,global=$('launch-quantization'),clip=$('clip-quantization'),slot=selectedClip();
+    const reason=snapshot.capabilities?.launchUnavailableReason??'Native launch quantization is unavailable; saved settings are retained.';
+    const frames=snapshot.capabilities?.launchWindowFrames??1024;
+    const help=`For grids other than 1 Bar, at most one batch is accepted per ${frames} audio frames (about ${(frames/48).toFixed(1)} ms at 48 kHz), sharing the Start/Seek allowance. Refused requests are not retried automatically. Queued requests keep their captured grid and target.`;
+    global.disabled=false;
+    global.value=snapshot.launch?.globalQuantization??'bar1';
+    for(const option of global.children)option.disabled=!available&&option.value!=='bar1';
+    global.title=available?`Quantization for new launches, scenes, track Stop and Return. ${help}`:`${reason} Select 1 Bar to change the global setting; clip overrides stay saved.`;
+    $('launch-help').textContent=`${available?'':`${reason} Select 1 Bar to recover supported launches; change each clip override explicitly. `}${help}`;
+    $('clip-launch-settings').hidden=!slot;
+    if(!slot)return;
+    clip.disabled=false;
+    for(const option of clip.children)option.disabled=!available&&option.value!=='bar1'&&!(option.value==='global'&&global.value==='bar1');
+    clip.value=snapshot.launch?.clipQuantization?.find(o=>o.occurrenceId===slot.id)?.quantization??'global';
+    clip.title=available?'Changes affect future launches.':`${reason} Select 1 Bar, or Global when the global setting is 1 Bar.`;
+    const runtime=snapshot.runtime?.tracks.find(t=>t.trackId===model.document().tracks[selected].id);
+    const pending=snapshot.runtime?.requests.find(r=>r.requestSerial===runtime?.pendingSerial&&r.preparationRevision===snapshot.preparationRevision);
+    $('clip-launch-status').textContent=`Effective: ${gridLabel(effectiveGrid(slot.id))}. ${pending?`Queued ${gridLabel(pending.quantization)}${pending.targetFrame?` at frame ${pending.targetFrame}`:''}. `:''}${available?'Changes affect future launches.':reason}`;
+    $('clip-launch-status').title=$('clip-launch-status').textContent;
+  }
   function meter(element,left,right){const bars=element.children,axis=element.classList.contains('vertical-meter')?'height':'width';bars[0].style[axis]=`${Math.min(1,left)*100}%`;bars[1].style[axis]=`${Math.min(1,right)*100}%`;}
   function peak(left,right){return`${left.toFixed(3)} / ${right.toFixed(3)}`;}
   let masterIntent=null,masterReceipt=null,masterStatus='',masterError=false,masterGeneration=null,masterPendingReset=false;
@@ -184,7 +221,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   function sceneText(result,snapshot){
     const reason=({7:'command queue full',8:'receipt table busy',12:'optional work limit',13:'Stop canceled',14:'end canceled',15:'feature disabled',16:'runtime invariant',18:'replaced request'})[result.reason]??`native reason ${result.reason}`;
     const members=(result.members??[]).map(member=>`${snapshot.document.tracks.find(t=>t.id===member.trackId)?.name??member.trackId}: ${member.status}${member.action==='stop'?' (track Stop)':''}`).join(' / ');
-    return `Scene ${result.sceneSlot+1} request ${result.requestSerial} ${result.status}${result.targetFrame?` at frame ${result.targetFrame}`:''}. ${members}${result.reason?`. Request summary: ${reason}.`:''}${[7,8,12].includes(result.reason)?' Let audio advance before an explicit retry.':''}`;
+    return `Scene ${result.sceneSlot+1} request ${result.requestSerial} ${result.status}${result.quantization?` (${gridLabel(result.quantization)})`:""}${result.targetFrame?` at frame ${result.targetFrame}`:''}. ${members}${result.reason?`. Request summary: ${reason}.`:''}${[7,8,12].includes(result.reason)?' Let audio advance before an explicit retry.':''}`;
   }
   function launchScene(slot){
     const intent={generation:generation(),preparationRevision:model.snapshot().preparationRevision,slot};
@@ -226,7 +263,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     const clip=preparedSlots(snapshot).find(c=>slotIdentity(c)===(result.slotId??result.clipId))?.name;
     const reason=({7:'command queue full',8:'receipt table busy',12:'optional work limit',5:'stale preparation',9:'empty slot',15:'feature disabled'})[result.reason]??`native reason ${result.reason}`;
     const members=isWorkspace()?(result.members??[]).map(m=>`${snapshot.document.tracks.find(t=>t.id===m.trackId)?.name??m.trackId}: ${m.status}`).join(' / '):'';
-    return `request ${result.requestSerial} ${result.status}${clip?` for ${clip}`:''}${members?` / ${members}`:''}${result.reason?` (${reason}); prior playback or pending action is retained. Let audio advance before an explicit retry.`:''}`;
+    return `request ${result.requestSerial} ${result.status}${result.quantization?` (${gridLabel(result.quantization)})`:""}${result.targetFrame?` at frame ${result.targetFrame}`:""}${clip?` for ${clip}`:''}${members?` / ${members}`:''}${result.reason?` (${reason}); prior playback or pending action is retained. Let audio advance before an explicit retry.`:''}`;
   }
   function observedRequest(result){return model.snapshot().runtime?.requests.find(r=>r.preparationRevision===result.preparationRevision&&r.requestSerial===result.requestSerial)??result;}
   function renderTransportRequest(snapshot){
@@ -315,7 +352,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       const authority=observation?.authority==='session'?'Session':observation?.authority==='arrangement'?'Arrangement':'Unavailable';
       if(v.state){const deleted=activeSlot&&!current?.slots.some(s=>s?.id===activeSlot.slotId),last=snapshot.runtime?.requests.filter(r=>r.members?.some(m=>m.trackId===v.trackId)).at(-1);v.state.textContent=`${authority}: ${active?`${snapshot.state.playing?'Playing':'Cued'} ${activeSlot?.name??active.name}${deleted?' (deleted in draft)':''}`:authority==='Session'?'Session silence':authority==='Arrangement'?'Arrangement gap':'observation unavailable'}${observation?.pendingAction?` / pending ${observation.pendingAction} (${observation.pendingAuthority}) at frame ${observation.pendingFrame}`:''}${last?` / ${requestText(last,snapshot)}`:''}`;v.summary.textContent=authority;v.summary.title=v.state.textContent;continue;}
       const draft=current?.slots[v.slot],installed=prepared?.slots.find(s=>s.slotId===v.clipId),playing=!!v.clipId&&observation?.activeSlotId===v.clipId,pending=!!v.clipId&&observation?.pendingSlotId===v.clipId;
-      v.choose.setAttribute('aria-pressed',String(track.id===v.trackId&&!sourceSelection&&slotOf(track)===v.slot));v.launch.disabled=!installed;v.launch.title=installed?'Launch the prepared slot at the next native bar boundary':'Apply while stopped to launch this slot';
+      v.choose.setAttribute('aria-pressed',String(track.id===v.trackId&&!sourceSelection&&slotOf(track)===v.slot));v.launch.disabled=!installed;v.launch.title=installed?`Launch the prepared slot: ${gridLabel(effectiveGrid(v.slotId??v.clipId))}`:'Apply while stopped to launch this slot';
       for(const [name,on] of Object.entries({occupied:!!draft,empty:!draft,prepared:!!installed,'draft-only':!!draft&&!installed,selected:track.id===v.trackId&&!sourceSelection&&slotOf(track)===v.slot,playing:playing&&!!snapshot.state.playing,cued:playing&&!snapshot.state.playing,pending}))v.cell.classList.toggle(name,on);
       v.status.textContent=[playing?`${snapshot.state.playing?'Playing':'Cued'} ${installed?.name}`:'',pending?'Pending launch':''].filter(Boolean).join(' / ');
     }
@@ -357,7 +394,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     for(const v of slotViews){
       if(v.state){const r=snapshot.runtime?.tracks.find(t=>t.trackId===v.trackId),name=snapshot.preparedClips?.find(c=>c.clipId===r?.activeClipId)?.name,requests=snapshot.runtime?.requests.filter(q=>q.trackId===v.trackId),last=requests?.at(-1),deleted=r?.activeClipId&&!document.tracks.find(t=>t.id===v.trackId)?.slots.some(c=>c?.id===r.activeClipId);v.state.textContent=`${r?.activeClipId?`${snapshot.state.playing?'Playing':'Cued'} ${name}${deleted?' (deleted in draft)':''}`:'Stopped'}${last?` / ${requestText(last,snapshot)}`:''}${r?.pendingAction?` / pending ${r.pendingAction} at frame ${r.pendingFrame}`:''}`;v.summary.textContent=last?.status==='rejected'?'Request rejected':r?.pendingAction?'Pending action':r?.activeClipId?`${snapshot.state.playing?'Playing':'Cued'} ${name}`:'Stopped';v.summary.title=v.state.textContent;continue;}
       const t=document.tracks.find(t=>t.id===v.trackId),c=t?.slots[v.slot],runtime=snapshot.runtime?.tracks.find(t=>t.trackId===v.trackId),prepared=snapshot.preparedClips?.find(c=>c.clipId===v.clipId),active=runtime?.activeClipId===v.clipId&&!!v.clipId,pending=runtime?.pendingClipId===v.clipId&&!!v.clipId;
-      v.choose.setAttribute('aria-pressed',String(t?.id===track.id&&v.slot===slotOf(track)));v.cell.classList.toggle('selected',t?.id===track.id&&v.slot===slotOf(track));v.launch.disabled=!prepared;v.launch.title=prepared?(model.pending()?'Launch prepared version':'Launch at the next native bar boundary'):'Apply while stopped to launch';
+      v.choose.setAttribute('aria-pressed',String(t?.id===track.id&&v.slot===slotOf(track)));v.cell.classList.toggle('selected',t?.id===track.id&&v.slot===slotOf(track));v.launch.disabled=!prepared;v.launch.title=prepared?(model.pending()?'Launch prepared version':`Launch: ${gridLabel(effectiveGrid(v.clipId))}`):'Apply while stopped to launch';
       for(const[state,on]of Object.entries({occupied:!!c,empty:!c,prepared:!!prepared,'draft-only':!!c&&!prepared,playing:active&&!!snapshot.state.playing,cued:active&&!snapshot.state.playing,pending,'saved-default':!!c&&t.defaultClipId===c.id}))v.cell.classList.toggle(state,on);
       const activeName=snapshot.preparedClips?.find(c=>c.clipId===runtime?.activeClipId)?.name;
       v.status.textContent=[c&&t.defaultClipId===c.id?'Saved default':'',active?`${snapshot.state.playing?'Playing':'Cued'} ${prepared?.name??''}`:'',pending?'Pending switch':'',v.slot===0&&runtime?.pendingAction==='stop'?'Pending track Stop':'',v.slot===0&&runtime?.activeClipId&&!t.slots.some(c=>c?.id===runtime.activeClipId)?`${snapshot.state.playing?'Playing':'Cued'} prepared ${activeName} (deleted in draft)`:''].filter(Boolean).join(' / ');
@@ -589,7 +626,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     const snapshot=model.snapshot(),document=editorDocument();if(!snapshot||!document)return;
     if(masterGeneration!==snapshot.generation){const canceled=masterGeneration!==null&&(!!masterIntent||masterPendingReset);masterGeneration=snapshot.generation;masterIntent=masterReceipt=null;masterPendingReset=false;masterStatus=canceled?'Master pending intent canceled on session change.':'';masterError=false;masterProducer.setGeneration(snapshot.generation);if(canceled)notice(masterStatus,false,'master');else if(noticeOwner==='master')notice('Master state refreshed for this session.',false,'master');}
     renderMaster();renderTransportRequest(snapshot);
-    selected=Math.min(selected,document.tracks.length-1);
+    selected=Math.min(selected,document.tracks.length-1);renderLaunchSettings(snapshot);
     if(!chainDevices().some(d=>d.instanceId===selectedInstance))selectedInstance=chainDevices()[0]?.instanceId??null;
     $('edit-device').disabled=!selectedInstance;$('session-title').textContent=document.title;$('dirty').textContent=snapshot.dirty||model.pending()?'Modified':'';doc.title=`${snapshot.dirty||model.pending()?'* ':''}${document.title} - Alive`;
     for(const[id,value]of [['tempo',document.tempo],['length',model.document().lengthBeats]])if(doc.activeElement!==$(id)&&!workspace.preserves($(id)))$(id).value=value;

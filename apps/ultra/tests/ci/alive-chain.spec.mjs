@@ -88,7 +88,7 @@ test('browser device double-click requests one validated load and reports native
 });
 
 // Browser geometry and input coverage only. The native desktop journey qualifies hosting/audio.
-async function openSession(page,longNames=false,clipBank=false,trackCount=2,workspaces=false){
+async function openSession(page,longNames=false,clipBank=false,trackCount=2,workspaces=false,launchQuantization=false){
   const document=JSON.parse(readFileSync(new URL('../../../alive/examples/two-instruments.alive',import.meta.url))),patch=JSON.parse(readFileSync(new URL('../../examples/subtractive.ultra',import.meta.url)));
   document.format='alive-session-v2';const deviceInstances={},runtime=[];
   while(document.tracks.length<trackCount){const track=structuredClone(document.tracks[0]);track.id=`track-${document.tracks.length+1}`;track.name=`Track ${document.tracks.length+1}`;document.tracks.push(track);}
@@ -116,6 +116,7 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2,work
     document.tracks.forEach((t,i)=>{const clip=t.slots[0],sourceId=`source-${t.id}`;document.sources.push({kind:'midi',id:sourceId,trackId:t.id,name:clip.name,lengthBeats:clip.lengthBeats,notes:clip.notes,automation:clip.automation});t.color='#c77b61';t.chain={kind:'midi',instrument:t.device};delete t.device;delete t.defaultClipId;t.slots[0]={id:clip.id,name:clip.name,sourceId,sourceOffset:{kind:'beats',value:0},loopEnabled:true};snapshot.trackChains.push({trackId:t.id,kind:'midi',instrumentId:t.chain.instrument.instanceId,effectIds:t.effects.map(e=>e.instanceId)});snapshot.preparedWorkspaces.sources.push({trackId:t.id,sourceId,kind:'midi',name:clip.name,lengthFrames:'205714'});snapshot.preparedWorkspaces.slots.push({trackId:t.id,slotId:clip.id,slot:0,sourceId,name:clip.name,sourceOffsetFrames:'0',loopEnabled:true});});
     snapshot.runtime.tracks=document.tracks.map(t=>({trackId:t.id,authority:'arrangement',activeSourceId:null,activePlacementId:null,activeSlotId:null,phase:null,epoch:'1',pendingAction:null,pendingAuthority:null,pendingSlotId:null,pendingSerial:null,pendingFrame:null}));
   }
+  if(launchQuantization){snapshot.capabilities.launchQuantization=true;snapshot.capabilities.launchWindowFrames=1024;snapshot.launch={globalQuantization:'bar1',clipQuantization:[]};}
   await page.addInitScript(snapshot=>{
     window.sessionSnapshot=snapshot;
     window.removeTrack=async trackId=>{
@@ -142,6 +143,7 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2,work
         undo.push(structuredClone(snapshot.draft??snapshot.document));redo.length=0;snapshot.draft=draft;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return{snapshot:structuredClone(snapshot),affected};
       }
       if(name==='alive_master'||name==='alive_master_reset_clip'){window.calls.push({name,args});if(window.masterGate)return window.masterGate(name,args);if(args.generation!==snapshot.generation)throw {code:'STALE_GENERATION',message:'stale generation'};const serial=String(BigInt(snapshot.master.acceptedSerial)+1n);snapshot.master.acceptedSerial=serial;snapshot.master.observation.appliedSerial=serial;if(name==='alive_master'){snapshot.master.gain=args.gain;snapshot.master.observation.targetGain=args.gain;snapshot.master.observation.currentGain=args.gain;return {generation:args.generation,acceptedGain:args.gain,acceptedSerial:serial,changed:true};}snapshot.master.observation.clipMask=0;return {generation:args.generation,acceptedSerial:serial};}
+      if(name==='alive_launch_settings'){window.calls.push({name,args});if(args.generation!==snapshot.generation||args.preparationRevision!==snapshot.preparationRevision||args.draftRevision!==snapshot.draftRevision)throw Error('Stale launch settings');if(args.edit.kind==='global')snapshot.launch.globalQuantization=args.edit.quantization;else{snapshot.launch.clipQuantization=snapshot.launch.clipQuantization.filter(o=>o.occurrenceId!==args.edit.occurrenceId);if(args.edit.quantization!=='global')snapshot.launch.clipQuantization.push({occurrenceId:args.edit.occurrenceId,quantization:args.edit.quantization});}snapshot.draftRevision++;snapshot.snapshotSequence=String(BigInt(snapshot.snapshotSequence)+1n);snapshot.dirty=true;return structuredClone(snapshot);}
       if(name==='alive_mixer'){window.calls.push({name,args});for(const document of [snapshot.document,snapshot.draft])if(document)Object.assign(document.tracks[args.track],{gain:args.gain,mute:args.mute,solo:args.solo});snapshot.dirty=true;return;}
       if(name==='alive_clip_edit'){window.calls.push({name,args});const op=args.operation;if(op.kind!=='create')throw Error('Fixture supports create only');snapshot.draft??=structuredClone(snapshot.document);const track=snapshot.draft.tracks.find(t=>t.id===op.trackId);if(track.slots[op.slot])throw Error('Slot already occupied');track.slots[op.slot]={id:`new-${track.id}-${op.slot}`,name:'New clip',lengthBeats:8,notes:[],automation:[]};snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return{snapshot:structuredClone(snapshot),affected:{trackId:track.id,slot:op.slot}};}
       return previous(name,args);
@@ -656,4 +658,24 @@ test('pointer-derived track gain remains readable in both mixer and Arrangement 
   const slider=page.getByLabel('Pulse gain fader',{exact:true}),number=page.getByLabel('Pulse gain',{exact:true});const box=await slider.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height*.77);await page.mouse.down();await page.mouse.move(box.x+box.width/2,box.y+box.height*.68);await page.mouse.up();await page.locator('#view-arrangement').click();
   const gain=page.getByLabel('Pulse Arrangement gain',{exact:true}),text=await gain.inputValue(),actual=await page.evaluate(()=>window.sessionSnapshot.document.tracks[0].gain);expect(text.length).toBeLessThanOrEqual(5);expect(Math.abs(Number(text)-actual)).toBeLessThanOrEqual(.0005);
   await page.locator('#view-session').click();const shown=await number.inputValue();expect(shown.length).toBeLessThanOrEqual(5);expect(Math.abs(Number(shown)-actual)).toBeLessThanOrEqual(.0005);
+});
+
+for(const size of [{width:1440,height:900},{width:1280,height:800},{width:1024,height:768},{width:800,height:600}])test(`launch quantization remains reachable in both workspaces at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page,false,true,2,true,true);
+  const global=page.getByLabel('Launch Quantization',{exact:true}),clip=page.getByLabel('Clip Launch Quantization',{exact:true});
+  await expect(global).toHaveValue('bar1');await expect(clip).toHaveValue('global');
+  await global.selectOption('eighth');await clip.selectOption('none');
+  await expect(page.getByLabel('Clip launch status',{exact:true})).toContainText('Effective: None');
+  const calls=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_launch_settings'));
+  expect(calls).toHaveLength(2);expect(calls[1].args.edit.occurrenceId).toBe(await page.evaluate(()=>window.sessionSnapshot.document.tracks[0].slots[0].id));
+  await global.focus();await page.keyboard.press('Home');await page.keyboard.press('ArrowDown');await page.keyboard.press('Tab');
+  await expect(page.locator('#session-workspace')).toBeVisible();
+  for(const view of ['session','arrangement']) {
+    await page.locator(`#view-${view}`).click();await expect(global).toBeInViewport();await expect(page.locator('#stop')).toBeInViewport();
+    await expect(page.locator(`#master-select-${view}`)).toBeInViewport();
+    const bounds=await page.evaluate(()=>({width:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight,selector:document.querySelector('#launch-quantization').getBoundingClientRect().toJSON(),stop:document.querySelector('#stop').getBoundingClientRect().toJSON()}));
+    expect(bounds.width).toBeLessThanOrEqual(size.width);expect(bounds.height).toBeLessThanOrEqual(size.height);expect(bounds.selector.width).toBeGreaterThanOrEqual(64);expect(bounds.selector.left).toBeGreaterThan(bounds.stop.right);
+    await page.screenshot({path:testInfo.outputPath(`launch-${view}-${size.width}x${size.height}.png`)});
+  }
+  expect(await page.evaluate(()=>window.calls.some(c=>['alive_transport','alive_workspace_action','alive_clip_action'].includes(c.name)))).toBe(false);
 });

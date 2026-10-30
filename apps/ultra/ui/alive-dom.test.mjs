@@ -958,3 +958,53 @@ for(const [label,commandName] of [
   else{assert.equal(calls.length,1);assert.equal(calls[0].args.generation,1);if(commandName==='alive_bypass'){assert.deepEqual(calls[0].args,{instanceId:'effect-0',bypassed:true,generation:1});assert.equal(native.snapshot.document.tracks[0].effects[0].bypassed,true);assert.equal(native.snapshot.state.playing,1);}if(commandName==='alive_device'){assert.equal(calls[0].args.trackId,'track-1');assert.equal(native.snapshot.document.title,'Device mutation');}if(commandName==='alive_editor')assert.equal(calls[0].args.instanceId,initial.document.tracks[0].device.instanceId);}
   view.dispose();
 });
+
+test('launch selectors save fenced settings and preserve captured native target',async()=>{
+  const initial=clipState();initial.capabilities={...initial.capabilities,launchQuantization:true,launchWindowFrames:1024};
+  initial.launch={globalQuantization:'bar1',clipQuantization:[]};
+  const clipId=initial.document.tracks[0].slots[0].id;
+  initial.runtime.requests=[{preparationRevision:'1',requestSerial:'9',status:'pending',trackId:initial.document.tracks[0].id,clipId,quantization:'sixteenth',targetFrame:'6000',reason:0}];
+  initial.runtime.tracks[0].pendingSerial='9';initial.runtime.tracks[0].pendingFrame='6000';
+  const page=dom('./alive.html'),native=backend(initial);
+  const invoke=async(name,args)=>{if(name!=='alive_launch_settings')return native.invoke(name,args);native.calls.push({name,args});
+    assert.equal(args.preparationRevision,'1');assert.equal(args.draftRevision,native.snapshot.draftRevision);
+    if(args.edit.kind==='global')native.snapshot.launch.globalQuantization=args.edit.quantization;
+    else native.snapshot.launch.clipQuantization=[{occurrenceId:args.edit.occurrenceId,quantization:args.edit.quantization}];
+    native.snapshot.draftRevision++;native.snapshot.snapshotSequence=String(Number(native.snapshot.snapshotSequence)+1);return structuredClone(native.snapshot);};
+  const view=mountAlive({...page,invoke});await settle();
+  assert.ok(page.ids.get('launch-quantization'),'global selector exists');
+  const global=page.ids.get('launch-quantization'),clip=page.ids.get('clip-quantization');
+  assert.equal(global.value,'bar1');assert.equal(global.children.length,10);assert.equal(clip.value,'global');
+  global.value='eighth';await global.fire('change');assert.equal(native.snapshot.launch.globalQuantization,'eighth');
+  clip.value='none';await clip.fire('change');assert.equal(native.snapshot.launch.clipQuantization[0].occurrenceId,clipId);
+  assert.match(page.ids.get('clip-launch-status').textContent,/1\/16.*6000/);
+  assert.equal(native.calls.filter(c=>['alive_transport','alive_clip_action','alive_workspace_action'].includes(c.name)).length,0);
+  await page.find('Select Pulse slot 2').fire('click');assert.equal(page.ids.get('clip-launch-settings').hidden,true);view.dispose();
+});
+
+test('launch controls preserve saved intent and explain unavailable native capability',async()=>{
+  const initial=clipState();initial.launch={globalQuantization:'bar4',clipQuantization:[{occurrenceId:initial.document.tracks[0].slots[0].id,quantization:'sixteenth'}]};
+  initial.capabilities={...initial.capabilities,launchQuantization:false,launchUnavailableReason:'This preparation exceeds quantized launch work limits',launchWindowFrames:1024};
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:async(name,args)=>{
+    if(name!=='alive_launch_settings')return native.invoke(name,args);
+    native.calls.push({name,args});if(args.edit.kind==='global')native.snapshot.launch.globalQuantization=args.edit.quantization;
+    else native.snapshot.launch.clipQuantization=[];
+    native.snapshot.draftRevision++;native.snapshot.snapshotSequence=String(Number(native.snapshot.snapshotSequence)+1);return structuredClone(native.snapshot);
+  }});await settle();
+  assert.ok(page.ids.get('launch-quantization'));assert.equal(page.ids.get('launch-quantization').value,'bar4');
+  const global=page.ids.get('launch-quantization'),clip=page.ids.get('clip-quantization');
+  assert.equal(global.disabled,false);assert.match(global.title,/exceeds.*work limits/i);
+  assert.equal(global.children.find(o=>o.value==='sixteenth').disabled,true);assert.equal(global.children.find(o=>o.value==='bar1').disabled,false);
+  assert.equal(clip.children.find(o=>o.value==='global').disabled,true);
+  assert.match(page.ids.get('launch-help').textContent,/1024.*21\.3.*Start\/Seek/);
+  global.value='bar1';await global.fire('change');assert.equal(clip.value,'sixteenth');assert.equal(clip.children.find(o=>o.value==='global').disabled,false);
+  clip.value='global';await clip.fire('change');assert.match(page.ids.get('clip-launch-status').textContent,/Effective: 1 Bar/);
+  assert.equal(native.calls.filter(c=>c.name==='alive_launch_settings').length,2);view.dispose();
+});
+
+test('focused launch selector restores accepted intent after refusal and generation change',async()=>{
+  const initial=clipState();initial.capabilities={...initial.capabilities,launchQuantization:true};initial.launch={globalQuantization:'bar1',clipQuantization:[]};
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:async(name,args)=>{if(name==='alive_launch_settings')throw Error('Prepared launch scope changed');return native.invoke(name,args);}});await settle();
+  const select=page.ids.get('launch-quantization');select.focus();select.value='eighth';await select.fire('change');assert.equal(select.value,'bar1');
+  native.snapshot.generation++;native.snapshot.snapshotSequence='2';native.snapshot.launch.globalQuantization='bar4';await view.refresh();assert.equal(select.value,'bar4');view.dispose();
+});
