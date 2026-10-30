@@ -1,0 +1,63 @@
+{
+  "base": "dd574205f0dc151d6c89df31f55d91cad34d14d1",
+  "product_head": "adaf6bc35ac34a977347021d570b2387e8a51cbf",
+  "verification_head": "b71a2b659e3a6c7391d16b1df833b9f2fdfeaecb",
+  "changed_source_sha256": {
+    "apps/alive/README.md": "2726b56ae3fb8cce6acdd4e0f77cabc54f7c10e294675127f53055347196c76c",
+    "apps/alive/examples/quantized-midi.alive": "6955b61ff1ec81a8e71d066db087f6a897519f1e93a521ab25ec1aed32278de8",
+    "apps/ultra/src-tauri/native/alive-launch-v1.h": "2aa6dfd576fb80c9858396bbd119a3886370f17844e6add61bc808bf8ae253ea",
+    "apps/ultra/src-tauri/native/alive_launch_v1_policy.md": "10e21053600a2443302826e0646bf5f180868900940f0969e98b7c0686cd0b0b",
+    "apps/ultra/src-tauri/native/alive_session.hpp": "8eab8edb1e33011ca978b5d9668624fd1ad52bf8d40b0e1ed7467f0411a701f7",
+    "apps/ultra/src-tauri/native/alive_session_clips.hpp": "14d0b17540be0e3d16ef658b8c324188e59050d249d64794290b949c3a5f6f32",
+    "apps/ultra/src-tauri/native/alive_session_launch.hpp": "b83c170c8d3c6125a1976a79229513bc86283ba0bc42ba63903bee1c8bac8956",
+    "apps/ultra/src-tauri/native/alive_session_workspace_envelope.hpp": "b310f96d55d787876e3fedb6ad328e66a59bb283178b32f79df34c3f87a3ddd5",
+    "apps/ultra/src-tauri/native/alive_session_workspaces.hpp": "b5a94f329cc8a0bf995eaf258fc9fcbb6758a84f3ad164fb1ea2cfb9975916b1",
+    "apps/ultra/src-tauri/native/backend.cpp": "e1694da8e1570671ca80530e0a2a4f7a20f97cc7e6f71a588a3b255676d8c495",
+    "apps/ultra/src-tauri/src/session/desktop.rs": "92221acfcad35b67da44bed4c1c84933e89deca1eb954fde921657c72b2f55e8",
+    "apps/ultra/src-tauri/src/session/history.rs": "463fb470b4717b31202d2b62435020f9244cc34572b0c3a493abffcb6a049802",
+    "apps/ultra/src-tauri/src/session/host.rs": "71b006b860b759a5bc5788810c0ca5c7389d27a13907b07376201e88712e068e",
+    "apps/ultra/src-tauri/src/session/launch.rs": "4ac3b8cb37fcfa92a3990ef056505d7b7449453abe170f235ac37e60316cbe1b",
+    "apps/ultra/src-tauri/src/session/master.rs": "e87ff5b10e3c0e2be20842b6029d3295f12a98ad5ca097ffd974562fcedd1eef",
+    "apps/ultra/src-tauri/src/session/mod.rs": "9a52dee20dc380930c1553e70b84ee75fb9dc1b2722620e67b2e3b3386e3da94",
+    "apps/ultra/src-tauri/src/session/native_launch.rs": "55280a423fa1c0d7876caeda09cfbbfe12c384d3755b08743cc521192b1ae888",
+    "apps/ultra/src-tauri/src/session/native_master.rs": "cb7ebd947dd26bdb6e22f4c8971298470c79ead00136667d0250b974349afa68",
+    "apps/ultra/src-tauri/src/session/persistence.rs": "7cb3c1bf939f87df2541184b359c381aabd8e43a41f1bba69860c02d427c870e",
+    "apps/ultra/src-tauri/src/session/prepare.rs": "08dfce6c604d67352b2a900faf20e2c8e98be98f8581422e79bdbf8ae6a69573",
+    "apps/ultra/src-tauri/src/session/runtime.rs": "51100a81eb1efb3bada67c69104215a87d12ce13a59a904253725aba5b171685",
+    "apps/ultra/src-tauri/src/session/runtime_workspaces.rs": "8ec287fb02a5f8b5edd6428dfbc381319be581cfc42b78353eb511df31eed03e",
+    "apps/ultra/src-tauri/src/session/tests.rs": "b562c39e24b9ac73011841ae066aa745e9533c937b2ef993aae8608441b1151a",
+    "apps/ultra/tests/alive_session_envelope_test.cpp": "e5d234c216ac9ccf324dd89717eb90e164474090cd5a73aaf8d4f81a5e4d6717",
+    "apps/ultra/tests/alive_session_launch_target_test.cpp": "6179d5b0414118ea0751b6d617dbeef74f5b279ed764002718a8b69bd9cb1d03",
+    "apps/ultra/tests/alive_session_launch_test.cpp": "7a886895462be066075d70784d050848991d1cf813087fa3298dd1141195020f",
+    "apps/ultra/tests/alive_session_workspace_envelope_test.cpp": "681f47eb7c01e08fe8a976ffddb76c28a11318f8134dbf7cf53f44b0c33ccc73",
+    "apps/ultra/tests/check_alive_desktop.py": "bf65891ddce178c980bdd6bb3829e22e66c01aaf642fc79d8e4c38d224edffe6",
+    "apps/ultra/tests/check_alive_launch_desktop.py": "baf0ccde8d0066f4c8e22ce6685cf29859bba3a3d3cb4b06528d47e5b2fd6dca",
+    "apps/ultra/tests/ci/alive-chain.spec.mjs": "c8754c2779560a57ad27f348fb7582ab4adb52d8aac3ba8213d1e9128a083617",
+    "apps/ultra/tests/ci/check-native.sh": "48a38be2cc9753a238e5a71067c67bc7060f41ed99a8102ed59b3aa64e5c8dd6",
+    "apps/ultra/tests/stage_alive_session.py": "c92fec378b7c9a84093def16ee13dfc675b8360e34d8ab1aa142ee2803e93841",
+    "apps/ultra/ui/alive-dom.test.mjs": "40007ad390a66323b24bd2a9314112d4ee475266be4516738e7af38634a5362a",
+    "apps/ultra/ui/alive-shell.css": "23300394677bbd14b726ffc7d3691bef9021f4767a944d7de921e3b50d08c76f",
+    "apps/ultra/ui/alive.html": "6378a08424cf2f328afcb56ed64c9400285b779a15e5139b71e50f7c910271ab",
+    "apps/ultra/ui/alive.mjs": "1d946f9d0d9880838ac359ea10e8a44202edceca64690e933f3ca32feb638b98",
+    "docs/superpowers/plans/2026-10-31-alive-launch-quantization.md": "1a09ec5466057f4728da0e82d3d213fc9123ed6b818daf0a71d7bf91d26b648e"
+  },
+  "local_build_inputs_and_artifacts": {
+    "/tmp/alive-launch-quantization/libultra_native.so": {
+      "sha256": "8a3b0ed0f75a59b76d6a6662e9a9c0ea0fb183618f64027c0894c25ebf42083d",
+      "bytes": 13495216
+    },
+    "/tmp/alive-launch-quantization/alive": {
+      "sha256": "1df2b79a57a94010b3515eac298603fd75bcc75674726d4d9b830c7ee8c00769",
+      "bytes": 278715200
+    },
+    "/tmp/alive-launch-quantization/ultra": {
+      "sha256": "6abdc086f9afb313991e7f65b4bfb23019b5c4b0b7197db3fcc6960753a7875c",
+      "bytes": 289334112
+    },
+    "/home/venetanji/Work/alive/apps/ultra/build/core/libultra_core_bundle.a": {
+      "sha256": "c32cf65f6dfee3388e0c6fe59ae713b0f4f50c663782902bc6250d79f27ed283",
+      "bytes": 34579316
+    }
+  },
+  "note": "Core archive reused read-only; current backend compiled locally. Binaries are local debug artifacts, not release packages. Existing sibling native-library symlink untouched."
+}
