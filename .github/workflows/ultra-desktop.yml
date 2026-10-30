@@ -1,13 +1,6 @@
 name: Alive and Ultra desktop packages
 
 on:
-  pull_request:
-    paths:
-      - 'apps/alive/**'
-      - 'apps/ultra/**'
-      - 'experiments/clockwork-faust/**'
-      - 'experiments/faust-reference/**'
-      - '.github/workflows/ultra-desktop.yml'
   push:
     tags: ['v*']
   workflow_dispatch:
@@ -17,8 +10,8 @@ permissions:
 
 concurrency:
   group: ultra-desktop-${{ github.ref }}
-  # Superseded PR builds can stop; tag releases are never interrupted.
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  # Superseded manual builds can stop; tag releases are never interrupted.
+  cancel-in-progress: ${{ github.event_name == 'workflow_dispatch' }}
 
 defaults:
   run:
@@ -41,7 +34,7 @@ jobs:
             target: x86_64-apple-darwin
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
-    # PR/manual builds never enter the signing environment.
+    # Manual builds never enter the signing environment.
     environment: ${{ github.event_name == 'push' && startsWith(matrix.os, 'macos-') && 'desktop-build' || 'desktop-checks' }}
     env:
       JOBS: '2'

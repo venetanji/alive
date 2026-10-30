@@ -26,8 +26,20 @@ checks before publication. Do not overwrite an existing tag or release.
 
 ## Builds
 
-`.github/workflows/ultra-desktop.yml` runs unsigned packaging on relevant PRs
-and manual dispatches. All four native targets must pass:
+`.github/workflows/ultra-desktop.yml` runs test packaging only on manual dispatch.
+Ordinary pushes and pull-request updates do not start package builds. Version
+tags matching `v*` still trigger the release path described below.
+
+In GitHub Actions, select the desktop packaging workflow (`ultra-desktop.yml`),
+choose **Run workflow**, then select the branch. From an authenticated checkout:
+
+```sh
+gh workflow run ultra-desktop.yml --ref YOUR_BRANCH
+```
+
+Manual runs build test packages without publishing a release. Run both this
+workflow and the separate manual **Ultra CI** workflow on the final commit when
+qualifying a merge/release. All four native targets must pass:
 
 | Runner | Rust target | Download |
 | --- | --- | --- |
@@ -44,7 +56,7 @@ installer checks also inspect the native DLL’s actual runtime imports. App-loc
 CRT servicing requires rebuilding packages when Microsoft ships runtime security
 fixes; it does not receive central redistributable servicing automatically.
 Maintainers must verify the applicable Visual Studio redistribution terms before
-public distribution. macOS PR/manual builds are ad-hoc signed,
+public distribution. macOS manual builds are ad-hoc signed,
 not notarized release downloads. Actual device/MIDI/latency and interactive UI
 acceptance still require platform hardware testing.
 
@@ -54,7 +66,7 @@ bytes, builds
 the real native engine, checks the shared ABI with a sounding Faust voice,
 note termination and stop/restart, runs Rust tests and builds the installer.
 Artifacts are uploaded as `ultra-<Rust target>` for 14 days with SHA256 manifests.
-The separate existing Ultra CI retains its browser/contracts/CPAL loopback gates.
+The separate manual Ultra CI retains its browser/contracts/CPAL loopback gates.
 
 Build dependencies: Rust 1.85.1, CMake 3.31.6, Python 3.12.10, Node 22.20.0,
 Tauri CLI 2.8.4, pinned Cargo.lock, SHA256-verified Clockwork revision
@@ -117,13 +129,14 @@ Configure credentials directly in GitHub, not chat. Limit `desktop-build`
 access to approved release tags; `desktop-checks` needs no secrets. Review
 GitHub environment protection rules before enabling release signing.
 
-PRs never enter `desktop-build` and never receive signing secrets. Tag builds
+Manual checks never enter `desktop-build` or receive signing secrets. Tag builds
 fail closed when any required secret is missing. The script uses a temporary
 keychain/key file, restores the keychain search list and deletes temporary
 material on exit. Tauri receives APPLE_SIGNING_IDENTITY, APPLE_API_KEY,
 APPLE_API_ISSUER and APPLE_API_KEY_PATH. The built app and distributed DMG are
 signature-verified, notarized/stapled and assessed with Gatekeeper. Signing
-cannot be proven by unsigned PR CI; the first authorized tag validates that path.
+cannot be proven by manual test packaging; the first authorized tag validates
+that path.
 
 ## Source references
 

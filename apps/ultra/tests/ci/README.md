@@ -1,10 +1,24 @@
 # Ultra CI
 
-`.github/workflows/ultra-ci.yml` runs on pull requests, pushes to `main`, and manual
-dispatch, avoiding duplicate PR/branch builds. It does not deploy, release,
-publish a package, or submit to a store.
+`.github/workflows/ultra-ci.yml` runs only on manual dispatch. Ordinary pushes
+and pull-request updates do not start CI, including on `main`. All three jobs
+and the optional Alive endurance modes remain available when requested. It does
+not deploy, release, publish a package, or submit to a store.
 The token is read-only, checkout credentials are not persisted, and the workflow
 does not read repository secrets or use `pull_request_target`.
+
+In GitHub Actions, select **Ultra CI**, choose **Run workflow**, then select the
+branch and endurance mode. From a checkout with GitHub CLI authentication:
+
+```sh
+gh workflow run ultra-ci.yml --ref YOUR_BRANCH -f alive_endurance=off
+```
+
+Use `pilot` or `endurance` instead of `off` for the optional sustained journey.
+Dispatch a fresh run on the intended final commit before merge/release
+qualification; an older green run does not validate later commits. Desktop
+packages are a separate opt-in workflow documented in
+`docs/ultra-desktop-releases.md`; version tags still trigger release packaging.
 
 ## What the three jobs establish
 

@@ -1,9 +1,6 @@
 name: Ultra CI
 
 on:
-  pull_request:
-  push:
-    branches: [main]
   workflow_dispatch:
     inputs:
       alive_endurance:
@@ -16,7 +13,7 @@ on:
           - pilot
           - endurance
 
-# Fork PRs execute untrusted source without secrets or repository write access.
+# Manual checks use no secrets or repository write access.
 permissions:
   contents: read
 
