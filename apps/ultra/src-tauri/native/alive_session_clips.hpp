@@ -265,7 +265,9 @@ bool envelopes_v3(const AliveSessionConfigV3 &c, clip_admission::Prepared &out, 
   if (boundaries[Window] > 6)
     return reject_v3(ALIVE_SESSION_V3_RUNTIME_INVARIANT, "Derived quantization boundary bound exceeds six.");
   if (quantized)
-    for (unsigned w = 1; w <= Window; ++w) boundaries[w] += 2;
+    // The first sample already has the original maximal reset allowance;
+    // coalescing leaves at most w-1 additional cuts in a w-frame window.
+    for (unsigned w = 1; w <= Window; ++w) boundaries[w] += std::min(2u, w - 1);
   const auto limits = policy(c.profile);
   const Cost frame_limit = {32, limits.scheduled_frame.root_clears, limits.scheduled_frame.event_scans,
                             limits.scheduled_frame.parameter_writes, limits.scheduled_frame.guard_steps};

@@ -16,7 +16,10 @@ batch produces terminal work-limit receipts; the owner does not retry it or
 move its target. Global Stop retains the independent reserved mailbox.
 
 A separate prepared envelope adds two arbitrary transitions per track to the
-existing bar/seam/placement boundary curve for every positive window width.
+existing bar/seam/placement boundary curve. The extra allowance is
+`min(2, width - 1)`: the original first-sample reset/initial transition already
+covers an arbitrary action there, and same-sample changes coalesce. Only
+positive-length interior cuts need additional transitions.
 In a window no wider than 1024 frames, there can be at most one newly accepted
 quantized batch, and at most one earlier pending quantized action per track.
 Each track has only one pending action: replacement cannot increase that bound.

@@ -251,7 +251,9 @@ inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out, bool quan
       if (!plus(k[w], grid[w], k[w]) || !plus(k[w], global[w], k[w]) || k[w] < k[w - 1])
         return overflow();
     if (quantized)
-      for (unsigned w = 1; w <= Window; ++w) k[w] += 2;
+      // compose includes the initial transition. Same-sample authority,
+      // suffix and seam changes coalesce; only interior cuts add transitions.
+      for (unsigned w = 1; w <= Window; ++w) k[w] += std::min(2u, w - 1);
     const unsigned boundary_limit = quantized ? 8 : 6;
     if (k[Window] > boundary_limit) {
       diag.placement[t] = tr.placement_count ? tr.placement_begin : UINT32_MAX;

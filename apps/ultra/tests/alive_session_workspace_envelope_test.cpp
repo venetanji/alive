@@ -702,7 +702,79 @@ void native_automation_chain() {
   assert(proof->diagnostic.error == ALIVE_SESSION_V4_BAD_OWNERSHIP);
 }
 
+void two_transition_authority() {
+  for (bool gap : {false, true})
+    for (bool same_source : {false, true}) {
+      auto c = abstract_source(5, 0, 3, 2);
+      const auto second = abstract_source(7, 0, 6, 2);
+      c.sources[1] = second.sources[0];
+      c.sources[1].event_begin = c.event_count;
+      for (unsigned i = 0; i < second.event_count; ++i)
+        c.events[c.event_count++] = second.events[i];
+      c.source_count = 2;
+      c.length_frames = 20;
+      c.loop_enabled = 1;
+      c.loop_start = 3;
+      c.loop_end = 17;
+      c.tracks[0].placement_count = 2;
+      c.placements[0] = {0, 0, 0, 0, 0, 4, 0};
+      c.placements[1] = {0, same_source ? 0u : 1u, 1, 0, gap ? 5u : 4u, gap ? 15u : 16u, 2};
+      c.slots[0] = {0, 1, 1, 0, 2};
+      Curves maximum{}, profile{}, bound{};
+      const Charge pulse{1, 2, 3, 4, 0, 1}, transition{1, 2, 3, 4, 0, 4};
+      for (unsigned source = 0; source < 2; ++source)
+        for (unsigned offset : {0u, 2u})
+          for (bool loop : {false, true}) {
+            assert(wa::source_profile(c, source, offset, loop, pulse, profile, 8));
+            for (unsigned m = 0; m < 6; ++m)
+              for (unsigned w = 1; w <= 8; ++w)
+                maximum[m][w] = std::max(maximum[m][w], profile[m][w]);
+          }
+      uint64_t endpoints[]{0, 4, gap ? 5u : 20u, 20};
+      const unsigned count = gap ? 4 : 3;
+      Envelope k{};
+      assert(wa::song_points(endpoints, count, 20, true, 3, 17, k, 8));
+      for (unsigned w = 1; w <= 8; ++w)
+        k[w] += 1 + std::min(2u, w - 1); // seam plus two coalesced arbitrary actions.
+      unsigned calls = 0;
+      assert(wa::compose(maximum, k, transition, bound, calls, 8, 8));
+      Curves pair = bound;
+      for (auto &row : pair)
+        for (auto &value : row)
+          value *= 2;
+      for (unsigned song_start : {0u, 3u, 7u, 16u})
+        for (unsigned phase0 : {2u, 6u})
+          for (unsigned phase1 : {2u, 6u})
+            for (unsigned mask = 0; mask < 4; ++mask)
+              for (unsigned cut = 0; cut < 8; ++cut)
+                for (unsigned cut2 = cut + 1; cut2 < 8; ++cut2)
+                for (unsigned action2 = 1; action2 <= 3; ++action2)
+                for (unsigned action = 1; action <= 3; ++action) {
+                  ScalarTrack states[2]{{bool(mask & 1), false, 0, ALIVE_SESSION_V4_NONE,
+                                          ALIVE_SESSION_V4_NONE, phase0},
+                                         {bool(mask & 2), false, 0, ALIVE_SESSION_V4_NONE,
+                                          ALIVE_SESSION_V4_NONE, phase1}};
+                  Charge actual{};
+                  uint64_t song = song_start;
+                  for (unsigned w = 1; w <= 8; ++w) {
+                    const bool wrap = song == 17;
+                    if (wrap)
+                      song = 3;
+                    accumulate(actual, scalar_frame(c, 0, states[0], song, wrap, w == 1,
+                                                     w - 1 == cut ? action : (w - 1 == cut2 ? action2 : 0), 2, 2));
+                    accumulate(actual, scalar_frame(c, 0, states[1], song, wrap, w == 1,
+                                                     w - 1 == 7 - cut ? (action + 1) % 4 : (w - 1 == 7 - cut2 ? action2 : 0), 2, 2));
+                    covered(actual, pair, w);
+                    ++song;
+                  }
+                  ++authority_cases;
+                }
+    }
+}
+
+
 int main() {
+  two_transition_authority();
   exhaustive_sources();
   exhaustive_boundaries();
   exhaustive_cuts();

@@ -49,7 +49,39 @@ uint64_t splice(const std::vector<std::vector<unsigned>> &streams, unsigned widt
     }
   return best;
 }
+
+void two_arbitrary_transitions() {
+  const std::vector<std::vector<unsigned>> streams{{2,0,1},{0,3,0,0,1}};
+  Envelope source{},boundaries{},bound{};
+  for(unsigned w=1;w<=8;++w) {
+    boundaries[w]=(w+3)/4+std::min(2u,w-1);
+    for(const auto &stream:streams) {
+      std::vector<Pulse> pulses{{0,3}};
+      for(unsigned f=0;f<stream.size();++f)pulses.push_back({f,stream[f]});
+      source[w]=std::max(source[w],brute(pulses,unsigned(stream.size()),w));
+    }
+  }
+  segments(source,boundaries,bound,8);
+  for(unsigned w=1;w<=8;++w)bound[w]+=3*boundaries[w];
+  for(unsigned song=0;song<4;++song)for(unsigned initial=0;initial<2;++initial)
+    for(unsigned phase=0;phase<streams[initial].size();++phase)
+      for(unsigned cut=0;cut<8;++cut)for(unsigned cut2=cut;cut2<8;++cut2)
+        for(unsigned next=0;next<2;++next)for(unsigned last=0;last<2;++last) {
+          unsigned source_index=initial,cursor=phase;uint64_t actual=0;
+          for(unsigned f=0;f<8;++f) {
+            bool reset=(song+f)%4==0;
+            if(reset)cursor=0;
+            if(f==cut){source_index=next;cursor=0;reset=true;}
+            if(f==cut2){source_index=last;cursor=0;reset=true;}
+            reset|=cursor==0;
+            actual+=(reset?3:0)+streams[source_index][cursor];
+            cursor=(cursor+1)%streams[source_index].size();
+            assert(actual<=bound[f+1]);
+          }
+        }
+}
 int main() {
+  two_arbitrary_transitions();
   for (unsigned period = 1; period <= 7; ++period)
     for (unsigned mask = 0; mask < (1u << period); ++mask) {
       std::vector<Pulse> pulses;
