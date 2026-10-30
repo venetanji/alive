@@ -59,7 +59,7 @@ def run():
     ui.click('Save and start Alive audio')
     ui.click('Close audio settings')
     ui.click('Audio details')
-    alive.wait_value('Audio callbacks', lambda s: int(s) > 0)
+    alive.wait_value('Audio callbacks', lambda s: s.isdecimal() and int(s) > 0)
     alive.transport('start')
     ui.click('Audio details')
     launch = next(node.get_name() for frame in alive.windows.app_frames() for node in ui.walk(frame)
@@ -71,10 +71,10 @@ def run():
     alive.screenshot('quantized-playing.png')
     ui.click('Audio details')
     alive.wait_value('Track 1 authority', lambda s: s == 'session')
-    alive.wait_value('Track 1 active voices', lambda s: int(s) > 0)
+    alive.wait_value('Track 1 active voices', lambda s: s.isdecimal() and int(s) > 0)
     ui.click('Stop transport')
     alive.wait_value('Transport playing', lambda s: s == 'false')
-    assert alive.value('Audio stream errors') == '0'
+    alive.wait_value('Audio stream errors', lambda s: s == '0')
     report = {'saved': str(saved), 'launch': document['launch'], 'receipt': receipt,
               'reopened_effective': '1/16', 'native_authority_after_launch': 'session',
               'native_active_voices': True, 'audio_stream_errors': 0, 'stopped': True}
