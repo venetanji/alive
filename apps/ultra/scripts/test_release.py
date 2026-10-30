@@ -64,6 +64,28 @@ class ReleaseTests(unittest.TestCase):
                     self.assertEqual((device['id'], device['version']),
                                      (track['device']['id'], track['device']['version']))
 
+    def test_default_workspace_is_bundled_for_both_products_on_every_target(self):
+        for target in release.TARGETS:
+            for product in ('alive', 'ultra'):
+                with self.subTest(target=target, product=product), tempfile.TemporaryDirectory() as d:
+                    package = Path(d).resolve()
+                    resources = release.bundle_config(target, product=product)['bundle']['resources']
+                    for source, destination in resources.items():
+                        if destination.startswith('alive-session/'):
+                            dest = package / destination
+                            dest.parent.mkdir(parents=True, exist_ok=True)
+                            shutil.copy2(release.APP / 'src-tauri' / source, dest)
+                    path = package / 'alive-session/alive/examples/empty-workspaces.alive'
+                    self.assertTrue(path.is_file(), 'The default project must work outside the source checkout')
+                    project = json.loads(path.read_text())
+                    self.assertEqual(project['format'], 'alive-session-v4')
+                    self.assertEqual(project['sources'], [])
+                    self.assertEqual(project['placements'], [])
+                    instrument = project['tracks'][0]['chain']['instrument']
+                    device_path = (path.parent / instrument['path']).resolve(strict=True)
+                    self.assertTrue(device_path.is_relative_to(package))
+                    self.assertEqual(json.loads(device_path.read_text())['device']['id'], instrument['id'])
+
     def test_alive_package_reuses_source_devices_and_notices(self):
         for target in release.TARGETS:
             with self.subTest(target=target), tempfile.TemporaryDirectory() as d:

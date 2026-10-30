@@ -1,6 +1,24 @@
 import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 
+test('older-project Arrangement action and its blockers fit compact windows',async({page},testInfo)=>{
+  await openSession(page,false,true);
+  await page.evaluate(()=>{window.sessionSnapshot.capabilities.workspaceConversionAvailable=true;});
+  await page.locator('#view-arrangement').click();
+  const action=page.getByRole('button',{name:'Enable Arrangement',exact:true});
+  await expect(action).toBeEnabled();await expect(page.locator('#arrangement-unavailable')).toContainText('clip-only');
+  for(const size of [{width:1440,height:900},{width:1280,height:800},{width:1024,height:768},{width:800,height:600}]){
+    await page.setViewportSize(size);await expect(action).toBeInViewport();
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
+    await page.screenshot({path:testInfo.outputPath(`arrangement-access-${size.width}x${size.height}.png`)});
+  }
+  await page.evaluate(()=>{window.sessionSnapshot.state.playing=1;});await expect(action).toBeDisabled();
+  await expect(page.locator('#arrangement-enable-status')).toContainText('Stop transport');
+  await page.evaluate(()=>{const s=window.sessionSnapshot;s.state.playing=0;s.draft=structuredClone(s.document);s.draft.tempo=130;s.draftRevision++;});
+  await expect(action).toBeDisabled();await expect(page.locator('#arrangement-enable-status')).toContainText('Apply pending edits');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
 test('musical toolbar and open session adapt to live window resizing without issuing commands',async({page},testInfo)=>{
   await openSession(page,false,true,8);
   const score=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));

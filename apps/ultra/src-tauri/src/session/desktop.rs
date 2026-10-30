@@ -603,13 +603,13 @@ fn resolve_dirty(window: &WebviewWindow, control: &mut Control) -> Result<bool, 
     else { Ok(chosen(result, "Discard", false)) }
 }
 fn example_path(resources: &Path, executable_dir: &Path, source: &Path) -> PathBuf {
-    let relative = "alive-session/alive/examples/two-instruments.alive";
+    let relative = "alive-session/alive/examples/empty-workspaces.alive";
     let bundled = resources.join(relative);
     if bundled.is_file() { return bundled; }
     // Linux's combined Ultra installer places both binaries beside shared resources.
     let companion = executable_dir.join("../lib/Ultra Research").join(relative);
     if companion.is_file() { return companion; }
-    source.join("../../alive/examples/two-instruments.alive")
+    source.join("../../alive/examples/empty-workspaces.alive")
 }
 #[derive(Serialize)]
 pub struct BrowserDevice {
@@ -905,22 +905,33 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
 mod tests {
     use super::*;
     #[test]
+    fn fresh_session_has_both_workspaces_without_converting_a_demo() {
+        let source=Path::new(env!("CARGO_MANIFEST_DIR"));
+        let path=example_path(&source.join("missing-resources"),&source.join("missing-bin"),source);
+        let prepared=new_session(read(&path).unwrap());
+        let Document::WorkspacesV4(project)=&prepared.saved.score else{panic!("Fresh sessions must expose Arrangement as well as Session")};
+        assert_eq!(project.tracks.len(),1);
+        assert!(project.tracks[0].slots.iter().all(Option::is_none));
+        assert!(project.sources.is_empty());assert!(project.placements.is_empty());
+        Host::default().validate(&prepared).expect("The default workspace must fit the shipping native profile");
+    }
+    #[test]
     fn alive_companion_loads_the_installed_shared_example_without_source_tree() {
         let unique = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos();
         let root = std::env::temp_dir().join(format!("alive-companion-{}-{unique}", std::process::id()));
         let resource = root.join("usr/lib/Ultra Research/alive-session");
-        let session = resource.join("alive/examples/two-instruments.alive");
+        let session = resource.join("alive/examples/empty-workspaces.alive");
         let device = resource.join("ultra/examples/subtractive.ultra");
         std::fs::create_dir_all(root.join("usr/bin")).unwrap();
         std::fs::create_dir_all(session.parent().unwrap()).unwrap();
         std::fs::create_dir_all(device.parent().unwrap()).unwrap();
-        std::fs::copy(Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive"), &session).unwrap();
+        std::fs::copy(Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/empty-workspaces.alive"), &session).unwrap();
         std::fs::copy(Path::new(env!("CARGO_MANIFEST_DIR")).join("../examples/subtractive.ultra"), &device).unwrap();
         let path = example_path(&root.join("usr/lib/Alive"), &root.join("usr/bin"), &root.join("missing-source"));
         let result = read(&path);
         std::fs::remove_dir_all(&root).unwrap();
         let prepared = result.expect("Installed Alive must load the shared bundled session, without repository paths");
-        assert_eq!(prepared.tracks.len(), 2);
+        assert_eq!(prepared.tracks.len(), 1);assert!(prepared.saved.score.is_workspaces());
     }
     #[test]
     fn polling_or_close_during_native_dialog_never_blocks_the_ui() {

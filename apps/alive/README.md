@@ -12,9 +12,7 @@ and refuse non-unity before retiring the current owner. Session now has a
 fixed-right Master strip and four aligned slot/scene rows; MIDI Arrangement
 has right-hand track controls and a bottom Master lane. Both views share gain,
 native stereo meters, unity and digital-overload reset controls. See `PLAN.md`
-for exact source, build and acceptance status. The current test launcher uses
-the coherent `f69125c` build; complete native save/restart and endurance
-qualification of this new checkpoint is in progress.
+for exact source, build and acceptance status.
 `alive-session-v3` scores
 preserve four clip slots per track, stable clip/note IDs,
 saved defaults, instance IDs, original-source fingerprints, ordered effects,
@@ -43,10 +41,14 @@ The launcher runs the Alive executable directly. Both apps can open at once.
 Alive uses application identifier `org.alive.session`, separate from Ultra's
 `org.alive.ultra.research`. The old `ultra --alive` entry remains compatible.
 
+Starting without a file, or choosing **New session**, opens the bundled
+`empty-workspaces.alive`: one MIDI instrument track with empty slots and a
+working Arrangement timeline. The populated examples remain available through
+Open. New sessions do not need an explicit format conversion.
+
 On the local test machine, open **Alive (Test)** from the desktop app launcher.
-Its desktop entry runs `apps/alive/run.sh` in this checkout and follows the
-latest completed release build; it does not rebuild on launch. Close and reopen
-Alive after a new build to test the updated executable.
+Its desktop entry selects a versioned, locally verified build; it does not
+rebuild on launch. Existing windows keep their original executable and project.
 
 The existing release pipeline builds separate Alive and Ultra desktop packages:
 DEB and AppImage on Linux, NSIS on Windows, and application bundles/DMG on macOS.
@@ -134,11 +136,13 @@ return to the field and press Tab to accept it before using file actions.
 Session and Arrangement buttons, or plain Tab outside controls, change only the
 workspace. Tab within inputs/buttons and modified Tab keep normal focus
 navigation. The existing Session view stays usable in both v3 and admitted MIDI
-workspaces. This development branch offers explicit stopped **Enable MIDI
-workspaces** conversion: it validates the entire project before installing v4,
+workspaces. Older projects expose **Enable Arrangement** directly in Arrangement,
+and **Enable MIDI workspaces** in Clip detail. This explicit stopped conversion
+validates the entire project before installing v4,
 and refuses without trimming music or replacing the playable v3 project.
 Only measured profile 1 (two tracks) is currently admitted. The unchanged
-default example exceeds its event envelope; its conversion refusal is expected.
+`two-instruments.alive` example exceeds its event envelope; its conversion
+refusal is expected. The empty default session fits the measured profile.
 Open `apps/alive/examples/midi-arrangement.alive` for the admitted two-instrument
 Arrangement starting project, or launch it directly:
 

@@ -28,6 +28,52 @@ class Element{
 const descendants=element=>element.children.flatMap(child=>[child,...descendants(child)]);
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
 
+test('older projects can enable Arrangement from its workspace without replacing their music',async()=>{
+  const initial=clipState();initial.state.playing=0;initial.capabilities={workspaceConversionAvailable:true};
+  const originalNotes=structuredClone(initial.document.tracks.map(t=>t.slots[0].notes));
+  const page=dom('./alive.html'),native=backend(initial);
+  const invoke=async(name,args)=>{
+    if(name!=='alive_enable_workspaces')return native.invoke(name,args);
+    native.calls.push({name,args:structuredClone(args)});
+    assert.deepEqual(args,{generation:1,draftRevision:0});
+    const next=workspaceState();next.state.playing=0;next.generation=2;next.snapshotSequence='2';
+    Object.assign(native.snapshot,next);return structuredClone(next);
+  };
+  const view=mountAlive({...page,invoke});await settle();
+  await page.ids.get('view-arrangement').fire('click');
+  const enable=page.find('Enable Arrangement');assert.ok(enable);assert.equal(enable.hidden,false);assert.equal(enable.disabled,false);
+  assert.match(page.ids.get('arrangement-unavailable').textContent,/clip-only/i);
+  assert.equal(native.calls.filter(c=>c.name!=='alive_current').length,0);
+  await enable.fire('click');
+  assert.equal(page.ids.get('timeline').hidden,false);assert.equal(page.ids.get('arrangement-placeholder').hidden,true);
+  assert.equal(page.ids.get('arrangement-workspace').hidden,false);
+  assert.deepEqual(view.model.document().sources.map(s=>s.notes),originalNotes);
+  assert.equal(native.calls.filter(c=>c.name==='alive_enable_workspaces').length,1);view.dispose();
+});
+test('Arrangement conversion explains changing playback and draft blockers without submitting a command',async()=>{
+  const initial=clipState();initial.capabilities={workspaceConversionAvailable:true};
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const enable=page.find('Enable Arrangement');assert.ok(enable);assert.equal(enable.disabled,true);
+  assert.match(page.ids.get('arrangement-enable-status').textContent,/stop transport/i);
+  native.snapshot.state.playing=0;native.snapshot.draft=structuredClone(initial.document);native.snapshot.draftRevision=1;native.snapshot.snapshotSequence='2';await view.refresh();
+  assert.equal(enable.disabled,true);assert.match(page.ids.get('arrangement-enable-status').textContent,/apply.*pending edits/i);
+  native.snapshot.draft=null;native.snapshot.draftRevision=2;native.snapshot.snapshotSequence='3';await view.refresh();
+  assert.equal(enable.disabled,false);
+  native.snapshot.capabilities.workspaceConversionAvailable=false;native.snapshot.snapshotSequence='4';await view.refresh();
+  assert.equal(enable.hidden,true);assert.match(page.ids.get('arrangement-enable-status').textContent,/native engine/i);
+  assert.equal(native.calls.filter(c=>c.name!=='alive_current').length,0);view.dispose();
+});
+test('refused Arrangement conversion keeps the project and offers another attempt',async()=>{
+  const initial=clipState();initial.state.playing=0;initial.capabilities={workspaceConversionAvailable:true};
+  const page=dom('./alive.html'),native=backend(initial);
+  const view=mountAlive({...page,invoke:async(name,args)=>{if(name==='alive_enable_workspaces')throw Error('Workspace events per frame: observed 40, limit 32');return native.invoke(name,args);}});await settle();
+  await page.ids.get('view-arrangement').fire('click');const before=structuredClone(view.model.snapshot());
+  await page.find('Enable Arrangement').fire('click');
+  assert.deepEqual(view.model.snapshot(),before);assert.equal(page.ids.get('timeline').hidden,true);
+  assert.equal(page.ids.get('arrangement-workspace').hidden,false);assert.equal(page.find('Enable Arrangement').disabled,false);
+  assert.match(page.ids.get('notice').textContent,/observed 40, limit 32/);view.dispose();
+});
+
 test('plain Tab navigates workspaces while controls and modified Tab keep native focus navigation',async()=>{
   const page=dom('./alive.html'),native=backend(clipState()),view=mountAlive({...page,invoke:native.invoke});await settle();
   let prevented=0;const tab=extra=>page.doc.fire('keydown',{key:'Tab',preventDefault(){prevented++;},...extra});
@@ -371,7 +417,7 @@ test('workspace conversion feedback does not misidentify a v5 envelope as a v4 f
   const view=mountAlive({...page,invoke});await settle();
   await page.find('Enable MIDI workspaces').fire('click');
   const status=page.ids.get('notice').textContent;
-  assert.match(status,/MIDI workspaces prepared/);assert.doesNotMatch(status,/Save writes v4/);
+  assert.match(status,/Arrangement enabled/);assert.doesNotMatch(status,/Save writes v4/);
   view.dispose();
 });
 
