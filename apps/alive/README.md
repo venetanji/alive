@@ -4,24 +4,16 @@ Alive is a separate `alive` executable with a compact Rust/Tauri session UI.
 Ultra remains the `ultra` patch-editor executable. Both share the native engine
 and Rust library; Alive hosts saved Ultra instruments and ordered stereo effect
 chains through versioned device manifests and the native Faust evaluator.
-New files use an `alive-session-v5` envelope around the score and saved Master
-gain. Existing bare scores remain readable. The Linux native host supports
-saved Master gain, 64-frame live ramps, coherent stereo peaks and an explicit
-digital-overload reset. Old or partial native libraries allow unity sessions
-and refuse non-unity before retiring the current owner. Session now has a
-fixed-right Master strip and four aligned slot/scene rows; MIDI Arrangement
-has right-hand track controls and a bottom Master lane. Both views share gain,
-native stereo meters, unity and digital-overload reset controls. See `PLAN.md`
-for exact source, build and acceptance status.
-`alive-session-v3` scores
-preserve four clip slots per track, stable clip/note IDs,
-saved defaults, instance IDs, original-source fingerprints, ordered effects,
-parameter bases, bypass and automation targets. Existing v1/v2 sessions upgrade
-in memory on Open when admitted; Save writes the upgrade. A playable legacy
-session refused by the stricter clip-bank policy remains editable and runnable
-in v2 with the reason shown. Version-1 instrument manifests remain valid.
-The example references the original subtractive device
-twice; it does not contain a copied patch or a fixed synthesizer implementation.
+The current MIDI workspace shares sources between four Session slots per track
+and Arrangement placements. Saved sessions retain stable note/source/device
+identities, effects, parameter bases, bypass, automation, Master gain and launch
+quantization. Session has a fixed-right Master strip; Arrangement has right-hand
+track controls and a bottom Master lane. Both views share native stereo meters,
+unity and digital-overload reset controls. See `PLAN.md` for current priorities
+and verification status.
+
+Alive is an experimental application. Its own schemas and native interfaces can
+evolve together without preserving previous Alive formats; see `PRODUCT.md`.
 
 ## Run
 
@@ -31,7 +23,7 @@ From the repository root:
 bash apps/alive/build.sh
 bash apps/alive/run.sh
 # Or open an existing session:
-bash apps/alive/run.sh apps/alive/examples/two-instruments.alive
+bash apps/alive/run.sh apps/alive/examples/quantized-midi.alive
 ```
 
 The developer binary is `apps/ultra/src-tauri/target/release/alive` (`alive.exe`
@@ -49,6 +41,28 @@ Open. New sessions do not need an explicit format conversion.
 On the local test machine, open **Alive (Test)** from the desktop app launcher.
 Its desktop entry selects a versioned, locally verified build; it does not
 rebuild on launch. Existing windows keep their original executable and project.
+
+## MIDI Editing And Detail Size
+
+Completed note gestures update admitted MIDI sources in native playback without
+Prepare / Apply or a transport restart. Undo/Redo uses the same publication path.
+The piano toolbar's **Preview** toggle starts off; enable it to hear keys and
+note selection, creation or pitch movement through the selected instrument and
+effects. Preview can sound while transport is stopped. It starts Audio when
+needed, while ordinary note editing does not.
+
+Structural, tempo and automation changes still use the pending-edit workflow.
+If a source already has incompatible pending edits, its notes remain pending
+until Apply. Dense schedules can refuse live editing/Preview within the current
+native work limits; the UI shows the capability or refusal reason.
+
+Drag the separator above **Clip / Devices** upward for a larger bottom panel.
+Double-click it, or use **Maximize detail**, to give the editor the working area;
+repeat to restore the previous size. The separator also supports arrow keys,
+Home and End. Escape cancels an active resize. The requested height survives
+window resizing, and Session/Arrangement navigation restores the upper workspace.
+
+## Desktop Packages
 
 The existing release pipeline builds separate Alive and Ultra desktop packages:
 DEB and AppImage on Linux, NSIS on Windows, and application bundles/DMG on macOS.

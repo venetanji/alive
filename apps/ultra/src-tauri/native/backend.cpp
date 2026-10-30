@@ -500,6 +500,11 @@ int alive_session_configure_v3(const AliveSessionConfigV3* config){
  const int result=session.configure_v3(*config,canvas);publish_canvas();return result;
 }
 int alive_session_request_v3(const AliveSessionRequestV3* request,AliveSessionReceiptV3* immediate){const AliveSessionRequestV3 invalid{};return immediate&&session.request_v3(request?*request:invalid,*immediate);}
+int alive_midi_limits_v1(AliveMidiLimitsV1* out){return out&&session.midi_limits(*out);}
+int alive_midi_edit_v1(const AliveMidiEditV1* r){const int result=r&&session.midi_edit(*r);if(result&&!running.load()&&!engine.status().ready){session.begin(canvas);session.sample(canvas);session.publish(canvas);publish_canvas();}return result;}
+int alive_midi_preview_v1(const AliveMidiPreviewV1* r){return r&&session.midi_preview(*r);}
+int alive_midi_release_v1(uint64_t preparation,uint64_t serial){const int result=session.midi_release(preparation,serial);if(result&&!running.load()&&!engine.status().ready){session.begin(canvas);session.sample(canvas);session.publish(canvas);publish_canvas();}return result;}
+int alive_midi_state_v1(AliveMidiStateV1* out){return out&&session.midi_snapshot(*out);}
 int alive_launch_limits_v1(AliveLaunchLimitsV1* out){return out&&session.launch_limits(*out);}
 int alive_launch_request_v3_v1(const AliveLaunchRequestV1* r,AliveSessionReceiptV3* out){return r&&out&&session.launch_request<AliveSessionRequestV3>(*r,*out,3);}
 int alive_launch_request_v4_v1(const AliveLaunchRequestV1* r,AliveSessionReceiptV4* out){return r&&out&&session.launch_request<AliveSessionRequestV4>(*r,*out,4);}

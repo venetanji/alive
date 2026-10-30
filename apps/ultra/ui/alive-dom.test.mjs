@@ -114,6 +114,28 @@ test('detail resize supports keyboard and cancels pointer preview with Escape',a
   await page.doc.fire('keydown',{key:'Escape',target:handle});assert.equal(handle.attrs['aria-valuenow'],'240');assert.equal(shell.style['--detail-height'],'240px');
   await handle.fire('pointerdown',{pointerId:2,clientY:400});await handle.fire('pointermove',{pointerId:2,clientY:450});await handle.fire('pointercancel');assert.equal(handle.attrs['aria-valuenow'],'240');view.dispose();
 });
+test('detail can grow beyond the upper mixer minimum and maximize without musical commands',async()=>{
+  const page=dom('./alive.html');page.win.innerHeight=900;page.ids.get('workspace-shell').clientHeight=700;
+  const native=backend(clipState()),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const handle=page.ids.get('detail-resizer');await handle.fire('keydown',{key:'End'});
+  assert.ok(Number(handle.attrs['aria-valuenow'])>=560,'The detail editor should be able to use most of the workspace');
+  await handle.fire('keydown',{key:'ArrowDown'});const normal=handle.attrs['aria-valuenow'],snapshot=structuredClone(view.model.snapshot());
+  const maximize=page.find('Maximize detail');assert.ok(maximize);await maximize.fire('click');
+  assert.equal(page.ids.get('session-workspace').hidden,true);assert.equal(page.ids.get('arrangement-workspace').hidden,true);
+  assert.equal(maximize.attrs['aria-label'],'Restore detail size');assert.equal(maximize.attrs['aria-pressed'],'true');
+  assert.ok(Number(handle.attrs['aria-valuenow'])>Number(normal));
+  await maximize.fire('click');assert.equal(handle.attrs['aria-valuenow'],normal);assert.equal(page.ids.get('session-workspace').hidden,false);
+  assert.deepEqual(view.model.snapshot(),snapshot);assert.equal(native.calls.filter(c=>c.name!=='alive_current').length,0);view.dispose();
+});
+test('maximized detail restores after canceled resize and view navigation exposes the selected workspace',async()=>{
+  const page=dom('./alive.html'),native=backend(clipState()),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const handle=page.ids.get('detail-resizer');await handle.fire('dblclick');
+  assert.equal(page.ids.get('session-workspace').hidden,true);const full=handle.attrs['aria-valuenow'];
+  await handle.fire('pointerdown',{pointerId:1,clientY:100});await handle.fire('pointermove',{pointerId:1,clientY:230});
+  await handle.fire('pointercancel');assert.equal(handle.attrs['aria-valuenow'],full);assert.equal(page.ids.get('session-workspace').hidden,true);
+  await page.ids.get('view-arrangement').fire('click');assert.equal(page.ids.get('arrangement-workspace').hidden,false);
+  assert.equal(page.find('Maximize detail').attrs['aria-pressed'],'false');view.dispose();
+});
 test('eight Session tracks expose four vertical slots and a mixer per column plus four scene rows',async()=>{
   const initial=clipState();initial.capabilities={maxTracks:8,maxDevices:16,atomicTrackActions:true};
   while(initial.document.tracks.length<8){const i=initial.document.tracks.length+1,t=structuredClone(initial.document.tracks[0]);t.id=`track-${i}`;t.name=`Track ${i}`;t.device.instanceId=`instance-${i}`;t.slots[0].id=`clip-${i}`;t.defaultClipId=t.slots[0].id;initial.document.tracks.push(t);initial.deviceInstances[t.device.instanceId]={...structuredClone(initial.deviceInstances[initial.document.tracks[0].device.instanceId]),index:i-1,track:i-1};initial.state.tracks.push(structuredClone(initial.state.tracks[0]));initial.state.devices.push(structuredClone(initial.state.devices[0]));}
@@ -778,6 +800,28 @@ function workspaceState(){
   s.runtime={tracks:s.document.tracks.map((t,i)=>({trackId:t.id,authority:'arrangement',activeSlotId:null,activePlacementId:`placement-${i}`,activeSourceId:`source-independent-${i}`,phase:'0',epoch:'1',pendingAction:null,pendingAuthority:null,pendingSlotId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'};
   s.capabilities={clipBank:true,workspaces:true,arrangement:true,audioSources:false,workspaceConversionAvailable:false,maxTracks:2,maxDevices:6,maxSources:8,maxPlacements:16,atomicTrackActions:true};return s;
 }
+test('piano Preview is set-wide, initially off, and sends held keys to native with release',async()=>{
+  const initial=workspaceState();initial.capabilities.midiPreview=true;initial.capabilities.midiEdit=true;
+  const page=dom('./alive.html'),native=backend(initial),previewCalls=[];
+  const area=page.doc.createElement('div');area.insertBefore=(child,before)=>{child.parentElement=area;const at=area.children.indexOf(before);area.children.splice(at<0?area.children.length:at,0,child);};area.append(page.ids.get('piano-roll'),page.ids.get('piano-help'));page.ids.set('test-piano-area',area);
+  const invoke=async(name,args)=>{if(name==='alive_midi_preview'){previewCalls.push(args);return{serial:String(previewCalls.length)}}return native.invoke(name,args)};
+  const view=mountAlive({...page,invoke});await settle();const toggle=page.find('MIDI note Preview');
+  assert.equal(toggle.attrs['aria-pressed'],'false');assert.equal(toggle.disabled,false);
+  await toggle.fire('click');assert.equal(toggle.attrs['aria-pressed'],'true');
+  const piano=page.ids.get('piano-roll');await piano.fire('pointerdown',{pointerId:70,clientX:5,clientY:25});await settle();
+  assert.equal(previewCalls.length,1);assert.equal(previewCalls[0].action,'note');assert.equal(previewCalls[0].trackId,'track-1');
+  await piano.fire('pointerup',{pointerId:70});await settle();assert.equal(previewCalls.at(-1).action,'release');
+  await page.find('Select Harmony slot 1').fire('click');assert.equal(toggle.attrs['aria-pressed'],'true');
+  await page.ids.get('add-note').fire('pointerdown',{pointerId:72});await settle();assert.equal(previewCalls.at(-1).action,'note');
+  await page.ids.get('add-note').fire('pointerup',{pointerId:72});await settle();assert.equal(previewCalls.at(-1).action,'release');
+  await toggle.fire('click');await piano.fire('pointerdown',{pointerId:71,clientX:5,clientY:50});await settle();assert.equal(previewCalls.length,4);
+  view.dispose();
+});
+test('native Preview work refusal is visible instead of claiming audition succeeded',async()=>{
+  const initial=workspaceState();initial.midi={previewError:4,previewSerial:'9'};
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  assert.match(page.ids.get('notice').textContent,/Preview.*work allowance/i);view.dispose();
+});
 test('v4 Session reads sources and real chains without compatibility instruments or embedded clips',async()=>{
   const initial=workspaceState(),page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
   assert.ok(page.find('Note 1 pitch'));assert.equal(page.ids.get('tracks').children.length,2);assert.match(page.find('Pulse clip runtime').textContent,/Arrangement/i);

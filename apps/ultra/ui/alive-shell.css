@@ -41,12 +41,26 @@ body{min-width:0;min-height:0;height:100dvh}
 #workspace-shell{min-width:0;min-height:0}
 #workspace-browser{min-width:0;flex-shrink:0}
 .workspace-column{overflow:hidden}
-.workspace{min-height:0;overscroll-behavior:contain}
-#detail-panel{max-height:calc(100% - 155px);display:flex;flex-direction:column;min-height:0}
+.workspace{min-height:96px;overscroll-behavior:contain}
+#detail-panel{max-height:none;display:flex;flex-direction:column;min-height:0}
 #detail-content{flex:0 1 auto;min-height:0;overscroll-behavior:contain}
+#clip-detail{display:flex;flex-direction:column;height:100%;min-height:min-content}
+#clip-detail>.clip-section,#clip-detail .clip-editors{display:flex;flex-direction:column;flex:1 0 auto}
+#clip-detail .piano-area{height:auto;flex:1 0 247px}
+#clip-detail>.timeline-inspector,#clip-detail>.clip-controls,#clip-detail>.automation-section,#clip-detail .section-heading,#clip-detail .note-table{flex:none}
 #draft-status{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .schedule-bar button{flex-shrink:0}
 .detail-tabs,#detail-resizer{flex:none}
+#maximize-detail{width:25px;min-width:25px;padding:2px 4px}
+#maximize-detail svg{margin:0}
+.detail-maximized #maximize-detail svg{transform:rotate(180deg)}
+.detail-maximized #clip-detail{display:grid;grid-template-columns:180px minmax(0,1fr);grid-template-rows:auto minmax(308px,1fr) auto}
+.detail-maximized #timeline-inspector{grid-column:1 / -1;grid-row:1}
+.detail-maximized #clip-controls{grid-column:1;grid-row:2;display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;align-content:start;justify-content:flex-start;gap:7px;min-height:0;overflow:auto;padding:8px;border-right:1px solid var(--line)}
+.detail-maximized #clip-controls button,.detail-maximized #clip-controls .source-scope{white-space:normal;text-align:left}
+.detail-maximized #clip-controls input,.detail-maximized #clip-controls select{max-width:100%}
+.detail-maximized #clip-detail>.clip-section{grid-column:2;grid-row:2;min-width:0;min-height:0}
+.detail-maximized #clip-detail>.automation-section{grid-column:1 / -1;grid-row:3}
 footer{position:relative;min-width:0;min-height:31px;height:31px;padding:3px 8px;gap:9px;z-index:9}
 #notice{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
 .workspace-authority{flex:none;margin:0;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -114,7 +128,6 @@ footer button{flex:none;min-height:23px;padding:2px 6px;font-size:11px}
   #master-session{padding-top:41px;padding-bottom:19px}
   #master-session .master-controls{min-height:104px;grid-template-rows:23px minmax(42px,1fr) 25px;gap:3px;padding:4px 6px}
   .scene-column .master-state{display:none}
-  #detail-panel{max-height:calc(100% - 150px)}
 }
 
 .launch-control{display:flex;align-items:center;gap:4px;white-space:nowrap}

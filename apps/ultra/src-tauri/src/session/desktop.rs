@@ -5,6 +5,7 @@ use super::history::{History, Direction, Projection};
 use std::{path::{Path, PathBuf}, sync::{Mutex, MutexGuard}, collections::BTreeMap};
 use tauri::{Emitter, Manager, WebviewWindow};
 use tauri_plugin_dialog::{DialogExt, MessageDialogButtons, MessageDialogResult};
+mod midi;
 
 fn trace_commands() -> bool { std::env::var_os("ALIVE_TRACE_COMMANDS").as_deref() == Some(std::ffi::OsStr::new("1")) }
 
@@ -23,6 +24,7 @@ struct Control {
     draft_launch: Option<launch::LaunchSettings>,
     draft_revision: u64,
     history: History,
+    midi_pending: Option<midi::Pending>,
     closing: bool,
     allow_exit: bool,
     editors: BTreeMap<String, EditorBinding>,
@@ -34,7 +36,7 @@ struct EditorBinding { generation: u64, instance_id: String }
 struct DeviceView { index: usize, track: usize, path: PathBuf, manifest: crate::canvas::device::HostManifest }
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
-struct Capabilities { launch_quantization: bool, launch_unavailable_reason:Option<String>, launch_window_frames:u32, clip_bank: bool, max_tracks: usize, max_devices: usize, slots_per_track: usize, max_clips: usize, atomic_track_actions: bool,workspaces:bool,arrangement:bool,audio_sources:bool,max_sources:usize,max_placements:usize,workspace_conversion_available:bool }
+struct Capabilities { midi_edit:bool,midi_preview:bool,midi_unavailable_reason:Option<String>,launch_quantization: bool, launch_unavailable_reason:Option<String>, launch_window_frames:u32, clip_bank: bool, max_tracks: usize, max_devices: usize, slots_per_track: usize, max_clips: usize, atomic_track_actions: bool,workspaces:bool,arrangement:bool,audio_sources:bool,max_sources:usize,max_placements:usize,workspace_conversion_available:bool }
 pub struct Desktop(Mutex<Control>);
 fn ui_lock<T>(mutex: &Mutex<T>) -> Result<MutexGuard<'_, T>, String> {
     mutex.try_lock().map_err(|_| "Finish the current session dialog before using this control".into())
@@ -44,6 +46,7 @@ fn ui_lock<T>(mutex: &Mutex<T>) -> Result<MutexGuard<'_, T>, String> {
 pub struct Snapshot {
     document: Session,
     master: MasterSnapshot,
+    midi: serde_json::Value,
     launch: launch::LaunchSettings,
     path: Option<PathBuf>,
     devices: Vec<crate::canvas::device::HostManifest>,
@@ -197,8 +200,8 @@ impl Control {
     fn workspace_edit(&mut self,label:&str,operation:workspaces::WorkspaceEditV4,generation:u64,revision:u64)->Result<workspace_edits::Affected,String>{
         main_only(label)?;self.version(generation,revision)?;
         let prepared=self.host.prepared.as_ref().ok_or("No session")?;
-        let before=self.draft.as_ref().unwrap_or(&prepared.saved.score);
-        let Document::WorkspacesV4(project)=before else{return Err("Enable MIDI workspaces first".into())};
+        let before=self.draft.as_ref().unwrap_or(&prepared.saved.score).clone();
+        let Document::WorkspacesV4(project)=&before else{return Err("Enable MIDI workspaces first".into())};
         let mut reserved=self.history.identities();
         if let Document::WorkspacesV4(p)=&prepared.saved.score {reserved.extend(p.identities());}
         let before_launch=self.current_launch();let mut after_launch=before_launch.clone();
@@ -209,7 +212,7 @@ impl Control {
         merge_live(&mut document,&prepared.saved.score);prepare::validate_musical(&document,prepared)?;
         if let (Some(from),Some(to))=(copied.as_deref(),affected.slot_id.as_deref()){after_launch.copy_override(from,to);}
         after_launch.retain_owned(&document);after_launch.validate(&document)?;
-        if self.history.record_with_launch(before,&document,&before_launch,&after_launch,"Workspace edit")?{self.retain_launch(document,after_launch);self.draft_revision+=1;}Ok(affected)
+        let mut history=self.history.clone();if history.record_with_launch(&before,&document,&before_launch,&after_launch,"Workspace edit")?{if !self.midi_note_transaction(&before,&document,&after_launch,&history)?{self.history=history;self.retain_launch(document,after_launch);self.draft_revision+=1;}}Ok(affected)
     }
     fn workspace_action(&mut self,label:&str,generation:u64,preparation_revision:&str,action:runtime_workspaces::Action)->Result<runtime_workspaces::RequestResult,String>{
         main_only(label)?;check_generation(self.generation,generation)?;
@@ -239,7 +242,9 @@ impl Control {
         if !self.driver.snapshot().running{return Err("Start Audio to launch a scene".into());}
         self.runtime.scene(&self.host,slot)
     }
-    fn version(&self,generation:u64,revision:u64)->Result<(),String> {
+    fn version(&mut self,generation:u64,revision:u64)->Result<(),String> {
+        self.midi_reconcile();
+        if self.midi_pending.is_some(){return Err("A note edit is awaiting native application. Refresh before another musical edit.".into());}
         ensure_counter(self.generation)?;ensure_counter(self.draft_revision)?;
         check_generation(self.generation,generation)?;
         if self.draft_revision!=revision {return Err("Pending edits changed. Refresh the session and try again.".into());} Ok(())
@@ -281,7 +286,7 @@ impl Control {
         let mut document=self.history.target(direction)?.materialize(&prepared.saved.score)?;
         merge_live(&mut document,&prepared.saved.score);prepare::validate_musical(&document,prepared)?;
         let launch=self.history.target_launch(direction)?;launch.validate(&document)?;
-        self.history.advance(direction);self.retain_launch(document,launch);self.draft_revision+=1;Ok(())
+        let before=self.draft.as_ref().unwrap_or(&prepared.saved.score).clone();let mut history=self.history.clone();history.advance(direction);if !self.midi_note_transaction(&before,&document,&launch,&history)?{self.history=history;self.retain_launch(document,launch);self.draft_revision+=1;}Ok(())
     }
     fn editor_instance(&self, label: &str) -> Result<Option<&str>, String> {
         if label == "main" { return Ok(None); }
@@ -294,6 +299,7 @@ impl Control {
         Ok(())
     }
     fn snapshot(&mut self, label: &str) -> Result<Snapshot, String> {
+        self.midi_reconcile();
         let instance_id = self.editor_instance(label)?.map(str::to_owned);
         let sequence=self.snapshot_sequence.checked_add(1).ok_or("Snapshot sequence exhausted")?;
         let (native_state,runtime)=self.runtime.poll(&self.host)?;
@@ -306,8 +312,8 @@ impl Control {
         let limits=if workspace{Some(host::workspace_limits()?)}else{None};
         let available=native::master_capability().is_some();
         let observation=self.runtime.master_observation.map(|m|serde_json::json!({"targetGain":m.target_gain,"currentGain":m.current_gain,"peakLeft":m.peak_left,"peakRight":m.peak_right,"clipMask":m.clip_mask,"appliedSerial":m.applied_serial.to_string(),"appliedFrame":m.applied_frame.to_string(),"observationStartFrame":m.observation_start_frame.to_string(),"observationEndFrame":m.observation_end_frame.to_string()}));
-        Ok(Snapshot { document: prepared.saved.score.clone(), launch:self.current_launch(), master: MasterSnapshot { gain:prepared.saved.master.gain, accepted_serial:self.accepted_serial.to_string(), available, unavailable_reason:(!available).then_some("Native Master support is unavailable; upgrade or reinstall the native library."), observation, observation_stale:false }, path: self.saved_path.clone(),
-            capabilities: Capabilities { launch_quantization:super::native_launch::available(self.host.preparation_revision),launch_unavailable_reason:super::native_launch::require(self.host.preparation_revision).err(),launch_window_frames:1024,clip_bank: prepared.saved.score.is_clips()||workspace, max_tracks, max_devices, slots_per_track: if prepared.saved.score.is_clips()||workspace{4}else{1}, max_clips, atomic_track_actions: if let Some(l)=&limits{l.features&native::V4_FEATURE_ATOMIC_TRACK_ACTIONS!=0}else{runtime::scenes_available(prepared)?},workspaces:workspace,arrangement:workspace,audio_sources:false,max_sources:limits.as_ref().map_or(0,|l|l.max_sources as usize),max_placements:limits.as_ref().map_or(0,|l|l.max_placements as usize),workspace_conversion_available:!workspace&&host::workspace_limits().is_ok() },
+        Ok(Snapshot { midi:self.midi_view(),document: prepared.saved.score.clone(), launch:self.current_launch(), master: MasterSnapshot { gain:prepared.saved.master.gain, accepted_serial:self.accepted_serial.to_string(), available, unavailable_reason:(!available).then_some("Native Master support is unavailable; upgrade or reinstall the native library."), observation, observation_stale:false }, path: self.saved_path.clone(),
+            capabilities: Capabilities { midi_edit:super::native_midi::require(self.host.preparation_revision).is_ok(),midi_preview:super::native_midi::require(self.host.preparation_revision).is_ok(),midi_unavailable_reason:super::native_midi::require(self.host.preparation_revision).err(),launch_quantization:super::native_launch::available(self.host.preparation_revision),launch_unavailable_reason:super::native_launch::require(self.host.preparation_revision).err(),launch_window_frames:1024,clip_bank: prepared.saved.score.is_clips()||workspace, max_tracks, max_devices, slots_per_track: if prepared.saved.score.is_clips()||workspace{4}else{1}, max_clips, atomic_track_actions: if let Some(l)=&limits{l.features&native::V4_FEATURE_ATOMIC_TRACK_ACTIONS!=0}else{runtime::scenes_available(prepared)?},workspaces:workspace,arrangement:workspace,audio_sources:false,max_sources:limits.as_ref().map_or(0,|l|l.max_sources as usize),max_placements:limits.as_ref().map_or(0,|l|l.max_placements as usize),workspace_conversion_available:!workspace&&host::workspace_limits().is_ok() },
             track_chains:if workspace{prepared.saved.score.tracks().into_iter().map(|t|serde_json::json!({"trackId":t.id(),"kind":if t.instrument().is_some(){"midi"}else{"audio"},"instrumentId":t.instrument().map(|d|&d.instance_id),"effectIds":t.effects().iter().map(|d|&d.instance_id).collect::<Vec<_>>() })).collect()}else{vec![]},prepared_workspaces:runtime_workspaces::prepared(&self.host)?,
             devices: if prepared.saved.score.is_workspaces(){vec![]}else{prepared.tracks.iter().map(|t| Ok(prepared.devices[t.midi_instrument()?].manifest.clone())).collect::<Result<_,String>>()?}, generation: self.generation,
             device_instances: prepared.devices.iter().enumerate().map(|(index, device)| (device.instance_id.clone(), DeviceView { index, track: device.track, path: device.path.clone(), manifest: device.manifest.clone() })).collect(),
@@ -324,6 +330,8 @@ impl Control {
         if playing != 0 { Err("Stop transport before preparing a schedule or changing devices. Your edits are retained.".into()) } else { Ok(()) }
     }
     fn install(&mut self, prepared: PreparedSession) -> Result<(), String> {
+        self.midi_reconcile();
+        if self.midi_pending.is_some(){return Err("Wait for the native note edit before replacing the session.".into());}
         ensure_counter(self.generation)?;ensure_counter(self.draft_revision)?;
         Host::preflight_master(&prepared)?;
         self.stopped()?;
@@ -376,13 +384,13 @@ pub fn alive_workspace_action(window:WebviewWindow,state:tauri::State<Desktop>,a
 pub struct WorkspaceEditResult {snapshot:Snapshot,affected:workspace_edits::Affected}
 #[tauri::command]
 pub fn alive_workspace_edit(window:WebviewWindow,state:tauri::State<Desktop>,operation:workspaces::WorkspaceEditV4,generation:u64,draft_revision:u64)->Result<WorkspaceEditResult,String>{
-    main_only(window.label())?;let mut c=ui_lock(&state.0)?;let mut snapshot=c.snapshot(window.label())?;let affected=c.workspace_edit(window.label(),operation,generation,draft_revision)?;snapshot.launch=c.current_launch();snapshot.draft=c.draft.clone();snapshot.draft_revision=c.draft_revision;snapshot.history=c.history.view();snapshot.dirty=c.dirty||c.draft.is_some();Ok(WorkspaceEditResult{snapshot,affected})
+    main_only(window.label())?;let mut c=ui_lock(&state.0)?;let mut snapshot=c.snapshot(window.label())?;let affected=c.workspace_edit(window.label(),operation,generation,draft_revision)?;snapshot.document=c.host.prepared.as_ref().unwrap().saved.score.clone();snapshot.midi=c.midi_view();snapshot.launch=c.current_launch();snapshot.draft=c.draft.clone();snapshot.draft_revision=c.draft_revision;snapshot.history=c.history.view();snapshot.dirty=c.dirty||c.draft.is_some();Ok(WorkspaceEditResult{snapshot,affected})
 }
 #[derive(Serialize)]
 pub struct ClipEditResult{snapshot:Snapshot,affected:clips::Affected}
 #[tauri::command]
 pub fn alive_clip_edit(window:WebviewWindow,state:tauri::State<Desktop>,operation:clips::Edit,generation:u64,draft_revision:u64)->Result<ClipEditResult,String>{
-    main_only(window.label())?;let mut c=ui_lock(&state.0)?;let mut snapshot=c.snapshot(window.label())?;let affected=c.clip_edit(operation,generation,draft_revision)?;snapshot.launch=c.current_launch();snapshot.draft=c.draft.clone();snapshot.draft_revision=c.draft_revision;snapshot.history=c.history.view();snapshot.dirty=c.dirty||c.draft.is_some();Ok(ClipEditResult{snapshot,affected})
+    main_only(window.label())?;let mut c=ui_lock(&state.0)?;let mut snapshot=c.snapshot(window.label())?;let affected=c.clip_edit(operation,generation,draft_revision)?;snapshot.document=c.host.prepared.as_ref().unwrap().saved.score.clone();snapshot.midi=c.midi_view();snapshot.launch=c.current_launch();snapshot.draft=c.draft.clone();snapshot.draft_revision=c.draft_revision;snapshot.history=c.history.view();snapshot.dirty=c.dirty||c.draft.is_some();Ok(ClipEditResult{snapshot,affected})
 }
 #[tauri::command]
 pub fn alive_enable_clips(window:WebviewWindow,state:tauri::State<Desktop>,generation:u64,draft_revision:u64)->Result<Snapshot,String>{
@@ -413,13 +421,13 @@ pub fn alive_edit(window:WebviewWindow,state:tauri::State<Desktop>,document:Sess
     main_only(window.label())?;let mut control=ui_lock(&state.0)?;
     let mut snapshot=control.snapshot(window.label())?;
     control.edit(document,&label,generation,draft_revision)?;
-    snapshot.launch=control.current_launch();snapshot.draft=control.draft.clone();snapshot.draft_revision=control.draft_revision;snapshot.history=control.history.view();snapshot.dirty=control.dirty||control.draft.is_some();Ok(snapshot)
+    snapshot.document=control.host.prepared.as_ref().unwrap().saved.score.clone();snapshot.midi=control.midi_view();snapshot.launch=control.current_launch();snapshot.draft=control.draft.clone();snapshot.draft_revision=control.draft_revision;snapshot.history=control.history.view();snapshot.dirty=control.dirty||control.draft.is_some();Ok(snapshot)
 }
 #[tauri::command]
 pub fn alive_history(window:WebviewWindow,state:tauri::State<Desktop>,direction:Direction,generation:u64,draft_revision:u64)->Result<Snapshot,String> {
     main_only(window.label())?;let mut control=ui_lock(&state.0)?;
     let mut snapshot=control.snapshot(window.label())?;control.history(direction,generation,draft_revision)?;
-    snapshot.launch=control.current_launch();snapshot.draft=control.draft.clone();snapshot.draft_revision=control.draft_revision;snapshot.history=control.history.view();snapshot.dirty=control.dirty||control.draft.is_some();Ok(snapshot)
+    snapshot.document=control.host.prepared.as_ref().unwrap().saved.score.clone();snapshot.midi=control.midi_view();snapshot.launch=control.current_launch();snapshot.draft=control.draft.clone();snapshot.draft_revision=control.draft_revision;snapshot.history=control.history.view();snapshot.dirty=control.dirty||control.draft.is_some();Ok(snapshot)
 }
 #[tauri::command]
 pub fn alive_discard(window:WebviewWindow,state:tauri::State<Desktop>,generation:u64,draft_revision:u64)->Result<Snapshot,String> {
@@ -878,12 +886,12 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
             let saved_wire = path.as_ref().map(|_| prepared.saved.wire);
             let mut host = Host::default(); let (prepared,upgraded)=enable_clips_for_load(&host,prepared).map_err(std::io::Error::other)?;let accepted_serial=host.install(prepared).map_err(std::io::Error::other)?;
             app.manage(Desktop(Mutex::new(Control { host, runtime:runtime::Runtime::default(),snapshot_sequence:0, accepted_serial, driver: crate::audio::Driver::load(app.path().app_data_dir()?.join("audio-settings.json")), generation: 1,
-                dirty: upgraded, saved_path, saved_wire, save_feedback:None, draft: None, draft_launch:None, draft_revision:0,history:History::default(), closing: false, allow_exit: false, editors: BTreeMap::new() })));
+                dirty: upgraded, saved_path, saved_wire, save_feedback:None, draft: None, draft_launch:None, draft_revision:0,history:History::default(),midi_pending:None, closing: false, allow_exit: false, editors: BTreeMap::new() })));
             tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::App("alive.html".into()))
                 .title("Alive").inner_size(1200., 800.).min_inner_size(800., 600.).build()?;
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![alive_current, alive_launch_settings, alive_browser_catalog, alive_master, alive_master_reset_clip, alive_enable_workspaces, alive_workspace_action, alive_workspace_edit, alive_workspace_track, alive_clip_edit, alive_clip_action, alive_launch_scene, alive_enable_clips, alive_edit, alive_history, alive_discard, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio_diagnostics, alive_audio, alive_editor, alive_file, alive_device])
+        .invoke_handler(tauri::generate_handler![midi::alive_midi_preview, alive_current, alive_launch_settings, alive_browser_catalog, alive_master, alive_master_reset_clip, alive_enable_workspaces, alive_workspace_action, alive_workspace_edit, alive_workspace_track, alive_clip_edit, alive_clip_action, alive_launch_scene, alive_enable_clips, alive_edit, alive_history, alive_discard, alive_apply, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio_diagnostics, alive_audio, alive_editor, alive_file, alive_device])
         .on_window_event(|window,event| { if window.label() == "main" { if let tauri::WindowEvent::CloseRequested { api, .. } = event { api.prevent_close(); request_close(window.app_handle()); } } })
         .build(context).expect("Unable to start Alive")
         .run(|app,event| match event {
@@ -1003,7 +1011,7 @@ mod tests {
     #[test]
     fn actual_registered_window_binding_authenticates_instance_and_generation() {
         let mut control=Control { host:Host::default(),runtime:runtime::Runtime::default(),snapshot_sequence:0, accepted_serial:0, driver:crate::audio::Driver::load(PathBuf::from("/nonexistent/alive-test.json")), generation:7,
-            dirty:false,saved_path:None,saved_wire:None,save_feedback:None,draft:None,draft_launch:None,draft_revision:0,history:History::default(),closing:false,allow_exit:false,editors:BTreeMap::new() };
+            dirty:false,saved_path:None,saved_wire:None,save_feedback:None,draft:None,draft_launch:None,draft_revision:0,history:History::default(),midi_pending:None,closing:false,allow_exit:false,editors:BTreeMap::new() };
         let label=editor_label(7,"effect-a");
         assert!(control.authorize_instance(&label,"effect-a").is_err());
         control.editors.insert(label.clone(),EditorBinding {generation:7,instance_id:"effect-a".into()});
@@ -1042,7 +1050,7 @@ mod tests {
         let prepared=read(&Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive")).unwrap();
         let mut host=Host::default();host.prepared=Some(prepared);
         Control {host,runtime:runtime::Runtime::default(),snapshot_sequence:0,accepted_serial:0,driver:crate::audio::Driver::load(PathBuf::from("/nonexistent/alive-test.json")),generation:7,
-            dirty:false,saved_path:None,saved_wire:None,save_feedback:None,draft:None,draft_launch:None,draft_revision:0,history:History::default(),closing:false,allow_exit:false,editors:BTreeMap::new()}
+            dirty:false,saved_path:None,saved_wire:None,save_feedback:None,draft:None,draft_launch:None,draft_revision:0,history:History::default(),midi_pending:None,closing:false,allow_exit:false,editors:BTreeMap::new()}
     }
     #[test]
     fn master_stale_generation_refuses_without_owner_mutation() {
@@ -1437,8 +1445,10 @@ mod tests {
         c.enable_workspaces("main",7,0).unwrap();assert_eq!(c.generation,8);let preparation=c.host.preparation_revision;let accepted=c.host.prepared.as_ref().unwrap().saved.score.clone();
         let Document::WorkspacesV4(project)=&accepted else{panic!()};
         for (track,old) in project.tracks.iter().zip(&original.saved.score.legacy().unwrap().tracks){let source=track.slots[0].as_ref().unwrap().source_id.clone();
+            // Changing source automation deliberately retains the draft/Apply
+            // path; note-only edits now have their own live native transaction.
+            c.workspace_edit("main",workspaces::WorkspaceEditV4::AutomationSet{source_id:source.clone(),lanes:old.automation.clone()},8,c.draft_revision).unwrap();
             for n in &old.notes{c.workspace_edit("main",workspaces::WorkspaceEditV4::NoteCreate{source_id:source.clone(),beat:n.beat,duration:n.duration,pitch:n.pitch,velocity:n.velocity},8,c.draft_revision).unwrap();}
-            c.workspace_edit("main",workspaces::WorkspaceEditV4::AutomationSet{source_id:source,lanes:old.automation.clone()},8,c.draft_revision).unwrap();
         }
         let draft=c.draft.clone();let revision=c.draft_revision;let ids=c.history.identities();assert!(c.apply_draft().unwrap_err().contains("observed 40, limit 32"));assert_eq!(c.host.preparation_revision,preparation);assert_eq!(c.host.prepared.as_ref().unwrap().saved.score,accepted);assert_eq!(c.draft,draft);assert_eq!(c.draft_revision,revision);assert_eq!(c.history.identities(),ids);assert!(c.history.view().can_undo);
     }

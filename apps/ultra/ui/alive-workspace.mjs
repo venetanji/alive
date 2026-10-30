@@ -2,13 +2,14 @@
 export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   const $=id=>doc.getElementById(id);
   let view='session',detail='clip',previousDetail='clip',expanded=true,browser=true,height=win?.innerHeight?340:220,resize=null,browserWidth=220,browserResize=null;
-  let requestedHeight=height;
+  let requestedHeight=height,maximized=false,customHeight=false;
   const handle=$('detail-resizer'),shell=$('workspace-shell');
   const parked=new Map();
   const detailRoot=()=>$(detail==='clip'?'clip-detail':detail==='master'?'master-detail':'device-detail');
-  const compact=()=>win?.innerHeight>0&&win.innerHeight<700;
   const maxBrowserWidth=()=>Math.max(180,Math.min(420,(shell.clientWidth||900)-480));
-  const maxHeight=()=>Math.max(160,shell.clientHeight-$('schedule-controls').getBoundingClientRect().height-($('detail-panel').getBoundingClientRect().height-$('detail-content').getBoundingClientRect().height)-(win?.innerHeight?(compact()?272:364):150));
+  const detailBudget=()=>shell.clientHeight-$('schedule-controls').getBoundingClientRect().height-($('detail-panel').getBoundingClientRect().height-$('detail-content').getBoundingClientRect().height);
+  const maxHeight=()=>Math.max(160,detailBudget()-(maximized?0:96));
+  const fitHeight=()=>{const limit=!maximized&&!customHeight&&win?.innerHeight?Math.max(160,detailBudget()-(win.innerHeight<700?272:364)):maxHeight();height=Math.round(Math.max(160,Math.min(limit,maximized?Infinity:requestedHeight)));};
   function park(root){const element=doc.activeElement;if(root.contains?.(element)&&element.matches?.('input,select,textarea'))parked.set(element,{root,value:element.value,visible:false,changed:parked.get(element)?.changed??false});}
   function restore(root){for(const [element,state]of parked){if(element.isConnected===false){parked.delete(element);continue;}if(state.root!==root||state.visible||element.closest?.('[hidden]'))continue;element.value=state.value;state.visible=true;if(!doc.activeElement?.closest?.('input,select,textarea,button,[contenteditable]'))element.focus();}}
   function preserveFocused(){
@@ -24,7 +25,11 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   const focus=event=>{const state=parked.get(event.target);if(state?.resumeOnFocus)state.visible=true;};
   doc.addEventListener('change',change,true);doc.addEventListener('blur',blur,true);doc.addEventListener('focus',focus,true);
   function paint(){
-    $('session-workspace').hidden=view!=='session';$('arrangement-workspace').hidden=view!=='arrangement';
+    const full=maximized&&expanded;
+    $('session-workspace').hidden=full||view!=='session';$('arrangement-workspace').hidden=full||view!=='arrangement';
+    shell.classList.toggle('detail-maximized',full);
+    const maximize=$('maximize-detail'),label=full?'Restore detail size':'Maximize detail';
+    maximize.setAttribute('aria-label',label);maximize.setAttribute('aria-pressed',String(full));maximize.title=label;
     for(const name of ['session','arrangement'])$('view-'+name).setAttribute('aria-pressed',String(view===name));
     $('workspace-browser').hidden=!browser;$('browser-resizer').hidden=!browser;$('toggle-browser').setAttribute('aria-expanded',String(browser));$('timeline-inspector').hidden=view!=='arrangement';
     shell.style.setProperty('--browser-width',`${browserWidth}px`);$('browser-resizer').setAttribute('aria-valuenow',browserWidth);$('browser-resizer').setAttribute('aria-valuemax',maxBrowserWidth());
@@ -36,16 +41,18 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
     restore($(view+'-workspace'));
     if(expanded){restore(detailRoot());if(view==='arrangement'&&detail==='clip')restore($('timeline-inspector'));}
   }
-  function setHeight(value){requestedHeight=value;height=Math.round(Math.max(160,Math.min(maxHeight(),value)));paint();}
-  function cancelResize(){if(!resize)return;const old=resize;resize=null;setHeight(old.requestedHeight);if(handle.hasPointerCapture?.(old.id))handle.releasePointerCapture(old.id);}
-  function navigate(name){cancelResize();const changed=name!==view;if(changed){park($(view+'-workspace'));if(view==='arrangement')park($('timeline-inspector'));}view=name;paint();if(changed)onNavigate(name);}
+  function setHeight(value){maximized=false;customHeight=true;requestedHeight=value;fitHeight();paint();}
+  function cancelResize(){if(!resize)return;const old=resize;resize=null;maximized=old.maximized;customHeight=old.customHeight;requestedHeight=old.requestedHeight;fitHeight();paint();if(handle.hasPointerCapture?.(old.id))handle.releasePointerCapture(old.id);}
+  function toggleMaximize(){cancelResize();if(!maximized)park($(view+'-workspace'));maximized=!maximized;expanded=true;paint();fitHeight();paint();}
+  function navigate(name){cancelResize();if(maximized){maximized=false;fitHeight();}const changed=name!==view;if(changed){park($(view+'-workspace'));if(view==='arrangement')park($('timeline-inspector'));}view=name;paint();if(changed)onNavigate(name);}
   for(const name of ['session','arrangement'])$('view-'+name).addEventListener('click',()=>navigate(name));
   // A pointer navigation must not blur an unfinished field and publish its change.
-  for(const id of ['view-session','view-arrangement','toggle-browser','toggle-detail','detail-clip','detail-devices'])$(id).addEventListener('pointerdown',event=>event.preventDefault());
+  for(const id of ['view-session','view-arrangement','toggle-browser','toggle-detail','maximize-detail','detail-clip','detail-devices'])$(id).addEventListener('pointerdown',event=>event.preventDefault());
   for(const name of ['clip','devices'])$('detail-'+name).addEventListener('click',()=>{cancelResize();if(expanded&&detail!==name)park(detailRoot());detail=name;expanded=true;paint();});
   $('toggle-browser').addEventListener('click',()=>{browser=!browser;paint();});
-  $('toggle-detail').addEventListener('click',()=>{cancelResize();if(expanded)park(detailRoot());expanded=!expanded;paint();});
-  handle.addEventListener('pointerdown',event=>{if(event.button!==0)return;resize={id:event.pointerId,y:event.clientY,height,requestedHeight};handle.setPointerCapture?.(event.pointerId);event.preventDefault();});
+  $('toggle-detail').addEventListener('click',()=>{cancelResize();if(expanded)park(detailRoot());expanded=!expanded;if(!expanded){maximized=false;fitHeight();}paint();});
+  $('maximize-detail').addEventListener('click',toggleMaximize);handle.addEventListener('dblclick',toggleMaximize);handle.title='Drag to resize; double-click to maximize or restore';
+  handle.addEventListener('pointerdown',event=>{if(event.button!==0||resize)return;resize={id:event.pointerId,y:event.clientY,height,requestedHeight,maximized,customHeight};handle.setPointerCapture?.(event.pointerId);event.preventDefault();});
   handle.addEventListener('pointermove',event=>{if(resize?.id===event.pointerId)setHeight(resize.height+resize.y-event.clientY);});
   handle.addEventListener('pointerup',event=>{if(resize?.id!==event.pointerId)return;resize=null;handle.releasePointerCapture?.(event.pointerId);});
   handle.addEventListener('pointercancel',cancelResize);handle.addEventListener('lostpointercapture',cancelResize);
@@ -66,6 +73,6 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
     event.preventDefault();navigate(view==='session'?'arrangement':'session');
     $(view+'-workspace').focus();
   };
-  const fit=()=>{cancelResize();cancelBrowserResize();browserWidth=Math.min(browserWidth,maxBrowserWidth());height=Math.round(Math.max(160,Math.min(maxHeight(),requestedHeight)));paint();};doc.addEventListener('keydown',keydown);win?.addEventListener('blur',cancelResize);win?.addEventListener('resize',fit);paint();if(win?.innerHeight)fit();
+  const fit=()=>{cancelResize();cancelBrowserResize();browserWidth=Math.min(browserWidth,maxBrowserWidth());fitHeight();paint();};doc.addEventListener('keydown',keydown);win?.addEventListener('blur',cancelResize);win?.addEventListener('resize',fit);paint();if(win?.innerHeight)fit();
   return{preserves:element=>parked.has(element),uncommitted:()=>[...parked].find(([element,state])=>element.isConnected!==false&&state.changed)?.[0],resetPreserved:()=>parked.clear(),park,restore,preserveFocused,openMaster(){if(detail!=='master'){previousDetail=detail;if(expanded)park(detailRoot());}detail='master';expanded=true;paint();},returnMusic(){if(detail==='master'){park(detailRoot());detail=previousDetail;expanded=true;paint();}},openClip(){if(expanded&&detail!=='clip')park(detailRoot());detail='clip';expanded=true;paint();},dispose(){doc.removeEventListener('keydown',keydown);doc.removeEventListener('change',change,true);doc.removeEventListener('blur',blur,true);doc.removeEventListener('focus',focus,true);parked.clear();win?.removeEventListener('blur',cancelResize);win?.removeEventListener('resize',fit);}};
 }

@@ -1,6 +1,66 @@
 import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 
+for(const size of [{width:1440,height:900},{width:1280,height:800},{width:800,height:600}])test(`detail expands and maximizes the piano editor at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page,false,true,2,true);
+  const resize=page.getByRole('separator',{name:'Resize detail area',exact:true}),panel=page.locator('#detail-panel');
+  const originalPiano=await page.locator('#piano-roll').boundingBox();await resize.focus();await resize.press('End');
+  expect((await panel.boundingBox()).height).toBeGreaterThan(size.height*.6);
+  if(size.height>=800)expect((await page.locator('#piano-roll').boundingBox()).height).toBeGreaterThan(originalPiano.height+60);
+  const previous=await resize.getAttribute('aria-valuenow');await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  await expect(page.locator('#session-workspace')).toBeHidden();await expect(page.locator('#arrangement-workspace')).toBeHidden();
+  expect((await panel.boundingBox()).height).toBeGreaterThan(size.height*.75);
+  expect((await page.locator('#piano-roll').boundingBox()).height).toBeGreaterThan(originalPiano.height+30);
+  await expect(page.locator('#stop')).toBeInViewport();await expect(page.locator('#show-audio')).toBeInViewport();
+  await expect(page.getByRole('button',{name:'Restore detail size',exact:true})).toBeInViewport();
+  const velocity=page.getByRole('group',{name:'Note velocity lane',exact:true});
+  if(size.height>=800)await expect(velocity).toBeInViewport({ratio:1});
+  else{await velocity.scrollIntoViewIfNeeded();await expect(velocity).toBeInViewport({ratio:1});}
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
+  await page.screenshot({path:testInfo.outputPath(`maximized-detail-${size.width}x${size.height}.png`)});
+  await page.setViewportSize({width:1024,height:768});await page.setViewportSize(size);
+  await page.getByRole('button',{name:'Restore detail size',exact:true}).click();
+  await expect(resize).toHaveAttribute('aria-valuenow',previous);await expect(page.locator('#session-workspace')).toBeVisible();
+  await page.getByRole('button',{name:'Toggle detail',exact:true}).click();
+  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  const panelBounds=await panel.boundingBox(),workspaceBounds=await page.locator('#workspace-shell').boundingBox();
+  expect(panelBounds.y+panelBounds.height).toBeLessThanOrEqual(workspaceBounds.y+workspaceBounds.height);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('maximized Arrangement clip controls stay in a vertical scrolling column',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page,false,true,2,true);
+  await page.getByRole('button',{name:'Arrangement workspace',exact:true}).click();
+  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  const controls=page.locator('#clip-controls');
+  expect(await controls.evaluate(e=>e.scrollWidth-e.clientWidth)).toBeLessThanOrEqual(1);
+  const action=page.getByRole('button',{name:'Delete clip',exact:true});await action.scrollIntoViewIfNeeded();await expect(action).toBeInViewport({ratio:1});
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('Devices and Master share detail maximization without changing musical state',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page,false,true,2,true);
+  for(const [button,content] of [['#detail-devices','#device-detail'],['#master-select-session','#master-detail']]){
+    await page.locator(button).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+    await expect(page.locator(content)).toBeVisible();expect((await page.locator('#detail-panel').boundingBox()).height).toBeGreaterThan(450);
+    await expect(page.locator('#stop')).toBeInViewport();await expect(page.locator('#show-audio')).toBeInViewport();
+    await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await expect(page.locator('#session-workspace')).toBeVisible();
+  }
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('detail drag cancellation and maximize preserve an unfinished upper mixer field',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true,2,true);
+  const separator=page.getByRole('separator',{name:'Resize detail area',exact:true}),before=await separator.getAttribute('aria-valuenow');
+  const box=await separator.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2,box.y-100,{steps:4});
+  expect(Number(await separator.getAttribute('aria-valuenow'))).toBeGreaterThan(Number(before));
+  await page.keyboard.press('Escape');await page.mouse.up();await expect(separator).toHaveAttribute('aria-valuenow',before);
+  const gain=page.getByLabel('Pulse gain',{exact:true});await gain.fill('1.234');
+  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await expect(page.locator('#session-workspace')).toBeHidden();
+  await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await expect(gain).toHaveValue('1.234');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
 test('older-project Arrangement action and its blockers fit compact windows',async({page},testInfo)=>{
   await openSession(page,false,true);
   await page.evaluate(()=>{window.sessionSnapshot.capabilities.workspaceConversionAvailable=true;});
@@ -106,7 +166,7 @@ test('browser device double-click requests one validated load and reports native
 });
 
 // Browser geometry and input coverage only. The native desktop journey qualifies hosting/audio.
-async function openSession(page,longNames=false,clipBank=false,trackCount=2,workspaces=false,launchQuantization=false){
+async function openSession(page,longNames=false,clipBank=false,trackCount=2,workspaces=false,launchQuantization=false,midiPreview=false){
   const document=JSON.parse(readFileSync(new URL('../../../alive/examples/two-instruments.alive',import.meta.url))),patch=JSON.parse(readFileSync(new URL('../../examples/subtractive.ultra',import.meta.url)));
   document.format='alive-session-v2';const deviceInstances={},runtime=[];
   while(document.tracks.length<trackCount){const track=structuredClone(document.tracks[0]);track.id=`track-${document.tracks.length+1}`;track.name=`Track ${document.tracks.length+1}`;document.tracks.push(track);}
@@ -135,6 +195,7 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2,work
     snapshot.runtime.tracks=document.tracks.map(t=>({trackId:t.id,authority:'arrangement',activeSourceId:null,activePlacementId:null,activeSlotId:null,phase:null,epoch:'1',pendingAction:null,pendingAuthority:null,pendingSlotId:null,pendingSerial:null,pendingFrame:null}));
   }
   if(launchQuantization){snapshot.capabilities.launchQuantization=true;snapshot.capabilities.launchWindowFrames=1024;snapshot.launch={globalQuantization:'bar1',clipQuantization:[]};}
+  if(midiPreview){snapshot.capabilities.midiPreview=true;snapshot.capabilities.midiEdit=true;}
   await page.addInitScript(snapshot=>{
     window.sessionSnapshot=snapshot;
     window.removeTrack=async trackId=>{
@@ -146,6 +207,7 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2,work
     window.calls=[];const undo=[],redo=[];window.__TAURI__={core:{invoke:async(name,args)=>{window.calls.push({name,args});if(name==='alive_current')return structuredClone(snapshot);if(name==='alive_edit'){undo.push(structuredClone(snapshot.draft??snapshot.document));redo.length=0;snapshot.draft=args.document;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return structuredClone(snapshot);}if(name==='alive_history'){const from=args.direction==='undo'?undo:redo,to=args.direction==='undo'?redo:undo;to.push(structuredClone(snapshot.draft??snapshot.document));snapshot.draft=from.pop();snapshot.draftRevision++;snapshot.history={canUndo:!!undo.length,canRedo:!!redo.length};return structuredClone(snapshot);}}}};
     const invoke=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=(name,args)=>name==='alive_device'&&args.action==='remove'?window.removeTrack(args.trackId):invoke(name,args);
     const previous=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=async(name,args)=>{
+      if(name==='alive_midi_preview'){window.calls.push({name,args});return{serial:String(window.calls.length)};}
       if(name==='alive_device'&&args.action==='load'){window.calls.push({name,args});if(window.browserLoadError)throw Error(window.browserLoadError);return structuredClone(snapshot);}
       if(name==='alive_workspace_edit'){
         window.calls.push({name,args});const op=args.operation;if(args.draftRevision!==snapshot.draftRevision)throw Error('Stale draft');const draft=structuredClone(snapshot.draft??snapshot.document),affected={trackId:op.trackId??null,sourceId:op.sourceId??null,placementId:null,slotId:null,noteId:op.noteId??null};
@@ -177,6 +239,26 @@ test('empty body double-click creates one draft clip and never launches',async({
   await body.dblclick();await expect(page.getByLabel('Clip name',{exact:true})).toHaveValue('New clip');
   const calls=await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'));expect(calls).toHaveLength(1);expect(calls[0].name).toBe('alive_clip_edit');expect(calls[0].args.operation).toEqual({kind:'create',trackId:'track-1',slot:1});
   await expect(page.getByRole('button',{name:'Launch Pulse New clip',exact:true})).toBeDisabled();await expect(body).toHaveAttribute('aria-pressed','true');
+});
+
+for(const size of [{width:1440,height:900},{width:1280,height:800},{width:1024,height:768},{width:800,height:600}])test(`native Preview control and piano key gestures fit ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page,false,true,2,true,false,true);
+  const preview=page.getByRole('button',{name:'MIDI note Preview',exact:true});await expect(preview).toBeInViewport();await expect(preview).toHaveAttribute('aria-pressed','false');
+  const height=await page.locator('#piano-roll').evaluate(e=>e.getBoundingClientRect().height);expect(height).toBeGreaterThanOrEqual(156);
+  await preview.click();await expect(preview).toHaveAttribute('aria-pressed','true');
+  const key=page.locator('#piano-roll [data-key="60"]');await key.scrollIntoViewIfNeeded();const box=await key.boundingBox();
+  await page.mouse.move(box.x+5,box.y+box.height/2);await page.mouse.down();
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_midi_preview'&&c.args.action==='note').length)).toBe(1);
+  await page.mouse.up();await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_midi_preview'&&c.args.action==='release').length)).toBe(1);
+  expect(await page.evaluate(()=>window.calls.some(c=>c.name==='alive_transport'||c.name==='alive_workspace_action'))).toBe(false);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
+  await preview.scrollIntoViewIfNeeded();await expect(preview).toBeInViewport();
+  if(size.width===800){
+    await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+    const bounds=await page.locator('.piano-tools').evaluate(e=>Array.from(e.children).map(child=>{const r=child.getBoundingClientRect();return{x:r.x,y:r.y,right:r.right,bottom:r.bottom};}));
+    for(let i=0;i<bounds.length;i++)for(let j=i+1;j<bounds.length;j++){const a=bounds[i],b=bounds[j];expect(a.right<=b.x||b.right<=a.x||a.bottom<=b.y||b.bottom<=a.y).toBe(true);}
+  }
+  await page.screenshot({path:testInfo.outputPath(`preview-${size.width}x${size.height}.png`)});
 });
 
 test('scene receipts leave the visual and accessibility tree in legacy mode and refresh on return',async({page})=>{
@@ -459,7 +541,9 @@ test('maximum detail resize leaves the entire detail and workspace reachable',as
   await page.setViewportSize({width:1280,height:800});await openSession(page,false,true);
   const handle=page.getByRole('separator',{name:'Resize detail area'});await handle.focus();await page.keyboard.press('End');
   const bounds=await page.evaluate(()=>({detail:document.querySelector('#detail-panel').getBoundingClientRect().bottom,footer:document.querySelector('footer').getBoundingClientRect().top,workspace:document.querySelector('#session-workspace').getBoundingClientRect().height}));
-  expect(bounds.detail).toBeLessThanOrEqual(bounds.footer);expect(bounds.workspace).toBeGreaterThanOrEqual(150);
+  expect(bounds.detail).toBeLessThanOrEqual(bounds.footer);expect(bounds.workspace).toBeGreaterThanOrEqual(96);
+  const gain=page.getByLabel('Pulse gain',{exact:true});await gain.scrollIntoViewIfNeeded();await expect(gain).toBeInViewport({ratio:1});
+  const master=page.locator('#master-select-session');await master.scrollIntoViewIfNeeded();await expect(master).toBeInViewport({ratio:1});
 });
 
 test('track name and metadata line boxes fit the fixed Session header without clipping',async({page})=>{

@@ -493,7 +493,7 @@ void prepare_chase(unsigned t, const AliveSessionTrackStateV3 *prospective = nul
     // heads in the same reserved scan to exclude ending/starting pitches.
     for (unsigned scan=0; scan<clip.event_count; ++scan) {
       trace_read(false);
-      const auto &e = config_.events[clip.event_begin + scan];
+      const auto &e = scheduled_event(clip.event_begin + scan);
       if (e.frame >= ts.phase) {
         if(mode_!=Mode::Workspaces || e.frame>ts.phase)break;
         if(e.kind==ALIVE_SESSION_NOTE_OFF || e.kind==ALIVE_SESSION_NOTE_ON)held[e.target]=0;
@@ -516,6 +516,7 @@ void prepare_chase(unsigned t, const AliveSessionTrackStateV3 *prospective = nul
   }
 }
 void clear_track(CanvasWorkspace &workspace, unsigned t, bool chased) noexcept {
+  midi_clear_track(t);
   if (!chased)
     prepare_chase(t);
   auto &ts = state_.tracks[t];
@@ -561,6 +562,7 @@ void cancel_pending(unsigned t, unsigned error) noexcept {
     resolved_[t].pending_slot = None;
 }
 void terminate_v3(CanvasWorkspace &workspace, unsigned error, bool scheduled = false) noexcept {
+  midi_release_note(workspace);
   state_.playing = 0;
   unsigned mask = 0;
   for (unsigned t = 0; t < config_.track_count; ++t) {
@@ -572,8 +574,8 @@ void terminate_v3(CanvasWorkspace &workspace, unsigned error, bool scheduled = f
     Cost cost{};
     for (unsigned t = 0; t < config_.track_count; ++t)
       if (mask & (1u << t)) {
-        cost[1] += prepared_.reset[t][1];
-        cost[3] += prepared_.reset[t][3] / 2;
+        cost[1] += midi_proof().reset[t][1];
+        cost[3] += midi_proof().reset[t][3] / 2;
       }
     trace_charge(2, cost);
   }
@@ -821,9 +823,9 @@ uint64_t target_frame(uint64_t position) const noexcept {
     if (config_.loop_enabled && position >= config_.loop_end)
       position = config_.loop_start;
     uint64_t point = NoFrame;
-    for (unsigned b = 0; b < prepared_.bar_count; ++b)
-      if (prepared_.bars[b] >= position) {
-        point = prepared_.bars[b];
+    for (unsigned b = 0; b < midi_proof().bar_count; ++b)
+      if (midi_proof().bars[b] >= position) {
+        point = midi_proof().bars[b];
         break;
       }
     // The seam has its own prepared envelope, so the exact grid stays unchanged.
@@ -832,10 +834,10 @@ uint64_t target_frame(uint64_t position) const noexcept {
     return point != NoFrame && point - position < NoFrame - state_.absolute_frame
                ? state_.absolute_frame + (point - position) : NoFrame;
   }
-  for (unsigned b = 0; b < prepared_.bar_count; ++b)
-    if (prepared_.bars[b] >= position)
-      return mode_ != Mode::Workspaces || prepared_.bars[b] - position < NoFrame - state_.absolute_frame
-                 ? state_.absolute_frame + prepared_.bars[b] - position : NoFrame;
+  for (unsigned b = 0; b < midi_proof().bar_count; ++b)
+    if (midi_proof().bars[b] >= position)
+      return mode_ != Mode::Workspaces || midi_proof().bars[b] - position < NoFrame - state_.absolute_frame
+                 ? state_.absolute_frame + midi_proof().bars[b] - position : NoFrame;
   return config_.loop_enabled ? state_.absolute_frame + config_.length_frames - position : NoFrame;
 }
 Cost first_candidate_cost() const noexcept {
@@ -858,7 +860,7 @@ Cost first_candidate_cost() const noexcept {
       reset = true;
     }
     if (reset && !(candidate_.clear_mask & (1u << t)))
-      out = clip_admission::add(out, prepared_.reset[t]);
+      out = clip_admission::add(out, midi_proof().reset[t]);
     if (clip == None)
       continue;
     const auto cl = source(clip);
@@ -867,14 +869,14 @@ Cost first_candidate_cost() const noexcept {
     while (lo < hi) {
       const unsigned mid = (lo + hi) / 2;
       trace_read(true);
-      if (config_.events[cl.event_begin + mid].frame < phase)
+      if (scheduled_event(cl.event_begin + mid).frame < phase)
         lo = mid + 1;
       else
         hi = mid;
     }
     while (lo < cl.event_count) {
       trace_read(true);
-      const auto &e = config_.events[cl.event_begin + lo];
+      const auto &e = scheduled_event(cl.event_begin + lo);
       if (e.frame != phase)
         break;
       ++lo;
@@ -890,7 +892,7 @@ bool optional_admission() noexcept {
   Cost charge{};
   for (unsigned t = 0; t < config_.track_count; ++t)
     if (candidate_.clear_mask & (1u << t))
-      charge = add(charge, prepared_.reset[t]);
+      charge = add(charge, midi_proof().reset[t]);
   charge[4] = HorizonSteps;
   const auto optional_frame = cost(limits.optional_frame), optional_window = cost(limits.optional_window);
   const auto scheduled_frame = cost(limits.scheduled_frame), scheduled_window = cost(limits.scheduled_window);
@@ -930,7 +932,7 @@ bool optional_admission() noexcept {
   uint64_t past_optional_placement=placement_optional_.total+placement_optional_.expired-placement_optional_.entries[current];
   for (unsigned j = 0; j <= Window; ++j) {
     for (unsigned m = 0; m < 5; ++m) {
-      const uint64_t future = j && candidate_.playing ? (launch_active_ || candidate_.quantized ? launch_prepared_ : prepared_).future[m][j] : 0;
+      const uint64_t future = j && candidate_.playing ? midi_proof(launch_active_ || candidate_.quantized).future[m][j] : 0;
       if (past_scheduled[m] + future + (j ? scheduled_.entries[current][m] : 0) >
           (m ? scheduled_window[m] : 64))
         accepted = false;
@@ -979,6 +981,8 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
   for (unsigned budget = 0; tail != end && budget < 64; ++budget) {
     const auto &c = commands_[tail];
     tail = (tail + 1) % 65;
+    if(c.kind==9){midi_ready_=true;midi_edit_source_=c.track;midi_epoch_=c.epoch;midi_state_.serial=c.frame;midi_state_.status=ALIVE_MIDI_QUEUED;midi_state_.error=0;continue;}
+    if(c.kind==10){midi_preview_pending_={1,sizeof(AliveMidiPreviewV1),c.track,c.param,unsigned(c.value),0,config_.preparation_revision,c.frame};midi_preview_epoch_=c.epoch;continue;}
     if (c.kind == 7 || c.kind == 8) { trace_charge(3, Cost{0, 0, 0, 0, 1}); apply_master(c); continue; }
     if (c.kind == 3) {
       trace_charge(3, Cost{0, 0, 0, 1, 0});
@@ -1222,7 +1226,7 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
     } else {
       for (unsigned t = 0; t < config_.track_count; ++t)
         if (!clear_[t])
-          charge = add(charge, prepared_.reset[t]);
+          charge = add(charge, midi_proof().reset[t]);
       if (const auto failure = scheduled_fits(charge)) {
         fault_v3(workspace, failure);
         return;
@@ -1254,7 +1258,7 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
     }
   for (unsigned t = 0; t < config_.track_count; ++t)
     if ((mask & ~optional_clear_) & (1u << t))
-      charge = add(charge, prepared_.reset[t]);
+      charge = add(charge, midi_proof().reset[t]);
   if (mask) {
     if (const auto failure = scheduled_fits(charge)) {
       fault_v3(workspace, failure);
@@ -1291,7 +1295,7 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
         }
       }
       while (next[t] < clip.event_count) {
-        const auto &e = config_.events[clip.event_begin + next[t]];
+        const auto &e = scheduled_event(clip.event_begin + next[t]);
         if (e.frame != ts.phase)
           break;
         if (count == 32) {
@@ -1379,6 +1383,7 @@ void advance_v3(CanvasWorkspace &workspace) noexcept {
       }
   }
   scheduled_.expire(state_.absolute_frame);
+  midi_events_.expire(state_.absolute_frame);
   optional_.expire(state_.absolute_frame);
   if(mode_==Mode::Workspaces){placement_scheduled_.expire(state_.absolute_frame);placement_optional_.expire(state_.absolute_frame);}
   if (state_.playing && !config_.loop_enabled && state_.position >= config_.length_frames)

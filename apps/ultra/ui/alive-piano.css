@@ -1,5 +1,6 @@
 .piano-area{display:flex;flex-direction:column;height:calc(var(--detail-height) - 27px);min-height:247px;overflow:hidden;background:#2b2b2b}
-.piano-tools{display:flex;align-items:center;gap:8px;flex:0 0 26px;min-width:0;overflow-x:auto;overflow-y:hidden;padding:2px 7px;background:#292929;border-bottom:1px solid #505050;scrollbar-width:thin;white-space:nowrap}
+.piano-tools{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;flex:0 0 auto;min-height:26px;min-width:0;padding:2px 7px;background:#292929;border-bottom:1px solid #505050;white-space:nowrap}
+.piano-tools>*{flex-shrink:0}
 .piano-tool-group{display:flex;align-items:center;gap:2px}.piano-tool-group>span{font-size:11px;color:var(--muted);padding-right:3px}
 .piano-tools button{min-width:22px;height:21px;min-height:21px;padding:0 5px;font-size:12px;line-height:18px;border-color:#565656}
 .piano-view-range{margin-left:auto;min-width:max-content;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
@@ -8,7 +9,8 @@
 #piano-roll [data-key]{cursor:default}#piano-roll [data-part=body]{cursor:move}#piano-roll [data-part=resize]{cursor:ew-resize}
 /* Keep empty-grid clicks on the stable SVG while selection redraws its marks. */
 #piano-roll rect,#piano-roll line,#piano-roll text{pointer-events:none}
-#piano-roll [data-note]{pointer-events:auto}
+#piano-roll [data-note],#piano-roll [data-key]{pointer-events:auto}
+.piano-tools .piano-preview[aria-pressed=true]{background:var(--selection);color:#202020;border-color:var(--selection)}
 .piano-velocity-lane{display:block;flex:0 0 40px;width:100%;height:40px;min-height:40px;box-shadow:inset 0 1px #5a5a5a;touch-action:none;outline-offset:-2px}
 .piano-velocity-lane:focus-visible{outline:2px solid var(--selection)}.piano-velocity-lane [data-part=velocity]{cursor:ns-resize}
 .piano-area .note-velocity{display:flex;flex:0 0 25px;height:25px;min-height:25px;gap:8px;padding:2px 9px;border-top:1px solid #454545;font-size:11px}

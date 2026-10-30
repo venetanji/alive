@@ -1,5 +1,31 @@
 # Alive / Ultra Plan
 
+## Active Product Roadmap: 2026-10-31
+
+The owner has resumed development. This section gives the current product
+priorities; the dated checkpoints below retain their original evidence and do
+not pause the work listed here. Alive's own previous formats and native
+interfaces need no backward compatibility or migration work (see PRODUCT.md).
+
+| Order | Work | Current State |
+| --- | --- | --- |
+| Done | Live MIDI note editing and set-wide Preview/audition through the actual device chain | Native and desktop qualification and independent review pass. Completed note gestures and musical Undo/Redo preserve playback and unrelated pending edits. Dense or incompatible pending sources retain the explicit draft path. Evidence: experiments/alive-midi-live-20261031. |
+| Done | Larger bottom Clip/Devices/Master detail panel | Expanded drag range, maximize/restore and compact piano/source layout. Requested size survives window resizing; unfinished fields survive navigation. Chromium and real WebKit checks pass at 1440x900, 1280x800 and 800x600. Evidence: experiments/alive-detail-20261031. |
+| Next | Loop controls | Reference study underway. Separate the song loop, clip start/end and local clip loop; support useful edits during playback. |
+| Next | Explicit MIDI/audio track creation and WAV clips | Shared design exists; mixed audio/MIDI playback and empty MIDI instrument slots remain to implement. |
+| Next | Input routing, monitoring, arm and live audio recording | User explicitly requested recording. Global input configuration, per-track input/channel, In/Auto/Off monitoring and independent arm must precede record-to-clip. |
+| Following | Shared silent-video engine for Alive and Ultra | Shared architecture and silent-video-first scope agreed; decoder, clock/presentation proof and product integration remain to implement. |
+| Parallel | Native Live devices and presets | Another session has demonstrated individual native devices. Broader catalog/preset interoperability still needs integration and verification. |
+
+Also completed: configurable launch quantization, Session/Arrangement switching,
+native MIDI Arrangement editing, and a fresh workspace that exposes both views.
+The local launcher selects a versioned build; its source-build-manifest.json
+records the installed source and artifact identities. CI remains
+manual; branch pushes do not dispatch cloud builds. Run focused verification
+for each change rather than repeating historical acceptance runs automatically.
+
+## Retained Checkpoints
+
 Paused for power-off at the user's request on 2026-10-30. Tasks 1-8 remain
 accepted; Task 9/Q1 is open and Task 10 has not started. Current evidence and
 restart instructions are at the top of `docs/PHASE2_HANDOFF.md`. All workers

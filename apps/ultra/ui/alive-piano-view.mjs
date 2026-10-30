@@ -3,7 +3,7 @@ import {GRID,geometry,initialViewport,navigateViewport,fitViewport,rulerTicks,be
 const blackKeys=new Set([1,3,6,8,10]);
 const pitchName=pitch=>`${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][pitch%12]}${Math.floor(pitch/12)-1}`;
 
-export function mountPianoView({doc,win,svg,onNavigate=()=>{},onGeometry=()=>{}}){
+export function mountPianoView({doc,win,svg,onNavigate=()=>{},onGeometry=()=>{},onPreview=()=>{}}){
   const make=(tag,attrs={},text)=>{
     const element=tag==='svg'||['rect','line','text','g','defs','clipPath','path','title'].includes(tag)
       ?doc.createElementNS('http://www.w3.org/2000/svg',tag):doc.createElement(tag);
@@ -13,6 +13,10 @@ export function mountPianoView({doc,win,svg,onNavigate=()=>{},onGeometry=()=>{}}
   };
   const area=svg.parentElement,toolbar=make('div',{class:'piano-tools',role:'toolbar','aria-label':'Piano viewport'});
   const range=make('output',{class:'piano-view-range','aria-label':'Visible piano range',title:'Wheel: scroll pitch; Shift + wheel: scroll time; Ctrl + wheel: zoom time; Alt + wheel: zoom pitch'});
+  const previewButton=make('button',{type:'button',class:'piano-preview','aria-label':'MIDI note Preview','aria-pressed':'false',title:'Preview notes through the selected instrument'},'Preview');
+  let previewEnabled=false;
+  previewButton.addEventListener('pointerdown',event=>event.preventDefault());
+  previewButton.addEventListener('click',()=>onPreview(!previewEnabled));
   const velocityLane=make('svg',{class:'piano-velocity-lane','aria-label':'Note velocity lane',role:'group',tabindex:0,'aria-describedby':'piano-help'});
   let viewport,last=null,g=null,scope=null,disposed=false;
 
@@ -32,7 +36,7 @@ export function mountPianoView({doc,win,svg,onNavigate=()=>{},onGeometry=()=>{}}
   const time=make('div',{class:'piano-tool-group'}),pitch=make('div',{class:'piano-tool-group'});
   time.append(make('span',{},'Time'),button('Scroll time earlier','<',()=>({type:'timePan',beats:-g.beatSpan/4})),button('Scroll time later','>',()=>({type:'timePan',beats:g.beatSpan/4})),button('Zoom out time','-',{type:'timeZoom',factor:1/1.5}),button('Zoom in time','+',{type:'timeZoom',factor:2}));
   pitch.append(make('span',{},'Pitch'),button('Scroll pitch down','v',{type:'pitchPan',pitches:-3}),button('Scroll pitch up','^',{type:'pitchPan',pitches:3}),button('Zoom out pitch','-',{type:'pitchZoom',factor:1/1.25}),button('Zoom in pitch','+',{type:'pitchZoom',factor:1.25}));
-  toolbar.append(time,pitch,button('Fit notes','Fit',{type:'fit'}),range);
+  toolbar.append(previewButton,time,pitch,button('Fit notes','Fit',{type:'fit'}),range);
   if(area){area.insertBefore(toolbar,svg);area.insertBefore(velocityLane,svg.nextSibling??null);}
 
   function text(parent,x,y,value,attrs={}){
@@ -110,6 +114,7 @@ export function mountPianoView({doc,win,svg,onNavigate=()=>{},onGeometry=()=>{}}
   const observer=win?.ResizeObserver?new win.ResizeObserver(resize):null;observer?.observe(svg);win?.addEventListener('resize',resize);
   return {
     velocityLane,
+    preview({enabled,available,reason}){previewEnabled=enabled;previewButton.disabled=!available;previewButton.setAttribute('aria-pressed',String(enabled));previewButton.title=available?'Preview selected, added and moved notes through the instrument':reason??'Native MIDI Preview is unavailable';},
     render(value){if(value.scope!==scope){scope=value.scope;viewport=initialViewport(value.notes,value.length);}last=value;draw();return g;},
     dispose(){disposed=true;observer?.disconnect();svg.removeEventListener('wheel',wheel);win?.removeEventListener('resize',resize);}
   };

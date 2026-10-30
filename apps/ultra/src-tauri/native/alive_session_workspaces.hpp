@@ -253,7 +253,7 @@ struct BorrowedSource {
 };
 BorrowedSource source(unsigned index) const noexcept {
   if (mode_ == Mode::Workspaces) {
-    const auto &s = config_.sources[index];
+    const auto &s = midi_source(index);
     return {s.event_begin, s.event_count, s.length_frames, s.owned_masks};
   }
   const auto &s = config_.clips[index];
@@ -755,6 +755,7 @@ bool configure_v4(const AliveSessionConfigV4 &c, const AliveSessionAudioBufferV4
     for (unsigned p = 0; p < device.parameter_count; ++p)
       ds.base[p] = device.parameters[p].base;
   }
+  midi_configure(c);
   clear_tracks(workspace, (1u << c.track_count) - 1);
   publish(workspace);
   return true;

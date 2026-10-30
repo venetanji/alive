@@ -22,6 +22,16 @@ Author, understand, connect, save, reopen, and play a bounded patch without havi
 to configure every object through permanent side panels. Host reusable saved
 instruments in a small, reopenable Alive session with clips, automation and a mixer.
 
+## Development Policy
+
+Alive and Ultra are experimental software with no deployed users. Their own
+previous file formats, schemas and native interfaces do not need backward
+compatibility. Evolve the current architecture directly; do not add migrations,
+old-format conversion flows or compatibility fallbacks. Update development
+fixtures with the architecture, and remove obsolete paths when they obstruct it.
+Preserve actual project work during development. Live/Max import and device
+interoperability remain product goals.
+
 ## Capabilities and Constraints
 
 - A patch-authored four-voice subtractive instrument combines Faust saw/filter/

@@ -22,6 +22,7 @@ pub use persistence::{read, save};
 pub mod native;
 mod native_master;
 mod native_launch;
+mod native_midi;
 pub mod host;
 pub mod probe;
 pub mod desktop;

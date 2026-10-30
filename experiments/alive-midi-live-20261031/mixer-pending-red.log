@@ -1,0 +1,34 @@
+
+running 1 test
+test session::desktop::midi::tests::native_applied_commits_notes_and_history_while_pending_transport_and_master_survive ... FAILED
+
+failures:
+
+---- session::desktop::midi::tests::native_applied_commits_notes_and_history_while_pending_transport_and_master_survive stdout ----
+
+thread 'session::desktop::midi::tests::native_applied_commits_notes_and_history_while_pending_transport_and_master_survive' (313830) panicked at src/session/native_master.rs:41:5:
+native fixture failed:
+
+running 1 test
+test session::desktop::midi::tests::native_applied_commits_notes_and_history_while_pending_transport_and_master_survive ... FAILED
+
+failures:
+
+failures:
+    session::desktop::midi::tests::native_applied_commits_notes_and_history_while_pending_transport_and_master_survive
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 306 filtered out; finished in 0.08s
+
+
+
+thread 'session::desktop::midi::tests::native_applied_commits_notes_and_history_while_pending_transport_and_master_survive' (313832) panicked at src/session/desktop/midi.rs:129:9:
+assertion failed: c.midi_pending.is_some()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    session::desktop::midi::tests::native_applied_commits_notes_and_history_while_pending_transport_and_master_survive
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 306 filtered out; finished in 0.09s

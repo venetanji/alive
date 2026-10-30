@@ -2,6 +2,7 @@
 #include "alive_session.h"
 #include "alive-master-v1.h"
 #include "alive-launch-v1.h"
+#include "alive-midi-edit-v1.h"
 #include "alive_session_launch.hpp"
 #include "canvas_workspace.hpp"
 #include "alive_session_clip_policy.hpp"
@@ -11,6 +12,7 @@
 #include <atomic>
 #include <cstring>
 #include <limits>
+#include <tuple>
 
 namespace ultra {
 #ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
@@ -332,8 +334,9 @@ class AliveSession {
    else if(c.kind==7||c.kind==8)apply_master(c);
   }tail_.store(tail,std::memory_order_release);state_.peak_left=state_.peak_right=0;for(auto& ts:state_.tracks)ts.mixer.peak_left=ts.mixer.peak_right=0;
  }
- void device_stopped(CanvasWorkspace& workspace)noexcept{stop();master_quiescent_=true;begin(workspace);publish(workspace);master_quiescent_=false;}
- void dispatch_event(CanvasWorkspace& workspace,const AliveSessionEventV2& event)noexcept{
+ void device_stopped(CanvasWorkspace& workspace)noexcept{stop();master_quiescent_=true;begin(workspace);if(mode_==Mode::Workspaces)midi_sample(workspace);publish(workspace);master_quiescent_=false;}
+ void dispatch_event(CanvasWorkspace& workspace,const AliveSessionEventV2& event)noexcept{midi_dispatch(workspace,event);}
+ void dispatch_event_raw(CanvasWorkspace& workspace,const AliveSessionEventV2& event)noexcept{
 #ifdef ULTRA_ALIVE_SESSION_TEST_TRACE
    if(mode_==Mode::Workspaces&&alive_session_test_dispatch)alive_session_test_dispatch(state_.absolute_frame,resolved_[event.track].source,resolved_[event.track].occurrence,event);
 #endif
@@ -344,7 +347,7 @@ class AliveSession {
    }
  }
  void sample(CanvasWorkspace& workspace)noexcept{
-  if(mode_!=Mode::Legacy){sample_v3(workspace);return;}
+  if(mode_!=Mode::Legacy){sample_v3(workspace);midi_sample(workspace);return;}
   if(!state_.playing)return;
   while(next_event_<config_.event_count&&config_.events[next_event_].frame==state_.position){const auto& event=config_.events[next_event_++];
    dispatch_event(workspace,event);
@@ -353,7 +356,7 @@ class AliveSession {
  std::array<double,2> mix(unsigned document,const std::array<double,2>& signal)noexcept{
   bool solo=false;for(unsigned t=0;t<config_.track_count;++t)solo|=state_.tracks[t].mixer.solo;
   for(unsigned t=0;t<config_.track_count;++t)if(config_.devices[config_.tracks[t].instrument].document==document){auto& ts=state_.tracks[t].mixer;
-   if(!state_.playing||(mode_!=Mode::Legacy&&state_.tracks[t].active_clip==ALIVE_SESSION_V3_NONE)||ts.mute||(solo&&!ts.solo))return {};
+   if(((!state_.playing||(mode_!=Mode::Legacy&&state_.tracks[t].active_clip==ALIVE_SESSION_V3_NONE))&&!midi_output(t))||ts.mute||(solo&&!ts.solo))return {};
    const std::array<double,2> output{signal[0]*ts.gain,signal[1]*ts.gain};
    if(std::isfinite(output[0]))ts.peak_left=std::max(ts.peak_left,std::abs(output[0]));
    if(std::isfinite(output[1]))ts.peak_right=std::max(ts.peak_right,std::abs(output[1]));
@@ -403,7 +406,9 @@ class AliveSession {
 #endif
   for(unsigned i=0;i<sizeof(T)/8;++i){uint64_t word;std::memcpy(&word,reinterpret_cast<const char*>(&value)+i*8,8);published_[i].store(word);}
   for(unsigned i=0;i<sizeof(master_)/8;++i){uint64_t word;std::memcpy(&word,reinterpret_cast<const char*>(&master_)+i*8,8);published_master_[i].store(word);}
+  midi_publish();
   publication_.fetch_add(1);
+  if(midi_done_&&midi_){midi_done_=false;midi_->pending.store(2,std::memory_order_release);}
  }
  template<class T> bool coherent_wire(T& result,unsigned version)const noexcept{
   for(unsigned attempt=0;attempt<4;++attempt){
@@ -487,5 +492,6 @@ class AliveSession {
  }
 #include "alive_session_clips.hpp"
 #include "alive_session_workspaces.hpp"
+#include "alive_session_midi.hpp"
 };
 }

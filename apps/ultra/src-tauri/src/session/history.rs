@@ -54,8 +54,9 @@ pub enum Direction { Undo, Redo }
 #[derive(Serialize)]
 #[serde(rename_all="camelCase")]
 pub(super) struct View { pub can_undo:bool,pub can_redo:bool,undo_label:Option<String>,redo_label:Option<String> }
+#[derive(Clone)]
 struct Entry { before:Projection,after:Projection,before_launch:super::launch::LaunchSettings,after_launch:super::launch::LaunchSettings,label:String,bytes:usize }
-#[derive(Default)]
+#[derive(Default,Clone)]
 pub(super) struct History { entries:Vec<Entry>,cursor:usize,bytes:usize }
 impl History {
     pub fn identities(&self)->std::collections::HashSet<String>{self.entries.iter().flat_map(|e|[&e.before,&e.after]).flat_map(Projection::identities).collect()}
