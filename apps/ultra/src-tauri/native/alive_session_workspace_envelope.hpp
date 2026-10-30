@@ -129,14 +129,14 @@ inline bool source_profile(const AliveSessionConfigV4 &c, unsigned source, uint6
 
 // The gate precedes every DP call, including tracks that will later fail policy.
 inline bool compose(const Curves &source, const Envelope &k, const Charge &transition,
-                    Curves &out, unsigned &calls, unsigned width = Window) noexcept {
-  if (!width || width > Window || k[width] > 6)
+                    Curves &out, unsigned &calls, unsigned width = Window, unsigned boundary_limit = 6) noexcept {
+  if (!width || width > Window || k[width] > boundary_limit)
     return false;
   for (unsigned w = 1; w <= width; ++w) {
     if (k[w] < k[w - 1])
       return false;
     for (unsigned m = 0; m < 6; ++m)
-      if (source[m][w] > UINT64_MAX / 7)
+      if (source[m][w] > UINT64_MAX / (boundary_limit + 1))
         return false;
   }
   for (unsigned m = 0; m < 6; ++m) {
@@ -166,7 +166,7 @@ struct Proof {
 
 // Input has passed the final MIDI shape validator. This has no runtime authority
 // and cannot configure the host; the next preparation slice consumes its curves.
-inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out) noexcept {
+inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out, bool quantized = false) noexcept {
   out = {};
   auto &diag = out.diagnostic;
   diag.version = 4;
@@ -250,11 +250,14 @@ inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out) noexcept 
     for (unsigned w = 1; w <= Window; ++w)
       if (!plus(k[w], grid[w], k[w]) || !plus(k[w], global[w], k[w]) || k[w] < k[w - 1])
         return overflow();
-    if (k[Window] > 6) {
+    if (quantized)
+      for (unsigned w = 1; w <= Window; ++w) k[w] += 2;
+    const unsigned boundary_limit = quantized ? 8 : 6;
+    if (k[Window] > boundary_limit) {
       diag.placement[t] = tr.placement_count ? tr.placement_begin : UINT32_MAX;
       diag.source[t] = tr.placement_count ? c.placements[tr.placement_begin].source : UINT32_MAX;
       diag.contribution[t] = unsigned(k[Window]);
-      return fail(ALIVE_SESSION_V4_WORK_LIMIT, 6, Window, k[Window], 6, t);
+      return fail(ALIVE_SESSION_V4_WORK_LIMIT, 6, Window, k[Window], boundary_limit, t);
     }
   }
   // One profile and one track maximum are streamed; never 96 envelope sets.
@@ -298,7 +301,7 @@ inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out) noexcept 
       }
     }
     if (!compose(scratch->maximum, out.boundaries[t], transition,
-                  scratch->composed, out.segment_calls))
+                  scratch->composed, out.segment_calls, Window, quantized ? 8 : 6))
       return overflow();
     for (unsigned m = 0; m < 6; ++m) {
       auto &future = m == 5 ? out.placement : out.prepared.future[m];

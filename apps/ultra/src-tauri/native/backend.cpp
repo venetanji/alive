@@ -500,6 +500,9 @@ int alive_session_configure_v3(const AliveSessionConfigV3* config){
  const int result=session.configure_v3(*config,canvas);publish_canvas();return result;
 }
 int alive_session_request_v3(const AliveSessionRequestV3* request,AliveSessionReceiptV3* immediate){const AliveSessionRequestV3 invalid{};return immediate&&session.request_v3(request?*request:invalid,*immediate);}
+int alive_launch_limits_v1(AliveLaunchLimitsV1* out){return out&&session.launch_limits(*out);}
+int alive_launch_request_v3_v1(const AliveLaunchRequestV1* r,AliveSessionReceiptV3* out){return r&&out&&session.launch_request<AliveSessionRequestV3>(*r,*out,3);}
+int alive_launch_request_v4_v1(const AliveLaunchRequestV1* r,AliveSessionReceiptV4* out){return r&&out&&session.launch_request<AliveSessionRequestV4>(*r,*out,4);}
 uint64_t alive_session_stop_v3(){const auto epoch=session.stop();if(!running.load()&&!engine.status().ready){session.begin(canvas);session.publish(canvas);publish_canvas();}return epoch;}
 int alive_session_state_v3(AliveSessionStateV3* state){return state&&session.snapshot_v3(*state);}
 int alive_session_diagnostic_v3(AliveSessionDiagnosticV3* diagnostic){return diagnostic&&session.diagnostic_v3(*diagnostic);}

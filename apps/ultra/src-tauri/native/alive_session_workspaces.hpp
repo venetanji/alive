@@ -656,6 +656,11 @@ bool configure_v4(const AliveSessionConfigV4 &c, const AliveSessionAudioBufferV4
   if (!envelopes_v4(c, *scratch, placement))
     return false;
   prepared_ = *scratch;
+  auto launch_proof = std::make_unique<workspace_admission::Proof>();
+  launch_admitted_ = workspace_admission::build_validated(c, *launch_proof, true);
+  launch_prepared_ = launch_proof->prepared;
+  launch_placement_ = launch_proof->placement;
+  launch_active_ = false;
   placement_future_ = placement;
   parameter_plans_ = *plans;
   document_devices_ = documents;

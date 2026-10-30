@@ -20,7 +20,9 @@ static void trace_charge(unsigned family, const Cost &value) noexcept {
 }
 static constexpr unsigned None = ALIVE_SESSION_V3_NONE;
 static constexpr uint64_t NoFrame = ALIVE_SESSION_V3_NO_FRAME;
-clip_admission::Prepared prepared_{};
+clip_admission::Prepared prepared_{}, launch_prepared_{};
+clip_admission::Envelope launch_placement_{};
+bool launch_admitted_ = false, launch_active_ = false;
 clip_admission::Ledger scheduled_{}, optional_{};
 std::array<unsigned, 8> cursors_{};
 struct Chase {
@@ -43,7 +45,7 @@ struct Candidate {
   bool group[64]{};
   uint64_t position = 0;
   unsigned playing = 0;
-  bool unscheduled = false;
+  bool unscheduled = false, quantized = false;
 } candidate_{};
 static bool output_header(unsigned version, unsigned bytes, size_t expected) noexcept {
   return version == 3 && bytes == expected;
@@ -237,7 +239,7 @@ bool bounds_v3(const AliveSessionConfigV3 &c) noexcept {
                          "Device automation summary does not match clip ownership.");
   return true;
 }
-bool envelopes_v3(const AliveSessionConfigV3 &c, clip_admission::Prepared &out) noexcept {
+bool envelopes_v3(const AliveSessionConfigV3 &c, clip_admission::Prepared &out, bool quantized = false) noexcept {
   using namespace clip_admission;
   out = {};
   Envelope boundaries{};
@@ -262,6 +264,8 @@ bool envelopes_v3(const AliveSessionConfigV3 &c, clip_admission::Prepared &out) 
     }
   if (boundaries[Window] > 6)
     return reject_v3(ALIVE_SESSION_V3_RUNTIME_INVARIANT, "Derived quantization boundary bound exceeds six.");
+  if (quantized)
+    for (unsigned w = 1; w <= Window; ++w) boundaries[w] += 2;
   const auto limits = policy(c.profile);
   const Cost frame_limit = {32, limits.scheduled_frame.root_clears, limits.scheduled_frame.event_scans,
                             limits.scheduled_frame.parameter_writes, limits.scheduled_frame.guard_steps};
@@ -319,6 +323,7 @@ bool envelopes_v3(const AliveSessionConfigV3 &c, clip_admission::Prepared &out) 
       const auto observed = out.future[m][width], limit = width == 1 ? frame_limit[m] : window_limit[m];
       if (observed <= limit)
         continue;
+      if (quantized) return false;
       const unsigned error = m            ? ALIVE_SESSION_V3_WORK_LIMIT
                              : width == 1 ? ALIVE_SESSION_V3_EVENT_FRAME_LIMIT
                                           : ALIVE_SESSION_V3_EVENT_WINDOW_LIMIT;
@@ -608,6 +613,8 @@ bool configure_v3(const AliveSessionConfigV3 &c, CanvasWorkspace &workspace) noe
   parameter_plans_ = *plans;
   document_devices_ = documents;
   prepared_ = *scratch;
+  launch_admitted_ = envelopes_v3(c, launch_prepared_, true);
+  launch_active_ = false;
   mode_ = Mode::Clips;
   last_preparation_ = c.preparation_revision;
   config_ = {};
@@ -682,9 +689,26 @@ bool configure_v3(const AliveSessionConfigV3 &c, CanvasWorkspace &workspace) noe
 bool request_v3(const AliveSessionRequestV3 &r, AliveSessionReceiptV3 &immediate) noexcept {
   return request_ingress(r,immediate,3);
 }
+bool launch_limits(AliveLaunchLimitsV1 &out) const noexcept {
+  if (out.version != 1 || out.struct_bytes != sizeof out) return false;
+  out = {1, sizeof out, 1023, 1024, unsigned(configured() && mode_ != Mode::Legacy && launch_admitted_), 0, config_.preparation_revision};
+  return true;
+}
+template<class Request, class Receipt>
+bool launch_request(const AliveLaunchRequestV1 &input, Receipt &out, unsigned version) noexcept {
+  Request r{};
+  r.version = version; r.struct_bytes = sizeof r;
+  r.kind = input.kind; r.track_mask = input.track_mask;
+  r.preparation_revision = input.preparation_revision; r.request_serial = input.request_serial;
+  r.position = input.position;
+  r.reserved = input.reserved;
+  for (unsigned t=0;t<8;++t) {r.tracks[t].action=input.tracks[t].action;r.tracks[t].slot=input.tracks[t].slot;}
+  if (input.version != 1 || input.struct_bytes != sizeof input) r.version = 0;
+  return request_ingress(r, out, version, input.quantization < 10 ? input.quantization : 10);
+}
 private:
 template<class Request,class Receipt>
-bool request_ingress(const Request &r, Receipt &immediate, unsigned version) noexcept {
+bool request_ingress(const Request &r, Receipt &immediate, unsigned version, unsigned quantization = UINT32_MAX) noexcept {
   if ((immediate.version != version || immediate.struct_bytes != sizeof immediate))
     return false;
   Receipt receipt{};
@@ -700,6 +724,10 @@ bool request_ingress(const Request &r, Receipt &immediate, unsigned version) noe
     immediate = receipt;
     return version == 4 ? reject_v4(error, message) : reject_v3(error, message);
   };
+  if (quantization != UINT32_MAX && (quantization >= 10 || r.kind != 3))
+    return refused(ALIVE_SESSION_V3_BAD_FIELD, "Invalid quantized track request.");
+  if (quantization != UINT32_MAX && !launch_admitted_)
+    return refused(ALIVE_SESSION_V3_WORK_LIMIT, "This preparation cannot admit quantized launch work.");
   if ((r.version != version || r.struct_bytes != sizeof r))
     return refused(ALIVE_SESSION_V3_BAD_HEADER, "Invalid v3 request header.");
   if ((version == 4 ? mode_ != Mode::Workspaces : mode_ != Mode::Clips) || !configured() || r.preparation_revision != config_.preparation_revision)
@@ -748,7 +776,7 @@ bool request_ingress(const Request &r, Receipt &immediate, unsigned version) noe
   Command c{};
   c.kind = 6;
   c.request.kind=r.kind;c.request.track_mask=r.track_mask;c.request.preparation_revision=r.preparation_revision;
-  c.request.request_serial=r.request_serial;c.request.position=r.position;
+  c.request.request_serial=r.request_serial;c.request.position=r.position;c.request.quantization=quantization;
   for(unsigned t=0;t<8;++t){c.request.tracks[t].action=r.tracks[t].action;c.request.tracks[t].slot=r.tracks[t].slot;}
   if (!enqueue(c, false))
     return refused(ALIVE_SESSION_V3_QUEUE_FULL, "Clip command queue is full.");
@@ -900,7 +928,7 @@ bool optional_admission() noexcept {
   uint64_t past_optional_placement=placement_optional_.total+placement_optional_.expired-placement_optional_.entries[current];
   for (unsigned j = 0; j <= Window; ++j) {
     for (unsigned m = 0; m < 5; ++m) {
-      const uint64_t future = j && candidate_.playing ? prepared_.future[m][j] : 0;
+      const uint64_t future = j && candidate_.playing ? (launch_active_ || candidate_.quantized ? launch_prepared_ : prepared_).future[m][j] : 0;
       if (past_scheduled[m] + future + (j ? scheduled_.entries[current][m] : 0) >
           (m ? scheduled_window[m] : 64))
         accepted = false;
@@ -908,7 +936,7 @@ bool optional_admission() noexcept {
         accepted = false;
     }
     if(mode_==Mode::Workspaces){
-      const uint64_t future=j&&candidate_.playing?placement_future_[j]:0;
+      const uint64_t future=j&&candidate_.playing?(launch_active_ || candidate_.quantized ? launch_placement_[j] : placement_future_[j]):0;
       if(past_placement+future+(j?placement_scheduled_.entries[current]:0)>512)accepted=false;
       if(past_optional_placement+(j?placement_optional_.entries[current]:0)>2114)accepted=false;
       if(j==0){past_placement-=placement_scheduled_.expired;past_optional_placement-=placement_optional_.expired;}
@@ -1044,7 +1072,18 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
       }
     } else {
       candidate_.group[index] = true;
-      const uint64_t target = candidate_.playing ? target_frame(candidate_.position) : state_.absolute_frame;
+      const bool quantized = r.quantization != UINT32_MAX;
+      if (quantized) { candidate_.quantized = true; candidate_.unscheduled = true; }
+      uint64_t target = state_.absolute_frame;
+      if (candidate_.playing) {
+        if (!quantized) target = target_frame(candidate_.position);
+        else {
+          const uint64_t delta = launch::distance(r.quantization, config_.tempo_bpm,
+            candidate_.position, config_.length_frames, config_.loop_enabled,
+            config_.loop_start, config_.loop_end);
+          target = delta < NoFrame - state_.absolute_frame ? state_.absolute_frame + delta : NoFrame;
+        }
+      }
       if (target == NoFrame) {
         finish(receipt, ALIVE_SESSION_V3_CANCELED, ALIVE_SESSION_V3_END_CANCELED);
         receipt.target_frame = NoFrame;
@@ -1126,6 +1165,7 @@ void begin_v3(CanvasWorkspace &workspace, unsigned end, uint64_t stop) noexcept 
   }
   const bool accepted = resolved && (!candidate_.unscheduled || optional_admission());
   if (accepted) {
+    launch_active_ |= candidate_.quantized;
     for (unsigned t = 0; t < config_.track_count; ++t)
       if (candidate_.old_status[t]) {
         auto &receipt = state_.receipts[state_.tracks[t].pending_serial % 128];

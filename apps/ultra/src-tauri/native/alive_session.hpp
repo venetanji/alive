@@ -1,6 +1,8 @@
 #pragma once
 #include "alive_session.h"
 #include "alive-master-v1.h"
+#include "alive-launch-v1.h"
+#include "alive_session_launch.hpp"
 #include "canvas_workspace.hpp"
 #include "alive_session_clip_policy.hpp"
 #include "alive_session_workspace_envelope.hpp"
@@ -22,7 +24,7 @@ inline void (*alive_session_test_placement_probe)(unsigned)noexcept=nullptr;
 inline uint64_t alive_session_test_reconstruction_reads=0,alive_session_test_preview_reads=0;
 #endif
 class AliveSession {
- struct InternalRequest {uint32_t kind=0,track_mask=0;uint64_t preparation_revision=0,request_serial=0,position=0;AliveSessionTrackActionV3 tracks[8]{};};
+ struct InternalRequest {uint32_t kind=0,track_mask=0,quantization=UINT32_MAX;uint64_t preparation_revision=0,request_serial=0,position=0;AliveSessionTrackActionV3 tracks[8]{};};
  struct Command {unsigned kind=0,track=0,param=0,mute=0,solo=0;double value=0;uint64_t frame=0,epoch=0;InternalRequest request{};};
  struct Config {
   uint32_t track_count=0,device_count=0,event_count=0,loop_enabled=0;

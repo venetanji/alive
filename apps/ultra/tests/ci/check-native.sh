@@ -56,6 +56,9 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror \
 "$TEST_DIR/alive-v4-layout"
 c++ -std=c++17 -O2 -Wall -Wextra -Werror \
   apps/ultra/tests/alive_session_envelope_test.cpp -o "$TEST_DIR/alive-envelope"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror \
+  apps/ultra/tests/alive_session_launch_target_test.cpp -o "$TEST_DIR/alive-launch-target"
+"$TEST_DIR/alive-launch-target"
 "$TEST_DIR/alive-envelope"
 c++ -std=c++17 -O2 -Wall -Wextra -Werror \
   apps/ultra/tests/alive_session_workspace_envelope_test.cpp -o "$TEST_DIR/alive-workspace-envelope"
@@ -93,7 +96,7 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
   -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
   -ldl -lrt -o "$TEST_DIR/alive-v4-authority-test"
 "$TEST_DIR/alive-v4-authority-test"
-for test in alive_session_v3_test alive_session_v3_measure alive_session_capacity; do
+for test in alive_session_v3_test alive_session_v3_measure alive_session_capacity alive_session_launch_test; do
   c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DCAPACITY_GUARDS \
     -I"$TEST_DIR" "apps/ultra/tests/${test}.cpp" "$TEST_DIR/alive-v3-backend.o" \
     "$NATIVE_BUILD/core/libultra_core_bundle.a" \
