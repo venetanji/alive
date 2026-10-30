@@ -7,7 +7,7 @@ from pathlib import Path
 
 def stage(source, target):
     session = json.loads(source.read_text())
-    score = session['score'] if session.get('format') == 'alive-session-v5' else session
+    score = session['score'] if session.get('format') in ('alive-session-v5', 'alive-session-v6') else session
     for track in score['tracks']:
         instrument = track.get('device') or track.get('chain', {}).get('instrument')
         for device in ([instrument] if instrument else []) + track.get('effects', []):

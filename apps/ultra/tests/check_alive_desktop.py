@@ -81,7 +81,7 @@ def select_clip(track):
 
 
 def file_score(session):
-    return session['score'] if session.get('format') == 'alive-session-v5' else session
+    return session['score'] if session.get('format') in ('alive-session-v5', 'alive-session-v6') else session
 
 
 def score(track):

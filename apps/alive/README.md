@@ -146,6 +146,23 @@ Arrangement starting project, or launch it directly:
 bash apps/alive/run.sh apps/alive/examples/midi-arrangement.alive
 ```
 
+The toolbar's **Launch** setting supports None, 1/32 through 1/2 notes, and
+1, 2, 4 or 8 Bars in fixed 4/4. An occupied Session clip can use Global or its
+own grid in Clip detail. Scenes, track Stop and Return use Global; global Stop
+stays immediate. Settings changes affect future requests, and queued targets
+keep their captured grid. Edited launch settings save in the strict
+`alive-session-v6` score/Master/launch envelope; older projects retain 1 Bar.
+
+For grids other than 1 Bar, at most one native batch is accepted per 1024 audio
+frames (about 21.3 ms at 48 kHz), sharing the Start/Seek allowance. Refused
+requests are not retried automatically. The full MIDI Arrangement example
+exceeds this additional workload proof (72 events per window, limit 64) while
+its original 1 Bar playback remains admitted. Open
+`apps/alive/examples/quantized-midi.alive` for a separate sparse example with
+Global=1/8 and a 1/16 occurrence override. When the library or workload cannot
+support finer grids, saved intent stays visible; explicitly choose 1 Bar and
+change any clip overrides to recover supported launches.
+
 The timeline shares tracks, devices and Clip detail with Session. Create a MIDI
 source in Clip detail, edit its notes, drag a blank lane to choose a range, and
 use **Place source in range**. Move a placement by dragging its body; drag its
@@ -165,8 +182,8 @@ track and mute/solo in each header. Audio-file tracks remain unavailable.
   global transport region, and Loop repeats its length. Space works outside
   focused controls. Meters show post-mixer callback peaks, including the master.
 - Each track has four fixed slots. Select chooses the score to edit; Launch
-  cues it at phase zero while stopped or queues a switch at the next strict
-  four-beat bar while playing. Track Stop stops only that track; global Stop
+  cues it at phase zero while stopped or queues a switch at the captured
+  launch grid while playing (1 Bar by default). Track Stop stops only that track; global Stop
   clears pending actions and silences every track. Runtime text distinguishes
   queued/pending, applied, rejected and unavailable observations. A queued
   request is not proof that it played.

@@ -20,6 +20,9 @@ existing bar/seam/placement boundary curve. The extra allowance is
 `min(2, width - 1)`: the original first-sample reset/initial transition already
 covers an arbitrary action there, and same-sample changes coalesce. Only
 positive-length interior cuts need additional transitions.
+For v3, the prepared bar-zero boundary guarantees `K(width) >= 1`, even for a
+silent track, so the original reset allowance covers that first sample. For
+v4, the existing `(K + 1) * transition` term supplies the initial allowance.
 In a window no wider than 1024 frames, there can be at most one newly accepted
 quantized batch, and at most one earlier pending quantized action per track.
 Each track has only one pending action: replacement cannot increase that bound.
@@ -49,3 +52,10 @@ Return, seek cancellation, finite song end and work-limit refusal. A dense
 fixture at 37-frame note spacing admits old playback while denying the additive
 capability. Existing v3 runtime, v3/v4 layout and envelope suites remain gates.
 These are deterministic software proofs, not hardware latency qualification.
+
+The unchanged two-track `midi-arrangement.alive` example exceeds the additive
+event/window proof (72 observed, 64 allowed), while its original bar launches
+remain admitted. `quantized-midi.alive` is a separate sparse, admitted example.
+The UI distinguishes workload refusal from a missing native library and retains
+saved intent. Explicit changes to 1 Bar (or clip Global with Global=1 Bar)
+remain available for recovery without erasing other overrides.
