@@ -79,18 +79,46 @@ main#workspace-shell{flex-direction:column;position:relative}
 .workspace-upper{display:flex;flex:1;min-height:0;min-width:0;overflow:hidden}
 .workspace-lower{display:flex;flex:none;min-height:0;min-width:0}
 .workspace-lower #detail-panel{flex:1;min-width:0}
-#info-view:not([hidden]){display:flex;flex-direction:column;align-self:flex-end;align-items:stretch;flex:0 0 calc(var(--browser-width,220px) + 5px);height:120px;overflow:auto;padding:8px;gap:8px;background:#303030;border-top:1px solid var(--line);border-right:1px solid var(--line);color:var(--text)}
+#detail-content{display:grid;grid-template-columns:calc(var(--browser-width,220px) + 5px) minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(120px,.65fr);overflow:hidden}
+#clip-detail:not([hidden]){grid-column:1 / -1;grid-row:1;min-height:0;height:100%;overflow:auto}
+#clip-detail>.clip-section{flex:1 0 310px;min-height:310px}
+#clip-detail>.clip-section:has(.note-table[open]){min-height:500px}
+#clip-detail .clip-editors{flex:1 1 0;min-height:0}
+#clip-detail .clip-area{flex:1 0 247px;min-height:247px}
+#clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,clamp(150px,22%,210px)),calc(100% - 160px)) minmax(0,1fr);grid-template-rows:auto minmax(156px,1fr) auto auto}
+#clip-detail .clip-properties-resizer{grid-column:1;grid-row:1 / -1;justify-self:end;width:7px;z-index:2;cursor:ew-resize;touch-action:none}
+#clip-detail .clip-properties-resizer:focus-visible{outline:2px solid var(--selection);outline-offset:-2px}
+@container clip-detail (max-height:300px){#clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,clamp(260px,38%,450px)),calc(100% - 160px)) minmax(0,1fr)}}
+#device-detail:not([hidden]),#master-detail:not([hidden]){grid-column:2;grid-row:2;min-height:0;overflow:auto}
+#info-view:not([hidden]){display:flex;flex-direction:column;align-items:stretch;grid-column:1;grid-row:2;min-height:0;overflow:auto;padding:8px;gap:8px;background:#303030;border-top:1px solid var(--line);border-right:1px solid var(--line);color:var(--text)}
 #info-view[hidden]{display:none}
+#detail-content:not(:has(#clip-detail:not([hidden]))){grid-template-rows:0 minmax(0,1fr)}
+#detail-content:has(#clip-detail:not([hidden])):not(:has(#device-detail:not([hidden]))):not(:has(#master-detail:not([hidden]))){grid-template-rows:minmax(0,1fr) 96px}
+#detail-content:not(:has(#info-view:not([hidden]))){grid-template-columns:0 minmax(0,1fr)}
+#detail-content:not(:has(#info-view:not([hidden]))):not(:has(#device-detail:not([hidden]))):not(:has(#master-detail:not([hidden]))){grid-template-rows:minmax(0,1fr) 0}
+.detail-collapsed #detail-content{height:120px;flex:none}
+.detail-collapsed #detail-content:not(:has(#info-view:not([hidden]))){height:0}
 @media(min-width:621px){
   #workspace-browser:not([hidden]){position:absolute;top:0;left:0;bottom:0;width:var(--browser-width,220px);z-index:1}
   #browser-resizer:not([hidden]){position:absolute;top:0;left:var(--browser-width,220px);bottom:0;width:5px;z-index:2}
-  #workspace-shell:has(#info-view:not([hidden])) #workspace-browser:not([hidden]),
-  #workspace-shell:has(#info-view:not([hidden])) #browser-resizer:not([hidden]){bottom:120px}
+  #workspace-shell #workspace-browser:not([hidden]),#workspace-shell #browser-resizer:not([hidden]){bottom:calc(var(--detail-height,220px) + 38px)}
+  #workspace-shell.detail-collapsed #workspace-browser:not([hidden]),#workspace-shell.detail-collapsed #browser-resizer:not([hidden]){bottom:158px}
   .workspace-upper:has(#workspace-browser:not([hidden])){padding-left:calc(var(--browser-width,220px) + 5px)}
-  #workspace-shell:has(#workspace-browser:not([hidden])):has(#info-view[hidden]) .workspace-lower{padding-left:calc(var(--browser-width,220px) + 5px)}
 }
-@media(max-width:620px){.workspace-upper{overflow:visible}}
+@media(max-width:620px){
+  .workspace-upper{overflow:visible}
+  #workspace-shell #workspace-browser:not([hidden]){top:0;bottom:calc(var(--detail-height,220px) + 38px)}
+  #workspace-shell.detail-collapsed #workspace-browser:not([hidden]){bottom:158px}
+}
+@media(max-height:700px){
+  #browser-library{min-height:230px}
+  #workspace-browser .browser-description{max-height:35px}
+  #workspace-browser .browser-status{max-height:35px}
+}
 #info-view .info-label{font-size:11px;font-weight:600;color:var(--amber)}
 #info-view #info-text{display:block;flex:none;overflow:visible;font-size:11px;line-height:1.45;white-space:normal;overflow-wrap:anywhere}
 #toggle-help{width:24px;padding:2px;font-weight:600}
+#clip-overview{display:inline-block;width:45px;height:12px;vertical-align:middle;border:1px solid var(--line);background:var(--canvas)}
+#clip-overview svg{display:block;width:100%;height:100%;margin:0;fill:var(--amber);stroke:none}
+#clip-overview .clip-overview-waveform{fill:none;stroke:var(--amber);stroke-width:1}
 footer #notice{flex:1;min-width:40px}

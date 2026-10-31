@@ -44,6 +44,16 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   const empty=make('div',{class:'audio-clip-empty'}),importButton=make('button',{type:'button','aria-label':'Import audio into selected slot'},'Import WAV...');
   importButton.addEventListener('click',onImport);empty.append(make('strong',{},'Audio clip'),make('p',{},'Import a sample to edit its waveform, start point and loop.'),importButton);
   const properties=make('aside',{class:'clip-properties','aria-label':'Clip properties'});
+  const divider=make('div',{class:'clip-properties-resizer',role:'separator',tabindex:0,'aria-label':'Resize Clip properties','aria-orientation':'vertical','aria-valuemin':140,'aria-valuemax':600});
+  let propertyResize=null;
+  const widthLimit=()=>Math.max(140,Math.min(600,(area.clientWidth||800)-160));
+  function setPropertyWidth(value){const width=Math.round(Math.max(140,Math.min(widthLimit(),value)));area.style.setProperty('--clip-properties-width',`${width}px`);divider.setAttribute('aria-valuenow',width);divider.setAttribute('aria-valuemax',widthLimit());}
+  divider.addEventListener('pointerdown',event=>{if(event.button!==0)return;propertyResize={id:event.pointerId,x:event.clientX,width:properties.getBoundingClientRect().width};divider.setPointerCapture?.(event.pointerId);event.preventDefault();});
+  divider.addEventListener('pointermove',event=>{if(propertyResize?.id===event.pointerId)setPropertyWidth(propertyResize.width+event.clientX-propertyResize.x);});
+  divider.addEventListener('pointerup',event=>{if(propertyResize?.id===event.pointerId){propertyResize=null;divider.releasePointerCapture?.(event.pointerId);}});
+  function cancelPropertyResize(){if(!propertyResize)return;const prior=propertyResize;propertyResize=null;setPropertyWidth(prior.width);if(divider.hasPointerCapture?.(prior.id))divider.releasePointerCapture(prior.id);}
+  divider.addEventListener('pointercancel',cancelPropertyResize);divider.addEventListener('lostpointercapture',cancelPropertyResize);
+  divider.addEventListener('keydown',event=>{if(event.key==='Escape'&&propertyResize){event.preventDefault();event.stopPropagation();cancelPropertyResize();return;}if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const current=properties.getBoundingClientRect().width;setPropertyWidth(event.key==='Home'?140:event.key==='End'?widthLimit():current+(event.key==='ArrowRight'?20:-20));});
   const regionTools=make('div',{class:'clip-region-tools',role:'toolbar','aria-label':'Clip markers and loop'}),regionInputs={};
   regionTools.append(make('strong',{class:'clip-properties-heading'},'Clip'));
   for(const [key,label]of [['start','Start'],['end','End'],['loopStart','Loop Position'],['loopLength','Loop Length']]){
@@ -75,10 +85,12 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     const action=make('button',{type:'button','aria-label':label},factor===.5?'/2':'x2');action.addEventListener('click',()=>stretch(last.source.sourceTempo*factor));stretchTools.append(action);stretchActions.push({action,factor});
   }
   stretchTools.append(make('span',{class:'muted'},'Pitch follows speed; shared sample'));
-  properties.append(regionTools,stretchTools);
+  const group=(label,content)=>{const section=make('details',{open:''}),summary=make('summary',{},label);section.append(summary,content);return section;};
+  const regionGroup=group('Clip',regionTools),stretchGroup=group('Audio',stretchTools);
+  properties.append(regionGroup,stretchGroup);
   const launchSettings=doc.getElementById?.('clip-launch-settings');
-  if(launchSettings)properties.append(launchSettings);
-  if(area){area.insertBefore(properties,midiSvg);area.insertBefore(toolbar,midiSvg);area.insertBefore(velocityLane,midiSvg.nextSibling??null);area.insertBefore(empty,midiSvg);}
+  if(launchSettings)properties.append(group('Launch',launchSettings));
+  if(area){area.insertBefore(properties,midiSvg);area.insertBefore(divider,midiSvg);area.insertBefore(toolbar,midiSvg);area.insertBefore(velocityLane,midiSvg.nextSibling??null);area.insertBefore(empty,midiSvg);}
 
   function text(parent,x,y,value,attrs={}){
     parent.append(make('text',{x,y,fill:'#b4b4b0',stroke:'none','font-size':10,...attrs},value));
@@ -94,9 +106,10 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     midiSvg.hidden=audio||!hasSource;audioSvg.hidden=!audio||emptyAudio;empty.hidden=!emptyAudio;
     if(audio||!hasSource)midiSvg.setAttribute('hidden','');else midiSvg.removeAttribute('hidden');
     if(!audio||emptyAudio)audioSvg.setAttribute('hidden','');else audioSvg.removeAttribute('hidden');
-    properties.hidden=!hasSource;area?.classList?.toggle('has-source',hasSource);
+    properties.hidden=!hasSource;divider.hidden=!hasSource;area?.classList?.toggle('has-source',hasSource);
+    if(hasSource&&!divider.getAttribute('aria-valuenow')){divider.setAttribute('aria-valuenow',Math.round(properties.getBoundingClientRect().width));divider.setAttribute('aria-valuemax',widthLimit());}
     toolbar.hidden=!hasSource;regionTools.hidden=!hasSource||!last.region;
-    stretchTools.hidden=!audio||emptyAudio;
+    stretchTools.hidden=!audio||emptyAudio;stretchGroup.hidden=!audio||emptyAudio;
     if(audio&&!emptyAudio){
       if(doc.activeElement!==stretchInputs.tempo)stretchInputs.tempo.value=String(Number(last.source.sourceTempo.toFixed(6)));
       if(doc.activeElement!==stretchInputs.length)stretchInputs.length.value=String(Number(last.length.toFixed(6)));

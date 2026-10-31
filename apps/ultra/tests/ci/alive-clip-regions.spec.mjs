@@ -81,6 +81,7 @@ for(const size of [{width:800,height:600},{width:1280,height:800}])test(`clip pr
   await page.getByRole('button',{name:'Restore detail size',exact:true}).click();
   await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();
   await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  await expect(page.locator('#clip-overview svg path')).toHaveCount(1);
   await expect(properties.getByLabel('Audio source BPM',{exact:true})).toBeVisible();
   const audioPanel=await properties.boundingBox();
   const audio=await page.locator('#audio-waveform').boundingBox();

@@ -67,7 +67,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     const svg=svgElement('svg',{viewBox:'0 0 18 18','aria-hidden':'true',focusable:'false'});svg.append(svgElement('path',{d:paths[kind]??paths.file}));return svg;
   }
   function decorate(button,kind,label,{only=false}={}){button.replaceChildren(icon(kind),make('span',only?'sr-only':'',label));button.title=button.getAttribute('aria-label')??label;}
-  for(const[id,kind]of Object.entries({'toggle-browser':'browser','view-session':'session','view-arrangement':'arrangement','detail-clip':'clip','detail-devices':'devices','toggle-detail':'detail','add-track':'instrument','add-effect':'effect','new':'file','open':'file','save':'save','save-as':'save','edit-device':'edit','undo':'undo','redo':'redo'}))decorate($(id),kind,$(id).textContent);
+  for(const[id,kind]of Object.entries({'toggle-browser':'browser','view-session':'session','view-arrangement':'arrangement','detail-devices':'devices','toggle-detail':'detail','add-track':'instrument','add-effect':'effect','new':'file','open':'file','save':'save','save-as':'save','edit-device':'edit','undo':'undo','redo':'redo'}))decorate($(id),kind,$(id).textContent);
   for(const[id,kind]of [['start','play'],['stop','stop']])decorate($(id),kind,id==='start'?'Start':'Stop',{only:true});
   const quantizations=[['none','None'],['thirtySecond','1/32'],['sixteenth','1/16'],['eighth','1/8'],['quarter','1/4'],['half','1/2'],['bar1','1 Bar'],['bar2','2 Bars'],['bar4','4 Bars'],['bar8','8 Bars']];
   const gridLabel=value=>quantizations.find(([key])=>key===value)?.[1]??'1 Bar';
@@ -156,6 +156,17 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     musicKey='';render();
   }
   function sourceOf(track=model.document()?.tracks[selected],document=model.document()){return document?.sources?.find(s=>s.id===(sourceSelection?.trackId===track?.id?sourceSelection.sourceId:selectedClip(track)?.sourceId))??null;}
+  function paintClipOverview(){
+    const holder=$('clip-overview'),source=sourceOf(),notes=source?.kind==='midi'?source.notes??[]:[];
+    holder.replaceChildren();holder.title=source?source.kind==='audio'?'Audio clip selected':`${notes.length} MIDI notes`:'No clip selected';
+    const peaks=source?.kind==='audio'?model.snapshot()?.preparedWorkspaces?.sources?.find(item=>item.sourceId===source.id)?.waveformPeaks??[]:[];
+    if(!notes.length&&!peaks.length)return;
+    const svg=doc.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 44 10');svg.setAttribute('aria-hidden','true');
+    if(notes.length){const length=Math.max(.01,sourceLength(source)),low=Math.min(...notes.map(n=>n.pitch)),high=Math.max(...notes.map(n=>n.pitch));
+      for(const note of notes){const rect=doc.createElementNS('http://www.w3.org/2000/svg','rect');rect.setAttribute('x',Math.max(0,Math.min(43,note.beat/length*44)));rect.setAttribute('y',8-(note.pitch-low)/Math.max(1,high-low)*7);rect.setAttribute('width',Math.max(1,Math.min(44,note.duration/length*44)));rect.setAttribute('height','1.5');svg.append(rect);}}
+    else{const path=doc.createElementNS('http://www.w3.org/2000/svg','path');let d='';for(let x=0;x<44;x++){const peak=peaks[Math.min(peaks.length-1,Math.floor(x*peaks.length/44))];d+=`M${x} ${5-Math.min(1,Math.max(0,peak[1]))*4}V${5-Math.max(-1,Math.min(0,peak[0]))*4}`;}path.setAttribute('d',d);path.setAttribute('class','clip-overview-waveform');svg.append(path);}
+    holder.append(svg);
+  }
   function preparedSlots(snapshot=model.snapshot()){return snapshot.preparedWorkspaces.slots;}
   function slotIdentity(slot){return slot?.slotId;}
   function slotOf(track){return selectedSlots.get(track.id)??0;}
@@ -700,8 +711,8 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     const structureMessage=snapshot.midi.pending?'Wait for the musical edit to finish before loading a device.':snapshot.state.playing?'Stop transport before loading a device.':'';
     browser.render({document:model.document(),instances:snapshot.deviceInstances,instrumentNeedsTrack,instrumentBlocked:structureMessage||($('add-track').disabled?'Track or device capacity reached.':''),effectBlocked:structureMessage||($('add-effect').disabled?'Effect or device capacity reached.':'')});
     for(const view of chainViews){view.choose.setAttribute('aria-pressed',String(view.reference.instanceId===selectedInstance));view.row.classList.toggle('selected',view.reference.instanceId===selectedInstance);view.bypass.setAttribute('aria-pressed',String(chainDevices().find(d=>d.instanceId===view.reference.instanceId).bypassed));view.row.classList.toggle('bypassed',!!chainDevices().find(d=>d.instanceId===view.reference.instanceId).bypassed);for(const {button,blocked} of view.actions){button.disabled=structuralBlocked||blocked;button.title=blocked?'Already at this end of the effect chain.':$('chain-status').textContent;}}
-    const nextMusic=JSON.stringify([snapshot.generation,selected,selectedClip()?.id,sourceOf()?.id,document.tracks[selected].sourceKind,document.tempo,document.lengthBeats,document.loopEnabled,document.tracks[selected]?.notes,document.tracks[selected]?.automation,editorOccurrence()?.region,clipTimeSelection]);
-    if(nextMusic!==musicKey){musicKey=nextMusic;buildMusic(document);}
+    const nextMusic=JSON.stringify([snapshot.generation,selected,selectedClip()?.id,sourceOf()?.id,document.tracks[selected].sourceKind,document.tempo,document.lengthBeats,document.loopEnabled,document.tracks[selected]?.notes,document.tracks[selected]?.automation,editorOccurrence()?.region,clipTimeSelection,sourceOf()?.kind==='audio'?snapshot.preparedWorkspaces?.sources?.find(item=>item.sourceId===sourceOf()?.id)?.waveformPeaks:null]);
+    if(nextMusic!==musicKey){musicKey=nextMusic;paintClipOverview();buildMusic(document);}
     paintLanes();
     $('device-title').textContent=instanceView(selectedInstance)?.manifest?.name??'Device';
     document.tracks.forEach((track,index)=>{

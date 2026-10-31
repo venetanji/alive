@@ -2,6 +2,100 @@ import {test,expect} from '@playwright/test';
 import {projectFixturePresentation} from '../presentation-dom.mjs';
 import {readFileSync,mkdirSync} from 'node:fs';
 
+test('narrow Browser stays above contextual Help when reopened',async({page},testInfo)=>{
+  await page.setViewportSize({width:600,height:600});await openSession(page);
+  const browser=page.locator('#workspace-browser'),help=page.locator('#info-view');
+  const shell=await page.locator('#workspace-shell').boundingBox(),b=await browser.boundingBox(),h=await help.boundingBox();
+  expect(Math.abs(b.y-shell.y)).toBeLessThanOrEqual(1);expect(b.y+b.height).toBeLessThanOrEqual(h.y+1);
+  expect(await help.evaluate(el=>{const r=el.getBoundingClientRect();return el.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));})).toBe(true);
+  await page.screenshot({path:testInfo.outputPath('after-narrow-browser.png')});
+  await page.locator('#toggle-browser').click();await expect(browser).toBeHidden();await page.locator('#toggle-browser').click();await expect(browser).toBeVisible();
+  await page.locator('#toggle-help').click();await expect(help).toBeHidden();await page.locator('#toggle-help').click();await expect(help).toBeVisible();
+  expect(await help.evaluate(el=>{const r=el.getBoundingClientRect();return el.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));})).toBe(true);
+});
+
+test('Clip and Device footer toggles independently own the lower rows',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const clip=page.locator('#clip-detail'),device=page.locator('#device-detail'),help=page.locator('#info-view');
+  const clipToggle=page.getByRole('button',{name:'Toggle Clip view',exact:true}),deviceToggle=page.getByRole('button',{name:'Toggle Device view',exact:true});
+  expect(await page.locator('#clip-overview svg rect').count()).toBeGreaterThan(0);
+  await expect(clip).toBeVisible();await deviceToggle.click();await expect(clip).toBeVisible();await expect(device).toBeVisible();
+  const c=await clip.boundingBox(),d=await device.boundingBox(),h=await help.boundingBox();
+  expect(c.x).toBeLessThanOrEqual(1);expect(c.y+c.height).toBeLessThanOrEqual(Math.min(d.y,h.y)+1);expect(h.x+h.width).toBeLessThanOrEqual(d.x+1);
+  await clipToggle.click();await expect(clip).toBeHidden();await expect(device).toBeVisible();
+  await deviceToggle.click();await expect(device).toBeHidden();await clipToggle.click();await expect(clip).toBeVisible();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('Clip properties arrange horizontally when short and as vertical disclosures when tall',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const resize=page.getByRole('separator',{name:'Resize detail area',exact:true}),properties=page.locator('.clip-properties');
+  await resize.focus();await resize.press('Home');
+  await expect(properties).toBeVisible();expect(await properties.evaluate(el=>getComputedStyle(el).display)).toBe('flex');
+  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  expect(await properties.evaluate(el=>getComputedStyle(el).display)).toBe('block');
+  await expect(properties.locator('details > summary').first()).toBeVisible();
+});
+
+test('Clip property divider resizes without issuing musical commands',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const divider=page.getByRole('separator',{name:'Resize Clip properties',exact:true}),properties=page.locator('.clip-properties');
+  const before=(await properties.boundingBox()).width;await divider.focus();await divider.press('End');
+  expect((await properties.boundingBox()).width).toBeGreaterThan(before);await divider.press('Home');
+  expect((await properties.boundingBox()).width).toBeLessThan(before);
+  const original=(await properties.boundingBox()).width,box=await divider.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+80,box.y+box.height/2);await page.keyboard.press('Escape');await page.mouse.up();
+  expect(Math.abs((await properties.boundingBox()).width-original)).toBeLessThanOrEqual(1);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('returning from Master restores an entirely hidden detail state',async({page})=>{
+  await openSession(page);await page.locator('#detail-clip').click();
+  await page.locator('#master-select-session').click();await expect(page.locator('#master-detail')).toBeVisible();
+  await page.getByRole('button',{name:'Select Pulse track',exact:true}).click();
+  await expect(page.locator('#clip-detail')).toBeHidden();await expect(page.locator('#device-detail')).toBeHidden();
+  await expect(page.locator('#workspace-shell')).toHaveClass(/detail-collapsed/);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('footer reopening after collapsing both panels opens only the requested panel',async({page})=>{
+  await openSession(page);await page.locator('#detail-devices').click();await page.locator('#toggle-detail').click();
+  await expect(page.locator('#clip-detail')).toBeHidden();await expect(page.locator('#device-detail')).toBeHidden();
+  await page.locator('#detail-clip').click();await expect(page.locator('#clip-detail')).toBeVisible();await expect(page.locator('#device-detail')).toBeHidden();
+  await page.locator('#master-select-session').click();await page.locator('#detail-clip').click();await expect(page.locator('#clip-detail')).toBeVisible();await expect(page.locator('#master-detail')).toBeHidden();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('footer actions remain reachable at the minimum native size',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page);
+  for(const selector of ['#toggle-help','#detail-clip','#detail-devices','#return-all','#show-audio','#audio-details > summary'])await expect(page.locator(selector)).toBeInViewport({ratio:1});
+});
+
+test('both detail panels resize and maximize while a device draft survives hiding',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);await page.locator('#detail-devices').click();
+  const clip=page.locator('#clip-detail'),device=page.locator('#device-detail'),resize=page.getByRole('separator',{name:'Resize detail area',exact:true});
+  const field=page.locator('.chain-device[data-instance-id="instrument-0"]').getByRole('spinbutton',{name:'Cutoff base',exact:true});
+  await field.fill('1717');await page.locator('#detail-devices').click();await expect(device).toBeHidden();await page.locator('#detail-devices').click();await expect(field).toHaveValue('1717');
+  const box=await resize.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2,box.y-50,{steps:4});await page.mouse.up();const height=await resize.getAttribute('aria-valuenow');
+  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await expect(clip).toBeVisible();await expect(device).toBeVisible();
+  await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await expect(resize).toHaveAttribute('aria-valuenow',height);await expect(field).toHaveValue('1717');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`all lower panel combinations preserve selection at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);
+  const clip=page.locator('#clip-detail'),device=page.locator('#device-detail'),help=page.locator('#info-view');
+  const buttons=[page.locator('#detail-clip'),page.locator('#detail-devices'),page.locator('#toggle-help')];
+  const initial=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
+  let state=[true,false,true];
+  for(const index of [1,2,0,2,1,2,0,1,2,0,1]){
+    await buttons[index].click();state[index]=!state[index];
+    for(const [element,on] of [[clip,state[0]],[device,state[1]],[help,state[2]]])if(on)await expect(element).toBeVisible();else await expect(element).toBeHidden();
+    if(state[0]&&state[1]&&state[2]){const c=await clip.boundingBox(),d=await device.boundingBox(),h=await help.boundingBox();expect(c.height).toBeGreaterThan(100);expect(d.height).toBeGreaterThanOrEqual(100);expect(c.y+c.height).toBeLessThanOrEqual(Math.min(d.y,h.y)+1);expect(h.x+h.width).toBeLessThanOrEqual(d.x+1);await page.screenshot({path:testInfo.outputPath(`both-panels-${size.width}x${size.height}.png`)});}
+  }
+  expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document))).toBe(initial);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
 test('contextual Help is a separate passive panel with independent visibility',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);
   const help=page.getByRole('complementary',{name:'Contextual help',exact:true});
@@ -29,12 +123,12 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
   const help=page.getByRole('complementary',{name:'Contextual help',exact:true}),detail=page.locator('#detail-panel');
   const toggle=page.getByRole('button',{name:'Toggle contextual help',exact:true});
   const before=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
-  const a=await help.boundingBox(),b=await detail.boundingBox();expect(a.x).toBeLessThanOrEqual(1);expect(a.x+a.width).toBeLessThanOrEqual(b.x+1);
+  const a=await help.boundingBox(),b=await page.locator('#clip-detail').boundingBox();expect(a.x).toBeLessThanOrEqual(1);expect(b.y+b.height).toBeLessThanOrEqual(a.y+1);
   await page.screenshot({path:testInfo.outputPath(`help-shown-${size.width}x${size.height}.png`)});
   await toggle.click();await expect(help).toBeHidden();
   await page.screenshot({path:testInfo.outputPath(`help-hidden-${size.width}x${size.height}.png`)});
   await page.locator('#toggle-browser').click();expect((await detail.boundingBox()).x).toBeLessThanOrEqual(1);await page.locator('#toggle-detail').click();await toggle.click();
-  await expect(help).toBeVisible();await expect(page.locator('#workspace-browser')).toBeHidden();await expect(page.locator('#detail-content')).toBeHidden();
+  await expect(help).toBeVisible();await expect(page.locator('#workspace-browser')).toBeHidden();await expect(page.locator('#clip-detail')).toBeHidden();await expect(page.locator('#device-detail')).toBeHidden();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
   expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document))).toBe(before);
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
@@ -73,23 +167,25 @@ for(const size of [{width:800,height:600},{width:1280,height:800}])test(`Alive c
 for(const size of [{width:800,height:600},{width:1280,height:800}])test(`saved Alive surface retains focused draft and natural scroll at ${size.width}x${size.height}`,async({page},info)=>{
   await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
   const card=page.locator('.chain-device').first(),surface=card.locator('.presentation-surface'),field=card.getByRole('spinbutton',{name:'Attack base',exact:true});
-  await field.fill('123');await expect(field).toBeFocused();await expect(card.getByLabel('Attack effective ownership',{exact:true})).toBeInViewport({ratio:1});expect(await surface.evaluate(e=>e.offsetWidth)).toBe(640);
+  await field.fill('123');await expect(field).toBeFocused();await card.getByLabel('Attack effective ownership',{exact:true}).scrollIntoViewIfNeeded();await expect(card.getByLabel('Attack effective ownership',{exact:true})).toBeInViewport({ratio:1});expect(await surface.evaluate(e=>e.offsetWidth)).toBe(640);
   await page.screenshot({path:info.outputPath(`saved-alive-${size.width}x${size.height}.png`)});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
   const chain=page.locator('#chain');expect(await chain.evaluate(e=>e.scrollWidth>e.clientWidth)).toBe(true);
-  await page.locator('#detail-clip').click();await page.locator('#detail-devices').click();await expect(field).toHaveValue('123');
+  await page.locator('#detail-devices').click();await page.locator('#detail-devices').click();await expect(field).toHaveValue('123');
 });
 
 for(const size of [{width:1440,height:900},{width:1280,height:800},{width:800,height:600}])test(`detail expands and maximizes the piano editor at ${size.width}x${size.height}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page);
   const resize=page.getByRole('separator',{name:'Resize detail area',exact:true}),panel=page.locator('#detail-panel');
-  const originalPiano=await page.locator('#piano-roll').boundingBox();await resize.focus();await resize.press('End');
+  const visiblePiano=()=>page.evaluate(()=>{const piano=document.querySelector('#piano-roll').getBoundingClientRect(),clip=document.querySelector('#clip-detail').getBoundingClientRect();return Math.max(0,Math.min(piano.bottom,clip.bottom)-Math.max(piano.top,clip.top));});
+  const originalPiano=await page.locator('#piano-roll').boundingBox(),originalVisible=await visiblePiano();await resize.focus();await resize.press('End');
   expect((await panel.boundingBox()).height).toBeGreaterThan(size.height*.6);
   if(size.height>=800)expect((await page.locator('#piano-roll').boundingBox()).height).toBeGreaterThan(originalPiano.height+60);
   const previous=await resize.getAttribute('aria-valuenow');await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
   await expect(page.locator('#session-workspace')).toBeHidden();await expect(page.locator('#arrangement-workspace')).toBeHidden();
   expect((await panel.boundingBox()).height).toBeGreaterThan(size.height*.75);
-  expect((await page.locator('#piano-roll').boundingBox()).height).toBeGreaterThan(originalPiano.height+30);
+  if(size.height>=800)expect((await page.locator('#piano-roll').boundingBox()).height).toBeGreaterThan(originalPiano.height+30);
+  else expect(await visiblePiano()).toBeGreaterThan(originalVisible+30);
   await expect(page.locator('#stop')).toBeInViewport();await expect(page.locator('#show-audio')).toBeInViewport();
   await expect(page.getByRole('button',{name:'Restore detail size',exact:true})).toBeInViewport();
   const velocity=page.getByRole('group',{name:'Note velocity lane',exact:true});
@@ -586,7 +682,7 @@ test('selected instance controls, keyboard automation target and immediate edits
   await page.getByRole('button',{name:'Select Pulse Stereo Lowpass effect 2',exact:true}).click();
   await expect(page.locator('#device-title')).toHaveText('Stereo Lowpass');await expect(page.locator('.chain-device[data-instance-id="stereo-lowpass"]').getByRole('spinbutton',{name:'Cutoff base',exact:true})).toHaveValue('1000');
   expect(await page.evaluate(()=>window.calls.some(c=>c.name==='alive_editor'||c.name==='alive_transport'))).toBe(false);
-  await page.locator('#detail-clip').click();await page.locator('.automation-section>summary').click();
+  await expect(page.locator('#clip-detail')).toBeVisible();await page.locator('.automation-section>summary').click();
   await page.getByLabel('Automation target',{exact:true}).selectOption(JSON.stringify(['stereo-lowpass','cutoff']));await page.getByRole('button',{name:'Add automation lane',exact:true}).click();
   await page.getByRole('button',{name:'Add Stereo Lowpass effect 2 / Cutoff point',exact:true}).click();
   await expect(page.getByLabel('Stereo Lowpass effect 2 / Cutoff point 1 value',{exact:true})).toHaveValue('1000');
@@ -605,6 +701,7 @@ test('long saved device names fit the minimum desktop window',async({page})=>{
 
 test('piano body, resize, velocity, cancellation and keyboard gestures are bounded transactions',async({page},testInfo)=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:1100,height:800});await openSession(page);
+  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
   const piano=page.locator('#piano-roll'),edits=()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit'));
   await piano.scrollIntoViewIfNeeded();
   for(let i=0;i<6;i++)await page.getByRole('button',{name:'Scroll pitch up',exact:true}).click();
@@ -752,15 +849,13 @@ for(const kind of ['device','note'])test(`detail navigation preserves an unfinis
   };
   await input.fill(typed);
   for(let i=0;i<3;i++){
+    await page.locator('#detail-'+own).click();await acrossPolls();
+    expect(await input.evaluate(e=>document.activeElement===e)).toBe(false);
+    await page.locator('#detail-'+own).click();await acrossPolls();
+    await page.locator('#detail-'+other).click();await acrossPolls();
     await page.locator('#detail-'+other).click();await acrossPolls();
     await page.locator('#toggle-detail').click();await acrossPolls();
     await page.locator('#toggle-detail').click();await acrossPolls();
-    expect(await input.evaluate(e=>document.activeElement===e)).toBe(false);
-    await page.locator('#detail-'+own).click();await acrossPolls();
-    await page.locator('#toggle-detail').click();await acrossPolls();
-    await page.locator('#detail-'+other).click();await acrossPolls();
-    expect(await input.evaluate(e=>document.activeElement===e)).toBe(false);
-    await page.locator('#detail-'+own).click();await acrossPolls();
   }
   await input.focus();await input.press('Tab');
   await expect.poll(async()=>(await mutations()).length).toBe(1);
@@ -1084,7 +1179,7 @@ for(const destination of ['Session slot','Arrangement track','Arrangement placem
     else await page.locator('.timeline-row[data-track-id="track-2"] .timeline-lane').click({position:{x:300,y:40}});
     await page.getByRole('button',{name:'Select Pulse Arrangement track',exact:true}).click();
   }
-  await page.locator('#detail-devices').click();
+  if(await page.locator('#device-detail').isHidden())await page.locator('#detail-devices').click();
   await expect(cutoff).toHaveValue('1828');expect(await cutoff.evaluate(e=>e===window.retainedRackCutoff)).toBe(true);
   const polls=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);
   await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(polls+1);
