@@ -721,3 +721,29 @@ test('wheel, Shift wheel and two-axis trackpad scrolling move the view without c
   await expect(page.locator('#canvas-zoom')).toHaveValue('1');
   expect(await exportPatch(page)).toEqual(before);
 });
+
+for(const width of [320,800,1280])test(`Ultra shares contextual Help and settings chrome without changing the patcher at ${width}px`,async({page},testInfo)=>{
+  await page.setViewportSize({width,height:width===320?740:800});
+  await page.goto('/canvas.html?new=1');
+  const info=page.locator('#ultra-info-view'),assist=page.locator('#assist');
+  await expect(info).toBeVisible();
+  const infoRect=await info.boundingBox(),assistRect=await page.locator('.assist-bar').boundingBox();
+  expect(infoRect.x).toBeLessThanOrEqual(12);
+  expect(infoRect.y).toBeGreaterThanOrEqual(assistRect.y-1);
+  await expect(page.locator('#open-help-library')).toBeInViewport();
+  await expect(page.locator('#show-help')).toBeInViewport();
+  const firstAssist=await assist.textContent();
+  await page.locator('#document-save').hover();
+  await expect(page.locator('#ultra-info-text')).toContainText('Save patch');
+  await page.locator('#open-help-library').focus();
+  await expect(page.locator('#ultra-info-text')).toContainText('Help & Examples');
+  expect(await assist.textContent()).toBe(firstAssist);
+  const originalCount=await page.locator('#objects [data-node]').count();
+  await page.locator('#open-help-library').click();
+  await expect(page.locator('#help-library')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#help-library')).toBeHidden();
+  expect(await page.locator('#objects [data-node]').count()).toBe(originalCount);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  await page.screenshot({path:testInfo.outputPath(`ultra-shared-chrome-${width}.png`)});
+});
