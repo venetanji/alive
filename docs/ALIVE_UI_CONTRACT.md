@@ -1,7 +1,12 @@
 # Alive UI Layout Contract
 
 **Product reference:** Ableton Live's spatial and workflow conventions, not its
-proprietary assets or a pixel clone. This contract applies to **Alive**, not
+proprietary assets or a pixel clone.
+
+**Shared product language:** `docs/CREATIVE_UI_PHILOSOPHY.md` governs colors,
+control appearance, menus, contextual Help and settings presentation across
+Alive and Ultra. Alive retains its DAW-specific Session/Arrangement layout;
+Ultra retains its Max-style patch-canvas hierarchy. This contract applies to **Alive**, not
 Ultra's Max-style patch editor. Read `docs/ALIVE_UI_HANDOFF.md` for ownership,
 the session runtime invariants and retained Live/Alive screenshots.
 
