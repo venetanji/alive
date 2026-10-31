@@ -75,7 +75,7 @@ pub fn binding_value(binding: &canvas::device::HostParameter, value: f64) -> Res
 
 pub(super) fn prepare_device(reference: &DeviceInstance, session_path: &Path, track: usize) -> Result<PreparedDevice, String> {
     text(&reference.path, 4096, "Device path")?;
-    if !matches!(reference.version, 1 | 2) { return Err(format!("Unsupported device manifest version {} (host supports 1 and 2)", reference.version)); }
+    if reference.version != 2 { return Err(format!("Unsupported device manifest version {} (host supports 2)", reference.version)); }
     let path = session_path.parent().unwrap_or(Path::new(".")).join(&reference.path);
     let loaded = documents::read_patch(&path)?;
     let mut patch = loaded.patch.ok_or("Expected a saved Ultra instrument, not a Max import")?;

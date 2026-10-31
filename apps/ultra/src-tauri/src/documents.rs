@@ -214,7 +214,7 @@ pub fn save_patch(path: &Path, patch: &Value) -> Result<PathBuf, String> {
     Ok(path)
 }
 
-pub fn empty_patch() -> Value { serde_json::json!({"version":1,"profile":"ultra-canvas-v1","nodes":[],"edges":[]}) }
+pub fn empty_patch() -> Value { serde_json::json!({"version":1,"profile":"ultra-canvas-v1","presentation":null,"nodes":[],"edges":[]}) }
 
 #[cfg(test)]
 #[path = "documents_tests.rs"]

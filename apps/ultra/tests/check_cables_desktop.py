@@ -34,7 +34,7 @@ def remembered():
 
 
 def run():
-    patch = {'version': 1, 'profile': 'ultra-canvas-v1', 'nodes': [
+    patch = {'version': 1, 'profile': 'ultra-canvas-v1','presentation': None, 'nodes': [
         desktop.node(1, 'message', {'text': '77'}, x=60, y=60),
         desktop.node(2, 'int', {'value': 0}, x=320, y=240),
         desktop.node(3, 'number', {'value': 0}, x=500, y=380),

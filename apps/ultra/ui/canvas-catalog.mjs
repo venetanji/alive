@@ -122,7 +122,7 @@ export function parseObjectText(text, previous=null) {
     const comment=text.match(/^\s*comment(?:\s([\s\S]*))?$/);
     if(comment){
       const node=makeNode('comment',1,0,0,{text:comment[1]??''});
-      validatePatch({version:2,profile:'ultra-patcher-v2',nodes:[node],edges:[]});
+      validatePatch({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[node],edges:[]});
       return{type:node.type,params:node.params};
     }
   }
@@ -188,7 +188,7 @@ export function parseObjectText(text, previous=null) {
   }
   const node=makeNode(entry.type,1,0,0,params);
   const hierarchical=['patcher','comment','inlet','outlet'].includes(entry.type);
-  validatePatch({version:hierarchical?2:1,profile:hierarchical?'ultra-patcher-v2':'ultra-canvas-v1',nodes:[node],edges:[]});
+  validatePatch({version:hierarchical?2:1,profile:hierarchical?'ultra-patcher-v2':'ultra-canvas-v1',presentation:null,nodes:[node],edges:[]});
   return {type:node.type,params:node.params};
 }
 

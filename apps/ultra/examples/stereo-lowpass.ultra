@@ -1,6 +1,62 @@
 {
   "version": 1,
   "profile": "ultra-canvas-v1",
+  "presentation": {
+    "version": 1,
+    "openOnLoad": false,
+    "size": {
+      "width": 240,
+      "height": 112
+    },
+    "items": [
+      {
+        "id": "cutoff",
+        "kind": "control",
+        "target": {
+          "kind": "parameter",
+          "node": 2,
+          "param": "cutoff"
+        },
+        "widget": "dial",
+        "label": "Cutoff",
+        "rect": {
+          "x": 8,
+          "y": 8,
+          "width": 88,
+          "height": 96
+        },
+        "included": true,
+        "visible": true,
+        "style": {
+          "accent": "cyan",
+          "labelPosition": "above"
+        }
+      },
+      {
+        "id": "resonance",
+        "kind": "control",
+        "target": {
+          "kind": "parameter",
+          "node": 2,
+          "param": "resonance"
+        },
+        "widget": "dial",
+        "label": "Resonance",
+        "rect": {
+          "x": 112,
+          "y": 8,
+          "width": 88,
+          "height": 96
+        },
+        "included": true,
+        "visible": true,
+        "style": {
+          "accent": "cyan",
+          "labelPosition": "above"
+        }
+      }
+    ]
+  },
   "nodes": [
     {
       "id": 1,

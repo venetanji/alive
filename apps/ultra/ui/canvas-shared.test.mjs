@@ -7,9 +7,9 @@ import {createSharedCanvasController} from './canvas-shared.mjs';
 
 const clone = value => structuredClone(value);
 const tick = () => new Promise(resolve=>setImmediate(resolve));
-const initial = () => ({version:2,profile:'ultra-patcher-v2',nodes:[
+const initial = () => ({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[
   makeNode('number',1),makeNode('number',2),
-  {...makeNode('patcher',3),patcher:{nodes:[makeNode('number',4)],edges:[]}},
+  {...makeNode('patcher',3),patcher:{presentation:null,nodes:[makeNode('number',4)],edges:[]}},
 ],edges:[]});
 
 // This service owns the tree/history. Each controller gets only an IPC view of it.
@@ -85,8 +85,8 @@ test('device bindings address the root tree while retaining the current child vi
   assert.equal(host.calls.some(call=>call.name==='canvas_apply'),false);
 });
 test('shared root and child modes commit structurally while operands retain live admission',async()=>{
-  const patch={version:2,profile:'ultra-patcher-v2',nodes:[makeNode('add',1,0,0,{rhs:2,numericmode:1}),
-    {...makeNode('patcher',3),patcher:{nodes:[makeNode('modulo',4,0,0,{rhs:3,numericmode:1})],edges:[]}}],edges:[]};
+  const patch={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[makeNode('add',1,0,0,{rhs:2,numericmode:1}),
+    {...makeNode('patcher',3),patcher:{presentation:null,nodes:[makeNode('modulo',4,0,0,{rhs:3,numericmode:1})],edges:[]}}],edges:[]};
   const {host,owner,child}=await views({broadcast:true,patch});
   const initialRevision=owner.getState().revision;
   owner.parameter(1,'numericmode',2);await owner.flush();
@@ -285,7 +285,7 @@ test('an acknowledged view blocks new authoring until every matching close barri
 });
 test('Save preflight allows held device note release without stopping the patch',async()=>{
   const {createDevicePlayer}=await import('./canvas-device-player.mjs');
-  const {host,owner}=await views({patch:{version:2,profile:'ultra-patcher-v2',nodes:[makeNode('poly_note',2)],edges:[]}});
+  const {host,owner}=await views({patch:{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[makeNode('poly_note',2)],edges:[]}});
   const player=createDevicePlayer({send:note=>owner.deviceEvent(2,0,note),stop:()=>owner.stop()});
   assert.equal(await player.press(60,'key:a'),true);
   await owner.flushBeforeClose({requestLabel:'save/owner',token:1,purpose:'save'});
@@ -300,7 +300,7 @@ test('Save preflight allows held device note release without stopping the patch'
 });
 test('a genuine close barrier retains the existing device release Stop fallback',async()=>{
   const {createDevicePlayer}=await import('./canvas-device-player.mjs');
-  const {host,owner}=await views({patch:{version:2,profile:'ultra-patcher-v2',nodes:[makeNode('poly_note',2)],edges:[]}});
+  const {host,owner}=await views({patch:{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[makeNode('poly_note',2)],edges:[]}});
   const player=createDevicePlayer({send:note=>owner.deviceEvent(2,0,note),stop:()=>owner.stop()});
   assert.equal(await player.press(60,'key:a'),true);await owner.flushBeforeClose({requestLabel:'owner',token:2});
   assert.equal(await player.release('key:a'),false);await owner.flush();

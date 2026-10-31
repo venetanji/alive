@@ -933,7 +933,7 @@ mod lifecycle_tests {
     #[test]
     fn focused_child_menu_retains_owner_authority() {
         let mut registry = Registry::default();
-        let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[{"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"nodes":[],"edges":[]}}],"edges":[]});
+        let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[{"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"presentation":null,"nodes":[],"edges":[]}}],"edges":[]});
         let owner = registry.add("Owner".into(), Kind::Patch, Some(patch), None, None).unwrap();
         let child = registry.open_view(&owner.label, 1).unwrap().0;
         let (target, action) = menu_target("doc:focused:save", Some(&child.label)).unwrap();

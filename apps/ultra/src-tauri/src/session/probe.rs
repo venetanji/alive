@@ -83,7 +83,7 @@ fn saved_device_boundaries(host:&mut Host,source:&super::PreparedSession,output:
 }
 fn saved_chain_proof(host: &mut Host, source: &super::PreparedSession, output: &Path) -> Result<Value, String> {
     use super::{DeviceInstance,Lane,Point,workspaces::{ProjectV4,TrackV4,ChainV4,SourceV4,ClipNote,PlacementV4,ClipRegionV4}};
-    let patch = json!({"version":1,"profile":"ultra-canvas-v1",
+    let patch = json!({"version":1,"profile":"ultra-canvas-v1","presentation":{"version":1,"openOnLoad":false,"size":{"width":1,"height":1},"items":[]},
         "nodes":[{"id":1,"type":"poly_note","x":0,"y":0,"params":{"voices":4}},
             {"id":2,"type":"mix_voice","x":0,"y":80,"params":{}},
             {"id":3,"type":"gain","x":0,"y":160,"params":{"value":127}},
@@ -91,8 +91,8 @@ fn saved_chain_proof(host: &mut Host, source: &super::PreparedSession, output: &
             {"id":5,"type":"dac","x":0,"y":320,"params":{}}],
         "edges":[{"from":1,"outlet":1,"to":2,"inlet":0},{"from":2,"outlet":0,"to":3,"inlet":0},
             {"from":3,"outlet":0,"to":4,"inlet":0},{"from":3,"outlet":0,"to":4,"inlet":1},{"from":4,"outlet":0,"to":5,"inlet":0}],
-        "device":{"version":1,"id":"org.alive.probe-impulse","name":"Probe Impulse","midi":{"node":1,"inlet":0},
-            "audio":{"inputs":0,"outputs":2,"layout":"stereo"},"parameters":[{"key":"level","label":"Level","node":3,"param":"value","min":0,"max":127}],"presets":[]}});
+        "device":{"version":2,"kind":"instrument","id":"org.alive.probe-impulse","name":"Probe Impulse","midi":{"input":{"node":1,"inlet":0},"output":null},
+            "audio":{"input":null,"output":{"channels":2,"layout":"stereo"}},"parameters":[{"key":"level","label":"Level","node":3,"param":"value","min":0,"max":127}],"presets":[]}});
     let impulse = output.join("impulse.ultra");
     std::fs::write(&impulse, serde_json::to_vec_pretty(&patch).unwrap()).map_err(|e| e.to_string())?;
     let reference = |path: &Path, instance: &str| -> Result<DeviceInstance, String> {

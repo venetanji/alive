@@ -6,11 +6,11 @@ import {readFileSync} from 'node:fs';
 import {deviceValues,presetParameters} from './canvas-device.mjs';
 import {packageInstrument,subtractivePatch} from './canvas-instrument.mjs';
 
-const manifest=()=>({version:1,id:'org.alive.test',name:'Test synth',midi:{node:1,inlet:0},
-  audio:{inputs:0,outputs:2,layout:'stereo'},parameters:[{key:'cutoff',label:'Cutoff',node:3,param:'cutoff',min:20,max:20000,unit:'Hz'}],
+const manifest=()=>({version:2,kind:'instrument',id:'org.alive.test',name:'Test synth',midi:{input:{node:1,inlet:0},output:null},
+  audio:{input:null,output:{channels:2,layout:'stereo'}},parameters:[{key:'cutoff',label:'Cutoff',node:3,param:'cutoff',min:20,max:20000,unit:'Hz'}],
   presets:[{name:'Soft',values:{cutoff:350}}]});
 
-const graph = () => ({version:1,profile:'ultra-canvas-v1',nodes:[
+const graph = () => ({version:1,profile:'ultra-canvas-v1',presentation:{version:1,openOnLoad:false,size:{width:640,height:120},items:[]},nodes:[
   makeNode('poly_note',1),makeNode('saw_voice',2),makeNode('filter_voice',3),
   makeNode('adsr_voice',4),makeNode('multiply_voice',5),makeNode('mix_voice',6),
   makeNode('gain',7),makeNode('join',8),makeNode('dac',9),
@@ -113,7 +113,7 @@ test('version 2 instruments retain authored MIDI with explicit stereo output',()
 });
 
 test('version 2 effects bind stereo audio input and live filter parameters without MIDI',()=>{
-  const patch={version:1,profile:'ultra-canvas-v1',nodes:[makeNode('audio_in',1),makeNode('filter_stereo',2),makeNode('signal_dac',3,0,0,{channels:'1 2'})],
+  const patch={version:1,profile:'ultra-canvas-v1',presentation:{version:1,openOnLoad:false,size:{width:640,height:120},items:[]},nodes:[makeNode('audio_in',1),makeNode('filter_stereo',2),makeNode('signal_dac',3,0,0,{channels:'1 2'})],
     edges:[[1,0,2,0],[1,1,2,1],[2,0,3,0],[2,1,3,1]].map(([from,outlet,to,inlet])=>({from,outlet,to,inlet})),
     device:{version:2,id:'org.alive.test-effect',name:'Stereo lowpass',kind:'audioEffect',midi:{input:null,output:null},
       audio:{input:{node:1,bundle:{channels:2,layout:'stereo'}},output:{channels:2,layout:'stereo'}},

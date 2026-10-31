@@ -323,7 +323,7 @@ def native_revision_text():
 def message_box_scenario():
     # A graph reinstall would erase int 9's remembered77, while a stale face
     # would leave the saved template visible after silent runtime replacement.
-    fixture = {'version': 1, 'profile': 'ultra-canvas-v1', 'nodes': [
+    fixture = {'version': 1, 'profile': 'ultra-canvas-v1','presentation': None, 'nodes': [
         {'id': 1, 'type': 'message_box', 'x': 280, 'y': 235, 'params': {'text': 'saved $1 $2'}},
         {'id': 2, 'type': 'message', 'x': 70, 'y': 60, 'params': {'text': '6.25'}},
         {'id': 3, 'type': 'message', 'x': 230, 'y': 60, 'params': {'text': 'list 5 pear 2.25'}},
@@ -410,7 +410,7 @@ def message_box_scenario():
 
 
 def print_popup_scenario():
-    fixture = {'version': 1, 'profile': 'ultra-canvas-v1', 'nodes': [
+    fixture = {'version': 1, 'profile': 'ultra-canvas-v1','presentation': None, 'nodes': [
         {'id': 1, 'type': 'message', 'x': 70, 'y': 70, 'params': {'text': 'list 3.5 <native> 7'}},
         {'id': 2, 'type': 'message', 'x': 330, 'y': 70, 'params': {'text': 'popup 0'}},
         {'id': 3, 'type': 'bang', 'x': 560, 'y': 70, 'params': {}},
@@ -585,7 +585,7 @@ def run():
         keys('Control_L', 'e')
 
         # Real X input checks WebKit pointer capture and the native apply boundary.
-        wiring = {'version': 1, 'profile': 'ultra-canvas-v1', 'nodes': [
+        wiring = {'version': 1, 'profile': 'ultra-canvas-v1','presentation': None, 'nodes': [
             {'id': 1, 'type': 'add', 'x': 80, 'y': 80, 'params': {'rhs': 0, 'numericmode': 0}},
             {'id': 2, 'type': 'number', 'x': 300, 'y': 240, 'params': {'value': 0}},
         ], 'edges': []}
@@ -609,7 +609,7 @@ def run():
         assert export() == connected, 'Native click-to-connect regressed'
         (output/'wiring.ultra.json').write_text(json.dumps(connected, indent=2)+'\n')
 
-        controls = {'version': 1, 'profile': 'ultra-canvas-v1', 'nodes': [
+        controls = {'version': 1, 'profile': 'ultra-canvas-v1','presentation': None, 'nodes': [
             {'id': 1, 'type': 'toggle', 'x': 80, 'y': 60, 'params': {}},
             {'id': 2, 'type': 'bang', 'x': 160, 'y': 60, 'params': {}},
             {'id': 3, 'type': 'number', 'x': 80, 'y': 220, 'params': {}},

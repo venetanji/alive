@@ -16,6 +16,8 @@ struct HierarchyDocument {
     profile: String,
     nodes: Vec<HierarchyNode>,
     edges: Vec<Edge>,
+    #[serde(rename = "presentation", deserialize_with = "super::required_presentation")]
+    _presentation: Value,
     #[serde(default, deserialize_with = "super::device::present")]
     device: Option<super::device::Device>,
     #[serde(default, rename = "helpShell", deserialize_with = "present_help_shell")]
@@ -34,6 +36,8 @@ fn present_help_shell<'de,D:Deserializer<'de>>(deserializer:D)->Result<Option<He
 struct Scope {
     nodes: Vec<HierarchyNode>,
     edges: Vec<Edge>,
+    #[serde(rename = "presentation", deserialize_with = "super::required_presentation")]
+    _presentation: Value,
 }
 
 #[derive(Deserialize)]
@@ -69,13 +73,13 @@ pub(super) fn prepare(patch: Value) -> Result<Prepared, String> {
     if doc.version != 2 || doc.profile != "ultra-patcher-v2" {
         return Err("Expected version 2 and profile ultra-patcher-v2".into());
     }
-    let root = Scope { nodes: doc.nodes, edges: doc.edges };
+    let root = Scope { nodes: doc.nodes, edges: doc.edges, _presentation: doc._presentation };
     validate_scope(&root, 0, &mut Bounds::default())?;
     validate_help_shell(&root,doc.help_shell.as_ref())?;
     let mut nodes = Vec::new();
     let mut edges = Vec::new();
     lower_scope(root, &mut nodes, &mut edges)?;
-    prepare_flat(Document { version: 1, profile: "ultra-canvas-v1".into(), nodes, edges, device: doc.device }, true)
+    prepare_flat(Document { version: 1, profile: "ultra-canvas-v1".into(), nodes, edges, _presentation: Value::Null, device: doc.device }, true)
 }
 
 fn validate_scope(scope: &Scope, depth: usize, bounds: &mut Bounds) -> Result<(), String> {

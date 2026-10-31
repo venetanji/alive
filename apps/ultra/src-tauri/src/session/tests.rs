@@ -129,7 +129,7 @@ fn missing_and_incompatible_devices_identify_track_and_preserve_input() {
     assert!(error.contains("Harmony") && error.contains("missing.ultra"), "{error}");
     assert_eq!(missing, before);
     let mut incompatible = example();
-    instrument_mut(&mut incompatible,0).version = 2;
+    instrument_mut(&mut incompatible,0).version = 1;
     let error = prepare_score_fixture(&incompatible, &example_path()).unwrap_err();
     assert!(error.contains("Pulse") && error.contains("version"), "{error}");
 }

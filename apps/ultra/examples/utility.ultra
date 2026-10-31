@@ -1,6 +1,39 @@
 {
   "version": 1,
   "profile": "ultra-canvas-v1",
+  "presentation": {
+    "version": 1,
+    "openOnLoad": false,
+    "size": {
+      "width": 160,
+      "height": 112
+    },
+    "items": [
+      {
+        "id": "gain",
+        "kind": "control",
+        "target": {
+          "kind": "parameter",
+          "node": 2,
+          "param": "value"
+        },
+        "widget": "dial",
+        "label": "Gain",
+        "rect": {
+          "x": 8,
+          "y": 8,
+          "width": 88,
+          "height": 96
+        },
+        "included": true,
+        "visible": true,
+        "style": {
+          "accent": "cyan",
+          "labelPosition": "above"
+        }
+      }
+    ]
+  },
   "nodes": [
     {
       "id": 1,

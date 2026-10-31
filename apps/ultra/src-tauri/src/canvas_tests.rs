@@ -7,7 +7,7 @@ fn edge(from: u32, outlet: u32, to: u32, inlet: u32) -> Value {
     json!({"from":from,"outlet":outlet,"to":to,"inlet":inlet})
 }
 fn patch(nodes: Vec<Value>, edges: Vec<Value>) -> Value {
-    json!({"version":1,"profile":"ultra-canvas-v1","nodes":nodes,"edges":edges})
+    json!({"version":1,"profile":"ultra-canvas-v1","presentation":null,"nodes":nodes,"edges":edges})
 }
 fn stereo() -> Value {
     patch(
@@ -71,15 +71,16 @@ fn authored_voice_parameter_bounds_are_strict() {
 }
 fn reusable_device_patch() -> Value {
     let mut source=patch(vec![node(1,"poly_note",json!({})),node(2,"adsr_voice",json!({})),node(3,"filter_voice",json!({}))],vec![]);
-    source["device"]=json!({"version":1,"id":"org.alive.subtractive","name":"Subtractive",
-        "midi":{"node":1,"inlet":0},"audio":{"inputs":0,"outputs":2,"layout":"stereo"},
+    source["presentation"]=json!({"version":1,"openOnLoad":false,"size":{"width":640,"height":120},"items":[]});
+    source["device"]=json!({"version":2,"kind":"instrument","id":"org.alive.subtractive","name":"Subtractive",
+        "midi":{"input":{"node":1,"inlet":0},"output":null},"audio":{"input":null,"output":{"channels":2,"layout":"stereo"}},
         "parameters":[{"key":"attack","label":"Attack","node":2,"param":"attack","min":1,"max":10000,"unit":"ms"},
             {"key":"cutoff","label":"Cutoff","node":3,"param":"cutoff","min":20,"max":20000}],
         "presets":[{"name":"Init","values":{"attack":10,"cutoff":2400}}]});
     source
 }
 #[test]
-fn version_two_instrument_manifest_normalizes_and_keeps_version_one_compatible() {
+fn version_two_instrument_manifest_is_current_and_version_one_is_refused() {
     let mut source=reusable_device_patch();
     source["device"]["version"]=json!(2);source["device"]["kind"]=json!("instrument");
     source["device"]["midi"]=json!({"input":{"node":1,"inlet":0},"output":null});
@@ -88,14 +89,14 @@ fn version_two_instrument_manifest_normalizes_and_keeps_version_one_compatible()
     let manifest=device::host_manifest(&source,&prepared.native).unwrap();
     let view=serde_json::to_value(manifest).unwrap();
     assert_eq!(view["kind"],"instrument");assert_eq!(view["noteNode"],1);assert!(view["input"].is_null());
-    let legacy=reusable_device_patch();let prepared=prepare(legacy.clone()).unwrap();
-    let view=serde_json::to_value(device::host_manifest(&legacy,&prepared.native).unwrap()).unwrap();
-    assert_eq!(view["version"],1);assert_eq!(view["kind"],"instrument");assert_eq!(view["noteNode"],1);
+    let mut legacy=reusable_device_patch();legacy["device"]["version"]=json!(1);
+    assert!(prepare(legacy).is_err());
 }
 #[test]
 fn version_two_effect_manifest_requires_bound_stereo_input_without_midi() {
     let mut source=patch(vec![node(1,"audio_in",json!({})),node(2,"filter_stereo",json!({})),node(3,"signal_dac",json!({"channels":"1 2"}))],
         vec![edge(1,0,2,0),edge(1,1,2,1),edge(2,0,3,0),edge(2,1,3,1)]);
+    source["presentation"]=json!({"version":1,"openOnLoad":false,"size":{"width":640,"height":120},"items":[]});
     source["device"]=json!({"version":2,"kind":"audioEffect","id":"org.alive.test-effect","name":"Stereo lowpass",
         "midi":{"input":null,"output":null},"audio":{"input":{"node":1,"bundle":{"channels":2,"layout":"stereo"}},"output":{"channels":2,"layout":"stereo"}},
         "parameters":[{"key":"cutoff","label":"Cutoff","node":2,"param":"cutoff","min":20,"max":20000}],"presets":[{"name":"Soft","values":{"cutoff":350}}]});
@@ -133,17 +134,17 @@ fn reusable_device_manifest_binds_live_saved_parameters_without_changing_runtime
     let mut ordinary=source.clone();ordinary.as_object_mut().unwrap().remove("device");
     let mut state=CanvasState::default();state.install(prepare(ordinary).unwrap(),|_|true).unwrap();
     assert!(state.matches(&prepared));
-    let mut hierarchical=json!({"version":2,"profile":"ultra-patcher-v2","device":source["device"],
-        "nodes":[{"id":10,"type":"patcher","x":0,"y":0,"params":{"name":"instrument"},"patcher":{"nodes":source["nodes"],"edges":[]}}],"edges":[]});
+    let mut hierarchical=json!({"version":2,"profile":"ultra-patcher-v2","presentation":source["presentation"],"device":source["device"],
+        "nodes":[{"id":10,"type":"patcher","x":0,"y":0,"params":{"name":"instrument"},"patcher":{"presentation":null,"nodes":source["nodes"],"edges":[]}}],"edges":[]});
     assert!(prepare(hierarchical.clone()).is_ok());
     hierarchical["device"]["parameters"][0]["node"]=json!(10);assert!(prepare(hierarchical).is_err());
 }
 #[test]
 fn reusable_device_manifest_rejects_invalid_schema_bindings_and_presets() {
     let valid=reusable_device_patch();
-    let cases=[("/device/version",json!(2)),("/device/id",json!("bad id")),("/device/name",json!("")),
-        ("/device/midi/node",json!(2)),("/device/midi/inlet",json!(1)),("/device/audio/inputs",json!(1)),
-        ("/device/audio/outputs",json!(4)),("/device/audio/layout",json!("discrete")),
+    let cases=[("/device/version",json!(1)),("/device/id",json!("bad id")),("/device/name",json!("")),
+        ("/device/midi/input/node",json!(2)),("/device/midi/input/inlet",json!(1)),("/device/audio/input",json!(1)),
+        ("/device/audio/output/channels",json!(4)),("/device/audio/output/layout",json!("discrete")),
         ("/device/parameters/0/key",json!("__proto__")),("/device/parameters/0/key",json!("prototype")),
         ("/device/parameters/0/key",json!("constructor")),("/device/parameters/0/key",json!("2attack")),
         ("/device/parameters/0/label",json!("bad\nlabel")),("/device/parameters/0/unit",json!("x".repeat(17))),
@@ -340,7 +341,7 @@ fn appearance_shared_cases_validate_without_changing_native_descriptors() {
     let appearance_patch = |kind: &str, style: Option<&Value>| {
         let params = match kind { "comment" => json!({"text":"Original callout."}), "patcher" => json!({"name":"child"}), _ => json!({}) };
         let mut source = node(1, kind, params);
-        if kind == "patcher" { source["patcher"] = json!({"nodes":[],"edges":[]}); }
+        if kind == "patcher" { source["patcher"] = json!({"presentation":null,"nodes":[],"edges":[]}); }
         if let Some(style) = style { source["style"] = style.clone(); }
         let mut document = patch(vec![source], vec![]);
         if matches!(kind, "comment" | "patcher") { document["version"] = json!(2); document["profile"] = json!("ultra-patcher-v2"); }
@@ -1230,11 +1231,11 @@ fn signal_control_and_mixed_ports_reach_the_message_bridge_but_dac_stays_signal_
 }
 
 fn hierarchy(nodes: Vec<Value>, edges: Vec<Value>) -> Value {
-    json!({"version":2,"profile":"ultra-patcher-v2","nodes":nodes,"edges":edges})
+    json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":nodes,"edges":edges})
 }
 fn patcher(id: u32, nodes: Vec<Value>, edges: Vec<Value>) -> Value {
     let mut result = node(id, "patcher", json!({"name":"basic"}));
-    result["patcher"] = json!({"nodes":nodes,"edges":edges});
+    result["patcher"] = json!({"presentation":null,"nodes":nodes,"edges":edges});
     result
 }
 fn native_edges(prepared: &Prepared) -> Vec<(u32, u32, u32, u32)> {
@@ -1357,7 +1358,7 @@ fn hierarchy_schema_rejects_unknown_fields_and_inapplicable_child_patchers() {
         ("comment", json!({"text":"x","extra":0})), ("inlet", json!({"index":1})),
         ("outlet", json!({"index":1}))] {
         let mut n = node(1, kind, params);
-        if kind == "patcher" { n["patcher"] = json!({"nodes":[],"edges":[]}); }
+        if kind == "patcher" { n["patcher"] = json!({"presentation":null,"nodes":[],"edges":[]}); }
         assert!(prepare(hierarchy(vec![n], vec![])).is_err(), "{kind}");
     }
     assert!(prepare(hierarchy(vec![node(1, "patcher", json!({"name":"x"}))], vec![])).is_err());
@@ -1539,7 +1540,7 @@ fn cable_midpoints_are_bounded_authoring_only_in_flat_and_nested_documents() {
     let base=patch(vec![node(1,"bang",json!({})),node(2,"bang",json!({}))],vec![edge(1,0,2,0)]);
     for nested in [false,true] {
         let document=|mut scope:Value|{
-            if nested {json!({"version":2,"profile":"ultra-patcher-v2","nodes":[{"id":3,"type":"patcher","x":10,"y":10,"params":{"name":"inner"},"patcher":{"nodes":scope["nodes"].take(),"edges":scope["edges"].take()}}],"edges":[]})}else{scope}
+            if nested {json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[{"id":3,"type":"patcher","x":10,"y":10,"params":{"name":"inner"},"patcher":{"presentation":null,"nodes":scope["nodes"].take(),"edges":scope["edges"].take()}}],"edges":[]})}else{scope}
         };
         let plain=prepare(document(base.clone())).unwrap();
         let mut state=CanvasState::default();let revision=state.install(plain,|_|true).unwrap();
@@ -1553,4 +1554,55 @@ fn cable_midpoints_are_bounded_authoring_only_in_flat_and_nested_documents() {
             assert!(prepare(document(changed)).is_err());
         }
     }
+}
+
+#[test]
+fn saved_presentation_current_schema() {
+    let corpus: Value = serde_json::from_str(include_str!("../../ui/canvas-presentation-cases.json")).unwrap();
+    for case in corpus.as_array().unwrap().iter().filter(|case| case.get("profiles").is_none()) {
+        assert_eq!(prepare(case["document"].clone()).is_ok(),case["valid"].as_bool().unwrap(),"{}",case["name"]);
+    }
+}
+
+fn presentation_control(node:u32,param:&str)->Value {
+    json!({"id":"surface_control","kind":"control","target":{"kind":"parameter","node":node,"param":param},
+        "widget":"dial","label":"Saved label","rect":{"x":8,"y":8,"width":72,"height":88},
+        "included":true,"visible":false,"style":{"accent":"orange","labelPosition":"below"}})
+}
+#[test]
+fn presentation_projection_resolves_descriptors_text_and_exact_capability_refusals(){
+    let mut source=reusable_device_patch();source["presentation"]["items"]=json!([presentation_control(2,"attack")]);
+    let graph=prepare(source.clone()).unwrap().native;
+    let manifest=device::host_manifest(&source,&graph).unwrap();
+    assert_eq!(manifest.presentation["items"][0]["resolved"],json!({"kind":"parameter","bindingId":"attack","descriptor":{"min":1.,"max":10000.,"integral":false,"unit":"ms"}}));
+    assert_eq!(manifest.presentation["items"][0]["visible"],false);
+    source["presentation"]["items"][0]["target"]["param"]=json!("release");
+    assert!(prepare(source.clone()).is_ok(),"Ultra can author unexposed live controls");
+    assert!(device::host_manifest(&source,&graph).unwrap_err().contains("parameter 2.release is not exposed"));
+    source["presentation"]["items"][0]["included"]=json!(false);
+    assert!(device::host_manifest(&source,&graph).is_ok(),"excluded outline items need no Alive capability");
+    source["nodes"].as_array_mut().unwrap().push(node(4,"message",json!({"text":"Hello"})));
+    source["presentation"]["items"][0]["included"]=json!(true);
+    source["presentation"]["items"][0]["widget"]=json!("text");
+    source["presentation"]["items"][0]["target"]=json!({"kind":"text","node":4,"param":"text"});
+    let graph=prepare(source.clone()).unwrap().native;
+    assert_eq!(device::host_manifest(&source,&graph).unwrap().presentation["items"][0]["resolved"],json!({"kind":"text","text":"Hello","style":{}}));
+    source["presentation"]["items"][0]["widget"]=json!("button");
+    source["presentation"]["items"][0]["target"]=json!({"kind":"event","node":4,"inlet":0,"action":"bang"});
+    assert!(device::host_manifest(&source,&graph).unwrap_err().contains("event 4:0 bang"));
+}
+#[test]
+fn empty_surfaces_zero_exposed_parameters_and_nested_unmounted_controls_are_current(){
+    let mut source=reusable_device_patch();source["device"]["parameters"]=json!([]);source["device"]["presets"]=json!([]);
+    let graph=prepare(source.clone()).unwrap().native;
+    assert!(device::host_manifest(&source,&graph).unwrap().parameters.is_empty());
+    source["presentation"]=Value::Null;assert!(prepare(source).is_err());
+    let mut source=reusable_device_patch();
+    let nested=json!({"version":2,"profile":"ultra-patcher-v2","presentation":source["presentation"],"device":source["device"],
+        "nodes":[{"id":10,"type":"patcher","x":0,"y":0,"params":{"name":"instrument"},"patcher":{"nodes":source["nodes"],"edges":[],"presentation":{
+            "version":1,"openOnLoad":true,"size":{"width":640,"height":120},"items":[presentation_control(2,"release")]}}}],"edges":[]});
+    let graph=prepare(nested.clone()).unwrap().native;
+    assert!(device::host_manifest(&nested,&graph).is_ok(),"unmounted child presentation needs no Alive capability");
+    source["nodes"].as_array_mut().unwrap().push(node(9,"live_device",json!({"device":"Analog","state":{"profile":"live12-analog-v1"}})));
+    assert!(prepare(source).is_err(),"schema support cannot admit an unavailable executable");
 }

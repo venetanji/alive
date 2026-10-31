@@ -55,7 +55,7 @@ test('named creation parameters share the positional validator and preserve unsp
   assert.equal(parseObjectText('message bang').params.text,'bang');
 });
 test('creation and text replacement are atomic, undoable and preserve identity and valid cords',()=>{
-  const doc=new CanvasDocument({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+  const doc=new CanvasDocument({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});
   const a=doc.add('add',30,40,{rhs:12}),b=doc.add('number',30,90,{value:4});
   assert.equal(doc.patch.nodes[0].params.rhs,12);
   doc.connect(a,0,b,0);
@@ -70,7 +70,7 @@ test('creation and text replacement are atomic, undoable and preserve identity a
   assert.doesNotThrow(()=>validatePatch(doc.patch));
 });
 test('group movement and deletion each have one undo step, preserving internal wires',()=>{
-  const doc=new CanvasDocument({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+  const doc=new CanvasDocument({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});
   const a=doc.add('bang',40,40),b=doc.add('number',40,100);doc.connect(a,0,b,0);
   doc.moveMany([{id:a,x:70,y:80},{id:b,x:70,y:140}]);
   assert.equal(doc.patch.nodes[1].y,140);doc.undo();assert.equal(doc.patch.nodes[1].y,100);

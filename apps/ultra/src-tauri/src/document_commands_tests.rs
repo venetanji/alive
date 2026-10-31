@@ -3,8 +3,8 @@ use super::*;
 fn parameter(value: f64) -> Parameter { Parameter { node: 2, key: "value".into(), value, hot: false } }
 
 fn numeric_patch() -> Value {
-    serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
-        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"numeric"},"patcher":{
+    serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
+        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"numeric"},"patcher":{"presentation":null,
             "nodes":[{"id":2,"type":"number","x":0,"y":0,"params":{"value":1}}],"edges":[]}}
     ],"edges":[]})
 }
@@ -100,7 +100,7 @@ fn canvas_parameter_retirement_blocks_revision_zero_installation() {
 fn retiring_ultra_owner_refuses_admission_history_and_root_close() {
     let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
     let mut registry = Registry::default();
-    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[],"edges":[]});
+    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[],"edges":[]});
     let root = registry.add("Retained".into(), Kind::Patch, Some(patch.clone()), None, None).unwrap();
     registry.get_mut(&root.label).unwrap().id = 9;
     let mut control = canvas::CanvasState::default();
@@ -165,8 +165,8 @@ fn snapshot(id: u32) -> canvas::NativeStatus {
 fn arithmetic_shared_rhs_history_retains_hot_state_and_mode_history_reinstalls() {
     let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
     let mut registry=Registry::default();
-    let patch=serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
-        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"arithmetic"},"patcher":{"nodes":[
+    let patch=serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
+        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"arithmetic"},"patcher":{"presentation":null,"nodes":[
             {"id":2,"type":"multiply","x":0,"y":0,"params":{"rhs":2,"numericmode":1}},
             {"id":3,"type":"print","x":100,"y":0,"params":{"label":"product","popup":1}},
             {"id":4,"type":"number","x":200,"y":0,"params":{"value":0}}
@@ -225,8 +225,8 @@ fn arithmetic_shared_rhs_history_retains_hot_state_and_mode_history_reinstalls()
 fn cable_midpoints_owner_commits_and_history_preserve_fresh_native_recall() {
     let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
     let mut registry = Registry::default();
-    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
-        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"nodes":[
+    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
+        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"presentation":null,"nodes":[
             {"id":2,"type":"number","x":10,"y":10,"params":{"value":1}},
             {"id":3,"type":"number","x":100,"y":100,"params":{"value":0}},
             {"id":4,"type":"message_box","x":150,"y":0,"params":{"text":"saved $1"}},
@@ -324,8 +324,8 @@ fn forced_graph_installs_cannot_silently_ignore_message_text_intent() {
 fn message_box_shared_restore_history_and_child_view_serials() {
     let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
     let mut registry=Registry::default();
-    let patch=serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
-        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"nodes":[
+    let patch=serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
+        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"presentation":null,"nodes":[
             {"id":2,"type":"message_box","x":0,"y":0,"params":{"text":"saved $1 $2"}},
             {"id":3,"type":"number","x":100,"y":0,"params":{"value":0}}
         ],"edges":[]}}
@@ -362,7 +362,7 @@ fn message_box_shared_restore_history_and_child_view_serials() {
 fn integer_number_shared_edits_and_history_keep_runtime_and_tab_independent() {
     let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
     let mut registry = Registry::default();
-    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
+    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
         {"id":1,"type":"number_int","x":0,"y":0,"params":{"value":1}},
         {"id":2,"type":"number","x":100,"y":0,"params":{"value":0}},
         {"id":3,"type":"number","x":200,"y":0,"params":{"value":0}}
@@ -394,8 +394,8 @@ fn integer_number_shared_edits_and_history_keep_runtime_and_tab_independent() {
 fn shared_admission_preserves_live_state_and_uses_atomic_hot_numeric_updates() {
     let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
     let mut registry = Registry::default();
-    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
-        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"nodes":[
+    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
+        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"presentation":null,"nodes":[
             {"id":2,"type":"number","x":0,"y":0,"params":{"value":1}},
             {"id":3,"type":"number","x":50,"y":0,"params":{"value":0}}
         ],"edges":[{"from":2,"outlet":0,"to":3,"inlet":0}]}}
@@ -460,4 +460,40 @@ fn shared_admission_preserves_live_state_and_uses_atomic_hot_numeric_updates() {
     assert!(replacement.runtime_revision > root.runtime_revision);
     assert_eq!(snapshot(root.id).active, 1);
     assert_eq!(unsafe { crate::ultra_canvas_close_document(root.id) }, 1);
+}
+
+#[test]
+fn saved_presentation_shared_history_and_reopen_preserve_native_runtime_and_receipts(){
+    const NAME:&str="document_windows::commands::tests::saved_presentation_shared_history_and_reopen_preserve_native_runtime_and_receipts";
+    if std::env::var("ULTRA_PRESENTATION_HISTORY_TEST_PROCESS").as_deref()!=Ok("1"){
+        let child=std::process::Command::new(std::env::current_exe().unwrap()).args(["--exact",NAME,"--nocapture"])
+            .env("ULTRA_PRESENTATION_HISTORY_TEST_PROCESS","1").output().unwrap();
+        assert!(child.status.success(),"{}\n{}",String::from_utf8_lossy(&child.stdout),String::from_utf8_lossy(&child.stderr));return;
+    }
+    let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut registry=Registry::default();
+    let root=registry.add("Surface".into(),Kind::Patch,Some(numeric_patch()),None,None).unwrap();
+    registry.get_mut(&root.label).unwrap().id=14;
+    let mut control=canvas::CanvasState::default();
+    let root=registry.prepare_runtime(&root.label,|owner|admit(&mut control,owner,owner.patch.as_ref().unwrap(),None,true)).unwrap();
+    let (child,_)=registry.open_view(&root.label,1).unwrap();
+    let message=control.event(root.runtime_revision,2,0,serde_json::json!([87])).unwrap();
+    assert_eq!(unsafe{crate::ultra_canvas_message_document(root.id,root.runtime_revision,2,0,&message)},1);
+    let native_before=native_numeric_state(root.id);
+    let mut edited=root.patch.clone().unwrap();
+    edited["presentation"]=serde_json::json!({"version":1,"openOnLoad":false,"size":{"width":640,"height":120},"items":[{
+        "id":"value","kind":"control","target":{"kind":"parameter","node":2,"param":"value"},"widget":"number","label":"Value",
+        "rect":{"x":8,"y":8,"width":100,"height":80},"included":true,"visible":true,"style":{"accent":"cyan","labelPosition":"above"}}]});
+    let committed=registry.commit(&child.label,0,edited.clone(),true,|owner,patch|admit(&mut control,owner,patch,None,false)).unwrap().document;
+    assert_eq!(committed.runtime_revision,root.runtime_revision);assert!(committed.dirty);
+    assert_eq!(native_numeric_state(root.id),native_before,"metadata commit reinstalled DSP or reset a live receipt");
+    for (base,direction,expected) in [(1,"undo",root.patch.unwrap()),(2,"redo",edited.clone())]{
+        let result=registry.history(&root.label,base,direction,|owner,patch|admit(&mut control,owner,patch,None,false)).unwrap().document;
+        assert_eq!(result.runtime_revision,root.runtime_revision);assert_eq!(native_numeric_state(root.id),native_before);
+        assert_eq!(registry.descriptor(&child.label).unwrap().patch,Some(expected));
+    }
+    let folder=std::env::temp_dir().join(format!("alive-saved-presentation-{}",std::process::id()));std::fs::create_dir_all(&folder).unwrap();
+    let file=folder.join("saved.ultra");documents::save_patch(&file,&edited).unwrap();
+    assert_eq!(documents::read_patch(&file).unwrap().patch,Some(edited));std::fs::remove_dir_all(folder).unwrap();
+    assert_eq!(unsafe{crate::ultra_canvas_close_document(root.id)},1);
 }

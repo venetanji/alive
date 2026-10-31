@@ -9,7 +9,7 @@ import {OBJECT_EXAMPLES} from './canvas-object-examples.mjs';
 import {createLibraryPatch, searchLibrary} from './canvas-library.mjs';
 
 const types=['sig','signal_add','signal_subtract','signal_multiply','signal_divide','cycle','phasor','noise','signal_clip','line_signal','snapshot','signal_dac'];
-const empty=()=>({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+const empty=()=>({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});
 const edge=(from,to,inlet=0,outlet=0)=>({from,outlet,to,inlet});
 const box=(id,text,extra={})=>({box:{id,maxclass:'newobj',text,patching_rect:[40,60,120,22],...extra}});
 const message=(id,text)=>({box:{id,maxclass:'message',text,patching_rect:[40,20,120,22]}});

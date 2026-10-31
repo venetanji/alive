@@ -228,9 +228,8 @@ mod tests {
             assert!(child.status.success(),"{}\n{}",String::from_utf8_lossy(&child.stdout),String::from_utf8_lossy(&child.stderr));return;
         }
         let path=Path::new(env!("CARGO_MANIFEST_DIR")).join("../examples/subtractive.ultra");
-        let mut patch: Value=serde_json::from_slice(&fs::read(path).unwrap()).unwrap();
-        let d=&mut patch["device"];d["version"]=json!(2);d["kind"]=json!("instrument");
-        d["midi"]=json!({"input":d["midi"].clone(),"output":null});d["audio"]=json!({"input":null,"output":{"channels":2,"layout":"stereo"}});
+        let patch: Value=serde_json::from_slice(&fs::read(path).unwrap()).unwrap();
+        assert_eq!(patch["device"]["version"],2);
         let folder=std::env::temp_dir().join(format!("ultra-v2-instrument-probe-{}",std::process::id()));
         fs::create_dir_all(&folder).unwrap();let source=folder.join("source.ultra");fs::write(&source,serde_json::to_vec(&patch).unwrap()).unwrap();
         assert_eq!(run(&source,&folder.join("render")).unwrap()["passed"],true);fs::remove_dir_all(folder).unwrap();

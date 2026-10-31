@@ -5,7 +5,7 @@ import {objectText, parseObjectText, portHelp} from './canvas-catalog.mjs';
 import {completionFor} from './canvas-completion.mjs';
 import {importMaxPatcher} from './canvas-max-import.mjs';
 
-const patch = (...nodes) => ({version:1,profile:'ultra-canvas-v1',nodes,edges:[]});
+const patch = (...nodes) => ({version:1,profile:'ultra-canvas-v1',presentation:null,nodes,edges:[]});
 const tick = () => new Promise(resolve => setImmediate(resolve));
 const box = (id,text,numinlets,numoutlets) => ({box:{id,maxclass:'newobj',text,numinlets,numoutlets,patching_rect:[40,60,100,22]}});
 const message = (id,text) => ({box:{id,maxclass:'message',text,patching_rect:[40,30,100,22]}});

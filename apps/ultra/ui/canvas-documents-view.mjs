@@ -5,7 +5,7 @@ import {MAX_IMPORT_LIMITS,readPatchFile} from './canvas-max-import.mjs';
 
 export function mountDocuments({doc,win,invoke,getPatch,adopt,beforeSave,beforeClose,onCloseCancelled=()=>{},inspect,notice,onDocument=()=>{},onDescriptor=()=>{},onReveal=()=>{}}){
   const $=id=>doc.querySelector('#'+id),make=(tag,className,text)=>{const e=doc.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;};
-  const cleanPatch={version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]};
+  const cleanPatch={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]};
   const unlisten=[];let disposed=false,returnFocus=null,readyTask=null;
   const guard=fn=>(...args)=>{try{return Promise.resolve(fn(...args)).catch(notice);}catch(error){notice(error);}};
   const pageURL=params=>{const url=new URL(win.location.href||'http://localhost/canvas.html');url.search='';url.hash='';for(const [key,value]of Object.entries(params))url.searchParams.set(key,value);return url.href;};

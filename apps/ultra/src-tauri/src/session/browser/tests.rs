@@ -639,3 +639,26 @@ fn malformed_revision_and_unknown_initial_cursors_are_explicitly_refused() {
         assert!(error.contains("Malformed"), "{revision:?}: {error}");
     }
 }
+
+#[test]
+fn saved_readiness_revalidates_required_surface_bindings_and_keeps_excluded_items(){
+    let f=Fixture::new();let path=f.device("user/surface.ultra");
+    let mut patch:serde_json::Value=serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+    patch["presentation"]["items"][0]["target"]["param"]=serde_json::json!("time");
+    patch["presentation"]["items"][0]["target"]["node"]=serde_json::json!(16);
+    fs::write(&path,serde_json::to_vec(&patch).unwrap()).unwrap();
+    let discovery=f.discover();let entry=users(&discovery)[0];
+    assert_eq!(entry.availability,Availability::Unavailable);
+    assert!(entry.reason.as_ref().unwrap().contains("live numeric"));
+    patch["presentation"]["items"][0]["target"]["node"]=serde_json::json!(5);
+    patch["presentation"]["items"][0]["target"]["param"]=serde_json::json!("release");
+    patch["device"]["parameters"].as_array_mut().unwrap().retain(|p|p["key"]!="release");
+    for preset in patch["device"]["presets"].as_array_mut().unwrap(){preset["values"].as_object_mut().unwrap().remove("release");}
+    fs::write(&path,serde_json::to_vec(&patch).unwrap()).unwrap();
+    let discovery=f.discover();assert!(users(&discovery)[0].reason.as_ref().unwrap().contains("is not exposed"));
+    patch["presentation"]["items"][0]["included"]=serde_json::json!(false);
+    // Other authored release controls must be excluded too.
+    for item in patch["presentation"]["items"].as_array_mut().unwrap(){if item["target"]["param"]=="release"{item["included"]=serde_json::json!(false);}}
+    fs::write(&path,serde_json::to_vec(&patch).unwrap()).unwrap();
+    assert_eq!(users(&f.discover())[0].availability,Availability::Ready);
+}

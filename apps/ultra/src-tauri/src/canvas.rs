@@ -16,6 +16,8 @@ const NUMBER_LIMIT: f64 = 100_000.;
 
 #[path = "canvas_hierarchy.rs"]
 mod hierarchy;
+#[path = "canvas_presentation.rs"]
+mod presentation;
 #[path = "canvas_device.rs"]
 pub(crate) mod device;
 
@@ -269,9 +271,12 @@ struct Document {
     profile: String,
     nodes: Vec<Node>,
     edges: Vec<Edge>,
+    #[serde(rename = "presentation", deserialize_with = "required_presentation")]
+    _presentation: Value,
     #[serde(default, deserialize_with = "device::present")]
     device: Option<device::Device>,
 }
+fn required_presentation<'de,D:serde::Deserializer<'de>>(deserializer:D)->Result<Value,D::Error>{Value::deserialize(deserializer)}
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Node {
@@ -412,6 +417,9 @@ fn outlet(node: &NativeNode, port: u32) -> Option<Port> {
         66..=67 if port <= 1 => Some(Port::Mono),
         _ => None,
     }
+}
+fn default_arguments(kind:u32)->&'static str{
+    match kind{19..=20=>"0 0",21..=22|38=>"0",29..=32=>"",49=>"1 2",_=>"i i"}
 }
 fn argument_count(node: &NativeNode) -> u32 {
     let end = node
@@ -784,6 +792,10 @@ fn validate_style(kind: u32, name: &str, style: &Map<String, Value>) -> Result<(
 }
 
 pub fn prepare(patch: Value) -> Result<Prepared, String> {
+    if patch["version"]==2 {validate_json_size(&patch,1024*1024,"Hierarchy patch exceeds 1 MiB JSON")?;}
+    else {validate_json_size(&patch,MAX_JSON_BYTES,"Canvas patch exceeds 64 KiB JSON")?;}
+    presentation::validate(&patch)?;
+    if patch.get("device").is_some() && patch["presentation"].is_null(){return Err("Reusable devices require a root presentation".into());}
     if patch.get("version").and_then(Value::as_u64) == Some(2) {
         return hierarchy::prepare(patch);
     }
@@ -869,14 +881,7 @@ fn prepare_flat(doc: Document, allow_relays: bool) -> Result<Prepared, String> {
             }
             let text = match node.params.get(key) {
                 Some(value) => value.as_str().ok_or("Creation args must be a string")?,
-                None => match kind {
-                    19..=20 => "0 0",
-                    21..=22 => "0",
-                    29..=32 => "",
-                    38 => "0",
-                    49 => "1 2",
-                    _ => "i i",
-                },
+                None => default_arguments(kind),
             };
             let arguments = arguments_config(text, (29..=32).contains(&kind))?;
             if matches!(kind, 38 | 49) {

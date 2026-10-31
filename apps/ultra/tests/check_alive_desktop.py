@@ -843,7 +843,7 @@ def check_separate_apps():
     binary = Path(f'/proc/{ui.pid}/exe').resolve(strict=True)
     assert binary.name == 'alive', f'Alive journey launched {binary}'
     patch = ui.output / 'alongside.ultra'
-    patch.write_text('{"version":1,"profile":"ultra-canvas-v1","nodes":[],"edges":[]}\n')
+    patch.write_text('{"version":1,"profile":"ultra-canvas-v1","presentation":null,"nodes":[],"edges":[]}\n')
     with (ui.output / 'alongside-ultra.log').open('w') as log:
         other = subprocess.Popen([str(binary.with_name('ultra')), str(patch)], stdout=log, stderr=log)
         try:

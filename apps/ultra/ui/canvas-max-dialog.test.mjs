@@ -81,7 +81,7 @@ test('file inspection stages Max and ordinary Ultra JSON and reports current fai
   const p=mount(async()=>identity);
   assert.equal(await p.inspectFile(file(source)),true);
   assert.equal(p.importSelected().patch.helpShell.object,'append');
-  const ordinary=JSON.stringify({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+  const ordinary=JSON.stringify({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});
   assert.equal(await p.inspectFile(file(ordinary)),true);
   assert.equal(p.hasSelection(),false);assert.equal(p.get('patch-json').value,ordinary);
   assert.equal(p.get('import-patch').disabled,false);

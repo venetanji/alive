@@ -18,15 +18,15 @@ function demo(type){
   if(['patcher','comment','inlet','outlet'].includes(type)){
     const wire=(from,to)=>({from,outlet:0,to,inlet:0});
     const annotation=makeNode('comment',7,200,50,{text:'Double-click p basic to enter. All objects share this document runtime.'});
-    const child={nodes:[makeNode('inlet',3,60,50),makeNode('signal_add',4,60,120,{rhs:10}),makeNode('outlet',5,60,190)],edges:[wire(3,4),wire(4,5)]};
-    if(['inlet','outlet'].includes(type))return{version:2,profile:'ultra-patcher-v2',...child};
-    return{version:2,profile:'ultra-patcher-v2',nodes:[makeNode('message',1,60,50,{text:'7'}),{...makeNode('patcher',2,60,140,{name:'basic'}),patcher:child},makeNode('snapshot',6,60,230),annotation],edges:[wire(1,2),wire(2,6)]};
+    const child={presentation:null,nodes:[makeNode('inlet',3,60,50),makeNode('signal_add',4,60,120,{rhs:10}),makeNode('outlet',5,60,190)],edges:[wire(3,4),wire(4,5)]};
+    if(['inlet','outlet'].includes(type))return{version:2,profile:'ultra-patcher-v2',presentation:null,...child};
+    return{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[makeNode('message',1,60,50,{text:'7'}),{...makeNode('patcher',2,60,140,{name:'basic'}),patcher:child},makeNode('snapshot',6,60,230),annotation],edges:[wire(1,2),wire(2,6)]};
   }
   if(Object.hasOwn(OBJECT_EXAMPLES,type))return copy(OBJECT_EXAMPLES[type]);
   if(['voice','gain','join','dac'].includes(type)){
     const patch=starterPatch();for(const node of patch.nodes)if(node.type==='gain')node.params.value=4;return patch;
   }
-  const patch={version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]};
+  const patch={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]};
   const node=(type,x,y,params={})=>{const value=makeNode(type,patch.nodes.length+1,x,y,params);patch.nodes.push(value);return value.id;};
   const cable=(from,to,inlet=0)=>patch.edges.push({from,outlet:0,to,inlet});
   if(['send','receive'].includes(type)){

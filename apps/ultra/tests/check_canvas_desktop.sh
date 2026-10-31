@@ -121,7 +121,7 @@ ultra_initial_patch="$ULTRA_TEST_OUTPUT_DIR/initial.ultra"
 if [[ -n ${ULTRA_TEST_INITIAL_PATCH:-} ]]; then
   cp -- "$ULTRA_TEST_INITIAL_PATCH" "$ultra_initial_patch"
 else
-  printf '%s\n' '{"version":1,"profile":"ultra-canvas-v1","nodes":[],"edges":[]}' > "$ultra_initial_patch"
+  printf '%s\n' '{"version":1,"profile":"ultra-canvas-v1","presentation":null,"nodes":[],"edges":[]}' > "$ultra_initial_patch"
 fi
 if [[ ${ULTRA_TEST_WM:-0} == 1 ]]; then
   mwm -xrm 'Mwm*interactivePlacement: False' -xrm 'Mwm*usePPosition: on' \

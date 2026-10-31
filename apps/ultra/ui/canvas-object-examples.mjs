@@ -2,7 +2,7 @@
 export const OBJECT_EXAMPLES = {
   "int": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -52,7 +52,7 @@ export const OBJECT_EXAMPLES = {
   },
   "float": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -102,7 +102,7 @@ export const OBJECT_EXAMPLES = {
   },
   "flonum": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -150,7 +150,7 @@ export const OBJECT_EXAMPLES = {
   },
   "slider": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -189,7 +189,7 @@ export const OBJECT_EXAMPLES = {
   },
   "pack": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -329,7 +329,7 @@ export const OBJECT_EXAMPLES = {
   },
   "unpack": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -415,7 +415,7 @@ export const OBJECT_EXAMPLES = {
   },
   "select": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -495,7 +495,7 @@ export const OBJECT_EXAMPLES = {
   },
   "route": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -611,7 +611,7 @@ export const OBJECT_EXAMPLES = {
   },
   "trigger": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -692,7 +692,7 @@ export const OBJECT_EXAMPLES = {
   },
   "line": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -807,7 +807,7 @@ export const OBJECT_EXAMPLES = {
   },
   "print": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -871,7 +871,7 @@ export const OBJECT_EXAMPLES = {
   },
   "send": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -929,7 +929,7 @@ export const OBJECT_EXAMPLES = {
   },
   "receive": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -987,7 +987,7 @@ export const OBJECT_EXAMPLES = {
   },
   "iter": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -1049,7 +1049,7 @@ export const OBJECT_EXAMPLES = {
   },
   "prepend": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -1128,7 +1128,7 @@ export const OBJECT_EXAMPLES = {
   },
   "append": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -1207,7 +1207,7 @@ export const OBJECT_EXAMPLES = {
   },
   "zl_reg": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -1286,7 +1286,7 @@ export const OBJECT_EXAMPLES = {
   },
   "zl_join": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -1365,7 +1365,7 @@ export const OBJECT_EXAMPLES = {
   },
   "zl_len": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -1427,7 +1427,7 @@ export const OBJECT_EXAMPLES = {
   },
   "zl_iter": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -1506,7 +1506,7 @@ export const OBJECT_EXAMPLES = {
   },
   "zl_slice": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -1602,7 +1602,7 @@ export const OBJECT_EXAMPLES = {
   },
   "zl_rev": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -1664,7 +1664,7 @@ export const OBJECT_EXAMPLES = {
   },
   "zl_rot": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -1743,7 +1743,7 @@ export const OBJECT_EXAMPLES = {
   },
   "sig": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -1841,7 +1841,7 @@ export const OBJECT_EXAMPLES = {
   },
   "signal_add": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -1921,7 +1921,7 @@ export const OBJECT_EXAMPLES = {
   },
   "signal_subtract": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -2001,7 +2001,7 @@ export const OBJECT_EXAMPLES = {
   },
   "signal_multiply": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -2081,7 +2081,7 @@ export const OBJECT_EXAMPLES = {
   },
   "signal_divide": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -2161,7 +2161,7 @@ export const OBJECT_EXAMPLES = {
   },
   "cycle": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -2227,7 +2227,7 @@ export const OBJECT_EXAMPLES = {
   },
   "phasor": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -2293,7 +2293,7 @@ export const OBJECT_EXAMPLES = {
   },
   "noise": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -2341,7 +2341,7 @@ export const OBJECT_EXAMPLES = {
   },
   "signal_clip": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -2422,7 +2422,7 @@ export const OBJECT_EXAMPLES = {
   },
   "line_signal": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -2520,7 +2520,7 @@ export const OBJECT_EXAMPLES = {
   },
   "snapshot": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -2601,7 +2601,7 @@ export const OBJECT_EXAMPLES = {
   },
   "signal_dac": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -2688,7 +2688,7 @@ export const OBJECT_EXAMPLES = {
   },
   "inlet": {
     "version": 2,
-    "profile": "ultra-patcher-v2",
+    "profile": "ultra-patcher-v2",presentation:null,
     "nodes": [
       {
         "id": 3,
@@ -2731,7 +2731,7 @@ export const OBJECT_EXAMPLES = {
   },
   "outlet": {
     "version": 2,
-    "profile": "ultra-patcher-v2",
+    "profile": "ultra-patcher-v2",presentation:null,
     "nodes": [
       {
         "id": 3,
@@ -2774,7 +2774,7 @@ export const OBJECT_EXAMPLES = {
   },
   "number_int": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -2842,7 +2842,7 @@ export const OBJECT_EXAMPLES = {
   },
   "message_box": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -2934,7 +2934,7 @@ export const OBJECT_EXAMPLES = {
   },
   "patcher": {
     "version": 2,
-    "profile": "ultra-patcher-v2",
+    "profile": "ultra-patcher-v2",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -2953,7 +2953,7 @@ export const OBJECT_EXAMPLES = {
         "params": {
           "name": "basic"
         },
-        "patcher": {
+        "patcher": {presentation:null,
           "nodes": [
             {
               "id": 3,
@@ -3032,7 +3032,7 @@ export const OBJECT_EXAMPLES = {
   },
   "comment": {
     "version": 2,
-    "profile": "ultra-patcher-v2",
+    "profile": "ultra-patcher-v2",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -3051,7 +3051,7 @@ export const OBJECT_EXAMPLES = {
         "params": {
           "name": "basic"
         },
-        "patcher": {
+        "patcher": {presentation:null,
           "nodes": [
             {
               "id": 3,
@@ -3130,7 +3130,7 @@ export const OBJECT_EXAMPLES = {
   },
   "subtract": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -3208,7 +3208,7 @@ export const OBJECT_EXAMPLES = {
   },
   "divide": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -3286,7 +3286,7 @@ export const OBJECT_EXAMPLES = {
   },
   "modulo": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -3364,7 +3364,7 @@ export const OBJECT_EXAMPLES = {
   },
   "reverse_subtract": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -3442,7 +3442,7 @@ export const OBJECT_EXAMPLES = {
   },
   "reverse_divide": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,
@@ -3520,7 +3520,7 @@ export const OBJECT_EXAMPLES = {
   },
   "abs": {
     "version": 1,
-    "profile": "ultra-canvas-v1",
+    "profile": "ultra-canvas-v1",presentation:null,
     "nodes": [
       {
         "id": 1,

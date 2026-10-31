@@ -16,7 +16,7 @@ def fixture():
     def comment(ident, text, x, y, style):
         return {**desktop.node(ident, 'comment', {'text': text}, x=x, y=y), 'style': style}
 
-    return {'version': 2, 'profile': 'ultra-patcher-v2', 'nodes': [
+    return {'version': 2, 'profile': 'ultra-patcher-v2','presentation': None, 'nodes': [
         comment(1, 'Literal <tag> & "quotes"\nExplicit second line stays text.', 40, 15,
                 {'width': 650, 'height': 65, 'fontsize': 18}),
         comment(2, 'Top callout\nPoint 0; font 14', 40, 100,

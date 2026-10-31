@@ -7,7 +7,7 @@ import {OBJECT_EXAMPLES} from './canvas-object-examples.mjs';
 import {createLibraryPatch, searchLibrary} from './canvas-library.mjs';
 
 const types=['iter','prepend','append','zl_reg','zl_join','zl_len','zl_iter','zl_slice','zl_rev','zl_rot'];
-const empty=()=>({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+const empty=()=>({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});
 const box=(id,text,extra={})=>({box:{id,maxclass:'newobj',text,patching_rect:[40,60,120,22],...extra}});
 const message=(id,text)=>({box:{id,maxclass:'message',text,patching_rect:[40,20,120,22]}});
 const wire=(from,to,inlet=0)=>({patchline:{source:[from,0],destination:[to,inlet]}});

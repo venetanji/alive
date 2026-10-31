@@ -20,7 +20,7 @@ test('new Message authoring has two inlets and preserves saved legacy literals',
   assert.equal(nodeSpec(legacy).inlets.length,1);
   assert.equal(objectText(legacy),'message.legacy 9');
   assert.equal(parseObjectText(objectText(legacy)).type,'message');
-  const patch={version:1,profile:'ultra-canvas-v1',nodes:[node,legacy,makeNode('message_box',9)],edges:[{from:8,outlet:0,to:7,inlet:1}]};
+  const patch={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[node,legacy,makeNode('message_box',9)],edges:[{from:8,outlet:0,to:7,inlet:1}]};
   assert.equal(parsePatch(serializePatch(patch)).nodes[2].params.text,'');
   assert.throws(()=>validatePatch({...patch,nodes:[{...legacy,params:{text:'saved $1'}}]}));
 });
@@ -44,7 +44,7 @@ test('display cache preserves empty templates, refuses stale serials and keeps n
 
 test('standalone Message text edit and history precede hot input without graph replacement',async()=>{
   const calls=[];let release,serial=0;
-  const patch={version:1,profile:'ultra-canvas-v1',nodes:[makeNode('message_box',1,0,0,{text:'saved $1'})],edges:[]};
+  const patch={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode('message_box',1,0,0,{text:'saved $1'})],edges:[]};
   let live=snapshot([row(1,'runtime')],0,8);
   const c=createCanvasController({patch,invoke:async(name,args)=>{
     calls.push({name,args});if(name==='canvas_apply')return{revision:8};
@@ -69,7 +69,7 @@ test('standalone Message text edit and history precede hot input without graph r
 
 test('shared Message same-text restore carries explicit CAS hint and serial-gates all views',async()=>{
   let serial=0,publication=1,live=snapshot([row(1,'runtime')],0,8);
-  const patch={version:2,profile:'ultra-patcher-v2',nodes:[makeNode('message_box',1,0,0,{text:'saved'})],edges:[]};
+  const patch={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[makeNode('message_box',1,0,0,{text:'saved'})],edges:[]};
   const descriptor=()=>({shared:true,label:'owner',ownerLabel:'owner',viewPath:[],patch,authoringRevision:1,runtimeRevision:8,messageTextSerial:serial,descriptorRevision:publication});
   const calls=[];const c=createSharedCanvasController({invoke:async(name,args)=>{
     calls.push({name,args});if(name==='document_current')return descriptor();
@@ -87,7 +87,7 @@ test('shared Message same-text restore carries explicit CAS hint and serial-gate
 
 test('standalone Message edits preserve interleaved text / trigger order',async()=>{
   const calls=[];let release,serial=0;
-  const c=createCanvasController({patch:{version:1,profile:'ultra-canvas-v1',nodes:[makeNode('message_box',1)],edges:[]},invoke:async(name,args)=>{
+  const c=createCanvasController({patch:{version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode('message_box',1)],edges:[]},invoke:async(name,args)=>{
     if(name==='canvas_apply')return{revision:4};
     calls.push({name,args});
     if(name==='canvas_message_text'){if(!serial)await new Promise(resolve=>release=resolve);return{serial:++serial};}
@@ -100,7 +100,7 @@ test('standalone Message edits preserve interleaved text / trigger order',async(
 
 test('rejected standalone text admission preserves saved text and history and blocks dependent edits',async()=>{
   let reject;
-  const c=createCanvasController({patch:{version:1,profile:'ultra-canvas-v1',nodes:[makeNode('message_box',1,0,0,{text:'saved'})],edges:[]},invoke:async(name)=>{
+  const c=createCanvasController({patch:{version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode('message_box',1,0,0,{text:'saved'})],edges:[]},invoke:async(name)=>{
     if(name==='canvas_apply')return{revision:4};
     if(name==='canvas_message_text')await new Promise((_,failure)=>reject=failure);
     return true;
@@ -114,7 +114,7 @@ test('rejected standalone text admission preserves saved text and history and bl
 
 test('both controllers admit replacement placeholders only for MessageBox cold/set input',async()=>{
   for(const shared of [false,true]){
-    const calls=[],patch={version:1,profile:'ultra-canvas-v1',nodes:[makeNode('message_box',1),makeNode('message',2)],edges:[]};
+    const calls=[],patch={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode('message_box',1),makeNode('message',2)],edges:[]};
     const invoke=async(name,args)=>{calls.push({name,args});
       if(name==='canvas_apply')return{revision:4};
       if(name==='document_current')return{shared:true,label:'owner',ownerLabel:'owner',viewPath:[],patch,authoringRevision:1,runtimeRevision:4,messageTextSerial:0};
@@ -129,7 +129,7 @@ test('both controllers admit replacement placeholders only for MessageBox cold/s
 
 test('Stop cancels queued text edits and settles already-admitted text without losing saved state',async()=>{
   let release;
-  const c=createCanvasController({patch:{version:1,profile:'ultra-canvas-v1',nodes:[makeNode('message_box',1)],edges:[]},invoke:async(name)=>{
+  const c=createCanvasController({patch:{version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode('message_box',1)],edges:[]},invoke:async(name)=>{
     if(name==='canvas_apply')return{revision:4};
     if(name==='canvas_message_text'){await new Promise(resolve=>release=resolve);return{serial:1};}
     return true;

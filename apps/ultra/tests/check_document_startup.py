@@ -32,7 +32,7 @@ def run():
         blocked = directory / 'initial.ultra'
         os.mkfifo(blocked)
         receiver = directory / 'startup-receiver.ultra'
-        receiver.write_text(json.dumps({'version': 1, 'profile': 'ultra-canvas-v1',
+        receiver.write_text(json.dumps({'version': 1, 'profile': 'ultra-canvas-v1','presentation': None,
                                        'nodes': [], 'edges': []}) + '\n')
         probe = directory / 'secondary-exit-probe.so'
         subprocess.run(['cc', '-shared', '-fPIC', '-O2', '-Wall', '-Wextra', '-Werror',

@@ -536,7 +536,7 @@ mod tests {
         const SOURCE_DOCUMENT: u32 = 1;
         const RECEIVE_DOCUMENT: u32 = 2;
         const OTHER_DOCUMENT: u32 = 3;
-        let make = |nodes: serde_json::Value, edges: serde_json::Value| canvas::prepare(serde_json::json!({"version":1,"profile":"ultra-canvas-v1","nodes":nodes,"edges":edges})).unwrap().native;
+        let make = |nodes: serde_json::Value, edges: serde_json::Value| canvas::prepare(serde_json::json!({"version":1,"profile":"ultra-canvas-v1","presentation":null,"nodes":nodes,"edges":edges})).unwrap().native;
         let node = |id,kind,params| serde_json::json!({"id":id,"type":kind,"x":0,"y":0,"params":params});
         let edge = |from,to| serde_json::json!({"from":from,"outlet":0,"to":to,"inlet":0});
         let mut source = make(serde_json::json!([node(1,"number",serde_json::json!({"value":42})),node(2,"send",serde_json::json!({"name":"ffi-cross-patch"}))]),serde_json::json!([edge(1,2)]));
@@ -665,7 +665,7 @@ mod tests {
         let edges = vec![edge(1,0,11,0),edge(2,0,12,0),edge(3,0,13,0),edge(4,0,14,0),
             edge(5,0,6,0),edge(6,0,15,0),edge(6,1,16,0),edge(7,0,17,0),edge(8,0,18,0),
             edge(9,0,19,0),edge(9,1,20,0),edge(10,0,21,0),edge(10,1,22,0)];
-        let prepared = canvas::prepare(serde_json::json!({"version":1,"profile":"ultra-canvas-v1","nodes":nodes,"edges":edges})).unwrap();
+        let prepared = canvas::prepare(serde_json::json!({"version":1,"profile":"ultra-canvas-v1","presentation":null,"nodes":nodes,"edges":edges})).unwrap();
         let revision = control.install(prepared, |graph| unsafe { ultra_canvas_install(graph) != 0 }).unwrap();
         for (node,inlet,value) in [
             (1,0,serde_json::json!("3.75")), (2,0,serde_json::json!("4.25")),

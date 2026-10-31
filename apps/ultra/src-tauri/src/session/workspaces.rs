@@ -503,10 +503,10 @@ impl ProjectV4 {
                 text(&device.path, 4096, "Device path")?;
                 super::prepare::token(&device.id, "Device ID")?;
                 fingerprint(&device.source_sha256)?;
-                if !matches!(device.version, 1 | 2) {
+                if device.version != 2 {
                     return Err(format!(
-                        "Unsupported manifest version on '{}'",
-                        device.instance_id
+                        "Track '{}' instance '{}': Unsupported manifest version {}",
+                        track.name,device.instance_id,device.version
                     ));
                 }
                 for (key, value) in &device.parameters {

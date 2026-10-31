@@ -7,7 +7,7 @@ fn wire() -> Value {
         "loopEnabled":false,"loopStartBeats":0.,"loopEndBeats":8.,
         "tracks":[{"id":"track","name":"MIDI","color":"#c77b61",
             "chain":{"kind":"midi","instrument":{"instanceId":"instrument","sourceSha256":"a".repeat(64),
-                "bypassed":false,"path":"missing.ultra","id":"org.alive.instrument","version":1,"parameters":{"cutoff":500.}}},
+                "bypassed":false,"path":"missing.ultra","id":"org.alive.instrument","version":2,"parameters":{"cutoff":500.}}},
             "effects":[],"slots":[{"id":"slot","name":"Slot","sourceId":"source",
                 "region":{"start":0.,"end":4.,"loopStart":0.,"loopEnd":4.,"loopEnabled":true}},null,null,null],
             "gain":1.,"mute":false,"solo":false}],

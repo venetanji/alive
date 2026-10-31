@@ -6,7 +6,7 @@ import {appearanceFields} from './canvas-appearance.mjs';
 import {completionFor} from './canvas-completion.mjs';
 import {importMaxPatcher} from './canvas-max-import.mjs';
 
-const patch=node=>({version:1,profile:'ultra-canvas-v1',nodes:[node],edges:[]});
+const patch=node=>({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[node],edges:[]});
 const node=text=>{const parsed=parseObjectText(text);return makeNode(parsed.type,1,0,0,parsed.params);};
 
 test('saved rhs-only arithmetic and English legacy text retain existing defaults',()=>{
@@ -52,7 +52,7 @@ test('integer saved operands validate atomically across flat and nested patches'
   for(const type of ['add','multiply','subtract','divide','modulo','reverse_subtract','reverse_divide']){
     for(const value of [null,false,3,-1,1.5])assert.throws(()=>validatePatch(patch(makeNode(type,1,0,0,{rhs:2,numericmode:value}))));
     assert.throws(()=>validatePatch(patch(makeNode(type,1,0,0,{rhs:2.5,numericmode:1}))),/integer|integral/i);
-    const nested={version:2,profile:'ultra-patcher-v2',nodes:[{...makeNode('patcher',2),patcher:{nodes:[makeNode(type,1,0,0,{rhs:2.5,numericmode:1})],edges:[]}}],edges:[]};
+    const nested={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[{...makeNode('patcher',2),patcher:{presentation:null,nodes:[makeNode(type,1,0,0,{rhs:2.5,numericmode:1})],edges:[]}}],edges:[]};
     assert.throws(()=>validatePatch(nested),/integer|integral/i);
   }
   assert.throws(()=>validatePatch(patch(makeNode('abs',1,0,0,{rhs:2}))),/rhs/);

@@ -4,7 +4,7 @@ import {mergePrintPopups} from './canvas-print-ui.mjs';
 
 const copy=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
 const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
-const empty=()=>({version:2,profile:'ultra-patcher-v2',nodes:[],edges:[]});
+const empty=()=>({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[],edges:[]});
 const treeNodes=scope=>scope.nodes.flatMap(node=>[node,...(node.type==='patcher'?treeNodes(node.patcher):[])]);
 
 // Merge individual fields and stable node IDs. Ordered cable edits conflict when
@@ -276,7 +276,7 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     enter:id=>{document.enter(id);helpView.navigate(document);emit();},leave:depth=>{document.leave(depth);helpView.navigate(document);emit();},reveal:id=>{document.reveal(id);helpView.navigate(document);emit();},
     hostHelpBasic:()=>{if(disposed||detaching||closeBarriers.size)return false;const hosted=helpView.hostBasic(document);if(hosted)emit();return hosted;},
     clearConsole:()=>{consoleRecords=[];consoleBaseline=consoleDropped;consoleEpoch++;emit();},
-    ...Object.fromEntries(['add','configure','remove','removeMany','connect','disconnect','move','moveMany','resize','style']
+    ...Object.fromEntries(['add','configure','remove','removeMany','connect','disconnect','move','moveMany','resize','style','setPresentation','updatePresentationItem','duplicateMany']
       .map(method=>[method,(...args)=>edit((...values)=>document[method](...values),args,{history:args.at(-1)?.history!==false,coalesceKey:`${method}:${JSON.stringify(args[0])}`})])),
     configure:(id,type,params)=>type==='message_box'&&document.patch.nodes.find(node=>node.id===id)?.type===type?
       parameter(id,'text',params.text):edit((...args)=>document.configure(...args),[id,type,params]),

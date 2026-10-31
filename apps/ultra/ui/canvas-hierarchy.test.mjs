@@ -5,9 +5,9 @@ import {lowerHierarchy} from './canvas-hierarchy.mjs';
 
 const wire=(from,to,outlet=0,inlet=0)=>({from,outlet,to,inlet});
 const copy=value=>JSON.parse(JSON.stringify(value));
-const nested=()=>({version:2,profile:'ultra-patcher-v2',nodes:[
+const nested=()=>({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[
   makeNode('message',1,40,40,{text:'7'}),
-  {id:2,type:'patcher',x:40,y:100,params:{name:'basic'},patcher:{nodes:[
+  {id:2,type:'patcher',x:40,y:100,params:{name:'basic'},patcher:{presentation:null,nodes:[
     {id:3,type:'inlet',x:40,y:30,params:{}},makeNode('add',4,40,90,{rhs:10}),
     {id:5,type:'outlet',x:40,y:150,params:{}},
     {id:7,type:'comment',x:150,y:30,params:{text:'A shared embedded patcher.'}},
@@ -140,7 +140,7 @@ test('object text changes install numeric arguments while metadata edits keep ex
 });
 
 test('near-limit authoring documents round trip their readable exported representation',()=>{
-  const patch={version:2,profile:'ultra-patcher-v2',nodes:[],edges:[]};
+  const patch={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[],edges:[]};
   for(let id=1;id<=249;id++)patch.nodes.push({id,type:'comment',x:40,y:40,params:{text:'a'.repeat(4096)}});
   assert.doesNotThrow(()=>parsePatch(serializePatch(patch)));
 });

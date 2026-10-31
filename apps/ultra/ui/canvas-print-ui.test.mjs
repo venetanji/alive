@@ -6,7 +6,7 @@ import {parseObjectText,objectText} from './canvas-catalog.mjs';
 import {analyzeMaxPatch,importMaxPatcher} from './canvas-max-import.mjs';
 import {createSharedCanvasController} from './canvas-shared.mjs';
 
-const patch=nodes=>({version:1,profile:'ultra-canvas-v1',nodes,edges:[]});
+const patch=nodes=>({version:1,profile:'ultra-canvas-v1',presentation:null,nodes,edges:[]});
 const row=(id,text='31',generation=1,frame=48000)=>({id,text,generation,frame,enabled:true,has_value:true});
 const snapshot=(nodes,frame=48000,revision=4)=>({revision,frame,nodes});
 const options=(extra={})=>({revision:4,ids:new Set([1,2]),now:100,...extra});

@@ -15,6 +15,7 @@ pub(crate) struct HostManifest {
     pub input: Option<HostAudioInput>,
     pub output: ChannelBundle,
     pub parameters: Vec<HostParameter>,
+    pub presentation: serde_json::Value,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, serde::Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -38,7 +39,7 @@ pub(crate) fn host_manifest(patch: &serde_json::Value, graph: &NativeGraph) -> R
         .ok_or("This Ultra patch has no reusable device manifest")?).map_err(|e| e.to_string())?;
     validate(Some(&device), graph)?;
     let nodes = &graph.nodes[..graph.node_count as usize];
-    let bindings = device.parameters.into_iter().map(|binding| {
+    let bindings: Vec<HostParameter> = device.parameters.into_iter().map(|binding| {
         let node = nodes.iter().find(|node| node.id == binding.node).unwrap();
         let spec = parameters(node.kind).iter().find(|spec| spec.key == binding.param).unwrap();
         HostParameter { key: binding.key, label: binding.label, node: binding.node,
@@ -46,27 +47,17 @@ pub(crate) fn host_manifest(patch: &serde_json::Value, graph: &NativeGraph) -> R
             base: [node.p0,node.p1,node.p2,node.p3,node.p4,node.p5][spec.slot as usize],
             integral: spec.integral, unit: binding.unit }
     }).collect();
+    let presentation=super::presentation::project(patch,&bindings)?;
     Ok(HostManifest { version: device.version, id: device.id, name: device.name,
         kind: device.kind, note_node: device.midi.map(|midi| midi.node),
         input: device.audio_input, output: device.audio_output,
-        parameters: bindings })
+        parameters: bindings, presentation })
 }
 
 pub(super) struct Device {
     version: u32, id: String, name: String, kind: DeviceKind,
     midi: Option<Midi>, audio_input: Option<HostAudioInput>, audio_output: ChannelBundle,
     parameters: Vec<Binding>, presets: Vec<Preset>,
-}
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct DeviceV1 {
-    version: u32,
-    id: String,
-    name: String,
-    midi: Midi,
-    audio: Audio,
-    parameters: Vec<Binding>,
-    presets: Vec<Preset>,
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -97,28 +88,19 @@ impl<'de> Deserialize<'de> for Device {
         use serde::de::Error;
         let value=serde_json::Value::deserialize(deserializer)?;
         match value.get("version").and_then(serde_json::Value::as_u64) {
-            Some(1) => {
-                let d: DeviceV1=serde_json::from_value(value).map_err(D::Error::custom)?;
-                if d.audio.inputs!=0 { return Err(D::Error::custom("version 1 audio inputs must be zero")); }
-                Ok(Self {version:d.version,id:d.id,name:d.name,kind:DeviceKind::Instrument,midi:Some(d.midi),
-                    audio_input:None,audio_output:ChannelBundle{channels:d.audio.outputs,layout:d.audio.layout},parameters:d.parameters,presets:d.presets})
-            }
             Some(2) => {
                 let d: DeviceV2=serde_json::from_value(value).map_err(D::Error::custom)?;
                 if d.midi.output.is_some() { return Err(D::Error::custom("MIDI output must be null")); }
                 Ok(Self {version:d.version,id:d.id,name:d.name,kind:d.kind,midi:d.midi.input,
                     audio_input:d.audio.input,audio_output:d.audio.output,parameters:d.parameters,presets:d.presets})
             }
-            _ => Err(D::Error::custom("expected device manifest version 1 or 2")),
+            _ => Err(D::Error::custom("expected device manifest version 2")),
         }
     }
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Midi { node: u32, inlet: u32 }
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
-struct Audio { inputs: u32, outputs: u32, layout: String }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Binding {
@@ -171,8 +153,8 @@ pub(super) fn validate(device: Option<&Device>, graph: &NativeGraph) -> Result<(
             }
         }
     }
-    if device.parameters.is_empty() || device.parameters.len()>16 || device.presets.len()>16 {
-        return Err(fail("requires 1..16 parameters and at most 16 presets"));
+    if device.parameters.len()>16 || device.presets.len()>16 {
+        return Err(fail("requires 0..16 parameters and at most 16 presets"));
     }
     let mut keys=HashSet::new();let mut targets=HashSet::new();
     for binding in &device.parameters {

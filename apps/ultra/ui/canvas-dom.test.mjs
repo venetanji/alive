@@ -54,7 +54,7 @@ test('Perform renames a device without replacing authored controls or presets',a
 });
 test('effect panel exposes live parameters and presets without a keyboard claim',async()=>{
   const p=await mount(true);
-  const patch={version:1,profile:'ultra-canvas-v1',nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
+  const patch={version:1,profile:'ultra-canvas-v1',presentation:{version:1,openOnLoad:false,size:{width:160,height:120},items:[]},nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
     device:{version:2,kind:'audioEffect',id:'org.alive.test.utility',name:'Utility',midi:{input:null,output:null},
       audio:{input:{node:1,bundle:{channels:2,layout:'stereo'}},output:{channels:2,layout:'stereo'}},
       parameters:[{key:'gain',label:'Gain',node:2,param:'value',min:0,max:2}],presets:[{name:'Quiet',values:{gain:.25}}]}};
@@ -80,7 +80,7 @@ test('effect panel exposes live parameters and presets without a keyboard claim'
 });
 test('saving a focused Perform value commits it before the snapshot',async()=>{
   const p=await mount(true);
-  const patch={version:1,profile:'ultra-canvas-v1',nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
+  const patch={version:1,profile:'ultra-canvas-v1',presentation:{version:1,openOnLoad:false,size:{width:160,height:120},items:[]},nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
     device:{version:2,kind:'audioEffect',id:'org.alive.test.utility',name:'Utility',midi:{input:null,output:null},
       audio:{input:{node:1,bundle:{channels:2,layout:'stereo'}},output:{channels:2,layout:'stereo'}},
       parameters:[{key:'gain',label:'Gain',node:2,param:'value',min:0,max:2}],presets:[]}};
@@ -92,7 +92,7 @@ test('saving a focused Perform value commits it before the snapshot',async()=>{
 });
 test('rebuilding Perform controls captures their focused value',async()=>{
   const p=await mount(true);
-  const patch={version:1,profile:'ultra-canvas-v1',nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
+  const patch={version:1,profile:'ultra-canvas-v1',presentation:{version:1,openOnLoad:false,size:{width:160,height:120},items:[]},nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
     device:{version:2,kind:'audioEffect',id:'org.alive.test.utility',name:'Utility',midi:{input:null,output:null},
       audio:{input:{node:1,bundle:{channels:2,layout:'stereo'}},output:{channels:2,layout:'stereo'}},
       parameters:[{key:'gain',label:'Gain',node:2,param:'value',min:0,max:2}],presets:[]}};
@@ -159,7 +159,7 @@ test('help reference replies cannot attach to a replacement shell and unavailabl
 });
 test('importing a help shell waits for native admission before requesting local reference text',async()=>{
   let admit;
-  const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Empty.ultra',kind:'patch',patch:{version:2,profile:'ultra-patcher-v2',nodes:[],edges:[]},dirty:false,viewPath:[],authoringRevision:0,runtimeRevision:1};
+  const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Empty.ultra',kind:'patch',patch:{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[],edges:[]},dirty:false,viewPath:[],authoringRevision:0,runtimeRevision:1};
   const p=await mount(true,{documentCurrent:descriptor,helpReference:async name=>reference(name),documentCommit:args=>new Promise(resolve=>{
     admit=()=>resolve({accepted:true,document:{...descriptor,patch:args.patch,authoringRevision:1,runtimeRevision:2}});
   })});
@@ -198,7 +198,7 @@ test('a native Basic tab can open an independently bound window without changing
 });
 test('live Print bubbles expose safe text and expire independently of console visibility',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'print',x:40,y:40,params:{label:'notes',popup:1}}],edges:[]});
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'print',x:40,y:40,params:{label:'notes',popup:1}}],edges:[]});
   await p.controller.flush();
   const revision=p.controller.getState().revision,findPopup=()=>p.all('objects').find(element=>element.attrs?.['aria-label']==='Print output, object 1');
   assert.ok(findPopup());assert.equal(findPopup().hidden,true);
@@ -214,7 +214,7 @@ test('live Print bubbles expose safe text and expire independently of console vi
 });
 test('comment callout geometry follows appearance and resets without native graph work',async()=>{
   const p=await mount(true);
-  p.controller.load({version:2,profile:'ultra-patcher-v2',nodes:[
+  p.controller.load({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[
     {id:1,type:'comment',x:40,y:40,params:{text:'Literal <note>\nSecond line.'},style:{width:190,height:70,fontsize:13,bubble:1}},
     {id:2,type:'int',x:40,y:140,params:{value:0}},
   ],edges:[]});await p.controller.flush();
@@ -248,7 +248,7 @@ test('console displays native messages safely, filters severity, selects source 
 });
 test('console source links reveal descendant objects from the root view',async()=>{
   const p=await mount(true);
-  p.controller.load({version:2,profile:'ultra-patcher-v2',nodes:[{id:1,type:'patcher',x:40,y:40,params:{name:'child'},patcher:{nodes:[{id:2,type:'print',x:40,y:40,params:{label:'nested'}}],edges:[]}}],edges:[]});
+  p.controller.load({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[{id:1,type:'patcher',x:40,y:40,params:{name:'child'},patcher:{presentation:null,nodes:[{id:2,type:'print',x:40,y:40,params:{label:'nested'}}],edges:[]}}],edges:[]});
   await p.controller.flush();const revision=p.controller.getState().revision;
   p.consoleRecords.push({sequence:1,revision,node:2,label:'nested',level:0,text:'19',frame:0});
   await p.controller.poll();await p.ids.get('show-console').fire('click');
@@ -382,15 +382,15 @@ test('hidden windows poll less often and restore immediately without stopping au
   await p.dispose();
 });
 test('import replacing a reused node ID rebuilds its type-specific controls and ports',async()=>{
-  const p=await mount();p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'join',x:50,y:50,params:{}}],edges:[]});
+  const p=await mount();p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'join',x:50,y:50,params:{}}],edges:[]});
   const node=p.all('objects').find(e=>Number(e.dataset.node)===1),ports=descendants(node).filter(e=>e.dataset.direction);assert.equal(ports.length,3);assert.equal(ports.filter(e=>e.dataset.portType==='mono').length,2);assert.ok(!descendants(node).some(e=>e.dataset.trigger));
 });
 test('consecutive palette objects are placed without overlapping headers or ports',async()=>{
-  const p=await mount();p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});await p.all('palette').find(e=>e.dataset.add==='bang').fire('click');await p.all('palette').find(e=>e.dataset.add==='number').fire('click');
+  const p=await mount();p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});await p.all('palette').find(e=>e.dataset.add==='bang').fire('click');await p.all('palette').find(e=>e.dataset.add==='number').fire('click');
   const[a,b]=p.controller.getState().patch.nodes;assert.ok(Math.abs(a.x-b.x)>=176||Math.abs(a.y-b.y)>=112);
 });
 test('keyboard creation rejects unknown objects and Escape cancels without mutating the patch',async()=>{
-  const p=await mount();p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+  const p=await mount();p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});
   await p.windowEvents.fire('keydown',{key:'n'});
   assert.equal(p.ids.get('object-entry').hidden,false);
   const input=p.ids.get('object-text');input.value='buffer~ wave';await input.fire('input');
@@ -431,7 +431,7 @@ test('number display follows native observations without changing saved paramete
 });
 test('saving a focused number commits its draft before taking the snapshot',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});
   await p.controller.flush();await p.ids.get('lock-patch').fire('click');
   const input=p.all('objects').find(e=>e.dataset.parameter==='value');
   p.document.activeElement=input;input.value='42';await input.fire('input');
@@ -443,7 +443,7 @@ test('saving a focused number commits its draft before taking the snapshot',asyn
 });
 test('rebuilding the node container captures the focused draft first',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});await p.controller.flush();
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});await p.controller.flush();
   await p.ids.get('lock-patch').fire('click');
   const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
   input.value='42';await input.fire('input');p.controller.add('bang',100,100);await p.controller.flush();
@@ -452,7 +452,7 @@ test('rebuilding the node container captures the focused draft first',async()=>{
 });
 test('saving an invalid focused number refuses the snapshot until cancelled',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});
   await p.controller.flush();await p.ids.get('lock-patch').fire('click');
   const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
   input.value='';await input.fire('input');
@@ -476,7 +476,7 @@ test('a parked invalid number blocks Save and close after focus moves',async()=>
   assert.equal(input.value,'');await p.dispose();
 });
 test('parked invalid number survives container reconstruction',async()=>{
-  const p=await mount(true);p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});await p.controller.flush();
+  const p=await mount(true);p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});await p.controller.flush();
   await p.ids.get('lock-patch').fire('click');const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
   input.value='';await input.fire('input');await input.fire('blur');p.document.activeElement=p.ids.get('document-save');
   p.controller.add('bang',100,100);await p.controller.flush();
@@ -484,7 +484,7 @@ test('parked invalid number survives container reconstruction',async()=>{
   await input.fire('keydown',{key:'Escape'});assert.equal(p.ids.get('objects').children.length,2);await p.dispose();
 });
 test('preflight commits valid parked drafts and rejects another invalid draft',async()=>{
-  const p=await mount(true);p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10}),makeNode('number',2,100,0,{value:20})],edges:[]});await p.controller.flush();
+  const p=await mount(true);p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode('number',1,0,0,{value:10}),makeNode('number',2,100,0,{value:20})],edges:[]});await p.controller.flush();
   await p.ids.get('lock-patch').fire('click');const inputs=p.all('objects').filter(e=>e.dataset.parameter==='value');
   p.document.activeElement=inputs[0];inputs[0].value='42';await inputs[0].fire('input');
   p.document.activeElement=inputs[1];inputs[1].value='';await inputs[1].fire('input');p.document.activeElement=p.ids.get('document-save');
@@ -493,7 +493,7 @@ test('preflight commits valid parked drafts and rejects another invalid draft',a
 });
 test('an out-of-range number draft is not clamped by Enter',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});
   await p.controller.flush();await p.ids.get('lock-patch').fire('click');
   const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
   input.value=String(Number(input.max)+1);await input.fire('input');await input.fire('keydown',{key:'Enter'});
@@ -503,7 +503,7 @@ test('an out-of-range number draft is not clamped by Enter',async()=>{
 });
 test('saving a focused inspector field commits its draft',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});
   await p.controller.flush();
   const node=p.all('objects').find(e=>e.dataset.node==='1');await descendants(node).find(e=>e.dataset.drag).fire('click');
   const input=p.all('inspector').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
@@ -514,7 +514,7 @@ test('saving a focused inspector field commits its draft',async()=>{
 });
 test('changing selection captures a focused inspector draft before rebuilding',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10}),makeNode('bang',2)],edges:[]});await p.controller.flush();
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode('number',1,0,0,{value:10}),makeNode('bang',2)],edges:[]});await p.controller.flush();
   const select=id=>descendants(p.all('objects').find(e=>e.dataset.node===String(id))).find(e=>e.dataset.drag).fire('click');
   await select(1);const input=p.all('inspector').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;
   input.value='42';await input.fire('input');await select(2);await p.controller.flush();
@@ -523,7 +523,7 @@ test('changing selection captures a focused inspector draft before rebuilding',a
 });
 test('saving a focused appearance value commits its draft',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});await p.controller.flush();
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode('number',1,0,0,{value:10})],edges:[]});await p.controller.flush();
   const node=p.all('objects').find(e=>e.dataset.node==='1');await descendants(node).find(e=>e.dataset.drag).fire('click');
   const input=p.all('inspector').find(e=>e.dataset.style==='fontsize');assert.ok(input);p.document.activeElement=input;
   input.value='24';await input.fire('input');await p.documents.action('save');
@@ -532,7 +532,7 @@ test('saving a focused appearance value commits its draft',async()=>{
 });
 test('saving an open object entry commits its draft',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});await p.controller.flush();
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});await p.controller.flush();
   await p.windowEvents.fire('keydown',{key:'n'});
   const input=p.ids.get('object-text');p.document.activeElement=input;input.value='number 42';await input.fire('input');
   await p.documents.action('save');
@@ -541,7 +541,7 @@ test('saving an open object entry commits its draft',async()=>{
 });
 test('saving through a toolbar commits the open object entry after focus moves',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});await p.controller.flush();
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});await p.controller.flush();
   await p.windowEvents.fire('keydown',{key:'n'});
   const input=p.ids.get('object-text');input.value='number 42';await input.fire('input');
   p.document.activeElement=p.ids.get('document-save');await p.ids.get('document-save').fire('click');
@@ -551,7 +551,7 @@ test('saving through a toolbar commits the open object entry after focus moves',
 test('controls can return a live observed value to the saved value without duplicate native events',async()=>{
   for(const type of ['number','flonum','slider']){
     const p=await mount(true);
-    p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type,x:40,y:40,params:{value:20}}],edges:[]});
+    p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type,x:40,y:40,params:{value:20}}],edges:[]});
     await p.controller.flush();await p.ids.get('lock-patch').fire('click');
     p.observed[1]={value:70,pulses:1};await p.controller.poll();
     const input=p.all('objects').find(e=>e.dataset.parameter==='value');
@@ -619,7 +619,7 @@ test('locking cancels an in-flight move and examples open independently',async()
 
 test('new variadic objects rebuild node-aware ports after configuration changes',async()=>{
   const p=await mount();
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'pack',x:40,y:40,params:{args:'0 0'}}],edges:[]});
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'pack',x:40,y:40,params:{args:'0 0'}}],edges:[]});
   const find=()=>p.all('objects').find(e=>Number(e.dataset.node)===1);
   assert.equal(descendants(find()).filter(e=>e.dataset.direction==='in').length,2);
   p.controller.parameter(1,'args','0 f s 0');
@@ -636,7 +636,7 @@ test('new variadic objects rebuild node-aware ports after configuration changes'
 });
 test('MSP channel configuration uses text, rebuilds ports and stays locked during performance',async()=>{
   const p=await mount();
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'signal_dac',x:40,y:40,params:{channels:'1 2'}}],edges:[]});
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'signal_dac',x:40,y:40,params:{channels:'1 2'}}],edges:[]});
   const find=()=>p.all('objects').find(e=>Number(e.dataset.node)===1);
   const inlets=()=>descendants(find()).filter(e=>e.dataset.direction==='in');
   assert.equal(inlets().length,2);
@@ -654,7 +654,7 @@ test('MSP channel configuration uses text, rebuilds ports and stays locked durin
 });
 test('locked flonum and slider emit hot native events with audio off, physical Tab is a UI action and observations display',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'flonum',x:40,y:40,params:{}},{id:2,type:'slider',x:40,y:100,params:{}}],edges:[]});
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'flonum',x:40,y:40,params:{}},{id:2,type:'slider',x:40,y:100,params:{}}],edges:[]});
   await p.controller.flush();await p.ids.get('lock-patch').fire('click');
   const input=id=>descendants(p.all('objects').find(e=>Number(e.dataset.node)===id)).find(e=>e.dataset.parameter==='value');
   assert.ok(input(1));assert.ok(input(2));
@@ -672,7 +672,7 @@ test('locked flonum and slider emit hot native events with audio off, physical T
 
 test('flonum Tab commits pending text before the native second-outlet event',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'flonum',x:40,y:40,params:{}}],edges:[]});
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'flonum',x:40,y:40,params:{}}],edges:[]});
   await p.controller.flush();await p.ids.get('lock-patch').fire('click');
   const input=p.all('objects').find(e=>e.dataset.parameter==='value');
   input.value='5.25';await input.fire('input');await input.fire('keydown',{key:'Tab'});await input.fire('change');await p.controller.flush();
@@ -684,7 +684,7 @@ test('flonum Tab commits pending text before the native second-outlet event',asy
 
 test('integer UI entry truncates either sign and silent runtime values display without changing the document',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'number_int',x:40,y:40,params:{minimum:-10,maximum:10}}],edges:[]});
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'number_int',x:40,y:40,params:{minimum:-10,maximum:10}}],edges:[]});
   await p.controller.flush();const input=p.all('objects').find(e=>e.dataset.parameter==='value');
   await input.fire('keydown',{key:'Tab'});await p.controller.flush();
   assert.equal(p.calls.some(c=>c.name==='canvas_event'),false);
@@ -700,7 +700,7 @@ test('integer UI entry truncates either sign and silent runtime values display w
 
 test('slider pointer values remain raw and offset/multiplier apply only to the output readout',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'slider',x:40,y:40,params:{min:10,mult:2,size:6}}],edges:[]});
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'slider',x:40,y:40,params:{min:10,mult:2,size:6}}],edges:[]});
   await p.controller.flush();await p.ids.get('lock-patch').fire('click');
   const input=p.all('objects').find(e=>e.dataset.parameter==='value');
   assert.equal(Number(input.min),0);assert.equal(Number(input.max),5);assert.equal(Number(input.step),1);
@@ -713,7 +713,7 @@ test('slider pointer values remain raw and offset/multiplier apply only to the o
 
 test('line Help opens its own runnable native example without starting audio or sending events',async()=>{
   const p=await mount(true);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'line',x:40,y:40,params:{}}],edges:[]});
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'line',x:40,y:40,params:{}}],edges:[]});
   await p.controller.flush();
   const node=p.all('objects').find(e=>Number(e.dataset.node)===1);
   await node.fire('contextmenu');await p.ids.get('context-menu').children.find(e=>e.textContent==='Help for line').fire('click');
@@ -725,7 +725,7 @@ test('line Help opens its own runnable native example without starting audio or 
 });
 
 test('native startup applies only its own document and file controls preserve the current graph',async()=>{
-  const patch={version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'bang',x:40,y:40,params:{}}],edges:[]};
+  const patch={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'bang',x:40,y:40,params:{}}],edges:[]};
   const p=await mount(true,{documentCurrent:{id:7,label:'patch-7',title:'Buttons.ultra',kind:'patch',patch}});
   assert.equal(p.calls.filter(c=>c.name==='canvas_apply').length,1);assert.equal(p.controller.getState().patch.nodes.length,1);
   assert.equal(p.ids.get('document-title').textContent,'Buttons.ultra');assert.equal(p.ids.get('document-dirty').hidden,true);
@@ -745,7 +745,7 @@ test('searchable library opens a new example window and focuses existing native 
 });
 
 test('receive binding edits rebuild inlet DOM and remain structural while locked',async()=>{
-  const p=await mount();p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'receive',x:40,y:40,params:{name:'notes'}}],edges:[]});
+  const p=await mount();p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'receive',x:40,y:40,params:{name:'notes'}}],edges:[]});
   const find=()=>p.all('objects').find(e=>Number(e.dataset.node)===1);assert.equal(descendants(find()).filter(e=>e.dataset.direction==='in').length,0);
   await descendants(find()).find(e=>e.dataset.drag).fire('click');let input=p.all('inspector').find(e=>e.dataset.parameter==='name');assert.equal(input.type,'text');
   input.value='';await input.fire('change');assert.equal(descendants(find()).filter(e=>e.dataset.direction==='in').length,1);
@@ -771,7 +771,7 @@ test('native menu, close-save and error events reach only their targeted documen
 });
 
 test('native child boot attaches to its owner snapshot and closing the view leaves execution running',async()=>{
-  const patch={version:2,profile:'ultra-patcher-v2',nodes:[{id:2,type:'patcher',x:40,y:40,params:{name:'basic'},patcher:{nodes:[{id:3,type:'number',x:40,y:40,params:{value:19}}],edges:[]}}],edges:[]};
+  const patch={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[{id:2,type:'patcher',x:40,y:40,params:{name:'basic'},patcher:{presentation:null,nodes:[{id:3,type:'number',x:40,y:40,params:{value:19}}],edges:[]}}],edges:[]};
   const descriptor={shared:true,id:0,label:'patch-view-1',ownerLabel:'main',title:'Owner.ultra',viewTitle:'basic',kind:'patch',patch,dirty:true,viewPath:[2],authoringRevision:4,runtimeRevision:1,canUndo:true,canRedo:false};
   const listeners=new Map(),tauri={webviewWindow:{getCurrentWebviewWindow:()=>({label:descriptor.label})},event:{listen:async(name,handler)=>{listeners.set(name,handler);return()=>listeners.delete(name);}}};
   const p=await mount(true,{documentCurrent:descriptor,tauri});
@@ -785,7 +785,7 @@ test('native child boot attaches to its owner snapshot and closing the view leav
 });
 
 test('native patcher headers request a child window while retaining the parent view',async()=>{
-  const patch={version:2,profile:'ultra-patcher-v2',nodes:[{id:2,type:'patcher',x:40,y:40,params:{name:'basic'},patcher:{nodes:[],edges:[]}}],edges:[]};
+  const patch={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[{id:2,type:'patcher',x:40,y:40,params:{name:'basic'},patcher:{presentation:null,nodes:[],edges:[]}}],edges:[]};
   const p=await mount(true,{documentCurrent:{shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner.ultra',kind:'patch',patch,dirty:false,viewPath:[],authoringRevision:1,runtimeRevision:1}});
   await p.all('objects').find(e=>e.dataset.node==='2').fire('dblclick');await settle();
   assert.ok(p.calls.some(call=>call.name==='document_open_patcher'&&call.args.node===2));
@@ -794,7 +794,7 @@ test('native patcher headers request a child window while retaining the parent v
 
 test('console reveal preserves its source revision across pending edits and native routing',async()=>{
   for(const replaceDuringFlush of [false,true]){
-    const patch={version:2,profile:'ultra-patcher-v2',nodes:[{id:2,type:'patcher',x:40,y:40,params:{name:'basic'},patcher:{nodes:[{id:3,type:'print',x:40,y:40,params:{label:'source'}}],edges:[]}}],edges:[]};
+    const patch={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[{id:2,type:'patcher',x:40,y:40,params:{name:'basic'},patcher:{presentation:null,nodes:[{id:3,type:'print',x:40,y:40,params:{label:'source'}}],edges:[]}}],edges:[]};
     const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner.ultra',kind:'patch',patch,dirty:false,viewPath:[],authoringRevision:1,runtimeRevision:1};
     const listeners=new Map(),tauri={webviewWindow:{getCurrentWebviewWindow:()=>({label:'main'})},event:{listen:async(name,handler)=>{listeners.set(name,handler);return()=>listeners.delete(name);}}};
     const p=await mount(true,{documentCurrent:descriptor,tauri});
@@ -811,7 +811,7 @@ test('console reveal preserves its source revision across pending edits and nati
 });
 
 test('target windows reject stale reveal descriptors and events with a reused node ID',async()=>{
-  const patch={version:2,profile:'ultra-patcher-v2',nodes:[{id:3,type:'print',x:40,y:40,params:{label:'replacement'}}],edges:[]};
+  const patch={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[{id:3,type:'print',x:40,y:40,params:{label:'replacement'}}],edges:[]};
   const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner.ultra',kind:'patch',patch,dirty:false,viewPath:[],authoringRevision:2,runtimeRevision:2,revealNode:3,revealRevision:1};
   const listeners=new Map(),tauri={webviewWindow:{getCurrentWebviewWindow:()=>({label:'main'})},event:{listen:async(name,handler)=>{listeners.set(name,handler);return()=>listeners.delete(name);}}};
   const p=await mount(true,{documentCurrent:descriptor,tauri});
@@ -825,7 +825,7 @@ test('target windows reject stale reveal descriptors and events with a reused no
 });
 
 test('target reveal adopts an authoritative descriptor ahead of its last broadcast',async()=>{
-  const patch={version:2,profile:'ultra-patcher-v2',nodes:[{id:3,type:'print',x:40,y:40,params:{label:'source'}}],edges:[]};
+  const patch={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[{id:3,type:'print',x:40,y:40,params:{label:'source'}}],edges:[]};
   const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner.ultra',kind:'patch',patch,dirty:false,viewPath:[],authoringRevision:1,runtimeRevision:1};
   const listeners=new Map(),tauri={webviewWindow:{getCurrentWebviewWindow:()=>({label:'main'})},event:{listen:async(name,handler)=>{listeners.set(name,handler);return()=>listeners.delete(name);}}};
   const p=await mount(true,{documentCurrent:descriptor,tauri});
@@ -837,7 +837,7 @@ test('target reveal adopts an authoritative descriptor ahead of its last broadca
 });
 
 test('native reveal waits for shared controller adoption during startup',async()=>{
-  const patch={version:2,profile:'ultra-patcher-v2',nodes:[{id:3,type:'print',x:40,y:40,params:{label:'source'}}],edges:[]};
+  const patch={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[{id:3,type:'print',x:40,y:40,params:{label:'source'}}],edges:[]};
   const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner.ultra',kind:'patch',patch,dirty:false,viewPath:[],authoringRevision:1,runtimeRevision:1};
   const listeners=new Map(),tauri={webviewWindow:{getCurrentWebviewWindow:()=>({label:'main'})},event:{listen:async(name,handler)=>{listeners.set(name,handler);return()=>listeners.delete(name);}}};
   let delivery;
@@ -851,7 +851,7 @@ test('native reveal waits for shared controller adoption during startup',async()
 });
 
 test('native owner broadcast arriving during initial adoption cannot leave a child on an older snapshot',async()=>{
-  const tree={version:2,profile:'ultra-patcher-v2',nodes:[{id:2,type:'patcher',x:40,y:40,params:{name:'basic'},patcher:{nodes:[{id:3,type:'number',x:40,y:40,params:{value:0}}],edges:[]}}],edges:[]};
+  const tree={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[{id:2,type:'patcher',x:40,y:40,params:{name:'basic'},patcher:{presentation:null,nodes:[{id:3,type:'number',x:40,y:40,params:{value:0}}],edges:[]}}],edges:[]};
   const initial={shared:true,id:0,label:'patch-view-1',ownerLabel:'main',title:'Owner.ultra',viewTitle:'basic',kind:'patch',dirty:false,viewPath:[2],authoringRevision:1,runtimeRevision:1};
   const newer={...initial,patch:JSON.parse(JSON.stringify(tree)),authoringRevision:2,dirty:true};newer.patch.nodes[0].patcher.nodes[0].x=90;
   const listeners=new Map();let reads=0;
@@ -878,7 +878,7 @@ test('native readiness waits for the close-flush event subscription to finish',a
 
 test('a close request arriving before initial native adoption binds to the shared controller',async()=>{
   const listeners=new Map(),request={requestLabel:'main',token:4};let closing;
-  const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner.ultra',kind:'patch',patch:{version:2,profile:'ultra-patcher-v2',nodes:[],edges:[]},dirty:false,viewPath:[],authoringRevision:0,runtimeRevision:1};
+  const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner.ultra',kind:'patch',patch:{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[],edges:[]},dirty:false,viewPath:[],authoringRevision:0,runtimeRevision:1};
   const tauri={webviewWindow:{getCurrentWebviewWindow:()=>({label:'main'})},event:{listen:async(name,handler)=>{listeners.set(name,handler);return()=>{};}}};
   const page=await mount(true,{documentCurrent:descriptor,tauri,observeInvoke:name=>{
     if(name==='document_current')closing=listeners.get('document-flush-before-close')({payload:request});
@@ -926,7 +926,7 @@ test('unchanged stopped status polls preserve cable paths while cable inputs inv
 
 // Delayed history still runs through the real shared controller and node views.
 async function mountHistoryControl(type='number') {
-  let patch=new CanvasDocument({version:2,profile:'ultra-patcher-v2',nodes:[makeNode(type,1,40,50,{value:150})],edges:[]}).document;
+  let patch=new CanvasDocument({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[makeNode(type,1,40,50,{value:150})],edges:[]}).document;
   let revision=1,hold=false,release,holdCommit=false,releaseCommit,cancelSave=false;
   const operations=[],past=[],future=[],descriptor=()=>({shared:true,id:1,label:'owner',ownerLabel:'owner',title:'Numeric',kind:'patch',viewPath:[],
     patch:structuredClone(patch),authoringRevision:revision,runtimeRevision:revision,canUndo:past.length>0,canRedo:future.length>0});
@@ -969,8 +969,8 @@ test('close flush acknowledges only after the focused shared edit reaches its ow
   await p.dispose();
 });
 test('owner Save waits for a linked focused draft and its delayed native admission',async()=>{
-  let patch=new CanvasDocument({version:2,profile:'ultra-patcher-v2',nodes:[makeNode('number',1,0,0,{value:10}),
-    {...makeNode('patcher',3),patcher:{nodes:[makeNode('number',13,0,0,{value:10})],edges:[]}}],edges:[]}).document;
+  let patch=new CanvasDocument({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[makeNode('number',1,0,0,{value:10}),
+    {...makeNode('patcher',3),patcher:{presentation:null,nodes:[makeNode('number',13,0,0,{value:10})],edges:[]}}],edges:[]}).document;
   let revision=1,release;const calls=[],listeners=new Map();
   const descriptor=label=>({shared:true,id:1,label,ownerLabel:'owner',title:'Shared',kind:'patch',viewPath:label==='child'?[3]:[],patch:structuredClone(patch),authoringRevision:revision,runtimeRevision:1,dirty:false});
   const tauri=label=>({event:{listen:async(name,handler)=>{listeners.set(`${label}/${name}`,handler);return()=>{};}},webviewWindow:{getCurrentWebviewWindow:()=>({label})}});
@@ -1086,7 +1086,7 @@ test('native save-before-close events retain their Quit generation through the p
 
 test('range thumb reflects the admitted endpoint in the same pointer dispatch',async()=>{
   const p=await mount(false);
-  p.controller.load({version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'slider',x:40,y:40,params:{size:101,value:0}}],edges:[]});
+  p.controller.load({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'slider',x:40,y:40,params:{size:101,value:0}}],edges:[]});
   await p.controller.flush();await p.ids.get('lock-patch').fire('click');
   const element=p.all('objects').find(e=>e.dataset.node==='1');
   element.closest=()=>null;

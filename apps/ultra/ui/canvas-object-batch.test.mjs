@@ -6,7 +6,7 @@ import {completionFor} from './canvas-completion.mjs';
 import {readFileSync} from 'node:fs';
 import {OBJECT_EXAMPLES} from './canvas-object-examples.mjs';
 
-const empty=()=>({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+const empty=()=>({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});
 test('appended control objects preserve protocol order and typed authoring aliases',()=>{
   assert.deepEqual(Object.keys(model.REGISTRY).slice(15,28),['int','float','flonum','slider','pack','unpack','select','route','trigger','line','print','send','receive']);
   for(const [text,type] of [['i 3','int'],['f 3.5','float'],['flonum','flonum'],['slider','slider'],['sel red','select'],['t b i','trigger'],['line','line']])

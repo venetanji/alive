@@ -45,7 +45,7 @@ export function createDocumentSession({invoke,getPatch,adopt,beforeSave=async()=
   async function ready(){
     const value=invoke?await invoke('document_current'):await browser.current?.();
     const valid=value&&typeof value==='object'&&typeof value.title==='string';
-    if(valid){acceptDescriptor(value);if(descriptor.patch)await adopt(copy(descriptor.patch),descriptor);else if(descriptor.source)await adopt({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]},descriptor);}
+    if(valid){acceptDescriptor(value);if(descriptor.patch)await adopt(copy(descriptor.patch),descriptor);else if(descriptor.source)await adopt({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]},descriptor);}
     baseline=fingerprint(getPatch());active=true;await update();
     if(valid&&value.source)await inspect(value.source,value.sourceName||value.title);
     return !!(valid&&(value.patch||value.source));

@@ -26,7 +26,7 @@ test('a lost release event reconciles and unfreezes the live save barrier',async
   session.dispose();
 });
 
-const patch=()=>({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+const patch=()=>({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});
 async function setup(responses={}){
   const {createDocumentSession}=await import('./canvas-documents.mjs');
   const calls=[],titles=[],notices=[];let current=patch();
@@ -146,7 +146,7 @@ test('a cancelled close does not acknowledge its obsolete flush',async()=>{
 test('a real shared-controller admission rejection sends a failed native close acknowledgement',async()=>{
   const {createSharedCanvasController}=await import('./canvas-shared.mjs');
   const {createDocumentSession}=await import('./canvas-documents.mjs');const calls=[];
-  const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner.ultra',kind:'patch',patch:{version:2,profile:'ultra-patcher-v2',nodes:[{id:1,type:'number',x:20,y:20,params:{value:0}}],edges:[]},viewPath:[],authoringRevision:0,runtimeRevision:1};
+  const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner.ultra',kind:'patch',patch:{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[{id:1,type:'number',x:20,y:20,params:{value:0}}],edges:[]},viewPath:[],authoringRevision:0,runtimeRevision:1};
   const invoke=async(name,args)=>{calls.push({name,args});if(name==='document_current')return descriptor;if(name==='document_commit')throw Error('Native canvas parameter was not admitted');return true;};
   const controller=createSharedCanvasController({invoke}),session=createDocumentSession({invoke,getPatch:()=>controller.getState().document,
     adopt:(_,value)=>controller.adoptDescriptor(value),beforeSave:()=>controller.flush(),beforeClose:request=>controller.flushBeforeClose(request)});
