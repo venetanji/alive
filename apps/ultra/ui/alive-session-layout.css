@@ -44,7 +44,7 @@
 #master-session .master-state{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 @container(max-width:95px){
   .track-gain{gap:2px;font-size:0}.track-gain input{width:100%;font-size:11px}
-  .mixer-strip{gap:2px}.track-meter output{font-size:9px}
+  .mixer-strip{gap:2px}.track-meter output{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
   .clip-bank-actions .track-return{font-size:0;width:20px}.clip-bank-actions .track-return::after{content:'R';font-size:10px}
   .clip-bank-actions .runtime-receipt>summary{font-size:0}.clip-bank-actions .runtime-receipt>summary::after{content:'i';font-size:11px}
 }

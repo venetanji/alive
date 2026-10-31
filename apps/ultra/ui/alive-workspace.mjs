@@ -9,7 +9,13 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   const detailRoot=()=>$(detail==='clip'?'clip-detail':detail==='master'?'master-detail':'device-detail');
   const maxBrowserWidth=()=>Math.max(180,Math.min(420,(shell.clientWidth||900)-480));
   const detailBudget=()=>shell.clientHeight-$('edit-controls').getBoundingClientRect().height-($('detail-panel').getBoundingClientRect().height-$('detail-content').getBoundingClientRect().height);
-  const workspaceMinimum=()=>view==='arrangement'?$('timeline').querySelector('.timeline-tools').getBoundingClientRect().height+$('master-arrangement-lane').getBoundingClientRect().height+96:96;
+  const workspaceMinimum=()=>{
+    if(view==='arrangement')return $('timeline').querySelector('.timeline-tools').getBoundingClientRect().height+$('master-arrangement-lane').getBoundingClientRect().height+96;
+    const session=$('session-workspace'),track=session.querySelector('.track'),header=track?.querySelector('.track-name'),bank=track?.querySelector('.clip-bank'),mixer=track?.querySelector('.track-mixer');
+    if(!header||!bank||!mixer||!win?.getComputedStyle)return 96;
+    const minHeight=element=>parseFloat(win.getComputedStyle(element).minHeight)||0;
+    return Math.ceil(header.getBoundingClientRect().height+minHeight(bank)+minHeight(mixer)+Math.max(0,session.offsetHeight-session.clientHeight));
+  };
   const maxHeight=()=>Math.max(160,detailBudget()-(maximized?0:workspaceMinimum()));
   const fitHeight=()=>{
     if(!maximized&&!customHeight&&expanded&&clipOpen&&deviceOpen&&!masterOpen&&win?.innerHeight){

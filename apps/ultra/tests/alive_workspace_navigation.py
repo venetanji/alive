@@ -18,6 +18,9 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
     def prepare(name):
         if windows.scope != 'Alive':
             return
+        if name in ('New session', 'Open session', 'Save session as', 'Quit Alive'):
+            expand('File menu')
+            return
         if name in ('Seek beat', 'Seek transport', 'Transport length beats', 'Track column width'):
             expand('Transport and view options')
             return
@@ -58,7 +61,7 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
         if details.get_state_set().contains(Atspi.StateType.EXPANDED):
             click('Audio details')
         if device or clip:
-            tab = 'Devices detail' if device else 'Clip detail'
+            tab = 'Toggle Device view' if device else 'Toggle Clip view'
             if not ui.wait_for(tab).get_state_set().contains(Atspi.StateType.PRESSED):
                 click(tab)
             if notes:
@@ -76,6 +79,11 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
                 ui.keys('Return')
 
     def visible_click(name):
+        if windows.scope == 'Alive' and name in ('Clip detail', 'Devices detail'):
+            tab = 'Toggle Clip view' if name == 'Clip detail' else 'Toggle Device view'
+            if not ui.wait_for(tab).get_state_set().contains(Atspi.StateType.PRESSED):
+                click(tab)
+            return
         if re.fullmatch(r'Select .+ (?:instrument|effect \d+)', name):
             return select_device(name)
         prepare(name)

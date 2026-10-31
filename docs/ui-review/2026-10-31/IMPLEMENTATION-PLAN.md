@@ -46,8 +46,10 @@ instance-owned expansion capability; no Wavetable-style control is implied.
 - [ ] Parent review of min/intermediate/wide widths, many tracks, resize and preserved alignment remains the next gate; subsequent catalog and menu batches are separate.
 
 ## M3 — Browser
-- [ ] Real catalog-backed categories/device/preset hierarchy, filter/tag/preview layout with honest capability flags.
-- [ ] Preserve existing validated drag/drop and rejection semantics. Test hide/reopen, search, focus, long names, empty/unsupported states.
+- [x] Preserve catalog-backed categories and show expandable device rows with keyboard navigation, passive selection, search and honest unavailable-preset messaging. Preserve qualified device loading and validated drag/drop.
+- [x] Keep the Browser usable at compact heights and preserve selection, expansion and drafts through search, hide/reopen and resize. Correct the Session minimum on detail resize and constrain track action menus to the visible track bank.
+- [ ] Preset parity remains blocked on the native Browser contract: catalog entries expose device metadata and qualification but no preset names or values, and the host manifest omits presets. There is no Browser operation to atomically load/apply a preset. Do not synthesize preset actions from the mockup.
+- [ ] Tags, tag filtering and Browser audio preview also lack catalog/host contracts; do not present simulated working controls. Parent review of Browser hierarchy and the 800×600 compact state remains the next gate.
 
 ## M4 — Clip/Device detail
 - [ ] Extend the M1b adaptive Clip options, footer overview and independent views with capability-backed expanded device surfaces when supported.

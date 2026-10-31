@@ -44,7 +44,7 @@ class NavigationTest(unittest.TestCase):
                                    wait_for=lambda name: Control())
         navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, None)
         ui.text('Loop Position', '2')
-        self.assertEqual(calls, ['Clip detail', ('Loop Position', '2')])
+        self.assertEqual(calls, ['Toggle Clip view', ('Loop Position', '2')])
 
     def test_source_actions_open_the_source_disclosure_before_activation(self):
         calls = []
@@ -55,7 +55,31 @@ class NavigationTest(unittest.TestCase):
                                    wait_for=lambda name: Control())
         navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, None)
         ui.click('Make source independent')
-        self.assertEqual(calls, ['Clip detail', 'Source / Clip', 'Make source independent'])
+        self.assertEqual(calls, ['Toggle Clip view', 'Source / Clip', 'Make source independent'])
+
+    def test_file_actions_open_file_menu_before_invocation(self):
+        calls = []
+        class Control:
+            def get_state_set(self): return self
+            def contains(self, state): return False
+        ui = types.SimpleNamespace(click=lambda name: calls.append(name), text=lambda *args: None,
+                                   wait_for=lambda name: Control())
+        navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, None)
+        ui.click('Open session')
+        self.assertEqual(calls, ['File menu', 'Open session'])
+
+    def test_legacy_detail_selection_only_opens_an_inactive_independent_view(self):
+        calls = []
+        class Control:
+            def __init__(self, pressed): self.pressed = pressed
+            def get_state_set(self): return self
+            def contains(self, state): return state == 'pressed' and self.pressed
+        controls = {'Toggle Clip view': Control(True), 'Toggle Device view': Control(False)}
+        ui = types.SimpleNamespace(click=lambda name: calls.append(name), text=lambda *args: None,
+                                   wait_for=lambda name: controls[name])
+        navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, None)
+        ui.click('Clip detail'); ui.click('Devices detail')
+        self.assertEqual(calls, ['Toggle Device view'])
 
     def test_adding_an_effect_closes_diagnostics_before_opening_the_native_chooser(self):
         calls = []

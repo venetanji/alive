@@ -2,6 +2,54 @@ import {test,expect} from '@playwright/test';
 import {projectFixturePresentation} from '../presentation-dom.mjs';
 import {readFileSync,mkdirSync} from 'node:fs';
 
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`detail maximum resize preserves useful pinned Session controls at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page,{trackCount:8});await page.locator('#detail-devices').click();const separator=page.getByRole('separator',{name:'Resize detail area',exact:true}),session=page.locator('#session-workspace');
+  const check=async()=>{const bounds=await session.boundingBox();for(const locator of [page.getByRole('button',{name:'Select Pulse slot 1',exact:true}),page.getByRole('button',{name:'Pulse mute',exact:true}),page.getByRole('button',{name:'Pulse solo',exact:true}),page.locator('#master-session').getByRole('spinbutton',{name:'Master gain',exact:true})]){const r=await locator.boundingBox();expect(r.y,await locator.getAttribute('aria-label')).toBeGreaterThanOrEqual(bounds.y-1);expect(r.y+r.height,await locator.getAttribute('aria-label')).toBeLessThanOrEqual(bounds.y+bounds.height+1);}};
+  await separator.focus();await separator.press('End');await check();await page.screenshot({path:testInfo.outputPath(`end-resize-${size.width}.png`)});
+  await separator.press('Home');const box=await separator.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2,65,{steps:5});await page.mouse.up();await check();
+  await page.setViewportSize({width:800,height:600});await check();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await expect(session).toBeHidden();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await check();expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+for(const width of [128,72])test(`track action menus stay reachable at ${width}px including horizontal scroll`,async({page},testInfo)=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page,{trackCount:8});await page.locator('#detail-devices').click();const workspace=page.locator('#session-workspace');
+  for(const [id,name]of [['track-1','Pulse'],['track-8','Track 8']]){
+    const track=page.locator(`.track[data-track-id="${id}"]`),handle=track.getByRole('separator',{name:`Resize ${name} track`,exact:true});if(id==='track-8')await workspace.evaluate(e=>e.scrollLeft=e.scrollWidth);await handle.focus();if(width===72)await handle.press('Home');
+    const inspector=track.locator('.track-inspector'),summary=inspector.locator('summary');await summary.click();
+    for(const label of [`Open ${name} editor`,`Replace ${name} device`,`Remove ${name} track`]){const action=page.getByRole('button',{name:label,exact:true}),rect=await action.boundingBox(),view=await workspace.boundingBox();expect(rect.x,label).toBeGreaterThanOrEqual(view.x-1);expect(rect.x+rect.width,label).toBeLessThanOrEqual(view.x+view.width+1);expect(await action.evaluate(el=>{const r=el.getBoundingClientRect();return el.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));}),label).toBe(true);}
+    await page.screenshot({path:testInfo.outputPath(`track-menu-${id}-${width}.png`)});await summary.focus();await summary.press('Escape');await expect(inspector).not.toHaveAttribute('open','');await expect(summary).toBeFocused();
+  }expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('track menu navigation preserves draft and the chosen track owns the editor action',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page);await page.locator('#detail-devices').click();const track=page.locator('.track').first(),menu=track.locator('.track-inspector'),summary=menu.locator('summary'),gain=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});
+  await gain.fill('0.713');await summary.click();await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await page.getByRole('button',{name:'Select Harmony track',exact:true}).click();await expect(menu).not.toHaveAttribute('open','');await page.getByRole('button',{name:'Select Pulse track',exact:true}).click();await expect(gain).toHaveValue('0.713');
+  await summary.click();await page.getByRole('button',{name:'Open Pulse editor',exact:true}).click();await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_editor').length)).toBe(1);expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([{name:'alive_editor',args:{instanceId:'instrument-0',generation:1}}]);
+});
+
+test('scrolling the track bank dismisses an open track menu and keeps focus in Session',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page,{trackCount:8});const workspace=page.locator('#session-workspace'),menu=page.locator('.track-inspector').first();await menu.locator('summary').click();await menu.getByRole('button',{name:'Open Pulse editor',exact:true}).focus();await workspace.evaluate(e=>e.scrollLeft=300);await expect(menu).not.toHaveAttribute('open','');await expect(workspace).toBeFocused();expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('resizing the window dismisses an open track menu without losing focus',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);const workspace=page.locator('#session-workspace'),menu=page.locator('.track-inspector').first();await menu.locator('summary').click();await menu.getByRole('button',{name:'Open Pulse editor',exact:true}).focus();await page.setViewportSize({width:800,height:600});await expect(menu).not.toHaveAttribute('open','');await expect(workspace).toBeFocused();expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('narrow track keeps secondary stereo readout accessible without visual overlap',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page);const track=page.locator('.track').first(),resize=track.getByRole('separator',{name:'Resize Pulse track'});await resize.focus();await resize.press('Home');const readout=track.locator('output[aria-label="Pulse peak"]');await expect(readout).toHaveText('0.000 / 0.000');expect((await readout.boundingBox()).width).toBeLessThanOrEqual(1);
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`Browser device hierarchy remains passive and honest at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();const gain=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});await gain.fill('0.713');
+  const tree=page.getByRole('tree',{name:'Browser results'}),device=tree.getByRole('treeitem',{name:'Subtractive',exact:true}),search=page.getByRole('searchbox',{name:'Search browser'});await device.click();await expect(gain).toHaveValue('0.713');
+  await tree.press('Space');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  for(let i=0;i<2;i++){await tree.press('ArrowRight');await expect(device).toHaveAttribute('aria-expanded','true');await expect(tree.getByRole('treeitem',{name:'Preset browsing unavailable',exact:true})).toHaveAttribute('aria-disabled','true');await tree.press('ArrowLeft');await expect(device).toHaveAttribute('aria-expanded','false');}
+  await device.locator('.browser-disclosure').click();await expect(device).toHaveAttribute('aria-expanded','true');await device.locator('.browser-disclosure').click();await expect(device).toHaveAttribute('aria-expanded','false');
+  await tree.press('ArrowRight');await page.screenshot({path:testInfo.outputPath(`browser-expanded-${size.width}.png`)});await page.getByRole('button',{name:'Browse Audio Effects',exact:true}).click();await page.getByRole('button',{name:'Browse Instruments',exact:true}).click();await expect(device).toHaveAttribute('aria-selected','true');await expect(device).toHaveAttribute('aria-expanded','true');await page.getByRole('button',{name:'Browse All',exact:true}).click();await search.fill('Stereo Utility');await expect(tree.getByRole('treeitem',{name:'Stereo Utility',exact:true})).toBeVisible();await page.screenshot({path:testInfo.outputPath(`browser-search-${size.width}.png`)});await search.fill('');await expect(device).toHaveAttribute('aria-selected','true');await expect(device).toHaveAttribute('aria-expanded','true');
+  const browserResize=page.getByRole('separator',{name:'Resize browser'});await browserResize.focus();await browserResize.press('End');await browserResize.press('Home');await expect(device).toHaveAttribute('aria-expanded','true');
+  await page.locator('#toggle-browser').click();await page.locator('#toggle-browser').click();await expect(device).toHaveAttribute('aria-expanded','true');await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
 for(const size of [{width:800,height:600},{width:1440,height:900}])test(`Browser ends at actual lower chrome with all panels hidden at ${size.width}`,async({page})=>{
   await page.setViewportSize(size);await openSession(page);
   for(let i=0;i<2;i++){
@@ -60,7 +108,7 @@ test('compact desktop default shows complete device controls and a useful Sessio
 for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`both-open Session keeps Browser results, clip slots and mixer controls visible at ${size.width}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
   const visible=locator=>locator.evaluate(el=>{const r=el.getBoundingClientRect();for(let p=el.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),b=p.getBoundingClientRect();if(/auto|scroll|hidden|clip/.test(s.overflow+s.overflowY+s.overflowX)&&(r.top<b.top-1||r.bottom>b.bottom+1||r.left<b.left-1||r.right>b.right+1))return false;}return r.width>0&&r.height>0&&r.top>=0&&r.left>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;});
-  for(const locator of [page.getByRole('option',{name:'Subtractive',exact:true}),page.getByRole('button',{name:'Select Pulse slot 1',exact:true}),page.getByRole('button',{name:'Pulse mute',exact:true}),page.getByRole('button',{name:'Pulse solo',exact:true}),page.locator('#master-session').getByRole('spinbutton',{name:'Master gain',exact:true})])expect(await visible(locator),await locator.getAttribute('aria-label')).toBe(true);
+  for(const locator of [page.getByRole('treeitem',{name:'Subtractive',exact:true}),page.getByRole('button',{name:'Select Pulse slot 1',exact:true}),page.getByRole('button',{name:'Pulse mute',exact:true}),page.getByRole('button',{name:'Pulse solo',exact:true}),page.locator('#master-session').getByRole('spinbutton',{name:'Master gain',exact:true})])expect(await visible(locator),await locator.getAttribute('aria-label')).toBe(true);
   await page.screenshot({path:testInfo.outputPath(`session-both-${size.width}x${size.height}.png`)});
 });
 
@@ -292,9 +340,8 @@ for(const size of [{width:1440,height:900},{width:1280,height:800},{width:800,he
   await page.setViewportSize(size);await openSession(page);
   const resize=page.getByRole('separator',{name:'Resize detail area',exact:true}),panel=page.locator('#detail-panel');
   const visiblePiano=()=>page.evaluate(()=>{const piano=document.querySelector('#piano-roll').getBoundingClientRect(),clip=document.querySelector('#clip-detail').getBoundingClientRect();return Math.max(0,Math.min(piano.bottom,clip.bottom)-Math.max(piano.top,clip.top));});
-  const originalPiano=await page.locator('#piano-roll').boundingBox(),originalVisible=await visiblePiano();await resize.focus();await resize.press('End');
-  expect((await panel.boundingBox()).height).toBeGreaterThan(size.height*.6);
-  if(size.height>=800)expect((await page.locator('#piano-roll').boundingBox()).height).toBeGreaterThan(originalPiano.height+60);
+  const originalPiano=await page.locator('#piano-roll').boundingBox(),originalVisible=await visiblePiano(),originalHeight=Number(await resize.getAttribute('aria-valuenow'));await resize.focus();await resize.press('End');
+  expect(Number(await resize.getAttribute('aria-valuenow'))).toBeGreaterThan(originalHeight);
   const previous=await resize.getAttribute('aria-valuenow');await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
   await expect(page.locator('#session-workspace')).toBeHidden();await expect(page.locator('#arrangement-workspace')).toBeHidden();
   expect((await panel.boundingBox()).height).toBeGreaterThan(size.height*.75);
@@ -416,8 +463,8 @@ test('browser search and keyboard selection never launch or change the score',as
   await page.setViewportSize({width:1280,height:800});await openSession(page);
   const before=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot));
   await page.getByRole('button',{name:'Browse Project Clips',exact:true}).click();
-  const option=page.getByRole('option',{name:'Clip 1',exact:true}).first();await option.click();
-  await page.getByRole('listbox',{name:'Browser results'}).press('ArrowDown');
+  const option=page.getByRole('treeitem',{name:'Clip 1',exact:true}).first();await option.click();
+  await page.getByRole('tree',{name:'Browser results'}).press('ArrowDown');
   expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot))).toBe(before);
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
   await page.getByRole('button',{name:'Open Clip',exact:true}).click();
@@ -443,14 +490,14 @@ for(const size of [{width:800,height:600},{width:1280,height:800}])test(`catalog
   });
   const tempo=page.locator('#tempo');await tempo.fill('133');
   const refresh=page.getByRole('button',{name:'Refresh Library',exact:true});await refresh.click();await expect(tempo).toHaveValue('133');
-  await expect(page.getByRole('option',{name:'Analog',exact:true})).toBeVisible();
+  await expect(page.getByRole('treeitem',{name:'Analog',exact:true})).toBeVisible();
   expect(await page.evaluate(()=>window.catalogRequests)).toEqual([{refresh:true,cursor:null},{refresh:false,cursor:{revision:'2',offset:64}}]);
-  await page.getByRole('button',{name:'Browse MIDI Effects',exact:true}).click();await expect(page.getByRole('option',{name:'Chord',exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Browse MIDI Effects',exact:true}).click();await expect(page.getByRole('treeitem',{name:'Chord',exact:true})).toBeVisible();
   await page.getByRole('button',{name:'Browse Instruments',exact:true}).click();
   const search=page.getByRole('searchbox',{name:'Search browser'});await search.fill('Analog');
-  const analog=page.getByRole('option',{name:'Analog',exact:true});await analog.click();
+  const analog=page.getByRole('treeitem',{name:'Analog',exact:true});await analog.click();
   await expect(analog).toHaveAttribute('draggable','false');await expect(page.locator('.browser-description')).toContainText('Save a qualified Analog');await expect(page.locator('.browser-load')).toBeDisabled();
-  await page.getByRole('listbox',{name:'Browser results'}).press('Enter');await analog.dblclick();
+  await page.getByRole('tree',{name:'Browser results'}).press('Enter');await analog.dblclick();
   const dataTransfer=await page.evaluateHandle(()=>new DataTransfer());await analog.dispatchEvent('dragstart',{dataTransfer});await page.locator('.track').first().dispatchEvent('drop',{dataTransfer});
   expect(await dataTransfer.evaluate(data=>data.types.length)).toBe(0);await dataTransfer.dispose();
   await refresh.click();await expect(analog).toHaveAttribute('aria-selected','true');await expect(page.locator('.browser-status')).toContainText('depth bound');await expect(tempo).toHaveValue('133');
@@ -467,7 +514,7 @@ for(const size of [{width:800,height:600},{width:1280,height:800}])test(`unfilte
     window.catalogRequest=({cursor})=>({revision:'long-list',entries:entries.slice(cursor?.offset??0,(cursor?.offset??0)+64),nextCursor:cursor?null:{revision:'long-list',offset:64},notices:['Candidate discovery requires saved devices.']});
   });
   await page.getByRole('button',{name:'Refresh Library',exact:true}).click();
-  const first=page.getByRole('option',{name:'Catalog candidate 00',exact:true}),last=page.getByRole('option',{name:'Catalog candidate 95',exact:true});
+  const first=page.getByRole('treeitem',{name:'Catalog candidate 00',exact:true}),last=page.getByRole('treeitem',{name:'Catalog candidate 95',exact:true});
   await expect(last).toHaveCount(1);await first.click();
   const geometry=()=>page.evaluate(()=>{
     const box=selector=>{const r=document.querySelector(selector).getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom};},list=document.querySelector('.browser-list');
@@ -498,10 +545,10 @@ test('browser device double-click requests one validated load and reports native
   await page.evaluate(()=>{window.sessionSnapshot.document.tracks[0].chain.instrument=null;window.sessionSnapshot.document.sources[0].automation=[];});
   await page.locator('#detail-devices').click();
   await expect(page.getByRole('button',{name:'Load instrument',exact:true})).toHaveCount(1);
-  await page.getByRole('option',{name:'Subtractive',exact:true}).click();
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).click();
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
   await page.evaluate(()=>{window.browserLoadError='Device capacity reached';});
-  await page.getByRole('option',{name:'Subtractive',exact:true}).dblclick();
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dblclick();
   await expect(page.locator('.browser-status')).toContainText('Device capacity reached');
   const calls=await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'));
   expect(calls).toHaveLength(1);expect(calls[0]).toMatchObject({name:'alive_device',args:{action:'load',path:'../../ultra/examples/subtractive.ultra',generation:1,editRevision:0}});
@@ -515,7 +562,7 @@ for(const selected of ['audio','occupied MIDI'])for(const refusal of ['Open devi
     window.catalogRequest=()=>({revision:'cached-user',entries:[{id:'user:cached',provider:'user',name:'Cached User Synth',kind:'instrument',path:'/owned/library/cached.ultra',profile:null,qualification:'qualified',availability:'ready',reason:null,description:'Saved user instrument',dependencies:[]}],nextCursor:null,notices:[]});
   });
   await page.getByRole('button',{name:'Refresh Library',exact:true}).click();
-  const device=page.getByRole('option',{name:'Cached User Synth',exact:true});await device.click();
+  const device=page.getByRole('treeitem',{name:'Cached User Synth',exact:true});await device.click();
   await page.locator('#detail-devices').click();
   const before=await page.evaluate(()=>({document:window.sessionSnapshot.document,generation:window.sessionSnapshot.generation,editRevision:window.sessionSnapshot.editRevision,dirty:window.sessionSnapshot.dirty,history:window.sessionSnapshot.history}));
   const chain=await page.locator('#chain-title').textContent(),card=await page.locator('.chain-select[aria-pressed="true"]').evaluateAll(elements=>elements[0]?.getAttribute('aria-label')??null);
@@ -532,7 +579,7 @@ for(const selected of ['audio','occupied MIDI'])test(`automatic instrument activ
   await openSession(page,{audioTrack:selected==='audio'});
   if(selected==='audio')await page.getByRole('button',{name:'Select Harmony track',exact:true}).click();
   const before=await page.evaluate(()=>structuredClone(window.sessionSnapshot.document));
-  await page.getByRole('option',{name:'Subtractive',exact:true}).dblclick();
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dblclick();
   await expect(page.locator('.track')).toHaveCount(3);
   expect(await page.evaluate(()=>window.calls.filter(c=>['alive_device','alive_workspace_track'].includes(c.name)).map(c=>({name:c.name,action:c.args.action,trackId:c.args.trackId})))).toEqual([{name:'alive_device',action:'loadNewTrack',trackId:selected==='audio'?'track-2':'track-1'}]);
   const loaded=await page.evaluate(()=>structuredClone(window.sessionSnapshot.document));
@@ -546,7 +593,7 @@ for(const selected of ['audio','occupied MIDI'])test(`automatic instrument activ
 
 test('fresh MIDI tracks expose the library immediately and accept a browser instrument on the dropped-on track',async({page})=>{
   await openSession(page,{emptyDevices:true});
-  const device=page.getByRole('option',{name:'Subtractive',exact:true});await expect(device).toBeVisible();
+  const device=page.getByRole('treeitem',{name:'Subtractive',exact:true});await expect(device).toBeVisible();
   await device.click();await expect(page.getByRole('button',{name:'Load Instrument',exact:true})).toBeEnabled();
   await device.dragTo(page.locator('.track[data-track-id="track-2"] .track-name'));
   await expect(page.locator('#chain-title')).toHaveText('Harmony chain');await expect(page.locator('#device-detail')).toBeVisible();
@@ -557,7 +604,7 @@ test('fresh MIDI tracks expose the library immediately and accept a browser inst
 });
 
 test('instrument drop replaces the MIDI instrument in place and retains its effects',async({page})=>{
-  await openSession(page);await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"]'));
+  await openSession(page);await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"]'));
   await expect(page.locator('#device-detail')).toBeVisible();
   expect(await page.evaluate(()=>window.calls.find(c=>c.name==='alive_device').args)).toMatchObject({trackId:'track-1',instanceId:'instrument-0',action:'replace'});
   expect(await page.evaluate(()=>window.sessionSnapshot.document.tracks[0].effects.map(e=>e.instanceId))).toEqual(['utility','stereo-lowpass']);
@@ -566,10 +613,10 @@ test('instrument drop replaces the MIDI instrument in place and retains its effe
 
 test('effects drop onto another track then insert before its first effect in serial order',async({page})=>{
   await openSession(page,{audioTrack:true});
-  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
+  await page.getByRole('treeitem',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
   await expect(page.locator('#chain-title')).toHaveText('Harmony chain');await expect(page.locator('.chain-device')).toHaveCount(1);
   const first=page.locator('.chain-device .chain-select').first();
-  await page.getByRole('option',{name:'Stereo Lowpass',exact:true}).dragTo(first,{targetPosition:{x:30,y:2}});
+  await page.getByRole('treeitem',{name:'Stereo Lowpass',exact:true}).dragTo(first,{targetPosition:{x:30,y:2}});
   await expect(page.locator('.chain-device')).toHaveCount(2);
   const calls=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device').map(c=>c.args));
   expect(calls).toHaveLength(2);expect(calls[0]).toMatchObject({trackId:'track-2',action:'add',path:'utility.ultra'});
@@ -579,30 +626,30 @@ test('effects drop onto another track then insert before its first effect in ser
 
 test('empty device chain accepts an instrument and successive effects at its tail',async({page})=>{
   await openSession(page,{emptyDevices:true});await page.locator('#detail-devices').click();
-  await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.chain-drop-tail'));
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dragTo(page.locator('.chain-drop-tail'));
   await expect(page.locator('.chain-device')).toHaveCount(1);
-  for(const name of ['Stereo Utility','Stereo Lowpass'])await page.getByRole('option',{name,exact:true}).dragTo(page.locator('.chain-drop-tail'));
+  for(const name of ['Stereo Utility','Stereo Lowpass'])await page.getByRole('treeitem',{name,exact:true}).dragTo(page.locator('.chain-drop-tail'));
   await expect(page.locator('.chain-device')).toHaveCount(3);
   expect(await page.evaluate(()=>window.sessionSnapshot.document.tracks[0].effects.map(e=>e.path))).toEqual(['utility.ultra','stereo-lowpass.ultra']);
 });
 
 test('device drops remain reachable at the minimum window size',async({page})=>{
   await page.setViewportSize({width:800,height:600});await openSession(page,{emptyDevices:true});
-  await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"] .track-name'));
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"] .track-name'));
   await expect(page.locator('#device-detail')).toBeVisible();
-  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.chain-drop-tail'));
+  await page.getByRole('treeitem',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.chain-drop-tail'));
   await expect(page.locator('.chain-device')).toHaveCount(2);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
 });
 
 test('device drops reject audio instruments, full chains and playing transport visibly',async({page})=>{
   await openSession(page,{audioTrack:true});
-  await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
   await expect(page.locator('#notice')).toContainText('MIDI track');
-  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"]'));
+  await page.getByRole('treeitem',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"]'));
   await expect(page.locator('#notice')).toContainText('two effects');
   await page.evaluate(()=>{window.sessionSnapshot.state.playing=1;});await expect(page.locator('#start')).toBeDisabled();
-  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
+  await page.getByRole('treeitem',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
   await expect(page.locator('#notice')).toContainText('Stop transport');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device'))).toEqual([]);
 });
@@ -610,7 +657,7 @@ test('device drops reject audio instruments, full chains and playing transport v
 test('Arrangement track drops use the actual destination and report native refusals without changing the chain',async({page})=>{
   await openSession(page,{emptyDevices:true});await page.locator('#view-arrangement').click();
   await page.evaluate(()=>{window.browserLoadError='Native device admission refused';});
-  await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.timeline-row[data-track-id="track-2"] .timeline-header'));
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dragTo(page.locator('.timeline-row[data-track-id="track-2"] .timeline-header'));
   await expect(page.locator('#notice')).toContainText('Native device admission refused');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device').map(c=>c.args.trackId))).toEqual(['track-2']);
   expect(await page.evaluate(()=>window.sessionSnapshot.document.tracks.every(t=>!t.chain.instrument))).toBe(true);
@@ -880,7 +927,7 @@ test('a chord velocity drag edits the selected note when markers overlap',async(
 test('browser selection and transport dismissal preserve unfinished musical fields',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);
   const tempo=page.locator('#tempo');await tempo.fill('130');
-  await page.getByRole('option',{name:'Subtractive',exact:true}).click();
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).click();
   await expect(tempo).toHaveValue('130');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
   await page.locator('#save').click();await expect(page.locator('#notice')).toContainText('Finish Tempo');
@@ -894,12 +941,12 @@ test('browser selection and transport dismissal preserve unfinished musical fiel
   await page.locator('#transport-options-toggle').click();await expect(length).toHaveValue('32');
   await length.focus();await length.press('Tab');
   await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit').length)).toBe(1);
-  await tempo.fill('133');await page.getByRole('option',{name:'Subtractive',exact:true}).click();
+  await tempo.fill('133');await page.getByRole('treeitem',{name:'Subtractive',exact:true}).click();
   await page.evaluate(()=>{const s=window.sessionSnapshot;s.generation++;s.editRevision=0;s.document.tempo=90;window.calls=[];});
   await expect(tempo).toHaveValue('90');
   await tempo.focus();await tempo.press('Tab');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
-  const search=page.getByRole('searchbox',{name:'Search browser'});await search.fill('sub');await page.getByRole('option',{name:'Subtractive',exact:true}).click();
+  const search=page.getByRole('searchbox',{name:'Search browser'});await search.fill('sub');await page.getByRole('treeitem',{name:'Subtractive',exact:true}).click();
   await page.locator('#save').click();await expect(page.locator('#notice')).not.toContainText('Finish Search');
 });
 
@@ -1266,9 +1313,9 @@ for(const size of [{width:1440,height:900},{width:800,height:600}])test(`device 
 
 test('rack drop insertion follows horizontal card midpoint even at its top edge',async({page})=>{
   await openSession(page,{audioTrack:true});
-  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
+  await page.getByRole('treeitem',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
   const first=page.locator('.chain-device').first(),box=await first.boundingBox();
-  await page.getByRole('option',{name:'Stereo Lowpass',exact:true}).dragTo(first,{targetPosition:{x:box.width-4,y:2}});
+  await page.getByRole('treeitem',{name:'Stereo Lowpass',exact:true}).dragTo(first,{targetPosition:{x:box.width-4,y:2}});
   await expect(first).toBeVisible();
   await expect.poll(()=>page.evaluate(()=>window.sessionSnapshot.document.tracks[1].effects.map(e=>e.path))).toEqual(['utility.ultra','stereo-lowpass.ultra']);
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device').at(-1).args.beforeInstanceId)).toBe(null);
