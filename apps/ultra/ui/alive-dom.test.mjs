@@ -802,6 +802,41 @@ test('Stop can cancel an outstanding musical publication without waiting behind 
   const view=mountAlive({...page,invoke});await settle();const cell=page.find('Select Pulse slot 2');await cell.fire('click');await cell.fire('dblclick');await page.ids.get('stop').fire('click');
   const stopped=native.calls.some(c=>c.name==='alive_transport'&&c.args.action==='stop');initial.midi.pending=false;await new Promise(resolve=>setTimeout(resolve,30));assert.equal(stopped,true);view.dispose();
 });
+const dragTransfer=()=>({values:{},setData(type,value){this.values[type]=value;}});
+test('device drag cancels on Escape and rejects a changed session or a foreign drop',async()=>{
+  const initial=workspaceState();initial.state.playing=0;
+  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
+  const device=()=>descendants(page.ids.get('browser-library')).find(e=>e.draggable);
+  const target=()=>page.ids.get('tracks').children[1];let dataTransfer=dragTransfer();
+  await page.doc.fire('drop',{target:target(),dataTransfer});assert.equal(native.calls.some(c=>c.name==='alive_device'),false);
+  await device().fire('dragstart',{dataTransfer});await page.doc.fire('dragover',{target:target(),dataTransfer});
+  assert.equal(target().classList.contains('device-drop-target'),true);
+  await page.doc.fire('keydown',{key:'Escape',target:target()});assert.equal(target().classList.contains('device-drop-target'),false);
+  await page.doc.fire('drop',{target:target(),dataTransfer});assert.equal(native.calls.some(c=>c.name==='alive_device'),false);
+  dataTransfer=dragTransfer();await device().fire('dragstart',{dataTransfer});
+  initial.generation++;initial.snapshotSequence='2';await view.refresh();
+  await page.doc.fire('drop',{target:target(),dataTransfer});assert.equal(native.calls.some(c=>c.name==='alive_device'),false);
+  assert.match(page.ids.get('notice').textContent,/drag session changed/);view.dispose();
+});
+test('queued device drop retains its destination and does not override a newer track selection',async()=>{
+  const initial=workspaceState();initial.state.playing=0;
+  const page=dom('./alive.html'),native=backend(initial),boundary=delayedBoundary(native,'alive_mixer',()=>{});
+  const view=mountAlive({...page,invoke:boundary.invoke});await settle();
+  const gain=page.find('Pulse gain');gain.value='.713';await gain.fire('change');
+  const row=descendants(page.ids.get('browser-library')).find(e=>e.draggable),dataTransfer=dragTransfer();
+  await row.fire('dragstart',{dataTransfer});await page.doc.fire('drop',{target:page.ids.get('tracks').children[1],dataTransfer});
+  await page.find('Select Pulse slot 2').fire('click');boundary.release();await settle();await settle();
+  assert.equal(native.calls.find(c=>c.name==='alive_device')?.args.trackId,'track-2');
+  assert.equal(native.calls.find(c=>c.name==='alive_device')?.args.action,'replace');
+  assert.equal(page.find('Select Pulse slot 2').attrs['aria-pressed'],'true');assert.equal(page.ids.get('device-detail').hidden,true);view.dispose();
+});
+test('fresh project fetches its device catalog once without category interaction',async()=>{
+  const initial=workspaceState();for(const t of initial.document.tracks){t.chain.instrument=null;t.effects=[];t.slots=[null,null,null,null];}initial.document.sources=[];initial.document.placements=[];initial.deviceInstances={};initial.state.playing=0;
+  const page=dom('./alive.html'),native=backend(initial);let fetches=0;
+  const view=mountAlive({...page,invoke:(name,args)=>{if(name==='alive_browser_catalog'){fetches++;return Promise.resolve([{name:'Fresh Synth',kind:'instrument',path:'/devices/fresh.ultra'}]);}return native.invoke(name,args);}});await settle();
+  assert.equal(page.find('Fresh Synth').draggable,true);await view.refresh();assert.equal(fetches,1);
+  await page.find('Fresh Synth').fire('click');assert.equal(descendants(page.ids.get('browser-library')).find(e=>e.className==='browser-load').textContent,'Load Instrument');view.dispose();
+});
 function workspaceState(editor=false){
   const document=JSON.parse(readFileSync(new URL('../../alive/examples/two-instruments.alive',import.meta.url),'utf8')).score,patch=JSON.parse(readFileSync(new URL('../examples/subtractive.ultra',import.meta.url),'utf8'));
   const deviceInstances={},devices=[];
@@ -825,6 +860,7 @@ function backend(initial){return timelineBackend(initial);}
 function liveBackend(snapshot){
   const calls=[];
   return{calls,snapshot,async invoke(name,args={}){
+    if(name==='alive_browser_catalog')return [];
     calls.push({name,args:structuredClone(args)});
     if(name==='alive_current'||name==='alive_file'||name==='alive_device')return structuredClone(snapshot);
     if(name==='alive_mixer'){Object.assign(snapshot.document.tracks.find(t=>t.id===args.trackId),{gain:args.gain,mute:args.mute,solo:args.solo});return;}

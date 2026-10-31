@@ -29,3 +29,5 @@
 #workspace-browser .browser-files button{font-size:11px;min-height:25px;margin-bottom:4px}
 #workspace-browser .browser-files button:last-child{margin-bottom:0}
 @container(max-width:205px){.browser-body{grid-template-columns:70px minmax(0,1fr)}#workspace-browser .browser-category{font-size:11px;padding:6px 4px}.browser-glyph{display:none}}
+
+.browser-result[draggable=true]{cursor:grab}.browser-result[draggable=true]:active{cursor:grabbing}

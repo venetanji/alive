@@ -153,8 +153,81 @@ test('browser device double-click requests one validated load and reports native
   await expect(page.locator('.track')).toHaveCount(2);await expect(page.locator('#start')).toBeEnabled();
 });
 
+test('fresh MIDI tracks expose the library immediately and accept a browser instrument on the dropped-on track',async({page})=>{
+  await openSession(page,{emptyDevices:true});
+  const device=page.getByRole('option',{name:'Subtractive',exact:true});await expect(device).toBeVisible();
+  await device.click();await expect(page.getByRole('button',{name:'Load Instrument',exact:true})).toBeEnabled();
+  await device.dragTo(page.locator('.track[data-track-id="track-2"] .track-name'));
+  await expect(page.locator('#chain-title')).toHaveText('Harmony chain');await expect(page.locator('#device-detail')).toBeVisible();
+  const calls=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device'));
+  expect(calls).toHaveLength(1);expect(calls[0].args).toMatchObject({trackId:'track-2',action:'load',path:'../../ultra/examples/subtractive.ultra'});
+  expect(await page.evaluate(()=>window.sessionSnapshot.document.tracks.map(t=>!!t.chain.instrument))).toEqual([false,true]);
+  await expect(page.locator('.track')).toHaveCount(2);
+});
+
+test('instrument drop replaces the MIDI instrument in place and retains its effects',async({page})=>{
+  await openSession(page);await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"]'));
+  await expect(page.locator('#device-detail')).toBeVisible();
+  expect(await page.evaluate(()=>window.calls.find(c=>c.name==='alive_device').args)).toMatchObject({trackId:'track-1',instanceId:'instrument-0',action:'replace'});
+  expect(await page.evaluate(()=>window.sessionSnapshot.document.tracks[0].effects.map(e=>e.instanceId))).toEqual(['utility','stereo-lowpass']);
+  await expect(page.locator('.track')).toHaveCount(2);
+});
+
+test('effects drop onto another track then insert before its first effect in serial order',async({page})=>{
+  await openSession(page,{audioTrack:true});
+  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
+  await expect(page.locator('#chain-title')).toHaveText('Harmony chain');await expect(page.locator('.chain-device')).toHaveCount(1);
+  const first=page.locator('.chain-device .chain-select').first();
+  await page.getByRole('option',{name:'Stereo Lowpass',exact:true}).dragTo(first,{targetPosition:{x:30,y:2}});
+  await expect(page.locator('.chain-device')).toHaveCount(2);
+  const calls=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device').map(c=>c.args));
+  expect(calls).toHaveLength(2);expect(calls[0]).toMatchObject({trackId:'track-2',action:'add',path:'utility.ultra'});
+  expect(calls[1]).toMatchObject({trackId:'track-2',action:'add',path:'stereo-lowpass.ultra',beforeInstanceId:'dropped-0'});
+  expect(await page.evaluate(()=>window.sessionSnapshot.document.tracks[1].effects.map(e=>e.path))).toEqual(['stereo-lowpass.ultra','utility.ultra']);
+});
+
+test('empty device chain accepts an instrument and successive effects at its tail',async({page})=>{
+  await openSession(page,{emptyDevices:true});await page.locator('#detail-devices').click();
+  await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.chain-drop-tail'));
+  await expect(page.locator('.chain-device')).toHaveCount(1);
+  for(const name of ['Stereo Utility','Stereo Lowpass'])await page.getByRole('option',{name,exact:true}).dragTo(page.locator('.chain-drop-tail'));
+  await expect(page.locator('.chain-device')).toHaveCount(3);
+  expect(await page.evaluate(()=>window.sessionSnapshot.document.tracks[0].effects.map(e=>e.path))).toEqual(['utility.ultra','stereo-lowpass.ultra']);
+});
+
+test('device drops remain reachable at the minimum window size',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page,{emptyDevices:true});
+  await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"] .track-name'));
+  await expect(page.locator('#device-detail')).toBeVisible();
+  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.chain-drop-tail'));
+  await expect(page.locator('.chain-device')).toHaveCount(2);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
+});
+
+test('device drops reject audio instruments, full chains and playing transport visibly',async({page})=>{
+  await openSession(page,{audioTrack:true});
+  await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
+  await expect(page.locator('#notice')).toContainText('MIDI track');
+  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"]'));
+  await expect(page.locator('#notice')).toContainText('two effects');
+  await page.evaluate(()=>{window.sessionSnapshot.state.playing=1;});await expect(page.locator('#start')).toBeDisabled();
+  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
+  await expect(page.locator('#notice')).toContainText('Stop transport');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device'))).toEqual([]);
+});
+
+test('Arrangement track drops use the actual destination and report native refusals without changing the chain',async({page})=>{
+  await openSession(page,{emptyDevices:true});await page.locator('#view-arrangement').click();
+  await page.evaluate(()=>{window.browserLoadError='Native device admission refused';});
+  await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.timeline-row[data-track-id="track-2"] .timeline-header'));
+  await expect(page.locator('#notice')).toContainText('Native device admission refused');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device').map(c=>c.args.trackId))).toEqual(['track-2']);
+  expect(await page.evaluate(()=>window.sessionSnapshot.document.tracks.every(t=>!t.chain.instrument))).toBe(true);
+  await expect(page.locator('.device-drop-target')).toHaveCount(0);
+});
+
 // Browser geometry and input coverage only. The native desktop journey qualifies hosting/audio.
-async function openSession(page,{longNames=false,trackCount=2,launchQuantization=true,midiPreview=true}={}){
+async function openSession(page,{longNames=false,trackCount=2,launchQuantization=true,midiPreview=true,emptyDevices=false,audioTrack=false}={}){
   const document=JSON.parse(readFileSync(new URL('../../../alive/examples/two-instruments.alive',import.meta.url))).score,patch=JSON.parse(readFileSync(new URL('../../examples/subtractive.ultra',import.meta.url)));
   const template=structuredClone(document.tracks[0]),sourceTemplate=structuredClone(document.sources[0]),deviceInstances={},runtime=[];
   while(document.tracks.length<trackCount){const i=document.tracks.length+1,track=structuredClone(template),source=structuredClone(sourceTemplate);track.id=`track-${i}`;track.name=`Track ${i}`;source.trackId=track.id;document.tracks.push(track);document.sources.push(source);}
@@ -176,6 +249,8 @@ async function openSession(page,{longNames=false,trackCount=2,launchQuantization
     capabilities:{maxTracks:8,maxDevices:16,atomicTrackActions:true,launchQuantization,launchWindowFrames:1024,midiPreview,midiEdit:true},launch:{globalQuantization:'bar1',clipQuantization:[]},midi:{pending:false,publication:{status:3,serial:'0',error:0}},history:{canUndo:false,canRedo:false},document,deviceInstances,dirty:false,
     state:{playing:0,position:'0',absoluteFrame:'0',rejected:'0',generation:'1',peakLeft:0,peakRight:0,devices:runtime,tracks:document.tracks.map(()=>({peakLeft:0,peakRight:0,activeVoices:0}))},audio:{config:{host:'default',device:'default',sample_rate:48000},observed_buffer_frames:0,callbacks:0,stream_errors:0,failed:false,message:'Browser fixture'},
     runtime:{tracks:document.tracks.map(t=>({trackId:t.id,authority:'arrangement',activeSourceId:null,activePlacementId:null,activeSlotId:null,phase:null,epoch:'1',pendingAction:null,pendingAuthority:null,pendingSlotId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'},preparedWorkspaces:{preparationRevision:'9007199254740993',sources:[],slots:[],placements:[]}};
+  if(emptyDevices){for(const track of document.tracks){track.chain.instrument=null;track.effects=[];}for(const source of document.sources)source.automation=[];}
+  if(audioTrack){document.tracks[1].chain={kind:'audio'};document.tracks[1].slots=[null,null,null,null];document.sources=document.sources.filter(s=>s.trackId!==document.tracks[1].id);}
   await page.addInitScript(snapshot=>{
     window.sessionSnapshot=snapshot;window.calls=[];const undo=[],redo=[];
     function prepared(){
@@ -183,11 +258,23 @@ async function openSession(page,{longNames=false,trackCount=2,launchQuantization
     }
     function accepted(){snapshot.editRevision++;snapshot.snapshotSequence=String(BigInt(snapshot.snapshotSequence)+1n);snapshot.dirty=true;snapshot.history={canUndo:!!undo.length,canRedo:!!redo.length};prepared();return structuredClone(snapshot);}
     window.__TAURI__={core:{invoke:async(name,args={})=>{
+      if(name==='alive_browser_catalog')return[{kind:'instrument',name:'Subtractive',path:'../../ultra/examples/subtractive.ultra'},{kind:'effect',name:'Stereo Utility',path:'utility.ultra'},{kind:'effect',name:'Stereo Lowpass',path:'stereo-lowpass.ultra'}];
       window.calls.push({name,args});if(name==='alive_current')return structuredClone(snapshot);
       if(name==='alive_midi_preview')return{serial:String(window.calls.length)};
       if(name==='alive_file')return structuredClone(snapshot);
       if(name==='alive_history'){const from=args.direction==='undo'?undo:redo,to=args.direction==='undo'?redo:undo;to.push(structuredClone(snapshot.document));snapshot.document=from.pop();return accepted();}
-      if(name==='alive_device'){if(window.browserLoadError)throw Error(window.browserLoadError);return structuredClone(snapshot);}
+      if(name==='alive_device'){
+        if(window.browserLoadError)throw Error(window.browserLoadError);
+        if(args.generation!==snapshot.generation||args.editRevision!==snapshot.editRevision)throw Error('Stale device edit');
+        const track=snapshot.document.tracks.find(t=>t.id===args.trackId),instrument=args.action==='load'||args.action==='replace';
+        const existing=Object.values(snapshot.deviceInstances).find(i=>i.path===args.path),instanceId=`dropped-${snapshot.editRevision}`;
+        const reference={instanceId,id:existing?.manifest.id??'fixture',path:args.path,bypassed:false,parameters:Object.fromEntries((existing?.manifest.parameters??[]).map(p=>[p.key,p.base]))};
+        if(instrument)track.chain.instrument=reference;
+        else{const before=track.effects.findIndex(e=>e.instanceId===args.beforeInstanceId);track.effects.splice(before<0?track.effects.length:before,0,reference);}
+        snapshot.deviceInstances[instanceId]={...structuredClone(existing),path:args.path,track:snapshot.document.tracks.indexOf(track),index:snapshot.state.devices.length};
+        snapshot.state.devices.push({effective:(existing?.manifest.parameters??[]).map(p=>p.base),owned:(existing?.manifest.parameters??[]).map(()=>0)});
+        snapshot.generation++;return accepted();
+      }
       if(name==='alive_workspace_track'){
         const op=args.operation;undo.push(structuredClone(snapshot.document));redo.length=0;
         if(op.kind==='remove'){

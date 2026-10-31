@@ -149,13 +149,22 @@ browser, Session tracks and detail editors scroll within their own regions.
 Drag the browser divider from 180 to 420px. Small windows use icon buttons for
 workspace navigation and scroll the detail contents to reach secondary fields.
 
-The Library browser searches real bundled instruments/effects and project
-clips. Choose Instruments or Audio Effects to read the bundled catalog; Search
-also loads it. Arrow keys select a result; Enter or double-click activates it.
-Single selection does not load a device or launch a clip. Add Track and Add
-Effect use existing native admission, and Open Clip selects its source for
-editing. Open instrument / Open effect retain the native file-picker fallback.
-Missing library files and native refusals appear in the browser.
+The Library browser loads the bundled instruments/effects immediately and also
+searches project clips. Drag a device onto a Session or Arrangement track, or
+into the selected track's Devices chain. An instrument fills an empty MIDI
+track or replaces its existing instrument; audio tracks accept effects. Drop
+an effect above or below another device to choose its serial position, or onto
+the chain's trailing drop area to append it. Successful loads open Devices and
+select the added device. Device changes require stopped transport and retain
+the current limit of two effects per track.
+
+Arrow keys select a browser result; Enter or double-click activates it. Load
+Instrument fills a selected empty MIDI track; Add Track creates another MIDI
+track when the selection already has an instrument. Add Effect appends to the
+selected track, and Open Clip selects its source for editing. Single selection
+does not load a device or launch a clip. Open instrument / Open effect retain
+the native file-picker fallback. Missing library files and native refusals
+appear in the browser or session status.
 
 The piano toolbar provides independent time and pitch navigation and Fit notes.
 Wheel scrolls pitches; Shift+wheel scrolls time; Ctrl/Cmd+wheel zooms time;

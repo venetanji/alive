@@ -23,7 +23,7 @@ export function filterEntries(entries,query='',category='all'){
   return entries.filter(entry=>(category==='all'||entry.kind===category)&&words.every(word=>`${entry.name} ${entry.description??''}`.toLocaleLowerCase().includes(word)));
 }
 
-export function mountBrowser({doc,root,onLoad,onSource,onCatalog,onNavigate=()=>{}}){
+export function mountBrowser({doc,root,onLoad,onSource,onCatalog,onNavigate=()=>{},onDeviceDrag=()=>{},onDragEnd=()=>{}}){
   const make=(tag,className,text)=>{const element=doc.createElement(tag);if(className)element.className=className;if(text!==undefined)element.textContent=text;return element;};
   const search=make('input','browser-search');search.type='search';search.placeholder='Search library';search.setAttribute('aria-label','Search browser');
   const body=make('div','browser-body'),nav=make('nav','browser-categories'),results=make('div','browser-results'),heading=make('div','browser-results-heading','Name'),list=make('div','browser-list'),empty=make('p','browser-empty'),footer=make('div','browser-selection'),description=make('p','browser-description'),activate=make('button','browser-load','Load'),status=make('p','browser-status');
@@ -62,6 +62,7 @@ export function mountBrowser({doc,root,onLoad,onSource,onCatalog,onNavigate=()=>
       for(const entry of visible){
       const row=make('button','browser-result'),glyph=make('span',`browser-glyph ${entry.kind}`),name=make('span','browser-result-name',entry.name);
       row.id=`browser-entry-${entries.indexOf(entry)}`;row.type='button';row.tabIndex=-1;row.setAttribute('role','option');row.setAttribute('data-entry',entry.id);row.setAttribute('aria-label',entry.name);row.title=[entry.name,entry.description].filter(Boolean).join(' / ');
+      if(entry.kind!=='source'){row.draggable=true;row.addEventListener('dragstart',event=>{choose(entry.id);onDeviceDrag(entry,event);});row.addEventListener('dragend',onDragEnd);}
       glyph.setAttribute('aria-hidden','true');row.append(glyph,name);row.addEventListener('click',()=>{choose(entry.id);list.focus();});row.addEventListener('dblclick',()=>{choose(entry.id);load();});list.append(row);
       }
     }
@@ -69,16 +70,16 @@ export function mountBrowser({doc,root,onLoad,onSource,onCatalog,onNavigate=()=>
     const chosen=selectedEntry(),blocked=chosen?.kind==='instrument'?state.instrumentBlocked:chosen?.kind==='effect'?state.effectBlocked:'';
     const active=list.children?.[visible.findIndex(entry=>entry.id===selected)];
     if(active)list.setAttribute('aria-activedescendant',active.id);else list.removeAttribute('aria-activedescendant');
-    empty.hidden=visible.length>0;empty.textContent=search.value.trim()?'No results. Try another search.':'No clips in this project.';
-    description.textContent=chosen?.description??(chosen?'Saved Ultra device':'Select a device or clip');activate.disabled=!chosen||!!blocked;activate.textContent=chosen?.kind==='source'?'Open Clip':chosen?.kind==='instrument'?'Add Track':'Add Effect';activate.title=blocked??'';
+    empty.hidden=visible.length>0;empty.textContent=search.value.trim()?'No results. Try another search.':category==='source'?'No clips in this project.':'No devices found.';
+    description.textContent=chosen?.description??(chosen?'Saved Ultra device':'Drag an instrument or effect onto a track');activate.disabled=!chosen||!!blocked;activate.textContent=chosen?.kind==='source'?'Open Clip':chosen?.kind==='instrument'?(state.instrumentNeedsTrack?'Add Track':'Load Instrument'):'Add Effect';activate.title=blocked??'';
     status.textContent=blocked||catalogError||(catalogState==='loading'?'Loading bundled library...':`${visible.length} ${visible.length===1?'item':'items'}`);status.classList.toggle('error',!!catalogError);
   }
-  function update(next){state=next;const nextEntries=browserEntries(bundled,next.document,next.instances);const nextKey=JSON.stringify([nextEntries,next.instrumentBlocked,next.effectBlocked]);if(nextKey===key)return;key=nextKey;entries=nextEntries;paint();}
+  function update(next){state=next;const nextEntries=browserEntries(bundled,next.document,next.instances);const nextKey=JSON.stringify([nextEntries,next.instrumentBlocked,next.effectBlocked,next.instrumentNeedsTrack]);if(nextKey===key)return;key=nextKey;entries=nextEntries;paint();}
   search.addEventListener('input',()=>{paint();ensureCatalog();});
   search.addEventListener('keydown',event=>{if(['ArrowDown','ArrowUp'].includes(event.key)){event.preventDefault();move(event.key);list.focus();}else if(event.key==='Escape'){event.preventDefault();search.value='';paint();}});
   list.addEventListener('keydown',event=>{if(['ArrowDown','ArrowUp','Home','End'].includes(event.key)){event.preventDefault();move(event.key);}else if(event.key==='Enter'){event.preventDefault();load();}});
   const preserve=event=>{if(!root.contains(doc.activeElement)&&!activate.contains(event.target))onNavigate();};
   root.addEventListener('pointerdown',preserve,true);
-  activate.addEventListener('click',load);paint();
+  activate.addEventListener('click',load);paint();ensureCatalog();
   return{render:update,dispose(){disposed=true;root.removeEventListener('pointerdown',preserve,true);}};
 }

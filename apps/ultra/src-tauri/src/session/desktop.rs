@@ -710,7 +710,8 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
             app.manage(Desktop(Mutex::new(Control { host, runtime:runtime::Runtime::default(),snapshot_sequence:0, accepted_serial, driver: crate::audio::Driver::load(app.path().app_data_dir()?.join("audio-settings.json")), generation: 1,
                 dirty:false,saved_path,save_feedback:None, edit_revision:0,history:History::default(),publication_pending:None, closing: false, allow_exit: false, editors: BTreeMap::new() })));
             tauri::WebviewWindowBuilder::new(app, "main", tauri::WebviewUrl::App("alive.html".into()))
-                .title("Alive").inner_size(1200., 800.).min_inner_size(800., 600.).build()?;
+                .title("Alive").inner_size(1200., 800.).min_inner_size(800., 600.)
+                .disable_drag_drop_handler().build()?;
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![publication::alive_midi_preview, alive_audio_import, alive_current, alive_launch_settings, alive_browser_catalog, alive_master, alive_master_reset_clip, alive_workspace_action, alive_workspace_edit, alive_workspace_track, alive_history, alive_base, alive_bypass, alive_mixer, alive_transport, alive_audio_devices, alive_audio_configure, alive_audio_diagnostics, alive_audio, alive_editor, alive_file, alive_device])

@@ -1,6 +1,7 @@
 import {point,beatAt,beatX,pitchAt,transformNote,velocityEdit,addNote,keyEdit,timeSelection,loopSelection,transformRegion} from './alive-piano.mjs';
 import {mountPianoView} from './alive-piano-view.mjs';
 import {mountBrowser} from './alive-browser.mjs';
+import {mountDeviceDrop} from './alive-device-drop.mjs';
 import {mountTransportOptions} from './alive-shell.mjs';
 import {createAliveModel,parameterReading,nativeInteger,instrumentOf,actualDevices,sourceLength} from './alive-model.mjs';
 import {mountAudioSettings} from './audio-settings.mjs';
@@ -50,7 +51,8 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   }
   function commitFocused(){if(doc.activeElement?.matches('input'))doc.activeElement.blur();}
   const guard=work=>(...args)=>{try{Promise.resolve(work(...args)).catch(error=>notice(error,true));}catch(error){notice(error,true);}};
-  const browser=mountBrowser({doc,root:$('browser-library'),onNavigate:workspace.preserveFocused,onLoad:loadBrowserEntry,onSource:openBrowserSource,onCatalog:()=>invoke?invoke('alive_browser_catalog'):Promise.reject('Open the native Alive app to browse bundled devices')});
+  const deviceDrop=mountDeviceDrop({doc,win,scope:()=>{const snapshot=model.snapshot();return snapshot?{generation:snapshot.generation,editRevision:snapshot.editRevision,playing:!!snapshot.state.playing,pending:snapshot.midi.pending,deviceCount:model.document().tracks.reduce((n,t)=>n+actualDevices(t).length,0),maxDevices:snapshot.capabilities.maxDevices}:null;},track:id=>model.document()?.tracks.find(t=>t.id===id),onDrop:loadBrowserEntry,onError:error=>notice(error,true)});
+  const browser=mountBrowser({doc,root:$('browser-library'),onNavigate:workspace.preserveFocused,onLoad:loadBrowserEntry,onSource:openBrowserSource,onDeviceDrag:deviceDrop.start,onDragEnd:deviceDrop.cancel,onCatalog:()=>invoke?invoke('alive_browser_catalog'):Promise.reject('Open the native Alive app to browse bundled devices')});
   const bind=(id,label,fn)=>{$(id).setAttribute('aria-label',label);$(id).addEventListener('click',guard(fn));};
   function numeric(label,value,{min,max,step='any'}={},change){
     const input=make('input');input.type='number';input.value=String(value);input.setAttribute('aria-label',label);
@@ -423,18 +425,23 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     const trackId=model.document().tracks[selected].id,instanceId=reference?.instanceId,origin=generation();
     return enqueue(async()=>{if(generation()!==origin)throw Error('The originating device session changed.');const snapshot=await command('alive_device',{trackId,instanceId,action,...(action==='reorder'?{beforeInstanceId}: {})});applySnapshot(snapshot);trackKey=musicKey=parameterKey=chainKey='';render();notice('Device chain updated.');});
   }
-  function loadBrowserEntry(entry){
-    const intent={generation:generation(),editRevision:model.snapshot()?.editRevision},trackId=model.document().tracks[selected].id,token=selectionToken;
+  function loadBrowserEntry(entry,destination=null){
+    const intent=destination?.intent??{generation:generation(),editRevision:model.snapshot()?.editRevision},trackId=destination?.trackId??model.document().tracks[selected].id,token=selectionToken;
+    cancelGesture();releaseAudition();
     return enqueue(async()=>{
       if(generation()!==intent.generation||(model.snapshot()?.editRevision)!==intent.editRevision)throw Error('The originating session changed. Select the browser entry again.');
-      let result,targetId=null;
+      const current=model.document().tracks.find(track=>track.id===trackId);if(!current)throw Error('The destination track was removed. Select a track and load the device again.');
+      if(model.snapshot().state.playing)throw Error('Stop transport before loading a device.');
+      if(model.snapshot().midi.pending)throw Error('Wait for the musical edit to finish before loading a device.');
+      let result,targetId=trackId;const previousIds=new Set(actualDevices(current).map(d=>d.instanceId));
       if(entry.kind==='instrument'){
-        const current=model.document().tracks.find(track=>track.id===trackId);if(!current)throw Error('The originating track was removed. Select a track and load the browser entry again.');targetId=current.chain.kind==='midi'&&!instrumentOf(current)?current.id:null;
-        if(!targetId){const created=await publicationCommand('alive_workspace_track',{operation:{kind:'addMidi',afterTrackId:current.id}});targetId=created.affected.trackId;}
-        result=await command('alive_device',{trackId:targetId,instanceId:null,action:'load',path:entry.path});
-      }else result=await invoke('alive_device',{...intent,trackId,action:'add',path:entry.path});
+        if(destination&&current.chain.kind!=='midi')throw Error('Drop instruments onto a MIDI track. Audio tracks accept audio effects.');
+        const replace=destination&&instrumentOf(current);
+        if(!destination&&(current.chain.kind!=='midi'||instrumentOf(current))){const created=await publicationCommand('alive_workspace_track',{operation:{kind:'addMidi',afterTrackId:current.id}});targetId=created.affected.trackId;}
+        result=await command('alive_device',{trackId:targetId,instanceId:replace?.instanceId??null,action:replace?'replace':'load',path:entry.path});
+      }else result=await command('alive_device',{trackId,action:'add',path:entry.path,...(destination?{beforeInstanceId:destination.beforeInstanceId}: {})});
       applySnapshot(result.snapshot??result);
-      if(entry.kind==='instrument'&&token===selectionToken){selected=Math.max(0,model.document().tracks.findIndex(t=>t.id===(result.affected?.trackId??targetId??model.document().tracks.at(-1)?.id)));sourceSelection=null;selectedInstance=null;selectionToken++;}
+      if(token===selectionToken){selected=Math.max(0,model.document().tracks.findIndex(t=>t.id===targetId));sourceSelection=null;selectedInstance=actualDevices(model.document().tracks[selected]).find(d=>!previousIds.has(d.instanceId))?.instanceId??null;selectionToken++;workspace.openDevices();}
       trackKey=musicKey=parameterKey=chainKey='';render();notice(`${entry.name} loaded. Transport remains stopped.`);
     });
   }
@@ -448,9 +455,11 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   function buildChain(){
     const track=model.document().tracks[selected],devices=chainDevices(track);
     rootlessInstrumentButton=null;$('chain-title').textContent=`${track.name} chain`;$('chain').replaceChildren();chainViews.length=0;
+    $('chain').dataset.trackId=track.id;
     if(track.chain?.kind==='midi'&&!instrumentOf(track)){const load=make('button','','Load instrument...');load.setAttribute('aria-label','Load instrument');load.disabled=!!model.snapshot().state.playing;load.title=load.disabled?'Stop transport to load an instrument':'Choose a saved Ultra instrument';load.addEventListener('click',guard(()=>structural(null,'load')));$('chain').append(load);rootlessInstrumentButton=load;}
     devices.forEach((reference,index)=>{
       const name=instanceName(reference,index),context=`${track.name} ${name}`,row=make('div','chain-device'),choose=make('button','chain-select',name),bypass=make('button','','Bypass'),actions=[];
+      row.dataset.instanceId=reference.instanceId;
       choose.setAttribute('aria-label',`Select ${context}`);choose.addEventListener('click',()=>{selectedInstance=reference.instanceId;parameterKey='';render();});
       bypass.setAttribute('aria-label',`Bypass ${context}`);const isInstrument=reference.instanceId===instrumentOf(track)?.instanceId;bypass.disabled=isInstrument;bypass.title=isInstrument?'Only effects support bypass. Use track mute to silence this track.':'Live bypass keeps the device state warm; audio output stays open.';
       bypass.addEventListener('click',guard(()=>{const instanceId=reference.instanceId,bypassed=!chainDevices().find(d=>d.instanceId===instanceId).bypassed,origin=generation();return enqueue(async()=>{if(generation()!==origin)throw Error('The originating device session changed.');await command('alive_bypass',{instanceId,bypassed});await refresh();});}));
@@ -464,6 +473,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       }
       $('chain').append(row);chainViews.push({row,choose,bypass,reference,actions});
     });
+    const tail=make('div','chain-drop-tail',track.chain.kind==='midi'&&!instrumentOf(track)?'Drop an instrument or audio effect here':'Drop audio effects here');tail.setAttribute('role','group');tail.setAttribute('aria-label','Device chain drop area');$('chain').append(tail);
   }
   function automationTargets(){
     return chainDevices().flatMap((reference,index)=>(instanceView(reference.instanceId)?.manifest?.parameters??[]).map(binding=>({instanceId:reference.instanceId,binding,label:reference.instanceId===instrumentOf(model.document().tracks[selected])?.instanceId?binding.label:`${instanceName(reference,index)} / ${binding.label}`})));
@@ -660,7 +670,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     $('chain-status').textContent=snapshot.midi.pending?'Wait for the musical edit to finish before changing devices.':snapshot.state.playing?'Stop transport to add, remove, replace or reorder devices. Bypass and base values work live.':'Add, remove, replace and reorder devices while stopped. Bypass and base values work live.';
     $('add-effect').disabled=structuralBlocked||document.tracks[selected].effects.length>=2||deviceCount>=maxDevices;
     const structureMessage=snapshot.midi.pending?'Wait for the musical edit to finish before loading a device.':snapshot.state.playing?'Stop transport before loading a device.':'';
-    browser.render({document:model.document(),instances:snapshot.deviceInstances,instrumentBlocked:structureMessage||($('add-track').disabled?'Track or device capacity reached.':''),effectBlocked:structureMessage||($('add-effect').disabled?'Effect or device capacity reached.':'')});
+    browser.render({document:model.document(),instances:snapshot.deviceInstances,instrumentNeedsTrack,instrumentBlocked:structureMessage||($('add-track').disabled?'Track or device capacity reached.':''),effectBlocked:structureMessage||($('add-effect').disabled?'Effect or device capacity reached.':'')});
     for(const view of chainViews){view.choose.setAttribute('aria-pressed',String(view.reference.instanceId===selectedInstance));view.row.classList.toggle('selected',view.reference.instanceId===selectedInstance);view.bypass.setAttribute('aria-pressed',String(chainDevices().find(d=>d.instanceId===view.reference.instanceId).bypassed));for(const {button,blocked} of view.actions){button.disabled=structuralBlocked||blocked;button.title=blocked?'Already at this end of the effect chain.':$('chain-status').textContent;}}
     const nextMusic=JSON.stringify([snapshot.generation,selected,selectedClip()?.id,sourceOf()?.id,document.tracks[selected].sourceKind,document.tempo,document.lengthBeats,document.loopEnabled,document.tracks[selected]?.notes,document.tracks[selected]?.automation,editorOccurrence()?.region,clipTimeSelection]);
     if(nextMusic!==musicKey){musicKey=nextMusic;buildMusic(document);}
@@ -747,6 +757,6 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   }
   if(invoke)win.setTimeout(pollMeasurements,1000);
   if(invoke){enqueue(refresh,true).then(()=>notice('Ready. Select a clip to edit notes or automation.')).catch(()=>{});win.setTimeout(poll,80);}else notice('Open the native app with bash apps/alive/run.sh. This page does not synthesize audio.',true);
-  return{model,refresh,dispose(){disposed=true;audition.dispose();win?.removeEventListener('blur',releaseAudition);browser.dispose();transportOptions.dispose();masterProducer.dispose();workspace.dispose();timeline?.dispose();pianoView.dispose();win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};
+  return{model,refresh,dispose(){disposed=true;audition.dispose();win?.removeEventListener('blur',releaseAudition);deviceDrop.dispose();browser.dispose();transportOptions.dispose();masterProducer.dispose();workspace.dispose();timeline?.dispose();pianoView.dispose();win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};
 }
 if(globalThis.document)mountAlive();
