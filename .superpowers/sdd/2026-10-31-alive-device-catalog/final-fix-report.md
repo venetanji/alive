@@ -220,3 +220,17 @@ The remaining validation is the controller-owned fresh immutable app build and
 real desktop execution of the extended catalog helper. Its UI observations do
 not expose edit revision/history internals; those are asserted directly by the
 Rust owner tests. Review this fix range before that acceptance.
+
+## Installed Acceptance Follow-Up
+
+The acceptance dispatch has now built exact committed source `a8b5f67` from a
+fresh git archive, excluding and preserving the four paused presentation
+checkpoint changes. Separate Alive/Ultra builds and the complete extended
+installed native journey pass using the shipping frozen library for both link
+and runtime. The new immutable install is
+`/home/venetanji/.local/share/alive/builds/a8b5f67`.
+Cached-file refusals, automatic track/instrument insertion and compound
+Undo/Redo/restoration pass before bundled drag/save/scheduled audio. Exact
+commands, two observed helper-only corrections and full provenance/results are
+in `final-installed-report.md`; Task 3 and the authored catalog packet are
+refreshed. Controller's combined final review/integration remains pending.

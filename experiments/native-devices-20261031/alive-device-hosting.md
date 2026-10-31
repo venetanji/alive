@@ -1,8 +1,9 @@
 # Alive device hosting and saved Ultra presentation
 
 Status: catalog delivery 0 implemented and verified on 2026-10-31 in installed
-source `dd423bd` on `feat/phase2-ui-fidelity`, including unfiltered list
-containment and native scrolling/footer checks at both sizes; see the
+source `a8b5f67` on `feat/phase2-ui-fidelity`, including unfiltered list
+containment, native scrolling/footer checks at both sizes and atomic automatic
+instrument insertion/refusal/Undo/Redo; see the
 [installed catalog evidence](../alive-device-catalog-20261031/README.md).
 The remaining sections retain the architecture and later delivery requirements.
 The native-device inventory and adapter audit come from the separate `2a0f`

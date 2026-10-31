@@ -132,7 +132,7 @@ def automatic_instrument_admission(library, fixture, original):
             assert selected_names() == ['Catalog Fixture Two'], selected_names()
             assert history_state() == initial_history
             assert alive.value('Native generation') == generation
-            assert save('catalog-automatic-baseline.alive') == before
+            assert save(f'catalog-automatic-refused-{failure}.alive') == before
             refused.append(dict(failure=failure, reason=reason, accepted_score_unchanged=True,
                                 native_generation_unchanged=True, selected_track='Audio 2',
                                 history_controls=initial_history))
@@ -160,6 +160,8 @@ def automatic_instrument_admission(library, fixture, original):
     ui.click('Undo')
     ui.wait_for('Select MIDI 1 track')
     assert save('catalog-automatic-restored.alive') == original
+    if ui.wait_for('Audio details').get_state_set().contains(Atspi.StateType.EXPANDED):
+        ui.click('Audio details')
     return dict(refusals=refused, success_track_count=3, compound_undo_redo=True,
                 captured_instance_id=captured, original_fixture_restored=True,
                 synthetic_ipc=False)

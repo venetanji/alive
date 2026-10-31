@@ -176,3 +176,45 @@ presentation/full-hosting milestones. This follow-up changes no production
 code, native admission, launcher, user configuration, native `2a0f` state or
 mapped library. User windows and unsaved work were preserved. No unrelated
 suites, cloud CI, push or launcher change was performed.
+
+## Final Fixed-Source Acceptance: a8b5f67
+
+Exact production source `a8b5f67f2e1cc3052dce76ff704b102ffbfac457` now passes
+the complete extended native journey. Exact archive/build/install commands,
+attempt diagnoses and results are in `final-installed-report.md` beside this
+report; current authored evidence is under
+`experiments/alive-device-catalog-20261031/`.
+
+The immutable install is `/home/venetanji/.local/share/alive/builds/a8b5f67`,
+with Alive and Ultra under `bin/`. Both apps were built from a fresh git archive
+at `/tmp/alive-catalog-final-source-a8b5f67-20261031`, whose 8733 archived files
+match fixed git blobs before and after compilation. The manifest records the
+actual archive build root, fixed tree and selected source git blob identities;
+all 309 source, seven resource and three artifact hashes verify. Both link and
+execution use the shipping library SHA `69ba16fe7af0e969a86f89f8ae94d33b767f7f47ea02ce74da7365a1dc770a90`,
+not the old piano ABI. No native library was rebuilt.
+
+The four paused presentation checkpoint changes were excluded from the archive
+and remain byte-identical in the worktree. Committed `canvas_tests.rs` is used
+instead of its paused modification; the three untracked presentation files are
+absent from the archived build. Existing `cf7ac2b`, `be355bb` and `dd423bd`
+artifact hashes also verify unchanged.
+
+Native acceptance retains both-size unfiltered clipping/scroll/footer checks,
+catalog refusal and refresh, and adds cached missing/invalid/unsupported file
+refusal from Audio with accepted score/generation/selection/history controls
+unchanged. Successful automatic insertion, one-step Undo/Redo with identical
+instrument identity and original-fixture restoration all pass. The subsequent
+actual bundled drag/save/scheduled-audio workflow passes: 173568 stereo PCM
+frames, peak `0.09684687107801437`, zero stream errors/rejected commands.
+Snapshot and raw PCM bytes were independently checked.
+
+Two helper-only fixes were needed and are documented with retained captures:
+unique refusal Save As snapshot names avoid GTK overwrite confirmation; closing
+the transaction's expanded Audio details pane restores an unobscured chain
+drop target. No production source was changed in this acceptance dispatch.
+The final full run exits 0 at `/tmp/alive-catalog-final-native-accepted-20261031`.
+Python compilation, diff checks and all four paused checkpoint hashes pass.
+Prior source-fix suites were not rerun. Only delivery 0 is complete; later
+presentation/hosting milestones remain active. Controller owns final scoped
+re-review, launcher and PR integration; no launcher/push/cloud CI occurred here.

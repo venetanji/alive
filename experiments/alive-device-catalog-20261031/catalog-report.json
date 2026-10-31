@@ -55,12 +55,12 @@
   "accepted_score_unchanged": true,
   "native_generation": "3",
   "rejected_commands": 0,
-  "native_library": "/home/venetanji/.local/share/alive/builds/dd423bd/bin/libultra_native.so",
-  "binary": "/home/venetanji/.local/share/alive/builds/dd423bd/bin/alive",
-  "source_commit": "dd423bd0fa418656304427cb7c89646813cfd065",
+  "native_library": "/home/venetanji/.local/share/alive/builds/a8b5f67/bin/libultra_native.so",
+  "binary": "/home/venetanji/.local/share/alive/builds/a8b5f67/bin/alive",
+  "source_commit": "a8b5f67f2e1cc3052dce76ff704b102ffbfac457",
   "artifact_hashes": {
-    "alive": "43c3d85e20a5e9f526038bdf6a694afcbd6ac1796a6aa8735548127ef7c87500",
-    "ultra": "79beb24dad95d71780485d0078bc612ceaa7065652ed3828f700429b344917ce",
+    "alive": "79327b938062f434a9ef7e84fe82a9f0c6d9554f17dfe023ab95acaf6ef687ab",
+    "ultra": "4d27dc0f2f4b0044db8876eee1fe0c63bb1d7365f87979513a5e8423d95cc112",
     "libultra_native.so": "69ba16fe7af0e969a86f89f8ae94d33b767f7f47ea02ce74da7365a1dc770a90"
   },
   "captures": [
@@ -408,7 +408,7 @@
       },
       "footer_paint_unchanged_on_scroll": true,
       "footer_pixel_stability_seconds": 2,
-      "footer_sha256": "39a95a6ae8522bc3572e318e59967654c630ffa7feac9d05a5b307a19d6bf259"
+      "footer_sha256": "df5581f54dd5df8501d71655421261f9ec379e6f27ab39aa25794b007f0bbece"
     },
     {
       "viewport": [
@@ -660,8 +660,50 @@
       },
       "footer_paint_unchanged_on_scroll": true,
       "footer_pixel_stability_seconds": 2,
-      "footer_sha256": "39a95a6ae8522bc3572e318e59967654c630ffa7feac9d05a5b307a19d6bf259"
+      "footer_sha256": "df5581f54dd5df8501d71655421261f9ec379e6f27ab39aa25794b007f0bbece"
     }
   ],
-  "physical_audio": false
+  "physical_audio": false,
+  "automatic_instrument_transaction": {
+    "refusals": [
+      {
+        "failure": "missing",
+        "reason": "Cannot open /tmp/alive-catalog-final-library-accepted-20261031/two.ultra: No such file or directory (os error 2)",
+        "accepted_score_unchanged": true,
+        "native_generation_unchanged": true,
+        "selected_track": "Audio 2",
+        "history_controls": {
+          "Undo": true,
+          "Redo": false
+        }
+      },
+      {
+        "failure": "invalid",
+        "reason": "Patch is not valid JSON: expected value at line 1 column 1",
+        "accepted_score_unchanged": true,
+        "native_generation_unchanged": true,
+        "selected_track": "Audio 2",
+        "history_controls": {
+          "Undo": true,
+          "Redo": false
+        }
+      },
+      {
+        "failure": "unsupported",
+        "reason": "Track 'MIDI 3' instance 'instance-810cd5e058f90aeb002355154567b419': Alive's native instrument profile does not support legacy Voice or cross-document send/receive nodes",
+        "accepted_score_unchanged": true,
+        "native_generation_unchanged": true,
+        "selected_track": "Audio 2",
+        "history_controls": {
+          "Undo": true,
+          "Redo": false
+        }
+      }
+    ],
+    "success_track_count": 3,
+    "compound_undo_redo": true,
+    "captured_instance_id": "instance-d2802a3467428f51dcc8e32b8c0eb9e9",
+    "original_fixture_restored": true,
+    "synthetic_ipc": false
+  }
 }

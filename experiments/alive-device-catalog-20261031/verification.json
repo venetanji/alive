@@ -1,35 +1,59 @@
 {
   "native_journey_exit_code": 0,
-  "installed_source": "dd423bd0fa418656304427cb7c89646813cfd065",
-  "build_link_native_sha256": "5786ef4b55c07a4812d94082766f3ad30ac4e1dd70cb9c3ff1672e0336b4375d",
+  "installed_source": "a8b5f67f2e1cc3052dce76ff704b102ffbfac457",
+  "build_source_archive": "/tmp/alive-catalog-final-source-a8b5f67-20261031",
+  "archive_git_blobs_verified_before_and_after_build": 8733,
+  "paused_checkpoint_changes_excluded": true,
+  "paused_worktree_sha256": {
+    "apps/ultra/src-tauri/src/canvas_tests.rs": "8274cd1195e6e914f954832bcdb580261beeb9ab50a735fef9d375573e032997",
+    "apps/ultra/ui/canvas-presentation.mjs": "04a04a8b6df2846024ba6378ec81abef824f874d16e099e63f3157d23ca05ca6",
+    "apps/ultra/ui/canvas-presentation.test.mjs": "af82bff900e7eafbb494102d78ac73e5ca0016ffa1c15b35032ac119d77b941c",
+    "apps/ultra/ui/canvas-presentation-cases.json": "fd7a4346138618ae3c80b0553b78f222dcc5fdb8a5af9f1b454cee85b357329a"
+  },
+  "build_link_native_sha256": "69ba16fe7af0e969a86f89f8ae94d33b767f7f47ea02ce74da7365a1dc770a90",
   "installed_native_sha256": "69ba16fe7af0e969a86f89f8ae94d33b767f7f47ea02ce74da7365a1dc770a90",
   "catalog_snapshot_score_equal": true,
+  "automatic_refusal_scores_equal": true,
+  "automatic_undo_restores_baseline": true,
+  "automatic_redo_score_and_instance_equal": true,
+  "automatic_restores_original_fixture": true,
+  "captured_instance_id": "instance-d2802a3467428f51dcc8e32b8c0eb9e9",
+  "authored_snapshot_sha256": {
+    "catalog-automatic-restored.alive": "197309457e7ed9bb24a8a25d072b9bb9d06a07a62fd2ad5637ce49e6e8d24c9a",
+    "catalog-automatic-redone.alive": "3efeabaa7aec2186b94ebe274913a442542e752f3b94c2d97b68fa249a3db397",
+    "catalog-automatic-undone.alive": "a8057322d34be6bf55f83c47e63e02fa7eeeada0ed8ea490c6bde442805a9bbf",
+    "catalog-automatic-loaded.alive": "3efeabaa7aec2186b94ebe274913a442542e752f3b94c2d97b68fa249a3db397",
+    "catalog-automatic-refused-unsupported.alive": "a8057322d34be6bf55f83c47e63e02fa7eeeada0ed8ea490c6bde442805a9bbf",
+    "catalog-automatic-refused-invalid.alive": "a8057322d34be6bf55f83c47e63e02fa7eeeada0ed8ea490c6bde442805a9bbf",
+    "catalog-automatic-refused-missing.alive": "a8057322d34be6bf55f83c47e63e02fa7eeeada0ed8ea490c6bde442805a9bbf",
+    "catalog-automatic-baseline.alive": "a8057322d34be6bf55f83c47e63e02fa7eeeada0ed8ea490c6bde442805a9bbf",
+    "catalog-after.alive": "197309457e7ed9bb24a8a25d072b9bb9d06a07a62fd2ad5637ce49e6e8d24c9a",
+    "catalog-before.alive": "197309457e7ed9bb24a8a25d072b9bb9d06a07a62fd2ad5637ce49e6e8d24c9a"
+  },
   "raw_pcm_hash_frames_peak_verified": true,
-  "full_native_output": "/tmp/alive-catalog-clipping-native-settled-20261031",
+  "full_native_output": "/tmp/alive-catalog-final-native-accepted-20261031",
   "prior_versions_artifacts_verified_unchanged": [
+    "cf7ac2b",
     "be355bb",
-    "cf7ac2b"
+    "dd423bd"
   ],
-  "fix_round_harness_attempts": [
+  "final_harness_attempts": [
     {
-      "path": "/tmp/alive-catalog-clipping-native-20261031",
+      "path": "/tmp/alive-catalog-final-native-20261031",
       "exit_code": 1,
-      "reason": "Wheel pointer leaves native row tooltip overlapping footer before strict pixel comparison. Geometry/footer ownership passed.",
-      "failure_capture_sha256": "bb8f7cdf6f9dd675b505c7d8cce9660bca1e92e3832a6f2b1823acad2ccc16b3"
+      "reason": "Repeated baseline Save As path triggered GTK overwrite confirmation after missing-file refusal assertions passed.",
+      "failure_capture_sha256": "3a8b431cd5e78ba6f2cebbfc3cb00706b5de0fe2a1c36ff6d1b724ea9b7d7808"
     },
     {
-      "path": "/tmp/alive-catalog-clipping-native-final-20261031",
-      "exit_code": 1,
-      "reason": "After parking pointer, only native description overlay scrollbar fading changed footer pixels. Geometry/footer ownership passed.",
-      "changed_pixel_count": 281,
-      "changed_pixel_bounds": [
-        205,
-        292,
-        209,
-        348
-      ],
-      "failure_capture_sha256": "a8279eba0dc0e406031fa397a3edb1245b1d39cf692e89240c10a51d87a3b402"
+      "path": "/tmp/alive-catalog-final-native-retry1-20261031",
+      "exit_code": 143,
+      "reason": "Stopped owned helper after all atomic transaction assertions passed; transaction diagnostic reads left Audio details overlay over chain drag target.",
+      "drag_hover_capture_sha256": "c72879e1fd2d483562cf16ecdbe3c4c311afb15972ee904aa6d5495d31519925"
     }
   ],
-  "helper_correction": "Park pointer off browser; require full footer pixels unchanged for 2 seconds, bounded at 6 seconds, before each sample. Exact before/after comparison retained."
+  "helper_corrections": [
+    "Unique refusal snapshot filenames in same directory with exact accepted score comparison retained",
+    "Close expanded Audio details after transaction restoration before existing bundled drag workflow"
+  ],
+  "acceptance_helper_sha256": "84675fabb97fb24b2a8816de7a7ff8d51658c06f0c618830b3b2454d9e7dc2f9"
 }
