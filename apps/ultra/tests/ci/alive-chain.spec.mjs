@@ -509,7 +509,7 @@ test('browser selection and transport dismissal preserve unfinished musical fiel
 test('four-slot bank preserves stable note identity and fits the minimum desktop',async({page},testInfo)=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:900,height:660});await openSession(page);
   await expect(page.getByRole('button',{name:'Select Pulse slot 4',exact:true})).toBeVisible();
-  await page.getByRole('button',{name:'Select Pulse slot 2',exact:true}).click();await expect(page.getByRole('button',{name:'Add note',exact:true})).toBeDisabled();
+  await page.getByRole('button',{name:'Select Pulse slot 2',exact:true}).click();await expect(page.getByRole('button',{name:'Add note',exact:true})).toBeHidden();
   await page.locator('.clip-source-actions>summary').click();await expect(page.getByRole('button',{name:'Create clip',exact:true})).toBeVisible();expect(await page.evaluate(()=>window.calls.some(c=>c.name==='alive_workspace_edit'||c.name==='alive_workspace_action'))).toBe(false);
   await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).click();
   await page.locator('.note-table>summary').click();

@@ -16,6 +16,7 @@ class Element{
   fire(type,event={}){for(const fn of this.listeners[type]??[])fn({target:this,preventDefault(){},...event});}
 }
 const descendants=e=>e.children.flatMap(c=>[c,...descendants(c)]);
+const midiSource={id:'source-a',kind:'midi'};
 async function mount(){
   const doc={createElement:tag=>new Element(tag),createElementNS:(_,tag)=>new Element(tag)},win=new Element('window');
   let observer,disconnected=false;
@@ -24,7 +25,7 @@ async function mount(){
   let navigations=0,lastGeometry;
   const view=mountClipView({doc,win,svg,audioSvg,onNavigate:()=>navigations++,onGeometry:g=>lastGeometry=g});
   const notes=[{id:'a',beat:1,duration:1,pitch:60,velocity:90},{id:'b',beat:6,duration:.5,pitch:65,velocity:110}];
-  view.render({notes,length:16,scope:'source-a',selectedNote:'a'});
+  view.render({notes,length:16,scope:'source-a',kind:'midi',source:midiSource,selectedNote:'a'});
   return {view,svg,audioSvg,area,win,notes,resize:()=>observer(),geometry:()=>lastGeometry,navigations:()=>navigations,disconnected:()=>disconnected,find:label=>descendants(area).find(e=>e.attrs['aria-label']===label)};
 }
 test('keyboard, musical ruler and editable velocity lane share actual pixel geometry',async()=>{
@@ -66,13 +67,13 @@ test('fit frames all notes, preserves their identities, and a source change rese
   assert.ok(fit.beatStart<=1&&fit.beatStart+fit.beatSpan>=6.5);assert.ok(fit.min<=60&&fit.max>=65);
   const selected=descendants(p.svg).find(e=>e.attrs['data-note']==='0'&&e.attrs['data-part']==='body');
   assert.equal(selected.attrs['aria-selected'],'true');
-  p.view.render({notes:p.notes,length:32,scope:'source-b',selectedNote:'b'});
+  p.view.render({notes:p.notes,length:32,scope:'source-b',kind:'midi',source:{...midiSource,id:'source-b'},selectedNote:'b'});
   assert.equal(p.geometry().beatStart,0);assert.equal(p.geometry().beatSpan,32);
   p.view.dispose();
 });
 test('clip editor renders separate Start, End and loop handles above a persistent time selection',async()=>{
   const p=await mount(),region={start:0,end:16,loopStart:2,loopEnd:8,loopEnabled:true};
-  p.view.render({notes:p.notes,length:16,scope:'source-a',region,timeSelection:{start:2,end:8}});
+  p.view.render({notes:p.notes,length:16,scope:'source-a',kind:'midi',source:midiSource,region,timeSelection:{start:2,end:8}});
   for(const kind of ['start','end','loopMove','loopLeft','loopRight'])assert.ok(descendants(p.svg).some(e=>e.attrs['data-region']===kind),kind);
   assert.ok(p.find('Clip Start'));assert.ok(p.find('Clip End'));assert.ok(p.find('Loop Position'));assert.ok(p.find('Loop Length'));
   assert.ok(descendants(p.svg).some(e=>e.attrs.class==='clip-time-selection'));
@@ -83,4 +84,13 @@ test('audio editor draws actual waveform peaks and keeps the shared beat and reg
   p.view.render({notes:[],length:8,scope:'audio',kind:'audio',source:{sourceTempo:120,file:{frames:'192000',sampleRate:48000,channels:2}},waveformPeaks:[[-.5,.75],[-.25,.5]],region:{start:0,end:8,loopStart:0,loopEnd:8,loopEnabled:true}});
   const waveform=descendants(p.audioSvg).find(e=>e.attrs.class==='audio-waveform');assert.ok(waveform);assert.ok(waveform.attrs.d.includes('L'));
   assert.equal(p.view.velocityLane.hidden,true);assert.ok(p.find('Loop Selection'));p.view.dispose();
+});
+test('empty selection survives resize without geometry and a real empty MIDI clip restores the editor',async()=>{
+  const p=await mount();
+  assert.equal(p.view.render({notes:[],length:4,kind:'midi',source:null,scope:'empty'}),null);
+  p.svg.rect.width=512;p.resize();p.svg.fire('wheel',{deltaY:120});
+  assert.equal(p.geometry(),null);assert.equal(p.svg.hidden,true);assert.equal(p.svg.children.length,0);assert.equal(p.view.velocityLane.hidden,true);
+  p.view.render({notes:[],length:4,kind:'midi',source:midiSource,scope:'new-clip'});
+  assert.equal(p.svg.hidden,false);assert.equal(p.view.velocityLane.hidden,false);assert.equal(p.geometry().width,512);
+  assert.ok(descendants(p.svg).some(e=>e.attrs['data-key']));p.view.dispose();
 });

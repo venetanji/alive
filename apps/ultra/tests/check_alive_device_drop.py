@@ -11,6 +11,13 @@ ui.find = alive.windows.scoped_find
 gestures = []
 
 
+def showing(name):
+    try:
+        return ui.find(name).get_state_set().contains(Atspi.StateType.SHOWING)
+    except StopIteration:
+        return False
+
+
 def drag(source, target, fraction=.5):
     start = Atspi.Component.get_extents(ui.wait_for(source), Atspi.CoordType.SCREEN)
     end = Atspi.Component.get_extents(ui.wait_for(target), Atspi.CoordType.SCREEN)
@@ -40,6 +47,11 @@ def drag(source, target, fraction=.5):
 try:
     alive.windows.focus('Alive')
     ui.wait_for('Select MIDI 1 track')
+    ui.click('Clip detail')
+    assert not showing('Selected clip piano roll')
+    assert not showing('Note velocity lane')
+    assert not showing('Add note')
+    alive.screenshot('native-empty-midi.png')
     # No category click or search: the catalog must be populated on a fresh project.
     drag('Subtractive', 'Select MIDI 1 track')
     ui.wait_for('Select MIDI 1 Subtractive instrument')
@@ -52,6 +64,9 @@ try:
     ui.click('Clip detail')
     ui.click('Select MIDI 1 slot 1')
     ui.keys('Control_L', 'Shift_L', 'm')
+    ui.wait_for('Add note')
+    assert showing('Selected clip piano roll')
+    assert showing('Note velocity lane')
     ui.click('Add note')
     ui.text('Note 1 duration', '4')
     saved = ui.output / 'dragged-chain.alive'

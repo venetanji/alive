@@ -22,7 +22,7 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   let viewport,last=null,g=null,scope=null,disposed=false,waveformZoom=1;
 
   function navigate(action){
-    if(!last)return;
+    if(!last?.source)return;
     onNavigate();
     if(action.type==='waveformZoom')waveformZoom=Math.max(.25,Math.min(8,waveformZoom*action.factor));
     else viewport=action.type==='fit'?fitViewport(last.kind==='audio'?[]:last.notes,g):navigateViewport(viewport,g,action);
@@ -85,12 +85,12 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   }
   function draw(){
     if(!last||disposed)return;
-    const audio=last.kind==='audio',emptyAudio=audio&&!last.source;
+    const audio=last.kind==='audio',hasSource=!!last.source,emptyAudio=audio&&!hasSource;
     svg=audio?audioSvg:midiSvg;
-    midiSvg.hidden=audio;audioSvg.hidden=!audio||emptyAudio;empty.hidden=!emptyAudio;
-    if(audio)midiSvg.setAttribute('hidden','');else midiSvg.removeAttribute('hidden');
+    midiSvg.hidden=audio||!hasSource;audioSvg.hidden=!audio||emptyAudio;empty.hidden=!emptyAudio;
+    if(audio||!hasSource)midiSvg.setAttribute('hidden','');else midiSvg.removeAttribute('hidden');
     if(!audio||emptyAudio)audioSvg.setAttribute('hidden','');else audioSvg.removeAttribute('hidden');
-    toolbar.hidden=emptyAudio;regionTools.hidden=!last.region;
+    toolbar.hidden=!hasSource;regionTools.hidden=!hasSource||!last.region;
     stretchTools.hidden=!audio||emptyAudio;
     if(audio&&!emptyAudio){
       if(doc.activeElement!==stretchInputs.tempo)stretchInputs.tempo.value=String(Number(last.source.sourceTempo.toFixed(6)));
@@ -100,7 +100,8 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     }
     importButton.disabled=!last.canImport;
     const inactive=audio?midiSvg:audioSvg;inactive.replaceChildren();
-    pitch.hidden=audio;waveform.hidden=!audio;previewButton.hidden=audio;velocityLane.hidden=audio;velocityLane.style.display=audio?'none':'';
+    pitch.hidden=audio;waveform.hidden=!audio;previewButton.hidden=audio;velocityLane.hidden=audio||!hasSource;velocityLane.style.display=audio||!hasSource?'none':'';
+    if(!hasSource){svg.replaceChildren();velocityLane.replaceChildren();g=null;onGeometry(g);return;}
     fit.setAttribute('aria-label',audio?'Fit sample':'Fit notes');fit.title=audio?'Fit the complete audio sample':'Fit notes';
     toolbar.setAttribute('aria-label',audio?'Audio sample viewport':'Piano viewport');
     range.title=audio?'Wheel: scroll time; Ctrl + wheel: zoom time':'Wheel: scroll pitch; Shift + wheel: scroll time; Ctrl + wheel: zoom time; Alt + wheel: zoom pitch';
@@ -185,7 +186,7 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     });
   }
   const wheel=event=>{
-    if(!last)return;
+    if(!last?.source||!g)return;
     event.preventDefault();
     const rect=svg.getBoundingClientRect(),x=Math.max(0,Math.min(1,(event.clientX-rect.left-g.pad)/(g.width-g.pad))),y=Math.max(0,Math.min(1,(event.clientY-rect.top-g.top)/(g.height-g.top)));
     if(event.ctrlKey||event.metaKey)navigate({type:'timeZoom',factor:event.deltaY<0?1.25:1/1.25,anchor:x});
@@ -194,7 +195,7 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     else if(event.shiftKey||Math.abs(event.deltaX)>Math.abs(event.deltaY))navigate({type:'timePan',beats:(event.deltaX||event.deltaY)/g.pixelsPerBeat});
     else navigate({type:'pitchPan',pitches:-Math.sign(event.deltaY)*3});
   };
-  const resize=()=>{if(!last||disposed)return;const rect=svg.getBoundingClientRect();if(!rect.width||!rect.height||(rect.width===g.width&&rect.height===g.height))return;onNavigate();draw();};
+  const resize=()=>{if(!last?.source||disposed)return;const rect=svg.getBoundingClientRect();if(!rect.width||!rect.height||(rect.width===g.width&&rect.height===g.height))return;onNavigate();draw();};
   for(const surface of [midiSvg,audioSvg])surface.addEventListener('wheel',wheel,{passive:false});
   const observer=win?.ResizeObserver?new win.ResizeObserver(resize):null;observer?.observe(midiSvg);observer?.observe(audioSvg);win?.addEventListener('resize',resize);
   return {

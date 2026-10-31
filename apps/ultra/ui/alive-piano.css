@@ -25,6 +25,7 @@
 :is(#piano-roll,#audio-waveform) [data-region=loopMove]{cursor:grab}
 :is(#piano-roll,#audio-waveform) [data-region=loopMove]:active{cursor:grabbing}
 .audio-source .note-velocity,.audio-source+.note-table{display:none}
+.empty-source :is(.clip-section>.section-heading,.note-velocity,.note-table,.automation-section){display:none}
 @media(max-width:850px){.clip-region-tools{gap:4px 8px}.clip-region-tools label{gap:4px}.clip-region-tools input[type=number]{width:51px}.clip-region-tools button{margin-left:auto}}
 
 .audio-clip-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:28px;color:var(--muted);text-align:center;background:var(--canvas)}.audio-clip-empty strong{color:var(--text);font-size:14px}.audio-clip-empty p{max-width:300px;margin:0 0 8px}.audio-clip-empty button{padding:5px 12px}.clip-area [hidden]{display:none!important}

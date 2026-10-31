@@ -348,9 +348,9 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   }
   function renderWorkspaceControls(snapshot,document,track,container){
     const slot=selectedClip(track),source=sourceOf(track,document),prepared=snapshot.preparedWorkspaces;
-    $('clip-bank-notice').textContent=snapshot.notice??(source?.kind==='audio'?`Warp / Re-Pitch / ${source.sourceTempo} BPM`:'Drag blank time to select. Ctrl+L loops the selection.');
+    $('clip-bank-notice').textContent=snapshot.notice??(source?.kind==='audio'?`Warp / Re-Pitch / ${source.sourceTempo} BPM`:source?'Drag blank time to select. Ctrl+L loops the selection.':'');
     $('clip-bank-notice').title=$('clip-bank-notice').textContent;
-    $('add-note').disabled=source?.kind!=='midi';$('add-note').hidden=track.chain.kind==='audio';$('add-lane').disabled=!source||!automationTargets().length;
+    $('add-note').disabled=source?.kind!=='midi';$('add-note').hidden=source?.kind!=='midi';$('add-lane').disabled=!source||!automationTargets().length;
     for(const v of slotViews){
       const observation=snapshot.runtime?.tracks.find(t=>t.trackId===v.trackId),current=document.tracks.find(t=>t.id===v.trackId);
       const active=prepared?.sources.find(s=>s.sourceId===observation?.activeSourceId),activeSlot=prepared?.slots.find(s=>s.slotId===observation?.activeSlotId);
@@ -496,7 +496,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   function mix(track,changes){const trackId=model.snapshot().document.tracks[track].id,origin=generation();return enqueue(async()=>{if(generation()!==origin)throw Error('The originating mixer session changed.');const index=model.snapshot().document.tracks.findIndex(t=>t.id===trackId);if(index<0)throw Error('The originating track was removed.');const current=model.snapshot().document.tracks[index];await invoke('alive_mixer',{generation:origin,trackId,track:index,gain:changes.gain??current.gain,mute:changes.mute??current.mute,solo:changes.solo??current.solo});await refresh();});}
   function buildMusic(document){
     const track=document.tracks[selected],trackId=track.id,clipId=track.clipId,sourceId=track.sourceId,occurrence=sourceSelection?.trackId===trackId?sourceSelection.occurrence:null,scope=scopeRevision;const editClip=(change,indexed=false)=>edit(change,{clipId,sourceId,occurrence,scope},indexed);$('clip-title').textContent=`${track.name} / ${sourceOf()?.name??'Choose a source'}`;
-    $('piano-roll').parentElement?.classList?.toggle('audio-source',track.sourceKind==='audio');paintClip(preview??track.notes??[],document.lengthBeats);$('notes').replaceChildren();
+    $('clip-detail').classList.toggle('empty-source',!sourceOf());$('piano-roll').parentElement?.classList?.toggle('audio-source',track.sourceKind==='audio');paintClip(preview??track.notes??[],document.lengthBeats);$('notes').replaceChildren();
     (track.notes??[]).forEach((note,index)=>{
       const row=make('tr');for(const[key,bounds]of [['beat',{min:0,max:document.lengthBeats,step:.25}],['pitch',{min:0,max:127,step:1}],['duration',{min:1/64,max:document.lengthBeats,step:.25}],['velocity',{min:1,max:127,step:1}]]){
         const cell=make('td'),input=numeric(`Note ${index+1} ${key}`,note[key],bounds,value=>editClip(doc=>{trackById(doc,trackId).notes[noteAt(trackById(doc,trackId),note.id)][key]=value;}));cell.append(input);row.append(cell);

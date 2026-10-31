@@ -82,6 +82,25 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
   await page.screenshot({path:testInfo.outputPath(`audio-region-${size.width}x${size.height}.png`)});
 });
 
+for(const size of [{width:800,height:600},{width:1280,height:800}])test(`empty MIDI slots and new tracks keep the clip editor empty at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(size);await openRangeStudy(page);
+  async function expectEmpty(){
+    for(const selector of ['#piano-roll','#audio-waveform','.clip-view-tools','.clip-region-tools','.piano-velocity-lane','.note-velocity','.note-table','.automation-section','#add-note'])await expect(page.locator(selector)).toBeHidden();
+    await expect(page.locator('.clip-area')).toBeVisible();
+  }
+  await page.getByRole('button',{name:'Select Pulse slot 2',exact:true}).click();await expectEmpty();
+  expect(await mutations(page)).toEqual([]);
+  await page.locator('#session-workspace').focus();await page.keyboard.press('Control+Shift+t');
+  await expect(page.getByRole('button',{name:'Select New MIDI track',exact:true})).toHaveAttribute('aria-pressed','true');await expectEmpty();
+  await page.screenshot({path:testInfo.outputPath(`empty-midi-${size.width}x${size.height}.png`)});
+  await page.getByRole('button',{name:'Select New MIDI slot 1',exact:true}).dblclick();
+  await expect(page.locator('#piano-roll')).toBeVisible();await expect(page.locator('.clip-region-tools')).toBeVisible();await expect(page.locator('.piano-velocity-lane')).toBeVisible();await expect(page.locator('#add-note')).toBeVisible();
+  expect(await page.evaluate(()=>window.sessionSnapshot.document.sources.at(-1).notes)).toEqual([]);
+  await page.getByRole('button',{name:'Undo',exact:true}).click();await expectEmpty();
+  await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).click();await expect(page.locator('#piano-roll [data-note]')).not.toHaveCount(0);
+  expect(await page.evaluate(()=>window.sessionSnapshot.state.playing)).toBe(1);expect(errors).toEqual([]);
+});
+
 test('an empty audio track has an audio import surface and no piano or MIDI editing controls',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openRangeStudy(page);
   await page.getByRole('button',{name:'Select Audio slot 2',exact:true}).click();
