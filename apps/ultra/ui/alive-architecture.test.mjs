@@ -18,8 +18,9 @@ test('browser keeps track creation in a single disclosure',()=>{
   assert.equal((html.match(/id="browser-add-menu"/g)??[]).length,1);
 });
 
-test('contextual Info remains footer-left and never substitutes for status',()=>{
-  assert.match(html,/<footer><aside id="info-view"[^>]*>[\s\S]*?<output id="info-text"[\s\S]*?<\/aside><p id="notice"/);
+test('contextual Help has a lower region and a footer toggle separate from status',()=>{
+  assert.match(html,/<div class="workspace-lower"><aside id="info-view"[^>]*>[\s\S]*?<output id="info-text"[\s\S]*?<\/aside>/);
+  assert.match(html,/<footer><button id="toggle-help"[^>]*>[\s\S]*?<\/button><p id="notice"/);
   assert.equal((html.match(/id="info-view"/g)??[]).length,1);
   assert.match(html,/<link rel="stylesheet" href="alive-browser.css"><link rel="stylesheet" href="creative-shell.css"><link rel="stylesheet" href="alive-ui-contract.css">/);
   assert.match(html,/<script type="module" src="alive-info.mjs"><\/script>/);

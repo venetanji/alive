@@ -2,14 +2,51 @@ import {test,expect} from '@playwright/test';
 import {projectFixturePresentation} from '../presentation-dom.mjs';
 import {readFileSync,mkdirSync} from 'node:fs';
 
+test('contextual Help is a separate passive panel with independent visibility',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const help=page.getByRole('complementary',{name:'Contextual help',exact:true});
+  const toggle=page.getByRole('button',{name:'Toggle contextual help',exact:true});
+  const initial=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
+  const box=await help.boundingBox(),footer=await page.locator('footer').boundingBox();
+  expect(box.x).toBeLessThanOrEqual(12);expect(box.height).toBeGreaterThan(80);expect(box.y+box.height).toBeLessThanOrEqual(footer.y+1);
+  await page.locator('#stop').hover();await expect(page.locator('#info-text')).toContainText('Stop transport');
+  await page.locator('#start').focus();await expect(page.locator('#info-text')).toContainText('Start transport');
+  await toggle.click();await expect(help).toBeHidden();await expect(toggle).toHaveAttribute('aria-expanded','false');
+  await page.keyboard.press('?');await expect(help).toBeVisible();await page.keyboard.press('?');await expect(help).toBeHidden();
+  const field=page.getByRole('searchbox',{name:'Search browser'});await field.fill('draft');await field.press('?');
+  await expect(field).toHaveValue('draft?');await expect(help).toBeHidden();
+  await page.evaluate(()=>{const el=document.createElement('div');el.contentEditable='true';el.id='test-editable';document.body.append(el);el.focus();});
+  await page.keyboard.press('?');await expect(help).toBeHidden();await expect(page.locator('#test-editable')).toHaveText('?');
+  await page.locator('#start').focus();await page.keyboard.press('?');await expect(help).toBeVisible();await expect(page.locator('#start')).toBeFocused();
+  const tempo=page.locator('#tempo');await tempo.fill('133');await toggle.click();await expect(tempo).toBeFocused();await expect(tempo).toHaveValue('133');await expect(help).toBeHidden();
+  await toggle.click();await expect(tempo).toBeFocused();await expect(tempo).toHaveValue('133');await expect(help).toBeVisible();
+  expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document))).toBe(initial);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`Help panel visibility and layout at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);
+  const help=page.getByRole('complementary',{name:'Contextual help',exact:true}),detail=page.locator('#detail-panel');
+  const toggle=page.getByRole('button',{name:'Toggle contextual help',exact:true});
+  const before=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
+  const a=await help.boundingBox(),b=await detail.boundingBox();expect(a.x).toBeLessThanOrEqual(1);expect(a.x+a.width).toBeLessThanOrEqual(b.x+1);
+  await page.screenshot({path:testInfo.outputPath(`help-shown-${size.width}x${size.height}.png`)});
+  await toggle.click();await expect(help).toBeHidden();
+  await page.screenshot({path:testInfo.outputPath(`help-hidden-${size.width}x${size.height}.png`)});
+  await page.locator('#toggle-browser').click();expect((await detail.boundingBox()).x).toBeLessThanOrEqual(1);await page.locator('#toggle-detail').click();await toggle.click();
+  await expect(help).toBeVisible();await expect(page.locator('#workspace-browser')).toBeHidden();await expect(page.locator('#detail-content')).toBeHidden();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
+  expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document))).toBe(before);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
 for(const size of [{width:800,height:600},{width:1280,height:800}])test(`Alive chrome preserves Live-inspired regions and contextual Info at ${size.width}x${size.height}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page);
   const baseline=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
   const info=page.getByRole('complementary',{name:'Contextual help',exact:true});
   const box=await info.boundingBox(),footer=await page.locator('footer').boundingBox();
-  const footerInset=await page.locator('footer').evaluate(element=>{const style=getComputedStyle(element);return parseFloat(style.paddingBottom)+parseFloat(style.borderBottomWidth);});
   expect(box.x).toBeLessThanOrEqual(12);
-  expect(Math.abs(box.y+box.height-(footer.y+footer.height-footerInset))).toBeLessThanOrEqual(2);
+  expect(Math.abs(box.y+box.height-footer.y)).toBeLessThanOrEqual(2);
   await page.locator('#stop').hover();
   await expect(page.locator('#info-text')).toContainText('Stop transport');
   const file=page.locator('#file-menu');

@@ -74,37 +74,23 @@
 #workspace-browser .insert-track-actions{display:grid;grid-template-columns:1fr 1fr;gap:3px}
 #workspace-browser .insert-track-actions button{min-width:0;padding:3px;font-size:10px;text-align:center;justify-content:center}
 
-/* Info is a semantic, dedicated corner, not a spare status/action region. */
-footer #info-view{
-  display:flex;
-  flex:0 1 var(--browser-width,220px);
-  min-width:150px;
-  max-width:300px;
-  height:100%;
-  align-items:center;
-  gap:7px;
-  padding:0 8px 0 2px;
-  border-right:1px solid var(--line);
-  overflow:hidden;
-  color:var(--muted);
+/* The Help panel occupies its own lower-left region beside the current detail. */
+main#workspace-shell{flex-direction:column;position:relative}
+.workspace-upper{display:flex;flex:1;min-height:0;min-width:0;overflow:hidden}
+.workspace-lower{display:flex;flex:none;min-height:0;min-width:0}
+.workspace-lower #detail-panel{flex:1;min-width:0}
+#info-view:not([hidden]){display:flex;flex-direction:column;align-self:flex-end;align-items:stretch;flex:0 0 calc(var(--browser-width,220px) + 5px);height:120px;overflow:auto;padding:8px;gap:8px;background:#303030;border-top:1px solid var(--line);border-right:1px solid var(--line);color:var(--text)}
+#info-view[hidden]{display:none}
+@media(min-width:621px){
+  #workspace-browser:not([hidden]){position:absolute;top:0;left:0;bottom:0;width:var(--browser-width,220px);z-index:1}
+  #browser-resizer:not([hidden]){position:absolute;top:0;left:var(--browser-width,220px);bottom:0;width:5px;z-index:2}
+  #workspace-shell:has(#info-view:not([hidden])) #workspace-browser:not([hidden]),
+  #workspace-shell:has(#info-view:not([hidden])) #browser-resizer:not([hidden]){bottom:120px}
+  .workspace-upper:has(#workspace-browser:not([hidden])){padding-left:calc(var(--browser-width,220px) + 5px)}
+  #workspace-shell:has(#workspace-browser:not([hidden])):has(#info-view[hidden]) .workspace-lower{padding-left:calc(var(--browser-width,220px) + 5px)}
 }
-#info-view .info-label{flex:none;font-size:10px;color:var(--amber);font-weight:600}
-#info-text{
-  display:block;
-  flex:1;
-  min-width:0;
-  font-size:11px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  line-height:20px;
-}
+@media(max-width:620px){.workspace-upper{overflow:visible}}
+#info-view .info-label{font-size:11px;font-weight:600;color:var(--amber)}
+#info-view #info-text{display:block;flex:none;overflow:visible;font-size:11px;line-height:1.45;white-space:normal;overflow-wrap:anywhere}
+#toggle-help{width:24px;padding:2px;font-weight:600}
 footer #notice{flex:1;min-width:40px}
-@media(max-width:850px){
-  footer #info-view{flex-basis:170px;min-width:125px;padding-right:5px;gap:4px}
-}
-@media(max-width:620px){
-  footer #info-view{flex-basis:125px;min-width:100px}
-  #info-view .info-label{font-size:9px}
-  #info-text{font-size:10px}
-}
