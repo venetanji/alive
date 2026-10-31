@@ -74,12 +74,26 @@ move/resize the loop. In Arrangement, Ctrl+L sets the song loop from its time
 selection. Song loop, occurrence markers and source content are separate.
 
 Double-click an empty audio slot to import a WAV. Audio clips show the prepared
-waveform and share the same selection/marker controls. The initial Warp mode is
-**Re-Pitch**: changing set tempo changes playback speed and pitch together.
+waveform and share the same selection/marker controls. Empty audio slots offer
+WAV import; audio tracks have no piano keyboard, notes or velocity controls.
+Use time zoom/pan, amplitude zoom and **Fit sample** to inspect the waveform.
+The Warp mode is **Re-Pitch**: changing set tempo changes playback speed and pitch
+together. Set **Source BPM**, enter **Length** in beats, use half/double length,
+or drag the sample's lower end handle to stretch it. Increasing its beat length
+slows and lowers the sample at the current set tempo. Escape cancels the drag.
+Stretching preserves the WAV and keeps markers and automation at their sample
+positions across every reference to that source; Arrangement spans stay fixed.
+Source BPM is bounded to 30-240. Pitch-preserving Warp modes are not implemented.
 Supported files are mono/stereo PCM 8/16/24/32-bit or float 32/64-bit WAV,
 8-192 kHz, up to 24 MiB and 60 seconds per file. Preparation is stereo 48 kHz,
 bounded to 60 seconds per source and 64 MiB total PCM. Recording, input routing,
 monitoring and arm remain upcoming work.
+
+**Devices** displays a horizontally scrolling rack from instrument through ordered
+effects. Each card owns its parameter controls, live values, bypass and editor
+actions. Subtractive groups Envelope, Filter and Output; effects expose their
+own manifest parameters. Drag browser effects onto the left or right half of a
+card to insert before or after it, or onto the trailing area to append.
 
 Drag the separator above **Clip / Devices** upward for a larger bottom panel.
 Double-click it, or use **Maximize detail**, to give the editor the working area;

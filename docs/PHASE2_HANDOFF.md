@@ -9,6 +9,8 @@ The phase-2 UI worktree is `/home/venetanji/.codex/worktrees/phase2-ui/alive`;
 the main checkout belongs to concurrent native Live device/DLL work.
 Current development supports immediate MIDI/audio musical edits, explicit track
 creation, clip/Arrangement loops, launch quantization and resizable detail.
+Audio tracks use a separate waveform editor with Re-Pitch stretching; Devices
+uses a horizontal rack with independent parameter panels for each instance.
 The sole file format is a v6 envelope with a v4 workspace score. Old conversion
 and draft Apply workflows are removed. Input routing/arm/recording and the
 shared silent-video engine remain on the roadmap. CI is manually dispatched.

@@ -122,6 +122,13 @@ test('Re-Pitch stretches the shared sample with numeric and drag controls; Escap
   expect(await page.evaluate(()=>window.sessionSnapshot.document.sources.at(-1).file.frames)).toBe('192000');
 });
 
+test('source BPM accepts repeated Enter commits without requiring a refocus',async({page})=>{
+  await openRangeStudy(page);await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();
+  const bpm=page.getByRole('spinbutton',{name:'Audio source BPM',exact:true});
+  for(const value of [140,150]){await bpm.fill(String(value));await bpm.press('Enter');await expect.poll(()=>page.evaluate(()=>window.sessionSnapshot.document.sources.at(-1).sourceTempo)).toBe(value);}
+  expect((await mutations(page)).filter(c=>c.args.operation.kind==='audioSourceTempo')).toHaveLength(2);
+});
+
 test('an audio length draft cannot target a clip removed by an accepted refresh',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await openRangeStudy(page);await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();
   const length=page.getByRole('spinbutton',{name:'Audio length in beats',exact:true});await length.fill('10');

@@ -52,21 +52,24 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   const loopLabel=make('label',{class:'clip-loop-toggle'}),loopToggle=make('input',{type:'checkbox','aria-label':'Clip Loop'});loopToggle.addEventListener('change',()=>onRegion('loopEnabled',loopToggle.checked));loopLabel.append(loopToggle,make('span',{},'Loop'));regionTools.append(loopLabel);
   const loopSelection=make('button',{type:'button','aria-label':'Loop Selection',title:'Set loop and Start from the time selection (Ctrl+L)'},'Loop Selection');loopSelection.addEventListener('click',onLoopSelection);regionTools.append(loopSelection,make('span',{class:'muted'},'beats'));
   const stretchTools=make('div',{class:'audio-stretch-tools',role:'toolbar','aria-label':'Audio Re-Pitch stretching'}),stretchInputs={};
+  async function stretch(tempo,sourceId=last?.source?.id){try{return await onStretch(tempo,sourceId);}catch(error){onError(String(error));return null;}}
   stretchTools.append(make('strong',{},'Re-Pitch'));
   for(const [key,label,aria]of [['tempo','Source BPM','Audio source BPM'],['length','Length','Audio length in beats']]){
     const holder=make('label',{},label),input=make('input',{type:'number',step:'any','aria-label':aria});
     const identity=()=>JSON.stringify([last?.scope,last?.revision,last?.source?.id]);let intent=null;
     input.addEventListener('focus',()=>{intent=identity();});
-    input.addEventListener('change',()=>{
+    input.addEventListener('change',async()=>{
       if(last?.kind!=='audio'||!last.source||intent!==identity()){onError('The audio source changed. Select it and enter the stretch value again.');return;}
       const value=Number(input.value),tempo=key==='tempo'?value:last.source.sourceTempo*value/last.length;
-      if(input.value===''||!Number.isFinite(tempo)||tempo<30||tempo>240){onError('Re-Pitch requires a source tempo from 30 to 240 BPM.');return;}onStretch(tempo,last.source.id);
+      if(input.value===''||!Number.isFinite(tempo)||tempo<30||tempo>240){onError('Re-Pitch requires a source tempo from 30 to 240 BPM.');return;}
+      const scope=last.scope,sourceId=last.source.id,receipt=await stretch(tempo,sourceId);
+      if(last.scope===scope&&last.source?.id===sourceId&&last.revision===receipt?.snapshot?.editRevision)intent=identity();
     });
     stretchInputs[key]=input;holder.append(input);if(key==='length')holder.append(make('span',{},'beats'));stretchTools.append(holder);
   }
   const stretchActions=[];
   for(const [label,factor]of [['Half sample length',.5],['Double sample length',2]]){
-    const action=make('button',{type:'button','aria-label':label},factor===.5?'/2':'x2');action.addEventListener('click',()=>onStretch(last.source.sourceTempo*factor));stretchTools.append(action);stretchActions.push({action,factor});
+    const action=make('button',{type:'button','aria-label':label},factor===.5?'/2':'x2');action.addEventListener('click',()=>stretch(last.source.sourceTempo*factor));stretchTools.append(action);stretchActions.push({action,factor});
   }
   stretchTools.append(make('span',{class:'muted'},'Pitch follows speed; shared sample'));
   if(area){area.insertBefore(toolbar,midiSvg);area.insertBefore(velocityLane,midiSvg.nextSibling??null);area.insertBefore(empty,midiSvg);}
