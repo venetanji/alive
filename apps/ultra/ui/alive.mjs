@@ -729,7 +729,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     const observations=snapshot.runtime?.tracks??[],overridden=observations.filter(t=>t.authority==='session').length,pending=observations.filter(t=>t.pendingAction).length;
     $('workspace-authority').textContent=`${observations.length!==snapshot.document.tracks.length||observations.some(t=>t.authority==null)?'Authority unavailable':overridden?`${overridden} Session override${overridden===1?'':'s'}`:'Arrangement'}${pending?` / ${pending} pending`:''}`;
     $('return-all').disabled=!snapshot.capabilities?.atomicTrackActions;
-    renderClipControls();const sourceActions=$('clip-controls').querySelector('.clip-source-actions');if(sourceActions){const maximized=$('workspace-shell').classList.contains('detail-maximized');if(maximized&&!sourceActions.open){sourceActions.open=true;sourceActions.dataset.maximized='true';}else if(!maximized&&sourceActions.dataset.maximized==='true'){sourceActions.open=false;delete sourceActions.dataset.maximized;}}timeline?.render();audioSettings?.update();
+    renderClipControls();timeline?.render();audioSettings?.update();
   }
   const audioController={
     getState:()=>{const audio=model.snapshot()?.audio;return {status:{running:!!audio?.running,output:audio},faulted:!!audio?.failed,busy:false};},

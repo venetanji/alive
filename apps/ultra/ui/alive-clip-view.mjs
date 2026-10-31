@@ -43,9 +43,12 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   toolbar.append(previewButton,time,pitch,waveform,fit,range);
   const empty=make('div',{class:'audio-clip-empty'}),importButton=make('button',{type:'button','aria-label':'Import audio into selected slot'},'Import WAV...');
   importButton.addEventListener('click',onImport);empty.append(make('strong',{},'Audio clip'),make('p',{},'Import a sample to edit its waveform, start point and loop.'),importButton);
+  const properties=make('aside',{class:'clip-properties','aria-label':'Clip properties'});
   const regionTools=make('div',{class:'clip-region-tools',role:'toolbar','aria-label':'Clip markers and loop'}),regionInputs={};
+  regionTools.append(make('strong',{class:'clip-properties-heading'},'Clip'));
   for(const [key,label]of [['start','Start'],['end','End'],['loopStart','Loop Position'],['loopLength','Loop Length']]){
-    const holder=make('label',{},label),input=make('input',{type:'number',step:'.25',min:0,'aria-label':key==='start'?'Clip Start':key==='end'?'Clip End':label,title:`${label} in source beats (0 is 1.1.1)`});
+    const visibleLabel=key==='loopStart'?'Position':key==='loopLength'?'Length':label;
+    const holder=make('label',{class:`clip-region-${key}`},visibleLabel),input=make('input',{type:'number',step:'.25',min:0,'aria-label':key==='start'?'Clip Start':key==='end'?'Clip End':label,title:`${label} in source beats (0 is 1.1.1)`});
     input.addEventListener('change',()=>{const value=Number(input.value);if(input.value===''||!Number.isFinite(value)){onError(`${label} requires a number.`);return;}onRegion(key,value);});
     regionInputs[key]=input;holder.append(input);regionTools.append(holder);
   }
@@ -53,7 +56,7 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   const loopSelection=make('button',{type:'button','aria-label':'Loop Selection',title:'Set loop and Start from the time selection (Ctrl+L)'},'Loop Selection');loopSelection.addEventListener('click',onLoopSelection);regionTools.append(loopSelection,make('span',{class:'muted'},'beats'));
   const stretchTools=make('div',{class:'audio-stretch-tools',role:'toolbar','aria-label':'Audio Re-Pitch stretching'}),stretchInputs={};
   async function stretch(tempo,sourceId=last?.source?.id){try{return await onStretch(tempo,sourceId);}catch(error){onError(String(error));return null;}}
-  stretchTools.append(make('strong',{},'Re-Pitch'));
+  stretchTools.append(make('strong',{},'Audio'),make('span',{class:'clip-audio-mode'},'Re-Pitch'));
   for(const [key,label,aria]of [['tempo','Source BPM','Audio source BPM'],['length','Length','Audio length in beats']]){
     const holder=make('label',{},label),input=make('input',{type:'number',step:'any','aria-label':aria});
     const identity=()=>JSON.stringify([last?.scope,last?.revision,last?.source?.id]);let intent=null;
@@ -72,9 +75,10 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     const action=make('button',{type:'button','aria-label':label},factor===.5?'/2':'x2');action.addEventListener('click',()=>stretch(last.source.sourceTempo*factor));stretchTools.append(action);stretchActions.push({action,factor});
   }
   stretchTools.append(make('span',{class:'muted'},'Pitch follows speed; shared sample'));
-  if(area){area.insertBefore(toolbar,midiSvg);area.insertBefore(velocityLane,midiSvg.nextSibling??null);area.insertBefore(empty,midiSvg);}
-  if(area)area.insertBefore(regionTools,svg);
-  if(area)area.insertBefore(stretchTools,svg);
+  properties.append(regionTools,stretchTools);
+  const launchSettings=doc.getElementById?.('clip-launch-settings');
+  if(launchSettings)properties.append(launchSettings);
+  if(area){area.insertBefore(properties,midiSvg);area.insertBefore(toolbar,midiSvg);area.insertBefore(velocityLane,midiSvg.nextSibling??null);area.insertBefore(empty,midiSvg);}
 
   function text(parent,x,y,value,attrs={}){
     parent.append(make('text',{x,y,fill:'#b4b4b0',stroke:'none','font-size':10,...attrs},value));
@@ -90,6 +94,7 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     midiSvg.hidden=audio||!hasSource;audioSvg.hidden=!audio||emptyAudio;empty.hidden=!emptyAudio;
     if(audio||!hasSource)midiSvg.setAttribute('hidden','');else midiSvg.removeAttribute('hidden');
     if(!audio||emptyAudio)audioSvg.setAttribute('hidden','');else audioSvg.removeAttribute('hidden');
+    properties.hidden=!hasSource;area?.classList?.toggle('has-source',hasSource);
     toolbar.hidden=!hasSource;regionTools.hidden=!hasSource||!last.region;
     stretchTools.hidden=!audio||emptyAudio;
     if(audio&&!emptyAudio){

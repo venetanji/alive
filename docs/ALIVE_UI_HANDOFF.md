@@ -5,6 +5,8 @@ The next PR starts from integrated `main`. No redesign is implemented here.
 Read `apps/alive/SESSION_CONTRACT.md` for the current behavior contract and
 `experiments/alive-pr6-finalization-20261031/README.md` for merge validation
 and its limits. Dated experiments describe their recorded builds.
+For the Live MIDI/audio Clip View inventory, implementation gaps and evidence,
+see `docs/ALIVE_CLIP_VIEW_FEATURE_MAP.md`.
 
 ## Required Spatial Organization
 
@@ -104,7 +106,7 @@ Native engine entry points include `apps/ultra/src-tauri/native/alive_session*.h
 | --- | --- |
 | `experiments/alive-workflow-reference-20261024/` | Actual Live runtime screenshots and action receipts. Start with `README.md`, `08-clip-created.png`, `18-launch-panel.png`, `35-a-running.png`, `36-b-queued-phase1.png`, `38-b-running.png`, `41-track-stopped-transport-running.png`, `44-device-context.png`, `49-host-running-editor-closed.png` and `50-editor-reopened-transport-running.png` |
 | `experiments/alive-clip-regions-20261031/live-reference.md` | Actual Live MIDI/audio time selection, Ctrl+L, independent Start and Arrangement loop observations, plus manual sources |
-| `/tmp/alive-live-range-reference-20261031/` | Local, ephemeral Live range captures, including `04-editor-expanded.png`, `05-time-selected.png`, `06-clip-ctrl-l.png`, `07-start-independent.png`, `17-arrangement-ctrl-l.png`, `28-audio-time-selected.png`, `30-audio-ctrl-l-fields.png`; these are not all committed |
+| `experiments/alive-clip-regions-20261031/live-reference/` | Retained Live captures, including `06-clip-ctrl-l.png`, `07-start-independent.png`, `17-arrangement-ctrl-l.png` and the audio sample view `30-audio-ctrl-l-fields.png`. Other original frames were stored under ephemeral `/tmp/alive-live-range-reference-20261031/` |
 | `experiments/phase2-ui-20261030/` | Alive UI captures, responsive checks and retained native/cloud failures; these are app evidence, not Live reference screenshots |
 | `experiments/alive-presentation-checkpoint-20261031/` | Installed source/build manifests, acceptance receipts, reviews, failed attempts and `captures/final-9ced05e/` Alive/Ultra screenshots |
 
