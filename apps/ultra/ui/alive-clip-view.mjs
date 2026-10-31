@@ -3,7 +3,7 @@ import {GRID,geometry,initialViewport,navigateViewport,fitViewport,rulerTicks,be
 const blackKeys=new Set([1,3,6,8,10]);
 const pitchName=pitch=>`${['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'][pitch%12]}${Math.floor(pitch/12)-1}`;
 
-export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onStretch=()=>{},onNavigate=()=>{},onGeometry=()=>{},onPreview=()=>{},onRegion=()=>{},onLoopSelection=()=>{},onError=()=>{}}){
+export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onStretch=()=>{},onNavigate=()=>{},onPark=()=>{},onRestore=()=>{},onStash=()=>[],onRecall=()=>{},isDraft=()=>false,onGeometry=()=>{},onPreview=()=>{},onRegion=()=>{},onLoopSelection=()=>{},onError=()=>{}}){
   const make=(tag,attrs={},text)=>{
     const element=tag==='svg'||['rect','line','text','g','defs','clipPath','path','title'].includes(tag)
       ?doc.createElementNS('http://www.w3.org/2000/svg',tag):doc.createElement(tag);
@@ -20,6 +20,7 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   previewButton.addEventListener('click',()=>onPreview(!previewEnabled));
   const velocityLane=make('svg',{class:'piano-velocity-lane','aria-label':'Note velocity lane',role:'group',tabindex:0,'aria-describedby':'piano-help'});
   let viewport,last=null,g=null,scope=null,disposed=false,waveformZoom=1;
+  const fieldIntents=new Map(),scopedIntents=new Map();
 
   function navigate(action){
     if(!last?.source)return;
@@ -59,7 +60,8 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   for(const [key,label]of [['start','Start'],['end','End'],['loopStart','Loop Position'],['loopLength','Loop Length']]){
     const visibleLabel=key==='loopStart'?'Position':key==='loopLength'?'Length':label;
     const holder=make('label',{class:`clip-region-${key}`},visibleLabel),input=make('input',{type:'number',step:'.25',min:0,'aria-label':key==='start'?'Clip Start':key==='end'?'Clip End':label,title:`${label} in source beats (0 is 1.1.1)`});
-    input.addEventListener('change',()=>{const value=Number(input.value);if(input.value===''||!Number.isFinite(value)){onError(`${label} requires a number.`);return;}onRegion(key,value);});
+    input.addEventListener('focus',()=>{if(!isDraft(input))fieldIntents.set(input,last?.scope);});
+    input.addEventListener('change',()=>{const intent=fieldIntents.get(input);if(intent!==undefined&&intent!==last?.scope){onError('The selected clip changed. Return to the original clip before finishing this value.');return;}const value=Number(input.value);if(input.value===''||!Number.isFinite(value)){onError(`${label} requires a number.`);return;}onRegion(key,value);});
     regionInputs[key]=input;holder.append(input);regionTools.append(holder);
   }
   const loopLabel=make('label',{class:'clip-loop-toggle'}),loopToggle=make('input',{type:'checkbox','aria-label':'Clip Loop'});loopToggle.addEventListener('change',()=>onRegion('loopEnabled',loopToggle.checked));loopLabel.append(loopToggle,make('span',{},'Loop'));regionTools.append(loopLabel);
@@ -69,14 +71,14 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   stretchTools.append(make('strong',{},'Audio'),make('span',{class:'clip-audio-mode'},'Re-Pitch'));
   for(const [key,label,aria]of [['tempo','Source BPM','Audio source BPM'],['length','Length','Audio length in beats']]){
     const holder=make('label',{},label),input=make('input',{type:'number',step:'any','aria-label':aria});
-    const identity=()=>JSON.stringify([last?.scope,last?.revision,last?.source?.id]);let intent=null;
-    input.addEventListener('focus',()=>{intent=identity();});
+    const identity=()=>JSON.stringify([last?.scope,last?.revision,last?.source?.id]);
+    input.addEventListener('focus',()=>{if(!isDraft(input))fieldIntents.set(input,identity());});
     input.addEventListener('change',async()=>{
-      if(last?.kind!=='audio'||!last.source||intent!==identity()){onError('The audio source changed. Select it and enter the stretch value again.');return;}
+      if(last?.kind!=='audio'||!last.source||fieldIntents.get(input)!==identity()){onError('The audio source changed. Select it and enter the stretch value again.');return;}
       const value=Number(input.value),tempo=key==='tempo'?value:last.source.sourceTempo*value/last.length;
       if(input.value===''||!Number.isFinite(tempo)||tempo<30||tempo>240){onError('Re-Pitch requires a source tempo from 30 to 240 BPM.');return;}
       const scope=last.scope,sourceId=last.source.id,receipt=await stretch(tempo,sourceId);
-      if(last.scope===scope&&last.source?.id===sourceId&&last.revision===receipt?.snapshot?.editRevision)intent=identity();
+      if(last.scope===scope&&last.source?.id===sourceId&&last.revision===receipt?.snapshot?.editRevision)fieldIntents.set(input,identity());
     });
     stretchInputs[key]=input;holder.append(input);if(key==='length')holder.append(make('span',{},'beats'));stretchTools.append(holder);
   }
@@ -85,7 +87,12 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     const action=make('button',{type:'button','aria-label':label},factor===.5?'/2':'x2');action.addEventListener('click',()=>stretch(last.source.sourceTempo*factor));stretchTools.append(action);stretchActions.push({action,factor});
   }
   stretchTools.append(make('span',{class:'muted'},'Pitch follows speed; shared sample'));
-  const group=(label,content)=>{const section=make('details',{open:''}),summary=make('summary',{},label);section.append(summary,content);return section;};
+  const group=(label,content)=>{
+    const section=make('details',{open:''}),summary=make('summary',{},label);section.append(summary,content);
+    summary.addEventListener('pointerdown',event=>{if(section.open&&section.contains(doc.activeElement)&&doc.activeElement?.matches?.('input,select,textarea')){onPark(section);event.preventDefault();}});
+    section.addEventListener('keydown',event=>{if(event.key==='Tab'&&event.shiftKey&&event.target===content.querySelector?.('input,select,textarea,button'))onPark(section);});
+    section.addEventListener('toggle',()=>{if(section.open)onRestore(section);});return section;
+  };
   const regionGroup=group('Clip',regionTools),stretchGroup=group('Audio',stretchTools);
   properties.append(regionGroup,stretchGroup);
   const launchSettings=doc.getElementById?.('clip-launch-settings');
@@ -111,8 +118,8 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     toolbar.hidden=!hasSource;regionTools.hidden=!hasSource||!last.region;
     stretchTools.hidden=!audio||emptyAudio;stretchGroup.hidden=!audio||emptyAudio;
     if(audio&&!emptyAudio){
-      if(doc.activeElement!==stretchInputs.tempo)stretchInputs.tempo.value=String(Number(last.source.sourceTempo.toFixed(6)));
-      if(doc.activeElement!==stretchInputs.length)stretchInputs.length.value=String(Number(last.length.toFixed(6)));
+      if(doc.activeElement!==stretchInputs.tempo&&!isDraft(stretchInputs.tempo))stretchInputs.tempo.value=String(Number(last.source.sourceTempo.toFixed(6)));
+      if(doc.activeElement!==stretchInputs.length&&!isDraft(stretchInputs.length))stretchInputs.length.value=String(Number(last.length.toFixed(6)));
       stretchInputs.tempo.min=30;stretchInputs.tempo.max=240;
       for(const {action,factor}of stretchActions)action.disabled=last.source.sourceTempo*factor<30||last.source.sourceTempo*factor>240;
     }
@@ -163,7 +170,7 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     for(const tick of ticks){const x=beatX(tick.beat,g);text(svg,x+4,14,tick.label,{'data-ruler-beat':tick.beat,fill:tick.major?'#eeeeec':'#a4a4a0'});}
     if(last.region){
       const region=last.region,loopStart=beatX(region.loopStart,g),loopEnd=beatX(region.loopEnd,g);
-      for(const [key,input]of Object.entries(regionInputs))if(doc.activeElement!==input)input.value=String(key==='loopLength'?region.loopEnd-region.loopStart:region[key]);
+      for(const [key,input]of Object.entries(regionInputs))if(doc.activeElement!==input&&!isDraft(input))input.value=String(key==='loopLength'?region.loopEnd-region.loopStart:region[key]);
       loopToggle.checked=region.loopEnabled;loopSelection.disabled=!last.timeSelection;
       const color=region.loopEnabled?'#c8ae74':'#898983',brace=clip(svg,'piano-clip-markers',pad-1,17,width-pad+2,35);
       brace.append(make('rect',{x:loopStart,y:21,width:Math.max(1,loopEnd-loopStart),height:10,fill:color,'data-region':'loopMove','aria-label':'Clip loop brace'}));
@@ -219,7 +226,16 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   return {
     velocityLane,
     preview({enabled,available,reason}){previewEnabled=enabled;previewButton.disabled=!available;previewButton.setAttribute('aria-pressed',String(enabled));previewButton.title=available?'Preview selected, added and moved notes through the instrument':reason??'Native MIDI Preview is unavailable';},
-    render(value){if(value.scope!==scope){scope=value.scope;viewport=initialViewport(value.notes,value.kind==='audio'?Math.ceil(value.length/4)*4+4:value.length);waveformZoom=1;}last=value;draw();return g;},
+    render(value){
+      if(value.scope!==scope){
+        const fields=[...Object.values(regionInputs),...Object.values(stretchInputs)];
+        if(scope!==null){const retained=onStash(scope,fields);if(retained.length)scopedIntents.set(scope,new Map(retained.map(input=>[input,fieldIntents.get(input)])));}
+        scope=value.scope;viewport=initialViewport(value.notes,value.kind==='audio'?Math.ceil(value.length/4)*4+4:value.length);waveformZoom=1;
+        onRecall(scope);const intents=scopedIntents.get(scope);if(intents){for(const [input,intent]of intents)fieldIntents.set(input,intent);scopedIntents.delete(scope);}
+        if(regionGroup.open)onRestore(regionGroup);if(stretchGroup.open)onRestore(stretchGroup);
+      }
+      last=value;draw();return g;
+    },
     dispose(){disposed=true;observer?.disconnect();for(const surface of [midiSvg,audioSvg])surface.removeEventListener('wheel',wheel);win?.removeEventListener('resize',resize);}
   };
 }

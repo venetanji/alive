@@ -2,6 +2,72 @@ import {test,expect} from '@playwright/test';
 import {projectFixturePresentation} from '../presentation-dom.mjs';
 import {readFileSync,mkdirSync} from 'node:fs';
 
+for(const size of [{width:800,height:600},{width:1440,height:900}])test(`Browser ends at actual lower chrome with all panels hidden at ${size.width}`,async({page})=>{
+  await page.setViewportSize(size);await openSession(page);
+  for(let i=0;i<2;i++){
+    await page.locator('#detail-clip').click();await page.locator('#toggle-help').click();
+    const bounds=await page.evaluate(()=>{const b=document.querySelector('#workspace-browser').getBoundingClientRect(),r=document.querySelector('#detail-panel').getBoundingClientRect(),s=document.querySelector('#browser-resizer').getBoundingClientRect();return {browser:b.bottom,resizer:s.bottom,lower:r.top};});
+    expect(Math.abs(bounds.browser-bounds.lower)).toBeLessThanOrEqual(1);expect(Math.abs(bounds.resizer-bounds.lower)).toBeLessThanOrEqual(1);
+    await page.locator('#toggle-help').click();await page.locator('#detail-clip').click();
+  }
+});
+
+for(const method of ['mouse','keyboard'])test(`Clip disclosure preserves an unfinished Start through ${method} navigation`,async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  const field=page.getByRole('spinbutton',{name:'Clip Start',exact:true}),summary=page.locator('.clip-properties > details').first().locator('summary');
+  await field.fill('1');
+  if(method==='mouse')await summary.click();else{await field.press('Shift+Tab');await expect(summary).toBeFocused();await summary.press('Enter');}
+  await expect(field).toBeHidden();
+  const before=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(before+2);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  if(method==='mouse')await summary.click();else await summary.press('Enter');
+  await expect(field).toHaveValue('1');await field.focus();await field.press('Tab');
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit').length)).toBe(1);
+  expect(await page.evaluate(()=>window.calls.find(c=>c.name==='alive_workspace_edit').args.operation)).toMatchObject({kind:'regionSet',occurrence:{kind:'slot',trackId:'track-1',slotId:'clip-track-1'},region:{start:1}});
+});
+
+test('a parked Clip Start stays with its source through selection changes',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  const field=page.getByRole('spinbutton',{name:'Clip Start',exact:true}),summary=page.locator('.clip-properties > details').first().locator('summary');
+  await field.fill('1');await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();
+  await page.getByRole('button',{name:'Select Harmony slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();await expect(field).toHaveValue('0');
+  await page.locator('#save').click();await expect(page.locator('#notice')).toContainText('Finish Clip Start');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();
+  await expect(field).toHaveValue('1');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await field.focus();await field.press('Tab');await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit').length)).toBe(1);
+  expect(await page.evaluate(()=>window.calls.find(c=>c.name==='alive_workspace_edit').args.operation)).toMatchObject({kind:'regionSet',occurrence:{kind:'slot',trackId:'track-1',slotId:'clip-track-1'},region:{start:1}});
+});
+
+for(const size of [{width:1280,height:800},{width:1440,height:900}])test(`default simultaneous detail shows complete controls and useful Session workspace at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
+  const fullyVisible=locator=>locator.evaluate(el=>{const r=el.getBoundingClientRect();for(let p=el.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),b=p.getBoundingClientRect();if(/auto|scroll|hidden|clip/.test(s.overflow+s.overflowY+s.overflowX)&&(r.top<b.top-1||r.bottom>b.bottom+1||r.left<b.left-1||r.right>b.right+1))return false;}return r.top>=0&&r.left>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;});
+  for(const label of ['Clip Start','Clip End','Loop Position','Loop Length'])expect(await fullyVisible(page.getByRole('spinbutton',{name:label,exact:true})),label).toBe(true);
+  expect(await fullyVisible(page.getByRole('group',{name:'Note velocity lane',exact:true}))).toBe(true);
+  const card=page.locator('.chain-device').first();for(const label of ['Attack base','Attack effective ownership'])expect(await fullyVisible(card.getByLabel(label,{exact:true})),label).toBe(true);
+  expect((await page.locator('#session-workspace').boundingBox()).height).toBeGreaterThanOrEqual(190);
+  await page.screenshot({path:testInfo.outputPath(`default-both-${size.width}.png`)});
+});
+
+test('compact desktop default shows complete device controls and a useful Session workspace',async({page},testInfo)=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page);await page.locator('#detail-devices').click();
+  const card=page.locator('.chain-device').first();
+  for(const label of ['Attack base','Attack effective ownership'])expect(await card.getByLabel(label,{exact:true}).evaluate(el=>{const r=el.getBoundingClientRect();for(let p=el.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),b=p.getBoundingClientRect();if(/auto|scroll|hidden|clip/.test(s.overflow+s.overflowY+s.overflowX)&&(r.top<b.top-1||r.bottom>b.bottom+1||r.left<b.left-1||r.right>b.right+1))return false;}return r.top>=0&&r.left>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;}),label).toBe(true);
+  expect((await page.locator('#session-workspace').boundingBox()).height).toBeGreaterThanOrEqual(180);
+  await page.screenshot({path:testInfo.outputPath('default-both-800.png')});
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`corrected panel capture matrix at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
+  const shot=name=>page.screenshot({path:testInfo.outputPath(`${name}-${size.width}x${size.height}.png`)});
+  expect((await page.locator('#session-workspace').boundingBox()).height).toBeGreaterThanOrEqual(180);await shot('both-default');
+  await page.locator('#toggle-help').click();await shot('help-hidden');
+  await page.locator('#detail-clip').click();await page.locator('#detail-devices').click();await shot('all-lower-hidden');
+  await page.locator('#detail-clip').click();await page.locator('#toggle-help').click();const resize=page.getByRole('separator',{name:'Resize detail area',exact:true});await resize.focus();await resize.press('Home');for(let i=0;i<3;i++)await resize.press('Shift+ArrowUp');await shot('clip-short');
+  const previous=await resize.getAttribute('aria-valuenow');await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await shot('clip-maximized');
+  await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await expect(resize).toHaveAttribute('aria-valuenow',previous);await shot('clip-restored');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
 test('narrow Browser stays above contextual Help when reopened',async({page},testInfo)=>{
   await page.setViewportSize({width:600,height:600});await openSession(page);
   const browser=page.locator('#workspace-browser'),help=page.locator('#info-view');

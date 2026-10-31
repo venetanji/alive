@@ -57,6 +57,25 @@ async function openRangeStudy(page){
   await page.goto('/alive.html');await expect(page.locator('#clip-title')).toContainText('Pulse');
 }
 const mutations=page=>page.evaluate(()=>window.calls.filter(c=>['alive_workspace_edit','alive_workspace_track'].includes(c.name)));
+
+for(const {method,label,value,tempo} of [{method:'mouse',label:'Audio source BPM',value:'121',tempo:121},{method:'keyboard',label:'Audio source BPM',value:'121',tempo:121},{method:'mouse',label:'Audio length in beats',value:'7',tempo:105}])test(`Audio disclosure preserves unfinished ${label} through ${method} navigation`,async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openRangeStudy(page);await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  const field=page.getByRole('spinbutton',{name:label,exact:true}),summary=page.locator('.clip-properties > details').filter({has:page.locator('.audio-stretch-tools')}).locator('summary');
+  await field.fill(value);if(method==='mouse')await summary.click();else{await field.press('Shift+Tab');await expect(summary).toBeFocused();await summary.press('Enter');}
+  await expect(field).toBeHidden();const before=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(before+2);
+  expect(await mutations(page)).toEqual([]);if(method==='mouse')await summary.click();else await summary.press('Enter');await expect(field).toHaveValue(value);
+  await field.focus();await field.press('Tab');await expect.poll(async()=>(await mutations(page)).length).toBe(1);
+  expect((await mutations(page))[0].args.operation).toMatchObject({kind:'audioSourceTempo',sourceId:'owned-audio',sourceTempo:tempo});
+});
+
+test('parked audio tempo stays with its sample through clip selection',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openRangeStudy(page);await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  const field=page.getByRole('spinbutton',{name:'Audio source BPM',exact:true}),summary=page.locator('.clip-properties > details').filter({has:page.locator('.audio-stretch-tools')}).locator('summary');
+  await field.fill('121');await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).click();
+  await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();
+  await expect(field).toHaveValue('121');expect(await mutations(page)).toEqual([]);await field.focus();await field.press('Tab');await expect.poll(async()=>(await mutations(page)).length).toBe(1);
+  expect((await mutations(page))[0].args.operation).toMatchObject({kind:'audioSourceTempo',sourceId:'owned-audio',sourceTempo:121});
+});
 async function selectClipTime(page,start,end){
   const svg=page.locator('#piano-roll:visible, #audio-waveform:visible');await svg.scrollIntoViewIfNeeded();
   const g=await svg.evaluate(e=>{const r=e.getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height,pad:Number(e.dataset.keyboardWidth),start:Number(e.dataset.beatStart),span:Number(e.dataset.beatSpan)};});

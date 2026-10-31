@@ -5,16 +5,27 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   let clipOpen=true,deviceOpen=false,masterOpen=false,previousPanels=null;
   let requestedHeight=height,maximized=false,customHeight=false;
   const handle=$('detail-resizer'),shell=$('workspace-shell');
-  const parked=new Map();
+  const parked=new Map(),scopedDrafts=new Map();
   const detailRoot=()=>$(detail==='clip'?'clip-detail':detail==='master'?'master-detail':'device-detail');
   const maxBrowserWidth=()=>Math.max(180,Math.min(420,(shell.clientWidth||900)-480));
   const detailBudget=()=>shell.clientHeight-$('edit-controls').getBoundingClientRect().height-($('detail-panel').getBoundingClientRect().height-$('detail-content').getBoundingClientRect().height);
   const workspaceMinimum=()=>view==='arrangement'?$('timeline').querySelector('.timeline-tools').getBoundingClientRect().height+$('master-arrangement-lane').getBoundingClientRect().height+96:96;
   const maxHeight=()=>Math.max(160,detailBudget()-(maximized?0:workspaceMinimum()));
-  const fitHeight=()=>{const limit=!maximized&&!customHeight&&clipOpen&&!deviceOpen&&win?.innerHeight?Math.max(160,detailBudget()-(win.innerHeight<700?272:364)):maxHeight();height=Math.round(Math.max(160,Math.min(limit,maximized?Infinity:requestedHeight)));};
+  const fitHeight=()=>{
+    if(!maximized&&!customHeight&&expanded&&clipOpen&&deviceOpen&&!masterOpen&&win?.innerHeight){
+      const workspaceFloor=win.innerHeight<700?180:win.innerHeight<850?200:240;
+      height=Math.round(Math.max(160,Math.min(510,maxHeight(),detailBudget()-workspaceFloor)));return;
+    }
+    const limit=!maximized&&!customHeight&&clipOpen&&!deviceOpen&&win?.innerHeight?Math.max(160,detailBudget()-(win.innerHeight<700?272:364)):maxHeight();height=Math.round(Math.max(160,Math.min(limit,maximized?Infinity:requestedHeight)));
+  };
   function park(root){const element=doc.activeElement;if(root.contains?.(element)&&element.matches?.('input,select,textarea'))parked.set(element,{root,value:element.value,visible:false,changed:parked.get(element)?.changed??false});}
   // Cached rack controls can be detached while another track is selected.
   function restore(root){for(const [element,state]of parked){if(element.isConnected===false){if(!element.closest?.('.chain-device'))parked.delete(element);continue;}if(state.root!==root||state.visible||element.closest?.('[hidden]'))continue;element.value=state.value;state.visible=true;if(!doc.activeElement?.closest?.('input,select,textarea,button,[contenteditable]'))element.focus();}}
+  function stashPreserved(key,elements){const bucket=new Map();for(const element of elements){const state=parked.get(element);if(state){bucket.set(element,state);parked.delete(element);}}if(bucket.size)scopedDrafts.set(key,bucket);return [...bucket.keys()];}
+  function recallPreserved(key){const bucket=scopedDrafts.get(key);if(!bucket)return;scopedDrafts.delete(key);for(const [element,state]of bucket)parked.set(element,{...state,visible:false});}
+  function discardPreserved(elements){for(const element of elements){parked.delete(element);for(const bucket of scopedDrafts.values())bucket.delete(element);}}
+  function resetPreserved(){parked.clear();scopedDrafts.clear();}
+  function uncommitted(){const entry=[...parked].find(([element,state])=>(element.isConnected!==false||element.closest?.('.chain-device'))&&state.changed);if(entry)return entry[0];for(const bucket of scopedDrafts.values())for(const [element,state]of bucket)if(state.changed)return element;}
   function preserveFocused(){
     const element=doc.activeElement;if(!element?.matches?.('input,select,textarea')||element.id==='seek')return;
     park(element.parentElement);const state=parked.get(element);
@@ -31,6 +42,7 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
     const full=maximized&&expanded;
     $('session-workspace').hidden=full||view!=='session';$('arrangement-workspace').hidden=full||view!=='arrangement';
     shell.classList.toggle('detail-maximized',full);
+    shell.classList.toggle('detail-both',expanded&&!masterOpen&&clipOpen&&deviceOpen);
     const maximize=$('maximize-detail'),label=full?'Restore detail size':'Maximize detail';
     maximize.setAttribute('aria-label',label);maximize.setAttribute('aria-pressed',String(full));maximize.title=label;
     for(const name of ['session','arrangement'])$('view-'+name).setAttribute('aria-pressed',String(view===name));
@@ -58,7 +70,7 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
     if(wasExpanded&&wasOpen)park($(name==='clip'?'clip-detail':'device-detail'));
     if(!wasExpanded){clipOpen=false;deviceOpen=false;}
     const next=!wasExpanded||!wasOpen;if(name==='clip')clipOpen=next;else deviceOpen=next;
-    detail=name;expanded=clipOpen||deviceOpen;if(!expanded)maximized=false;fitHeight();paint();
+    detail=name;expanded=clipOpen||deviceOpen;if(!expanded)maximized=false;paint();fitHeight();paint();
   });
   $('toggle-browser').addEventListener('click',()=>{browser=!browser;paint();});
   $('toggle-detail').addEventListener('click',()=>{cancelResize();if(expanded){if(clipOpen)park($('clip-detail'));if(deviceOpen)park($('device-detail'));if(masterOpen)park($('master-detail'));}expanded=!expanded;if(expanded&&!clipOpen&&!deviceOpen&&!masterOpen)clipOpen=true;if(!expanded){maximized=false;fitHeight();}paint();});
@@ -85,5 +97,5 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
     $(view+'-workspace').focus();
   };
   const fit=()=>{cancelResize();cancelBrowserResize();browserWidth=Math.min(browserWidth,maxBrowserWidth());fitHeight();paint();};doc.addEventListener('keydown',keydown);win?.addEventListener('blur',cancelResize);win?.addEventListener('resize',fit);paint();if(win?.innerHeight)fit();
-  return{preserves:element=>parked.has(element),uncommitted:()=>[...parked].find(([element,state])=>(element.isConnected!==false||element.closest?.('.chain-device'))&&state.changed)?.[0],discardPreserved:elements=>{for(const element of elements)parked.delete(element);},resetPreserved:()=>parked.clear(),park,restore,preserveFocused,openMaster(){if(!masterOpen){previousDetail=detail;previousPanels={clip:clipOpen,devices:deviceOpen,expanded};if(expanded){park($('clip-detail'));park($('device-detail'));}}masterOpen=true;detail='master';expanded=true;paint();},returnMusic(){if(masterOpen){park($('master-detail'));masterOpen=false;clipOpen=previousPanels?.clip??true;deviceOpen=previousPanels?.devices??false;detail=previousDetail;expanded=previousPanels?.expanded??true;paint();}},openDevices(){masterOpen=false;deviceOpen=true;detail='devices';expanded=true;fitHeight();paint();},openClip(){masterOpen=false;clipOpen=true;detail='clip';expanded=true;fitHeight();paint();},dispose(){doc.removeEventListener('keydown',keydown);doc.removeEventListener('change',change,true);doc.removeEventListener('blur',blur,true);doc.removeEventListener('focus',focus,true);parked.clear();win?.removeEventListener('blur',cancelResize);win?.removeEventListener('resize',fit);}};
+  return{preserves:element=>parked.has(element),uncommitted,discardPreserved,resetPreserved,stashPreserved,recallPreserved,park,restore,preserveFocused,openMaster(){if(!masterOpen){previousDetail=detail;previousPanels={clip:clipOpen,devices:deviceOpen,expanded};if(expanded){park($('clip-detail'));park($('device-detail'));}}masterOpen=true;detail='master';expanded=true;paint();},returnMusic(){if(masterOpen){park($('master-detail'));masterOpen=false;clipOpen=previousPanels?.clip??true;deviceOpen=previousPanels?.devices??false;detail=previousDetail;expanded=previousPanels?.expanded??true;paint();fitHeight();paint();}},openDevices(){masterOpen=false;deviceOpen=true;detail='devices';expanded=true;paint();fitHeight();paint();},openClip(){masterOpen=false;clipOpen=true;detail='clip';expanded=true;paint();fitHeight();paint();},dispose(){doc.removeEventListener('keydown',keydown);doc.removeEventListener('change',change,true);doc.removeEventListener('blur',blur,true);doc.removeEventListener('focus',focus,true);resetPreserved();win?.removeEventListener('blur',cancelResize);win?.removeEventListener('resize',fit);}};
 }

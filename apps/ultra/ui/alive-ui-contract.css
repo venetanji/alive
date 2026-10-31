@@ -76,10 +76,25 @@
 
 /* The Help panel occupies its own lower-left region beside the current detail. */
 main#workspace-shell{flex-direction:column;position:relative}
-.workspace-upper{display:flex;flex:1;min-height:0;min-width:0;overflow:hidden}
+.workspace-upper{position:relative;display:flex;flex:1;min-height:0;min-width:0;overflow:hidden}
 .workspace-lower{display:flex;flex:none;min-height:0;min-width:0}
 .workspace-lower #detail-panel{flex:1;min-width:0}
+.detail-both:has(#timeline-inspector[hidden]) #detail-panel{position:relative}
+.detail-both:has(#timeline-inspector[hidden]) #detail-tabs{position:absolute;top:8px;right:0;height:31px;background:transparent;border:0;z-index:4}
+.detail-both:has(#timeline-inspector[hidden]) #clip-bank-notice{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.detail-both:has(#timeline-inspector[hidden]) #clip-detail{position:relative}
+.detail-both:has(#timeline-inspector[hidden]) #clip-controls{padding-right:235px}
+.detail-both:has(#timeline-inspector[hidden]) #clip-detail>.clip-section{flex-basis:280px;min-height:280px}
+.detail-both:has(#timeline-inspector[hidden]) #clip-detail>.clip-section:has(.note-table[open]){min-height:500px}
+.detail-both:has(#timeline-inspector[hidden]) .clip-section>.section-heading{position:absolute;top:0;right:135px;width:90px;height:32px;min-height:0;padding:3px 5px;background:transparent;border:0;z-index:3}
+.detail-both:has(#timeline-inspector[hidden]) .clip-section>.section-heading h1{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 #detail-content{display:grid;grid-template-columns:calc(var(--browser-width,220px) + 5px) minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(120px,.65fr);overflow:hidden}
+.detail-both #detail-content{grid-template-rows:minmax(0,1fr) minmax(205px,.65fr)}
+@media(max-height:699px){
+  .detail-both #detail-content{grid-template-rows:minmax(0,1fr) minmax(180px,.65fr)}
+  .detail-both #chain-status{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .detail-both #chain{padding-top:4px}
+}
 #clip-detail:not([hidden]){grid-column:1 / -1;grid-row:1;min-height:0;height:100%;overflow:auto}
 #clip-detail>.clip-section{flex:1 0 310px;min-height:310px}
 #clip-detail>.clip-section:has(.note-table[open]){min-height:500px}
@@ -101,14 +116,11 @@ main#workspace-shell{flex-direction:column;position:relative}
 @media(min-width:621px){
   #workspace-browser:not([hidden]){position:absolute;top:0;left:0;bottom:0;width:var(--browser-width,220px);z-index:1}
   #browser-resizer:not([hidden]){position:absolute;top:0;left:var(--browser-width,220px);bottom:0;width:5px;z-index:2}
-  #workspace-shell #workspace-browser:not([hidden]),#workspace-shell #browser-resizer:not([hidden]){bottom:calc(var(--detail-height,220px) + 38px)}
-  #workspace-shell.detail-collapsed #workspace-browser:not([hidden]),#workspace-shell.detail-collapsed #browser-resizer:not([hidden]){bottom:158px}
   .workspace-upper:has(#workspace-browser:not([hidden])){padding-left:calc(var(--browser-width,220px) + 5px)}
 }
 @media(max-width:620px){
   .workspace-upper{overflow:visible}
-  #workspace-shell #workspace-browser:not([hidden]){top:0;bottom:calc(var(--detail-height,220px) + 38px)}
-  #workspace-shell.detail-collapsed #workspace-browser:not([hidden]){bottom:158px}
+  #workspace-shell #workspace-browser:not([hidden]){top:0;bottom:0}
 }
 @media(max-height:700px){
   #browser-library{min-height:230px}
