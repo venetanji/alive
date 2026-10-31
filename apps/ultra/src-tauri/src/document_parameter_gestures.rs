@@ -67,6 +67,41 @@ mod tests {
     fn value(id:u32,node:u32)->f64{let s=snapshot(id);s.nodes[..s.node_count as usize].iter().find(|n|n.id==node).unwrap().value}
     fn pulses(id:u32,node:u32)->u64{let s=snapshot(id);s.nodes[..s.node_count as usize].iter().find(|n|n.id==node).unwrap().pulses}
     #[test]
+    fn linked_view_cold_hint_cannot_overwrite_an_active_parameter_gesture(){
+        const NAME:&str="document_windows::commands::parameter_gestures::tests::linked_view_cold_hint_cannot_overwrite_an_active_parameter_gesture";
+        if std::env::var("ULTRA_PRESENTATION_CONFLICT_TEST_PROCESS").as_deref()!=Ok("1"){
+            let child=std::process::Command::new(std::env::current_exe().unwrap()).args(["--exact",NAME,"--nocapture"]).env("ULTRA_PRESENTATION_CONFLICT_TEST_PROCESS","1").output().unwrap();
+            assert!(child.status.success(),"{}\n{}",String::from_utf8_lossy(&child.stdout),String::from_utf8_lossy(&child.stderr));return;
+        }
+        let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        let patch=serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
+            {"id":10,"type":"patcher","x":0,"y":0,"params":{"name":"linked"},"patcher":{"presentation":null,"nodes":[
+                {"id":1,"type":"multiply","x":0,"y":0,"params":{"rhs":0.65}},
+                {"id":2,"type":"number","x":0,"y":0,"params":{"value":0}}],"edges":[{"from":1,"outlet":0,"to":2,"inlet":0}]}}],"edges":[]});
+        let mut registry=Registry::default();let owner=registry.add("Owned preview".into(),Kind::Patch,Some(patch),None,None).unwrap();
+        let mut audio=crate::AudioControl::default();let mut io=crate::audio::Driver::load(PathBuf::from("/nonexistent/ultra-linked-preview-test.json"));
+        let owner=registry.prepare_runtime(&owner.label,|owner|admit_owned(&mut io,&mut audio.graphs[owner.id as usize],owner,owner.patch.as_ref().unwrap(),None,None,true)).unwrap();
+        let (linked,_)=registry.open_view(&owner.label,10).unwrap();
+        let request=|token,phase:&str,value|GestureRequest{owner_label:owner.label.clone(),runtime_revision:owner.runtime_revision,token,node:1,key:"rhs".into(),phase:phase.into(),value};
+        let message=audio.graphs[owner.id as usize].event(owner.runtime_revision,1,0,serde_json::json!([1])).unwrap();
+        for phase in ["commit","cancel"]{
+            let token=apply(&mut registry,&mut audio,&mut io,&owner.label,request(None,"begin",0.65)).unwrap().token;
+            apply(&mut registry,&mut audio,&mut io,&owner.label,request(Some(token),"preview",0.4)).unwrap();
+            assert_eq!(unsafe{crate::ultra_canvas_message_document(owner.id,owner.runtime_revision,1,0,&message)},1);assert_eq!(value(owner.id,2),0.4);
+            let before=registry.descriptor(&owner.label).unwrap();let preview=serde_json::to_value(&before).unwrap();let before_pulses=pulses(owner.id,2);
+            let hint=Parameter{node:1,key:"rhs".into(),value:0.65,hot:false};
+            let refused=registry.commit(&linked.label,before.authoring_revision,before.patch.unwrap(),true,|owner,patch|admit_owned(&mut io,&mut audio.graphs[owner.id as usize],owner,patch,Some(&hint),None,false));
+            assert!(refused.as_ref().is_err_and(|error|error.contains("owned by an active presentation gesture")),"ordinary unchanged-patch cold hint bypassed the active gesture token");
+            assert_eq!(serde_json::to_value(registry.descriptor(&owner.label).unwrap()).unwrap(),preview);assert_eq!(pulses(owner.id,2),before_pulses);
+            assert_eq!(registry.parameter_gesture(&owner.label,&owner.label,owner.runtime_revision,token).unwrap().value,0.4);
+            assert_eq!(unsafe{crate::ultra_canvas_message_document(owner.id,owner.runtime_revision,1,0,&message)},1);assert_eq!(value(owner.id,2),0.4,"refused hint changed native rhs");
+            apply(&mut registry,&mut audio,&mut io,&owner.label,request(Some(token),phase,0.65)).unwrap();
+            assert!(registry.descriptor(&owner.label).unwrap().parameter_previews.is_empty());
+            assert_eq!(unsafe{crate::ultra_canvas_message_document(owner.id,owner.runtime_revision,1,0,&message)},1);assert_eq!(value(owner.id,2),0.65);assert_eq!(snapshot(owner.id).revision,owner.runtime_revision);
+        }
+        close_owned(&mut io,owner.id).unwrap();
+    }
+    #[test]
     fn non_hot_baseline_return_commit_reconciles_native_value_without_output_or_reinstall(){
         const NAME:&str="document_windows::commands::parameter_gestures::tests::non_hot_baseline_return_commit_reconciles_native_value_without_output_or_reinstall";
         if std::env::var("ULTRA_PRESENTATION_BASELINE_TEST_PROCESS").as_deref()!=Ok("1"){

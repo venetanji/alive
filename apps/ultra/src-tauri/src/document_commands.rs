@@ -102,6 +102,9 @@ pub fn admit_message(control: &mut canvas::CanvasState, owner: &Document, patch:
         return Ok(documents::Admission {revision:control.revision(),message_text_serial:control.message_text_serial()});
     }
     if let Some(parameter) = parameter.filter(|_| !force) {
+        if owner.parameter_previews().iter().any(|gesture|gesture.node==parameter.node&&gesture.key==parameter.key) {
+            return Err("This parameter is owned by an active presentation gesture. Finish or cancel it first.".into());
+        }
         if control.parameter_matches(&plan, parameter.node, &parameter.key, parameter.value)? {
             let revision = control.revision();
             if parameter.hot { control.event(revision, parameter.node, 0, serde_json::json!([parameter.value]))?; }
