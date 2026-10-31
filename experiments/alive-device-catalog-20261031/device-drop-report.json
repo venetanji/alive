@@ -1,0 +1,86 @@
+{
+  "binary": "/home/venetanji/.local/share/alive/builds/be355bb/bin/alive",
+  "native_library": "/home/venetanji/.local/share/alive/builds/be355bb/bin/libultra_native.so",
+  "gestures": [
+    {
+      "source": "Subtractive",
+      "target": "Select MIDI 1 track",
+      "start": [
+        151,
+        248
+      ],
+      "end": [
+        288,
+        79
+      ],
+      "synthetic_ipc": false
+    },
+    {
+      "source": "Stereo Utility",
+      "target": "Device chain drop area",
+      "start": [
+        151,
+        221
+      ],
+      "end": [
+        953,
+        602
+      ],
+      "synthetic_ipc": false
+    },
+    {
+      "source": "Stereo Lowpass",
+      "target": "Select MIDI 1 Stereo Utility effect 1",
+      "start": [
+        151,
+        194
+      ],
+      "end": [
+        897,
+        484
+      ],
+      "synthetic_ipc": false
+    }
+  ],
+  "effects": [
+    "org.alive.stereo-lowpass",
+    "org.alive.utility"
+  ],
+  "audio": {
+    "frames": 197120,
+    "seconds": 4.1066666666666665,
+    "peak": 0.09684687107801437,
+    "one_second_peaks": [
+      0.0,
+      0.0,
+      0.09684687107801437,
+      0.06331683695316315,
+      0.0
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "dab59ebf3507a942486b11b7079807a872f08f67e1aee190211d1559ed21b23d",
+    "path": "dragged-chain.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "group_id": 918073,
+      "recorder_pid": 918077,
+      "returncode": 1,
+      "wall_seconds": 4.479198421002366,
+      "audio_bytes": 1576960,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    }
+  },
+  "stream_errors": 0,
+  "rejected_commands": 0,
+  "saved_format": "alive-session-v6",
+  "physical_audio": false
+}

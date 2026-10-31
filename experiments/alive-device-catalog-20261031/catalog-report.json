@@ -1,0 +1,161 @@
+{
+  "initial_entries": [
+    "Stereo Lowpass",
+    "Stereo Utility",
+    "Subtractive",
+    "Catalog Fixture One",
+    "Amp",
+    "Analog",
+    "Auto Filter",
+    "Cabinet",
+    "Channel EQ",
+    "Collision",
+    "Compressor",
+    "Corpus",
+    "Delay",
+    "Drift",
+    "Drum Buss",
+    "Drum Sampler",
+    "Echo",
+    "Electric",
+    "Limiter",
+    "Redux",
+    "Reverb",
+    "Roar",
+    "Spectral Resonator",
+    "Spectral Time",
+    "Tension",
+    "Utility"
+  ],
+  "live_candidate_count": 22,
+  "bundled_count": 3,
+  "initial_user_count": 1,
+  "refreshed_user_count": 2,
+  "analog_reason": "Alive native-source ownership and transport admission are pending",
+  "disabled_load": true,
+  "blocked_inputs": [
+    "Enter",
+    "double click",
+    "pointer drag"
+  ],
+  "refusal_input": {
+    "source": "Analog",
+    "target": "Select MIDI 1 track",
+    "start": [
+      151,
+      194
+    ],
+    "end": [
+      288,
+      79
+    ],
+    "double_click_interval_seconds": 0.06,
+    "synthetic_ipc": false
+  },
+  "accepted_score_unchanged": true,
+  "native_generation": "3",
+  "rejected_commands": 0,
+  "native_library": "/home/venetanji/.local/share/alive/builds/be355bb/bin/libultra_native.so",
+  "binary": "/home/venetanji/.local/share/alive/builds/be355bb/bin/alive",
+  "source_commit": "be355bbeb675a725001d46b7cd401ae0d4bdbdd7",
+  "artifact_hashes": {
+    "alive": "0d46f63c19256309d13f6ca6e3f808f5bcd40f006d200deef196a3221321346e",
+    "ultra": "da518507416f11add23190674f3a1195e50ef618a07e43e5bfafb2d03e22e2f0",
+    "libultra_native.so": "69ba16fe7af0e969a86f89f8ae94d33b767f7f47ea02ce74da7365a1dc770a90"
+  },
+  "captures": [
+    {
+      "viewport": [
+        800,
+        600
+      ],
+      "controls": {
+        "Refresh Library": [
+          7,
+          124,
+          205,
+          24
+        ],
+        "Search browser": [
+          7,
+          92,
+          205,
+          29
+        ],
+        "Analog": [
+          83,
+          180,
+          136,
+          28
+        ],
+        "Load Instrument": [
+          7,
+          367,
+          205,
+          25
+        ],
+        "unavailable_reason": [
+          [
+            7,
+            286,
+            205,
+            76
+          ],
+          [
+            0,
+            399,
+            219,
+            64
+          ]
+        ]
+      }
+    },
+    {
+      "viewport": [
+        1280,
+        800
+      ],
+      "controls": {
+        "Refresh Library": [
+          7,
+          124,
+          205,
+          24
+        ],
+        "Search browser": [
+          7,
+          92,
+          205,
+          29
+        ],
+        "Analog": [
+          83,
+          180,
+          136,
+          28
+        ],
+        "Load Instrument": [
+          7,
+          567,
+          205,
+          25
+        ],
+        "unavailable_reason": [
+          [
+            7,
+            486,
+            205,
+            76
+          ],
+          [
+            0,
+            599,
+            219,
+            64
+          ]
+        ]
+      }
+    }
+  ],
+  "physical_audio": false
+}

@@ -1,11 +1,13 @@
 # Alive device hosting and saved Ultra presentation
 
-Status: architecture and delivery proposal, revised 2026-10-31 against the Alive
-UI work through `3ca2cef` (verification packet `aad0030`) on
-`feat/phase2-ui-fidelity`, published to PR #6 / `feat/alive-session-host`.
+Status: catalog delivery 0 implemented and verified on 2026-10-31 in installed
+source `be355bb` on `feat/phase2-ui-fidelity`; see the
+[installed catalog evidence](../alive-device-catalog-20261031/README.md).
+The remaining sections retain the architecture and later delivery requirements.
 The native-device inventory and adapter audit come from the separate `2a0f`
 worktree. Its native runtime is not integrated into that Alive build. Proposed
-catalog fields, saved presentation and native Alive hosting remain to implement.
+saved presentation and native Alive hosting remain to implement. Catalog
+descriptors do not qualify any installed native candidate for loading.
 
 User requirements are fixed: three musical device classes, composite
 presets/racks, one shared Live-style control family, Ultra authoring, and the
@@ -17,10 +19,13 @@ capability, not a requirement to preserve earlier Alive formats.
 
 ## Current Alive baseline and integration boundary
 
-- The browser immediately requests a small native catalog: Subtractive, Stereo
-  Utility and Stereo Lowpass. It combines these with device references already
-  in the project and Project Clips, with search, keyboard activation and dragging.
-  It does not yet discover installed Live devices or import their preset library.
+- The browser requests bounded metadata pages for bundled Subtractive, Stereo
+  Utility and Stereo Lowpass, saved Ultra devices in the user library, and
+  installed Live implementation candidates. It combines these with project
+  device references and Project Clips, with search and explicit refresh.
+  Only qualified ready saved devices can activate or drag; installed candidates
+  expose unavailable reasons. It does not import Live presets or construct DSP
+  during discovery, selection or search.
 - Browser devices can be dropped onto Session tracks, Arrangement rows or the
   horizontal Devices strip. Effects insert before/after a card using its X
   midpoint. Loading an instrument opens Devices and selects the accepted instance.
@@ -243,10 +248,13 @@ before implementation; they do not describe the installed UI build:
 
 ## Ordered delivery
 
-0. Catalog contract and provider boundary: retain the existing browser/drag/card
+0. **Complete: catalog contract and provider boundary.** Retain the existing browser/drag/card
    behavior, define descriptor identity and unavailable reasons, and index a
    bounded local metadata set without runtime construction. Start with the known
    saved Analog device; enable loading only with the qualified host in step 2.
+   Installed acceptance found all 22 local implementation candidates and refused
+   Analog activation without changing accepted music. No saved Analog descriptor
+   is loadable in this build; its host integration remains step 2.
 1. Saved presentation in Ultra: panel/control items, canonical persistence/history,
    a shared renderer in Ultra preview and Alive cards, no automatic keyboard,
    current-schema examples/fixtures and deliberate Max presentation import.
@@ -300,5 +308,7 @@ Full source-audit references and the twelve current admission gates are retained
 in `~/.cache/alive-ultra-evidence/live-device-catalog-20261031/hosting/report.md`.
 The companion `experiments/native-devices-20261031/device-catalog.md` in the
 native-device worktree records which implementation boundaries actually exist;
-this proposal adds no runtime qualification or schema fields. This revised plan
-is mirrored at the same repository path in the UI worktree for the PR handoff.
+catalog delivery adds bounded descriptor fields but no native runtime
+qualification. The remaining presentation and hosting proposals grant no loader
+admission. The native-worktree copy retains the earlier proposal; this UI copy
+records the installed catalog completion without changing that worktree.

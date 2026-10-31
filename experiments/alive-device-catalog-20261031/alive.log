@@ -1,0 +1,43 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri)
+warning: unused import: `SaveSnapshot`
+  --> /home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/src/documents.rs:14:28
+   |
+14 | pub use save::{SaveNotice, SaveSnapshot};
+   |                            ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `reserve_native` is never used
+  --> /home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/src/document_windows.rs:47:8
+   |
+36 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+47 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `code` is never read
+   --> /home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/src/session/host.rs:251:39
+    |
+251 | pub(super) struct AdmissionError {pub code:u32,pub message:String}
+    |                   --------------      ^^^^
+    |                   |
+    |                   field in this struct
+
+warning: suspicious definition of the runtime `write` symbol used by the standard library
+   --> /home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/src/audio.rs:420:13
+    |
+420 |             fn write(fd: i32, buf: *const u8, len: usize) -> isize;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected `unsafe extern "C" fn(i32, *const std::ffi::c_void, usize) -> isize` (for the current target)
+            found    `unsafe extern "C" fn(i32, *const u8, usize) -> isize`
+    = help: either fix the signature or remove any attributes like `#[unsafe(no_mangle)]`, `#[unsafe(export_name = "write")]`, or `#[link_name = "write"]`
+    = help: allow this lint if the signature is compatible
+    = note: `#[warn(suspicious_runtime_symbol_definitions)]` on by default
+
+warning: `ultra` (lib) generated 4 warnings (run `cargo fix --lib -p ultra` to apply 1 suggestion)
+   Compiling alive v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/alive/src-tauri)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 28.19s
