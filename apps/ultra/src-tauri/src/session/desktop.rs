@@ -6,6 +6,8 @@ use std::{path::{Path, PathBuf}, sync::{Mutex, MutexGuard}, collections::BTreeMa
 use tauri::{Emitter, Manager, WebviewWindow};
 use tauri_plugin_dialog::{DialogExt, MessageDialogButtons, MessageDialogResult};
 mod publication;
+#[cfg(test)]
+mod device_transactions;
 
 fn trace_commands() -> bool { std::env::var_os("ALIVE_TRACE_COMMANDS").as_deref() == Some(std::ffi::OsStr::new("1")) }
 
@@ -208,7 +210,15 @@ impl Control {
         let mut document=self.history.target(direction)?.materialize(&prepared.saved.score)?;
         merge_live(&mut document,&prepared.saved.score);
         let launch=self.history.target_launch(direction)?;launch.validate(&document)?;
-        let before=&prepared.saved.score.clone();let mut history=self.history.clone();history.advance(direction);self.publish_music(&before,&document,&launch,&history)?;Ok(())
+        let before=&prepared.saved.score.clone();let mut history=self.history.clone();history.advance(direction);
+        let roots=|score:&Session|score.tracks.iter().flat_map(|t|t.devices().map(|d|d.instance_id.clone())).collect::<Vec<_>>();
+        if roots(before)!=roots(&document) {
+            self.stopped()?;
+            prepare::check_sources(&document,&prepared.origin,Some(before))?;
+            let mut saved=structural_saved(&prepared.saved,document);saved.launch=launch;
+            let candidate=prepare(&saved,&prepared.origin)?;
+            self.install_with_history(candidate,history)?;
+        }else{self.publish_music(before,&document,&launch,&history)?;}Ok(())
     }
     fn editor_instance(&self, label: &str) -> Result<Option<&str>, String> {
         if label == "main" { return Ok(None); }
@@ -258,6 +268,11 @@ impl Control {
         self.generation += 1; self.editors.clear(); self.dirty = true; self.clear_scope()?;
         Ok(())
     }
+    fn install_with_history(&mut self, prepared:PreparedSession, history:History)->Result<(),String> {
+        self.install(prepared)?;
+        self.history=history;
+        Ok(())
+    }
 
 }
 
@@ -298,7 +313,7 @@ pub fn alive_workspace_edit(window:WebviewWindow,state:tauri::State<Desktop>,ope
 #[tauri::command]
 pub fn alive_history(window:WebviewWindow,state:tauri::State<Desktop>,direction:Direction,generation:u64,edit_revision:u64)->Result<Snapshot,String> {
     main_only(window.label())?;let mut control=ui_lock(&state.0)?;
-    control.history(direction,generation,edit_revision)?;control.snapshot(window.label())
+    control.history(direction,generation,edit_revision)?;close_stale_editors(window.app_handle(),control.generation);control.snapshot(window.label())
 }
 
 
@@ -435,7 +450,7 @@ fn save_to_path(control: &mut Control, path: &Path) -> Result<(), String> {
     ensure_counter(control.edit_revision)?;
     control.host.validate(&prepare(&prepared.saved,&prepared.origin)?)?;
     let (path,saved) = persistence::save_document(path, &prepared.saved, &prepared.origin)?;
-    control.history.rebase_audio_paths(&prepared.origin,&path);
+    control.history.rebase_paths(&prepared.origin,&path);
     let current = control.host.prepared.as_mut().unwrap();
     if current.origin != path || current.saved != saved {control.edit_revision+=1;}
     let current=control.host.prepared.as_mut().unwrap();
@@ -557,6 +572,14 @@ fn structural_saved(current:&SavedSession,document:Session)->SavedSession {
     saved.launch.retain_owned(&saved.score);
     saved
 }
+fn insert_workspace_track(document:&mut Session,after:Option<&str>,midi:bool,ids:&mut std::collections::HashSet<String>)->Result<String,String> {
+    if document.tracks.len()>=host::workspace_limits()?.max_tracks as usize{return Err("Eight logical tracks are available in this workspace".into());}
+    let position=match after{Some(id)=>document.tracks.iter().position(|t|t.id==id).ok_or("Unknown selected track")?+1,None=>document.tracks.len()};
+    let id=workspaces::fresh("track",ids);
+    let chain=if midi{workspaces::ChainV4::Midi{instrument:None}}else{workspaces::ChainV4::Audio{}};
+    document.tracks.insert(position,workspaces::TrackV4{id:id.clone(),name:format!("{} {}",if midi{"MIDI"}else{"Audio"},document.tracks.len()+1),color:if midi{"#86a59c"}else{"#c77b61"}.into(),chain,effects:vec![],slots:[None,None,None,None],gain:1.,mute:false,solo:false});
+    Ok(id)
+}
 fn change_device(document:&mut Session,track_id:&str,action:&str,instance_id:Option<&str>,before:Option<&str>,reference:Option<DeviceInstance>)->Result<(),String>{
     addition_capacity(document,track_id,action)?;change_workspace_device(document,track_id,action,instance_id,before,reference)
 }
@@ -593,11 +616,7 @@ impl Control {
         let midi=matches!(&operation,WorkspaceTrackOperation::AddMidi{..});
         let (track_id,label,graph_change)=match operation {
             WorkspaceTrackOperation::AddMidi{after_track_id}|WorkspaceTrackOperation::AddAudio{after_track_id}=>{
-                if candidate.tracks.len()>=host::workspace_limits()?.max_tracks as usize{return Err("Eight logical tracks are available in this workspace".into());}
-                let position=match after_track_id {Some(id)=>candidate.tracks.iter().position(|t|t.id==id).ok_or("Unknown selected track")?+1,None=>candidate.tracks.len()};
-                let id=workspaces::fresh("track",&mut ids);
-                let chain=if midi{workspaces::ChainV4::Midi{instrument:None}}else{workspaces::ChainV4::Audio{}};
-                candidate.tracks.insert(position,workspaces::TrackV4{id:id.clone(),name:format!("{} {}",if midi{"MIDI"}else{"Audio"},candidate.tracks.len()+1),color:if midi{"#86a59c"}else{"#c77b61"}.into(),chain,effects:vec![],slots:[None,None,None,None],gain:1.,mute:false,solo:false});
+                let id=insert_workspace_track(&mut candidate,after_track_id.as_deref(),midi,&mut ids)?;
                 (id,if midi{"Insert MIDI track"}else{"Insert Audio track"},false)
             },
             WorkspaceTrackOperation::Remove{track_id}=>{
@@ -651,39 +670,61 @@ pub async fn alive_audio_import(window:WebviewWindow,track_id:String,slot:u32,pa
         Ok(WorkspaceEditResult{snapshot:c.snapshot(window.label())?,affected})
     }).await.map_err(|e|e.to_string())?
 }
+impl Control {
+    fn device_edit(&mut self, track_id:&str, action:&str, instance_id:Option<&str>, before_instance_id:Option<&str>, generation:u64, revision:u64, choose:impl FnOnce()->Result<Option<PathBuf>,String>)->Result<(),String> {
+        self.version(generation,revision)?;self.stopped()?;
+        let current = self.host.prepared.as_ref().ok_or("No session")?;
+        let mut document = current.saved.score.clone();
+        let automatic=action=="loadNewTrack";
+        // The new track remains prospective until its captured device and full graph are admitted.
+        let target=if automatic {
+            if instance_id.is_some()||before_instance_id.is_some(){return Err("Automatic instrument loading requires a track destination without a device instance".into());}
+            let mut ids=self.history.identities();ids.extend(document.identities());
+            insert_workspace_track(&mut document,Some(track_id),true,&mut ids)?
+        }else{track_id.to_owned()};
+        let track_id=target.as_str();let action=if automatic{"load"}else{action};
+        addition_capacity(&document,track_id,action)?;
+        { let project=&document;
+            let track=project.tracks.iter().find(|t|t.id==track_id).ok_or("Unknown workspace track")?;
+            if action!="add"&&!(action=="load"&&track.instrument().is_none()&&matches!(track.chain,workspaces::ChainV4::Midi{..})) {
+                let id=instance_id.ok_or("An explicit device instance ID is required")?;
+                if !track.devices().any(|d|d.instance_id==id){return Err("Unknown workspace device instance".into());}
+            }
+            if let Some(before)=before_instance_id{if !track.effects.iter().any(|d|d.instance_id==before){return Err("Unknown destination effect".into());}}
+        }
+        let reference = if matches!(action, "load" | "replace" | "add") {
+            let Some(path) = choose()? else { return Ok(()); };
+            Some({let mut reference=capture_device(&path,&document)?;let mut ids=self.history.identities();ids.extend(document.identities());reference.instance_id=workspaces::fresh("instance",&mut ids);reference})
+        } else { None };
+        change_device(&mut document, track_id, action, instance_id, before_instance_id, reference)?;
+        prepare::check_sources(&document,&current.origin,Some(&current.saved.score))?;
+        let saved=structural_saved(&current.saved,document);
+        let prepared=prepare(&saved,&current.origin)?;
+        if automatic {
+            let mut history=self.history.clone();
+            history.record_with_launch(&current.saved.score,&saved.score,&current.saved.launch,&saved.launch,"Insert MIDI instrument")?;
+            self.install_with_history(prepared,history)?;
+        }else{self.install(prepared)?;}
+        Ok(())
+    }
+}
 #[tauri::command]
 pub async fn alive_device(window: WebviewWindow, track_id: String, action: String, generation: u64, edit_revision:u64, instance_id: Option<String>, before_instance_id: Option<String>, path: Option<PathBuf>) -> Result<Snapshot, String> {
     main_only(window.label())?;
     tauri::async_runtime::spawn_blocking(move || {
         let state = window.state::<Desktop>();
         let mut control = ui_lock(&state.0)?;
-        control.version(generation,edit_revision)?; control.stopped()?;
-
-        let current = control.host.prepared.as_ref().ok_or("No session")?;
-        let mut document = current.saved.score.clone();
-        addition_capacity(&document,&track_id,&action)?;
-        { let project=&document;
-            let track=project.tracks.iter().find(|t|t.id==track_id).ok_or("Unknown workspace track")?;
-            if action!="add"&&!(action=="load"&&track.instrument().is_none()&&matches!(track.chain,workspaces::ChainV4::Midi{..})) {
-                let id=instance_id.as_deref().ok_or("An explicit device instance ID is required")?;
-                if !track.devices().any(|d|d.instance_id==id){return Err("Unknown workspace device instance".into());}
-            }
-            if let Some(before)=before_instance_id.as_deref(){if !track.effects.iter().any(|d|d.instance_id==before){return Err("Unknown destination effect".into());}}
-        }
-        let reference = if matches!(action.as_str(), "load" | "replace" | "add") {
-            let path = match path { Some(path) => path, None => {
-                let Some(path) = window.dialog().file().set_parent(&window).set_title("Load Ultra Device").add_filter("Ultra device", &["ultra"]).blocking_pick_file() else { return control.snapshot(window.label()); };
-                path.into_path().map_err(|e| e.to_string())?
-            }};
-            Some({let mut reference=capture_device(&path,&document)?;let mut ids=control.history.identities();ids.extend(document.identities());reference.instance_id=workspaces::fresh("instance",&mut ids);reference})
-        } else { None };
-        change_device(&mut document, &track_id, &action, instance_id.as_deref(), before_instance_id.as_deref(), reference)?;
-        prepare::check_sources(&document,&current.origin,Some(&current.saved.score))?;
-        let prepared = prepare(&structural_saved(&current.saved,document), &current.origin)?; control.install(prepared)?;
+        control.device_edit(&track_id,&action,instance_id.as_deref(),before_instance_id.as_deref(),generation,edit_revision,|| {
+            match path {Some(path)=>Ok(Some(path)),None=>{
+                let Some(path) = window.dialog().file().set_parent(&window).set_title("Load Ultra Device").add_filter("Ultra device", &["ultra"]).blocking_pick_file() else {return Ok(None)};
+                Ok(Some(path.into_path().map_err(|e|e.to_string())?))
+            }}
+        })?;
         close_stale_editors(window.app_handle(), control.generation);
         control.snapshot(window.label())
     }).await.map_err(|e| e.to_string())?
 }
+
 fn request_close(app: &tauri::AppHandle) {
     let state = app.state::<Desktop>();
     let Ok(mut control) = state.0.try_lock() else { return; };
@@ -731,7 +772,7 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
 #[cfg(test)]
 mod tests {
 use super::*;
-fn musical_control()->Control {
+pub(super) fn musical_control()->Control {
  let prepared=read(&Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive")).unwrap();
  let mut host=Host::default();host.prepared=Some(prepared);
  Control{host,runtime:Default::default(),snapshot_sequence:0,accepted_serial:0,driver:crate::audio::Driver::load(PathBuf::from("/nonexistent/alive-test.json")),generation:7,dirty:false,saved_path:None,save_feedback:None,edit_revision:0,history:Default::default(),publication_pending:None,closing:false,allow_exit:false,editors:Default::default()}

@@ -202,6 +202,13 @@ pub struct Config {
     live_resources: Vec<PathBuf>,
 }
 impl Config {
+    #[cfg(test)]
+    pub(super) fn user_fixture(root: &Path) -> Self {
+        Self::from_environment(root.join("no-resources"), root.join("no-source"), |key| {
+            (key == "ALIVE_DEVICE_LIBRARY_PATHS").then(|| root.as_os_str().to_owned())
+        })
+    }
+
     pub fn environment(resources: PathBuf, source: PathBuf) -> Self {
         Self::from_environment(resources, source, |key| std::env::var_os(key))
     }

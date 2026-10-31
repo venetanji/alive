@@ -442,11 +442,14 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       if(entry.kind==='instrument'){
         if(destination&&current.chain.kind!=='midi')throw Error('Drop instruments onto a MIDI track. Audio tracks accept audio effects.');
         const replace=destination&&instrumentOf(current);
-        if(!destination&&(current.chain.kind!=='midi'||instrumentOf(current))){const created=await publicationCommand('alive_workspace_track',{operation:{kind:'addMidi',afterTrackId:current.id}});targetId=created.affected.trackId;}
-        result=await command('alive_device',{trackId:targetId,instanceId:replace?.instanceId??null,action:replace?'replace':'load',path:entry.path});
+        const newTrack=!destination&&(current.chain.kind!=='midi'||instrumentOf(current)),trackIds=new Set(model.document().tracks.map(track=>track.id));
+        result=await command('alive_device',{trackId,instanceId:replace?.instanceId??null,action:newTrack?'loadNewTrack':replace?'replace':'load',path:entry.path});
+        if(newTrack)targetId=result.document.tracks.find(track=>!trackIds.has(track.id))?.id??trackId;
       }else result=await command('alive_device',{trackId,action:'add',path:entry.path,...(destination?{beforeInstanceId:destination.beforeInstanceId}: {})});
+      const selectedTrackId=model.document().tracks[selected]?.id;
       applySnapshot(result.snapshot??result);
       if(token===selectionToken){selected=Math.max(0,model.document().tracks.findIndex(t=>t.id===targetId));sourceSelection=null;selectedInstance=actualDevices(model.document().tracks[selected]).find(d=>!previousIds.has(d.instanceId))?.instanceId??null;selectionToken++;workspace.openDevices();}
+      else{const index=model.document().tracks.findIndex(track=>track.id===selectedTrackId);if(index>=0)selected=index;}
       trackKey=musicKey=parameterKey=chainKey='';render();notice(`${entry.name} loaded. Transport remains stopped.`);
     });
   }
@@ -678,14 +681,16 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   for(const name of diagnosticNames){const label=make('label','',name),output=make('output','','-');output.setAttribute('aria-label',name);label.append(output);$('diagnostics').append(label);diagnostics.set(name,output);}
   function render(){
     if(sourceSelection&&model.document()){const d=model.document(),p=d.placements?.find(p=>p.id===sourceSelection.occurrence?.placementId);if(!d.sources?.some(s=>s.id===sourceSelection.sourceId))sourceSelection=null;else if(sourceSelection.occurrence)sourceSelection={...sourceSelection,sourceId:p?.sourceId??sourceSelection.sourceId,occurrence:p?sourceSelection.occurrence:null};}
-    const snapshot=model.snapshot(),document=editorDocument();if(!snapshot||!document)return;
+    const snapshot=model.snapshot();if(!snapshot)return;
+    selected=Math.min(selected,snapshot.document.tracks.length-1);
+    const document=editorDocument();if(!document)return;
     const selectionScope=JSON.stringify([snapshot.generation,document.tracks[selected]?.id,selectedClip()?.id,sourceSelection]);if(selectionScope!==clipSelectionScope){clipSelectionScope=selectionScope;clipTimeSelection=null;regionPreview=null;}
     previewFailure=snapshot.midi?.previewError===4?'Preview reached the native work allowance. Release the key and try again.':snapshot.midi?.previewError&&snapshot.midi.previewError!==6?'Preview was refused by native playback.':'';renderNotice();
     audition.configure({generation:snapshot.generation,preparationRevision:snapshot.preparationRevision,trackId:document.tracks[selected]?.id,sourceId:sourceOf()?.id,available:!!snapshot.capabilities?.midiPreview});
     clipView?.preview({enabled:audition.enabled(),available:!!snapshot.capabilities?.midiPreview,reason:snapshot.capabilities?.midiUnavailableReason});
     if(masterGeneration!==snapshot.generation){const canceled=masterGeneration!==null&&(!!masterIntent||masterPendingReset);masterGeneration=snapshot.generation;masterIntent=masterReceipt=null;masterPendingReset=false;masterStatus=canceled?'Master pending intent canceled on session change.':'';masterError=false;masterProducer.setGeneration(snapshot.generation);if(canceled)notice(masterStatus,false,'master');else if(noticeOwner==='master')notice('Master state refreshed for this session.',false,'master');}
     renderMaster();renderTransportRequest(snapshot);
-    selected=Math.min(selected,document.tracks.length-1);renderLaunchSettings(snapshot);
+    renderLaunchSettings(snapshot);
     if(!chainDevices().some(d=>d.instanceId===selectedInstance))selectedInstance=chainDevices()[0]?.instanceId??null;
     $('edit-device').disabled=!selectedInstance;$('session-title').textContent=document.title;$('dirty').textContent=snapshot.dirty?'Modified':'';doc.title=`${snapshot.dirty?'* ':''}${document.title} - Alive`;
     for(const[id,value]of [['tempo',document.tempo],['length',model.document().lengthBeats]])if(doc.activeElement!==$(id)&&!workspace.preserves($(id)))$(id).value=value;
@@ -777,7 +782,19 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     trackKey=musicKey=parameterKey=chainKey='';render();
   });}
   bind('insert-audio-track','Insert Audio Track',()=>insertTrack('addAudio'));bind('insert-midi-track','Insert MIDI Track',()=>insertTrack('addMidi'));
-  bind('add-track','Add instrument track',()=>{cancelGesture();return enqueue(async()=>{let targetId=model.document().tracks[selected]?.id;if(model.document().tracks[selected]?.chain.kind!=='midi'||instrumentOf(model.document().tracks[selected])){const created=await publicationCommand('alive_workspace_track',{operation:{kind:'addMidi',afterTrackId:targetId??null}});targetId=created.affected.trackId;}const result=await command('alive_device',{trackId:targetId,instanceId:null,action:'load'});applySnapshot(result.snapshot??result);trackKey=musicKey=parameterKey='';render();});});
+  bind('add-track','Add instrument track',()=>{
+    const trackId=model.document().tracks[selected].id,intent={generation:generation(),editRevision:model.snapshot().editRevision},token=selectionToken;
+    cancelGesture();releaseAudition();return enqueue(async()=>{
+      if(generation()!==intent.generation||model.snapshot().editRevision!==intent.editRevision)throw Error('The originating session changed. Select the instrument again.');
+      const track=model.document().tracks.find(t=>t.id===trackId);if(!track)throw Error('The destination track was removed.');
+      const newTrack=track.chain.kind!=='midi'||!!instrumentOf(track),ids=new Set(model.document().tracks.map(t=>t.id));
+      const result=await command('alive_device',{trackId,instanceId:null,action:newTrack?'loadNewTrack':'load'}),selectedTrackId=model.document().tracks[selected]?.id;
+      const created=newTrack&&result.document.tracks.find(t=>!ids.has(t.id));applySnapshot(result);
+      if(created&&token===selectionToken){selected=model.document().tracks.findIndex(t=>t.id===created.id);selectedInstance=instrumentOf(created)?.instanceId??null;sourceSelection=null;selectionToken++;workspace.openDevices();}
+      else{const index=model.document().tracks.findIndex(t=>t.id===selectedTrackId);if(index>=0)selected=index;}
+      trackKey=musicKey=parameterKey=chainKey='';render();
+    });
+  });
   const keydown=guard(event=>{if(event.defaultPrevented)return;const typing=event.target.closest?.('input,select,textarea,[contenteditable]');if(!typing&&(event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='t'){event.preventDefault();return insertTrack(event.shiftKey?'addMidi':'addAudio');}if(!event.repeat&&!typing&&(event.ctrlKey||event.metaKey)&&event.shiftKey&&event.key.toLowerCase()==='m'){event.preventDefault();if(event.target.closest?.('#arrangement-workspace')){const range=timeline.getRange(),track=model.document().tracks[selected];if(track.chain.kind!=='midi')throw Error('Select a MIDI track to insert a MIDI clip.');return workspaceEdit({kind:'midiPlacementCreate',trackId:track.id,start:range.start,duration:range.duration,name:'MIDI clip'},true);}const track=model.document().tracks[selected],slot=slotOf(track);if(track.chain.kind!=='midi'||track.slots[slot])return;return clipEdit({kind:'create',trackId:track.id,slot});}if(event.key==='Escape'&&!$('alive-audio-settings').hidden){event.preventDefault();closeAudioSettings();return;}if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();return file(event.shiftKey?'saveAs':'save');}if(event.code==='Space'&&!event.target.matches('input,select,button,summary')){event.preventDefault();return transport(model.snapshot()?.state.playing?'stop':'start');}});doc.addEventListener('keydown',keydown);
   let unlisten=null;
   if(win?.__TAURI__?.event?.listen)win.__TAURI__.event.listen('alive-close-requested',()=>{guard(()=>file('quit'))();}).then(fn=>{unlisten=fn;});

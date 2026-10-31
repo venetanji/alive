@@ -802,6 +802,33 @@ test('browser instrument loading retains the existing empty MIDI track selection
   assert.ok(row);await row.fire('dblclick');await settle();
   assert.equal(native.calls.find(c=>c.name==='alive_device').args.trackId,'track-1');assert.match(page.ids.get('clip-title').textContent,/Pulse/);view.dispose();
 });
+test('automatic instrument transaction preserves a newer track selection across insertion and generation change',async()=>{
+  const initial=workspaceState();initial.state.playing=0;
+  const page=dom('./alive.html'),native=backend(initial),pending=deferred();
+  const view=mountAlive({...page,invoke:async(name,args)=>{
+    if(name!=='alive_device')return native.invoke(name,args);
+    native.calls.push({name,args:structuredClone(args)});await pending.promise;
+    const track=structuredClone(initial.document.tracks[0]);track.id='compound-track';track.name='Compound';track.slots=[null,null,null,null];track.chain.instrument.instanceId='compound-instrument';
+    initial.document.tracks.splice(1,0,track);initial.deviceInstances['compound-instrument']=structuredClone(initial.deviceInstances[initial.document.tracks[0].chain.instrument.instanceId]);initial.generation++;initial.editRevision++;
+    return structuredClone(initial);
+  }});await settle();
+  const row=descendants(page.ids.get('browser-library')).find(e=>e.className==='browser-result'&&e.getAttribute('data-entry')?.startsWith('device:'));
+  await row.fire('dblclick');await page.find('Select Harmony slot 1').fire('click');pending.resolve();await settle();await settle();
+  assert.deepEqual(native.calls.filter(c=>c.name==='alive_workspace_track'),[]);
+  assert.equal(native.calls.find(c=>c.name==='alive_device').args.action,'loadNewTrack');
+  assert.match(page.ids.get('clip-title').textContent,/Harmony/);assert.equal(page.find('Select Harmony slot 1').attrs['aria-pressed'],'true');view.dispose();
+});
+for(const outcome of ['cancel','refuse'])test(`automatic instrument picker ${outcome} uses one transaction and retains the accepted document`,async()=>{
+  const initial=workspaceState();initial.state.playing=0;initial.document.tracks[0].chain={kind:'audio'};
+  const page=dom('./alive.html'),native=backend(initial),before=structuredClone(initial);
+  const view=mountAlive({...page,invoke:async(name,args)=>{
+    if(name!=='alive_device')return native.invoke(name,args);native.calls.push({name,args:structuredClone(args)});
+    if(outcome==='refuse')throw Error('Invalid saved Ultra JSON');return structuredClone(initial);
+  }});await settle();await page.ids.get('add-track').fire('click');await settle();
+  assert.deepEqual(native.calls.filter(c=>c.name==='alive_workspace_track'),[]);
+  assert.deepEqual(native.calls.find(c=>c.name==='alive_device').args,{trackId:'track-1',instanceId:null,action:'loadNewTrack',generation:1,editRevision:0});
+  assert.deepEqual(view.model.snapshot(),before);assert.match(page.ids.get('chain-title').textContent,/Pulse/);view.dispose();
+});
 test('queued browser instrument load fills its originating rootless track and preserves newer selection',async()=>{
   const initial=workspaceState(),instrument=initial.document.tracks[0].chain.instrument;
   initial.state.playing=0;initial.capabilities.maxTracks=8;initial.document.tracks[0].chain.instrument=null;

@@ -217,6 +217,42 @@ test('browser device double-click requests one validated load and reports native
   await expect(page.locator('.track')).toHaveCount(2);await expect(page.locator('#start')).toBeEnabled();
 });
 
+for(const selected of ['audio','occupied MIDI'])for(const refusal of ['Open device: file is missing','Invalid saved Ultra JSON','Alive does not admit native-source profiles'])test(`automatic instrument activation from ${selected} retains accepted state after ${refusal}`,async({page})=>{
+  await openSession(page,{audioTrack:selected==='audio'});
+  if(selected==='audio')await page.getByRole('button',{name:'Select Harmony track',exact:true}).click();
+  await page.evaluate(()=>{
+    window.catalogRequest=()=>({revision:'cached-user',entries:[{id:'user:cached',provider:'user',name:'Cached User Synth',kind:'instrument',path:'/owned/library/cached.ultra',profile:null,qualification:'qualified',availability:'ready',reason:null,description:'Saved user instrument',dependencies:[]}],nextCursor:null,notices:[]});
+  });
+  await page.getByRole('button',{name:'Refresh Library',exact:true}).click();
+  const device=page.getByRole('option',{name:'Cached User Synth',exact:true});await device.click();
+  await page.locator('#detail-devices').click();
+  const before=await page.evaluate(()=>({document:window.sessionSnapshot.document,generation:window.sessionSnapshot.generation,editRevision:window.sessionSnapshot.editRevision,dirty:window.sessionSnapshot.dirty,history:window.sessionSnapshot.history}));
+  const chain=await page.locator('#chain-title').textContent(),card=await page.locator('.chain-select[aria-pressed="true"]').evaluateAll(elements=>elements[0]?.getAttribute('aria-label')??null);
+  await page.evaluate(error=>{window.browserLoadError=error;},refusal);
+  await device.dblclick();await expect(page.locator('.browser-status')).toContainText(refusal);
+  expect(await page.evaluate(()=>({document:window.sessionSnapshot.document,generation:window.sessionSnapshot.generation,editRevision:window.sessionSnapshot.editRevision,dirty:window.sessionSnapshot.dirty,history:window.sessionSnapshot.history}))).toEqual(before);
+  await expect(page.locator('.track')).toHaveCount(2);await expect(page.locator('#chain-title')).toHaveText(chain);
+  if(card)await expect(page.locator('.chain-select[aria-pressed="true"]')).toHaveAttribute('aria-label',card);
+  await expect(device).toHaveAttribute('aria-selected','true');
+  expect(await page.evaluate(()=>window.calls.filter(c=>['alive_device','alive_workspace_track'].includes(c.name)))).toEqual([{name:'alive_device',args:{trackId:selected==='audio'?'track-2':'track-1',instanceId:null,action:'loadNewTrack',path:'/owned/library/cached.ultra',generation:1,editRevision:0}}]);
+});
+
+for(const selected of ['audio','occupied MIDI'])test(`automatic instrument activation from ${selected} commits one track with compound Undo and Redo`,async({page})=>{
+  await openSession(page,{audioTrack:selected==='audio'});
+  if(selected==='audio')await page.getByRole('button',{name:'Select Harmony track',exact:true}).click();
+  const before=await page.evaluate(()=>structuredClone(window.sessionSnapshot.document));
+  await page.getByRole('option',{name:'Subtractive',exact:true}).dblclick();
+  await expect(page.locator('.track')).toHaveCount(3);
+  expect(await page.evaluate(()=>window.calls.filter(c=>['alive_device','alive_workspace_track'].includes(c.name)).map(c=>({name:c.name,action:c.args.action,trackId:c.args.trackId})))).toEqual([{name:'alive_device',action:'loadNewTrack',trackId:selected==='audio'?'track-2':'track-1'}]);
+  const loaded=await page.evaluate(()=>structuredClone(window.sessionSnapshot.document));
+  const created=loaded.tracks.find(t=>!before.tracks.some(old=>old.id===t.id));expect(created.chain.instrument).toBeTruthy();
+  await expect(page.locator('#chain-title')).toHaveText(`${created.name} chain`);await expect(page.locator('.chain-device')).toHaveCount(1);
+  await page.locator('#undo').click();await expect(page.locator('.track')).toHaveCount(2);
+  expect(await page.evaluate(()=>window.sessionSnapshot.document)).toEqual(before);
+  await page.locator('#redo').click();await expect(page.locator('.track')).toHaveCount(3);
+  expect(await page.evaluate(()=>window.sessionSnapshot.document)).toEqual(loaded);
+});
+
 test('fresh MIDI tracks expose the library immediately and accept a browser instrument on the dropped-on track',async({page})=>{
   await openSession(page,{emptyDevices:true});
   const device=page.getByRole('option',{name:'Subtractive',exact:true});await expect(device).toBeVisible();
@@ -330,7 +366,13 @@ async function openSession(page,{longNames=false,trackCount=2,launchQuantization
       if(name==='alive_device'){
         if(window.browserLoadError)throw Error(window.browserLoadError);
         if(args.generation!==snapshot.generation||args.editRevision!==snapshot.editRevision)throw Error('Stale device edit');
-        const track=snapshot.document.tracks.find(t=>t.id===args.trackId),instrument=args.action==='load'||args.action==='replace';
+        let track=snapshot.document.tracks.find(t=>t.id===args.trackId);const instrument=['load','replace','loadNewTrack'].includes(args.action);
+        if(args.action==='loadNewTrack'){
+          undo.push(structuredClone(snapshot.document));redo.length=0;
+          const at=snapshot.document.tracks.indexOf(track)+1;
+          track={id:`track-new-${snapshot.editRevision}`,name:'New MIDI',chain:{kind:'midi',instrument:null},effects:[],slots:[null,null,null,null],color:'#86a59c',gain:1,mute:false,solo:false};
+          snapshot.document.tracks.splice(at,0,track);
+        }
         const existing=Object.values(snapshot.deviceInstances).find(i=>i.path===args.path),instanceId=`dropped-${snapshot.editRevision}`;
         const reference={instanceId,id:existing?.manifest.id??'fixture',path:args.path,bypassed:false,parameters:Object.fromEntries((existing?.manifest.parameters??[]).map(p=>[p.key,p.base]))};
         if(instrument)track.chain.instrument=reference;

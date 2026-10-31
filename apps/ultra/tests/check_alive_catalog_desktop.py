@@ -96,6 +96,75 @@ def descends_from(control, ancestor):
     return False
 
 
+def automatic_instrument_admission(library, fixture, original):
+    """Exercise cached-file refusal and the compound track history via real UI."""
+    ui.click('Insert Audio Track')
+    ui.wait_for('Select Audio 2 track')
+    ui.click('Select Audio 2 track')
+    before = save('catalog-automatic-baseline.alive')
+    generation = alive.value('Native generation')
+    path = library / 'two.ultra'
+    authored = json.dumps(fixture)
+    refused = []
+    search('Catalog Fixture Two')
+    ui.click('Catalog Fixture Two')
+    history_state = lambda: {
+        name: ui.wait_for(name).get_state_set().contains(Atspi.StateType.ENABLED)
+        for name in ['Undo', 'Redo']
+    }
+    initial_history = history_state()
+    for failure in ['missing', 'invalid', 'unsupported']:
+        if failure == 'missing':
+            path.unlink()
+        elif failure == 'invalid':
+            path.write_text('invalid saved JSON')
+        else:
+            changed = json.loads(authored)
+            changed['nodes'].append(dict(id=99, type='voice', x=0, y=0, params={}))
+            path.write_text(json.dumps(changed))
+        try:
+            # No refresh: this remains the ready descriptor captured before mutation.
+            ui.click('Catalog Fixture Two')
+            ui.keys('Return')
+            needle = {'missing': 'Cannot open', 'invalid': 'not valid JSON', 'unsupported': 'does not support legacy Voice'}[failure]
+            reason = alive.wait_value('Session status', lambda text: needle in text)
+            assert ui.wait_for('Select Audio 2 track').get_state_set().contains(Atspi.StateType.PRESSED)
+            assert selected_names() == ['Catalog Fixture Two'], selected_names()
+            assert history_state() == initial_history
+            assert alive.value('Native generation') == generation
+            assert save('catalog-automatic-baseline.alive') == before
+            refused.append(dict(failure=failure, reason=reason, accepted_score_unchanged=True,
+                                native_generation_unchanged=True, selected_track='Audio 2',
+                                history_controls=initial_history))
+        finally:
+            path.write_text(authored)
+    ui.click('Catalog Fixture Two')
+    ui.keys('Return')
+    ui.wait_for('Select MIDI 3 Catalog Fixture Two instrument')
+    loaded = save('catalog-automatic-loaded.alive')
+    assert len(loaded['tracks']) == 3
+    created = loaded['tracks'][2]
+    assert created['chain']['instrument'] is not None
+    captured = created['chain']['instrument']['instanceId']
+    ui.click('Undo')
+    ui.wait_for('Select Audio 2 track')
+    assert save('catalog-automatic-undone.alive') == before
+    ui.click('Redo')
+    ui.wait_for('Select MIDI 3 track')
+    redone = save('catalog-automatic-redone.alive')
+    assert redone == loaded
+    assert redone['tracks'][2]['chain']['instrument']['instanceId'] == captured
+    # Restore the original empty MIDI fixture for the existing drag/audio journey.
+    ui.click('Undo')
+    ui.wait_for('Select Audio 2 track')
+    ui.click('Undo')
+    ui.wait_for('Select MIDI 1 track')
+    assert save('catalog-automatic-restored.alive') == original
+    return dict(refusals=refused, success_track_count=3, compound_undo_redo=True,
+                captured_instance_id=captured, original_fixture_restored=True,
+                synthetic_ipc=False)
+
+
 def unfiltered_layout(width, height):
     search('')
     results = ui.wait_for('Browser results')
@@ -306,6 +375,11 @@ try:
         source_commit=manifest['source_commit'], artifact_hashes=manifest['artifacts'],
         captures=captures, unfiltered_captures=unfiltered_captures, physical_audio=False,
     ), indent=2) + '\n')
+    transaction = automatic_instrument_admission(library, fixture, before)
+    report_path = ui.output / 'catalog-report.json'
+    report = json.loads(report_path.read_text())
+    report['automatic_instrument_transaction'] = transaction
+    report_path.write_text(json.dumps(report, indent=2) + '\n')
     search('')
     runpy.run_path(str(helper), run_name='__main__')
 except Exception:

@@ -22,7 +22,10 @@ impl From<&Session> for Projection {
 }
 impl Projection {
     fn identities(&self)->std::collections::HashSet<String>{
-        self.tracks.iter().map(|t|t.id.clone()).chain(self.tracks.iter().flat_map(|t|t.slots.iter().flatten().map(|s|s.id.clone()))).chain(self.sources.iter().map(|s|s.id().to_owned())).chain(self.sources.iter().flat_map(|s|match s{super::workspaces::SourceV4::Midi{notes,..}=>notes.iter().map(|n|n.id.clone()).collect::<Vec<_>>(),super::workspaces::SourceV4::Audio{..}=>vec![]})).chain(self.placements.iter().map(|p|p.id.clone())).collect()
+        self.tracks.iter().map(|t|t.id.clone()).chain(self.tracks.iter().flat_map(|t|t.slots.iter().flatten().map(|s|s.id.clone()))).chain(self.tracks.iter().flat_map(|t|{
+            let instrument=match &t.chain{super::workspaces::ChainV4::Midi{instrument}=>instrument.as_ref(),super::workspaces::ChainV4::Audio{}=>None};
+            instrument.into_iter().chain(&t.effects).map(|d|d.instance_id.clone())
+        })).chain(self.sources.iter().map(|s|s.id().to_owned())).chain(self.sources.iter().flat_map(|s|match s{super::workspaces::SourceV4::Midi{notes,..}=>notes.iter().map(|n|n.id.clone()).collect::<Vec<_>>(),super::workspaces::SourceV4::Audio{..}=>vec![]})).chain(self.placements.iter().map(|p|p.id.clone())).collect()
     }
     pub fn materialize(&self,live:&Session)->Result<Session,String>{
         let mut document=live.clone();document.title=self.title.clone();document.tempo=self.tempo;document.length_beats=self.length_beats;document.loop_enabled=self.loop_enabled;document.loop_start_beats=self.loop_start_beats;document.loop_end_beats=self.loop_end_beats;document.sources=self.sources.clone();document.placements=self.placements.clone();
@@ -43,10 +46,19 @@ struct Entry { before:Projection,after:Projection,before_launch:super::launch::L
 #[derive(Default,Clone)]
 pub(super) struct History { entries:Vec<Entry>,cursor:usize,bytes:usize }
 impl History {
-    pub fn rebase_audio_paths(&mut self,origin:&std::path::Path,destination:&std::path::Path){
+    pub fn rebase_paths(&mut self,origin:&std::path::Path,destination:&std::path::Path){
         let old=origin.parent().unwrap_or(std::path::Path::new("."));let new=destination.parent().unwrap_or(std::path::Path::new("."));
         for entry in &mut self.entries {for projection in [&mut entry.before,&mut entry.after] {
-            { let project=projection;for source in &mut project.sources {
+            { let project=projection;
+            // Removed tracks still own captured device paths needed by Redo.
+            for track in &mut project.tracks {
+                let instrument=match &mut track.chain {super::workspaces::ChainV4::Midi{instrument}=>instrument.as_mut(),super::workspaces::ChainV4::Audio{}=>None};
+                for device in instrument.into_iter().chain(&mut track.effects) {
+                    let resolved=old.join(&device.path);let resolved=std::fs::canonicalize(&resolved).unwrap_or(resolved);
+                    if let Some(path)=super::persistence::relative_path(new,&resolved).to_str(){device.path=path.to_owned();}
+                }
+            }
+            for source in &mut project.sources {
                 if let super::workspaces::SourceV4::Audio{file,..}=source {
                     let resolved=old.join(&file.path);let resolved=std::fs::canonicalize(&resolved).unwrap_or(resolved);
                     if let Some(path)=super::persistence::relative_path(new,&resolved).to_str(){file.path=path.to_owned();}
