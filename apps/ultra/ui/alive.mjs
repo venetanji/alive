@@ -1,9 +1,11 @@
+import {mountPresentation} from './canvas-presentation-view.mjs';
+import {createAlivePresentationHost} from './canvas-presentation-hosts.mjs';
 import {point,beatAt,beatX,pitchAt,transformNote,velocityEdit,addNote,keyEdit,timeSelection,loopSelection,transformRegion} from './alive-piano.mjs';
 import {mountClipView} from './alive-clip-view.mjs';
 import {mountBrowser,deviceAdmissionReason} from './alive-browser.mjs';
 import {mountDeviceDrop} from './alive-device-drop.mjs';
 import {mountTransportOptions} from './alive-shell.mjs';
-import {createAliveModel,parameterReading,nativeInteger,instrumentOf,actualDevices,sourceLength} from './alive-model.mjs';
+import {createAliveModel,nativeInteger,instrumentOf,actualDevices,sourceLength} from './alive-model.mjs';
 import {mountAudioSettings} from './audio-settings.mjs';
 import {mountWorkspace} from './alive-workspace.mjs';
 import {workspaceMusicEdit} from './alive-workspace-edits.mjs';
@@ -460,11 +462,11 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     sourceSelection={trackId:entry.trackId,sourceId:entry.sourceId,occurrence:null};
     musicKey=clipControlsKey='';workspace.openClip();render();
   }
-  function discardRack(key,cached){workspace.discardPreserved([...cached.parameters.values()].flatMap(({number,range})=>[number,range]));rackCache.delete(key);}
+  function discardRack(key,cached){for(const view of cached.parameters.values()){workspace.discardPreserved([...view.panel.querySelectorAll('input,select')]);view.surface.dispose();view.host.dispose();}rackCache.delete(key);}
   function buildChain(){
     const track=model.document().tracks[selected],devices=chainDevices(track);
     rootlessInstrumentButton=null;$('chain-title').textContent=`${track.name} chain`;
-    const cacheKey=JSON.stringify([generation(),track.id,track.name,devices.map(d=>[d.instanceId,d.path])]);
+    const cacheKey=JSON.stringify([generation(),track.id,track.name,devices.map(d=>[d.instanceId,d.path,d.sourceSha256,d.id,d.version])]);
     // Keep mounted control nodes per track so navigation preserves unfinished fields.
     for(const [key,cached]of rackCache)if(cached.generation!==generation()||(cached.trackId===track.id&&key!==cacheKey))discardRack(key,cached);
     const cached=rackCache.get(cacheKey);$('chain').replaceChildren();chainViews.length=0;parameterViews.clear();
@@ -545,25 +547,12 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   }
   function buildParameters(instanceId){
     const device=instanceView(instanceId)?.manifest,panel=make('div','device-controls');
-    const keys=device?.parameters?.map(p=>p.key)??[];
-    const synth=['attack','decay','sustain','release'].every(key=>keys.includes(key));
-    const groups=synth?[['Envelope',['attack','decay','sustain','release']],['Filter',['cutoff','resonance'].filter(key=>keys.includes(key))],['Output',keys.filter(key=>!['attack','decay','sustain','release','cutoff','resonance'].includes(key))]]:keys.includes('cutoff')?[['Filter',keys]]:keys.includes('gain')?[['Stereo output',keys]]:[['Controls',keys]];
-    panel.classList.toggle('synth-controls',synth);
-    for(const [title,groupKeys]of groups){
-      if(!groupKeys.length)continue;
-      const group=make('fieldset','device-control-group'),legend=make('legend','',title);group.classList.toggle('single-control',groupKeys.length===1);group.append(legend);panel.append(group);
-      for(const key of groupKeys){
-        const binding=device.parameters.find(p=>p.key===key);
-        const section=make('div','parameter'),label=make('label','',binding.label),base=make('div','base'),unit=make('span','unit',binding.unit??''),number=numeric(`${binding.label} base`,binding.base,{min:binding.min,max:binding.max,step:binding.integral?1:binding.max<=1?.01:binding.max<=20?.1:1},value=>setBase(instanceId,binding.key,value)),range=make('input'),output=make('output');
-        range.type='range';range.min=binding.min;range.max=binding.max;range.step=binding.integral?'1':'any';range.value=binding.base;range.id=`base-${instanceId}-${binding.key}`;range.setAttribute('aria-label',`${binding.label} base slider`);label.htmlFor=range.id;
-        range.addEventListener('change',guard(()=>setBase(instanceId,binding.key,Number(range.value))));range.addEventListener('input',()=>{number.value=range.value;});
-        output.setAttribute('aria-label',`${binding.label} effective ownership`);base.append(number,unit);section.append(label,range,base,output);group.append(section);parameterViews.set(JSON.stringify([instanceId,binding.key]),{instanceId,binding,section,number,range,output});
-      }
-    }
-    if(!keys.length)panel.append(make('p','muted','Open in Ultra to edit this patch.'));
+    if(!device?.presentation)return panel;
+    const host=createAlivePresentationHost({instanceId,getSnapshot:()=>model.snapshot(),writeBase:(request,assert,assertValue)=>enqueue(async()=>{assert();assertValue();await invoke('alive_base',request);assert();await refresh();assert();})});
+    const surface=mountPresentation({doc,root:panel,presentation:device.presentation,host,mode:'performance',onError:error=>notice(error,true)});
+    parameterViews.set(instanceId,{instanceId,panel,host,surface});
     return panel;
   }
-  function setBase(instanceId,key,value){const origin=generation();return enqueue(async()=>{if(generation()!==origin)throw Error('The originating device session changed.');await invoke('alive_base',{instanceId,key,value,generation:origin});await refresh();});}
   const piano=$('piano-roll'),audioWaveform=$('audio-waveform'),velocity=$('note-velocity');
   clipView=mountClipView({doc,win,svg:piano,audioSvg:audioWaveform,onImport:guard(()=>importAudio(model.document().tracks[selected].id,slotOf(model.document().tracks[selected]))),onStretch:stretchAudio,onNavigate:()=>{releaseAudition();cancelGesture();},onGeometry:g=>{pianoGeometry=g;},onPreview:enabled=>{audition.enabled(enabled);render();},onRegion:guard(changeRegion),onLoopSelection:guard(loopClipSelection),onError:error=>notice(error,true)});
   function stretchAudio(sourceTempo,sourceId=sourceOf()?.id){const source=sourceOf();if(source?.kind!=='audio'||source.id!==sourceId)throw Error('Select the audio sample again.');if(!Number.isFinite(sourceTempo)||sourceTempo<30||sourceTempo>240)throw Error('Re-Pitch requires a source tempo from 30 to 240 BPM.');clipTimeSelection=null;return workspaceEdit({kind:'audioSourceTempo',sourceId:source.id,sourceTempo});}
@@ -704,7 +693,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     $('start').disabled=!!snapshot.state.playing;$('stop').disabled=false;$('add-track').disabled=(instrumentNeedsTrack&&document.tracks.length>=maxTracks)||deviceCount>=maxDevices||!!snapshot.state.playing||snapshot.midi.pending;
     const nextTracks=JSON.stringify([snapshot.generation,document.tracks.map(t=>[t.id,t.name,t.color,t.chain?.kind,t.slots?.map(c=>c?[c.id,c.name,c.sourceId]:null)])]);if(nextTracks!==trackKey){trackKey=nextTracks;buildTracks(document);}
     for(const [key,cached]of rackCache)if(cached.generation!==generation()||!model.document().tracks.some(track=>track.id===cached.trackId))discardRack(key,cached);
-    const nextChain=JSON.stringify([snapshot.generation,document.tracks[selected].id,document.tracks[selected].name,document.tracks[selected].chain.kind,chainDevices().map(d=>[d.instanceId,d.path])]);if(nextChain!==chainKey){chainKey=nextChain;buildChain();}
+    const nextChain=JSON.stringify([snapshot.generation,document.tracks[selected].id,document.tracks[selected].name,document.tracks[selected].chain.kind,chainDevices().map(d=>[d.instanceId,d.path,d.sourceSha256,d.id,d.version])]);if(nextChain!==chainKey){chainKey=nextChain;buildChain();}
     const structuralBlocked=!!snapshot.state.playing||snapshot.midi.pending;if(rootlessInstrumentButton)rootlessInstrumentButton.disabled=structuralBlocked;
     $('chain-status').textContent=snapshot.midi.pending?'Wait for the musical edit to finish before changing devices.':snapshot.state.playing?'Stop transport to add, remove, replace or reorder devices. Bypass and base values work live.':'Add, remove, replace and reorder devices while stopped. Bypass and base values work live.';
     $('add-effect').disabled=structuralBlocked||document.tracks[selected].effects.length>=2||deviceCount>=maxDevices;
@@ -722,12 +711,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       meter(view.bar,runtime?.peakLeft??0,runtime?.peakRight??0);view.readout.textContent=peak(runtime?.peakLeft??0,runtime?.peakRight??0);
       for(const button of [...view.actions.children].slice(1)){button.disabled=button===view.actions.children[2]?!!snapshot.midi?.pending||document.tracks.length<=1:!!snapshot.state.playing||snapshot.midi.pending||!instrumentOf(track);button.title=snapshot.midi.pending?'Wait for the musical edit to finish before changing devices.':snapshot.state.playing?'Stop transport before replacing a device or removing a track.':button.textContent==='Remove track'?'Remove this whole track, its instrument, effects and automation. Keep at least one track.':'Replace this instrument from a saved Ultra source; its automation lanes are removed.';}
     });
-    for(const view of parameterViews.values()){
-      const device=instanceView(view.instanceId),binding=device?.manifest.parameters.find(p=>p.key===view.binding.key);if(!binding)continue;
-      const reading=parameterReading(binding,snapshot.state.devices[device.index],device.manifest.parameters.indexOf(binding));
-      if(doc.activeElement!==view.number&&!workspace.preserves(view.number))view.number.value=reading.base;if(doc.activeElement!==view.range&&!workspace.preserves(view.range))view.range.value=reading.base;
-      view.output.textContent=`${reading.owner}: ${Number(reading.effective.toFixed(3))}${binding.unit?' '+binding.unit:''}`;view.section.classList.toggle('automated',reading.owner==='Automation');
-    }
+    for(const cached of rackCache.values())for(const view of cached.parameters.values())view.host.publish();
     const frameBeat=value=>Number(nativeInteger(value)*1000000n/48000n)/1000000*snapshot.document.tempo/60;
     const beat=frameBeat(snapshot.state.position),sixteenth=Math.floor(Math.max(0,beat)*4);
     const musicalPosition=`${Math.floor(sixteenth/16)+1}.${Math.floor(sixteenth/4)%4+1}.${sixteenth%4+1}`,precisePosition=`${beat.toFixed(3)} beats`;
@@ -810,6 +794,6 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   }
   if(invoke)win.setTimeout(pollMeasurements,1000);
   if(invoke){enqueue(refresh,true).then(()=>notice('Ready. Select a clip to edit notes or automation.')).catch(()=>{});win.setTimeout(poll,80);}else notice('Open the native app with bash apps/alive/run.sh. This page does not synthesize audio.',true);
-  return{model,refresh,dispose(){disposed=true;audition.dispose();win?.removeEventListener('blur',releaseAudition);deviceDrop.dispose();browser.dispose();transportOptions.dispose();masterProducer.dispose();workspace.dispose();timeline?.dispose();clipView.dispose();win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};
+  return{model,refresh,dispose(){disposed=true;for(const [key,cached]of rackCache)discardRack(key,cached);audition.dispose();win?.removeEventListener('blur',releaseAudition);deviceDrop.dispose();browser.dispose();transportOptions.dispose();masterProducer.dispose();workspace.dispose();timeline?.dispose();clipView.dispose();win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};
 }
 if(globalThis.document)mountAlive();

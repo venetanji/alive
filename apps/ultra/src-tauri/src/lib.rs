@@ -912,6 +912,8 @@ pub fn run_ultra(context: fn() -> tauri::Context<tauri::Wry>) {
             help_reference::help_reference,
             document_windows::document_current,
             document_windows::commands::document_commit,
+            document_windows::commands::document_parameter_gesture,
+            document_windows::commands::document_settle_parameter_gestures,
             document_windows::commands::document_history,
             document_windows::commands::document_open_patcher,
             document_windows::commands::document_close_flushed,

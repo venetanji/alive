@@ -316,6 +316,14 @@ where
 pub struct Prepared {
     pub native: NativeGraph,
 }
+impl Prepared {
+    pub fn parameter_hot(&self,id:u32,key:&str)->bool{key=="value"&&self.native.nodes[..self.native.node_count as usize].iter().any(|n|n.id==id&&matches!(n.kind,2|3|15..=18|52))}
+    pub fn parameter_value(&self, id:u32, key:&str)->Result<f64,String>{
+        let node=self.native.nodes[..self.native.node_count as usize].iter().find(|n|n.id==id).ok_or("Unknown canvas node")?;
+        let spec=parameters(node.kind).iter().find(|s|s.key==key&&s.live).ok_or("Unknown or structural canvas parameter")?;
+        Ok([node.p0,node.p1,node.p2,node.p3,node.p4,node.p5][spec.slot as usize])
+    }
+}
 
 /// Count the serialized input without allocating another unbounded JSON string.
 struct SizeLimit {
@@ -1020,6 +1028,19 @@ pub struct CanvasState {
 impl CanvasState {
     pub fn revision(&self) -> u64 { self.revision }
     pub fn message_text_serial(&self) -> u64 { self.message_text_serial }
+
+    pub fn live_changes_only(old:&Prepared,next:&Prepared)->bool{
+        let mut current=Self{graph:Some(old.clone()),revision:1,..Self::default()};
+        for node in &next.native.nodes[..next.native.node_count as usize]{for spec in parameters(node.kind).iter().filter(|s|s.live){
+            let value=[node.p0,node.p1,node.p2,node.p3,node.p4,node.p5][spec.slot as usize];
+            if current.parameter(1,node.id,spec.key,value,|_,_|true).is_err(){return false;}
+        }}current.matches(next)
+    }
+
+    // Native preview is transient; canonical comparison still reflects the authored graph.
+    pub fn preview_parameter(&self,revision:u64,node:u32,key:&str,value:f64,send:impl FnOnce(u32,f64)->bool)->Result<(),String>{
+        self.clone().parameter(revision,node,key,value,send)
+    }
 
     pub fn matches(&self, plan: &Prepared) -> bool {
         self.graph.as_ref().is_some_and(|current| {

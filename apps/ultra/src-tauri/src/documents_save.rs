@@ -48,7 +48,7 @@ impl Registry {
         let request = self.save.requests.remove(owner).unwrap();
         let document = if timeout { Err("Timed out waiting for linked views to flush".into()) }
             else if let Some(error) = request.error { Err(error) }
-            else { self.get_open(owner).cloned() };
+            else { self.require_settled_parameter_gestures(owner).and_then(|_|self.get_open(owner).cloned()) };
         Ok(Some(SaveSnapshot { notice: SaveNotice { owner: owner.into(), token, views: request.members.into_iter().collect() }, document }))
     }
 

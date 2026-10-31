@@ -1,0 +1,29 @@
+@import './live-controls.css';
+@import './live-device-view.css';
+
+.presentation-viewport{max-width:100%;min-width:0;overflow:auto;scrollbar-color:var(--line,#777) var(--canvas,#292929);}
+.presentation-surface{position:relative;isolation:isolate;flex:none;box-sizing:content-box;--live-font:var(--font,"Liberation Sans","Helvetica Neue",sans-serif);--live-surface:var(--raised,#363636);--live-ink:var(--text,#ededeb);--live-focus:var(--selection,#91b9ed);color:var(--live-ink);}
+.presentation-item{position:absolute;box-sizing:border-box;overflow:auto;scrollbar-width:thin;--live-accent:var(--selection,#88c5c7);}
+.presentation-item[hidden]{display:none;}
+.presentation-item[data-accent=cyan]{--live-accent:#03c3d5;}
+.presentation-item[data-accent=orange]{--live-accent:#ffad56;}
+.presentation-item[data-accent=neutral]{--live-accent:#b5b5b5;}
+.presentation-item>.live-control{width:100%;min-width:0;gap:2px;}
+.presentation-item>.live-control .live-dial{width:44px;height:44px;}
+.presentation-item>.live-control .live-value{height:18px;min-height:18px;padding:1px 3px;}
+.presentation-item>.live-value{width:100%;}
+.presentation-item>.live-menu{display:grid;gap:4px;}
+.presentation-item>.live-button{width:100%;}
+.presentation-item[data-label-position=below]>.live-control .live-label{order:3;}
+.presentation-item[data-label-position=hidden] .live-label{display:none;}
+.presentation-item .live-readout{max-width:100%;}
+.presentation-ownership{display:block;margin-top:3px;text-align:center;color:var(--muted,#b5b5b5);font-size:10px;line-height:1.2;font-variant-numeric:tabular-nums;}
+.presentation-item.automated .presentation-ownership{color:var(--stereo,#88c5c7);}
+.presentation-error,.presentation-panel-status{box-sizing:border-box;padding:5px;color:var(--live-error,#ffb0a4);font-size:11px;line-height:1.4;overflow-wrap:anywhere;}
+.presentation-error[hidden],.presentation-panel-status[hidden]{display:none;}
+.presentation-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.35;}
+.chain-device:has(.presentation-surface){width:auto;min-width:180px;max-width:100%;}
+.chain-device .device-controls:has(.presentation-surface){display:block;padding:0;flex:1;min-height:0;overflow:auto;}
+.chain-device .presentation-viewport{height:100%;}
+.chain-device.bypassed .presentation-surface{opacity:.55;}
+#instrument-controls{min-width:0;max-width:100%;}

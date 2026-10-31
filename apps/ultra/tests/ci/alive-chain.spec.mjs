@@ -1,5 +1,16 @@
 import {test,expect} from '@playwright/test';
+import {projectFixturePresentation} from '../presentation-dom.mjs';
 import {readFileSync,mkdirSync} from 'node:fs';
+
+for(const size of [{width:800,height:600},{width:1280,height:800}])test(`saved Alive surface retains focused draft and natural scroll at ${size.width}x${size.height}`,async({page},info)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
+  const card=page.locator('.chain-device').first(),surface=card.locator('.presentation-surface'),field=card.getByRole('spinbutton',{name:'Attack base',exact:true});
+  await field.fill('123');await expect(field).toBeFocused();await expect(card.getByLabel('Attack effective ownership',{exact:true})).toBeInViewport({ratio:1});expect(await surface.evaluate(e=>e.offsetWidth)).toBe(640);
+  await page.screenshot({path:info.outputPath(`saved-alive-${size.width}x${size.height}.png`)});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
+  const chain=page.locator('#chain');expect(await chain.evaluate(e=>e.scrollWidth>e.clientWidth)).toBe(true);
+  await page.locator('#detail-clip').click();await page.locator('#detail-devices').click();await expect(field).toHaveValue('123');
+});
 
 for(const size of [{width:1440,height:900},{width:1280,height:800},{width:800,height:600}])test(`detail expands and maximizes the piano editor at ${size.width}x${size.height}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page);
@@ -335,13 +346,13 @@ async function openSession(page,{longNames=false,trackCount=2,launchQuantization
   document.tracks.forEach((track,index)=>{
     const reference=track.chain.instrument,source=document.sources[index];reference.instanceId=`instrument-${index}`;reference.bypassed=false;track.effects=[];
     source.id=`source-${track.id}`;source.name='Clip 1';source.notes.forEach((n,i)=>n.id=`note-${track.id}-${i}`);source.automation.forEach(l=>l.instanceId=reference.instanceId);track.slots=[{id:`clip-${track.id}`,name:'Clip 1',sourceId:source.id,region:{start:0,end:8,loopStart:0,loopEnd:8,loopEnabled:true}},null,null,null];
-    const manifest={...patch.device,parameters:patch.device.parameters.map(p=>({...p,base:reference.parameters[p.key]}))};
+    const manifest={...patch.device,presentation:projectFixturePresentation(patch),parameters:patch.device.parameters.map(p=>({...p,base:reference.parameters[p.key]}))};
     deviceInstances[reference.instanceId]={track:index,index:runtime.length,path:reference.path,manifest};runtime.push({effective:manifest.parameters.map(p=>p.base),owned:manifest.parameters.map(()=>0)});
   });
   for(const file of ['utility','stereo-lowpass']){
-    const device=JSON.parse(readFileSync(new URL(`../../examples/${file}.ultra`,import.meta.url))).device,instanceId=file;
+    const authored=JSON.parse(readFileSync(new URL(`../../examples/${file}.ultra`,import.meta.url))),device=authored.device,instanceId=file;
     if(longNames&&file==='stereo-lowpass')device.name='LongSavedDevice'.repeat(8);
-    const manifest={...device,parameters:device.parameters.map(p=>({...p,base:p.key==='gain'?1:p.key==='resonance'?.7:1000}))};
+    const manifest={...device,presentation:projectFixturePresentation(authored),parameters:device.parameters.map(p=>({...p,base:p.key==='gain'?1:p.key==='resonance'?.7:1000}))};
     document.tracks[0].effects.push({instanceId,id:device.id,path:`${file}.ultra`,parameters:Object.fromEntries(manifest.parameters.map(p=>[p.key,p.base])),bypassed:false});
     deviceInstances[instanceId]={track:0,index:runtime.length,path:`${file}.ultra`,manifest};runtime.push({effective:manifest.parameters.map(p=>p.base),owned:manifest.parameters.map(()=>0)});
   }

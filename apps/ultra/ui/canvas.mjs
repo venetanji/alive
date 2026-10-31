@@ -650,7 +650,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     render(controller.getState());
     if(!accepted)throw Error('Finish or cancel the invalid focused edit before saving or closing.');
   }
-  documents=mountDocuments({doc,win,invoke,getPatch:()=>controller.getState().document,adopt:adoptDocument,beforeSave:()=>{captureFocusedDraft();return controller.flush();},
+  documents=mountDocuments({doc,win,invoke,getPatch:()=>controller.getState().document,adopt:adoptDocument,beforeSave:async()=>{captureFocusedDraft();await controller.settleParameterGestures?.();return controller.flush();},
     beforeClose:request=>{captureFocusedDraft();return controller.flushBeforeClose?.(request)??controller.flush();},onCloseCancelled:request=>controller.cancelClose?.(request),
     onDescriptor:descriptor=>controller.acceptDescriptor?.(descriptor),onReveal:acceptReveal,
     notice:error=>controller.notice(error),inspect:(source,name)=>{dialog('open');$('patch-json').value=source;return maxDialog.inspect(source,name);}});

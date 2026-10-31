@@ -1,3 +1,4 @@
+import {createParameterGestures} from './canvas-parameter-gestures.mjs';
 // ultra-canvas-v1: a document/editor and bounded native command adapter, never a JS scheduler or DSP.
 import {appearanceFields, validateStyle} from './canvas-appearance.mjs';
 import {validateMidpoints, translatedMidpoints} from './canvas-cable-geometry.mjs';
@@ -368,18 +369,21 @@ export function createHelpViewState() {
 export function createCanvasController({invoke,patch=starterPatch(),onState=()=>{}}={}) {
   const document=new CanvasDocument(patch),native=typeof invoke==='function';
   const helpView=createHelpViewState();helpView.reconcile(document);
+  let parameterGestures;
   let revision=null,desired=1,applied=0,applyTask=null,paramTask=null,eventTask=null,operation=null;
   let status={},observations={},messageBoxes={},printPopups={},messageSerial=0,inFlightText=null,consoleRecords=[],consoleDropped=0,consoleDroppedBaseline=0,consoleEpoch=0,notice=native?'Preparing native patch…':'Browser preview: native execution is unavailable.',faulted=false,panicked=false,disposed=false,actionEpoch=0;
   let pendingParams=new Map(),events=[],pollTask=null,stopTask=null,stopping=false,lifecycle=0;
-  const getState=()=>({patch:copy(document.patch),document:copy(document.document),path:[...document.path],...helpView.getState(),native,revision,desiredRevision:desired,activeDocumentRevision:applied,status:{...status},observations:copy(observations),messageBoxes:copy(messageBoxes),printPopups:copy(printPopups),console:copy(consoleRecords),consoleDropped:Math.max(0,consoleDropped-consoleDroppedBaseline),notice,faulted:faulted||panicked,
+  const getState=()=>({patch:copy(document.patch),document:copy(document.document),path:[...document.path],...helpView.getState(),native,ownerId:'main',parameterPreviews:parameterGestures?.snapshots()??[],revision,desiredRevision:desired,activeDocumentRevision:applied,status:{...status},observations:copy(observations),messageBoxes:copy(messageBoxes),printPopups:copy(printPopups),console:copy(consoleRecords),consoleDropped:Math.max(0,consoleDropped-consoleDroppedBaseline),notice,faulted:faulted||panicked,
     busy:!!operation,applying:!!applyTask,ready:native&&applied===desired&&!status.fault&&!status.server_lost&&!faulted&&!panicked&&!operation&&!stopping&&!disposed,canUndo:!!document.past.length,canRedo:!!document.future.length});
   const emit=()=>onState(getState());
+  parameterGestures=createParameterGestures({native,invoke,scope:()=>({ownerLabel:'main',runtimeRevision:revision,sourceRevision:desired}),read:(id,key)=>treeNodes(document.document).find(node=>node.id===id)?.params[key],onCommit:(id,key,value)=>document.parameterRoot(id,key,value,{history:true}),onChange:emit});
   const report=error=>{notice=String(error?.message||error);emit();};
   const textPending=()=>inFlightText!==null||events.some(item=>item.kind==='text');
   const requireTextAdmission=()=>{if(textPending())fail('Wait for the message text edit to finish before changing the document.');};
   const resetRuntime=({replaceGraph=false}={})=>{observations={};messageBoxes={};if(replaceGraph)printPopups={};messageSerial=0;inFlightText=null;actionEpoch++;for(const item of events)item.resolve?.(false);events=[];};
   const execution=p=>{const flat=p.version===2?lowerHierarchy(p):p;return JSON.stringify({nodes:flat.nodes.map(({id,type,params})=>({id,type,params})),edges:flat.edges.map(({from,outlet,to,inlet})=>({from,outlet,to,inlet}))});};
   function structural(fn,force=false) {
+    parameterGestures.assertSettled();
     requireTextAdmission();
     const before=execution(document.document),result=fn();
     helpView.reconcile(document);
@@ -417,6 +421,7 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
     })().finally(()=>{paramTask=null;emit();});return paramTask;
   }
   function parameter(id,key,value,{history=true,root=false}={}) {
+    parameterGestures.assertTarget(id,key);
     const node=(root?treeNodes(document.document):document.patch.nodes).find(n=>n.id===id);if(!node)fail('Missing object.');
     const write=(...args)=>root?document.parameterRoot(...args):document.parameter(...args);
     if(node.type==='message_box'&&key==='text'){
@@ -595,6 +600,7 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
     }
   }
   async function dispose(){
+    await parameterGestures.settle();
     lifecycle++;resetRuntime();
     return exclusive(async()=>{
       if(disposed)return;
@@ -602,7 +608,7 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
       disposed=true;
     });
   }
-  return {getState,prepare:ensureApply,startAudio,stopAudio,stop,panic,poll,flush,dispose,disposeDocument:dispose,event,tab,parameter,
+  return {beginParameterGesture:parameterGestures.begin,writeParameterGesture:parameterGestures.write,settleParameterGestures:parameterGestures.settle,getState,prepare:ensureApply,startAudio,stopAudio,stop,panic,poll,flush,dispose,disposeDocument:dispose,event,tab,parameter,
     deviceParameter:(id,key,value,options)=>parameter(id,key,value,{...options,root:true}),
     deviceEvent:(node,inlet,value)=>event(node,inlet,value,undefined,true),
     enter:id=>{document.enter(id);helpView.navigate(document);emit();},leave:depth=>{document.leave(depth);helpView.navigate(document);emit();},reveal:id=>{document.reveal(id);helpView.navigate(document);emit();},

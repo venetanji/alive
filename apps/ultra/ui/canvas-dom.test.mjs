@@ -16,10 +16,14 @@ class Element {
   removeAttribute(k){delete this.attrs[k];}
   addEventListener(k,f){(this.listeners[k]??=[]).push(f);}
   removeEventListener(){}
+  getAttribute(k){return this.attrs[k]??null;}
+  querySelectorAll(selector){return descendants(this).filter(e=>selector.split(",").some(s=>s.toUpperCase()===e.tagName));}
+  checkValidity(){return true;}
+  dispatchEvent(event){for(const f of this.listeners[event.type]??[])f(event);}
   getBoundingClientRect(){return{left:0,top:0,width:160,height:90};}
   setPointerCapture(){} releasePointerCapture(){} focus(){} select(){} click(){return this.fire('click');}
   showModal(){this.open=true;}close(){this.open=false;}
-  async fire(type,extra={}){const e={type,target:this,button:0,preventDefault(){},stopPropagation(){},...extra};await Promise.all((this.listeners[type]||[]).map(f=>f(e)));}
+  async fire(type,extra={}){if(type==='change'&&this.tagName==='INPUT'&&this.classList.contains('live-value'))for(const fn of this.listeners.input??[])fn({type:'input',target:this});const e={type,target:this,button:0,preventDefault(){},stopPropagation(){},...extra};await Promise.all((this.listeners[type]||[]).map(f=>f(e)));}
 }
 const descendants=e=>e.children.filter(x=>typeof x==='object').flatMap(x=>[x,...descendants(x)]);
 const settle=()=>new Promise(r=>setImmediate(r));
@@ -36,7 +40,7 @@ async function mount(native=false,{documentCurrent=null,tauri,observeInvoke=()=>
   const window={addEventListener:(...a)=>windowEvents.addEventListener(...a),setTimeout:(fn,ms)=>{timeouts.push({fn,ms});return timeouts.length;},clearTimeout(){},location:{href:'http://localhost/canvas.html',assign:href=>navigations.push(href)},open:url=>{const child={url};previews.push(child);return child;}};
   if(tauri)window.__TAURI__=tauri;
   ids.get('legacy-link').href='index.html';ids.get('lab-link').href='chord-lab.html';
-  let invoke=native?async(name,args={})=>{calls.push({name,args});observeInvoke(name,args);if(name==='document_commit'&&documentCommit)return documentCommit(args);if(name==='help_reference')return helpReference?.(args.name);if(name==='document_current')return documentCurrent;if(name==='document_list')return[{id:1,label:'main',title:'First.ultra',kind:'patch'},{id:2,label:'patch-2',title:'Second.ultra',kind:'patch'}];if(name==='document_save')return{id:1,title:'Saved.ultra',kind:'patch'};if(name==='audio_devices')return{config:{host:'default',device:'default',sample_rate:48000,buffer_frames:null},hosts:['PipeWire'],effective_host:'PipeWire',devices:[{id:'default',name:'System default - Speakers',compatible:true}],notice:'Audio is off.'};if(name==='canvas_apply'){patch=args.patch;return{revision:++revision};}if(name==='audio_start')running=true;if(name==='audio_stop')running=false;if(name==='audio_status')return{running,...audioStatus};if(name==='canvas_status')return{revision,active:true,nodes:patch.nodes.map(n=>({id:n.id,value:0,pulses:0,...observed[n.id]})),console:consoleRecords.splice(0),print_popups:popupSnapshots.value};return true;}:undefined;
+  let invoke=native?async(name,args={})=>{calls.push({name,args});observeInvoke(name,args);if(name==='document_parameter_gesture')return{token:1,document:{}};if(name==='document_commit'&&documentCommit)return documentCommit(args);if(name==='help_reference')return helpReference?.(args.name);if(name==='document_current')return documentCurrent;if(name==='document_list')return[{id:1,label:'main',title:'First.ultra',kind:'patch'},{id:2,label:'patch-2',title:'Second.ultra',kind:'patch'}];if(name==='document_save')return{id:1,title:'Saved.ultra',kind:'patch'};if(name==='audio_devices')return{config:{host:'default',device:'default',sample_rate:48000,buffer_frames:null},hosts:['PipeWire'],effective_host:'PipeWire',devices:[{id:'default',name:'System default - Speakers',compatible:true}],notice:'Audio is off.'};if(name==='canvas_apply'){patch=args.patch;return{revision:++revision};}if(name==='audio_start')running=true;if(name==='audio_stop')running=false;if(name==='audio_status')return{running,...audioStatus};if(name==='canvas_status')return{revision,active:true,nodes:patch.nodes.map(n=>({id:n.id,value:0,pulses:0,...observed[n.id]})),console:consoleRecords.splice(0),print_popups:popupSnapshots.value};return true;}:undefined;
   const fallbackInvoke=invoke;if(invokeOverride)invoke=(name,args)=>invokeOverride(name,args,fallbackInvoke);
   const {mountCanvas}=await import('./canvas.mjs');const page=mountCanvas({document,window,invoke});await page.ready;await page.controller.flush();await settle();
   return{...page,ids,calls,timeouts,navigations,previews,observed,consoleRecords,popupSnapshots,windowEvents,documentEvents,document,all:id=>descendants(ids.get(id))};
@@ -44,6 +48,7 @@ async function mount(native=false,{documentCurrent=null,tauri,observeInvoke=()=>
 test('Perform renames a device without replacing authored controls or presets',async()=>{
   const p=await mount(true),patch=subtractivePatch();
   patch.device.parameters[4]={...patch.device.parameters[4],key:'tone',label:'Tone',min:100,max:9000};
+  patch.presentation.items.find(item=>item.label==='Cutoff').label='Tone';
   for(const preset of patch.device.presets){preset.values.tone=preset.values.cutoff;delete preset.values.cutoff;}
   p.controller.load(patch);await p.controller.flush();await p.ids.get('show-instrument').fire('click');
   p.ids.get('instrument-name').value='Renamed';await p.ids.get('instrument-package').fire('click');
@@ -54,15 +59,14 @@ test('Perform renames a device without replacing authored controls or presets',a
 });
 test('effect panel exposes live parameters and presets without a keyboard claim',async()=>{
   const p=await mount(true);
-  const patch={version:1,profile:'ultra-canvas-v1',presentation:{version:1,openOnLoad:false,size:{width:160,height:120},items:[]},nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
+  const patch={version:1,profile:'ultra-canvas-v1',presentation:{version:1,openOnLoad:false,size:{width:160,height:120},items:[{id:'gain_control',kind:'control',target:{kind:'parameter',node:2,param:'value'},widget:'number',label:'Gain',rect:{x:8,y:8,width:96,height:60},included:true,visible:true,style:{accent:'default',labelPosition:'above'}}]},nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
     device:{version:2,kind:'audioEffect',id:'org.alive.test.utility',name:'Utility',midi:{input:null,output:null},
       audio:{input:{node:1,bundle:{channels:2,layout:'stereo'}},output:{channels:2,layout:'stereo'}},
       parameters:[{key:'gain',label:'Gain',node:2,param:'value',min:0,max:2}],presets:[{name:'Quiet',values:{gain:.25}}]}};
   p.controller.load(patch);await p.controller.flush();await p.ids.get('show-instrument').fire('click');
   assert.equal(p.ids.get('instrument-title').textContent,'Utility');
-  assert.equal(p.ids.get('instrument-keyboard').hidden,true);
-  assert.equal(p.ids.get('instrument-release').hidden,true);
-  assert.match(p.ids.get('instrument-keyboard-note').textContent,/host.*audio/i);
+  assert.equal(p.ids.has('instrument-keyboard'),false);
+  assert.equal(p.ids.has('instrument-release'),false);
   p.ids.get('instrument-name').value='Renamed effect';await p.ids.get('instrument-package').fire('click');
   assert.deepEqual(p.controller.getState().document.device,{...patch.device,name:'Renamed effect'});
   const control=p.all('instrument-controls').find(e=>e.tagName==='INPUT'&&e.type==='number');
@@ -73,14 +77,13 @@ test('effect panel exposes live parameters and presets without a keyboard claim'
   const instrument=structuredClone(patch);instrument.nodes[0]=makeNode('poly_note',1);
   instrument.device.kind='instrument';instrument.device.midi.input={node:1,inlet:0};instrument.device.audio.input=null;
   p.controller.load(instrument);await p.controller.flush();await p.controller.startAudio();
-  assert.equal(p.ids.get('instrument-keyboard').hidden,false);
-  const key=p.all('instrument-keyboard').find(e=>e.dataset.note==='60');await key.fire('pointerdown',{pointerId:1});
-  assert.ok(p.calls.some(c=>c.name==='canvas_event'&&c.args.node===1&&c.args.inlet===0));
+  assert.equal(p.ids.has('instrument-keyboard'),false);
+  assert.equal(p.calls.some(c=>c.name==='canvas_event'&&c.args.node===1),false);
   await p.dispose();
 });
 test('saving a focused Perform value commits it before the snapshot',async()=>{
   const p=await mount(true);
-  const patch={version:1,profile:'ultra-canvas-v1',presentation:{version:1,openOnLoad:false,size:{width:160,height:120},items:[]},nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
+  const patch={version:1,profile:'ultra-canvas-v1',presentation:{version:1,openOnLoad:false,size:{width:160,height:120},items:[{id:'gain_control',kind:'control',target:{kind:'parameter',node:2,param:'value'},widget:'number',label:'Gain',rect:{x:8,y:8,width:96,height:60},included:true,visible:true,style:{accent:'default',labelPosition:'above'}}]},nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
     device:{version:2,kind:'audioEffect',id:'org.alive.test.utility',name:'Utility',midi:{input:null,output:null},
       audio:{input:{node:1,bundle:{channels:2,layout:'stereo'}},output:{channels:2,layout:'stereo'}},
       parameters:[{key:'gain',label:'Gain',node:2,param:'value',min:0,max:2}],presets:[]}};
@@ -90,16 +93,17 @@ test('saving a focused Perform value commits it before the snapshot',async()=>{
   assert.equal(p.calls.filter(c=>c.name==='document_save').at(-1).args.patch.nodes.find(n=>n.id===2).params.value,.5);
   await p.dispose();
 });
-test('rebuilding Perform controls captures their focused value',async()=>{
+test('source replacement retains the old focused Perform draft and rejects redirected writes',async()=>{
   const p=await mount(true);
-  const patch={version:1,profile:'ultra-canvas-v1',presentation:{version:1,openOnLoad:false,size:{width:160,height:120},items:[]},nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
+  const patch={version:1,profile:'ultra-canvas-v1',presentation:{version:1,openOnLoad:false,size:{width:160,height:120},items:[{id:'gain_control',kind:'control',target:{kind:'parameter',node:2,param:'value'},widget:'number',label:'Gain',rect:{x:8,y:8,width:96,height:60},included:true,visible:true,style:{accent:'default',labelPosition:'above'}}]},nodes:[makeNode('audio_in',1),makeNode('line_signal',2,0,0,{value:1})],edges:[],
     device:{version:2,kind:'audioEffect',id:'org.alive.test.utility',name:'Utility',midi:{input:null,output:null},
       audio:{input:{node:1,bundle:{channels:2,layout:'stereo'}},output:{channels:2,layout:'stereo'}},
       parameters:[{key:'gain',label:'Gain',node:2,param:'value',min:0,max:2}],presets:[]}};
   p.controller.load(patch);await p.controller.flush();await p.ids.get('show-instrument').fire('click');
   const input=p.all('instrument-controls').find(e=>e.type==='number');p.document.activeElement=input;input.value='0.5';await input.fire('input');
   const changed=structuredClone(patch);changed.device.parameters[0].label='Level';p.controller.load(changed);await p.controller.flush();
-  assert.equal(p.controller.getState().document.nodes.find(n=>n.id===2).params.value,.5);await p.dispose();
+  assert.equal(p.controller.getState().document.nodes.find(n=>n.id===2).params.value,1);
+  assert.equal(input.value,'0.5');assert.equal(input.hasDraft(),true);await p.dispose();
 });
 test('help shell hosts Basic while question/reference navigation preserves the native runtime',async()=>{
   const patch=helpPatch(),descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Help.ultra',kind:'patch',patch,dirty:false,viewPath:[],authoringRevision:1,runtimeRevision:9};

@@ -23,7 +23,7 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   // display:none blurs inputs and emits change. Keep that navigation local,
   // then publish a suppressed change only on a later user change or blur.
   const change=event=>{const state=parked.get(event.target);if(!state)return;if(!state.visible){state.changed=true;event.stopImmediatePropagation();}else parked.delete(event.target);};
-  const blur=event=>{const state=parked.get(event.target);if(!state?.visible)return;parked.delete(event.target);if(state.changed)event.target.dispatchEvent(new win.Event('change',{bubbles:true}));};
+  const blur=event=>{const state=parked.get(event.target);if(state&&!state.visible){event.stopImmediatePropagation();return;}if(!state?.visible)return;parked.delete(event.target);if(state.changed)event.target.dispatchEvent(new win.Event('change',{bubbles:true}));};
   const focus=event=>{const state=parked.get(event.target);if(state?.resumeOnFocus)state.visible=true;};
   doc.addEventListener('change',change,true);doc.addEventListener('blur',blur,true);doc.addEventListener('focus',focus,true);
   function paint(){

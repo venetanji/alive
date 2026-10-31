@@ -4,6 +4,7 @@ import {readFileSync} from 'node:fs';
 import {mountAlive} from './alive.mjs';
 import {mountHostedEditor} from './alive-editor.mjs';
 import {mountBrowser} from './alive-browser.mjs';
+import {projectFixturePresentation} from '../tests/presentation-dom.mjs';
 import {mountDeviceDrop} from './alive-device-drop.mjs';
 
 // Real view modules with a small DOM adapter; native execution and geometry are separate checks.
@@ -20,12 +21,15 @@ class Element{
   removeAttribute(key){delete this.attrs[key];}
   addEventListener(key,fn){(this.listeners[key]??=[]).push(fn);}
   removeEventListener(){}
+  querySelectorAll(selector){return descendants(this).filter(e=>e.matches(selector));}
+  checkValidity(){return true;}
+  dispatchEvent(event){for(const fn of this.listeners[event.type]??[])fn(event);}
   matches(selector){return selector.split(',').some(s=>s.trim().startsWith('[')?this.attrs[s.trim().slice(1,-1)]!==undefined:s.trim().startsWith('.')?this.classList.contains(s.trim().slice(1)):s.trim().startsWith('#')?this.id===s.trim().slice(1):this.tagName===s.trim().toUpperCase());}
   querySelector(selector){return descendants(this).find(e=>e.matches(selector))??null;}
   closest(selector){return this.matches(selector)?this:this.parentElement?.closest(selector);}
   getBoundingClientRect(){return{left:0,top:0,width:100,height:30};}
   focus(){this.doc.activeElement=this;}blur(){if(this.doc.activeElement===this)this.doc.activeElement=null;}
-  async fire(type,extra={}){const event={target:this,button:0,preventDefault(){},stopPropagation(){},...extra};for(const fn of this.listeners[type]??[])await fn(event);await settle();}
+  async fire(type,extra={}){if(type==='change'&&this.tagName==='INPUT')for(const fn of this.listeners.input??[])fn({type:'input',target:this});const event={target:this,button:0,preventDefault(){},stopPropagation(){},...extra};for(const fn of this.listeners[type]??[])await fn(event);await settle();}
 }
 const descendants=element=>element.children.flatMap(child=>[child,...descendants(child)]);
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
@@ -349,7 +353,7 @@ test('hosted zoom selection follows fitted and manually selected graph scale',as
 
 test('an effect editor owns its own manifest patch state and instance command',async()=>{
   const initial=workspaceState(true),patch=JSON.parse(readFileSync(new URL('../examples/utility.ultra',import.meta.url),'utf8'));
-  const instanceId='effect-editor-instance',manifest={...patch.device,parameters:patch.device.parameters.map(p=>({...p,base:1,integral:false}))};
+  const instanceId='effect-editor-instance',manifest={...patch.device,presentation:projectFixturePresentation(patch),parameters:patch.device.parameters.map(p=>({...p,base:1,integral:false}))};
   initial.document.tracks[0].effects.push({instanceId,path:'utility.ultra',id:manifest.id,version:2,sourceSha256:'0'.repeat(64),parameters:{gain:1},bypassed:false});
   initial.deviceInstances[instanceId]={index:2,track:0,manifest};initial.state.devices.push({base:[1],effective:[.5],owned:[1]});
   initial.instanceId=instanceId;initial.deviceIndex=2;initial.patch=patch;
@@ -369,7 +373,7 @@ function withChain(){
   const initial=workspaceState();
   for(const [index,file] of ['utility','stereo-lowpass'].entries()){
     const patch=JSON.parse(readFileSync(new URL(`../examples/${file}.ultra`,import.meta.url),'utf8'));
-    const instanceId=`effect-${index}`,manifest={...patch.device,parameters:patch.device.parameters.map(p=>({...p,base:p.key==='gain'?1:p.key==='resonance'?.7:2400,integral:false}))};
+    const instanceId=`effect-${index}`,manifest={...patch.device,presentation:projectFixturePresentation(patch),parameters:patch.device.parameters.map(p=>({...p,base:p.key==='gain'?1:p.key==='resonance'?.7:2400,integral:false}))};
     initial.document.tracks[0].effects.push({instanceId,id:manifest.id,path:`${file}.ultra`,version:2,sourceSha256:'0'.repeat(64),parameters:Object.fromEntries(manifest.parameters.map(p=>[p.key,p.base])),bypassed:false});
     initial.deviceInstances[instanceId]={index:index+2,track:0,manifest};initial.state.devices.push({effective:manifest.parameters.map(()=>.5),owned:manifest.parameters.map(()=>1)});
   }
@@ -954,7 +958,7 @@ function workspaceState(editor=false){
   for(const [i,t] of document.tracks.entries()){
     const source=document.sources.find(s=>s.trackId===t.id);source.id=`source-independent-${i}`;source.notes.forEach((n,index)=>n.id=`note-${t.id}-${index}`);t.slots[0].id=`clip-${t.id}`;t.slots[0].sourceId=source.id;
     const placement=document.placements.find(p=>p.trackId===t.id);placement.id=`placement-${i}`;placement.sourceId=source.id;
-    const reference=t.chain.instrument,manifest={...patch.device,parameters:patch.device.parameters.map(binding=>({...binding,base:reference.parameters[binding.key],integral:false}))};
+    const reference=t.chain.instrument,manifest={...patch.device,presentation:projectFixturePresentation(patch),parameters:patch.device.parameters.map(binding=>({...binding,base:reference.parameters[binding.key],integral:false}))};
     deviceInstances[reference.instanceId]={index:i,track:i,path:reference.path,manifest};devices.push(manifest);
   }
   const result={generation:1,editRevision:0,preparationRevision:'1',snapshotSequence:'1',history:{canUndo:false,canRedo:false},document,deviceInstances,instanceId:editor?document.tracks[0].chain.instrument.instanceId:null,deviceIndex:editor?0:null,track:editor?0:null,patch:editor?patch:null,dirty:false,

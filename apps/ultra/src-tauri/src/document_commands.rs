@@ -5,6 +5,25 @@ use serde::Deserialize;
 #[cfg(test)]
 #[path = "document_commands_tests.rs"]
 mod tests;
+#[path="document_parameter_gestures.rs"]
+mod parameter_gestures;
+
+#[tauri::command]
+pub fn document_parameter_gesture(window:WebviewWindow,state:tauri::State<Documents>,audio:tauri::State<Audio>,io:tauri::State<crate::AudioIo>,request:parameter_gestures::GestureRequest)->Result<parameter_gestures::GestureReply,String>{
+    let mut registry=state.0.lock().map_err(|_|"Document lock poisoned")?;
+    let mut audio=audio.0.lock().map_err(|_|"Audio control lock poisoned")?;
+    let mut io=io.0.lock().map_err(|_|"Audio device lock poisoned")?;
+    let result=parameter_gestures::apply(&mut registry,&mut audio,&mut io,window.label(),request);
+    drop(io);drop(audio);broadcast(window.app_handle(),&registry,window.label());result
+}
+#[tauri::command]
+pub fn document_settle_parameter_gestures(window:WebviewWindow,state:tauri::State<Documents>,audio:tauri::State<Audio>,io:tauri::State<crate::AudioIo>)->Result<Document,String>{
+    let mut registry=state.0.lock().map_err(|_|"Document lock poisoned")?;
+    let mut audio=audio.0.lock().map_err(|_|"Audio control lock poisoned")?;
+    let mut io=io.0.lock().map_err(|_|"Audio device lock poisoned")?;
+    let result=parameter_gestures::settle(&mut registry,&mut audio,&mut io,window.label());
+    drop(io);drop(audio);broadcast(window.app_handle(),&registry,window.label());result
+}
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -60,6 +79,7 @@ pub fn admit_message(control: &mut canvas::CanvasState, owner: &Document, patch:
     if parameter.is_some() && message_text.is_some() { return Err("Numeric and message text hints cannot be combined".into()); }
     let plan = canvas::prepare(patch.clone())?;
     let force = force || owner.runtime_revision == 0;
+    if force { owner.require_settled_parameter_gestures()?; }
     if force && message_text.is_some() { return Err("Message text hints require an active graph and cannot accompany a forced installation".into()); }
     let inferred_text = if !force && parameter.is_none() && message_text.is_none() {
         control.single_message_text_change(&plan).map(|(node,text)| MessageText { node,text })
