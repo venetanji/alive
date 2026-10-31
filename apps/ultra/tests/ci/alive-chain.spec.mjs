@@ -70,14 +70,16 @@ for(const size of [{width:1440,height:900},{width:1280,height:800},{width:800,he
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
-test('maximized Arrangement clip controls stay in a vertical scrolling column',async({page})=>{
+test('maximized Arrangement keeps source actions available without covering the editor',async({page})=>{
   await page.setViewportSize({width:800,height:600});await openSession(page);
   await page.getByRole('button',{name:'Arrangement workspace',exact:true}).click();
   await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
   const controls=page.locator('#clip-controls');
-  await expect(page.locator('.clip-source-actions')).toHaveAttribute('open','');
+  await expect(page.locator('.clip-source-actions')).not.toHaveAttribute('open');
   expect(await controls.evaluate(e=>e.scrollWidth-e.clientWidth)).toBeLessThanOrEqual(1);
+  await page.locator('.clip-source-actions > summary').click();
   const action=page.getByRole('button',{name:'Delete clip',exact:true});expect(await action.boundingBox()).not.toBeNull();await action.scrollIntoViewIfNeeded();await expect(action).toBeInViewport({ratio:1});
+  await page.locator('.clip-source-actions > summary').click();
   await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await expect(page.locator('.clip-source-actions')).not.toHaveAttribute('open');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });

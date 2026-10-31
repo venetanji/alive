@@ -64,6 +64,33 @@ async function selectClipTime(page,start,end){
   await page.mouse.move(x(start),y);await page.mouse.down();await page.mouse.move(x(end),y,{steps:8});await page.mouse.up();await page.keyboard.press('Control+l');
 }
 
+for(const size of [{width:800,height:600},{width:1280,height:800}])test(`clip properties sit beside the MIDI and audio editors at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openRangeStudy(page);
+  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  await expect(page.locator('.clip-source-actions')).not.toHaveAttribute('open');
+  const before=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
+  const properties=page.getByRole('complementary',{name:'Clip properties',exact:true});
+  await expect(properties).toHaveCount(1,{timeout:1000});
+  await expect(properties.getByLabel('Clip Start',{exact:true})).toBeVisible();
+  await expect(properties.getByLabel('Loop Length',{exact:true})).toBeVisible();
+  await expect(properties.getByLabel('Clip Launch Quantization',{exact:true})).toBeAttached();
+  const panel=await properties.boundingBox(),piano=await page.locator('#piano-roll').boundingBox();
+  expect(panel.x+panel.width).toBeLessThanOrEqual(piano.x+1);
+  expect(piano.width).toBeGreaterThan(300);
+  await page.screenshot({path:testInfo.outputPath(`midi-clip-properties-${size.width}.png`)});
+  await page.getByRole('button',{name:'Restore detail size',exact:true}).click();
+  await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();
+  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  await expect(properties.getByLabel('Audio source BPM',{exact:true})).toBeVisible();
+  const audioPanel=await properties.boundingBox();
+  const audio=await page.locator('#audio-waveform').boundingBox();
+  expect(audioPanel.x+audioPanel.width).toBeLessThanOrEqual(audio.x+1);
+  expect(audio.width).toBeGreaterThan(300);
+  expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document))).toBe(before);
+  expect(await mutations(page)).toEqual([]);
+  await page.screenshot({path:testInfo.outputPath(`audio-clip-properties-${size.width}.png`)});
+});
+
 for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:1000}])test(`MIDI and audio range controls preserve source content at ${size.width}x${size.height}`,async({page},testInfo)=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize(size);await openRangeStudy(page);
   await page.getByRole('button',{name:'Maximize detail',exact:true}).click();

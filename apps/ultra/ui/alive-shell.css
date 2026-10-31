@@ -54,13 +54,6 @@ body{min-width:0;min-height:0;height:100dvh}
 #maximize-detail{width:25px;min-width:25px;padding:2px 4px}
 #maximize-detail svg{margin:0}
 .detail-maximized #maximize-detail svg{transform:rotate(180deg)}
-.detail-maximized #clip-detail{display:grid;grid-template-columns:180px minmax(0,1fr);grid-template-rows:auto minmax(308px,1fr) auto}
-.detail-maximized #timeline-inspector{grid-column:1 / -1;grid-row:1}
-.detail-maximized #clip-controls{grid-column:1;grid-row:2;display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;align-content:start;justify-content:flex-start;gap:7px;min-height:0;overflow:auto;padding:8px;border-right:1px solid var(--line)}
-.detail-maximized #clip-controls button,.detail-maximized #clip-controls .source-scope{white-space:normal;text-align:left}
-.detail-maximized #clip-controls input,.detail-maximized #clip-controls select{max-width:100%}
-.detail-maximized #clip-detail>.clip-section{grid-column:2;grid-row:2;min-width:0;min-height:0}
-.detail-maximized #clip-detail>.automation-section{grid-column:1 / -1;grid-row:3}
 footer{position:relative;min-width:0;min-height:31px;height:31px;padding:3px 8px;gap:9px;z-index:9}
 #notice{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
 .workspace-authority{flex:none;margin:0;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -147,10 +140,5 @@ footer button{flex:none;min-height:23px;padding:2px 6px;font-size:11px}
 .clip-source-actions-body{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
 .clip-source-actions[open]>.clip-source-actions-body{position:absolute;right:0;top:calc(100% + 5px);bottom:auto;z-index:10;width:min(420px,75vw);max-height:280px;overflow:auto;padding:10px;background:var(--chrome);border:1px solid #737373;box-shadow:0 -5px 16px #0005}
 .clip-source-actions .source-scope{width:100%;line-height:1.45}
-.detail-maximized .clip-source-actions{display:contents}
-.detail-maximized .clip-source-actions>summary{display:none}
-.detail-maximized .clip-source-actions>.clip-source-actions-body{position:static;display:flex;flex-direction:column;align-items:stretch;width:auto;max-height:none;padding:0;overflow:visible;background:transparent;border:0;box-shadow:none}
-.detail-maximized .clip-source-actions:not([open])>.clip-source-actions-body{display:flex}
-.detail-maximized #clip-controls .clip-control-heading{overflow:visible;white-space:normal;margin:0}
 
 @media(max-width:850px){.detail-maximized .clip-view-range{display:none}}
