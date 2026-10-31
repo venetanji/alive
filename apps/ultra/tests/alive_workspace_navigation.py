@@ -82,6 +82,12 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
                 expand('Automation inspector')
             if source_actions:
                 expand('Source / Clip')
+            elif name == 'Add note':
+                # Its popup can cover the following Clip header in Arrangement.
+                # Close it through the same disclosure a user would operate.
+                source = ui.wait_for('Source / Clip')
+                if source.get_state_set().contains(Atspi.StateType.EXPANDED):
+                    click('Source / Clip')
         if track_action:
             track = next(value for value in track_action.groups() if value)
             column = ui.wait_for(track + ' track')

@@ -57,6 +57,19 @@ class NavigationTest(unittest.TestCase):
         ui.click('Make source independent')
         self.assertEqual(calls, ['Toggle Clip view', 'Source / Clip', 'Make source independent'])
 
+    def test_add_note_closes_open_source_disclosure_before_real_click(self):
+        calls = []
+        class Control:
+            def __init__(self, name): self.name = name
+            def get_state_set(self): return self
+            def contains(self, state):
+                return (state == 'visible' and self.name == 'Source / Clip') or (state == 'expanded' and self.name == 'Source / Clip')
+        ui = types.SimpleNamespace(click=lambda name: calls.append(name), text=lambda *args: None,
+                                   wait_for=lambda name: Control(name), find=lambda name: Control(name))
+        navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, None)
+        ui.click('Add note')
+        self.assertEqual(calls, ['Source / Clip', 'Add note'])
+
     def test_visible_panels_are_not_toggled_closed_when_pressed_state_is_absent(self):
         calls = []
         class Control:

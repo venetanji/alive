@@ -1391,6 +1391,20 @@ test('renaming an Arrangement source keeps its source controls open after the ac
   await expect(disclosure).toHaveAttribute('open','');await page.getByRole('button',{name:'Select placement p-1',exact:true}).click();await expect(disclosure).not.toHaveAttribute('open','');
 });
 
+test('closing the source disclosure makes the Arrangement Add note target reachable',async({page},testInfo)=>{
+  await openArrangement(page,{width:1440,height:900});await dragBlankLaneRange(page,page.locator('.timeline-lane').first());
+  const disclosure=page.locator('.clip-source-actions'),summary=disclosure.locator('summary');await summary.click();
+  await page.getByRole('button',{name:'Create MIDI source',exact:true}).click();await expect(page.getByLabel('MIDI source',{exact:true})).toHaveValue('new-source-1');
+  await summary.click();await expect(disclosure).toHaveAttribute('open','');const name=page.getByLabel('MIDI source name',{exact:true});await name.fill('MIDI journey');await name.press('Tab');
+  await expect.poll(async()=>(await workspaceEdits(page)).map(c=>c.args.operation.kind)).toEqual(['sourceCreateMidi','sourceRename']);
+  const add=page.getByRole('button',{name:'Add note',exact:true});await add.scrollIntoViewIfNeeded();
+  const hit=()=>add.evaluate(el=>{const r=el.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {target:hit===el||el.contains(hit),cover:!!hit?.closest('.clip-source-actions-body')};});
+  expect(await hit()).toEqual({target:false,cover:true});await page.screenshot({path:testInfo.outputPath('source-disclosure-covers-add-note.png')});
+  await summary.click();await expect(disclosure).not.toHaveAttribute('open','');expect((await hit()).target).toBe(true);await add.click();
+  await expect.poll(async()=>(await workspaceEdits(page)).map(c=>c.args.operation.kind)).toEqual(['sourceCreateMidi','sourceRename','noteCreate']);
+  expect((await workspaceEdits(page)).at(-1).args.operation.sourceId).toBe('new-source-1');
+});
+
 test('Arrangement Master aligns with right track controls and source fields have visible context',async({page})=>{
   await openArrangement(page,{width:1440,height:900});await page.getByRole('button',{name:'Select placement p-0',exact:true}).click();await page.locator('.clip-source-actions>summary').click();
   const boxes=await page.evaluate(()=>{const rect=e=>e.getBoundingClientRect();const header=rect(document.querySelector('.timeline-header')),master=rect(document.querySelector('#master-arrangement-lane .master-heading')),controls=rect(document.querySelector('#master-arrangement'));return {headerLeft:header.left,masterLeft:master.left,controlsRight:controls.right,workspaceRight:rect(document.querySelector('#arrangement-workspace')).right};});
