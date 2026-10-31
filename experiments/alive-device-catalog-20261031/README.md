@@ -1,11 +1,12 @@
 # Installed catalog delivery 0
 
-Installed source: `be355bbeb675a725001d46b7cd401ae0d4bdbdd7` on
+Installed source: `dd423bd0fa418656304427cb7c89646813cfd065` on
 `feat/phase2-ui-fidelity`. Actual Linux install:
-`/home/venetanji/.local/share/alive/builds/be355bb/bin/alive`.
-This packet follows the approved backend and browser changes. It adds native
-acceptance, documentation and a focused desktop helper; no production change
-was needed. Launcher update and PR publication remain with the controller.
+`/home/venetanji/.local/share/alive/builds/dd423bd/bin/alive`.
+This packet requalifies the approved backend/browser and the `dd423bd` production
+containment correction (`min-height:0` on `.browser-results`). This evidence
+follow-up changes only the native helper, reports/captures and roadmap. Launcher
+update and PR publication remain with the controller.
 
 ## Accepted behavior
 
@@ -20,16 +21,25 @@ indexing remains invisible until Refresh Library, which then exposes both.
 The same native journey then uses actual pointer drags to load Subtractive onto
 the track, append Stereo Utility and insert Stereo Lowpass before Utility. It
 creates a MIDI clip/note, saves `alive-session-v6` and starts scheduled clip
-playback through that chain. Private software PCM is nonzero: 197120 stereo
+playback through that chain. Private software PCM is nonzero: 196096 stereo
 frames at 48 kHz, peak `0.09684687107801437`. Audio stream errors and rejected
 commands are zero. The supervised recorder is complete with `requested_stop`;
 its termination return code is 1, with zero stderr bytes, as recorded by the
 existing recorder helper. This is software PipeWire/CPAL evidence, without a
 physical audio or realtime-capacity claim.
 
-Native client captures at 800x600 and 1280x800 were inspected. Search, Refresh,
-the unavailable reason and disabled load remain reachable inside the viewport;
-there is no whole-window overflow. The reason is repeated in the browser status
+Native unfiltered client captures at 800x600 and 1280x800 were inspected at both
+scroll positions. The 26 initial rows use an internally scrolling list that clips above the
+selection/load/status footer. Home/End reveals the last candidate, Utility;
+40 actual wheel-up inputs return to the first row while preserving that later
+selection. Nine footer hit samples per size belong to description/load/status,
+with no list/row ownership. The entire settled footer pixel band remains exactly
+identical across scrolling. The compact list is 98px high, the normal list 298px;
+Utility moves from y=855 to y=250/450 through actual scrolling. Four explicit
+unfiltered captures supplement the two filtered Analog captures and the refreshed
+empty-MIDI/chain captures. Search, Refresh, the unavailable reason and disabled
+load remain reachable; there is no whole-window overflow. The reason is repeated
+in the browser status
 so it remains readable when the longer selection description clips. The private
 XDG library default also contributes a missing-root notice; it does not hide the
 valid explicit fixture or installed candidates.
@@ -60,15 +70,29 @@ and generation stability corroborate this boundary; this packet does not claim
 constructor instrumentation or foreign DSP qualification.
 
 The prior 159 Node, 110 Chromium and 15 Rust provider passes remain their
-existing evidence and were not repeated. The new desktop helper passes Python
-compilation and the final installed native journey exits 0. An initial owned
-run was stopped (143) after diagnostic reads left Audio details open, obscuring
-the bundled chain drop. The helper closes diagnostics before captures and
-before the bundled journey; no product source changed for that correction.
+existing evidence and were not repeated. The frontend fix worker separately
+records two red unfiltered regressions and six focused Chromium green cases.
+The desktop helper passes Python compilation and the final installed native
+journey exits 0. The earlier `be355bb` acceptance missed unfiltered row overpaint;
+its filtered-only layout conclusion is superseded by these full-list checks.
+
+Two fix-round native attempts stopped at strict footer pixel equality before the
+bundled journey. First, the wheel pointer triggered a native row tooltip over the
+footer. Parking the pointer removed it. Second, only 281 pixels changed, confined
+to x=205..209/y=292..348: the description's native overlay scrollbar thumb fading.
+The helper now parks the pointer and waits for the full footer image to remain
+unchanged for two seconds, bounded at six seconds, before each sample/capture.
+It retains exact before/after equality without masks or tolerated differences.
+Geometry and all footer ownership checks passed in both earlier attempts.
+`verification.json` records their paths, failure-capture hashes and diagnosis.
 
 Full final private artifacts, including authored session snapshots and raw PCM,
-remain at `/tmp/alive-catalog-native-final-20261031`; the first attempt remains
-at `/tmp/alive-catalog-native-20261031`. No proprietary binary, preset/resource
+remain at `/tmp/alive-catalog-clipping-native-settled-20261031`. The two failed
+fix-round attempts remain at `/tmp/alive-catalog-clipping-native-20261031` and
+`/tmp/alive-catalog-clipping-native-final-20261031`. Older `be355bb` attempts also
+remain at their original paths. The immutable `be355bb` and `cf7ac2b` artifacts
+were verified unchanged; neither install was overwritten. No proprietary binary,
+preset/resource
 payload, disassembly or private daemon state is included here. All test display,
 bus, configuration and software audio resources are private; user desktop
 windows and unsaved work were preserved. CI was not dispatched.
@@ -83,7 +107,7 @@ each run. The helper creates that second fixture to prove refresh invalidation.
 
 ```sh
 ULTRA_TEST_ALIVE=1 ULTRA_TEST_ALIVE_DEFAULT=1 \
-ULTRA_TEST_ALIVE_BINARY=/home/venetanji/.local/share/alive/builds/be355bb/bin/alive \
+ULTRA_TEST_ALIVE_BINARY=/home/venetanji/.local/share/alive/builds/dd423bd/bin/alive \
 ULTRA_TEST_SCRIPT=$PWD/apps/ultra/tests/check_alive_catalog_desktop.py \
 ALIVE_LIVE_ROOTS='/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources' \
 ALIVE_DEVICE_LIBRARY_PATHS=/tmp/alive-catalog-library-NEW \

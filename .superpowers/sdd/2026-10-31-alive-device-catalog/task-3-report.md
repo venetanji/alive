@@ -72,3 +72,107 @@ Build logs: `/tmp/alive-catalog-build-20261031`.
 Private installer adaptation: `/tmp/alive-catalog-install-20261031.py`.
 No proprietary payloads are committed. Artifact hashes and authored reports are
 retained in the evidence packet.
+
+## Fix Round 1: Unfiltered Native Containment
+
+Status: new installed acceptance passes on production source
+`dd423bd0fa418656304427cb7c89646813cfd065`; controller re-review/integration remains
+pending. This supersedes the earlier filtered-only native layout conclusion.
+Task 3 review correctly identified row overpaint in the original full-list
+captures. Task 2's `dd423bd` correction sets `.browser-results {min-height:0}`
+and records two red long-list Chromium regressions followed by six focused green
+cases. Those browser cases were not repeated in this acceptance round.
+
+The new immutable install is
+`/home/venetanji/.local/share/alive/builds/dd423bd`, with executables at
+`bin/alive` and `bin/ultra`. Builds use the same frozen native link directory and
+owned Cargo target as before. Both builds exit 0 with four existing warnings.
+All 308 manifested sources, seven resources and three installed artifacts
+verify. Running executable/native mapping and artifact hashes match the new
+manifest. `be355bb` and `cf7ac2b` artifact hashes also verify unchanged.
+
+### Exact Build And Install Commands
+
+```sh
+ULTRA_NATIVE_LIB_DIR=/tmp/alive-piano-live-edit-20261031 CARGO_TARGET_DIR=/tmp/alive-live-regions-rust-target cargo build --manifest-path apps/alive/src-tauri/Cargo.toml --locked > /tmp/alive-catalog-clipping-build-20261031/alive.log 2>&1
+ULTRA_NATIVE_LIB_DIR=/tmp/alive-piano-live-edit-20261031 CARGO_TARGET_DIR=/tmp/alive-live-regions-rust-target cargo build --manifest-path apps/ultra/src-tauri/Cargo.toml --locked > /tmp/alive-catalog-clipping-build-20261031/ultra.log 2>&1
+python3 /tmp/alive-catalog-clipping-install-20261031.py > /tmp/alive-catalog-clipping-build-20261031/install-verification.json
+```
+
+All exit 0. The private installer adapts the prior fresh-staging/atomic-rename
+installer, asserts exact HEAD `dd423bd`, refuses an existing destination and
+copies the approved shipping library SHA `69ba16fe7af0e969a86f89f8ae94d33b767f7f47ea02ce74da7365a1dc770a90`.
+No engine library was rebuilt or overwritten. A fresh fixture directory
+`/tmp/alive-catalog-clipping-library-20261031` began with only `one.ultra`, copied
+from the authored bundled Subtractive and renamed/id-changed as specified.
+
+### Native Attempts And Helper-Only Corrections
+
+First command:
+
+```sh
+ULTRA_TEST_ALIVE=1 ULTRA_TEST_ALIVE_DEFAULT=1 ULTRA_TEST_ALIVE_BINARY=/home/venetanji/.local/share/alive/builds/dd423bd/bin/alive ULTRA_TEST_SCRIPT=$PWD/apps/ultra/tests/check_alive_catalog_desktop.py ALIVE_LIVE_ROOTS='/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources' ALIVE_DEVICE_LIBRARY_PATHS=/tmp/alive-catalog-clipping-library-20261031 bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-catalog-clipping-native-20261031 > /tmp/alive-catalog-clipping-native-20261031.log 2>&1
+```
+
+Exit 1 at the 800x600 strict footer pixel comparison, after geometry and nine
+footer ownership samples passed. The failure capture shows a native
+`Stereo Utility / Bundled Ultra device` hover tooltip across the footer because
+wheel scrolling leaves the pointer over a result. Added helper-only pointer
+parking in the blank detail area before both samples/captures.
+
+Second command:
+
+```sh
+ULTRA_TEST_ALIVE=1 ULTRA_TEST_ALIVE_DEFAULT=1 ULTRA_TEST_ALIVE_BINARY=/home/venetanji/.local/share/alive/builds/dd423bd/bin/alive ULTRA_TEST_SCRIPT=$PWD/apps/ultra/tests/check_alive_catalog_desktop.py ALIVE_LIVE_ROOTS='/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources' ALIVE_DEVICE_LIBRARY_PATHS=/tmp/alive-catalog-clipping-library-20261031 bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-catalog-clipping-native-final-20261031 > /tmp/alive-catalog-clipping-native-final-20261031.log 2>&1
+```
+
+Exit 1 at the same strict comparison. Tooltip was absent. A direct GdkPixbuf
+comparison of the scrolled capture and failure image found exactly 281 changed
+pixels within x=205..209/y=292..348, confined to the description's native overlay
+scrollbar thumb fading out. The rest of the footer was unchanged, and geometry
+and all footer ownership samples again passed. Added a helper-only bounded
+stability wait: the entire footer pixel band must remain identical for two
+seconds before sampling, with a six-second deadline. No pixel masks, tolerances
+or weaker before/after comparison were introduced. Failure-capture hashes and
+paths are recorded in `experiments/alive-device-catalog-20261031/verification.json`.
+
+Final command:
+
+```sh
+ULTRA_TEST_ALIVE=1 ULTRA_TEST_ALIVE_DEFAULT=1 ULTRA_TEST_ALIVE_BINARY=/home/venetanji/.local/share/alive/builds/dd423bd/bin/alive ULTRA_TEST_SCRIPT=$PWD/apps/ultra/tests/check_alive_catalog_desktop.py ALIVE_LIVE_ROOTS='/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources' ALIVE_DEVICE_LIBRARY_PATHS=/tmp/alive-catalog-clipping-library-20261031 bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-catalog-clipping-native-settled-20261031 > /tmp/alive-catalog-clipping-native-settled-20261031.log 2>&1
+python3 -m py_compile apps/ultra/tests/check_alive_catalog_desktop.py
+git diff --check
+```
+
+All exit 0. The final full native journey checks 26 unfiltered entries at both
+800x600 and 1280x800, Home/End selection/reveal, 40 real wheel-up inputs,
+retained last-candidate selection, bounded list/footer geometry, nine footer hit
+samples per size and exact settled footer pixel equality across scrolling.
+Compact list bounds are `[83,180,136,98]`, normal `[83,180,136,298]`.
+Utility moves from y=855 to y=250/450 on End; wheel returns the first row to
+y=180 without changing the selected Utility. Four additional actual-native
+unfiltered top/scrolled captures, two filtered captures and the refreshed
+empty-MIDI/chain captures were visually inspected. Rows clip above the footer;
+later results scroll into view without covering description/Load/status.
+
+The same final journey rechecks 22 unavailable installed candidates, fixture
+refresh 1-to-2, Analog refusal inputs, unchanged accepted score/generation and
+zero rejected commands, then performs all bundled track/chain/card drags,
+clip/note creation, save and scheduled playback. Effect order remains Lowpass
+then Utility. Raw retained PCM independently verifies 196096 stereo frames,
+SHA `b89673681716f134c40205235d31475f4eeddf3404829537e0f72543317fea5d`,
+peak `0.09684687107801437`, stream errors 0 and rejected commands 0.
+Recorder supervision is complete/requested_stop, stderr bytes 0, recorder
+return code 1 as in the existing helper. This is private software audio only.
+
+### Refreshed Evidence And Boundary
+
+The current packet now manifests `dd423bd`, the refreshed logs/reports/captures
+and four additional unfiltered screenshots. Older installations and private
+attempts are preserved. The latest complete output is
+`/tmp/alive-catalog-clipping-native-settled-20261031`.
+The README and roadmap identify only the new tested source and retain all later
+presentation/full-hosting milestones. This follow-up changes no production
+code, native admission, launcher, user configuration, native `2a0f` state or
+mapped library. User windows and unsaved work were preserved. No unrelated
+suites, cloud CI, push or launcher change was performed.

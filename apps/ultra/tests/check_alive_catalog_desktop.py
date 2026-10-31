@@ -156,7 +156,12 @@ def unfiltered_layout(width, height):
         image = ui.Gdk.pixbuf_get_from_window(ui.Gdk.get_default_root_window(), 0, 0, width, height)
         image.savev(str(ui.output / name), 'png', [], [])
 
-    capture(f'native-catalog-unfiltered-scrolled-{width}x{height}.png')
+    def park_pointer():
+        # Native row tooltips can overlap the footer without any list paint leak.
+        assert ui.t.XTestFakeMotionEvent(ui.display, 0, width - 100, height - 100, 0)
+        ui.x.XFlush(ui.display)
+        time.sleep(.3)
+
     # Scroll without changing selection: any row painted over the footer changes
     # these pixels, even when the footer remains the top accessibility hit target.
     band_top = list_bounds[1] + list_bounds[3] + 1
@@ -164,17 +169,36 @@ def unfiltered_layout(width, height):
     def footer_pixels():
         image = ui.Gdk.pixbuf_get_from_window(ui.Gdk.get_default_root_window(), list_bounds[0], band_top, list_bounds[2], band_bottom - band_top)
         return bytes(image.get_pixels())
-    before_pixels = footer_pixels()
+
+    def settled_footer_pixels():
+        # WebKit's native overlay scrollbar fades after selection/scroll activity.
+        previous = footer_pixels()
+        stable_since = time.monotonic()
+        deadline = stable_since + 6
+        while time.monotonic() < deadline:
+            time.sleep(.15)
+            current = footer_pixels()
+            if current != previous:
+                previous = current
+                stable_since = time.monotonic()
+            elif time.monotonic() - stable_since >= 2:
+                return current
+        raise AssertionError('Native footer pixels did not settle before capture')
+
+    park_pointer()
+    before_pixels = settled_footer_pixels()
+    capture(f'native-catalog-unfiltered-scrolled-{width}x{height}.png')
     assert ui.t.XTestFakeMotionEvent(ui.display, 0, list_bounds[0] + list_bounds[2] // 2, list_bounds[1] + list_bounds[3] // 2, 0)
     for _ in range(40):
         assert ui.t.XTestFakeButtonEvent(ui.display, 4, 1, 0)
         assert ui.t.XTestFakeButtonEvent(ui.display, 4, 0, 0)
     ui.x.XFlush(ui.display)
     time.sleep(.3)
+    park_pointer()
     first_scrolled = bounds(ui.wait_for(first_name))
     assert list_bounds[1] <= first_scrolled[1] and first_scrolled[1] + first_scrolled[3] <= list_bounds[1] + list_bounds[3], (list_bounds, first_scrolled)
     assert selected_names() == [last_name], selected_names()
-    after_pixels = footer_pixels()
+    after_pixels = settled_footer_pixels()
     assert before_pixels == after_pixels, 'Scrolling list rows changed the selected-device footer pixels'
     capture(f'native-catalog-unfiltered-top-{width}x{height}.png')
     return dict(viewport=[width, height], entries=len(options()), list_bounds=list_bounds,
@@ -183,6 +207,7 @@ def unfiltered_layout(width, height):
                 footer_controls={label: rect for label, _, rect in controls}, footer_hits=hits,
                 scroll_input=dict(keys=['Home', 'End'], pointer_wheel_up=40, synthetic_ipc=False),
                 footer_paint_unchanged_on_scroll=True,
+                footer_pixel_stability_seconds=2,
                 footer_sha256=hashlib.sha256(before_pixels).hexdigest())
 
 
