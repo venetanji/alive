@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {mountAlive} from './alive.mjs';
 import {mountHostedEditor} from './alive-editor.mjs';
+import {mountBrowser} from './alive-browser.mjs';
+import {mountDeviceDrop} from './alive-device-drop.mjs';
 
 // Real view modules with a small DOM adapter; native execution and geometry are separate checks.
 class Element{
@@ -27,6 +29,86 @@ class Element{
 }
 const descendants=element=>element.children.flatMap(child=>[child,...descendants(child)]);
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
+const catalogEntry=(overrides={})=>({id:'bundled:fresh',provider:'bundled',name:'Fresh Synth',kind:'instrument',path:'/devices/fresh.ultra',profile:null,qualification:'qualified',availability:'ready',reason:null,description:'Bundled Ultra device',dependencies:[],...overrides});
+const catalogPage=(entries=[],overrides={})=>({revision:'1',entries,nextCursor:null,notices:[],...overrides});
+const deferred=()=>{let resolve,reject;const promise=new Promise((yes,no)=>{resolve=yes;reject=no;});return{promise,resolve,reject};};
+function browserHarness(onCatalog){
+  const page=dom('./alive.html'),root=page.ids.get('browser-library'),loads=[],sources=[],drags=[];
+  const browser=mountBrowser({doc:page.doc,root,onCatalog,onLoad:entry=>loads.push(entry),onSource:entry=>sources.push(entry),onDeviceDrag:entry=>drags.push(entry)});
+  const byClass=name=>descendants(root).find(e=>e.classList.contains(name));
+  const row=id=>descendants(root).find(e=>e.attrs['data-entry']===id);
+  return{...page,root,browser,loads,sources,drags,byClass,row};
+}
+test('catalog loads and searches additional pages without losing loaded results',async()=>{
+  const continuation=deferred(),requests=[];
+  const page=browserHarness(request=>{requests.push(request);return requests.length===1?Promise.resolve(catalogPage([catalogEntry()],{nextCursor:{revision:'1',offset:64},notices:['User library reached its depth bound']})):continuation.promise;});
+  await settle();assert.ok(page.row('bundled:fresh'));assert.deepEqual(requests,[{refresh:false,cursor:null},{refresh:false,cursor:{revision:'1',offset:64}}]);
+  page.byClass('browser-search').value='chord';await page.byClass('browser-search').fire('input');
+  continuation.resolve(catalogPage([catalogEntry({id:'live:chord',name:'Chord',kind:'midiEffect',path:null,qualification:'unsupported',availability:'unavailable',reason:'MIDI processing is unavailable'})]));await settle();
+  assert.ok(page.row('live:chord'));assert.match(page.byClass('browser-status').textContent,/depth bound/);
+  await page.find('Browse MIDI Effects').fire('click');assert.ok(page.row('live:chord'));page.browser.dispose();
+});
+for(const overrides of [{path:null,qualification:'candidate',availability:'unavailable'},{qualification:'unsupported'},{availability:'unavailable'},{path:' '},{kind:'midiEffect'}])test(`unavailable ${JSON.stringify(overrides)} blocks button keyboard double-click and drag activation`,async()=>{
+  const entry=catalogEntry({id:'live:analog',name:'Analog',reason:'Save a qualified Analog device first',...overrides});
+  const page=browserHarness(()=>Promise.resolve(catalogPage([entry])));await settle();const row=page.row('live:analog');assert.ok(row);
+  await row.fire('click');assert.match(page.byClass('browser-description').textContent,/Save a qualified Analog/);assert.equal(page.byClass('browser-load').disabled,true);assert.equal(row.draggable,false);
+  await page.byClass('browser-load').fire('click');await page.byClass('browser-list').fire('keydown',{key:'Enter'});await row.fire('dblclick');let prevented=false;await row.fire('dragstart',{preventDefault(){prevented=true;}});
+  assert.equal(prevented,true);assert.equal(page.loads.length,0);assert.equal(page.drags.length,0);page.browser.dispose();
+});
+test('refresh owns responses preserves stable selection and ignores stale failures and pages',async()=>{
+  const requests=[],pending=[];const page=browserHarness(request=>{requests.push(request);const gate=deferred();pending.push(gate);return gate.promise;});
+  pending[0].resolve(catalogPage([catalogEntry()],{nextCursor:{revision:'1',offset:64}}));await settle();await page.row('bundled:fresh').fire('click');
+  const refresh=page.find('Refresh Library');assert.ok(refresh);await refresh.fire('click');assert.deepEqual(requests[2],{refresh:true,cursor:null});
+  assert.equal(page.row('bundled:fresh').attrs['aria-selected'],'true');
+  pending[2].resolve(catalogPage([catalogEntry({id:'other',name:'Other Synth'})],{revision:'2',nextCursor:{revision:'2',offset:64}}));await settle();assert.equal(page.row('bundled:fresh').attrs['aria-selected'],'true');
+  pending[1].resolve(catalogPage([catalogEntry({id:'obsolete',name:'Obsolete'})]));await settle();assert.equal(page.row('obsolete'),undefined);
+  pending[3].resolve(catalogPage([catalogEntry({name:'Renamed Synth'})],{revision:'2'}));await settle();assert.equal(page.row('bundled:fresh').attrs['aria-selected'],'true');
+  await page.byClass('browser-list').fire('keydown',{key:'Enter'});assert.equal(page.loads[0].name,'Renamed Synth');
+  await refresh.fire('click');await refresh.fire('click');pending[4].reject(Error('Stale discovery failure'));pending[5].resolve(catalogPage([catalogEntry()],{revision:'3'}));await settle();assert.doesNotMatch(page.byClass('browser-status').textContent,/Stale discovery failure/);
+  await refresh.fire('click');const before=page.byClass('browser-status').textContent;page.browser.dispose();pending[6].resolve(catalogPage([catalogEntry({id:'disposed'})],{revision:'4',nextCursor:{revision:'4',offset:64}}));await settle();
+  assert.equal(page.row('disposed'),undefined);assert.equal(requests.length,7);assert.equal(page.byClass('browser-status').textContent,before);
+});
+test('failed catalog discovery can retry and retains useful project entries',async()=>{
+  let attempts=0;const page=browserHarness(()=>++attempts===1?Promise.reject(Error('Unreadable root')):Promise.resolve(catalogPage([catalogEntry()])));
+  page.browser.render({document:workspaceState().document,instances:workspaceState().deviceInstances});await settle();assert.match(page.byClass('browser-status').textContent,/Unreadable root/);assert.ok(descendants(page.root).some(e=>e.draggable));
+  await page.find('Refresh Library').fire('click');assert.ok(page.row('bundled:fresh'));assert.doesNotMatch(page.byClass('browser-status').textContent,/Unreadable root/);page.browser.dispose();
+});
+test('failed continuation retains loaded metadata and retries a fresh index with the selected ID',async()=>{
+  const requests=[];const page=browserHarness(request=>{
+    requests.push(request);
+    if(request.cursor)return Promise.reject(Error('Index expired'));
+    return Promise.resolve(catalogPage([catalogEntry()],requests.length===1?{nextCursor:{revision:'1',offset:64},notices:['A device could not be read']}:{revision:'2'}));
+  });
+  await settle();assert.ok(page.row('bundled:fresh'));await page.row('bundled:fresh').fire('click');assert.match(page.byClass('browser-status').textContent,/Index expired/);assert.match(page.byClass('browser-status').textContent,/could not be read/);
+  await page.find('Refresh Library').fire('click');assert.deepEqual(requests[2],{refresh:true,cursor:null});assert.equal(page.row('bundled:fresh').attrs['aria-selected'],'true');assert.doesNotMatch(page.byClass('browser-status').textContent,/Index expired/);page.browser.dispose();
+});
+test('a catalog rejection after disposal cannot change the browser',async()=>{
+  const pending=deferred(),page=browserHarness(()=>pending.promise),before=page.byClass('browser-status').textContent;
+  page.browser.dispose();pending.reject(Error('Disposed discovery failure'));await settle();assert.equal(page.byClass('browser-status').textContent,before);
+});
+test('drop admission rejects candidate unavailable and empty-path entries before capturing a drag',async()=>{
+  const page=dom('./alive.html'),loaded=[],errors=[],drop=mountDeviceDrop({doc:page.doc,win:page.win,scope:()=>({generation:1,editRevision:0}),track:()=>workspaceState().document.tracks[0],onDrop:entry=>loaded.push(entry),onError:error=>errors.push(error)});
+  for(const entry of [catalogEntry({qualification:'candidate'}),catalogEntry({availability:'unavailable'}),catalogEntry({path:' '})]){
+    let prevented=false;const dataTransfer=dragTransfer();drop.start(entry,{dataTransfer,preventDefault(){prevented=true;}});assert.equal(prevented,true);assert.deepEqual(dataTransfer.values,{});
+    await page.doc.fire('drop',{target:page.ids.get('tracks'),dataTransfer});
+  }
+  assert.equal(loaded.length,0);assert.equal(errors.length,3);drop.dispose();
+});
+test('queued browser loading rechecks admission before any native mutation',async()=>{
+  const initial=workspaceState();initial.state.playing=0;
+  const page=dom('./alive.html'),native=backend(initial),boundary=delayedBoundary(native,'alive_mixer',()=>{}),entry=catalogEntry();
+  const view=mountAlive({...page,invoke:(name,args)=>name==='alive_browser_catalog'?Promise.resolve(catalogPage([entry])):boundary.invoke(name,args)});await settle();
+  const gain=page.find('Pulse gain');gain.value='.713';await gain.fire('change');
+  await page.find('Fresh Synth').fire('click');const list=descendants(page.ids.get('browser-library')).find(e=>e.className==='browser-list'),loading=list.fire('keydown',{key:'Enter'});
+  entry.availability='unavailable';entry.reason='Saved device was removed';boundary.release();await loading;
+  assert.equal(native.calls.some(c=>['alive_device','alive_workspace_track'].includes(c.name)),false);assert.match(descendants(page.ids.get('browser-library')).find(e=>e.classList.contains('browser-status')).textContent,/Saved device was removed/);view.dispose();
+});
+test('drop rechecks admission after an otherwise valid drag starts',async()=>{
+  const page=dom('./alive.html'),root=page.ids.get('tracks'),target=page.doc.createElement('div'),entry=catalogEntry(),loaded=[],errors=[];target.className='track';target.dataset.trackId='track-1';root.append(target);
+  const drop=mountDeviceDrop({doc:page.doc,win:page.win,scope:()=>({generation:1,editRevision:0,playing:false,pending:false,deviceCount:1,maxDevices:6}),track:()=>workspaceState().document.tracks[0],onDrop:entry=>loaded.push(entry),onError:error=>errors.push(error)});
+  const dataTransfer=dragTransfer();drop.start(entry,{dataTransfer,preventDefault(){assert.fail('qualified entry must start dragging');}});entry.qualification='unsupported';entry.reason='Device qualification changed';
+  await page.doc.fire('drop',{target,dataTransfer});assert.equal(loaded.length,0);assert.match(errors[0],/qualification changed/);drop.dispose();
+});
 
 test('plain Tab navigates workspaces while controls and modified Tab keep native focus navigation',async()=>{
   const page=dom('./alive.html'),native=backend(workspaceState()),view=mountAlive({...page,invoke:native.invoke});await settle();
@@ -835,7 +917,7 @@ test('queued device drop retains its destination and does not override a newer t
 test('fresh project fetches its device catalog once without category interaction',async()=>{
   const initial=workspaceState();for(const t of initial.document.tracks){t.chain.instrument=null;t.effects=[];t.slots=[null,null,null,null];}initial.document.sources=[];initial.document.placements=[];initial.deviceInstances={};initial.state.playing=0;
   const page=dom('./alive.html'),native=backend(initial);let fetches=0;
-  const view=mountAlive({...page,invoke:(name,args)=>{if(name==='alive_browser_catalog'){fetches++;return Promise.resolve([{name:'Fresh Synth',kind:'instrument',path:'/devices/fresh.ultra'}]);}return native.invoke(name,args);}});await settle();
+  const view=mountAlive({...page,invoke:(name,args)=>{if(name==='alive_browser_catalog'){fetches++;assert.deepEqual(args,{request:{refresh:false,cursor:null}});return Promise.resolve(catalogPage([catalogEntry()]));}return native.invoke(name,args);}});await settle();
   assert.equal(page.find('Fresh Synth').draggable,true);await view.refresh();assert.equal(fetches,1);
   await page.find('Fresh Synth').fire('click');assert.equal(descendants(page.ids.get('browser-library')).find(e=>e.className==='browser-load').textContent,'Load Instrument');view.dispose();
 });
@@ -862,7 +944,7 @@ function backend(initial){return timelineBackend(initial);}
 function liveBackend(snapshot){
   const calls=[];
   return{calls,snapshot,async invoke(name,args={}){
-    if(name==='alive_browser_catalog')return [];
+    if(name==='alive_browser_catalog')return catalogPage();
     calls.push({name,args:structuredClone(args)});
     if(name==='alive_current'||name==='alive_file'||name==='alive_device')return structuredClone(snapshot);
     if(name==='alive_mixer'){Object.assign(snapshot.document.tracks.find(t=>t.id===args.trackId),{gain:args.gain,mute:args.mute,solo:args.solo});return;}

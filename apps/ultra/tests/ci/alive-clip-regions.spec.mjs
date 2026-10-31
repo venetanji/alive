@@ -29,7 +29,7 @@ async function openRangeStudy(page){
     }
     prepare();window.__TAURI__={core:{invoke:async(name,args={})=>{
       window.calls.push({name,args});if(name==='alive_current')return snapshotNow();
-      if(name==='alive_browser_catalog')return{entries:[],notice:''};
+      if(name==='alive_browser_catalog')return{revision:'1',entries:[],nextCursor:null,notices:[]};
       if(name==='alive_workspace_edit'||name==='alive_workspace_track'){
         if(pending)throw Error('A musical edit is still pending.');if(args.editRevision!==snapshot.editRevision)throw Error('Stale musical edit.');
         const document=structuredClone(snapshot.document),op=args.operation,affected={trackId:op.trackId??null,sourceId:null,slotId:null,placementId:null,noteId:null};

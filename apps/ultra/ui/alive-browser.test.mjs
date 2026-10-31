@@ -6,9 +6,21 @@ const document={format:'alive-session-v4',tracks:[{id:'track-1',name:'Pulse',cha
 const instances={'inst-1':{manifest:{name:'Subtractive Instrument'}},'fx-1':{manifest:{name:'Stereo Utility'}}};
 test('browser indexes real device references and current project sources without changing them',()=>{
   const before=structuredClone(document),entries=browserEntries([],document,instances);
-  assert.deepEqual(entries.map(e=>e.kind),['instrument','effect','source']);
+  assert.deepEqual(entries.map(e=>e.kind),['instrument','audioEffect','source']);
   assert.equal(entries[0].path,'/devices/synth.ultra');assert.equal(entries[2].sourceId,'source-1');
   assert.deepEqual(document,before);
+});
+test('catalog identities survive project aliases and pathless candidates remain distinct',()=>{
+  const catalog=[{id:'bundled:synth',provider:'bundled',kind:'instrument',name:'Synth',path:'/devices/synth.ultra'},
+    {id:'live:analog',kind:'instrument',name:'Analog',path:null,reason:'Needs a saved device'},
+    {id:'live:analog-preset',kind:'instrument',name:'Analog preset',path:null},
+    {id:'live:chord',kind:'midiEffect',name:'Chord',path:null}];
+  const entries=browserEntries(catalog,document,instances);
+  assert.deepEqual(entries.slice(0,4).map(e=>e.id),['bundled:synth','live:analog','live:analog-preset','live:chord']);
+  assert.equal(entries.filter(e=>e.path==='/devices/synth.ultra').length,1);
+  assert.equal(filterEntries(entries,'Analog','instrument')[0].path,null);
+  assert.equal(filterEntries(entries,'chord','midiEffect')[0].kind,'midiEffect');
+  assert.equal(filterEntries(entries,'saved device')[0].id,'live:analog');
 });
 test('bundled and loaded copies share one result and search is case insensitive',()=>{
   const bundled=[{id:'subtractive',name:'Subtractive Instrument',kind:'instrument',path:'/devices/synth.ultra'}];

@@ -1,5 +1,5 @@
 import {test,expect} from '@playwright/test';
-import {readFileSync} from 'node:fs';
+import {readFileSync,mkdirSync} from 'node:fs';
 
 for(const size of [{width:1440,height:900},{width:1280,height:800},{width:800,height:600}])test(`detail expands and maximizes the piano editor at ${size.width}x${size.height}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page);
@@ -138,6 +138,37 @@ test('browser search and keyboard selection never launch or change the score',as
   await page.screenshot({path:testInfo.outputPath('browser-project-clips.png')});
 });
 
+for(const size of [{width:800,height:600},{width:1280,height:800}])test(`catalog availability paging and Refresh Library fit ${size.width}x${size.height}`,async({page})=>{
+  await page.setViewportSize(size);await openSession(page);
+  const before=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
+  await page.evaluate(()=>{
+    window.catalogRequests=[];let revision=1;
+    const entry=(overrides={})=>({id:'user:saved',provider:'user',name:'Saved Synth',kind:'instrument',path:'/saved/synth.ultra',profile:null,qualification:'qualified',availability:'ready',reason:null,description:'User library',dependencies:[],...overrides});
+    window.catalogRequest=request=>{
+      window.catalogRequests.push(request);if(!request.cursor)revision++;
+      return request.cursor?{revision:String(revision),entries:[entry({id:'live:analog',provider:'live',name:'Analog',path:null,qualification:'candidate',availability:'unavailable',reason:'Save a qualified Analog device before loading it.',description:'Installed Live device candidate'}),entry({id:'live:chord',provider:'live',name:'Chord',kind:'midiEffect',path:null,qualification:'unsupported',availability:'unavailable',reason:'MIDI device hosting is not available.'})],nextCursor:null,notices:['User library discovery reached its depth bound.']}:
+        {revision:String(revision),entries:[entry()],nextCursor:{revision:String(revision),offset:64},notices:[]};
+    };
+  });
+  const tempo=page.locator('#tempo');await tempo.fill('133');
+  const refresh=page.getByRole('button',{name:'Refresh Library',exact:true});await refresh.click();await expect(tempo).toHaveValue('133');
+  await expect(page.getByRole('option',{name:'Analog',exact:true})).toBeVisible();
+  expect(await page.evaluate(()=>window.catalogRequests)).toEqual([{refresh:true,cursor:null},{refresh:false,cursor:{revision:'2',offset:64}}]);
+  await page.getByRole('button',{name:'Browse MIDI Effects',exact:true}).click();await expect(page.getByRole('option',{name:'Chord',exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Browse Instruments',exact:true}).click();
+  const search=page.getByRole('searchbox',{name:'Search browser'});await search.fill('Analog');
+  const analog=page.getByRole('option',{name:'Analog',exact:true});await analog.click();
+  await expect(analog).toHaveAttribute('draggable','false');await expect(page.locator('.browser-description')).toContainText('Save a qualified Analog');await expect(page.locator('.browser-load')).toBeDisabled();
+  await page.getByRole('listbox',{name:'Browser results'}).press('Enter');await analog.dblclick();
+  const dataTransfer=await page.evaluateHandle(()=>new DataTransfer());await analog.dispatchEvent('dragstart',{dataTransfer});await page.locator('.track').first().dispatchEvent('drop',{dataTransfer});
+  expect(await dataTransfer.evaluate(data=>data.types.length)).toBe(0);await dataTransfer.dispose();
+  await refresh.click();await expect(analog).toHaveAttribute('aria-selected','true');await expect(page.locator('.browser-status')).toContainText('depth bound');await expect(tempo).toHaveValue('133');
+  await expect(search).toBeInViewport({ratio:1});await expect(refresh).toBeInViewport({ratio:1});await expect(page.locator('.browser-description')).toBeInViewport({ratio:1});await expect(page.locator('.browser-load')).toBeInViewport({ratio:1});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
+  expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document))).toBe(before);expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  mkdirSync('/tmp/alive-device-catalog-ui-20261031',{recursive:true});await page.screenshot({path:`/tmp/alive-device-catalog-ui-20261031/catalog-${size.width}x${size.height}.png`});
+});
+
 test('browser device double-click requests one validated load and reports native refusal',async({page})=>{
   await openSession(page);
   await page.evaluate(()=>{window.sessionSnapshot.document.tracks[0].chain.instrument=null;window.sessionSnapshot.document.sources[0].automation=[];});
@@ -258,7 +289,7 @@ async function openSession(page,{longNames=false,trackCount=2,launchQuantization
     }
     function accepted(){snapshot.editRevision++;snapshot.snapshotSequence=String(BigInt(snapshot.snapshotSequence)+1n);snapshot.dirty=true;snapshot.history={canUndo:!!undo.length,canRedo:!!redo.length};prepared();return structuredClone(snapshot);}
     window.__TAURI__={core:{invoke:async(name,args={})=>{
-      if(name==='alive_browser_catalog')return[{kind:'instrument',name:'Subtractive',path:'../../ultra/examples/subtractive.ultra'},{kind:'effect',name:'Stereo Utility',path:'utility.ultra'},{kind:'effect',name:'Stereo Lowpass',path:'stereo-lowpass.ultra'}];
+      if(name==='alive_browser_catalog')return window.catalogRequest?window.catalogRequest(args.request):{revision:'1',entries:[{id:'bundled:subtractive',kind:'instrument',name:'Subtractive',path:'../../ultra/examples/subtractive.ultra'},{id:'bundled:utility',kind:'audioEffect',name:'Stereo Utility',path:'utility.ultra'},{id:'bundled:lowpass',kind:'audioEffect',name:'Stereo Lowpass',path:'stereo-lowpass.ultra'}].map(entry=>({...entry,provider:'bundled',profile:null,qualification:'qualified',availability:'ready',reason:null,description:'Bundled Ultra device',dependencies:[]})),nextCursor:null,notices:[]};
       window.calls.push({name,args});if(name==='alive_current')return structuredClone(snapshot);
       if(name==='alive_midi_preview')return{serial:String(window.calls.length)};
       if(name==='alive_file')return structuredClone(snapshot);

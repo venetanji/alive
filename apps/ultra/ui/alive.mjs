@@ -1,6 +1,6 @@
 import {point,beatAt,beatX,pitchAt,transformNote,velocityEdit,addNote,keyEdit,timeSelection,loopSelection,transformRegion} from './alive-piano.mjs';
 import {mountClipView} from './alive-clip-view.mjs';
-import {mountBrowser} from './alive-browser.mjs';
+import {mountBrowser,deviceAdmissionReason} from './alive-browser.mjs';
 import {mountDeviceDrop} from './alive-device-drop.mjs';
 import {mountTransportOptions} from './alive-shell.mjs';
 import {createAliveModel,parameterReading,nativeInteger,instrumentOf,actualDevices,sourceLength} from './alive-model.mjs';
@@ -52,7 +52,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   function commitFocused(){if(doc.activeElement?.matches('input'))doc.activeElement.blur();}
   const guard=work=>(...args)=>{try{Promise.resolve(work(...args)).catch(error=>notice(error,true));}catch(error){notice(error,true);}};
   const deviceDrop=mountDeviceDrop({doc,win,scope:()=>{const snapshot=model.snapshot();return snapshot?{generation:snapshot.generation,editRevision:snapshot.editRevision,playing:!!snapshot.state.playing,pending:snapshot.midi.pending,deviceCount:model.document().tracks.reduce((n,t)=>n+actualDevices(t).length,0),maxDevices:snapshot.capabilities.maxDevices}:null;},track:id=>model.document()?.tracks.find(t=>t.id===id),onDrop:loadBrowserEntry,onError:error=>notice(error,true)});
-  const browser=mountBrowser({doc,root:$('browser-library'),onNavigate:workspace.preserveFocused,onLoad:loadBrowserEntry,onSource:openBrowserSource,onDeviceDrag:deviceDrop.start,onDragEnd:deviceDrop.cancel,onCatalog:()=>invoke?invoke('alive_browser_catalog'):Promise.reject('Open the native Alive app to browse bundled devices')});
+  const browser=mountBrowser({doc,root:$('browser-library'),onNavigate:workspace.preserveFocused,onLoad:loadBrowserEntry,onSource:openBrowserSource,onDeviceDrag:deviceDrop.start,onDragEnd:deviceDrop.cancel,onCatalog:request=>invoke?invoke('alive_browser_catalog',{request}):Promise.reject('Open the native Alive app to browse the device library')});
   const bind=(id,label,fn)=>{$(id).setAttribute('aria-label',label);$(id).addEventListener('click',guard(fn));};
   function numeric(label,value,{min,max,step='any'}={},change){
     const input=make('input');input.type='number';input.value=String(value);input.setAttribute('aria-label',label);
@@ -433,6 +433,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     const intent=destination?.intent??{generation:generation(),editRevision:model.snapshot()?.editRevision},trackId=destination?.trackId??model.document().tracks[selected].id,token=selectionToken;
     cancelGesture();releaseAudition();
     return enqueue(async()=>{
+      const unavailable=deviceAdmissionReason(entry);if(unavailable)throw Error(unavailable);
       if(generation()!==intent.generation||(model.snapshot()?.editRevision)!==intent.editRevision)throw Error('The originating session changed. Select the browser entry again.');
       const current=model.document().tracks.find(track=>track.id===trackId);if(!current)throw Error('The destination track was removed. Select a track and load the device again.');
       if(model.snapshot().state.playing)throw Error('Stop transport before loading a device.');

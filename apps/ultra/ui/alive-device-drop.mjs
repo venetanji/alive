@@ -1,3 +1,4 @@
+import {deviceAdmissionReason} from './alive-browser.mjs';
 const deviceType='application/x-alive-browser-device';
 
 // Only a drag started by this browser can load a device. File/text drops stay external.
@@ -7,7 +8,8 @@ export function mountDeviceDrop({doc,win,scope,track,onDrop,onError}){
   function cancel(){clearHighlight();drag=null;lastError='';}
   function error(message){if(message!==lastError){lastError=message;onError(message);}}
   function start(entry,event){
-    cancel();const intent=scope();if(!intent){event.preventDefault();return;}
+    cancel();const blocked=deviceAdmissionReason(entry);if(blocked){event.preventDefault();error(blocked);return;}
+    const intent=scope();if(!intent){event.preventDefault();return;}
     drag={entry,intent};event.dataTransfer.setData(deviceType,entry.id);event.dataTransfer.effectAllowed='copy';
   }
   function destination(event){
@@ -24,13 +26,14 @@ export function mountDeviceDrop({doc,win,scope,track,onDrop,onError}){
     return row?{trackId:row.dataset.trackId,beforeInstanceId:null,element:row,decoration:null}:null;
   }
   function reason(target){
+    const unavailable=deviceAdmissionReason(drag.entry);if(unavailable)return unavailable;
     const now=scope(),current=track(target.trackId);
     if(!now||now.generation!==drag.intent.generation||now.editRevision!==drag.intent.editRevision)return 'The device drag session changed. Drag the device again.';
     if(!current)return 'The destination track was removed. Drag the device again.';
     if(now.pending)return 'Wait for the musical edit to finish before loading a device.';
     if(now.playing)return 'Stop transport before loading a device.';
     if(drag.entry.kind==='instrument'&&current.chain.kind!=='midi')return 'Drop instruments onto a MIDI track. Audio tracks accept audio effects.';
-    if(drag.entry.kind==='effect'&&current.effects.length>=2)return 'This track already has two effects. Remove an effect before adding another.';
+    if(drag.entry.kind==='audioEffect'&&current.effects.length>=2)return 'This track already has two effects. Remove an effect before adding another.';
     if(now.deviceCount>=now.maxDevices&&!(drag.entry.kind==='instrument'&&current.chain.instrument))return 'Device capacity reached. Remove a device before adding another.';
     return '';
   }
