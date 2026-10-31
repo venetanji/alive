@@ -1,0 +1,153 @@
+{
+  "synthetic_ipc": false,
+  "physical_audio": false,
+  "inputs": [
+    {
+      "control": "Attack base",
+      "text": "23",
+      "commit": true,
+      "method": "XTest keys"
+    },
+    {
+      "control": "Attack base",
+      "text": "47",
+      "commit": true,
+      "method": "XTest keys"
+    },
+    {
+      "control": "Attack base",
+      "text": "",
+      "commit": false,
+      "method": "XTest keys"
+    }
+  ],
+  "layouts": [
+    {
+      "product": "alive",
+      "window": [
+        800,
+        600
+      ],
+      "first": [
+        243,
+        374,
+        64,
+        19
+      ],
+      "last_after_focus_scroll": [
+        686,
+        374,
+        61,
+        19
+      ],
+      "ownership": "Base: 122.99 ms",
+      "first_after_scroll": [
+        158,
+        374,
+        64,
+        19
+      ],
+      "fixed_control_bounds": [
+        667,
+        1,
+        33,
+        22
+      ],
+      "scroll_input": "XTest Shift + vertical wheel",
+      "actual_last_value": "55"
+    },
+    {
+      "product": "alive",
+      "window": [
+        1280,
+        800
+      ],
+      "first": [
+        243,
+        570,
+        64,
+        19
+      ],
+      "last_after_focus_scroll": [
+        771,
+        570,
+        61,
+        19
+      ],
+      "ownership": "Base: 122.99 ms",
+      "first_after_scroll": [
+        243,
+        570,
+        64,
+        19
+      ],
+      "fixed_control_bounds": [
+        1086,
+        1,
+        60,
+        22
+      ],
+      "scroll_input": "XTest Shift + vertical wheel",
+      "actual_last_value": "55"
+    }
+  ],
+  "independence": {
+    "same_source_sha256": "96342f492f1bd80798524bb88eb46e3d48f4b155593cd465697bbf65a0e37521",
+    "instance_ids": [
+      "track-1-instrument",
+      "track-2-instrument"
+    ],
+    "unfinished_field_survived_navigation": true,
+    "accepted_values": [
+      122.99,
+      47
+    ],
+    "other_parameters_unchanged": true
+  },
+  "alive": {
+    "pid": 1111469,
+    "binary": "/home/venetanji/.local/share/alive/builds/1b6cb68/bin/alive",
+    "binary_sha256": "fa268118b19c8a864d7c0ca9a99e4dc0904d6c7b48f80633a92000f573de8add",
+    "native_library": "/home/venetanji/.local/share/alive/builds/1b6cb68/bin/libultra_native.so",
+    "native_sha256": "69ba16fe7af0e969a86f89f8ae94d33b767f7f47ea02ce74da7365a1dc770a90",
+    "audio": {
+      "frames": 365056,
+      "seconds": 7.605333333333333,
+      "peak": 0.37416601181030273,
+      "one_second_peaks": [
+        0.10612675547599792,
+        0.12066742777824402,
+        0.09461954236030579,
+        0.11697878688573837,
+        0.0994623601436615,
+        0.37416601181030273,
+        0.09461954236030579,
+        0.06766839325428009
+      ],
+      "unequal_stereo_samples_after_setup": 0,
+      "sha256": "76013fd2488204b0778dce8bacbeef8e191afb5be0610db8c48eeeef675fcd86",
+      "path": "editor-close-playing.f32",
+      "physical_audio": false,
+      "supervision": {
+        "complete": true,
+        "reason": "requested_stop",
+        "group_id": 1113066,
+        "recorder_pid": 1113070,
+        "returncode": 1,
+        "wall_seconds": 7.7581425629978185,
+        "audio_bytes": 2920448,
+        "stderr_bytes": 0,
+        "limits": {
+          "wall_seconds": 2700.0,
+          "audio_bytes": 1073741824,
+          "metadata_bytes": 67108864,
+          "stderr_bytes": 1048576,
+          "disk_reserve_bytes": 268435456
+        }
+      }
+    },
+    "stream_errors": 0,
+    "rejected_commands": 0,
+    "editor_closed_while_playing": true
+  }
+}

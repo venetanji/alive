@@ -1,14 +1,18 @@
 # Alive device hosting and saved Ultra presentation
 
-Status: catalog delivery 0 implemented and verified on 2026-10-31 in installed
-source `a8b5f67` on `feat/phase2-ui-fidelity`, including unfiltered list
-containment, native scrolling/footer checks at both sizes and atomic automatic
-instrument insertion/refusal/Undo/Redo; see the
+Status: saved-presentation Tasks 1/2 are reviewed and installed on 2026-10-31 in
+source `9ced05e` on `feat/phase2-ui-fidelity`. The shared saved surface, independent
+instance values/drafts, both native window sizes, and editor closure during
+software-audio playback have installed evidence in the
+[saved-presentation checkpoint](../alive-presentation-checkpoint-20261031/README.md).
+This retains catalog delivery 0's
 [installed catalog evidence](../alive-device-catalog-20261031/README.md).
-The remaining sections retain the architecture and later delivery requirements.
+Presentation authoring, Max presentation import, and native hosting remain
+pending; the broader roadmap stays paused. The remaining sections retain the
+architecture and later delivery requirements.
 The native-device inventory and adapter audit come from the separate `2a0f`
 worktree. Its native runtime is not integrated into that Alive build. Proposed
-saved presentation and native Alive hosting remain to implement. Catalog
+presentation authoring and native Alive hosting remain to implement. Catalog
 descriptors do not qualify any installed native candidate for loading.
 
 User requirements are fixed: three musical device classes, composite

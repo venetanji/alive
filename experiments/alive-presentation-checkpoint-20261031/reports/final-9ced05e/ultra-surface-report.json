@@ -1,0 +1,250 @@
+{
+  "synthetic_ipc": false,
+  "physical_audio": false,
+  "inputs": [],
+  "layouts": [
+    {
+      "product": "ultra",
+      "window": [
+        800,
+        600
+      ],
+      "first": [
+        511,
+        219,
+        64,
+        19
+      ],
+      "last_after_focus_scroll": [
+        684,
+        219,
+        61,
+        19
+      ],
+      "ownership": "Base: 10 ms",
+      "first_after_scroll": [
+        156,
+        219,
+        64,
+        19
+      ],
+      "fixed_control_bounds": [
+        760,
+        102,
+        28,
+        29
+      ],
+      "scroll_input": "XTest Shift + vertical wheel",
+      "actual_first_value": "10",
+      "wheel_point": [
+        645,
+        153
+      ],
+      "left_wheel_batches": 1,
+      "wheel_batches": 2,
+      "wheel_values_unchanged": true,
+      "actual_last_value": "90"
+    },
+    {
+      "product": "ultra",
+      "window": [
+        1280,
+        800
+      ],
+      "first": [
+        991,
+        219,
+        64,
+        19
+      ],
+      "last_after_focus_scroll": [
+        1164,
+        219,
+        61,
+        19
+      ],
+      "ownership": "Base: 10 ms",
+      "first_after_scroll": [
+        636,
+        219,
+        64,
+        19
+      ],
+      "fixed_control_bounds": [
+        1240,
+        102,
+        28,
+        29
+      ],
+      "scroll_input": "XTest Shift + vertical wheel",
+      "actual_first_value": "10",
+      "wheel_point": [
+        1125,
+        153
+      ],
+      "left_wheel_batches": 2,
+      "wheel_batches": 1,
+      "wheel_values_unchanged": true,
+      "actual_last_value": "90"
+    }
+  ],
+  "mode": "ultra-only",
+  "native_window_sizes": [
+    {
+      "scope": "subtractive.ultra - Ultra",
+      "requested": [
+        800,
+        600
+      ],
+      "actual": [
+        800,
+        600
+      ]
+    },
+    {
+      "scope": "subtractive.ultra - Ultra",
+      "requested": [
+        1280,
+        800
+      ],
+      "actual": [
+        1280,
+        800
+      ]
+    }
+  ],
+  "scroll_attempts": [
+    {
+      "product": "ultra",
+      "window": [
+        800,
+        600
+      ],
+      "wheel_point": [
+        645,
+        153
+      ],
+      "last_bounds": [
+        [
+          799,
+          219,
+          61,
+          19
+        ],
+        [
+          684,
+          219,
+          61,
+          19
+        ]
+      ]
+    },
+    {
+      "product": "ultra",
+      "window": [
+        1280,
+        800
+      ],
+      "wheel_point": [
+        1125,
+        153
+      ],
+      "last_bounds": [
+        [
+          1164,
+          219,
+          61,
+          19
+        ]
+      ]
+    }
+  ],
+  "ultra": {
+    "pid": 1127181,
+    "binary": "/home/venetanji/.local/share/alive/builds/9ced05e/bin/ultra",
+    "binary_sha256": "eeb76c2758bb4a9233fb80b2250e5d354a82397569f6d772496b661a250fed78",
+    "native_library": "/home/venetanji/.local/share/alive/builds/9ced05e/bin/libultra_native.so",
+    "native_sha256": "69ba16fe7af0e969a86f89f8ae94d33b767f7f47ea02ce74da7365a1dc770a90",
+    "automatic_keyboard": false,
+    "observed_panel_controls": [
+      {
+        "name": "Attack",
+        "role": "slider"
+      },
+      {
+        "name": "Attack value",
+        "role": "entry"
+      },
+      {
+        "name": "Decay",
+        "role": "slider"
+      },
+      {
+        "name": "Decay value",
+        "role": "entry"
+      },
+      {
+        "name": "Sustain",
+        "role": "slider"
+      },
+      {
+        "name": "Sustain value",
+        "role": "entry"
+      },
+      {
+        "name": "Release",
+        "role": "slider"
+      },
+      {
+        "name": "Release value",
+        "role": "entry"
+      },
+      {
+        "name": "Cutoff",
+        "role": "slider"
+      },
+      {
+        "name": "Cutoff value",
+        "role": "entry"
+      },
+      {
+        "name": "Resonance",
+        "role": "slider"
+      },
+      {
+        "name": "Resonance value",
+        "role": "entry"
+      },
+      {
+        "name": "Level",
+        "role": "slider"
+      },
+      {
+        "name": "Level value",
+        "role": "entry"
+      },
+      {
+        "name": "New preset name",
+        "role": "entry"
+      },
+      {
+        "name": "Device name",
+        "role": "entry"
+      }
+    ],
+    "saved_surface_size": {
+      "width": 640,
+      "height": 112
+    },
+    "saved_surface_controls": [
+      "Attack",
+      "Decay",
+      "Sustain",
+      "Release",
+      "Cutoff",
+      "Resonance",
+      "Level"
+    ]
+  },
+  "passed": true
+}

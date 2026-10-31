@@ -1,0 +1,327 @@
+{
+  "format": "alive-session-v6",
+  "score": {
+    "format": "alive-session-v4",
+    "title": "First Light",
+    "tempo": 112.0,
+    "lengthBeats": 8.0,
+    "loopEnabled": true,
+    "loopStartBeats": 0.0,
+    "loopEndBeats": 8.0,
+    "tracks": [
+      {
+        "id": "track-1",
+        "name": "Pulse",
+        "color": "#c77b61",
+        "chain": {
+          "kind": "midi",
+          "instrument": {
+            "instanceId": "track-1-instrument",
+            "sourceSha256": "96342f492f1bd80798524bb88eb46e3d48f4b155593cd465697bbf65a0e37521",
+            "bypassed": false,
+            "path": "../../../../.local/share/alive/builds/1b6cb68/lib/Alive/alive-session/ultra/examples/subtractive.ultra",
+            "id": "org.alive.subtractive",
+            "version": 2,
+            "parameters": {
+              "attack": 122.99,
+              "cutoff": 2400.0,
+              "decay": 150.0,
+              "level": 55.0,
+              "release": 300.0,
+              "resonance": 0.7,
+              "sustain": 0.65
+            }
+          }
+        },
+        "effects": [],
+        "slots": [
+          {
+            "id": "track-1-clip",
+            "name": "Clip 1",
+            "sourceId": "track-1-source",
+            "region": {
+              "start": 0.0,
+              "end": 8.0,
+              "loopStart": 0.0,
+              "loopEnd": 8.0,
+              "loopEnabled": true
+            }
+          },
+          null,
+          null,
+          null
+        ],
+        "gain": 0.7,
+        "mute": false,
+        "solo": false
+      },
+      {
+        "id": "track-2",
+        "name": "Harmony",
+        "color": "#86a59c",
+        "chain": {
+          "kind": "midi",
+          "instrument": {
+            "instanceId": "track-2-instrument",
+            "sourceSha256": "96342f492f1bd80798524bb88eb46e3d48f4b155593cd465697bbf65a0e37521",
+            "bypassed": false,
+            "path": "../../../../.local/share/alive/builds/1b6cb68/lib/Alive/alive-session/ultra/examples/subtractive.ultra",
+            "id": "org.alive.subtractive",
+            "version": 2,
+            "parameters": {
+              "attack": 47.0,
+              "cutoff": 2400.0,
+              "decay": 150.0,
+              "level": 43.0,
+              "release": 300.0,
+              "resonance": 0.7,
+              "sustain": 0.65
+            }
+          }
+        },
+        "effects": [],
+        "slots": [
+          {
+            "id": "track-2-clip",
+            "name": "Clip 1",
+            "sourceId": "track-2-source",
+            "region": {
+              "start": 0.0,
+              "end": 8.0,
+              "loopStart": 0.0,
+              "loopEnd": 8.0,
+              "loopEnabled": true
+            }
+          },
+          null,
+          null,
+          null
+        ],
+        "gain": 0.7,
+        "mute": false,
+        "solo": false
+      }
+    ],
+    "sources": [
+      {
+        "kind": "midi",
+        "id": "track-1-source",
+        "trackId": "track-1",
+        "name": "Clip 1",
+        "lengthBeats": 8.0,
+        "notes": [
+          {
+            "id": "track-1-note-1",
+            "beat": 0.0,
+            "duration": 1.75,
+            "pitch": 60,
+            "velocity": 90
+          },
+          {
+            "id": "track-1-note-3",
+            "beat": 0.0,
+            "duration": 1.75,
+            "pitch": 67,
+            "velocity": 90
+          },
+          {
+            "id": "track-1-note-4",
+            "beat": 2.0,
+            "duration": 1.75,
+            "pitch": 57,
+            "velocity": 90
+          },
+          {
+            "id": "track-1-note-6",
+            "beat": 2.0,
+            "duration": 1.75,
+            "pitch": 64,
+            "velocity": 90
+          },
+          {
+            "id": "track-1-note-7",
+            "beat": 4.0,
+            "duration": 1.75,
+            "pitch": 53,
+            "velocity": 90
+          },
+          {
+            "id": "track-1-note-9",
+            "beat": 4.0,
+            "duration": 1.75,
+            "pitch": 60,
+            "velocity": 90
+          },
+          {
+            "id": "track-1-note-10",
+            "beat": 6.0,
+            "duration": 1.75,
+            "pitch": 55,
+            "velocity": 90
+          },
+          {
+            "id": "track-1-note-12",
+            "beat": 6.0,
+            "duration": 1.75,
+            "pitch": 62,
+            "velocity": 90
+          }
+        ],
+        "automation": [
+          {
+            "instanceId": "track-1-instrument",
+            "key": "cutoff",
+            "enabled": true,
+            "points": [
+              {
+                "beat": 0.0,
+                "value": 900.0
+              },
+              {
+                "beat": 2.0,
+                "value": 2200.0
+              },
+              {
+                "beat": 4.0,
+                "value": 700.0
+              },
+              {
+                "beat": 6.0,
+                "value": 3600.0
+              }
+            ]
+          },
+          {
+            "instanceId": "track-1-instrument",
+            "key": "level",
+            "enabled": true,
+            "points": [
+              {
+                "beat": 0.0,
+                "value": 55.0
+              },
+              {
+                "beat": 4.0,
+                "value": 48.0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "midi",
+        "id": "track-2-source",
+        "trackId": "track-2",
+        "name": "Clip 1",
+        "lengthBeats": 8.0,
+        "notes": [
+          {
+            "id": "track-2-note-1",
+            "beat": 0.0,
+            "duration": 1.75,
+            "pitch": 72,
+            "velocity": 65
+          },
+          {
+            "id": "track-2-note-4",
+            "beat": 2.0,
+            "duration": 1.75,
+            "pitch": 69,
+            "velocity": 65
+          },
+          {
+            "id": "track-2-note-7",
+            "beat": 4.0,
+            "duration": 1.75,
+            "pitch": 65,
+            "velocity": 65
+          },
+          {
+            "id": "track-2-note-10",
+            "beat": 6.0,
+            "duration": 1.75,
+            "pitch": 67,
+            "velocity": 65
+          }
+        ],
+        "automation": [
+          {
+            "instanceId": "track-2-instrument",
+            "key": "cutoff",
+            "enabled": true,
+            "points": [
+              {
+                "beat": 0.0,
+                "value": 1300.0
+              },
+              {
+                "beat": 2.0,
+                "value": 2200.0
+              },
+              {
+                "beat": 4.0,
+                "value": 700.0
+              },
+              {
+                "beat": 6.0,
+                "value": 3600.0
+              }
+            ]
+          },
+          {
+            "instanceId": "track-2-instrument",
+            "key": "level",
+            "enabled": true,
+            "points": [
+              {
+                "beat": 0.0,
+                "value": 45.0
+              },
+              {
+                "beat": 4.0,
+                "value": 38.0
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "placements": [
+      {
+        "id": "track-1-placement",
+        "trackId": "track-1",
+        "sourceId": "track-1-source",
+        "start": 0.0,
+        "duration": 8.0,
+        "region": {
+          "start": 0.0,
+          "end": 8.0,
+          "loopStart": 0.0,
+          "loopEnd": 8.0,
+          "loopEnabled": true
+        }
+      },
+      {
+        "id": "track-2-placement",
+        "trackId": "track-2",
+        "sourceId": "track-2-source",
+        "start": 0.0,
+        "duration": 8.0,
+        "region": {
+          "start": 0.0,
+          "end": 8.0,
+          "loopStart": 0.0,
+          "loopEnd": 8.0,
+          "loopEnabled": true
+        }
+      }
+    ]
+  },
+  "master": {
+    "gain": 1.0
+  },
+  "launch": {
+    "globalQuantization": "bar1",
+    "clipQuantization": []
+  }
+}
