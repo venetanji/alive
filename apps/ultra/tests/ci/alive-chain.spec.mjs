@@ -920,6 +920,13 @@ test('detached rack draft blocks Save until its cached field is deliberately com
   await page.locator('#save').click();await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_file').map(c=>c.args.action))).toEqual(['save']);
 });
 
+test('removing the selected empty MIDI track rebuilds the rack for the audio track at the same index',async({page})=>{
+  await openSession(page,{emptyDevices:true,audioTrack:true});await page.locator('#detail-devices').click();await expect(page.getByRole('button',{name:'Load instrument',exact:true})).toBeVisible();
+  await page.evaluate(()=>{const s=window.sessionSnapshot;s.document.tracks.shift();s.document.sources=s.document.sources.filter(source=>source.trackId!== 'track-1');s.editRevision++;});
+  await expect(page.locator('#chain-title')).toHaveText('Harmony chain');await expect(page.locator('#chain')).toHaveAttribute('data-track-id','track-2');await expect(page.getByRole('button',{name:'Load instrument',exact:true})).toHaveCount(0);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device'))).toEqual([]);
+});
+
 test('removing a track releases its detached cached rack and parked draft',async({page})=>{
   await openSession(page);await page.locator('#detail-devices').click();
   await page.locator('.chain-device[data-instance-id="instrument-0"]').getByLabel('Cutoff base',{exact:true}).fill('1828');

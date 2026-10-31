@@ -118,6 +118,11 @@ WAV import supports mono/stereo PCM 8/16/24/32-bit and float 32/64-bit files,
 before inspecting it. Preparation owns stereo 48 kHz PCM, bounded to 60 seconds
 per source and 64 MiB across the session. Re-Pitch follows set tempo by changing
 sample playback speed and pitch together. Source bytes remain external.
+Audio source tempo is editable from 30..240 BPM. Changing it scales source beat
+coordinates for automation and every slot/placement region, keeping their sample
+positions; placement starts/durations remain fixed. The full source endpoint is
+bounded to its recomputed duration. Prepared PCM is replaced through the same
+acknowledged musical publication and retirement path as other audio edits.
 
 Save As rebases resolved audio and device paths and prevents a session save from
 overwriting a dependency, including symlink aliases. Retained history audio paths

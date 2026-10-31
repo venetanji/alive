@@ -698,7 +698,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     $('start').disabled=!!snapshot.state.playing;$('stop').disabled=false;$('add-track').disabled=(instrumentNeedsTrack&&document.tracks.length>=maxTracks)||deviceCount>=maxDevices||!!snapshot.state.playing||snapshot.midi.pending;
     const nextTracks=JSON.stringify([snapshot.generation,document.tracks.map(t=>[t.id,t.name,t.color,t.chain?.kind,t.slots?.map(c=>c?[c.id,c.name,c.sourceId]:null)])]);if(nextTracks!==trackKey){trackKey=nextTracks;buildTracks(document);}
     for(const [key,cached]of rackCache)if(cached.generation!==generation()||!model.document().tracks.some(track=>track.id===cached.trackId))discardRack(key,cached);
-    const nextChain=JSON.stringify([snapshot.generation,selected,chainDevices().map(d=>[d.instanceId,d.path])]);if(nextChain!==chainKey){chainKey=nextChain;buildChain();}
+    const nextChain=JSON.stringify([snapshot.generation,document.tracks[selected].id,document.tracks[selected].name,document.tracks[selected].chain.kind,chainDevices().map(d=>[d.instanceId,d.path])]);if(nextChain!==chainKey){chainKey=nextChain;buildChain();}
     const structuralBlocked=!!snapshot.state.playing||snapshot.midi.pending;if(rootlessInstrumentButton)rootlessInstrumentButton.disabled=structuralBlocked;
     $('chain-status').textContent=snapshot.midi.pending?'Wait for the musical edit to finish before changing devices.':snapshot.state.playing?'Stop transport to add, remove, replace or reorder devices. Bypass and base values work live.':'Add, remove, replace and reorder devices while stopped. Bypass and base values work live.';
     $('add-effect').disabled=structuralBlocked||document.tracks[selected].effects.length>=2||deviceCount>=maxDevices;
