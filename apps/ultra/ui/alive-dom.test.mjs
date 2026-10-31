@@ -300,9 +300,11 @@ test('chain selection uses stable instance metadata without launching and live b
   assert.equal(page.find('Bypass Pulse Subtractive instrument').disabled,true);
   await page.find('Select Pulse Stereo Lowpass effect 2').fire('click');
   assert.equal(page.ids.get('device-title').textContent,'Stereo Lowpass');
-  assert.equal(page.find('Cutoff effective ownership').textContent,'Automation: 0.5 Hz');
+  const card=descendants(page.ids.get('chain')).find(e=>e.dataset.instanceId==='effect-1');
+  const control=label=>descendants(card).find(e=>e.attrs['aria-label']===label);
+  assert.equal(control('Cutoff effective ownership').textContent,'Automation: 0.5 Hz');
   assert.equal(native.calls.some(c=>c.name==='alive_editor'||c.name==='alive_transport'),false);
-  const cutoff=page.find('Cutoff base');cutoff.value='1400';await cutoff.fire('change');
+  const cutoff=control('Cutoff base');cutoff.value='1400';await cutoff.fire('change');
   assert.deepEqual(native.calls.find(c=>c.name==='alive_base').args,{instanceId:'effect-1',key:'cutoff',value:1400,generation:1});
   await page.find('Bypass Pulse Stereo Lowpass effect 2').fire('click');
   assert.deepEqual(native.calls.find(c=>c.name==='alive_bypass').args,{instanceId:'effect-1',bypassed:true,generation:1});

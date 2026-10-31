@@ -397,7 +397,7 @@ test('selected instance controls, keyboard automation target and immediate edits
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:900,height:660});await openSession(page);
   await page.locator('#detail-devices').click();
   await page.getByRole('button',{name:'Select Pulse Stereo Lowpass effect 2',exact:true}).click();
-  await expect(page.locator('#device-title')).toHaveText('Stereo Lowpass');await expect(page.getByRole('spinbutton',{name:'Cutoff base',exact:true})).toHaveValue('1000');
+  await expect(page.locator('#device-title')).toHaveText('Stereo Lowpass');await expect(page.locator('.chain-device[data-instance-id="stereo-lowpass"]').getByRole('spinbutton',{name:'Cutoff base',exact:true})).toHaveValue('1000');
   expect(await page.evaluate(()=>window.calls.some(c=>c.name==='alive_editor'||c.name==='alive_transport'))).toBe(false);
   await page.locator('#detail-clip').click();await page.locator('.automation-section>summary').click();
   await page.getByLabel('Automation target',{exact:true}).selectOption(JSON.stringify(['stereo-lowpass','cutoff']));await page.getByRole('button',{name:'Add automation lane',exact:true}).click();
@@ -555,7 +555,7 @@ for(const kind of ['device','note'])test(`detail navigation preserves an unfinis
   await page.setViewportSize({width:1280,height:800});await openSession(page);
   const device=kind==='device',own=device?'devices':'clip',other=device?'clip':'devices',typed=device?'1717':'73';
   if(device)await page.locator('#detail-devices').click();else await page.locator('.note-table>summary').click();
-  const input=page.getByRole('spinbutton',{name:device?'Cutoff base':'Note 1 pitch',exact:true,includeHidden:true});
+  const input=(device?page.locator('.chain-device[data-instance-id="instrument-0"]'):page).getByRole('spinbutton',{name:device?'Cutoff base':'Note 1 pitch',exact:true,includeHidden:true});
   const original=JSON.parse(readFileSync(new URL('../../../alive/examples/two-instruments.alive',import.meta.url))).score;
   const mutations=()=>page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'));
   const acrossPolls=async()=>{
@@ -767,7 +767,7 @@ test('Master selection parks unfinished clip text and caret without a native edi
 
 test('browser and column widths resize locally and Master selection preserves device binding',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page,{longNames:true});
-  await page.locator('#detail-devices').click();const parameter=page.getByLabel('Cutoff base',{exact:true});await parameter.fill('1777');
+  await page.locator('#detail-devices').click();const parameter=page.locator('.chain-device[data-instance-id="instrument-0"]').getByLabel('Cutoff base',{exact:true});await parameter.fill('1777');
   await page.locator('#master-select-session').click();await expect(page.locator('#master-select-session')).toHaveAttribute('aria-pressed','true');await expect(page.locator('#master-detail')).toBeVisible();
   const separator=page.getByRole('separator',{name:'Resize browser'});await separator.focus();await page.keyboard.press('End');await expect(separator).toHaveAttribute('aria-valuenow','420');expect(await page.locator('#workspace-browser').evaluate(e=>e.getBoundingClientRect().width)).toBe(420);
   await separator.press('Home');expect(await page.locator('#workspace-browser').evaluate(e=>e.getBoundingClientRect().width)).toBe(180);
@@ -836,4 +836,48 @@ for(const size of [{width:1440,height:900},{width:1280,height:800},{width:1024,h
     await page.screenshot({path:testInfo.outputPath(`launch-${view}-${size.width}x${size.height}.png`)});
   }
   expect(await page.evaluate(()=>window.calls.some(c=>['alive_transport','alive_workspace_action'].includes(c.name)))).toBe(false);
+});
+
+for(const size of [{width:1440,height:900},{width:800,height:600}])test(`device rack exposes independent controls and internal horizontal scrolling at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
+  const cards=page.locator('.chain-device');await expect(cards).toHaveCount(3);
+  const bounds=await cards.evaluateAll(nodes=>nodes.map(e=>e.getBoundingClientRect().toJSON()));
+  expect(bounds[1].x).toBeGreaterThan(bounds[0].x+bounds[0].width-1);expect(bounds[2].y).toBe(bounds[0].y);
+  await page.screenshot({path:testInfo.outputPath(`device-rack-start-${size.width}.png`)});
+  const instrument=cards.nth(0),filter=cards.nth(2);
+  await expect(instrument.getByLabel('Cutoff base',{exact:true})).toBeVisible();
+  await expect(filter.getByLabel('Cutoff base',{exact:true})).toHaveValue('1000');
+  await instrument.getByLabel('Cutoff base',{exact:true}).fill('1717');
+  await filter.locator('.chain-select').click();
+  await expect(instrument.getByLabel('Cutoff base',{exact:true})).toHaveValue('1717');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base'))).toEqual([]);
+  await filter.getByLabel('Cutoff base',{exact:true}).fill('2345');await filter.getByLabel('Cutoff base',{exact:true}).press('Tab');
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base').at(-1)?.args)).toMatchObject({instanceId:'stereo-lowpass',key:'cutoff',value:2345});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  if(size.width===800)expect(await page.locator('#chain').evaluate(e=>e.scrollWidth>e.clientWidth)).toBe(true);
+  await page.screenshot({path:testInfo.outputPath(`device-rack-${size.width}.png`)});
+});
+
+test('rack drop insertion follows horizontal card midpoint even at its top edge',async({page})=>{
+  await openSession(page,{audioTrack:true});
+  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
+  const first=page.locator('.chain-device').first(),box=await first.boundingBox();
+  await page.getByRole('option',{name:'Stereo Lowpass',exact:true}).dragTo(first,{targetPosition:{x:box.width-4,y:2}});
+  await expect(first).toBeVisible();
+  await expect.poll(()=>page.evaluate(()=>window.sessionSnapshot.document.tracks[1].effects.map(e=>e.path))).toEqual(['utility.ultra','stereo-lowpass.ultra']);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device').at(-1).args.beforeInstanceId)).toBe(null);
+});
+
+test('rack retains another track draft and opens the editor owned by an unselected card',async({page})=>{
+  await openSession(page);await page.locator('#detail-devices').click();
+  const instrument=page.locator('.chain-device[data-instance-id="instrument-0"]'),cutoff=instrument.getByLabel('Cutoff base',{exact:true});
+  await cutoff.fill('1828');
+  await page.getByRole('button',{name:'Select Harmony track',exact:true}).click();
+  await page.getByRole('button',{name:'Select Pulse track',exact:true}).click();
+  await expect(cutoff).toHaveValue('1828');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base'))).toEqual([]);
+  await cutoff.focus();await cutoff.press('Tab');
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base').map(c=>c.args))).toEqual([{instanceId:'instrument-0',key:'cutoff',value:1828,generation:1}]);
+  await page.getByRole('button',{name:'Edit Pulse Stereo Lowpass effect 2 in Ultra',exact:true}).click();
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_editor').at(-1)?.args.instanceId)).toBe('stereo-lowpass');
 });

@@ -16,9 +16,9 @@ export function mountDeviceDrop({doc,win,scope,track,onDrop,onError}){
     if(chain){
       const current=track(chain.dataset.trackId);if(!current)return null;
       const row=element.closest('.chain-device'),effect=current.effects.findIndex(e=>e.instanceId===row?.dataset.instanceId);
-      const upper=row&&event.clientY<row.getBoundingClientRect().top+row.getBoundingClientRect().height/2;
-      const before=effect<0?current.effects[0]:current.effects[effect+(upper?0:1)];
-      return{trackId:current.id,beforeInstanceId:row?before?.instanceId??null:null,element:row??element.closest('.chain-drop-tail')??chain,decoration:row?(effect<0||!upper?'device-drop-after':'device-drop-before'):null};
+      const leading=row&&event.clientX<row.getBoundingClientRect().left+row.getBoundingClientRect().width/2;
+      const before=effect<0?current.effects[0]:current.effects[effect+(leading?0:1)];
+      return{trackId:current.id,beforeInstanceId:row?before?.instanceId??null:null,element:row??element.closest('.chain-drop-tail')??chain,decoration:row?(effect<0||!leading?'device-drop-after':'device-drop-before'):null};
     }
     const row=element?.closest('.track,.timeline-row');
     return row?{trackId:row.dataset.trackId,beforeInstanceId:null,element:row,decoration:null}:null;
