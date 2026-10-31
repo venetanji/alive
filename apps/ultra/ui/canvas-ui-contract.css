@@ -1,0 +1,40 @@
+/* Ultra-specific regions: retain Max-style toolbar and object-editor hierarchy.
+   Shared colors, help affordances and settings are in creative-shell.css. */
+.ultra-app .document-bar{gap:10px}
+.ultra-app .file-menu>summary{min-height:23px;padding:3px 9px}
+.ultra-app .file-menu>summary::after{content:"▾";font-size:10px;color:var(--muted);margin-left:6px}
+.ultra-app .menu-surface{top:29px;left:53px}
+.ultra-app .document-tools .icon-button{border-radius:var(--ui-radius)}
+.ultra-app .toolbar{gap:4px}
+.ultra-app .toolbar-end{gap:3px}
+.ultra-app .toolbar-end .icon-button{border-radius:var(--ui-radius)}
+.ultra-app .assist-bar{
+  justify-content:initial;
+  min-width:0;
+  gap:8px;
+  padding:0 8px;
+}
+#ultra-info-view{
+  flex:0 1 250px;
+  min-width:154px;
+  max-width:300px;
+  height:100%;
+  padding:0 7px 0 0;
+  border-right:1px solid var(--line);
+}
+#ultra-info-text{line-height:21px}
+.ultra-app #assist{flex:1;min-width:0}
+.ultra-app #selection-hint{flex:none}
+.ultra-app #open-help-library,.ultra-app #show-help{min-width:23px}
+.ultra-app #details-panel .ui-settings-surface{padding-bottom:12px}
+@media(max-width:850px){
+  #ultra-info-view{flex-basis:194px;min-width:145px;gap:4px}
+  .ultra-app .assist-bar{gap:5px}
+}
+@media(max-width:480px){
+  #ultra-info-view{flex:0 1 153px;min-width:131px;padding-right:2px;gap:3px}
+  .ultra-app .assist-bar{padding:0 5px;gap:3px}
+  #ultra-info-view .ui-info-label{font-size:9px}
+  #ultra-info-text{font-size:10px}
+  #ultra-info-view .ui-info-actions{gap:0}
+}
