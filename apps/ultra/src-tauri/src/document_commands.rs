@@ -97,7 +97,8 @@ pub fn admit_message(control: &mut canvas::CanvasState, owner: &Document, patch:
         control.single_parameter_change(&plan).map(|(node, key, value, hot)| Parameter { node, key: key.into(), value, hot })
     } else { None };
     let parameter = parameter.or(inferred.as_ref());
-    if !force && control.matches(&plan) && !parameter.is_some_and(|parameter| parameter.hot) {
+    // A cold hint can reconcile native preview state even when canonical values match.
+    if !force && control.matches(&plan) && parameter.is_none() {
         return Ok(documents::Admission {revision:control.revision(),message_text_serial:control.message_text_serial()});
     }
     if let Some(parameter) = parameter.filter(|_| !force) {

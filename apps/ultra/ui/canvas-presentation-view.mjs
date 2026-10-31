@@ -15,10 +15,13 @@ export function mountPresentation({doc,root,presentation,host,mode='preview',onE
   function mountControl(item,box){
     const resolved=host.resolve(item.target),descriptor=resolved?.descriptor;
     if(item.target.kind==='text'){
-      const text=make('div','presentation-text',resolved?.text??'');
-      const style=resolved?.style??{},color=rgba=>`rgba(${rgba.slice(0,3).map(c=>Math.round(c*255)).join(',')},${rgba[3]})`;
-      if(style.fontsize)text.style.fontSize=style.fontsize+'px';if(style.textcolor)text.style.color=color(style.textcolor);if(style.bgcolor)text.style.backgroundColor=color(style.bgcolor);
-      box.append(text);return;
+      const text=make('div','presentation-text'),color=rgba=>`rgba(${rgba.slice(0,3).map(c=>Math.round(c*255)).join(',')},${rgba[3]})`;
+      function refresh(){
+        if(!active())return;
+        const current=host.resolve(item.target),style=current?.style??{};text.textContent=current?.text??'';
+        text.style.fontSize=style.fontsize?style.fontsize+'px':'';text.style.color=style.textcolor?color(style.textcolor):'';text.style.backgroundColor=style.bgcolor?color(style.bgcolor):'';
+      }
+      box.append(text);views.push({refresh,hasDraft:()=>false,dispose(){}});refresh();return;
     }
     const error=make('div','presentation-error');error.setAttribute('role','alert');error.hidden=true;
     let gesture=null,serial=0,control;
@@ -35,7 +38,10 @@ export function mountPresentation({doc,root,presentation,host,mode='preview',onE
         if(!active()||ticket!==serial)return;
         error.hidden=true;if(snapshot&&!control.hasDraft?.())control.update?.(snapshot.commanded);
         refresh();
-      },e=>{if(active()&&ticket===serial){gesture=gestureId;report(e,error);refresh();}});
+      },e=>{if(active()&&ticket===serial){
+        if(e.code==='PRESENTATION_GESTURE_ENDED'&&e.gestureId===gestureId){if(gesture===gestureId)gesture=null;}else gesture=gestureId;
+        report(e,error);refresh();
+      }});
       return true;
     }
     const state=read(),value=state?.commanded??descriptor?.min??0;

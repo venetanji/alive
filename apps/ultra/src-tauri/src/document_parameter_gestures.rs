@@ -67,6 +67,33 @@ mod tests {
     fn value(id:u32,node:u32)->f64{let s=snapshot(id);s.nodes[..s.node_count as usize].iter().find(|n|n.id==node).unwrap().value}
     fn pulses(id:u32,node:u32)->u64{let s=snapshot(id);s.nodes[..s.node_count as usize].iter().find(|n|n.id==node).unwrap().pulses}
     #[test]
+    fn non_hot_baseline_return_commit_reconciles_native_value_without_output_or_reinstall(){
+        const NAME:&str="document_windows::commands::parameter_gestures::tests::non_hot_baseline_return_commit_reconciles_native_value_without_output_or_reinstall";
+        if std::env::var("ULTRA_PRESENTATION_BASELINE_TEST_PROCESS").as_deref()!=Ok("1"){
+            let child=std::process::Command::new(std::env::current_exe().unwrap()).args(["--exact",NAME,"--nocapture"]).env("ULTRA_PRESENTATION_BASELINE_TEST_PROCESS","1").output().unwrap();
+            assert!(child.status.success(),"{}\n{}",String::from_utf8_lossy(&child.stdout),String::from_utf8_lossy(&child.stderr));return;
+        }
+        let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+        let patch=serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
+            {"id":1,"type":"multiply","x":0,"y":0,"params":{"rhs":0.65}},
+            {"id":2,"type":"number","x":0,"y":0,"params":{"value":0}}],"edges":[{"from":1,"outlet":0,"to":2,"inlet":0}]});
+        let mut registry=Registry::default();let owner=registry.add("Cold reconciliation".into(),Kind::Patch,Some(patch),None,None).unwrap();
+        let mut audio=crate::AudioControl::default();let mut io=crate::audio::Driver::load(PathBuf::from("/nonexistent/ultra-baseline-return-test.json"));
+        let owner=registry.prepare_runtime(&owner.label,|owner|admit_owned(&mut io,&mut audio.graphs[owner.id as usize],owner,owner.patch.as_ref().unwrap(),None,None,true)).unwrap();
+        let request=|token,phase:&str,value|GestureRequest{owner_label:owner.label.clone(),runtime_revision:owner.runtime_revision,token,node:1,key:"rhs".into(),phase:phase.into(),value};
+        let token=apply(&mut registry,&mut audio,&mut io,&owner.label,request(None,"begin",0.65)).unwrap().token;
+        apply(&mut registry,&mut audio,&mut io,&owner.label,request(Some(token),"preview",0.4)).unwrap();
+        let message=audio.graphs[owner.id as usize].event(owner.runtime_revision,1,0,serde_json::json!([1])).unwrap();
+        assert_eq!(unsafe{crate::ultra_canvas_message_document(owner.id,owner.runtime_revision,1,0,&message)},1);assert_eq!(value(owner.id,2),0.4);
+        let before=pulses(owner.id,2);
+        let final_state=apply(&mut registry,&mut audio,&mut io,&owner.label,request(Some(token),"commit",0.65)).unwrap().document;
+        assert_eq!(final_state.patch.unwrap()["nodes"][0]["params"]["rhs"],0.65);assert!(final_state.parameter_previews.is_empty());
+        assert_eq!(snapshot(owner.id).revision,owner.runtime_revision);assert_eq!(pulses(owner.id,2),before,"cold reconciliation must not emit a hot output");
+        assert_eq!(unsafe{crate::ultra_canvas_message_document(owner.id,owner.runtime_revision,1,0,&message)},1);
+        assert_eq!(value(owner.id,2),0.65,"baseline-return commit left native rhs at its earlier preview");
+        close_owned(&mut io,owner.id).unwrap();
+    }
+    #[test]
     fn live_preview_metadata_other_parameter_cancel_commit_history_and_detached_settlement(){
         const NAME:&str="document_windows::commands::parameter_gestures::tests::live_preview_metadata_other_parameter_cancel_commit_history_and_detached_settlement";
         if std::env::var("ULTRA_PRESENTATION_GESTURE_TEST_PROCESS").as_deref()!=Ok("1"){

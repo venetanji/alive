@@ -3,11 +3,12 @@ import {treeNodes} from './canvas-hierarchy.mjs';
 import {actualDevices,parameterReading} from './alive-model.mjs';
 
 const equalScope=(a,b)=>['ownerId','generation','instanceId','sourceRevision'].every(key=>a?.[key]===b?.[key]);
+const endedGesture=(gestureId,message)=>Object.assign(Error(message),{code:'PRESENTATION_GESTURE_ENDED',gestureId});
 const unavailable=()=>{throw Error('Installed device panels are unavailable for this host.');};
 function lifetime(readScope){
   const listeners=new Set(),gestures=new Map();let disposed=false,serial=0;
   const assert=scope=>{if(disposed||!equalScope(scope,readScope()))throw Error('Presentation scope changed. Select the device again.');};
-  return{assert,gestures,get scope(){return Object.freeze({...readScope()});},beginGesture(bindingId,original){const scope=readScope();assert(scope);const id=`gesture-${++serial}`;gestures.set(id,{bindingId,original,latest:original,scope:{...scope}});return id;},gesture(request){assert(request.scope);const gesture=gestures.get(request.gestureId);if(!gesture||gesture.bindingId!==request.bindingId||!equalScope(gesture.scope,request.scope))throw Error('Presentation gesture is no longer authorized.');if(!['preview','commit','cancel'].includes(request.phase))throw Error('Invalid presentation gesture phase.');return gesture;},subscribe(fn){listeners.add(fn);return()=>listeners.delete(fn);},publish(){if(!disposed)for(const fn of listeners)fn();},dispose(){disposed=true;gestures.clear();listeners.clear();}};
+  return{assert,gestures,get scope(){return Object.freeze({...readScope()});},beginGesture(bindingId,original){const scope=readScope();assert(scope);const id=`gesture-${++serial}`;gestures.set(id,{bindingId,original,latest:original,scope:{...scope}});return id;},gesture(request){assert(request.scope);const gesture=gestures.get(request.gestureId);if(!gesture||gesture.bindingId!==request.bindingId||!equalScope(gesture.scope,request.scope))throw endedGesture(request.gestureId,'Presentation gesture is no longer authorized.');if(!['preview','commit','cancel'].includes(request.phase))throw Error('Invalid presentation gesture phase.');return gesture;},subscribe(fn){listeners.add(fn);return()=>listeners.delete(fn);},publish(){if(!disposed)for(const fn of listeners)fn();},dispose(){disposed=true;gestures.clear();listeners.clear();}};
 }
 function validate(value,descriptor){if(!Number.isFinite(value)||value<descriptor.min||value>descriptor.max||descriptor.integral&&!Number.isInteger(value))throw Error(`Parameter requires a value from ${descriptor.min} to ${descriptor.max}.`);}
 
@@ -45,6 +46,9 @@ export function createAlivePresentationHost({instanceId,getSnapshot,writeBase}={
   const reference=()=>getSnapshot()?.document.tracks.flatMap(actualDevices).find(device=>device.instanceId===instanceId);
   const scope=()=>{const s=getSnapshot(),r=reference();return{ownerId:'alive-session',generation:s?.generation,instanceId,sourceRevision:r?JSON.stringify([r.sourceSha256,r.path,r.id,r.version]):null};};
   const life=lifetime(scope);let writes=Promise.resolve();
+  function assertBase(request,gesture){
+    if(instance()?.manifest.parameters.find(p=>p.key===request.bindingId)?.base!==gesture.latest){life.gestures.delete(request.gestureId);throw endedGesture(request.gestureId,'The base value changed during this presentation gesture. Try the control again.');}
+  }
   function resolve(target){
     const item=instance()?.manifest.presentation?.items.find(item=>JSON.stringify(item.target)===JSON.stringify(target)),resolved=item?.resolved;
     if(!resolved)throw Error('Saved presentation target is unavailable in the accepted manifest.');
@@ -60,10 +64,10 @@ export function createAlivePresentationHost({instanceId,getSnapshot,writeBase}={
   return{get scope(){return life.scope;},resolve,snapshot,subscribe:life.subscribe,publish:life.publish,beginGesture(bindingId){return life.beginGesture(bindingId,snapshot(bindingId)?.commanded);},write(request){
     const run=async()=>{
       const gesture=life.gesture(request),binding=instance()?.manifest.parameters.find(p=>p.key===request.bindingId);if(!binding||!reference())throw Error('The device instance is no longer available.');
-      if(binding.base!==gesture.latest)throw Error('The base value changed during this presentation gesture. Finish the other edit and try again.');
+      assertBase(request,gesture);
       const value=request.phase==='cancel'?gesture.original:request.value;validate(value,binding);
       const assert=()=>life.assert(request.scope);
-      const assertValue=()=>{if(instance()?.manifest.parameters.find(p=>p.key===request.bindingId)?.base!==gesture.latest)throw Error('The base value changed during this presentation gesture.');};
+      const assertValue=()=>assertBase(request,gesture);
       await writeBase({generation:request.scope.generation,instanceId:request.scope.instanceId,key:request.bindingId,value},assert,assertValue);life.assert(request.scope);gesture.latest=value;
       if(request.phase!=='preview')life.gestures.delete(request.gestureId);life.publish();return snapshot(request.bindingId);
     };
