@@ -7,8 +7,9 @@ for(const size of [{width:800,height:600},{width:1280,height:800}])test(`Alive c
   const baseline=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
   const info=page.getByRole('complementary',{name:'Contextual help',exact:true});
   const box=await info.boundingBox(),footer=await page.locator('footer').boundingBox();
+  const footerInset=await page.locator('footer').evaluate(element=>{const style=getComputedStyle(element);return parseFloat(style.paddingBottom)+parseFloat(style.borderBottomWidth);});
   expect(box.x).toBeLessThanOrEqual(12);
-  expect(Math.abs(box.y+box.height-(footer.y+footer.height))).toBeLessThanOrEqual(2);
+  expect(Math.abs(box.y+box.height-(footer.y+footer.height-footerInset))).toBeLessThanOrEqual(2);
   await page.locator('#stop').hover();
   await expect(page.locator('#info-text')).toContainText('Stop transport');
   const file=page.locator('#file-menu');
